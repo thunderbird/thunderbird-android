@@ -832,6 +832,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="volume_navigation_message">In message views</string>
     <string name="volume_navigation_list">In list views</string>
 
+    <string name="show_account_list_on_startup">Show account list on startup</string>
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>

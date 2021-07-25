@@ -166,6 +166,9 @@ public class GeneralSettingsDescriptions {
         s.put("registeredNameColor", Settings.versions(
                 new V(1, new ColorSetting(0xFF00008F))
         ));
+        s.put("showAccountListOnStartup", Settings.versions(
+                new V(1, new BooleanSetting(false))
+        ));
         s.put("showContactName", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));

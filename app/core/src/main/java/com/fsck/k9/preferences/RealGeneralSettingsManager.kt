@@ -95,11 +95,17 @@ internal class RealGeneralSettingsManager(
     }
 
     @Synchronized
+    override fun setShowAccountListOnStartup(showAccountListOnStartup: Boolean) {
+        getSettings().copy(showAccountListOnStartup = showAccountListOnStartup).persist()
+    }
+
+    @Synchronized
     override fun setShowRecentChanges(showRecentChanges: Boolean) {
         getSettings().copy(showRecentChanges = showRecentChanges).persist()
     }
 
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
+        editor.putBoolean("showAccountListOnStartup", settings.showAccountListOnStartup)
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
     }
 
@@ -108,6 +114,7 @@ internal class RealGeneralSettingsManager(
 
         val settings = GeneralSettings(
             backgroundSync = K9.backgroundOps.toBackgroundSync(),
+            showAccountListOnStartup = storage.getBoolean("showAccountListOnStartup", false),
             showRecentChanges = storage.getBoolean("showRecentChanges", true)
         )
 

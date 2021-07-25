@@ -241,6 +241,10 @@
             android:title="@string/accountlist_preferences">
 
             <CheckBoxPreference
+                android:key="show_account_list_on_startup"
+                android:title="@string/show_account_list_on_startup" />
+
+            <CheckBoxPreference
                 android:key="show_unified_inbox"
                 android:title="@string/show_unified_inbox_title" />
 

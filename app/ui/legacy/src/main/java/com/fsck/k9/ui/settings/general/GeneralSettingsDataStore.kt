@@ -5,19 +5,23 @@ import com.fsck.k9.K9
 import com.fsck.k9.K9.AppTheme
 import com.fsck.k9.K9.SubTheme
 import com.fsck.k9.job.K9JobManager
+import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.ThemeManager
+import org.koin.java.KoinJavaComponent.inject
 
 class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,
     private val themeManager: ThemeManager,
     private val appLanguageManager: AppLanguageManager
 ) : PreferenceDataStore() {
+    private val generalSettingsManager: GeneralSettingsManager by inject(GeneralSettingsManager::class.java)
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme
             "animations" -> K9.isShowAnimations
+            "show_account_list_on_startup" -> generalSettingsManager.getSettings().showAccountListOnStartup
             "show_unified_inbox" -> K9.isShowUnifiedInbox
             "messagelist_stars" -> K9.isShowMessageListStars
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
@@ -46,6 +50,7 @@ class GeneralSettingsDataStore(
         when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme = value
             "animations" -> K9.isShowAnimations = value
+            "show_account_list_on_startup" -> generalSettingsManager.setShowAccountListOnStartup(value)
             "show_unified_inbox" -> K9.isShowUnifiedInbox = value
             "messagelist_stars" -> K9.isShowMessageListStars = value
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value

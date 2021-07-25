@@ -12,6 +12,7 @@ package com.fsck.k9.preferences
 // TODO: Move over settings from K9
 data class GeneralSettings(
     val backgroundSync: BackgroundSync,
+    val showAccountListOnStartup: Boolean,
     val showRecentChanges: Boolean
 )
 

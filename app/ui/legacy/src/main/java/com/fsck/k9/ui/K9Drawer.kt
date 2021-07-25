@@ -19,6 +19,7 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
+import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.ui.account.AccountImageLoader
 import com.fsck.k9.ui.account.AccountsViewModel
 import com.fsck.k9.ui.account.DisplayAccount
@@ -49,7 +50,6 @@ import com.mikepenz.materialdrawer.util.getDrawerItem
 import com.mikepenz.materialdrawer.util.removeAllItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
-import java.util.ArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -63,6 +63,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val resources: Resources by inject()
     private val messagingController: MessagingController by inject()
     private val accountImageLoader: AccountImageLoader by inject()
+    private val generalSettingsManager: GeneralSettingsManager by inject()
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
@@ -128,6 +129,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         foldersViewModel.getFolderListLiveData().observe(parent) { folders ->
             setUserFolders(folders)
+        }
+
+        if (generalSettingsManager.getSettings().showAccountListOnStartup) {
+            drawer.openDrawer(GravityCompat.START, false)
+            headerView.selectionListShown = true
         }
     }
 

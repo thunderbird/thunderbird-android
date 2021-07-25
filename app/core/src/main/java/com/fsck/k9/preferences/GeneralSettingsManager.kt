@@ -11,5 +11,6 @@ interface GeneralSettingsManager {
     fun getSettings(): GeneralSettings
     fun getSettingsFlow(): Flow<GeneralSettings>
 
+    fun setShowAccountListOnStartup(showAccountListOnStartup: Boolean)
     fun setShowRecentChanges(showRecentChanges: Boolean)
 }
