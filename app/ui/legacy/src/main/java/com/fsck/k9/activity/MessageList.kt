@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
@@ -96,6 +97,7 @@ open class MessageList :
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
     private lateinit var actionBar: ActionBar
+    private lateinit var searchView: SearchView
     private var drawer: K9Drawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
     private var menu: Menu? = null
@@ -664,6 +666,8 @@ open class MessageList :
             drawer!!.close()
         } else if (displayMode == DisplayMode.MESSAGE_VIEW && messageListWasDisplayed) {
             showMessageList()
+        } else if (this::searchView.isInitialized && !searchView.isIconified) {
+            searchView.isIconified = true
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
                 if (K9.isShowUnifiedInbox) {
@@ -854,10 +858,6 @@ open class MessageList :
         return super.onKeyUp(keyCode, event)
     }
 
-    override fun onSearchRequested(): Boolean {
-        return messageListFragment!!.onSearchRequested()
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == android.R.id.home) {
@@ -904,9 +904,6 @@ open class MessageList :
             return true
         } else if (id == R.id.select_all) {
             messageListFragment!!.selectAll()
-            return true
-        } else if (id == R.id.search) {
-            messageListFragment!!.onSearchRequested()
             return true
         } else if (id == R.id.search_remote) {
             messageListFragment!!.onRemoteSearch()
@@ -1003,6 +1000,25 @@ open class MessageList :
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.message_list_option, menu)
         this.menu = menu
+
+        // setup search view
+        val searchItem = menu.findItem(R.id.search)
+        searchView = searchItem.actionView as SearchView
+        searchView.maxWidth = Int.MAX_VALUE
+        searchView.queryHint = resources.getString(R.string.search_action)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                messageListFragment?.onSearchRequested(query)
+                return true
+            }
+
+            override fun onQueryTextChange(s: String): Boolean {
+                return false
+            }
+        })
+
         return true
     }
 
@@ -1273,19 +1289,24 @@ open class MessageList :
         }
     }
 
-    override fun startSearch(account: Account?, folderId: Long?): Boolean {
+    override fun startSearch(query: String, account: Account?, folderId: Long?): Boolean {
         // If this search was started from a MessageList of a single folder, pass along that folder info
         // so that we can enable remote search.
-        if (account != null && folderId != null) {
-            val appData = Bundle().apply {
+        val appData = if (account != null && folderId != null) {
+            Bundle().apply {
                 putString(EXTRA_SEARCH_ACCOUNT, account.uuid)
                 putLong(EXTRA_SEARCH_FOLDER, folderId)
             }
-            startSearch(null, false, appData, false)
         } else {
             // TODO Handle the case where we're searching from within a search result.
-            startSearch(null, false, null, false)
+            null
         }
+        val searchIntent = Intent(this, Search::class.java).apply {
+            action = Intent.ACTION_SEARCH
+            putExtra(SearchManager.QUERY, query)
+            putExtra(SearchManager.APP_DATA, appData)
+        }
+        startActivity(searchIntent)
 
         return true
     }
