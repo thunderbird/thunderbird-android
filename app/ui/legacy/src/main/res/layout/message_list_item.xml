@@ -58,7 +58,7 @@
                 android:bufferType="spannable"
                 android:layout_below="@+id/subject_wrapper"
                 android:singleLine="false"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="@style/TextAppearance.K9.Small"
                 android:textColor="?android:attr/textColorPrimary"
                 android:longClickable="false"
                 android:layout_alignWithParentIfMissing="false"
@@ -97,12 +97,13 @@
                     android:layout_marginLeft="1dip"
                     android:ellipsize="marquee"
                     android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
                     android:textColor="?android:attr/textColorPrimary"
                     />
 
             <TextView
                     android:id="@+id/thread_count"
+                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
                     android:textColor="?attr/messageListThreadCountForegroundColor"
                     android:background="?attr/messageListThreadCountBackground"
                     android:layout_width="wrap_content"
@@ -137,7 +138,7 @@
                 android:paddingLeft="3dip"
                 android:paddingRight="8dip"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="@style/TextAppearance.K9.Small"
                 android:textColor="?android:attr/textColorSecondary"/>
 
         <CheckBox

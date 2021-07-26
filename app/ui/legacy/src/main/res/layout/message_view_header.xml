@@ -41,7 +41,7 @@
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
                     tools:text="(no subject)"
                     />
 
@@ -136,7 +136,7 @@
                         android:singleLine="true"
                         android:ellipsize="end"
                         android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="@style/TextAppearance.K9.MediumSmall"
                         android:textStyle="bold"
                         android:text="@string/general_no_sender"
                         android:gravity="center_vertical"
@@ -153,7 +153,7 @@
                         android:layout_below="@+id/from"
                         android:ellipsize="end"
                         android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="@style/TextAppearance.K9.Small"
                         android:textStyle="bold"
                         android:visibility="gone"
                         android:gravity="center_vertical"
@@ -170,7 +170,7 @@
                         android:paddingRight="4dp"
                         android:text="@string/message_to_label"
                         android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textAppearance="@style/TextAppearance.K9.MediumSmall"
                         android:textStyle="bold" />
 
                     <TextView
@@ -183,7 +183,7 @@
                         android:ellipsize="end"
                         android:paddingTop="2dp"
                         android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
                     
                     <!-- CC -->
                     <TextView
@@ -198,7 +198,7 @@
                         android:text="@string/message_view_cc_label"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textStyle="bold"
-                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
                     
                     <TextView
                         android:id="@+id/cc"
@@ -210,7 +210,7 @@
                         android:ellipsize="end"
                         android:paddingTop="2dp"
                         android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
 
                     <!-- BCC -->
                     <TextView
@@ -225,7 +225,7 @@
                         android:text="@string/message_view_bcc_label"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textStyle="bold"
-                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
 
                     <TextView
                         android:id="@+id/bcc"
@@ -237,7 +237,7 @@
                         android:ellipsize="end"
                         android:paddingTop="2dp"
                         android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
                     
                     <!-- Date -->
                     <TextView
@@ -249,7 +249,7 @@
                         android:paddingTop="8dp"
                         android:singleLine="true"
                         android:ellipsize="none"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="@style/TextAppearance.K9.Small"
                         android:textColor="?android:attr/textColorSecondary" />
 
                     <LinearLayout

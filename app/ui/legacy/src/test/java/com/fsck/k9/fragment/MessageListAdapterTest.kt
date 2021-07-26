@@ -35,7 +35,7 @@ import org.mockito.kotlin.mock
 import org.robolectric.Robolectric
 
 private const val SOME_ACCOUNT_UUID = "6b84207b-25de-4dab-97c3-953bbf03fec6"
-private const val FIRST_LINE_DEFAULT_FONT_SIZE = 18f
+private const val FIRST_LINE_DEFAULT_FONT_SIZE = 16f
 private const val SECOND_LINE_DEFAULT_FONT_SIZE = 14f
 private const val DATE_DEFAULT_FONT_SIZE = 14f
 
