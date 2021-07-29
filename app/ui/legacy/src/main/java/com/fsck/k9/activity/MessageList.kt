@@ -1174,13 +1174,14 @@ open class MessageList :
         finish()
     }
 
-    fun setActionBarTitle(title: String) {
+    fun setActionBarTitle(title: String, subtitle: String? = null) {
         actionBar.title = title
+        actionBar.subtitle = subtitle
     }
 
-    override fun setMessageListTitle(title: String) {
+    override fun setMessageListTitle(title: String, subtitle: String?) {
         if (displayMode != DisplayMode.MESSAGE_VIEW) {
-            setActionBarTitle(title)
+            setActionBarTitle(title, subtitle)
         }
     }
 

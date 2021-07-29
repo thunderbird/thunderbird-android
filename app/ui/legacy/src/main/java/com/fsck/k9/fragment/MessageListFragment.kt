@@ -331,7 +331,15 @@ class MessageListFragment :
             else -> ""
         }
 
-        fragmentListener.setMessageListTitle(title)
+        val subtitle = account.let { account ->
+            if (account == null || isUnifiedInbox || preferences.accounts.size == 1) {
+                null
+            } else {
+                account.description
+            }
+        }
+
+        fragmentListener.setMessageListTitle(title, subtitle)
     }
 
     fun progress(progress: Boolean) {
@@ -1876,7 +1884,7 @@ class MessageListFragment :
         fun setMessageListProgress(level: Int)
         fun showThread(account: Account, threadRootId: Long)
         fun openMessage(messageReference: MessageReference)
-        fun setMessageListTitle(title: String)
+        fun setMessageListTitle(title: String, subtitle: String?)
         fun onCompose(account: Account?)
         fun startSearch(account: Account?, folderId: Long?): Boolean
         fun remoteSearchStarted()
