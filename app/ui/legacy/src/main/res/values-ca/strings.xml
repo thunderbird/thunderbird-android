@@ -16,7 +16,7 @@
   <string name="user_forum_title">Fòrum d\'usuaris</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
-  <string name="about_libraries">Biblioteques</string>
+  <string name="about_libraries">Biblioteques informàtiques</string>
   <string name="license">Llicència</string>
   <string name="changelog_title">Registre de canvis</string>
   <string name="changelog_loading_error">No s\'ha pogut carregar el registre de canvis.</string>
@@ -78,8 +78,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="choose_account_title">Trieu un compte</string>
   <string name="choose_folder_title">Tria carpeta</string>
   <string name="status_loading_account_folder">Comprova <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">Recuperant capçaleres <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">Enviant <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_loading_account_folder_headers">S\'estan recuperant capçaleres <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_sending_account">S\'està enviant <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_syncing_off">Sincronització desactivada</string>
@@ -148,7 +148,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(Sense assumpte)</string>
   <string name="general_no_sender">Sense remitent</string>
-  <string name="status_loading_more">Carregant missatges\u2026</string>
+  <string name="status_loading_more">S\'estan carregant missatges\u2026</string>
   <string name="status_network_error">Error de connexió</string>
   <string name="status_invalid_id_error">No s\'ha trobat el missatge</string>
   <string name="status_loading_error">Hi ha hagut un error durant la càrrega del missatge</string>
@@ -159,7 +159,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">Compte \"<xliff:g id="account">%s</xliff:g>\" comprimida des de <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">Compactant el compte \"<xliff:g id="account">%s</xliff:g>\"</string>
+  <string name="compacting_account">S\'està compactant el compte \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Correu nou</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nous missatges</item>
@@ -179,10 +179,10 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="notification_certificate_error_text">Comproveu la configuració del servidor.</string>
   <string name="notification_authentication_error_title">Ha fallat l\'autenticació</string>
   <string name="notification_authentication_error_text">Ha fallat l\'autenticació de <xliff:g id="account">%s</xliff:g>. Actualitzeu la configuració del servidor.</string>
-  <string name="notification_bg_sync_ticker">Comprovant el correu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
-  <string name="notification_bg_sync_title">Comprovant el correu</string>
-  <string name="notification_bg_send_ticker">Enviant correu: <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_bg_send_title">Enviant correu</string>
+  <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_title">S\'està comprovant el correu</string>
+  <string name="notification_bg_send_ticker">S\'està enviant correu: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_bg_send_title">S\'està enviant correu</string>
   <string name="notification_bg_title_separator">.</string>
   <string name="notification_channel_push_title">Sincronitza-ho (Empeny)</string>
   <string name="notification_channel_push_description">Mostrat mentre s\'esperen missatges nous</string>
@@ -300,12 +300,12 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_basics_show_password">Mostra la contrasenya</string>
   <string name="account_setup_basics_manual_setup_action">Configuració manual</string>
   <string name="account_setup_check_settings_title"/>
-  <string name="account_setup_check_settings_retr_info_msg">Recuperant la informació del compte\u2026</string>
-  <string name="account_setup_check_settings_check_incoming_msg">Comprovant la configuració del servidor d\'entrada\u2026</string>
-  <string name="account_setup_check_settings_check_outgoing_msg">Comprovant la configuració del servidor de sortida\u2026</string>
-  <string name="account_setup_check_settings_authenticate">Autenticant\u2026</string>
-  <string name="account_setup_check_settings_fetch">Recuperant la configuració del compte\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Cancel·lant\u2026</string>
+  <string name="account_setup_check_settings_retr_info_msg">S\'està recuperant la informació del compte\u2026</string>
+  <string name="account_setup_check_settings_check_incoming_msg">S\'està comprovant la configuració del servidor d\'entrada\u2026</string>
+  <string name="account_setup_check_settings_check_outgoing_msg">S\'està comprovant la configuració del servidor de sortida\u2026</string>
+  <string name="account_setup_check_settings_authenticate">S\'està autenticant\u2026</string>
+  <string name="account_setup_check_settings_fetch">S\'està recuperant la configuració del compte\u2026</string>
+  <string name="account_setup_check_settings_canceling_msg">S\'està cancel·lant\u2026</string>
   <string name="account_setup_names_title">Ja gairebé hem acabat!</string>
   <string name="account_setup_names_account_name_label">Dóna un nom a aquest compte (opcional):</string>
   <string name="account_setup_names_user_name_label">Escriviu el nom (és el que es mostrarà als missatges sortints):</string>
@@ -443,7 +443,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_show_pictures_never">No</string>
   <string name="account_settings_show_pictures_only_from_contacts">Dels contactes</string>
   <string name="account_settings_show_pictures_always">De qualsevol</string>
-  <string name="account_settings_composition">Enviant correu</string>
+  <string name="account_settings_composition">S\'està enviant el correu</string>
   <string name="account_settings_default_quoted_text_shown_label">Cita el missatge original en respondre\'l.</string>
   <string name="account_settings_default_quoted_text_shown_summary">Afegeix el missatge original a les vostres respostes.</string>
   <string name="account_settings_reply_after_quote_label">Contesta després del text citat.</string>
@@ -463,8 +463,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_upload_sent_messages_label">Carrega els missatges enviats</string>
   <string name="account_settings_upload_sent_messages_summary">Carrega els missatges a la carpeta d\'enviats després d\'enviar-los</string>
   <string name="account_settings_general_title">Configuració general</string>
-  <string name="account_settings_reading_mail">Llegint el correu</string>
-  <string name="account_settings_sync">Recuperant el correu</string>
+  <string name="account_settings_reading_mail">S\'està llegint el correu</string>
+  <string name="account_settings_sync">S\'està recuperant el correu</string>
   <string name="account_settings_folders">Carpetes</string>
   <string name="account_settings_quote_prefix_label">Prefix de citació del text</string>
   <string name="account_settings_crypto">Encriptació d\'extrem a extrem</string>
@@ -776,7 +776,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Còpia de seguretat</string>
   <string name="settings_list_miscellaneous_category">Miscel·lània</string>
-  <string name="settings_export_title">Configuració de l\'exportació</string>
+  <string name="settings_export_title">Exporta la configuració</string>
   <string name="settings_export_button">Exporta</string>
   <string name="settings_export_share_button">Comparteix</string>
   <string name="settings_export_progress_text">S\'està exportant la configuració...</string>
@@ -796,7 +796,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_import_status_error">Fallada d\'importació</string>
   <string name="settings_import_later_button">Més tard</string>
   <string name="settings_import">Importa la configuració</string>
-  <string name="settings_importing">Important la configuració...</string>
+  <string name="settings_importing">S\'està important la configuració...</string>
   <plurals name="settings_import_password_prompt">
     <item quantity="one">Per poder usar el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar la contrasenya del servidor. </item>
     <item quantity="other">Per poder fer servir el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar les contrasenyes del servidor. </item>
@@ -818,7 +818,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="unread_widget_account_not_selected">No hi ha cap compte seleccionat</string>
   <string name="unread_widget_folder_not_selected">No hi ha cap carpeta seleccionada</string>
   <string name="webview_empty_message">Sense text</string>
-  <string name="webview_contextmenu_link_view_action">Obre per mostrar</string>
+  <string name="webview_contextmenu_link_view_action">Obre l\'enllaç</string>
   <string name="webview_contextmenu_link_share_action">Comparteix l\'enllaç</string>
   <string name="webview_contextmenu_link_copy_action">Copia l\'enllaç</string>
   <string name="webview_contextmenu_link_clipboard_label">Enllaç</string>
@@ -847,14 +847,14 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Límit de resultats de la cerca del servidor</string>
-  <string name="remote_search_sending_query">Enviant la consulta al servidor</string>
+  <string name="remote_search_sending_query">S\'està enviant la consulta al servidor</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">Recuperant %d resultat</item>
-    <item quantity="other">Recuperant %d resultats</item>
+    <item quantity="other">S\'està recuperant %d resultats</item>
   </plurals>
   <plurals name="remote_search_downloading_limited">
     <item quantity="one">Recuperant %1$d de %2$d resultats</item>
-    <item quantity="other">Recuperant %1$dde %2$dresultats</item>
+    <item quantity="other">S\'està recuperant %1$dde %2$dresultats</item>
   </plurals>
   <string name="remote_search_error">No s\'ha pogut fer la cerca remota.</string>
   <string name="account_settings_search">Cerca</string>
@@ -867,8 +867,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_threaded_view_label">Vista de fil de discussió</string>
   <string name="global_settings_threaded_view_summary">Recull els missatges del mateix fil de discussió</string>
   <string name="upgrade_databases_title">Actualització de les bases de dades</string>
-  <string name="upgrade_databases_unspecified">Actualitzant les bases de dades...</string>
-  <string name="upgrade_database_format">Actualitzant la base de dades del compte \"<xliff:g id="account">%s</xliff:g>\"</string>
+  <string name="upgrade_databases_unspecified">S\'estan actualitzant les bases de dades...</string>
+  <string name="upgrade_database_format">S\'està actualitzant la base de dades del compte \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="global_settings_splitview_mode_label">Mostra amb pantalla dividida</string>
   <string name="global_settings_splitview_always">Sempre</string>
   <string name="global_settings_splitview_never">Mai</string>
@@ -881,10 +881,10 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_colorize_missing_contact_pictures_summary">Acoloreix les imatges de contactes absents</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Accions de missatge visibles</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Mostra les accions seleccionades al menú de vista de missatge</string>
-  <string name="loading_attachment">Carregant l\'adjunt…</string>
-  <string name="fetching_attachment_dialog_title_send">Enviant el missatge</string>
-  <string name="fetching_attachment_dialog_title_save">Desant l\'esborrany</string>
-  <string name="fetching_attachment_dialog_message">Recuperant l\'adjunt…</string>
+  <string name="loading_attachment">S\'està carregant l\'adjunt…</string>
+  <string name="fetching_attachment_dialog_title_send">S\'està enviant el missatge</string>
+  <string name="fetching_attachment_dialog_title_save">S\'està desant l\'esborrany</string>
+  <string name="fetching_attachment_dialog_message">S\'està recuperant l\'adjunt…</string>
   <string name="auth_external_error">No s\'ha pogut autenticar. El servidor no ha mostrat l\'opció SASL EXTERNAL. Això podria ser degut a un problema amb el certificat del client (caducat, o autoritat del certificat desconeguda) o algun altre problema de configuració.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Fes servir el certificat de client</string>
@@ -917,7 +917,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="enable_sign_only">Habilita PGP de només signar</string>
   <string name="disable_sign_only">Inhabilita PGP de només signar</string>
   <string name="openpgp_inline_title">Mode PGP/INLINE</string>
-  <string name="openpgp_inline_text">El missatge s\'envia en el format PGP/INLINE.\nAixò només s\'hauria d\'usar per a compatibilitat:</string>
+  <string name="openpgp_inline_text">El missatge s\'envia en el format PGP/INLINE.\nAixò només s\'hauria de fer servir per a compatibilitat:</string>
   <string name="openpgp_inline_plus_compat">Alguns clients només admeten aquest format</string>
   <string name="openpgp_inline_minus_transit">Les signatures es poden trencar durant el trànsit</string>
   <string name="openpgp_inline_minus_attach">Els adjunts no s\'admeten</string>
@@ -971,7 +971,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="locked_attach_unlock">Desbloqueja</string>
   <string name="locked_attach_unencrypted">Aquesta part no estava encriptada i pot no ser segura.</string>
   <string name="locked_attach_title">Adjunt no protegit</string>
-  <string name="message_progress_text">Carregant...</string>
+  <string name="message_progress_text">S\'està carregant...</string>
   <string name="messageview_decrypt_cancelled">S\'ha cancel·lat la desencriptació.</string>
   <string name="messageview_decrypt_retry">Torna-hi</string>
   <string name="messageview_decrypt_incomplete">Cal baixar el missatge encriptat per desencriptar-lo.</string>
@@ -988,23 +988,23 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="apg_deprecated_2">A causa d\'això, el suport d\'APG s\'ha eliminat del K-9 Mail.</string>
   <string name="apg_deprecated_bullet_1">El desenvolupament es va aturar a principis de 2014.</string>
   <string name="apg_deprecated_bullet_2">Conté problemes de seguretat no corregits.</string>
-  <string name="apg_learn_more">Podeu clicar <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">aquí</a> per saber-ne més.</string>
+  <string name="apg_learn_more">Podeu fer clic <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">aquí</a> per saber-ne més.</string>
   <string name="apg_deprecated_ok">Ja ho tinc!</string>
   <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Aquest missatge està encriptat.</string>
   <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
   <string name="crypto_no_provider_button">Ves a la configuració</string>
   <string name="mail_list_widget_text">Llista de missatges del K-9</string>
-  <string name="mail_list_widget_loading">Carregant missatges...</string>
+  <string name="mail_list_widget_loading">S\'està carregant missatges...</string>
   <string name="fetching_folders_failed">Ha fallat recuperar la llista de carpetes.</string>
   <string name="error_recipient_crypto_retrieve">Error en recuperar l\'estat del destinatari del proveïdor d\'OpenPGP!</string>
   <string name="openpgp_enabled_error_title">Encriptació no possible</string>
   <string name="openpgp_enabled_error_msg">Alguns dels destinataris seleccionats no admeten aquesta característica!</string>
   <string name="enable_encryption">Habilita l\'encriptació</string>
   <string name="disable_encryption">Inhabilita l\'encriptació</string>
-  <string name="openpgp_description_text1">Encriptar els missatges assegura que els pugui llegir el destinatari i ningú més.</string>
+  <string name="openpgp_description_text1">L\'encriptació dels missatges assegura que els pugui llegir el destinatari i ningú més.</string>
   <string name="openpgp_description_text3">L\'encriptació només es mostrarà si tots els destinataris l\'admeten i us han d\'haver enviat un missatge abans.</string>
-  <string name="openpgp_description_text2">Commuteu l\'encriptació clicant en aquesta icona.</string>
+  <string name="openpgp_description_text2">Commuteu l\'encriptació fent clic en aquesta icona.</string>
   <string name="openpgp_enabled_error_gotit">Ja ho tinc</string>
   <string name="openpgp_enabled_error_back">Enrere</string>
   <string name="openpgp_enabled_error_disable">Inhabilita l\'encriptació</string>
@@ -1013,7 +1013,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="dialog_autocrypt_mutual_title">Mode mutu d\'autoencriptació</string>
   <string name="dialog_autocrypt_mutual_description_1">Els missatges s\'encriptaran normalment per selecció o en respondre un missatge encriptat.</string>
   <string name="dialog_autocrypt_mutual_description_2">Si tant el remitent com el destinatari habiliten el mode mutu, l\'encriptació s\'habilitarà per defecte.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Podeu <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">clicar aquí</a> per saber-ne més.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Podeu <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">fer clic aquí</a> per saber-ne més.</string>
   <string name="general_settings_title">Configuració general</string>
   <string name="dialog_openkeychain_info_title">No hi ha cap aplicació d\'OpenPGP instal·lada.</string>
   <string name="dialog_openkeychain_info_install">Instal·la</string>
@@ -1038,7 +1038,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
 
 Per configurar el vostre dispositiu nou per a l\'autoencriptació, si us plau, seguiu les instruccions que es mostraran al dispositiu nou.
 
-Podeu guardar aquest missatge i usar-lo com a còpia de seguretat per a la vostra clau secreta. Si ho voleu fer, hauríeu d\'anotar-vos la contrasenya i desar-la amb seguretat.
+Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la vostra clau secreta. Si ho voleu fer, hauríeu d\'anotar-vos la contrasenya i desar-la amb seguretat.
 </string>
   <string name="ac_transfer_error_send">Hi ha hagut un error mentre s\'enviava el missatge. Si us plau, comproveu la connexió de xarxa i la configuració del servidor de sortida.</string>
   <string name="switch_on">Actiu</string>

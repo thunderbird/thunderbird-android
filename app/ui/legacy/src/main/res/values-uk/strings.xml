@@ -7,10 +7,11 @@
   <string name="shortcuts_title">Облікові записи K-9 Mail</string>
   <string name="unread_widget_label">K-9 Непрочитані</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Дресирувальники K-9</string>
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Авторське право 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Часткові авторські права 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">Програмний код</string>
   <string name="app_license">Ліцензія Apache версії 2.0</string>
+  <string name="about_project_title">Проект з відкритим кодом</string>
   <string name="about_website_title">Сайт</string>
   <string name="user_forum_title">Форум</string>
   <string name="about_fediverse_title">Соцмережі</string>
@@ -18,6 +19,11 @@
   <string name="about_libraries">Бібліотеки</string>
   <string name="license">Ліцензія</string>
   <string name="changelog_title">Журнал змін</string>
+  <string name="changelog_loading_error">Не вдалося завантажити список змін.</string>
+  <string name="changelog_version_title">Версія %s</string>
+  <string name="changelog_recent_changes_title">Що нового</string>
+  <string name="changelog_show_recent_changes">Показувати останні зміни при оновленні додатка</string>
+  <string name="changelog_snackbar_text">Дізнатися, що нового у цьому релізі</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Ласкаво просимо до K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -96,7 +102,9 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="spam_action">Спам</string>
   <string name="forward_action">Переслати</string>
   <string name="forward_as_attachment_action">Переслати як вкладення</string>
+  <string name="edit_as_new_message_action">Редагувати як нове повідомлення</string>
   <string name="move_action">Перемістити</string>
+  <string name="move_to_drafts_action">Перемістити в Чернетки</string>
   <string name="single_message_options_action">Надіслати...</string>
   <string name="refile_action">Перемістити…</string>
   <string name="done_action">Готово</string>
@@ -109,6 +117,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="add_account_action">Додати обліковий запис</string>
   <string name="compose_action">Написати новий лист</string>
   <string name="search_action">Пошук</string>
+  <string name="search_everywhere_action">Шукати всюди</string>
   <string name="search_results">Результати пошуку</string>
   <string name="preferences_action">Налаштування</string>
   <string name="folders_action">Керування теками</string>
@@ -127,6 +136,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
     <item quantity="many">Адреси скопійовано до комірки обміну</item>
     <item quantity="other">Адреси скопійовано до комірки обміну</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Текст теми скопійовано в буфер обміну</string>
   <string name="message_view_theme_action_dark">Перемкнути на темну тему</string>
   <string name="message_view_theme_action_light">Перемкнути на світлу тему</string>
   <string name="mark_as_unread_action">Позначити непрочитаним</string>
@@ -179,6 +189,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="notification_bg_send_ticker">Надсилання пошти: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Надсилання пошти</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Синхронізувати (пуш)</string>
+  <string name="notification_channel_push_description">Відображається під час очікування нових повідомлень</string>
   <string name="notification_channel_messages_title">Повідомлення</string>
   <string name="notification_channel_messages_description">Сповіщення, пов\'язані з повідомленнями</string>
   <string name="notification_channel_miscellaneous_title">Різне</string>
@@ -215,6 +227,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="message_compose_show_quoted_text_action">Включити цитоване повідомлення</string>
   <string name="message_compose_description_delete_quoted_text">Видалити цитований текст</string>
   <string name="message_compose_description_edit_quoted_text">Редагувати цитований текст</string>
+  <string name="remove_attachment_action">Видалити вкладення</string>
   <string name="message_view_from_format">Від: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Кому:</string>
   <string name="message_view_cc_label">Копія:</string>
@@ -477,6 +490,20 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_led_color_summary">Колір блимання LED-індикатору вашого телефону для цього облікового запису</string>
   <string name="account_settings_mail_display_count_label">Розмір локальної теки</string>
   <string name="account_settings_autodownload_message_size_label">Отримувати повідомлення розміром до</string>
+  <string name="account_settings_autodownload_message_size_1">1 КБ</string>
+  <string name="account_settings_autodownload_message_size_2">2 КБ</string>
+  <string name="account_settings_autodownload_message_size_4">4 КБ</string>
+  <string name="account_settings_autodownload_message_size_8">8 КБ</string>
+  <string name="account_settings_autodownload_message_size_16">16 КБ</string>
+  <string name="account_settings_autodownload_message_size_32">32 КБ</string>
+  <string name="account_settings_autodownload_message_size_64">64 КБ</string>
+  <string name="account_settings_autodownload_message_size_128">128 КБ</string>
+  <string name="account_settings_autodownload_message_size_256">256 КБ</string>
+  <string name="account_settings_autodownload_message_size_512">512 КБ</string>
+  <string name="account_settings_autodownload_message_size_1024">1 МБ</string>
+  <string name="account_settings_autodownload_message_size_2048">2 МБ</string>
+  <string name="account_settings_autodownload_message_size_5120">5 МБ</string>
+  <string name="account_settings_autodownload_message_size_10240">10 МБ</string>
   <string name="account_settings_autodownload_message_size_any">будь-якого розміру (без обмежень)</string>
   <string name="account_settings_message_age_label">Синхронізувати повідомлення за</string>
   <string name="account_settings_message_age_any">увесь час (без обмежень)</string>
@@ -532,6 +559,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="folder_settings_folder_push_mode_normal">Без класу</string>
   <string name="folder_settings_folder_push_mode_first_class">1-ий клас</string>
   <string name="folder_settings_folder_push_mode_second_class">2-ий клас</string>
+  <string name="folder_settings_folder_push_mode_inherited">Такий як і клас розкладу (poll)</string>
   <string name="folder_settings_folder_notify_mode_label">Клас сповіщення теки</string>
   <string name="folder_settings_folder_notify_mode_normal">Без класу</string>
   <string name="folder_settings_folder_notify_mode_first_class">1-й клас</string>
@@ -667,6 +695,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="volume_navigation_title">Навігація кнопками зміни гучності</string>
   <string name="volume_navigation_message">при перегляді повідомлень</string>
   <string name="volume_navigation_list">у списках</string>
+  <string name="show_unified_inbox_title">Показувати Об\'єднані Вхідні</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Непрочитані</string>
   <string name="search_all_messages_title">Всі повідомлення</string>
@@ -719,9 +748,13 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="send_failed_reason">Помилка відправки: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Зберегти чернетку повідомлення?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Зберегти чи Скасувати це повідомлення?</string>
+  <string name="save_or_discard_draft_message_changes">Зберегти чи Скасувати зміни?</string>
   <string name="confirm_discard_draft_message_title">Скасувати повідомлення?</string>
   <string name="confirm_discard_draft_message">Ви дійсно хочете скасувати це повідомлення?</string>
   <string name="select_text_now">Виберіть текст для копіювання.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Очистити локальні повідомлення?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Це видалить всі локальні повідомлення з теки. Жодне повідомлення не буде видалене з сервера.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Очистити повідомлення</string>
   <string name="dialog_confirm_delete_title">Підтвердіть видалення</string>
   <string name="dialog_confirm_delete_message">Ви хочете видалити це повідомлення?</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -800,6 +833,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="webview_contextmenu_link_share_action">Надіслати посилання</string>
   <string name="webview_contextmenu_link_copy_action">Копіювати посилання до буфера обміну</string>
   <string name="webview_contextmenu_link_clipboard_label">Посилання</string>
+  <string name="webview_contextmenu_link_text_copy_action">Скопіювати текст посилання у буфер обміну</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Текст посилання</string>
   <string name="webview_contextmenu_image_title">Зображення</string>
   <string name="webview_contextmenu_image_view_action">Переглянути зображеня</string>
   <string name="webview_contextmenu_image_save_action">Зберегти зображення</string>
@@ -880,6 +915,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="recipient_bcc">Прихована копія</string>
   <string name="recipient_to">До</string>
   <string name="recipient_from">Від</string>
+  <string name="unknown_recipient">&lt;Невідомий Адресат&gt;</string>
+  <string name="unknown_sender">&lt;Невідомий Відправник&gt;</string>
   <string name="address_type_home">Домашній</string>
   <string name="address_type_work">Робочий</string>
   <string name="address_type_other">Інший</string>
@@ -1026,4 +1063,17 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Дозволити доступ до контактів</string>
   <string name="permission_contacts_rationale_message">Цей додаток потребує доступу до ваших контактів, щоб мати можливість відображати імена і фотографії контактів та відображати пропозиції під час їх введення.</string>
+  <string name="generic_loading_error">Сталася помилка при завантаженні даних</string>
+  <string name="push_notification_state_initializing">Ініціалізація...</string>
+  <string name="push_notification_state_listening">Очікування нових листів</string>
+  <string name="push_notification_state_wait_background_sync">Очікування дозволу на фонову синхронізацію</string>
+  <string name="push_notification_state_wait_network">Очікування наявності мережі</string>
+  <string name="push_notification_info">Натисніть, щоб дізнатися більше.</string>
+  <string name="push_info_title">Інформація про сповіщення</string>
+  <string name="push_info_notification_explanation_text">Під час використання пуш-сповіщень, K-9 Mail використовує з\'єднання з поштовим сервером. Android\'у необхідно відображати сповіщення безперервно доки програма працює на фоні. %s</string>
+  <string name="push_info_configure_notification_text">Тим не менш, Android також дозволяє приховати сповіщення.</string>
+  <string name="push_info_learn_more_text">Дізнатися більше</string>
+  <string name="push_info_configure_notification_action">Налаштувати сповіщення</string>
+  <string name="push_info_disable_push_text">Якщо вам не потрібне миттєве сповіщення про нові повідомлення, вам варто вимкнути Push і використовувати Polling. Polling перевіряє пошту з регулярними інтервалами і не потребує сповіщення.</string>
+  <string name="push_info_disable_push_action">Вимкнути пуш-сповіщення</string>
 </resources>
