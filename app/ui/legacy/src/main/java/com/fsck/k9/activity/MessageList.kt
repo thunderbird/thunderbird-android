@@ -618,13 +618,17 @@ open class MessageList :
         ManageFoldersActivity.launch(this, account!!)
     }
 
-    fun openRealAccount(account: Account) {
+    fun openRealAccount(account: Account): Boolean {
+        val shouldCloseDrawer = account.autoExpandFolderId != null
+
         val folderId = defaultFolderProvider.getDefaultFolder(account)
 
         val search = LocalSearch()
         search.addAllowedFolder(folderId)
         search.addAccountUuid(account.uuid)
         actionDisplaySearch(this, search, noThreading = false, newTask = false)
+
+        return shouldCloseDrawer
     }
 
     private fun performSearch(search: LocalSearch) {
