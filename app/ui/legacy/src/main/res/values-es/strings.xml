@@ -1048,6 +1048,13 @@ Puede mantener este mensaje y usarlo como copia de seguridad de su clave secreta
   <string name="permission_contacts_rationale_message">Para poder proveer sugerencias de contactos y mostrar sus nombres, la app necesita acceso a éstos.</string>
   <string name="generic_loading_error">Se produjo un error al cargar los datos</string>
   <string name="push_notification_state_initializing">Iniciando...</string>
+  <string name="push_notification_state_listening">Esperando nuevos correos electrónicos</string>
   <string name="push_notification_state_wait_background_sync">Esperar hasta que se permita la sincronización en segundo plano</string>
   <string name="push_notification_state_wait_network">Esperar hasta que la red esté disponible</string>
+  <string name="push_notification_info">Toque para obtener más información.</string>
+  <string name="push_info_title">Empujar Info</string>
+  <string name="push_info_configure_notification_text">Sin embargo, Android también te permite ocultar la notificación. </string>
+  <string name="push_info_learn_more_text">Aprende más</string>
+  <string name="push_info_configure_notification_action">Configurar notificación</string>
+  <string name="push_info_disable_push_action">Deshabilitar Push</string>
 </resources>

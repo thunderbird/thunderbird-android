@@ -14,6 +14,7 @@
   <string name="about_project_title">Проект с отворен код</string>
   <string name="about_website_title">Уебстраница</string>
   <string name="user_forum_title">Потребителски форум</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Библиотеки</string>
   <string name="license">Лиценз</string>
   <string name="changelog_title">Списък на промените</string>
@@ -151,6 +152,10 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="status_invalid_id_error">Съобщението не е намерено</string>
   <string name="status_loading_error">Грешка при зареждане на съобщението</string>
   <string name="load_more_messages_fmt">Зареди още <xliff:g id="messages_to_load">%d</xliff:g> </string>
+  <string name="size_format_gigabytes">%.1f ГБ</string>
+  <string name="size_format_megabytes">%.1f МБ</string>
+  <string name="size_format_kilobytes">%.1f КБ</string>
+  <string name="size_format_bytes">%d Б</string>
   <string name="account_size_changed">Профил \"<xliff:g id="account">%s</xliff:g>\" се смали от <xliff:g id="oldSize">%s</xliff:g> до <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Компресира профил \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ново Писмо</string>

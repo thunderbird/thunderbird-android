@@ -102,7 +102,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="spam_action">Spam</string>
   <string name="forward_action">Weiterleiten</string>
   <string name="forward_as_attachment_action">Als Anhang weiterleiten</string>
-  <string name="edit_as_new_message_action">Editiere als neue Meldung</string>
+  <string name="edit_as_new_message_action">Als neue Nachricht bearbeiten</string>
   <string name="move_action">Verschieben</string>
   <string name="move_to_drafts_action">Zu Entwürfen verschieben</string>
   <string name="single_message_options_action">Senden…</string>
@@ -117,7 +117,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="add_account_action">Konto hinzufügen</string>
   <string name="compose_action">Verfassen</string>
   <string name="search_action">Suchen</string>
-  <string name="search_everywhere_action">Suche überall</string>
+  <string name="search_everywhere_action">Überall suchen</string>
   <string name="search_results">Suchergebnisse</string>
   <string name="preferences_action">Einstellungen</string>
   <string name="folders_action">Ordner verwalten</string>
@@ -803,7 +803,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
     <item quantity="other">Um das Konto \"<xliff:g id="account">%s</xliff:g>\" nutzen zu können, müssen Sie die Serverpasswörter eingeben.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Passwort des Posteingangsservers</string>
-  <string name="settings_import_outgoing_server_password_hint">Passwort des Posteingangsservers</string>
+  <string name="settings_import_outgoing_server_password_hint">Passwort des Postausgangsservers</string>
   <string name="settings_import_use_same_password_for_outgoing_server">Gleiches Passwort für den Postausgangsserver verwenden</string>
   <string name="server_name_format">Servername: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Anzahl ungelesener Nachrichten anzeigen für…</string>

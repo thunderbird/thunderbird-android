@@ -7,18 +7,23 @@
   <string name="shortcuts_title">Účty K-9</string>
   <string name="unread_widget_label">K-9 Nepřečtená</string>
   <!--Used in the about dialog-->
+  <string name="app_authors">Páníčci robopsů K-9</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">Zdrojový kód</string>
   <string name="app_license">Apache License, verze 2.0</string>
   <string name="about_project_title">Projekt s otevřeným zdrojovým kódem</string>
   <string name="about_website_title">Webová stránka</string>
   <string name="user_forum_title">Uživatelské fórum</string>
+  <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Softwarové knihovny</string>
   <string name="license">Licence</string>
   <string name="changelog_title">Soupis změn</string>
   <string name="changelog_loading_error">Nelze nahrát soupis změn.</string>
   <string name="changelog_version_title">Verze %s</string>
+  <string name="changelog_recent_changes_title">Co je nového</string>
+  <string name="changelog_show_recent_changes">Po aktualizaci aplikace, zobrazovat nejnovější změny</string>
+  <string name="changelog_snackbar_text">Zjistěte, co je v tomto vydání nového</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Vítejte v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -111,6 +116,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="add_account_action">Přidat účet</string>
   <string name="compose_action">Nová</string>
   <string name="search_action">Hledat</string>
+  <string name="search_everywhere_action">Hledat všude</string>
   <string name="search_results">Výsledky hledání</string>
   <string name="preferences_action">Možnosti</string>
   <string name="folders_action">Spravovat složky</string>
@@ -129,6 +135,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
     <item quantity="many">Adres zkopírováno do schránky</item>
     <item quantity="other">Adresy zkopírovány do schránky</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Text předmětu zkopírován do schránky</string>
   <string name="message_view_theme_action_dark">Přepnout na tmavý motiv</string>
   <string name="message_view_theme_action_light">Přepnout na světlý motiv</string>
   <string name="mark_as_unread_action">Označit jako nepřečtené</string>
@@ -181,6 +188,8 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="notification_bg_send_ticker">Odesílání pošty: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Odesílání pošty</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Synchronizovat (Push)</string>
+  <string name="notification_channel_push_description">Zobrazeno po dobu čekání na nové zprávy</string>
   <string name="notification_channel_messages_title">Zpráva</string>
   <string name="notification_channel_messages_description">Oznámení související se zprávami</string>
   <string name="notification_channel_miscellaneous_title">Různé</string>
@@ -480,6 +489,20 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_led_color_summary">Barva, kterou má telefon blikat pro tento účet</string>
   <string name="account_settings_mail_display_count_label">Velikost místního adresáře</string>
   <string name="account_settings_autodownload_message_size_label">Stahovat zprávy až do</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">jakékoli velikosti (bez omezení)</string>
   <string name="account_settings_message_age_label">Synchronizovat odeslané zprávy</string>
   <string name="account_settings_message_age_any">kdykoliv (bez omezení)</string>
@@ -535,6 +558,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="folder_settings_folder_push_mode_normal">Žádná třída</string>
   <string name="folder_settings_folder_push_mode_first_class">1. třída</string>
   <string name="folder_settings_folder_push_mode_second_class">2. třída</string>
+  <string name="folder_settings_folder_push_mode_inherited">Stejné jako třída fondu</string>
   <string name="folder_settings_folder_notify_mode_label">Třída oznámení složky</string>
   <string name="folder_settings_folder_notify_mode_normal">Žádná třída</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. třída</string>
@@ -1038,4 +1062,16 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
   <string name="permission_contacts_rationale_title">Umožnit přístup ke kontaktům</string>
   <string name="permission_contacts_rationale_message">Aby bylo možné poskytovat automatické dopisování kontaktů a zobrazovat jména a fotky kontaktů, aplikace potřebuje přístup k vašim kontaktům.</string>
   <string name="generic_loading_error">Nastala chyba při nahrávání dat</string>
+  <string name="push_notification_state_initializing">Inicializace…</string>
+  <string name="push_notification_state_listening">Čeká se na nové e-maily</string>
+  <string name="push_notification_state_wait_background_sync">Uspáno do doby, než bude umožněna synchronizace na pozadí</string>
+  <string name="push_notification_state_wait_network">Uspáno do doby, než bude k dispozici síť</string>
+  <string name="push_notification_info">Klepněte, pokud se chcete dozvědět víc.</string>
+  <string name="push_info_title">Push informace</string>
+  <string name="push_info_notification_explanation_text">Při používání Push, K-9 Mail udržuje spojení s e-mailový serverem. Systém Android vyžaduje zobrazování průběžného upozornění, zatímco je aplikace aktivní na pozadí. %s</string>
+  <string name="push_info_configure_notification_text">Nicméně, Android vám také umožňuje toto upozornění skrýt.</string>
+  <string name="push_info_learn_more_text">Zjistit více</string>
+  <string name="push_info_configure_notification_action">Nastavit upozorňování</string>
+  <string name="push_info_disable_push_text">Pokud nepotřebujete okamžitá upozornění na nové zprávy, měli byste Push vypnout a použít pravidelné dotazování se. To kontroluje nové e-maily v pravidelném intervalu a nepotřebuje upozornění.</string>
+  <string name="push_info_disable_push_action">Vypnout Push</string>
 </resources>
