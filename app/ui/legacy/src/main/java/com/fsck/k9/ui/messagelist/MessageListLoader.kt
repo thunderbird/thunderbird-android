@@ -40,6 +40,17 @@ class MessageListLoader(
 ) {
 
     fun getMessageList(config: MessageListConfig): MessageListInfo {
+        return try {
+            getMessageListInfo(config)
+        } catch (e: Exception) {
+            Timber.e(e, "Error while fetching message list")
+
+            // TODO: Return an error object instead of an empty list
+            MessageListInfo(messageListItems = emptyList(), hasMoreMessages = false)
+        }
+    }
+
+    private fun getMessageListInfo(config: MessageListConfig): MessageListInfo {
         val accounts = config.search.getAccounts(preferences)
         val cursors = accounts
             .mapNotNull { loadMessageListForAccount(it, config) }
