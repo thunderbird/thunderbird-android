@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.801" versioncode="28001" date="2021-07-30">
+        <change>Tweaked the default font sizes</change>
+        <change>The name of the currently selected account is displayed in the top bar below the folder name (when using multiple accounts)</change>
+        <change>When selecting an account in the drawer the auto-expand folder is now displayed right away</change>
+        <change>Added support for user-installed CAs</change>
+        <change>Error notifications now contain the full error text</change>
+        <change>Fixed some crashes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.800" versioncode="28000" date="2021-07-24">
         <change>Major redesign of the user interface</change>
         <change>Changed periodic background sync and push implementations to work much more reliably</change>
