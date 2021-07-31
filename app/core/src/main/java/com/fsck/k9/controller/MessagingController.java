@@ -598,6 +598,8 @@ public class MessagingController {
     public void synchronizeMailboxBlocking(Account account, String folderServerId) throws MessagingException {
         long folderId = getFolderId(account, folderServerId);
 
+        account.setRingNotified(false);
+
         final CountDownLatch latch = new CountDownLatch(1);
         putBackground("synchronizeMailbox", null, () -> {
             try {
