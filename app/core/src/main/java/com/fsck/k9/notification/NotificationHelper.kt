@@ -35,6 +35,8 @@ class NotificationHelper(
             if (vibrationPattern != null) {
                 builder.setVibrate(vibrationPattern)
             }
+        } else {
+            builder.setNotificationSilent()
         }
 
         if (ledColor != null) {
