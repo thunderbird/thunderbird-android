@@ -26,6 +26,7 @@ class WearNotifications extends BaseNotifications {
         int notificationId = holder.notificationId;
         NotificationContent content = holder.content;
         NotificationCompat.Builder builder = createBigTextStyleNotification(account, holder, notificationId);
+        builder.setNotificationSilent();
 
         PendingIntent deletePendingIntent = actionCreator.createDismissMessagePendingIntent(
                 context, content.messageReference, holder.notificationId);
