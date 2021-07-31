@@ -820,7 +820,7 @@ class MessageListFragment :
             }
 
             computeBatchDirection()
-            updateActionModeTitle()
+            updateActionMode()
             computeSelectAllVisibility()
         } else {
             this.selected.clear()
@@ -875,7 +875,7 @@ class MessageListFragment :
         }
 
         computeBatchDirection()
-        updateActionModeTitle()
+        updateActionMode()
         computeSelectAllVisibility()
 
         adapter.notifyDataSetChanged()
@@ -889,8 +889,10 @@ class MessageListFragment :
         setFlag(item, Flag.FLAGGED, !item.isStarred)
     }
 
-    private fun updateActionModeTitle() {
-        actionMode!!.title = getString(R.string.actionbar_selected, selectedCount)
+    private fun updateActionMode() {
+        val actionMode = actionMode ?: error("actionMode == null")
+        actionMode.title = getString(R.string.actionbar_selected, selectedCount)
+        actionMode.invalidate()
     }
 
     private fun computeSelectAllVisibility() {
@@ -1477,7 +1479,7 @@ class MessageListFragment :
         }
 
         recalculateSelectionCount()
-        updateActionModeTitle()
+        updateActionMode()
     }
 
     private fun startAndPrepareActionMode() {
@@ -1715,15 +1717,19 @@ class MessageListFragment :
 
             // we don't support cross account actions atm
             if (!isSingleAccountMode) {
-                // show all
+                val accounts = accountUuidsForSelected.mapNotNull { accountUuid ->
+                    preferences.getAccount(accountUuid)
+                }
+
                 menu.findItem(R.id.move).isVisible = true
-                menu.findItem(R.id.archive).isVisible = true
-                menu.findItem(R.id.spam).isVisible = true
                 menu.findItem(R.id.copy).isVisible = true
 
-                for (accountUuid in accountUuidsForSelected) {
-                    val account = preferences.getAccount(accountUuid)
-                    account?.let { setContextCapabilities(it, menu) }
+                // Disable archive/spam options here and maybe enable below when checking account capabilities
+                menu.findItem(R.id.archive).isVisible = false
+                menu.findItem(R.id.spam).isVisible = false
+
+                for (account in accounts) {
+                    setContextCapabilities(account, menu)
                 }
             }
 
@@ -1762,10 +1768,13 @@ class MessageListFragment :
                 menu.findItem(R.id.move).isVisible = false
                 menu.findItem(R.id.copy).isVisible = false
 
-                // TODO: we could support the archive and spam operations if all selected messages
-                // belong to non-POP3 accounts
-                menu.findItem(R.id.archive).isVisible = false
-                menu.findItem(R.id.spam).isVisible = false
+                if (account?.hasArchiveFolder() == true) {
+                    menu.findItem(R.id.archive).isVisible = true
+                }
+
+                if (account?.hasSpamFolder() == true) {
+                    menu.findItem(R.id.spam).isVisible = true
+                }
             } else {
                 // hide unsupported
                 if (!messagingController.isCopyCapable(account)) {
@@ -1841,12 +1850,13 @@ class MessageListFragment :
                 R.id.unflag -> setFlagForSelected(Flag.FLAGGED, false)
                 R.id.select_all -> selectAll()
                 R.id.archive -> {
-                    // only if the account supports this
                     onArchive(checkedMessages)
+                    // TODO: Only finish action mode if all messages have been moved.
                     selectedCount = 0
                 }
                 R.id.spam -> {
                     onSpam(checkedMessages)
+                    // TODO: Only finish action mode if all messages have been moved.
                     selectedCount = 0
                 }
                 R.id.move -> {
