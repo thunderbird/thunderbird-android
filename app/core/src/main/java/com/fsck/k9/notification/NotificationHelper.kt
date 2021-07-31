@@ -23,6 +23,7 @@ class NotificationHelper(
     ) {
 
         if (K9.isQuietTime) {
+            builder.setNotificationSilent()
             return
         }
 
