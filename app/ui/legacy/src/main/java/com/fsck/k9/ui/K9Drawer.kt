@@ -1,5 +1,6 @@
 package com.fsck.k9.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
@@ -7,8 +8,10 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.TypedValue
+import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -44,12 +47,10 @@ import com.mikepenz.materialdrawer.model.interfaces.selectedColorInt
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import com.mikepenz.materialdrawer.util.addItems
-import com.mikepenz.materialdrawer.util.addStickyFooterItem
 import com.mikepenz.materialdrawer.util.getDrawerItem
 import com.mikepenz.materialdrawer.util.removeAllItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
-import java.util.ArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -68,6 +69,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val resources: Resources by inject()
     private val messagingController: MessagingController by inject()
     private val accountImageLoader: AccountImageLoader by inject()
+
+    private val buttonRow: LinearLayout = parent.findViewById(R.id.material_drawer_button_row)
+    private val buttonSettings: ImageView = parent.findViewById(R.id.drawer_button_settings)
+    private val buttonManageFolders: ImageView = parent.findViewById(R.id.drawer_button_manage_folders)
+    private val buttonRefreshAll: ImageView = parent.findViewById(R.id.drawer_button_refresh_all)
+    private val buttonRefreshAccount: ImageView = parent.findViewById(R.id.drawer_button_refresh_account)
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
@@ -99,6 +106,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         initializeImageLoader()
         configureAccountHeader()
+        configureButtonBar()
 
         drawer.addDrawerListener(parent.createDrawerListener())
         sliderView.tintStatusBar = true
@@ -124,8 +132,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 swipeRefreshLayout.setSlingshotDistance(slingshotDistance)
             }
         }
-
-        addFooterItems()
 
         accountsViewModel.displayAccountsLiveData.observeNotNull(parent) { accounts ->
             setAccounts(accounts)
@@ -162,6 +168,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             openedAccountUuid = account.uuid
             val eventHandled = !parent.openRealAccount(account)
             updateUserAccountsAndFolders(account)
+            updateButtonBarVisibility(false)
 
             eventHandled
         }
@@ -207,6 +214,36 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private fun buildBadgeTextWithUnreadCount(unreadCount: Int): String? {
         return if (unreadCount > 0) unreadCount.toString() else null
+    }
+
+    private fun updateButtonBarVisibility(showsAccounts: Boolean) {
+        buttonManageFolders.visibility = if (showsAccounts) View.GONE else View.VISIBLE
+        buttonRefreshAccount.visibility = if (showsAccounts) View.GONE else View.VISIBLE
+        buttonRefreshAll.visibility = if (showsAccounts) View.VISIBLE else View.GONE
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun configureButtonBar() {
+        headerView.onAccountHeaderSelectionViewClickListener = { view, profile ->
+            updateButtonBarVisibility(!headerView.selectionListShown)
+            false
+        }
+        updateButtonBarVisibility(headerView.selectionListShown)
+
+        buttonRow.setOnTouchListener { _, _ -> true } // To avoid touch going through
+        buttonSettings.setOnClickListener { SettingsActivity.launch(parent) }
+        buttonManageFolders.setOnClickListener { parent.launchManageFoldersScreen() }
+        buttonRefreshAccount.setOnClickListener { refreshAndShowProgress(headerView.activeProfile?.tag as Account) }
+        buttonRefreshAll.setOnClickListener { refreshAndShowProgress(null) }
+
+        val showContentDescription = View.OnLongClickListener { v ->
+            Toast.makeText(parent, v.contentDescription, Toast.LENGTH_SHORT).show()
+            true
+        }
+        buttonSettings.setOnLongClickListener(showContentDescription)
+        buttonManageFolders.setOnLongClickListener(showContentDescription)
+        buttonRefreshAccount.setOnLongClickListener(showContentDescription)
+        buttonRefreshAll.setOnLongClickListener(showContentDescription)
     }
 
     private fun setAccounts(displayAccounts: List<DisplayAccount>) {
@@ -259,35 +296,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
     }
 
-    private fun addFooterItems() {
-        sliderView.addStickyFooterItem(
-            PrimaryDrawerItem().apply {
-                nameRes = R.string.folders_action
-                iconRes = folderIconProvider.iconFolderResId
-                identifier = DRAWER_ID_FOLDERS
-                isSelectable = false
-            }
-        )
-
-        sliderView.addStickyFooterItem(
-            PrimaryDrawerItem().apply {
-                nameRes = R.string.preferences_action
-                iconRes = getResId(R.attr.iconActionSettings)
-                identifier = DRAWER_ID_PREFERENCES
-                isSelectable = false
-            }
-        )
-    }
-
-    private fun getResId(resAttribute: Int): Int {
-        val typedValue = TypedValue()
-        val found = parent.theme.resolveAttribute(resAttribute, typedValue, true)
-        if (!found) {
-            throw AssertionError("Couldn't find resource with attribute $resAttribute")
-        }
-        return typedValue.resourceId
-    }
-
     private fun getFolderDisplayName(folder: Folder): String {
         return folderNameFormatter.displayName(folder)
     }
@@ -299,20 +307,26 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             foldersViewModel.loadFolders(account)
         }
 
-        // Account can be null to refresh all (unified inbox or account list).
         swipeRefreshLayout.setOnRefreshListener {
-            val accountToRefresh = if (headerView.selectionListShown) null else account
-            messagingController.checkMail(
-                accountToRefresh, true, true,
-                object : SimpleMessagingListener() {
-                    override fun checkMailFinished(context: Context?, account: Account?) {
-                        swipeRefreshLayout.post {
-                            swipeRefreshLayout.isRefreshing = false
-                        }
+            refreshAndShowProgress(if (headerView.selectionListShown) null else account)
+        }
+    }
+
+    private fun refreshAndShowProgress(account: Account?) {
+        // Account can be null to refresh all (unified inbox or account list).
+        if (!swipeRefreshLayout.isRefreshing) {
+            swipeRefreshLayout.isRefreshing = true
+        }
+        messagingController.checkMail(
+            account, true, true,
+            object : SimpleMessagingListener() {
+                override fun checkMailFinished(context: Context?, account: Account?) {
+                    swipeRefreshLayout.post {
+                        swipeRefreshLayout.isRefreshing = false
                     }
                 }
-            )
-        }
+            }
+        )
     }
 
     private fun initializeWithAccountColor(account: Account) {
@@ -329,8 +343,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private fun handleItemClickListener(drawerItem: IDrawerItem<*>) {
         when (drawerItem.identifier) {
-            DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
-            DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
             DRAWER_ID_UNIFIED_INBOX -> parent.openUnifiedInbox()
             else -> {
                 val folder = drawerItem.tag as Folder
