@@ -10,7 +10,8 @@ internal val controllerPushModule = module {
         AccountPushControllerFactory(
             backendManager = get(),
             messagingController = get(),
-            folderRepositoryManager = get()
+            folderRepositoryManager = get(),
+            preferences = get()
         )
     }
     single {
