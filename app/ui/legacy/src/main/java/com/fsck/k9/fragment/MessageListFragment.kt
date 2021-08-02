@@ -1807,11 +1807,11 @@ class MessageListFragment :
                     menu.findItem(R.id.archive).isVisible = false
                     menu.findItem(R.id.spam).isVisible = false
                 } else {
-                    if (isArchiveFolder) {
+                    if (!account.hasArchiveFolder() || isArchiveFolder) {
                         menu.findItem(R.id.archive).isVisible = false
                     }
 
-                    if (isSpamFolder) {
+                    if (!account.hasSpamFolder() || isSpamFolder) {
                         menu.findItem(R.id.spam).isVisible = false
                     }
                 }
