@@ -23,6 +23,7 @@ class NotificationHelper(
     ) {
 
         if (K9.isQuietTime) {
+            builder.setNotificationSilent()
             return
         }
 
@@ -34,6 +35,8 @@ class NotificationHelper(
             if (vibrationPattern != null) {
                 builder.setVibrate(vibrationPattern)
             }
+        } else {
+            builder.setNotificationSilent()
         }
 
         if (ledColor != null) {
