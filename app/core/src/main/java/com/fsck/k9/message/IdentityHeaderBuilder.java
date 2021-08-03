@@ -3,16 +3,20 @@ package com.fsck.k9.message;
 
 import android.net.Uri;
 import android.net.Uri.Builder;
-import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
+import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
+import timber.log.Timber;
 
 
 public class IdentityHeaderBuilder {
+    private static final int MAX_LINE_LENGTH = 72;
+    private static final int FIRST_LINE_EXTRA_LENGTH = K9.IDENTITY_HEADER.length() + 2;
+
     private InsertableHtmlContent quotedHtmlContent;
     private QuoteStyle quoteStyle;
     private SimpleMessageFormat messageFormat;
@@ -95,9 +99,33 @@ public class IdentityHeaderBuilder {
         appendValue(IdentityField.QUOTED_TEXT_MODE, quotedTextMode);
 
         String k9identity = IdentityField.IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
+        String headerValue = foldHeaderValue(k9identity);
 
-        Timber.d("Generated identity: %s", k9identity);
-        return k9identity;
+        Timber.d("Generated identity: %s", headerValue);
+        return headerValue;
+    }
+
+    private String foldHeaderValue(String input) {
+        int inputLength = input.length();
+        int endOfFirstLine = MAX_LINE_LENGTH - FIRST_LINE_EXTRA_LENGTH;
+        if (inputLength <= endOfFirstLine) {
+            return input;
+        }
+
+        int extraLines = (inputLength - endOfFirstLine - 1) / (MAX_LINE_LENGTH - 1) + 1;
+        int builderSize = inputLength + extraLines * 3 /* CR LF SPACE */;
+        StringBuilder headerValue = new StringBuilder(builderSize);
+
+        headerValue.append(input, 0, endOfFirstLine);
+        int start = endOfFirstLine;
+        while (start < inputLength) {
+            headerValue.append("\r\n ");
+            int end = start + Math.min(MAX_LINE_LENGTH - 1, inputLength - start);
+            headerValue.append(input, start, end);
+            start = end;
+        }
+
+        return headerValue.toString();
     }
 
     private void appendValue(IdentityField field, int value) {

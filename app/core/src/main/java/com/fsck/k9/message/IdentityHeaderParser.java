@@ -29,10 +29,12 @@ public class IdentityHeaderParser {
             return identity;
         }
 
+        String encodedString = unfoldHeaderValue(identityString);
+
         // Check to see if this is a "next gen" identity.
-        if (identityString.charAt(0) == IdentityField.IDENTITY_VERSION_1.charAt(0) && identityString.length() > 2) {
+        if (encodedString.charAt(0) == IdentityField.IDENTITY_VERSION_1.charAt(0) && encodedString.length() > 2) {
             Uri.Builder builder = new Uri.Builder();
-            builder.encodedQuery(identityString.substring(1));  // Need to cut off the ! at the beginning.
+            builder.encodedQuery(encodedString.substring(1));  // Need to cut off the ! at the beginning.
             Uri uri = builder.build();
             for (IdentityField key : IdentityField.values()) {
                 String value = uri.getQueryParameter(key.value());
@@ -56,9 +58,9 @@ public class IdentityHeaderParser {
         } else {
             // Legacy identity
 
-            Timber.d("Got a saved legacy identity: %s", identityString);
+            Timber.d("Got a saved legacy identity: %s", encodedString);
 
-            StringTokenizer tokenizer = new StringTokenizer(identityString, ":", false);
+            StringTokenizer tokenizer = new StringTokenizer(encodedString, ":", false);
 
             // First item is the body length. We use this to separate the composed reply from the quoted text.
             if (tokenizer.hasMoreTokens()) {
@@ -84,5 +86,9 @@ public class IdentityHeaderParser {
         }
 
         return identity;
+    }
+
+    private static String unfoldHeaderValue(String identityString) {
+        return identityString.replaceAll("\r?\n ", "");
     }
 }
