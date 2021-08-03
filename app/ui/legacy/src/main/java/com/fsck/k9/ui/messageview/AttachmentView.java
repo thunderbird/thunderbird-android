@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.messageview;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -120,8 +121,14 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
     }
 
     public void refreshThumbnail() {
+        Context context = getContext();
+        if (context instanceof Activity && ((Activity) context).isDestroyed()) {
+            // Do nothing because Glide would throw an exception
+            return;
+        }
+
         preview.setVisibility(View.VISIBLE);
-        Glide.with(getContext())
+        Glide.with(context)
                 .load(attachment.internalUri)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
