@@ -92,6 +92,7 @@
         <item name="messageListForwarded">@drawable/ic_messagelist_forwarded</item>
         <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded</item>
         <item name="messageStar">@drawable/btn_check_star</item>
+        <item name="messageStarColor">#fbbc04</item>
         <item name="messageViewBackgroundColor">#ffffffff</item>
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus</item>
         <item name="attachmentCardBackground">#e8e8e8</item>
@@ -209,6 +210,7 @@
         <item name="messageListForwarded">@drawable/ic_messagelist_forwarded</item>
         <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded</item>
         <item name="messageStar">@drawable/btn_check_star</item>
+        <item name="messageStarColor">#fdd663</item>
         <item name="messageViewBackgroundColor">#000000</item>
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus</item>
         <item name="attachmentCardBackground">#313131</item>
