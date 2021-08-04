@@ -64,6 +64,7 @@ internal class PushNotificationManager(
             .setContentIntent(contentIntent)
             .setOngoing(true)
             .setNotificationSilent()
+            .setPriority(NotificationCompat.PRIORITY_MIN)
             .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
             .setLocalOnly(true)
             .setShowWhen(false)
