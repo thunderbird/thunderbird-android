@@ -79,6 +79,7 @@
         <attr name="messageListForwarded" format="reference"/>
         <attr name="messageListAnsweredForwarded" format="reference"/>
         <attr name="messageStar" format="reference"/>
+        <attr name="messageStarColor" format="color"/>
         <attr name="messageViewBackgroundColor" format="reference|color"/>
         <attr name="messageComposeAddContactImage" format="reference"/>
         <attr name="attachmentCardBackground" format="reference|color"/>
