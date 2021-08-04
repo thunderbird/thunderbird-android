@@ -11,6 +11,8 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
+import com.fsck.k9.MessageCounts;
+import com.fsck.k9.MessageCountsProvider;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
@@ -122,6 +124,18 @@ public class MessagingControllerTest extends K9RobolectricTest {
         }
     };
 
+    private MessageCountsProvider messageCountsProvider = new MessageCountsProvider() {
+        @Override
+        public MessageCounts getMessageCounts(@NotNull SearchAccount searchAccount) {
+            return new MessageCounts(0, 0);
+        }
+
+        @Override
+        public MessageCounts getMessageCounts(@NotNull Account account) {
+            return new MessageCounts(0, 0);
+        }
+    };
+
     private Preferences preferences;
     private String accountUuid;
 
@@ -135,8 +149,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         preferences = Preferences.getPreferences(appContext);
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
-                localStoreProvider, unreadMessageCountProvider, backendManager, preferences, messageStoreManager,
-                saveMessageDataCreator, Collections.<ControllerExtension>emptyList());
+                localStoreProvider, unreadMessageCountProvider, messageCountsProvider, backendManager, preferences,
+                messageStoreManager, saveMessageDataCreator, Collections.<ControllerExtension>emptyList());
 
         configureAccount();
         configureBackendManager();

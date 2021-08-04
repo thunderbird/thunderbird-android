@@ -74,6 +74,12 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
                     WHERE messages.folder_id = folders.id 
                       AND messages.empty = 0 AND messages.deleted = 0 
                       AND (messages.read = 0 OR folders.id = ?)
+                ), (
+                    SELECT COUNT(messages.id) 
+                    FROM messages 
+                    WHERE messages.folder_id = folders.id 
+                      AND messages.empty = 0 AND messages.deleted = 0 
+                      AND messages.flagged = 1
                 )
                 FROM folders
                 $displayModeSelection
@@ -165,8 +171,11 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val moreMessages: MoreMessages
         get() = MoreMessages.fromDatabaseName(cursor.getString(12))
 
-    override val messageCount: Int
+    override val unreadMessageCount: Int
         get() = cursor.getInt(13)
+
+    override val starredMessageCount: Int
+        get() = cursor.getInt(14)
 
     override fun serverIdOrThrow(): String {
         return serverId ?: error("No server ID found for folder '$name' ($id)")

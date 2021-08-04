@@ -834,6 +834,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="volume_navigation_list">In list views</string>
 
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
+    <string name="show_starred_count_title">Show starred count</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="unread_modifier"> - Unread</string>

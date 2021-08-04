@@ -34,6 +34,8 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
+import com.fsck.k9.MessageCounts;
+import com.fsck.k9.MessageCountsProvider;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
@@ -126,6 +128,7 @@ public class MessagingController {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final UnreadMessageCountProvider unreadMessageCountProvider;
+    private final MessageCountsProvider messageCountsProvider;
     private final DraftOperations draftOperations;
 
 
@@ -140,14 +143,15 @@ public class MessagingController {
 
     MessagingController(Context context, NotificationController notificationController,
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
-            UnreadMessageCountProvider unreadMessageCountProvider, BackendManager backendManager,
-            Preferences preferences, MessageStoreManager messageStoreManager,
+            UnreadMessageCountProvider unreadMessageCountProvider, MessageCountsProvider messageCountsProvider,
+            BackendManager backendManager, Preferences preferences, MessageStoreManager messageStoreManager,
             SaveMessageDataCreator saveMessageDataCreator, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
         this.unreadMessageCountProvider = unreadMessageCountProvider;
+        this.messageCountsProvider = messageCountsProvider;
         this.backendManager = backendManager;
         this.preferences = preferences;
         this.messageStoreManager = messageStoreManager;
@@ -1681,6 +1685,14 @@ public class MessagingController {
 
     public int getUnreadMessageCount(SearchAccount searchAccount) {
         return unreadMessageCountProvider.getUnreadMessageCount(searchAccount);
+    }
+
+    public MessageCounts getMessageCounts(Account account) {
+        return messageCountsProvider.getMessageCounts(account);
+    }
+
+    public MessageCounts getMessageCounts(SearchAccount searchAccount) {
+        return messageCountsProvider.getMessageCounts(searchAccount);
     }
 
     public int getFolderUnreadMessageCount(Account account, Long folderId) throws MessagingException {
