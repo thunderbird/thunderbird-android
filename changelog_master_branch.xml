@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.802" versioncode="28002" date="2021-08-04">
+        <change>Fixed a bug that was triggered when Push was enabled, but the server didn't support Push. If you've noticed high battery drain, this was probably it</change>
+        <change>Added support for archive and spam actions in the Unified Inbox</change>
+        <change>Fixed notification sounds/vibration. Sometimes notifications were audible when they shouldn't have been, sometimes the other way around</change>
+        <change>Display the star of starred messages in yellow</change>
+        <change>Don't show archive/spam action when no such folder is configured</change>
+        <change>Fixed a crash when saving a draft message with modified signature text</change>
+        <change>Fixed a crash when refreshing attachment previews</change>
+    </release>
     <release version="5.801" versioncode="28001" date="2021-07-30">
         <change>Tweaked the default font sizes</change>
         <change>The name of the currently selected account is displayed in the top bar below the folder name (when using multiple accounts)</change>
