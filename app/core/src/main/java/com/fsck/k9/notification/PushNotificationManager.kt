@@ -58,6 +58,7 @@ internal class PushNotificationManager(
         val contentIntent = PendingIntent.getActivity(context, 1, intent, flag)
 
         return NotificationCompat.Builder(context, notificationChannelManager.pushChannelId)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
             .setSmallIcon(resourceProvider.iconPushNotification)
             .setContentTitle(resourceProvider.pushNotificationText(notificationState))
             .setContentText(resourceProvider.pushNotificationInfoText())
