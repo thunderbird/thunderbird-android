@@ -1364,16 +1364,22 @@ class MessageListFragment :
     }
 
     val isOutbox: Boolean
-        get() {
-            val currentFolder = currentFolder ?: return false
-            return currentFolder.databaseId == account!!.outboxFolderId
-        }
+        get() = isSpecialFolder(account?.outboxFolderId)
 
     private val isInbox: Boolean
-        get() {
-            val currentFolder = currentFolder ?: return false
-            return currentFolder.databaseId == account!!.inboxFolderId
-        }
+        get() = isSpecialFolder(account?.inboxFolderId)
+
+    private val isArchiveFolder: Boolean
+        get() = isSpecialFolder(account?.archiveFolderId)
+
+    private val isSpamFolder: Boolean
+        get() = isSpecialFolder(account?.spamFolderId)
+
+    private fun isSpecialFolder(specialFolderId: Long?): Boolean {
+        val folderId = specialFolderId ?: return false
+        val currentFolder = currentFolder ?: return false
+        return currentFolder.databaseId == folderId
+    }
 
     val isRemoteFolder: Boolean
         get() {
@@ -1775,8 +1781,23 @@ class MessageListFragment :
                 if (account?.hasSpamFolder() == true) {
                     menu.findItem(R.id.spam).isVisible = true
                 }
+            } else if (isOutbox) {
+                menu.findItem(R.id.mark_as_read).isVisible = false
+                menu.findItem(R.id.mark_as_unread).isVisible = false
+                menu.findItem(R.id.archive).isVisible = false
+                menu.findItem(R.id.copy).isVisible = false
+                menu.findItem(R.id.flag).isVisible = false
+                menu.findItem(R.id.unflag).isVisible = false
+                menu.findItem(R.id.spam).isVisible = false
+                menu.findItem(R.id.move).isVisible = false
+
+                disableMarkAsRead = true
+                disableFlag = true
+
+                if (account.hasDraftsFolder()) {
+                    menu.findItem(R.id.move_to_drafts).isVisible = true
+                }
             } else {
-                // hide unsupported
                 if (!messagingController.isCopyCapable(account)) {
                     menu.findItem(R.id.copy).isVisible = false
                 }
@@ -1785,33 +1806,13 @@ class MessageListFragment :
                     menu.findItem(R.id.move).isVisible = false
                     menu.findItem(R.id.archive).isVisible = false
                     menu.findItem(R.id.spam).isVisible = false
-                }
+                } else {
+                    if (!account.hasArchiveFolder() || isArchiveFolder) {
+                        menu.findItem(R.id.archive).isVisible = false
+                    }
 
-                val hideArchiveAction = isSingleFolderMode && currentFolder!!.databaseId == account.archiveFolderId
-                if (hideArchiveAction) {
-                    menu.findItem(R.id.archive).isVisible = false
-                }
-
-                val hideSpamAction = isSingleFolderMode && currentFolder!!.databaseId == account.spamFolderId
-                if (hideSpamAction) {
-                    menu.findItem(R.id.spam).isVisible = false
-                }
-
-                if (isOutbox) {
-                    menu.findItem(R.id.mark_as_read).isVisible = false
-                    menu.findItem(R.id.mark_as_unread).isVisible = false
-                    menu.findItem(R.id.archive).isVisible = false
-                    menu.findItem(R.id.copy).isVisible = false
-                    menu.findItem(R.id.flag).isVisible = false
-                    menu.findItem(R.id.unflag).isVisible = false
-                    menu.findItem(R.id.spam).isVisible = false
-                    menu.findItem(R.id.move).isVisible = false
-
-                    disableMarkAsRead = true
-                    disableFlag = true
-
-                    if (account.hasDraftsFolder()) {
-                        menu.findItem(R.id.move_to_drafts).isVisible = true
+                    if (!account.hasSpamFolder() || isSpamFolder) {
+                        menu.findItem(R.id.spam).isVisible = false
                     }
                 }
             }
