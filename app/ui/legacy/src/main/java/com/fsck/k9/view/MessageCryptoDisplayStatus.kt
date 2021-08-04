@@ -24,7 +24,7 @@ import org.openintents.openpgp.OpenPgpSignatureResult.SenderStatusResult.USER_ID
 import org.openintents.openpgp.OpenPgpSignatureResult.SenderStatusResult.USER_ID_UNCONFIRMED
 
 enum class MessageCryptoDisplayStatus(
-    val isEnabled: Boolean = false,
+    val isEnabled: Boolean = true,
 
     @AttrRes
     val colorAttr: Int,
