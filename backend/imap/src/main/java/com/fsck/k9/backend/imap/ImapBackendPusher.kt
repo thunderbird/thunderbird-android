@@ -226,6 +226,10 @@ internal class ImapBackendPusher(
         }
     }
 
+    override fun onPushNotSupported() {
+        callback.onPushNotSupported()
+    }
+
     private fun startRetryTimer(folderServerId: String, timeout: Long) {
         Timber.v("ImapBackendPusher for folder %s sleeping for %d ms", folderServerId, timeout)
         pushFolderSleeping[folderServerId] = idleRefreshManager.startTimer(timeout, ::restartFolderPushers)

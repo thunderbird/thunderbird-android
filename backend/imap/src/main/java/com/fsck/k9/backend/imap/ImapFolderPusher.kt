@@ -70,10 +70,19 @@ class ImapFolderPusher(
 
         try {
             while (!stopPushing) {
-                val idleResult = folderIdler.idle()
-
-                if (idleResult == IdleResult.SYNC) {
-                    callback.onPushEvent(folderServerId)
+                when (folderIdler.idle()) {
+                    IdleResult.SYNC -> {
+                        callback.onPushEvent(folderServerId)
+                    }
+                    IdleResult.STOPPED -> {
+                        // ImapFolderIdler only stops when we ask it to.
+                        // But it can't hurt to make extra sure we exit the loop.
+                        stopPushing = true
+                    }
+                    IdleResult.NOT_SUPPORTED -> {
+                        stopPushing = true
+                        callback.onPushNotSupported()
+                    }
                 }
             }
         } catch (e: Exception) {

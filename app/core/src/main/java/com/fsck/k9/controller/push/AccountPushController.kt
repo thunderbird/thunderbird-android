@@ -1,6 +1,8 @@
 package com.fsck.k9.controller.push
 
 import com.fsck.k9.Account
+import com.fsck.k9.Account.FolderMode
+import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
@@ -17,6 +19,7 @@ import timber.log.Timber
 internal class AccountPushController(
     private val backendManager: BackendManager,
     private val messagingController: MessagingController,
+    private val preferences: Preferences,
     folderRepositoryManager: FolderRepositoryManager,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val account: Account
@@ -34,6 +37,11 @@ internal class AccountPushController(
 
         override fun onPushError(exception: Exception) {
             messagingController.handleException(account, exception)
+        }
+
+        override fun onPushNotSupported() {
+            Timber.v("AccountPushController(%s) - Push not supported. Disabling Push for account.", account.uuid)
+            disablePush()
         }
     }
 
@@ -87,5 +95,10 @@ internal class AccountPushController(
 
     private fun syncFolders(folderServerId: String) {
         messagingController.synchronizeMailboxBlocking(account, folderServerId)
+    }
+
+    private fun disablePush() {
+        account.folderPushMode = FolderMode.NONE
+        preferences.saveAccount(account)
     }
 }
