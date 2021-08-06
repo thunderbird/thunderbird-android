@@ -22,6 +22,8 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolder
+import com.fsck.k9.notification.NotificationChannelManager
+import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.settings.onClick
@@ -43,6 +45,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val openPgpApiManager: OpenPgpApiManager by inject { parametersOf(this) }
     private val messagingController: MessagingController by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
+    private val notificationChannelManager: NotificationChannelManager by inject()
     private lateinit var dataStore: AccountSettingsDataStore
 
     private val accountUuid: String by lazy {
@@ -71,7 +74,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         initializeAdvancedPushSettings(account)
         initializeCryptoSettings(account)
         initializeFolderSettings(account)
-        initializeNotifications()
+        initializeNotifications(account)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -176,10 +179,23 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeNotifications() {
-        findPreference<Preference>(PREFERENCE_OPEN_NOTIFICATION_SETTINGS)?.let {
+    private fun initializeNotifications(account: Account) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference<Preference>(it).remove() }
+        }
+
+        findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES)?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference<Preference>(it).remove() }
+                it.notificationChannelId = notificationChannelManager.getChannelIdFor(account, ChannelType.MESSAGES)
+            } else {
+                it.remove()
+            }
+        }
+
+        findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS)?.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                it.notificationChannelId =
+                    notificationChannelManager.getChannelIdFor(account, ChannelType.MISCELLANEOUS)
             } else {
                 it.remove()
             }
@@ -373,7 +389,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_SENT_FOLDER = "sent_folder"
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
-        private const val PREFERENCE_OPEN_NOTIFICATION_SETTINGS = "open_notification_settings"
+        private const val PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES = "open_notification_settings_messages"
+        private const val PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS = "open_notification_settings_miscellaneous"
         private const val DELETE_POLICY_MARK_AS_READ = "MARK_AS_READ"
 
         private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf(

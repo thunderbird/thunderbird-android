@@ -382,11 +382,21 @@
             android:summary="@string/account_settings_notify_sync_summary"
             android:title="@string/account_settings_notify_sync_label" />
 
-        <com.fsck.k9.ui.settings.account.NotificationsPreference
-            android:key="open_notification_settings"
-            android:summary="@string/account_settings_notification_open_system_notifications_summary"
-            android:title="@string/account_settings_notification_open_system_notifications_label" />
+        <PreferenceCategory
+            android:key="notification_channels"
+            android:title="@string/account_settings_notification_channels_label">
 
+            <com.fsck.k9.ui.settings.account.NotificationsPreference
+                android:key="open_notification_settings_messages"
+                android:summary="@string/account_settings_open_notification_settings_messages_summary"
+                android:title="@string/notification_channel_messages_title" />
+
+            <com.fsck.k9.ui.settings.account.NotificationsPreference
+                android:key="open_notification_settings_miscellaneous"
+                android:summary="@string/account_settings_open_notification_settings_miscellaneous_summary"
+                android:title="@string/notification_channel_miscellaneous_title" />
+
+        </PreferenceCategory>
     </PreferenceScreen>
 
     <PreferenceScreen
