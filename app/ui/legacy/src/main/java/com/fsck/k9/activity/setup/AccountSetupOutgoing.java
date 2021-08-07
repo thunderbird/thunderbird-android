@@ -148,6 +148,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
+        boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
+
         try {
             ServerSettings settings = mAccount.getOutgoingServerSettings();
 
@@ -188,6 +190,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             if (settings.password != null) {
                 mPasswordView.setText(settings.password);
             }
+
+            mPasswordLayoutView.setEndIconVisible(!editSettings);
 
             if (settings.clientCertificateAlias != null) {
                 mClientCertificateSpinner.setAlias(settings.clientCertificateAlias);

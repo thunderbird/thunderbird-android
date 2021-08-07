@@ -200,6 +200,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 mPasswordView.setText(settings.password);
             }
 
+            mPasswordLayoutView.setEndIconVisible(!editSettings);
+
             if (settings.clientCertificateAlias != null) {
                 mClientCertificateSpinner.setAlias(settings.clientCertificateAlias);
             }
