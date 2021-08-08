@@ -2,22 +2,11 @@ package com.fsck.k9.view;
 
 
 import java.util.Arrays;
-import java.util.List;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.os.Parcel;
-import android.os.Parcelable;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -27,6 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
@@ -38,9 +30,7 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Header;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.messageview.OnCryptoClickListener;
@@ -328,10 +318,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     private void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
-        int color = ThemeUtils.getStyledColor(getContext(), displayStatus.colorAttr);
-        mCryptoStatusIcon.setEnabled(displayStatus.isEnabled);
+        int color = ThemeUtils.getStyledColor(getContext(), displayStatus.getColorAttr());
+        mCryptoStatusIcon.setEnabled(displayStatus.isEnabled());
         mCryptoStatusIcon.setVisibility(View.VISIBLE);
-        mCryptoStatusIcon.setImageResource(displayStatus.statusIconRes);
+        mCryptoStatusIcon.setImageResource(displayStatus.getStatusIconRes());
         mCryptoStatusIcon.setColorFilter(color);
     }
 
