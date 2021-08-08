@@ -19,7 +19,7 @@ public class BoundaryGeneratorTest {
 
         String result = boundaryGenerator.generateBoundary();
 
-        assertEquals("----000000000000000000000000000000", result);
+        assertEquals("----==000000000000000000000000000000", result);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class BoundaryGeneratorTest {
 
         String result = boundaryGenerator.generateBoundary();
 
-        assertEquals("----0123456789ABCDEFGHIJKLMNOPQRSZ", result);
+        assertEquals("----==0123456789ABCDEFGHIJKLMNOPQRSZ", result);
     }
 
     private Random createRandom(int... values) {

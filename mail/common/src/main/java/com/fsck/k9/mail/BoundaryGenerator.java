@@ -32,7 +32,7 @@ public class BoundaryGenerator {
 
     public String generateBoundary() {
         StringBuilder builder = new StringBuilder(4 + BOUNDARY_CHARACTER_COUNT);
-        builder.append("----");
+        builder.append("----==");
         
         for (int i = 0; i < BOUNDARY_CHARACTER_COUNT; i++) {
             builder.append(BASE36_MAP[random.nextInt(36)]);
