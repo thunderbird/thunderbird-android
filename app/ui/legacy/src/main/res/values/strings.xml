@@ -521,7 +521,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Mark as read when deleted</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Mark a message as read when it is deleted</string>
-    <string name="account_settings_notification_channels_label">Notification channels</string>
+    <string name="account_settings_notification_channels_label">Notification categories</string>
     <string name="account_settings_open_notification_settings_messages_summary">Configure notifications for new messages</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configure error and status notifications</string>
 
