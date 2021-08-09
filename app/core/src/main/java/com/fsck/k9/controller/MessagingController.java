@@ -2775,6 +2775,11 @@ public class MessagingController {
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, messageServerId);
             }
+
+            String accountUuid = account.getUuid();
+            long folderId = getFolderIdOrThrow(account, folderServerId);
+            MessageReference messageReference = new MessageReference(accountUuid, folderId, messageServerId, null);
+            notificationController.removeNewMailNotification(account, messageReference);
         }
 
         @Override
