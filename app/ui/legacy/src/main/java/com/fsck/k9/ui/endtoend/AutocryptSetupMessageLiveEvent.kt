@@ -34,7 +34,7 @@ class AutocryptSetupMessageLiveEvent(val messageCreator: AutocryptTransferMessag
         val result = openPgpApi.executeApi(intent, null as InputStream?, baos)
 
         val keyData = baos.toByteArray()
-        val pi: PendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT)
+        val pi: PendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT) ?: error("Missing result intent")
 
         val setupMessage = messageCreator.createAutocryptTransferMessage(keyData, address)
 
