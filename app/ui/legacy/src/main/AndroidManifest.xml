@@ -1,2 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.fsck.k9.ui" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fsck.k9.ui">
+
+    <queries>
+        <intent>
+            <!-- Used to check whether to display the "Add from Contacts" menu item in the compose screen -->
+            <action android:name="android.intent.action.PICK" />
+            <data
+                android:mimeType="*/*"
+                android:scheme="content"
+                android:host="com.android.contacts" />
+        </intent>
+
+        <intent>
+            <!-- Used by AttachmentController to find the best Intent to view an attachment -->
+            <action android:name="android.intent.action.VIEW" />
+            <data
+                android:mimeType="*/*"
+                android:scheme="content" />
+        </intent>
+
+        <intent>
+            <!-- Used by the OpenPGP API -->
+            <action android:name="org.openintents.openpgp.IOpenPgpService2" />
+        </intent>
+
+        <intent>
+            <!-- Used by OpenPgpAppSelectDialog -->
+            <action android:name="android.intent.action.VIEW" />
+            <data
+                android:mimeType="*/*"
+                android:scheme="market"
+                android:host="details" />
+        </intent>
+
+        <intent>
+            <!-- Used by OpenPgpAppSelectDialog -->
+            <action android:name="org.openintents.openpgp.IOpenPgpService" />
+        </intent>
+    </queries>
+
+</manifest>
