@@ -4,7 +4,7 @@ buildscript {
     ext {
         buildConfig = [
                 'compileSdk': 29,
-                'targetSdk': 29,
+                'targetSdk': 30,
                 'minSdk': 21,
                 'buildTools': '29.0.3',
                 'robolectricSdk': 29
