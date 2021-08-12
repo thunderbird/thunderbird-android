@@ -429,8 +429,6 @@
   <string name="account_settings_mark_message_as_read_on_view_summary">ഒരു സന്ദേശം കാണാനായി തുറക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">ഇല്ലാതാക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">ഒരു സന്ദേശം ഇല്ലാതാക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="account_settings_notification_open_system_notifications_label">അറിയിപ്പ് ക്രമീകരണങ്ങൾ</string>
-  <string name="account_settings_notification_open_system_notifications_summary">സിസ്റ്റം അറിയിപ്പ് ക്രമീകരണങ്ങൾ തുറക്കുക</string>
   <string name="account_settings_show_pictures_label">എല്ലായ്പ്പോഴും ചിത്രങ്ങൾ കാണിക്കുക</string>
   <string name="account_settings_show_pictures_never">ഇല്ല</string>
   <string name="account_settings_show_pictures_only_from_contacts">കോൺടാക്റ്റുകളിൽ നിന്ന്</string>

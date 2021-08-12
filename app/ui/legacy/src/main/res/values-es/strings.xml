@@ -436,8 +436,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar mensaje como leído cuando se abre para verlo</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como leído al borrar</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marcar el mensaje como leído cuando se borra</string>
-  <string name="account_settings_notification_open_system_notifications_label">Configuración de las notificaciones</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Abrir opciones de notificación del sistema.</string>
   <string name="account_settings_show_pictures_label">Mostrar imágenes siempre</string>
   <string name="account_settings_show_pictures_never">No</string>
   <string name="account_settings_show_pictures_only_from_contacts">Sólo de mis contactos</string>

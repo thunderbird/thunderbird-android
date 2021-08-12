@@ -433,8 +433,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_mark_message_as_read_on_view_summary">Пазначаць ліст прачытаным пасля прагляду</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Пазначаць як прачытанае пры выдаленні</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Пазначаць ліст як прачытаны пасля яго выдалення</string>
-  <string name="account_settings_notification_open_system_notifications_label">Налады апавяшчэнняў</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Адкрыць сістэмныя налады апавяшчэнняў</string>
   <string name="account_settings_show_pictures_label">Заўсёды паказваць выявы</string>
   <string name="account_settings_show_pictures_never">Не</string>
   <string name="account_settings_show_pictures_only_from_contacts">Ад кантактаў</string>

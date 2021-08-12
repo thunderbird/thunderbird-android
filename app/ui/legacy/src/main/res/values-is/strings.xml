@@ -437,8 +437,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_mark_message_as_read_on_view_summary">Merkja skilaboð sem lesin þegar þau eru opnuð til lestrar</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Merkja sem lesið þegar er eytt</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Merkja skilaboð sem lesin þegar þeim er eytt</string>
-  <string name="account_settings_notification_open_system_notifications_label">Stillingar á tilkynningum</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Opna stillingar kerfisins fyrir tilkynningar</string>
   <string name="account_settings_show_pictures_label">Alltaf sýna myndir</string>
   <string name="account_settings_show_pictures_never">Nei</string>
   <string name="account_settings_show_pictures_only_from_contacts">Frá tengiliðum</string>

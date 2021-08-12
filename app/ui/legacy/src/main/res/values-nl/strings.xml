@@ -29,7 +29,7 @@
   <string name="accounts_welcome"><![CDATA[ <p> K-9 Mail is een gratis krachtige e-mail client voor Android. </p><p> De verbeterde mogelijkheden bestaan uit ondermeer:
 </p>
 <ul>
-<li>Duw mail middels IMAP IDLE</li> 
+<li>Push mail middels IMAP IDLE</li> 
 <li>Betere prestaties</li> 
 <li>Bericht herclassificatie</li> 
 <li>E-mail handtekeningen</li> 
@@ -179,7 +179,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="notification_bg_send_ticker">Versturen van berichten: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Berichten versturen</string>
   <string name="notification_bg_title_separator">:</string>
-  <string name="notification_channel_push_title">Synchroniseren (Duw)</string>
+  <string name="notification_channel_push_title">Synchroniseren (Push)</string>
   <string name="notification_channel_push_description">Wordt weergeven in afwachting op nieuwe berichten</string>
   <string name="notification_channel_messages_title">Beeld berichten</string>
   <string name="notification_channel_messages_description">Meldingen gerelateerd aan berichten</string>
@@ -377,7 +377,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_options_mail_check_frequency_6hour">Elke 6 uur</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Elke 12 uur</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Elke 24 uur</string>
-  <string name="account_setup_options_enable_push_label">Duw mail voor dit account toestaan</string>
+  <string name="account_setup_options_enable_push_label">Push mail voor dit account toestaan</string>
   <string name="account_setup_options_enable_push_summary">Als uw server dit ondersteunt, zullen nieuwe berichten direct verschijnen. Deze optie kan drastisch verbeteringen of verslechteringen van prestaties teweeg brengen.</string>
   <string name="idle_refresh_period_label">Vernieuw inactieve verbinding</string>
   <string name="idle_refresh_period_2min">Elke 2 minuten</string>
@@ -432,8 +432,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_mark_message_as_read_on_view_summary">Markeer als gelezen wanneer ingezien</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Als gelezen markeren bij wissen</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Markeer een bericht als gelezen wanneer die wordt gewist</string>
-  <string name="account_settings_notification_open_system_notifications_label">Meldingsinstellingen</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Open instellingen voor systeemmeldingen</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Meldingen instellen voor nieuwe berichten</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Error- en statusmeldingen instellen</string>
   <string name="account_settings_show_pictures_label">Laat afbeeldingen automatisch zien</string>
   <string name="account_settings_show_pictures_never">Nooit</string>
   <string name="account_settings_show_pictures_only_from_contacts">Alleen van contacten</string>
@@ -519,7 +519,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_folder_sync_mode_first_and_second_class">1e en 2e klasse mappen</string>
   <string name="account_settings_folder_sync_mode_not_second_class">Alle behalve 2e klasse mappen</string>
   <string name="account_settings_folder_sync_mode_none">Geen</string>
-  <string name="account_settings_folder_push_mode_label">Duw mappen</string>
+  <string name="account_settings_folder_push_mode_label">Push mappen</string>
   <string name="account_settings_folder_push_mode_all">Alle</string>
   <string name="account_settings_folder_push_mode_first_class">Alleen 1e klasse mappen</string>
   <string name="account_settings_folder_push_mode_first_and_second_class">1e en 2e klasse mappen</string>
@@ -545,7 +545,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="folder_settings_folder_sync_mode_first_class">1e klasse</string>
   <string name="folder_settings_folder_sync_mode_second_class">2e klasse</string>
   <string name="folder_settings_folder_sync_mode_inherited">Zelfde als weergave klasse</string>
-  <string name="folder_settings_folder_push_mode_label">Duw klasse map</string>
+  <string name="folder_settings_folder_push_mode_label">Push klasse map</string>
   <string name="folder_settings_folder_push_mode_normal">Geen klasse</string>
   <string name="folder_settings_folder_push_mode_first_class">1e klasse</string>
   <string name="folder_settings_folder_push_mode_second_class">2e klasse</string>
@@ -554,7 +554,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="folder_settings_folder_notify_mode_normal">Geen klasse</string>
   <string name="folder_settings_folder_notify_mode_first_class">1e klasse</string>
   <string name="folder_settings_folder_notify_mode_second_class">2e klasse</string>
-  <string name="folder_settings_folder_notify_mode_inherited">Zelfde als duw klasse</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Zelfde als push klasse</string>
   <string name="folder_settings_clear_local_folder_action">Lokale berichten wissen</string>
   <string name="account_settings_incoming_label">Inkomende server</string>
   <string name="account_settings_incoming_summary">Instellen van de inkomende mail server</string>
@@ -671,7 +671,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="background_ops_always">Altijd</string>
   <string name="background_ops_auto_sync_only">Als \'Auto-sync\' geselecteerd is</string>
   <string name="batch_select_all">Selecteer alle</string>
-  <string name="account_setup_push_limit_label">Max mappen om te controleren met duw</string>
+  <string name="account_setup_push_limit_label">Max mappen om te controleren met push</string>
   <string name="account_setup_push_limit_5">5 mappen</string>
   <string name="account_setup_push_limit_10">10 mappen</string>
   <string name="account_setup_push_limit_25">25 mappen</string>
@@ -1049,11 +1049,11 @@ U kunt dit bericht bewaren als backup voor uw geheime sleutel. Als u dit wilt do
   <string name="push_notification_state_wait_background_sync">Doet niets totdat achtergrondsynchronisatie wordt toegestaan</string>
   <string name="push_notification_state_wait_network">Doet niets totdat er een netwerk beschikbaar is</string>
   <string name="push_notification_info">Tik hier om er meer over te leren.</string>
-  <string name="push_info_title">Duw informatie</string>
-  <string name="push_info_notification_explanation_text">Als je duw gebruikt, dan houd K-9 mail een verbinding open met de e-mail server. Android vereist dat een app die op de achtergrond actief blijft een melding plaatst. %s</string>
+  <string name="push_info_title">Push informatie</string>
+  <string name="push_info_notification_explanation_text">Als je push gebruikt, dan houd K-9 mail een verbinding open met de e-mail server. Android vereist dat een app die op de achtergrond actief blijft een melding plaatst. %s</string>
   <string name="push_info_configure_notification_text">Android maakt het echter ook mogelijk om meldingen te verbergen.</string>
   <string name="push_info_learn_more_text">Meer leren hierover</string>
   <string name="push_info_configure_notification_action">Melding instellen</string>
-  <string name="push_info_disable_push_text">Als je het niet nodig vindt om per direct meldingen te ontvangen van nieuwe berichten, dan kun je beter duw uitschakelen en in plaats daarvan kiezen voor peilen. Met peilen wordt er om de zoveel tijd gekeken of er nieuwe e-mails zijn binnengekomen. Daarvoor is het weergeven van een melding niet continu nodig.</string>
-  <string name="push_info_disable_push_action">Duw uitschakelen</string>
+  <string name="push_info_disable_push_text">Als je het niet nodig vindt om per direct meldingen te ontvangen van nieuwe berichten, dan kun je beter push uitschakelen en in plaats daarvan kiezen voor peilen. Met peilen wordt er om de zoveel tijd gekeken of er nieuwe e-mails zijn binnengekomen. Daarvoor is het weergeven van een melding niet continu nodig.</string>
+  <string name="push_info_disable_push_action">Push uitschakelen</string>
 </resources>

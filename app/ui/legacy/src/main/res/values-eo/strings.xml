@@ -431,8 +431,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_mark_message_as_read_on_view_summary">Markas mesaĝon kiel nelegitan, kiam ĝi estas malfermita por montri</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marki kiel legitan je forigo</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Markas mesaĝon kiel nelegitan, kiam ĝi estas forigata</string>
-  <string name="account_settings_notification_open_system_notifications_label">Agordoj de sciigoj</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Malfermi sistemajn agordojn de sciigoj</string>
   <string name="account_settings_show_pictures_label">Ĉiam montri bildojn</string>
   <string name="account_settings_show_pictures_never">Ne</string>
   <string name="account_settings_show_pictures_only_from_contacts">De kontaktoj</string>

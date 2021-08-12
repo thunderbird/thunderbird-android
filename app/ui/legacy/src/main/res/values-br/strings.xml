@@ -418,8 +418,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_notify_contacts_mail_only_summary">Diskouez rebuzadurioù evit kemennadennoù darempredoù a anavezan hepken</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Merkañ evel lennet pa vez digoret</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Merkañ ar gemennadenn evel lennet pa vez digoret anezho d’he gwelet</string>
-  <string name="account_settings_notification_open_system_notifications_label">Arventennoù rebuziñ</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Digeriñ arventennoù ar rebuzadurioù reizhiad</string>
   <string name="account_settings_show_pictures_label">Diskouez ar skeudennoù bepred</string>
   <string name="account_settings_show_pictures_never">Ket</string>
   <string name="account_settings_show_pictures_only_from_contacts">Digant darempredoù</string>

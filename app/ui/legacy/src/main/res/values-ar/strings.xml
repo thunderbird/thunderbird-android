@@ -406,7 +406,6 @@
   <string name="account_notify_contacts_mail_only_summary">إظهار الإشعارات فقط عند تلقي رسائل مِن طرف مراسلين معروفين</string>
   <string name="account_settings_mark_message_as_read_on_view_label">تحديد الرسالة كمقروءة بعد فتحها</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">تحديد الرسالة كمقروءة بعد فتحها الإطلاع عليها</string>
-  <string name="account_settings_notification_open_system_notifications_label">إعدادات الإشعار</string>
   <string name="account_settings_show_pictures_label">دائمًا اظهر الصور</string>
   <string name="account_settings_show_pictures_never">لا</string>
   <string name="account_settings_show_pictures_only_from_contacts">من المُتراسِلين</string>

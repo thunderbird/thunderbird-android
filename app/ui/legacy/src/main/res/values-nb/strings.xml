@@ -422,7 +422,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Merk en melding som lest når den åpnes for visning</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marker som lest når slettet</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marker en melding som lest når den er slettet</string>
-  <string name="account_settings_notification_open_system_notifications_label">Innstillinger for varsler</string>
   <string name="account_settings_show_pictures_label">Alltid vis bilder</string>
   <string name="account_settings_show_pictures_never">Nei</string>
   <string name="account_settings_show_pictures_only_from_contacts">Fra kontakter</string>

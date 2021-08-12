@@ -421,8 +421,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar uma mensagem como lida ao abrir para visualização</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como lida quando apagada</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marcar a mensagem como lida quando é apagada</string>
-  <string name="account_settings_notification_open_system_notifications_label">Configurações de notificação</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Configurações de sistema aberto</string>
   <string name="account_settings_show_pictures_label">Mostrar sempre as imagens</string>
   <string name="account_settings_show_pictures_never">Não</string>
   <string name="account_settings_show_pictures_only_from_contacts">Apenas dos contactos</string>

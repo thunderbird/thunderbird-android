@@ -428,8 +428,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_mark_message_as_read_on_view_summary">Tandai pesan sebagai telah dibaca saat dibuka untuk dilihat</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Tandai sebagai terbaca saat dihapus</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Tandai pesan sebagai terbaca saat dihapus</string>
-  <string name="account_settings_notification_open_system_notifications_label">Pengaturan notifikasi</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Buka pengaturan notifikasi sistem</string>
   <string name="account_settings_show_pictures_label">Selalu tampilkan gambar</string>
   <string name="account_settings_show_pictures_never">Tidak</string>
   <string name="account_settings_show_pictures_only_from_contacts">Dari kontak</string>

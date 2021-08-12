@@ -435,8 +435,6 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="account_settings_mark_message_as_read_on_view_summary">開啟檢視郵件內容時自動標記為已讀</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">刪除後標記為已讀</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">刪除郵件時將其標記為已讀</string>
-  <string name="account_settings_notification_open_system_notifications_label">通知設定</string>
-  <string name="account_settings_notification_open_system_notifications_summary">開啟系統通知設定</string>
   <string name="account_settings_show_pictures_label">顯示圖片</string>
   <string name="account_settings_show_pictures_never">不要</string>
   <string name="account_settings_show_pictures_only_from_contacts">來自您的聯絡人的郵件</string>

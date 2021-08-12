@@ -435,8 +435,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_mark_message_as_read_on_view_summary">Mesaj okunmak üzere açıldığında okundu olarak işaretle</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Silindiğinde okundu olarak işaretle</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Bir ileti silindiğinde okundu olarak işaretlemek</string>
-  <string name="account_settings_notification_open_system_notifications_label">Bildirim ayarları</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Sistem bildirim ayarlarını aç</string>
   <string name="account_settings_show_pictures_label">Daima resimleri göster</string>
   <string name="account_settings_show_pictures_never">Hayır</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kişilerden</string>

@@ -405,8 +405,6 @@
   <string name="account_settings_mark_message_as_read_on_view_label">Pärast avamist märgi loetuks</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Märgi sõnum loetuks, kui see on vaatamiseks avatud</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Pärast kustutamist märgi loetuks</string>
-  <string name="account_settings_notification_open_system_notifications_label">Teadete sätted</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Ava süsteemi teadete sätted</string>
   <string name="account_settings_show_pictures_label">Näita alati pilte</string>
   <string name="account_settings_show_pictures_never">Ei</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kontaktidelt</string>

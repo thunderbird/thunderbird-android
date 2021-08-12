@@ -436,8 +436,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_mark_message_as_read_on_view_summary">Markatu mezua irakurritako gisa ikusteko irekitzerakoan</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Markatu irakurritako gisa ezabatzean</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Markatu mezua irakurritako gisa ikusteko ezabatzean</string>
-  <string name="account_settings_notification_open_system_notifications_label">Jakinarazpenen ezarpenak</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Ireki sistemako jakinarazpenen ezarpenak</string>
   <string name="account_settings_show_pictures_label">Erakutsi beti Irudiak</string>
   <string name="account_settings_show_pictures_never">Ez</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kontaktuetatik</string>
