@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.803" versioncode="28003" date="2021-08-12">
+        <change>Don't show the icon for the ongoing Push notification in the status bar (on versions older than Android 8.0)</change>
+        <change>Directly open system settings for notification categories (Android 8.0 and newer)</change>
+        <change>Fixed a bug where a notification wasn't removed when the associated message was deleted</change>
+        <change>Ignore unnecessary spaces when filtering the list of folders</change>
+        <change>Fixed crypto status icons not being clickable</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.802" versioncode="28002" date="2021-08-04">
         <change>Fixed a bug that was triggered when Push was enabled, but the server didn't support Push. If you've noticed high battery drain, this was probably it</change>
         <change>Added support for archive and spam actions in the Unified Inbox</change>
