@@ -438,8 +438,9 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_mark_message_as_read_on_view_summary">Shënoje një mesazh të lexuar, kur hapet për parje</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Vëri shenjë si i lexuar, kur fshihet</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Vërini shenjë si i lexuar një mesazhi, kur fshihet</string>
-  <string name="account_settings_notification_open_system_notifications_label">Rregullime njoftimesh</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Rregullime njoftimesh sistemi të hapur</string>
+  <string name="account_settings_notification_channels_label">Kategori njoftimesh</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Formësoni njoftime për mesazhe të rinj</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Formësoni njoftime gabimesh dhe gjendjesh</string>
   <string name="account_settings_show_pictures_label">Shfaqi përherë figurat</string>
   <string name="account_settings_show_pictures_never">Jo</string>
   <string name="account_settings_show_pictures_only_from_contacts">Prej kontaktesh</string>

@@ -441,8 +441,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_mark_message_as_read_on_view_summary">Marchează mesaj ca citit când e deschis pentru vizualizare</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marchează ca citit la ștergere</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marchează un mesaj ca citit când este șters</string>
-  <string name="account_settings_notification_open_system_notifications_label">Setări notificări</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Deschide setările notificărilor de sistem</string>
   <string name="account_settings_show_pictures_label">Arată întotdeauna imaginile</string>
   <string name="account_settings_show_pictures_never">Nu</string>
   <string name="account_settings_show_pictures_only_from_contacts">De la contacte</string>

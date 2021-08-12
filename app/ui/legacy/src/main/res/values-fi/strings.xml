@@ -436,8 +436,9 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se avataan katseltavaksi</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Merkitse luetuksi poistettaessa</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Merkitse viesti luetuksi, kun se poistetaan</string>
-  <string name="account_settings_notification_open_system_notifications_label">Ilmoitusasetukset</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Avaa järjestelmän ilmoitusasetukset</string>
+  <string name="account_settings_notification_channels_label">Ilmoitusten luokat</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Määritä uusien viestien ilmoitukset</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Määritä virhe- ja tilailmoitukset</string>
   <string name="account_settings_show_pictures_label">Näytä aina kuvat</string>
   <string name="account_settings_show_pictures_never">Ei koskaan</string>
   <string name="account_settings_show_pictures_only_from_contacts">Vain yhteystiedoissa olevilta lähettäjiltä</string>

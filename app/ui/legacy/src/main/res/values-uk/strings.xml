@@ -442,8 +442,9 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_mark_message_as_read_on_view_summary">Позначати повідомлення прочитаним після відкриття для перегляду</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Позначити прочитаним після видалення</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Позначити повідомлення прочитаним після видалення</string>
-  <string name="account_settings_notification_open_system_notifications_label">Налаштування сповіщень</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Відкрити системні налаштування сповіщень</string>
+  <string name="account_settings_notification_channels_label">Категорії сповіщень</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Налаштуйте сповіщення для нових повідомлень</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Налаштуйте сповіщення про помилки та статуси</string>
   <string name="account_settings_show_pictures_label">Завжди показувати зображення</string>
   <string name="account_settings_show_pictures_never">Ні</string>
   <string name="account_settings_show_pictures_only_from_contacts">Від контактів</string>

@@ -441,8 +441,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_mark_message_as_read_on_view_summary">Oznacz wiadomość jako przeczytaną przy otwieraniu</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Oznacz jako przeczytane po usunięciu</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Oznacz wiadomość jako przeczytaną przy usuwaniu</string>
-  <string name="account_settings_notification_open_system_notifications_label">Ustawienia powiadomień</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Otwórz systemowe ustawienia powiadomień</string>
   <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazki</string>
   <string name="account_settings_show_pictures_never">Nie</string>
   <string name="account_settings_show_pictures_only_from_contacts">Od kontaktów</string>

@@ -435,8 +435,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_mark_message_as_read_on_view_summary">Маркирай съобщението като прочетено, когато се отвори за разглеждане</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Маркирай като прочетено при изтриване</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Маркира съобщението като прочетено при изтриване</string>
-  <string name="account_settings_notification_open_system_notifications_label">Настройки на известия</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Отвори системните настройките за известия</string>
   <string name="account_settings_show_pictures_label">Винаги показвай картинките</string>
   <string name="account_settings_show_pictures_never">Не</string>
   <string name="account_settings_show_pictures_only_from_contacts">От контактите</string>

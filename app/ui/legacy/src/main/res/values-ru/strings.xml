@@ -21,6 +21,9 @@
   <string name="changelog_title">Список изменений</string>
   <string name="changelog_loading_error">Не удалось загрузить список изменений.</string>
   <string name="changelog_version_title">Версия %s</string>
+  <string name="changelog_recent_changes_title">Что нового</string>
+  <string name="changelog_show_recent_changes">Показывать последние изменения, когда приложение было обновлено</string>
+  <string name="changelog_snackbar_text">Узнайте, что нового в этом выпуске</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добро пожаловать!</string>
   <string name="accounts_welcome"><![CDATA[
@@ -113,6 +116,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="add_account_action">Добавить</string>
   <string name="compose_action">Создать</string>
   <string name="search_action">Поиск сообщения</string>
+  <string name="search_everywhere_action">Искать везде</string>
   <string name="search_results">Результаты поиска</string>
   <string name="preferences_action">Настройки</string>
   <string name="folders_action">Выбрать папки</string>
@@ -131,6 +135,7 @@ K-9 Mail — почтовый клиент для Android.
     <item quantity="many">Адреса скопированы в буфер</item>
     <item quantity="other">Адреса скопированы в буфер</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Текст темы скопирован в буфер обмена</string>
   <string name="message_view_theme_action_dark">Тёмная тема</string>
   <string name="message_view_theme_action_light">Светлая тема</string>
   <string name="mark_as_unread_action">Не прочитано</string>
@@ -182,6 +187,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Отправка почты</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Синхронизация (Push)</string>
+  <string name="notification_channel_push_description">Отображается во время ожидания новых сообщений</string>
   <string name="notification_channel_messages_title">Сообщение</string>
   <string name="notification_channel_messages_description">Уведомления о сообщениях</string>
   <string name="notification_channel_miscellaneous_title">Разное</string>
@@ -433,8 +440,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Отметить как прочитанное при удалении</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Отметить как прочитанное при удалении</string>
-  <string name="account_settings_notification_open_system_notifications_label">Настройки уведомлений</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Открыть настройки уведомлений</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Настройка уведомлений о новых сообщениях</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Настройка уведомлений об ошибках и статусе</string>
   <string name="account_settings_show_pictures_label">Показать изображения</string>
   <string name="account_settings_show_pictures_never">Никогда</string>
   <string name="account_settings_show_pictures_only_from_contacts">От контактов</string>
@@ -550,6 +557,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="folder_settings_folder_push_mode_normal">Нет класса</string>
   <string name="folder_settings_folder_push_mode_first_class">1 класс</string>
   <string name="folder_settings_folder_push_mode_second_class">2 класс</string>
+  <string name="folder_settings_folder_push_mode_inherited">То же, что и класс опроса</string>
   <string name="folder_settings_folder_notify_mode_label">Уведомление</string>
   <string name="folder_settings_folder_notify_mode_normal">Нет класса</string>
   <string name="folder_settings_folder_notify_mode_first_class">1 класс</string>
@@ -1054,4 +1062,16 @@ K-9 Mail — почтовый клиент для Android.
   <string name="permission_contacts_rationale_title">Разрешить доступ к контактам</string>
   <string name="permission_contacts_rationale_message">Чтобы подсказывать имена и показывать фото, приложению нужен доступ к контактам</string>
   <string name="generic_loading_error">При загрузке данных возникла ошибка</string>
+  <string name="push_notification_state_initializing">Инициализация…</string>
+  <string name="push_notification_state_listening">Ожидание новых писем</string>
+  <string name="push_notification_state_wait_background_sync">Спящий режим до тех пор, пока не будет разрешена фоновая синхронизация</string>
+  <string name="push_notification_state_wait_network">Спящий режим до появления сети</string>
+  <string name="push_notification_info">Нажмите, чтобы узнать больше.</string>
+  <string name="push_info_title">Информация о Push</string>
+  <string name="push_info_notification_explanation_text">При использовании Push K-9 Mail поддерживает соединение с почтовым сервером. Android требует отображения постоянного уведомления, пока приложение активно в фоновом режиме. %s</string>
+  <string name="push_info_configure_notification_text">Однако Android также позволяет скрыть уведомление.</string>
+  <string name="push_info_learn_more_text">Узнать больше</string>
+  <string name="push_info_configure_notification_action">Настроить уведомление</string>
+  <string name="push_info_disable_push_text">Если вам не нужны мгновенные уведомления о новых сообщениях, вам следует отключить Push и использовать Опрос. Опрос проверяет наличие новой почты через регулярные промежутки времени и не нуждается в уведомлениях.</string>
+  <string name="push_info_disable_push_action">Отключить Push</string>
 </resources>

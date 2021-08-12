@@ -9,9 +9,21 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="source_code">کد منبع</string>
   <string name="app_license">مجوز آپاچی، نسخهٔ ۲٫۰</string>
+  <string name="about_project_title">پروژهٔ متن‌باز</string>
+  <string name="about_website_title">وبگاه</string>
+  <string name="user_forum_title">انجمن کاربری</string>
+  <string name="about_fediverse_title">فِدیوِرس</string>
+  <string name="about_twitter_title">توئیتر</string>
   <string name="about_libraries">کتابخانه‌ها</string>
   <string name="license">مجوز</string>
+  <string name="changelog_title">گزارش تغییرات</string>
+  <string name="changelog_loading_error">گزارش تغییرات بار نشد.</string>
+  <string name="changelog_version_title">نسخهٔ %s</string>
+  <string name="changelog_recent_changes_title">تازه‌ها</string>
+  <string name="changelog_show_recent_changes">هنگامی که برنامه روزآمد شد تغییرات تازه را نشان بده</string>
+  <string name="changelog_snackbar_text">از تازه‌های این نسخه باخبر شوید</string>
   <!--Welcome message-->
   <string name="welcome_message_title">به «کِی‌ناین میل» خوش آمدید</string>
   <string name="accounts_welcome"><![CDATA[
@@ -91,6 +103,7 @@
   <string name="forward_as_attachment_action">هدایت به‌شکل پیوست</string>
   <string name="edit_as_new_message_action">ویرایش به‌عنوان پیام جدید</string>
   <string name="move_action">انتقال به</string>
+  <string name="move_to_drafts_action">انتقال به پیش‌نویس‌ها</string>
   <string name="single_message_options_action">ارسال…</string>
   <string name="refile_action">سامان‌دهی...</string>
   <string name="done_action">انجام شد</string>
@@ -120,6 +133,7 @@
     <item quantity="one">نشانی‌ها در بریده‌دان کپی شد</item>
     <item quantity="other">نشانی‌ها در بریده‌دان کپی شد</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">نوشتهٔ موضوع به بریده‌دان کپی شد</string>
   <string name="message_view_theme_action_dark">تغییر به پوستهٔ تیره</string>
   <string name="message_view_theme_action_light">تغییر به پوستهٔ روشن</string>
   <string name="mark_as_unread_action">خوانده نشد</string>
@@ -170,6 +184,8 @@
   <string name="notification_bg_send_ticker">ارسال رایانامه: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">ارسال رایانامه</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">همگام‌سازی (پیشرانی)</string>
+  <string name="notification_channel_push_description">هنگام انتظار برای پیام‌های تازه نشان داده می‌شود</string>
   <string name="notification_channel_messages_title">پیام‌ها</string>
   <string name="notification_channel_messages_description">اعلان‌های مربوط به پیام‌ها</string>
   <string name="notification_channel_miscellaneous_title">متفرقه</string>
@@ -421,8 +437,6 @@
   <string name="account_settings_mark_message_as_read_on_view_summary">زمانی که یک پیام را باز کردید به‌عنوان خوانده علامت بخورد</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">هنگام حذف، نشان بزن که خواندم</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">پیام حذف‌شده را نشان بزن که خوانده‌ام</string>
-  <string name="account_settings_notification_open_system_notifications_label">تنظیمات اعلان</string>
-  <string name="account_settings_notification_open_system_notifications_summary">بازکردن تنظیمات اعلان دستگاه</string>
   <string name="account_settings_show_pictures_label">همیشه عکس‌ها را نشان بده</string>
   <string name="account_settings_show_pictures_never">خیر</string>
   <string name="account_settings_show_pictures_only_from_contacts">از مخاطبان</string>
@@ -538,6 +552,7 @@
   <string name="folder_settings_folder_push_mode_normal">بدون سطح</string>
   <string name="folder_settings_folder_push_mode_first_class">سطح ۱</string>
   <string name="folder_settings_folder_push_mode_second_class">سطح ۲</string>
+  <string name="folder_settings_folder_push_mode_inherited">همانند سطح سرکشی</string>
   <string name="folder_settings_folder_notify_mode_label">سطح اعلان پوشه</string>
   <string name="folder_settings_folder_notify_mode_normal">بدون سطح</string>
   <string name="folder_settings_folder_notify_mode_first_class">سطح ۱</string>
@@ -673,6 +688,7 @@
   <string name="volume_navigation_title">جابه‌جایی با کلیدهای تنظیم صدا</string>
   <string name="volume_navigation_message">در نماهای پیام</string>
   <string name="volume_navigation_list">در نماهای لیستی</string>
+  <string name="show_unified_inbox_title">نمایش صندوق یکپارچه</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- نخوانده</string>
   <string name="search_all_messages_title">همهٔ پیام‌ها</string>
@@ -725,6 +741,7 @@
   <string name="send_failed_reason">ارسال ناموفق بود: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">پیام پیش‌نویس ذخیره شود؟</string>
   <string name="save_or_discard_draft_message_instructions_fmt">پیام را نگه می‌دارید یا دور می‌اندازید؟</string>
+  <string name="save_or_discard_draft_message_changes">تغییرات حفظ شود یا دور ریخته شود؟</string>
   <string name="confirm_discard_draft_message_title">پیام از بین برود؟</string>
   <string name="confirm_discard_draft_message">آیا از دورانداختن این پیام مطمئن هستید؟</string>
   <string name="select_text_now">متن را انتخاب کنید تا کپی شود.</string>
@@ -803,6 +820,8 @@
   <string name="webview_contextmenu_link_share_action">اشتراک‌گذاری پیوند</string>
   <string name="webview_contextmenu_link_copy_action">کپی‌کردن پیوند در بریده‌دان</string>
   <string name="webview_contextmenu_link_clipboard_label">پیوند</string>
+  <string name="webview_contextmenu_link_text_copy_action">کپی‌کردن نوشتهٔ پیوند به بریده‌دان</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">نوشتهٔ پیوند</string>
   <string name="webview_contextmenu_image_title">تصویر</string>
   <string name="webview_contextmenu_image_view_action">دیدن تصویر</string>
   <string name="webview_contextmenu_image_save_action">ذخیرهٔ تصویر</string>
@@ -879,6 +898,8 @@
   <string name="recipient_bcc">مخفیانه به</string>
   <string name="recipient_to">به</string>
   <string name="recipient_from">از</string>
+  <string name="unknown_recipient">&lt;گیرندهٔ ناشناس&gt;</string>
+  <string name="unknown_sender">&lt;فرستندهٔ ناشناس&gt;</string>
   <string name="address_type_home">خانه</string>
   <string name="address_type_work">کار</string>
   <string name="address_type_other">سایر</string>
@@ -1025,4 +1046,17 @@
   <!--permissions-->
   <string name="permission_contacts_rationale_title">اجازهٔ دسترسی به مخاطبان را بدهید</string>
   <string name="permission_contacts_rationale_message">برای پیشنهاد مخاطب و نمایش نام و عکس مخاطب، برنامه نیاز دارد به مخاطبان شما دسترسی داشته باشد.</string>
+  <string name="generic_loading_error">هنگام بارکردن داده، خطایی رخ داد</string>
+  <string name="push_notification_state_initializing">مقداردهی اولیه...</string>
+  <string name="push_notification_state_listening">در انتظار رایانامه‌های جدید</string>
+  <string name="push_notification_state_wait_background_sync">می‌خوابد تا هنگامی که اجازهٔ همگام‌سازی در پس‌زمینه داده شود</string>
+  <string name="push_notification_state_wait_network">می‌خوابد تا هنگامی که شبکه در دسترس باشد</string>
+  <string name="push_notification_info">لمس کنید تا بیشتر بدانید.</string>
+  <string name="push_info_title">اطلاعات پیشرانی</string>
+  <string name="push_info_notification_explanation_text">هنگام استفاده از پیشرانی، K-9 Mail اتصالی به کارساز رایانامه برقرار می‌کند. اندروید نیاز دارد هنگامی که برنامه‌ای در پس‌زمینه فعال است اعلان مداومی را نشان دهد. %s</string>
+  <string name="push_info_configure_notification_text">البته اندروید این امکان را به شما می‌دهد که اعلان را پنهان کنید.</string>
+  <string name="push_info_learn_more_text">بیشتر بدانید</string>
+  <string name="push_info_configure_notification_action">پیکربندی اعلان</string>
+  <string name="push_info_disable_push_text">اگر برای پیام‌های جدید نیاز به اعلان آنی ندارید، بهتر است پیشرانی را غیرفعال کنید و سرکشی را به کار ببرید. روش سرکشی در فواصل زمانی منظم آمدن نامه‌های جدید را بررسی می‌کند و به آن اعلان نیاز ندارد.</string>
+  <string name="push_info_disable_push_action">غیرفعال‌سازی پیشرانی</string>
 </resources>

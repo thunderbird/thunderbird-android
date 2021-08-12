@@ -441,8 +441,9 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_mark_message_as_read_on_view_summary">Označit zprávu jako přečtenou po otevření</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Při smazání označit jako přečtené</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Při jejím mazání, označit zprávu jako přečtenou</string>
-  <string name="account_settings_notification_open_system_notifications_label">Nastavení oznamování</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Nastavení oznamování v operačním systému</string>
+  <string name="account_settings_notification_channels_label">Kategorie upozorňování</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Nastavit upozornění na nové zprávy</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Nastavit upozorňování na chyby a stavy</string>
   <string name="account_settings_show_pictures_label">Vždy zobrazovat obrázky</string>
   <string name="account_settings_show_pictures_never">Ne</string>
   <string name="account_settings_show_pictures_only_from_contacts">Jen od kontaktů</string>

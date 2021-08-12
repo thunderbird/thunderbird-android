@@ -438,8 +438,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca un messaggio come letto quando viene aperto per la visualizzazione</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marca come letto all\'eliminazione </string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marca un messaggio come letto quando viene eliminato</string>
-  <string name="account_settings_notification_open_system_notifications_label">Impostazioni notifiche</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Apri le impostazioni di sistema delle notifiche</string>
+  <string name="account_settings_notification_channels_label">Categorie di notifiche</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Configura le notifiche per i nuovi messaggi</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Configura le notifiche per errori e stato</string>
   <string name="account_settings_show_pictures_label">Mostra sempre le immagini</string>
   <string name="account_settings_show_pictures_never">No</string>
   <string name="account_settings_show_pictures_only_from_contacts">Dai contatti</string>

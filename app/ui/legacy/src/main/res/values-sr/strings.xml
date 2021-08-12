@@ -432,8 +432,6 @@
   <string name="account_settings_mark_message_as_read_on_view_summary">Означава поруку прочитаном када се отвори за приказ</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Означи као прочитано по брисању</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Означи поруку прочитаном по брисању</string>
-  <string name="account_settings_notification_open_system_notifications_label">Поставке обавештења</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Отвори системске поставке обавештења</string>
   <string name="account_settings_show_pictures_label">Увек прикажи слике</string>
   <string name="account_settings_show_pictures_never">не</string>
   <string name="account_settings_show_pictures_only_from_contacts">од контаката</string>

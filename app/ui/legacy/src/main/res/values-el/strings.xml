@@ -21,6 +21,9 @@
   <string name="changelog_title">Κατάλογος αλλαγών</string>
   <string name="changelog_loading_error">Δεν ήταν δυνατή η φόρτωση του καταλόγου αλλαγών</string>
   <string name="changelog_version_title">Έκδοση %s</string>
+  <string name="changelog_recent_changes_title">Τι νέο υπάρχει</string>
+  <string name="changelog_show_recent_changes">Εμφάνιση πρόσφατων αλλαγών από την ενημέρωση της εφαρμογής</string>
+  <string name="changelog_snackbar_text">Δείτε τι έχει αλλάξει σε αυτή την έκδοση</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Καλώς ορίσατε στο K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -114,6 +117,7 @@
   <string name="add_account_action">Προσθήκη λογαριασμού</string>
   <string name="compose_action">Δημιουργία νέου</string>
   <string name="search_action">Αναζήτηση</string>
+  <string name="search_everywhere_action">Αναζήτηση παντού</string>
   <string name="search_results">Αποτελέσματα αναζήτησης</string>
   <string name="preferences_action">Ρυθμίσεις</string>
   <string name="folders_action">Διαχείριση φακέλων</string>
@@ -130,6 +134,7 @@
     <item quantity="one">Η διεύθυνση αντιγράφηκε στο πρόχειρο</item>
     <item quantity="other">Οι διευθύνσεις αντιγράφηκαν στο πρόχειρο </item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Το θέμα αντιγράφηκε στο πρόχειρο</string>
   <string name="message_view_theme_action_dark">Εφαρμογή σκούρας εμφάνισης</string>
   <string name="message_view_theme_action_light">Εφαρμογή φωτεινής εμφάνισης</string>
   <string name="mark_as_unread_action">Σήμανση ως μη αναγνωσμένο</string>
@@ -180,6 +185,8 @@
   <string name="notification_bg_send_ticker">Αποστολή μηνύματος: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Αποστολή μηνύματος</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Συγχρονισμός (Push)</string>
+  <string name="notification_channel_push_description">Εμφανίζεται κατά την αναμονή για νέα μηνύματα</string>
   <string name="notification_channel_messages_title">Μηνύματα</string>
   <string name="notification_channel_messages_description">Ειδοποιήσεις που αφορούν μηνύματα</string>
   <string name="notification_channel_miscellaneous_title">Διάφορα</string>
@@ -431,8 +438,6 @@
   <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Σήμανση ως αναγνωσμένο κατά τη διαγραφή</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Να γίνεται σήμανση του μηνύματος ως αναγνωσμένο όταν διαγράφεται</string>
-  <string name="account_settings_notification_open_system_notifications_label">Ρυθμίσεις ειδοποιήσεων</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Άνοιγμα ρυθμίσεων ειδοποιήσεων συστήματος</string>
   <string name="account_settings_show_pictures_label">Προβολή εικόνων πάντα</string>
   <string name="account_settings_show_pictures_never">Όχι</string>
   <string name="account_settings_show_pictures_only_from_contacts">Από τις Επαφές</string>
@@ -548,6 +553,7 @@
   <string name="folder_settings_folder_push_mode_normal">Χωρίς Επίπεδο</string>
   <string name="folder_settings_folder_push_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_push_mode_second_class">Δεύτερο επίπεδο</string>
+  <string name="folder_settings_folder_push_mode_inherited">Όπως το επίπεδο ενημέρωσης</string>
   <string name="folder_settings_folder_notify_mode_label">Επίπεδο ειδοποίησης φακέλου</string>
   <string name="folder_settings_folder_notify_mode_normal">Χωρίς Επίπεδο</string>
   <string name="folder_settings_folder_notify_mode_first_class">Πρώτο επίπεδο</string>
@@ -845,6 +851,10 @@
     <item quantity="one">Ανάκληση %d αποτελέσματος</item>
     <item quantity="other">Μετάκληση %d αποτελεσμάτων</item>
   </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Φόρτωση %1$d από %2$d αποτελέσματα</item>
+    <item quantity="other"> Φόρτωση %1$d από %2$d αποτελέσματα</item>
+  </plurals>
   <string name="remote_search_error">Η απομακρυσμένη αναζήτηση απέτυχε.</string>
   <string name="account_settings_search">Αναζήτηση</string>
   <string name="account_settings_remote_search_enabled">Ενεργοποίηση αναζήτησης στον εξυπηρετητή</string>
@@ -1038,4 +1048,16 @@
   <string name="permission_contacts_rationale_title">Να επιτρέπεται η πρόσβαση στις επαφές</string>
   <string name="permission_contacts_rationale_message">Για να είναι δυνατή η παροχή προτάσεων επαφών και η εμφάνιση των ονομάτων και φωτογραφιών των επαφών, η εφαρμογή χρειάζεται πρόσβαση στις επαφές σας.</string>
   <string name="generic_loading_error">Προέκυψε σφάλμα κατά τη φόρτωση των δεδομένων</string>
+  <string name="push_notification_state_initializing">Αρχικοποίηση...</string>
+  <string name="push_notification_state_listening">Αναμονή για νέα μηνύματα</string>
+  <string name="push_notification_state_wait_background_sync">Σε αδράνεια μέχρι να επιτραπεί ο συγχρονισμός στο παρασκήνιο</string>
+  <string name="push_notification_state_wait_network">Σε αδράνεια μέχρι να υπάρξει διαθέσιμο δίκτυο</string>
+  <string name="push_notification_info">Πατήστε για να μάθετε περισσότερα</string>
+  <string name="push_info_title">Πληροφορίες σπρωξίματος</string>
+  <string name="push_info_notification_explanation_text">Όταν χρησιμοποιείται το σπρώξιμο (Push), το K-9 Mail διατηρεί μια σύνδεση με τον εξυπηρετητή ηλεκτρονικού ταχυδρομείου (mail server). Το Android απαιτεί να προβάλλεται συνεχώς μια ειδοποίηση όσο η εφαρμογή λειτουργεί στο παρασκήνιο. %s</string>
+  <string name="push_info_configure_notification_text">Παρόλα αυτά, το Android σάς επιτρέπει να κρύψετε την ειδοποίηση.</string>
+  <string name="push_info_learn_more_text">Μάθετε περισσότερα</string>
+  <string name="push_info_configure_notification_action">Προσαρμογή ειδοποίησης</string>
+  <string name="push_info_disable_push_text">Αν δεν χρειάζεστε άμεση ειδοποίηση για νέα μηνύματα, απενεργοποιήστε το σπρώξιμο και χρησιμοποιήστε ενημέρωση (Polling). Η ενημέρωση ελέγχει για νέα μηνύματα ανά τακτά χρονικά διαστήματα και δεν χρειάζεται την ειδοποίηση.</string>
+  <string name="push_info_disable_push_action">Απενεργοποίηση σπρωξίματος</string>
 </resources>

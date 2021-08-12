@@ -437,8 +437,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_mark_message_as_read_on_view_summary">Marker som læst når meddelses åbnes for læsning</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marker som læst ved sletning</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marker en besked som læst når den bliver slettet</string>
-  <string name="account_settings_notification_open_system_notifications_label">Opsætning af notifikationer</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Åbn opsætning for notifikationer</string>
   <string name="account_settings_show_pictures_label">Vis altid billeder</string>
   <string name="account_settings_show_pictures_never">Aldrig</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kun når afsender findes i Kontakter</string>

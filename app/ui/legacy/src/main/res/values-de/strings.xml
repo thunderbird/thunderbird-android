@@ -438,8 +438,9 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_mark_message_as_read_on_view_summary">Nachricht als gelesen markieren, sobald sie zum Betrachten geöffnet wird</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Beim Löschen als gelesen markieren</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Nachricht als gelesen markieren, sobald sie gelöscht wird</string>
-  <string name="account_settings_notification_open_system_notifications_label">Benachrichtigungseinstellungen</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Benachrichtigungseinstellungen öffnen</string>
+  <string name="account_settings_notification_channels_label">Benachrichtigungskategorien</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Konfiguriere die Benachrichtigungen für neue Nachrichten</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguriere Fehler- und Statusbenachrichtigungen</string>
   <string name="account_settings_show_pictures_label">Bilder automatisch herunterladen</string>
   <string name="account_settings_show_pictures_never">Niemals</string>
   <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>
