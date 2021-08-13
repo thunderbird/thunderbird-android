@@ -91,13 +91,25 @@ internal class RealImapFolderIdler(
                 idleSent = true
             }
 
-            val initialResponse = connection.readResponse()
-            if (!initialResponse.isContinuationRequested) {
-                Timber.w("%s.idle(): Received something other than a continuation response", logTag)
-                return IdleResult.NOT_SUPPORTED
-            }
+            var receivedRelevantResponse = false
+            do {
+                val response = connection.readResponse()
+                if (response.tag == tag) {
+                    Timber.w("%s.idle(): IDLE command completed without a continuation request response", logTag)
+                    return IdleResult.NOT_SUPPORTED
+                } else if (response.isRelevant) {
+                    receivedRelevantResponse = true
+                }
+            } while (!response.isContinuationRequested)
 
-            connection.setSocketIdleReadTimeout()
+            if (receivedRelevantResponse) {
+                Timber.v("%s.idle(): Received a relevant untagged response right after sending IDLE command", logTag)
+                result = IdleResult.SYNC
+                stopIdle = true
+                sendDone()
+            } else {
+                connection.setSocketIdleReadTimeout()
+            }
 
             var response: ImapResponse
             do {
