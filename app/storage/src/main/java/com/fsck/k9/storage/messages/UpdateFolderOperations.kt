@@ -65,7 +65,7 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
         setString(folderId = folderId, columnName = "more_messages", value = moreMessages.databaseName)
     }
 
-    fun setLastUpdated(folderId: Long, timestamp: Long) {
+    fun setLastChecked(folderId: Long, timestamp: Long) {
         lockableDatabase.execute(false) { db ->
             val contentValues = ContentValues().apply {
                 put("last_updated", timestamp)
