@@ -1,6 +1,7 @@
 package com.fsck.k9.storage.messages
 
 import android.database.Cursor
+import androidx.core.database.getLongOrNull
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.helper.map
 import com.fsck.k9.mail.FolderClass
@@ -171,11 +172,14 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val moreMessages: MoreMessages
         get() = MoreMessages.fromDatabaseName(cursor.getString(12))
 
+    override val lastChecked: Long?
+        get() = cursor.getLongOrNull(13)
+
     override val unreadMessageCount: Int
-        get() = cursor.getInt(13)
+        get() = cursor.getInt(14)
 
     override val starredMessageCount: Int
-        get() = cursor.getInt(14)
+        get() = cursor.getInt(15)
 
     override fun serverIdOrThrow(): String {
         return serverId ?: error("No server ID found for folder '$name' ($id)")
@@ -199,5 +203,6 @@ private val FOLDER_COLUMNS = arrayOf(
     "notify_class",
     "push_class",
     "visible_limit",
-    "more_messages"
+    "more_messages",
+    "last_updated"
 )

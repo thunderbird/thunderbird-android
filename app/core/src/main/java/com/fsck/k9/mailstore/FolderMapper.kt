@@ -21,6 +21,7 @@ interface FolderDetailsAccessor {
     val pushClass: FolderClass
     val visibleLimit: Int
     val moreMessages: MoreMessages
+    val lastChecked: Long?
     val unreadMessageCount: Int
     val starredMessageCount: Int
 
