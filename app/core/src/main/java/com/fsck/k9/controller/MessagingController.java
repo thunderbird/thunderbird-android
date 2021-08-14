@@ -2483,9 +2483,6 @@ public class MessagingController {
             showFetchingMailNotificationIfNecessary(account, folder);
             try {
                 synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener);
-
-                long now = System.currentTimeMillis();
-                folder.setLastChecked(now);
             } finally {
                 clearFetchingMailNotificationIfNecessary(account);
             }
