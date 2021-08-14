@@ -351,16 +351,6 @@ public class LocalFolder {
         }
     }
 
-    public void setLastChecked(final long lastChecked) throws MessagingException {
-        try {
-            open();
-            this.lastChecked = lastChecked;
-        } catch (MessagingException e) {
-            throw new WrappedException(e);
-        }
-        updateFolderColumn("last_updated", lastChecked);
-    }
-
     public int getVisibleLimit() throws MessagingException {
         open();
         return visibleLimit;
@@ -1124,6 +1114,7 @@ public class LocalFolder {
                         db.execSQL("DELETE FROM messages WHERE folder_id = ?", folderIdArg);
 
                         setMoreMessages(MoreMessages.UNKNOWN);
+                        resetLastChecked(db);
 
                         return null;
                     } catch (MessagingException e) {
@@ -1137,8 +1128,15 @@ public class LocalFolder {
 
         this.localStore.notifyChange();
 
-        setLastChecked(0);
         setVisibleLimit(getAccount().getDisplayCount());
+    }
+
+    private void resetLastChecked(SQLiteDatabase db) {
+        lastChecked = 0;
+
+        ContentValues values = new ContentValues();
+        values.putNull("last_updated");
+        db.update("folders", values, "id = ?", new String[] { Long.toString(databaseId) });
     }
 
     public void destroyLocalOnlyMessages() throws MessagingException {
