@@ -119,6 +119,7 @@ public class Account implements BaseAccount {
     private FolderMode folderNotifyNewMailMode;
     private boolean notifySelfNewMail;
     private boolean notifyContactsMailOnly;
+    private boolean ignoreChatMessages;
     private String legacyInboxFolder;
     private String importedDraftsFolder;
     private String importedSentFolder;
@@ -678,6 +679,14 @@ public class Account implements BaseAccount {
 
     public synchronized void setNotifyContactsMailOnly(boolean notifyContactsMailOnly) {
         this.notifyContactsMailOnly = notifyContactsMailOnly;
+    }
+
+    public synchronized boolean isIgnoreChatMessages() {
+        return ignoreChatMessages;
+    }
+
+    public synchronized void setIgnoreChatMessages(boolean ignoreChatMessages) {
+        this.ignoreChatMessages = ignoreChatMessages;
     }
 
     public synchronized Expunge getExpungePolicy() {

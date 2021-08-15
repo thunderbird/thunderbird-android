@@ -4,6 +4,8 @@ import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.K9MailLib
+import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalFolder.isModeMismatch
 import com.fsck.k9.mailstore.LocalMessage
@@ -80,6 +82,11 @@ class K9NotificationStrategy(private val contacts: Contacts) : NotificationStrat
             return false
         }
 
+        if (account.isIgnoreChatMessages && message.isChatMessage) {
+            Timber.v("No notification: Notifications for chat messages are disabled")
+            return false
+        }
+
         if (!account.isNotifySelfNewMail && account.isAnIdentity(message.from)) {
             Timber.v("No notification: Notifications for messages from yourself are disabled")
             return false
@@ -92,4 +99,7 @@ class K9NotificationStrategy(private val contacts: Contacts) : NotificationStrat
 
         return true
     }
+
+    private val Message.isChatMessage: Boolean
+        get() = getHeader(K9MailLib.CHAT_HEADER).isNotEmpty()
 }

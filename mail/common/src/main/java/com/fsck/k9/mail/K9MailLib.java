@@ -9,6 +9,7 @@ public class K9MailLib {
 
     public static final int PUSH_WAKE_LOCK_TIMEOUT = 60000;
     public static final String IDENTITY_HEADER = "X-K9mail-Identity";
+    public static final String CHAT_HEADER = "Chat-Version";
 
     /**
      * Should K-9 log the conversation it has over the wire with

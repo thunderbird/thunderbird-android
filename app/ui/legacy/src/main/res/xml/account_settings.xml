@@ -327,6 +327,13 @@
             android:summary="@string/account_notify_contacts_mail_only_summary"
             android:title="@string/account_notify_contacts_mail_only_label" />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="account_notify"
+            android:key="ignore_chat_messages"
+            android:summary="@string/account_settings_ignore_chat_messages_summary"
+            android:title="@string/account_settings_ignore_chat_messages_label" />
+
         <com.takisoft.preferencex.RingtonePreference
             android:defaultValue="content://settings/system/notification_sound"
             android:dependency="account_notify"
