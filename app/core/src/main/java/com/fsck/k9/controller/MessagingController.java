@@ -64,6 +64,7 @@ import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -390,6 +391,12 @@ public class MessagingController {
 
     public void refreshFolderListSynchronous(Account account) {
         try {
+            ServerSettings serverSettings = account.getIncomingServerSettings();
+            if (serverSettings.password == null) {
+                handleAuthenticationFailure(account, true);
+                return;
+            }
+
             Backend backend = getBackend(account);
             backend.refreshFolderList();
 
@@ -643,6 +650,12 @@ public class MessagingController {
     }
 
     private void syncFolder(Account account, long folderId, MessagingListener listener, Backend backend) {
+        ServerSettings serverSettings = account.getIncomingServerSettings();
+        if (serverSettings.password == null) {
+            handleAuthenticationFailure(account, true);
+            return;
+        }
+
         Exception commandException = null;
         try {
             processPendingCommandsSynchronous(account);
@@ -1498,6 +1511,12 @@ public class MessagingController {
         Exception lastFailure = null;
         boolean wasPermanentFailure = false;
         try {
+            ServerSettings serverSettings = account.getOutgoingServerSettings();
+            if (serverSettings.password == null) {
+                handleAuthenticationFailure(account, false);
+                return;
+            }
+
             LocalStore localStore = localStoreProvider.getInstance(account);
             OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
             LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderId());
