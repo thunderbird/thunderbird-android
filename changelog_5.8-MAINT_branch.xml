@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.804" versioncode="28004" date="2021-08-18">
+        <change>Fixed a bug where Push didn't work with some servers</change>
+        <change>Don't connect to the incoming or outgoing server when passwords haven't been provided after import</change>
+        <change>Added missing scrollbars in screens showing the folder list</change>
+        <change>Tapping the app icon should now always bring the app to the foreground instead of adding another message list screen</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.803" versioncode="28003" date="2021-08-12">
         <change>Don't show the icon for the ongoing Push notification in the status bar (on versions older than Android 8.0)</change>
         <change>Directly open system settings for notification categories (Android 8.0 and newer)</change>
