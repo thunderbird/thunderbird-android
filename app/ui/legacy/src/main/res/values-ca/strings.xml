@@ -437,6 +437,9 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca el missatge com a llegit després d\'haver-lo obert.</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marca com a llegit quan se suprimeixi</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marca un missatge com a llegit quan se suprimeix.</string>
+  <string name="account_settings_notification_channels_label">Categories de notificacions</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Configureu les notificacions per als missatges nous</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Configureu les notificacions per als errors i l\'estat</string>
   <string name="account_settings_show_pictures_label">Sempre mostra les imatges</string>
   <string name="account_settings_show_pictures_never">No</string>
   <string name="account_settings_show_pictures_only_from_contacts">Dels contactes</string>

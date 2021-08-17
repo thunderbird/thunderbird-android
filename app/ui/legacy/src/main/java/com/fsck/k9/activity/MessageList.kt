@@ -134,6 +134,16 @@ open class MessageList :
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // If the app's main task was not created using the default launch intent (e.g. from a notification, a widget,
+        // or a shortcut), using the app icon to "launch" the app will create a new MessageList instance instead of only
+        // bringing the app's task to the foreground. We catch this situation here and simply finish the activity. This
+        // will bring the task to the foreground, showing the last active screen.
+        if (intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER) && !isTaskRoot) {
+            Timber.v("Not displaying MessageList. Only bringing the app task to the foreground.")
+            finish()
+            return
+        }
+
         val accounts = preferences.accounts
         deleteIncompleteAccounts(accounts)
         val hasAccountSetup = accounts.any { it.isFinishedSetup }

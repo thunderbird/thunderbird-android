@@ -294,6 +294,47 @@ class RealImapFolderIdlerTest {
         latch.awaitWithTimeout()
         assertThat(imapFolder.isOpen).isFalse()
     }
+
+    @Test
+    fun `irrelevant untagged response to IDLE command before continuation request`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.STOPPED)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueUntaggedServerResponse("OK irrelevant")
+        imapConnection.enqueueContinuationServerResponse()
+
+        wakeLock.waitForRelease()
+        idler.stop()
+        imapConnection.waitForCommand("DONE")
+        imapConnection.enqueueTaggedServerResponse("OK")
+        latch.awaitWithTimeout()
+    }
+
+    @Test
+    fun `relevant untagged response to IDLE command before continuation request`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.SYNC)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueUntaggedServerResponse("1 EXISTS")
+        imapConnection.enqueueContinuationServerResponse()
+        imapConnection.waitForCommand("DONE")
+        imapConnection.enqueueTaggedServerResponse("OK")
+        latch.awaitWithTimeout()
+    }
 }
 
 private fun CountDownLatch.awaitWithTimeout() {

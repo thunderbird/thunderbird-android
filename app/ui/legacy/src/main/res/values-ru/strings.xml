@@ -440,6 +440,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Отметить как прочитанное при удалении</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Отметить как прочитанное при удалении</string>
+  <string name="account_settings_notification_channels_label">Категории уведомлений</string>
   <string name="account_settings_open_notification_settings_messages_summary">Настройка уведомлений о новых сообщениях</string>
   <string name="account_settings_open_notification_settings_miscellaneous_summary">Настройка уведомлений об ошибках и статусе</string>
   <string name="account_settings_show_pictures_label">Показать изображения</string>
