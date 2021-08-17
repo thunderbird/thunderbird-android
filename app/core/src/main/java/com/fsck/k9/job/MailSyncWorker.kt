@@ -39,6 +39,11 @@ class MailSyncWorker(
             return Result.success()
         }
 
+        if (account.incomingServerSettings.password == null) {
+            Timber.d("Password for this account is missing. Skipping mail sync.")
+            return Result.success()
+        }
+
         val success = messagingController.performPeriodicMailSync(account)
 
         return if (success) Result.success() else Result.retry()
