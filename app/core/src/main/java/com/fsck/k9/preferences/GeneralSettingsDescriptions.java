@@ -283,6 +283,9 @@ public class GeneralSettingsDescriptions {
         s.put("showRecentChanges", Settings.versions(
                 new V(73, new BooleanSetting(true))
         ));
+        s.put("showStarredCount", Settings.versions(
+                new V(75, new BooleanSetting(false))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

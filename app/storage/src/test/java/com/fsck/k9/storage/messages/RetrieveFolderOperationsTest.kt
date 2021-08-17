@@ -269,7 +269,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             displayMode = FolderMode.ALL,
             outboxFolderId = folderId2
         ) { folder ->
-            Triple(folder.id, folder.name, folder.messageCount)
+            Triple(folder.id, folder.name, folder.unreadMessageCount)
         }
 
         assertThat(result).hasSize(4)

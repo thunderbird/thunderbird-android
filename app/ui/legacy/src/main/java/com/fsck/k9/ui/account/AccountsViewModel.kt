@@ -10,7 +10,8 @@ import androidx.lifecycle.asLiveData
 import com.fsck.k9.Account
 import com.fsck.k9.AccountsChangeListener
 import com.fsck.k9.Preferences
-import com.fsck.k9.controller.UnreadMessageCountProvider
+import com.fsck.k9.controller.MessageCounts
+import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.provider.EmailProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +26,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 class AccountsViewModel(
     private val preferences: Preferences,
-    private val unreadMessageCountProvider: UnreadMessageCountProvider,
+    private val messageCountsProvider: MessageCountsProvider,
     private val contentResolver: ContentResolver
 ) : ViewModel() {
     private val accountsFlow: Flow<List<Account>> =
@@ -46,27 +47,31 @@ class AccountsViewModel(
 
     private val displayAccountFlow: Flow<List<DisplayAccount>> = accountsFlow
         .flatMapLatest { accounts ->
-            val unreadCountFlows: List<Flow<Int>> = accounts.map { account ->
-                getUnreadCountFlow(account)
+            val messageCountsFlows: List<Flow<MessageCounts>> = accounts.map { account ->
+                getMessageCountsFlow(account)
             }
 
-            combine(unreadCountFlows) { unreadCounts ->
-                unreadCounts.mapIndexed { index, unreadCount ->
-                    DisplayAccount(account = accounts[index], unreadCount)
+            combine(messageCountsFlows) { messageCountsList ->
+                messageCountsList.mapIndexed { index, messageCounts ->
+                    DisplayAccount(
+                        account = accounts[index],
+                        unreadMessageCount = messageCounts.unread,
+                        starredMessageCount = messageCounts.starred
+                    )
                 }
             }
         }
 
-    private fun getUnreadCountFlow(account: Account): Flow<Int> {
+    private fun getMessageCountsFlow(account: Account): Flow<MessageCounts> {
         return callbackFlow {
             val notificationUri = EmailProvider.getNotificationUri(account.uuid)
 
-            send(unreadMessageCountProvider.getUnreadMessageCount(account))
+            send(messageCountsProvider.getMessageCounts(account))
 
             val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
                 override fun onChange(selfChange: Boolean) {
                     launch {
-                        send(unreadMessageCountProvider.getUnreadMessageCount(account))
+                        send(messageCountsProvider.getMessageCounts(account))
                     }
                 }
             }

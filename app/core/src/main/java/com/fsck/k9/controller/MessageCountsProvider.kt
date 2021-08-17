@@ -11,20 +11,22 @@ import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.getAccounts
 import timber.log.Timber
 
-interface UnreadMessageCountProvider {
-    fun getUnreadMessageCount(account: Account): Int
-    fun getUnreadMessageCount(searchAccount: SearchAccount): Int
+interface MessageCountsProvider {
+    fun getMessageCounts(account: Account): MessageCounts
+    fun getMessageCounts(searchAccount: SearchAccount): MessageCounts
 }
 
-internal class DefaultUnreadMessageCountProvider(
+data class MessageCounts(val unread: Int, val starred: Int)
+
+internal class DefaultMessageCountsProvider(
     private val context: Context,
     private val preferences: Preferences,
     private val accountSearchConditions: AccountSearchConditions,
     private val localStoreProvider: LocalStoreProvider
-) : UnreadMessageCountProvider {
-    override fun getUnreadMessageCount(account: Account): Int {
+) : MessageCountsProvider {
+    override fun getMessageCounts(account: Account): MessageCounts {
         if (!account.isAvailable(context)) {
-            return 0
+            return MessageCounts(0, 0)
         }
 
         return try {
@@ -34,32 +36,35 @@ internal class DefaultUnreadMessageCountProvider(
             accountSearchConditions.excludeSpecialFolders(account, search)
             accountSearchConditions.limitToDisplayableFolders(account, search)
 
-            localStore.getUnreadMessageCount(search)
+            localStore.getMessageCounts(search)
         } catch (e: MessagingException) {
-            Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account)
-            0
+            Timber.e(e, "Unable to getMessageCounts for account: %s", account)
+            MessageCounts(0, 0)
         }
     }
 
-    override fun getUnreadMessageCount(searchAccount: SearchAccount): Int {
+    override fun getMessageCounts(searchAccount: SearchAccount): MessageCounts {
         val search = searchAccount.relatedSearch
         val accounts = search.getAccounts(preferences)
 
-        var unreadMessageCount = 0
+        var unreadCount = 0
+        var starredCount = 0
         for (account in accounts) {
-            unreadMessageCount += getUnreadMessageCountWithLocalSearch(account, search)
+            val accountMessageCount = getMessageCountsWithLocalSearch(account, search)
+            unreadCount += accountMessageCount.unread
+            starredCount += accountMessageCount.starred
         }
 
-        return unreadMessageCount
+        return MessageCounts(unreadCount, starredCount)
     }
 
-    private fun getUnreadMessageCountWithLocalSearch(account: Account, search: LocalSearch): Int {
+    private fun getMessageCountsWithLocalSearch(account: Account, search: LocalSearch): MessageCounts {
         return try {
             val localStore = localStoreProvider.getInstance(account)
-            localStore.getUnreadMessageCount(search)
+            localStore.getMessageCounts(search)
         } catch (e: MessagingException) {
-            Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account)
-            0
+            Timber.e(e, "Unable to getMessageCounts for account: %s", account)
+            MessageCounts(0, 0)
         }
     }
 }

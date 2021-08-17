@@ -55,6 +55,11 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 
+private const val UNREAD_SYMBOL = "\u2B24"
+private const val STARRED_SYMBOL = "\u2605"
+private const val THIN_SPACE = "\u2009"
+private const val EN_SPACE = "\u2000"
+
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
     private val foldersViewModel: FoldersViewModel by parent.viewModel()
     private val accountsViewModel: AccountsViewModel by parent.viewModel()
@@ -162,6 +167,48 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
     }
 
+    private fun buildBadgeText(displayAccount: DisplayAccount): String? {
+        return buildBadgeText(displayAccount.unreadMessageCount, displayAccount.starredMessageCount)
+    }
+
+    private fun buildBadgeText(displayFolder: DisplayFolder): String? {
+        return buildBadgeText(displayFolder.unreadMessageCount, displayFolder.starredMessageCount)
+    }
+
+    private fun buildBadgeText(unreadCount: Int, starredCount: Int): String? {
+        return if (K9.isShowStarredCount) {
+            buildBadgeTextWithStarredCount(unreadCount, starredCount)
+        } else {
+            buildBadgeTextWithUnreadCount(unreadCount)
+        }
+    }
+
+    private fun buildBadgeTextWithStarredCount(unreadCount: Int, starredCount: Int): String? {
+        if (unreadCount == 0 && starredCount == 0) return null
+
+        return buildString {
+            val hasUnreadCount = unreadCount > 0
+            if (hasUnreadCount) {
+                append(UNREAD_SYMBOL)
+                append(THIN_SPACE)
+                append(unreadCount)
+            }
+
+            if (starredCount > 0) {
+                if (hasUnreadCount) {
+                    append(EN_SPACE)
+                }
+                append(STARRED_SYMBOL)
+                append(THIN_SPACE)
+                append(starredCount)
+            }
+        }
+    }
+
+    private fun buildBadgeTextWithUnreadCount(unreadCount: Int): String? {
+        return if (unreadCount > 0) unreadCount.toString() else null
+    }
+
     private fun setAccounts(displayAccounts: List<DisplayAccount>) {
         val oldSelectedBackgroundColor = selectedBackgroundColor
 
@@ -183,8 +230,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 descriptionTextColor = selectedTextColor
                 selectedColorInt = drawerColors.selectedColor
                 icon = ImageHolder(createAccountImageUri(account))
-                displayAccount.unreadCount.takeIf { it > 0 }?.let { unreadCount ->
-                    badgeText = unreadCount.toString()
+                buildBadgeText(displayAccount)?.let { text ->
+                    badgeText = text
                     badgeStyle = BadgeStyle().apply {
                         textColorStateList = selectedTextColor
                     }
@@ -328,8 +375,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 identifier = drawerId
                 tag = folder
                 nameText = getFolderDisplayName(folder)
-                displayFolder.unreadCount.takeIf { it > 0 }?.let {
-                    badgeText = it.toString()
+                buildBadgeText(displayFolder)?.let { text ->
+                    badgeText = text
                     badgeStyle = folderBadgeStyle
                 }
                 selectedColorInt = selectedBackgroundColor

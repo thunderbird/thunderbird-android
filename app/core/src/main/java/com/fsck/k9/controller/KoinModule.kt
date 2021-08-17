@@ -18,7 +18,7 @@ val controllerModule = module {
             get<NotificationController>(),
             get<NotificationStrategy>(),
             get<LocalStoreProvider>(),
-            get<UnreadMessageCountProvider>(),
+            get<MessageCountsProvider>(),
             get<BackendManager>(),
             get<Preferences>(),
             get<MessageStoreManager>(),
@@ -26,5 +26,12 @@ val controllerModule = module {
             get(named("controllerExtensions"))
         )
     }
-    single<UnreadMessageCountProvider> { DefaultUnreadMessageCountProvider(get(), get(), get(), get()) }
+    single<MessageCountsProvider> {
+        DefaultMessageCountsProvider(
+            context = get(),
+            preferences = get(),
+            accountSearchConditions = get(),
+            localStoreProvider = get()
+        )
+    }
 }

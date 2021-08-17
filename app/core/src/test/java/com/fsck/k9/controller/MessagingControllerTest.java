@@ -114,15 +114,15 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private LocalMessage localMessageToSend1;
     private volatile boolean hasFetchedMessage = false;
 
-    private UnreadMessageCountProvider unreadMessageCountProvider = new UnreadMessageCountProvider() {
+    private MessageCountsProvider messageCountsProvider = new MessageCountsProvider() {
         @Override
-        public int getUnreadMessageCount(@NotNull SearchAccount searchAccount) {
-            return 0;
+        public MessageCounts getMessageCounts(@NotNull SearchAccount searchAccount) {
+            return new MessageCounts(0, 0);
         }
 
         @Override
-        public int getUnreadMessageCount(@NotNull Account account) {
-            return 0;
+        public MessageCounts getMessageCounts(@NotNull Account account) {
+            return new MessageCounts(0, 0);
         }
     };
 
@@ -139,7 +139,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         preferences = Preferences.getPreferences(appContext);
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
-                localStoreProvider, unreadMessageCountProvider, backendManager, preferences, messageStoreManager,
+                localStoreProvider, messageCountsProvider, backendManager, preferences, messageStoreManager,
                 saveMessageDataCreator, Collections.<ControllerExtension>emptyList());
 
         configureAccount();

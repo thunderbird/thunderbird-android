@@ -47,7 +47,8 @@ class FolderRepository(
                     isLocalOnly = folder.isLocalOnly
                 ),
                 isInTopGroup = folder.isInTopGroup,
-                unreadCount = folder.messageCount
+                unreadMessageCount = folder.unreadMessageCount,
+                starredMessageCount = folder.starredMessageCount
             )
         }.sortedWith(sortForDisplay)
     }
@@ -271,7 +272,8 @@ data class RemoteFolderDetails(
 data class DisplayFolder(
     val folder: Folder,
     val isInTopGroup: Boolean,
-    val unreadCount: Int
+    val unreadMessageCount: Int,
+    val starredMessageCount: Int
 )
 
 enum class FolderType {

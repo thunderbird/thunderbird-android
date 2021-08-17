@@ -31,6 +31,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
+import com.fsck.k9.controller.MessageCounts;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
 import com.fsck.k9.controller.PendingCommandSerializer;
@@ -1275,6 +1276,40 @@ public class LocalStore {
         });
     }
 
+    private int getStarredMessageCount(LocalSearch search) throws MessagingException {
+        StringBuilder whereBuilder = new StringBuilder();
+        List<String> queryArgs = new ArrayList<>();
+        SqlQueryBuilder.buildWhereClause(account, search.getConditions(), whereBuilder, queryArgs);
+
+        String where = whereBuilder.toString();
+        final String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
+
+        final String sqlQuery = "SELECT SUM(flagged=1) " +
+                "FROM messages " +
+                "JOIN folders ON (folders.id = messages.folder_id) " +
+                "WHERE (messages.empty = 0 AND messages.deleted = 0)" +
+                (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+
+        return database.execute(false, new DbCallback<Integer>() {
+            @Override
+            public Integer doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException {
+                Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
+                try {
+                    if (cursor.moveToFirst()) {
+                        return cursor.getInt(0);
+                    } else {
+                        return 0;
+                    }
+                } finally {
+                    cursor.close();
+                }
+            }
+        });
+    }
+
+    public MessageCounts getMessageCounts(LocalSearch search) throws MessagingException {
+        return new MessageCounts(getUnreadMessageCount(search), getStarredMessageCount(search));
+    }
 
     public static String getColumnNameForFlag(Flag flag) {
         switch (flag) {
