@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -20,6 +21,10 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricManager.Authenticators;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
@@ -147,6 +152,20 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
+
+        boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
+
+        mPasswordLayoutView.setEndIconOnClickListener(v -> {
+            if (mPasswordView.getTransformationMethod() instanceof PasswordTransformationMethod) {
+                if (editSettings) {
+                    authenticateUserAndShowPassword();
+                } else {
+                    mPasswordView.setTransformationMethod(null);
+                }
+            } else {
+                mPasswordView.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+        });
 
         try {
             ServerSettings settings = mAccount.getOutgoingServerSettings();
@@ -496,6 +515,31 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         DI.get(LocalKeyStoreManager.class).deleteCertificate(mAccount, newHost, newPort, MailServerDirection.OUTGOING);
         mAccount.setOutgoingServerSettings(server);
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
+    }
+
+    private void authenticateUserAndShowPassword() {
+        new BiometricPrompt(this, ContextCompat.getMainExecutor(this), new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                mPasswordView.setTransformationMethod(null);
+            }
+
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                if (errorCode == BiometricPrompt.ERROR_HW_NOT_PRESENT
+                        || errorCode == BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL) {
+                    Toast.makeText(AccountSetupOutgoing.this, R.string.account_setup_basics_show_password_need_lock,
+                            Toast.LENGTH_SHORT).show();
+                } else if (errString.length() != 0) {
+                    Toast.makeText(AccountSetupOutgoing.this, errString, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).authenticate(new BiometricPrompt.PromptInfo.Builder()
+                .setAllowedAuthenticators(Authenticators.BIOMETRIC_STRONG
+                        | Authenticators.BIOMETRIC_WEAK | Authenticators.DEVICE_CREDENTIAL)
+                .setTitle(getString(R.string.account_setup_basics_show_password_biometrics_title))
+                .setSubtitle(getString(R.string.account_setup_basics_show_password_biometrics_subtitle))
+                .build());
     }
 
     public void onClick(View v) {
