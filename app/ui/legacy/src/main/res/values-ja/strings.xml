@@ -23,6 +23,7 @@
   <string name="changelog_version_title">バージョン %s</string>
   <string name="changelog_recent_changes_title">新着</string>
   <string name="changelog_show_recent_changes">アプリの更新後に更新内容を表示する</string>
+  <string name="changelog_snackbar_text">このリリースは何が新しいのかを知る</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Mailへようこそ</string>
   <string name="accounts_welcome"><![CDATA[

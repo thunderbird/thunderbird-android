@@ -1004,7 +1004,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="enable_encryption">Aktivera kryptering</string>
   <string name="disable_encryption">Inaktivera kryptering</string>
   <string name="openpgp_description_text1">Krypterande meddelanden säkerställer att de kan läsas av mottagaren, och ingen annan.</string>
-  <string name="openpgp_description_text3">Kryptering visas endast om den stöds av alla mottagare, och de måste ha skickat ett e-postmeddelande till dig innan.</string>
+  <string name="openpgp_description_text3">Kryptering visas endast om den stöds av alla mottagare, och de måste ha skickat dig ett e-postmeddelande tidigare.</string>
   <string name="openpgp_description_text2">Växla kryptering genom att klicka på denna ikon.</string>
   <string name="openpgp_enabled_error_gotit">Uppfattat</string>
   <string name="openpgp_enabled_error_back">Bakåt</string>
