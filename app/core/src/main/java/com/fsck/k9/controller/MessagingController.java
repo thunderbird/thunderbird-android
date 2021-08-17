@@ -125,7 +125,6 @@ public class MessagingController {
     private final Set<MessagingListener> listeners = new CopyOnWriteArraySet<>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
-    private final UnreadMessageCountProvider unreadMessageCountProvider;
     private final MessageCountsProvider messageCountsProvider;
     private final DraftOperations draftOperations;
 
@@ -141,14 +140,13 @@ public class MessagingController {
 
     MessagingController(Context context, NotificationController notificationController,
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
-            UnreadMessageCountProvider unreadMessageCountProvider, MessageCountsProvider messageCountsProvider,
-            BackendManager backendManager, Preferences preferences, MessageStoreManager messageStoreManager,
+            MessageCountsProvider messageCountsProvider, BackendManager backendManager,
+            Preferences preferences, MessageStoreManager messageStoreManager,
             SaveMessageDataCreator saveMessageDataCreator, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
-        this.unreadMessageCountProvider = unreadMessageCountProvider;
         this.messageCountsProvider = messageCountsProvider;
         this.backendManager = backendManager;
         this.preferences = preferences;
@@ -1678,11 +1676,13 @@ public class MessagingController {
     }
 
     public int getUnreadMessageCount(Account account) {
-        return unreadMessageCountProvider.getUnreadMessageCount(account);
+        MessageCounts messageCounts = messageCountsProvider.getMessageCounts(account);
+        return messageCounts.getUnread();
     }
 
     public int getUnreadMessageCount(SearchAccount searchAccount) {
-        return unreadMessageCountProvider.getUnreadMessageCount(searchAccount);
+        MessageCounts messageCounts = messageCountsProvider.getMessageCounts(searchAccount);
+        return messageCounts.getUnread();
     }
 
     public int getFolderUnreadMessageCount(Account account, Long folderId) throws MessagingException {
