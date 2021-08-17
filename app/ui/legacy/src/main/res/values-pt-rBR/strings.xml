@@ -436,6 +436,9 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida quando ela for aberta para visualização</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como lida ao excluir</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marca uma mensagem como lida quando ela for excluída</string>
+  <string name="account_settings_notification_channels_label">Categorias de notificação</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Configura as notificações para as novas mensagens</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Configura as notificações de erros e status</string>
   <string name="account_settings_show_pictures_label">Sempre exibir imagens</string>
   <string name="account_settings_show_pictures_never">Não</string>
   <string name="account_settings_show_pictures_only_from_contacts">Dos contatos</string>

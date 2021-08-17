@@ -432,6 +432,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_mark_message_as_read_on_view_summary">Markeer als gelezen wanneer ingezien</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Als gelezen markeren bij wissen</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Markeer een bericht als gelezen wanneer die wordt gewist</string>
+  <string name="account_settings_notification_channels_label">Meldingscategorieën</string>
   <string name="account_settings_open_notification_settings_messages_summary">Meldingen instellen voor nieuwe berichten</string>
   <string name="account_settings_open_notification_settings_miscellaneous_summary">Error- en statusmeldingen instellen</string>
   <string name="account_settings_show_pictures_label">Laat afbeeldingen automatisch zien</string>
