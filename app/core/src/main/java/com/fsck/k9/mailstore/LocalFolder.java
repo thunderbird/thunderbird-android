@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.MessageCounts;
+import com.fsck.k9.controller.MessageCounts;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
@@ -330,20 +330,20 @@ public class LocalFolder {
             return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
                 @Override
                 public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    int unreadMessageCount = 0;
+                    int starredMessageCount = 0;
                     Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                            "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged=1",
+                            "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged = 1",
                             new String[] { Long.toString(databaseId) }, null, null, null);
 
                     try {
                         if (cursor.moveToFirst()) {
-                            unreadMessageCount = cursor.getInt(0);
+                            starredMessageCount = cursor.getInt(0);
                         }
                     } finally {
                         cursor.close();
                     }
 
-                    return unreadMessageCount;
+                    return starredMessageCount;
                 }
             });
         } catch (WrappedException e) {

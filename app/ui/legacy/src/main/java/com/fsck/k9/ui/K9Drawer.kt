@@ -14,7 +14,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fsck.k9.Account
 import com.fsck.k9.K9
-import com.fsck.k9.MessageCounts
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
@@ -55,6 +54,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+
+private const val UNREAD_SYMBOL = "\u2B24"
+private const val STARRED_SYMBOL = "\u2605"
+private const val THIN_SPACE = "\u2009"
+private const val EN_SPACE = "\u2000"
 
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
     private val foldersViewModel: FoldersViewModel by parent.viewModel()
@@ -163,24 +167,46 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
     }
 
-    /**
-     * Format the unread and starred counts for display in the fragment Badge box
-     */
-    private fun formatBadgeText(messageCounts: MessageCounts): String {
-        var badgeText = ""
-        if (K9.isShowStarredCount) {
-            if (messageCounts.unread > 0) {
-                badgeText = "\u2B24\u2009" + messageCounts.unread.toString()
-            }
-            if (messageCounts.starred > 0) {
-                badgeText = badgeText + "\u2000\u2605\u2009" + messageCounts.starred.toString()
-            }
+    private fun buildBadgeText(displayAccount: DisplayAccount): String? {
+        return buildBadgeText(displayAccount.unreadMessageCount, displayAccount.starredMessageCount)
+    }
+
+    private fun buildBadgeText(displayFolder: DisplayFolder): String? {
+        return buildBadgeText(displayFolder.unreadMessageCount, displayFolder.starredMessageCount)
+    }
+
+    private fun buildBadgeText(unreadCount: Int, starredCount: Int): String? {
+        return if (K9.isShowStarredCount) {
+            buildBadgeTextWithStarredCount(unreadCount, starredCount)
         } else {
-            if (messageCounts.unread > 0) {
-                badgeText = messageCounts.unread.toString()
+            buildBadgeTextWithUnreadCount(unreadCount)
+        }
+    }
+
+    private fun buildBadgeTextWithStarredCount(unreadCount: Int, starredCount: Int): String? {
+        if (unreadCount == 0 && starredCount == 0) return null
+
+        return buildString {
+            val hasUnreadCount = unreadCount > 0
+            if (hasUnreadCount) {
+                append(UNREAD_SYMBOL)
+                append(THIN_SPACE)
+                append(unreadCount)
+            }
+
+            if (starredCount > 0) {
+                if (hasUnreadCount) {
+                    append(EN_SPACE)
+                }
+                append(STARRED_SYMBOL)
+                append(THIN_SPACE)
+                append(starredCount)
             }
         }
-        return badgeText.trim()
+    }
+
+    private fun buildBadgeTextWithUnreadCount(unreadCount: Int): String? {
+        return if (unreadCount > 0) unreadCount.toString() else null
     }
 
     private fun setAccounts(displayAccounts: List<DisplayAccount>) {
@@ -204,13 +230,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 descriptionTextColor = selectedTextColor
                 selectedColorInt = drawerColors.selectedColor
                 icon = ImageHolder(createAccountImageUri(account))
-                formatBadgeText(displayAccount.messageCounts).takeIf { it.isNotEmpty() }
-                    ?.let { bText ->
-                        badgeText = bText
-                        badgeStyle = BadgeStyle().apply {
-                            textColorStateList = selectedTextColor
-                        }
+                buildBadgeText(displayAccount)?.let { text ->
+                    badgeText = text
+                    badgeStyle = BadgeStyle().apply {
+                        textColorStateList = selectedTextColor
                     }
+                }
             }
 
             if (account.uuid == openedAccountUuid) {
@@ -327,16 +352,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 selectedColorInt = selectedBackgroundColor
                 textColor = selectedTextColor
                 isSelected = unifiedInboxSelected
-
-                // TODO: get the real message counts from the back end
-                var messageCounts = MessageCounts(0, 0)
-                formatBadgeText(messageCounts).takeIf { it.isNotEmpty() }
-                    ?.let { bText ->
-                        badgeText = bText
-                        badgeStyle = BadgeStyle().apply {
-                            textColorStateList = selectedTextColor
-                        }
-                    }
             }
 
             sliderView.addItems(unifiedInboxItem)
@@ -360,16 +375,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 identifier = drawerId
                 tag = folder
                 nameText = getFolderDisplayName(folder)
-                formatBadgeText(
-                    MessageCounts(
-                        displayFolder.unreadMessageCount,
-                        displayFolder.starredMessageCount
-                    )
-                ).takeIf { it.isNotEmpty() }
-                    ?.let { bText ->
-                        badgeText = bText
-                        badgeStyle = folderBadgeStyle
-                    }
+                buildBadgeText(displayFolder)?.let { text ->
+                    badgeText = text
+                    badgeStyle = folderBadgeStyle
+                }
                 selectedColorInt = selectedBackgroundColor
                 textColor = selectedTextColor
             }

@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.fsck.k9.Account
 import com.fsck.k9.AccountsChangeListener
-import com.fsck.k9.MessageCounts
-import com.fsck.k9.MessageCountsProvider
 import com.fsck.k9.Preferences
+import com.fsck.k9.controller.MessageCounts
+import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.provider.EmailProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -53,7 +53,11 @@ class AccountsViewModel(
 
             combine(messageCountsFlows) { messageCountsList ->
                 messageCountsList.mapIndexed { index, messageCounts ->
-                    DisplayAccount(account = accounts[index], messageCounts)
+                    DisplayAccount(
+                        account = accounts[index],
+                        unreadMessageCount = messageCounts.unread,
+                        starredMessageCount = messageCounts.starred
+                    )
                 }
             }
         }

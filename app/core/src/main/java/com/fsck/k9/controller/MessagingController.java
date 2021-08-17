@@ -34,8 +34,6 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.MessageCounts;
-import com.fsck.k9.MessageCountsProvider;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
@@ -1685,14 +1683,6 @@ public class MessagingController {
 
     public int getUnreadMessageCount(SearchAccount searchAccount) {
         return unreadMessageCountProvider.getUnreadMessageCount(searchAccount);
-    }
-
-    public MessageCounts getMessageCounts(Account account) {
-        return messageCountsProvider.getMessageCounts(account);
-    }
-
-    public MessageCounts getMessageCounts(SearchAccount searchAccount) {
-        return messageCountsProvider.getMessageCounts(searchAccount);
     }
 
     public int getFolderUnreadMessageCount(Account account, Long folderId) throws MessagingException {

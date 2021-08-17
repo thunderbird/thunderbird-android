@@ -1,6 +1,8 @@
-package com.fsck.k9
+package com.fsck.k9.controller
 
 import android.content.Context
+import com.fsck.k9.Account
+import com.fsck.k9.Preferences
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.AccountSearchConditions
@@ -37,7 +39,7 @@ internal class DefaultMessageCountsProvider(
             localStore.getMessageCounts(search)
         } catch (e: MessagingException) {
             Timber.e(e, "Unable to getMessageCounts for account: %s", account)
-            return MessageCounts(0, 0)
+            MessageCounts(0, 0)
         }
     }
 
@@ -48,7 +50,7 @@ internal class DefaultMessageCountsProvider(
         var unreadCount = 0
         var starredCount = 0
         for (account in accounts) {
-            var accountMessageCount = getMessageCountsWithLocalSearch(account, search)
+            val accountMessageCount = getMessageCountsWithLocalSearch(account, search)
             unreadCount += accountMessageCount.unread
             starredCount += accountMessageCount.starred
         }
@@ -62,7 +64,7 @@ internal class DefaultMessageCountsProvider(
             localStore.getMessageCounts(search)
         } catch (e: MessagingException) {
             Timber.e(e, "Unable to getMessageCounts for account: %s", account)
-            return MessageCounts(0, 0)
+            MessageCounts(0, 0)
         }
     }
 }

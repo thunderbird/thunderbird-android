@@ -1,8 +1,6 @@
 package com.fsck.k9.controller
 
 import android.content.Context
-import com.fsck.k9.DefaultMessageCountsProvider
-import com.fsck.k9.MessageCountsProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.LocalStoreProvider

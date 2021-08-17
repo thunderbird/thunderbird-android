@@ -11,8 +11,6 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
-import com.fsck.k9.MessageCounts;
-import com.fsck.k9.MessageCountsProvider;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
