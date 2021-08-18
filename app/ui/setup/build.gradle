@@ -10,7 +10,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
-    implementation "com.google.android.material:material:${versions.materialComponents}"
     implementation "androidx.core:core-ktx:${versions.androidxCore}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"

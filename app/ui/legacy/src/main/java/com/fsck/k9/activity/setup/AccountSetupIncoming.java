@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,10 +21,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.biometric.BiometricManager.Authenticators;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
@@ -47,6 +42,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.base.extensions.TextInputLayoutHelper;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
@@ -184,18 +180,15 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
 
         boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
-
-        mPasswordLayoutView.setEndIconOnClickListener(v -> {
-            if (mPasswordView.getTransformationMethod() instanceof PasswordTransformationMethod) {
-                if (editSettings) {
-                    authenticateUserAndShowPassword();
-                } else {
-                    mPasswordView.setTransformationMethod(null);
-                }
-            } else {
-                mPasswordView.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            }
-        });
+        if (editSettings) {
+            TextInputLayoutHelper.configureAuthenticatedPasswordToggle(
+                    mPasswordLayoutView,
+                    this,
+                    getString(R.string.account_setup_basics_show_password_biometrics_title),
+                    getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
+                    getString(R.string.account_setup_basics_show_password_need_lock)
+            );
+        }
 
         try {
             ServerSettings settings = mAccount.getIncomingServerSettings();
@@ -629,31 +622,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             failure(e);
         }
 
-    }
-
-    private void authenticateUserAndShowPassword() {
-        new BiometricPrompt(this, ContextCompat.getMainExecutor(this), new BiometricPrompt.AuthenticationCallback() {
-            @Override
-            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                mPasswordView.setTransformationMethod(null);
-            }
-
-            @Override
-            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                if (errorCode == BiometricPrompt.ERROR_HW_NOT_PRESENT
-                        || errorCode == BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL) {
-                    Toast.makeText(AccountSetupIncoming.this, R.string.account_setup_basics_show_password_need_lock,
-                            Toast.LENGTH_SHORT).show();
-                } else if (errString.length() != 0) {
-                    Toast.makeText(AccountSetupIncoming.this, errString, Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).authenticate(new BiometricPrompt.PromptInfo.Builder()
-                .setAllowedAuthenticators(Authenticators.BIOMETRIC_STRONG
-                        | Authenticators.BIOMETRIC_WEAK | Authenticators.DEVICE_CREDENTIAL)
-                .setTitle(getString(R.string.account_setup_basics_show_password_biometrics_title))
-                .setSubtitle(getString(R.string.account_setup_basics_show_password_biometrics_subtitle))
-                .build());
     }
 
     public void onClick(View v) {
