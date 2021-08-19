@@ -39,7 +39,7 @@ class MailSyncWorker(
             return Result.success()
         }
 
-        if (account.incomingServerSettings.password == null) {
+        if (account.incomingServerSettings.isMissingCredentials) {
             Timber.d("Password for this account is missing. Skipping mail sync.")
             return Result.success()
         }
