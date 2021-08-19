@@ -34,6 +34,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.ui.base.extensions.TextInputLayoutHelper;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -146,6 +147,17 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        }
+
+        boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
+        if (editSettings) {
+            TextInputLayoutHelper.configureAuthenticatedPasswordToggle(
+                    mPasswordLayoutView,
+                    this,
+                    getString(R.string.account_setup_basics_show_password_biometrics_title),
+                    getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
+                    getString(R.string.account_setup_basics_show_password_need_lock)
+            );
         }
 
         try {

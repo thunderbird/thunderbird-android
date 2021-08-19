@@ -19,11 +19,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
@@ -44,6 +42,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.base.extensions.TextInputLayoutHelper;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
@@ -181,6 +180,15 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
 
         boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
+        if (editSettings) {
+            TextInputLayoutHelper.configureAuthenticatedPasswordToggle(
+                    mPasswordLayoutView,
+                    this,
+                    getString(R.string.account_setup_basics_show_password_biometrics_title),
+                    getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
+                    getString(R.string.account_setup_basics_show_password_need_lock)
+            );
+        }
 
         try {
             ServerSettings settings = mAccount.getIncomingServerSettings();

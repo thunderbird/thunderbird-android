@@ -29,7 +29,6 @@ dependencies {
     implementation "androidx.cardview:cardview:${versions.androidxCardView}"
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "com.google.android.material:material:${versions.materialComponents}"
     implementation "de.cketti.library.changelog:ckchangelog-core:2.0.0-beta02"
     implementation "com.splitwise:tokenautocomplete:4.0.0-beta01"
     implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0"
