@@ -212,9 +212,9 @@ interface MessageStore {
     fun setMoreMessages(folderId: Long, moreMessages: MoreMessages)
 
     /**
-     * Update the 'last updated' state of a folder.
+     * Update the time when the folder was last checked for new messages.
      */
-    fun setLastUpdated(folderId: Long, timestamp: Long)
+    fun setLastChecked(folderId: Long, timestamp: Long)
 
     /**
      * Update folder status message.

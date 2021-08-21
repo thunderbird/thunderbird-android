@@ -65,6 +65,8 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mailstore.FolderDetailsAccessor;
+import com.fsck.k9.mailstore.ListenableMessageStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -679,9 +681,13 @@ public class MessagingController {
             return;
         }
 
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        Long lastChecked = messageStore.getFolder(folderId, FolderDetailsAccessor::getLastChecked);
+        boolean suppressNotifications = lastChecked == null;
+
         String folderServerId = localFolder.getServerId();
         SyncConfig syncConfig = createSyncConfig(account);
-        ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
+        ControllerSyncListener syncListener = new ControllerSyncListener(account, listener, suppressNotifications);
 
         backend.sync(folderServerId, syncConfig, syncListener);
 
@@ -2477,9 +2483,6 @@ public class MessagingController {
             showFetchingMailNotificationIfNecessary(account, folder);
             try {
                 synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener);
-
-                long now = System.currentTimeMillis();
-                folder.setLastChecked(now);
             } finally {
                 clearFetchingMailNotificationIfNecessary(account);
             }
@@ -2716,12 +2719,14 @@ public class MessagingController {
         private final MessagingListener listener;
         private final LocalStore localStore;
         private final int previousUnreadMessageCount;
+        private final boolean suppressNotifications;
         boolean syncFailed = false;
 
 
-        ControllerSyncListener(Account account, MessagingListener listener) {
+        ControllerSyncListener(Account account, MessagingListener listener, boolean suppressNotifications) {
             this.account = account;
             this.listener = listener;
+            this.suppressNotifications = suppressNotifications;
             this.localStore = getLocalStoreOrThrow(account);
 
             previousUnreadMessageCount = getUnreadMessageCount(account);
@@ -2778,7 +2783,8 @@ public class MessagingController {
             // Send a notification of this message
             LocalMessage message = loadMessage(folderServerId, messageServerId);
             LocalFolder localFolder = message.getFolder();
-            if (notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
+            if (!suppressNotifications &&
+                    notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                 Timber.v("Creating notification for message %s:%s", localFolder.getName(), message.getUid());
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 notificationController.addNewMailNotification(account, message, previousUnreadMessageCount);

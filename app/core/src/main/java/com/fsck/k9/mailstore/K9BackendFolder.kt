@@ -67,7 +67,7 @@ class K9BackendFolder(
     }
 
     override fun setLastChecked(timestamp: Long) {
-        messageStore.setLastUpdated(folderId, timestamp)
+        messageStore.setLastChecked(folderId, timestamp)
     }
 
     override fun setStatus(status: String?) {
