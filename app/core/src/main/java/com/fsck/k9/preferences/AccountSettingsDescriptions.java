@@ -261,6 +261,9 @@ public class AccountSettingsDescriptions {
         s.put("trashFolderSelection", Settings.versions(
                 new V(54, new EnumSetting<>(SpecialFolderSelection.class, SpecialFolderSelection.AUTOMATIC))
         ));
+        s.put("ignoreChatMessages", Settings.versions(
+                new V(76, new BooleanSetting(false))
+        ));
         // note that there is no setting for openPgpProvider, because this will have to be set up together
         // with the actual provider after import anyways.
 

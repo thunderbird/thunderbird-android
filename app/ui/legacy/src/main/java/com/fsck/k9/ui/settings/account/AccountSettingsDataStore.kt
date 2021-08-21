@@ -37,6 +37,7 @@ class AccountSettingsDataStore(
             "remote_search_enabled" -> account.isAllowRemoteSearch
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
+            "ignore_chat_messages" -> account.isIgnoreChatMessages
             else -> defValue
         }
     }
@@ -69,6 +70,7 @@ class AccountSettingsDataStore(
             "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts = value
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
             "upload_sent_messages" -> account.isUploadSentMessages = value
+            "ignore_chat_messages" -> account.isIgnoreChatMessages = value
             else -> return
         }
 

@@ -51,6 +51,7 @@ class AccountPreferenceSerializer(
             folderNotifyNewMailMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderNotifyNewMailMode", FolderMode.ALL)
             isNotifySelfNewMail = storage.getBoolean("$accountUuid.notifySelfNewMail", true)
             isNotifyContactsMailOnly = storage.getBoolean("$accountUuid.notifyContactsMailOnly", false)
+            isIgnoreChatMessages = storage.getBoolean("$accountUuid.ignoreChatMessages", false)
             isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
             deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
             legacyInboxFolder = storage.getString("$accountUuid.inboxFolderName", null)
@@ -256,6 +257,7 @@ class AccountPreferenceSerializer(
             editor.putString("$accountUuid.folderNotifyNewMailMode", folderNotifyNewMailMode.name)
             editor.putBoolean("$accountUuid.notifySelfNewMail", isNotifySelfNewMail)
             editor.putBoolean("$accountUuid.notifyContactsMailOnly", isNotifyContactsMailOnly)
+            editor.putBoolean("$accountUuid.ignoreChatMessages", isIgnoreChatMessages)
             editor.putBoolean("$accountUuid.notifyMailCheck", isNotifySync)
             editor.putInt("$accountUuid.deletePolicy", deletePolicy.setting)
             editor.putString("$accountUuid.inboxFolderName", legacyInboxFolder)
@@ -379,6 +381,7 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.lastAutomaticCheckTime")
         editor.remove("$accountUuid.notifyNewMail")
         editor.remove("$accountUuid.notifySelfNewMail")
+        editor.remove("$accountUuid.ignoreChatMessages")
         editor.remove("$accountUuid.deletePolicy")
         editor.remove("$accountUuid.draftsFolderName")
         editor.remove("$accountUuid.sentFolderName")
@@ -551,6 +554,7 @@ class AccountPreferenceSerializer(
             isNotifySync = false
             isNotifySelfNewMail = true
             isNotifyContactsMailOnly = false
+            isIgnoreChatMessages = false
             folderDisplayMode = FolderMode.NOT_SECOND_CLASS
             folderSyncMode = FolderMode.FIRST_CLASS
             folderPushMode = FolderMode.NONE
