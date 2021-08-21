@@ -392,7 +392,7 @@ public class MessagingController {
     public void refreshFolderListSynchronous(Account account) {
         try {
             ServerSettings serverSettings = account.getIncomingServerSettings();
-            if (serverSettings.password == null) {
+            if (serverSettings.isMissingCredentials()) {
                 handleAuthenticationFailure(account, true);
                 return;
             }
@@ -651,7 +651,7 @@ public class MessagingController {
 
     private void syncFolder(Account account, long folderId, MessagingListener listener, Backend backend) {
         ServerSettings serverSettings = account.getIncomingServerSettings();
-        if (serverSettings.password == null) {
+        if (serverSettings.isMissingCredentials()) {
             handleAuthenticationFailure(account, true);
             return;
         }
@@ -1512,7 +1512,7 @@ public class MessagingController {
         boolean wasPermanentFailure = false;
         try {
             ServerSettings serverSettings = account.getOutgoingServerSettings();
-            if (serverSettings.password == null) {
+            if (serverSettings.isMissingCredentials()) {
                 handleAuthenticationFailure(account, false);
                 return;
             }

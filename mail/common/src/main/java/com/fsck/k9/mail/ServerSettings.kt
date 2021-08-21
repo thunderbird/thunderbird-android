@@ -16,6 +16,11 @@ data class ServerSettings @JvmOverloads constructor(
     @JvmField val clientCertificateAlias: String?,
     val extra: Map<String, String?> = emptyMap()
 ) {
+    val isMissingCredentials: Boolean = when (authenticationType) {
+        AuthType.EXTERNAL -> clientCertificateAlias == null
+        else -> password == null
+    }
+
     init {
         require(type == type.toLowerCase(Locale.ROOT)) { "type must be all lower case" }
     }
