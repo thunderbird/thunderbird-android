@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.805" versioncode="28005" date="2021-08-21">
+        <change>Fixed the check for missing incoming/outgoing server credentials (introduced in K-9 Mail 5.804)</change>
+        <change>Changed the 'save attachment' icon (apparently floppy disks are no longer a thing)</change>
+    </release>
     <release version="5.804" versioncode="28004" date="2021-08-18">
         <change>Fixed a bug where Push didn't work with some servers</change>
         <change>Don't connect to the incoming or outgoing server when passwords haven't been provided after import</change>
