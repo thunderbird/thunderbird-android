@@ -53,6 +53,7 @@
         <item name="iconActionUpload">@drawable/ic_file_upload</item>
         <item name="iconActionSelectAll">@drawable/ic_select_all</item>
         <item name="iconActionSave">@drawable/ic_floppy</item>
+        <item name="iconActionSaveAttachment">@drawable/ic_download</item>
         <item name="iconActionCancel">@drawable/ic_clear</item>
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_light</item>
         <item name="iconActionExpand">@drawable/ic_chevron_down</item>
@@ -171,6 +172,7 @@
         <item name="iconActionUpload">@drawable/ic_file_upload</item>
         <item name="iconActionSelectAll">@drawable/ic_select_all</item>
         <item name="iconActionSave">@drawable/ic_floppy</item>
+        <item name="iconActionSaveAttachment">@drawable/ic_download</item>
         <item name="iconActionCancel">@drawable/ic_clear</item>
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_dark</item>
         <item name="iconActionExpand">@drawable/ic_chevron_down</item>
