@@ -355,8 +355,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_basics_email_hint">Email address</string>
     <string name="account_setup_basics_password_hint">Password</string>
     <string name="account_setup_basics_show_password">Show password</string>
+
+    <!-- Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app -->
     <string name="account_setup_basics_show_password_need_lock">To view your password here, enable screen lock on this device.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Verify it\'s you</string>
+    <string name="account_setup_basics_show_password_biometrics_title">Verify your identity</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Unlock to view your password</string>
     <string name="account_setup_basics_manual_setup_action">Manual setup</string>
 
