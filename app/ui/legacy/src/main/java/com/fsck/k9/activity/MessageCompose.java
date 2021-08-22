@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
@@ -53,6 +52,7 @@ import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.DI;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
+import com.fsck.k9.MissingAccoutException;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.compose.AttachmentPresenter;
@@ -62,6 +62,7 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.IdentityAdapter;
 import com.fsck.k9.activity.compose.IdentityAdapter.IdentityContainer;
+import com.fsck.k9.activity.compose.AccountProvider;
 import com.fsck.k9.activity.compose.PgpEnabledErrorDialog.OnOpenPgpDisableListener;
 import com.fsck.k9.activity.compose.PgpInlineDialog.OnOpenPgpInlineChangeListener;
 import com.fsck.k9.activity.compose.PgpSignOnlyDialog.OnOpenPgpSignOnlyChangeListener;
@@ -95,8 +96,6 @@ import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.AutocryptStatusInteractor;
 import com.fsck.k9.message.ComposePgpEnableByDefaultDecider;
 import com.fsck.k9.message.ComposePgpInlineDecider;
-import com.fsck.k9.message.IdentityField;
-import com.fsck.k9.message.IdentityHeaderParser;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
@@ -194,10 +193,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     /**
      * The account used for message composition.
      */
-    private Account account;
-    private Identity identity;
-    private boolean identityChanged = false;
-    private boolean signatureChanged = false;
+    private AccountProvider accountProvider;
 
     // relates to the message being replied to, forwarded, or edited TODO split up?
     private MessageReference relatedMessageReference;
@@ -282,15 +278,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 relatedMessageReference.getAccountUuid() :
                 intent.getStringExtra(EXTRA_ACCOUNT);
 
-        if (accountUuid != null) {
-            account = preferences.getAccount(accountUuid);
-        }
-
-        if (account == null) {
-            account = preferences.getDefaultAccount();
-        }
-
-        if (account == null) {
+        try {
+            accountProvider = new AccountProvider(preferences, accountUuid);
+        } catch (MissingAccoutException e) {
             /*
              * There are no accounts set up. This should not have happened. Prompt the
              * user to set up an account as an acceptable bailout.
@@ -300,6 +290,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             finish();
             return;
         }
+        Account account = accountProvider.getAccount();
 
         contacts = Contacts.getInstance(MessageCompose.this);
 
@@ -345,7 +336,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 changesMadeSinceLastSave = true;
-                signatureChanged = true;
+                accountProvider.setSignatureChanged(true);
             }
         };
 
@@ -398,10 +389,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         }
 
-        if (identity == null) {
-            identity = account.getIdentity(0);
-        }
-
         if (account.isSignatureBeforeQuotedText()) {
             signatureView = upperSignature;
             lowerSignature.setVisibility(View.GONE);
@@ -411,10 +398,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
         updateSignature();
         signatureView.addTextChangedListener(signTextWatcher);
-
-        if (!identity.getSignatureUse()) {
-            signatureView.setVisibility(View.GONE);
-        }
 
         requestReadReceipt = account.isMessageReadReceipt();
 
@@ -618,8 +601,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (draftMessageId != null) {
             outState.putLong(STATE_KEY_DRAFT_ID, draftMessageId);
         }
-        outState.putParcelable(STATE_IDENTITY, identity);
-        outState.putBoolean(STATE_IDENTITY_CHANGED, identityChanged);
+        outState.putParcelable(STATE_IDENTITY, accountProvider.getIdentity());
+        outState.putBoolean(STATE_IDENTITY_CHANGED, accountProvider.hasIdentityChanged());
         outState.putString(STATE_IN_REPLY_TO, repliedToMessageId);
         outState.putString(STATE_REFERENCES, referencedMessageIds);
         outState.putBoolean(STATE_KEY_READ_RECEIPT, requestReadReceipt);
@@ -656,8 +639,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             draftMessageId = null;
         }
-        identity = savedInstanceState.getParcelable(STATE_IDENTITY);
-        identityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
+        accountProvider.setIdentity(savedInstanceState.getParcelable(STATE_IDENTITY));
         repliedToMessageId = savedInstanceState.getString(STATE_IN_REPLY_TO);
         referencedMessageIds = savedInstanceState.getString(STATE_REFERENCES);
         changesMadeSinceLastSave = savedInstanceState.getBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE);
@@ -709,15 +691,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setInReplyTo(repliedToMessageId)
                 .setReferences(referencedMessageIds)
                 .setRequestReadReceipt(requestReadReceipt)
-                .setIdentity(identity)
+                .setIdentity(accountProvider.getIdentity())
                 .setMessageFormat(currentMessageFormat)
                 .setText(CrLfConverter.toCrLf(messageContentView.getText()))
                 .setAttachments(attachmentPresenter.getAttachments())
                 .setInlineAttachments(attachmentPresenter.getInlineAttachments())
                 .setSignature(CrLfConverter.toCrLf(signatureView.getText()))
-                .setSignatureBeforeQuotedText(account.isSignatureBeforeQuotedText())
-                .setIdentityChanged(identityChanged)
-                .setSignatureChanged(signatureChanged)
+                .setSignatureBeforeQuotedText(accountProvider.getAccount().isSignatureBeforeQuotedText())
+                .setIdentityChanged(accountProvider.hasIdentityChanged())
+                .setSignatureChanged(accountProvider.getSignatureChanged())
                 .setCursorPosition(messageContentView.getSelectionStart())
                 .setMessageReference(relatedMessageReference)
                 .setDraft(isDraft)
@@ -747,7 +729,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void checkToSaveDraftAndSave() {
-        if (!account.hasDraftsFolder()) {
+        if (!accountProvider.getAccount().hasDraftsFolder()) {
             Toast.makeText(this, R.string.compose_error_no_draft_folder, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -761,7 +743,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void checkToSaveDraftImplicitly() {
-        if (!account.hasDraftsFolder()) {
+        if (!accountProvider.getAccount().hasDraftsFolder()) {
             return;
         }
 
@@ -792,7 +774,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void onDiscard() {
         if (draftMessageId != null) {
-            messagingController.deleteDraft(account, draftMessageId);
+            messagingController.deleteDraft(accountProvider.getAccount(), draftMessageId);
         }
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         finishWithoutChanges();
@@ -868,54 +850,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void onAccountChosen(Account account, Identity identity) {
-        if (!this.account.equals(account)) {
-            Timber.v("Switching account from %s to %s", this.account, account);
-
-            // on draft edit, make sure we don't keep previous message UID
-            if (action == Action.EDIT_DRAFT) {
-                relatedMessageReference = null;
-            }
-
-            // test whether there is something to save
-            if (changesMadeSinceLastSave || (draftMessageId != null)) {
-                final Long previousDraftId = draftMessageId;
-                final Account previousAccount = this.account;
-
-                // make current message appear as new
-                draftMessageId = null;
-
-                // actual account switch
-                this.account = account;
-
-                Timber.v("Account switch, saving new draft in new account");
-                checkToSaveDraftImplicitly();
-
-                if (previousDraftId != null) {
-                    Timber.v("Account switch, deleting draft from previous account: %d", previousDraftId);
-
-                    messagingController.deleteDraft(previousAccount, previousDraftId);
-                }
-            } else {
-                this.account = account;
-            }
-
-            // Show CC/BCC text input field when switching to an account that always wants them
-            // displayed.
-            // Please note that we're not hiding the fields if the user switches back to an account
-            // that doesn't have this setting checked.
-            recipientPresenter.onSwitchAccount(this.account);
-            quotedMessagePresenter.onSwitchAccount(this.account);
-
-            // not sure how to handle mFolder, mSourceMessage?
-        }
-
-        switchToIdentity(identity);
-    }
-
     private void switchToIdentity(Identity identity) {
-        this.identity = identity;
-        identityChanged = true;
+        accountProvider.setIdentity(identity);
         changesMadeSinceLastSave = true;
         updateFrom();
         updateSignature();
@@ -924,10 +860,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void updateFrom() {
-        chooseIdentityButton.setText(identity.getEmail());
+        chooseIdentityButton.setText(accountProvider.getIdentity().getEmail());
     }
 
     private void updateSignature() {
+        Identity identity = accountProvider.getIdentity();
         if (identity.getSignatureUse()) {
             String signature = CrLfConverter.toLf(identity.getSignature());
             signatureView.setText(signature);
@@ -1037,7 +974,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
 
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
-        if (!account.hasDraftsFolder()) {
+        if (!accountProvider.getAccount().hasDraftsFolder()) {
             menu.findItem(R.id.save).setEnabled(false);
         }
 
@@ -1062,7 +999,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         navigateUp = shouldNavigateUp;
 
         if (changesMadeSinceLastSave && draftIsNotEmpty()) {
-            if (!account.hasDraftsFolder()) {
+            if (!accountProvider.getAccount().hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
             } else {
                 showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
@@ -1082,9 +1019,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void openDefaultFolder() {
-        long folderId = defaultFolderProvider.getDefaultFolder(account);
+        long folderId = defaultFolderProvider.getDefaultFolder(accountProvider.getAccount());
         LocalSearch search = new LocalSearch();
-        search.addAccountUuid(account.getUuid());
+        search.addAccountUuid(accountProvider.getAccount().getUuid());
         search.addAllowedFolder(folderId);
         MessageList.actionDisplaySearch(this, search, false, true);
         finish();
@@ -1180,7 +1117,38 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         IdentityContainer container = (IdentityContainer) adapter.getItem(which);
-                        onAccountChosen(container.account, container.identity);
+                        accountProvider.onAccountChosen(container.account, (previousAccount, account) -> {
+                            Timber.v("Switching account from %s to %s", previousAccount, account);
+
+                            // on draft edit, make sure we don't keep previous message UID
+                            if (action == MessageCompose.Action.EDIT_DRAFT) {
+                                relatedMessageReference = null;
+                            }
+
+                            // test whether there is something to save
+                            if (changesMadeSinceLastSave || draftMessageId != null) {
+                                Long previousDraftId = draftMessageId;
+
+                                // make current message appear as new
+                                draftMessageId = null;
+
+                                // actual account switch
+                                Timber.v("Account switch, saving new draft in new account");
+                                checkToSaveDraftImplicitly();
+                                if (previousDraftId != null) {
+                                    Timber.v("Account switch, deleting draft from previous account: %d", previousDraftId);
+                                    messagingController.deleteDraft(previousAccount, previousDraftId);
+                                }
+                            }
+
+                            // Show CC/BCC text input field when switching to an account that always wants them
+                            // displayed.
+                            // Please note that we're not hiding the fields if the user switches back to an account
+                            // that doesn't have this setting checked.
+                            recipientPresenter.onSwitchAccount(account);
+                            quotedMessagePresenter.onSwitchAccount(account);
+                        });
+                        switchToIdentity(container.identity);
                     }
                 });
 
@@ -1343,6 +1311,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void setIdentityFromMessage(Message message) {
+        Account account = accountProvider.getAccount();
         Identity useIdentity = IdentityHelper.getRecipientIdentityFromMessage(account, message);
         Identity defaultIdentity = account.getIdentity(0);
         if (useIdentity != defaultIdentity) {
@@ -1373,65 +1342,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             attachmentPresenter.loadAllAvailableAttachments(messageViewInfo);
         }
 
-        // Decode the identity header when loading a draft.
-        // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
-        Map<IdentityField, String> k9identity = new HashMap<>();
-        String[] identityHeaders = message.getHeader(K9.IDENTITY_HEADER);
-        if (identityHeaders.length == 0) {
-            identityHeaders = messageViewInfo.rootPart.getHeader(K9.IDENTITY_HEADER);
-        }
-
-        if (identityHeaders.length > 0 && identityHeaders[0] != null) {
-            k9identity = IdentityHeaderParser.parse(identityHeaders[0]);
-        }
-
-        Identity newIdentity = new Identity();
-        if (k9identity.containsKey(IdentityField.SIGNATURE)) {
-            newIdentity = newIdentity
-                    .withSignatureUse(true)
-                    .withSignature(k9identity.get(IdentityField.SIGNATURE));
-            signatureChanged = true;
-        } else {
-            if (message instanceof LocalMessage) {
-                newIdentity = newIdentity.withSignatureUse(((LocalMessage) message).getFolder().getSignatureUse());
-            }
-            newIdentity = newIdentity.withSignature(identity.getSignature());
-        }
-
-        if (k9identity.containsKey(IdentityField.NAME)) {
-            newIdentity = newIdentity.withName(k9identity.get(IdentityField.NAME));
-            identityChanged = true;
-        } else {
-            newIdentity = newIdentity.withName(identity.getName());
-        }
-
-        if (k9identity.containsKey(IdentityField.EMAIL)) {
-            newIdentity = newIdentity.withEmail(k9identity.get(IdentityField.EMAIL));
-            identityChanged = true;
-        } else {
-            newIdentity = newIdentity.withEmail(identity.getEmail());
-        }
-
-        if (k9identity.containsKey(IdentityField.ORIGINAL_MESSAGE)) {
-            relatedMessageReference = null;
-            String originalMessage = k9identity.get(IdentityField.ORIGINAL_MESSAGE);
-            MessageReference messageReference = MessageReference.parse(originalMessage);
-
-            if (messageReference != null) {
-                // Check if this is a valid account in our database
-                Account account = preferences.getAccount(messageReference.getAccountUuid());
-                if (account != null) {
-                    relatedMessageReference = messageReference;
-                }
-            }
-        }
-
-        identity = newIdentity;
-
-        updateSignature();
-        updateFrom();
-
-        quotedMessagePresenter.processDraftMessage(messageViewInfo, k9identity);
+        accountProvider.updateAccountAndIdentity(messageViewInfo, message, (messageReference, draftProperties) -> {
+            relatedMessageReference = messageReference;
+            updateSignature();
+            updateFrom();
+            quotedMessagePresenter.processDraftMessage(messageViewInfo, draftProperties);
+        });
     }
 
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
@@ -1528,7 +1444,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void updateMessageFormat() {
-        MessageFormat origMessageFormat = account.getMessageFormat();
+        MessageFormat origMessageFormat = accountProvider.getAccount().getMessageFormat();
         SimpleMessageFormat messageFormat;
         if (origMessageFormat == MessageFormat.TEXT) {
             // The user wants to send text/plain messages. We don't override that choice under
@@ -1566,6 +1482,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         String plaintextSubject =
                 (currentMessageBuilder instanceof PgpMessageBuilder) ? currentMessageBuilder.getSubject() : null;
 
+        Account account = accountProvider.getAccount();
         if (isDraft) {
             changesMadeSinceLastSave = false;
             currentMessageBuilder = null;
