@@ -177,37 +177,37 @@ public class QuotedMessagePresenter {
         populateUIWithQuotedMessage(messageViewInfo, account.isDefaultQuotedTextShown(), action);
     }
 
-    public void processDraftMessage(MessageViewInfo messageViewInfo, Map<IdentityField, String> k9identity) {
-        quoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
-                ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
+    public void processDraftMessage(MessageViewInfo messageViewInfo, Map<IdentityField, String> draftProperties) {
+        quoteStyle = draftProperties.get(IdentityField.QUOTE_STYLE) != null
+                ? QuoteStyle.valueOf(draftProperties.get(IdentityField.QUOTE_STYLE))
                 : account.getQuoteStyle();
 
         int cursorPosition = 0;
-        if (k9identity.containsKey(IdentityField.CURSOR_POSITION)) {
+        if (draftProperties.containsKey(IdentityField.CURSOR_POSITION)) {
             try {
-                cursorPosition = Integer.parseInt(k9identity.get(IdentityField.CURSOR_POSITION));
+                cursorPosition = Integer.parseInt(draftProperties.get(IdentityField.CURSOR_POSITION));
             } catch (Exception e) {
                 Timber.e(e, "Could not parse cursor position for MessageCompose; continuing.");
             }
         }
 
         String showQuotedTextMode;
-        if (k9identity.containsKey(IdentityField.QUOTED_TEXT_MODE)) {
-            showQuotedTextMode = k9identity.get(IdentityField.QUOTED_TEXT_MODE);
+        if (draftProperties.containsKey(IdentityField.QUOTED_TEXT_MODE)) {
+            showQuotedTextMode = draftProperties.get(IdentityField.QUOTED_TEXT_MODE);
         } else {
             showQuotedTextMode = "NONE";
         }
 
-        int bodyLength = k9identity.get(IdentityField.LENGTH) != null ?
-                Integer.valueOf(k9identity.get(IdentityField.LENGTH)) : UNKNOWN_LENGTH;
-        int bodyOffset = k9identity.get(IdentityField.OFFSET) != null ?
-                Integer.valueOf(k9identity.get(IdentityField.OFFSET)) : UNKNOWN_LENGTH;
-        Integer bodyFooterOffset = k9identity.get(IdentityField.FOOTER_OFFSET) != null ?
-                Integer.valueOf(k9identity.get(IdentityField.FOOTER_OFFSET)) : null;
-        Integer bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null ?
-                Integer.valueOf(k9identity.get(IdentityField.PLAIN_LENGTH)) : null;
-        Integer bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null ?
-                Integer.valueOf(k9identity.get(IdentityField.PLAIN_OFFSET)) : null;
+        int bodyLength = draftProperties.get(IdentityField.LENGTH) != null ?
+                Integer.valueOf(draftProperties.get(IdentityField.LENGTH)) : UNKNOWN_LENGTH;
+        int bodyOffset = draftProperties.get(IdentityField.OFFSET) != null ?
+                Integer.valueOf(draftProperties.get(IdentityField.OFFSET)) : UNKNOWN_LENGTH;
+        Integer bodyFooterOffset = draftProperties.get(IdentityField.FOOTER_OFFSET) != null ?
+                Integer.valueOf(draftProperties.get(IdentityField.FOOTER_OFFSET)) : null;
+        Integer bodyPlainLength = draftProperties.get(IdentityField.PLAIN_LENGTH) != null ?
+                Integer.valueOf(draftProperties.get(IdentityField.PLAIN_LENGTH)) : null;
+        Integer bodyPlainOffset = draftProperties.get(IdentityField.PLAIN_OFFSET) != null ?
+                Integer.valueOf(draftProperties.get(IdentityField.PLAIN_OFFSET)) : null;
 
         QuotedTextMode quotedMode;
         try {
@@ -219,7 +219,7 @@ public class QuotedMessagePresenter {
         // Always respect the user's current composition format preference, even if the
         // draft was saved in a different format.
         // TODO - The current implementation doesn't allow a user in HTML mode to edit a draft that wasn't saved with K9mail.
-        String messageFormatString = k9identity.get(IdentityField.MESSAGE_FORMAT);
+        String messageFormatString = draftProperties.get(IdentityField.MESSAGE_FORMAT);
 
         MessageFormat messageFormat = null;
         if (messageFormatString != null) {
