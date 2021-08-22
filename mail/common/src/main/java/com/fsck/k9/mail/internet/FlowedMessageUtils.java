@@ -1,4 +1,4 @@
-package com.fsck.k9.mailstore.util;
+package com.fsck.k9.mail.internet;
 
 
 /**
