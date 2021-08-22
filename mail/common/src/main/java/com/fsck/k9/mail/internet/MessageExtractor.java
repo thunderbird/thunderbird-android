@@ -120,15 +120,12 @@ public class MessageExtractor {
             } catch (IOException e) { /* Ignore */ }
         }
 
-        if (isSameMimeType(mimeType, "text/plain")) {
-            String contentType = part.getContentType();
-            if (FormatFlowedHelper.isFormatFlowed(contentType)) {
-                boolean delSp = FormatFlowedHelper.isDelSp(contentType);
-                return FlowedMessageUtils.deflow(text, delSp);
-            }
+        FormatFlowedResult result = FormatFlowedHelper.checkFormatFlowed(part.getContentType());
+        if (result.isFormatFlowed()) {
+            return FlowedMessageUtils.deflow(text, result.isDelSp());
+        } else {
+            return text;
         }
-
-        return text;
     }
 
     public static boolean hasMissingParts(Part part) {

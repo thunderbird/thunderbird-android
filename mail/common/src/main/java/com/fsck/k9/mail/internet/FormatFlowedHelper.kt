@@ -1,32 +1,30 @@
-package com.fsck.k9.mail.internet;
+package com.fsck.k9.mail.internet
 
+import java.util.Locale
 
-import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
-import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
+internal object FormatFlowedHelper {
+    private const val TEXT_PLAIN = "text/plain"
+    private const val HEADER_PARAM_FORMAT = "format"
+    private const val HEADER_FORMAT_FLOWED = "flowed"
+    private const val HEADER_PARAM_DELSP = "delsp"
+    private const val HEADER_DELSP_YES = "yes"
 
+    @JvmStatic
+    fun checkFormatFlowed(contentTypeHeaderValue: String?): FormatFlowedResult {
+        if (contentTypeHeaderValue == null) return negativeResult()
 
-class FormatFlowedHelper {
-    private static final String TEXT_PLAIN = "text/plain";
-    private static final String HEADER_PARAM_FORMAT = "format";
-    private static final String HEADER_FORMAT_FLOWED = "flowed";
-    private static final String HEADER_PARAM_DELSP = "delsp";
-    private static final String HEADER_DELSP_YES = "yes";
+        val mimeValue = MimeParameterDecoder.decode(contentTypeHeaderValue)
+        if (!MimeUtility.isSameMimeType(TEXT_PLAIN, mimeValue.value)) return negativeResult()
 
+        val formatParameter = mimeValue.parameters[HEADER_PARAM_FORMAT]?.toLowerCase(Locale.ROOT)
+        if (formatParameter != HEADER_FORMAT_FLOWED) return negativeResult()
 
-    static boolean isFormatFlowed(String contentType) {
-        String mimeType = getHeaderParameter(contentType, null);
-        if (isSameMimeType(TEXT_PLAIN, mimeType)) {
-            String formatParameter = getHeaderParameter(contentType, HEADER_PARAM_FORMAT);
-            return HEADER_FORMAT_FLOWED.equalsIgnoreCase(formatParameter);
-        }
-        return false;
+        val delSpParameter = mimeValue.parameters[HEADER_PARAM_DELSP]?.toLowerCase(Locale.ROOT)
+
+        return FormatFlowedResult(isFormatFlowed = true, isDelSp = delSpParameter == HEADER_DELSP_YES)
     }
 
-    static boolean isDelSp(String contentType) {
-        if (isFormatFlowed(contentType)) {
-            String delSpParameter = getHeaderParameter(contentType, HEADER_PARAM_DELSP);
-            return HEADER_DELSP_YES.equalsIgnoreCase(delSpParameter);
-        }
-        return false;
-    }
+    private fun negativeResult() = FormatFlowedResult(isFormatFlowed = false, isDelSp = false)
 }
+
+internal data class FormatFlowedResult(val isFormatFlowed: Boolean, val isDelSp: Boolean)
