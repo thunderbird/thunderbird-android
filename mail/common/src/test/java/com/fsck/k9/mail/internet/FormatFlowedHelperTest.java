@@ -3,13 +3,13 @@ package com.fsck.k9.mail.internet;
 
 import org.junit.Test;
 
-import static com.fsck.k9.mail.internet.FlowedMessageUtils.isDelSp;
-import static com.fsck.k9.mail.internet.FlowedMessageUtils.isFormatFlowed;
+import static com.fsck.k9.mail.internet.FormatFlowedHelper.isDelSp;
+import static com.fsck.k9.mail.internet.FormatFlowedHelper.isFormatFlowed;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class FlowedMessageUtilsTest {
+public class FormatFlowedHelperTest {
     @Test
     public void isFormatFlowed_withTextPlainFormatFlowed_shouldReturnTrue() throws Exception {
         assertTrue(isFormatFlowed("text/plain; format=flowed"));

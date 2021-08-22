@@ -5,7 +5,7 @@ import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
 
-class FlowedMessageUtils {
+class FormatFlowedHelper {
     private static final String TEXT_PLAIN = "text/plain";
     private static final String HEADER_PARAM_FORMAT = "format";
     private static final String HEADER_FORMAT_FLOWED = "flowed";
