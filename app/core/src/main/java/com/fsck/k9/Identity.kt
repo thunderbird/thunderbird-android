@@ -17,4 +17,5 @@ data class Identity(
     fun withSignature(signature: String?) = copy(signature = signature)
     fun withSignatureUse(signatureUse: Boolean) = copy(signatureUse = signatureUse)
     fun withEmail(email: String?) = copy(email = email)
+    fun withReplyTo(replyTo: String?) = copy(replyTo = replyTo)
 }

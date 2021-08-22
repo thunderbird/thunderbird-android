@@ -165,6 +165,7 @@ class AccountProviderTest {
         assertEquals(IDENTITY_A_EMAIL, toTest.identity.email)
         assertEquals(IDENTITY_A_SIGNATURE, toTest.identity.signature)
         assertTrue(toTest.identity.signatureUse)
+        assertEquals(IDENTITY_A_REPLYTO, toTest.identity.replyTo)
     }
 
     @Test
@@ -202,6 +203,7 @@ class AccountProviderTest {
         assertEquals(IDENTITY_A_EMAIL, toTest.identity.email)
         assertEquals(newSignature, toTest.identity.signature)
         assertTrue(toTest.identity.signatureUse)
+        assertEquals(IDENTITY_A_REPLYTO, toTest.identity.replyTo)
     }
 
     @Test
@@ -233,6 +235,7 @@ class AccountProviderTest {
         assertEquals(IDENTITY_B_EMAIL, toTest.identity.email)
         assertEquals(IDENTITY_B_SIGNATURE, toTest.identity.signature)
         assertTrue(toTest.identity.signatureUse)
+        assertEquals(IDENTITY_B_REPLYTO, toTest.identity.replyTo)
     }
 
     @Test
@@ -270,6 +273,7 @@ class AccountProviderTest {
         assertEquals(IDENTITY_B_EMAIL, toTest.identity.email)
         assertEquals(newSignature, toTest.identity.signature)
         assertTrue(toTest.identity.signatureUse)
+        assertEquals(IDENTITY_B_REPLYTO, toTest.identity.replyTo)
     }
 
     private fun createAccount(): Account {

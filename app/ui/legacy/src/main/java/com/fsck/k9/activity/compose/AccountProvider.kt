@@ -62,6 +62,7 @@ class AccountProvider {
             findIdentity(draftProperties)
         }
         updateSignature(draftProperties, message)
+        updateReplyTo(message)
         callback.onFinished(getRelatedMessageReference(draftProperties), draftProperties)
     }
 
@@ -130,6 +131,12 @@ class AccountProvider {
             if (message is LocalMessage) {
                 identity = identity.withSignatureUse(message.folder.signatureUse)
             }
+        }
+    }
+
+    private fun updateReplyTo(message: Message) {
+        if (message.replyTo.size > 0) {
+            identity = identity.withReplyTo(message.replyTo[0].toEncodedString())
         }
     }
 }
