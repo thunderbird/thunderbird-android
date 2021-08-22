@@ -57,9 +57,38 @@ class AccountProvider {
         message: Message,
         callback: OnIdentityUpdateFinishedCallback
     ) {
-        // Decode the identity header when loading a draft.
-        // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
+        val draftProperties: Map<IdentityField?, String?> = decodeIdentityHeader(message, messageViewInfo)
+        if (isChangedIdentiy(draftProperties)) {
+            findIdentity(draftProperties)
+        }
+        updateSignature(draftProperties, message)
+        callback.onFinished(getRelatedMessageReference(draftProperties), draftProperties)
+    }
 
+    private fun getRelatedMessageReference(draftProperties: Map<IdentityField?, String?>): MessageReference? {
+        var relatedMessageReference: MessageReference? = null
+        if (draftProperties.containsKey(IdentityField.ORIGINAL_MESSAGE)) {
+            val originalMessage = draftProperties[IdentityField.ORIGINAL_MESSAGE]
+            val messageReference = MessageReference.parse(originalMessage)
+            if (messageReference != null) {
+                // Check if this is a valid account in our database
+                val account: Account? = preferences.getAccount(messageReference.accountUuid)
+                if (account != null) {
+                    relatedMessageReference = messageReference
+                }
+            }
+        }
+        return relatedMessageReference
+    }
+
+    fun hasIdentityChanged(): Boolean {
+        return identityChanged
+    }
+
+    private fun decodeIdentityHeader(
+        message: Message,
+        messageViewInfo: MessageViewInfo
+    ): Map<IdentityField?, String?> {
         // Decode the identity header when loading a draft.
         // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
         var draftProperties: Map<IdentityField?, String?> = HashMap()
@@ -67,57 +96,41 @@ class AccountProvider {
         if (identityHeaders.size == 0) {
             identityHeaders = messageViewInfo.rootPart.getHeader(K9.IDENTITY_HEADER)
         }
-
         if (identityHeaders.size > 0 && identityHeaders[0] != null) {
             draftProperties = IdentityHeaderParser.parse(identityHeaders[0])
         }
+        return draftProperties
+    }
 
-        var newIdentity = Identity()
-        if (draftProperties.containsKey(IdentityField.SIGNATURE)) {
-            newIdentity = newIdentity
+    private fun findIdentity(k9identity: Map<IdentityField?, String?>) {
+        var changedIdentityExists = false
+        for (id in account.identities) {
+            if (id.name.equals(k9identity[IdentityField.NAME]) && id.email.equals(k9identity[IdentityField.EMAIL])) {
+                identity = id
+                changedIdentityExists = true
+                break
+            }
+        }
+        if (!changedIdentityExists) {
+            identity = Identity(null, k9identity[IdentityField.NAME], k9identity[IdentityField.EMAIL])
+        }
+        identityChanged = true
+    }
+
+    private fun isChangedIdentiy(k9identity: Map<IdentityField?, String?>) =
+        k9identity.containsKey(IdentityField.NAME) && k9identity.containsKey(IdentityField.EMAIL)
+
+    private fun updateSignature(k9identity: Map<IdentityField?, String?>, message: Message) {
+        if (k9identity.containsKey(IdentityField.SIGNATURE)) {
+            identity = identity
                 .withSignatureUse(true)
-                .withSignature(draftProperties[IdentityField.SIGNATURE])
+                .withSignature(k9identity[IdentityField.SIGNATURE])
             signatureChanged = true
         } else {
             if (message is LocalMessage) {
-                newIdentity = newIdentity.withSignatureUse(message.folder.signatureUse)
-            }
-            newIdentity = newIdentity.withSignature(identity.signature)
-        }
-
-        if (draftProperties.containsKey(IdentityField.NAME)) {
-            newIdentity = newIdentity.withName(draftProperties[IdentityField.NAME])
-            identityChanged = true
-        } else {
-            newIdentity = newIdentity.withName(identity.name)
-        }
-
-        if (draftProperties.containsKey(IdentityField.EMAIL)) {
-            newIdentity = newIdentity.withEmail(draftProperties[IdentityField.EMAIL])
-            identityChanged = true
-        } else {
-            newIdentity = newIdentity.withEmail(identity.email)
-        }
-
-        var relatedMessageReference: MessageReference? = null
-        if (draftProperties.containsKey(IdentityField.ORIGINAL_MESSAGE)) {
-            val originalMessage = draftProperties[IdentityField.ORIGINAL_MESSAGE]
-            val messageReference = MessageReference.parse(originalMessage)
-            if (messageReference != null) {
-                // Check if this is a valid account in our database
-                val account = preferences.getAccount(messageReference.accountUuid)
-                if (account != null) {
-                    relatedMessageReference = messageReference
-                }
+                identity = identity.withSignatureUse(message.folder.signatureUse)
             }
         }
-
-        identity = newIdentity
-        callback.onFinished(relatedMessageReference, draftProperties)
-    }
-
-    fun hasIdentityChanged(): Boolean {
-        return identityChanged
     }
 }
 

@@ -164,6 +164,7 @@ class AccountProviderTest {
         assertEquals(IDENTITY_A_NAME, toTest.identity.name)
         assertEquals(IDENTITY_A_EMAIL, toTest.identity.email)
         assertEquals(IDENTITY_A_SIGNATURE, toTest.identity.signature)
+        assertTrue(toTest.identity.signatureUse)
     }
 
     @Test
@@ -230,6 +231,8 @@ class AccountProviderTest {
 
         assertEquals(IDENTITY_B_NAME, toTest.identity.name)
         assertEquals(IDENTITY_B_EMAIL, toTest.identity.email)
+        assertEquals(IDENTITY_B_SIGNATURE, toTest.identity.signature)
+        assertTrue(toTest.identity.signatureUse)
     }
 
     @Test
