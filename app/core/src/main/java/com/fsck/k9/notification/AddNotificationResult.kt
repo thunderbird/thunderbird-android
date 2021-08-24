@@ -1,39 +1,25 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
-
-class AddNotificationResult {
-    private final NotificationHolder notificationHolder;
-    private final boolean cancelNotificationBeforeReuse;
-
-
-    private AddNotificationResult(NotificationHolder notificationHolder,
-            boolean cancelNotificationBeforeReuse) {
-        this.notificationHolder = notificationHolder;
-        this.cancelNotificationBeforeReuse = cancelNotificationBeforeReuse;
-    }
-
-    public static AddNotificationResult newNotification(NotificationHolder notificationHolder) {
-        return new AddNotificationResult(notificationHolder, false);
-    }
-
-    public static AddNotificationResult replaceNotification(NotificationHolder notificationHolder) {
-        return new AddNotificationResult(notificationHolder, true);
-    }
-
-    public boolean shouldCancelNotification() {
-        return cancelNotificationBeforeReuse;
-    }
-
-    public int getNotificationId() {
-        if (!shouldCancelNotification()) {
-            throw new IllegalStateException("getNotificationId() can only be called when " +
-                    "shouldCancelNotification() returns true");
+internal class AddNotificationResult private constructor(
+    val notificationHolder: NotificationHolder,
+    @get:JvmName("shouldCancelNotification")
+    val shouldCancelNotification: Boolean
+) {
+    val notificationId: Int
+        get() {
+            check(shouldCancelNotification) { "shouldCancelNotification == false" }
+            return notificationHolder.notificationId
         }
 
-        return notificationHolder.notificationId;
-    }
+    companion object {
+        @JvmStatic
+        fun newNotification(notificationHolder: NotificationHolder): AddNotificationResult {
+            return AddNotificationResult(notificationHolder, shouldCancelNotification = false)
+        }
 
-    public NotificationHolder getNotificationHolder() {
-        return notificationHolder;
+        @JvmStatic
+        fun replaceNotification(notificationHolder: NotificationHolder): AddNotificationResult {
+            return AddNotificationResult(notificationHolder, shouldCancelNotification = true)
+        }
     }
 }

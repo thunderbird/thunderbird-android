@@ -1,108 +1,104 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.fsck.k9.Account
+import com.fsck.k9.mailstore.LocalFolder
 
-import android.app.PendingIntent;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
+private const val NOTIFICATION_LED_WHILE_SYNCING = false
 
-import com.fsck.k9.Account;
-import com.fsck.k9.mailstore.LocalFolder;
+internal class SyncNotifications(
+    private val notificationHelper: NotificationHelper,
+    private val actionBuilder: NotificationActionCreator,
+    private val resourceProvider: NotificationResourceProvider
+) {
+    fun showSendingNotification(account: Account) {
+        val accountName = notificationHelper.getAccountName(account)
+        val title = resourceProvider.sendingMailTitle()
+        val tickerText = resourceProvider.sendingMailBody(accountName)
 
-import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_FAST;
+        val notificationId = NotificationIds.getFetchingMailNotificationId(account)
+        val outboxFolderId = account.outboxFolderId ?: error("Outbox folder not configured")
+        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
+            account, outboxFolderId, notificationId
+        )
 
-
-class SyncNotifications {
-    private static final boolean NOTIFICATION_LED_WHILE_SYNCING = false;
-
-
-    private final NotificationHelper notificationHelper;
-    private final NotificationActionCreator actionBuilder;
-    private final NotificationResourceProvider resourceProvider;
-
-
-    public SyncNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionBuilder,
-                             NotificationResourceProvider resourceProvider) {
-        this.notificationHelper = notificationHelper;
-        this.actionBuilder = actionBuilder;
-        this.resourceProvider = resourceProvider;
-    }
-
-    public void showSendingNotification(Account account) {
-        String accountName = notificationHelper.getAccountName(account);
-        String title = resourceProvider.sendingMailTitle();
-        String tickerText = resourceProvider.sendingMailBody(accountName);
-
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
-        long outboxFolderId = account.getOutboxFolderId();
-        PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-                account, outboxFolderId, notificationId);
-
-        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder(account,
-                NotificationChannelManager.ChannelType.MISCELLANEOUS)
-                .setSmallIcon(resourceProvider.getIconSendingMail())
-                .setWhen(System.currentTimeMillis())
-                .setOngoing(true)
-                .setTicker(tickerText)
-                .setContentTitle(title)
-                .setContentText(accountName)
-                .setContentIntent(showMessageListPendingIntent)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        val notificationBuilder = notificationHelper
+            .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
+            .setSmallIcon(resourceProvider.iconSendingMail)
+            .setWhen(System.currentTimeMillis())
+            .setOngoing(true)
+            .setTicker(tickerText)
+            .setContentTitle(title)
+            .setContentText(accountName)
+            .setContentIntent(showMessageListPendingIntent)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
         if (NOTIFICATION_LED_WHILE_SYNCING) {
-            notificationHelper.configureNotification(builder, null, null,
-                    account.getNotificationSetting().getLedColor(),
-                    NOTIFICATION_LED_BLINK_FAST, true);
+            notificationHelper.configureNotification(
+                builder = notificationBuilder,
+                ringtone = null,
+                vibrationPattern = null,
+                ledColor = account.notificationSetting.ledColor,
+                ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
+                ringAndVibrate = true
+            )
         }
 
-        getNotificationManager().notify(notificationId, builder.build());
+        notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    public void clearSendingNotification(Account account) {
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
-        getNotificationManager().cancel(notificationId);
+    fun clearSendingNotification(account: Account) {
+        val notificationId = NotificationIds.getFetchingMailNotificationId(account)
+        notificationManager.cancel(notificationId)
     }
 
-    public void showFetchingMailNotification(Account account, LocalFolder folder) {
-        String accountName = account.getDescription();
-        long folderId = folder.getDatabaseId();
-        String folderName = folder.getName();
+    fun showFetchingMailNotification(account: Account, folder: LocalFolder) {
+        val accountName = account.description
+        val folderId = folder.databaseId
+        val folderName = folder.name
+        val tickerText = resourceProvider.checkingMailTicker(accountName, folderName)
+        val title = resourceProvider.checkingMailTitle()
 
-        String tickerText = resourceProvider.checkingMailTicker(accountName, folderName);
-        String title = resourceProvider.checkingMailTitle();
-        //TODO: Use format string from resources
-        String text = accountName + resourceProvider.checkingMailSeparator() + folderName;
+        // TODO: Use format string from resources
+        val text = accountName + resourceProvider.checkingMailSeparator() + folderName
 
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
-        PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-                account, folderId, notificationId);
+        val notificationId = NotificationIds.getFetchingMailNotificationId(account)
+        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
+            account, folderId, notificationId
+        )
 
-        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder(account,
-                NotificationChannelManager.ChannelType.MISCELLANEOUS)
-                .setSmallIcon(resourceProvider.getIconCheckingMail())
-                .setWhen(System.currentTimeMillis())
-                .setOngoing(true)
-                .setTicker(tickerText)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setContentIntent(showMessageListPendingIntent)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setCategory(NotificationCompat.CATEGORY_SERVICE);
+        val notificationBuilder = notificationHelper
+            .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
+            .setSmallIcon(resourceProvider.iconCheckingMail)
+            .setWhen(System.currentTimeMillis())
+            .setOngoing(true)
+            .setTicker(tickerText)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setContentIntent(showMessageListPendingIntent)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
 
         if (NOTIFICATION_LED_WHILE_SYNCING) {
-            notificationHelper.configureNotification(builder, null, null,
-                    account.getNotificationSetting().getLedColor(),
-                    NOTIFICATION_LED_BLINK_FAST, true);
+            notificationHelper.configureNotification(
+                builder = notificationBuilder,
+                ringtone = null,
+                vibrationPattern = null,
+                ledColor = account.notificationSetting.ledColor,
+                ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
+                ringAndVibrate = true
+            )
         }
 
-        getNotificationManager().notify(notificationId, builder.build());
+        notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    public void clearFetchingMailNotification(Account account) {
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
-        getNotificationManager().cancel(notificationId);
+    fun clearFetchingMailNotification(account: Account) {
+        val notificationId = NotificationIds.getFetchingMailNotificationId(account)
+        notificationManager.cancel(notificationId)
     }
 
-    private NotificationManagerCompat getNotificationManager() {
-        return notificationHelper.getNotificationManager();
-    }
+    private val notificationManager: NotificationManagerCompat
+        get() = notificationHelper.getNotificationManager()
 }

@@ -1,50 +1,60 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.app.PendingIntent
+import android.content.Context
+import com.fsck.k9.Account
+import com.fsck.k9.controller.MessageReference
 
-import java.util.List;
+interface NotificationActionCreator {
+    fun createViewMessagePendingIntent(messageReference: MessageReference, notificationId: Int): PendingIntent
 
-import android.app.PendingIntent;
-import android.content.Context;
+    fun createViewFolderPendingIntent(account: Account, folderId: Long, notificationId: Int): PendingIntent
 
-import com.fsck.k9.Account;
-import com.fsck.k9.controller.MessageReference;
+    fun createViewMessagesPendingIntent(
+        account: Account,
+        messageReferences: List<MessageReference>,
+        notificationId: Int
+    ): PendingIntent
 
+    fun createViewFolderListPendingIntent(account: Account, notificationId: Int): PendingIntent
 
-public interface NotificationActionCreator {
-    PendingIntent createViewMessagePendingIntent(MessageReference messageReference, int notificationId);
+    fun createDismissAllMessagesPendingIntent(account: Account, notificationId: Int): PendingIntent
 
-    PendingIntent createViewFolderPendingIntent(Account account, long folderId, int notificationId);
+    fun createDismissMessagePendingIntent(
+        context: Context,
+        messageReference: MessageReference,
+        notificationId: Int
+    ): PendingIntent
 
-    PendingIntent createViewMessagesPendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId);
+    fun createReplyPendingIntent(messageReference: MessageReference, notificationId: Int): PendingIntent
 
-    PendingIntent createViewFolderListPendingIntent(Account account, int notificationId);
+    fun createMarkMessageAsReadPendingIntent(messageReference: MessageReference, notificationId: Int): PendingIntent
 
-    PendingIntent createDismissAllMessagesPendingIntent(Account account, int notificationId);
+    fun createMarkAllAsReadPendingIntent(
+        account: Account,
+        messageReferences: List<MessageReference>,
+        notificationId: Int
+    ): PendingIntent
 
-    PendingIntent createDismissMessagePendingIntent(Context context, MessageReference messageReference,
-            int notificationId);
+    fun getEditIncomingServerSettingsIntent(account: Account): PendingIntent
 
-    PendingIntent createReplyPendingIntent(MessageReference messageReference, int notificationId);
+    fun getEditOutgoingServerSettingsIntent(account: Account): PendingIntent
 
-    PendingIntent createMarkMessageAsReadPendingIntent(MessageReference messageReference, int notificationId);
+    fun createDeleteMessagePendingIntent(messageReference: MessageReference, notificationId: Int): PendingIntent
 
-    PendingIntent createMarkAllAsReadPendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId);
+    fun createDeleteAllPendingIntent(
+        account: Account,
+        messageReferences: List<MessageReference>,
+        notificationId: Int
+    ): PendingIntent
 
-    PendingIntent getEditIncomingServerSettingsIntent(Account account);
+    fun createArchiveMessagePendingIntent(messageReference: MessageReference, notificationId: Int): PendingIntent
 
-    PendingIntent getEditOutgoingServerSettingsIntent(Account account);
+    fun createArchiveAllPendingIntent(
+        account: Account,
+        messageReferences: List<MessageReference>,
+        notificationId: Int
+    ): PendingIntent
 
-    PendingIntent createDeleteMessagePendingIntent(MessageReference messageReference, int notificationId);
-
-    PendingIntent createDeleteAllPendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId);
-
-    PendingIntent createArchiveMessagePendingIntent(MessageReference messageReference, int notificationId);
-
-    PendingIntent createArchiveAllPendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId);
-
-    PendingIntent createMarkMessageAsSpamPendingIntent(MessageReference messageReference, int notificationId);
+    fun createMarkMessageAsSpamPendingIntent(messageReference: MessageReference, notificationId: Int): PendingIntent
 }

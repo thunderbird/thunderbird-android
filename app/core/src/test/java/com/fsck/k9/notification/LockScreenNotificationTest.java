@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat.Builder;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.LockScreenNotificationVisibility;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.testing.MockHelper;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
@@ -182,6 +183,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
     }
 
     private NotificationContent createNotificationContent(String sender) {
-        return new NotificationContent(null, sender, null, null, null, false);
+        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
+        return new NotificationContent(messageReference, sender, "irrelevant", "irrelevant", "irrelevant", false);
     }
 }

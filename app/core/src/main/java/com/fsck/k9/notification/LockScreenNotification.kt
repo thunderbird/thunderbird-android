@@ -1,109 +1,84 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.app.Notification
+import androidx.core.app.NotificationCompat
+import com.fsck.k9.K9
+import com.fsck.k9.K9.LockScreenNotificationVisibility
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
-import android.app.Notification;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.Builder;
-import android.text.TextUtils;
-
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-
-
-class LockScreenNotification {
-    static final int MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5;
-
-
-    private final NotificationHelper notificationHelper;
-    private final NotificationResourceProvider resourceProvider;
-
-
-    LockScreenNotification(NotificationHelper notificationHelper, NotificationResourceProvider resourceProvider) {
-        this.notificationHelper = notificationHelper;
-        this.resourceProvider = resourceProvider;
-    }
-
-    public void configureLockScreenNotification(Builder builder, NotificationData notificationData) {
-        switch (K9.getLockScreenNotificationVisibility()) {
-            case NOTHING: {
-                builder.setVisibility(NotificationCompat.VISIBILITY_SECRET);
-                break;
+internal class LockScreenNotification(
+    private val notificationHelper: NotificationHelper,
+    private val resourceProvider: NotificationResourceProvider
+) {
+    fun configureLockScreenNotification(builder: NotificationCompat.Builder, notificationData: NotificationData) {
+        when (K9.lockScreenNotificationVisibility) {
+            LockScreenNotificationVisibility.NOTHING -> {
+                builder.setVisibility(NotificationCompat.VISIBILITY_SECRET)
             }
-            case APP_NAME: {
-                builder.setVisibility(NotificationCompat.VISIBILITY_PRIVATE);
-                break;
+            LockScreenNotificationVisibility.APP_NAME -> {
+                builder.setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
             }
-            case EVERYTHING: {
-                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-                break;
+            LockScreenNotificationVisibility.EVERYTHING -> {
+                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             }
-            case SENDERS: {
-                Notification publicNotification = createPublicNotificationWithSenderList(notificationData);
-                builder.setPublicVersion(publicNotification);
-                break;
+            LockScreenNotificationVisibility.SENDERS -> {
+                val publicNotification = createPublicNotificationWithSenderList(notificationData)
+                builder.setPublicVersion(publicNotification)
             }
-            case MESSAGE_COUNT: {
-                Notification publicNotification = createPublicNotificationWithNewMessagesCount(notificationData);
-                builder.setPublicVersion(publicNotification);
-                break;
+            LockScreenNotificationVisibility.MESSAGE_COUNT -> {
+                val publicNotification = createPublicNotificationWithNewMessagesCount(notificationData)
+                builder.setPublicVersion(publicNotification)
             }
         }
     }
 
-    private Notification createPublicNotificationWithSenderList(NotificationData notificationData) {
-        Builder builder = createPublicNotification(notificationData);
-        int newMessages = notificationData.getNewMessagesCount();
+    private fun createPublicNotificationWithSenderList(notificationData: NotificationData): Notification {
+        val builder = createPublicNotification(notificationData)
+
+        val newMessages = notificationData.newMessagesCount
         if (newMessages == 1) {
-            NotificationHolder holder = notificationData.getHolderForLatestNotification();
-            builder.setContentText(holder.content.sender);
+            val holder = notificationData.holderForLatestNotification
+            builder.setContentText(holder.content.sender)
         } else {
-            List<NotificationContent> contents = notificationData.getContentForSummaryNotification();
-            String senderList = createCommaSeparatedListOfSenders(contents);
-            builder.setContentText(senderList);
+            val contents = notificationData.getContentForSummaryNotification()
+            val senderList = createCommaSeparatedListOfSenders(contents)
+            builder.setContentText(senderList)
         }
 
-        return builder.build();
+        return builder.build()
     }
 
-    private Notification createPublicNotificationWithNewMessagesCount(NotificationData notificationData) {
-        Builder builder = createPublicNotification(notificationData);
-        Account account = notificationData.getAccount();
-        String accountName = notificationHelper.getAccountName(account);
-        builder.setContentText(accountName);
+    private fun createPublicNotificationWithNewMessagesCount(notificationData: NotificationData): Notification {
+        val builder = createPublicNotification(notificationData)
+        val account = notificationData.account
+        val accountName = notificationHelper.getAccountName(account)
 
-        return builder.build();
+        builder.setContentText(accountName)
+        return builder.build()
     }
 
-    private Builder createPublicNotification(NotificationData notificationData) {
-        Account account = notificationData.getAccount();
-        int newMessages = notificationData.getNewMessagesCount();
-        int unreadCount = notificationData.getUnreadMessageCount();
-        String title = resourceProvider.newMessagesTitle(newMessages);
+    private fun createPublicNotification(notificationData: NotificationData): NotificationCompat.Builder {
+        val account = notificationData.account
+        val newMessages = notificationData.newMessagesCount
+        val unreadCount = notificationData.unreadMessageCount
+        val title = resourceProvider.newMessagesTitle(newMessages)
 
-        return notificationHelper.createNotificationBuilder(account,
-                NotificationChannelManager.ChannelType.MESSAGES)
-                .setSmallIcon(resourceProvider.getIconNewMail())
-                .setColor(account.getChipColor())
-                .setNumber(unreadCount)
-                .setContentTitle(title)
-                .setCategory(NotificationCompat.CATEGORY_EMAIL);
+        return notificationHelper.createNotificationBuilder(account, NotificationChannelManager.ChannelType.MESSAGES)
+            .setSmallIcon(resourceProvider.iconNewMail)
+            .setColor(account.chipColor)
+            .setNumber(unreadCount)
+            .setContentTitle(title)
+            .setCategory(NotificationCompat.CATEGORY_EMAIL)
     }
 
+    fun createCommaSeparatedListOfSenders(contents: List<NotificationContent>): String {
+        return contents.asSequence()
+            .map { it.sender }
+            .distinct()
+            .take(MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION)
+            .joinToString()
+    }
 
-    String createCommaSeparatedListOfSenders(List<NotificationContent> contents) {
-        // Use a LinkedHashSet so that we preserve ordering (newest to oldest), but still remove duplicates
-        Set<CharSequence> senders = new LinkedHashSet<>(MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
-        for (NotificationContent content : contents) {
-            senders.add(content.sender);
-            if (senders.size() == MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION) {
-                break;
-            }
-        }
-
-        return TextUtils.join(", ", senders);
+    companion object {
+        const val MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5
     }
 }

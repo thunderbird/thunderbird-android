@@ -1,224 +1,159 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
-
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import android.util.SparseBooleanArray;
-
-import com.fsck.k9.Account;
-import com.fsck.k9.controller.MessageReference;
-
+import android.util.SparseBooleanArray
+import com.fsck.k9.Account
+import com.fsck.k9.controller.MessageReference
+import java.util.LinkedList
 
 /**
  * A holder class for pending new mail notifications.
  */
-class NotificationData {
-    // Note: As of Jellybean, phone notifications show a maximum of 5 lines, while tablet notifications show 7 lines.
-    static final int MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5;
-    // Note: This class assumes MAX_NUMBER_OF_STACKED_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
-    static final int MAX_NUMBER_OF_STACKED_NOTIFICATIONS = 8;
+internal class NotificationData(val account: Account, private val initialUnreadMessageCount: Int) {
+    private val activeNotifications = LinkedList<NotificationHolder>()
+    private val additionalNotifications = LinkedList<NotificationContent>()
+    private val notificationIdsInUse = SparseBooleanArray()
 
+    val unreadMessageCount: Int
+        get() = initialUnreadMessageCount + newMessagesCount
 
-    private final Account account;
-    private final LinkedList<NotificationHolder> activeNotifications = new LinkedList<>();
-    private final Deque<NotificationContent> additionalNotifications = new LinkedList<>();
-    private final SparseBooleanArray notificationIdsInUse = new SparseBooleanArray();
-    private int unreadMessageCount;
+    val newMessagesCount: Int
+        get() = activeNotifications.size + additionalNotifications.size
 
+    val isSingleMessageNotification: Boolean
+        get() = activeNotifications.size == 1
 
-    public NotificationData(Account account) {
-        this.account = account;
-    }
+    val holderForLatestNotification: NotificationHolder
+        get() = activeNotifications.first
 
-    public AddNotificationResult addNotificationContent(NotificationContent content) {
-        int notificationId;
-        boolean cancelNotificationIdBeforeReuse;
-        if (isMaxNumberOfActiveNotificationsReached()) {
-            NotificationHolder notificationHolder = activeNotifications.removeLast();
-            addToAdditionalNotifications(notificationHolder);
-            notificationId = notificationHolder.notificationId;
-            cancelNotificationIdBeforeReuse = true;
+    private val isMaxNumberOfActiveNotificationsReached: Boolean
+        get() = activeNotifications.size == MAX_NUMBER_OF_STACKED_NOTIFICATIONS
+
+    fun addNotificationContent(content: NotificationContent): AddNotificationResult {
+        val notificationId: Int
+        val cancelNotificationIdBeforeReuse: Boolean
+        if (isMaxNumberOfActiveNotificationsReached) {
+            val notificationHolder = activeNotifications.removeLast()
+            addToAdditionalNotifications(notificationHolder)
+            notificationId = notificationHolder.notificationId
+            cancelNotificationIdBeforeReuse = true
         } else {
-            notificationId = getNewNotificationId();
-            cancelNotificationIdBeforeReuse = false;
+            notificationId = getNewNotificationId()
+            cancelNotificationIdBeforeReuse = false
         }
 
-        NotificationHolder notificationHolder = createNotificationHolder(notificationId, content);
-        activeNotifications.addFirst(notificationHolder);
+        val notificationHolder = createNotificationHolder(notificationId, content)
+        activeNotifications.addFirst(notificationHolder)
 
-        if (cancelNotificationIdBeforeReuse) {
-            return AddNotificationResult.replaceNotification(notificationHolder);
+        return if (cancelNotificationIdBeforeReuse) {
+            AddNotificationResult.replaceNotification(notificationHolder)
         } else {
-            return AddNotificationResult.newNotification(notificationHolder);
+            AddNotificationResult.newNotification(notificationHolder)
         }
     }
 
-    private boolean isMaxNumberOfActiveNotificationsReached() {
-        return activeNotifications.size() == MAX_NUMBER_OF_STACKED_NOTIFICATIONS;
+    private fun addToAdditionalNotifications(notificationHolder: NotificationHolder) {
+        additionalNotifications.addFirst(notificationHolder.content)
     }
 
-    private void addToAdditionalNotifications(NotificationHolder notificationHolder) {
-        additionalNotifications.addFirst(notificationHolder.content);
-    }
-
-    private int getNewNotificationId() {
-        for (int i = 0; i < MAX_NUMBER_OF_STACKED_NOTIFICATIONS; i++) {
-            int notificationId = NotificationIds.getNewMailStackedNotificationId(account, i);
+    private fun getNewNotificationId(): Int {
+        for (index in 0 until MAX_NUMBER_OF_STACKED_NOTIFICATIONS) {
+            val notificationId = NotificationIds.getNewMailStackedNotificationId(account, index)
             if (!isNotificationInUse(notificationId)) {
-                markNotificationIdAsInUse(notificationId);
-                return notificationId;
+                markNotificationIdAsInUse(notificationId)
+                return notificationId
             }
         }
 
-        throw new AssertionError("getNewNotificationId() called with no free notification ID");
+        throw AssertionError("getNewNotificationId() called with no free notification ID")
     }
 
-    private boolean isNotificationInUse(int notificationId) {
-        return notificationIdsInUse.get(notificationId);
+    private fun isNotificationInUse(notificationId: Int): Boolean {
+        return notificationIdsInUse[notificationId]
     }
 
-    private void markNotificationIdAsInUse(int notificationId) {
-        notificationIdsInUse.put(notificationId, true);
+    private fun markNotificationIdAsInUse(notificationId: Int) {
+        notificationIdsInUse.put(notificationId, true)
     }
 
-    private void markNotificationIdAsFree(int notificationId) {
-        notificationIdsInUse.delete(notificationId);
+    private fun markNotificationIdAsFree(notificationId: Int) {
+        notificationIdsInUse.delete(notificationId)
     }
 
-    NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {
-        return new NotificationHolder(notificationId, content);
+    private fun createNotificationHolder(notificationId: Int, content: NotificationContent): NotificationHolder {
+        return NotificationHolder(notificationId, content)
     }
 
-    public boolean containsStarredMessages() {
-        for (NotificationHolder holder : activeNotifications) {
-            if (holder.content.starred) {
-                return true;
-            }
+    fun containsStarredMessages(): Boolean {
+        return activeNotifications.any { it.content.isStarred } || additionalNotifications.any { it.isStarred }
+    }
+
+    fun hasSummaryOverflowMessages(): Boolean {
+        return activeNotifications.size > MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
+    }
+
+    fun getSummaryOverflowMessagesCount(): Int {
+        val activeOverflowCount = activeNotifications.size - MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
+        return if (activeOverflowCount > 0) {
+            activeOverflowCount + additionalNotifications.size
+        } else {
+            additionalNotifications.size
+        }
+    }
+
+    fun getContentForSummaryNotification(): List<NotificationContent> {
+        return activeNotifications.asSequence()
+            .map { it.content }
+            .take(MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION)
+            .toList()
+    }
+
+    fun getActiveNotificationIds(): IntArray {
+        return activeNotifications.map { it.notificationId }.toIntArray()
+    }
+
+    fun removeNotificationForMessage(messageReference: MessageReference): RemoveNotificationResult {
+        val holder = getNotificationHolderForMessage(messageReference)
+            ?: return RemoveNotificationResult.unknownNotification()
+
+        activeNotifications.remove(holder)
+
+        val notificationId = holder.notificationId
+        markNotificationIdAsFree(notificationId)
+
+        return if (additionalNotifications.isEmpty()) {
+            RemoveNotificationResult.cancelNotification(notificationId)
+        } else {
+            val newContent = additionalNotifications.removeFirst()
+            val replacement = createNotificationHolder(notificationId, newContent)
+            activeNotifications.addLast(replacement)
+            RemoveNotificationResult.createNotification(replacement)
+        }
+    }
+
+    private fun getNotificationHolderForMessage(messageReference: MessageReference): NotificationHolder? {
+        return activeNotifications.firstOrNull { it.content.messageReference == messageReference }
+    }
+
+    fun getAllMessageReferences(): ArrayList<MessageReference> {
+        val newSize = activeNotifications.size + additionalNotifications.size
+        val messageReferences = ArrayList<MessageReference>(newSize)
+
+        for (holder in activeNotifications) {
+            messageReferences.add(holder.content.messageReference)
         }
 
-        for (NotificationContent content : additionalNotifications) {
-            if (content.starred) {
-                return true;
-            }
+        for (content in additionalNotifications) {
+            messageReferences.add(content.messageReference)
         }
 
-        return false;
+        return messageReferences
     }
 
-    public boolean hasSummaryOverflowMessages() {
-        return activeNotifications.size() > MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION;
-    }
+    companion object {
+        // Note: As of Jellybean, phone notifications show a maximum of 5 lines, while tablet notifications show 7 lines.
+        const val MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5
 
-    public int getSummaryOverflowMessagesCount() {
-        int activeOverflowCount = activeNotifications.size() - MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION;
-        if (activeOverflowCount > 0) {
-            return activeOverflowCount + additionalNotifications.size();
-        }
-        return additionalNotifications.size();
-    }
-
-    public int getNewMessagesCount() {
-        return activeNotifications.size() + additionalNotifications.size();
-    }
-
-    public boolean isSingleMessageNotification() {
-        return activeNotifications.size() == 1;
-    }
-
-    public NotificationHolder getHolderForLatestNotification() {
-        return activeNotifications.getFirst();
-    }
-
-    public List<NotificationContent> getContentForSummaryNotification() {
-        int size = calculateNumberOfMessagesForSummaryNotification();
-        List<NotificationContent> result = new ArrayList<>(size);
-
-        Iterator<NotificationHolder> iterator = activeNotifications.iterator();
-        int notificationCount = 0;
-        while (iterator.hasNext() && notificationCount < MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION) {
-            NotificationHolder holder = iterator.next();
-            result.add(holder.content);
-            notificationCount++;
-        }
-
-        return result;
-    }
-
-    private int calculateNumberOfMessagesForSummaryNotification() {
-        return Math.min(activeNotifications.size(), MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION);
-    }
-
-    public int[] getActiveNotificationIds() {
-        int size = activeNotifications.size();
-        int[] notificationIds = new int[size];
-
-        for (int i = 0; i < size; i++) {
-            NotificationHolder holder = activeNotifications.get(i);
-            notificationIds[i] = holder.notificationId;
-        }
-
-        return notificationIds;
-    }
-
-    public RemoveNotificationResult removeNotificationForMessage(MessageReference messageReference) {
-        NotificationHolder holder = getNotificationHolderForMessage(messageReference);
-        if (holder == null) {
-            return RemoveNotificationResult.unknownNotification();
-        }
-
-        activeNotifications.remove(holder);
-
-        int notificationId = holder.notificationId;
-        markNotificationIdAsFree(notificationId);
-
-        if (!additionalNotifications.isEmpty()) {
-            NotificationContent newContent = additionalNotifications.removeFirst();
-            NotificationHolder replacement = createNotificationHolder(notificationId, newContent);
-            activeNotifications.addLast(replacement);
-            return RemoveNotificationResult.createNotification(replacement);
-        }
-
-        return RemoveNotificationResult.cancelNotification(notificationId);
-    }
-
-    private NotificationHolder getNotificationHolderForMessage(MessageReference messageReference) {
-        for (NotificationHolder holder : activeNotifications) {
-            if (messageReference.equals(holder.content.messageReference)) {
-                return holder;
-            }
-        }
-
-        return null;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public int getUnreadMessageCount() {
-        return unreadMessageCount + getNewMessagesCount();
-    }
-
-    public void setUnreadMessageCount(int unreadMessageCount) {
-        this.unreadMessageCount = unreadMessageCount;
-    }
-
-    public ArrayList<MessageReference> getAllMessageReferences() {
-        int newSize = activeNotifications.size() + additionalNotifications.size();
-        ArrayList<MessageReference> messageReferences = new ArrayList<>(newSize);
-
-        for (NotificationHolder holder : activeNotifications) {
-            messageReferences.add(holder.content.messageReference);
-        }
-
-        for (NotificationContent content : additionalNotifications) {
-            messageReferences.add(content.messageReference);
-        }
-
-        return messageReferences;
+        // Note: This class assumes MAX_NUMBER_OF_STACKED_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
+        const val MAX_NUMBER_OF_STACKED_NOTIFICATIONS = 8
     }
 }

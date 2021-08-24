@@ -1,129 +1,101 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.content.Context
+import android.text.SpannableStringBuilder
+import com.fsck.k9.Account
+import com.fsck.k9.K9
+import com.fsck.k9.helper.Contacts
+import com.fsck.k9.helper.MessageHelper
+import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mailstore.LocalMessage
+import com.fsck.k9.message.extractors.PreviewResult.PreviewType
 
-import android.content.Context;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
+internal class NotificationContentCreator(
+    private val context: Context,
+    private val resourceProvider: NotificationResourceProvider
+) {
+    fun createFromMessage(account: Account, message: LocalMessage): NotificationContent {
+        val sender = getMessageSender(account, message)
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.MessageHelper;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
-
-
-class NotificationContentCreator {
-    private final Context context;
-    private final NotificationResourceProvider resourceProvider;
-
-
-    public NotificationContentCreator(Context context, NotificationResourceProvider resourceProvider) {
-        this.context = context;
-        this.resourceProvider = resourceProvider;
+        return NotificationContent(
+            messageReference = message.makeMessageReference(),
+            sender = getMessageSenderForDisplay(sender),
+            subject = getMessageSubject(message),
+            preview = getMessagePreview(message),
+            summary = buildMessageSummary(sender, getMessageSubject(message)),
+            isStarred = message.isSet(Flag.FLAGGED)
+        )
     }
 
-    public NotificationContent createFromMessage(Account account, LocalMessage message) {
-        MessageReference messageReference = message.makeMessageReference();
-        String sender = getMessageSender(account, message);
-        String displaySender = getMessageSenderForDisplay(sender);
-        String subject = getMessageSubject(message);
-        CharSequence preview = getMessagePreview(message);
-        CharSequence summary = buildMessageSummary(sender, subject);
-        boolean starred = message.isSet(Flag.FLAGGED);
-
-        return new NotificationContent(messageReference, displaySender, subject, preview, summary, starred);
-    }
-
-    private CharSequence getMessagePreview(LocalMessage message) {
-        String subject = message.getSubject();
-        String snippet = getPreview(message);
-
-        boolean isSubjectEmpty = TextUtils.isEmpty(subject);
-        boolean isSnippetPresent = snippet != null;
-        if (isSubjectEmpty && isSnippetPresent) {
-            return snippet;
+    private fun getMessagePreview(message: LocalMessage): CharSequence {
+        val snippet = getPreview(message)
+        if (message.subject.isNullOrEmpty() && snippet != null) {
+            return snippet
         }
 
-        String displaySubject = getMessageSubject(message);
+        return SpannableStringBuilder().apply {
+            val displaySubject = getMessageSubject(message)
+            append(displaySubject)
 
-        SpannableStringBuilder preview = new SpannableStringBuilder();
-        preview.append(displaySubject);
-        if (isSnippetPresent) {
-            preview.append('\n');
-            preview.append(snippet);
+            if (snippet != null) {
+                append('\n')
+                append(snippet)
+            }
         }
-        
-        return preview;
     }
 
-    private String getPreview(LocalMessage message) {
-        PreviewType previewType = message.getPreviewType();
-        switch (previewType) {
-            case NONE:
-            case ERROR:
-                return null;
-            case TEXT:
-                return message.getPreview();
-            case ENCRYPTED:
-                return resourceProvider.previewEncrypted();
+    private fun getPreview(message: LocalMessage): String? {
+        val previewType = message.previewType ?: error("previewType == null")
+        return when (previewType) {
+            PreviewType.NONE, PreviewType.ERROR -> null
+            PreviewType.TEXT -> message.preview
+            PreviewType.ENCRYPTED -> resourceProvider.previewEncrypted()
         }
-
-        throw new AssertionError("Unknown preview type: " + previewType);
     }
 
-    private CharSequence buildMessageSummary(String sender, String subject) {
-        if (sender == null) {
-            return subject;
+    private fun buildMessageSummary(sender: String?, subject: String): CharSequence {
+        return if (sender == null) {
+            subject
+        } else {
+            SpannableStringBuilder().apply {
+                append(sender)
+                append(" ")
+                append(subject)
+            }
         }
-
-        SpannableStringBuilder summary = new SpannableStringBuilder();
-        summary.append(sender);
-        summary.append(" ");
-        summary.append(subject);
-
-        return summary;
     }
 
-    private String getMessageSubject(Message message) {
-        String subject = message.getSubject();
-        if (!TextUtils.isEmpty(subject)) {
-            return subject;
-        }
-
-        return resourceProvider.noSubject();
+    private fun getMessageSubject(message: Message): String {
+        val subject = message.subject.orEmpty()
+        return subject.ifEmpty { resourceProvider.noSubject() }
     }
 
-    private String getMessageSender(Account account, Message message) {
-        boolean isSelf = false;
-        final Contacts contacts = K9.isShowContactName() ? Contacts.getInstance(context) : null;
-        final Address[] fromAddresses = message.getFrom();
+    private fun getMessageSender(account: Account, message: Message): String? {
+        val contacts = if (K9.isShowContactName) Contacts.getInstance(context) else null
+        var isSelf = false
 
-        if (fromAddresses != null) {
-            isSelf = account.isAnIdentity(fromAddresses);
-            if (!isSelf && fromAddresses.length > 0) {
-                return MessageHelper.toFriendly(fromAddresses[0], contacts).toString();
+        val fromAddresses = message.from
+        if (!fromAddresses.isNullOrEmpty()) {
+            isSelf = account.isAnIdentity(fromAddresses)
+            if (!isSelf) {
+                return MessageHelper.toFriendly(fromAddresses.first(), contacts).toString()
             }
         }
 
         if (isSelf) {
             // show To: if the message was sent from me
-            Address[] recipients = message.getRecipients(Message.RecipientType.TO);
-
-            if (recipients != null && recipients.length > 0) {
-                String recipientDisplayName = MessageHelper.toFriendly(recipients[0], contacts).toString();
-                return resourceProvider.recipientDisplayName(recipientDisplayName);
+            val recipients = message.getRecipients(Message.RecipientType.TO)
+            if (!recipients.isNullOrEmpty()) {
+                val recipientDisplayName = MessageHelper.toFriendly(recipients.first(), contacts).toString()
+                return resourceProvider.recipientDisplayName(recipientDisplayName)
             }
         }
 
-        return null;
+        return null
     }
 
-    private String getMessageSenderForDisplay(String sender) {
-        return (sender != null) ? sender : resourceProvider.noSender();
+    private fun getMessageSenderForDisplay(sender: String?): String {
+        return sender ?: resourceProvider.noSender()
     }
 }

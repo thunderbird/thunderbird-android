@@ -1,235 +1,221 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.app.KeyguardManager
+import android.app.Notification
+import android.content.Context
+import androidx.core.app.NotificationCompat
+import com.fsck.k9.Account
+import com.fsck.k9.K9
+import com.fsck.k9.K9.NotificationHideSubject
+import com.fsck.k9.K9.NotificationQuickDelete
+import com.fsck.k9.notification.NotificationGroupKeys.getGroupKey
+import com.fsck.k9.notification.NotificationIds.getNewMailSummaryNotificationId
 
-import java.util.ArrayList;
-import java.util.List;
+internal open class DeviceNotifications(
+    notificationHelper: NotificationHelper,
+    actionCreator: NotificationActionCreator,
+    private val lockScreenNotification: LockScreenNotification,
+    private val wearNotifications: WearNotifications,
+    resourceProvider: NotificationResourceProvider
+) : BaseNotifications(notificationHelper, actionCreator, resourceProvider) {
 
-import android.app.KeyguardManager;
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Context;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.Builder;
-import androidx.core.app.NotificationCompat.InboxStyle;
+    fun buildSummaryNotification(account: Account, notificationData: NotificationData, silent: Boolean): Notification {
+        val unreadMessageCount = notificationData.unreadMessageCount
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.NotificationSetting;
-import com.fsck.k9.controller.MessageReference;
-
-import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_SLOW;
-
-
-class DeviceNotifications extends BaseNotifications {
-    private final WearNotifications wearNotifications;
-    private final LockScreenNotification lockScreenNotification;
-
-
-    DeviceNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
-            LockScreenNotification lockScreenNotification, WearNotifications wearNotifications,
-            NotificationResourceProvider resourceProvider) {
-        super(notificationHelper, actionCreator, resourceProvider);
-        this.wearNotifications = wearNotifications;
-        this.lockScreenNotification = lockScreenNotification;
-    }
-
-    public Notification buildSummaryNotification(Account account, NotificationData notificationData,
-            boolean silent) {
-        int unreadMessageCount = notificationData.getUnreadMessageCount();
-
-        NotificationCompat.Builder builder;
-        if (isPrivacyModeActive()) {
-            builder = createSimpleSummaryNotification(account, unreadMessageCount);
-        } else if (notificationData.isSingleMessageNotification()) {
-            NotificationHolder holder = notificationData.getHolderForLatestNotification();
-            builder = createBigTextStyleSummaryNotification(account, holder);
-        } else {
-            builder = createInboxStyleSummaryNotification(account, notificationData, unreadMessageCount);
+        val builder = when {
+            isPrivacyModeActive -> {
+                createSimpleSummaryNotification(account, unreadMessageCount)
+            }
+            notificationData.isSingleMessageNotification -> {
+                val holder = notificationData.holderForLatestNotification
+                createBigTextStyleSummaryNotification(account, holder)
+            }
+            else -> {
+                createInboxStyleSummaryNotification(account, notificationData, unreadMessageCount)
+            }
         }
 
         if (notificationData.containsStarredMessages()) {
-            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+            builder.priority = NotificationCompat.PRIORITY_HIGH
         }
 
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        PendingIntent deletePendingIntent = actionCreator.createDismissAllMessagesPendingIntent(
-                account, notificationId);
-        builder.setDeleteIntent(deletePendingIntent);
+        val notificationId = getNewMailSummaryNotificationId(account)
+        val deletePendingIntent = actionCreator.createDismissAllMessagesPendingIntent(account, notificationId)
+        builder.setDeleteIntent(deletePendingIntent)
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
-        boolean ringAndVibrate = false;
-        if (!silent && !account.isRingNotified()) {
-            account.setRingNotified(true);
-            ringAndVibrate = true;
+        var ringAndVibrate = false
+        if (!silent && !account.isRingNotified) {
+            account.isRingNotified = true
+            ringAndVibrate = true
         }
 
-        NotificationSetting notificationSetting = account.getNotificationSetting();
+        val notificationSetting = account.notificationSetting
         notificationHelper.configureNotification(
-                builder,
-                (notificationSetting.isRingEnabled()) ? notificationSetting.getRingtone() : null,
-                (notificationSetting.isVibrateEnabled()) ? notificationSetting.getVibration() : null,
-                (notificationSetting.isLedEnabled()) ? notificationSetting.getLedColor() : null,
-                NOTIFICATION_LED_BLINK_SLOW,
-                ringAndVibrate);
+            builder = builder,
+            ringtone = if (notificationSetting.isRingEnabled) notificationSetting.ringtone else null,
+            vibrationPattern = if (notificationSetting.isVibrateEnabled) notificationSetting.vibration else null,
+            ledColor = if (notificationSetting.isLedEnabled) notificationSetting.ledColor else null,
+            ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_SLOW,
+            ringAndVibrate = ringAndVibrate
+        )
 
-        return builder.build();
+        return builder.build()
     }
 
-    private NotificationCompat.Builder createSimpleSummaryNotification(Account account, int unreadMessageCount) {
-        String accountName = notificationHelper.getAccountName(account);
-        CharSequence newMailText = resourceProvider.newMailTitle();
-        String unreadMessageCountText = resourceProvider.newMailUnreadMessageCount(unreadMessageCount, accountName);
-
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        PendingIntent contentIntent = actionCreator.createViewFolderListPendingIntent(account, notificationId);
+    private fun createSimpleSummaryNotification(account: Account, unreadMessageCount: Int): NotificationCompat.Builder {
+        val accountName = notificationHelper.getAccountName(account)
+        val newMailText = resourceProvider.newMailTitle()
+        val unreadMessageCountText = resourceProvider.newMailUnreadMessageCount(unreadMessageCount, accountName)
+        val notificationId = getNewMailSummaryNotificationId(account)
+        val contentIntent = actionCreator.createViewFolderListPendingIntent(account, notificationId)
 
         return createAndInitializeNotificationBuilder(account)
-                .setNumber(unreadMessageCount)
-                .setTicker(newMailText)
-                .setContentTitle(unreadMessageCountText)
-                .setContentText(newMailText)
-                .setContentIntent(contentIntent);
+            .setNumber(unreadMessageCount)
+            .setTicker(newMailText)
+            .setContentTitle(unreadMessageCountText)
+            .setContentText(newMailText)
+            .setContentIntent(contentIntent)
     }
 
-    private NotificationCompat.Builder createBigTextStyleSummaryNotification(Account account,
-            NotificationHolder holder) {
+    private fun createBigTextStyleSummaryNotification(
+        account: Account,
+        holder: NotificationHolder
+    ): NotificationCompat.Builder {
+        val notificationId = getNewMailSummaryNotificationId(account)
+        val builder = createBigTextStyleNotification(account, holder, notificationId)
+        builder.setGroupSummary(true)
 
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        Builder builder = createBigTextStyleNotification(account, holder, notificationId)
-                .setGroupSummary(true);
+        val content = holder.content
+        addReplyAction(builder, content, notificationId)
+        addMarkAsReadAction(builder, content, notificationId)
+        addDeleteAction(builder, content, notificationId)
 
-        NotificationContent content = holder.content;
-        addReplyAction(builder, content, notificationId);
-        addMarkAsReadAction(builder, content, notificationId);
-        addDeleteAction(builder, content, notificationId);
-
-        return builder;
+        return builder
     }
 
-    private NotificationCompat.Builder createInboxStyleSummaryNotification(Account account,
-            NotificationData notificationData, int unreadMessageCount) {
+    private fun createInboxStyleSummaryNotification(
+        account: Account,
+        notificationData: NotificationData,
+        unreadMessageCount: Int
+    ): NotificationCompat.Builder {
+        val latestNotification = notificationData.holderForLatestNotification
+        val newMessagesCount = notificationData.newMessagesCount
+        val accountName = notificationHelper.getAccountName(account)
+        val title = resourceProvider.newMessagesTitle(newMessagesCount)
+        val summary = if (notificationData.hasSummaryOverflowMessages()) {
+            resourceProvider.additionalMessages(notificationData.getSummaryOverflowMessagesCount(), accountName)
+        } else {
+            accountName
+        }
+        val groupKey = getGroupKey(account)
 
-        NotificationHolder latestNotification = notificationData.getHolderForLatestNotification();
+        val builder = createAndInitializeNotificationBuilder(account)
+            .setNumber(unreadMessageCount)
+            .setTicker(latestNotification.content.summary)
+            .setGroup(groupKey)
+            .setGroupSummary(true)
+            .setContentTitle(title)
+            .setSubText(accountName)
 
-        int newMessagesCount = notificationData.getNewMessagesCount();
-        String accountName = notificationHelper.getAccountName(account);
-        String title = resourceProvider.newMessagesTitle(newMessagesCount);
-        String summary = (notificationData.hasSummaryOverflowMessages()) ?
-                resourceProvider.additionalMessages(notificationData.getSummaryOverflowMessagesCount(), accountName) :
-                accountName;
-        String groupKey = NotificationGroupKeys.getGroupKey(account);
+        val style = createInboxStyle(builder)
+            .setBigContentTitle(title)
+            .setSummaryText(summary)
 
-        NotificationCompat.Builder builder = createAndInitializeNotificationBuilder(account)
-                .setNumber(unreadMessageCount)
-                .setTicker(latestNotification.content.summary)
-                .setGroup(groupKey)
-                .setGroupSummary(true)
-                .setContentTitle(title)
-                .setSubText(accountName);
+        for (content in notificationData.getContentForSummaryNotification()) {
+            style.addLine(content.summary)
+        }
+        builder.setStyle(style)
 
-        NotificationCompat.InboxStyle style = createInboxStyle(builder)
-                .setBigContentTitle(title)
-                .setSummaryText(summary);
+        addMarkAllAsReadAction(builder, notificationData)
+        addDeleteAllAction(builder, notificationData)
+        wearNotifications.addSummaryActions(builder, notificationData)
 
-        for (NotificationContent content : notificationData.getContentForSummaryNotification()) {
-            style.addLine(content.summary);
+        val notificationId = getNewMailSummaryNotificationId(account)
+        val messageReferences = notificationData.getAllMessageReferences()
+        val contentIntent = actionCreator.createViewMessagesPendingIntent(account, messageReferences, notificationId)
+        builder.setContentIntent(contentIntent)
+
+        return builder
+    }
+
+    private fun addMarkAsReadAction(
+        builder: NotificationCompat.Builder,
+        content: NotificationContent,
+        notificationId: Int
+    ) {
+        val icon = resourceProvider.iconMarkAsRead
+        val title = resourceProvider.actionMarkAsRead()
+        val messageReference = content.messageReference
+        val action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId)
+
+        builder.addAction(icon, title, action)
+    }
+
+    private fun addMarkAllAsReadAction(builder: NotificationCompat.Builder, notificationData: NotificationData) {
+        val icon = resourceProvider.iconMarkAsRead
+        val title = resourceProvider.actionMarkAsRead()
+        val account = notificationData.account
+        val messageReferences = notificationData.getAllMessageReferences()
+        val notificationId = getNewMailSummaryNotificationId(account)
+        val markAllAsReadPendingIntent =
+            actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId)
+
+        builder.addAction(icon, title, markAllAsReadPendingIntent)
+    }
+
+    private fun addDeleteAllAction(builder: NotificationCompat.Builder, notificationData: NotificationData) {
+        if (K9.notificationQuickDeleteBehaviour !== NotificationQuickDelete.ALWAYS) {
+            return
         }
 
-        builder.setStyle(style);
+        val icon = resourceProvider.iconDelete
+        val title = resourceProvider.actionDelete()
+        val account = notificationData.account
+        val notificationId = getNewMailSummaryNotificationId(account)
+        val messageReferences = notificationData.getAllMessageReferences()
+        val action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId)
 
-        addMarkAllAsReadAction(builder, notificationData);
-        addDeleteAllAction(builder, notificationData);
-
-        wearNotifications.addSummaryActions(builder, notificationData);
-
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        List<MessageReference> messageReferences = notificationData.getAllMessageReferences();
-        PendingIntent contentIntent = actionCreator.createViewMessagesPendingIntent(
-                account, messageReferences, notificationId);
-        builder.setContentIntent(contentIntent);
-
-        return builder;
+        builder.addAction(icon, title, action)
     }
 
-    private void addMarkAsReadAction(Builder builder, NotificationContent content, int notificationId) {
-        int icon = resourceProvider.getIconMarkAsRead();
-        String title = resourceProvider.actionMarkAsRead();
-
-
-        MessageReference messageReference = content.messageReference;
-        PendingIntent action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId);
-
-        builder.addAction(icon, title, action);
-    }
-
-    private void addMarkAllAsReadAction(Builder builder, NotificationData notificationData) {
-        int icon = resourceProvider.getIconMarkAsRead();
-        String title = resourceProvider.actionMarkAsRead();
-
-        Account account = notificationData.getAccount();
-        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        PendingIntent markAllAsReadPendingIntent =
-                actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId);
-
-        builder.addAction(icon, title, markAllAsReadPendingIntent);
-    }
-
-    private void addDeleteAllAction(Builder builder, NotificationData notificationData) {
-        if (K9.getNotificationQuickDeleteBehaviour() != NotificationQuickDelete.ALWAYS) {
-            return;
-        }
-
-        int icon = resourceProvider.getIconDelete();
-        String title = resourceProvider.actionDelete();
-
-        Account account = notificationData.getAccount();
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
-        PendingIntent action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId);
-
-        builder.addAction(icon, title, action);
-    }
-
-    private void addDeleteAction(Builder builder, NotificationContent content, int notificationId) {
+    private fun addDeleteAction(
+        builder: NotificationCompat.Builder,
+        content: NotificationContent,
+        notificationId: Int
+    ) {
         if (!isDeleteActionEnabled()) {
-            return;
+            return
         }
 
-        int icon = resourceProvider.getIconDelete();
-        String title = resourceProvider.actionDelete();
+        val icon = resourceProvider.iconDelete
+        val title = resourceProvider.actionDelete()
+        val messageReference = content.messageReference
+        val action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId)
 
-        MessageReference messageReference = content.messageReference;
-        PendingIntent action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId);
-
-        builder.addAction(icon, title, action);
+        builder.addAction(icon, title, action)
     }
 
-    private void addReplyAction(Builder builder, NotificationContent content, int notificationId) {
-        int icon = resourceProvider.getIconReply();
-        String title = resourceProvider.actionReply();
+    private fun addReplyAction(builder: NotificationCompat.Builder, content: NotificationContent, notificationId: Int) {
+        val icon = resourceProvider.iconReply
+        val title = resourceProvider.actionReply()
+        val messageReference = content.messageReference
+        val replyToMessagePendingIntent = actionCreator.createReplyPendingIntent(messageReference, notificationId)
 
-        MessageReference messageReference = content.messageReference;
-        PendingIntent replyToMessagePendingIntent =
-                actionCreator.createReplyPendingIntent(messageReference, notificationId);
-
-        builder.addAction(icon, title, replyToMessagePendingIntent);
+        builder.addAction(icon, title, replyToMessagePendingIntent)
     }
 
-    private boolean isPrivacyModeActive() {
-        KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+    private val isPrivacyModeActive: Boolean
+        get() {
+            val keyguardService = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            val privacyModeAlwaysEnabled = K9.notificationHideSubject === NotificationHideSubject.ALWAYS
+            val privacyModeEnabledWhenLocked = K9.notificationHideSubject === NotificationHideSubject.WHEN_LOCKED
+            val screenLocked = keyguardService.inKeyguardRestrictedInputMode()
+            return privacyModeAlwaysEnabled || privacyModeEnabledWhenLocked && screenLocked
+        }
 
-        boolean privacyModeAlwaysEnabled = K9.getNotificationHideSubject() == NotificationHideSubject.ALWAYS;
-        boolean privacyModeEnabledWhenLocked = K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED;
-        boolean screenLocked = keyguardService.inKeyguardRestrictedInputMode();
-
-        return privacyModeAlwaysEnabled || (privacyModeEnabledWhenLocked && screenLocked);
-    }
-
-    protected InboxStyle createInboxStyle(Builder builder) {
-        return new InboxStyle(builder);
+    protected open fun createInboxStyle(builder: NotificationCompat.Builder?): NotificationCompat.InboxStyle {
+        return NotificationCompat.InboxStyle(builder)
     }
 }

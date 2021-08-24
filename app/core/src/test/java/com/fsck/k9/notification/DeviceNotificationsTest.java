@@ -17,6 +17,7 @@ import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.RobolectricTest;
+import com.fsck.k9.controller.MessageReference;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -197,8 +198,11 @@ public class DeviceNotificationsTest extends RobolectricTest {
         when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
         when(notificationData.getAccount()).thenReturn(account);
 
-        NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, PREVIEW, SUMMARY, false);
-        NotificationContent content2 = new NotificationContent(null, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
+        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
+        NotificationContent content =
+                new NotificationContent(messageReference, SENDER, SUBJECT, PREVIEW, SUMMARY, false);
+        NotificationContent content2 =
+                new NotificationContent(messageReference, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
         List<NotificationContent> contents = Arrays.asList(content, content2);
         when(notificationData.getContentForSummaryNotification()).thenReturn(contents);
 

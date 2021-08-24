@@ -7,6 +7,7 @@ import androidx.core.app.NotificationCompat.Builder;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.testing.MockHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,7 +98,8 @@ public class BaseNotificationsTest {
     }
 
     private NotificationHolder createNotificationHolder(int notificationId) {
-        NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, NOTIFICATION_PREVIEW,
+        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
+        NotificationContent content = new NotificationContent(messageReference, SENDER, SUBJECT, NOTIFICATION_PREVIEW,
                 NOTIFICATION_SUMMARY, false);
         return new NotificationHolder(notificationId, content);
     }

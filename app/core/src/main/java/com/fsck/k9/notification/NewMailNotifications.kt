@@ -1,167 +1,134 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
-
-import android.app.Notification;
-import androidx.core.app.NotificationManagerCompat;
-import android.util.SparseArray;
-
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.mailstore.LocalMessage;
-
+import android.util.SparseArray
+import androidx.core.app.NotificationManagerCompat
+import com.fsck.k9.Account
+import com.fsck.k9.K9
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.mailstore.LocalMessage
 
 /**
  * Handle notifications for new messages.
- * <p>
- * We call the notification shown on the device <em>summary notification</em>, even when there's only one new message.
- * Notifications on an Android Wear device are displayed as a stack of cards and that's why we call them <em>stacked
- * notifications</em>. We have to keep track of stacked notifications individually and recreate/update the summary
- * notification when one or more of the stacked notifications are added/removed.<br>
- * {@link NotificationData} keeps track of all data required to (re)create the actual system notifications.
- * </p>
+ *
+ * We call the notification shown on the device *summary notification*, even when there's only one new message.
+ * Notifications on an Android Wear device are displayed as a stack of cards and that's why we call them *stacked
+ * notifications*. We have to keep track of stacked notifications individually and recreate/update the summary
+ * notification when one or more of the stacked notifications are added/removed.
+ *
+ * [NotificationData] keeps track of all data required to (re)create the actual system notifications.
  */
-class NewMailNotifications {
-    private final NotificationHelper notificationHelper;
-    private final NotificationContentCreator contentCreator;
-    private final DeviceNotifications deviceNotifications;
-    private final WearNotifications wearNotifications;
-    private final SparseArray<NotificationData> notifications = new SparseArray<>();
-    private final Object lock = new Object();
+internal open class NewMailNotifications(
+    private val notificationHelper: NotificationHelper,
+    private val contentCreator: NotificationContentCreator,
+    private val deviceNotifications: DeviceNotifications,
+    private val wearNotifications: WearNotifications
+) {
+    private val notifications = SparseArray<NotificationData>()
+    private val lock = Any()
 
+    fun addNewMailNotification(account: Account, message: LocalMessage, unreadMessageCount: Int) {
+        val content = contentCreator.createFromMessage(account, message)
 
-    NewMailNotifications(NotificationHelper notificationHelper, NotificationContentCreator contentCreator,
-            DeviceNotifications deviceNotifications, WearNotifications wearNotifications) {
-        this.notificationHelper = notificationHelper;
-        this.deviceNotifications = deviceNotifications;
-        this.wearNotifications = wearNotifications;
-        this.contentCreator = contentCreator;
-    }
+        synchronized(lock) {
+            val notificationData = getOrCreateNotificationData(account, unreadMessageCount)
 
-    public void addNewMailNotification(Account account, LocalMessage message, int unreadMessageCount) {
-        NotificationContent content = contentCreator.createFromMessage(account, message);
-
-        synchronized (lock) {
-            NotificationData notificationData = getOrCreateNotificationData(account, unreadMessageCount);
-            AddNotificationResult result = notificationData.addNotificationContent(content);
-
-            if (result.shouldCancelNotification()) {
-                int notificationId = result.getNotificationId();
-                cancelNotification(notificationId);
+            val result = notificationData.addNotificationContent(content)
+            if (result.shouldCancelNotification) {
+                val notificationId = result.notificationId
+                cancelNotification(notificationId)
             }
 
-            createStackedNotification(account, result.getNotificationHolder());
-            createSummaryNotification(account, notificationData, false);
+            createStackedNotification(account, result.notificationHolder)
+            createSummaryNotification(account, notificationData, false)
         }
     }
 
-    public void removeNewMailNotification(Account account, MessageReference messageReference) {
-        synchronized (lock) {
-            NotificationData notificationData = getNotificationData(account);
-            if (notificationData == null) {
-                return;
+    fun removeNewMailNotification(account: Account, messageReference: MessageReference) {
+        synchronized(lock) {
+            val notificationData = getNotificationData(account) ?: return
+
+            val result = notificationData.removeNotificationForMessage(messageReference)
+            if (result.isUnknownNotification) return
+
+            cancelNotification(result.notificationId)
+
+            if (result.shouldCreateNotification) {
+                createStackedNotification(account, result.notificationHolder)
             }
 
-            RemoveNotificationResult result = notificationData.removeNotificationForMessage(messageReference);
-            if (result.isUnknownNotification()) {
-                return;
-            }
-
-            cancelNotification(result.getNotificationId());
-
-            if (result.shouldCreateNotification()) {
-                createStackedNotification(account, result.getNotificationHolder());
-            }
-
-            updateSummaryNotification(account, notificationData);
+            updateSummaryNotification(account, notificationData)
         }
     }
 
-    public void clearNewMailNotifications(Account account) {
-        NotificationData notificationData;
-        synchronized (lock) {
-            notificationData = removeNotificationData(account);
+    fun clearNewMailNotifications(account: Account) {
+        val notificationData = synchronized(lock) { removeNotificationData(account) } ?: return
+
+        for (notificationId in notificationData.getActiveNotificationIds()) {
+            cancelNotification(notificationId)
         }
 
-        if (notificationData == null) {
-            return;
-        }
-
-        for (int notificationId : notificationData.getActiveNotificationIds()) {
-            cancelNotification(notificationId);
-        }
-
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        cancelNotification(notificationId);
+        val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        cancelNotification(notificationId)
     }
 
-    private NotificationData getOrCreateNotificationData(Account account, int unreadMessageCount) {
-        NotificationData notificationData = getNotificationData(account);
-        if (notificationData != null) {
-            return notificationData;
-        }
+    private fun getOrCreateNotificationData(account: Account, unreadMessageCount: Int): NotificationData {
+        val notificationData = getNotificationData(account)
+        if (notificationData != null) return notificationData
 
-        int accountNumber = account.getAccountNumber();
-        NotificationData newNotificationHolder = createNotificationData(account, unreadMessageCount);
-        notifications.put(accountNumber, newNotificationHolder);
+        val accountNumber = account.accountNumber
+        val newNotificationHolder = createNotificationData(account, unreadMessageCount)
+        notifications.put(accountNumber, newNotificationHolder)
 
-        return newNotificationHolder;
+        return newNotificationHolder
     }
 
-    private NotificationData getNotificationData(Account account) {
-        int accountNumber = account.getAccountNumber();
-        return notifications.get(accountNumber);
+    private fun getNotificationData(account: Account): NotificationData? {
+        val accountNumber = account.accountNumber
+        return notifications[accountNumber]
     }
 
-    private NotificationData removeNotificationData(Account account) {
-        int accountNumber = account.getAccountNumber();
-        NotificationData notificationData = notifications.get(accountNumber);
-        notifications.remove(accountNumber);
-        return notificationData;
+    private fun removeNotificationData(account: Account): NotificationData? {
+        val accountNumber = account.accountNumber
+        val notificationData = notifications[accountNumber]
+        notifications.remove(accountNumber)
+        return notificationData
     }
 
-    NotificationData createNotificationData(Account account, int unreadMessageCount) {
-        NotificationData notificationData = new NotificationData(account);
-        notificationData.setUnreadMessageCount(unreadMessageCount);
-        return notificationData;
+    protected open fun createNotificationData(account: Account, unreadMessageCount: Int): NotificationData {
+        return NotificationData(account, unreadMessageCount)
     }
 
-    private void cancelNotification(int notificationId) {
-        getNotificationManager().cancel(notificationId);
+    private fun cancelNotification(notificationId: Int) {
+        notificationManager.cancel(notificationId)
     }
 
-    private void updateSummaryNotification(Account account, NotificationData notificationData) {
-        if (notificationData.getNewMessagesCount() == 0) {
-            clearNewMailNotifications(account);
+    private fun updateSummaryNotification(account: Account, notificationData: NotificationData) {
+        if (notificationData.newMessagesCount == 0) {
+            clearNewMailNotifications(account)
         } else {
-            createSummaryNotification(account, notificationData, true);
+            createSummaryNotification(account, notificationData, true)
         }
     }
 
-    private void createSummaryNotification(Account account, NotificationData notificationData, boolean silent) {
-        Notification notification = deviceNotifications.buildSummaryNotification(account, notificationData, silent);
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-
-        getNotificationManager().notify(notificationId, notification);
+    private fun createSummaryNotification(account: Account, notificationData: NotificationData, silent: Boolean) {
+        val notification = deviceNotifications.buildSummaryNotification(account, notificationData, silent)
+        val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        notificationManager.notify(notificationId, notification)
     }
 
-    private void createStackedNotification(Account account, NotificationHolder holder) {
-        if (isPrivacyModeEnabled()) {
-            return;
+    private fun createStackedNotification(account: Account, holder: NotificationHolder) {
+        if (isPrivacyModeEnabled) {
+            return
         }
 
-        Notification notification = wearNotifications.buildStackedNotification(account, holder);
-        int notificationId = holder.notificationId;
-
-        getNotificationManager().notify(notificationId, notification);
+        val notification = wearNotifications.buildStackedNotification(account, holder)
+        val notificationId = holder.notificationId
+        notificationManager.notify(notificationId, notification)
     }
 
-    private boolean isPrivacyModeEnabled() {
-        return K9.getNotificationHideSubject() != NotificationHideSubject.NEVER;
-    }
+    private val isPrivacyModeEnabled: Boolean
+        get() = K9.notificationHideSubject !== K9.NotificationHideSubject.NEVER
 
-    private NotificationManagerCompat getNotificationManager() {
-        return notificationHelper.getNotificationManager();
-    }
+    private val notificationManager: NotificationManagerCompat
+        get() = notificationHelper.getNotificationManager()
 }

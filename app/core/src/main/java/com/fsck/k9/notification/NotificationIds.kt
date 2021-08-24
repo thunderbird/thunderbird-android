@@ -1,61 +1,62 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import com.fsck.k9.Account
 
-import com.fsck.k9.Account;
+internal object NotificationIds {
+    const val PUSH_NOTIFICATION_ID = 1
 
+    private const val NUMBER_OF_GENERAL_NOTIFICATIONS = 1
+    private const val OFFSET_SEND_FAILED_NOTIFICATION = 0
+    private const val OFFSET_CERTIFICATE_ERROR_INCOMING = 1
+    private const val OFFSET_CERTIFICATE_ERROR_OUTGOING = 2
+    private const val OFFSET_AUTHENTICATION_ERROR_INCOMING = 3
+    private const val OFFSET_AUTHENTICATION_ERROR_OUTGOING = 4
+    private const val OFFSET_FETCHING_MAIL = 5
+    private const val OFFSET_NEW_MAIL_SUMMARY = 6
+    private const val OFFSET_NEW_MAIL_STACKED = 7
+    private const val NUMBER_OF_DEVICE_NOTIFICATIONS = 7
+    private const val NUMBER_OF_STACKED_NOTIFICATIONS = NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS
+    private const val NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT =
+        NUMBER_OF_DEVICE_NOTIFICATIONS + NUMBER_OF_STACKED_NOTIFICATIONS
 
-class NotificationIds {
-    public static final int PUSH_NOTIFICATION_ID = 1;
-    private static final int NUMBER_OF_GENERAL_NOTIFICATIONS = 1;
-
-    private static final int OFFSET_SEND_FAILED_NOTIFICATION = 0;
-    private static final int OFFSET_CERTIFICATE_ERROR_INCOMING = 1;
-    private static final int OFFSET_CERTIFICATE_ERROR_OUTGOING = 2;
-    private static final int OFFSET_AUTHENTICATION_ERROR_INCOMING = 3;
-    private static final int OFFSET_AUTHENTICATION_ERROR_OUTGOING = 4;
-    private static final int OFFSET_FETCHING_MAIL = 5;
-    private static final int OFFSET_NEW_MAIL_SUMMARY = 6;
-
-    private static final int OFFSET_NEW_MAIL_STACKED = 7;
-
-    private static final int NUMBER_OF_DEVICE_NOTIFICATIONS = 7;
-    private static final int NUMBER_OF_STACKED_NOTIFICATIONS = NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS;
-    private static final int NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT = NUMBER_OF_DEVICE_NOTIFICATIONS +
-            NUMBER_OF_STACKED_NOTIFICATIONS;
-            
-
-    public static int getNewMailSummaryNotificationId(Account account) {
-        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_SUMMARY;
+    @JvmStatic
+    fun getNewMailSummaryNotificationId(account: Account): Int {
+        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_SUMMARY
     }
 
-    public static int getNewMailStackedNotificationId(Account account, int index) {
-        if (index < 0 || index >= NUMBER_OF_STACKED_NOTIFICATIONS) {
-            throw new IndexOutOfBoundsException("Invalid value: " + index);
-        }
+    @JvmStatic
+    fun getNewMailStackedNotificationId(account: Account, index: Int): Int {
+        require(index in 0 until NUMBER_OF_STACKED_NOTIFICATIONS) { "Invalid index: $index" }
 
-        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_STACKED + index;
+        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_STACKED + index
     }
 
-    public static int getFetchingMailNotificationId(Account account) {
-        return getBaseNotificationId(account) + OFFSET_FETCHING_MAIL;
+    @JvmStatic
+    fun getFetchingMailNotificationId(account: Account): Int {
+        return getBaseNotificationId(account) + OFFSET_FETCHING_MAIL
     }
 
-    public static int getSendFailedNotificationId(Account account) {
-        return getBaseNotificationId(account) + OFFSET_SEND_FAILED_NOTIFICATION;
+    @JvmStatic
+    fun getSendFailedNotificationId(account: Account): Int {
+        return getBaseNotificationId(account) + OFFSET_SEND_FAILED_NOTIFICATION
     }
 
-    public static int getCertificateErrorNotificationId(Account account, boolean incoming) {
-        int offset = incoming ? OFFSET_CERTIFICATE_ERROR_INCOMING : OFFSET_CERTIFICATE_ERROR_OUTGOING;
-        return getBaseNotificationId(account) + offset;
+    @JvmStatic
+    fun getCertificateErrorNotificationId(account: Account, incoming: Boolean): Int {
+        val offset = if (incoming) OFFSET_CERTIFICATE_ERROR_INCOMING else OFFSET_CERTIFICATE_ERROR_OUTGOING
+
+        return getBaseNotificationId(account) + offset
     }
 
-    public static int getAuthenticationErrorNotificationId(Account account, boolean incoming) {
-        int offset = incoming ? OFFSET_AUTHENTICATION_ERROR_INCOMING : OFFSET_AUTHENTICATION_ERROR_OUTGOING;
-        return getBaseNotificationId(account) + offset;
+    @JvmStatic
+    fun getAuthenticationErrorNotificationId(account: Account, incoming: Boolean): Int {
+        val offset = if (incoming) OFFSET_AUTHENTICATION_ERROR_INCOMING else OFFSET_AUTHENTICATION_ERROR_OUTGOING
+
+        return getBaseNotificationId(account) + offset
     }
 
-    private static int getBaseNotificationId(Account account) {
+    private fun getBaseNotificationId(account: Account): Int {
         return 1 /* skip notification ID 0 */ + NUMBER_OF_GENERAL_NOTIFICATIONS +
-                account.getAccountNumber() * NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT;
+            account.accountNumber * NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT
     }
 }

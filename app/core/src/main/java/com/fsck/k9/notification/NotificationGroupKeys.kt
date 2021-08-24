@@ -1,14 +1,12 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import com.fsck.k9.Account
 
-import com.fsck.k9.Account;
+object NotificationGroupKeys {
+    private const val NOTIFICATION_GROUP_KEY_PREFIX = "newMailNotifications-"
 
-
-public class NotificationGroupKeys {
-    private static final String NOTIFICATION_GROUP_KEY_PREFIX = "newMailNotifications-";
-    
-    
-    public static String getGroupKey(Account account) {
-        return NOTIFICATION_GROUP_KEY_PREFIX + account.getAccountNumber();
+    @JvmStatic
+    fun getGroupKey(account: Account): String {
+        return NOTIFICATION_GROUP_KEY_PREFIX + account.accountNumber
     }
 }

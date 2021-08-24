@@ -1,83 +1,66 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import com.fsck.k9.Account
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.mailstore.LocalFolder
+import com.fsck.k9.mailstore.LocalMessage
 
-import com.fsck.k9.Account;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalMessage;
-
-
-public class NotificationController {
-    private final CertificateErrorNotifications certificateErrorNotifications;
-    private final AuthenticationErrorNotifications authenticationErrorNotifications;
-    private final SyncNotifications syncNotifications;
-    private final SendFailedNotifications sendFailedNotifications;
-    private final NewMailNotifications newMailNotifications;
-
-
-    NotificationController(
-            CertificateErrorNotifications certificateErrorNotifications,
-            AuthenticationErrorNotifications authenticationErrorNotifications,
-            SyncNotifications syncNotifications,
-            SendFailedNotifications sendFailedNotifications,
-            NewMailNotifications newMailNotifications
-    ) {
-        this.certificateErrorNotifications = certificateErrorNotifications;
-        this.authenticationErrorNotifications = authenticationErrorNotifications;
-        this.syncNotifications = syncNotifications;
-        this.sendFailedNotifications = sendFailedNotifications;
-        this.newMailNotifications = newMailNotifications;
+class NotificationController internal constructor(
+    private val certificateErrorNotifications: CertificateErrorNotifications,
+    private val authenticationErrorNotifications: AuthenticationErrorNotifications,
+    private val syncNotifications: SyncNotifications,
+    private val sendFailedNotifications: SendFailedNotifications,
+    private val newMailNotifications: NewMailNotifications
+) {
+    fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
+        certificateErrorNotifications.showCertificateErrorNotification(account, incoming)
     }
 
-    public void showCertificateErrorNotification(Account account, boolean incoming) {
-        certificateErrorNotifications.showCertificateErrorNotification(account, incoming);
+    fun clearCertificateErrorNotifications(account: Account, incoming: Boolean) {
+        certificateErrorNotifications.clearCertificateErrorNotifications(account, incoming)
     }
 
-    public void clearCertificateErrorNotifications(Account account, boolean incoming) {
-        certificateErrorNotifications.clearCertificateErrorNotifications(account, incoming);
+    fun showAuthenticationErrorNotification(account: Account, incoming: Boolean) {
+        authenticationErrorNotifications.showAuthenticationErrorNotification(account, incoming)
     }
 
-    public void showAuthenticationErrorNotification(Account account, boolean incoming) {
-        authenticationErrorNotifications.showAuthenticationErrorNotification(account, incoming);
+    fun clearAuthenticationErrorNotification(account: Account, incoming: Boolean) {
+        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, incoming)
     }
 
-    public void clearAuthenticationErrorNotification(Account account, boolean incoming) {
-        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, incoming);
+    fun showSendingNotification(account: Account) {
+        syncNotifications.showSendingNotification(account)
     }
 
-    public void showSendingNotification(Account account) {
-        syncNotifications.showSendingNotification(account);
+    fun clearSendingNotification(account: Account) {
+        syncNotifications.clearSendingNotification(account)
     }
 
-    public void clearSendingNotification(Account account) {
-        syncNotifications.clearSendingNotification(account);
+    fun showSendFailedNotification(account: Account, exception: Exception) {
+        sendFailedNotifications.showSendFailedNotification(account, exception)
     }
 
-    public void showSendFailedNotification(Account account, Exception exception) {
-        sendFailedNotifications.showSendFailedNotification(account, exception);
+    fun clearSendFailedNotification(account: Account) {
+        sendFailedNotifications.clearSendFailedNotification(account)
     }
 
-    public void clearSendFailedNotification(Account account) {
-        sendFailedNotifications.clearSendFailedNotification(account);
+    fun showFetchingMailNotification(account: Account, folder: LocalFolder) {
+        syncNotifications.showFetchingMailNotification(account, folder)
     }
 
-    public void showFetchingMailNotification(Account account, LocalFolder folder) {
-        syncNotifications.showFetchingMailNotification(account, folder);
+    fun clearFetchingMailNotification(account: Account) {
+        syncNotifications.clearFetchingMailNotification(account)
     }
 
-    public void clearFetchingMailNotification(Account account) {
-        syncNotifications.clearFetchingMailNotification(account);
+    fun addNewMailNotification(account: Account, message: LocalMessage, previousUnreadMessageCount: Int) {
+        newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount)
     }
 
-    public void addNewMailNotification(Account account, LocalMessage message, int previousUnreadMessageCount) {
-        newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount);
+    fun removeNewMailNotification(account: Account, messageReference: MessageReference) {
+        newMailNotifications.removeNewMailNotification(account, messageReference)
     }
 
-    public void removeNewMailNotification(Account account, MessageReference messageReference) {
-        newMailNotifications.removeNewMailNotification(account, messageReference);
-    }
-
-    public void clearNewMailNotifications(Account account) {
-        newMailNotifications.clearNewMailNotifications(account);
+    fun clearNewMailNotifications(account: Account) {
+        newMailNotifications.clearNewMailNotifications(account)
     }
 }

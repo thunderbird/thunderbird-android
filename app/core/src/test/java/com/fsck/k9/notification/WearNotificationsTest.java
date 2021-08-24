@@ -254,7 +254,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private NotificationContent createNotificationContent(MessageReference messageReference) {
-        return new NotificationContent(messageReference, null, null, null, null, false);
+        return new NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false);
     }
 
     private NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {
@@ -355,7 +355,7 @@ public class WearNotificationsTest extends RobolectricTest {
         }
 
         @Override
-        MessagingController createMessagingController() {
+        protected MessagingController createMessagingController() {
             return messagingController;
         }
     }

@@ -1,54 +1,45 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
-
-class RemoveNotificationResult {
-    private final NotificationHolder notificationHolder;
-    private final int notificationId;
-    private final boolean unknownNotification;
-
-
-    private RemoveNotificationResult(NotificationHolder notificationHolder, int notificationId,
-            boolean unknownNotification) {
-        this.notificationHolder = notificationHolder;
-        this.notificationId = notificationId;
-        this.unknownNotification = unknownNotification;
-    }
-
-    public static RemoveNotificationResult createNotification(NotificationHolder notificationHolder) {
-        return new RemoveNotificationResult(notificationHolder, notificationHolder.notificationId, false);
-    }
-
-    public static RemoveNotificationResult cancelNotification(int notificationId) {
-        return new RemoveNotificationResult(null, notificationId, false);
-    }
-
-    public static RemoveNotificationResult unknownNotification() {
-        return new RemoveNotificationResult(null, 0, true);
-    }
-
-    public boolean shouldCreateNotification() {
-        return notificationHolder != null;
-    }
-
-    public int getNotificationId() {
-        if (isUnknownNotification()) {
-            throw new IllegalStateException("getNotificationId() can only be called when " +
-                    "isUnknownNotification() returns false");
+internal class RemoveNotificationResult private constructor(
+    private val holder: NotificationHolder?,
+    notificationId: Int,
+    val isUnknownNotification: Boolean
+) {
+    val notificationId: Int = notificationId
+        get() {
+            check(!isUnknownNotification) { "isUnknownNotification == true" }
+            return field
         }
 
-        return notificationId;
-    }
+    @get:JvmName("shouldCreateNotification")
+    val shouldCreateNotification: Boolean
+        get() = holder != null
 
-    public boolean isUnknownNotification() {
-        return unknownNotification;
-    }
+    val notificationHolder: NotificationHolder
+        get() = holder ?: error("shouldCreateNotification == false")
 
-    public NotificationHolder getNotificationHolder() {
-        if (!shouldCreateNotification()) {
-            throw new IllegalStateException("getNotificationHolder() can only be called when " +
-                    "shouldCreateNotification() returns true");
+    companion object {
+        @JvmStatic
+        fun createNotification(notificationHolder: NotificationHolder): RemoveNotificationResult {
+            return RemoveNotificationResult(
+                holder = notificationHolder,
+                notificationId = notificationHolder.notificationId,
+                isUnknownNotification = false
+            )
         }
 
-        return notificationHolder;
+        @JvmStatic
+        fun cancelNotification(notificationId: Int): RemoveNotificationResult {
+            return RemoveNotificationResult(
+                holder = null,
+                notificationId = notificationId,
+                isUnknownNotification = false
+            )
+        }
+
+        @JvmStatic
+        fun unknownNotification(): RemoveNotificationResult {
+            return RemoveNotificationResult(holder = null, notificationId = 0, isUnknownNotification = true)
+        }
     }
 }
