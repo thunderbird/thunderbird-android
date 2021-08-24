@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore;
 
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.fsck.k9.DI;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.TestCoreResourceProvider;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -135,7 +137,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
     @Test
     public void testTextPlainFormatFlowed() throws MessagingException {
         // Create text/plain body
-        TextBody body = new TextBody(BODY_TEXT_FLOWED);
+        Body body = new BinaryMemoryBody(BODY_TEXT_FLOWED.getBytes(StandardCharsets.UTF_8), "utf-8");
 
         // Create message
         MimeMessage message = new MimeMessage();

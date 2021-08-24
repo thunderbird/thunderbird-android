@@ -19,13 +19,11 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.Viewable.Flowed;
 import org.apache.commons.io.input.BoundedInputStream;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
-import static com.fsck.k9.mail.internet.FlowedMessageUtils.isFormatFlowed;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Html;
@@ -112,12 +110,21 @@ public class MessageExtractor {
         InputStream in = MimeUtility.decodeBody(body);
         InputStream possiblyLimitedIn =
                 textSizeLimit != NO_TEXT_SIZE_LIMIT ? new BoundedInputStream(in, textSizeLimit) : in;
+
+        String text;
         try {
-            return CharsetSupport.readToString(possiblyLimitedIn, charset);
+            text = CharsetSupport.readToString(possiblyLimitedIn, charset);
         } finally {
             try {
                 MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);
             } catch (IOException e) { /* Ignore */ }
+        }
+
+        FormatFlowedResult result = FormatFlowedHelper.checkFormatFlowed(part.getContentType());
+        if (result.isFormatFlowed()) {
+            return FlowedMessageUtils.deflow(text, result.isDelSp());
+        } else {
+            return text;
         }
     }
 
@@ -202,12 +209,7 @@ public class MessageExtractor {
             String mimeType = part.getMimeType();
             Viewable viewable;
             if (isSameMimeType(mimeType, "text/plain")) {
-                if (isFormatFlowed(part.getContentType())) {
-                    boolean delSp = FlowedMessageUtils.isDelSp(part.getContentType());
-                    viewable = new Flowed(part, delSp);
-                } else {
-                    viewable = new Text(part);
-                }
+                viewable = new Text(part);
             } else {
                 viewable = new Html(part);
             }
