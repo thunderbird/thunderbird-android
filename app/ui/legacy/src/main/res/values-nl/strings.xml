@@ -686,12 +686,12 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="volume_navigation_title">Volume op/neer navigatie</string>
   <string name="volume_navigation_message">Bericht beeld</string>
   <string name="volume_navigation_list">Variabele lijst weergave</string>
-  <string name="show_unified_inbox_title">Gecombineerde postvak-in weergeven</string>
+  <string name="show_unified_inbox_title">Gecombineerd postvak-in weergeven</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Ongelezen</string>
   <string name="search_all_messages_title">Alle berichten</string>
   <string name="search_all_messages_detail">Alle berichten in doorzoekbare mappen</string>
-  <string name="integrated_inbox_title">Gecombineerde postvak-in</string>
+  <string name="integrated_inbox_title">Gecombineerd postvak-in</string>
   <string name="integrated_inbox_detail">Alle berichten in gecombineerde mappen</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Combineer</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Alle berichten worden in de gecombineerde postvak-in weergegeven</string>
@@ -804,7 +804,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="unread_widget_select_account">Ongelezen aantal weergeven voor …</string>
   <string name="unread_widget_account_title">Account</string>
   <string name="unread_widget_account_summary">Het account waarvan het aantal ongelezen berichten wordt getoond</string>
-  <string name="unread_widget_unified_inbox_account_summary">Gecombineerde postvak-in</string>
+  <string name="unread_widget_unified_inbox_account_summary">Gecombineerd postvak-in</string>
   <string name="unread_widget_folder_enabled_title">Map aantal</string>
   <string name="unread_widget_folder_enabled_summary">Toon het aantal ongelezen berichten van een enkele map</string>
   <string name="unread_widget_folder_title">Map</string>
