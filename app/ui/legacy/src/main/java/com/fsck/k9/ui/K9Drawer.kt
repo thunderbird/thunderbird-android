@@ -8,7 +8,6 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -300,7 +299,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         headerView.addProfiles(*accountItems)
 
         if (K9.isShowUnifiedInbox) {
-            val unifiedInboxItem =  ProfileDrawerItem().apply {
+            val unifiedInboxItem = ProfileDrawerItem().apply {
                 iconRes = R.drawable.ic_inbox_multiple
                 nameRes = R.string.integrated_inbox_title
                 descriptionRes = R.string.integrated_inbox_description
