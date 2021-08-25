@@ -8,6 +8,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -39,6 +40,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import com.mikepenz.materialdrawer.model.interfaces.badgeText
+import com.mikepenz.materialdrawer.model.interfaces.descriptionRes
 import com.mikepenz.materialdrawer.model.interfaces.descriptionText
 import com.mikepenz.materialdrawer.model.interfaces.iconRes
 import com.mikepenz.materialdrawer.model.interfaces.nameRes
@@ -87,7 +89,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val swipeRefreshLayout: SwipeRefreshLayout
 
     private val userFolderDrawerIds = ArrayList<Long>()
-    private var unifiedInboxSelected: Boolean = false
     private val textColor: Int
     private var selectedTextColor: ColorStateList? = null
     private var selectedBackgroundColor: Int = 0
@@ -164,13 +165,20 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         headerView.headerBackground = ImageHolder(R.drawable.drawer_header_background)
 
         headerView.onAccountHeaderListener = { _, profile, _ ->
-            val account = (profile as ProfileDrawerItem).tag as Account
-            openedAccountUuid = account.uuid
-            val eventHandled = !parent.openRealAccount(account)
-            updateUserAccountsAndFolders(account)
-            updateButtonBarVisibility(false)
-
-            eventHandled
+            when (profile.identifier) {
+                DRAWER_ID_UNIFIED_INBOX -> {
+                    parent.openUnifiedInbox()
+                    close()
+                    true
+                } else -> {
+                    val account = (profile as ProfileDrawerItem).tag as Account
+                    openedAccountUuid = account.uuid
+                    val eventHandled = !parent.openRealAccount(account)
+                    updateUserAccountsAndFolders(account)
+                    updateButtonBarVisibility(false)
+                    eventHandled
+                }
+            }
         }
     }
 
@@ -250,12 +258,17 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         val oldSelectedBackgroundColor = selectedBackgroundColor
 
         var newActiveProfile: IProfile? = null
+        var unifiedInboxStarredCount = 0
+        var unifiedInboxUnreadCount = 0
         val accountItems = displayAccounts.map { displayAccount ->
             val account = displayAccount.account
             val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
 
             val drawerColors = getDrawerColorsForAccount(account)
             val selectedTextColor = drawerColors.accentColor.toSelectedColorStateList()
+
+            unifiedInboxStarredCount += displayAccount.starredMessageCount
+            unifiedInboxUnreadCount += displayAccount.unreadMessageCount
 
             val accountItem = ProfileDrawerItem().apply {
                 isNameShown = true
@@ -285,6 +298,26 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         headerView.clear()
         headerView.addProfiles(*accountItems)
+
+        if (K9.isShowUnifiedInbox) {
+            val unifiedInboxItem =  ProfileDrawerItem().apply {
+                iconRes = R.drawable.ic_inbox_multiple
+                nameRes = R.string.integrated_inbox_title
+                descriptionRes = R.string.integrated_inbox_description
+                isNameShown = true
+                identifier = DRAWER_ID_UNIFIED_INBOX
+                textColor = selectedTextColor
+                selectedColorInt = selectedBackgroundColor
+                isSelectable = false
+                buildBadgeText(unifiedInboxUnreadCount, unifiedInboxStarredCount)?.let { text ->
+                    badgeText = text
+                    badgeStyle = BadgeStyle().apply {
+                        textColorStateList = selectedTextColor
+                    }
+                }
+            }
+            headerView.addProfile(unifiedInboxItem, 0)
+        }
 
         newActiveProfile?.let { profile ->
             headerView.activeProfile = profile
@@ -356,24 +389,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         var openedFolderDrawerId: Long = -1
 
-        if (K9.isShowUnifiedInbox) {
-            val unifiedInboxItem = PrimaryDrawerItem().apply {
-                iconRes = R.drawable.ic_inbox_multiple
-                identifier = DRAWER_ID_UNIFIED_INBOX
-                nameRes = R.string.integrated_inbox_title
-                selectedColorInt = selectedBackgroundColor
-                textColor = selectedTextColor
-                isSelected = unifiedInboxSelected
-            }
-
-            sliderView.addItems(unifiedInboxItem)
-            sliderView.addItems(FixedDividerDrawerItem(identifier = DRAWER_ID_DIVIDER))
-
-            if (unifiedInboxSelected) {
-                openedFolderDrawerId = DRAWER_ID_UNIFIED_INBOX
-            }
-        }
-
         if (folders == null) {
             return
         }
@@ -434,16 +449,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     fun deselect() {
-        unifiedInboxSelected = false
         openedFolderId = null
         sliderView.selectExtension.deselect()
-    }
-
-    fun selectUnifiedInbox() {
-        headerView.selectionListShown = false
-        deselect()
-        unifiedInboxSelected = true
-        sliderView.setSelection(DRAWER_ID_UNIFIED_INBOX, false)
     }
 
     private data class DrawerColors(
