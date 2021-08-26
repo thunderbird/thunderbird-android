@@ -15,7 +15,7 @@ class FoldersViewModel(private val foldersLiveDataFactory: FoldersLiveDataFactor
     }
 
     fun loadFolders(account: Account) {
-        if (currentFoldersLiveData?.accountUuid == account.uuid) return
+        if (currentFoldersLiveData?.account?.uuid == account.uuid) return
 
         removeCurrentFoldersLiveData()
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.mailstore.FolderRepositoryManager
+import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.mailstore.SpecialFolderSelectionStrategy
@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 
 class AccountSettingsViewModel(
     private val preferences: Preferences,
-    private val folderRepositoryManager: FolderRepositoryManager,
+    private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy
 ) : ViewModel() {
     val accounts = AccountsLiveData(preferences)
@@ -28,9 +28,10 @@ class AccountSettingsViewModel(
         if (accountLiveData.value == null) {
 
             GlobalScope.launch(Dispatchers.Main) {
-                accountLiveData.value = withContext(Dispatchers.IO) {
+                val account = withContext(Dispatchers.IO) {
                     loadAccount(accountUuid)
                 }
+                accountLiveData.value = account
             }
         }
 
@@ -60,13 +61,13 @@ class AccountSettingsViewModel(
     }
 
     private fun loadFolders(account: Account) {
-        val folderRepository = folderRepositoryManager.getFolderRepository(account)
         GlobalScope.launch(Dispatchers.Main) {
-            foldersLiveData.value = withContext(Dispatchers.IO) {
-                val folders = folderRepository.getRemoteFolders()
+            val remoteFolderInfo = withContext(Dispatchers.IO) {
+                val folders = folderRepository.getRemoteFolders(account)
                 val automaticSpecialFolders = getAutomaticSpecialFolders(folders)
                 RemoteFolderInfo(folders, automaticSpecialFolders)
             }
+            foldersLiveData.value = remoteFolderInfo
         }
     }
 

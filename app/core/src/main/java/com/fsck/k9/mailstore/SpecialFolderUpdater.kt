@@ -18,7 +18,7 @@ class SpecialFolderUpdater(
     private val account: Account
 ) {
     fun updateSpecialFolders() {
-        val folders = folderRepository.getRemoteFolders()
+        val folders = folderRepository.getRemoteFolders(account)
 
         updateInbox(folders)
 
@@ -42,15 +42,15 @@ class SpecialFolderUpdater(
         account.inboxFolderId = newInboxId
 
         if (oldInboxId != null && folders.any { it.id == oldInboxId }) {
-            folderRepository.setIncludeInUnifiedInbox(oldInboxId, false)
+            folderRepository.setIncludeInUnifiedInbox(account, oldInboxId, false)
         }
 
         if (newInboxId != null) {
-            folderRepository.setIncludeInUnifiedInbox(newInboxId, true)
-            folderRepository.setDisplayClass(newInboxId, FolderClass.FIRST_CLASS)
-            folderRepository.setSyncClass(newInboxId, FolderClass.FIRST_CLASS)
-            folderRepository.setPushClass(newInboxId, FolderClass.FIRST_CLASS)
-            folderRepository.setNotificationClass(newInboxId, FolderClass.FIRST_CLASS)
+            folderRepository.setIncludeInUnifiedInbox(account, newInboxId, true)
+            folderRepository.setDisplayClass(account, newInboxId, FolderClass.FIRST_CLASS)
+            folderRepository.setSyncClass(account, newInboxId, FolderClass.FIRST_CLASS)
+            folderRepository.setPushClass(account, newInboxId, FolderClass.FIRST_CLASS)
+            folderRepository.setNotificationClass(account, newInboxId, FolderClass.FIRST_CLASS)
         }
     }
 
@@ -117,8 +117,8 @@ class SpecialFolderUpdater(
         }
 
         if (folderId != null) {
-            folderRepository.setDisplayClass(folderId, FolderClass.FIRST_CLASS)
-            folderRepository.setSyncClass(folderId, FolderClass.NO_CLASS)
+            folderRepository.setDisplayClass(account, folderId, FolderClass.FIRST_CLASS)
+            folderRepository.setSyncClass(account, folderId, FolderClass.NO_CLASS)
         }
     }
 

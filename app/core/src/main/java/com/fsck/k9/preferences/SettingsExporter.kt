@@ -10,7 +10,6 @@ import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_EMAIL_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_NAME_KEY
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.FolderRepository
-import com.fsck.k9.mailstore.FolderRepositoryManager
 import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import com.fsck.k9.preferences.Settings.SettingsDescription
@@ -24,7 +23,7 @@ class SettingsExporter(
     private val contentResolver: ContentResolver,
     private val preferences: Preferences,
     private val folderSettingsProvider: FolderSettingsProvider,
-    private val folderRepositoryManager: FolderRepositoryManager
+    private val folderRepository: FolderRepository
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
@@ -211,7 +210,6 @@ class SettingsExporter(
             }
         }
 
-        val folderRepository = folderRepositoryManager.getFolderRepository(account)
         writeFolderNameSettings(account, folderRepository, serializer)
 
         serializer.endTag(null, SETTINGS_ELEMENT)
@@ -272,7 +270,7 @@ class SettingsExporter(
     ) {
         fun writeFolderNameSetting(key: String, folderId: Long?, importedFolderServerId: String?) {
             val folderServerId = folderId?.let {
-                folderRepository.getFolderServerId(folderId)
+                folderRepository.getFolderServerId(account, folderId)
             } ?: importedFolderServerId
 
             if (folderServerId != null) {

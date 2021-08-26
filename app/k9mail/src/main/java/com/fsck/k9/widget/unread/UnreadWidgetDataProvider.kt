@@ -7,7 +7,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.R
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.mailstore.FolderRepositoryManager
+import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
@@ -19,7 +19,7 @@ class UnreadWidgetDataProvider(
     private val preferences: Preferences,
     private val messagingController: MessagingController,
     private val defaultFolderProvider: DefaultFolderProvider,
-    private val folderRepositoryManager: FolderRepositoryManager,
+    private val folderRepository: FolderRepository,
     private val folderNameFormatterFactory: FolderNameFormatterFactory
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
@@ -78,8 +78,7 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getFolderDisplayName(account: Account, folderId: Long): String {
-        val folderRepository = folderRepositoryManager.getFolderRepository(account)
-        val folder = folderRepository.getFolder(folderId)
+        val folder = folderRepository.getFolder(account, folderId)
         return if (folder != null) {
             val folderNameFormatter = folderNameFormatterFactory.create(context)
             folderNameFormatter.displayName(folder)

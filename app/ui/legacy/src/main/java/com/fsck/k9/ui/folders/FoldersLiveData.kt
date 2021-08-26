@@ -18,16 +18,13 @@ class FoldersLiveData(
     private val folderRepository: FolderRepository,
     private val messagingController: MessagingController,
     private val preferences: Preferences,
-    val accountUuid: String,
+    val account: Account,
     val displayMode: FolderMode?
 ) : LiveData<List<DisplayFolder>>() {
 
     private val messagingListener = object : SimpleMessagingListener() {
-        override fun folderStatusChanged(
-            account: Account,
-            folderId: Long
-        ) {
-            if (account?.uuid == accountUuid) {
+        override fun folderStatusChanged(account: Account, folderId: Long) {
+            if (account.uuid == this@FoldersLiveData.account.uuid) {
                 loadFoldersAsync()
             }
         }
@@ -39,7 +36,10 @@ class FoldersLiveData(
 
     private fun loadFoldersAsync() {
         GlobalScope.launch(Dispatchers.Main) {
-            value = withContext(Dispatchers.IO) { folderRepository.getDisplayFolders(displayMode) }
+            val displayFolders = withContext(Dispatchers.IO) {
+                folderRepository.getDisplayFolders(account, displayMode)
+            }
+            value = displayFolders
         }
     }
 
