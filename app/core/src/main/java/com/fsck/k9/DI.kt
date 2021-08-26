@@ -29,6 +29,10 @@ object DI {
     fun <T : Any> get(clazz: Class<T>): T {
         return koinGet(clazz)
     }
+
+    inline fun <reified T : Any> get(): T {
+        return koinGet(T::class.java)
+    }
 }
 
 interface EarlyInit

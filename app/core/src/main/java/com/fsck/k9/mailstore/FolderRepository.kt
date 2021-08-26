@@ -2,6 +2,9 @@ package com.fsck.k9.mailstore
 
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
+import com.fsck.k9.DI
+import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.CoroutineDispatcher
@@ -50,6 +53,42 @@ class FolderRepository(
                 starredMessageCount = folder.starredMessageCount
             )
         }.sortedWith(sortForDisplay)
+    }
+
+    fun getDisplayFoldersFlow(account: Account, displayMode: FolderMode): Flow<List<DisplayFolder>> {
+        val messagingController = DI.get<MessagingController>()
+
+        return callbackFlow {
+            send(getDisplayFolders(account, displayMode))
+
+            val listener = object : SimpleMessagingListener() {
+                override fun folderStatusChanged(statusChangedAccount: Account, folderId: Long) {
+                    if (statusChangedAccount.uuid == account.uuid) {
+                        launch {
+                            send(getDisplayFolders(account, displayMode))
+                        }
+                    }
+                }
+            }
+            messagingController.addListener(listener)
+
+            awaitClose {
+                messagingController.removeListener(listener)
+            }
+        }.buffer(capacity = Channel.CONFLATED)
+            .distinctUntilChanged()
+            .flowOn(ioDispatcher)
+    }
+
+    fun getDisplayFoldersFlow(account: Account): Flow<List<DisplayFolder>> {
+        return accountManager.getAccountFlow(account.uuid)
+            .map { latestAccount ->
+                AccountContainer(latestAccount, latestAccount.folderDisplayMode)
+            }
+            .distinctUntilChanged()
+            .flatMapLatest { (account, folderDisplayMode) ->
+                getDisplayFoldersFlow(account, folderDisplayMode)
+            }
     }
 
     fun getFolder(account: Account, folderId: Long): Folder? {
@@ -243,6 +282,11 @@ class FolderRepository(
     private val RemoteFolderDetails.effectiveSyncClass: FolderClass
         get() = if (syncClass == FolderClass.INHERITED) displayClass else syncClass
 }
+
+private data class AccountContainer(
+    val account: Account,
+    val folderDisplayMode: FolderMode
+)
 
 data class Folder(val id: Long, val name: String, val type: FolderType, val isLocalOnly: Boolean)
 

@@ -8,5 +8,5 @@ val foldersUiModule = module {
     single { FolderNameFormatterFactory() }
     factory { (context: Context) -> FolderNameFormatter(context.resources) }
     single { FoldersLiveDataFactory(get(), get(), get()) }
-    viewModel { FoldersViewModel(get()) }
+    viewModel { FoldersViewModel(folderRepository = get()) }
 }
