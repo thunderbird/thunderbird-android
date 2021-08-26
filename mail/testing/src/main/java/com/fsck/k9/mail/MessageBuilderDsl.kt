@@ -36,7 +36,7 @@ class PartBuilder(private val part: Part) {
         require(!gotBodyBlock) { "Only one body block allowed" }
         gotBodyBlock = true
 
-        val body = BinaryMemoryBody(ByteArray(size) { 'A'.toByte() }, encoding)
+        val body = BinaryMemoryBody(ByteArray(size) { 'A'.code.toByte() }, encoding)
         MimeMessageHelper.setBody(part, body)
     }
 

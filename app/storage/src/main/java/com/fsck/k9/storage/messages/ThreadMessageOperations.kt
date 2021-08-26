@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.message.MessageHeaderParser
-import java.util.Locale
 
 internal class ThreadMessageOperations {
 
@@ -37,7 +36,7 @@ internal class ThreadMessageOperations {
             var referencesHeader: String? = null
             if (headerBytes != null) {
                 MessageHeaderParser.parse(headerBytes.inputStream()) { name, value ->
-                    when (name.toLowerCase(Locale.ROOT)) {
+                    when (name.lowercase()) {
                         "in-reply-to" -> inReplyToHeader = value
                         "references" -> referencesHeader = value
                     }

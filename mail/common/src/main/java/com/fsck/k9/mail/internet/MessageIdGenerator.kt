@@ -2,7 +2,6 @@ package com.fsck.k9.mail.internet
 
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
-import java.util.Locale
 import java.util.UUID
 
 class MessageIdGenerator(private val uuidGenerator: UuidGenerator) {
@@ -29,6 +28,6 @@ interface UuidGenerator {
 class K9UuidGenerator : UuidGenerator {
     override fun randomUuid(): String {
         // We use upper case here to match Apple Mail Message-ID format (for privacy)
-        return UUID.randomUUID().toString().toUpperCase(Locale.ROOT)
+        return UUID.randomUUID().toString().uppercase()
     }
 }

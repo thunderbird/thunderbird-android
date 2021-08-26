@@ -332,7 +332,7 @@ internal class RealImapFolder(
             val command = String.format(Locale.US, "SEARCH 1:* %s", criteria)
             val responses = executeSimpleCommand(command)
 
-            return responses.sumBy { response ->
+            return responses.sumOf { response ->
                 if (ImapResponseParser.equalsIgnoreCase(response[0], "SEARCH")) {
                     response.size - 1
                 } else {
@@ -366,7 +366,7 @@ internal class RealImapFolder(
         }
 
     private fun extractHighestUid(searchResponse: SearchResponse): Long {
-        return searchResponse.numbers.max() ?: -1L
+        return searchResponse.numbers.maxOrNull() ?: -1L
     }
 
     override fun getMessage(uid: String): ImapMessage {
@@ -841,7 +841,7 @@ internal class RealImapFolder(
                     // We've got to the end of the children of the part, so now we can find out what type it is and
                     // bail out.
                     val subType = bs.getString(i)
-                    mp.setSubType(subType.toLowerCase(Locale.US))
+                    mp.setSubType(subType.lowercase())
                     break
                 }
             }
@@ -866,7 +866,7 @@ internal class RealImapFolder(
              */
             val type = bs.getString(0)
             val subType = bs.getString(1)
-            val mimeType = "$type/$subType".toLowerCase(Locale.US)
+            val mimeType = "$type/$subType".lowercase()
 
             var bodyParams: ImapList? = null
             if (bs[2] is ImapList) {
@@ -913,14 +913,14 @@ internal class RealImapFolder(
             val contentDisposition = StringBuilder()
             if (bodyDisposition != null && !bodyDisposition.isEmpty()) {
                 if (!"NIL".equals(bodyDisposition.getString(0), ignoreCase = true)) {
-                    contentDisposition.append(bodyDisposition.getString(0).toLowerCase(Locale.US))
+                    contentDisposition.append(bodyDisposition.getString(0).lowercase())
                 }
                 if (bodyDisposition.size > 1 && bodyDisposition[1] is ImapList) {
                     val bodyDispositionParams = bodyDisposition.getList(1)
                     // If there is body disposition information we can pull some more information
                     // about the attachment out.
                     for (i in bodyDispositionParams.indices step 2) {
-                        val paramName = bodyDispositionParams.getString(i).toLowerCase(Locale.US)
+                        val paramName = bodyDispositionParams.getString(i).lowercase()
                         val paramValue = bodyDispositionParams.getString(i + 1)
                         contentDisposition.append(String.format(";\r\n %s=\"%s\"", paramName, paramValue))
                     }
@@ -988,8 +988,8 @@ internal class RealImapFolder(
                     if (response.isContinuationRequested) {
                         val eolOut = EOLConvertingOutputStream(connection!!.outputStream)
                         message.writeTo(eolOut)
-                        eolOut.write('\r'.toInt())
-                        eolOut.write('\n'.toInt())
+                        eolOut.write('\r'.code)
+                        eolOut.write('\n'.code)
                         eolOut.flush()
                     }
                 } while (response.tag == null)

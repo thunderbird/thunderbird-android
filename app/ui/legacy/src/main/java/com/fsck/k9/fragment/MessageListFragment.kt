@@ -1503,7 +1503,7 @@ class MessageListFragment :
         selectedCount = adapter.messages
             .asSequence()
             .filter { it.uniqueId in selected }
-            .sumBy { it.threadCount.coerceAtLeast(1) }
+            .sumOf { it.threadCount.coerceAtLeast(1) }
     }
 
     fun remoteSearchFinished() {

@@ -56,7 +56,7 @@ private class UnstructuredHeaderChecker(val input: String, initialLineLength: In
                     skipVCharAndWsp()
                 }
                 else -> {
-                    throw MimeHeaderParserException("Unexpected character (${char.toInt()})", currentIndex)
+                    throw MimeHeaderParserException("Unexpected character (${char.code})", currentIndex)
                 }
             }
         }
