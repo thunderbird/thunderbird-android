@@ -99,12 +99,10 @@ class DeleteConfirmationActivity : K9Activity(ThemeType.DIALOG), ConfirmationDia
         private const val DIALOG_ID = 1
         private const val DIALOG_TAG = "dialog"
 
-        @JvmStatic
         fun getIntent(context: Context, messageReference: MessageReference): Intent {
             return getIntent(context, listOf(messageReference))
         }
 
-        @JvmStatic
         fun getIntent(context: Context, messageReferences: List<MessageReference>): Intent {
             val accountUuid = messageReferences[0].accountUuid
             val messageReferenceStrings = MessageReferenceHelper.toMessageReferenceStringList(messageReferences)

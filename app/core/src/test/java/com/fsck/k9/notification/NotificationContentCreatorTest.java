@@ -53,12 +53,12 @@ public class NotificationContentCreatorTest extends RobolectricTest {
     public void createFromMessage_withRegularMessage() throws Exception {
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
-        assertEquals(messageReference, content.messageReference);
-        assertEquals(SENDER_NAME, content.sender);
-        assertEquals(SUBJECT, content.subject);
-        assertEquals(SUBJECT + "\n" + PREVIEW, content.preview.toString());
-        assertEquals(SENDER_NAME + " " + SUBJECT, content.summary.toString());
-        assertEquals(false, content.starred);
+        assertEquals(messageReference, content.getMessageReference());
+        assertEquals(SENDER_NAME, content.getSender());
+        assertEquals(SUBJECT, content.getSubject());
+        assertEquals(SUBJECT + "\n" + PREVIEW, content.getPreview().toString());
+        assertEquals(SENDER_NAME + " " + SUBJECT, content.getSummary().toString());
+        assertEquals(false, content.isStarred());
     }
 
     @Test
@@ -68,9 +68,9 @@ public class NotificationContentCreatorTest extends RobolectricTest {
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
         String noSubject = "(No subject)";
-        assertEquals(noSubject, content.subject);
-        assertEquals(PREVIEW, content.preview.toString());
-        assertEquals(SENDER_NAME + " " + noSubject, content.summary.toString());
+        assertEquals(noSubject, content.getSubject());
+        assertEquals(PREVIEW, content.getPreview().toString());
+        assertEquals(SENDER_NAME + " " + noSubject, content.getSummary().toString());
     }
 
     @Test
@@ -80,8 +80,8 @@ public class NotificationContentCreatorTest extends RobolectricTest {
 
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
-        assertEquals(SUBJECT, content.subject);
-        assertEquals(SUBJECT, content.preview.toString());
+        assertEquals(SUBJECT, content.getSubject());
+        assertEquals(SUBJECT, content.getPreview().toString());
     }
 
     @Test
@@ -91,8 +91,8 @@ public class NotificationContentCreatorTest extends RobolectricTest {
 
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
-        assertEquals(SUBJECT, content.subject);
-        assertEquals(SUBJECT, content.preview.toString());
+        assertEquals(SUBJECT, content.getSubject());
+        assertEquals(SUBJECT, content.getPreview().toString());
     }
 
     @Test
@@ -103,8 +103,8 @@ public class NotificationContentCreatorTest extends RobolectricTest {
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
         String encrypted = "*Encrypted*";
-        assertEquals(SUBJECT, content.subject);
-        assertEquals(SUBJECT + "\n" + encrypted, content.preview.toString());
+        assertEquals(SUBJECT, content.getSubject());
+        assertEquals(SUBJECT + "\n" + encrypted, content.getPreview().toString());
     }
 
     @Test
@@ -113,8 +113,8 @@ public class NotificationContentCreatorTest extends RobolectricTest {
 
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
-        assertEquals("No sender", content.sender);
-        assertEquals(SUBJECT, content.summary.toString());
+        assertEquals("No sender", content.getSender());
+        assertEquals(SUBJECT, content.getSummary().toString());
     }
 
     @Test
@@ -124,8 +124,8 @@ public class NotificationContentCreatorTest extends RobolectricTest {
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
         String insteadOfSender = "To:Bob";
-        assertEquals(insteadOfSender, content.sender);
-        assertEquals(insteadOfSender + " " + SUBJECT, content.summary.toString());
+        assertEquals(insteadOfSender, content.getSender());
+        assertEquals(insteadOfSender + " " + SUBJECT, content.getSummary().toString());
     }
 
     @Test
@@ -134,7 +134,7 @@ public class NotificationContentCreatorTest extends RobolectricTest {
 
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
-        assertEquals(true, content.starred);
+        assertEquals(true, content.isStarred());
     }
 
     @Test
@@ -146,10 +146,10 @@ public class NotificationContentCreatorTest extends RobolectricTest {
 
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
-        assertEquals("No sender", content.sender);
-        assertEquals("(No subject)", content.subject);
-        assertEquals("(No subject)", content.preview.toString());
-        assertEquals("(No subject)", content.summary.toString());
+        assertEquals("No sender", content.getSender());
+        assertEquals("(No subject)", content.getSubject());
+        assertEquals("(No subject)", content.getPreview().toString());
+        assertEquals("(No subject)", content.getSummary().toString());
     }
 
     private NotificationContentCreator createNotificationContentCreator() {

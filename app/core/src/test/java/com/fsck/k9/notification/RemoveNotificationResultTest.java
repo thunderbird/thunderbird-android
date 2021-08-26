@@ -1,6 +1,7 @@
 package com.fsck.k9.notification;
 
 
+import com.fsck.k9.controller.MessageReference;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,10 @@ public class RemoveNotificationResultTest {
 
     @Before
     public void setUp() throws Exception {
-        notificationHolder = new NotificationHolder(NOTIFICATION_ID, null);
+        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
+        NotificationContent notificationContent = new NotificationContent(messageReference, "irrelevant", "irrelevant",
+                "irrelevant", "irrelevant", false);
+        notificationHolder = new NotificationHolder(NOTIFICATION_ID, notificationContent);
     }
 
     @Test

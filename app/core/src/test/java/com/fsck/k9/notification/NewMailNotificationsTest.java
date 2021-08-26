@@ -285,7 +285,8 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
     }
 
     private NotificationContent createNotificationContent() {
-        return new NotificationContent(null, null, null, null, null, false);
+        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
+        return new NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false);
     }
 
     private NotificationHolder createNotificationHolder(NotificationContent content, int index) {
@@ -370,7 +371,7 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
         }
 
         @Override
-        NotificationData createNotificationData(Account account, int unreadMessageCount) {
+        protected NotificationData createNotificationData(Account account, int unreadMessageCount) {
             return notificationData;
         }
     }

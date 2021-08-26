@@ -141,7 +141,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
         }
 
         @Override
-        PendingIntent createContentIntent(Account account, boolean incoming) {
+        protected PendingIntent createContentIntent(Account account, boolean incoming) {
             return contentIntent;
         }
     }

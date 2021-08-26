@@ -31,7 +31,7 @@ public class NotificationDataTest extends RobolectricTest {
     @Before
     public void setUp() throws Exception {
         account = createFakeAccount();
-        notificationData = new NotificationData(account);
+        notificationData = new NotificationData(account, 0);
     }
 
     @Test
@@ -43,8 +43,8 @@ public class NotificationDataTest extends RobolectricTest {
         assertFalse(result.shouldCancelNotification());
         NotificationHolder holder = result.getNotificationHolder();
         assertNotNull(holder);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), holder.notificationId);
-        assertEquals(content, holder.content);
+        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), holder.getNotificationId());
+        assertEquals(content, holder.getContent());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class NotificationDataTest extends RobolectricTest {
         NotificationContent content = createNotificationContent("1");
         notificationData.addNotificationContent(content);
 
-        RemoveNotificationResult result = notificationData.removeNotificationForMessage(content.messageReference);
+        RemoveNotificationResult result = notificationData.removeNotificationForMessage(content.getMessageReference());
 
         assertFalse(result.isUnknownNotification());
         assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), result.getNotificationId());
@@ -92,15 +92,15 @@ public class NotificationDataTest extends RobolectricTest {
         notificationData.addNotificationContent(latestContent);
 
         RemoveNotificationResult result =
-                notificationData.removeNotificationForMessage(latestContent.messageReference);
+                notificationData.removeNotificationForMessage(latestContent.getMessageReference());
 
         assertFalse(result.isUnknownNotification());
         assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), result.getNotificationId());
         assertTrue(result.shouldCreateNotification());
         NotificationHolder holder = result.getNotificationHolder();
         assertNotNull(holder);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), holder.notificationId);
-        assertEquals(content, holder.content);
+        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), holder.getNotificationId());
+        assertEquals(content, holder.getContent());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class NotificationDataTest extends RobolectricTest {
         for (int i = 1; i <= NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS + 1; i++) {
             NotificationContent content = createNotificationContent("" + i);
             notificationData.addNotificationContent(content);
-            notificationData.removeNotificationForMessage(content.messageReference);
+            notificationData.removeNotificationForMessage(content.getMessageReference());
         }
     }
 
@@ -127,7 +127,7 @@ public class NotificationDataTest extends RobolectricTest {
 
     @Test
     public void testUnreadMessagesCount() throws Exception {
-        notificationData.setUnreadMessageCount(42);
+        notificationData = new NotificationData(account, 42);
         assertEquals(42, notificationData.getUnreadMessageCount());
 
         NotificationContent content = createNotificationContent("1");
