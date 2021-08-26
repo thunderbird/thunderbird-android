@@ -95,6 +95,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private var openedAccountUuid: String? = null
     private var openedFolderId: Long? = null
 
+    private var unifiedInboxStarredCount: Int = 0
+    private var unifiedInboxUnreadCount: Int = 0
+
     val layout: DrawerLayout
         get() = drawer
 
@@ -257,8 +260,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         val oldSelectedBackgroundColor = selectedBackgroundColor
 
         var newActiveProfile: IProfile? = null
-        var unifiedInboxStarredCount = 0
-        var unifiedInboxUnreadCount = 0
+        unifiedInboxStarredCount = 0
+        unifiedInboxUnreadCount = 0
         val accountItems = displayAccounts.map { displayAccount ->
             val account = displayAccount.account
             val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
