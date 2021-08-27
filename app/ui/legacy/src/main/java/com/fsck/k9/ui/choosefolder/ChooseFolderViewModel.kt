@@ -11,7 +11,7 @@ class ChooseFolderViewModel(private val foldersLiveDataFactory: FoldersLiveDataF
 
     fun getFolders(account: Account, displayMode: FolderMode): FoldersLiveData {
         val liveData = foldersLiveData
-        if (liveData != null && liveData.accountUuid == account.uuid && liveData.displayMode == displayMode) {
+        if (liveData != null && liveData.account.uuid == account.uuid && liveData.displayMode == displayMode) {
             return liveData
         }
 

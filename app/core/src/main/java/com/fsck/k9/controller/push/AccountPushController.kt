@@ -7,7 +7,7 @@ import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.mailstore.FolderRepositoryManager
+import com.fsck.k9.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,11 +20,10 @@ internal class AccountPushController(
     private val backendManager: BackendManager,
     private val messagingController: MessagingController,
     private val preferences: Preferences,
-    folderRepositoryManager: FolderRepositoryManager,
+    private val folderRepository: FolderRepository,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val account: Account
 ) {
-    private val folderRepository = folderRepositoryManager.getFolderRepository(account)
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
 
     @Volatile
@@ -76,7 +75,7 @@ internal class AccountPushController(
 
     private fun startListeningForPushFolders() {
         coroutineScope.launch {
-            folderRepository.getPushFoldersFlow().collect { remoteFolders ->
+            folderRepository.getPushFoldersFlow(account).collect { remoteFolders ->
                 val folderServerIds = remoteFolders.map { it.serverId }
                 updatePushFolders(folderServerIds)
             }

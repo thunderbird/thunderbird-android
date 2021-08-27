@@ -10,7 +10,7 @@ class ManageFoldersViewModel(private val foldersLiveDataFactory: FoldersLiveData
 
     fun getFolders(account: Account): FoldersLiveData {
         val liveData = foldersLiveData
-        if (liveData != null && liveData.accountUuid == account.uuid) {
+        if (liveData != null && liveData.account.uuid == account.uuid) {
             return liveData
         }
 

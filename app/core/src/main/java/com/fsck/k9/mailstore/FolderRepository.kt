@@ -23,7 +23,6 @@ import com.fsck.k9.mail.FolderType as RemoteFolderType
 class FolderRepository(
     private val messageStoreManager: MessageStoreManager,
     private val accountManager: AccountManager,
-    private val account: Account,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
     private val sortForDisplay =
@@ -33,7 +32,7 @@ class FolderRepository(
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
-    fun getDisplayFolders(displayMode: FolderMode?): List<DisplayFolder> {
+    fun getDisplayFolders(account: Account, displayMode: FolderMode?): List<DisplayFolder> {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getDisplayFolders(
             displayMode = displayMode ?: account.folderDisplayMode,
@@ -43,7 +42,7 @@ class FolderRepository(
                 folder = Folder(
                     id = folder.id,
                     name = folder.name,
-                    type = folderTypeOf(folder.id),
+                    type = folderTypeOf(account, folder.id),
                     isLocalOnly = folder.isLocalOnly
                 ),
                 isInTopGroup = folder.isInTopGroup,
@@ -53,26 +52,26 @@ class FolderRepository(
         }.sortedWith(sortForDisplay)
     }
 
-    fun getFolder(folderId: Long): Folder? {
+    fun getFolder(account: Account, folderId: Long): Folder? {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolder(folderId) { folder ->
             Folder(
                 id = folder.id,
                 name = folder.name,
-                type = folderTypeOf(folder.id),
+                type = folderTypeOf(account, folder.id),
                 isLocalOnly = folder.isLocalOnly
             )
         }
     }
 
-    fun getFolderDetails(folderId: Long): FolderDetails? {
+    fun getFolderDetails(account: Account, folderId: Long): FolderDetails? {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolder(folderId) { folder ->
             FolderDetails(
                 folder = Folder(
                     id = folder.id,
                     name = folder.name,
-                    type = folderTypeOf(folder.id),
+                    type = folderTypeOf(account, folder.id),
                     isLocalOnly = folder.isLocalOnly
                 ),
                 isInTopGroup = folder.isInTopGroup,
@@ -85,7 +84,7 @@ class FolderRepository(
         }
     }
 
-    fun getRemoteFolders(): List<RemoteFolder> {
+    fun getRemoteFolders(account: Account): List<RemoteFolder> {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolders(excludeLocalOnly = true) { folder ->
             RemoteFolder(
@@ -97,7 +96,7 @@ class FolderRepository(
         }
     }
 
-    fun getRemoteFolderDetails(): List<RemoteFolderDetails> {
+    fun getRemoteFolderDetails(account: Account): List<RemoteFolderDetails> {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolders(excludeLocalOnly = true) { folder ->
             RemoteFolderDetails(
@@ -117,21 +116,21 @@ class FolderRepository(
         }
     }
 
-    fun getPushFoldersFlow(): Flow<List<RemoteFolder>> {
+    fun getPushFoldersFlow(account: Account): Flow<List<RemoteFolder>> {
         return account.getFolderPushModeFlow()
             .flatMapLatest { pushMode ->
-                getPushFoldersFlow(pushMode)
+                getPushFoldersFlow(account, pushMode)
             }
     }
 
-    private fun getPushFoldersFlow(folderMode: FolderMode): Flow<List<RemoteFolder>> {
+    private fun getPushFoldersFlow(account: Account, folderMode: FolderMode): Flow<List<RemoteFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account)
         return callbackFlow {
-            send(getPushFolders(folderMode))
+            send(getPushFolders(account, folderMode))
 
             val listener = FolderSettingsChangedListener {
                 launch {
-                    send(getPushFolders(folderMode))
+                    send(getPushFolders(account, folderMode))
                 }
             }
             messageStore.addFolderSettingsChangedListener(listener)
@@ -144,10 +143,10 @@ class FolderRepository(
             .flowOn(ioDispatcher)
     }
 
-    private fun getPushFolders(folderMode: FolderMode): List<RemoteFolder> {
+    private fun getPushFolders(account: Account, folderMode: FolderMode): List<RemoteFolder> {
         if (folderMode == FolderMode.NONE) return emptyList()
 
-        return getRemoteFolderDetails()
+        return getRemoteFolderDetails(account)
             .asSequence()
             .filter { folderDetails ->
                 val pushClass = folderDetails.effectivePushClass
@@ -165,54 +164,54 @@ class FolderRepository(
             .toList()
     }
 
-    fun getFolderServerId(folderId: Long): String? {
+    fun getFolderServerId(account: Account, folderId: Long): String? {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolder(folderId) { folder ->
             folder.serverId
         }
     }
 
-    fun getFolderId(folderServerId: String): Long? {
+    fun getFolderId(account: Account, folderServerId: String): Long? {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolderId(folderServerId)
     }
 
-    fun isFolderPresent(folderId: Long): Boolean {
+    fun isFolderPresent(account: Account, folderId: Long): Boolean {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolder(folderId) { true } ?: false
     }
 
-    fun updateFolderDetails(folderDetails: FolderDetails) {
+    fun updateFolderDetails(account: Account, folderDetails: FolderDetails) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.updateFolderSettings(folderDetails)
     }
 
-    fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
+    fun setIncludeInUnifiedInbox(account: Account, folderId: Long, includeInUnifiedInbox: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
     }
 
-    fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
+    fun setDisplayClass(account: Account, folderId: Long, folderClass: FolderClass) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setDisplayClass(folderId, folderClass)
     }
 
-    fun setSyncClass(folderId: Long, folderClass: FolderClass) {
+    fun setSyncClass(account: Account, folderId: Long, folderClass: FolderClass) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setSyncClass(folderId, folderClass)
     }
 
-    fun setPushClass(folderId: Long, folderClass: FolderClass) {
+    fun setPushClass(account: Account, folderId: Long, folderClass: FolderClass) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setPushClass(folderId, folderClass)
     }
 
-    fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
+    fun setNotificationClass(account: Account, folderId: Long, folderClass: FolderClass) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setNotificationClass(folderId, folderClass)
     }
 
-    private fun folderTypeOf(folderId: Long) = when (folderId) {
+    private fun folderTypeOf(account: Account, folderId: Long) = when (folderId) {
         account.inboxFolderId -> FolderType.INBOX
         account.outboxFolderId -> FolderType.OUTBOX
         account.sentFolderId -> FolderType.SENT

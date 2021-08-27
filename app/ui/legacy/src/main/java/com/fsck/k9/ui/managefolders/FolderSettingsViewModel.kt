@@ -11,7 +11,6 @@ import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderRepository
-import com.fsck.k9.mailstore.FolderRepositoryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -20,7 +19,7 @@ private const val NO_FOLDER_ID = 0L
 
 class FolderSettingsViewModel(
     private val preferences: Preferences,
-    private val folderRepositoryManager: FolderRepositoryManager,
+    private val folderRepository: FolderRepository,
     private val messagingController: MessagingController
 ) : ViewModel() {
     private val actionLiveData = SingleLiveEvent<Action>()
@@ -44,8 +43,7 @@ class FolderSettingsViewModel(
     ): LiveData<FolderSettingsResult> {
         return liveData(context = viewModelScope.coroutineContext) {
             val account = loadAccount(accountUuid)
-            val folderRepository = folderRepositoryManager.getFolderRepository(account)
-            val folderDetails = folderRepository.loadFolderDetails(folderId)
+            val folderDetails = folderRepository.loadFolderDetails(account, folderId)
             if (folderDetails == null) {
                 Timber.w("Folder with ID $folderId not found")
                 emit(FolderNotFound)
@@ -57,7 +55,7 @@ class FolderSettingsViewModel(
 
             val folderSettingsData = FolderSettingsData(
                 folder = folderDetails.folder,
-                dataStore = FolderSettingsDataStore(folderRepository, folderDetails)
+                dataStore = FolderSettingsDataStore(folderRepository, account, folderDetails)
             )
             emit(folderSettingsData)
         }
@@ -69,9 +67,9 @@ class FolderSettingsViewModel(
         }
     }
 
-    private suspend fun FolderRepository.loadFolderDetails(folderId: Long): FolderDetails? {
+    private suspend fun FolderRepository.loadFolderDetails(account: Account, folderId: Long): FolderDetails? {
         return withContext(Dispatchers.IO) {
-            getFolderDetails(folderId)
+            getFolderDetails(account, folderId)
         }
     }
 

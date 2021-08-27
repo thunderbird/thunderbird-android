@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.managefolders
 
 import androidx.preference.PreferenceDataStore
+import com.fsck.k9.Account
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderRepository
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 
 class FolderSettingsDataStore(
     private val folderRepository: FolderRepository,
+    private val account: Account,
     private var folder: FolderDetails
 ) : PreferenceDataStore() {
     private val saveScope = CoroutineScope(GlobalScope.coroutineContext + Dispatchers.IO)
@@ -64,7 +66,7 @@ class FolderSettingsDataStore(
     private fun updateFolder(newFolder: FolderDetails) {
         folder = newFolder
         saveScope.launch {
-            folderRepository.updateFolderDetails(newFolder)
+            folderRepository.updateFolderDetails(account, newFolder)
         }
     }
 }

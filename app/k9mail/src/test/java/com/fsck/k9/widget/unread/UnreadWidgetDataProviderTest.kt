@@ -7,7 +7,6 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderRepository
-import com.fsck.k9.mailstore.FolderRepositoryManager
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.folders.FolderNameFormatter
@@ -27,11 +26,11 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     val preferences = createPreferences()
     val messagingController = createMessagingController()
     val defaultFolderStrategy = createDefaultFolderStrategy()
-    val folderRepositoryManager = createFolderRepositoryManager()
+    val folderRepository = createFolderRepository()
     val folderNameFormatterFactory = createFolderNameFormatterFactory()
     val provider = UnreadWidgetDataProvider(
         context, preferences, messagingController, defaultFolderStrategy,
-        folderRepositoryManager, folderNameFormatterFactory
+        folderRepository, folderNameFormatterFactory
     )
 
     @Test
@@ -102,16 +101,9 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         on { getDefaultFolder(account) } doReturn FOLDER_ID
     }
 
-    fun createFolderRepositoryManager(): FolderRepositoryManager {
-        val folderRepository = createFolderRepository()
-        return mock {
-            on { getFolderRepository(account) } doReturn folderRepository
-        }
-    }
-
     fun createFolderRepository(): FolderRepository {
         return mock {
-            on { getFolder(FOLDER_ID) } doReturn FOLDER
+            on { getFolder(account, FOLDER_ID) } doReturn FOLDER
         }
     }
 

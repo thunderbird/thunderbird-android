@@ -11,10 +11,10 @@ val preferencesModule = module {
             contentResolver = get(),
             preferences = get(),
             folderSettingsProvider = get(),
-            folderRepositoryManager = get()
+            folderRepository = get()
         )
     }
-    factory { FolderSettingsProvider(folderRepositoryManager = get()) }
+    factory { FolderSettingsProvider(folderRepository = get()) }
     factory<AccountManager> { get<Preferences>() }
     single {
         RealGeneralSettingsManager(

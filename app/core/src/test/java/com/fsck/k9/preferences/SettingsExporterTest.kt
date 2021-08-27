@@ -2,7 +2,7 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
-import com.fsck.k9.mailstore.FolderRepositoryManager
+import com.fsck.k9.mailstore.FolderRepository
 import java.io.ByteArrayOutputStream
 import org.jdom2.Document
 import org.jdom2.input.SAXBuilder
@@ -17,12 +17,12 @@ class SettingsExporterTest : K9RobolectricTest() {
     private val contentResolver = RuntimeEnvironment.application.contentResolver
     private val preferences: Preferences by inject()
     private val folderSettingsProvider: FolderSettingsProvider by inject()
-    private val folderRepositoryManager: FolderRepositoryManager by inject()
+    private val folderRepository: FolderRepository by inject()
     private val settingsExporter = SettingsExporter(
         contentResolver,
         preferences,
         folderSettingsProvider,
-        folderRepositoryManager
+        folderRepository
     )
 
     @Test
