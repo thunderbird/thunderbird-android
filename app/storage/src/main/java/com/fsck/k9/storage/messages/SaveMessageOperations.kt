@@ -28,7 +28,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.util.Locale
 import java.util.Stack
 import java.util.UUID
 import org.apache.commons.io.IOUtils
@@ -355,7 +354,7 @@ internal class SaveMessageOperations(
 
     private fun getTransferEncoding(part: Part): String {
         val contentTransferEncoding = part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING).firstOrNull()
-        return contentTransferEncoding?.toLowerCase(Locale.ROOT) ?: MimeUtil.ENC_7BIT
+        return contentTransferEncoding?.lowercase() ?: MimeUtil.ENC_7BIT
     }
 
     private fun addChildrenToStack(stack: Stack<PartContainer>, part: Part, parentId: Long) {

@@ -1,7 +1,5 @@
 package com.fsck.k9.mail
 
-import java.util.Locale
-
 /**
  * Container for incoming or outgoing server settings
  */
@@ -22,7 +20,7 @@ data class ServerSettings @JvmOverloads constructor(
     }
 
     init {
-        require(type == type.toLowerCase(Locale.ROOT)) { "type must be all lower case" }
+        require(type == type.lowercase()) { "type must be all lower case" }
     }
 
     fun newPassword(newPassword: String?): ServerSettings {

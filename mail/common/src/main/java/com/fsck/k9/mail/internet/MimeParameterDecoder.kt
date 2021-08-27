@@ -2,7 +2,6 @@ package com.fsck.k9.mail.internet
 
 import java.nio.charset.Charset
 import java.nio.charset.IllegalCharsetNameException
-import java.util.Locale
 import okio.Buffer
 
 private typealias Parameters = Map<String, String>
@@ -69,7 +68,7 @@ object MimeParameterDecoder {
             do {
                 parser.expect(SEMICOLON)
 
-                val parameterName = parser.readToken().toLowerCase(Locale.ROOT)
+                val parameterName = parser.readToken().lowercase()
 
                 parser.skipCFWS()
                 parser.expect(EQUALS_SIGN)

@@ -4,7 +4,6 @@ import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.MimeParameterDecoder
 import com.fsck.k9.mail.internet.MimeUtility
 import com.fsck.k9.mail.internet.MimeValue
-import java.util.Locale
 
 private const val FALLBACK_NAME = "noname"
 
@@ -38,11 +37,11 @@ class BasicPartInfoExtractor {
 
     private fun String.toMimeValue(): MimeValue = MimeParameterDecoder.decode(this)
 
-    private fun MimeValue.getParameter(name: String): String? = parameters[name.toLowerCase(Locale.ROOT)]
+    private fun MimeValue.getParameter(name: String): String? = parameters[name.lowercase()]
 
     private fun String.getParameter(name: String): String? {
         val mimeValue = MimeParameterDecoder.decode(this)
-        return mimeValue.parameters[name.toLowerCase(Locale.ROOT)]
+        return mimeValue.parameters[name.lowercase()]
     }
 }
 

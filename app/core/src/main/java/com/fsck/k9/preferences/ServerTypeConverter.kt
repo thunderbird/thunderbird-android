@@ -1,10 +1,8 @@
 package com.fsck.k9.preferences
 
-import java.util.Locale
-
 object ServerTypeConverter {
     @JvmStatic
-    fun toServerSettingsType(exportType: String): String = exportType.toLowerCase(Locale.ROOT)
+    fun toServerSettingsType(exportType: String): String = exportType.lowercase()
 
     @JvmStatic
     fun fromServerSettingsType(serverSettingsType: String): String = when (serverSettingsType) {

@@ -11,8 +11,8 @@ buildscript {
         ]
 
         versions = [
-                'kotlin': '1.4.32',
-                'kotlinCoroutines': '1.4.3',
+                'kotlin': '1.5.30',
+                'kotlinCoroutines': '1.5.1',
                 'androidxAppCompat': '1.2.0',
                 'androidxRecyclerView': '1.1.0',
                 'androidxLifecycle': '2.3.1',

@@ -60,10 +60,10 @@ class AccountCreator(private val preferences: Preferences, private val resources
             return accountColors.random()
         }
 
-        return availableColors.shuffled().minBy { color ->
+        return availableColors.shuffled().minOf { color ->
             val index = DEFAULT_COLORS.indexOf(color)
             if (index != -1) index else DEFAULT_COLORS.size
-        }!!
+        }
     }
 
     companion object {

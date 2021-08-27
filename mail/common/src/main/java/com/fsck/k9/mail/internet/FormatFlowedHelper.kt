@@ -1,7 +1,5 @@
 package com.fsck.k9.mail.internet
 
-import java.util.Locale
-
 internal object FormatFlowedHelper {
     private const val TEXT_PLAIN = "text/plain"
     private const val HEADER_PARAM_FORMAT = "format"
@@ -16,10 +14,10 @@ internal object FormatFlowedHelper {
         val mimeValue = MimeParameterDecoder.decode(contentTypeHeaderValue)
         if (!MimeUtility.isSameMimeType(TEXT_PLAIN, mimeValue.value)) return negativeResult()
 
-        val formatParameter = mimeValue.parameters[HEADER_PARAM_FORMAT]?.toLowerCase(Locale.ROOT)
+        val formatParameter = mimeValue.parameters[HEADER_PARAM_FORMAT]?.lowercase()
         if (formatParameter != HEADER_FORMAT_FLOWED) return negativeResult()
 
-        val delSpParameter = mimeValue.parameters[HEADER_PARAM_DELSP]?.toLowerCase(Locale.ROOT)
+        val delSpParameter = mimeValue.parameters[HEADER_PARAM_DELSP]?.lowercase()
 
         return FormatFlowedResult(isFormatFlowed = true, isDelSp = delSpParameter == HEADER_DELSP_YES)
     }

@@ -144,10 +144,10 @@ class ManageFoldersFragment : Fragment() {
         if (constraint.isNullOrEmpty()) return true
 
         val locale = Locale.getDefault()
-        val displayName = item.displayName.toLowerCase(locale)
+        val displayName = item.displayName.lowercase(locale)
         return constraint.splitToSequence(" ")
             .filter { it.isNotEmpty() }
-            .map { it.toLowerCase(locale) }
+            .map { it.lowercase(locale) }
             .any { it in displayName }
     }
 

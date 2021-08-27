@@ -38,7 +38,7 @@ class MimeHeaderParser(private val input: String) {
             val c = read()
             when {
                 c == '%' -> output.writeByte(readPercentEncoded())
-                c.isAttributeChar() -> output.writeByte(c.toInt())
+                c.isAttributeChar() -> output.writeByte(c.code)
                 else -> return
             }
         }
@@ -52,8 +52,7 @@ class MimeHeaderParser(private val input: String) {
     }
 
     private fun readHexDigit(): Int {
-        val character = read()
-        return when (character) {
+        return when (val character = read()) {
             in '0'..'9' -> character - '0'
             in 'a'..'f' -> character - 'a' + 10
             in 'A'..'F' -> character - 'A' + 10
@@ -112,7 +111,7 @@ class MimeHeaderParser(private val input: String) {
         if (!endReached() && peek() == character) {
             currentIndex++
         } else {
-            throw MimeHeaderParserException("Expected '$character' (${character.toInt()})", currentIndex)
+            throw MimeHeaderParserException("Expected '$character' (${character.code})", currentIndex)
         }
     }
 
@@ -149,7 +148,7 @@ class MimeHeaderParser(private val input: String) {
                 else -> {
                     currentIndex--
                     throw MimeHeaderParserException(
-                        "Unexpected '$character' (${character.toInt()}) in comment",
+                        "Unexpected '$character' (${character.code}) in comment",
                         errorIndex = currentIndex
                     )
                 }

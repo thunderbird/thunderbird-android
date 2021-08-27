@@ -1,7 +1,5 @@
 package com.fsck.k9.mail
 
-import java.util.Locale
-
 class MimeType private constructor(
     val type: String,
     val subtype: String
@@ -27,8 +25,8 @@ class MimeType private constructor(
         fun String.toMimeType(): MimeType {
             val matchResult = requireNotNull(MIME_TYPE.matchEntire(this)) { "Invalid MIME type: $this" }
 
-            val type = matchResult.groupValues[1].toLowerCase(Locale.ROOT)
-            val subtype = matchResult.groupValues[2].toLowerCase(Locale.ROOT)
+            val type = matchResult.groupValues[1].lowercase()
+            val subtype = matchResult.groupValues[2].lowercase()
 
             return MimeType(type, subtype)
         }
