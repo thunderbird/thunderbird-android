@@ -14,14 +14,18 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.MutableLiveData
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
+import com.fsck.k9.controller.MessageCounts
+import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
+import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.account.AccountImageLoader
 import com.fsck.k9.ui.account.AccountsViewModel
 import com.fsck.k9.ui.account.DisplayAccount
@@ -51,6 +55,8 @@ import com.mikepenz.materialdrawer.util.getDrawerItem
 import com.mikepenz.materialdrawer.util.removeAllItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -69,6 +75,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val resources: Resources by inject()
     private val messagingController: MessagingController by inject()
     private val accountImageLoader: AccountImageLoader by inject()
+    private val messageCountsProvider: MessageCountsProvider by inject()
 
     private val buttonRow: LinearLayout = parent.findViewById(R.id.material_drawer_button_row)
     private val buttonSettings: ImageView = parent.findViewById(R.id.drawer_button_settings)
@@ -88,6 +95,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private val userFolderDrawerIds = ArrayList<Long>()
     private var unifiedInboxSelected: Boolean = false
+    private var unifiedInboxDrawerItem: PrimaryDrawerItem? = null
+    private val unifiedInboxMessageCounts = MutableLiveData<MessageCounts>()
+
     private val textColor: Int
     private var selectedTextColor: ColorStateList? = null
     private var selectedBackgroundColor: Int = 0
@@ -133,12 +143,35 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             }
         }
 
+        unifiedInboxMessageCounts.observeNotNull(parent) { messageCounts ->
+            setUnifiedInboxBadgeText(messageCounts)
+        }
+
         accountsViewModel.displayAccountsLiveData.observeNotNull(parent) { accounts ->
             setAccounts(accounts)
+            unifiedInboxRefresh()
         }
 
         foldersViewModel.getFolderListLiveData().observe(parent) { folders ->
             setUserFolders(folders)
+            unifiedInboxRefresh()
+        }
+    }
+
+    private fun setUnifiedInboxBadgeText(messageCounts: MessageCounts) {
+        if (K9.isShowUnifiedInbox) {
+            unifiedInboxDrawerItem?.apply {
+                buildBadgeText(messageCounts)?.let { text ->
+                    badgeText = text
+                    badgeStyle = folderBadgeStyle
+                }
+            }
+        }
+    }
+
+    private fun unifiedInboxRefresh() {
+        GlobalScope.launch {
+            unifiedInboxMessageCounts.postValue(messageCountsProvider.getMessageCounts(SearchAccount.createUnifiedInboxAccount()))
         }
     }
 
@@ -172,6 +205,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
             eventHandled
         }
+    }
+
+    private fun buildBadgeText(messageCounts: MessageCounts): String? {
+        return buildBadgeText(messageCounts.unread, messageCounts.starred)
     }
 
     private fun buildBadgeText(displayAccount: DisplayAccount): String? {
@@ -357,7 +394,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         var openedFolderDrawerId: Long = -1
 
         if (K9.isShowUnifiedInbox) {
-            val unifiedInboxItem = PrimaryDrawerItem().apply {
+            val unifiedInboxDrawerItem = PrimaryDrawerItem().apply {
                 iconRes = R.drawable.ic_inbox_multiple
                 identifier = DRAWER_ID_UNIFIED_INBOX
                 nameRes = R.string.integrated_inbox_title
@@ -365,8 +402,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 textColor = selectedTextColor
                 isSelected = unifiedInboxSelected
             }
+            this.unifiedInboxDrawerItem = unifiedInboxDrawerItem
+            unifiedInboxMessageCounts.value?.let { messageCounts -> setUnifiedInboxBadgeText(messageCounts) }
 
-            sliderView.addItems(unifiedInboxItem)
+            sliderView.addItems(unifiedInboxDrawerItem)
             sliderView.addItems(FixedDividerDrawerItem(identifier = DRAWER_ID_DIVIDER))
 
             if (unifiedInboxSelected) {
@@ -412,6 +451,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         sliderView.selectExtension.deselect()
         sliderView.removeAllItems()
         userFolderDrawerIds.clear()
+        unifiedInboxDrawerItem = null
     }
 
     fun selectAccount(accountUuid: String) {
