@@ -172,11 +172,16 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun unifiedInboxRefresh() {
         if (K9.isShowUnifiedInbox) {
             GlobalScope.launch {
-                unifiedInboxMessageCounts.postValue(
-                    messageCountsProvider.getMessageCounts(SearchAccount.createUnifiedInboxAccount())
-                )
+                unifiedInboxRefreshInner()
             }
         }
+    }
+
+    @Synchronized
+    private fun unifiedInboxRefreshInner() {
+        unifiedInboxMessageCounts.postValue(
+            messageCountsProvider.getMessageCounts(SearchAccount.createUnifiedInboxAccount())
+        )
     }
 
     private fun initializeImageLoader() {
