@@ -173,7 +173,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         if (K9.isShowUnifiedInbox) {
             GlobalScope.launch {
                 unifiedInboxMessageCounts.postValue(
-                    messageCountsProvider.getMessageCounts(SearchAccount.createUnifiedInboxAccount()))
+                    messageCountsProvider.getMessageCounts(SearchAccount.createUnifiedInboxAccount())
+                )
             }
         }
     }
