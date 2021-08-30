@@ -16,7 +16,7 @@ data class ServerSettings @JvmOverloads constructor(
 ) {
     val isMissingCredentials: Boolean = when (authenticationType) {
         AuthType.EXTERNAL -> clientCertificateAlias == null
-        else -> password == null
+        else -> username.isNotBlank() && password == null
     }
 
     init {
