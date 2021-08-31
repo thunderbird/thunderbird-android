@@ -66,7 +66,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.FolderDetailsAccessor;
-import com.fsck.k9.mailstore.ListenableMessageStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -1487,21 +1486,14 @@ public class MessagingController {
     }
 
     private boolean messagesPendingSend(final Account account) {
-        try {
-            LocalFolder localFolder = localStoreProvider.getInstance(account).getFolder(account.getOutboxFolderId());
-            if (!localFolder.exists()) {
-                return false;
-            }
-
-            localFolder.open();
-
-            if (localFolder.getMessageCount() > 0) {
-                return true;
-            }
-        } catch (Exception e) {
-            Timber.e(e, "Exception while checking for unsent messages");
+        Long outboxFolderId = account.getOutboxFolderId();
+        if (outboxFolderId == null) {
+            Timber.w("Could not get Outbox folder ID from Account");
+            return false;
         }
-        return false;
+
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        return messageStore.getMessageCount(outboxFolderId) > 0;
     }
 
     /**
