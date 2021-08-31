@@ -1,301 +1,307 @@
-package com.fsck.k9.activity.compose;
+package com.fsck.k9.activity.compose
 
+import androidx.test.core.app.ApplicationProvider
+import com.fsck.k9.Account
+import com.fsck.k9.K9RobolectricTest
+import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType
+import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType
+import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode
+import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser
+import com.fsck.k9.helper.ReplyToParser
+import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses
+import com.fsck.k9.mail.Address
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.Message.RecipientType
+import com.fsck.k9.message.AutocryptStatusInteractor
+import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus
+import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusType
+import com.fsck.k9.message.ComposePgpEnableByDefaultDecider
+import com.fsck.k9.message.ComposePgpInlineDecider
+import com.fsck.k9.view.RecipientSelectView.Recipient
+import com.google.common.truth.Truth.assertThat
+import kotlin.test.assertNotNull
+import org.junit.Before
+import org.junit.Ignore
+import org.junit.Test
+import org.koin.test.inject
+import org.mockito.ArgumentMatchers.eq
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stubbing
+import org.openintents.openpgp.OpenPgpApiManager
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
+import org.openintents.openpgp.util.OpenPgpApi
+import org.robolectric.Robolectric
+import org.robolectric.annotation.LooperMode
 
-import java.util.Arrays;
-import java.util.List;
+private val TO_ADDRESS = Address("to@domain.example")
+private val CC_ADDRESS = Address("cc@domain.example")
+private const val CRYPTO_PROVIDER = "crypto_provider"
+private const val CRYPTO_KEY_ID = 123L
 
-import android.content.Context;
-import androidx.loader.app.LoaderManager;
-
-import com.fsck.k9.Account;
-import com.fsck.k9.DI;
-import com.fsck.k9.K9RobolectricTest;
-import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
-import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
-import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
-import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
-import com.fsck.k9.helper.ReplyToParser;
-import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.message.AutocryptStatusInteractor;
-import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
-import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusType;
-import com.fsck.k9.message.ComposePgpEnableByDefaultDecider;
-import com.fsck.k9.message.ComposePgpInlineDecider;
-import com.fsck.k9.view.RecipientSelectView.Recipient;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.openintents.openpgp.OpenPgpApiManager;
-import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
-import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
-import org.openintents.openpgp.util.OpenPgpApi;
-import org.robolectric.Robolectric;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.LooperMode;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-
-@SuppressWarnings("ConstantConditions")
 @LooperMode(LooperMode.Mode.LEGACY)
-public class RecipientPresenterTest extends K9RobolectricTest {
-    private static final ReplyToAddresses TO_ADDRESSES = new ReplyToAddresses(Address.parse("to@example.org"));
-    private static final List<Address> ALL_TO_ADDRESSES = Arrays.asList(Address.parse("allTo@example.org"));
-    private static final List<Address> ALL_CC_ADDRESSES = Arrays.asList(Address.parse("allCc@example.org"));
-    private static final String CRYPTO_PROVIDER = "crypto_provider";
-    private static final long CRYPTO_KEY_ID = 123L;
+class RecipientPresenterTest : K9RobolectricTest() {
+    private val openPgpApiManager = mock<OpenPgpApiManager> {
+        on { openPgpProviderState } doReturn OpenPgpProviderState.UNCONFIGURED
+        on { setOpenPgpProvider(any(), any()) } doAnswer { invocation ->
+            openPgpApiManagerCallback = invocation.getArgument(1)
+        }
+    }
+    private val recipientMvpView = mock<RecipientMvpView>()
+    private val account = mock<Account>()
+    private val composePgpInlineDecider = mock<ComposePgpInlineDecider>()
+    private val composePgpEnableByDefaultDecider = mock<ComposePgpEnableByDefaultDecider>()
+    private val autocryptStatusInteractor = mock<AutocryptStatusInteractor>()
+    private val replyToParser = mock<ReplyToParser>()
+    private val autocryptDraftStateHeaderParser: AutocryptDraftStateHeaderParser by inject()
+    private lateinit var recipientPresenter: RecipientPresenter
 
-
-    private RecipientPresenter recipientPresenter;
-    private ReplyToParser replyToParser;
-    private ComposePgpInlineDecider composePgpInlineDecider;
-    private ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider;
-    private Account account;
-    private RecipientMvpView recipientMvpView;
-    private AutocryptStatusInteractor autocryptStatusInteractor;
-    private RecipientAutocryptStatus noRecipientsAutocryptResult;
-    private OpenPgpApiManager openPgpApiManager;
-    private OpenPgpApiManagerCallback openPgpApiManagerCallback;
-
+    private val noRecipientsAutocryptResult = RecipientAutocryptStatus(RecipientAutocryptStatusType.NO_RECIPIENTS, null)
+    private var openPgpApiManagerCallback: OpenPgpApiManagerCallback? = null
 
     @Before
-    public void setUp() throws Exception {
-        Context context = RuntimeEnvironment.application;
-        Robolectric.getBackgroundThreadScheduler().pause();
+    fun setUp() {
+        Robolectric.getBackgroundThreadScheduler().pause()
 
-        recipientMvpView = mock(RecipientMvpView.class);
-        openPgpApiManager = mock(OpenPgpApiManager.class);
-        account = mock(Account.class);
-        composePgpInlineDecider = mock(ComposePgpInlineDecider.class);
-        composePgpEnableByDefaultDecider = mock(ComposePgpEnableByDefaultDecider.class);
-        autocryptStatusInteractor = mock(AutocryptStatusInteractor.class);
-        replyToParser = mock(ReplyToParser.class);
-        LoaderManager loaderManager = mock(LoaderManager.class);
-
-        when(openPgpApiManager.getOpenPgpProviderState()).thenReturn(OpenPgpProviderState.UNCONFIGURED);
-
-        recipientPresenter = new RecipientPresenter(
-                context, loaderManager, openPgpApiManager, recipientMvpView, account, composePgpInlineDecider,
-                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser,
-                DI.get(AutocryptDraftStateHeaderParser.class)
-        );
-
-        ArgumentCaptor<OpenPgpApiManagerCallback> callbackCaptor = ArgumentCaptor.forClass(OpenPgpApiManagerCallback.class);
-        verify(openPgpApiManager).setOpenPgpProvider(isNull(String.class), callbackCaptor.capture());
-        openPgpApiManagerCallback = callbackCaptor.getValue();
-
-        noRecipientsAutocryptResult = new RecipientAutocryptStatus(RecipientAutocryptStatusType.NO_RECIPIENTS, null);
+        recipientPresenter = RecipientPresenter(
+            ApplicationProvider.getApplicationContext(),
+            mock(),
+            openPgpApiManager,
+            recipientMvpView,
+            account,
+            composePgpInlineDecider,
+            composePgpEnableByDefaultDecider,
+            autocryptStatusInteractor,
+            replyToParser,
+            autocryptDraftStateHeaderParser
+        )
     }
 
     @Test
     @Ignore("It looks like the support version of AsyncTaskLoader handles background tasks differently")
-    public void testInitFromReplyToMessage() throws Exception {
-        Message message = mock(Message.class);
-        when(replyToParser.getRecipientsToReplyTo(message, account)).thenReturn(TO_ADDRESSES);
+    fun testInitFromReplyToMessage() {
+        val message = mock<Message>()
+        stubbing(replyToParser) {
+            on { getRecipientsToReplyTo(message, account) } doReturn ReplyToAddresses(arrayOf(TO_ADDRESS))
+        }
 
-        recipientPresenter.initFromReplyToMessage(message, false);
-        runBackgroundTask();
+        recipientPresenter.initFromReplyToMessage(message, false)
+        runBackgroundTask()
 
-        Recipient toRecipient = new Recipient(TO_ADDRESSES.to[0]);
-        verify(recipientMvpView).addRecipients(eq(RecipientType.TO), eq(toRecipient));
+        verify(recipientMvpView).addRecipients(eq(RecipientType.TO), eq(Recipient(TO_ADDRESS)))
     }
 
     @Test
     @Ignore("It looks like the support version of AsyncTaskLoader handles background tasks differently")
-    public void testInitFromReplyToAllMessage() throws Exception {
-        Message message = mock(Message.class);
-        when(replyToParser.getRecipientsToReplyTo(message, account)).thenReturn(TO_ADDRESSES);
-        ReplyToAddresses replyToAddresses = new ReplyToAddresses(ALL_TO_ADDRESSES, ALL_CC_ADDRESSES);
-        when(replyToParser.getRecipientsToReplyAllTo(message, account)).thenReturn(replyToAddresses);
+    fun testInitFromReplyToAllMessage() {
+        val message = mock<Message>()
+        val replyToAddresses = ReplyToAddresses(listOf(TO_ADDRESS), listOf(CC_ADDRESS))
+        stubbing(replyToParser) {
+            on { getRecipientsToReplyAllTo(message, account) } doReturn replyToAddresses
+        }
 
-        recipientPresenter.initFromReplyToMessage(message, true);
-        // one for To, one for Cc
-        runBackgroundTask();
-        runBackgroundTask();
+        recipientPresenter.initFromReplyToMessage(message, true)
+        runBackgroundTask()
+        runBackgroundTask()
 
-        verify(recipientMvpView).addRecipients(eq(RecipientType.TO), any(Recipient.class));
-        verify(recipientMvpView).addRecipients(eq(RecipientType.CC), any(Recipient.class));
+        verify(recipientMvpView).addRecipients(eq(RecipientType.TO), eq(Recipient(TO_ADDRESS)))
+        verify(recipientMvpView).addRecipients(eq(RecipientType.CC), eq(Recipient(CC_ADDRESS)))
     }
 
     @Test
-    public void initFromReplyToMessage_shouldCallComposePgpInlineDecider() throws Exception {
-        Message message = mock(Message.class);
-        when(replyToParser.getRecipientsToReplyTo(message, account)).thenReturn(TO_ADDRESSES);
+    fun initFromReplyToMessage_shouldCallComposePgpInlineDecider() {
+        val message = mock<Message>()
+        stubbing(replyToParser) {
+            on { getRecipientsToReplyTo(message, account) } doReturn ReplyToAddresses(arrayOf(TO_ADDRESS))
+        }
 
-        recipientPresenter.initFromReplyToMessage(message, false);
+        recipientPresenter.initFromReplyToMessage(message, false)
 
-        verify(composePgpInlineDecider).shouldReplyInline(message);
+        verify(composePgpInlineDecider).shouldReplyInline(message)
     }
 
     @Test
-    public void getCurrentCryptoStatus_withoutCryptoProvider() throws Exception {
-        when(openPgpApiManager.getOpenPgpProviderState()).thenReturn(OpenPgpProviderState.UNCONFIGURED);
-        recipientPresenter.asyncUpdateCryptoStatus();
+    fun getCurrentCryptoStatus_withoutCryptoProvider() {
+        stubbing(openPgpApiManager) {
+            on { openPgpProviderState } doReturn OpenPgpProviderState.UNCONFIGURED
+        }
 
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+        recipientPresenter.asyncUpdateCryptoStatus()
 
-        assertEquals(CryptoStatusDisplayType.UNCONFIGURED, status.getDisplayType());
-        assertEquals(CryptoSpecialModeDisplayType.NONE, status.getSpecialModeDisplayType());
-        assertNull(status.getAttachErrorStateOrNull());
-        assertFalse(status.isProviderStateOk());
-        assertFalse(status.isOpenPgpConfigured());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.UNCONFIGURED)
+            assertThat(status.specialModeDisplayType).isEqualTo(CryptoSpecialModeDisplayType.NONE)
+            assertThat(status.attachErrorStateOrNull).isNull()
+            assertThat(status.isProviderStateOk()).isFalse()
+            assertThat(status.isOpenPgpConfigured).isFalse()
+        }
     }
 
     @Test
-    public void getCurrentCryptoStatus_withCryptoProvider() throws Exception {
-        setupCryptoProvider(noRecipientsAutocryptResult);
+    fun getCurrentCryptoStatus_withCryptoProvider() {
+        setupCryptoProvider(noRecipientsAutocryptResult)
 
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
-
-        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.isOpenPgpConfigured());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.UNAVAILABLE)
+            assertThat(status.isProviderStateOk()).isTrue()
+            assertThat(status.isOpenPgpConfigured).isTrue()
+        }
     }
 
     @Test
-    public void getCurrentCryptoStatus_withOpportunistic() throws Exception {
-        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
-                RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null);
-        setupCryptoProvider(recipientAutocryptStatus);
+    fun getCurrentCryptoStatus_withOpportunistic() {
+        val recipientAutocryptStatus = RecipientAutocryptStatus(
+            RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null
+        )
 
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+        setupCryptoProvider(recipientAutocryptStatus)
 
-        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.isOpenPgpConfigured());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.AVAILABLE)
+            assertThat(status.isProviderStateOk()).isTrue()
+            assertThat(status.isOpenPgpConfigured).isTrue()
+        }
     }
 
     @Test
-    public void getCurrentCryptoStatus_withOpportunistic__confirmed() throws Exception {
-        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
-                RecipientAutocryptStatusType.AVAILABLE_CONFIRMED, null);
-        setupCryptoProvider(recipientAutocryptStatus);
+    fun getCurrentCryptoStatus_withOpportunistic__confirmed() {
+        val recipientAutocryptStatus = RecipientAutocryptStatus(
+            RecipientAutocryptStatusType.AVAILABLE_CONFIRMED, null
+        )
 
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+        setupCryptoProvider(recipientAutocryptStatus)
 
-        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.isOpenPgpConfigured());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.AVAILABLE)
+            assertThat(status.isProviderStateOk()).isTrue()
+            assertThat(status.isOpenPgpConfigured).isTrue()
+        }
     }
 
     @Test
-    public void getCurrentCryptoStatus_withOpportunistic__missingKeys() throws Exception {
-        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
-                RecipientAutocryptStatusType.UNAVAILABLE, null);
-        setupCryptoProvider(recipientAutocryptStatus);
+    fun getCurrentCryptoStatus_withOpportunistic__missingKeys() {
+        val recipientAutocryptStatus = RecipientAutocryptStatus(
+            RecipientAutocryptStatusType.UNAVAILABLE, null
+        )
 
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+        setupCryptoProvider(recipientAutocryptStatus)
 
-        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.isOpenPgpConfigured());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.UNAVAILABLE)
+            assertThat(status.isProviderStateOk()).isTrue()
+            assertThat(status.isOpenPgpConfigured).isTrue()
+        }
     }
 
     @Test
-    public void getCurrentCryptoStatus_withOpportunistic__privateMissingKeys() throws Exception {
-        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
-                RecipientAutocryptStatusType.UNAVAILABLE, null);
-        setupCryptoProvider(recipientAutocryptStatus);
+    fun getCurrentCryptoStatus_withOpportunistic__privateMissingKeys() {
+        val recipientAutocryptStatus = RecipientAutocryptStatus(
+            RecipientAutocryptStatusType.UNAVAILABLE, null
+        )
 
-        recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
-        runBackgroundTask();
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+        setupCryptoProvider(recipientAutocryptStatus)
+        recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED)
+        runBackgroundTask()
 
-        assertEquals(CryptoStatusDisplayType.ENABLED_ERROR, status.getDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.isOpenPgpConfigured());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.ENABLED_ERROR)
+            assertThat(status.isProviderStateOk()).isTrue()
+            assertThat(status.isOpenPgpConfigured).isTrue()
+        }
     }
 
     @Test
-    public void getCurrentCryptoStatus_withModeDisabled() throws Exception {
-        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
-                RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null);
-        setupCryptoProvider(recipientAutocryptStatus);
+    fun getCurrentCryptoStatus_withModeDisabled() {
+        val recipientAutocryptStatus = RecipientAutocryptStatus(
+            RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null
+        )
 
-        recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
-        runBackgroundTask();
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+        setupCryptoProvider(recipientAutocryptStatus)
+        recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_DISABLED)
+        runBackgroundTask()
 
-        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.isOpenPgpConfigured());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.AVAILABLE)
+            assertThat(status.isProviderStateOk()).isTrue()
+            assertThat(status.isOpenPgpConfigured).isTrue()
+        }
     }
 
     @Test
-    public void getCurrentCryptoStatus_withModePrivate() throws Exception {
-        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
-                RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null);
-        setupCryptoProvider(recipientAutocryptStatus);
+    fun getCurrentCryptoStatus_withModePrivate() {
+        val recipientAutocryptStatus = RecipientAutocryptStatus(
+            RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null
+        )
 
-        recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
-        runBackgroundTask();
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+        setupCryptoProvider(recipientAutocryptStatus)
+        recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED)
+        runBackgroundTask()
 
-        assertEquals(CryptoStatusDisplayType.ENABLED, status.getDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.isOpenPgpConfigured());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.ENABLED)
+            assertThat(status.isProviderStateOk()).isTrue()
+            assertThat(status.isOpenPgpConfigured).isTrue()
+        }
     }
 
     @Test
-    public void getCurrentCryptoStatus_withModeSignOnly() throws Exception {
-        setupCryptoProvider(noRecipientsAutocryptResult);
+    fun getCurrentCryptoStatus_withModeSignOnly() {
+        setupCryptoProvider(noRecipientsAutocryptResult)
 
-        recipientPresenter.onMenuSetSignOnly(true);
-        runBackgroundTask();
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+        recipientPresenter.onMenuSetSignOnly(true)
+        runBackgroundTask()
 
-        assertEquals(CryptoStatusDisplayType.SIGN_ONLY, status.getDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.isSigningEnabled());
-        assertTrue(status.isSignOnly());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.SIGN_ONLY)
+            assertThat(status.isProviderStateOk()).isTrue()
+            assertThat(status.isOpenPgpConfigured).isTrue()
+            assertThat(status.isSignOnly).isTrue()
+        }
     }
 
     @Test
-    public void getCurrentCryptoStatus_withModeInline() throws Exception {
-        setupCryptoProvider(noRecipientsAutocryptResult);
+    fun getCurrentCryptoStatus_withModeInline() {
+        setupCryptoProvider(noRecipientsAutocryptResult)
 
-        recipientPresenter.onMenuSetPgpInline(true);
-        runBackgroundTask();
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+        recipientPresenter.onMenuSetPgpInline(true)
+        runBackgroundTask()
 
-        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.isPgpInlineModeEnabled());
+        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+            assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.UNAVAILABLE)
+            assertThat(status.isProviderStateOk()).isTrue()
+            assertThat(status.isPgpInlineModeEnabled).isTrue()
+        }
     }
 
-    private void runBackgroundTask() {
-        boolean taskRun = Robolectric.getBackgroundThreadScheduler().runOneTask();
-        assertTrue(taskRun);
+    private fun runBackgroundTask() {
+        assertThat(Robolectric.getBackgroundThreadScheduler().runOneTask()).isTrue()
     }
 
-    private void setupCryptoProvider(RecipientAutocryptStatus autocryptStatusResult) throws Exception {
-        Account account = mock(Account.class);
-        OpenPgpApi openPgpApi = mock(OpenPgpApi.class);
+    private fun setupCryptoProvider(autocryptStatusResult: RecipientAutocryptStatus) {
+        stubbing(account) {
+            on { openPgpProvider } doReturn CRYPTO_PROVIDER
+            on { isOpenPgpProviderConfigured } doReturn true
+            on { openPgpKey } doReturn CRYPTO_KEY_ID
+        }
 
-        when(account.getOpenPgpProvider()).thenReturn(CRYPTO_PROVIDER);
-        when(account.isOpenPgpProviderConfigured()).thenReturn(true);
-        when(account.getOpenPgpKey()).thenReturn(CRYPTO_KEY_ID);
-        recipientPresenter.onSwitchAccount(account);
+        recipientPresenter.onSwitchAccount(account)
 
-        when(openPgpApiManager.getOpenPgpProviderState()).thenReturn(OpenPgpProviderState.OK);
-        when(openPgpApiManager.getOpenPgpApi()).thenReturn(openPgpApi);
-        when(autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(
-                any(OpenPgpApi.class), any(String[].class))).thenReturn(autocryptStatusResult);
+        val openPgpApiMock = mock<OpenPgpApi>()
 
-        openPgpApiManagerCallback.onOpenPgpProviderStatusChanged();
-        runBackgroundTask();
+        stubbing(autocryptStatusInteractor) {
+            on { retrieveCryptoProviderRecipientStatus(eq(openPgpApiMock), any()) } doReturn autocryptStatusResult
+        }
+
+        stubbing(openPgpApiManager) {
+            on { openPgpApi } doReturn openPgpApiMock
+            on { openPgpProviderState } doReturn OpenPgpProviderState.OK
+        }
+
+        openPgpApiManagerCallback!!.onOpenPgpProviderStatusChanged()
+        runBackgroundTask()
     }
 }
