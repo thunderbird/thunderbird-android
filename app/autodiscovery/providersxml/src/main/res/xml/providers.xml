@@ -285,11 +285,11 @@
     </provider>
     
     <!-- France -->
-    <provider id="mailo.com" label="mailo.com" domain="mailo.com*">
+    <provider id="mailo.com" label="mailo.com" domain="mailo.com">
         <incoming uri="imap+tls+://mail.mailo.com" username="$email" />
         <outgoing uri="smtp+tls+://mail.mailo.com" username="$email" />
     </provider>
-    <provider id="net-c.fr" label="net-c.fr" domain="net-c.fr*">
+    <provider id="net-c.fr" label="net-c.fr" domain="net-c.fr">
         <incoming uri="imap+tls+://mail.mailo.com" username="$email" />
         <outgoing uri="smtp+tls+://mail.mailo.com" username="$email" />
     </provider>
