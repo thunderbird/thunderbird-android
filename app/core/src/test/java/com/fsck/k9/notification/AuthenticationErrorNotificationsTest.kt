@@ -1,148 +1,110 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.app.Notification
+import android.app.PendingIntent
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.test.core.app.ApplicationProvider
+import com.fsck.k9.Account
+import com.fsck.k9.RobolectricTest
+import com.fsck.k9.testing.MockHelper.mockBuilder
+import org.junit.Test
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
-import android.app.Notification;
-import android.app.PendingIntent;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.Builder;
-import androidx.core.app.NotificationManagerCompat;
+private const val INCOMING = true
+private const val OUTGOING = false
+private const val ACCOUNT_NUMBER = 1
+private const val ACCOUNT_NAME = "TestAccount"
 
-import com.fsck.k9.Account;
-import com.fsck.k9.testing.MockHelper;
-import com.fsck.k9.RobolectricTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.robolectric.RuntimeEnvironment;
+class AuthenticationErrorNotificationsTest : RobolectricTest() {
+    private val resourceProvider = TestNotificationResourceProvider()
+    private val notification = mock<Notification>()
+    private val notificationManager = mock<NotificationManagerCompat>()
+    private val builder = createFakeNotificationBuilder(notification)
+    private val notificationHelper = createFakeNotificationHelper(notificationManager, builder)
+    private val account = createFakeAccount()
+    private val authenticationErrorNotifications = TestAuthenticationErrorNotifications()
+    private val contentIntent = mock<PendingIntent>()
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+    @Test
+    fun showAuthenticationErrorNotification_withIncomingServer_shouldCreateNotification() {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING)
 
+        authenticationErrorNotifications.showAuthenticationErrorNotification(account, INCOMING)
 
-public class AuthenticationErrorNotificationsTest extends RobolectricTest {
-    private static final boolean INCOMING = true;
-    private static final boolean OUTGOING = false;
-    private static final int ACCOUNT_NUMBER = 1;
-    private static final String ACCOUNT_NAME = "TestAccount";
-
-
-    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
-    private Notification notification;
-    private NotificationManagerCompat notificationManager;
-    private NotificationCompat.Builder builder;
-    private NotificationHelper notificationHelper;
-    private Account account;
-    private AuthenticationErrorNotifications authenticationErrorNotifications;
-    private PendingIntent contentIntent;
-
-
-    @Before
-    public void setUp() throws Exception {
-        notification = createFakeNotification();
-        notificationManager = createFakeNotificationManager();
-        builder = createFakeNotificationBuilder(notification);
-        notificationHelper = createFakeNotificationHelper(notificationManager, builder);
-        account = createFakeAccount();
-        contentIntent = createFakeContentIntent();
-
-        authenticationErrorNotifications = new TestAuthenticationErrorNotifications();
+        verify(notificationManager).notify(notificationId, notification)
+        assertAuthenticationErrorNotificationContents()
     }
 
     @Test
-    public void showAuthenticationErrorNotification_withIncomingServer_shouldCreateNotification() throws Exception {
-        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING);
+    fun clearAuthenticationErrorNotification_withIncomingServer_shouldCancelNotification() {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING)
 
-        authenticationErrorNotifications.showAuthenticationErrorNotification(account, INCOMING);
+        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, INCOMING)
 
-        verify(notificationManager).notify(notificationId, notification);
-        assertAuthenticationErrorNotificationContents();
+        verify(notificationManager).cancel(notificationId)
     }
 
     @Test
-    public void clearAuthenticationErrorNotification_withIncomingServer_shouldCancelNotification() throws Exception {
-        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING);
+    fun showAuthenticationErrorNotification_withOutgoingServer_shouldCreateNotification() {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING)
 
-        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, INCOMING);
+        authenticationErrorNotifications.showAuthenticationErrorNotification(account, OUTGOING)
 
-        verify(notificationManager).cancel(notificationId);
+        verify(notificationManager).notify(notificationId, notification)
+        assertAuthenticationErrorNotificationContents()
     }
 
     @Test
-    public void showAuthenticationErrorNotification_withOutgoingServer_shouldCreateNotification() throws Exception {
-        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING);
+    fun clearAuthenticationErrorNotification_withOutgoingServer_shouldCancelNotification() {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING)
 
-        authenticationErrorNotifications.showAuthenticationErrorNotification(account, OUTGOING);
+        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, OUTGOING)
 
-        verify(notificationManager).notify(notificationId, notification);
-        assertAuthenticationErrorNotificationContents();
+        verify(notificationManager).cancel(notificationId)
     }
 
-    @Test
-    public void clearAuthenticationErrorNotification_withOutgoingServer_shouldCancelNotification() throws Exception {
-        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING);
-
-        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, OUTGOING);
-
-        verify(notificationManager).cancel(notificationId);
+    private fun assertAuthenticationErrorNotificationContents() {
+        verify(builder).setSmallIcon(resourceProvider.iconWarning)
+        verify(builder).setTicker("Authentication failed")
+        verify(builder).setContentTitle("Authentication failed")
+        verify(builder).setContentText("Authentication failed for $ACCOUNT_NAME. Update your server settings.")
+        verify(builder).setContentIntent(contentIntent)
+        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 
-    private void assertAuthenticationErrorNotificationContents() {
-        verify(builder).setSmallIcon(resourceProvider.getIconWarning());
-        verify(builder).setTicker("Authentication failed");
-        verify(builder).setContentTitle("Authentication failed");
-        verify(builder).setContentText("Authentication failed for " + ACCOUNT_NAME + ". Update your server settings.");
-        verify(builder).setContentIntent(contentIntent);
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-    }
-
-    private Notification createFakeNotification() {
-        return mock(Notification.class);
-    }
-
-    private NotificationManagerCompat createFakeNotificationManager() {
-        return mock(NotificationManagerCompat.class);
-    }
-
-    private Builder createFakeNotificationBuilder(Notification notification) {
-        Builder builder = MockHelper.mockBuilder(Builder.class);
-        when(builder.build()).thenReturn(notification);
-        return builder;
-    }
-
-    private NotificationHelper createFakeNotificationHelper(NotificationManagerCompat notificationManager,
-            NotificationCompat.Builder builder) {
-        NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
-        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
-        when(notificationHelper.createNotificationBuilder(any(Account.class),
-                any(NotificationChannelManager.ChannelType.class)))
-                .thenReturn(builder);
-
-        return notificationHelper;
-    }
-
-    private Account createFakeAccount() {
-        Account account = mock(Account.class);
-        when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
-        when(account.getDescription()).thenReturn(ACCOUNT_NAME);
-
-        return account;
-    }
-
-    private PendingIntent createFakeContentIntent() {
-        return mock(PendingIntent.class);
-    }
-
-
-    class TestAuthenticationErrorNotifications extends AuthenticationErrorNotifications {
-        public TestAuthenticationErrorNotifications() {
-            super(notificationHelper, mock(NotificationActionCreator.class), resourceProvider);
+    private fun createFakeNotificationBuilder(notification: Notification?): NotificationCompat.Builder {
+        return mockBuilder {
+            on { build() } doReturn notification
         }
+    }
 
-        @Override
-        protected PendingIntent createContentIntent(Account account, boolean incoming) {
-            return contentIntent;
+    private fun createFakeNotificationHelper(
+        notificationManager: NotificationManagerCompat,
+        builder: NotificationCompat.Builder
+    ): NotificationHelper {
+        return mock {
+            on { getContext() } doReturn ApplicationProvider.getApplicationContext()
+            on { getNotificationManager() } doReturn notificationManager
+            on { createNotificationBuilder(any(), any()) } doReturn builder
+        }
+    }
+
+    private fun createFakeAccount(): Account {
+        return mock {
+            on { accountNumber } doReturn ACCOUNT_NUMBER
+            on { description } doReturn ACCOUNT_NAME
+        }
+    }
+
+    internal inner class TestAuthenticationErrorNotifications :
+        AuthenticationErrorNotifications(notificationHelper, mock(), resourceProvider) {
+
+        override fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
+            return contentIntent
         }
     }
 }

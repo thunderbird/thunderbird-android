@@ -1,160 +1,127 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.app.Notification
+import android.app.PendingIntent
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.test.core.app.ApplicationProvider
+import com.fsck.k9.Account
+import com.fsck.k9.RobolectricTest
+import com.fsck.k9.mailstore.LocalFolder
+import com.fsck.k9.notification.NotificationIds.getFetchingMailNotificationId
+import com.fsck.k9.testing.MockHelper.mockBuilder
+import org.junit.Test
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
 
-import android.app.Notification;
-import android.app.PendingIntent;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.Builder;
-import androidx.core.app.NotificationManagerCompat;
+private const val ACCOUNT_NUMBER = 1
+private const val ACCOUNT_NAME = "TestAccount"
+private const val FOLDER_SERVER_ID = "INBOX"
+private const val FOLDER_NAME = "Inbox"
 
-import com.fsck.k9.Account;
-import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.testing.MockHelper;
-import com.fsck.k9.RobolectricTest;
+class SyncNotificationsTest : RobolectricTest() {
+    private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
+    private val notification = mock<Notification>()
+    private val notificationManager = mock<NotificationManagerCompat>()
+    private val builder = createFakeNotificationBuilder(notification)
+    private val account = createFakeAccount()
+    private val contentIntent = mock<PendingIntent>()
+    private val syncNotifications = SyncNotifications(
+        notificationHelper = createFakeNotificationHelper(notificationManager, builder),
+        actionBuilder = createActionBuilder(contentIntent),
+        resourceProvider = resourceProvider
+    )
 
-import org.junit.Before;
-import org.junit.Test;
-import org.robolectric.RuntimeEnvironment;
+    @Test
+    fun testShowSendingNotification() {
+        val notificationId = getFetchingMailNotificationId(account)
 
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+        syncNotifications.showSendingNotification(account)
 
-
-public class SyncNotificationsTest extends RobolectricTest {
-    private static final int ACCOUNT_NUMBER = 1;
-    private static final String ACCOUNT_NAME = "TestAccount";
-    private static final String FOLDER_SERVER_ID = "INBOX";
-    private static final String FOLDER_NAME = "Inbox";
-
-
-    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
-    private Notification notification;
-    private NotificationManagerCompat notificationManager;
-    private Builder builder;
-    private Account account;
-    private SyncNotifications syncNotifications;
-    private PendingIntent contentIntent;
-
-
-    @Before
-    public void setUp() throws Exception {
-        notification = createFakeNotification();
-        notificationManager = createFakeNotificationManager();
-        builder = createFakeNotificationBuilder(notification);
-        NotificationHelper notificationHelper = createFakeNotificationHelper(notificationManager, builder);
-        account = createFakeAccount();
-        contentIntent = createFakeContentIntent();
-        NotificationActionCreator actionBuilder = createActionBuilder(contentIntent);
-
-        syncNotifications = new SyncNotifications(notificationHelper, actionBuilder, resourceProvider);
+        verify(notificationManager).notify(notificationId, notification)
+        verify(builder).setSmallIcon(resourceProvider.iconSendingMail)
+        verify(builder).setTicker("Sending mail: $ACCOUNT_NAME")
+        verify(builder).setContentTitle("Sending mail")
+        verify(builder).setContentText(ACCOUNT_NAME)
+        verify(builder).setContentIntent(contentIntent)
+        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 
     @Test
-    public void testShowSendingNotification() throws Exception {
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+    fun testClearSendingNotification() {
+        val notificationId = getFetchingMailNotificationId(account)
 
-        syncNotifications.showSendingNotification(account);
+        syncNotifications.clearSendingNotification(account)
 
-        verify(notificationManager).notify(notificationId, notification);
-        verify(builder).setSmallIcon(resourceProvider.getIconSendingMail());
-        verify(builder).setTicker("Sending mail: " + ACCOUNT_NAME);
-        verify(builder).setContentTitle("Sending mail");
-        verify(builder).setContentText(ACCOUNT_NAME);
-        verify(builder).setContentIntent(contentIntent);
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        verify(notificationManager).cancel(notificationId)
     }
 
     @Test
-    public void testClearSendingNotification() throws Exception {
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+    fun testGetFetchingMailNotificationId() {
+        val localFolder = createFakeLocalFolder()
+        val notificationId = getFetchingMailNotificationId(account)
 
-        syncNotifications.clearSendingNotification(account);
+        syncNotifications.showFetchingMailNotification(account, localFolder)
 
-        verify(notificationManager).cancel(notificationId);
+        verify(notificationManager).notify(notificationId, notification)
+        verify(builder).setSmallIcon(resourceProvider.iconCheckingMail)
+        verify(builder).setTicker("Checking mail: $ACCOUNT_NAME:$FOLDER_NAME")
+        verify(builder).setContentTitle("Checking mail")
+        verify(builder).setContentText("$ACCOUNT_NAME:$FOLDER_NAME")
+        verify(builder).setContentIntent(contentIntent)
+        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 
     @Test
-    public void testGetFetchingMailNotificationId() throws Exception {
-        LocalFolder localFolder = createFakeLocalFolder();
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+    fun testClearSendFailedNotification() {
+        val notificationId = getFetchingMailNotificationId(account)
 
-        syncNotifications.showFetchingMailNotification(account, localFolder);
+        syncNotifications.clearFetchingMailNotification(account)
 
-        verify(notificationManager).notify(notificationId, notification);
-        verify(builder).setSmallIcon(resourceProvider.getIconCheckingMail());
-        verify(builder).setTicker("Checking mail: " + ACCOUNT_NAME + ":" + FOLDER_NAME);
-        verify(builder).setContentTitle("Checking mail");
-        verify(builder).setContentText(ACCOUNT_NAME + ":" + FOLDER_NAME);
-        verify(builder).setContentIntent(contentIntent);
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        verify(notificationManager).cancel(notificationId)
     }
 
-    @Test
-    public void testClearSendFailedNotification() throws Exception {
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
-
-        syncNotifications.clearFetchingMailNotification(account);
-
-        verify(notificationManager).cancel(notificationId);
+    private fun createFakeNotificationBuilder(notification: Notification): NotificationCompat.Builder {
+        return mockBuilder {
+            on { build() } doReturn notification
+        }
     }
 
-
-    private Notification createFakeNotification() {
-        return mock(Notification.class);
+    private fun createFakeNotificationHelper(
+        notificationManager: NotificationManagerCompat,
+        builder: NotificationCompat.Builder
+    ): NotificationHelper {
+        return mock {
+            on { getContext() } doReturn ApplicationProvider.getApplicationContext()
+            on { getNotificationManager() } doReturn notificationManager
+            on { createNotificationBuilder(any(), any()) } doReturn builder
+            on { getAccountName(any()) } doReturn ACCOUNT_NAME
+        }
     }
 
-    private NotificationManagerCompat createFakeNotificationManager() {
-        return mock(NotificationManagerCompat.class);
+    private fun createFakeAccount(): Account {
+        return mock {
+            on { accountNumber } doReturn ACCOUNT_NUMBER
+            on { description } doReturn ACCOUNT_NAME
+            on { outboxFolderId } doReturn 33L
+        }
     }
 
-    private Builder createFakeNotificationBuilder(Notification notification) {
-        Builder builder = MockHelper.mockBuilder(Builder.class);
-        when(builder.build()).thenReturn(notification);
-        return builder;
+    private fun createActionBuilder(contentIntent: PendingIntent): NotificationActionCreator {
+        return mock {
+            on { createViewFolderPendingIntent(eq(account), anyLong(), anyInt()) } doReturn contentIntent
+        }
     }
 
-    private NotificationHelper createFakeNotificationHelper(
-            NotificationManagerCompat notificationManager, Builder builder) {
-        NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
-        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
-        when(notificationHelper.createNotificationBuilder(any(Account.class),
-                any(NotificationChannelManager.ChannelType.class)))
-                .thenReturn(builder);
-        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-
-        return notificationHelper;
-    }
-
-    private Account createFakeAccount() {
-        Account account = mock(Account.class);
-        when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
-        when(account.getDescription()).thenReturn(ACCOUNT_NAME);
-        when(account.getOutboxFolderId()).thenReturn(33L);
-
-        return account;
-    }
-
-    private PendingIntent createFakeContentIntent() {
-        return mock(PendingIntent.class);
-    }
-
-    private NotificationActionCreator createActionBuilder(PendingIntent contentIntent) {
-        NotificationActionCreator actionBuilder = mock(NotificationActionCreator.class);
-        when(actionBuilder.createViewFolderPendingIntent(eq(account), anyLong(), anyInt()))
-                .thenReturn(contentIntent);
-        return actionBuilder;
-    }
-
-    private LocalFolder createFakeLocalFolder() {
-        LocalFolder folder = mock(LocalFolder.class);
-        when(folder.getServerId()).thenReturn(FOLDER_SERVER_ID);
-        when(folder.getName()).thenReturn(FOLDER_NAME);
-        return folder;
+    private fun createFakeLocalFolder(): LocalFolder {
+        return mock {
+            on { serverId } doReturn FOLDER_SERVER_ID
+            on { name } doReturn FOLDER_NAME
+        }
     }
 }

@@ -1,118 +1,86 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.app.Notification
+import android.app.PendingIntent
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.test.core.app.ApplicationProvider
+import com.fsck.k9.Account
+import com.fsck.k9.RobolectricTest
+import com.fsck.k9.testing.MockHelper.mockBuilder
+import org.junit.Test
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
-import android.app.Notification;
-import android.app.PendingIntent;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.Builder;
-import androidx.core.app.NotificationManagerCompat;
+private const val ACCOUNT_NUMBER = 1
+private const val ACCOUNT_NAME = "TestAccount"
 
-import com.fsck.k9.Account;
-import com.fsck.k9.testing.MockHelper;
-import com.fsck.k9.RobolectricTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.robolectric.RuntimeEnvironment;
+class SendFailedNotificationsTest : RobolectricTest() {
+    private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
+    private val notification = mock<Notification>()
+    private val notificationManager = mock<NotificationManagerCompat>()
+    private val builder = createFakeNotificationBuilder(notification)
+    private val account = createFakeAccount()
+    private val contentIntent = mock<PendingIntent>()
+    private val notificationId = NotificationIds.getSendFailedNotificationId(account)
+    private val sendFailedNotifications = SendFailedNotifications(
+        notificationHelper = createFakeNotificationHelper(notificationManager, builder),
+        actionBuilder = createActionBuilder(contentIntent),
+        resourceProvider = resourceProvider
+    )
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+    @Test
+    fun testShowSendFailedNotification() {
+        val exception = Exception()
 
+        sendFailedNotifications.showSendFailedNotification(account, exception)
 
-public class SendFailedNotificationsTest extends RobolectricTest {
-    private static final int ACCOUNT_NUMBER = 1;
-    private static final String ACCOUNT_NAME = "TestAccount";
-
-
-    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
-    private Notification notification;
-    private NotificationManagerCompat notificationManager;
-    private Builder builder;
-    private Account account;
-    private SendFailedNotifications sendFailedNotifications;
-    private PendingIntent contentIntent;
-    private int notificationId;
-
-
-    @Before
-    public void setUp() throws Exception {
-        notification = createFakeNotification();
-        notificationManager = createFakeNotificationManager();
-        builder = createFakeNotificationBuilder(notification);
-        NotificationHelper notificationHelper = createFakeNotificationHelper(notificationManager, builder);
-        account = createFakeAccount();
-        contentIntent = createFakeContentIntent();
-        NotificationActionCreator actionBuilder = createActionBuilder(contentIntent);
-        notificationId = NotificationIds.getSendFailedNotificationId(account);
-
-        sendFailedNotifications = new SendFailedNotifications(notificationHelper, actionBuilder, resourceProvider);
+        verify(notificationManager).notify(notificationId, notification)
+        verify(builder).setSmallIcon(resourceProvider.iconWarning)
+        verify(builder).setTicker("Failed to send some messages")
+        verify(builder).setContentTitle("Failed to send some messages")
+        verify(builder).setContentText("Exception")
+        verify(builder).setContentIntent(contentIntent)
+        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 
     @Test
-    public void testShowSendFailedNotification() throws Exception {
-        Exception exception = new Exception();
+    fun testClearSendFailedNotification() {
+        sendFailedNotifications.clearSendFailedNotification(account)
 
-        sendFailedNotifications.showSendFailedNotification(account, exception);
-
-        verify(notificationManager).notify(notificationId, notification);
-        verify(builder).setSmallIcon(resourceProvider.getIconWarning());
-        verify(builder).setTicker("Failed to send some messages");
-        verify(builder).setContentTitle("Failed to send some messages");
-        verify(builder).setContentText("Exception");
-        verify(builder).setContentIntent(contentIntent);
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        verify(notificationManager).cancel(notificationId)
     }
 
-    @Test
-    public void testClearSendFailedNotification() throws Exception {
-        sendFailedNotifications.clearSendFailedNotification(account);
-
-        verify(notificationManager).cancel(notificationId);
+    private fun createFakeNotificationBuilder(notification: Notification?): NotificationCompat.Builder {
+        return mockBuilder {
+            on { build() } doReturn notification
+        }
     }
 
-    private Notification createFakeNotification() {
-        return mock(Notification.class);
+    private fun createFakeNotificationHelper(
+        notificationManager: NotificationManagerCompat,
+        builder: NotificationCompat.Builder
+    ): NotificationHelper {
+        return mock {
+            on { getContext() } doReturn ApplicationProvider.getApplicationContext()
+            on { getNotificationManager() } doReturn notificationManager
+            on { createNotificationBuilder(any(), any()) } doReturn builder
+        }
     }
 
-    private NotificationManagerCompat createFakeNotificationManager() {
-        return mock(NotificationManagerCompat.class);
+    private fun createFakeAccount(): Account {
+        return mock {
+            on { accountNumber } doReturn ACCOUNT_NUMBER
+            on { description } doReturn ACCOUNT_NAME
+        }
     }
 
-    private Builder createFakeNotificationBuilder(Notification notification) {
-        Builder builder = MockHelper.mockBuilder(Builder.class);
-        when(builder.build()).thenReturn(notification);
-        return builder;
-    }
-
-    private NotificationHelper createFakeNotificationHelper(NotificationManagerCompat notificationManager,
-            Builder builder) {
-        NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
-        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
-        when(notificationHelper.createNotificationBuilder(any(Account.class),
-                any(NotificationChannelManager.ChannelType.class)))
-                .thenReturn(builder);
-
-        return notificationHelper;
-    }
-
-    private Account createFakeAccount() {
-        Account account = mock(Account.class);
-        when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
-        when(account.getDescription()).thenReturn(ACCOUNT_NAME);
-
-        return account;
-    }
-
-    private PendingIntent createFakeContentIntent() {
-        return mock(PendingIntent.class);
-    }
-
-    private NotificationActionCreator createActionBuilder(PendingIntent contentIntent) {
-        NotificationActionCreator actionBuilder = mock(NotificationActionCreator.class);
-        when(actionBuilder.createViewFolderListPendingIntent(any(Account.class), anyInt())).thenReturn(contentIntent);
-        return actionBuilder;
+    private fun createActionBuilder(contentIntent: PendingIntent): NotificationActionCreator {
+        return mock {
+            on { createViewFolderListPendingIntent(any(), anyInt()) } doReturn contentIntent
+        }
     }
 }

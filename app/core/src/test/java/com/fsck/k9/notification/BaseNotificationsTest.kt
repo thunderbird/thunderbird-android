@@ -1,146 +1,130 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import androidx.core.app.NotificationCompat
+import com.fsck.k9.Account
+import com.fsck.k9.K9
+import com.fsck.k9.K9.NotificationQuickDelete
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.testing.MockHelper.mockBuilder
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
-import androidx.core.app.NotificationCompat.BigTextStyle;
-import androidx.core.app.NotificationCompat.Builder;
+private const val ACCOUNT_COLOR = 0xAABBCC
+private const val ACCOUNT_NAME = "AccountName"
+private const val ACCOUNT_NUMBER = 2
+private const val NOTIFICATION_SUMMARY = "Summary"
+private const val SENDER = "MessageSender"
+private const val SUBJECT = "Subject"
+private const val NOTIFICATION_PREVIEW = "Preview"
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.testing.MockHelper;
-import org.junit.Before;
-import org.junit.Test;
+class BaseNotificationsTest {
+    private val resourceProvider = TestNotificationResourceProvider()
+    private val notifications = createTestNotifications()
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+    @Test
+    fun testCreateAndInitializeNotificationBuilder() {
+        val account = createFakeAccount()
 
+        val builder = notifications.createAndInitializeNotificationBuilder(account)
 
-public class BaseNotificationsTest {
-    private static final int ACCOUNT_COLOR = 0xAABBCC;
-    private static final String ACCOUNT_NAME = "AccountName";
-    private static final int ACCOUNT_NUMBER = 2;
-    private static final String NOTIFICATION_SUMMARY = "Summary";
-    private static final String SENDER = "MessageSender";
-    private static final String SUBJECT = "Subject";
-    private static final String NOTIFICATION_PREVIEW = "Preview";
-
-
-    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
-    private TestNotifications notifications;
-
-
-    @Before
-    public void setUp() throws Exception {
-        notifications = createTestNotifications();
+        verify(builder).setSmallIcon(resourceProvider.iconNewMail)
+        verify(builder).color = ACCOUNT_COLOR
+        verify(builder).setAutoCancel(true)
     }
 
     @Test
-    public void testCreateAndInitializeNotificationBuilder() throws Exception {
-        Account account = createFakeAccount();
+    fun testIsDeleteActionEnabled_NotificationQuickDelete_ALWAYS() {
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
 
-        Builder builder = notifications.createAndInitializeNotificationBuilder(account);
+        val result = notifications.isDeleteActionEnabled()
 
-        verify(builder).setSmallIcon(resourceProvider.getIconNewMail());
-        verify(builder).setColor(ACCOUNT_COLOR);
-        verify(builder).setAutoCancel(true);
+        assertThat(result).isTrue()
     }
 
     @Test
-    public void testIsDeleteActionEnabled_NotificationQuickDelete_ALWAYS() throws Exception {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+    fun testIsDeleteActionEnabled_NotificationQuickDelete_FOR_SINGLE_MSG() {
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.FOR_SINGLE_MSG
 
-        boolean result = notifications.isDeleteActionEnabled();
+        val result = notifications.isDeleteActionEnabled()
 
-        assertTrue(result);
+        assertThat(result).isTrue()
     }
 
     @Test
-    public void testIsDeleteActionEnabled_NotificationQuickDelete_FOR_SINGLE_MSG() throws Exception {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.FOR_SINGLE_MSG);
+    fun testIsDeleteActionEnabled_NotificationQuickDelete_NEVER() {
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.NEVER
 
-        boolean result = notifications.isDeleteActionEnabled();
+        val result = notifications.isDeleteActionEnabled()
 
-        assertTrue(result);
+        assertThat(result).isFalse()
     }
 
     @Test
-    public void testIsDeleteActionEnabled_NotificationQuickDelete_NEVER() throws Exception {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
+    fun testCreateBigTextStyleNotification() {
+        val account = createFakeAccount()
+        val notificationId = 23
+        val holder = createNotificationHolder(notificationId)
 
-        boolean result = notifications.isDeleteActionEnabled();
+        val builder = notifications.createBigTextStyleNotification(account, holder, notificationId)
 
-        assertFalse(result);
+        verify(builder).setTicker(NOTIFICATION_SUMMARY)
+        verify(builder).setGroup("newMailNotifications-$ACCOUNT_NUMBER")
+        verify(builder).setContentTitle(SENDER)
+        verify(builder).setContentText(SUBJECT)
+        verify(builder).setSubText(ACCOUNT_NAME)
+        verify(notifications.bigTextStyle).bigText(NOTIFICATION_PREVIEW)
+        verify(builder).setStyle(notifications.bigTextStyle)
     }
 
-    @Test
-    public void testCreateBigTextStyleNotification() throws Exception {
-        Account account = createFakeAccount();
-        int notificationId = 23;
-        NotificationHolder holder = createNotificationHolder(notificationId);
-
-        Builder builder = notifications.createBigTextStyleNotification(account, holder, notificationId);
-
-        verify(builder).setTicker(NOTIFICATION_SUMMARY);
-        verify(builder).setGroup("newMailNotifications-" + ACCOUNT_NUMBER);
-        verify(builder).setContentTitle(SENDER);
-        verify(builder).setContentText(SUBJECT);
-        verify(builder).setSubText(ACCOUNT_NAME);
-
-        BigTextStyle bigTextStyle = notifications.bigTextStyle;
-        verify(bigTextStyle).bigText(NOTIFICATION_PREVIEW);
-
-        verify(builder).setStyle(bigTextStyle);
+    private fun createNotificationHolder(notificationId: Int): NotificationHolder {
+        return NotificationHolder(
+            notificationId = notificationId,
+            content = NotificationContent(
+                messageReference = MessageReference("irrelevant", 1, "irrelevant", null),
+                sender = SENDER,
+                subject = SUBJECT,
+                preview = NOTIFICATION_PREVIEW,
+                summary = NOTIFICATION_SUMMARY,
+                isStarred = false
+            )
+        )
     }
 
-    private NotificationHolder createNotificationHolder(int notificationId) {
-        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
-        NotificationContent content = new NotificationContent(messageReference, SENDER, SUBJECT, NOTIFICATION_PREVIEW,
-                NOTIFICATION_SUMMARY, false);
-        return new NotificationHolder(notificationId, content);
+    private fun createTestNotifications(): TestNotifications {
+        return TestNotifications(
+            notificationHelper = createFakeNotificationHelper(),
+            actionCreator = mock(),
+            resourceProvider = resourceProvider
+        )
     }
 
-    private TestNotifications createTestNotifications() {
-        NotificationHelper notificationHelper = createFakeNotificationHelper();
-        NotificationActionCreator actionCreator = mock(NotificationActionCreator.class);
-
-        return new TestNotifications(notificationHelper, actionCreator, resourceProvider);
-    }
-
-    private NotificationHelper createFakeNotificationHelper() {
-        Builder builder = MockHelper.mockBuilder(Builder.class);
-        NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.createNotificationBuilder(any(Account.class), any(NotificationChannelManager
-                .ChannelType.class))).thenReturn(builder);
-        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        return notificationHelper;
-    }
-
-    private Account createFakeAccount() {
-        Account account = mock(Account.class);
-        when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
-        when(account.getChipColor()).thenReturn(ACCOUNT_COLOR);
-        return account;
-    }
-
-
-    static class TestNotifications extends BaseNotifications {
-
-        BigTextStyle bigTextStyle;
-
-        protected TestNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
-                NotificationResourceProvider resourceProvider) {
-            super(notificationHelper, actionCreator, resourceProvider);
-            bigTextStyle = mock(BigTextStyle.class);
+    private fun createFakeNotificationHelper(): NotificationHelper {
+        return mock {
+            on { createNotificationBuilder(any(), any()) } doReturn mockBuilder()
+            on { getAccountName(any()) } doReturn ACCOUNT_NAME
         }
+    }
 
-        @Override
-        protected BigTextStyle createBigTextStyle(Builder builder) {
-            return bigTextStyle;
+    private fun createFakeAccount(): Account {
+        return mock {
+            on { accountNumber } doReturn ACCOUNT_NUMBER
+            on { chipColor } doReturn ACCOUNT_COLOR
+        }
+    }
+
+    internal class TestNotifications(
+        notificationHelper: NotificationHelper,
+        actionCreator: NotificationActionCreator,
+        resourceProvider: NotificationResourceProvider
+    ) : BaseNotifications(notificationHelper, actionCreator, resourceProvider) {
+        val bigTextStyle = mock<NotificationCompat.BigTextStyle>()
+
+        override fun createBigTextStyle(builder: NotificationCompat.Builder?): NotificationCompat.BigTextStyle {
+            return bigTextStyle
         }
     }
 }

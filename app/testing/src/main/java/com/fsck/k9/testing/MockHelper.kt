@@ -1,25 +1,23 @@
-package com.fsck.k9.testing;
+package com.fsck.k9.testing
 
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.KStubbing
 
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import static org.mockito.Mockito.RETURNS_DEFAULTS;
-import static org.mockito.Mockito.mock;
-
-
-public class MockHelper {
-    public static <T> T mockBuilder(Class<T> classToMock) {
-        return mock(classToMock, new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                Object mock = invocation.getMock();
-                if (invocation.getMethod().getReturnType().isInstance(mock)) {
-                    return mock;
-                } else {
-                    return RETURNS_DEFAULTS.answer(invocation);
-                }
+object MockHelper {
+    @JvmStatic
+    fun <T> mockBuilder(classToMock: Class<T>): T {
+        return mock(classToMock) { invocation ->
+            val mock = invocation.mock
+            if (invocation.method.returnType.isInstance(mock)) {
+                mock
+            } else {
+                Mockito.RETURNS_DEFAULTS.answer(invocation)
             }
-        });
+        }
+    }
+
+    inline fun <reified T> mockBuilder(stubbing: KStubbing<T>.(T) -> Unit = {}): T {
+        return mockBuilder(T::class.java).apply { KStubbing(this).stubbing(this) }
     }
 }

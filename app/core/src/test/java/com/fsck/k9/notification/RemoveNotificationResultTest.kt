@@ -1,111 +1,108 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.notification.RemoveNotificationResult.Companion.cancelNotification
+import com.fsck.k9.notification.RemoveNotificationResult.Companion.createNotification
+import com.fsck.k9.notification.RemoveNotificationResult.Companion.unknownNotification
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
 
-import com.fsck.k9.controller.MessageReference;
-import org.junit.Before;
-import org.junit.Test;
+private const val NOTIFICATION_ID = 23
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+class RemoveNotificationResultTest {
+    private val notificationHolder = NotificationHolder(
+        notificationId = NOTIFICATION_ID,
+        content = NotificationContent(
+            messageReference = MessageReference("irrelevant", 1, "irrelevant", null),
+            sender = "irrelevant",
+            subject = "irrelevant",
+            preview = "irrelevant",
+            summary = "irrelevant",
+            isStarred = false
+        )
+    )
 
+    @Test
+    fun createNotification_shouldCancelNotification_shouldReturnTrue() {
+        val result = createNotification(notificationHolder)
 
-public class RemoveNotificationResultTest {
-    private static final int NOTIFICATION_ID = 23;
-
-
-    private NotificationHolder notificationHolder;
-
-
-    @Before
-    public void setUp() throws Exception {
-        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
-        NotificationContent notificationContent = new NotificationContent(messageReference, "irrelevant", "irrelevant",
-                "irrelevant", "irrelevant", false);
-        notificationHolder = new NotificationHolder(NOTIFICATION_ID, notificationContent);
+        assertThat(result.shouldCreateNotification).isTrue()
     }
 
     @Test
-    public void createNotification_shouldCancelNotification_shouldReturnTrue() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.createNotification(notificationHolder);
+    fun createNotification_getNotificationId_shouldReturnNotificationId() {
+        val result = createNotification(notificationHolder)
 
-        assertTrue(result.shouldCreateNotification());
+        assertThat(result.notificationId).isEqualTo(NOTIFICATION_ID)
     }
 
     @Test
-    public void createNotification_getNotificationId_shouldReturnNotificationId() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.createNotification(notificationHolder);
+    fun createNotification_isUnknownNotification_shouldReturnFalse() {
+        val result = createNotification(notificationHolder)
 
-        assertEquals(NOTIFICATION_ID, result.getNotificationId());
+        assertThat(result.isUnknownNotification).isFalse()
     }
 
     @Test
-    public void createNotification_isUnknownNotification_shouldReturnFalse() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.createNotification(notificationHolder);
+    fun createNotification_getNotificationHolder_shouldReturnNotificationHolder() {
+        val result = createNotification(notificationHolder)
 
-        assertFalse(result.isUnknownNotification());
+        assertThat(result.notificationHolder).isEqualTo(notificationHolder)
     }
 
     @Test
-    public void createNotification_getNotificationHolder_shouldReturnNotificationHolder() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.createNotification(notificationHolder);
+    fun cancelNotification_shouldCancelNotification_shouldReturnFalse() {
+        val result = cancelNotification(NOTIFICATION_ID)
 
-        assertEquals(notificationHolder, result.getNotificationHolder());
+        assertThat(result.shouldCreateNotification).isFalse()
     }
 
     @Test
-    public void cancelNotification_shouldCancelNotification_shouldReturnFalse() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.cancelNotification(NOTIFICATION_ID);
+    fun cancelNotification_getNotificationId_shouldReturnNotificationId() {
+        val result = cancelNotification(NOTIFICATION_ID)
 
-        assertFalse(result.shouldCreateNotification());
+        assertThat(result.notificationId).isEqualTo(NOTIFICATION_ID)
     }
 
     @Test
-    public void cancelNotification_getNotificationId_shouldReturnNotificationId() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.cancelNotification(NOTIFICATION_ID);
+    fun cancelNotification_isUnknownNotification_shouldReturnFalse() {
+        val result = cancelNotification(NOTIFICATION_ID)
 
-        assertEquals(NOTIFICATION_ID, result.getNotificationId());
+        assertThat(result.isUnknownNotification).isFalse()
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun cancelNotification_getNotificationHolder_shouldThrowException() {
+        val result = cancelNotification(NOTIFICATION_ID)
+
+        result.notificationHolder
     }
 
     @Test
-    public void cancelNotification_isUnknownNotification_shouldReturnFalse() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.cancelNotification(NOTIFICATION_ID);
+    fun unknownNotification_shouldCancelNotification_shouldReturnFalse() {
+        val result = unknownNotification()
 
-        assertFalse(result.isUnknownNotification());
+        assertThat(result.shouldCreateNotification).isFalse()
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void cancelNotification_getNotificationHolder_shouldThrowException() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.cancelNotification(NOTIFICATION_ID);
+    @Test(expected = IllegalStateException::class)
+    fun unknownNotification_getNotificationId_shouldThrowException() {
+        val result = unknownNotification()
 
-        result.getNotificationHolder();
-    }
-
-    @Test
-    public void unknownNotification_shouldCancelNotification_shouldReturnFalse() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.unknownNotification();
-
-        assertFalse(result.shouldCreateNotification());
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void unknownNotification_getNotificationId_shouldThrowException() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.unknownNotification();
-
-        result.getNotificationId();
+        result.notificationId
     }
 
     @Test
-    public void unknownNotification_isUnknownNotification_shouldReturnTrue() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.unknownNotification();
+    fun unknownNotification_isUnknownNotification_shouldReturnTrue() {
+        val result = unknownNotification()
 
-        assertTrue(result.isUnknownNotification());
+        assertThat(result.isUnknownNotification).isTrue()
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void unknownNotification_getNotificationHolder_shouldThrowException() throws Exception {
-        RemoveNotificationResult result = RemoveNotificationResult.unknownNotification();
+    @Test(expected = IllegalStateException::class)
+    fun unknownNotification_getNotificationHolder_shouldThrowException() {
+        val result = unknownNotification()
 
-        result.getNotificationHolder();
+        result.notificationHolder
     }
 }

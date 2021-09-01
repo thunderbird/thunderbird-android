@@ -1,62 +1,56 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import com.fsck.k9.controller.MessageReference
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
 
-import com.fsck.k9.controller.MessageReference;
-import org.junit.Before;
-import org.junit.Test;
+private const val NOTIFICATION_ID = 23
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+class AddNotificationResultTest {
+    private val notificationHolder = NotificationHolder(
+        notificationId = NOTIFICATION_ID,
+        content = NotificationContent(
+            messageReference = MessageReference("irrelevant", 1, "irrelevant", null),
+            sender = "irrelevant",
+            subject = "irrelevant",
+            preview = "irrelevant",
+            summary = "irrelevant",
+            isStarred = false
+        )
+    )
 
+    @Test
+    fun newNotification_shouldCancelNotification_shouldReturnFalse() {
+        val result = AddNotificationResult.newNotification(notificationHolder)
 
-public class AddNotificationResultTest {
-    private static final int NOTIFICATION_ID = 23;
+        assertThat(result.shouldCancelNotification).isFalse()
+    }
 
+    @Test(expected = IllegalStateException::class)
+    fun newNotification_getNotificationId_shouldReturnNotificationId() {
+        val result = AddNotificationResult.newNotification(notificationHolder)
 
-    private NotificationHolder notificationHolder;
-
-
-    @Before
-    public void setUp() throws Exception {
-        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
-        NotificationContent notificationContent = new NotificationContent(messageReference, "irrelevant", "irrelevant",
-                "irrelevant", "irrelevant", false);
-        notificationHolder = new NotificationHolder(NOTIFICATION_ID, notificationContent);
+        result.notificationId
     }
 
     @Test
-    public void newNotification_shouldCancelNotification_shouldReturnFalse() throws Exception {
-        AddNotificationResult result = AddNotificationResult.newNotification(notificationHolder);
+    fun replaceNotification_shouldCancelNotification_shouldReturnTrue() {
+        val result = AddNotificationResult.replaceNotification(notificationHolder)
 
-        assertFalse(result.shouldCancelNotification());
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void newNotification_getNotificationId_shouldReturnNotificationId() throws Exception {
-        AddNotificationResult result = AddNotificationResult.newNotification(notificationHolder);
-
-        result.getNotificationId();
+        assertThat(result.shouldCancelNotification).isTrue()
     }
 
     @Test
-    public void replaceNotification_shouldCancelNotification_shouldReturnTrue() throws Exception {
-        AddNotificationResult result = AddNotificationResult.replaceNotification(notificationHolder);
+    fun replaceNotification_getNotificationId_shouldReturnNotificationId() {
+        val result = AddNotificationResult.replaceNotification(notificationHolder)
 
-        assertTrue(result.shouldCancelNotification());
+        assertThat(result.notificationId).isEqualTo(NOTIFICATION_ID)
     }
 
     @Test
-    public void replaceNotification_getNotificationId_shouldReturnNotificationId() throws Exception {
-        AddNotificationResult result = AddNotificationResult.replaceNotification(notificationHolder);
+    fun getNotificationHolder_shouldReturnNotificationHolder() {
+        val result = AddNotificationResult.replaceNotification(notificationHolder)
 
-        assertEquals(NOTIFICATION_ID, result.getNotificationId());
-    }
-
-    @Test
-    public void getNotificationHolder_shouldReturnNotificationHolder() throws Exception {
-        AddNotificationResult result = AddNotificationResult.replaceNotification(notificationHolder);
-
-        assertEquals(notificationHolder, result.getNotificationHolder());
+        assertThat(result.notificationHolder).isEqualTo(notificationHolder)
     }
 }

@@ -1,315 +1,300 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import com.fsck.k9.Account
+import com.fsck.k9.RobolectricTest
+import com.fsck.k9.controller.MessageReference
+import com.google.common.truth.Truth.assertThat
+import kotlin.test.assertNotNull
+import org.junit.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
-import java.util.List;
+private const val ACCOUNT_UUID = "1-2-3"
+private const val ACCOUNT_NUMBER = 23
+private const val FOLDER_ID = 42L
 
-import com.fsck.k9.Account;
-import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.controller.MessageReference;
-import org.junit.Before;
-import org.junit.Test;
+class NotificationDataTest : RobolectricTest() {
+    private val account = createFakeAccount()
+    private val notificationData = NotificationData(account, 0)
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+    @Test
+    fun testAddNotificationContent() {
+        val content = createNotificationContent("1")
 
+        val result = notificationData.addNotificationContent(content)
 
-public class NotificationDataTest extends RobolectricTest {
-    private static final String ACCOUNT_UUID = "1-2-3";
-    private static final int ACCOUNT_NUMBER = 23;
-    private static final long FOLDER_ID = 42;
-    private static final String FOLDER_NAME = "INBOX";
+        assertThat(result.shouldCancelNotification).isFalse()
 
+        val holder = result.notificationHolder
 
-    private NotificationData notificationData;
-    private Account account;
-
-
-    @Before
-    public void setUp() throws Exception {
-        account = createFakeAccount();
-        notificationData = new NotificationData(account, 0);
+        assertThat(holder).isNotNull()
+        assertThat(holder.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 0))
+        assertThat(holder.content).isEqualTo(content)
     }
 
     @Test
-    public void testAddNotificationContent() throws Exception {
-        NotificationContent content = createNotificationContent("1");
+    fun testAddNotificationContentWithReplacingNotification() {
+        notificationData.addNotificationContent(createNotificationContent("1"))
+        notificationData.addNotificationContent(createNotificationContent("2"))
+        notificationData.addNotificationContent(createNotificationContent("3"))
+        notificationData.addNotificationContent(createNotificationContent("4"))
+        notificationData.addNotificationContent(createNotificationContent("5"))
+        notificationData.addNotificationContent(createNotificationContent("6"))
+        notificationData.addNotificationContent(createNotificationContent("7"))
+        notificationData.addNotificationContent(createNotificationContent("8"))
 
-        AddNotificationResult result = notificationData.addNotificationContent(content);
+        val result = notificationData.addNotificationContent(createNotificationContent("9"))
 
-        assertFalse(result.shouldCancelNotification());
-        NotificationHolder holder = result.getNotificationHolder();
-        assertNotNull(holder);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), holder.getNotificationId());
-        assertEquals(content, holder.getContent());
+        assertThat(result.shouldCancelNotification).isTrue()
+        assertThat(result.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 0))
     }
 
     @Test
-    public void testAddNotificationContentWithReplacingNotification() throws Exception {
-        notificationData.addNotificationContent(createNotificationContent("1"));
-        notificationData.addNotificationContent(createNotificationContent("2"));
-        notificationData.addNotificationContent(createNotificationContent("3"));
-        notificationData.addNotificationContent(createNotificationContent("4"));
-        notificationData.addNotificationContent(createNotificationContent("5"));
-        notificationData.addNotificationContent(createNotificationContent("6"));
-        notificationData.addNotificationContent(createNotificationContent("7"));
-        notificationData.addNotificationContent(createNotificationContent("8"));
+    fun testRemoveNotificationForMessage() {
+        val content = createNotificationContent("1")
+        notificationData.addNotificationContent(content)
 
-        AddNotificationResult result = notificationData.addNotificationContent(createNotificationContent("9"));
+        val result = notificationData.removeNotificationForMessage(content.messageReference)
 
-        assertTrue(result.shouldCancelNotification());
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), result.getNotificationId());
+        assertThat(result.isUnknownNotification).isFalse()
+        assertThat(result.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 0))
+        assertThat(result.shouldCreateNotification).isFalse()
     }
 
     @Test
-    public void testRemoveNotificationForMessage() throws Exception {
-        NotificationContent content = createNotificationContent("1");
-        notificationData.addNotificationContent(content);
+    fun testRemoveNotificationForMessageWithRecreatingNotification() {
+        notificationData.addNotificationContent(createNotificationContent("1"))
+        val content = createNotificationContent("2")
+        notificationData.addNotificationContent(content)
+        notificationData.addNotificationContent(createNotificationContent("3"))
+        notificationData.addNotificationContent(createNotificationContent("4"))
+        notificationData.addNotificationContent(createNotificationContent("5"))
+        notificationData.addNotificationContent(createNotificationContent("6"))
+        notificationData.addNotificationContent(createNotificationContent("7"))
+        notificationData.addNotificationContent(createNotificationContent("8"))
+        notificationData.addNotificationContent(createNotificationContent("9"))
+        val latestContent = createNotificationContent("10")
+        notificationData.addNotificationContent(latestContent)
 
-        RemoveNotificationResult result = notificationData.removeNotificationForMessage(content.getMessageReference());
+        val result = notificationData.removeNotificationForMessage(latestContent.messageReference)
 
-        assertFalse(result.isUnknownNotification());
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), result.getNotificationId());
-        assertFalse(result.shouldCreateNotification());
-    }
-
-    @Test
-    public void testRemoveNotificationForMessageWithRecreatingNotification() throws Exception {
-        notificationData.addNotificationContent(createNotificationContent("1"));
-        NotificationContent content = createNotificationContent("2");
-        notificationData.addNotificationContent(content);
-        notificationData.addNotificationContent(createNotificationContent("3"));
-        notificationData.addNotificationContent(createNotificationContent("4"));
-        notificationData.addNotificationContent(createNotificationContent("5"));
-        notificationData.addNotificationContent(createNotificationContent("6"));
-        notificationData.addNotificationContent(createNotificationContent("7"));
-        notificationData.addNotificationContent(createNotificationContent("8"));
-        notificationData.addNotificationContent(createNotificationContent("9"));
-        NotificationContent latestContent = createNotificationContent("10");
-        notificationData.addNotificationContent(latestContent);
-
-        RemoveNotificationResult result =
-                notificationData.removeNotificationForMessage(latestContent.getMessageReference());
-
-        assertFalse(result.isUnknownNotification());
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), result.getNotificationId());
-        assertTrue(result.shouldCreateNotification());
-        NotificationHolder holder = result.getNotificationHolder();
-        assertNotNull(holder);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), holder.getNotificationId());
-        assertEquals(content, holder.getContent());
-    }
-
-    @Test
-    public void testRemoveDoesNotLeakNotificationIds() {
-        for (int i = 1; i <= NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS + 1; i++) {
-            NotificationContent content = createNotificationContent("" + i);
-            notificationData.addNotificationContent(content);
-            notificationData.removeNotificationForMessage(content.getMessageReference());
+        assertThat(result.isUnknownNotification).isFalse()
+        assertThat(result.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 1))
+        assertThat(result.shouldCreateNotification).isTrue()
+        assertNotNull(result.notificationHolder) { holder ->
+            assertThat(holder.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 1))
+            assertThat(holder.content).isEqualTo(content)
         }
     }
 
     @Test
-    public void testNewMessagesCount() throws Exception {
-        assertEquals(0, notificationData.getNewMessagesCount());
-
-        NotificationContent contentOne = createNotificationContent("1");
-        notificationData.addNotificationContent(contentOne);
-        assertEquals(1, notificationData.getNewMessagesCount());
-
-        NotificationContent contentTwo = createNotificationContent("2");
-        notificationData.addNotificationContent(contentTwo);
-        assertEquals(2, notificationData.getNewMessagesCount());
+    fun testRemoveDoesNotLeakNotificationIds() {
+        for (i in 1..NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS + 1) {
+            val content = createNotificationContent(i.toString())
+            notificationData.addNotificationContent(content)
+            notificationData.removeNotificationForMessage(content.messageReference)
+        }
     }
 
     @Test
-    public void testUnreadMessagesCount() throws Exception {
-        notificationData = new NotificationData(account, 42);
-        assertEquals(42, notificationData.getUnreadMessageCount());
+    fun testNewMessagesCount() {
+        assertThat(notificationData.newMessagesCount).isEqualTo(0)
 
-        NotificationContent content = createNotificationContent("1");
-        notificationData.addNotificationContent(content);
-        assertEquals(43, notificationData.getUnreadMessageCount());
+        val contentOne = createNotificationContent("1")
+        notificationData.addNotificationContent(contentOne)
+        assertThat(notificationData.newMessagesCount).isEqualTo(1)
 
-        NotificationContent contentTwo = createNotificationContent("2");
-        notificationData.addNotificationContent(contentTwo);
-        assertEquals(44, notificationData.getUnreadMessageCount());
+        val contentTwo = createNotificationContent("2")
+        notificationData.addNotificationContent(contentTwo)
+        assertThat(notificationData.newMessagesCount).isEqualTo(2)
     }
 
     @Test
-    public void testContainsStarredMessages() throws Exception {
-        assertFalse(notificationData.containsStarredMessages());
+    fun testUnreadMessagesCount() {
+        val notificationData = NotificationData(account, 42)
+        assertThat(notificationData.unreadMessageCount).isEqualTo(42)
 
-        notificationData.addNotificationContent(createNotificationContentForStarredMessage());
+        val content = createNotificationContent("1")
+        notificationData.addNotificationContent(content)
+        assertThat(notificationData.unreadMessageCount).isEqualTo(43)
 
-        assertTrue(notificationData.containsStarredMessages());
+        val contentTwo = createNotificationContent("2")
+        notificationData.addNotificationContent(contentTwo)
+        assertThat(notificationData.unreadMessageCount).isEqualTo(44)
     }
 
     @Test
-    public void testContainsStarredMessagesWithAdditionalMessages() throws Exception {
-        notificationData.addNotificationContent(createNotificationContent("1"));
-        notificationData.addNotificationContent(createNotificationContent("2"));
-        notificationData.addNotificationContent(createNotificationContent("3"));
-        notificationData.addNotificationContent(createNotificationContent("4"));
-        notificationData.addNotificationContent(createNotificationContent("5"));
-        notificationData.addNotificationContent(createNotificationContent("6"));
-        notificationData.addNotificationContent(createNotificationContent("7"));
-        notificationData.addNotificationContent(createNotificationContent("8"));
+    fun testContainsStarredMessages() {
+        assertThat(notificationData.containsStarredMessages()).isFalse()
 
-        assertFalse(notificationData.containsStarredMessages());
+        notificationData.addNotificationContent(createNotificationContentForStarredMessage())
 
-        notificationData.addNotificationContent(createNotificationContentForStarredMessage());
-
-        assertTrue(notificationData.containsStarredMessages());
+        assertThat(notificationData.containsStarredMessages()).isTrue()
     }
 
     @Test
-    public void testIsSingleMessageNotification() throws Exception {
-        assertFalse(notificationData.isSingleMessageNotification());
+    fun testContainsStarredMessagesWithAdditionalMessages() {
+        notificationData.addNotificationContent(createNotificationContent("1"))
+        notificationData.addNotificationContent(createNotificationContent("2"))
+        notificationData.addNotificationContent(createNotificationContent("3"))
+        notificationData.addNotificationContent(createNotificationContent("4"))
+        notificationData.addNotificationContent(createNotificationContent("5"))
+        notificationData.addNotificationContent(createNotificationContent("6"))
+        notificationData.addNotificationContent(createNotificationContent("7"))
+        notificationData.addNotificationContent(createNotificationContent("8"))
+        assertThat(notificationData.containsStarredMessages()).isFalse()
 
-        notificationData.addNotificationContent(createNotificationContent("1"));
-        assertTrue(notificationData.isSingleMessageNotification());
+        notificationData.addNotificationContent(createNotificationContentForStarredMessage())
 
-        notificationData.addNotificationContent(createNotificationContent("2"));
-        assertFalse(notificationData.isSingleMessageNotification());
+        assertThat(notificationData.containsStarredMessages()).isTrue()
     }
 
     @Test
-    public void testGetHolderForLatestNotification() throws Exception {
-        NotificationContent content = createNotificationContent("1");
-        AddNotificationResult addResult = notificationData.addNotificationContent(content);
+    fun testIsSingleMessageNotification() {
+        assertThat(notificationData.isSingleMessageNotification).isFalse()
 
-        NotificationHolder holder = notificationData.getHolderForLatestNotification();
+        notificationData.addNotificationContent(createNotificationContent("1"))
+        assertThat(notificationData.isSingleMessageNotification).isTrue()
 
-        assertEquals(addResult.getNotificationHolder(), holder);
+        notificationData.addNotificationContent(createNotificationContent("2"))
+        assertThat(notificationData.isSingleMessageNotification).isFalse()
     }
 
     @Test
-    public void testGetContentForSummaryNotification() throws Exception {
-        notificationData.addNotificationContent(createNotificationContent("1"));
-        NotificationContent content4 = createNotificationContent("2");
-        notificationData.addNotificationContent(content4);
-        NotificationContent content3 = createNotificationContent("3");
-        notificationData.addNotificationContent(content3);
-        NotificationContent content2 = createNotificationContent("4");
-        notificationData.addNotificationContent(content2);
-        NotificationContent content1 = createNotificationContent("5");
-        notificationData.addNotificationContent(content1);
-        NotificationContent content0 = createNotificationContent("6");
-        notificationData.addNotificationContent(content0);
+    fun testGetHolderForLatestNotification() {
+        val content = createNotificationContent("1")
+        val addResult = notificationData.addNotificationContent(content)
 
-        List<NotificationContent> contents = notificationData.getContentForSummaryNotification();
+        val holder = notificationData.holderForLatestNotification
 
-        assertEquals(5, contents.size());
-        assertEquals(content0, contents.get(0));
-        assertEquals(content1, contents.get(1));
-        assertEquals(content2, contents.get(2));
-        assertEquals(content3, contents.get(3));
-        assertEquals(content4, contents.get(4));
+        assertThat(holder).isEqualTo(addResult.notificationHolder)
     }
 
     @Test
-    public void testGetActiveNotificationIds() throws Exception {
-        notificationData.addNotificationContent(createNotificationContent("1"));
-        notificationData.addNotificationContent(createNotificationContent("2"));
+    fun testGetContentForSummaryNotification() {
+        notificationData.addNotificationContent(createNotificationContent("1"))
+        val content4 = createNotificationContent("2")
+        notificationData.addNotificationContent(content4)
+        val content3 = createNotificationContent("3")
+        notificationData.addNotificationContent(content3)
+        val content2 = createNotificationContent("4")
+        notificationData.addNotificationContent(content2)
+        val content1 = createNotificationContent("5")
+        notificationData.addNotificationContent(content1)
+        val content0 = createNotificationContent("6")
+        notificationData.addNotificationContent(content0)
 
-        int[] notificationIds = notificationData.getActiveNotificationIds();
+        val contents = notificationData.getContentForSummaryNotification()
 
-        assertEquals(2, notificationIds.length);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), notificationIds[0]);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), notificationIds[1]);
+        assertThat(contents.size.toLong()).isEqualTo(5)
+        assertThat(contents[0]).isEqualTo(content0)
+        assertThat(contents[1]).isEqualTo(content1)
+        assertThat(contents[2]).isEqualTo(content2)
+        assertThat(contents[3]).isEqualTo(content3)
+        assertThat(contents[4]).isEqualTo(content4)
     }
 
     @Test
-    public void testGetAccount() throws Exception {
-        assertEquals(account, notificationData.getAccount());
+    fun testGetActiveNotificationIds() {
+        notificationData.addNotificationContent(createNotificationContent("1"))
+        notificationData.addNotificationContent(createNotificationContent("2"))
+
+        val notificationIds = notificationData.getActiveNotificationIds()
+
+        assertThat(notificationIds.size).isEqualTo(2)
+        assertThat(notificationIds[0]).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 1))
+        assertThat(notificationIds[1]).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 0))
     }
 
     @Test
-    public void testGetAllMessageReferences() throws Exception {
-        MessageReference messageReference0 = createMessageReference("1");
-        MessageReference messageReference1 = createMessageReference("2");
-        MessageReference messageReference2 = createMessageReference("3");
-        MessageReference messageReference3 = createMessageReference("4");
-        MessageReference messageReference4 = createMessageReference("5");
-        MessageReference messageReference5 = createMessageReference("6");
-        MessageReference messageReference6 = createMessageReference("7");
-        MessageReference messageReference7 = createMessageReference("8");
-        MessageReference messageReference8 = createMessageReference("9");
-        notificationData.addNotificationContent(createNotificationContent(messageReference8));
-        notificationData.addNotificationContent(createNotificationContent(messageReference7));
-        notificationData.addNotificationContent(createNotificationContent(messageReference6));
-        notificationData.addNotificationContent(createNotificationContent(messageReference5));
-        notificationData.addNotificationContent(createNotificationContent(messageReference4));
-        notificationData.addNotificationContent(createNotificationContent(messageReference3));
-        notificationData.addNotificationContent(createNotificationContent(messageReference2));
-        notificationData.addNotificationContent(createNotificationContent(messageReference1));
-        notificationData.addNotificationContent(createNotificationContent(messageReference0));
-
-        List<MessageReference> messageReferences = notificationData.getAllMessageReferences();
-
-        assertEquals(9, messageReferences.size());
-        assertEquals(messageReference0, messageReferences.get(0));
-        assertEquals(messageReference1, messageReferences.get(1));
-        assertEquals(messageReference2, messageReferences.get(2));
-        assertEquals(messageReference3, messageReferences.get(3));
-        assertEquals(messageReference4, messageReferences.get(4));
-        assertEquals(messageReference5, messageReferences.get(5));
-        assertEquals(messageReference6, messageReferences.get(6));
-        assertEquals(messageReference7, messageReferences.get(7));
-        assertEquals(messageReference8, messageReferences.get(8));
+    fun testGetAccount() {
+        assertThat(notificationData.account).isEqualTo(account)
     }
 
     @Test
-    public void testOverflowNotifications() {
-        MessageReference messageReference0 = createMessageReference("1");
-        MessageReference messageReference1 = createMessageReference("2");
-        MessageReference messageReference2 = createMessageReference("3");
-        MessageReference messageReference3 = createMessageReference("4");
-        MessageReference messageReference4 = createMessageReference("5");
-        MessageReference messageReference5 = createMessageReference("6");
-        MessageReference messageReference6 = createMessageReference("7");
-        MessageReference messageReference7 = createMessageReference("8");
-        MessageReference messageReference8 = createMessageReference("9");
-        
-        notificationData.addNotificationContent(createNotificationContent(messageReference8));
-        notificationData.addNotificationContent(createNotificationContent(messageReference7));
-        notificationData.addNotificationContent(createNotificationContent(messageReference6));
-        notificationData.addNotificationContent(createNotificationContent(messageReference5));
-        notificationData.addNotificationContent(createNotificationContent(messageReference4));
-        notificationData.addNotificationContent(createNotificationContent(messageReference3));
-        notificationData.addNotificationContent(createNotificationContent(messageReference2));
-        notificationData.addNotificationContent(createNotificationContent(messageReference1));
-        notificationData.addNotificationContent(createNotificationContent(messageReference0));
+    fun testGetAllMessageReferences() {
+        val messageReference0 = createMessageReference("1")
+        val messageReference1 = createMessageReference("2")
+        val messageReference2 = createMessageReference("3")
+        val messageReference3 = createMessageReference("4")
+        val messageReference4 = createMessageReference("5")
+        val messageReference5 = createMessageReference("6")
+        val messageReference6 = createMessageReference("7")
+        val messageReference7 = createMessageReference("8")
+        val messageReference8 = createMessageReference("9")
+        notificationData.addNotificationContent(createNotificationContent(messageReference8))
+        notificationData.addNotificationContent(createNotificationContent(messageReference7))
+        notificationData.addNotificationContent(createNotificationContent(messageReference6))
+        notificationData.addNotificationContent(createNotificationContent(messageReference5))
+        notificationData.addNotificationContent(createNotificationContent(messageReference4))
+        notificationData.addNotificationContent(createNotificationContent(messageReference3))
+        notificationData.addNotificationContent(createNotificationContent(messageReference2))
+        notificationData.addNotificationContent(createNotificationContent(messageReference1))
+        notificationData.addNotificationContent(createNotificationContent(messageReference0))
 
-        assertTrue(notificationData.hasSummaryOverflowMessages());
-        assertEquals(4, notificationData.getSummaryOverflowMessagesCount());
+        val messageReferences = notificationData.getAllMessageReferences()
+
+        assertThat(messageReferences).isEqualTo(
+            listOf(
+                messageReference0,
+                messageReference1,
+                messageReference2,
+                messageReference3,
+                messageReference4,
+                messageReference5,
+                messageReference6,
+                messageReference7,
+                messageReference8
+            )
+        )
     }
 
-    private Account createFakeAccount() {
-        Account account = mock(Account.class);
-        when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
-        return account;
+    @Test
+    fun testOverflowNotifications() {
+        val messageReference0 = createMessageReference("1")
+        val messageReference1 = createMessageReference("2")
+        val messageReference2 = createMessageReference("3")
+        val messageReference3 = createMessageReference("4")
+        val messageReference4 = createMessageReference("5")
+        val messageReference5 = createMessageReference("6")
+        val messageReference6 = createMessageReference("7")
+        val messageReference7 = createMessageReference("8")
+        val messageReference8 = createMessageReference("9")
+        notificationData.addNotificationContent(createNotificationContent(messageReference8))
+        notificationData.addNotificationContent(createNotificationContent(messageReference7))
+        notificationData.addNotificationContent(createNotificationContent(messageReference6))
+        notificationData.addNotificationContent(createNotificationContent(messageReference5))
+        notificationData.addNotificationContent(createNotificationContent(messageReference4))
+        notificationData.addNotificationContent(createNotificationContent(messageReference3))
+        notificationData.addNotificationContent(createNotificationContent(messageReference2))
+        notificationData.addNotificationContent(createNotificationContent(messageReference1))
+        notificationData.addNotificationContent(createNotificationContent(messageReference0))
+
+        assertThat(notificationData.hasSummaryOverflowMessages()).isTrue()
+        assertThat(notificationData.getSummaryOverflowMessagesCount()).isEqualTo(4)
     }
 
-    private MessageReference createMessageReference(String uid) {
-        return new MessageReference(ACCOUNT_UUID, FOLDER_ID, uid, null);
+    private fun createFakeAccount(): Account {
+        return mock {
+            on { accountNumber } doReturn ACCOUNT_NUMBER
+        }
     }
 
-    private NotificationContent createNotificationContent(String uid) {
-        MessageReference messageReference = createMessageReference(uid);
-        return createNotificationContent(messageReference);
+    private fun createMessageReference(uid: String): MessageReference {
+        return MessageReference(ACCOUNT_UUID, FOLDER_ID, uid, null)
     }
 
-    private NotificationContent createNotificationContent(MessageReference messageReference) {
-        return new NotificationContent(messageReference, "", "", "", "", false);
+    private fun createNotificationContent(uid: String): NotificationContent {
+        val messageReference = createMessageReference(uid)
+        return createNotificationContent(messageReference)
     }
 
-    private NotificationContent createNotificationContentForStarredMessage() {
-        MessageReference messageReference = createMessageReference("42");
-        return new NotificationContent(messageReference, "", "", "", "", true);
+    private fun createNotificationContent(messageReference: MessageReference): NotificationContent {
+        return NotificationContent(messageReference, "", "", "", "", false)
+    }
+
+    private fun createNotificationContentForStarredMessage(): NotificationContent {
+        val messageReference = createMessageReference("42")
+        return NotificationContent(messageReference, "", "", "", "", true)
     }
 }

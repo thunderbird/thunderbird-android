@@ -1,362 +1,322 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.app.Notification
+import android.app.PendingIntent
+import androidx.core.app.NotificationCompat
+import androidx.test.core.app.ApplicationProvider
+import com.fsck.k9.Account
+import com.fsck.k9.K9
+import com.fsck.k9.K9.NotificationQuickDelete
+import com.fsck.k9.RobolectricTest
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.testing.MockHelper.mockBuilder
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
+import org.mockito.ArgumentMatcher
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Context;
-import androidx.core.app.NotificationCompat.Action;
-import androidx.core.app.NotificationCompat.Builder;
-import androidx.core.app.NotificationCompat.Extender;
-import androidx.core.app.NotificationCompat.WearableExtender;
+private const val ACCOUNT_NUMBER = 42
+private const val ACCOUNT_NAME = "accountName"
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.testing.MockHelper;
-import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.controller.MessagingController;
+class WearNotificationsTest : RobolectricTest() {
+    private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
+    private val account = createAccount()
+    private val notification = mock<Notification>()
+    private val builder = createNotificationBuilder(notification)
+    private val actionCreator = mock<NotificationActionCreator>()
+    private val wearNotifications = TestWearNotifications(
+        notificationHelper = createNotificationHelper(builder),
+        actionCreator = actionCreator,
+        messagingController = createMessagingController(),
+        resourceProvider = resourceProvider
+    )
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatcher;
-import org.robolectric.RuntimeEnvironment;
+    @Test
+    fun testBuildStackedNotification() {
+        disableOptionalActions()
+        val notificationIndex = 0
+        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val messageReference = createMessageReference(1)
+        val content = createNotificationContent(messageReference)
+        val holder = createNotificationHolder(notificationId, content)
+        val replyPendingIntent = createFakePendingIntent(1)
+        val markAsReadPendingIntent = createFakePendingIntent(2)
+        whenever(
+            actionCreator.createReplyPendingIntent(
+                messageReference,
+                notificationId
+            )
+        ).thenReturn(replyPendingIntent)
+        whenever(actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId)).thenReturn(
+            markAsReadPendingIntent
+        )
 
-import java.util.ArrayList;
+        val result = wearNotifications.buildStackedNotification(account, holder)
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-
-public class WearNotificationsTest extends RobolectricTest {
-    private static final int ACCOUNT_NUMBER = 42;
-    private static final String ACCOUNT_NAME = "accountName";
-
-    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
-    private Account account;
-    private Builder builder;
-    private NotificationActionCreator actionCreator;
-    private TestWearNotifications wearNotifications;
-    private Notification notification;
-
-    @Before
-    public void setUp() throws Exception {
-        account = createAccount();
-        notification = createNotification();
-        builder = createNotificationBuilder(notification);
-        actionCreator = createNotificationActionCreator();
-        NotificationHelper notificationHelper = createNotificationHelper(RuntimeEnvironment.application, builder);
-        MessagingController messagingController = createMessagingController();
-
-        wearNotifications = new TestWearNotifications(notificationHelper, actionCreator, messagingController,
-                resourceProvider);
+        assertThat(result).isEqualTo(notification)
+        verifyExtendWasOnlyCalledOnce()
+        verifyAddAction(resourceProvider.wearIconReplyAll, "Reply", replyPendingIntent)
+        verifyAddAction(resourceProvider.wearIconMarkAsRead, "Mark Read", markAsReadPendingIntent)
+        verifyNumberOfActions(2)
     }
 
     @Test
-    public void testBuildStackedNotification() throws Exception {
-        disableOptionalActions();
-        int notificationIndex = 0;
-        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        MessageReference messageReference = createMessageReference(1);
-        NotificationContent content = createNotificationContent(messageReference);
-        NotificationHolder holder = createNotificationHolder(notificationId, content);
-        PendingIntent replyPendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createReplyPendingIntent(messageReference, notificationId)).thenReturn(replyPendingIntent);
-        PendingIntent markAsReadPendingIntent = createFakePendingIntent(2);
-        when(actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId))
-                .thenReturn(markAsReadPendingIntent);
+    fun testBuildStackedNotificationWithDeleteActionEnabled() {
+        enableDeleteAction()
+        val notificationIndex = 0
+        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val messageReference = createMessageReference(1)
+        val content = createNotificationContent(messageReference)
+        val holder = createNotificationHolder(notificationId, content)
+        val deletePendingIntent = createFakePendingIntent(1)
+        whenever(actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId)).thenReturn(
+            deletePendingIntent
+        )
 
-        Notification result = wearNotifications.buildStackedNotification(account, holder);
+        val result = wearNotifications.buildStackedNotification(account, holder)
 
-        assertEquals(notification, result);
-        verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(resourceProvider.getWearIconReplyAll(), "Reply", replyPendingIntent);
-        verifyAddAction(resourceProvider.getWearIconMarkAsRead(), "Mark Read", markAsReadPendingIntent);
-        verifyNumberOfActions(2);
+        assertThat(result).isEqualTo(notification)
+        verifyExtendWasOnlyCalledOnce()
+        verifyAddAction(resourceProvider.wearIconDelete, "Delete", deletePendingIntent)
     }
 
     @Test
-    public void testBuildStackedNotificationWithDeleteActionEnabled() throws Exception {
-        enableDeleteAction();
-        int notificationIndex = 0;
-        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        MessageReference messageReference = createMessageReference(1);
-        NotificationContent content = createNotificationContent(messageReference);
-        NotificationHolder holder = createNotificationHolder(notificationId, content);
-        PendingIntent deletePendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId))
-                .thenReturn(deletePendingIntent);
+    fun testBuildStackedNotificationWithArchiveActionEnabled() {
+        enableArchiveAction()
+        val notificationIndex = 0
+        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val messageReference = createMessageReference(1)
+        val content = createNotificationContent(messageReference)
+        val holder = createNotificationHolder(notificationId, content)
+        val archivePendingIntent = createFakePendingIntent(1)
+        whenever(actionCreator.createArchiveMessagePendingIntent(messageReference, notificationId)).thenReturn(
+            archivePendingIntent
+        )
 
-        Notification result = wearNotifications.buildStackedNotification(account, holder);
+        val result = wearNotifications.buildStackedNotification(account, holder)
 
-        assertEquals(notification, result);
-        verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(resourceProvider.getWearIconDelete(), "Delete", deletePendingIntent);
+        assertThat(result).isEqualTo(notification)
+        verifyExtendWasOnlyCalledOnce()
+        verifyAddAction(resourceProvider.wearIconArchive, "Archive", archivePendingIntent)
     }
 
     @Test
-    public void testBuildStackedNotificationWithArchiveActionEnabled() throws Exception {
-        enableArchiveAction();
-        int notificationIndex = 0;
-        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        MessageReference messageReference = createMessageReference(1);
-        NotificationContent content = createNotificationContent(messageReference);
-        NotificationHolder holder = createNotificationHolder(notificationId, content);
-        PendingIntent archivePendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createArchiveMessagePendingIntent(messageReference, notificationId))
-                .thenReturn(archivePendingIntent);
+    fun testBuildStackedNotificationWithMarkAsSpamActionEnabled() {
+        enableSpamAction()
+        val notificationIndex = 0
+        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val messageReference = createMessageReference(1)
+        val content = createNotificationContent(messageReference)
+        val holder = createNotificationHolder(notificationId, content)
+        val markAsSpamPendingIntent = createFakePendingIntent(1)
+        whenever(actionCreator.createMarkMessageAsSpamPendingIntent(messageReference, notificationId)).thenReturn(
+            markAsSpamPendingIntent
+        )
 
-        Notification result = wearNotifications.buildStackedNotification(account, holder);
+        val result = wearNotifications.buildStackedNotification(account, holder)
 
-        assertEquals(notification, result);
-        verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(resourceProvider.getWearIconArchive(), "Archive", archivePendingIntent);
+        assertThat(result).isEqualTo(notification)
+        verifyExtendWasOnlyCalledOnce()
+        verifyAddAction(resourceProvider.wearIconMarkAsSpam, "Spam", markAsSpamPendingIntent)
     }
 
     @Test
-    public void testBuildStackedNotificationWithMarkAsSpamActionEnabled() throws Exception {
-        enableSpamAction();
-        int notificationIndex = 0;
-        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        MessageReference messageReference = createMessageReference(1);
-        NotificationContent content = createNotificationContent(messageReference);
-        NotificationHolder holder = createNotificationHolder(notificationId, content);
-        PendingIntent markAsSpamPendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createMarkMessageAsSpamPendingIntent(messageReference, notificationId))
-                .thenReturn(markAsSpamPendingIntent);
+    fun testAddSummaryActions() {
+        disableOptionalSummaryActions()
+        val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        val messageReferences = createMessageReferenceList()
+        val notificationData = createNotificationData(messageReferences)
+        val markAllAsReadPendingIntent = createFakePendingIntent(1)
+        whenever(actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId)).thenReturn(
+            markAllAsReadPendingIntent
+        )
 
-        Notification result = wearNotifications.buildStackedNotification(account, holder);
+        wearNotifications.addSummaryActions(builder, notificationData)
 
-        assertEquals(notification, result);
-        verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(resourceProvider.getWearIconMarkAsSpam(), "Spam", markAsSpamPendingIntent);
+        verifyExtendWasOnlyCalledOnce()
+        verifyAddAction(resourceProvider.wearIconMarkAsRead, "Mark All Read", markAllAsReadPendingIntent)
+        verifyNumberOfActions(1)
     }
 
     @Test
-    public void testAddSummaryActions() throws Exception {
-        disableOptionalSummaryActions();
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        ArrayList<MessageReference> messageReferences = createMessageReferenceList();
-        NotificationData notificationData = createNotificationData(messageReferences);
-        PendingIntent markAllAsReadPendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId))
-                .thenReturn(markAllAsReadPendingIntent);
+    fun testAddSummaryActionsWithDeleteAllActionEnabled() {
+        enableDeleteAction()
+        val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        val messageReferences = createMessageReferenceList()
+        val notificationData = createNotificationData(messageReferences)
+        val deletePendingIntent = createFakePendingIntent(1)
+        whenever(actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId)).thenReturn(
+            deletePendingIntent
+        )
 
-        wearNotifications.addSummaryActions(builder, notificationData);
+        wearNotifications.addSummaryActions(builder, notificationData)
 
-        verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(resourceProvider.getWearIconMarkAsRead(), "Mark All Read", markAllAsReadPendingIntent);
-        verifyNumberOfActions(1);
+        verifyExtendWasOnlyCalledOnce()
+        verifyAddAction(resourceProvider.wearIconDelete, "Delete All", deletePendingIntent)
     }
 
     @Test
-    public void testAddSummaryActionsWithDeleteAllActionEnabled() throws Exception {
-        enableDeleteAction();
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        ArrayList<MessageReference> messageReferences = createMessageReferenceList();
-        NotificationData notificationData = createNotificationData(messageReferences);
-        PendingIntent deletePendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId))
-                .thenReturn(deletePendingIntent);
+    fun testAddSummaryActionsWithArchiveAllActionEnabled() {
+        enableArchiveAction()
+        val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        val messageReferences = createMessageReferenceList()
+        val notificationData = createNotificationData(messageReferences)
+        val archivePendingIntent = createFakePendingIntent(1)
+        whenever(actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId)).thenReturn(
+            archivePendingIntent
+        )
 
-        wearNotifications.addSummaryActions(builder, notificationData);
+        wearNotifications.addSummaryActions(builder, notificationData)
 
-        verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(resourceProvider.getWearIconDelete(), "Delete All", deletePendingIntent);
+        verifyExtendWasOnlyCalledOnce()
+        verifyAddAction(resourceProvider.wearIconArchive, "Archive All", archivePendingIntent)
     }
 
-    @Test
-    public void testAddSummaryActionsWithArchiveAllActionEnabled() throws Exception {
-        enableArchiveAction();
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        ArrayList<MessageReference> messageReferences = createMessageReferenceList();
-        NotificationData notificationData = createNotificationData(messageReferences);
-        PendingIntent archivePendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId))
-                .thenReturn(archivePendingIntent);
-
-        wearNotifications.addSummaryActions(builder, notificationData);
-
-        verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(resourceProvider.getWearIconArchive(), "Archive All", archivePendingIntent);
+    private fun disableOptionalActions() {
+        disableDeleteAction()
+        disableArchiveAction()
+        disableSpamAction()
     }
 
-    private void disableOptionalActions() {
-        disableDeleteAction();
-        disableArchiveAction();
-        disableSpamAction();
+    private fun disableDeleteAction() {
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.NEVER
     }
 
-    private void disableDeleteAction() {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
+    private fun disableArchiveAction() {
+        whenever(account.archiveFolderId).thenReturn(null)
     }
 
-    private void disableArchiveAction() {
-        when(account.getArchiveFolderId()).thenReturn(null);
+    private fun disableSpamAction() {
+        whenever(account.spamFolderId).thenReturn(null)
     }
 
-    private void disableSpamAction() {
-        when(account.getSpamFolderId()).thenReturn(null);
+    private fun enableDeleteAction() {
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
+        K9.isConfirmDeleteFromNotification = false
     }
 
-    private void enableDeleteAction() {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
-        K9.setConfirmDeleteFromNotification(false);
+    private fun enableArchiveAction() {
+        whenever(account.archiveFolderId).thenReturn(22L)
     }
 
-    private void enableArchiveAction() {
-        when(account.getArchiveFolderId()).thenReturn(22L);
+    private fun enableSpamAction() {
+        whenever(account.spamFolderId).thenReturn(11L)
     }
 
-    private void enableSpamAction() {
-        when(account.getSpamFolderId()).thenReturn(11L);
+    private fun disableOptionalSummaryActions() {
+        disableDeleteAction()
+        disableArchiveAction()
     }
 
-    private void disableOptionalSummaryActions() {
-        disableDeleteAction();
-        disableArchiveAction();
-    }
-
-    private Builder createNotificationBuilder(Notification notification) {
-        Builder builder = MockHelper.mockBuilder(Builder.class);
-        when(builder.build()).thenReturn(notification);
-        return builder;
-    }
-
-    private NotificationHelper createNotificationHelper(Context context, Builder builder) {
-        NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.createNotificationBuilder(any(Account.class), any(NotificationChannelManager
-                .ChannelType.class))).thenReturn(builder);
-        when(notificationHelper.getAccountName(account)).thenReturn(ACCOUNT_NAME);
-        when(notificationHelper.getContext()).thenReturn(context);
-        return notificationHelper;
-    }
-
-    private NotificationActionCreator createNotificationActionCreator() {
-        return mock(NotificationActionCreator.class);
-    }
-
-    private Account createAccount() {
-        Account account = mock(Account.class);
-        when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
-        return account;
-    }
-
-    private MessagingController createMessagingController() {
-        MessagingController messagingController = mock(MessagingController.class);
-        when(messagingController.isMoveCapable(account)).thenReturn(true);
-        return messagingController;
-    }
-
-    private NotificationContent createNotificationContent(MessageReference messageReference) {
-        return new NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false);
-    }
-
-    private NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {
-        return new NotificationHolder(notificationId, content);
-    }
-
-    private Notification createNotification() {
-        return mock(Notification.class);
-    }
-
-    private MessageReference createMessageReference(int number) {
-        return new MessageReference("account", 1, String.valueOf(number), null);
-    }
-
-    private PendingIntent createFakePendingIntent(int requestCode) {
-        return PendingIntent.getActivity(RuntimeEnvironment.application, requestCode, null, 0);
-    }
-
-    private ArrayList<MessageReference> createMessageReferenceList() {
-        ArrayList<MessageReference> messageReferences = new ArrayList<>();
-        messageReferences.add(createMessageReference(1));
-        messageReferences.add(createMessageReference(2));
-
-        return messageReferences;
-    }
-
-    private NotificationData createNotificationData(ArrayList<MessageReference> messageReferences) {
-        NotificationData notificationData = mock(NotificationData.class);
-        when(notificationData.getAccount()).thenReturn(account);
-        when(notificationData.getAllMessageReferences()).thenReturn(messageReferences);
-        return notificationData;
-    }
-
-    private Builder verifyExtendWasOnlyCalledOnce() {
-        return verify(builder, times(1)).extend(any(Extender.class));
-    }
-
-    private void verifyAddAction(int icon, String title, PendingIntent pendingIntent) {
-        verify(builder).extend(action(icon, title, pendingIntent));
-    }
-
-    private Builder verifyNumberOfActions(int expectedNumberOfActions) {
-        return verify(builder).extend(numberOfActions(expectedNumberOfActions));
-    }
-
-    private WearableExtender action(int icon, String title, PendingIntent pendingIntent) {
-        return argThat(new ActionMatcher(icon, title, pendingIntent));
-    }
-
-    private WearableExtender numberOfActions(int expectedNumberOfActions) {
-        return argThat(new NumberOfActionsMatcher(expectedNumberOfActions));
-    }
-
-
-    static class ActionMatcher implements ArgumentMatcher<WearableExtender> {
-        private int icon;
-        private String title;
-        private PendingIntent pendingIntent;
-
-        public ActionMatcher(int icon, String title, PendingIntent pendingIntent) {
-            this.icon = icon;
-            this.title = title;
-            this.pendingIntent = pendingIntent;
+    private fun createNotificationBuilder(notification: Notification): NotificationCompat.Builder {
+        return mockBuilder {
+            on { build() } doReturn notification
         }
+    }
 
-        @Override
-        public boolean matches(WearableExtender argument) {
-            for (Action action : argument.getActions()) {
-                if (action.icon == icon && action.title.equals(title) && action.actionIntent == pendingIntent) {
-                    return true;
-                }
+    private fun createNotificationHelper(builder: NotificationCompat.Builder): NotificationHelper {
+        return mock {
+            on { createNotificationBuilder(any(), any()) } doReturn builder
+            on { getAccountName(account) } doReturn ACCOUNT_NAME
+            on { getContext() } doReturn ApplicationProvider.getApplicationContext()
+        }
+    }
+
+    private fun createAccount(): Account {
+        return mock {
+            on { accountNumber } doReturn ACCOUNT_NUMBER
+        }
+    }
+
+    private fun createMessagingController(): MessagingController {
+        return mock {
+            on { isMoveCapable(account) } doReturn true
+        }
+    }
+
+    private fun createNotificationContent(messageReference: MessageReference): NotificationContent {
+        return NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false)
+    }
+
+    private fun createNotificationHolder(notificationId: Int, content: NotificationContent): NotificationHolder {
+        return NotificationHolder(notificationId, content)
+    }
+
+    private fun createMessageReference(number: Int): MessageReference {
+        return MessageReference("account", 1, number.toString(), null)
+    }
+
+    private fun createFakePendingIntent(requestCode: Int): PendingIntent {
+        return PendingIntent.getActivity(ApplicationProvider.getApplicationContext(), requestCode, null, 0)
+    }
+
+    private fun createMessageReferenceList(): ArrayList<MessageReference> {
+        return arrayListOf(createMessageReference(1), createMessageReference(2))
+    }
+
+    private fun createNotificationData(messageReferences: ArrayList<MessageReference>): NotificationData {
+        return mock {
+            on { account } doReturn account
+            on { getAllMessageReferences() } doReturn messageReferences
+        }
+    }
+
+    private fun verifyExtendWasOnlyCalledOnce() {
+        verify(builder, times(1)).extend(any())
+    }
+
+    private fun verifyAddAction(icon: Int, title: String, pendingIntent: PendingIntent) {
+        verify(builder).extend(action(icon, title, pendingIntent))
+    }
+
+    private fun verifyNumberOfActions(expectedNumberOfActions: Int) {
+        verify(builder).extend(numberOfActions(expectedNumberOfActions))
+    }
+
+    private fun action(icon: Int, title: String, pendingIntent: PendingIntent): NotificationCompat.WearableExtender {
+        return argThat(ActionMatcher(icon, title, pendingIntent))
+    }
+
+    private fun numberOfActions(expectedNumberOfActions: Int): NotificationCompat.WearableExtender {
+        return argThat(NumberOfActionsMatcher(expectedNumberOfActions))
+    }
+
+    internal class ActionMatcher(
+        private val icon: Int,
+        private val title: String,
+        private val pendingIntent: PendingIntent
+    ) : ArgumentMatcher<NotificationCompat.WearableExtender> {
+        override fun matches(argument: NotificationCompat.WearableExtender): Boolean {
+            return argument.actions.any { action ->
+                action.icon == icon && action.title == title && action.actionIntent === pendingIntent
             }
-
-            return false;
         }
     }
 
-    static class NumberOfActionsMatcher implements ArgumentMatcher<WearableExtender> {
-        private final int expectedNumberOfActions;
-
-        public NumberOfActionsMatcher(int expectedNumberOfActions) {
-            this.expectedNumberOfActions = expectedNumberOfActions;
-        }
-
-        @Override
-        public boolean matches(WearableExtender argument) {
-            return argument.getActions().size() == expectedNumberOfActions;
+    internal class NumberOfActionsMatcher(private val expectedNumberOfActions: Int) :
+        ArgumentMatcher<NotificationCompat.WearableExtender> {
+        override fun matches(argument: NotificationCompat.WearableExtender): Boolean {
+            return argument.actions.size == expectedNumberOfActions
         }
     }
 
-    static class TestWearNotifications extends WearNotifications {
-        private final MessagingController messagingController;
-
-        public TestWearNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
-                                     MessagingController messagingController, NotificationResourceProvider resourceProvider) {
-            super(notificationHelper, actionCreator, resourceProvider);
-            this.messagingController = messagingController;
-        }
-
-        @Override
-        protected MessagingController createMessagingController() {
-            return messagingController;
+    internal class TestWearNotifications(
+        notificationHelper: NotificationHelper,
+        actionCreator: NotificationActionCreator,
+        private val messagingController: MessagingController,
+        resourceProvider: NotificationResourceProvider
+    ) : WearNotifications(
+        notificationHelper, actionCreator, resourceProvider
+    ) {
+        override fun createMessagingController(): MessagingController {
+            return messagingController
         }
     }
 }

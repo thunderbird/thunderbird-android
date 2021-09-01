@@ -1,189 +1,179 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import androidx.core.app.NotificationCompat
+import androidx.test.core.app.ApplicationProvider
+import com.fsck.k9.Account
+import com.fsck.k9.K9
+import com.fsck.k9.K9.LockScreenNotificationVisibility
+import com.fsck.k9.RobolectricTest
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.testing.MockHelper.mockBuilder
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stubbing
 
-import java.util.Arrays;
+private const val ACCOUNT_NAME = "Hugo"
+private const val NEW_MESSAGE_COUNT = 3
+private const val UNREAD_MESSAGE_COUNT = 4
 
-import android.app.Notification;
-import android.content.Context;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.Builder;
+class LockScreenNotificationTest : RobolectricTest() {
+    private val resourceProvider = TestNotificationResourceProvider()
+    private val builder = createFakeNotificationBuilder()
+    private val publicBuilder = createFakeNotificationBuilder()
+    private var notificationData = createFakeNotificationData()
+    private var lockScreenNotification = LockScreenNotification(
+        notificationHelper = createFakeNotificationHelper(publicBuilder),
+        resourceProvider = resourceProvider
+    )
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.LockScreenNotificationVisibility;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.testing.MockHelper;
-import com.fsck.k9.RobolectricTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.robolectric.RuntimeEnvironment;
+    @Test
+    fun configureLockScreenNotification_NOTHING() {
+        K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.NOTHING
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
-
-public class LockScreenNotificationTest extends RobolectricTest {
-    private static final String ACCOUNT_NAME = "Hugo";
-    private static final int NEW_MESSAGE_COUNT = 3;
-    private static final int UNREAD_MESSAGE_COUNT = 4;
-
-    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
-    private Builder builder;
-    private Builder publicBuilder;
-    private LockScreenNotification lockScreenNotification;
-    private NotificationData notificationData;
-
-
-    @Before
-    public void setUp() throws Exception {
-        Context context = RuntimeEnvironment.application;
-        builder = createFakeNotificationBuilder();
-        publicBuilder = createFakeNotificationBuilder();
-        NotificationHelper notificationHelper = createFakeNotificationHelper(context, publicBuilder);
-        Account account = createFakeAccount();
-        notificationData = createFakeNotificationData(account);
-        lockScreenNotification = new LockScreenNotification(notificationHelper, resourceProvider);
+        verify(builder).setVisibility(NotificationCompat.VISIBILITY_SECRET)
     }
 
     @Test
-    public void configureLockScreenNotification_NOTHING() throws Exception {
-        K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.NOTHING);
+    fun configureLockScreenNotification_APP_NAME() {
+        K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.APP_NAME
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_SECRET);
+        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
     }
 
     @Test
-    public void configureLockScreenNotification_APP_NAME() throws Exception {
-        K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.APP_NAME);
+    fun configureLockScreenNotification_EVERYTHING() {
+        K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.EVERYTHING
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PRIVATE);
+        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 
     @Test
-    public void configureLockScreenNotification_EVERYTHING() throws Exception {
-        K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.EVERYTHING);
+    fun configureLockScreenNotification_SENDERS_withSingleMessage() {
+        K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.SENDERS
+        val holder = NotificationHolder(
+            notificationId = 42,
+            content = createNotificationContent(sender = "alice@example.com")
+        )
+        stubbing(notificationData) {
+            on { newMessagesCount } doReturn 1
+            on { unreadMessageCount } doReturn 1
+            on { holderForLatestNotification } doReturn holder
+        }
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        verify(publicBuilder).setSmallIcon(resourceProvider.iconNewMail)
+        verify(publicBuilder).setNumber(1)
+        verify(publicBuilder).setContentTitle("1 new message")
+        verify(publicBuilder).setContentText("alice@example.com")
+        verify(builder).setPublicVersion(publicBuilder.build())
     }
 
     @Test
-    public void configureLockScreenNotification_SENDERS_withSingleMessage() throws Exception {
-        K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.SENDERS);
-        String senderName = "alice@example.com";
-        NotificationContent content = createNotificationContent(senderName);
-        NotificationHolder holder = new NotificationHolder(42, content);
-        when(notificationData.getNewMessagesCount()).thenReturn(1);
-        when(notificationData.getUnreadMessageCount()).thenReturn(1);
-        when(notificationData.getHolderForLatestNotification()).thenReturn(holder);
+    fun configureLockScreenNotification_SENDERS_withMultipleMessages() {
+        K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.SENDERS
+        val content1 = createNotificationContent("alice@example.com")
+        val content2 = createNotificationContent("Bob <bob@example.com>")
+        val content3 = createNotificationContent("\"Peter Lustig\" <peter@example.com>")
+        stubbing(notificationData) {
+            on { newMessagesCount } doReturn NEW_MESSAGE_COUNT
+            on { unreadMessageCount } doReturn UNREAD_MESSAGE_COUNT
+            on { getContentForSummaryNotification() } doReturn listOf(content1, content2, content3)
+        }
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
-        verify(publicBuilder).setSmallIcon(resourceProvider.getIconNewMail());
-        verify(publicBuilder).setNumber(1);
-        verify(publicBuilder).setContentTitle("1 new message");
-        verify(publicBuilder).setContentText(senderName);
-        verify(builder).setPublicVersion(publicBuilder.build());
-    }
-
-    @Test
-    public void configureLockScreenNotification_SENDERS_withMultipleMessages() throws Exception {
-        K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.SENDERS);
-        NotificationContent content1 = createNotificationContent("alice@example.com");
-        NotificationContent content2 = createNotificationContent("Bob <bob@example.com>");
-        NotificationContent content3 = createNotificationContent("\"Peter Lustig\" <peter@example.com>");
-        when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
-        when(notificationData.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
-        when(notificationData.getContentForSummaryNotification()).thenReturn(
-                Arrays.asList(content1, content2, content3));
-
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
-
-        verify(publicBuilder).setSmallIcon(resourceProvider.getIconNewMail());
-        verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
-        verify(publicBuilder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
+        verify(publicBuilder).setSmallIcon(resourceProvider.iconNewMail)
+        verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT)
+        verify(publicBuilder).setContentTitle("$NEW_MESSAGE_COUNT new messages")
         verify(publicBuilder).setContentText(
-                "alice@example.com, Bob <bob@example.com>, \"Peter Lustig\" <peter@example.com>");
-        verify(builder).setPublicVersion(publicBuilder.build());
+            "alice@example.com, Bob <bob@example.com>, \"Peter Lustig\" <peter@example.com>"
+        )
+        verify(builder).setPublicVersion(publicBuilder.build())
     }
 
     @Test
-    public void configureLockScreenNotification_SENDERS_makeSureWeGetEnoughSenderNames() throws Exception {
-        assertTrue(NotificationData.MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION >=
-                LockScreenNotification.MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
+    fun configureLockScreenNotification_SENDERS_makeSureWeGetEnoughSenderNames() {
+        assertThat(
+            NotificationData.MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION >=
+                LockScreenNotification.MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION
+        ).isTrue()
     }
 
     @Test
-    public void createCommaSeparatedListOfSenders_withMoreSendersThanShouldBeDisplayed() throws Exception {
-        NotificationContent content1 = createNotificationContent("alice@example.com");
-        NotificationContent content2 = createNotificationContent("bob@example.com");
-        NotificationContent content3 = createNotificationContent("cloe@example.com");
-        NotificationContent content4 = createNotificationContent("dagobert@example.com");
-        NotificationContent content5 = createNotificationContent("ed@example.com");
-        NotificationContent content6 = createNotificationContent("fiona@example.com");
+    fun createCommaSeparatedListOfSenders_withMoreSendersThanShouldBeDisplayed() {
+        val content1 = createNotificationContent("alice@example.com")
+        val content2 = createNotificationContent("bob@example.com")
+        val content3 = createNotificationContent("cloe@example.com")
+        val content4 = createNotificationContent("dagobert@example.com")
+        val content5 = createNotificationContent("ed@example.com")
+        val content6 = createNotificationContent("fiona@example.com")
 
-        String result = lockScreenNotification.createCommaSeparatedListOfSenders(
-                Arrays.asList(content1, content2, content3, content4, content5, content6));
+        val result = lockScreenNotification.createCommaSeparatedListOfSenders(
+            listOf(content1, content2, content3, content4, content5, content6)
+        )
 
-        assertEquals(
-                "alice@example.com, bob@example.com, cloe@example.com, dagobert@example.com, ed@example.com", result);
+        assertThat(result).isEqualTo(
+            "alice@example.com, bob@example.com, cloe@example.com, dagobert@example.com, ed@example.com"
+        )
     }
 
     @Test
-    public void configureLockScreenNotification_MESSAGE_COUNT() throws Exception {
-        K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.MESSAGE_COUNT);
-        when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
-        when(notificationData.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
+    fun configureLockScreenNotification_MESSAGE_COUNT() {
+        K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
+        stubbing(notificationData) {
+            on { newMessagesCount } doReturn NEW_MESSAGE_COUNT
+            on { unreadMessageCount } doReturn UNREAD_MESSAGE_COUNT
+        }
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
-        verify(publicBuilder).setSmallIcon(resourceProvider.getIconNewMail());
-        verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
-        verify(publicBuilder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
-        verify(publicBuilder).setContentText(ACCOUNT_NAME);
-        verify(builder).setPublicVersion(publicBuilder.build());
+        verify(publicBuilder).setSmallIcon(resourceProvider.iconNewMail)
+        verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT)
+        verify(publicBuilder).setContentTitle("$NEW_MESSAGE_COUNT new messages")
+        verify(publicBuilder).setContentText(ACCOUNT_NAME)
+        verify(builder).setPublicVersion(publicBuilder.build())
     }
 
-    private Account createFakeAccount() {
-        Account account = mock(Account.class);
-        when(account.getDescription()).thenReturn(ACCOUNT_NAME);
-        return account;
+    private fun createFakeAccount(): Account {
+        return mock {
+            on { description } doReturn ACCOUNT_NAME
+        }
     }
 
-    private Builder createFakeNotificationBuilder() {
-        Builder builder = MockHelper.mockBuilder(Builder.class);
-        when(builder.build()).thenReturn(mock(Notification.class));
-        return builder;
+    private fun createFakeNotificationBuilder(): NotificationCompat.Builder {
+        return mockBuilder {
+            on { build() } doReturn mock()
+        }
     }
 
-    private NotificationHelper createFakeNotificationHelper(Context context, Builder builder) {
-        NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.getContext()).thenReturn(context);
-        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        when(notificationHelper.createNotificationBuilder(any(Account.class), any(NotificationChannelManager
-                .ChannelType.class))).thenReturn(builder);
-
-        return notificationHelper;
+    private fun createFakeNotificationHelper(builder: NotificationCompat.Builder): NotificationHelper {
+        return mock {
+            on { getContext() } doReturn ApplicationProvider.getApplicationContext()
+            on { getAccountName(any()) } doReturn ACCOUNT_NAME
+            on { createNotificationBuilder(any(), any()) } doReturn builder
+        }
     }
 
-    private NotificationData createFakeNotificationData(Account account) {
-        NotificationData notificationData = mock(NotificationData.class);
-        when(notificationData.getAccount()).thenReturn(account);
-
-        return notificationData;
+    private fun createFakeNotificationData(): NotificationData {
+        val fakeAccount = createFakeAccount()
+        return mock {
+            on { account } doReturn fakeAccount
+        }
     }
 
-    private NotificationContent createNotificationContent(String sender) {
-        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
-        return new NotificationContent(messageReference, sender, "irrelevant", "irrelevant", "irrelevant", false);
+    private fun createNotificationContent(sender: String): NotificationContent {
+        val messageReference = MessageReference("irrelevant", 1, "irrelevant", null)
+        return NotificationContent(messageReference, sender, "irrelevant", "irrelevant", "irrelevant", false)
     }
 }

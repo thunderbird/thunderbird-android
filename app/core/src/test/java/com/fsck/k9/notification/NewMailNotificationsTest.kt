@@ -1,378 +1,361 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.app.Notification
+import androidx.core.app.NotificationManagerCompat
+import com.fsck.k9.Account
+import com.fsck.k9.K9
+import com.fsck.k9.K9.NotificationHideSubject
+import com.fsck.k9.K9RobolectricTest
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.mailstore.LocalMessage
+import org.junit.Test
+import org.mockito.ArgumentMatchers.anyBoolean
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stubbing
+import org.mockito.kotlin.whenever
 
-import android.app.Notification;
-import androidx.core.app.NotificationManagerCompat;
+private const val ACCOUNT_NUMBER = 23
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9RobolectricTest;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.mailstore.LocalMessage;
-import org.junit.Before;
-import org.junit.Test;
+class NewMailNotificationsTest : K9RobolectricTest() {
+    private val account = createAccount()
+    private val notificationManager = createNotificationManager()
+    private val contentCreator = createNotificationContentCreator()
+    private val deviceNotifications = createDeviceNotifications()
+    private val wearNotifications = createWearNotifications()
+    private val newMailNotifications = TestNewMailNotifications(
+        notificationHelper = createNotificationHelper(notificationManager),
+        contentCreator = contentCreator,
+        deviceNotifications = deviceNotifications,
+        wearNotifications = wearNotifications
+    )
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+    @Test
+    fun testAddNewMailNotification() {
+        val notificationIndex = 0
+        val message = createLocalMessage()
+        val content = createNotificationContent()
+        val holder = createNotificationHolder(content, notificationIndex)
+        addToNotificationContentCreator(message, content)
+        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
+        val wearNotification = createNotification()
+        val summaryNotification = createNotification()
+        addToWearNotifications(holder, wearNotification)
+        addToDeviceNotifications(summaryNotification)
 
+        newMailNotifications.addNewMailNotification(account, message, 42)
 
-public class NewMailNotificationsTest extends K9RobolectricTest {
-    private static final int ACCOUNT_NUMBER = 23;
-
-    private Account account;
-    private TestNewMailNotifications newMailNotifications;
-    private NotificationManagerCompat notificationManager;
-    private NotificationContentCreator contentCreator;
-    private DeviceNotifications deviceNotifications;
-    private WearNotifications wearNotifications;
-
-
-    @Before
-    public void setUp() throws Exception {
-        account = createAccount();
-
-        notificationManager = createNotificationManager();
-        NotificationHelper notificationHelper = createNotificationHelper(notificationManager);
-        contentCreator = createNotificationContentCreator();
-        deviceNotifications = createDeviceNotifications();
-        wearNotifications = createWearNotifications();
-
-        newMailNotifications = new TestNewMailNotifications(notificationHelper, contentCreator, deviceNotifications,
-                wearNotifications);
+        val wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        verify(notificationManager).notify(wearNotificationId, wearNotification)
+        val summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        verify(notificationManager).notify(summaryNotificationId, summaryNotification)
     }
 
     @Test
-    public void testAddNewMailNotification() throws Exception {
-        int notificationIndex = 0;
-        LocalMessage message = createLocalMessage();
-        NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
-        addToNotificationContentCreator(message, content);
-        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
-        Notification wearNotification = createNotification();
-        Notification summaryNotification = createNotification();
-        addToWearNotifications(holder, wearNotification);
-        addToDeviceNotifications(summaryNotification);
+    fun testAddNewMailNotificationWithCancelingExistingNotification() {
+        val notificationIndex = 0
+        val message = createLocalMessage()
+        val content = createNotificationContent()
+        val holder = createNotificationHolder(content, notificationIndex)
+        addToNotificationContentCreator(message, content)
+        whenAddingContentReturn(content, AddNotificationResult.replaceNotification(holder))
+        val wearNotification = createNotification()
+        val summaryNotification = createNotification()
+        addToWearNotifications(holder, wearNotification)
+        addToDeviceNotifications(summaryNotification)
 
-        newMailNotifications.addNewMailNotification(account, message, 42);
+        newMailNotifications.addNewMailNotification(account, message, 42)
 
-        int wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        verify(notificationManager).notify(wearNotificationId, wearNotification);
-        verify(notificationManager).notify(summaryNotificationId, summaryNotification);
+        val wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        verify(notificationManager).notify(wearNotificationId, wearNotification)
+        verify(notificationManager).cancel(wearNotificationId)
+        val summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        verify(notificationManager).notify(summaryNotificationId, summaryNotification)
     }
 
     @Test
-    public void testAddNewMailNotificationWithCancelingExistingNotification() throws Exception {
-        int notificationIndex = 0;
-        LocalMessage message = createLocalMessage();
-        NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
-        addToNotificationContentCreator(message, content);
-        whenAddingContentReturn(content, AddNotificationResult.replaceNotification(holder));
-        Notification wearNotification = createNotification();
-        Notification summaryNotification = createNotification();
-        addToWearNotifications(holder, wearNotification);
-        addToDeviceNotifications(summaryNotification);
+    fun testAddNewMailNotificationWithPrivacyModeEnabled() {
+        enablePrivacyMode()
+        val notificationIndex = 0
+        val message = createLocalMessage()
+        val content = createNotificationContent()
+        val holder = createNotificationHolder(content, notificationIndex)
+        addToNotificationContentCreator(message, content)
+        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
+        val wearNotification = createNotification()
+        addToDeviceNotifications(wearNotification)
 
-        newMailNotifications.addNewMailNotification(account, message, 42);
+        newMailNotifications.addNewMailNotification(account, message, 42)
 
-        int wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        verify(notificationManager).notify(wearNotificationId, wearNotification);
-        verify(notificationManager).cancel(wearNotificationId);
-        verify(notificationManager).notify(summaryNotificationId, summaryNotification);
+        val wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        verify(notificationManager, never()).notify(eq(wearNotificationId), any())
+        verify(notificationManager).notify(summaryNotificationId, wearNotification)
     }
 
     @Test
-    public void testAddNewMailNotificationWithPrivacyModeEnabled() throws Exception {
-        enablePrivacyMode();
-        int notificationIndex = 0;
-        LocalMessage message = createLocalMessage();
-        NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
-        addToNotificationContentCreator(message, content);
-        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
-        Notification wearNotification = createNotification();
-        addToDeviceNotifications(wearNotification);
+    fun testAddNewMailNotificationTwice() {
+        val notificationIndexOne = 0
+        val notificationIndexTwo = 1
+        val messageOne = createLocalMessage()
+        val messageTwo = createLocalMessage()
+        val contentOne = createNotificationContent()
+        val contentTwo = createNotificationContent()
+        val holderOne = createNotificationHolder(contentOne, notificationIndexOne)
+        val holderTwo = createNotificationHolder(contentTwo, notificationIndexTwo)
+        addToNotificationContentCreator(messageOne, contentOne)
+        addToNotificationContentCreator(messageTwo, contentTwo)
+        whenAddingContentReturn(contentOne, AddNotificationResult.newNotification(holderOne))
+        whenAddingContentReturn(contentTwo, AddNotificationResult.newNotification(holderTwo))
+        val wearNotificationOne = createNotification()
+        val wearNotificationTwo = createNotification()
+        val summaryNotification = createNotification()
+        addToWearNotifications(holderOne, wearNotificationOne)
+        addToWearNotifications(holderTwo, wearNotificationTwo)
+        addToDeviceNotifications(summaryNotification)
 
-        newMailNotifications.addNewMailNotification(account, message, 42);
+        newMailNotifications.addNewMailNotification(account, messageOne, 42)
+        newMailNotifications.addNewMailNotification(account, messageTwo, 42)
 
-        int wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        verify(notificationManager, never()).notify(eq(wearNotificationId), any(Notification.class));
-        verify(notificationManager).notify(summaryNotificationId, wearNotification);
+        val wearNotificationIdOne = NotificationIds.getNewMailStackedNotificationId(account, notificationIndexOne)
+        verify(notificationManager).notify(wearNotificationIdOne, wearNotificationOne)
+        val wearNotificationIdTwo = NotificationIds.getNewMailStackedNotificationId(account, notificationIndexTwo)
+        verify(notificationManager).notify(wearNotificationIdTwo, wearNotificationTwo)
+        val summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        verify(notificationManager, times(2)).notify(summaryNotificationId, summaryNotification)
     }
 
     @Test
-    public void testAddNewMailNotificationTwice() throws Exception {
-        int notificationIndexOne = 0;
-        int notificationIndexTwo = 1;
-        LocalMessage messageOne = createLocalMessage();
-        LocalMessage messageTwo = createLocalMessage();
-        NotificationContent contentOne = createNotificationContent();
-        NotificationContent contentTwo = createNotificationContent();
-        NotificationHolder holderOne = createNotificationHolder(contentOne, notificationIndexOne);
-        NotificationHolder holderTwo = createNotificationHolder(contentTwo, notificationIndexTwo);
-        addToNotificationContentCreator(messageOne, contentOne);
-        addToNotificationContentCreator(messageTwo, contentTwo);
-        whenAddingContentReturn(contentOne, AddNotificationResult.newNotification(holderOne));
-        whenAddingContentReturn(contentTwo, AddNotificationResult.newNotification(holderTwo));
-        Notification wearNotificationOne = createNotification();
-        Notification wearNotificationTwo = createNotification();
-        Notification summaryNotification = createNotification();
-        addToWearNotifications(holderOne, wearNotificationOne);
-        addToWearNotifications(holderTwo, wearNotificationTwo);
-        addToDeviceNotifications(summaryNotification);
+    fun testRemoveNewMailNotificationWithoutNotificationData() {
+        val messageReference = createMessageReference(1)
 
-        newMailNotifications.addNewMailNotification(account, messageOne, 42);
-        newMailNotifications.addNewMailNotification(account, messageTwo, 42);
+        newMailNotifications.removeNewMailNotification(account, messageReference)
 
-        int wearNotificationIdOne = NotificationIds.getNewMailStackedNotificationId(account, notificationIndexOne);
-        int wearNotificationIdTwo = NotificationIds.getNewMailStackedNotificationId(account, notificationIndexTwo);
-        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        verify(notificationManager).notify(wearNotificationIdOne, wearNotificationOne);
-        verify(notificationManager).notify(wearNotificationIdTwo, wearNotificationTwo);
-        verify(notificationManager, times(2)).notify(summaryNotificationId, summaryNotification);
+        verify(notificationManager, never()).cancel(anyInt())
     }
 
     @Test
-    public void testRemoveNewMailNotificationWithoutNotificationData() throws Exception {
-        MessageReference messageReference = createMessageReference(1);
+    fun testRemoveNewMailNotificationWithUnknownMessageReference() {
+        enablePrivacyMode()
+        val messageReference = createMessageReference(1)
+        val notificationIndex = 0
+        val message = createLocalMessage()
+        val content = createNotificationContent()
+        val holder = createNotificationHolder(content, notificationIndex)
+        addToNotificationContentCreator(message, content)
+        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
+        val summaryNotification = createNotification()
+        addToDeviceNotifications(summaryNotification)
+        newMailNotifications.addNewMailNotification(account, message, 23)
+        whenRemovingContentReturn(messageReference, RemoveNotificationResult.unknownNotification())
 
-        newMailNotifications.removeNewMailNotification(account, messageReference);
+        newMailNotifications.removeNewMailNotification(account, messageReference)
 
-        verify(notificationManager, never()).cancel(anyInt());
+        verify(notificationManager, never()).cancel(anyInt())
     }
 
     @Test
-    public void testRemoveNewMailNotificationWithUnknownMessageReference() throws Exception {
-        enablePrivacyMode();
-        MessageReference messageReference = createMessageReference(1);
-        int notificationIndex = 0;
-        LocalMessage message = createLocalMessage();
-        NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
-        addToNotificationContentCreator(message, content);
-        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
-        Notification summaryNotification = createNotification();
-        addToDeviceNotifications(summaryNotification);
-        newMailNotifications.addNewMailNotification(account, message, 23);
-        whenRemovingContentReturn(messageReference, RemoveNotificationResult.unknownNotification());
+    fun testRemoveNewMailNotification() {
+        enablePrivacyMode()
+        val messageReference = createMessageReference(1)
+        val notificationIndex = 0
+        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val message = createLocalMessage()
+        val content = createNotificationContent()
+        val holder = createNotificationHolder(content, notificationIndex)
+        addToNotificationContentCreator(message, content)
+        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
+        val summaryNotification = createNotification()
+        addToDeviceNotifications(summaryNotification)
+        newMailNotifications.addNewMailNotification(account, message, 23)
+        whenRemovingContentReturn(messageReference, RemoveNotificationResult.cancelNotification(notificationId))
 
-        newMailNotifications.removeNewMailNotification(account, messageReference);
+        newMailNotifications.removeNewMailNotification(account, messageReference)
 
-        verify(notificationManager, never()).cancel(anyInt());
+        verify(notificationManager).cancel(notificationId)
+        val summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        verify(notificationManager, times(2)).notify(summaryNotificationId, summaryNotification)
     }
 
     @Test
-    public void testRemoveNewMailNotification() throws Exception {
-        enablePrivacyMode();
-        MessageReference messageReference = createMessageReference(1);
-        int notificationIndex = 0;
-        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        LocalMessage message = createLocalMessage();
-        NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
-        addToNotificationContentCreator(message, content);
-        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
-        Notification summaryNotification = createNotification();
-        addToDeviceNotifications(summaryNotification);
-        newMailNotifications.addNewMailNotification(account, message, 23);
-        whenRemovingContentReturn(messageReference, RemoveNotificationResult.cancelNotification(notificationId));
+    fun testRemoveNewMailNotificationClearingAllNotifications() {
+        val messageReference = createMessageReference(1)
+        val notificationIndex = 0
+        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val message = createLocalMessage()
+        val content = createNotificationContent()
+        val holder = createNotificationHolder(content, notificationIndex)
+        addToNotificationContentCreator(message, content)
+        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
+        val summaryNotification = createNotification()
+        addToDeviceNotifications(summaryNotification)
+        newMailNotifications.addNewMailNotification(account, message, 23)
+        whenRemovingContentReturn(messageReference, RemoveNotificationResult.cancelNotification(notificationId))
+        whenever(newMailNotifications.notificationData.newMessagesCount).thenReturn(0)
+        setActiveNotificationIds()
 
-        newMailNotifications.removeNewMailNotification(account, messageReference);
+        newMailNotifications.removeNewMailNotification(account, messageReference)
 
-        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        verify(notificationManager).cancel(notificationId);
-        verify(notificationManager, times(2)).notify(summaryNotificationId, summaryNotification);
+        verify(notificationManager).cancel(notificationId)
+        val summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        verify(notificationManager).cancel(summaryNotificationId)
     }
 
     @Test
-    public void testRemoveNewMailNotificationClearingAllNotifications() throws Exception {
-        MessageReference messageReference = createMessageReference(1);
-        int notificationIndex = 0;
-        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        LocalMessage message = createLocalMessage();
-        NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
-        addToNotificationContentCreator(message, content);
-        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
-        Notification summaryNotification = createNotification();
-        addToDeviceNotifications(summaryNotification);
-        newMailNotifications.addNewMailNotification(account, message, 23);
-        whenRemovingContentReturn(messageReference, RemoveNotificationResult.cancelNotification(notificationId));
-        when(newMailNotifications.notificationData.getNewMessagesCount()).thenReturn(0);
-        setActiveNotificationIds();
+    fun testRemoveNewMailNotificationWithCreateNotification() {
+        val messageReference = createMessageReference(1)
+        val notificationIndex = 0
+        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val message = createLocalMessage()
+        val contentOne = createNotificationContent()
+        val contentTwo = createNotificationContent()
+        val holderOne = createNotificationHolder(contentOne, notificationIndex)
+        val holderTwo = createNotificationHolder(contentTwo, notificationIndex)
+        addToNotificationContentCreator(message, contentOne)
+        whenAddingContentReturn(contentOne, AddNotificationResult.newNotification(holderOne))
+        val summaryNotification = createNotification()
+        addToDeviceNotifications(summaryNotification)
+        val wearNotificationOne = createNotification()
+        val wearNotificationTwo = createNotification()
+        addToWearNotifications(holderOne, wearNotificationOne)
+        addToWearNotifications(holderTwo, wearNotificationTwo)
+        newMailNotifications.addNewMailNotification(account, message, 23)
+        whenRemovingContentReturn(messageReference, RemoveNotificationResult.createNotification(holderTwo))
 
-        newMailNotifications.removeNewMailNotification(account, messageReference);
+        newMailNotifications.removeNewMailNotification(account, messageReference)
 
-        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        verify(notificationManager).cancel(notificationId);
-        verify(notificationManager).cancel(summaryNotificationId);
+        verify(notificationManager).cancel(notificationId)
+        verify(notificationManager).notify(notificationId, wearNotificationTwo)
+        val summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        verify(notificationManager, times(2)).notify(summaryNotificationId, summaryNotification)
     }
 
     @Test
-    public void testRemoveNewMailNotificationWithCreateNotification() throws Exception {
-        MessageReference messageReference = createMessageReference(1);
-        int notificationIndex = 0;
-        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        LocalMessage message = createLocalMessage();
-        NotificationContent contentOne = createNotificationContent();
-        NotificationContent contentTwo = createNotificationContent();
-        NotificationHolder holderOne = createNotificationHolder(contentOne, notificationIndex);
-        NotificationHolder holderTwo = createNotificationHolder(contentTwo, notificationIndex);
-        addToNotificationContentCreator(message, contentOne);
-        whenAddingContentReturn(contentOne, AddNotificationResult.newNotification(holderOne));
-        Notification summaryNotification = createNotification();
-        addToDeviceNotifications(summaryNotification);
-        Notification wearNotificationOne = createNotification();
-        Notification wearNotificationTwo = createNotification();
-        addToWearNotifications(holderOne, wearNotificationOne);
-        addToWearNotifications(holderTwo, wearNotificationTwo);
-        newMailNotifications.addNewMailNotification(account, message, 23);
-        whenRemovingContentReturn(messageReference, RemoveNotificationResult.createNotification(holderTwo));
+    fun testClearNewMailNotificationsWithoutNotificationData() {
+        newMailNotifications.clearNewMailNotifications(account)
 
-        newMailNotifications.removeNewMailNotification(account, messageReference);
-
-        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        verify(notificationManager).cancel(notificationId);
-        verify(notificationManager).notify(notificationId, wearNotificationTwo);
-        verify(notificationManager, times(2)).notify(summaryNotificationId, summaryNotification);
+        verify(notificationManager, never()).cancel(anyInt())
     }
 
     @Test
-    public void testClearNewMailNotificationsWithoutNotificationData() throws Exception {
-        newMailNotifications.clearNewMailNotifications(account);
+    fun testClearNewMailNotifications() {
+        val notificationIndex = 0
+        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val message = createLocalMessage()
+        val content = createNotificationContent()
+        val holder = createNotificationHolder(content, notificationIndex)
+        addToNotificationContentCreator(message, content)
+        setActiveNotificationIds(notificationId)
+        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
+        newMailNotifications.addNewMailNotification(account, message, 3)
 
-        verify(notificationManager, never()).cancel(anyInt());
+        newMailNotifications.clearNewMailNotifications(account)
+
+        verify(notificationManager).cancel(notificationId)
+        verify(notificationManager).cancel(NotificationIds.getNewMailSummaryNotificationId(account))
     }
 
-    @Test
-    public void testClearNewMailNotifications() throws Exception {
-        int notificationIndex = 0;
-        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
-        LocalMessage message = createLocalMessage();
-        NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
-        addToNotificationContentCreator(message, content);
-        setActiveNotificationIds(notificationId);
-        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
-        newMailNotifications.addNewMailNotification(account, message, 3);
-
-        newMailNotifications.clearNewMailNotifications(account);
-
-        verify(notificationManager).cancel(notificationId);
-        verify(notificationManager).cancel(NotificationIds.getNewMailSummaryNotificationId(account));
-    }
-
-    private Account createAccount() {
-        Account account = mock(Account.class);
-        when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
-        return account;
-    }
-
-    private LocalMessage createLocalMessage() {
-        return mock(LocalMessage.class);
-    }
-
-    private NotificationContent createNotificationContent() {
-        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
-        return new NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false);
-    }
-
-    private NotificationHolder createNotificationHolder(NotificationContent content, int index) {
-        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, index);
-        return new NotificationHolder(notificationId, content);
-    }
-
-    private NotificationManagerCompat createNotificationManager() {
-        return mock(NotificationManagerCompat.class);
-    }
-
-    private NotificationHelper createNotificationHelper(NotificationManagerCompat notificationManager) {
-        NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
-        return notificationHelper;
-    }
-
-    private NotificationContentCreator createNotificationContentCreator() {
-        return mock(NotificationContentCreator.class);
-    }
-
-    private void addToNotificationContentCreator(LocalMessage message, NotificationContent content) {
-        when(contentCreator.createFromMessage(account, message)).thenReturn(content);
-    }
-
-    private DeviceNotifications createDeviceNotifications() {
-        return mock(DeviceNotifications.class);
-    }
-
-    private void addToDeviceNotifications(Notification notificationToReturn) {
-        when(deviceNotifications.buildSummaryNotification(
-                        eq(account), eq(newMailNotifications.notificationData), anyBoolean())
-        ).thenReturn(notificationToReturn);
-    }
-
-    private Notification createNotification() {
-        return mock(Notification.class);
-    }
-
-    private WearNotifications createWearNotifications() {
-        return mock(WearNotifications.class);
-    }
-
-    private MessageReference createMessageReference(int number) {
-        return new MessageReference("account", 1, String.valueOf(number), null);
-    }
-
-    private void addToWearNotifications(NotificationHolder notificationHolder, Notification notificationToReturn) {
-        when(wearNotifications.buildStackedNotification(account, notificationHolder)).thenReturn(notificationToReturn);
-    }
-
-    private void whenAddingContentReturn(NotificationContent content, AddNotificationResult result) {
-        NotificationData notificationData = newMailNotifications.notificationData;
-        when(notificationData.addNotificationContent(content)).thenReturn(result);
-
-        int newCount = notificationData.getNewMessagesCount() + 1;
-        when(notificationData.getNewMessagesCount()).thenReturn(newCount);
-    }
-
-    private void whenRemovingContentReturn(MessageReference messageReference, RemoveNotificationResult result) {
-        NotificationData notificationData = newMailNotifications.notificationData;
-        when(notificationData.removeNotificationForMessage(messageReference)).thenReturn(result);
-    }
-
-    private void setActiveNotificationIds(int... notificationIds) {
-        NotificationData notificationData = newMailNotifications.notificationData;
-        when(notificationData.getActiveNotificationIds()).thenReturn(notificationIds);
-    }
-
-    private void enablePrivacyMode() {
-        K9.setNotificationHideSubject(NotificationHideSubject.ALWAYS);
-    }
-
-    static class TestNewMailNotifications extends NewMailNotifications {
-
-        public final NotificationData notificationData;
-
-        TestNewMailNotifications(NotificationHelper notificationHelper, NotificationContentCreator contentCreator,
-                DeviceNotifications deviceNotifications, WearNotifications wearNotifications) {
-            super(notificationHelper, contentCreator, deviceNotifications, wearNotifications);
-            notificationData = mock(NotificationData.class);
+    private fun createAccount(): Account {
+        return mock {
+            on { accountNumber } doReturn ACCOUNT_NUMBER
         }
+    }
 
-        @Override
-        protected NotificationData createNotificationData(Account account, int unreadMessageCount) {
-            return notificationData;
+    private fun createLocalMessage(): LocalMessage = mock()
+
+    private fun createNotificationContent(): NotificationContent {
+        val messageReference = MessageReference("irrelevant", 1, "irrelevant", null)
+        return NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false)
+    }
+
+    private fun createNotificationHolder(content: NotificationContent, index: Int): NotificationHolder {
+        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, index)
+        return NotificationHolder(notificationId, content)
+    }
+
+    private fun createNotificationManager(): NotificationManagerCompat = mock()
+
+    private fun createNotificationHelper(notificationManager: NotificationManagerCompat): NotificationHelper {
+        return mock {
+            on { getNotificationManager() } doReturn notificationManager
+        }
+    }
+
+    private fun createNotificationContentCreator(): NotificationContentCreator = mock()
+
+    private fun addToNotificationContentCreator(message: LocalMessage, content: NotificationContent) {
+        stubbing(contentCreator) {
+            on { createFromMessage(account, message) } doReturn content
+        }
+    }
+
+    private fun createDeviceNotifications(): DeviceNotifications = mock()
+
+    private fun addToDeviceNotifications(notificationToReturn: Notification) {
+        stubbing(deviceNotifications) {
+            on {
+                buildSummaryNotification(eq(account), eq(newMailNotifications.notificationData), anyBoolean())
+            } doReturn notificationToReturn
+        }
+    }
+
+    private fun createNotification(): Notification = mock()
+
+    private fun createWearNotifications(): WearNotifications = mock()
+
+    private fun createMessageReference(number: Int): MessageReference {
+        return MessageReference("account", 1, number.toString(), null)
+    }
+
+    private fun addToWearNotifications(notificationHolder: NotificationHolder, notificationToReturn: Notification) {
+        whenever(wearNotifications.buildStackedNotification(account, notificationHolder))
+            .thenReturn(notificationToReturn)
+    }
+
+    private fun whenAddingContentReturn(content: NotificationContent, result: AddNotificationResult) {
+        val notificationData = newMailNotifications.notificationData
+        val newCount = notificationData.newMessagesCount + 1
+
+        stubbing(notificationData) {
+            on { addNotificationContent(content) } doReturn result
+            on { newMessagesCount } doReturn newCount
+        }
+    }
+
+    private fun whenRemovingContentReturn(messageReference: MessageReference, result: RemoveNotificationResult) {
+        stubbing(newMailNotifications.notificationData) {
+            on { removeNotificationForMessage(messageReference) } doReturn result
+        }
+    }
+
+    private fun setActiveNotificationIds(vararg notificationIds: Int) {
+        stubbing(newMailNotifications.notificationData) {
+            on { getActiveNotificationIds() } doReturn notificationIds
+        }
+    }
+
+    private fun enablePrivacyMode() {
+        K9.notificationHideSubject = NotificationHideSubject.ALWAYS
+    }
+
+    internal class TestNewMailNotifications(
+        notificationHelper: NotificationHelper,
+        contentCreator: NotificationContentCreator,
+        deviceNotifications: DeviceNotifications,
+        wearNotifications: WearNotifications
+    ) : NewMailNotifications(
+        notificationHelper, contentCreator, deviceNotifications, wearNotifications
+    ) {
+        val notificationData = mock<NotificationData>()
+
+        override fun createNotificationData(account: Account, unreadMessageCount: Int): NotificationData {
+            return notificationData
         }
     }
 }

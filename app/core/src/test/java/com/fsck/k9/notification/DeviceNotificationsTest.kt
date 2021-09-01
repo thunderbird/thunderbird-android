@@ -1,276 +1,237 @@
-package com.fsck.k9.notification;
+package com.fsck.k9.notification
 
+import android.app.Notification
+import androidx.core.app.NotificationCompat
+import androidx.test.core.app.ApplicationProvider
+import com.fsck.k9.Account
+import com.fsck.k9.K9
+import com.fsck.k9.K9.NotificationHideSubject
+import com.fsck.k9.K9.NotificationQuickDelete
+import com.fsck.k9.RobolectricTest
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.testing.MockHelper.mockBuilder
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stubbing
 
-import java.util.Arrays;
-import java.util.List;
+private const val UNREAD_MESSAGE_COUNT = 42
+private const val NEW_MESSAGE_COUNT = 2
+private const val ACCOUNT_NAME = "accountName"
+private const val ACCOUNT_NUMBER = 3
+private const val ACCOUNT_COLOR = 0xABCDEF
+private const val SUMMARY = "summary"
+private const val PREVIEW = "preview"
+private const val SUBJECT = "subject"
+private const val SENDER = "sender"
+private const val SUMMARY_2 = "summary2"
+private const val PREVIEW_2 = "preview2"
+private const val SUBJECT_2 = "subject2"
+private const val SENDER_2 = "sender2"
+private const val NOTIFICATION_ID = 23
 
-import android.app.Application;
-import android.app.Notification;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.BigTextStyle;
-import androidx.core.app.NotificationCompat.Builder;
-import androidx.core.app.NotificationCompat.InboxStyle;
+class DeviceNotificationsTest : RobolectricTest() {
+    private val notification = mock<Notification>()
+    private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
+    private val account = createFakeAccount()
+    private val notificationData = createFakeNotificationData(account)
+    private val builder = createFakeNotificationBuilder()
+    private val builder2 = createFakeNotificationBuilder()
+    private val lockScreenNotification = mock<LockScreenNotification>()
+    private val notifications = createDeviceNotifications(builder, lockScreenNotification)
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.NotificationSetting;
-import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.controller.MessageReference;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.robolectric.RuntimeEnvironment;
+    @Test
+    fun buildSummaryNotification_withPrivacyModeActive() {
+        K9.notificationHideSubject = NotificationHideSubject.ALWAYS
 
-import static com.fsck.k9.testing.MockHelper.mockBuilder;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+        val result = notifications.buildSummaryNotification(account, notificationData, false)
 
-
-public class DeviceNotificationsTest extends RobolectricTest {
-    private static final int UNREAD_MESSAGE_COUNT = 42;
-    private static final int NEW_MESSAGE_COUNT = 2;
-    private static final String ACCOUNT_NAME = "accountName";
-    private static final int ACCOUNT_NUMBER = 3;
-    private static final int ACCOUNT_COLOR = 0xABCDEF;
-    private static final String SUMMARY = "summary";
-    private static final String PREVIEW = "preview";
-    private static final String SUBJECT = "subject";
-    private static final String SENDER = "sender";
-    private static final String SUMMARY_2 = "summary2";
-    private static final String PREVIEW_2 = "preview2";
-    private static final String SUBJECT_2 = "subject2";
-    private static final String SENDER_2 = "sender2";
-    private static final int NOTIFICATION_ID = 23;
-    private static final Notification FAKE_NOTIFICATION = mock(Notification.class);
-
-
-    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
-    private Account account;
-    private NotificationData notificationData;
-    private TestDeviceNotifications notifications;
-    private Builder builder;
-    private Builder builder2 = mockBuilder(Builder.class);
-    private LockScreenNotification lockScreenNotification;
-
-
-    @Before
-    public void setUp() throws Exception {
-        account = createFakeAccount();
-        notificationData = createFakeNotificationData(account);
-
-        builder = createFakeNotificationBuilder();
-        lockScreenNotification = mock(LockScreenNotification.class);
-        notifications = createDeviceNotifications(builder, lockScreenNotification);
+        verify(builder).setSmallIcon(resourceProvider.iconNewMail)
+        verify(builder).color = ACCOUNT_COLOR
+        verify(builder).setAutoCancel(true)
+        verify(builder).setNumber(UNREAD_MESSAGE_COUNT)
+        verify(builder).setTicker("New mail")
+        verify(builder).setContentText("New mail")
+        verify(builder).setContentTitle("$UNREAD_MESSAGE_COUNT Unread ($ACCOUNT_NAME)")
+        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData)
+        assertThat(result).isEqualTo(notification)
     }
 
     @Test
-    public void buildSummaryNotification_withPrivacyModeActive() throws Exception {
-        K9.setNotificationHideSubject(NotificationHideSubject.ALWAYS);
+    fun buildSummaryNotification_withSingleMessageNotification() {
+        K9.notificationHideSubject = NotificationHideSubject.NEVER
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
+        stubbing(notificationData) {
+            on { isSingleMessageNotification } doReturn true
+        }
 
-        Notification result = notifications.buildSummaryNotification(account, notificationData, false);
+        val result = notifications.buildSummaryNotification(account, notificationData, false)
 
-        verify(builder).setSmallIcon(resourceProvider.getIconNewMail());
-        verify(builder).setColor(ACCOUNT_COLOR);
-        verify(builder).setAutoCancel(true);
-        verify(builder).setNumber(UNREAD_MESSAGE_COUNT);
-        verify(builder).setTicker("New mail");
-        verify(builder).setContentText("New mail");
-        verify(builder).setContentTitle(UNREAD_MESSAGE_COUNT + " Unread (" + ACCOUNT_NAME + ")");
-        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
-        assertEquals(FAKE_NOTIFICATION, result);
+        verify(builder).setSmallIcon(resourceProvider.iconNewMail)
+        verify(builder).color = ACCOUNT_COLOR
+        verify(builder).setAutoCancel(true)
+        verify(builder).setTicker(SUMMARY)
+        verify(builder).setContentText(SUBJECT)
+        verify(builder).setContentTitle(SENDER)
+        verify(builder).setStyle(notifications.bigTextStyle)
+        verify(notifications.bigTextStyle).bigText(PREVIEW)
+        verify(builder).addAction(resourceProvider.iconReply, "Reply", null)
+        verify(builder).addAction(resourceProvider.iconMarkAsRead, "Mark Read", null)
+        verify(builder).addAction(resourceProvider.iconDelete, "Delete", null)
+        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData)
+        assertThat(result).isEqualTo(notification)
     }
 
     @Test
-    public void buildSummaryNotification_withSingleMessageNotification() throws Exception {
-        K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
-        when(notificationData.isSingleMessageNotification()).thenReturn(true);
+    fun buildSummaryNotification_withMultiMessageNotification() {
+        K9.notificationHideSubject = NotificationHideSubject.NEVER
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
+        stubbing(notificationData) {
+            on { isSingleMessageNotification } doReturn false
+            on { containsStarredMessages() } doReturn true
+        }
 
-        Notification result = notifications.buildSummaryNotification(account, notificationData, false);
+        val result = notifications.buildSummaryNotification(account, notificationData, false)
 
-        verify(builder).setSmallIcon(resourceProvider.getIconNewMail());
-        verify(builder).setColor(ACCOUNT_COLOR);
-        verify(builder).setAutoCancel(true);
-        verify(builder).setTicker(SUMMARY);
-        verify(builder).setContentText(SUBJECT);
-        verify(builder).setContentTitle(SENDER);
-        verify(builder).setStyle(notifications.bigTextStyle);
-        verify(notifications.bigTextStyle).bigText(PREVIEW);
-        verify(builder).addAction(resourceProvider.getIconReply(), "Reply", null);
-        verify(builder).addAction(resourceProvider.getIconMarkAsRead(), "Mark Read", null);
-        verify(builder).addAction(resourceProvider.getIconDelete(), "Delete", null);
-        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
-        assertEquals(FAKE_NOTIFICATION, result);
+        verify(builder).setSmallIcon(resourceProvider.iconNewMail)
+        verify(builder).color = ACCOUNT_COLOR
+        verify(builder).setAutoCancel(true)
+        verify(builder).setTicker(SUMMARY)
+        verify(builder).setContentTitle("$NEW_MESSAGE_COUNT new messages")
+        verify(builder).setSubText(ACCOUNT_NAME)
+        verify(builder).setGroup("newMailNotifications-$ACCOUNT_NUMBER")
+        verify(builder).setGroupSummary(true)
+        verify(builder).priority = NotificationCompat.PRIORITY_HIGH
+        verify(builder).setStyle(notifications.inboxStyle)
+        verify(notifications.inboxStyle).setBigContentTitle("$NEW_MESSAGE_COUNT new messages")
+        verify(notifications.inboxStyle).setSummaryText(ACCOUNT_NAME)
+        verify(notifications.inboxStyle).addLine(SUMMARY)
+        verify(notifications.inboxStyle).addLine(SUMMARY_2)
+        verify(builder).addAction(resourceProvider.iconMarkAsRead, "Mark Read", null)
+        verify(builder).addAction(resourceProvider.iconDelete, "Delete", null)
+        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData)
+        assertThat(result).isEqualTo(notification)
     }
 
     @Test
-    public void buildSummaryNotification_withMultiMessageNotification() throws Exception {
-        K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
-        when(notificationData.isSingleMessageNotification()).thenReturn(false);
-        when(notificationData.containsStarredMessages()).thenReturn(true);
+    fun buildSummaryNotification_withAdditionalMessages() {
+        K9.notificationHideSubject = NotificationHideSubject.NEVER
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
+        stubbing(notificationData) {
+            on { isSingleMessageNotification } doReturn false
+            on { hasSummaryOverflowMessages() } doReturn true
+            on { getSummaryOverflowMessagesCount() } doReturn 23
+        }
 
-        Notification result = notifications.buildSummaryNotification(account, notificationData, false);
+        notifications.buildSummaryNotification(account, notificationData, false)
 
-        verify(builder).setSmallIcon(resourceProvider.getIconNewMail());
-        verify(builder).setColor(ACCOUNT_COLOR);
-        verify(builder).setAutoCancel(true);
-        verify(builder).setTicker(SUMMARY);
-        verify(builder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
-        verify(builder).setSubText(ACCOUNT_NAME);
-        verify(builder).setGroup("newMailNotifications-" + ACCOUNT_NUMBER);
-        verify(builder).setGroupSummary(true);
-        verify(builder).setPriority(NotificationCompat.PRIORITY_HIGH);
-        verify(builder).setStyle(notifications.inboxStyle);
-        verify(notifications.inboxStyle).setBigContentTitle(NEW_MESSAGE_COUNT + " new messages");
-        verify(notifications.inboxStyle).setSummaryText(ACCOUNT_NAME);
-        verify(notifications.inboxStyle).addLine(SUMMARY);
-        verify(notifications.inboxStyle).addLine(SUMMARY_2);
-        verify(builder).addAction(resourceProvider.getIconMarkAsRead(), "Mark Read", null);
-        verify(builder).addAction(resourceProvider.getIconDelete(), "Delete", null);
-        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
-        assertEquals(FAKE_NOTIFICATION, result);
+        verify(notifications.inboxStyle).setSummaryText("+ 23 more on $ACCOUNT_NAME")
     }
 
     @Test
-    public void buildSummaryNotification_withAdditionalMessages() throws Exception {
-        K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
-        when(notificationData.isSingleMessageNotification()).thenReturn(false);
-        when(notificationData.hasSummaryOverflowMessages()).thenReturn(true);
-        when(notificationData.getSummaryOverflowMessagesCount()).thenReturn(23);
+    fun buildSummaryNotification_withoutDeleteAllAction() {
+        K9.notificationHideSubject = NotificationHideSubject.NEVER
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.NEVER
+        stubbing(notificationData) {
+            on { isSingleMessageNotification } doReturn false
+        }
 
-        notifications.buildSummaryNotification(account, notificationData, false);
+        notifications.buildSummaryNotification(account, notificationData, false)
 
-        verify(notifications.inboxStyle).setSummaryText("+ 23 more on " + ACCOUNT_NAME);
+        verify(builder, never()).addAction(resourceProvider.iconDelete, "Delete", null)
     }
 
     @Test
-    public void buildSummaryNotification_withoutDeleteAllAction() throws Exception {
-        K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
-        when(notificationData.isSingleMessageNotification()).thenReturn(false);
+    @Throws(Exception::class)
+    fun buildSummaryNotification_withoutDeleteAction() {
+        K9.notificationHideSubject = NotificationHideSubject.NEVER
+        K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.NEVER
+        stubbing(notificationData) {
+            on { isSingleMessageNotification } doReturn true
+        }
 
-        notifications.buildSummaryNotification(account, notificationData, false);
+        notifications.buildSummaryNotification(account, notificationData, false)
 
-        verify(builder, never()).addAction(resourceProvider.getIconDelete(), "Delete", null);
+        verify(builder, never()).addAction(resourceProvider.iconDelete, "Delete", null)
     }
 
-    @Test
-    public void buildSummaryNotification_withoutDeleteAction() throws Exception {
-        K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
-        when(notificationData.isSingleMessageNotification()).thenReturn(true);
-
-        notifications.buildSummaryNotification(account, notificationData, false);
-
-        verify(builder, never()).addAction(resourceProvider.getIconDelete(), "Delete", null);
+    private fun createFakeNotificationBuilder(): NotificationCompat.Builder {
+        return mockBuilder {
+            on { build() } doReturn notification
+        }
     }
 
-    private Builder createFakeNotificationBuilder() {
-        Builder builder = mockBuilder(Builder.class);
-        when(builder.build()).thenReturn(FAKE_NOTIFICATION);
-        return builder;
+    private fun createFakeAccount(): Account {
+        return mock {
+            on { chipColor } doReturn ACCOUNT_COLOR
+            on { accountNumber } doReturn ACCOUNT_NUMBER
+            on { notificationSetting } doReturn mock()
+        }
     }
 
-    private Account createFakeAccount() {
-        Account account = mock(Account.class);
-
-        when(account.getChipColor()).thenReturn(ACCOUNT_COLOR);
-        when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
-
-        NotificationSetting notificationSetting = mock(NotificationSetting.class);
-        when(account.getNotificationSetting()).thenReturn(notificationSetting);
-
-        return account;
+    private fun createFakeNotificationData(account: Account): NotificationData {
+        val messageReference = MessageReference("irrelevant", 1, "irrelevant", null)
+        val content = NotificationContent(messageReference, SENDER, SUBJECT, PREVIEW, SUMMARY, false)
+        val content2 = NotificationContent(messageReference, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true)
+        return mock {
+            on { unreadMessageCount } doReturn UNREAD_MESSAGE_COUNT
+            on { newMessagesCount } doReturn NEW_MESSAGE_COUNT
+            on { this.account } doReturn account
+            on { getContentForSummaryNotification() } doReturn listOf(content, content2)
+            on { holderForLatestNotification } doReturn NotificationHolder(NOTIFICATION_ID, content)
+        }
     }
 
-    private NotificationData createFakeNotificationData(Account account) {
-        NotificationData notificationData = mock(NotificationData.class);
-        when(notificationData.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
-        when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
-        when(notificationData.getAccount()).thenReturn(account);
-
-        MessageReference messageReference = new MessageReference("irrelevant", 1, "irrelevant", null);
-        NotificationContent content =
-                new NotificationContent(messageReference, SENDER, SUBJECT, PREVIEW, SUMMARY, false);
-        NotificationContent content2 =
-                new NotificationContent(messageReference, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
-        List<NotificationContent> contents = Arrays.asList(content, content2);
-        when(notificationData.getContentForSummaryNotification()).thenReturn(contents);
-
-        NotificationHolder holder = new NotificationHolder(NOTIFICATION_ID, content);
-        when(notificationData.getHolderForLatestNotification()).thenReturn(holder);
-
-        return notificationData;
+    private fun createDeviceNotifications(
+        builder: NotificationCompat.Builder,
+        lockScreenNotification: LockScreenNotification
+    ): TestDeviceNotifications {
+        return TestDeviceNotifications(
+            notificationHelper = createFakeNotificationHelper(builder),
+            actionCreator = mock(),
+            lockScreenNotification = lockScreenNotification,
+            wearNotifications = mock(),
+            resourceProvider = resourceProvider
+        )
     }
 
-    private TestDeviceNotifications createDeviceNotifications(Builder builder,
-            LockScreenNotification lockScreenNotification) {
-        NotificationHelper notificationHelper = createFakeNotificationHelper(builder);
-        NotificationActionCreator actionCreator = mock(NotificationActionCreator.class);
-        WearNotifications wearNotifications = mock(WearNotifications.class);
-
-        return new TestDeviceNotifications(notificationHelper, actionCreator, lockScreenNotification,
-                wearNotifications, resourceProvider);
-    }
-
-    private NotificationHelper createFakeNotificationHelper(final Builder builder) {
-        Application context = RuntimeEnvironment.application;
-
-        NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.getContext()).thenReturn(context);
-        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        when(notificationHelper.createNotificationBuilder(any(Account.class), any(NotificationChannelManager
-                .ChannelType.class))).thenAnswer(new Answer<Builder>() {
-            private int invocationCount = 0;
-
-            @Override
-            public Builder answer(InvocationOnMock invocation) throws Throwable {
-                invocationCount++;
-                switch (invocationCount) {
-                    case 1: {
-                        return builder;
-                    }
-                    case 2: {
-                        return builder2;
-                    }
-                }
-
-                throw new AssertionError("createNotificationBuilder() invoked more than twice");
+    private fun createFakeNotificationHelper(builder: NotificationCompat.Builder): NotificationHelper {
+        return mock {
+            on { getContext() } doReturn ApplicationProvider.getApplicationContext()
+            on { getAccountName(any()) } doReturn ACCOUNT_NAME
+            on { createNotificationBuilder(any(), any()) } doReturn builder doReturn builder2 doAnswer {
+                throw AssertionError("createNotificationBuilder() invoked more than twice")
             }
-        });
-
-        return notificationHelper;
+        }
     }
 
+    internal class TestDeviceNotifications(
+        notificationHelper: NotificationHelper,
+        actionCreator: NotificationActionCreator,
+        lockScreenNotification: LockScreenNotification,
+        wearNotifications: WearNotifications,
+        resourceProvider: NotificationResourceProvider
+    ) : DeviceNotifications(
+        notificationHelper,
+        actionCreator,
+        lockScreenNotification,
+        wearNotifications,
+        resourceProvider
+    ) {
+        val bigTextStyle = mockBuilder<NotificationCompat.BigTextStyle>()
+        val inboxStyle = mockBuilder<NotificationCompat.InboxStyle>()
 
-    static class TestDeviceNotifications extends DeviceNotifications {
-        BigTextStyle bigTextStyle = mockBuilder(BigTextStyle.class);
-        InboxStyle inboxStyle = mockBuilder(InboxStyle.class);
-
-
-        TestDeviceNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
-                LockScreenNotification lockScreenNotification, WearNotifications wearNotifications,
-                NotificationResourceProvider resourceProvider) {
-            super(notificationHelper, actionCreator, lockScreenNotification, wearNotifications, resourceProvider);
+        override fun createBigTextStyle(builder: NotificationCompat.Builder?): NotificationCompat.BigTextStyle {
+            return bigTextStyle
         }
 
-        @Override
-        protected BigTextStyle createBigTextStyle(Builder builder) {
-            return bigTextStyle;
-        }
-
-        @Override
-        protected InboxStyle createInboxStyle(Builder builder) {
-            return inboxStyle;
+        override fun createInboxStyle(builder: NotificationCompat.Builder?): NotificationCompat.InboxStyle {
+            return inboxStyle
         }
     }
 }
