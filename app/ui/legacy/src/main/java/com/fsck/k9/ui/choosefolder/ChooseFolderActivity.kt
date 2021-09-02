@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
@@ -20,7 +19,6 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
-import com.fsck.k9.ui.folders.FoldersLiveData
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
@@ -42,11 +40,6 @@ class ChooseFolderActivity : K9Activity() {
     private var scrollToFolderId: Long? = null
     private var messageReference: String? = null
     private var showDisplayableOnly = false
-    private var foldersLiveData: FoldersLiveData? = null
-
-    private val folderListObserver = Observer<List<DisplayFolder>> { folders ->
-        updateFolderList(folders)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,12 +53,14 @@ class ChooseFolderActivity : K9Activity() {
 
         initializeFolderList()
 
+        viewModel.getFolders().observe(this) { folders ->
+            updateFolderList(folders)
+        }
+
         val savedDisplayMode = savedInstanceState?.getString(STATE_DISPLAY_MODE)?.let { FolderMode.valueOf(it) }
         val displayMode = savedDisplayMode ?: getInitialDisplayMode()
 
-        foldersLiveData = viewModel.getFolders(account, displayMode).apply {
-            observe(this@ChooseFolderActivity, folderListObserver)
-        }
+        viewModel.setDisplayMode(account, displayMode)
     }
 
     private fun decodeArguments(savedInstanceState: Bundle?): Boolean {
@@ -137,7 +132,7 @@ class ChooseFolderActivity : K9Activity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         scrollToFolderId?.let { folderId -> outState.putLong(STATE_SCROLL_TO_FOLDER_ID, folderId) }
-        outState.putString(STATE_DISPLAY_MODE, foldersLiveData?.displayMode?.name)
+        outState.putString(STATE_DISPLAY_MODE, viewModel.currentDisplayMode?.name)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -181,10 +176,7 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun setDisplayMode(displayMode: FolderMode) {
-        foldersLiveData?.removeObserver(folderListObserver)
-        foldersLiveData = viewModel.getFolders(account, displayMode).apply {
-            observe(this@ChooseFolderActivity, folderListObserver)
-        }
+        viewModel.setDisplayMode(account, displayMode)
     }
 
     private fun returnResult(folderId: Long, displayName: String) {
