@@ -301,4 +301,31 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
 
         assertThat(result).isNull()
     }
+
+    @Test
+    fun `get message count from empty folder`() {
+        val folderId = sqliteDatabase.createFolder()
+
+        val result = retrieveFolderOperations.getMessageCount(folderId)
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `get message count from non-existent folder`() {
+        val result = retrieveFolderOperations.getMessageCount(23)
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `get message count from non-empty folder`() {
+        val folderId = sqliteDatabase.createFolder()
+        sqliteDatabase.createMessage(folderId = folderId)
+        sqliteDatabase.createMessage(folderId = folderId)
+
+        val result = retrieveFolderOperations.getMessageCount(folderId)
+
+        assertThat(result).isEqualTo(2)
+    }
 }

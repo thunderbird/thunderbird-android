@@ -130,6 +130,17 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
             }
         }
     }
+
+    fun getMessageCount(folderId: Long): Int {
+        return lockableDatabase.execute(false) { db ->
+            db.rawQuery(
+                "SELECT COUNT(id) FROM messages WHERE empty = 0 AND deleted = 0 AND folder_id = ?",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                if (cursor.moveToFirst()) cursor.getInt(0) else 0
+            }
+        }
+    }
 }
 
 private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {

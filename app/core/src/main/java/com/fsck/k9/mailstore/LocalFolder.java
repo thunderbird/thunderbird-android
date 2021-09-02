@@ -259,34 +259,6 @@ public class LocalFolder {
         });
     }
 
-    public int getMessageCount() throws MessagingException {
-        try {
-            return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
-                @Override
-                public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        open();
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
-                    Cursor cursor = null;
-                    try {
-                        cursor = db.rawQuery(
-                                "SELECT COUNT(id) FROM messages " +
-                                "WHERE empty = 0 AND deleted = 0 and folder_id = ?",
-                                new String[] { Long.toString(databaseId) });
-                        cursor.moveToFirst();
-                        return cursor.getInt(0);   //messagecount
-                    } finally {
-                        Utility.closeQuietly(cursor);
-                    }
-                }
-            });
-        } catch (WrappedException e) {
-            throw (MessagingException) e.getCause();
-        }
-    }
-
     public MessageCounts getMessageCounts() throws MessagingException {
         return new MessageCounts(getUnreadMessageCount(), getStarredMessageCount());
     }

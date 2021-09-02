@@ -177,6 +177,11 @@ interface MessageStore {
     fun getFolderId(folderServerId: String): Long?
 
     /**
+     * Retrieve the number of messages in a folder.
+     */
+    fun getMessageCount(folderId: Long): Int
+
+    /**
      * Update a folder's name and type.
      */
     fun changeFolder(folderServerId: String, name: String, type: FolderType)
