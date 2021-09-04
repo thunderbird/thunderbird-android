@@ -1,21 +1,14 @@
 package com.fsck.k9.ui.managefolders
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.fsck.k9.Account
-import com.fsck.k9.ui.folders.FoldersLiveData
-import com.fsck.k9.ui.folders.FoldersLiveDataFactory
+import com.fsck.k9.mailstore.DisplayFolder
+import com.fsck.k9.mailstore.FolderRepository
 
-class ManageFoldersViewModel(private val foldersLiveDataFactory: FoldersLiveDataFactory) : ViewModel() {
-    private var foldersLiveData: FoldersLiveData? = null
-
-    fun getFolders(account: Account): FoldersLiveData {
-        val liveData = foldersLiveData
-        if (liveData != null && liveData.account.uuid == account.uuid) {
-            return liveData
-        }
-
-        return foldersLiveDataFactory.create(account).also {
-            foldersLiveData = it
-        }
+class ManageFoldersViewModel(private val folderRepository: FolderRepository) : ViewModel() {
+    fun getFolders(account: Account): LiveData<List<DisplayFolder>> {
+        return folderRepository.getDisplayFoldersFlow(account).asLiveData()
     }
 }

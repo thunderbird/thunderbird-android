@@ -94,6 +94,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private var folderBadgeStyle: BadgeStyle? = null
     private var openedAccountUuid: String? = null
     private var openedFolderId: Long? = null
+    private var latestFolderList: List<DisplayFolder>? = null
 
     val layout: DrawerLayout
         get() = drawer
@@ -292,7 +293,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         if (oldSelectedBackgroundColor != selectedBackgroundColor) {
             // Recreate list of folders with updated account color
-            setUserFolders(foldersViewModel.getFolderListLiveData().value)
+            setUserFolders(latestFolderList)
         }
     }
 
@@ -352,6 +353,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun setUserFolders(folders: List<DisplayFolder>?) {
+        this.latestFolderList = folders
         clearUserFolders()
 
         var openedFolderDrawerId: Long = -1
