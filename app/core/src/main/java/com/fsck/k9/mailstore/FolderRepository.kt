@@ -5,6 +5,7 @@ import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.DI
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
+import com.fsck.k9.helper.sendBlockingSilently
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,7 +20,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -64,9 +64,7 @@ class FolderRepository(
             val listener = object : SimpleMessagingListener() {
                 override fun folderStatusChanged(statusChangedAccount: Account, folderId: Long) {
                     if (statusChangedAccount.uuid == account.uuid) {
-                        launch {
-                            send(getDisplayFolders(account, displayMode))
-                        }
+                        sendBlockingSilently(getDisplayFolders(account, displayMode))
                     }
                 }
             }
@@ -168,9 +166,7 @@ class FolderRepository(
             send(getPushFolders(account, folderMode))
 
             val listener = FolderSettingsChangedListener {
-                launch {
-                    send(getPushFolders(account, folderMode))
-                }
+                sendBlockingSilently(getPushFolders(account, folderMode))
             }
             messageStore.addFolderSettingsChangedListener(listener)
 

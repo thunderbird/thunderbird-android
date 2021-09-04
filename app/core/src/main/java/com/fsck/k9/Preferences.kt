@@ -3,6 +3,7 @@ package com.fsck.k9
 import android.content.Context
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
+import com.fsck.k9.helper.sendBlockingSilently
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.preferences.AccountManager
@@ -18,7 +19,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
@@ -126,11 +126,7 @@ class Preferences internal constructor(
             val listener = AccountsChangeListener {
                 val account = getAccount(accountUuid)
                 if (account != null) {
-                    try {
-                        sendBlocking(account)
-                    } catch (e: Exception) {
-                        Timber.w(e, "Error while trying to send to channel")
-                    }
+                    sendBlockingSilently(account)
                 } else {
                     channel.close()
                 }

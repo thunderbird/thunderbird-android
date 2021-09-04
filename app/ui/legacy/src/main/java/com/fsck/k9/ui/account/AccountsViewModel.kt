@@ -12,6 +12,7 @@ import com.fsck.k9.AccountsChangeListener
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageCounts
 import com.fsck.k9.controller.MessageCountsProvider
+import com.fsck.k9.helper.sendBlockingSilently
 import com.fsck.k9.provider.EmailProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,9 +35,7 @@ class AccountsViewModel(
             send(preferences.accounts)
 
             val accountsChangeListener = AccountsChangeListener {
-                launch {
-                    send(preferences.accounts)
-                }
+                sendBlockingSilently(preferences.accounts)
             }
             preferences.addOnAccountsChangeListener(accountsChangeListener)
 
