@@ -4,7 +4,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val accountUiModule = module {
-    viewModel { AccountsViewModel(preferences = get(), messageCountsProvider = get(), contentResolver = get()) }
+    viewModel { AccountsViewModel(accountManager = get(), messageCountsProvider = get(), contentResolver = get()) }
     factory { AccountImageLoader(accountFallbackImageProvider = get()) }
     factory { AccountFallbackImageProvider(context = get()) }
     factory { AccountImageModelLoaderFactory(contactPhotoLoader = get(), accountFallbackImageProvider = get()) }

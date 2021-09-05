@@ -8,11 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.fsck.k9.Account
-import com.fsck.k9.AccountsChangeListener
-import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageCounts
 import com.fsck.k9.controller.MessageCountsProvider
-import com.fsck.k9.helper.sendBlockingSilently
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.provider.EmailProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,25 +24,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AccountsViewModel(
-    private val preferences: Preferences,
+    accountManager: AccountManager,
     private val messageCountsProvider: MessageCountsProvider,
     private val contentResolver: ContentResolver
 ) : ViewModel() {
-    private val accountsFlow: Flow<List<Account>> =
-        callbackFlow {
-            send(preferences.accounts)
-
-            val accountsChangeListener = AccountsChangeListener {
-                sendBlockingSilently(preferences.accounts)
-            }
-            preferences.addOnAccountsChangeListener(accountsChangeListener)
-
-            awaitClose {
-                preferences.removeOnAccountsChangeListener(accountsChangeListener)
-            }
-        }.flowOn(Dispatchers.IO)
-
-    private val displayAccountFlow: Flow<List<DisplayAccount>> = accountsFlow
+    private val displayAccountFlow: Flow<List<DisplayAccount>> = accountManager.getAccountsFlow()
         .flatMapLatest { accounts ->
             val messageCountsFlows: List<Flow<MessageCounts>> = accounts.map { account ->
                 getMessageCountsFlow(account)

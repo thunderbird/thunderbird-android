@@ -140,6 +140,23 @@ class Preferences internal constructor(
             .flowOn(backgroundDispatcher)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getAccountsFlow(): Flow<List<Account>> {
+        return callbackFlow {
+            send(accounts)
+
+            val listener = AccountsChangeListener {
+                sendBlockingSilently(accounts)
+            }
+            addOnAccountsChangeListener(listener)
+
+            awaitClose {
+                removeOnAccountsChangeListener(listener)
+            }
+        }.buffer(capacity = Channel.CONFLATED)
+            .flowOn(backgroundDispatcher)
+    }
+
     fun newAccount(): Account {
         val accountUuid = UUID.randomUUID().toString()
         val account = Account(accountUuid)
