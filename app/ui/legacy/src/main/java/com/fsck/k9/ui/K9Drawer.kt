@@ -168,7 +168,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             val account = (profile as ProfileDrawerItem).tag as Account
             openedAccountUuid = account.uuid
             val eventHandled = !parent.openRealAccount(account)
-            updateUserAccountsAndFolders(account)
             updateButtonBarVisibility(false)
 
             eventHandled
