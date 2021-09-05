@@ -58,6 +58,7 @@ import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageViewFragment
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
+import com.fsck.k9.ui.messageview.SwipeCatcher
 import com.fsck.k9.ui.onboarding.OnboardingActivity
 import com.fsck.k9.ui.permissions.K9PermissionUiHelper
 import com.fsck.k9.ui.permissions.Permission
@@ -66,6 +67,9 @@ import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.materialdrawer.util.getOptimalDrawerWidth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
@@ -130,6 +134,18 @@ open class MessageList :
     private var messageListWasDisplayed = false
     private var viewSwitcher: ViewSwitcher? = null
     private lateinit var recentChangesSnackbar: Snackbar
+
+    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+    private val onSwipe =
+        SwipeCatcher { swipeToLeft ->
+            coroutineScope.launch {
+                if (swipeToLeft) {
+                    showNextMessage()
+                } else {
+                    showPreviousMessage()
+                }
+            }
+        }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -1236,6 +1252,7 @@ open class MessageList :
             }
 
             val fragment = MessageViewFragment.newInstance(messageReference)
+            fragment.setSwipeCatcher(onSwipe)
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
             fragmentTransaction.commit()

@@ -116,6 +116,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private AttachmentViewInfo currentAttachmentViewInfo;
 
+    private SwipeCatcher swipeCatcher;
+
+    public void setSwipeCatcher(SwipeCatcher catcher) {
+        swipeCatcher = catcher;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -173,6 +179,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         View view = layoutInflater.inflate(R.layout.message, container, false);
 
         mMessageView = view.findViewById(R.id.message_view);
+        mMessageView.setSwipeCatcher(swipeCatcher);
         mMessageView.setAttachmentCallback(this);
         mMessageView.setMessageCryptoPresenter(messageCryptoPresenter);
 
@@ -749,9 +756,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public boolean isInitialized() {
-        return mInitialized ;
+        return mInitialized;
     }
-
 
     private MessageLoaderCallbacks messageLoaderCallbacks = new MessageLoaderCallbacks() {
         @Override

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -57,6 +58,11 @@ public class MessageTopView extends LinearLayout {
 
     private MessageCryptoPresenter messageCryptoPresenter;
 
+    private static final int SWIPE_THRESHOLD = 5;
+    private SwipeCatcher swipeCatcher;
+    private boolean swipeCatching = false;
+    private float swipeOriginX = 0;
+    private float swipeOriginY = 0;
 
     public MessageTopView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -385,5 +391,54 @@ public class MessageTopView extends LinearLayout {
             super.writeToParcel(out, flags);
             out.writeInt((this.showPicturesButtonClicked) ? 1 : 0);
         }
+    }
+
+    public void setSwipeCatcher(SwipeCatcher catcher) {
+        swipeCatcher = catcher;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (swipeCatching) {
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_UP: {
+                    boolean swipeToLeft = (event.getX() - swipeOriginX) < 0;
+                    swipeCatcher.onSwipe(swipeToLeft);
+                    swipeCatching = false;
+                    return true;
+                }
+                case MotionEvent.ACTION_CANCEL: {
+                    swipeCatching = false;
+                    return true;
+                }
+            }
+        }
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        if (swipeCatcher != null) {
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN: {
+                    swipeCatching = false;
+                    swipeOriginX = event.getX();
+                    swipeOriginY = event.getY();
+                    break;
+                }
+                case MotionEvent.ACTION_MOVE: {
+                    if (swipeCatching) {
+                        return true;
+                    }
+                    float swipeLengthX = Math.abs(event.getX() - swipeOriginX);
+                    float swipeLengthY = Math.abs(event.getY() - swipeOriginY);
+                    if ((swipeLengthX > swipeLengthY) && (swipeLengthX > SWIPE_THRESHOLD)) {
+                        swipeCatching = true;
+                        return true;
+                    }
+                }
+            }
+        }
+        return super.onInterceptTouchEvent(event);
     }
 }
