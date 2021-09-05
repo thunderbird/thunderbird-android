@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AttachmentView" parent="">
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="AttachmentCard" parent="">
+        <item name="android:layout_width">300dp</item>
+    </style>
+
+</resources>
+

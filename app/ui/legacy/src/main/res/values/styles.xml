@@ -99,5 +99,13 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="AttachmentView" parent="">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="AttachmentCard" parent="">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
 </resources>
 
