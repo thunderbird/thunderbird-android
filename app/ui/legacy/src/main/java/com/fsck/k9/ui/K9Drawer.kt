@@ -55,7 +55,8 @@ import com.mikepenz.materialdrawer.util.getDrawerItem
 import com.mikepenz.materialdrawer.util.removeAllItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
@@ -97,6 +98,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private var unifiedInboxSelected: Boolean = false
     private var unifiedInboxDrawerItem: PrimaryDrawerItem? = null
     private val unifiedInboxMessageCounts = MutableLiveData<MessageCounts>()
+    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
     private val textColor: Int
     private var selectedTextColor: ColorStateList? = null
@@ -171,7 +173,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private fun unifiedInboxRefresh() {
         if (K9.isShowUnifiedInbox) {
-            GlobalScope.launch {
+            coroutineScope.launch {
                 unifiedInboxRefreshInner()
             }
         }
