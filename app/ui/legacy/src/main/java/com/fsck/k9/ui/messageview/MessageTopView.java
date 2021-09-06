@@ -11,10 +11,12 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.util.AttributeSet;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -58,11 +60,15 @@ public class MessageTopView extends LinearLayout {
 
     private MessageCryptoPresenter messageCryptoPresenter;
 
-    private static final int SWIPE_THRESHOLD = 5;
+    private static final int SWIPE_START_THRESHOLD = 10;
+    private static final int SWIPE_ANIMATION_DELTA = 500;
+    private static final int SWIPE_ANIMATION_DURATION = 500;
     private SwipeCatcher swipeCatcher;
-    private boolean swipeCatching = false;
-    private float swipeOriginX = 0;
-    private float swipeOriginY = 0;
+    private boolean swipeCatching;
+    private boolean swipeFeedbackVisible;
+    private float swipeOriginX;
+    private float swipeOriginY;
+    private boolean swipeToLeft;
 
     public MessageTopView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -397,20 +403,55 @@ public class MessageTopView extends LinearLayout {
         swipeCatcher = catcher;
     }
 
+    private void showSwipeFeedback() {
+        if (!swipeFeedbackVisible) {
+            float deltaX = swipeToLeft ? -SWIPE_ANIMATION_DELTA : SWIPE_ANIMATION_DELTA;
+            TranslateAnimation swipeAnimation = new TranslateAnimation(0, deltaX, 0, 0);
+            swipeAnimation.setDuration(SWIPE_ANIMATION_DURATION);
+            swipeAnimation.setFillAfter(true);
+            startAnimation(swipeAnimation);
+            performHapticFeedback(HapticFeedbackConstants.GESTURE_START);
+            swipeFeedbackVisible = true;
+        }
+    }
+
+    private void hideSwipeFeedback() {
+        if (swipeFeedbackVisible) {
+            TranslateAnimation cancelAnimation = new TranslateAnimation(0, 0, 0, 0);
+            cancelAnimation.setDuration(SWIPE_ANIMATION_DURATION);
+            cancelAnimation.setFillAfter(true);
+            startAnimation(cancelAnimation);
+            performHapticFeedback(HapticFeedbackConstants.GESTURE_END);
+            swipeFeedbackVisible = false;
+        }
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (swipeCatching) {
-            switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_UP: {
-                    boolean swipeToLeft = (event.getX() - swipeOriginX) < 0;
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_MOVE: {
+                boolean thisSwipeToLeft = (event.getX() < swipeOriginX);
+                if (thisSwipeToLeft != swipeToLeft) {
+                    // swipe direction was reversed
+                    hideSwipeFeedback();
+                    swipeCatching = false;
+                    swipeToLeft = thisSwipeToLeft;
+                }
+                if (swipeCatching) {
+                    showSwipeFeedback();
+                }
+                return true;
+            }
+            case MotionEvent.ACTION_UP: {
+                if (swipeCatching && (swipeCatcher != null)) {
                     swipeCatcher.onSwipe(swipeToLeft);
-                    swipeCatching = false;
-                    return true;
                 }
-                case MotionEvent.ACTION_CANCEL: {
-                    swipeCatching = false;
-                    return true;
-                }
+                // fall through ...
+            }
+            case MotionEvent.ACTION_CANCEL: {
+                hideSwipeFeedback();
+                swipeCatching = false;
+                return true;
             }
         }
         return super.onTouchEvent(event);
@@ -422,6 +463,7 @@ public class MessageTopView extends LinearLayout {
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN: {
                     swipeCatching = false;
+                    swipeFeedbackVisible = false;
                     swipeOriginX = event.getX();
                     swipeOriginY = event.getY();
                     break;
@@ -430,10 +472,11 @@ public class MessageTopView extends LinearLayout {
                     if (swipeCatching) {
                         return true;
                     }
-                    float swipeLengthX = Math.abs(event.getX() - swipeOriginX);
-                    float swipeLengthY = Math.abs(event.getY() - swipeOriginY);
-                    if ((swipeLengthX > swipeLengthY) && (swipeLengthX > SWIPE_THRESHOLD)) {
+                    float swipeWidth = Math.abs(event.getX() - swipeOriginX);
+                    float swipeHeight = Math.abs(event.getY() - swipeOriginY);
+                    if ((swipeWidth > swipeHeight) && (swipeWidth > SWIPE_START_THRESHOLD)) {
                         swipeCatching = true;
+                        swipeToLeft = event.getX() < swipeOriginX;
                         return true;
                     }
                 }
