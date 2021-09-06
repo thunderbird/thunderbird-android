@@ -95,6 +95,20 @@ public class MessageHelperTest extends RobolectricTest {
     }
 
     @Test
+    public void toFriendly_atPrecededByOpeningParenthesisShouldNotTriggerSpoofPrevention() {
+        Address address = new Address("gitlab@gitlab.example", "username (@username)");
+        CharSequence friendly = MessageHelper.toFriendly(address, contacts);
+        assertEquals("username (@username)", friendly.toString());
+    }
+
+    @Test
+    public void toFriendly_nameStartingWithAtShouldNotTriggerSpoofPrevention() {
+        Address address = new Address("address@domain.example", "@username");
+        CharSequence friendly = MessageHelper.toFriendly(address, contacts);
+        assertEquals("@username", friendly.toString());
+    }
+
+    @Test
     public void toFriendly_spoofPreventionDoesntOverrideContact() {
         Address address = new Address("test@testor.com", "Tim Testor");
         CharSequence friendly = MessageHelper.toFriendly(address, contactsWithFakeSpoofContact,
