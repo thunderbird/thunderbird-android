@@ -87,7 +87,8 @@ open class MessageList :
     MessageViewFragmentListener,
     FragmentManager.OnBackStackChangedListener,
     OnSwitchCompleteListener,
-    PermissionUiHelper {
+    PermissionUiHelper,
+    SwipeCatcher {
 
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
 
@@ -136,16 +137,6 @@ open class MessageList :
     private lateinit var recentChangesSnackbar: Snackbar
 
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
-    private val onSwipe =
-        SwipeCatcher { swipeToLeft ->
-            coroutineScope.launch {
-                if (swipeToLeft) {
-                    showNextMessage()
-                } else {
-                    showPreviousMessage()
-                }
-            }
-        }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -1252,7 +1243,7 @@ open class MessageList :
             }
 
             val fragment = MessageViewFragment.newInstance(messageReference)
-            fragment.setSwipeCatcher(onSwipe)
+            fragment.setSwipeCatcher(this)
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
             fragmentTransaction.commit()
@@ -1759,6 +1750,24 @@ open class MessageList :
             }
 
             actionDisplaySearch(context, search, noThreading = false, newTask = false)
+        }
+    }
+
+    override fun doSwipe(swipeToLeft: Boolean) {
+        coroutineScope.launch {
+            if (swipeToLeft) {
+                showNextMessage()
+            } else {
+                showPreviousMessage()
+            }
+        }
+    }
+
+    override fun canSwipe(swipeToLeft: Boolean): Boolean {
+        if (swipeToLeft) {
+            return menu?.findItem(R.id.next_message)?.isEnabled ?: false
+        } else {
+            return menu?.findItem(R.id.previous_message)?.isEnabled ?: false
         }
     }
 }

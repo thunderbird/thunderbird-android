@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -33,6 +34,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener;
 import com.fsck.k9.view.MessageHeader;
+import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.ThemeUtils;
 import com.fsck.k9.view.ToolableViewAnimator;
 import org.openintents.openpgp.OpenPgpError;
@@ -43,7 +45,6 @@ public class MessageTopView extends LinearLayout {
     public static final int PROGRESS_MAX = 1000;
     public static final int PROGRESS_MAX_WITH_MARGIN = 950;
     public static final int PROGRESS_STEP_DURATION = 180;
-
 
     private ToolableViewAnimator viewAnimator;
     private ProgressBar progressBar;
@@ -60,15 +61,18 @@ public class MessageTopView extends LinearLayout {
 
     private MessageCryptoPresenter messageCryptoPresenter;
 
-    private static final int SWIPE_START_THRESHOLD = 10;
-    private static final int SWIPE_ANIMATION_DELTA = 500;
-    private static final int SWIPE_ANIMATION_DURATION = 500;
+    private static final float SWIPE_START_THRESHOLD = 10;
+    private static final float SWIPE_EXECUTE_THRESHOLD = 500;
+    private static final float SWIPE_TRANSLATE_DELAY_FACTOR = 1.0f;
+    private static final float SWIPE_TRANSLATE_ALPHA = 0.5f;
+    private static final long SWIPE_FADEOUT_DURATION = 500;
     private SwipeCatcher swipeCatcher;
     private boolean swipeCatching;
-    private boolean swipeFeedbackVisible;
+    private boolean swipeToLeft;
     private float swipeOriginX;
     private float swipeOriginY;
-    private boolean swipeToLeft;
+    private float swipePriorDeltaX;
+    private MessageWebView swipeWebView;
 
     public MessageTopView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -403,54 +407,74 @@ public class MessageTopView extends LinearLayout {
         swipeCatcher = catcher;
     }
 
-    private void showSwipeFeedback() {
-        if (!swipeFeedbackVisible) {
-            float deltaX = swipeToLeft ? -SWIPE_ANIMATION_DELTA : SWIPE_ANIMATION_DELTA;
-            TranslateAnimation swipeAnimation = new TranslateAnimation(0, deltaX, 0, 0);
-            swipeAnimation.setDuration(SWIPE_ANIMATION_DURATION);
-            swipeAnimation.setFillAfter(true);
-            startAnimation(swipeAnimation);
-            performHapticFeedback(HapticFeedbackConstants.GESTURE_START);
-            swipeFeedbackVisible = true;
+    private MessageWebView swipeGetWebView() {
+        if (swipeWebView == null) {
+            swipeWebView = findViewById(R.id.message_content);
         }
+        return swipeWebView;
     }
 
-    private void hideSwipeFeedback() {
-        if (swipeFeedbackVisible) {
-            TranslateAnimation cancelAnimation = new TranslateAnimation(0, 0, 0, 0);
-            cancelAnimation.setDuration(SWIPE_ANIMATION_DURATION);
-            cancelAnimation.setFillAfter(true);
-            startAnimation(cancelAnimation);
-            performHapticFeedback(HapticFeedbackConstants.GESTURE_END);
-            swipeFeedbackVisible = false;
-        }
+    private void swipeAnimateTo(float newDeltaX) {
+        setAlpha(newDeltaX != 0 ? SWIPE_TRANSLATE_ALPHA : 1f);
+        TranslateAnimation animation = new TranslateAnimation(swipePriorDeltaX, newDeltaX, 0, 0);
+        animation.setDuration((long) (Math.abs(newDeltaX - swipePriorDeltaX) * SWIPE_TRANSLATE_DELAY_FACTOR));
+        animation.setFillAfter(true);
+        startAnimation(animation);
+        swipePriorDeltaX = newDeltaX;
+    }
+
+    private boolean swipeWebViewIsZoomed() {
+        return swipeGetWebView().isZoomed();
+    }
+
+    private boolean swipeInsideWebView(MotionEvent event) {
+        Rect frame = new Rect();
+        int[] origin = new int[2];
+        swipeGetWebView().getHitRect(frame);
+        swipeGetWebView().getLocationOnScreen(origin);
+        frame.offset(origin[0], origin[1]);
+        float rawX = event.getRawX();
+        float rawY = event.getRawY();
+        return ((rawX > frame.left) && (rawX < frame.right) && (rawY > frame.top) && (rawY < frame.bottom));
+    }
+
+    private boolean swipeExceedsThreshold(MotionEvent event) {
+        float diffX = Math.abs(event.getX() - swipeOriginX);
+        float diffY = Math.abs(event.getY() - swipeOriginY);
+        return (diffX > diffY) && (diffX > SWIPE_START_THRESHOLD);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_MOVE: {
-                boolean thisSwipeToLeft = (event.getX() < swipeOriginX);
-                if (thisSwipeToLeft != swipeToLeft) {
-                    // swipe direction was reversed
-                    hideSwipeFeedback();
-                    swipeCatching = false;
-                    swipeToLeft = thisSwipeToLeft;
-                }
                 if (swipeCatching) {
-                    showSwipeFeedback();
+                    float newDeltaX = event.getX() - swipeOriginX;
+                    boolean thisSwipeToLeft = newDeltaX < 0;
+                    if (thisSwipeToLeft == swipeToLeft) {
+                        swipeAnimateTo(newDeltaX);
+                        if (Math.abs(newDeltaX) > SWIPE_EXECUTE_THRESHOLD) {
+                            if (swipeCatcher != null && swipeCatcher.canSwipe(swipeToLeft)) {
+                                newDeltaX = getWidth() * (swipeToLeft ? -1 : 1);
+                                swipeAnimateTo(newDeltaX);
+                                performHapticFeedback(HapticFeedbackConstants.GESTURE_END);
+                                swipeCatcher.doSwipe(swipeToLeft);
+                            }
+                            swipeCatching = false;
+                        }
+                    } else {
+                        swipeAnimateTo(0);
+                        swipeCatching = false;
+                    }
                 }
                 return true;
             }
-            case MotionEvent.ACTION_UP: {
-                if (swipeCatching && (swipeCatcher != null)) {
-                    swipeCatcher.onSwipe(swipeToLeft);
-                }
-                // fall through ...
-            }
+            case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL: {
-                hideSwipeFeedback();
-                swipeCatching = false;
+                if (swipeCatching) {
+                    swipeAnimateTo(0);
+                    swipeCatching = false;
+                }
                 return true;
             }
         }
@@ -463,20 +487,29 @@ public class MessageTopView extends LinearLayout {
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN: {
                     swipeCatching = false;
-                    swipeFeedbackVisible = false;
+                    swipePriorDeltaX = 0;
                     swipeOriginX = event.getX();
                     swipeOriginY = event.getY();
                     break;
                 }
                 case MotionEvent.ACTION_MOVE: {
+                    if (!swipeCatching) {
+                        if (swipeExceedsThreshold(event) && (!swipeInsideWebView(event) || !swipeWebViewIsZoomed())) {
+                            swipeToLeft = event.getX() < swipeOriginX;
+                            if (swipeCatcher.canSwipe(swipeToLeft)) {
+                                swipeCatching = true;
+                                performHapticFeedback(HapticFeedbackConstants.GESTURE_START);
+                            }
+                        }
+                    }
                     if (swipeCatching) {
                         return true;
                     }
-                    float swipeWidth = Math.abs(event.getX() - swipeOriginX);
-                    float swipeHeight = Math.abs(event.getY() - swipeOriginY);
-                    if ((swipeWidth > swipeHeight) && (swipeWidth > SWIPE_START_THRESHOLD)) {
-                        swipeCatching = true;
-                        swipeToLeft = event.getX() < swipeOriginX;
+                    break;
+                }
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL: {
+                    if (swipeCatching) {
                         return true;
                     }
                 }

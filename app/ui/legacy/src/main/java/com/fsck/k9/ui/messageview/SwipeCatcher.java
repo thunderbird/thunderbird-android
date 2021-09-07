@@ -6,5 +6,6 @@ package com.fsck.k9.ui.messageview;
  * The swipeToLeft parameter indicates if the swipe is towards the left or the right.
  */
 public interface SwipeCatcher {
-    void onSwipe(boolean swipeToLeft);
+    void doSwipe(boolean swipeToLeft);
+    boolean canSwipe(boolean swipeToLeft);
 }
