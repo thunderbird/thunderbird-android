@@ -59,6 +59,7 @@ import com.fsck.k9.ui.messageview.MessageViewFragment
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
 import com.fsck.k9.ui.messageview.SwipeCatcher
+import com.fsck.k9.ui.messageview.SwipeMode
 import com.fsck.k9.ui.onboarding.OnboardingActivity
 import com.fsck.k9.ui.permissions.K9PermissionUiHelper
 import com.fsck.k9.ui.permissions.Permission
@@ -1753,21 +1754,20 @@ open class MessageList :
         }
     }
 
-    override fun doSwipe(swipeToLeft: Boolean) {
+    override fun doSwipe(mode: SwipeMode) {
         coroutineScope.launch {
-            if (swipeToLeft) {
-                showNextMessage()
-            } else {
-                showPreviousMessage()
+            when (mode) {
+                SwipeMode.SWIPING_LEFT -> showNextMessage()
+                SwipeMode.SWIPING_RIGHT -> showPreviousMessage()
             }
         }
     }
 
-    override fun canSwipe(swipeToLeft: Boolean): Boolean {
-        if (swipeToLeft) {
-            return menu?.findItem(R.id.next_message)?.isEnabled ?: false
-        } else {
-            return menu?.findItem(R.id.previous_message)?.isEnabled ?: false
+    override fun canSwipe(mode: SwipeMode): Boolean {
+        return when (mode) {
+            SwipeMode.SWIPING_LEFT -> menu?.findItem(R.id.next_message)?.isEnabled ?: false
+            SwipeMode.SWIPING_RIGHT -> menu?.findItem(R.id.previous_message)?.isEnabled ?: false
+            else -> false
         }
     }
 }

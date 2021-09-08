@@ -20,12 +20,6 @@ import com.fsck.k9.mailstore.AttachmentResolver;
 
 public class MessageWebView extends WebView {
 
-    private final float initialScale = getScale();
-
-    public boolean isZoomed() {
-        return getScale() > initialScale;
-    }
-
     public MessageWebView(Context context) {
         super(context);
     }
