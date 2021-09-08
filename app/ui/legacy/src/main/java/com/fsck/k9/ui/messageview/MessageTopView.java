@@ -502,7 +502,8 @@ public class MessageTopView extends LinearLayout {
                 case MotionEvent.ACTION_MOVE: {
                     if (swipeMode == SwipeMode.DISABLED) {
                         SwipeMode newMode = swipeGetSwipeMode(event);
-                        if ((newMode != SwipeMode.DISABLED) && swipeCatcher.canSwipe(newMode) && (!swipeInsideWebView() || !swipeWebViewCanScroll(newMode))) {
+                        if ((newMode != SwipeMode.DISABLED) && swipeCatcher.canSwipe(newMode)
+                                && (!swipeInsideWebView() || !swipeWebViewCanScroll(newMode))) {
                             swipeMode = newMode;
                             performHapticFeedback(HapticFeedbackConstants.GESTURE_START);
                         }
