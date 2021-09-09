@@ -46,7 +46,7 @@
         <item name="iconActionFlag">@drawable/ic_star</item>
         <item name="iconActionUnflag">@drawable/ic_star_border</item>
         <item name="iconActionMarkAsRead">@drawable/ic_opened_envelope</item>
-        <item name="iconActionMarkAsUnread">@drawable/ic_envelope</item>
+        <item name="iconActionMarkAsUnread">@drawable/ic_mark_new</item>
         <item name="iconActionRemoteSearch">@drawable/ic_magnify_cloud</item>
         <item name="iconActionAdd">@drawable/ic_plus</item>
         <item name="iconActionImportExport">@drawable/ic_arrow_up_down</item>
@@ -165,7 +165,7 @@
         <item name="iconActionFlag">@drawable/ic_star</item>
         <item name="iconActionUnflag">@drawable/ic_star_border</item>
         <item name="iconActionMarkAsRead">@drawable/ic_opened_envelope</item>
-        <item name="iconActionMarkAsUnread">@drawable/ic_envelope</item>
+        <item name="iconActionMarkAsUnread">@drawable/ic_mark_new</item>
         <item name="iconActionRemoteSearch">@drawable/ic_magnify_cloud</item>
         <item name="iconActionAdd">@drawable/ic_plus</item>
         <item name="iconActionImportExport">@drawable/ic_arrow_up_down</item>
