@@ -303,6 +303,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_basics_email_hint">Адреса електронної пошти</string>
   <string name="account_setup_basics_password_hint">Пароль</string>
   <string name="account_setup_basics_show_password">Показати пароль</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ручне налаштування</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Отримання інформації про обліковий запис\u2026</string>

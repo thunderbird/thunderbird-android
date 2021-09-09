@@ -109,6 +109,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="discard_action">Elvetés</string>
   <string name="save_draft_action">Mentés piszkozatként</string>
   <string name="check_mail_action">Levél ellenőrzése</string>
+  <string name="check_all_mail_action">Minden postafiók összehangolása</string>
   <string name="send_messages_action">Üzenetek küldése</string>
   <string name="refresh_folders_action">Mappalista frissítése</string>
   <string name="filter_folders_action">Mappa keresése</string>
@@ -296,6 +297,10 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_basics_email_hint">E-mail-cím</string>
   <string name="account_setup_basics_password_hint">Jelszó</string>
   <string name="account_setup_basics_show_password">Jelszó megjelenítése</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Ha itt szeretné megtekinteni jelszavát, engedélyezze a képernyőzárat ezen az eszközön.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Személyazonosság ellenőrzése</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Feloldás a jelszó megtekintéséhez</string>
   <string name="account_setup_basics_manual_setup_action">Kézi beállítás</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Fiókinformációk beolvasása\u2026</string>
@@ -431,10 +436,15 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_settings_notify_self_summary">Értesítés megjelenítése az elküldött üzeneteknél</string>
   <string name="account_notify_contacts_mail_only_label">Csak partnerek</string>
   <string name="account_notify_contacts_mail_only_summary">Értesítések megjelenítése csak az ismert partnerektől érkező üzeneteknél</string>
+  <string name="account_settings_ignore_chat_messages_label">Csevegőüzenetek kihagyása</string>
+  <string name="account_settings_ignore_chat_messages_summary">Ne jelenítsen meg értesítéseket az e -mail csevegéshez tartozó üzenetekről</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Megjelölés olvasottként megnyitáskor</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Üzenet megjelölése olvasottként megtekintésre megnyitáskor</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Megjelölés olvasottként törléskor</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Üzenet megjelölése olvasottként törléskor</string>
+  <string name="account_settings_notification_channels_label">Értesítési kategóriák</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Értesítési beállítások az új üzenetekhez</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Hiba- és állapotértesítések beállítása</string>
   <string name="account_settings_show_pictures_label">Képek megjelenítése mindig</string>
   <string name="account_settings_show_pictures_never">Nem</string>
   <string name="account_settings_show_pictures_only_from_contacts">Partnerektől</string>
@@ -687,6 +697,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="volume_navigation_message">Üzenetnézetekben</string>
   <string name="volume_navigation_list">Listanézetekben</string>
   <string name="show_unified_inbox_title">Egységes beérkezett üzenetek megjelenítése</string>
+  <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">– Olvasatlan</string>
   <string name="search_all_messages_title">Összes üzenet</string>

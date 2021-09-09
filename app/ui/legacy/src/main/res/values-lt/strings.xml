@@ -190,6 +190,7 @@
   <string name="account_setup_basics_title">Nustatyti naują paskyrą</string>
   <string name="account_setup_basics_email_hint">El. pašto adresas</string>
   <string name="account_setup_basics_password_hint">Slaptažodis</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Rankinis nustatymas</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Gaunama paskyros informacija…</string>

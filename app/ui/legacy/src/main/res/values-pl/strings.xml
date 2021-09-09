@@ -111,6 +111,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="discard_action">Usuń</string>
   <string name="save_draft_action">Zapisz jako szkic</string>
   <string name="check_mail_action">Sprawdź pocztę</string>
+  <string name="check_all_mail_action">Sprawdź pocztę na wszystkich kontach</string>
   <string name="send_messages_action">Wyślij wiadomości</string>
   <string name="refresh_folders_action">Odśwież listę</string>
   <string name="filter_folders_action">Wyszukaj folder</string>
@@ -302,6 +303,10 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_basics_email_hint">Adres email</string>
   <string name="account_setup_basics_password_hint">Hasło</string>
   <string name="account_setup_basics_show_password">Pokaż hasło</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Aby zobaczyć tutaj swoje hasło, ustaw blokadę ekranu na tym urządzeniu.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Zweryfikuj swoją tożsamość</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Odblokuj, aby zobaczyć swoje hasło</string>
   <string name="account_setup_basics_manual_setup_action">Ustaw ręcznie</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Pobieram informacje…</string>
@@ -437,10 +442,14 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_notify_self_summary">Pokaż powiadomienie dla wiadomości wysłanych przeze mnie</string>
   <string name="account_notify_contacts_mail_only_label">Tylko kontakty</string>
   <string name="account_notify_contacts_mail_only_summary">Pokaż powiadomienia tylko dla wiadomości od znanych kontaktów</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignoruj wiadomości z czatu</string>
+  <string name="account_settings_ignore_chat_messages_summary">Nie pokazuj powiadomień dla wiadomości należących do czatu e-mail</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Oznacz jako przeczytane</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Oznacz wiadomość jako przeczytaną przy otwieraniu</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Oznacz jako przeczytane po usunięciu</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Oznacz wiadomość jako przeczytaną przy usuwaniu</string>
+  <string name="account_settings_notification_channels_label">Kategorie powiadomień</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Konfiguruj powiadomienia dla nowych wiadomości</string>
   <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazki</string>
   <string name="account_settings_show_pictures_never">Nie</string>
   <string name="account_settings_show_pictures_only_from_contacts">Od kontaktów</string>
@@ -693,6 +702,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="volume_navigation_message">Wygląd wiadomości</string>
   <string name="volume_navigation_list">Różne widoki list</string>
   <string name="show_unified_inbox_title">Pokaż zintegrowaną skrzynkę odbiorczą</string>
+  <string name="show_starred_count_title">Pokaż liczbę oznaczonych gwiazdką</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Nieprzeczytane</string>
   <string name="search_all_messages_title">Wszystkie wiadomości</string>

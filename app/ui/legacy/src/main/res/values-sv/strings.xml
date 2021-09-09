@@ -105,11 +105,12 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="move_action">Flytta</string>
   <string name="move_to_drafts_action">Flytta till utkast</string>
   <string name="single_message_options_action">Skicka…</string>
-  <string name="refile_action">Omarkivera…</string>
+  <string name="refile_action">Arkivera om…</string>
   <string name="done_action">Klar</string>
   <string name="discard_action">Kassera</string>
   <string name="save_draft_action">Spara som utkast</string>
   <string name="check_mail_action">Kontrollera e-post</string>
+  <string name="check_all_mail_action">Kontrollera e-post i alla konton</string>
   <string name="send_messages_action">Skicka meddelanden</string>
   <string name="refresh_folders_action">Uppdatera mapplista</string>
   <string name="filter_folders_action">Hitta mapp</string>
@@ -215,7 +216,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:</string>
   <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sender">%2$s</xliff:g> skrev: (<xliff:g id="sent_date">%1$s</xliff:g>)</string>
   <string name="message_compose_error_no_recipients">Du måste ange minst en mottagare.</string>
-  <string name="compose_error_incomplete_recipient">Mottagarfältet är inte komplett!</string>
+  <string name="compose_error_incomplete_recipient">Mottagarfältet innehåller ofullständig inmatning!</string>
   <string name="error_contact_address_not_found">Hittar ingen e-postadress för denna kontakt.</string>
   <string name="message_compose_attachments_skipped_toast">Vissa bilagor kan inte vidarebefordras eftersom de inte har hämtats.</string>
   <string name="message_compose_attachments_forward_toast">Meddelandet kan inte vidarebefordras eftersom vissa bilagor inte har hämtats.</string>
@@ -291,13 +292,17 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="quiet_time">Tyst tid</string>
   <string name="quiet_time_description">Inaktivera ringsignaler, vibration och blinkande på natten</string>
   <string name="quiet_time_notification">Stäng av aviseringar</string>
-  <string name="quiet_time_notification_description">Stäng av avisering under \"Tyst tid\"</string>
+  <string name="quiet_time_notification_description">Inaktivera aviseringar helt under tyst tid</string>
   <string name="quiet_time_starts">Tyst tid börjar</string>
   <string name="quiet_time_ends">Tyst tid slutar</string>
   <string name="account_setup_basics_title">Konfigurera ett nytt konto</string>
   <string name="account_setup_basics_email_hint">E-postadress</string>
   <string name="account_setup_basics_password_hint">Lösenord</string>
   <string name="account_setup_basics_show_password">Visa lösenord</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">För att se ditt lösenord här, aktivera skärmlåset på denna enhet.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verifiera din identitet</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Lås upp för att se ditt lösenord</string>
   <string name="account_setup_basics_manual_setup_action">Konfigurera manuellt</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Hämtar kontoinformation\u2026</string>
@@ -433,6 +438,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_notify_self_summary">Visa avisering även för e-post som jag själv skickat</string>
   <string name="account_notify_contacts_mail_only_label">Endast kontakter</string>
   <string name="account_notify_contacts_mail_only_summary">Visa aviseringar endast för meddelanden från kända kontakter</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignorera chattmeddelanden</string>
+  <string name="account_settings_ignore_chat_messages_summary">Visa inte aviseringar för meddelanden som tillhör en e-postchatt</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst vid öppning</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markera ett meddelande som läst när det visas</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Markera som läst när det tas bort</string>
@@ -692,6 +699,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="volume_navigation_message">I meddelandelistor</string>
   <string name="volume_navigation_list">I listvyer</string>
   <string name="show_unified_inbox_title">Visa samlad inkorg</string>
+  <string name="show_starred_count_title">Visa antalet stjärnmarkerade</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Olästa</string>
   <string name="search_all_messages_title">Alla meddelanden</string>
@@ -806,7 +814,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="settings_import_outgoing_server_password_hint">Utgående serverlösenord</string>
   <string name="settings_import_use_same_password_for_outgoing_server">Använd samma lösenord för utgående server</string>
   <string name="server_name_format">Servernamn: <xliff:g id="hostname">%s</xliff:g></string>
-  <string name="unread_widget_select_account">Visa antal olästa för…</string>
+  <string name="unread_widget_select_account">Visa antalet olästa för…</string>
   <string name="unread_widget_account_title">Konto</string>
   <string name="unread_widget_account_summary">Kontot för vilken olästa räkningen ska visas</string>
   <string name="unread_widget_unified_inbox_account_summary">Samlad inkorg</string>

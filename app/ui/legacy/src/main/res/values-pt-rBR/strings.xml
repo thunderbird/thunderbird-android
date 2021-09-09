@@ -110,6 +110,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Salvar como rascunho</string>
   <string name="check_mail_action">Verificar e-mail</string>
+  <string name="check_all_mail_action">Verificar mensagens em todas as contas</string>
   <string name="send_messages_action">Enviar mensagens</string>
   <string name="refresh_folders_action">Atualizar a lista de pastas</string>
   <string name="filter_folders_action">Encontrar pasta</string>
@@ -297,6 +298,10 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_basics_email_hint">Endereço de e-mail</string>
   <string name="account_setup_basics_password_hint">Senha</string>
   <string name="account_setup_basics_show_password">Exibir a senha</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Para ver a sua senha aqui, habilite o bloqueio de tela neste dispositivo.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verifique sua identidade</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloqueie para ver a sua senha</string>
   <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Recuperando informações da conta\u2026</string>
@@ -432,6 +437,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_notify_self_summary">Exibe uma notificação para mensagens enviadas</string>
   <string name="account_notify_contacts_mail_only_label">Apenas contatos</string>
   <string name="account_notify_contacts_mail_only_summary">Exibe notificações somente para mensagens de contatos conhecidos</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignorar mensagens de bate-papo</string>
+  <string name="account_settings_ignore_chat_messages_summary">Não mostra notificações para mensagens pertencentes a um bate-papo por e-mail</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar como lida ao abrir</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida quando ela for aberta para visualização</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como lida ao excluir</string>
@@ -691,6 +698,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="volume_navigation_message">Nas visualizações das mensagens</string>
   <string name="volume_navigation_list">Nas visualizações das listas</string>
   <string name="show_unified_inbox_title">Exibir a caixa de entrada unificada</string>
+  <string name="show_starred_count_title">Mostrar a contagem de sinalizadas</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Não lido</string>
   <string name="search_all_messages_title">Todas as mensagens</string>

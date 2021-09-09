@@ -16,6 +16,7 @@
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="global_settings_registered_name_color_label">Colourise contacts</string>
   <string name="global_settings_registered_name_color_changed">Colourise names in your contact list</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_check_settings_title"/>
   <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronised with the server</string>
   <string name="account_settings_color_label">Account colour</string>

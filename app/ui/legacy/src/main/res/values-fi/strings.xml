@@ -110,6 +110,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="discard_action">Hylkää</string>
   <string name="save_draft_action">Tallenna luonnoksena</string>
   <string name="check_mail_action">Tarkista sähköposti</string>
+  <string name="check_all_mail_action">Tarkista viestit kaikilta tileiltä</string>
   <string name="send_messages_action">Lähetä viestit</string>
   <string name="refresh_folders_action">Päivitä kansiot</string>
   <string name="filter_folders_action">Etsi kansio</string>
@@ -297,6 +298,10 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_basics_email_hint">Sähköpostiosoite</string>
   <string name="account_setup_basics_password_hint">Salasana</string>
   <string name="account_setup_basics_show_password">Näytä salasana</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Jotta näet salasanasi tässä, ota käyttöön laitteen näytön lukitus.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Vahvista henkilöllisyytesi</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Avaa lukitus nähdäksesi salasanasi</string>
   <string name="account_setup_basics_manual_setup_action">Määritä asetukset käsin</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Haetaan tilin tietoja\u2026</string>
@@ -432,6 +437,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_settings_notify_self_summary">Näytä ilmoitus lähettämistäni viesteistä</string>
   <string name="account_notify_contacts_mail_only_label">Vain yhteystiedot</string>
   <string name="account_notify_contacts_mail_only_summary">Näytä ilmoitukset vain niistä viesteistä, jotka tulevat tunnetuilta yhteystiedoilta</string>
+  <string name="account_settings_ignore_chat_messages_label">Älä huomioi keskusteluviestejä</string>
+  <string name="account_settings_ignore_chat_messages_summary">Älä näytä ilmoituksia viesteistä, jotka kuuluvat sähköpostikeskusteluun</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Merkitse viesti luetuksi avattaessa</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se avataan katseltavaksi</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Merkitse luetuksi poistettaessa</string>
@@ -691,6 +698,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="volume_navigation_message">Viestinäkymä</string>
   <string name="volume_navigation_list">Erilaisia listanäkymiä</string>
   <string name="show_unified_inbox_title">Näytä \"Yhdistetty saapuneet\"</string>
+  <string name="show_starred_count_title">Näytä tähdellä merkittyjen viestien määrä</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Lukemattomat</string>
   <string name="search_all_messages_title">Kaikki viestit</string>

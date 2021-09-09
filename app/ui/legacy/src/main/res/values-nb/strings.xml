@@ -283,6 +283,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_setup_basics_email_hint">E-postadresse</string>
   <string name="account_setup_basics_password_hint">Passord</string>
   <string name="account_setup_basics_show_password">Vis passord</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Manuelt oppsett</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Henter kontoinformasjon\u2026</string>

@@ -290,6 +290,7 @@
   <string name="account_setup_basics_email_hint">ഇമെയിൽ വിലാസം</string>
   <string name="account_setup_basics_password_hint">രഹസ്യവാചകം</string>
   <string name="account_setup_basics_show_password">രഹസ്യവാചകം പ്രദർശിപ്പിക്കുക</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">സ്വമേധയാലുള്ള സജ്ജീകരണം</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">അക്കൗണ്ട് വിവരങ്ങൾ വീണ്ടെടുക്കുന്നു\u2026</string>

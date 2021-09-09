@@ -21,6 +21,9 @@
   <string name="changelog_title">Izmaiņu žurnāls</string>
   <string name="changelog_loading_error">Nevarēja ielādēt izmaiņu žurnālu.</string>
   <string name="changelog_version_title">Versija %s</string>
+  <string name="changelog_recent_changes_title">Kas jauns</string>
+  <string name="changelog_show_recent_changes">Parādīt pēdējās izmaiņas kopš lietotnes atjaunošanas</string>
+  <string name="changelog_snackbar_text">Uzzināt, kas jauns šajā versijā</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Laipni lūdzam K-9 Pastā</string>
   <string name="accounts_welcome"><![CDATA[
@@ -107,6 +110,7 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="discard_action">Izmest</string>
   <string name="save_draft_action">Saglabāt kā melnrakstu</string>
   <string name="check_mail_action">Pārbaudīt pastu</string>
+  <string name="check_all_mail_action">Pārbaudīt pastu visos kontos</string>
   <string name="send_messages_action">Sūtīt vēstules</string>
   <string name="refresh_folders_action">Atsvaidzināt mapju sarakstu</string>
   <string name="filter_folders_action">Meklēt mapi</string>
@@ -297,6 +301,9 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_basics_email_hint">E-pasta adrese</string>
   <string name="account_setup_basics_password_hint">Parole</string>
   <string name="account_setup_basics_show_password">Rādīt paroli</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Lai apskatītos savu paroli, ieslēdziet ekrāna bloķēšanu savā ierīcē.</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Atbloķēt, lai varētu apskatīties savu paroli</string>
   <string name="account_setup_basics_manual_setup_action">Pašrocīga iestatīšana</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Saņem konta informāciju\u2026</string>
@@ -432,10 +439,15 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_notify_self_summary">Parādīt paziņjumu par nosūtītajām vēstulēm</string>
   <string name="account_notify_contacts_mail_only_label">Tikai kontaktus</string>
   <string name="account_notify_contacts_mail_only_summary">Parādīt paziņojumus par vēstulēm tikai no zināmiem kontaktiem</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignorēt sarakstes ziņas</string>
+  <string name="account_settings_ignore_chat_messages_summary">Nerādīt paziņojumus, kas saistīti ar šo e-pasta saraksti</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Atzīmēt kā izlasītu, kad vēstule atvērta</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Atzīmēt vēstuli kā izlasītu, kad tā atvērta aplūkošanai</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Pēc izdzēšanas atzīmēt kā izlasītu</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Pēc izdzēšanas atzīmēt vestuli kā izlasītu</string>
+  <string name="account_settings_notification_channels_label">Paziņojumu kategorijas</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Iestatīt paziņojumus jaunām ziņām</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Iestatīt kļūdu un statusa paziņojumus</string>
   <string name="account_settings_show_pictures_label">Vienmēr rādīt bildes</string>
   <string name="account_settings_show_pictures_never">Nē</string>
   <string name="account_settings_show_pictures_only_from_contacts">No kontaktiem</string>
@@ -551,6 +563,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="folder_settings_folder_push_mode_normal">Bez kategorijas</string>
   <string name="folder_settings_folder_push_mode_first_class">1. kategorija</string>
   <string name="folder_settings_folder_push_mode_second_class">2. kategorija</string>
+  <string name="folder_settings_folder_push_mode_inherited">Tāda pati, kā pārbaudes kategorija</string>
   <string name="folder_settings_folder_notify_mode_label">Mapes paziņojumu kategorija</string>
   <string name="folder_settings_folder_notify_mode_normal">Bez kategorijas</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. kategorija</string>
@@ -687,6 +700,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="volume_navigation_message">Vēstuļu skatā</string>
   <string name="volume_navigation_list">Saraksta skatā</string>
   <string name="show_unified_inbox_title">Rādīt apvienoto pastkasti</string>
+  <string name="show_starred_count_title">Parādīt atzīmēto vēstuļu skaitu</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- nelasīts</string>
   <string name="search_all_messages_title">Visas vēstules</string>
@@ -1051,6 +1065,15 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <string name="permission_contacts_rationale_message">Lai ieteiktu kontaktus un parādītu to vārdus un attēlus, lietotnei nepieciešama atļauja piekļūt Jūsu kontaktiem.</string>
   <string name="generic_loading_error">Lejupielādējot datus notika kāda kļūda</string>
   <string name="push_notification_state_initializing">Inicializē...</string>
+  <string name="push_notification_state_listening">Gaida jaunas vēstules</string>
   <string name="push_notification_state_wait_background_sync">Snaust, kamēr atļauta fona sinhronizēšana</string>
   <string name="push_notification_state_wait_network">Snaust, kamēr pieejams tīkls</string>
+  <string name="push_notification_info">Pieskarieties, lai uzzinātu vairāk.</string>
+  <string name="push_info_title">Pārbaudes informācija</string>
+  <string name="push_info_notification_explanation_text">Kad tiek izmantota pārbaude, K-9 Pasts saglabā savienojumu ar e-pasta serveri. Android pieprasa parādīt paziņojumu, kad lietotne fonā ir aktīva. %s</string>
+  <string name="push_info_configure_notification_text">Taču Android arī ļauj paslēpt paziņojumu.</string>
+  <string name="push_info_learn_more_text">Uzzināt vairāk</string>
+  <string name="push_info_configure_notification_action">Iestatīt paziņojumu</string>
+  <string name="push_info_disable_push_text">Ja nevēlaties saņemt paziņojumus par jaunām vēstulēm, atslēdziet lejupielādēšanu un izmantojiet pārbaudīšanu. Pārbaudē ik pēc noteikta laikā tiek noskaidrots, vai nav saņemts jauns pasts, un tai nav vajadzīgs paziņojums.</string>
+  <string name="push_info_disable_push_action">Atslēgt lejupielādēšanu</string>
 </resources>

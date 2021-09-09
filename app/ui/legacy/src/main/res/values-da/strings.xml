@@ -298,6 +298,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_basics_email_hint">Mail addresse</string>
   <string name="account_setup_basics_password_hint">Password</string>
   <string name="account_setup_basics_show_password">Vis kodeord</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Henter konto-information\u2026</string>

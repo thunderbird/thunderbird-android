@@ -9,7 +9,19 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, luchd-coiseachd nan con K-9.</string>
   <string name="app_copyright_fmt">Còir-lethbhreac 2008-<xliff:g>%s</xliff:g> Luchd-coiseachd nan con K-9. Cuid dhen chòir-lethbhreac 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
+  <string name="source_code">An còd tùsail</string>
   <string name="app_license">Fo cheadachas Apache, tionndadh 2.0.</string>
+  <string name="about_project_title">Pròiseact le tùs fosgailte</string>
+  <string name="about_website_title">Làrach-lìn</string>
+  <string name="user_forum_title">Fòram an luchd-chleachdaidh</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
+  <string name="about_libraries">Leabhar-lannan</string>
+  <string name="license">An ceadachas</string>
+  <string name="changelog_title">Loga nan atharraichean</string>
+  <string name="changelog_loading_error">Cha b’ urrainn dhuinn loga nan atharraichean a luchdadh.</string>
+  <string name="changelog_version_title">Tionndadh %s</string>
+  <string name="changelog_recent_changes_title">Na tha ùr</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Fàilte gu aplacaid a’ phuist</string>
   <string name="accounts_welcome">&lt;p&gt; Tha aplacaid a’ phuist ’na aplacaid shaor agus chumhachdach airson post-d air Android. &lt;/p&gt;&lt;p&gt; Tha na gleusan leasaichte aige a’ gabhail a-staigh: &lt;/p&gt; &lt;ul&gt; &lt;li&gt;Put post slighe IMAP IDLE&lt;/li&gt; &lt;li&gt;Dèanadas nas fheàrr&lt;/li&gt; &lt;li&gt;Ath-fhaidhleadh theachdaireachdan&lt;/li&gt; &lt;li&gt;Eàrr-sgrìobhaidhean puist-d&lt;/li&gt; &lt;li&gt;Bcc dhut fhèin&lt;/li&gt; &lt;li&gt;Fo-sgrìobhaidhean phasganan&lt;/li&gt; &lt;li&gt;Sioncronachadh nam pasgan air fad&lt;/li&gt; &lt;li&gt;Rèiteachadh seòladh nam freagairt&lt;/li&gt; &lt;li&gt;Ath-ghoiridean a’ mheur-chlàir&lt;/li&gt; &lt;li&gt;Taic nas fheàrr airson IMAP&lt;/li&gt; &lt;li&gt;Sàbhaladh de cheanglachain air SD&lt;/li&gt; &lt;li&gt;Falamhachadh an sgudail&lt;/li&gt; &lt;li&gt;Seòrsachadh theachdaireachdan&lt;/li&gt; &lt;li&gt;…is mòran a bharrachd&lt;/li&gt; &lt;/ul&gt; &lt;p&gt; Thoir an aire nach cuir aplacaid a’ phuist taic ri cuid mhòr de chunntasan saora Hotmail agus mar iomadh prògram puist-d eile, tachraidh rudan neònach nuair a bhruidhneas e ri Microsoft Exchange. &lt;/p&gt;&lt;p&gt; Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceistean aig &lt;a href=https://github.com/k9mail/k-9/&gt;https://github.com/k9mail/k-9/&lt;/a&gt;. &lt;/p&gt;</string>
@@ -56,21 +68,26 @@
   <string name="spam_action">Spama</string>
   <string name="forward_action">Sìn air adhart</string>
   <string name="forward_as_attachment_action">Sìn air adhart mar cheanglachan</string>
+  <string name="edit_as_new_message_action">Deasaich mar theachdaireachd ùr</string>
   <string name="move_action">Gluais</string>
+  <string name="move_to_drafts_action">Gluais gu na dreachdan</string>
   <string name="single_message_options_action">Cuir…</string>
   <string name="refile_action">Ath-fhaidhlich…</string>
   <string name="done_action">Deiseil</string>
   <string name="discard_action">Tilg air falbh</string>
   <string name="save_draft_action">Sàbhail mar dhreachd</string>
   <string name="check_mail_action">Thoir sùil airson post</string>
+  <string name="check_all_mail_action">Faigh am post aig gach cunntas</string>
   <string name="send_messages_action">Cuir na teachdaireachdan</string>
   <string name="refresh_folders_action">Ath-nuadhaich liosta nam pasgan</string>
   <string name="filter_folders_action">Lorg sa phasgan</string>
   <string name="add_account_action">Cuir cunntas ris</string>
   <string name="compose_action">Sgrìobh</string>
   <string name="search_action">Lorg sa phost</string>
+  <string name="search_everywhere_action">Lorg anns gach àite</string>
   <string name="search_results">Toraidhean an luirg</string>
   <string name="preferences_action">Roghainnean</string>
+  <string name="folders_action">Stiùirich na pasganan</string>
   <string name="account_settings_action">Roghainnean a’ chunntais</string>
   <string name="remove_account_action">Thoir an cunntas air falbh</string>
   <string name="mark_as_read_action">Comharraich gun deach a leughadh</string>
@@ -86,6 +103,7 @@
     <item quantity="few">Chaidh na seòlaidhean a chur air an stòr-bhòrd</item>
     <item quantity="other">Chaidh na seòlaidhean a chur air an stòr-bhòrd</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Chaidh lethbhreac teacsa a’ chuspair a chur air an stòr-bhòrd</string>
   <string name="message_view_theme_action_dark">Cleachd ùrlar dorcha ’na àite</string>
   <string name="message_view_theme_action_light">Cleachd ùrlar soilleir ’na àite</string>
   <string name="mark_as_unread_action">Comharraich nach deach a leughadh</string>
@@ -105,6 +123,10 @@
   <string name="status_invalid_id_error">Cha deach an teachdaireachd a lorg</string>
   <string name="status_loading_error">Mearachd a’ luchdadh na teachdaireachd</string>
   <string name="load_more_messages_fmt">Luchdaich suas ri <xliff:g id="messages_to_load">%d</xliff:g> a bharrachd</string>
+  <string name="size_format_gigabytes">%.1fGB</string>
+  <string name="size_format_megabytes">%.1fMB</string>
+  <string name="size_format_kilobytes">%.1fkB</string>
+  <string name="size_format_bytes">%dB</string>
   <string name="account_size_changed">Bha an cunntas “<xliff:g id="account">%s</xliff:g>” <xliff:g id="oldSize">%s</xliff:g> is chan eil e ach <xliff:g id="newSize">%s</xliff:g> a-nis</string>
   <string name="compacting_account">A’ dùmhlachadh a’ chunntais “<xliff:g id="account">%s</xliff:g>”</string>
   <string name="notification_new_title">Post ùr</string>
@@ -133,6 +155,7 @@
   <string name="notification_bg_send_ticker">A’ cur a’ phuist: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">A’ cur a’ phuist</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Sioncronaich (Put)</string>
   <string name="notification_channel_messages_title">Teachdaireachdan</string>
   <string name="notification_channel_miscellaneous_title">An corr</string>
   <string name="special_mailbox_name_inbox">A-steach</string>
@@ -166,6 +189,7 @@
   <string name="message_compose_show_quoted_text_action">Gabh a-staigh às-earrann na teachdaireachd</string>
   <string name="message_compose_description_delete_quoted_text">Thoir an às-earrann air falbh</string>
   <string name="message_compose_description_edit_quoted_text">Deasaich an às-earrann</string>
+  <string name="remove_attachment_action">Thoir an ceanglachan air falbh</string>
   <string name="message_view_from_format">O: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Gu:</string>
   <string name="message_view_cc_label">Cc:</string>
@@ -241,6 +265,8 @@
   <string name="account_setup_basics_email_hint">Seòladh puist-d</string>
   <string name="account_setup_basics_password_hint">Facal-faire</string>
   <string name="account_setup_basics_show_password">Seall am facal-faire</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_biometrics_title">Dearbh cò thusa</string>
   <string name="account_setup_basics_manual_setup_action">Suidheachadh a làimh</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">A’ faighinn fiosrachadh a’ chunntais…</string>
@@ -645,14 +671,15 @@
   <string name="volume_navigation_title">Seòladaireachd le putanan àirde na fuaime</string>
   <string name="volume_navigation_message">Ann an seallaidhean theachdaireachdan</string>
   <string name="volume_navigation_list">Ann an seallaidhean liostaichean</string>
+  <string name="show_unified_inbox_title">Seall an t-oll-bhogsa</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">– Gun leughadh</string>
   <string name="search_all_messages_title">Na h-uile teachdaireachd</string>
   <string name="search_all_messages_detail">Na h-uile teachdaireachd ann am pasgan so-luirg</string>
-  <string name="integrated_inbox_title">Am bogsa a-steach co-aonaichte</string>
+  <string name="integrated_inbox_title">An t-oll-bhogsa</string>
   <string name="integrated_inbox_detail">Na h-uile teachdaireachd ann am pasganan co-aonaichte</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Co-aonaich</string>
-  <string name="folder_settings_include_in_integrated_inbox_summary">Tha gach teachdaireachd ’ga shealltainn sa bhogsa a-steach cho-aonaichte</string>
+  <string name="folder_settings_include_in_integrated_inbox_summary">Tha gach teachdaireachd ga shealltainn san oll-bhogsa</string>
   <string name="account_settings_searchable_label">Na pasganan san dèanar lorg</string>
   <string name="account_settings_searchable_all">Na h-uile</string>
   <string name="account_settings_searchable_displayable">So-thaisbeanadh</string>
@@ -739,7 +766,7 @@
   <string name="unread_widget_select_account">Seall co mheud a tha gun leughadh ann an…</string>
   <string name="unread_widget_account_title">Cunntas</string>
   <string name="unread_widget_account_summary">An cunntas dhan dèid na teachdaireachdan gun leughadh a chunntadh</string>
-  <string name="unread_widget_unified_inbox_account_summary">Bogsa a-steach co-aonaichte</string>
+  <string name="unread_widget_unified_inbox_account_summary">An t-oll-bhogsa</string>
   <string name="unread_widget_folder_enabled_title">Cunntas pasgain</string>
   <string name="unread_widget_folder_enabled_summary">Seall cunntas nan teachdaireachdan gun leughadh air aon phasgan a-mhàin</string>
   <string name="unread_widget_folder_title">Pasgan</string>
