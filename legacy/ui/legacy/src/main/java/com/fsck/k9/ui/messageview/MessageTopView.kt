@@ -56,6 +56,7 @@ class MessageTopView(
 
     private var isShowingProgress = false
     private var showPicturesButtonClicked = false
+    var renderPlainFormat = false
 
     private var showAccountIndicator = false
 
@@ -125,6 +126,7 @@ class MessageTopView(
         val hideUnsignedTextDivider = account.isOpenPgpHideSignOnly
         view.displayMessageViewContainer(
             messageViewInfo,
+            renderPlainFormat,
             object : OnRenderingFinishedListener {
                 override fun onLoadFinished() {
                     displayViewOnLoadFinished(true)
@@ -137,6 +139,8 @@ class MessageTopView(
 
         if (view.hasHiddenExternalImages && !showPicturesButtonClicked) {
             showShowPicturesButton()
+        } else {
+            hideShowPicturesButton()
         }
     }
 

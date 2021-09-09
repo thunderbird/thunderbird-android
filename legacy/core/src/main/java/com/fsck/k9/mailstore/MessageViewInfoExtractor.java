@@ -151,7 +151,7 @@ public class MessageViewInfoExtractor {
         UnsubscribeUri preferredUnsubscribeUri = ListUnsubscribeHelper.INSTANCE.getPreferredListUnsubscribeUri(message);
 
         return MessageViewInfo.createWithExtractedContent(
-                message, contentPart, isMessageIncomplete, viewable.html, attachmentInfos, attachmentResolver,
+                message, contentPart, isMessageIncomplete, viewable.html, HtmlConverter.textToHtml(viewable.text), attachmentInfos, attachmentResolver,
                 preferredUnsubscribeUri);
     }
 

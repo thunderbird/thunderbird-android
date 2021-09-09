@@ -74,7 +74,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
             true,
         )
         val messageViewInfo = MessageViewInfo(
-            message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
+            message, false, message, SUBJECT, false, TEXT, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
             EXTRA_TEXT, ArrayList(), null,
         )
 
@@ -107,7 +107,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
             false,
         )
         val messageViewInfo = MessageViewInfo(
-            message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
+            message, false, message, SUBJECT, false, TEXT, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
             EXTRA_TEXT, ArrayList(), null,
         )
 
@@ -128,7 +128,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         localBodyPart.addHeader(MimeHeader.HEADER_CONTENT_ID, contentId)
         val attachmentViewInfo = AttachmentViewInfo(MIME_TYPE, ATTACHMENT_NAME, size, URI, true, localBodyPart, true)
         val messageViewInfo = MessageViewInfo(
-            message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
+            message, false, message, SUBJECT, false, TEXT, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
             EXTRA_TEXT, ArrayList(), null,
         )
 
@@ -156,7 +156,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         localBodyPart.addHeader(MimeHeader.HEADER_CONTENT_ID, contentId)
         val attachmentViewInfo = AttachmentViewInfo(MIME_TYPE, ATTACHMENT_NAME, size, URI, true, localBodyPart, false)
         val messageViewInfo = MessageViewInfo(
-            message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
+            message, false, message, SUBJECT, false, TEXT, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
             EXTRA_TEXT, ArrayList(), null,
         )
 
