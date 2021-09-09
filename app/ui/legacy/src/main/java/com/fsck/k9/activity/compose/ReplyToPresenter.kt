@@ -1,65 +1,60 @@
 package com.fsck.k9.activity.compose
 
 import android.os.Bundle
-import android.text.TextWatcher
-import com.fsck.k9.FontSizes
 import com.fsck.k9.Identity
 import com.fsck.k9.mail.Address
-import com.fsck.k9.view.RecipientSelectView.Recipient
 
 private const val STATE_KEY_REPLY_TO_SHOWN = "com.fsck.k9.activity.compose.ReplyToPresenter.replyToShown"
 
 class ReplyToPresenter(private val view: ReplyToView) {
-
-    fun onSaveInstaceState(outState: Bundle) {
-        outState.putBoolean(STATE_KEY_REPLY_TO_SHOWN, view.isVisible())
-    }
-
-    fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        view.setVisible(savedInstanceState.getBoolean(STATE_KEY_REPLY_TO_SHOWN))
-    }
+    private lateinit var identity: Identity
+    private var identityReplyTo: Array<Address>? = null
 
     fun getAddresses(): Array<Address> {
         return view.getAddresses()
     }
 
-    fun hasUncompletedRecipients(): Boolean {
-        var result = false
-        if (view.hasUncompletedText()) {
+    fun isNotReadyForSending(): Boolean {
+        return if (view.hasUncompletedText()) {
             view.showError()
-            view.setVisible(true)
-            result = true
+            view.isVisible = true
+            true
+        } else {
+            false
         }
-        return result
     }
 
     fun setIdentity(identity: Identity) {
-        if (identity.replyTo != null && identity.replyTo?.length != 0) {
-            val parsedAddresses = Address.parse(identity.replyTo)
-            parsedAddresses.forEach { view.addRecipients(Recipient(it)) }
+        this.identity = identity
+
+        removeIdentityReplyTo()
+        addIdentityReplyTo()
+    }
+
+    private fun addIdentityReplyTo() {
+        identityReplyTo = Address.parse(identity.replyTo)?.takeIf { it.isNotEmpty() }
+        identityReplyTo?.let { addresses ->
+            view.silentlyAddAddresses(addresses)
         }
     }
 
-    fun onSwitchIdentity(oldIdentity: Identity, newIdentity: Identity) {
-        if (oldIdentity.replyTo != null && oldIdentity.replyTo?.length != 0) {
-            val recipients = view.getRecipients()
-            val toRemove = recipients.filter { oldIdentity.replyTo!!.contains(it.address.address) }
-            view.removeRecipients(toRemove)
+    private fun removeIdentityReplyTo() {
+        identityReplyTo?.let { addresses ->
+            view.silentlyRemoveAddresses(addresses)
         }
-        setIdentity(newIdentity)
     }
 
     fun onNonRecipientFieldFocused() {
-        if (view.isVisible() && view.getAddresses().size == 0) {
-            view.setVisible(false)
+        if (view.isVisible && view.getAddresses().isEmpty()) {
+            view.isVisible = false
         }
     }
 
-    fun setFontSizes(fontSizes: FontSizes, fontSize: Int) {
-        view.setFontSizes(fontSizes, fontSize)
+    fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(STATE_KEY_REPLY_TO_SHOWN, view.isVisible)
     }
 
-    fun addTextChangedListener(draftNeedsChangingTextWatcher: TextWatcher) {
-        view.addTextChangedListener(draftNeedsChangingTextWatcher)
+    fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        view.isVisible = savedInstanceState.getBoolean(STATE_KEY_REPLY_TO_SHOWN)
     }
 }

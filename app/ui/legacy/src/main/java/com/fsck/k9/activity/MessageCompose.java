@@ -308,7 +308,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         chooseIdentityButton = findViewById(R.id.identity);
         chooseIdentityButton.setOnClickListener(this);
-        replyToPresenter = new ReplyToPresenter(new ReplyToView(this));
+
+        ReplyToView replyToView = new ReplyToView(this);
+        replyToPresenter = new ReplyToPresenter(replyToView);
 
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
@@ -353,7 +355,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         };
 
-        replyToPresenter.addTextChangedListener(draftNeedsChangingTextWatcher);
+        replyToView.addTextChangedListener(draftNeedsChangingTextWatcher);
         recipientMvpView.addTextChangedListener(draftNeedsChangingTextWatcher);
         quotedMessageMvpView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
@@ -465,7 +467,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         // Set font size of input controls
         int fontSize = K9.getFontSizes().getMessageComposeInput();
-        replyToPresenter.setFontSizes(K9.getFontSizes(), fontSize);
+        replyToView.setFontSizes(K9.getFontSizes(), fontSize);
         recipientMvpView.setFontSizes(K9.getFontSizes(), fontSize);
         quotedMessageMvpView.setFontSizes(K9.getFontSizes(), fontSize);
         K9.getFontSizes().setViewTextSize(subjectView, fontSize);
@@ -633,7 +635,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         outState.putBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE, changesMadeSinceLastSave);
         outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
 
-        replyToPresenter.onSaveInstaceState(outState);
+        replyToPresenter.onSaveInstanceState(outState);
         recipientPresenter.onSaveInstanceState(outState);
         quotedMessagePresenter.onSaveInstanceState(outState);
         attachmentPresenter.onSaveInstanceState(outState);
@@ -745,7 +747,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
-        if(replyToPresenter.hasUncompletedRecipients()) {
+        if (replyToPresenter.isNotReadyForSending()) {
             return;
         }
 
@@ -928,13 +930,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void switchToIdentity(Identity identity) {
-        replyToPresenter.onSwitchIdentity(this.identity, identity);
         this.identity = identity;
         identityChanged = true;
         changesMadeSinceLastSave = true;
         updateFrom();
         updateSignature();
         updateMessageFormat();
+        replyToPresenter.setIdentity(identity);
         recipientPresenter.onSwitchIdentity(identity);
     }
 

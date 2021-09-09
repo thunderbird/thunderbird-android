@@ -4,176 +4,150 @@ import android.os.Bundle
 import com.fsck.k9.Identity
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.mail.Address
-import com.fsck.k9.view.RecipientSelectView.Recipient
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.any
-import org.mockito.Mockito.eq
-import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.stubbing
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyNoMoreInteractions
 
-private val REPLY_TO_ADDRESS = "reply-to@example.com"
-private val REPLY_TO_ADDRESS_2 = "reply-to2@example.com"
-private val REPLY_TO_ADDRESS_3 = "reply-to3@example.com"
+private const val REPLY_TO_ADDRESS = "reply-to@example.com"
+private const val REPLY_TO_ADDRESS_2 = "reply-to2@example.com"
+private const val REPLY_TO_ADDRESS_3 = "reply-to3@example.com"
 
 class ReplyToPresenterTest : K9RobolectricTest() {
-    private val replyToPresenter: ReplyToPresenter
-    private val view: ReplyToView
-
-    init {
-        view = mock()
-        replyToPresenter = ReplyToPresenter(view)
-    }
+    private val view = mock<ReplyToView>()
+    private val replyToPresenter = ReplyToPresenter(view)
 
     @Test
     fun testInstanceState_expectStoreVisibility() {
-        val state = mock<Bundle>()
-        `when`(view.isVisible()).thenReturn(true)
-        `when`(state.getBoolean(any())).thenReturn(true)
+        val initialView = mock<ReplyToView> {
+            on { isVisible } doReturn true
+        }
+        val initialPresenter = ReplyToPresenter(initialView)
+        val state = Bundle()
+        initialPresenter.onSaveInstanceState(state)
 
-        replyToPresenter.onSaveInstaceState(state)
         replyToPresenter.onRestoreInstanceState(state)
 
-        val stringCaptor = argumentCaptor<String>()
-        verify(state).putBoolean(stringCaptor.capture(), eq(true))
-        verify(state).getBoolean(stringCaptor.firstValue)
-        verify(view).isVisible()
-        verify(view).setVisible(true)
-        verifyNoMoreInteractions(view, state)
+        verify(view).isVisible = true
     }
 
     @Test
     fun testGetAddresses_expectAddressesFromView() {
-        val array = arrayOf(mock<Address>())
-        `when`(view.getAddresses()).thenReturn(array)
+        val addresses = Address.parse(REPLY_TO_ADDRESS)
+        stubbing(view) {
+            on { getAddresses() } doReturn addresses
+        }
 
         val result = replyToPresenter.getAddresses()
 
-        assertThat(result).isSameInstanceAs(array)
+        assertThat(result).isSameInstanceAs(addresses)
     }
 
     @Test
     fun testHasUncompletedRecipients_onlyCompleteAddresses_expectTrue() {
-        `when`(view.hasUncompletedText()).thenReturn(false)
+        stubbing(view) {
+            on { hasUncompletedText() } doReturn false
+        }
 
-        assertThat(replyToPresenter.hasUncompletedRecipients()).isFalse()
+        val result = replyToPresenter.isNotReadyForSending()
 
-        verify(view).hasUncompletedText()
-        verifyNoMoreInteractions(view)
+        assertThat(result).isFalse()
     }
 
     @Test
     fun testHasUncompletedRecipients_notCompleteAddresses_expectFalse() {
-        `when`(view.hasUncompletedText()).thenReturn(true)
+        stubbing(view) {
+            on { hasUncompletedText() } doReturn true
+        }
 
-        assertThat(replyToPresenter.hasUncompletedRecipients()).isTrue()
+        val result = replyToPresenter.isNotReadyForSending()
 
-        verify(view).hasUncompletedText()
+        assertThat(result).isTrue()
         verify(view).showError()
-        verify(view).setVisible(true)
-        verifyNoMoreInteractions(view)
+        verify(view).isVisible = true
     }
 
     @Test
     fun testSetIdentity_identityWithOneReplyTo_expectSetReplyTo() {
-        replyToPresenter.setIdentity(Identity("a", "b", "x@y.z", null, false, REPLY_TO_ADDRESS))
+        val identity = Identity("a", "b", "x@y.z", null, false, REPLY_TO_ADDRESS)
 
-        val recipientsCaptor = argumentCaptor<Recipient>()
-        verify(view).addRecipients(recipientsCaptor.capture())
-        assertThat(recipientsCaptor.allValues.size).isEqualTo(1)
-        assertThat(recipientsCaptor.firstValue.address.address).isEqualTo(REPLY_TO_ADDRESS)
+        replyToPresenter.setIdentity(identity)
+
+        verify(view).silentlyAddAddresses(Address.parse(REPLY_TO_ADDRESS))
     }
 
     @Test
     fun testSetIdentity_identityWithMultipleReplyTo_expectSetReplyTo() {
-        replyToPresenter.setIdentity(Identity("a", "b", "x@y.z", null, false, REPLY_TO_ADDRESS + ", " + REPLY_TO_ADDRESS_2))
+        val replyTo = "$REPLY_TO_ADDRESS, $REPLY_TO_ADDRESS_2"
+        val identity = Identity("a", "b", "x@y.z", null, false, replyTo)
 
-        val recipientsCaptor = argumentCaptor<Recipient>()
-        verify(view, atLeastOnce()).addRecipients(recipientsCaptor.capture())
-        assertThat(recipientsCaptor.allValues.size).isEqualTo(2)
-        assertThat(recipientsCaptor.firstValue.address.address).isEqualTo(REPLY_TO_ADDRESS)
-        assertThat(recipientsCaptor.secondValue.address.address).isEqualTo(REPLY_TO_ADDRESS_2)
+        replyToPresenter.setIdentity(identity)
+
+        verify(view).silentlyAddAddresses(Address.parse(replyTo))
     }
 
     @Test
     fun testOnSwitchIdentity_newIdentityWithoutReplyTo_expectRemoveReplyToOfOldIdentity() {
-        `when`(view.getRecipients()).thenReturn(listOf(createRecipient(REPLY_TO_ADDRESS)))
+        val replyToOne = "$REPLY_TO_ADDRESS, $REPLY_TO_ADDRESS_2"
+        val identityOne = Identity("a", "b", "x@y.z", null, false, replyToOne)
+        val identityTwo = Identity()
 
-        replyToPresenter.onSwitchIdentity(Identity("a", "b", "x@y.z", null, false, REPLY_TO_ADDRESS), Identity())
+        replyToPresenter.setIdentity(identityOne)
+        replyToPresenter.setIdentity(identityTwo)
 
-        verify(view).getRecipients()
-        val captor = argumentCaptor<List<Recipient>>()
-        verify(view).removeRecipients(captor.capture())
-        assertThat(captor.allValues.size).isEqualTo(1)
-        assertThat(captor.firstValue.size).isEqualTo(1)
-        assertThat(captor.firstValue.first().address.address).isEqualTo(REPLY_TO_ADDRESS)
-        verifyNoMoreInteractions(view)
+        verify(view).silentlyRemoveAddresses(Address.parse(replyToOne))
     }
 
     @Test
     fun testOnSwitchIdentity_identityWithSubsetOfOldIdentity_expectRemoveThenAdd() {
-        `when`(view.getRecipients()).thenReturn(listOf(createRecipient(REPLY_TO_ADDRESS), createRecipient(REPLY_TO_ADDRESS_2)))
+        val replyToOne = "$REPLY_TO_ADDRESS, $REPLY_TO_ADDRESS_2"
+        val identityOne = Identity("a", "b", "x@y.z", null, false, replyToOne)
+        val replyToTwo = "$REPLY_TO_ADDRESS, $REPLY_TO_ADDRESS_3"
+        val identityTwo = Identity("c", "d", "x@y.z", null, false, replyToTwo)
 
-        replyToPresenter.onSwitchIdentity(
-            Identity("a", "b", "x@y.z", null, false, REPLY_TO_ADDRESS + ", " + REPLY_TO_ADDRESS_2),
-            Identity("c", "d", "x@y.z", null, false, REPLY_TO_ADDRESS + ", " + REPLY_TO_ADDRESS_3)
-        )
+        replyToPresenter.setIdentity(identityOne)
+        replyToPresenter.setIdentity(identityTwo)
 
-        verify(view).getRecipients()
-        val captor = argumentCaptor<List<Recipient>>()
-        verify(view).removeRecipients(captor.capture())
-        assertThat(captor.allValues.size).isEqualTo(1)
-        assertThat(captor.firstValue.size).isEqualTo(2)
-        assertThat(captor.firstValue.get(0).address.address).isEqualTo(REPLY_TO_ADDRESS)
-        assertThat(captor.firstValue.get(1).address.address).isEqualTo(REPLY_TO_ADDRESS_2)
-        val recipientsCaptor = argumentCaptor<Recipient>()
-        verify(view, atLeastOnce()).addRecipients(recipientsCaptor.capture())
-        assertThat(recipientsCaptor.allValues.size).isEqualTo(2)
-        assertThat(recipientsCaptor.firstValue.address.address).isEqualTo(REPLY_TO_ADDRESS)
-        assertThat(recipientsCaptor.secondValue.address.address).isEqualTo(REPLY_TO_ADDRESS_3)
-        verifyNoMoreInteractions(view)
+        verify(view).silentlyAddAddresses(Address.parse(replyToOne))
+        verify(view).silentlyRemoveAddresses(Address.parse(replyToOne))
+        verify(view).silentlyAddAddresses(Address.parse(replyToTwo))
     }
 
     @Test
     fun testOnNonRecipientFieldFocused_notVisible_expectNoChange() {
-        `when`(view.isVisible()).thenReturn(false)
+        stubbing(view) {
+            on { isVisible } doReturn false
+        }
 
         replyToPresenter.onNonRecipientFieldFocused()
 
-        verify(view).isVisible()
-        verifyNoMoreInteractions(view)
+        verify(view, never()).isVisible = false
     }
 
     @Test
     fun testOnNonRecipientFieldFocused_noContentFieldVisible_expectHide() {
-        `when`(view.isVisible()).thenReturn(true)
-        `when`(view.getAddresses()).thenReturn(arrayOf())
+        stubbing(view) {
+            on { isVisible } doReturn true
+            on { getAddresses() } doReturn emptyArray()
+        }
 
         replyToPresenter.onNonRecipientFieldFocused()
 
-        verify(view).isVisible()
-        verify(view).getAddresses()
-        verify(view).setVisible(false)
-        verifyNoMoreInteractions(view)
+        verify(view).isVisible = false
     }
 
     @Test
     fun testOnNonRecipientFieldFocused_withContentFieldVisible_expectNoChange() {
-        `when`(view.isVisible()).thenReturn(true)
-        `when`(view.getAddresses()).thenReturn(arrayOf(mock()))
+        stubbing(view) {
+            on { isVisible } doReturn true
+            on { getAddresses() } doReturn Address.parse(REPLY_TO_ADDRESS)
+        }
 
         replyToPresenter.onNonRecipientFieldFocused()
 
-        verify(view).isVisible()
-        verify(view).getAddresses()
-        verifyNoMoreInteractions(view)
-    }
-
-    private fun createRecipient(mailAddress: String): Recipient {
-        return Recipient(Address(mailAddress))
+        verify(view, never()).isVisible = false
     }
 }
