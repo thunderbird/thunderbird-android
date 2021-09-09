@@ -278,6 +278,9 @@ public class GeneralSettingsDescriptions {
         s.put("showStarredCount", Settings.versions(
                 new V(75, new BooleanSetting(false))
         ));
+        s.put("preferredContentTypeK9", Settings.versions(
+                new V(82, new EnumSetting<>(K9.PREF_CONT_TYPE.class, K9.PREF_CONT_TYPE.TEXT_HTML))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

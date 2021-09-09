@@ -208,6 +208,11 @@
         <item>spam</item>
     </string-array>
 
+    <string-array name="messageview_preferred_content_type_values" translatable="false">
+        <item>TEXT_HTML</item>
+        <item>TEXT_PLAIN</item>
+    </string-array>
+
     <string-array name="volume_navigation_values" translatable="false">
         <item>message</item>
         <item>list</item>

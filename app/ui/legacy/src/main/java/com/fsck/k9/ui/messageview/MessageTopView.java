@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.ShowPictures;
+import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.Contacts;
@@ -54,7 +55,7 @@ public class MessageTopView extends LinearLayout {
     private Button showPicturesButton;
     private boolean isShowingProgress;
     private boolean showPicturesButtonClicked;
-    private boolean renderPlainFormat = false;
+    private boolean renderPlainFormat;
 
     private MessageCryptoPresenter messageCryptoPresenter;
 
@@ -81,6 +82,8 @@ public class MessageTopView extends LinearLayout {
         setShowPicturesButtonListener();
 
         containerView = findViewById(R.id.message_container);
+
+        renderPlainFormat = (K9.getPreferredContentType() == K9.PREF_CONT_TYPE.TEXT_PLAIN);
 
         hideHeaderView();
     }

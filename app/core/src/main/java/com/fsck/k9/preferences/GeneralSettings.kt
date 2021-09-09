@@ -13,6 +13,7 @@ package com.fsck.k9.preferences
 data class GeneralSettings(
     val backgroundSync: BackgroundSync,
     val showRecentChanges: Boolean,
+    val preferredContentType: PrefContentType,
     val appTheme: AppTheme,
     val messageViewTheme: SubTheme,
     val messageComposeTheme: SubTheme,
@@ -23,6 +24,11 @@ enum class BackgroundSync {
     ALWAYS,
     NEVER,
     FOLLOW_SYSTEM_AUTO_SYNC
+}
+
+enum class PrefContentType {
+    TEXT_HTML,
+    TEXT_PLAIN
 }
 
 enum class AppTheme {

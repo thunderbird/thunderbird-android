@@ -126,6 +126,9 @@ object K9 : EarlyInit {
     var backgroundOps = BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
 
     @JvmStatic
+    var preferredContentType = PREF_CONT_TYPE.TEXT_HTML
+
+    @JvmStatic
     var isShowAnimations = true
 
     @JvmStatic
@@ -350,6 +353,8 @@ object K9 : EarlyInit {
 
         backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)
 
+        preferredContentType = storage.getEnum("preferredContentTypeK9", PREF_CONT_TYPE.TEXT_HTML)
+
         isColorizeMissingContactPictures = storage.getBoolean("colorizeMissingContactPictures", true)
 
         isMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false)
@@ -368,6 +373,7 @@ object K9 : EarlyInit {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
+        editor.putEnum("preferredContentTypeK9", preferredContentType)
         editor.putBoolean("animations", isShowAnimations)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)
@@ -486,6 +492,11 @@ object K9 : EarlyInit {
 
     enum class BACKGROUND_OPS {
         ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
+    }
+
+    enum class PREF_CONT_TYPE {
+        TEXT_HTML,
+        TEXT_PLAIN
     }
 
     /**

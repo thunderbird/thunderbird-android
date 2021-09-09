@@ -68,7 +68,8 @@ internal class RealGeneralSettingsManager(
     @Synchronized
     private fun updateGeneralSettingsWithStateFromK9(): GeneralSettings {
         return getSettings().copy(
-            backgroundSync = K9.backgroundOps.toBackgroundSync()
+            backgroundSync = K9.backgroundOps.toBackgroundSync(),
+            preferredContentType = K9.preferredContentType.toPrefContentType()
         ).also { generalSettings ->
             this.generalSettings = generalSettings
         }
@@ -134,6 +135,7 @@ internal class RealGeneralSettingsManager(
         val settings = GeneralSettings(
             backgroundSync = K9.backgroundOps.toBackgroundSync(),
             showRecentChanges = storage.getBoolean("showRecentChanges", true),
+            preferredContentType = K9.preferredContentType.toPrefContentType(),
             appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM),
             messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL),
             messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL),
@@ -151,6 +153,13 @@ private fun K9.BACKGROUND_OPS.toBackgroundSync(): BackgroundSync {
         K9.BACKGROUND_OPS.ALWAYS -> BackgroundSync.ALWAYS
         K9.BACKGROUND_OPS.NEVER -> BackgroundSync.NEVER
         K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC -> BackgroundSync.FOLLOW_SYSTEM_AUTO_SYNC
+    }
+}
+
+private fun K9.PREF_CONT_TYPE.toPrefContentType(): PrefContentType {
+    return when (this) {
+        K9.PREF_CONT_TYPE.TEXT_HTML -> PrefContentType.TEXT_HTML
+        K9.PREF_CONT_TYPE.TEXT_PLAIN -> PrefContentType.TEXT_PLAIN
     }
 }
 

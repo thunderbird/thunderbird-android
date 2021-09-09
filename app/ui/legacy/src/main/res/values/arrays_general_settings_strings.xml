@@ -156,6 +156,11 @@
         <item>@string/spam_action</item>
     </string-array>
 
+    <string-array name="messageview_preferred_content_type_entries">
+        <item>@string/global_settings_messageview_preferred_content_type_text_html</item>
+        <item>@string/global_settings_messageview_preferred_content_type_text_plain</item>
+    </string-array>
+
     <string-array name="volume_navigation_entries">
         <item>@string/volume_navigation_message</item>
         <item>@string/volume_navigation_list</item>

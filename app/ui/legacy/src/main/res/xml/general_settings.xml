@@ -348,6 +348,13 @@
                 android:summary="@string/global_settings_messageview_autofit_width_summary"
                 android:title="@string/global_settings_messageview_autofit_width_label" />
 
+            <ListPreference
+                android:dialogTitle="@string/global_settings_messageview_preferred_content_type_title"
+                android:entries="@array/messageview_preferred_content_type_entries"
+                android:entryValues="@array/messageview_preferred_content_type_values"
+                android:key="messageview_preferred_content_type"
+                app:useSimpleSummaryProvider="true"
+                android:title="@string/global_settings_messageview_preferred_content_type_title" />
         </PreferenceCategory>
 
     </PreferenceScreen>
