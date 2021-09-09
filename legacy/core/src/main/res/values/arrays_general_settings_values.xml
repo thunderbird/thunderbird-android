@@ -233,4 +233,9 @@
         <item>ReturnToMessageList</item>
     </string-array>
 
+    <string-array name="messageview_body_content_type_values" translatable="false">
+        <item>TEXT_HTML</item>
+        <item>TEXT_PLAIN</item>
+    </string-array>
+
 </resources>

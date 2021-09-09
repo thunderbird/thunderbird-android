@@ -30,6 +30,8 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
+import net.thunderbird.core.preference.BodyContentType
+import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -39,6 +41,7 @@ class MessageTopView(
 ) : LinearLayout(context, attrs), KoinComponent {
 
     private val contactRepository: ContactRepository by inject()
+    private val visualSettingsPrefManager: DisplayVisualSettingsPreferenceManager by inject()
 
     private lateinit var layoutInflater: LayoutInflater
 
@@ -80,6 +83,8 @@ class MessageTopView(
         setShowPicturesButtonListener()
 
         containerView = findViewById(R.id.message_container)
+
+        renderPlainFormat = visualSettingsPrefManager.getConfig().bodyContentType == BodyContentType.TEXT_PLAIN
 
         hideHeaderView()
     }
