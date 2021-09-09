@@ -99,6 +99,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private MessageLoaderHelper messageLoaderHelper;
     private MessageCryptoPresenter messageCryptoPresenter;
     private Long showProgressThreshold;
+    MessageViewInfo mMessageViewInfo;
     private UnsubscribeUri preferredUnsubscribeUri;
 
     /**
@@ -301,6 +302,18 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         } else {
             delete();
         }
+    }
+
+    public void onDisplayPlainText() {
+        mMessageView.setRenderPlainFormat(true);
+        showMessage(mMessageViewInfo);
+        mFragmentListener.updateMenu();
+    }
+
+    public void onDisplayHTML() {
+        mMessageView.setRenderPlainFormat(false);
+        showMessage(mMessageViewInfo);
+        mFragmentListener.updateMenu();
     }
 
     private void delete() {
@@ -764,15 +777,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         messageCryptoPresenter.onClickShowCryptoKey();
     }
 
-    public void asyncReloadMessage() {
-        messageLoaderHelper.asyncReloadMessage();
-    }
 
-    public void setRenderPlainFormat(final boolean b) {
-        mMessageView.setRenderPlainFormat(b);
-    }
-
-    public boolean getRenderPlainFormat() {
+    public boolean isRenderPlainFormat() {
         return mMessageView.getRenderPlainFormat();
     }
 
@@ -811,6 +817,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
+            mMessageViewInfo = messageViewInfo;
             showMessage(messageViewInfo);
             preferredUnsubscribeUri = messageViewInfo.preferredUnsubscribeUri;
             showProgressThreshold = null;
