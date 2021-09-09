@@ -111,6 +111,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="discard_action">Verwerfen</string>
   <string name="save_draft_action">Als Entwurf speichern</string>
   <string name="check_mail_action">E-Mail abrufen</string>
+  <string name="check_all_mail_action">E-Mails in allen Konten abfragen</string>
   <string name="send_messages_action">Nachrichten senden</string>
   <string name="refresh_folders_action">Ordnerliste aktualisieren</string>
   <string name="filter_folders_action">Ordner suchen</string>
@@ -298,6 +299,10 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_basics_email_hint">E-Mail-Adresse</string>
   <string name="account_setup_basics_password_hint">Passwort</string>
   <string name="account_setup_basics_show_password">Passwort anzeigen</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Um dein Passwort hier anzuzeigen, aktiviere die Bildschirmsperre auf diesem Gerät.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Deine Identität bestätigen</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Entsperren, um dein Passwort anzuzeigen</string>
   <string name="account_setup_basics_manual_setup_action">Manuelle Einrichtung</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Kontoinformationen werden abgerufen\u2026</string>
@@ -434,6 +439,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine Ihrer eigenen E-Mail-Adressen als Absender tragen</string>
   <string name="account_notify_contacts_mail_only_label">Nur Kontakte</string>
   <string name="account_notify_contacts_mail_only_summary">Benachrichtigungen nur für Nachrichten von bekannten Kontakten anzeigen</string>
+  <string name="account_settings_ignore_chat_messages_label">Chat-Nachrichten ignorieren</string>
+  <string name="account_settings_ignore_chat_messages_summary">Keine Benachrichtigungen für Nachrichten anzeigen, die zu einem E-Mail-Chat gehören</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Beim Öffnen als gelesen markieren</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Nachricht als gelesen markieren, sobald sie zum Betrachten geöffnet wird</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Beim Löschen als gelesen markieren</string>
@@ -693,6 +700,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="volume_navigation_message">Nachrichtenansicht</string>
   <string name="volume_navigation_list">Diverse Listenansichten</string>
   <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
+  <string name="show_starred_count_title">Anzahl der Sterne anzeigen</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Ungelesen</string>
   <string name="search_all_messages_title">Alle Nachrichten</string>

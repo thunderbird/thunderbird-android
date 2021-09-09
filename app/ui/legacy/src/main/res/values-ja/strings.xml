@@ -111,12 +111,14 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="discard_action">破棄</string>
   <string name="save_draft_action">下書きへ保存</string>
   <string name="check_mail_action">メール受信</string>
+  <string name="check_all_mail_action">すべてのアカウントのメールを確認する</string>
   <string name="send_messages_action">メール送信</string>
   <string name="refresh_folders_action">フォルダ一覧を再読込</string>
   <string name="filter_folders_action">フォルダを探す</string>
   <string name="add_account_action">アカウント追加</string>
   <string name="compose_action">作成</string>
   <string name="search_action">検索</string>
+  <string name="search_everywhere_action">あらゆる所を検索</string>
   <string name="search_results">検索結果</string>
   <string name="preferences_action">設定</string>
   <string name="folders_action">フォルダ管理</string>
@@ -181,6 +183,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="notification_bg_send_ticker">メール送信中: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">メール送信中</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">同期(プッシュ)</string>
+  <string name="notification_channel_push_description">新着メッセージ待機中に表示される</string>
   <string name="notification_channel_messages_title">メッセージ表示</string>
   <string name="notification_channel_messages_description">メッセージに関連した通知</string>
   <string name="notification_channel_miscellaneous_title">その他</string>
@@ -293,6 +297,10 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_basics_email_hint">メールアドレス</string>
   <string name="account_setup_basics_password_hint">パスワード</string>
   <string name="account_setup_basics_show_password">パスワードを表示</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">ここでパスワードを表示するには、このデバイスの画面ロックを有効にしてください。</string>
+  <string name="account_setup_basics_show_password_biometrics_title">あなたの本人確認</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">ロック解除してあなたのパスワードを表示する</string>
   <string name="account_setup_basics_manual_setup_action">手動設定</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">アカウント情報を取得中\u2026</string>
@@ -428,10 +436,15 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_notify_self_summary">このアカウントからのメールも通知する</string>
   <string name="account_notify_contacts_mail_only_label">連絡先のみ</string>
   <string name="account_notify_contacts_mail_only_summary">既知の連絡先からのメッセージのみ通知を表示します</string>
+  <string name="account_settings_ignore_chat_messages_label">チャットメッセージを無視する</string>
+  <string name="account_settings_ignore_chat_messages_summary">メールチャットに属するメッセージの通知を表示しない</string>
   <string name="account_settings_mark_message_as_read_on_view_label">開くと同時に既読にする</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを参照したときに既読にする</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">削除時に既読にする</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">メッセージが削除されたときに既読にします</string>
+  <string name="account_settings_notification_channels_label">通知カテゴリ</string>
+  <string name="account_settings_open_notification_settings_messages_summary">新着メッセージの通知を設定</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">エラーと状態通知を設定</string>
   <string name="account_settings_show_pictures_label">画像を自動で表示</string>
   <string name="account_settings_show_pictures_never">しない</string>
   <string name="account_settings_show_pictures_only_from_contacts">連絡先に登録しているユーザからのメールのみ</string>
@@ -547,6 +560,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="folder_settings_folder_push_mode_normal">クラスなし</string>
   <string name="folder_settings_folder_push_mode_first_class">1st クラス</string>
   <string name="folder_settings_folder_push_mode_second_class">2nd クラス</string>
+  <string name="folder_settings_folder_push_mode_inherited">受信クラスと同一設定</string>
   <string name="folder_settings_folder_notify_mode_label">フォルダ通知クラス</string>
   <string name="folder_settings_folder_notify_mode_normal">クラスなし</string>
   <string name="folder_settings_folder_notify_mode_first_class">1st クラス</string>
@@ -683,6 +697,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="volume_navigation_message">メッセージ表示</string>
   <string name="volume_navigation_list">一覧表示</string>
   <string name="show_unified_inbox_title">統合フォルダを表示</string>
+  <string name="show_starred_count_title">フラグの数を表示する</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - 未読</string>
   <string name="search_all_messages_title">全メッセージ</string>
@@ -1038,5 +1053,15 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="permission_contacts_rationale_message">連絡先の提案をできるようにし、連絡先の名前と写真を表示するには、アプリが連絡先にアクセスする必要があります。</string>
   <string name="generic_loading_error">データの読み込み中にエラーが発生しました</string>
   <string name="push_notification_state_initializing">初期化しています…</string>
+  <string name="push_notification_state_listening">新着メッセージ待機中</string>
+  <string name="push_notification_state_wait_background_sync">バックグラウンド同期が許可されるまでスリープ</string>
+  <string name="push_notification_state_wait_network">ネットワークが利用可能になるまでスリープ</string>
+  <string name="push_notification_info">タップして詳細を表示。</string>
+  <string name="push_info_title">プッシュ情報</string>
+  <string name="push_info_notification_explanation_text">プッシュを使用する場合、K-9 Mailはメールサーバーへの接続を維持します。Androidでは、アプリがバックグラウンドで動作している間、継続して通知を表示する必要があります。%s</string>
+  <string name="push_info_configure_notification_text">しかし、Androidでは、通知を隠すこともできます。</string>
+  <string name="push_info_learn_more_text">詳細を表示</string>
   <string name="push_info_configure_notification_action">通知設定</string>
+  <string name="push_info_disable_push_text">新しいメッセージの即時通知が不要な場合は、プッシュを無効にして同期を使用してください。同期は、一定の間隔で新着メールを確認するので、通知は必要ありません。</string>
+  <string name="push_info_disable_push_action">プッシュを無効にする</string>
 </resources>

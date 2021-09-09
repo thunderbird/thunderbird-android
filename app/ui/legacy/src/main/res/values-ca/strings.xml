@@ -110,6 +110,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="discard_action">Descarta</string>
   <string name="save_draft_action">Desa com a esborrany</string>
   <string name="check_mail_action">Comprova el correu</string>
+  <string name="check_all_mail_action">Comprova els missatges de tots els comptes</string>
   <string name="send_messages_action">Envia missatges</string>
   <string name="refresh_folders_action">Refresca carpetes</string>
   <string name="filter_folders_action">Cerca carpetes</string>
@@ -298,6 +299,9 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_basics_email_hint">Adreça de correu electrònic</string>
   <string name="account_setup_basics_password_hint">Contrasenya</string>
   <string name="account_setup_basics_show_password">Mostra la contrasenya</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Per veure la contrasenya aquí, activeu el bloqueig de pantalla en aquest dispositiu.</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloqueu-ho per veure la contrasenya.</string>
   <string name="account_setup_basics_manual_setup_action">Configuració manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">S\'està recuperant la informació del compte\u2026</string>
@@ -433,6 +437,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_notify_self_summary">Mostra una notificació per als missatges que enviïs</string>
   <string name="account_notify_contacts_mail_only_label">Només els contactes</string>
   <string name="account_notify_contacts_mail_only_summary">Mostra notificacions només per als missatges de contactes coneguts</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignora els missatges de conversa</string>
+  <string name="account_settings_ignore_chat_messages_summary">No mostris notificacions de missatges pertanyents a una conversa de correu electrònic.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca el missatge obert com a llegit</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca el missatge com a llegit després d\'haver-lo obert.</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marca com a llegit quan se suprimeixi</string>
@@ -692,6 +698,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="volume_navigation_message">Vista del missatge</string>
   <string name="volume_navigation_list">A la vista de llistes</string>
   <string name="show_unified_inbox_title">Mostra la safata d\'entrada unificada</string>
+  <string name="show_starred_count_title">Mostra el recompte de destacats.</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- No llegit</string>
   <string name="search_all_messages_title">Tots els missatges</string>

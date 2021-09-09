@@ -8,7 +8,7 @@
   <string name="unread_widget_label">Mensaje K-9 no leído</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Los encargados del perrito K-9</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Partes del Copyright 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
+  <string name="app_copyright_fmt">© 2008-<xliff:g>%s</xliff:g> Los encargados del perrito K-9. Con porciones de código © 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="source_code">Código fuente</string>
   <string name="app_license">Licencia Apache, versión 2.0</string>
   <string name="about_project_title">Proyecto de código abierto</string>
@@ -109,6 +109,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Guardar como borrador</string>
   <string name="check_mail_action">Comprobar correo</string>
+  <string name="check_all_mail_action">Comprobar el correo en todas las cuentas</string>
   <string name="send_messages_action">Enviar correo</string>
   <string name="refresh_folders_action">Recargar lista de carpetas</string>
   <string name="filter_folders_action">Buscar carpeta</string>
@@ -124,8 +125,8 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="mark_as_read_action">Marcar como leído</string>
   <string name="send_alternate_action">Compartir</string>
   <string name="send_alternate_chooser_title">Seleccionar remitente</string>
-  <string name="flag_action">Añadir estrella</string>
-  <string name="unflag_action">Borrar estrella</string>
+  <string name="flag_action">Destacar el mensaje</string>
+  <string name="unflag_action">No marcar como destacado</string>
   <string name="copy_action">Copiar</string>
   <string name="show_headers_action">Mostrar cabeceras</string>
   <plurals name="copy_address_to_clipboard">
@@ -215,7 +216,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="message_compose_error_no_recipients">El mensaje necesita algún destinatario.</string>
   <string name="compose_error_incomplete_recipient">El campo de destinatario está incompleto.</string>
   <string name="error_contact_address_not_found">No se encontró la dirección de correo electrónico de este contacto.</string>
-  <string name="message_compose_attachments_skipped_toast">Algunos adjuntos no pueden reenviarse porque se han descargado.</string>
+  <string name="message_compose_attachments_skipped_toast">Algunos adjuntos no pueden reenviarse porque no se han descargado.</string>
   <string name="message_compose_attachments_forward_toast">El mensaje no puede ser reenviado porque algunos adjuntos no se han descargado.</string>
   <string name="message_compose_show_quoted_text_action">Incluir mensaje original</string>
   <string name="message_compose_description_delete_quoted_text">No incluir el mensaje original</string>
@@ -241,8 +242,8 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="debug_delete_local_body">Depurar / Limpiar el cuerpo del mensaje</string>
   <string name="message_discarded_toast">Mensaje descartado</string>
   <string name="message_saved_toast">Mensaje guardado como borrador</string>
-  <string name="global_settings_flag_label">Mostrar estrellas</string>
-  <string name="global_settings_flag_summary">Las estrellas indican un mensaje destacado</string>
+  <string name="global_settings_flag_label">Mostrar mensajes destacados</string>
+  <string name="global_settings_flag_summary">Las estrellas indican mensajes destacados</string>
   <string name="global_settings_preview_lines_label">Previsualizar líneas</string>
   <string name="global_settings_show_correspondent_names_label">Mostrar nombre asociado</string>
   <string name="global_settings_show_correspondent_names_summary">Mostrar nombre asociado en vez de dirección de correo</string>
@@ -296,6 +297,10 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_basics_email_hint">Dirección de correo</string>
   <string name="account_setup_basics_password_hint">Contraseña</string>
   <string name="account_setup_basics_show_password">Mostrar la contraseña</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Para ver tu contraseña activa la pantalla de bloqueo en tu dispositivo.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verifica tu identidad</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloquea para ver tu contraseña</string>
   <string name="account_setup_basics_manual_setup_action">Configuración manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Recuperando información de cuenta\u2026</string>
@@ -431,6 +436,8 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_settings_notify_self_summary">Mostrar notificaciones durante el envío de correo</string>
   <string name="account_notify_contacts_mail_only_label">Solamente contactos</string>
   <string name="account_notify_contacts_mail_only_summary">Mostrar notificaciones solamente para mensajes de contactos conocidos</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignorar mensajes de chat</string>
+  <string name="account_settings_ignore_chat_messages_summary">No mostrar notificaciones para mensajes que formen parte de un chat a través de correo electrónico</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensaje como leído al abrirlo</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar mensaje como leído cuando se abre para verlo</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como leído al borrar</string>
@@ -630,15 +637,15 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="sort_by_arrival">Llegada</string>
   <string name="sort_by_subject">Asunto</string>
   <string name="sort_by_sender">Remitente</string>
-  <string name="sort_by_flag">Estrella</string>
+  <string name="sort_by_flag">Destacar</string>
   <string name="sort_by_unread">Leído/No leído</string>
   <string name="sort_by_attach">Adjuntos</string>
   <string name="account_delete_dlg_title">Eliminar cuenta</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado desconocido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar clave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rechazar clave</string>
-  <string name="message_view_help_key">Supr (o D) - Borrar\nR - Responder\nA - Responder a todos\nC - Redactar\nF - Reenviar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (no) leído\nG - Estrella\nO - Tipo de ordenación\nI - Invertir orden\nQ - Volver a las carpetas\nS - Des/marcar\nJ o P - Mensaje anterior\nK o N - Siguiente mensaje</string>
-  <string name="message_list_help_key">Supr (o D) - Borrar\nC - Redactar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (no) leído\nG - Estrella\nO - Tipo de ordenación\nI - Invertir orden\nQ - Volver a las carpetas\nS - Des/marcar</string>
+  <string name="message_view_help_key">Supr (o D) - Borrar\nR - Responder\nA - Responder a todos\nC - Redactar\nF - Reenviar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (no) leído\nG - Destacar\nO - Tipo de ordenación\nI - Invertir orden\nQ - Volver a las carpetas\nS - Des/marcar\nJ o P - Mensaje anterior\nK o N - Siguiente mensaje</string>
+  <string name="message_list_help_key">Supr (o D) - Borrar\nC - Redactar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (no) leído\nG - Destacar\nO - Tipo de ordenación\nI - Invertir orden\nQ - Volver a las carpetas\nS - Des/marcar</string>
   <string name="folder_list_filter_hint">El nombre de la carpeta contiene</string>
   <string name="folder_list_display_mode_label">Mostrar carpetas…</string>
   <string name="folder_list_display_mode_all">Ver todas las carpetas</string>
@@ -690,6 +697,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="volume_navigation_message">Vista de mensaje</string>
   <string name="volume_navigation_list">Listas de mensajes</string>
   <string name="show_unified_inbox_title">Mostrar bandeja de entrada unificada</string>
+  <string name="show_starred_count_title">Mostrar número de mensajes destacados</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - No leído</string>
   <string name="search_all_messages_title">Todos los mensajes</string>
@@ -1033,11 +1041,11 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="ac_transfer_finish">Para finalizar, abra el mensaje en su otro dispositivo e introduzca el código de configuración.</string>
   <string name="ac_transfer_show_code">Mostrar código de configuración</string>
   <string name="ac_transfer_msg_subject">Mensaje de configuración Autocrypt</string>
-  <string name="ac_transfer_msg_body">Este mensaje contiene toda la información para transferir sus ajustes de Autocrypt junto con su clave secreta de manera segura desde su dispositivo original.
+  <string name="ac_transfer_msg_body">Este mensaje contiene toda la información para transferir tus ajustes de Autocrypt junto con tu clave secreta de manera segura desde tu dispositivo original.
 
-Para configurar su nuevo dispositivo con Autocrypt, por favor siga las instrucciones que deberían presentarse en su nuevo dispositivo.
+Para configurar tu nuevo dispositivo con Autocrypt sigue las instrucciones que deberían presentarse en tu nuevo dispositivo.
 
-Puede mantener este mensaje y usarlo como copia de seguridad de su clave secreta. Si desea hacer esto, debería anotar la contraseña y guardarla de manera segura.
+Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta. Para ello deberías anotar la contraseña y guardarla de manera segura.
 </string>
   <string name="ac_transfer_error_send">Ha ocurrido un error al enviar el mensaje, por favor verifique su conexión a internet y la configuración del servidor de salida.</string>
   <string name="switch_on">Sí</string>

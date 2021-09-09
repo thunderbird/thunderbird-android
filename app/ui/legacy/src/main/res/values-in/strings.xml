@@ -289,6 +289,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_basics_email_hint">Alamat surel</string>
   <string name="account_setup_basics_password_hint">Sandi</string>
   <string name="account_setup_basics_show_password">Tampilkan sandi</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Mengambil informasi akun\u2026</string>

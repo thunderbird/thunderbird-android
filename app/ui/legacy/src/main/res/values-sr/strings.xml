@@ -293,6 +293,7 @@
   <string name="account_setup_basics_email_hint">Адреса е-поште</string>
   <string name="account_setup_basics_password_hint">Лозинка</string>
   <string name="account_setup_basics_show_password">Прикажи лозинку</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ручна постава</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Добављам податке о налогу\u2026</string>

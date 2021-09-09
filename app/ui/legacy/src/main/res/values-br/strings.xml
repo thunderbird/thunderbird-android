@@ -281,6 +281,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_basics_email_hint">Chomlec’h postel</string>
   <string name="account_setup_basics_password_hint">Ger-tremen</string>
   <string name="account_setup_basics_show_password">Diskouez ar ger-tremen</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Arventennañ dre zorn</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">O kerc’hat titouroù ar gont\u2026</string>

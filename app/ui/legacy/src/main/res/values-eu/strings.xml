@@ -297,6 +297,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_basics_email_hint">Posta helbidea</string>
   <string name="account_setup_basics_password_hint">Pasahitza</string>
   <string name="account_setup_basics_show_password">Erakutsi pasahitza</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Eskuzko konfigurazioa</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Kontuaren informazioa berreskuratzen\u2026</string>

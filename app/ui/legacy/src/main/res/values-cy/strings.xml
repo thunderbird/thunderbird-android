@@ -291,6 +291,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_basics_email_hint">Cyfeiriad e-bost</string>
   <string name="account_setup_basics_password_hint">Cyfrinair</string>
   <string name="account_setup_basics_show_password">Dangos cyfrinair</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Gosod â llaw</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Yn nôl manylion y cyfrif\u2026</string>

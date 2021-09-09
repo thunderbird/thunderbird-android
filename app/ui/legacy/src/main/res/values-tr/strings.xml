@@ -184,6 +184,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="notification_bg_send_title">Posta gönderiliyor</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_push_title">Eşzamanla (İttir)</string>
+  <string name="notification_channel_push_description">Yeni iletiler beklenirken görüntülenir</string>
   <string name="notification_channel_messages_title">İletiler</string>
   <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
   <string name="notification_channel_miscellaneous_title">Çeşitli</string>
@@ -296,6 +297,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_basics_email_hint">E-posta adresi</string>
   <string name="account_setup_basics_password_hint">Parola</string>
   <string name="account_setup_basics_show_password">Parolayı göster</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">El ile ayar</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Hesap bilgisi alınıyor\u2026</string>
@@ -435,6 +437,9 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_mark_message_as_read_on_view_summary">Mesaj okunmak üzere açıldığında okundu olarak işaretle</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Silindiğinde okundu olarak işaretle</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Bir ileti silindiğinde okundu olarak işaretlemek</string>
+  <string name="account_settings_notification_channels_label">Bildirim kategorileri</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Yeni ileti bildirimlerini ayarla</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Hata ve durum bildirimlerini ayarla</string>
   <string name="account_settings_show_pictures_label">Daima resimleri göster</string>
   <string name="account_settings_show_pictures_never">Hayır</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kişilerden</string>
@@ -550,6 +555,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="folder_settings_folder_push_mode_normal">Sınıflama yok</string>
   <string name="folder_settings_folder_push_mode_first_class">1. Sınıf</string>
   <string name="folder_settings_folder_push_mode_second_class">2. Sınıf</string>
+  <string name="folder_settings_folder_push_mode_inherited">Sorgu sınıfı ile aynı</string>
   <string name="folder_settings_folder_notify_mode_label">Klasör bildirim sınıfı</string>
   <string name="folder_settings_folder_notify_mode_normal">Sınıflama yok</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. Sınıf</string>
@@ -686,6 +692,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="volume_navigation_message">İleti görünümlerinde</string>
   <string name="volume_navigation_list">liste görünümlerinde</string>
   <string name="show_unified_inbox_title">Birleşik Gelen Kutusunu Göster</string>
+  <string name="show_starred_count_title">Yıldızlanan sayısını göster</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Okunmadı</string>
   <string name="search_all_messages_title">Bütün mesajlar</string>
@@ -1045,4 +1052,10 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <string name="permission_contacts_rationale_message">Kişilerle ilgili öneriler sunabilmek, kişi adlarını ve fotoğraflarını görüntüleyebilmek için uygulamanın kişilerinize erişmesi gerekir.</string>
   <string name="generic_loading_error">Veriler yüklenirken bir hata oluştu </string>
   <string name="push_notification_state_initializing">Başlatılıyor...</string>
+  <string name="push_notification_state_listening">Yeni e-postalar bekleniyor</string>
+  <string name="push_notification_state_wait_background_sync">Arkaplan senkronizasyonuna izin verilene kadar uyku halinde</string>
+  <string name="push_notification_state_wait_network">Şebekeye erişene kadar uyku halinde</string>
+  <string name="push_notification_info">Daha fazlasını öğrenmek için dokunun.</string>
+  <string name="push_info_configure_notification_text">Aynı zamanda Android de bildirimleri gizlemenize olanak sağlamaktadır.</string>
+  <string name="push_info_learn_more_text">Daha fazlasını öğren</string>
 </resources>

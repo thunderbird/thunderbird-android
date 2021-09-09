@@ -110,6 +110,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="discard_action">Zrušit</string>
   <string name="save_draft_action">Uložit jako koncept</string>
   <string name="check_mail_action">Zkontrolovat poštu</string>
+  <string name="check_all_mail_action">Zkontrolovat e-maily ve všech účtech</string>
   <string name="send_messages_action">Odeslat zprávy</string>
   <string name="refresh_folders_action">Obnovit složky</string>
   <string name="filter_folders_action">Najdi složku</string>
@@ -302,6 +303,10 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_basics_email_hint">Emailová adresa</string>
   <string name="account_setup_basics_password_hint">Heslo</string>
   <string name="account_setup_basics_show_password">Zobrazit heslo</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Pokud si zde chcete zobrazit své heslo, zapněte zamykání obrazovky tohoto zařízení.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Ověřte svou identitu</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Pokud chcete vidět své heslo, odemkněte</string>
   <string name="account_setup_basics_manual_setup_action">Ruční nastavení</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Získávání informací o účtu\u2026</string>
@@ -437,6 +442,8 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_notify_self_summary">Zobrazovat oznámení pro vlastní odeslanou poštu</string>
   <string name="account_notify_contacts_mail_only_label">Pouze kontakty</string>
   <string name="account_notify_contacts_mail_only_summary">Zobrazovat oznámení pouze na zprávy od známých kontaktů</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignorovat zprávy z chatů</string>
+  <string name="account_settings_ignore_chat_messages_summary">Nezobrazovat upozornění na zprávy, náležející do e-mailového chatu</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Označit jako přečtenou po otevření</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Označit zprávu jako přečtenou po otevření</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Při smazání označit jako přečtené</string>
@@ -696,6 +703,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="volume_navigation_message">Zobrazení zpráv</string>
   <string name="volume_navigation_list">Různá zobrazení seznamů</string>
   <string name="show_unified_inbox_title">Ukázat sjednocený pohled na doručenou poštu</string>
+  <string name="show_starred_count_title">Zobrazit počet označených hvězdičkou</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Nepřečtené</string>
   <string name="search_all_messages_title">Všechny zprávy</string>

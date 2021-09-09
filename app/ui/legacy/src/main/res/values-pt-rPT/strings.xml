@@ -282,6 +282,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_basics_email_hint">Endereço de email</string>
   <string name="account_setup_basics_password_hint">Palavra-passe</string>
   <string name="account_setup_basics_show_password">Mostrar palavra-passe</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">A obter informações da conta\u2026</string>

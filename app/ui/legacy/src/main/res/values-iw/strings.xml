@@ -205,6 +205,7 @@
   <string name="account_setup_basics_title">הגדר חשבון חדש</string>
   <string name="account_setup_basics_email_hint">כתובת דוא\"ל</string>
   <string name="account_setup_basics_password_hint">סיסמא</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">הוראות הגדרה</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">מאחזר מידע חשבון …</string>

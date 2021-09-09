@@ -298,6 +298,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_basics_email_hint">Netfang</string>
   <string name="account_setup_basics_password_hint">Lykilorð</string>
   <string name="account_setup_basics_show_password">Sýna lykilorð</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Handvirk uppsetning</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Næ í upplýsingar um aðgang\u2026</string>

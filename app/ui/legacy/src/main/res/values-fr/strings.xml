@@ -109,7 +109,8 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="done_action">Terminé</string>
   <string name="discard_action">Abandonner</string>
   <string name="save_draft_action">Enregistrer comme brouillon</string>
-  <string name="check_mail_action">Relève des courriels</string>
+  <string name="check_mail_action">Relever les courriels</string>
+  <string name="check_all_mail_action">Relever les courriels dans tous les comptes</string>
   <string name="send_messages_action">Envoyer les courriels</string>
   <string name="refresh_folders_action">Actualiser la liste des dossiers</string>
   <string name="filter_folders_action">Trouver un dossier</string>
@@ -299,6 +300,10 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_setup_basics_email_hint">Adresse courriel</string>
   <string name="account_setup_basics_password_hint">Mot de passe</string>
   <string name="account_setup_basics_show_password">Afficher le mot de passe</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Pour visualiser votre mot de passe ici, activez le verrouillage de l’écran sur cet appareil.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Confirmer votre identité</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Déverrouiller l’écran pour visualiser votre mot de passe</string>
   <string name="account_setup_basics_manual_setup_action">Configuration manuelle</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Récupération des renseignements de compte\u2026</string>
@@ -434,6 +439,8 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_settings_notify_self_summary">Afficher une notification pour les courriels que j’ai envoyés</string>
   <string name="account_notify_contacts_mail_only_label">Contacts seulement</string>
   <string name="account_notify_contacts_mail_only_summary">N’afficher des notifications que pour les courriels de contacts connus</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignorer les messages de conversation</string>
+  <string name="account_settings_ignore_chat_messages_summary">Ne pas afficher de notification pour les messages qui appartiennent à une conversation de courriel</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marquer comme lu à l’ouverture</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marquer un courriel comme lu quand il est ouvert pour être visualisé</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marquer comme lu lors de la suppression</string>
@@ -693,6 +700,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="volume_navigation_message">Dans les vues des courriels</string>
   <string name="volume_navigation_list">Dans les vues en liste</string>
   <string name="show_unified_inbox_title">Afficher la boîte de réception unifiée</string>
+  <string name="show_starred_count_title">Afficher le compte d’étoilés</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Non lu</string>
   <string name="search_all_messages_title">Tous les courriels</string>

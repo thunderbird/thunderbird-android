@@ -111,6 +111,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="discard_action">Hidhe tej</string>
   <string name="save_draft_action">Ruaje si skicë</string>
   <string name="check_mail_action">Merr email-et</string>
+  <string name="check_all_mail_action">Kontrollo për postë në krejt llogaritë</string>
   <string name="send_messages_action">Dërgo mesazhe</string>
   <string name="refresh_folders_action">Rifresko listë dosjesh</string>
   <string name="filter_folders_action">Gjej në dosje</string>
@@ -299,6 +300,10 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_basics_email_hint">Adresë email</string>
   <string name="account_setup_basics_password_hint">Fjalëkalim</string>
   <string name="account_setup_basics_show_password">Shfaqe fjalëkalimin</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Që të shihni fjalëkalimin tuaj këtu, aktivizoni kyçje ekrani në këtë pajisje.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verifikoni identitetin tuaj</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Që të shihni fjalëkalimin tuaj, shkyçeni</string>
   <string name="account_setup_basics_manual_setup_action">Rregullim dorazi</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Po merren të dhëna llogarie\u2026</string>
@@ -434,6 +439,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_notify_self_summary">Shfaq një njoftim për mesazhet që dërgoj</string>
   <string name="account_notify_contacts_mail_only_label">Vetëm kontaktet</string>
   <string name="account_notify_contacts_mail_only_summary">Shfaq njoftime vetëm për mesazhe nga kontakte të njohur</string>
+  <string name="account_settings_ignore_chat_messages_label">Shpërfill mesazhe fjalosjesh</string>
+  <string name="account_settings_ignore_chat_messages_summary">Mos shfaq njoftime për mesazhe që u përkasin një fjalosjeje me email</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Shënoje si të lexuar kur hapet</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Shënoje një mesazh të lexuar, kur hapet për parje</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Vëri shenjë si i lexuar, kur fshihet</string>
@@ -693,6 +700,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="volume_navigation_message">Në skenë mesazhi</string>
   <string name="volume_navigation_list">Në skenë liste</string>
   <string name="show_unified_inbox_title">Shfaq Kuti Poste të Njësuar</string>
+  <string name="show_starred_count_title">Shfaq llogari me yll</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Të palexuar</string>
   <string name="search_all_messages_title">Krejt mesazhet</string>

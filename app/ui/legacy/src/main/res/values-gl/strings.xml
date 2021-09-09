@@ -262,6 +262,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_basics_email_hint">Enderezo de correo</string>
   <string name="account_setup_basics_password_hint">Contrasinal</string>
   <string name="account_setup_basics_show_password">Mostrar contrasinal</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Configuración Manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Recuperando información da conta\u2026</string>

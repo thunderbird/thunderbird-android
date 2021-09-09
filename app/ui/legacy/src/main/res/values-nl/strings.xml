@@ -106,6 +106,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="discard_action">Vergeten</string>
   <string name="save_draft_action">Opslaan als concept</string>
   <string name="check_mail_action">Controleer e-mail</string>
+  <string name="check_all_mail_action">Voor alle accounts nagaan of er nieuwe e-mails zijn</string>
   <string name="send_messages_action">Verstuur berichten</string>
   <string name="refresh_folders_action">Maplijst verversen</string>
   <string name="filter_folders_action">Map vinden</string>
@@ -121,8 +122,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="mark_as_read_action">Markeer als gelezen</string>
   <string name="send_alternate_action">Delen</string>
   <string name="send_alternate_chooser_title">Kies afzender</string>
-  <string name="flag_action">Voeg ster toe</string>
-  <string name="unflag_action">Verwijder ster</string>
+  <string name="flag_action">Ster toevoegen</string>
+  <string name="unflag_action">Ster verwijderen</string>
   <string name="copy_action">Kopieer</string>
   <string name="show_headers_action">Laat koppen zien</string>
   <plurals name="copy_address_to_clipboard">
@@ -238,7 +239,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="debug_delete_local_body">Debug / Bericht veld wissen</string>
   <string name="message_discarded_toast">Bericht verwijderd</string>
   <string name="message_saved_toast">Bericht opgeslagen als concept</string>
-  <string name="global_settings_flag_label">Bericht sterren</string>
+  <string name="global_settings_flag_label">Sterren weergeven</string>
   <string name="global_settings_flag_summary">Sterren geven gemarkeerde berichten aan</string>
   <string name="global_settings_preview_lines_label">Preview regels</string>
   <string name="global_settings_show_correspondent_names_label">Toon naam bij bericht</string>
@@ -260,7 +261,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_confirm_actions_title">Bevestig acties</string>
   <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoert</string>
   <string name="global_settings_confirm_action_delete">Verwijder</string>
-  <string name="global_settings_confirm_action_delete_starred">Gemarkeerd verwijderen (in bericht weergave)</string>
+  <string name="global_settings_confirm_action_delete_starred">Berichten met een ster verwijderen (in berichtweergave)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Bericht afbreken</string>
   <string name="global_settings_confirm_menu_mark_all_read">Markeer alles als gelezen</string>
@@ -293,6 +294,10 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_basics_email_hint">E-mailadres</string>
   <string name="account_setup_basics_password_hint">Wachtwoord</string>
   <string name="account_setup_basics_show_password">Toon wachtwoord</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Schakel op dit apparaat een schermvergrendeling in om hier je wachtwoord te kunnen zien</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verifieer je identiteit</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Ontgrendel om je wachtwoord te zien</string>
   <string name="account_setup_basics_manual_setup_action">Handmatige setup</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Ophalen account informatie\u2026</string>
@@ -428,6 +433,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_notify_self_summary">Notificatie ook voor e-mail verzonden vanaf een identiteit</string>
   <string name="account_notify_contacts_mail_only_label">Alleen contacten</string>
   <string name="account_notify_contacts_mail_only_summary">Notificaties alleen weergeven voor bekende contacten</string>
+  <string name="account_settings_ignore_chat_messages_label">Chatberichten negeren</string>
+  <string name="account_settings_ignore_chat_messages_summary">Geef geen meldingen weer voor berichten die onderdeel zijn van een e-mail-chat</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markeer als gelezen als geopend</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markeer als gelezen wanneer ingezien</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Als gelezen markeren bij wissen</string>
@@ -687,6 +694,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="volume_navigation_message">Bericht beeld</string>
   <string name="volume_navigation_list">Variabele lijst weergave</string>
   <string name="show_unified_inbox_title">Gecombineerde postvak-in weergeven</string>
+  <string name="show_starred_count_title">Het aantal berichten met een ster weergeven</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Ongelezen</string>
   <string name="search_all_messages_title">Alle berichten</string>

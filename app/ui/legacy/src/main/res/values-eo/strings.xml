@@ -292,6 +292,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_basics_email_hint">Retpoŝtadreso</string>
   <string name="account_setup_basics_password_hint">Pasvorto</string>
   <string name="account_setup_basics_show_password">Montri pasvorton</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Agordi permane</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Elŝutado de informoj pri konto\u2026</string>

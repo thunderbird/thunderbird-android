@@ -229,6 +229,7 @@
   <string name="account_setup_basics_email_hint">이메일 주소</string>
   <string name="account_setup_basics_password_hint">비밀번호</string>
   <string name="account_setup_basics_show_password">암호 표시</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">수동 설정</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">계정 정보 복구\u2026</string>

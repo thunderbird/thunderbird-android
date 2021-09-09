@@ -295,6 +295,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_basics_email_hint">E-mailová adresa</string>
   <string name="account_setup_basics_password_hint">Heslo</string>
   <string name="account_setup_basics_show_password">Zobraziť heslo</string>
+  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ručné nastavenie</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Načítavanie informácií o účte\u2026</string>
