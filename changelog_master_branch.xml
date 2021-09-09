@@ -5,6 +5,32 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.900" versioncode="29000" date="2021-09-09">
+        <change>Experimental: Added a toolbar with a "check mail" button to the navigation drawer</change>
+        <change>Experimental: Tweaked the mark as unread toolbar icon</change>
+        <change>Don't show notifications for new messages when syncing a folder for the first time</change>
+        <change>Optionally show starred message count in navigation drawer</change>
+        <change>Require the user to authenticate before unmasking server passwords</change>
+        <change>Properly decode format=flowed body before including the text in a reply</change>
+        <change>Added a setting to suppress notifications for chat messages</change>
+        <change>Small change to the user interface for searching messages</change>
+        <change>Make sure attachment box isn't cut off on small screens</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.806" versioncode="28006" date="2021-08-30">
+        <change>Fixed the check for missing outgoing server credentials, again… hopefully 🤞</change>
+    </release>
+    <release version="5.805" versioncode="28005" date="2021-08-21">
+        <change>Fixed the check for missing incoming/outgoing server credentials (introduced in K-9 Mail 5.804)</change>
+        <change>Changed the 'save attachment' icon (apparently floppy disks are no longer a thing)</change>
+    </release>
+    <release version="5.804" versioncode="28004" date="2021-08-18">
+        <change>Fixed a bug where Push didn't work with some servers</change>
+        <change>Don't connect to the incoming or outgoing server when passwords haven't been provided after import</change>
+        <change>Added missing scrollbars in screens showing the folder list</change>
+        <change>Tapping the app icon should now always bring the app to the foreground instead of adding another message list screen</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.803" versioncode="28003" date="2021-08-12">
         <change>Don't show the icon for the ongoing Push notification in the status bar (on versions older than Android 8.0)</change>
         <change>Directly open system settings for notification categories (Android 8.0 and newer)</change>
