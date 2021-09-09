@@ -1006,6 +1006,16 @@ open class MessageList :
         } else if (id == R.id.show_headers) {
             startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
             return true
+        } else if (id == R.id.set_format_plain) {
+            messageViewFragment!!.setRenderPlainFormat(true);
+            messageViewFragment!!.asyncReloadMessage(); /* call refresh */
+            updateMenu();
+            return true;
+        } else if (id == R.id.set_format_html) {
+            messageViewFragment!!.setRenderPlainFormat(false);
+            messageViewFragment!!.asyncReloadMessage(); /* call refresh */
+            updateMenu();
+            return true;
         }
 
         if (!singleFolderMode) {
@@ -1100,6 +1110,8 @@ open class MessageList :
             menu.findItem(R.id.toggle_message_view_theme).isVisible = false
             menu.findItem(R.id.unsubscribe).isVisible = false
             menu.findItem(R.id.show_headers).isVisible = false
+            menu.findItem(R.id.set_format_html).isVisible = false;
+            menu.findItem(R.id.set_format_plain).isVisible = false;
         } else {
             // hide prev/next buttons in split mode
             if (displayMode != DisplayMode.MESSAGE_VIEW) {
@@ -1176,6 +1188,12 @@ open class MessageList :
                 menu.findItem(R.id.spam).isVisible = false
 
                 menu.findItem(R.id.refile).isVisible = false
+            }
+
+            if (messageViewFragment!!.getRenderPlainFormat()) {
+                menu.findItem(R.id.set_format_plain).isVisible = false;
+            } else {
+                menu.findItem(R.id.set_format_html).isVisible = false;
             }
 
             if (messageViewFragment!!.isOutbox) {

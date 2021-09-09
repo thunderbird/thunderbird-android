@@ -764,6 +764,18 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         messageCryptoPresenter.onClickShowCryptoKey();
     }
 
+    public void asyncReloadMessage() {
+        messageLoaderHelper.asyncReloadMessage();
+    }
+
+    public void setRenderPlainFormat(final boolean b) {
+        mMessageView.setRenderPlainFormat(b);
+    }
+
+    public boolean getRenderPlainFormat() {
+        return mMessageView.getRenderPlainFormat();
+    }
+
     public interface MessageViewFragmentListener {
         void onForward(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
         void onForwardAsAttachment(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);

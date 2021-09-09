@@ -54,6 +54,7 @@ public class MessageTopView extends LinearLayout {
     private Button showPicturesButton;
     private boolean isShowingProgress;
     private boolean showPicturesButtonClicked;
+    private boolean renderPlainFormat = false;
 
     private MessageCryptoPresenter messageCryptoPresenter;
 
@@ -120,7 +121,7 @@ public class MessageTopView extends LinearLayout {
         containerView.addView(view);
 
         boolean hideUnsignedTextDivider = account.isOpenPgpHideSignOnly();
-        view.displayMessageViewContainer(messageViewInfo, new OnRenderingFinishedListener() {
+        view.displayMessageViewContainer(messageViewInfo, renderPlainFormat, new OnRenderingFinishedListener() {
             @Override
             public void onLoadFinished() {
                 displayViewOnLoadFinished(true);
@@ -129,6 +130,8 @@ public class MessageTopView extends LinearLayout {
 
         if (view.hasHiddenExternalImages() && !showPicturesButtonClicked) {
             showShowPicturesButton();
+        } else {
+            hideShowPicturesButton();
         }
     }
 
@@ -354,6 +357,14 @@ public class MessageTopView extends LinearLayout {
         if (messageContainerViewCandidate instanceof MessageContainerView) {
             ((MessageContainerView) messageContainerViewCandidate).refreshAttachmentThumbnail(attachment);
         }
+    }
+
+    public void setRenderPlainFormat(final boolean b) {
+        renderPlainFormat = b;
+    }
+
+    public boolean getRenderPlainFormat() {
+        return renderPlainFormat;
     }
 
     private static class SavedState extends BaseSavedState {
