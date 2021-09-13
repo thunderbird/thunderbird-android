@@ -32,8 +32,8 @@ val coreNotificationModule = module {
     single { SendFailedNotifications(get(), get(), get()) }
     single { NewMailNotifications(get(), get(), get(), get()) }
     single { NotificationContentCreator(get(), get()) }
-    single { WearNotifications(get(), get(), get()) }
-    single { DeviceNotifications(get(), get(), get(), get(), get()) }
+    single { SingleMessageNotifications(get(), get(), get()) }
+    single { MessageSummaryNotifications(get(), get(), get(), get(), get()) }
     single { LockScreenNotification(get(), get()) }
     single {
         PushNotificationManager(

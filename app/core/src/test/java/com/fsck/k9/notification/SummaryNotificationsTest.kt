@@ -35,15 +35,16 @@ private const val SUBJECT_2 = "subject2"
 private const val SENDER_2 = "sender2"
 private const val NOTIFICATION_ID = 23
 
-class DeviceNotificationsTest : RobolectricTest() {
+class SummaryNotificationsTest : RobolectricTest() {
     private val notification = mock<Notification>()
+    private val bigTextStyle = mockBuilder<NotificationCompat.BigTextStyle>()
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
     private val account = createFakeAccount()
     private val notificationData = createFakeNotificationData(account)
     private val builder = createFakeNotificationBuilder()
     private val builder2 = createFakeNotificationBuilder()
     private val lockScreenNotification = mock<LockScreenNotification>()
-    private val notifications = createDeviceNotifications(builder, lockScreenNotification)
+    private val notifications = createSummaryNotifications(builder, lockScreenNotification)
 
     @Test
     fun buildSummaryNotification_withPrivacyModeActive() {
@@ -78,8 +79,8 @@ class DeviceNotificationsTest : RobolectricTest() {
         verify(builder).setTicker(SUMMARY)
         verify(builder).setContentText(SUBJECT)
         verify(builder).setContentTitle(SENDER)
-        verify(builder).setStyle(notifications.bigTextStyle)
-        verify(notifications.bigTextStyle).bigText(PREVIEW)
+        verify(builder).setStyle(bigTextStyle)
+        verify(bigTextStyle).bigText(PREVIEW)
         verify(builder).addAction(resourceProvider.iconReply, "Reply", null)
         verify(builder).addAction(resourceProvider.iconMarkAsRead, "Mark Read", null)
         verify(builder).addAction(resourceProvider.iconDelete, "Delete", null)
@@ -187,15 +188,22 @@ class DeviceNotificationsTest : RobolectricTest() {
         }
     }
 
-    private fun createDeviceNotifications(
+    private fun createSummaryNotifications(
         builder: NotificationCompat.Builder,
         lockScreenNotification: LockScreenNotification
-    ): TestDeviceNotifications {
-        return TestDeviceNotifications(
-            notificationHelper = createFakeNotificationHelper(builder),
+    ): TestMessageSummaryNotifications {
+        val notificationHelper = createFakeNotificationHelper(builder)
+        val singleMessageNotifications = TestSingleMessageNotifications(
+            notificationHelper = notificationHelper,
+            actionCreator = mock(),
+            resourceProvider = resourceProvider
+        )
+
+        return TestMessageSummaryNotifications(
+            notificationHelper = notificationHelper,
             actionCreator = mock(),
             lockScreenNotification = lockScreenNotification,
-            wearNotifications = mock(),
+            singleMessageNotifications = singleMessageNotifications,
             resourceProvider = resourceProvider
         )
     }
@@ -210,28 +218,37 @@ class DeviceNotificationsTest : RobolectricTest() {
         }
     }
 
-    internal class TestDeviceNotifications(
+    internal class TestMessageSummaryNotifications(
         notificationHelper: NotificationHelper,
         actionCreator: NotificationActionCreator,
         lockScreenNotification: LockScreenNotification,
-        wearNotifications: WearNotifications,
+        singleMessageNotifications: SingleMessageNotifications,
         resourceProvider: NotificationResourceProvider
-    ) : DeviceNotifications(
+    ) : MessageSummaryNotifications(
         notificationHelper,
         actionCreator,
         lockScreenNotification,
-        wearNotifications,
+        singleMessageNotifications,
         resourceProvider
     ) {
-        val bigTextStyle = mockBuilder<NotificationCompat.BigTextStyle>()
         val inboxStyle = mockBuilder<NotificationCompat.InboxStyle>()
-
-        override fun createBigTextStyle(builder: NotificationCompat.Builder?): NotificationCompat.BigTextStyle {
-            return bigTextStyle
-        }
 
         override fun createInboxStyle(builder: NotificationCompat.Builder?): NotificationCompat.InboxStyle {
             return inboxStyle
+        }
+    }
+
+    internal inner class TestSingleMessageNotifications(
+        notificationHelper: NotificationHelper,
+        actionCreator: NotificationActionCreator,
+        resourceProvider: NotificationResourceProvider
+    ) : SingleMessageNotifications(
+        notificationHelper,
+        actionCreator,
+        resourceProvider
+    ) {
+        override fun createBigTextStyle(builder: NotificationCompat.Builder?): NotificationCompat.BigTextStyle {
+            return bigTextStyle
         }
     }
 }

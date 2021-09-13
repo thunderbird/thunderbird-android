@@ -25,16 +25,15 @@ import org.mockito.kotlin.whenever
 private const val ACCOUNT_NUMBER = 42
 private const val ACCOUNT_NAME = "accountName"
 
-class WearNotificationsTest : RobolectricTest() {
+class SingleMessageNotificationsTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
     private val account = createAccount()
     private val notification = mock<Notification>()
     private val builder = createNotificationBuilder(notification)
     private val actionCreator = mock<NotificationActionCreator>()
-    private val wearNotifications = TestWearNotifications(
+    private val notifications = SingleMessageNotifications(
         notificationHelper = createNotificationHelper(builder),
         actionCreator = actionCreator,
-        messagingController = createMessagingController(),
         resourceProvider = resourceProvider
     )
 
@@ -42,7 +41,7 @@ class WearNotificationsTest : RobolectricTest() {
     fun testBuildStackedNotification() {
         disableOptionalActions()
         val notificationIndex = 0
-        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val notificationId = NotificationIds.getSingleMessageNotificationId(account, notificationIndex)
         val messageReference = createMessageReference(1)
         val content = createNotificationContent(messageReference)
         val holder = createNotificationHolder(notificationId, content)
@@ -58,7 +57,7 @@ class WearNotificationsTest : RobolectricTest() {
             markAsReadPendingIntent
         )
 
-        val result = wearNotifications.buildStackedNotification(account, holder)
+        val result = notifications.buildSingleMessageNotification(account, holder)
 
         assertThat(result).isEqualTo(notification)
         verifyExtendWasOnlyCalledOnce()
@@ -71,7 +70,7 @@ class WearNotificationsTest : RobolectricTest() {
     fun testBuildStackedNotificationWithDeleteActionEnabled() {
         enableDeleteAction()
         val notificationIndex = 0
-        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val notificationId = NotificationIds.getSingleMessageNotificationId(account, notificationIndex)
         val messageReference = createMessageReference(1)
         val content = createNotificationContent(messageReference)
         val holder = createNotificationHolder(notificationId, content)
@@ -80,7 +79,7 @@ class WearNotificationsTest : RobolectricTest() {
             deletePendingIntent
         )
 
-        val result = wearNotifications.buildStackedNotification(account, holder)
+        val result = notifications.buildSingleMessageNotification(account, holder)
 
         assertThat(result).isEqualTo(notification)
         verifyExtendWasOnlyCalledOnce()
@@ -91,7 +90,7 @@ class WearNotificationsTest : RobolectricTest() {
     fun testBuildStackedNotificationWithArchiveActionEnabled() {
         enableArchiveAction()
         val notificationIndex = 0
-        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val notificationId = NotificationIds.getSingleMessageNotificationId(account, notificationIndex)
         val messageReference = createMessageReference(1)
         val content = createNotificationContent(messageReference)
         val holder = createNotificationHolder(notificationId, content)
@@ -100,7 +99,7 @@ class WearNotificationsTest : RobolectricTest() {
             archivePendingIntent
         )
 
-        val result = wearNotifications.buildStackedNotification(account, holder)
+        val result = notifications.buildSingleMessageNotification(account, holder)
 
         assertThat(result).isEqualTo(notification)
         verifyExtendWasOnlyCalledOnce()
@@ -111,7 +110,7 @@ class WearNotificationsTest : RobolectricTest() {
     fun testBuildStackedNotificationWithMarkAsSpamActionEnabled() {
         enableSpamAction()
         val notificationIndex = 0
-        val notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex)
+        val notificationId = NotificationIds.getSingleMessageNotificationId(account, notificationIndex)
         val messageReference = createMessageReference(1)
         val content = createNotificationContent(messageReference)
         val holder = createNotificationHolder(notificationId, content)
@@ -120,63 +119,11 @@ class WearNotificationsTest : RobolectricTest() {
             markAsSpamPendingIntent
         )
 
-        val result = wearNotifications.buildStackedNotification(account, holder)
+        val result = notifications.buildSingleMessageNotification(account, holder)
 
         assertThat(result).isEqualTo(notification)
         verifyExtendWasOnlyCalledOnce()
         verifyAddAction(resourceProvider.wearIconMarkAsSpam, "Spam", markAsSpamPendingIntent)
-    }
-
-    @Test
-    fun testAddSummaryActions() {
-        disableOptionalSummaryActions()
-        val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
-        val messageReferences = createMessageReferenceList()
-        val notificationData = createNotificationData(messageReferences)
-        val markAllAsReadPendingIntent = createFakePendingIntent(1)
-        whenever(actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId)).thenReturn(
-            markAllAsReadPendingIntent
-        )
-
-        wearNotifications.addSummaryActions(builder, notificationData)
-
-        verifyExtendWasOnlyCalledOnce()
-        verifyAddAction(resourceProvider.wearIconMarkAsRead, "Mark All Read", markAllAsReadPendingIntent)
-        verifyNumberOfActions(1)
-    }
-
-    @Test
-    fun testAddSummaryActionsWithDeleteAllActionEnabled() {
-        enableDeleteAction()
-        val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
-        val messageReferences = createMessageReferenceList()
-        val notificationData = createNotificationData(messageReferences)
-        val deletePendingIntent = createFakePendingIntent(1)
-        whenever(actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId)).thenReturn(
-            deletePendingIntent
-        )
-
-        wearNotifications.addSummaryActions(builder, notificationData)
-
-        verifyExtendWasOnlyCalledOnce()
-        verifyAddAction(resourceProvider.wearIconDelete, "Delete All", deletePendingIntent)
-    }
-
-    @Test
-    fun testAddSummaryActionsWithArchiveAllActionEnabled() {
-        enableArchiveAction()
-        val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
-        val messageReferences = createMessageReferenceList()
-        val notificationData = createNotificationData(messageReferences)
-        val archivePendingIntent = createFakePendingIntent(1)
-        whenever(actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId)).thenReturn(
-            archivePendingIntent
-        )
-
-        wearNotifications.addSummaryActions(builder, notificationData)
-
-        verifyExtendWasOnlyCalledOnce()
-        verifyAddAction(resourceProvider.wearIconArchive, "Archive All", archivePendingIntent)
     }
 
     private fun disableOptionalActions() {
@@ -304,19 +251,6 @@ class WearNotificationsTest : RobolectricTest() {
         ArgumentMatcher<NotificationCompat.WearableExtender> {
         override fun matches(argument: NotificationCompat.WearableExtender): Boolean {
             return argument.actions.size == expectedNumberOfActions
-        }
-    }
-
-    internal class TestWearNotifications(
-        notificationHelper: NotificationHelper,
-        actionCreator: NotificationActionCreator,
-        private val messagingController: MessagingController,
-        resourceProvider: NotificationResourceProvider
-    ) : WearNotifications(
-        notificationHelper, actionCreator, resourceProvider
-    ) {
-        override fun createMessagingController(): MessagingController {
-            return messagingController
         }
     }
 }
