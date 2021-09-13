@@ -176,6 +176,79 @@
 
         </FrameLayout>
 
+        <ViewAnimator
+            android:id="@+id/reply_to_expander_container"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_margin="12dp"
+            android:inAnimation="@anim/fade_in"
+            android:outAnimation="@anim/fade_out">
+
+            <ImageView
+                android:id="@+id/reply_to_expander"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="6dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="?attr/iconActionExpand" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </ViewAnimator>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:id="@+id/reply_to_divider"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:id="@+id/reply_to_wrapper"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="12dip"
+        android:layout_marginRight="12dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:minHeight="50dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp"
+            android:minWidth="50dp"
+            android:id="@+id/reply_to_label"
+            android:labelFor="@+id/reply_to"
+            android:text="@string/reply_to_label"
+            style="@style/ComposeTextLabel" />
+
+        <com.fsck.k9.view.RecipientSelectView
+            android:id="@+id/reply_to"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:inputType="textEmailAddress|textMultiLine"
+            android:imeOptions="actionNext"
+            android:background="@android:color/transparent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:dropDownWidth="wrap_content"
+            style="@style/RecipientEditText"
+            />
+
     </LinearLayout>
 
     <View

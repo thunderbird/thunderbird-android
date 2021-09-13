@@ -52,6 +52,10 @@ public class MessageBuilderTest extends RobolectricTest {
     private static final String TEST_ATTACHMENT_TEXT = "text data in attachment";
     private static final String TEST_SUBJECT = "test_subject";
     private static final Address TEST_IDENTITY_ADDRESS = new Address("test@example.org", "tester");
+    private static final Address[] TEST_REPLY_TO = new Address[] {
+            new Address("reply-to1@example.org", "reply 1"),
+            new Address("reply-to2@example.org", "reply 2")
+    };
     private static final Address[] TEST_TO = new Address[] {
             new Address("to1@example.org", "recip 1"),
             new Address("to2@example.org", "recip 2")
@@ -75,6 +79,7 @@ public class MessageBuilderTest extends RobolectricTest {
             "BCC: bcc recip <bcc@example.org>\r\n" +
             "Subject: test_subject\r\n" +
             "User-Agent: K-9 Mail for Android\r\n" +
+            "Reply-to: reply 1 <reply-to1@example.org>, reply 2 <reply-to2@example.org>\r\n" +
             "In-Reply-To: inreplyto\r\n" +
             "References: references\r\n" +
             "Message-ID: " + TEST_MESSAGE_ID + "\r\n" +
@@ -214,6 +219,7 @@ public class MessageBuilderTest extends RobolectricTest {
         assertEquals("text/plain", message.getMimeType());
         assertEquals(TEST_SUBJECT, message.getSubject());
         assertEquals(TEST_IDENTITY_ADDRESS, message.getFrom()[0]);
+        assertArrayEquals(TEST_REPLY_TO, message.getReplyTo());
         assertArrayEquals(TEST_TO, message.getRecipients(RecipientType.TO));
         assertArrayEquals(TEST_CC, message.getRecipients(RecipientType.CC));
         assertArrayEquals(TEST_BCC, message.getRecipients(RecipientType.BCC));
@@ -432,6 +438,7 @@ public class MessageBuilderTest extends RobolectricTest {
                 .setSubject(TEST_SUBJECT)
                 .setSentDate(SENT_DATE)
                 .setHideTimeZone(true)
+                .setReplyTo(TEST_REPLY_TO)
                 .setTo(Arrays.asList(TEST_TO))
                 .setCc(Arrays.asList(TEST_CC))
                 .setBcc(Arrays.asList(TEST_BCC))
