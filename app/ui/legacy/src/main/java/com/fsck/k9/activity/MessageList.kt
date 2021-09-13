@@ -57,6 +57,7 @@ import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageViewFragment
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
+import com.fsck.k9.ui.messageview.MessageViewPagerFragment
 import com.fsck.k9.ui.messageview.PlaceholderFragment
 import com.fsck.k9.ui.onboarding.OnboardingActivity
 import com.fsck.k9.ui.permissions.K9PermissionUiHelper
@@ -104,7 +105,7 @@ open class MessageList :
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
-    private var messageViewFragment: MessageViewFragment? = null
+    private var messageViewPagerFragment: MessageViewPagerFragment? = null;
     private var firstBackStackId = -1
     private var account: Account? = null
     private var search: LocalSearch? = null
@@ -226,7 +227,7 @@ open class MessageList :
         }
 
         removeMessageListFragment()
-        removeMessageViewFragment()
+        removeMessageViewPagerFragment()
 
         messageReference = null
         search = null
@@ -254,10 +255,14 @@ open class MessageList :
     private fun findFragments() {
         val fragmentManager = supportFragmentManager
         messageListFragment = fragmentManager.findFragmentById(R.id.message_list_container) as MessageListFragment?
-        messageViewFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW) as MessageViewFragment?
+        messageViewPagerFragment = fragmentManager.findFragmentById(R.id.message_viewpager_container) as MessageViewPagerFragment?
 
         messageListFragment?.let { messageListFragment ->
             initializeFromLocalSearch(messageListFragment.localSearch)
+        }
+
+        messageViewPagerFragment?.let { messageViewPagerFragment ->
+            messageViewPagerFragment.initializeMessageListFragment()
         }
     }
 
@@ -277,9 +282,19 @@ open class MessageList :
             this.messageListFragment = messageListFragment
         }
 
+        val hasMessageViewPagerFragment = messageViewPagerFragment != null
+        if (!hasMessageViewPagerFragment) {
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            val messageViewPagerFragment = MessageViewPagerFragment()
+            fragmentTransaction.add(R.id.message_viewpager_container, messageViewPagerFragment)
+            fragmentTransaction.commit()
+
+            this.messageViewPagerFragment = messageViewPagerFragment
+        }
+
         // Check if the fragment wasn't restarted and has a MessageReference in the arguments.
         // If so, open the referenced message.
-        if (!hasMessageListFragment && messageViewFragment == null && messageReference != null) {
+        if (!hasMessageListFragment && messageViewPagerFragment == null && messageReference != null) {
             openMessage(messageReference!!)
         }
     }
@@ -305,7 +320,7 @@ open class MessageList :
             }
         }
 
-        displayMode = if (messageViewFragment != null || messageReference != null) {
+        displayMode = if (messageViewPagerFragment != null || messageReference != null) {
             DisplayMode.MESSAGE_VIEW
         } else {
             DisplayMode.MESSAGE_LIST
@@ -334,10 +349,10 @@ open class MessageList :
             }
             DisplayMode.SPLIT_VIEW -> {
                 messageListWasDisplayed = true
-                if (messageViewFragment == null) {
+                if (messageViewPagerFragment == null) {
                     showMessageViewPlaceHolder()
                 } else {
-                    val activeMessage = messageViewFragment!!.messageReference
+                    val activeMessage = messageViewPagerFragment!!.currentMessageViewFragment.messageReference
                     if (activeMessage != null) {
                         messageListFragment!!.setActiveMessage(activeMessage)
                     }
@@ -600,7 +615,7 @@ open class MessageList :
 
     fun openFolder(folderId: Long) {
         if (displayMode == DisplayMode.SPLIT_VIEW) {
-            removeMessageViewFragment()
+            removeMessageViewPagerFragment()
             showMessageViewPlaceHolder()
         }
 
@@ -717,10 +732,8 @@ open class MessageList :
 
         when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_UP -> {
-                if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
-                    K9.isUseVolumeKeysForNavigation
-                ) {
-                    showPreviousMessage()
+                if (displayMode != DisplayMode.MESSAGE_LIST && K9.isUseVolumeKeysForNavigation) {
+                    messageViewPagerFragment!!.showPreviousMessage()
                     return true
                 } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
                     messageListFragment!!.onMoveUp()
@@ -728,10 +741,8 @@ open class MessageList :
                 }
             }
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
-                    K9.isUseVolumeKeysForNavigation
-                ) {
-                    showNextMessage()
+                if (displayMode != DisplayMode.MESSAGE_LIST && K9.isUseVolumeKeysForNavigation) {
+                    messageViewPagerFragment!!.showNextMessage()
                     return true
                 } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
                     messageListFragment!!.onMoveDown()
@@ -753,8 +764,8 @@ open class MessageList :
             KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_D -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onDelete()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onDelete()
+                } else {
+                    messageViewPagerFragment!!.currentMessageViewFragment.onDelete()
                 }
                 return true
             }
@@ -765,71 +776,61 @@ open class MessageList :
             KeyEvent.KEYCODE_G -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onToggleFlagged()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onToggleFlagged()
+                } else {
+                    messageViewPagerFragment!!.currentMessageViewFragment.onToggleFlagged()
                 }
                 return true
             }
             KeyEvent.KEYCODE_M -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onMove()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onMove()
+                } else {
+                    messageViewPagerFragment!!.currentMessageViewFragment.onMove()
                 }
                 return true
             }
             KeyEvent.KEYCODE_V -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onArchive()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onArchive()
+                } else {
+                    messageViewPagerFragment!!.currentMessageViewFragment.onArchive()
                 }
                 return true
             }
             KeyEvent.KEYCODE_Y -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onCopy()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onCopy()
+                } else  {
+                    messageViewPagerFragment!!.currentMessageViewFragment.onCopy()
                 }
                 return true
             }
             KeyEvent.KEYCODE_Z -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onToggleRead()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onToggleRead()
+                } else {
+                    messageViewPagerFragment!!.currentMessageViewFragment.onToggleRead()
                 }
                 return true
             }
             KeyEvent.KEYCODE_F -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onForward()
-                }
+                    messageViewPagerFragment!!.currentMessageViewFragment.onForward()
                 return true
             }
             KeyEvent.KEYCODE_A -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onReplyAll()
-                }
+                    messageViewPagerFragment!!.currentMessageViewFragment.onReplyAll()
                 return true
             }
             KeyEvent.KEYCODE_R -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onReply()
-                }
+                    messageViewPagerFragment!!.currentMessageViewFragment.onReply()
                 return true
             }
             KeyEvent.KEYCODE_J, KeyEvent.KEYCODE_P -> {
-                if (messageViewFragment != null) {
-                    showPreviousMessage()
-                }
+                messageViewPagerFragment!!.showPreviousMessage()
                 return true
             }
             KeyEvent.KEYCODE_N, KeyEvent.KEYCODE_K -> {
-                if (messageViewFragment != null) {
-                    showNextMessage()
-                }
+                messageViewPagerFragment!!.showNextMessage()
                 return true
             }
             KeyEvent.KEYCODE_H -> {
@@ -842,21 +843,20 @@ open class MessageList :
                 return true
             }
             KeyEvent.KEYCODE_DPAD_LEFT -> {
-                return if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
-                    showPreviousMessage()
+                return if (displayMode == DisplayMode.MESSAGE_VIEW) {
+                    messageViewPagerFragment!!.showPreviousMessage()
                 } else {
                     false
                 }
             }
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                return if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
-                    showNextMessage()
+                return if (displayMode == DisplayMode.MESSAGE_VIEW) {
+                    messageViewPagerFragment!!.showNextMessage()
                 } else {
                     false
                 }
             }
-        }
-
+    }
         return false
     }
 
@@ -928,53 +928,54 @@ open class MessageList :
         } else if (id == R.id.mark_all_as_read) {
             messageListFragment!!.confirmMarkAllAsRead()
             return true
-        } else if (id == R.id.next_message) { // MessageView
-            showNextMessage()
+        } else if (id == R.id.next_message) { // MessageViewPager
+            messageViewPagerFragment!!.showNextMessage()
             return true
         } else if (id == R.id.previous_message) {
-            showPreviousMessage()
+            messageViewPagerFragment!!.showPreviousMessage()
             return true
         } else if (id == R.id.delete) {
-            messageViewFragment!!.onDelete()
+            messageViewPagerFragment!!.currentMessageViewFragment.onDelete()
             return true
         } else if (id == R.id.reply) {
-            messageViewFragment!!.onReply()
+            messageViewPagerFragment!!.currentMessageViewFragment.onReply()
             return true
         } else if (id == R.id.reply_all) {
-            messageViewFragment!!.onReplyAll()
+            messageViewPagerFragment!!.currentMessageViewFragment.onReplyAll()
             return true
         } else if (id == R.id.forward) {
-            messageViewFragment!!.onForward()
+            messageViewPagerFragment!!.currentMessageViewFragment.onForward()
             return true
         } else if (id == R.id.forward_as_attachment) {
-            messageViewFragment!!.onForwardAsAttachment()
+            messageViewPagerFragment!!.currentMessageViewFragment.onForwardAsAttachment()
             return true
         } else if (id == R.id.edit_as_new_message) {
-            messageViewFragment!!.onEditAsNewMessage()
+            messageViewPagerFragment!!.currentMessageViewFragment.onEditAsNewMessage()
             return true
         } else if (id == R.id.share) {
-            messageViewFragment!!.onSendAlternate()
+            messageViewPagerFragment!!.currentMessageViewFragment.onSendAlternate()
             return true
         } else if (id == R.id.toggle_unread) {
-            messageViewFragment!!.onToggleRead()
+            messageViewPagerFragment!!.currentMessageViewFragment.onToggleRead()
             return true
         } else if (id == R.id.archive || id == R.id.refile_archive) {
-            messageViewFragment!!.onArchive()
+            messageViewPagerFragment!!.currentMessageViewFragment.onArchive()
             return true
         } else if (id == R.id.spam || id == R.id.refile_spam) {
-            messageViewFragment!!.onSpam()
+            messageViewPagerFragment!!.currentMessageViewFragment.onSpam()
             return true
         } else if (id == R.id.move || id == R.id.refile_move) {
-            messageViewFragment!!.onMove()
+            messageViewPagerFragment!!.currentMessageViewFragment.onMove()
             return true
         } else if (id == R.id.copy || id == R.id.refile_copy) {
-            messageViewFragment!!.onCopy()
+            messageViewPagerFragment!!.currentMessageViewFragment.onCopy()
             return true
         } else if (id == R.id.move_to_drafts) {
-            messageViewFragment!!.onMoveToDrafts()
+            messageViewPagerFragment!!.currentMessageViewFragment.onMoveToDrafts()
             return true
         } else if (id == R.id.show_headers) {
-            startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
+            startActivity(MessageSourceActivity.createLaunchIntent(this,
+                messageViewPagerFragment!!.currentMessageViewFragment.messageReference))
             return true
         }
 
@@ -1053,8 +1054,8 @@ open class MessageList :
         if (menu == null) return
 
         // Set visibility of menu items related to the message view
-        if (displayMode == DisplayMode.MESSAGE_LIST || messageViewFragment == null ||
-            !messageViewFragment!!.isInitialized
+        if (displayMode == DisplayMode.MESSAGE_LIST || messageViewPagerFragment == null ||
+            !messageViewPagerFragment!!.currentMessageViewFragment.isInitialized
         ) {
             menu.findItem(R.id.next_message).isVisible = false
             menu.findItem(R.id.previous_message).isVisible = false
@@ -1075,7 +1076,7 @@ open class MessageList :
                 menu.findItem(R.id.next_message).isVisible = false
                 menu.findItem(R.id.previous_message).isVisible = false
             } else {
-                val ref = messageViewFragment!!.messageReference
+                val ref = messageViewPagerFragment!!.currentMessageViewFragment.messageReference
                 val initialized = messageListFragment != null &&
                     messageListFragment!!.isLoadFinished
                 val canDoPrev = initialized && !messageListFragment!!.isFirst(ref)
@@ -1101,11 +1102,11 @@ open class MessageList :
                 toggleTheme.isVisible = true
             }
 
-            if (messageViewFragment!!.isOutbox) {
+            if (messageViewPagerFragment!!.currentMessageViewFragment.isOutbox) {
                 menu.findItem(R.id.toggle_unread).isVisible = false
             } else {
                 // Set title of menu item to toggle the read state of the currently displayed message
-                val drawableAttr = if (messageViewFragment!!.isMessageRead) {
+                val drawableAttr = if (messageViewPagerFragment!!.currentMessageViewFragment.isMessageRead) {
                     menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action)
                     intArrayOf(R.attr.iconActionMarkAsUnread)
                 } else {
@@ -1120,7 +1121,7 @@ open class MessageList :
             menu.findItem(R.id.delete).isVisible = K9.isMessageViewDeleteActionVisible
 
             // Set visibility of copy, move, archive, spam in action bar and refile submenu
-            if (messageViewFragment!!.isCopyCapable) {
+            if (messageViewPagerFragment!!.currentMessageViewFragment.isCopyCapable) {
                 menu.findItem(R.id.copy).isVisible = K9.isMessageViewCopyActionVisible
                 menu.findItem(R.id.refile_copy).isVisible = true
             } else {
@@ -1128,9 +1129,9 @@ open class MessageList :
                 menu.findItem(R.id.refile_copy).isVisible = false
             }
 
-            if (messageViewFragment!!.isMoveCapable) {
-                val canMessageBeArchived = messageViewFragment!!.canMessageBeArchived()
-                val canMessageBeMovedToSpam = messageViewFragment!!.canMessageBeMovedToSpam()
+            if (messageViewPagerFragment!!.currentMessageViewFragment.isMoveCapable) {
+                val canMessageBeArchived = messageViewPagerFragment!!.currentMessageViewFragment.canMessageBeArchived()
+                val canMessageBeMovedToSpam = messageViewPagerFragment!!.currentMessageViewFragment.canMessageBeMovedToSpam()
 
                 menu.findItem(R.id.move).isVisible = K9.isMessageViewMoveActionVisible
                 menu.findItem(R.id.archive).isVisible = canMessageBeArchived && K9.isMessageViewArchiveActionVisible
@@ -1147,7 +1148,7 @@ open class MessageList :
                 menu.findItem(R.id.refile).isVisible = false
             }
 
-            if (messageViewFragment!!.isOutbox) {
+            if (messageViewPagerFragment!!.currentMessageViewFragment.isOutbox) {
                 menu.findItem(R.id.move_to_drafts).isVisible = true
             }
         }
@@ -1235,11 +1236,9 @@ open class MessageList :
                 messageListFragment!!.setActiveMessage(messageReference)
             }
 
-            val fragment = MessageViewFragment.newInstance(messageReference)
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
-            fragmentTransaction.commit()
-            messageViewFragment = fragment
+            if (messageViewPagerFragment != null) {
+                messageViewPagerFragment!!.setActiveMessage(messageReference)
+            }
 
             if (displayMode != DisplayMode.SPLIT_VIEW) {
                 showMessageView()
@@ -1341,7 +1340,7 @@ open class MessageList :
     }
 
     private fun showMessageViewPlaceHolder() {
-        removeMessageViewFragment()
+        removeMessageViewPagerFragment()
 
         // Add placeholder fragment if necessary
         val fragmentManager = supportFragmentManager
@@ -1354,11 +1353,11 @@ open class MessageList :
         messageListFragment!!.setActiveMessage(null)
     }
 
-    private fun removeMessageViewFragment() {
-        if (messageViewFragment != null) {
+    private fun removeMessageViewPagerFragment() {
+        if (messageViewPagerFragment != null) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.remove(messageViewFragment!!)
-            messageViewFragment = null
+            fragmentTransaction.remove(messageViewPagerFragment!!)
+            messageViewPagerFragment = null
             fragmentTransaction.commit()
 
             showDefaultTitleView()
@@ -1416,7 +1415,7 @@ open class MessageList :
     }
 
     private fun showNextMessage(): Boolean {
-        val ref = messageViewFragment!!.messageReference
+        val ref = messageViewPagerFragment!!.currentMessageViewFragment.messageReference
         if (ref != null) {
             if (messageListFragment!!.openNext(ref)) {
                 lastDirection = NEXT
@@ -1427,7 +1426,7 @@ open class MessageList :
     }
 
     private fun showPreviousMessage(): Boolean {
-        val ref = messageViewFragment!!.messageReference
+        val ref = messageViewPagerFragment!!.currentMessageViewFragment.messageReference
         if (ref != null) {
             if (messageListFragment!!.openPrevious(ref)) {
                 lastDirection = PREVIOUS
@@ -1497,7 +1496,7 @@ open class MessageList :
 
     override fun onSwitchComplete(displayedChild: Int) {
         if (displayedChild == 0) {
-            removeMessageViewFragment()
+            removeMessageViewPagerFragment()
         }
     }
 
@@ -1527,8 +1526,9 @@ open class MessageList :
 
         if (requestCode and REQUEST_FLAG_PENDING_INTENT != 0) {
             val originalRequestCode = requestCode xor REQUEST_FLAG_PENDING_INTENT
-            if (messageViewFragment != null) {
-                messageViewFragment!!.onPendingIntentResult(originalRequestCode, resultCode, data)
+            if (messageViewPagerFragment != null) {
+                messageViewPagerFragment!!.currentMessageViewFragment
+                    .onPendingIntentResult(originalRequestCode, resultCode, data)
             }
         }
     }

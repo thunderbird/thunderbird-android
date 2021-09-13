@@ -39,7 +39,7 @@
                 android:layout_height="fill_parent" />
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/message_view_container"
+                android:id="@+id/message_viewpager_container"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
 

@@ -853,4 +853,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
         return new AttachmentController(mController, this, attachment);
     }
+
+    public MessageReference getMessageRef() {
+        return mMessageReference;
+    }
 }

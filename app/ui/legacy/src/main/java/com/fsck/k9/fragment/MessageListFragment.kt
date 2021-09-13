@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
+import android.widget.ListAdapter
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fsck.k9.Account
 import com.fsck.k9.Account.Expunge
@@ -1929,5 +1931,9 @@ class MessageListFragment :
                 )
             }
         }
+    }
+
+    fun getLiveData(): LiveData<MessageListInfo> {
+        return viewModel.getMessageListLiveData()
     }
 }
