@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="start">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/material_drawer_swipe_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
+            android:id="@+id/material_drawer_slider"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/messageListDividerColor" />
+
+    <LinearLayout
+        android:id="@+id/material_drawer_button_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:background="?android:attr/windowBackground">
+        <ImageView
+            android:id="@+id/drawer_button_refresh_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="?attr/iconActionRefresh"
+            android:contentDescription="@string/check_mail_action"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+        <ImageView
+            android:id="@+id/drawer_button_refresh_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_refresh_all"
+            android:contentDescription="@string/check_all_mail_action"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/drawer_button_manage_folders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_folder_manage"
+            android:contentDescription="@string/folders_action"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+        <ImageView
+            android:id="@+id/drawer_button_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="?attr/iconActionSettings"
+            android:contentDescription="@string/preferences_action"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+    </LinearLayout>
+
+</LinearLayout>
