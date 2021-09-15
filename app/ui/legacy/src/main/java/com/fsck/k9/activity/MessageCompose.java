@@ -1373,6 +1373,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         draftMessageId = messagingController.getId(message);
         subjectView.setText(messageViewInfo.subject);
 
+        replyToPresenter.initFromDraftMessage(message);
         recipientPresenter.initFromDraftMessage(message);
 
         // Read In-Reply-To header from draft
