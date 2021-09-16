@@ -27,7 +27,9 @@ import com.fsck.k9.ui.account.AccountsViewModel
 import com.fsck.k9.ui.account.DisplayAccount
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
+import com.fsck.k9.ui.folders.DisplayUnifiedInbox
 import com.fsck.k9.ui.folders.FolderIconProvider
+import com.fsck.k9.ui.folders.FolderList
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FoldersViewModel
 import com.fsck.k9.ui.settings.SettingsActivity
@@ -94,7 +96,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private var folderBadgeStyle: BadgeStyle? = null
     private var openedAccountUuid: String? = null
     private var openedFolderId: Long? = null
-    private var latestFolderList: List<DisplayFolder>? = null
+    private var latestFolderList: FolderList? = null
 
     val layout: DrawerLayout
         get() = drawer
@@ -138,8 +140,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             setAccounts(accounts)
         }
 
-        foldersViewModel.getFolderListLiveData().observe(parent) { folders ->
-            setUserFolders(folders)
+        foldersViewModel.getFolderListLiveData().observe(parent) { folderList ->
+            setUserFolders(folderList)
         }
     }
 
@@ -180,6 +182,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private fun buildBadgeText(displayFolder: DisplayFolder): String? {
         return buildBadgeText(displayFolder.unreadMessageCount, displayFolder.starredMessageCount)
+    }
+
+    private fun buildBadgeText(unifiedInbox: DisplayUnifiedInbox): String? {
+        return buildBadgeText(unifiedInbox.unreadMessageCount, unifiedInbox.starredMessageCount)
     }
 
     private fun buildBadgeText(unreadCount: Int, starredCount: Int): String? {
@@ -351,13 +357,17 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
     }
 
-    private fun setUserFolders(folders: List<DisplayFolder>?) {
-        this.latestFolderList = folders
+    private fun setUserFolders(folderList: FolderList?) {
+        this.latestFolderList = folderList
         clearUserFolders()
 
         var openedFolderDrawerId: Long = -1
 
-        if (K9.isShowUnifiedInbox) {
+        if (folderList == null) {
+            return
+        }
+
+        folderList.unifiedInbox?.let { unifiedInbox ->
             val unifiedInboxItem = PrimaryDrawerItem().apply {
                 iconRes = R.drawable.ic_inbox_multiple
                 identifier = DRAWER_ID_UNIFIED_INBOX
@@ -365,6 +375,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 selectedColorInt = selectedBackgroundColor
                 textColor = selectedTextColor
                 isSelected = unifiedInboxSelected
+                buildBadgeText(unifiedInbox)?.let { text ->
+                    badgeText = text
+                    badgeStyle = folderBadgeStyle
+                }
             }
 
             sliderView.addItems(unifiedInboxItem)
@@ -375,11 +389,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             }
         }
 
-        if (folders == null) {
-            return
-        }
-
-        for (displayFolder in folders) {
+        for (displayFolder in folderList.folders) {
             val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
 
