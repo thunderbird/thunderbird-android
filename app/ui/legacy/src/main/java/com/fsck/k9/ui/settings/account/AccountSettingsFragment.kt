@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import com.fsck.k9.Account
 import com.fsck.k9.account.BackgroundAccountRemover
@@ -182,23 +183,17 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private fun initializeNotifications(account: Account) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference<Preference>(it).remove() }
-        }
 
-        findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES)?.let {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES)?.let {
                 it.notificationChannelId = notificationChannelManager.getChannelIdFor(account, ChannelType.MESSAGES)
-            } else {
-                it.remove()
             }
-        }
 
-        findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS)?.let {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS)?.let {
                 it.notificationChannelId =
                     notificationChannelManager.getChannelIdFor(account, ChannelType.MISCELLANEOUS)
-            } else {
-                it.remove()
             }
+        } else {
+            findPreference<PreferenceCategory>(PREFERENCE_NOTIFICATION_CHANNELS).remove()
         }
     }
 
@@ -389,6 +384,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_SENT_FOLDER = "sent_folder"
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
+        private const val PREFERENCE_NOTIFICATION_CHANNELS = "notification_channels"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES = "open_notification_settings_messages"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS = "open_notification_settings_miscellaneous"
         private const val DELETE_POLICY_MARK_AS_READ = "MARK_AS_READ"
