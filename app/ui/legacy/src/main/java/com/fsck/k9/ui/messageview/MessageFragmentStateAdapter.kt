@@ -60,52 +60,53 @@ class MessageFragmentStateAdapter(
         recyclerView.addOnItemTouchListener(
             object : RecyclerView.SimpleOnItemTouchListener() {
                 override fun onInterceptTouchEvent(view: RecyclerView, event: MotionEvent): Boolean {
-                    return super.onInterceptTouchEvent(view, event) || isWebViewIntercepting(view, event)
+                    return super.onInterceptTouchEvent(view, event) || isWebViewIntercepting(event)
                 }
             }
         )
         super.onAttachedToRecyclerView(recyclerView)
     }
 
-    private var touchOrigin: MotionEvent? = null
-    private var webViewInterceptingState = false
+    private var isWebViewIntercepting = false
 
-    private fun isWebViewIntercepting(view: RecyclerView, event: MotionEvent): Boolean {
-        when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> {
-                touchOrigin = MotionEvent.obtainNoHistory(event)
-                webViewInterceptingState = false
-            }
-            MotionEvent.ACTION_MOVE -> {
-                if (!webViewInterceptingState && (touchOrigin != null)) {
-                    val webView: View? = getCurrentMessageViewFragment()?.view?.findViewById(R.id.message_content)
-                    if (webView != null) {
-                        val webViewRect = Rect()
-                        val webViewOrigin = IntArray(2)
-                        webView.getHitRect(webViewRect)
-                        webView.getLocationOnScreen(webViewOrigin)
-                        webViewRect.offset(webViewOrigin[0], webViewOrigin[1])
-                        if (webViewRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-                            if (view.scrollState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                                val diffX: Float = Math.abs(event.x - touchOrigin!!.x)
-                                val diffY: Float = Math.abs(event.y - touchOrigin!!.y)
-                                if (diffY > diffX) {
-                                    // scrolling vertically
-                                } else if ((event.x < touchOrigin!!.x) && webView.canScrollHorizontally(1)) {
-                                    // scrolling left
-                                    webViewInterceptingState = true
-                                } else if ((event.x > touchOrigin!!.x) && webView.canScrollHorizontally(-1)) {
-                                    // scrolling right
-                                    webViewInterceptingState = true
-                                }
-                            }
-                        }
+    private fun isWebViewIntercepting(event: MotionEvent): Boolean {
+        val action = event.actionMasked
+
+        // the WebView is already intercepting
+        if ((action == MotionEvent.ACTION_MOVE) && isWebViewIntercepting) {
+            return true
+        }
+
+        // check for a down hit inside the WebView
+        if (action == MotionEvent.ACTION_DOWN) {
+            val webView: View? = getCurrentMessageViewFragment()?.view?.findViewById(R.id.message_content)
+            if (webView != null) {
+                val webViewRect = Rect()
+                val webViewOrigin = IntArray(2)
+                webView.getHitRect(webViewRect)
+                val webViewWidth = (webViewRect.right - webViewRect.left).toFloat()
+                webView.getLocationOnScreen(webViewOrigin)
+                webViewRect.offset(webViewOrigin[0], webViewOrigin[1])
+                if (webViewRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    val cannotScrollRight = !webView.canScrollHorizontally(1)
+                    val cannotScrollLeft = !webView.canScrollHorizontally(-1)
+                    val disableIntercepting = when {
+                        // right side of screen
+                        (cannotScrollRight && (event.x > webViewWidth * 0.8f)) -> true
+                        // left side of screen
+                        (cannotScrollLeft && (event.x < webViewWidth * 0.2f)) -> true
+                        // anywhere else on screen
+                        else -> cannotScrollRight && cannotScrollLeft
                     }
+                    isWebViewIntercepting = !disableIntercepting
+                    return isWebViewIntercepting
                 }
             }
-            else -> webViewInterceptingState = false
         }
-        return webViewInterceptingState
+
+        // otherwise the default is no intercepting
+        isWebViewIntercepting = false
+        return false
     }
 
     fun getCurrentMessageViewFragment(): MessageViewFragment? {
@@ -118,5 +119,9 @@ class MessageFragmentStateAdapter(
 
     fun getMessagePosition(reference: MessageReference): Int {
         return messageListFragment.getPosition(reference)
+    }
+
+    fun doOnPageSelected(position: Int) {
+        isWebViewIntercepting = false
     }
 }

@@ -30,8 +30,30 @@ class MessageViewPagerFragment : Fragment() {
         if (viewPager != null) {
             viewPager!!.isUserInputEnabled = true
             viewPager!!.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
+            viewPager!!.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                }
+
+                override fun onPageSelected(position: Int) {
+                    doOnPageSelected(position)
+                    super.onPageSelected(position)
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+                    super.onPageScrollStateChanged(state)
+                }
+            })
         }
         return view
+    }
+
+    private fun doOnPageSelected(position: Int) {
+        adapter?.doOnPageSelected(position)
     }
 
     override fun onResume() {
