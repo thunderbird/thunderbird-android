@@ -19,7 +19,7 @@ internal open class NewMailNotifications(
     private val notifications = SparseArray<NotificationData>()
     private val lock = Any()
 
-    fun addNewMailNotification(account: Account, message: LocalMessage, unreadMessageCount: Int) {
+    fun addNewMailNotification(account: Account, message: LocalMessage, unreadMessageCount: Int, silent: Boolean) {
         val content = contentCreator.createFromMessage(account, message)
 
         synchronized(lock) {
@@ -32,7 +32,7 @@ internal open class NewMailNotifications(
             }
 
             createSingleMessageNotification(account, result.notificationHolder)
-            createSummaryNotification(account, notificationData, false)
+            createSummaryNotification(account, notificationData, silent)
         }
     }
 
@@ -99,7 +99,7 @@ internal open class NewMailNotifications(
         if (notificationData.newMessagesCount == 0) {
             clearNewMailNotifications(account)
         } else {
-            createSummaryNotification(account, notificationData, true)
+            createSummaryNotification(account, notificationData, silent = true)
         }
     }
 

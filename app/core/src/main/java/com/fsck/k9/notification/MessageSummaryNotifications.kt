@@ -45,12 +45,6 @@ internal open class MessageSummaryNotifications(
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
-        var ringAndVibrate = false
-        if (!silent && !account.isRingNotified) {
-            account.isRingNotified = true
-            ringAndVibrate = true
-        }
-
         val notificationSetting = account.notificationSetting
         notificationHelper.configureNotification(
             builder = builder,
@@ -58,7 +52,7 @@ internal open class MessageSummaryNotifications(
             vibrationPattern = if (notificationSetting.isVibrateEnabled) notificationSetting.vibration else null,
             ledColor = if (notificationSetting.isLedEnabled) notificationSetting.ledColor else null,
             ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_SLOW,
-            ringAndVibrate = ringAndVibrate
+            ringAndVibrate = !silent
         )
 
         return builder.build()
