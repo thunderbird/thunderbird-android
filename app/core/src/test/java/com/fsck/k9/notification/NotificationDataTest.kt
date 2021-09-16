@@ -28,7 +28,7 @@ class NotificationDataTest : RobolectricTest() {
         val holder = result.notificationHolder
 
         assertThat(holder).isNotNull()
-        assertThat(holder.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 0))
+        assertThat(holder.notificationId).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 0))
         assertThat(holder.content).isEqualTo(content)
     }
 
@@ -46,7 +46,7 @@ class NotificationDataTest : RobolectricTest() {
         val result = notificationData.addNotificationContent(createNotificationContent("9"))
 
         assertThat(result.shouldCancelNotification).isTrue()
-        assertThat(result.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 0))
+        assertThat(result.notificationId).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 0))
     }
 
     @Test
@@ -57,7 +57,7 @@ class NotificationDataTest : RobolectricTest() {
         val result = notificationData.removeNotificationForMessage(content.messageReference)
 
         assertThat(result.isUnknownNotification).isFalse()
-        assertThat(result.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 0))
+        assertThat(result.notificationId).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 0))
         assertThat(result.shouldCreateNotification).isFalse()
     }
 
@@ -79,17 +79,17 @@ class NotificationDataTest : RobolectricTest() {
         val result = notificationData.removeNotificationForMessage(latestContent.messageReference)
 
         assertThat(result.isUnknownNotification).isFalse()
-        assertThat(result.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 1))
+        assertThat(result.notificationId).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 1))
         assertThat(result.shouldCreateNotification).isTrue()
         assertNotNull(result.notificationHolder) { holder ->
-            assertThat(holder.notificationId).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 1))
+            assertThat(holder.notificationId).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 1))
             assertThat(holder.content).isEqualTo(content)
         }
     }
 
     @Test
     fun testRemoveDoesNotLeakNotificationIds() {
-        for (i in 1..NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS + 1) {
+        for (i in 1..NotificationData.MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS + 1) {
             val content = createNotificationContent(i.toString())
             notificationData.addNotificationContent(content)
             notificationData.removeNotificationForMessage(content.messageReference)
@@ -202,8 +202,8 @@ class NotificationDataTest : RobolectricTest() {
         val notificationIds = notificationData.getActiveNotificationIds()
 
         assertThat(notificationIds.size).isEqualTo(2)
-        assertThat(notificationIds[0]).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 1))
-        assertThat(notificationIds[1]).isEqualTo(NotificationIds.getNewMailStackedNotificationId(account, 0))
+        assertThat(notificationIds[0]).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 1))
+        assertThat(notificationIds[1]).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 0))
     }
 
     @Test
