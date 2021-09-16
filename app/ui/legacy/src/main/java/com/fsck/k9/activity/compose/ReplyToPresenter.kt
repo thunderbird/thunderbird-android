@@ -3,12 +3,20 @@ package com.fsck.k9.activity.compose
 import android.os.Bundle
 import com.fsck.k9.Identity
 import com.fsck.k9.mail.Address
+import com.fsck.k9.mail.Message
 
 private const val STATE_KEY_REPLY_TO_SHOWN = "com.fsck.k9.activity.compose.ReplyToPresenter.replyToShown"
 
 class ReplyToPresenter(private val view: ReplyToView) {
     private lateinit var identity: Identity
     private var identityReplyTo: Array<Address>? = null
+
+    fun initFromDraftMessage(message: Message) {
+        message.replyTo.takeIf { it.isNotEmpty() }?.let { addresses ->
+            view.silentlyAddAddresses(addresses)
+            view.isVisible = true
+        }
+    }
 
     fun getAddresses(): Array<Address> {
         return view.getAddresses()
