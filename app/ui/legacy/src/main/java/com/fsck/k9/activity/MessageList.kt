@@ -342,6 +342,7 @@ open class MessageList :
                         messageListFragment!!.setActiveMessage(activeMessage)
                     }
                 }
+                setDrawerLockState()
             }
         }
     }
@@ -1444,16 +1445,20 @@ open class MessageList :
 
         messageListFragment!!.setActiveMessage(null)
 
-        if (isDrawerEnabled) {
-            if (isAdditionalMessageListDisplayed) {
-                lockDrawer()
-            } else {
-                unlockDrawer()
-            }
-        }
+        setDrawerLockState()
 
         showDefaultTitleView()
         configureMenu(menu)
+    }
+
+    private fun setDrawerLockState() {
+        if (!isDrawerEnabled) return
+
+        if (isAdditionalMessageListDisplayed) {
+            lockDrawer()
+        } else {
+            unlockDrawer()
+        }
     }
 
     private fun showMessageView() {
