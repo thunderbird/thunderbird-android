@@ -33,7 +33,7 @@ public class IdentityAdapter extends BaseAdapter {
 
         List<Object> items = new ArrayList<>();
         Preferences prefs = Preferences.getPreferences(context.getApplicationContext());
-        Collection<Account> accounts = prefs.getAvailableAccounts();
+        Collection<Account> accounts = prefs.getAccounts();
         for (Account account : accounts) {
             items.add(account);
             List<Identity> identities = account.getIdentities();

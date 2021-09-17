@@ -1,6 +1,5 @@
 package com.fsck.k9.controller
 
-import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.MessagingException
@@ -19,16 +18,11 @@ interface MessageCountsProvider {
 data class MessageCounts(val unread: Int, val starred: Int)
 
 internal class DefaultMessageCountsProvider(
-    private val context: Context,
     private val preferences: Preferences,
     private val accountSearchConditions: AccountSearchConditions,
     private val localStoreProvider: LocalStoreProvider
 ) : MessageCountsProvider {
     override fun getMessageCounts(account: Account): MessageCounts {
-        if (!account.isAvailable(context)) {
-            return MessageCounts(0, 0)
-        }
-
         return try {
             val localStore = localStoreProvider.getInstance(account)
 

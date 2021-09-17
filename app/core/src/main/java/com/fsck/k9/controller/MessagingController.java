@@ -1442,13 +1442,6 @@ public class MessagingController {
         backend.sendMessage(message);
     }
 
-    public void sendPendingMessages(MessagingListener listener) {
-        for (Account account : preferences.getAvailableAccounts()) {
-            sendPendingMessages(account, listener);
-        }
-    }
-
-
     /**
      * Attempt to send any messages that are sitting in the Outbox.
      */
@@ -1457,9 +1450,6 @@ public class MessagingController {
         putBackground("sendPendingMessages", listener, new Runnable() {
             @Override
             public void run() {
-                if (!account.isAvailable(context)) {
-                    throw new UnavailableAccountException();
-                }
                 if (messagesPendingSend(account)) {
 
                     showSendingNotificationIfNecessary(account);
@@ -2336,7 +2326,7 @@ public class MessagingController {
                         accounts = new ArrayList<>(1);
                         accounts.add(account);
                     } else {
-                        accounts = preferences.getAvailableAccounts();
+                        accounts = preferences.getAccounts();
                     }
 
                     for (final Account account : accounts) {
@@ -2370,11 +2360,6 @@ public class MessagingController {
     private void checkMailForAccount(final Context context, final Account account,
             final boolean ignoreLastCheckedTime,
             final MessagingListener listener) {
-        if (!account.isAvailable(context)) {
-            Timber.i("Skipping synchronizing unavailable account %s", account.getDescription());
-            return;
-        }
-
         Timber.i("Synchronizing account %s", account.getDescription());
 
         NotificationState notificationState = new NotificationState();

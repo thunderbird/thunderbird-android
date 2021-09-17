@@ -12,7 +12,6 @@ import android.os.Environment;
 
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
-import timber.log.Timber;
 
 /**
  * Manager for different {@link StorageProvider} -classes that abstract access
@@ -103,16 +102,6 @@ public class StorageManager {
          * @return Never <code>null</code>.
          */
         File getAttachmentDirectory(Context context, String id);
-
-        /**
-         * Check for the underlying storage availability.
-         *
-         * @param context
-         *            Never <code>null</code>.
-         * @return Whether the underlying storage returned by this provider is
-         *         ready for read/write operations at the time of invocation.
-         */
-        boolean isReady(Context context);
     }
 
     /**
@@ -165,11 +154,6 @@ public class StorageManager {
         public File getAttachmentDirectory(Context context, String id) {
             // we store attachments in the database directory
             return context.getDatabasePath(id + ".db_att");
-        }
-
-        @Override
-        public boolean isReady(Context context) {
-            return true;
         }
     }
 
@@ -234,11 +218,6 @@ public class StorageManager {
         @Override
         public File getAttachmentDirectory(Context context, String id) {
             return new File(mApplicationDirectory, id + ".db_att");
-        }
-
-        @Override
-        public boolean isReady(Context context) {
-            return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
         }
     }
 
@@ -338,20 +317,6 @@ public class StorageManager {
         StorageProvider provider = getProvider(providerId);
         // TODO fallback to internal storage if no provider
         return provider.getAttachmentDirectory(context, dbName);
-    }
-
-    /**
-     * @param providerId
-     *            Never <code>null</code>.
-     * @return Whether the specified provider is ready for read/write operations
-     */
-    public boolean isReady(final String providerId) {
-        StorageProvider provider = getProvider(providerId);
-        if (provider == null) {
-            Timber.w("Storage-Provider \"%s\" does not exist", providerId);
-            return false;
-        }
-        return provider.isReady(context);
     }
 
     /**

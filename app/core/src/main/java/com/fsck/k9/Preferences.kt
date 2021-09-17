@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.flowOn
 import timber.log.Timber
 
 class Preferences internal constructor(
-    private val context: Context,
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
     private val accountPreferenceSerializer: AccountPreferenceSerializer,
@@ -103,9 +102,6 @@ class Preferences internal constructor(
                 return accountsInOrder.toList()
             }
         }
-
-    val availableAccounts: Collection<Account>
-        get() = accounts.filter { it.isAvailable(context) }
 
     override fun getAccount(accountUuid: String): Account? {
         synchronized(accountLock) {
@@ -191,7 +187,7 @@ class Preferences internal constructor(
 
     var defaultAccount: Account?
         get() {
-            return getDefaultAccountOrNull() ?: availableAccounts.firstOrNull()?.also { newDefaultAccount ->
+            return getDefaultAccountOrNull() ?: accounts.firstOrNull()?.also { newDefaultAccount ->
                 defaultAccount = newDefaultAccount
             }
         }

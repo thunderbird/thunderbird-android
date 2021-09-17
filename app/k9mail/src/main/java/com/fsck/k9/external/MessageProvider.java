@@ -152,10 +152,6 @@ public class MessageProvider extends ContentProvider {
         for (Account account : Preferences.getPreferences(getContext()).getAccounts()) {
             if (account.getAccountNumber() == accountId) {
                 myAccount = account;
-                if (!account.isAvailable(getContext())) {
-                    Timber.w("not deleting messages because account is unavailable at the moment");
-                    return 0;
-                }
             }
         }
 
@@ -661,7 +657,7 @@ public class MessageProvider extends ContentProvider {
 
             Context context = getContext();
             MessagingController controller = MessagingController.getInstance(context);
-            Collection<Account> accounts = Preferences.getPreferences(context).getAvailableAccounts();
+            Collection<Account> accounts = Preferences.getPreferences(context).getAccounts();
 
             for (Account account : accounts) {
                 if (account.getAccountNumber() == accountNumber) {

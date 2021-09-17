@@ -19,7 +19,6 @@ val mainModule = module {
     single<CoroutineScope>(named("AppCoroutineScope")) { GlobalScope }
     single {
         Preferences(
-            context = get(),
             storagePersister = get(),
             localStoreProvider = get(),
             accountPreferenceSerializer = get()

@@ -392,11 +392,6 @@ open class MessageList :
         noThreading = launchData.noThreading
         messageReference = launchData.messageReference
 
-        if (!account.isAvailable(this)) {
-            onAccountUnavailable()
-            return false
-        }
-
         return true
     }
 
@@ -529,11 +524,6 @@ open class MessageList :
             // necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
             // when returning from search results
             searchStatusManager.isActive = false
-        }
-
-        if (account != null && !account!!.isAvailable(this)) {
-            onAccountUnavailable()
-            return
         }
     }
 
@@ -1187,12 +1177,6 @@ open class MessageList :
                 menu.findItem(R.id.search_everywhere).isVisible = true
             }
         }
-    }
-
-    protected fun onAccountUnavailable() {
-        // TODO: Find better way to handle this case.
-        Timber.i("Account is unavailable right now: $account")
-        finish()
     }
 
     fun setActionBarTitle(title: String, subtitle: String? = null) {
