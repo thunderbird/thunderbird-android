@@ -158,9 +158,6 @@ public class Account implements BaseAccount {
     private boolean subscribedFoldersOnly;
     private int maximumPolledMessageAge;
     private int maximumAutoDownloadMessageSize;
-    // Tracks if we have sent a notification for this account for
-    // current set of fetched messages
-    private boolean ringNotified;
     private MessageFormat messageFormat;
     private boolean messageFormatAuto;
     private boolean messageReadReceipt;
@@ -315,15 +312,6 @@ public class Account implements BaseAccount {
 
     public synchronized void setAlwaysBcc(String alwaysBcc) {
         this.alwaysBcc = alwaysBcc;
-    }
-
-    /* Have we sent a new mail notification on this account */
-    public boolean isRingNotified() {
-        return ringNotified;
-    }
-
-    public void setRingNotified(boolean ringNotified) {
-        this.ringNotified = ringNotified;
     }
 
     public String getLocalStorageProviderId() {
