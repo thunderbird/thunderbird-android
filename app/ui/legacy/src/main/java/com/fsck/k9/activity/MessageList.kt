@@ -37,8 +37,6 @@ import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
-import com.fsck.k9.mailstore.StorageManager
-import com.fsck.k9.mailstore.StorageManager.StorageListener
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
@@ -93,7 +91,6 @@ open class MessageList :
     private val defaultFolderProvider: DefaultFolderProvider by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
 
-    private val storageListener: StorageListener = StorageListenerImplementation()
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
     private lateinit var actionBar: ActionBar
@@ -519,11 +516,6 @@ open class MessageList :
         }
     }
 
-    public override fun onPause() {
-        super.onPause()
-        StorageManager.getInstance(application).removeListener(storageListener)
-    }
-
     public override fun onResume() {
         super.onResume()
 
@@ -543,8 +535,6 @@ open class MessageList :
             onAccountUnavailable()
             return
         }
-
-        StorageManager.getInstance(application).addListener(storageListener)
     }
 
     override fun onStart() {
@@ -1610,16 +1600,6 @@ open class MessageList :
 
     override fun requestPermission(permission: Permission) {
         permissionUiHelper.requestPermission(permission)
-    }
-
-    private inner class StorageListenerImplementation : StorageListener {
-        override fun onUnmount(providerId: String) {
-            if (account?.localStorageProviderId == providerId) {
-                runOnUiThread { onAccountUnavailable() }
-            }
-        }
-
-        override fun onMount(providerId: String) = Unit
     }
 
     private enum class DisplayMode {

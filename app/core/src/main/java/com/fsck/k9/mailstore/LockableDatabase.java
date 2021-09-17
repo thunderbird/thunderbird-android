@@ -64,46 +64,6 @@ public class LockableDatabase {
         }
     }
 
-    /**
-     * Open the DB on mount and close the DB on unmount
-     */
-    private class StorageListener implements StorageManager.StorageListener {
-        @Override
-        public void onUnmount(final String providerId) {
-            if (!providerId.equals(mStorageProviderId)) {
-                return;
-            }
-
-            Timber.d("LockableDatabase: Closing DB %s due to unmount event on StorageProvider: %s", uUid, providerId);
-
-            try {
-                lockWrite();
-                try {
-                    mDb.close();
-                } finally {
-                    unlockWrite();
-                }
-            } catch (UnavailableStorageException e) {
-                Timber.w(e, "Unable to writelock on unmount");
-            }
-        }
-
-        @Override
-        public void onMount(final String providerId) {
-            if (!providerId.equals(mStorageProviderId)) {
-                return;
-            }
-
-            Timber.d("LockableDatabase: Opening DB %s due to mount event on StorageProvider: %s", uUid, providerId);
-
-            try {
-                openOrCreateDataspace();
-            } catch (UnavailableStorageException e) {
-                Timber.e(e, "Unable to open DB on mount");
-            }
-        }
-    }
-
     private String mStorageProviderId;
 
     private SQLiteDatabase mDb;
@@ -122,8 +82,6 @@ public class LockableDatabase {
         mReadLock = lock.readLock();
         mWriteLock = lock.writeLock();
     }
-
-    private final StorageListener mStorageListener = new StorageListener();
 
     private Context context;
 
@@ -357,7 +315,6 @@ public class LockableDatabase {
         } finally {
             unlockWrite();
         }
-        StorageManager.getInstance(context).addListener(mStorageListener);
     }
 
     /**
@@ -494,9 +451,6 @@ public class LockableDatabase {
 
             if (recreate) {
                 openOrCreateDataspace();
-            } else {
-                // stop waiting for mount/unmount events
-                getStorageManager().removeListener(mStorageListener);
             }
         } finally {
             unlockWrite();

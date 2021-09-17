@@ -2,8 +2,6 @@ package com.fsck.k9.mailstore;
 
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
@@ -16,7 +14,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import android.content.Context;
 import android.os.Environment;
 
-import com.fsck.k9.Core;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import timber.log.Timber;
@@ -120,40 +117,6 @@ public class StorageManager {
          *         ready for read/write operations at the time of invocation.
          */
         boolean isReady(Context context);
-
-        /**
-         * Retrieve the root of the underlying storage.
-         *
-         * @param context
-         *            Never <code>null</code>.
-         * @return The root directory of the denoted storage. Never
-         *         <code>null</code>.
-         */
-        File getRoot(Context context);
-    }
-
-    /**
-     * Interface for components wanting to be notified of storage availability
-     * events.
-     */
-    public interface StorageListener {
-        /**
-         * Invoked on storage mount (with read/write access).
-         *
-         * @param providerId
-         *            Identifier (as returned by {@link StorageProvider#getId()}
-         *            of the newly mounted storage. Never <code>null</code>.
-         */
-        void onMount(String providerId);
-
-        /**
-         * Invoked when a storage is about to be unmounted.
-         *
-         * @param providerId
-         *            Identifier (as returned by {@link StorageProvider#getId()}
-         *            of the to-be-unmounted storage. Never <code>null</code>.
-         */
-        void onUnmount(String providerId);
     }
 
     /**
@@ -173,7 +136,6 @@ public class StorageManager {
         public static final String ID = "InternalStorage";
 
         private final CoreResourceProvider resourceProvider;
-        private File mRoot;
 
         public InternalStorageProvider(CoreResourceProvider resourceProvider) {
             this.resourceProvider = resourceProvider;
@@ -186,8 +148,6 @@ public class StorageManager {
 
         @Override
         public void init(Context context) {
-            // XXX
-            mRoot = new File("/");
         }
 
         @Override
@@ -214,11 +174,6 @@ public class StorageManager {
         @Override
         public boolean isReady(Context context) {
             return true;
-        }
-
-        @Override
-        public File getRoot(Context context) {
-            return mRoot;
         }
     }
 
@@ -289,11 +244,6 @@ public class StorageManager {
         public boolean isReady(Context context) {
             return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
         }
-
-        @Override
-        public File getRoot(Context context) {
-            return Environment.getExternalStorageDirectory();
-        }
     }
 
     /**
@@ -329,11 +279,6 @@ public class StorageManager {
 
     protected final Context context;
 
-    /**
-     * Listener to be notified for storage related events.
-     */
-    private List<StorageListener> mListeners = new ArrayList<>();
-
     private static transient StorageManager instance;
 
     public static synchronized StorageManager getInstance(final Context context) {
@@ -343,21 +288,6 @@ public class StorageManager {
             instance = new StorageManager(applicationContext, resourceProvider);
         }
         return instance;
-    }
-
-    /**
-     * @param file
-     *            Canonical file to match. Never <code>null</code>.
-     * @return Whether the specified file matches a filesystem root.
-     * @throws IOException
-     */
-    public static boolean isMountPoint(final File file) {
-        for (final File root : File.listRoots()) {
-            if (root.equals(file)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -467,90 +397,6 @@ public class StorageManager {
             result.put(entry.getKey(), entry.getValue().getName(context));
         }
         return result;
-    }
-
-    /**
-     * @param path
-     */
-    public void onBeforeUnmount(final String path) {
-        Timber.i("storage path \"%s\" unmounting", path);
-        final StorageProvider provider = resolveProvider(path);
-        if (provider == null) {
-            return;
-        }
-        for (final StorageListener listener : mListeners) {
-            try {
-                listener.onUnmount(provider.getId());
-            } catch (Exception e) {
-                Timber.w(e, "Error while notifying StorageListener");
-            }
-        }
-        final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
-        sync.writeLock.lock();
-        sync.unmounting = true;
-        sync.writeLock.unlock();
-    }
-
-    public void onAfterUnmount(final String path) {
-        Timber.i("storage path \"%s\" unmounted", path);
-        final StorageProvider provider = resolveProvider(path);
-        if (provider == null) {
-            return;
-        }
-        final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
-        sync.writeLock.lock();
-        sync.unmounting = false;
-        sync.writeLock.unlock();
-
-        Core.setServicesEnabled(context);
-    }
-
-    /**
-     * @param path
-     * @param readOnly
-     */
-    public void onMount(final String path, final boolean readOnly) {
-        Timber.i("storage path \"%s\" mounted readOnly=%s", path, readOnly);
-        if (readOnly) {
-            return;
-        }
-
-        final StorageProvider provider = resolveProvider(path);
-        if (provider == null) {
-            return;
-        }
-        for (final StorageListener listener : mListeners) {
-            try {
-                listener.onMount(provider.getId());
-            } catch (Exception e) {
-                Timber.w(e, "Error while notifying StorageListener");
-            }
-        }
-
-        // XXX we should reset mail service ONLY if there are accounts using the storage (this is not done in a regular listener because it has to be invoked afterward)
-        Core.setServicesEnabled(context);
-    }
-
-    /**
-     * @param path
-     *            Never <code>null</code>.
-     * @return The corresponding provider. <code>null</code> if no match.
-     */
-    protected StorageProvider resolveProvider(final String path) {
-        for (final StorageProvider provider : mProviders.values()) {
-            if (path.equals(provider.getRoot(context).getAbsolutePath())) {
-                return provider;
-            }
-        }
-        return null;
-    }
-
-    public void addListener(final StorageListener listener) {
-        mListeners.add(listener);
-    }
-
-    public void removeListener(final StorageListener listener) {
-        mListeners.remove(listener);
     }
 
     /**
