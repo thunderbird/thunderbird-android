@@ -35,7 +35,6 @@ public class LockableDatabase {
          * @return Any relevant data. Can be <code>null</code>.
          * @throws WrappedException
          * @throws com.fsck.k9.mail.MessagingException
-         * @throws com.fsck.k9.mailstore.UnavailableStorageException
          */
         T doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException;
     }
@@ -173,7 +172,6 @@ public class LockableDatabase {
      * @param callback
      *            Never <code>null</code>.
      * @return Whatever {@link DbCallback#doDbWork(SQLiteDatabase)} returns.
-     * @throws UnavailableStorageException
      */
     public <T> T execute(final boolean transactional, final DbCallback<T> callback) throws MessagingException {
         lockRead();
@@ -260,7 +258,7 @@ public class LockableDatabase {
         }
     }
 
-    public void open() throws UnavailableStorageException {
+    public void open() {
         lockWrite();
         try {
             openOrCreateDataspace();
@@ -269,12 +267,7 @@ public class LockableDatabase {
         }
     }
 
-    /**
-     *
-     * @throws UnavailableStorageException
-     */
-    private void openOrCreateDataspace() throws UnavailableStorageException {
-
+    private void openOrCreateDataspace() {
         lockWrite();
         try {
             final File databaseFile = prepareStorage(mStorageProviderId);
@@ -310,13 +303,7 @@ public class LockableDatabase {
         }
     }
 
-    /**
-     * @param providerId
-     *            Never <code>null</code>.
-     * @return DB file.
-     * @throws UnavailableStorageException
-     */
-    protected File prepareStorage(final String providerId) throws UnavailableStorageException {
+    protected File prepareStorage(final String providerId) {
         final StorageManager storageManager = getStorageManager();
 
         final File databaseFile = storageManager.getDatabase(uUid, providerId);
@@ -328,8 +315,7 @@ public class LockableDatabase {
         }
         if (!databaseParentDir.exists()) {
             if (!databaseParentDir.mkdirs()) {
-                // Android seems to be unmounting the storage...
-                throw new UnavailableStorageException("Unable to access: " + databaseParentDir);
+                throw new RuntimeException("Unable to access: " + databaseParentDir);
             }
             FileHelper.touchFile(databaseParentDir, ".nomedia");
         }
@@ -350,23 +336,20 @@ public class LockableDatabase {
 
     /**
      * Delete the backing database.
-     *
-     * @throws UnavailableStorageException
      */
-    public void delete() throws UnavailableStorageException {
+    public void delete() {
         delete(false);
     }
 
-    public void recreate() throws UnavailableStorageException {
+    public void recreate() {
         delete(true);
     }
 
     /**
      * @param recreate
      *            <code>true</code> if the DB should be recreated after delete
-     * @throws UnavailableStorageException
      */
-    private void delete(final boolean recreate) throws UnavailableStorageException {
+    private void delete(final boolean recreate) {
         lockWrite();
         try {
             try {
