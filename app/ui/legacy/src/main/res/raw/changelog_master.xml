@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.901" versioncode="29001" date="2021-09-17">
+        <change>Added support for entering Reply-To addresses when composing a message</change>
+        <change>Display the unread message count for the Unified Inbox in the drawer</change>
+        <change>Fixed crash when using the split-screen view</change>
+        <change>Hide notification category settings on Android versions that don't support them</change>
+        <change>Update the sync notification for an account instead of adding and removing it for each folder</change>
+        <change>A lot of internal changes to the notification code - please report any bugs or odd behavior you encounter</change>
+    </release>
     <release version="5.900" versioncode="29000" date="2021-09-09">
         <change>Experimental: Added a toolbar with a "check mail" button to the navigation drawer</change>
         <change>Experimental: Tweaked the mark as unread toolbar icon</change>
