@@ -131,22 +131,12 @@ public class LockableDatabase {
      * You <strong>have to</strong> invoke {@link #unlockRead()} when you're
      * done with the storage.
      * </p>
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available
      */
-    protected void lockRead() throws UnavailableStorageException {
+    protected void lockRead() {
         mReadLock.lock();
-        try {
-            getStorageManager().lockProvider(mStorageProviderId);
-        } catch (UnavailableStorageException | RuntimeException e) {
-            mReadLock.unlock();
-            throw e;
-        }
     }
 
     protected void unlockRead() {
-        getStorageManager().unlockProvider(mStorageProviderId);
         mReadLock.unlock();
     }
 
@@ -158,45 +148,12 @@ public class LockableDatabase {
      * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
      * done with the storage.
      * </p>
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available.
      */
-    protected void lockWrite() throws UnavailableStorageException {
-        lockWrite(mStorageProviderId);
-    }
-
-    /**
-     * Lock the storage for exclusive access (other threads aren't allowed to
-     * run simultaneously)
-     *
-     * <p>
-     * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
-     * done with the storage.
-     * </p>
-     *
-     * @param providerId
-     *            Never <code>null</code>.
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available.
-     */
-    protected void lockWrite(final String providerId) throws UnavailableStorageException {
+    private void lockWrite() {
         mWriteLock.lock();
-        try {
-            getStorageManager().lockProvider(providerId);
-        } catch (UnavailableStorageException | RuntimeException e) {
-            mWriteLock.unlock();
-            throw e;
-        }
     }
 
-    protected void unlockWrite() {
-        unlockWrite(mStorageProviderId);
-    }
-
-    protected void unlockWrite(final String providerId) {
-        getStorageManager().unlockProvider(providerId);
+    private void unlockWrite() {
         mWriteLock.unlock();
     }
 
@@ -272,39 +229,34 @@ public class LockableDatabase {
         Timber.v("LockableDatabase: Switching provider from %s to %s", mStorageProviderId, newProviderId);
 
         final String oldProviderId = mStorageProviderId;
-        lockWrite(oldProviderId);
+        lockWrite();
         try {
-            lockWrite(newProviderId);
             try {
-                try {
-                    mDb.close();
-                } catch (Exception e) {
-                    Timber.i(e, "Unable to close DB on local store migration");
-                }
-
-                final StorageManager storageManager = getStorageManager();
-                File oldDatabase = storageManager.getDatabase(uUid, oldProviderId);
-
-                // create new path
-                prepareStorage(newProviderId);
-
-                // move all database files
-                FileHelper.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
-                // move all attachment files
-                FileHelper.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId),
-                        storageManager.getAttachmentDirectory(uUid, newProviderId));
-                // remove any remaining old journal files
-                deleteDatabase(oldDatabase);
-
-                mStorageProviderId = newProviderId;
-
-                // re-initialize this class with the new Uri
-                openOrCreateDataspace();
-            } finally {
-                unlockWrite(newProviderId);
+                mDb.close();
+            } catch (Exception e) {
+                Timber.i(e, "Unable to close DB on local store migration");
             }
+
+            final StorageManager storageManager = getStorageManager();
+            File oldDatabase = storageManager.getDatabase(uUid, oldProviderId);
+
+            // create new path
+            prepareStorage(newProviderId);
+
+            // move all database files
+            FileHelper.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
+            // move all attachment files
+            FileHelper.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId),
+                    storageManager.getAttachmentDirectory(uUid, newProviderId));
+            // remove any remaining old journal files
+            deleteDatabase(oldDatabase);
+
+            mStorageProviderId = newProviderId;
+
+            // re-initialize this class with the new Uri
+            openOrCreateDataspace();
         } finally {
-            unlockWrite(oldProviderId);
+            unlockWrite();
         }
     }
 

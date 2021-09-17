@@ -3,13 +3,9 @@ package com.fsck.k9.mailstore;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import android.content.Context;
 import android.os.Environment;
@@ -247,35 +243,9 @@ public class StorageManager {
     }
 
     /**
-     * Stores storage provider locking information
-     */
-    public static class SynchronizationAid {
-        /**
-         * {@link Lock} has a thread semantic so it can't be released from
-         * another thread - this flags act as a holder for the unmount state
-         */
-        public boolean unmounting = false;
-
-        public final Lock readLock;
-
-        public final Lock writeLock;
-
-        {
-            final ReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
-            readLock = readWriteLock.readLock();
-            writeLock = readWriteLock.writeLock();
-        }
-    }
-
-    /**
      * The active storage providers.
      */
     private final Map<String, StorageProvider> mProviders = new LinkedHashMap<>();
-
-    /**
-     * Locking data for the active storage providers.
-     */
-    private final Map<StorageProvider, SynchronizationAid> mProviderLocks = new IdentityHashMap<>();
 
     protected final Context context;
 
@@ -322,7 +292,6 @@ public class StorageManager {
 
                 provider.init(context);
                 mProviders.put(provider.getId(), provider);
-                mProviderLocks.put(provider, new SynchronizationAid());
             }
         }
 
@@ -397,42 +366,5 @@ public class StorageManager {
             result.put(entry.getKey(), entry.getValue().getName(context));
         }
         return result;
-    }
-
-    /**
-     * Try to lock the underlying storage to prevent concurrent unmount.
-     *
-     * <p>
-     * You must invoke {@link #unlockProvider(String)} when you're done with the
-     * storage.
-     * </p>
-     *
-     * @param providerId
-     * @throws UnavailableStorageException
-     *             If the storage can't be locked.
-     */
-    public void lockProvider(final String providerId) throws UnavailableStorageException {
-        final StorageProvider provider = getProvider(providerId);
-        if (provider == null) {
-            throw new UnavailableStorageException("StorageProvider not found: " + providerId);
-        }
-        // lock provider
-        final SynchronizationAid sync = mProviderLocks.get(provider);
-        final boolean locked = sync.readLock.tryLock();
-        if (!locked || (locked && sync.unmounting)) {
-            if (locked) {
-                sync.readLock.unlock();
-            }
-            throw new UnavailableStorageException("StorageProvider is unmounting");
-        } else if (locked && !provider.isReady(context)) {
-            sync.readLock.unlock();
-            throw new UnavailableStorageException("StorageProvider not ready");
-        }
-    }
-
-    public void unlockProvider(final String providerId) {
-        final StorageProvider provider = getProvider(providerId);
-        final SynchronizationAid sync = mProviderLocks.get(provider);
-        sync.readLock.unlock();
     }
 }
