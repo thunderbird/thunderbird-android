@@ -2427,6 +2427,8 @@ public class MessagingController {
                         public void run() {
                             Timber.v("Clearing notification flag for %s", account.getDescription());
 
+                            clearFetchingMailNotification(account);
+
                             if (getUnreadMessageCount(account) == 0) {
                                 notificationController.clearNewMailNotifications(account);
                             }
@@ -2471,7 +2473,7 @@ public class MessagingController {
             try {
                 synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener, notificationState);
             } finally {
-                clearFetchingMailNotificationIfNecessary(account);
+                showEmptyFetchingMailNotificationIfNecessary(account);
             }
         } catch (Exception e) {
             Timber.e(e, "Exception while processing folder %s:%s", account.getDescription(), folder.getServerId());
@@ -2484,12 +2486,15 @@ public class MessagingController {
         }
     }
 
-    private void clearFetchingMailNotificationIfNecessary(Account account) {
+    private void showEmptyFetchingMailNotificationIfNecessary(Account account) {
         if (account.isNotifySync()) {
-            notificationController.clearFetchingMailNotification(account);
+            notificationController.showEmptyFetchingMailNotification(account);
         }
     }
 
+    private void clearFetchingMailNotification(Account account) {
+        notificationController.clearFetchingMailNotification(account);
+    }
 
     public void compact(final Account account, final MessagingListener ml) {
         putBackground("compact:" + account.getDescription(), ml, new Runnable() {

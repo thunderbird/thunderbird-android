@@ -48,6 +48,10 @@ class NotificationController internal constructor(
         syncNotifications.showFetchingMailNotification(account, folder)
     }
 
+    fun showEmptyFetchingMailNotification(account: Account) {
+        syncNotifications.showEmptyFetchingMailNotification(account)
+    }
+
     fun clearFetchingMailNotification(account: Account) {
         syncNotifications.clearFetchingMailNotification(account)
     }
