@@ -31,7 +31,7 @@ class MessageViewPagerFragment(private val messageList: MessageList) : Fragment(
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         adapter = MessageFragmentStateAdapter(this)
         viewPager.adapter = adapter
-        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(@ViewPager2.ScrollState state: Int) {
                 doPageScrollStateChanged(state)
                 super.onPageScrollStateChanged(state)
