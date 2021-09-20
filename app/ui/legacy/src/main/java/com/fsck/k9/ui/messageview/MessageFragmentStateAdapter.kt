@@ -83,8 +83,4 @@ class MessageFragmentStateAdapter(
     fun resetWebView() {
         webView = null
     }
-
-    fun clearFragmentCache() {
-        fragmentCache.clear()
-    }
 }

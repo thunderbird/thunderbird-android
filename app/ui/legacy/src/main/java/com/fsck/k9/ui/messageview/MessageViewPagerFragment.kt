@@ -33,42 +33,44 @@ class MessageViewPagerFragment(private val messageList: MessageList) : Fragment(
         viewPager.adapter = adapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(@ViewPager2.ScrollState state: Int) {
-                doPageScrollStateChanged(state)
+                if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                    viewPagerSettled()
+                }
                 super.onPageScrollStateChanged(state)
             }
         })
         return view
     }
 
-    private fun doPageScrollStateChanged(@ViewPager2.ScrollState state: Int) {
-        if (state == ViewPager2.SCROLL_STATE_IDLE) {
+    private fun viewPagerSettled() {
+        viewPager.post {
             messageList.configureMenu()
             adapter.resetWebView()
         }
     }
 
     val activeMessageViewFragment: MessageViewFragment?
-        get() { return adapter.getActiveMessageViewFragment() }
+        get() {
+            return adapter.getActiveMessageViewFragment()
+        }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun notifyDataSetChanged() = try {
-        val reference = getMessageReference(viewPager.currentItem)
-        adapter.clearFragmentCache()
+    fun notifyMessageListFragmentChanged() {
         adapter.notifyDataSetChanged()
-        showMessage(reference)
-    } catch (e: UninitializedPropertyAccessException) {
-        // swallow UninitializedPropertyAccessException
     }
 
     fun showMessage(messageReference: MessageReference?) {
         if (messageReference != null) {
-            viewPager.setCurrentItem(getMessagePosition(messageReference), true)
+            val position = getMessagePosition(messageReference)
+            if (position >= 0) {
+                viewPager.setCurrentItem(position, true)
+            }
         }
     }
 
     fun showPreviousMessage(): Boolean {
         val position = viewPager.currentItem - 1
-        return if (position >= 0) {
+        return if (0 <= position) {
             viewPager.setCurrentItem(position, true)
             true
         } else {
@@ -78,7 +80,7 @@ class MessageViewPagerFragment(private val messageList: MessageList) : Fragment(
 
     fun showNextMessage(): Boolean {
         val position = viewPager.currentItem + 1
-        return if (position < adapter.itemCount) {
+        return if (position < getMessageCount()) {
             viewPager.setCurrentItem(position, true)
             true
         } else {
@@ -89,7 +91,7 @@ class MessageViewPagerFragment(private val messageList: MessageList) : Fragment(
     fun getMessageCount(): Int {
         return try {
             messageList.getMessageCount()
-        } catch (e: UninitializedPropertyAccessException) {
+        } catch (e: Exception) {
             0
         }
     }
@@ -97,15 +99,15 @@ class MessageViewPagerFragment(private val messageList: MessageList) : Fragment(
     private fun getMessagePosition(reference: MessageReference): Int {
         return try {
             messageList.getMessagePosition(reference)
-        } catch (e: UninitializedPropertyAccessException) {
-            0
+        } catch (e: Exception) {
+            -1
         }
     }
 
     fun getMessageReference(position: Int): MessageReference? {
         return try {
             messageList.getMessageReference(position)
-        } catch (e: UninitializedPropertyAccessException) {
+        } catch (e: Exception) {
             null
         }
     }

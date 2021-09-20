@@ -109,7 +109,7 @@ open class MessageList :
             val changing = (field != value)
             field = value
             if (changing) {
-                notifyDataSetChanged()
+                messageViewPagerFragment?.notifyMessageListFragmentChanged()
             }
         }
     private var messageViewPagerFragment: MessageViewPagerFragment? = null
@@ -1488,13 +1488,6 @@ open class MessageList :
 
     override fun updateMenu() {
         invalidateOptionsMenu()
-    }
-
-    /**
-     * MessageListFragment should call this method whenever its contents have changed
-     */
-    override fun notifyDataSetChanged() {
-        messageViewPagerFragment?.notifyDataSetChanged()
     }
 
     override fun disableDeleteAction() {
