@@ -13,7 +13,9 @@ internal open class SingleMessageNotifications(
 
     fun buildSingleMessageNotification(account: Account, holder: NotificationHolder): Notification {
         val notificationId = holder.notificationId
-        return createSingleMessageNotificationBuilder(account, holder, notificationId).build()
+        return createSingleMessageNotificationBuilder(account, holder, notificationId)
+            .setNotificationSilent()
+            .build()
     }
 
     fun createSingleMessageNotificationBuilder(
@@ -23,7 +25,6 @@ internal open class SingleMessageNotifications(
     ): NotificationCompat.Builder {
         val content = holder.content
         val builder = createBigTextStyleNotification(account, holder, notificationId)
-        builder.setNotificationSilent()
 
         val deletePendingIntent = actionCreator.createDismissMessagePendingIntent(
             context, content.messageReference, holder.notificationId
