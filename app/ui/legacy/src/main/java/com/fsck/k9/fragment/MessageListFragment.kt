@@ -1901,6 +1901,7 @@ class MessageListFragment :
         fun remoteSearchStarted()
         fun goBack()
         fun updateMenu()
+        fun notifyDataSetChanged()
 
         companion object {
             const val MAX_PROGRESS = 10000
@@ -1931,7 +1932,7 @@ class MessageListFragment :
         }
     }
 
-    fun getListView(): ListView {
-        return listView
+    fun getCount(): Int {
+        return adapter.messages.count()
     }
 }

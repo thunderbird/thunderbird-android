@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.messageview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.ContextThemeWrapper
@@ -9,16 +10,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.fsck.k9.DI.get
+import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessageReference
-import com.fsck.k9.fragment.MessageListFragment
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.ThemeManager
 
-class MessageViewPagerFragment : Fragment() {
+class MessageViewPagerFragment(private val messageList: MessageList) : Fragment() {
     private val themeManager = get(ThemeManager::class.java)
-    private var viewPager: ViewPager2? = null
-    private var adapter: MessageFragmentStateAdapter? = null
-    private var messageListFragment: MessageListFragment? = null
+    private lateinit var viewPager: ViewPager2
+    private lateinit var adapter: MessageFragmentStateAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -27,64 +27,49 @@ class MessageViewPagerFragment : Fragment() {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.message_viewpager, container, false)
         viewPager = view.findViewById(R.id.viewPager)
-        if (viewPager != null) {
-            viewPager!!.isUserInputEnabled = true
-            viewPager!!.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
-            viewPager!!.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-                    super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                }
-
-                override fun onPageSelected(position: Int) {
-                    doOnPageSelected(position)
-                    super.onPageSelected(position)
-                }
-
-                override fun onPageScrollStateChanged(state: Int) {
-                    super.onPageScrollStateChanged(state)
-                }
-            })
-        }
+        viewPager.isUserInputEnabled = true
+        viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
+        adapter = MessageFragmentStateAdapter(this)
+        viewPager.adapter = adapter
+        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(@ViewPager2.ScrollState state: Int) {
+                doPageScrollStateChanged(state)
+                super.onPageScrollStateChanged(state)
+            }
+        })
         return view
     }
 
-    private fun doOnPageSelected(position: Int) {
-        adapter?.doOnPageSelected(position)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        resetMessageListFragment()
-    }
-
-    val selectedMessageViewFragment: MessageViewFragment?
-        get() { return adapter!!.getCurrentMessageViewFragment() }
-
-    fun resetMessageListFragment() {
-        val newMessageListFragment =
-            parentFragmentManager.findFragmentById(R.id.message_list_container) as MessageListFragment?
-        if (newMessageListFragment != messageListFragment) {
-            messageListFragment = newMessageListFragment
-            if (viewPager != null && messageListFragment != null) {
-                adapter = MessageFragmentStateAdapter(this, messageListFragment!!, viewPager!!)
-            }
+    private fun doPageScrollStateChanged(@ViewPager2.ScrollState state: Int) {
+        if (state == ViewPager2.SCROLL_STATE_IDLE) {
+            messageList.configureMenu()
+            adapter.resetWebView()
         }
     }
 
-    fun setActiveMessage(messageReference: MessageReference) {
-        if (viewPager != null && adapter != null) {
-            viewPager!!.setCurrentItem(adapter!!.getMessagePosition(messageReference), true)
+    val activeMessageViewFragment: MessageViewFragment?
+        get() { return adapter.getActiveMessageViewFragment() }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun notifyDataSetChanged() = try {
+        val reference = getMessageReference(viewPager.currentItem)
+        adapter.clearFragmentCache()
+        adapter.notifyDataSetChanged()
+        showMessage(reference)
+    } catch (e: UninitializedPropertyAccessException) {
+        // swallow UninitializedPropertyAccessException
+    }
+
+    fun showMessage(messageReference: MessageReference?) {
+        if (messageReference != null) {
+            viewPager.setCurrentItem(getMessagePosition(messageReference), true)
         }
     }
 
     fun showPreviousMessage(): Boolean {
-        val position = viewPager!!.currentItem - 1
+        val position = viewPager.currentItem - 1
         return if (position >= 0) {
-            viewPager!!.setCurrentItem(position, true)
+            viewPager.setCurrentItem(position, true)
             true
         } else {
             false
@@ -92,12 +77,40 @@ class MessageViewPagerFragment : Fragment() {
     }
 
     fun showNextMessage(): Boolean {
-        val position = viewPager!!.currentItem + 1
-        return if (position < adapter!!.itemCount) {
-            viewPager!!.setCurrentItem(position, true)
+        val position = viewPager.currentItem + 1
+        return if (position < adapter.itemCount) {
+            viewPager.setCurrentItem(position, true)
             true
         } else {
             false
         }
+    }
+
+    fun getMessageCount(): Int {
+        return try {
+            messageList.getMessageCount()
+        } catch (e: UninitializedPropertyAccessException) {
+            0
+        }
+    }
+
+    private fun getMessagePosition(reference: MessageReference): Int {
+        return try {
+            messageList.getMessagePosition(reference)
+        } catch (e: UninitializedPropertyAccessException) {
+            0
+        }
+    }
+
+    fun getMessageReference(position: Int): MessageReference? {
+        return try {
+            messageList.getMessageReference(position)
+        } catch (e: UninitializedPropertyAccessException) {
+            null
+        }
+    }
+
+    fun getActivePosition(): Int {
+        return viewPager.currentItem
     }
 }
