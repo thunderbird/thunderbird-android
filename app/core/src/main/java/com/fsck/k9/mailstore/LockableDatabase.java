@@ -33,10 +33,8 @@ public class LockableDatabase {
          *            The locked database on which the work should occur. Never
          *            <code>null</code>.
          * @return Any relevant data. Can be <code>null</code>.
-         * @throws WrappedException
-         * @throws com.fsck.k9.mail.MessagingException
          */
-        T doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException;
+        T doDbWork(SQLiteDatabase db) throws MessagingException;
     }
 
     public interface SchemaDefinition {
@@ -46,21 +44,6 @@ public class LockableDatabase {
          * @param db Never <code>null</code>.
          */
         void doDbUpgrade(SQLiteDatabase db);
-    }
-
-    /**
-     * Workaround exception wrapper used to keep the inner exception generated
-     * in a {@link DbCallback}.
-     */
-    public static class WrappedException extends RuntimeException {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 8184421232587399369L;
-
-        public WrappedException(final Exception cause) {
-            super(cause);
-        }
     }
 
     private String mStorageProviderId;
