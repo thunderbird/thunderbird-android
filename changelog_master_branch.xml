@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.902" versioncode="29002" date="2021-09-21">
+        <change>Fixed missing notification sound</change>
+    </release>
     <release version="5.901" versioncode="29001" date="2021-09-17">
         <change>Added support for entering Reply-To addresses when composing a message</change>
         <change>Display the unread message count for the Unified Inbox in the drawer</change>
