@@ -457,13 +457,6 @@
         android:title="@string/privacy_preferences"
         search:ignore="true">
 
-        <ListPreference
-            android:entries="@array/notification_hide_subject_entries"
-            android:entryValues="@array/notification_hide_subject_values"
-            android:key="notification_hide_subject"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/global_settings_notification_hide_subject_title" />
-
         <CheckBoxPreference
             android:key="privacy_hide_useragent"
             android:summary="@string/global_settings_privacy_hide_useragent_detail"

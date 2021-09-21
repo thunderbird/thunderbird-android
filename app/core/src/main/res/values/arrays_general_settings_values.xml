@@ -171,12 +171,6 @@
         <item>6</item>
     </string-array>
 
-    <string-array name="notification_hide_subject_values" translatable="false">
-        <item name="1">NEVER</item>
-        <item name="2">WHEN_LOCKED</item>
-        <item name="3">ALWAYS</item>
-    </string-array>
-
     <string-array name="notification_quick_delete_values" translatable="false">
         <item name="1">NEVER</item>
         <item name="2">FOR_SINGLE_MSG</item>
