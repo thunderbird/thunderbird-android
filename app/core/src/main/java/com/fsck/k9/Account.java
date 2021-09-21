@@ -1031,16 +1031,6 @@ public class Account implements BaseAccount {
         return notificationSetting;
     }
 
-    /**
-     * @return <code>true</code> if our {@link StorageProvider} is ready. (e.g.
-     *         card inserted)
-     */
-    public boolean isAvailable(Context context) {
-        String localStorageProviderId = getLocalStorageProviderId();
-        boolean storageProviderIsInternalMemory = localStorageProviderId == null;
-        return storageProviderIsInternalMemory || StorageManager.getInstance(context).isReady(localStorageProviderId);
-    }
-
     public synchronized boolean isMarkMessageAsReadOnView() {
         return markMessageAsReadOnView;
     }

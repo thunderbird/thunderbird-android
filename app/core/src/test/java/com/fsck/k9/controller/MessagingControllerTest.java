@@ -31,7 +31,6 @@ import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
-import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.preferences.Protocols;
@@ -166,13 +165,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
         controller.clearFolderSynchronous(account, FOLDER_ID);
 
         verify(localFolder).clearAllMessages();
-    }
-
-    @Test(expected = UnavailableAccountException.class)
-    public void clearFolderSynchronous_whenStorageUnavailable_shouldThrowUnavailableAccountException() throws MessagingException {
-        doThrow(new UnavailableStorageException("Test")).when(localFolder).open();
-
-        controller.clearFolderSynchronous(account, FOLDER_ID);
     }
 
     @Test

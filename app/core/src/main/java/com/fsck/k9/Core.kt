@@ -2,16 +2,9 @@ package com.fsck.k9
 
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.os.Handler
-import android.os.Looper
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mail.internet.BinaryTempFileBody
-import com.fsck.k9.service.StorageGoneReceiver
-import java.util.concurrent.SynchronousQueue
-import timber.log.Timber
 
 object Core : EarlyInit {
     private val context: Context by inject()
@@ -35,7 +28,6 @@ object Core : EarlyInit {
         BinaryTempFileBody.setTempDirectory(context.cacheDir)
 
         setServicesEnabled(context)
-        registerReceivers(context)
     }
 
     /**
@@ -77,44 +69,6 @@ object Core : EarlyInit {
 
         if (enabled) {
             jobManager.scheduleAllMailJobs()
-        }
-    }
-
-    /**
-     * Register BroadcastReceivers programmatically because doing it from manifest
-     * would make K-9 auto-start. We don't want auto-start because the initialization
-     * sequence isn't safe while some events occur (SD card unmount).
-     */
-    private fun registerReceivers(context: Context) {
-        val receiver = StorageGoneReceiver()
-        val filter = IntentFilter()
-        filter.addAction(Intent.ACTION_MEDIA_EJECT)
-        filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED)
-        filter.addDataScheme("file")
-
-        val queue = SynchronousQueue<Handler>()
-
-        // starting a new thread to handle unmount events
-        Thread(
-            Runnable {
-                Looper.prepare()
-                try {
-                    queue.put(Handler())
-                } catch (e: InterruptedException) {
-                    Timber.e(e)
-                }
-
-                Looper.loop()
-            },
-            "Unmount-thread"
-        ).start()
-
-        try {
-            val storageGoneHandler = queue.take()
-            context.registerReceiver(receiver, filter, null, storageGoneHandler)
-            Timber.i("Registered: unmount receiver")
-        } catch (e: InterruptedException) {
-            Timber.e(e, "Unable to register unmount receiver")
         }
     }
 }

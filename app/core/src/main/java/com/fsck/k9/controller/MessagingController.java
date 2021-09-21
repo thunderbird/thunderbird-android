@@ -77,7 +77,6 @@ import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SaveMessageData;
 import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
-import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.power.TracingPowerManager;
@@ -216,23 +215,7 @@ public class MessagingController {
                             command.sequence,
                             command.isForegroundPriority ? "foreground" : "background");
 
-                    try {
-                        command.runnable.run();
-                    } catch (UnavailableAccountException e) {
-                        // retry later
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                try {
-                                    sleep(30 * 1000);
-                                    queuedCommands.put(command);
-                                } catch (InterruptedException e) {
-                                    Timber.e("Interrupted while putting a pending command for an unavailable account " +
-                                            "back into the queue. THIS SHOULD NEVER HAPPEN.");
-                                }
-                            }
-                        }.start();
-                    }
+                    command.runnable.run();
 
                     Timber.i(" Command '%s' completed", command.description);
                 }
@@ -741,10 +724,6 @@ public class MessagingController {
             public void run() {
                 try {
                     processPendingCommandsSynchronous(account);
-                } catch (UnavailableStorageException e) {
-                    Timber.i("Failed to process pending command because storage is not available - " +
-                            "trying again later.");
-                    throw new UnavailableAccountException(e);
                 } catch (MessagingException me) {
                     Timber.e(me, "processPendingCommands");
 
@@ -1442,13 +1421,6 @@ public class MessagingController {
         backend.sendMessage(message);
     }
 
-    public void sendPendingMessages(MessagingListener listener) {
-        for (Account account : preferences.getAvailableAccounts()) {
-            sendPendingMessages(account, listener);
-        }
-    }
-
-
     /**
      * Attempt to send any messages that are sitting in the Outbox.
      */
@@ -1457,9 +1429,6 @@ public class MessagingController {
         putBackground("sendPendingMessages", listener, new Runnable() {
             @Override
             public void run() {
-                if (!account.isAvailable(context)) {
-                    throw new UnavailableAccountException();
-                }
                 if (messagesPendingSend(account)) {
 
                     showSendingNotificationIfNecessary(account);
@@ -1633,9 +1602,6 @@ public class MessagingController {
                     notificationController.showSendFailedNotification(account, lastFailure);
                 }
             }
-        } catch (UnavailableStorageException e) {
-            Timber.i("Failed to send pending messages because storage is not available - trying again later.");
-            throw new UnavailableAccountException(e);
         } catch (Exception e) {
             Timber.v(e, "Failed to send pending messages");
         } finally {
@@ -1901,9 +1867,6 @@ public class MessagingController {
             }
 
             processPendingCommands(account);
-        } catch (UnavailableStorageException e) {
-            Timber.i("Failed to move/copy message because storage is not available - trying again later.");
-            throw new UnavailableAccountException(e);
         } catch (MessagingException me) {
             throw new RuntimeException("Error moving message", me);
         }
@@ -2148,9 +2111,6 @@ public class MessagingController {
             }
 
             unsuppressMessages(account, messages);
-        } catch (UnavailableStorageException e) {
-            Timber.i("Failed to delete message because storage is not available - trying again later.");
-            throw new UnavailableAccountException(e);
         } catch (MessagingException me) {
             throw new RuntimeException("Error deleting message from local store.", me);
         }
@@ -2220,9 +2180,6 @@ public class MessagingController {
                         queuePendingCommand(account, command);
                         processPendingCommands(account);
                     }
-                } catch (UnavailableStorageException e) {
-                    Timber.i("Failed to empty trash because storage is not available - trying again later.");
-                    throw new UnavailableAccountException(e);
                 } catch (Exception e) {
                     Timber.e(e, "emptyTrash failed");
                 }
@@ -2242,9 +2199,6 @@ public class MessagingController {
             LocalFolder localFolder = localStoreProvider.getInstance(account).getFolder(folderId);
             localFolder.open();
             localFolder.clearAllMessages();
-        } catch (UnavailableStorageException e) {
-            Timber.i("Failed to clear folder because storage is not available - trying again later.");
-            throw new UnavailableAccountException(e);
         } catch (Exception e) {
             Timber.e(e, "clearFolder failed");
         }
@@ -2336,7 +2290,7 @@ public class MessagingController {
                         accounts = new ArrayList<>(1);
                         accounts.add(account);
                     } else {
-                        accounts = preferences.getAvailableAccounts();
+                        accounts = preferences.getAccounts();
                     }
 
                     for (final Account account : accounts) {
@@ -2370,11 +2324,6 @@ public class MessagingController {
     private void checkMailForAccount(final Context context, final Account account,
             final boolean ignoreLastCheckedTime,
             final MessagingListener listener) {
-        if (!account.isAvailable(context)) {
-            Timber.i("Skipping synchronizing unavailable account %s", account.getDescription());
-            return;
-        }
-
         Timber.i("Synchronizing account %s", account.getDescription());
 
         NotificationState notificationState = new NotificationState();

@@ -578,7 +578,7 @@ public class LocalFolder {
         try {
             return this.localStore.getDatabase().execute(false, new DbCallback<String>() {
                 @Override
-                public String doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                public String doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
                         open();
                         Cursor cursor = null;
@@ -608,7 +608,7 @@ public class LocalFolder {
         try {
             return this.localStore.getDatabase().execute(false, new DbCallback<LocalMessage>() {
                 @Override
-                public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
                         open();
                         LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this);
@@ -679,7 +679,7 @@ public class LocalFolder {
         try {
             return  localStore.getDatabase().execute(false, new DbCallback<List<LocalMessage>>() {
                 @Override
-                public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
                         open();
                         return LocalFolder.this.localStore.getMessages(listener, LocalFolder.this,
@@ -705,7 +705,7 @@ public class LocalFolder {
         try {
             return  localStore.getDatabase().execute(false, new DbCallback<List<String>>() {
                 @Override
-                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException {
                     Cursor cursor = null;
                     ArrayList<String> result = new ArrayList<>();
 
@@ -777,7 +777,7 @@ public class LocalFolder {
         try {
             this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     for (LocalMessage message : messages) {
                         try {
                             message.destroy();
@@ -974,7 +974,7 @@ public class LocalFolder {
 
         localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 long messagePartId;
 
                 Cursor cursor = db.query("message_parts", new String[] { "id" }, "root = ? AND server_extra = ?",
@@ -1013,7 +1013,7 @@ public class LocalFolder {
         cv.put("uid", message.getUid());
         this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 db.update("messages", cv, "id = ?", new String[]
                         { Long.toString(message.getDatabaseId()) });
                 return null;
@@ -1032,8 +1032,7 @@ public class LocalFolder {
         try {
             this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                        UnavailableStorageException {
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
 
                     for (LocalMessage message : messages) {
                         try {
@@ -1167,8 +1166,7 @@ public class LocalFolder {
         try {
             localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                        UnavailableStorageException {
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
                         deleteMessagePartsAndDataFromDisk(messagePartId);
 
@@ -1301,7 +1299,7 @@ public class LocalFolder {
     private void deleteMessageParts(final long rootMessagePartId) throws MessagingException {
         localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 db.delete("message_parts", "root = ?", new String[] { Long.toString(rootMessagePartId) });
                 return null;
             }
@@ -1311,7 +1309,7 @@ public class LocalFolder {
     private void deleteMessageDataFromDisk(final long rootMessagePartId) throws MessagingException {
         localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 deleteMessagePartsFromDisk(db, rootMessagePartId);
                 return null;
             }

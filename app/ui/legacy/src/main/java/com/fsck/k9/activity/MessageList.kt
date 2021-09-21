@@ -37,8 +37,6 @@ import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
-import com.fsck.k9.mailstore.StorageManager
-import com.fsck.k9.mailstore.StorageManager.StorageListener
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
@@ -95,7 +93,6 @@ open class MessageList :
     private val defaultFolderProvider: DefaultFolderProvider by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
 
-    private val storageListener: StorageListener = StorageListenerImplementation()
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
     private lateinit var actionBar: ActionBar
@@ -403,11 +400,6 @@ open class MessageList :
         noThreading = launchData.noThreading
         messageReference = launchData.messageReference
 
-        if (!account.isAvailable(this)) {
-            onAccountUnavailable()
-            return false
-        }
-
         return true
     }
 
@@ -527,11 +519,6 @@ open class MessageList :
         }
     }
 
-    public override fun onPause() {
-        super.onPause()
-        StorageManager.getInstance(application).removeListener(storageListener)
-    }
-
     public override fun onResume() {
         super.onResume()
 
@@ -546,13 +533,6 @@ open class MessageList :
             // when returning from search results
             searchStatusManager.isActive = false
         }
-
-        if (account != null && !account!!.isAvailable(this)) {
-            onAccountUnavailable()
-            return
-        }
-
-        StorageManager.getInstance(application).addListener(storageListener)
     }
 
     override fun onStart() {
@@ -1199,12 +1179,6 @@ open class MessageList :
                 menu.findItem(R.id.search_everywhere).isVisible = true
             }
         }
-    }
-
-    protected fun onAccountUnavailable() {
-        // TODO: Find better way to handle this case.
-        Timber.i("Account is unavailable right now: $account")
-        finish()
     }
 
     fun setActionBarTitle(title: String, subtitle: String? = null) {
