@@ -18,7 +18,7 @@ class MessageViewPagerFragment : Fragment() {
     private val themeManager = get(ThemeManager::class.java)
     private lateinit var messageList: MessageViewPagerFragmentListener
     private lateinit var viewPager: ViewPager2
-    private lateinit var adapter: MessageFragmentStateAdapter
+    private lateinit var adapter: MessageViewPagerAdapter
     private lateinit var initialMessage: MessageReference
 
     companion object {
@@ -57,7 +57,7 @@ class MessageViewPagerFragment : Fragment() {
         viewPager = view.findViewById(R.id.viewPager)
         viewPager.isUserInputEnabled = true
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
-        adapter = MessageFragmentStateAdapter(this)
+        adapter = MessageViewPagerAdapter(this)
         viewPager.adapter = adapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(@ViewPager2.ScrollState state: Int) {

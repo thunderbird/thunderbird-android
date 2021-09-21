@@ -9,7 +9,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.fsck.k9.ui.R
 import java.lang.ref.WeakReference
 
-class MessageFragmentStateAdapter(
+class MessageViewPagerAdapter(
     private val viewPagerFragment: MessageViewPagerFragment,
 ) : FragmentStateAdapter(viewPagerFragment) {
 
