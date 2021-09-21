@@ -57,21 +57,28 @@ class FolderRepository(
 
     fun getDisplayFoldersFlow(account: Account, displayMode: FolderMode): Flow<List<DisplayFolder>> {
         val messagingController = DI.get<MessagingController>()
+        val messageStore = messageStoreManager.getMessageStore(account)
 
         return callbackFlow {
             send(getDisplayFolders(account, displayMode))
 
-            val listener = object : SimpleMessagingListener() {
+            val folderStatusChangedListener = object : SimpleMessagingListener() {
                 override fun folderStatusChanged(statusChangedAccount: Account, folderId: Long) {
                     if (statusChangedAccount.uuid == account.uuid) {
                         sendBlockingSilently(getDisplayFolders(account, displayMode))
                     }
                 }
             }
-            messagingController.addListener(listener)
+            messagingController.addListener(folderStatusChangedListener)
+
+            val folderSettingsChangedListener = FolderSettingsChangedListener {
+                sendBlockingSilently(getDisplayFolders(account, displayMode))
+            }
+            messageStore.addFolderSettingsChangedListener(folderSettingsChangedListener)
 
             awaitClose {
-                messagingController.removeListener(listener)
+                messagingController.removeListener(folderStatusChangedListener)
+                messageStore.removeFolderSettingsChangedListener(folderSettingsChangedListener)
             }
         }.buffer(capacity = Channel.CONFLATED)
             .distinctUntilChanged()
