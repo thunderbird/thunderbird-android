@@ -2,24 +2,16 @@ package com.fsck.k9.mailstore;
 
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import android.content.Context;
 import android.os.Environment;
 
-import com.fsck.k9.Core;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
-import timber.log.Timber;
 
 /**
  * Manager for different {@link StorageProvider} -classes that abstract access
@@ -110,135 +102,6 @@ public class StorageManager {
          * @return Never <code>null</code>.
          */
         File getAttachmentDirectory(Context context, String id);
-
-        /**
-         * Check for the underlying storage availability.
-         *
-         * @param context
-         *            Never <code>null</code>.
-         * @return Whether the underlying storage returned by this provider is
-         *         ready for read/write operations at the time of invocation.
-         */
-        boolean isReady(Context context);
-
-        /**
-         * Retrieve the root of the underlying storage.
-         *
-         * @param context
-         *            Never <code>null</code>.
-         * @return The root directory of the denoted storage. Never
-         *         <code>null</code>.
-         */
-        File getRoot(Context context);
-    }
-
-    /**
-     * Interface for components wanting to be notified of storage availability
-     * events.
-     */
-    public interface StorageListener {
-        /**
-         * Invoked on storage mount (with read/write access).
-         *
-         * @param providerId
-         *            Identifier (as returned by {@link StorageProvider#getId()}
-         *            of the newly mounted storage. Never <code>null</code>.
-         */
-        void onMount(String providerId);
-
-        /**
-         * Invoked when a storage is about to be unmounted.
-         *
-         * @param providerId
-         *            Identifier (as returned by {@link StorageProvider#getId()}
-         *            of the to-be-unmounted storage. Never <code>null</code>.
-         */
-        void onUnmount(String providerId);
-    }
-
-    /**
-     * Base provider class for providers that rely on well-known path to check
-     * for storage availability.
-     *
-     * <p>
-     * Since solely checking for paths can be unsafe, this class allows to check
-     * for device compatibility using {@link #supportsVendor()}. If the vendor
-     * specific check fails, the provider won't be able to provide any valid
-     * File handle, regardless of the path existence.
-     * </p>
-     *
-     * <p>
-     * Moreover, this class validates the denoted storage path against mount
-     * points using {@link StorageManager#isMountPoint(File)}.
-     * </p>
-     */
-    public abstract static class FixedStorageProviderBase implements StorageProvider {
-        /**
-         * The root of the denoted storage. Used for mount points checking.
-         */
-        private File mRoot;
-
-        /**
-         * Chosen base directory
-         */
-        private File mApplicationDir;
-
-        @Override
-        public void init(final Context context) {
-            mRoot = computeRoot(context);
-            // use <STORAGE_ROOT>/k9
-            mApplicationDir = new File(mRoot, "k9");
-        }
-
-        /**
-         * Vendor specific checks
-         *
-         * @return Whether this provider supports the underlying vendor specific
-         *         storage
-         */
-        protected abstract boolean supportsVendor();
-
-        @Override
-        public boolean isReady(Context context) {
-            try {
-                final File root = mRoot.getCanonicalFile();
-                return isMountPoint(root)
-                       && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-            } catch (IOException e) {
-                Timber.w(e, "Specified root isn't ready: %s", mRoot);
-                return false;
-            }
-        }
-
-        @Override
-        public final boolean isSupported(Context context) {
-            return mRoot.isDirectory() && supportsVendor();
-        }
-
-        @Override
-        public File getDatabase(Context context, String id) {
-            return new File(mApplicationDir, id + ".db");
-        }
-
-        @Override
-        public File getAttachmentDirectory(Context context, String id) {
-            return new File(mApplicationDir, id + ".db_att");
-        }
-
-        @Override
-        public final File getRoot(Context context) {
-            return mRoot;
-        }
-
-        /**
-         * Retrieve the well-known storage root directory from the actual
-         * implementation.
-         *
-         * @param context
-         *            Never <code>null</code>.
-         * @return Never <code>null</code>.
-         */
-        protected abstract File computeRoot(Context context);
     }
 
     /**
@@ -258,7 +121,6 @@ public class StorageManager {
         public static final String ID = "InternalStorage";
 
         private final CoreResourceProvider resourceProvider;
-        private File mRoot;
 
         public InternalStorageProvider(CoreResourceProvider resourceProvider) {
             this.resourceProvider = resourceProvider;
@@ -271,8 +133,6 @@ public class StorageManager {
 
         @Override
         public void init(Context context) {
-            // XXX
-            mRoot = new File("/");
         }
 
         @Override
@@ -294,16 +154,6 @@ public class StorageManager {
         public File getAttachmentDirectory(Context context, String id) {
             // we store attachments in the database directory
             return context.getDatabasePath(id + ".db_att");
-        }
-
-        @Override
-        public boolean isReady(Context context) {
-            return true;
-        }
-
-        @Override
-        public File getRoot(Context context) {
-            return mRoot;
         }
     }
 
@@ -369,37 +219,6 @@ public class StorageManager {
         public File getAttachmentDirectory(Context context, String id) {
             return new File(mApplicationDirectory, id + ".db_att");
         }
-
-        @Override
-        public boolean isReady(Context context) {
-            return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-        }
-
-        @Override
-        public File getRoot(Context context) {
-            return Environment.getExternalStorageDirectory();
-        }
-    }
-
-    /**
-     * Stores storage provider locking information
-     */
-    public static class SynchronizationAid {
-        /**
-         * {@link Lock} has a thread semantic so it can't be released from
-         * another thread - this flags act as a holder for the unmount state
-         */
-        public boolean unmounting = false;
-
-        public final Lock readLock;
-
-        public final Lock writeLock;
-
-        {
-            final ReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
-            readLock = readWriteLock.readLock();
-            writeLock = readWriteLock.writeLock();
-        }
     }
 
     /**
@@ -407,17 +226,7 @@ public class StorageManager {
      */
     private final Map<String, StorageProvider> mProviders = new LinkedHashMap<>();
 
-    /**
-     * Locking data for the active storage providers.
-     */
-    private final Map<StorageProvider, SynchronizationAid> mProviderLocks = new IdentityHashMap<>();
-
     protected final Context context;
-
-    /**
-     * Listener to be notified for storage related events.
-     */
-    private List<StorageListener> mListeners = new ArrayList<>();
 
     private static transient StorageManager instance;
 
@@ -428,21 +237,6 @@ public class StorageManager {
             instance = new StorageManager(applicationContext, resourceProvider);
         }
         return instance;
-    }
-
-    /**
-     * @param file
-     *            Canonical file to match. Never <code>null</code>.
-     * @return Whether the specified file matches a filesystem root.
-     * @throws IOException
-     */
-    public static boolean isMountPoint(final File file) {
-        for (final File root : File.listRoots()) {
-            if (root.equals(file)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -477,7 +271,6 @@ public class StorageManager {
 
                 provider.init(context);
                 mProviders.put(provider.getId(), provider);
-                mProviderLocks.put(provider, new SynchronizationAid());
             }
         }
 
@@ -527,20 +320,6 @@ public class StorageManager {
     }
 
     /**
-     * @param providerId
-     *            Never <code>null</code>.
-     * @return Whether the specified provider is ready for read/write operations
-     */
-    public boolean isReady(final String providerId) {
-        StorageProvider provider = getProvider(providerId);
-        if (provider == null) {
-            Timber.w("Storage-Provider \"%s\" does not exist", providerId);
-            return false;
-        }
-        return provider.isReady(context);
-    }
-
-    /**
      * @return A map of available providers names, indexed by their ID. Never
      *         <code>null</code>.
      * @see StorageManager
@@ -552,126 +331,5 @@ public class StorageManager {
             result.put(entry.getKey(), entry.getValue().getName(context));
         }
         return result;
-    }
-
-    /**
-     * @param path
-     */
-    public void onBeforeUnmount(final String path) {
-        Timber.i("storage path \"%s\" unmounting", path);
-        final StorageProvider provider = resolveProvider(path);
-        if (provider == null) {
-            return;
-        }
-        for (final StorageListener listener : mListeners) {
-            try {
-                listener.onUnmount(provider.getId());
-            } catch (Exception e) {
-                Timber.w(e, "Error while notifying StorageListener");
-            }
-        }
-        final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
-        sync.writeLock.lock();
-        sync.unmounting = true;
-        sync.writeLock.unlock();
-    }
-
-    public void onAfterUnmount(final String path) {
-        Timber.i("storage path \"%s\" unmounted", path);
-        final StorageProvider provider = resolveProvider(path);
-        if (provider == null) {
-            return;
-        }
-        final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
-        sync.writeLock.lock();
-        sync.unmounting = false;
-        sync.writeLock.unlock();
-
-        Core.setServicesEnabled(context);
-    }
-
-    /**
-     * @param path
-     * @param readOnly
-     */
-    public void onMount(final String path, final boolean readOnly) {
-        Timber.i("storage path \"%s\" mounted readOnly=%s", path, readOnly);
-        if (readOnly) {
-            return;
-        }
-
-        final StorageProvider provider = resolveProvider(path);
-        if (provider == null) {
-            return;
-        }
-        for (final StorageListener listener : mListeners) {
-            try {
-                listener.onMount(provider.getId());
-            } catch (Exception e) {
-                Timber.w(e, "Error while notifying StorageListener");
-            }
-        }
-
-        // XXX we should reset mail service ONLY if there are accounts using the storage (this is not done in a regular listener because it has to be invoked afterward)
-        Core.setServicesEnabled(context);
-    }
-
-    /**
-     * @param path
-     *            Never <code>null</code>.
-     * @return The corresponding provider. <code>null</code> if no match.
-     */
-    protected StorageProvider resolveProvider(final String path) {
-        for (final StorageProvider provider : mProviders.values()) {
-            if (path.equals(provider.getRoot(context).getAbsolutePath())) {
-                return provider;
-            }
-        }
-        return null;
-    }
-
-    public void addListener(final StorageListener listener) {
-        mListeners.add(listener);
-    }
-
-    public void removeListener(final StorageListener listener) {
-        mListeners.remove(listener);
-    }
-
-    /**
-     * Try to lock the underlying storage to prevent concurrent unmount.
-     *
-     * <p>
-     * You must invoke {@link #unlockProvider(String)} when you're done with the
-     * storage.
-     * </p>
-     *
-     * @param providerId
-     * @throws UnavailableStorageException
-     *             If the storage can't be locked.
-     */
-    public void lockProvider(final String providerId) throws UnavailableStorageException {
-        final StorageProvider provider = getProvider(providerId);
-        if (provider == null) {
-            throw new UnavailableStorageException("StorageProvider not found: " + providerId);
-        }
-        // lock provider
-        final SynchronizationAid sync = mProviderLocks.get(provider);
-        final boolean locked = sync.readLock.tryLock();
-        if (!locked || (locked && sync.unmounting)) {
-            if (locked) {
-                sync.readLock.unlock();
-            }
-            throw new UnavailableStorageException("StorageProvider is unmounting");
-        } else if (locked && !provider.isReady(context)) {
-            sync.readLock.unlock();
-            throw new UnavailableStorageException("StorageProvider not ready");
-        }
-    }
-
-    public void unlockProvider(final String providerId) {
-        final StorageProvider provider = getProvider(providerId);
-        final SynchronizationAid sync = mProviderLocks.get(provider);
-        sync.readLock.unlock();
     }
 }

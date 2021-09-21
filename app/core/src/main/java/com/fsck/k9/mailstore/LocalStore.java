@@ -51,7 +51,6 @@ import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider;
-import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
@@ -180,7 +179,6 @@ public class LocalStore {
     /**
      * local://localhost/path/to/database/uuid.db
      * This constructor is only used by {@link LocalStoreProvider#getInstance(Account)}
-     * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
     private LocalStore(final Account account, final Context context) throws MessagingException {
         this.context = context;
@@ -282,7 +280,7 @@ public class LocalStore {
         return folders;
     }
 
-    public void delete() throws UnavailableStorageException {
+    public void delete() {
         database.delete();
     }
 
@@ -809,8 +807,7 @@ public class LocalStore {
             try {
                 database.execute(true, new DbCallback<Void>() {
                     @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                            UnavailableStorageException {
+                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
 
                         selectionCallback.doDbWork(db, selection.toString(),
                                 selectionArgs.toArray(new String[selectionArgs.size()]));
@@ -860,8 +857,7 @@ public class LocalStore {
          * @param selectionArgs
          *         The current subset of the argument list.
          */
-        void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
-                throws UnavailableStorageException;
+        void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs);
 
         /**
          * This will be executed after each invocation of
@@ -905,8 +901,7 @@ public class LocalStore {
             }
 
             @Override
-            public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
-                    throws UnavailableStorageException {
+            public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs) {
 
                 db.update("messages", cv, "empty = 0 AND id" + selectionSet,
                         selectionArgs);
@@ -952,8 +947,7 @@ public class LocalStore {
             }
 
             @Override
-            public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
-                    throws UnavailableStorageException {
+            public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs) {
 
                 db.execSQL("UPDATE messages SET " + flagColumn + " = " + ((newState) ? "1" : "0") +
                         " WHERE id IN (" +
@@ -1003,8 +997,7 @@ public class LocalStore {
             }
 
             @Override
-            public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
-                    throws UnavailableStorageException {
+            public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs) {
 
                 if (threadedList) {
                     String sql = "SELECT m.uid, m.folder_id " +

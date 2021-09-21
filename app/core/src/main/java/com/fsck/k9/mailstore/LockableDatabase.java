@@ -35,7 +35,6 @@ public class LockableDatabase {
          * @return Any relevant data. Can be <code>null</code>.
          * @throws WrappedException
          * @throws com.fsck.k9.mail.MessagingException
-         * @throws com.fsck.k9.mailstore.UnavailableStorageException
          */
         T doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException;
     }
@@ -64,46 +63,6 @@ public class LockableDatabase {
         }
     }
 
-    /**
-     * Open the DB on mount and close the DB on unmount
-     */
-    private class StorageListener implements StorageManager.StorageListener {
-        @Override
-        public void onUnmount(final String providerId) {
-            if (!providerId.equals(mStorageProviderId)) {
-                return;
-            }
-
-            Timber.d("LockableDatabase: Closing DB %s due to unmount event on StorageProvider: %s", uUid, providerId);
-
-            try {
-                lockWrite();
-                try {
-                    mDb.close();
-                } finally {
-                    unlockWrite();
-                }
-            } catch (UnavailableStorageException e) {
-                Timber.w(e, "Unable to writelock on unmount");
-            }
-        }
-
-        @Override
-        public void onMount(final String providerId) {
-            if (!providerId.equals(mStorageProviderId)) {
-                return;
-            }
-
-            Timber.d("LockableDatabase: Opening DB %s due to mount event on StorageProvider: %s", uUid, providerId);
-
-            try {
-                openOrCreateDataspace();
-            } catch (UnavailableStorageException e) {
-                Timber.e(e, "Unable to open DB on mount");
-            }
-        }
-    }
-
     private String mStorageProviderId;
 
     private SQLiteDatabase mDb;
@@ -122,8 +81,6 @@ public class LockableDatabase {
         mReadLock = lock.readLock();
         mWriteLock = lock.writeLock();
     }
-
-    private final StorageListener mStorageListener = new StorageListener();
 
     private Context context;
 
@@ -173,22 +130,12 @@ public class LockableDatabase {
      * You <strong>have to</strong> invoke {@link #unlockRead()} when you're
      * done with the storage.
      * </p>
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available
      */
-    protected void lockRead() throws UnavailableStorageException {
+    protected void lockRead() {
         mReadLock.lock();
-        try {
-            getStorageManager().lockProvider(mStorageProviderId);
-        } catch (UnavailableStorageException | RuntimeException e) {
-            mReadLock.unlock();
-            throw e;
-        }
     }
 
     protected void unlockRead() {
-        getStorageManager().unlockProvider(mStorageProviderId);
         mReadLock.unlock();
     }
 
@@ -200,45 +147,12 @@ public class LockableDatabase {
      * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
      * done with the storage.
      * </p>
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available.
      */
-    protected void lockWrite() throws UnavailableStorageException {
-        lockWrite(mStorageProviderId);
-    }
-
-    /**
-     * Lock the storage for exclusive access (other threads aren't allowed to
-     * run simultaneously)
-     *
-     * <p>
-     * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
-     * done with the storage.
-     * </p>
-     *
-     * @param providerId
-     *            Never <code>null</code>.
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available.
-     */
-    protected void lockWrite(final String providerId) throws UnavailableStorageException {
+    private void lockWrite() {
         mWriteLock.lock();
-        try {
-            getStorageManager().lockProvider(providerId);
-        } catch (UnavailableStorageException | RuntimeException e) {
-            mWriteLock.unlock();
-            throw e;
-        }
     }
 
-    protected void unlockWrite() {
-        unlockWrite(mStorageProviderId);
-    }
-
-    protected void unlockWrite(final String providerId) {
-        getStorageManager().unlockProvider(providerId);
+    private void unlockWrite() {
         mWriteLock.unlock();
     }
 
@@ -258,7 +172,6 @@ public class LockableDatabase {
      * @param callback
      *            Never <code>null</code>.
      * @return Whatever {@link DbCallback#doDbWork(SQLiteDatabase)} returns.
-     * @throws UnavailableStorageException
      */
     public <T> T execute(final boolean transactional, final DbCallback<T> callback) throws MessagingException {
         lockRead();
@@ -314,58 +227,47 @@ public class LockableDatabase {
         Timber.v("LockableDatabase: Switching provider from %s to %s", mStorageProviderId, newProviderId);
 
         final String oldProviderId = mStorageProviderId;
-        lockWrite(oldProviderId);
+        lockWrite();
         try {
-            lockWrite(newProviderId);
             try {
-                try {
-                    mDb.close();
-                } catch (Exception e) {
-                    Timber.i(e, "Unable to close DB on local store migration");
-                }
-
-                final StorageManager storageManager = getStorageManager();
-                File oldDatabase = storageManager.getDatabase(uUid, oldProviderId);
-
-                // create new path
-                prepareStorage(newProviderId);
-
-                // move all database files
-                FileHelper.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
-                // move all attachment files
-                FileHelper.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId),
-                        storageManager.getAttachmentDirectory(uUid, newProviderId));
-                // remove any remaining old journal files
-                deleteDatabase(oldDatabase);
-
-                mStorageProviderId = newProviderId;
-
-                // re-initialize this class with the new Uri
-                openOrCreateDataspace();
-            } finally {
-                unlockWrite(newProviderId);
+                mDb.close();
+            } catch (Exception e) {
+                Timber.i(e, "Unable to close DB on local store migration");
             }
+
+            final StorageManager storageManager = getStorageManager();
+            File oldDatabase = storageManager.getDatabase(uUid, oldProviderId);
+
+            // create new path
+            prepareStorage(newProviderId);
+
+            // move all database files
+            FileHelper.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
+            // move all attachment files
+            FileHelper.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId),
+                    storageManager.getAttachmentDirectory(uUid, newProviderId));
+            // remove any remaining old journal files
+            deleteDatabase(oldDatabase);
+
+            mStorageProviderId = newProviderId;
+
+            // re-initialize this class with the new Uri
+            openOrCreateDataspace();
         } finally {
-            unlockWrite(oldProviderId);
+            unlockWrite();
         }
     }
 
-    public void open() throws UnavailableStorageException {
+    public void open() {
         lockWrite();
         try {
             openOrCreateDataspace();
         } finally {
             unlockWrite();
         }
-        StorageManager.getInstance(context).addListener(mStorageListener);
     }
 
-    /**
-     *
-     * @throws UnavailableStorageException
-     */
-    private void openOrCreateDataspace() throws UnavailableStorageException {
-
+    private void openOrCreateDataspace() {
         lockWrite();
         try {
             final File databaseFile = prepareStorage(mStorageProviderId);
@@ -401,13 +303,7 @@ public class LockableDatabase {
         }
     }
 
-    /**
-     * @param providerId
-     *            Never <code>null</code>.
-     * @return DB file.
-     * @throws UnavailableStorageException
-     */
-    protected File prepareStorage(final String providerId) throws UnavailableStorageException {
+    protected File prepareStorage(final String providerId) {
         final StorageManager storageManager = getStorageManager();
 
         final File databaseFile = storageManager.getDatabase(uUid, providerId);
@@ -419,8 +315,7 @@ public class LockableDatabase {
         }
         if (!databaseParentDir.exists()) {
             if (!databaseParentDir.mkdirs()) {
-                // Android seems to be unmounting the storage...
-                throw new UnavailableStorageException("Unable to access: " + databaseParentDir);
+                throw new RuntimeException("Unable to access: " + databaseParentDir);
             }
             FileHelper.touchFile(databaseParentDir, ".nomedia");
         }
@@ -441,23 +336,20 @@ public class LockableDatabase {
 
     /**
      * Delete the backing database.
-     *
-     * @throws UnavailableStorageException
      */
-    public void delete() throws UnavailableStorageException {
+    public void delete() {
         delete(false);
     }
 
-    public void recreate() throws UnavailableStorageException {
+    public void recreate() {
         delete(true);
     }
 
     /**
      * @param recreate
      *            <code>true</code> if the DB should be recreated after delete
-     * @throws UnavailableStorageException
      */
-    private void delete(final boolean recreate) throws UnavailableStorageException {
+    private void delete(final boolean recreate) {
         lockWrite();
         try {
             try {
@@ -494,9 +386,6 @@ public class LockableDatabase {
 
             if (recreate) {
                 openOrCreateDataspace();
-            } else {
-                // stop waiting for mount/unmount events
-                getStorageManager().removeListener(mStorageListener);
             }
         } finally {
             unlockWrite();
