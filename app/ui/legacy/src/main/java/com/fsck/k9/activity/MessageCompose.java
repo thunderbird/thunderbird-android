@@ -67,6 +67,8 @@ import com.fsck.k9.activity.compose.PgpInlineDialog.OnOpenPgpInlineChangeListene
 import com.fsck.k9.activity.compose.PgpSignOnlyDialog.OnOpenPgpSignOnlyChangeListener;
 import com.fsck.k9.activity.compose.RecipientMvpView;
 import com.fsck.k9.activity.compose.RecipientPresenter;
+import com.fsck.k9.activity.compose.ReplyToPresenter;
+import com.fsck.k9.activity.compose.ReplyToView;
 import com.fsck.k9.activity.compose.SaveMessageTask;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
@@ -211,6 +213,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
+    private ReplyToPresenter replyToPresenter;
     private boolean finishAfterDraftSaved;
     private boolean alreadyNotifiedUserOfEmptySubject = false;
     private boolean changesMadeSinceLastSave = false;
@@ -306,6 +309,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         chooseIdentityButton = findViewById(R.id.identity);
         chooseIdentityButton.setOnClickListener(this);
 
+        ReplyToView replyToView = new ReplyToView(this);
+        replyToPresenter = new ReplyToPresenter(replyToView);
+
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
         ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider = new ComposePgpEnableByDefaultDecider();
@@ -349,6 +355,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         };
 
+        replyToView.addTextChangedListener(draftNeedsChangingTextWatcher);
         recipientMvpView.addTextChangedListener(draftNeedsChangingTextWatcher);
         quotedMessageMvpView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
@@ -419,6 +426,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         requestReadReceipt = account.isMessageReadReceipt();
 
         updateFrom();
+        replyToPresenter.setIdentity(identity);
 
         if (!relatedMessageProcessed) {
             if (action == Action.REPLY || action == Action.REPLY_ALL ||
@@ -459,6 +467,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         // Set font size of input controls
         int fontSize = K9.getFontSizes().getMessageComposeInput();
+        replyToView.setFontSizes(K9.getFontSizes(), fontSize);
         recipientMvpView.setFontSizes(K9.getFontSizes(), fontSize);
         quotedMessageMvpView.setFontSizes(K9.getFontSizes(), fontSize);
         K9.getFontSizes().setViewTextSize(subjectView, fontSize);
@@ -626,6 +635,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         outState.putBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE, changesMadeSinceLastSave);
         outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
 
+        replyToPresenter.onSaveInstanceState(outState);
         recipientPresenter.onSaveInstanceState(outState);
         quotedMessagePresenter.onSaveInstanceState(outState);
         attachmentPresenter.onSaveInstanceState(outState);
@@ -647,6 +657,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         requestReadReceipt = savedInstanceState.getBoolean(STATE_KEY_READ_RECEIPT);
 
+        replyToPresenter.onRestoreInstanceState(savedInstanceState);
         recipientPresenter.onRestoreInstanceState(savedInstanceState);
         quotedMessagePresenter.onRestoreInstanceState(savedInstanceState);
         attachmentPresenter.onRestoreInstanceState(savedInstanceState);
@@ -710,6 +721,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setReferences(referencedMessageIds)
                 .setRequestReadReceipt(requestReadReceipt)
                 .setIdentity(identity)
+                .setReplyTo(replyToPresenter.getAddresses())
                 .setMessageFormat(currentMessageFormat)
                 .setText(CrLfConverter.toCrLf(messageContentView.getText()))
                 .setAttachments(attachmentPresenter.getAttachments())
@@ -732,6 +744,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (subjectView.getText().length() == 0 && !alreadyNotifiedUserOfEmptySubject) {
             Toast.makeText(this, R.string.empty_subject, Toast.LENGTH_LONG).show();
             alreadyNotifiedUserOfEmptySubject = true;
+            return;
+        }
+
+        if (replyToPresenter.isNotReadyForSending()) {
             return;
         }
 
@@ -920,6 +936,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateFrom();
         updateSignature();
         updateMessageFormat();
+        replyToPresenter.setIdentity(identity);
         recipientPresenter.onSwitchIdentity(identity);
     }
 
@@ -942,6 +959,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         int id = v.getId();
         if (id == R.id.message_content || id == R.id.subject) {
             if (hasFocus) {
+                replyToPresenter.onNonRecipientFieldFocused();
                 recipientPresenter.onNonRecipientFieldFocused();
             }
         }
@@ -1355,6 +1373,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         draftMessageId = messagingController.getId(message);
         subjectView.setText(messageViewInfo.subject);
 
+        replyToPresenter.initFromDraftMessage(message);
         recipientPresenter.initFromDraftMessage(message);
 
         // Read In-Reply-To header from draft
@@ -1430,6 +1449,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         updateSignature();
         updateFrom();
+        replyToPresenter.setIdentity(identity);
 
         quotedMessagePresenter.processDraftMessage(messageViewInfo, k9identity);
     }

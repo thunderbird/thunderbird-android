@@ -26,7 +26,7 @@ internal class NotificationData(val account: Account, private val initialUnreadM
         get() = activeNotifications.first
 
     private val isMaxNumberOfActiveNotificationsReached: Boolean
-        get() = activeNotifications.size == MAX_NUMBER_OF_STACKED_NOTIFICATIONS
+        get() = activeNotifications.size == MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
 
     fun addNotificationContent(content: NotificationContent): AddNotificationResult {
         val notificationId: Int
@@ -56,8 +56,8 @@ internal class NotificationData(val account: Account, private val initialUnreadM
     }
 
     private fun getNewNotificationId(): Int {
-        for (index in 0 until MAX_NUMBER_OF_STACKED_NOTIFICATIONS) {
-            val notificationId = NotificationIds.getNewMailStackedNotificationId(account, index)
+        for (index in 0 until MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) {
+            val notificationId = NotificationIds.getSingleMessageNotificationId(account, index)
             if (!isNotificationInUse(notificationId)) {
                 markNotificationIdAsInUse(notificationId)
                 return notificationId
@@ -153,7 +153,8 @@ internal class NotificationData(val account: Account, private val initialUnreadM
         // Note: As of Jellybean, phone notifications show a maximum of 5 lines, while tablet notifications show 7 lines.
         const val MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5
 
-        // Note: This class assumes MAX_NUMBER_OF_STACKED_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
-        const val MAX_NUMBER_OF_STACKED_NOTIFICATIONS = 8
+        // Note: This class assumes that
+        // MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
+        const val MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = 8
     }
 }

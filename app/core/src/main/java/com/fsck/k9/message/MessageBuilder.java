@@ -50,6 +50,7 @@ public abstract class MessageBuilder {
     private Address[] to;
     private Address[] cc;
     private Address[] bcc;
+    private Address[] replyTo;
     private String inReplyTo;
     private String references;
     private boolean requestReadReceipt;
@@ -115,10 +116,7 @@ public abstract class MessageBuilder {
             message.setHeader("User-Agent", encodedUserAgent);
         }
 
-        final String replyTo = identity.getReplyTo();
-        if (replyTo != null) {
-            message.setReplyTo(new Address[] { new Address(replyTo) });
-        }
+        message.setReplyTo(replyTo);
 
         if (inReplyTo != null) {
             message.setInReplyTo(inReplyTo);
@@ -392,6 +390,11 @@ public abstract class MessageBuilder {
 
     public MessageBuilder setBcc(List<Address> bcc) {
         this.bcc = bcc.toArray(new Address[bcc.size()]);
+        return this;
+    }
+
+    public MessageBuilder setReplyTo(Address[] replyTo) {
+        this.replyTo = replyTo;
         return this;
     }
 

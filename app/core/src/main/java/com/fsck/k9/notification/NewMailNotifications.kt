@@ -9,24 +9,17 @@ import com.fsck.k9.mailstore.LocalMessage
 
 /**
  * Handle notifications for new messages.
- *
- * We call the notification shown on the device *summary notification*, even when there's only one new message.
- * Notifications on an Android Wear device are displayed as a stack of cards and that's why we call them *stacked
- * notifications*. We have to keep track of stacked notifications individually and recreate/update the summary
- * notification when one or more of the stacked notifications are added/removed.
- *
- * [NotificationData] keeps track of all data required to (re)create the actual system notifications.
  */
 internal open class NewMailNotifications(
     private val notificationHelper: NotificationHelper,
     private val contentCreator: NotificationContentCreator,
-    private val deviceNotifications: DeviceNotifications,
-    private val wearNotifications: WearNotifications
+    private val messageSummaryNotifications: MessageSummaryNotifications,
+    private val singleMessageNotifications: SingleMessageNotifications
 ) {
     private val notifications = SparseArray<NotificationData>()
     private val lock = Any()
 
-    fun addNewMailNotification(account: Account, message: LocalMessage, unreadMessageCount: Int) {
+    fun addNewMailNotification(account: Account, message: LocalMessage, unreadMessageCount: Int, silent: Boolean) {
         val content = contentCreator.createFromMessage(account, message)
 
         synchronized(lock) {
@@ -38,8 +31,8 @@ internal open class NewMailNotifications(
                 cancelNotification(notificationId)
             }
 
-            createStackedNotification(account, result.notificationHolder)
-            createSummaryNotification(account, notificationData, false)
+            createSingleMessageNotification(account, result.notificationHolder)
+            createSummaryNotification(account, notificationData, silent)
         }
     }
 
@@ -53,7 +46,7 @@ internal open class NewMailNotifications(
             cancelNotification(result.notificationId)
 
             if (result.shouldCreateNotification) {
-                createStackedNotification(account, result.notificationHolder)
+                createSingleMessageNotification(account, result.notificationHolder)
             }
 
             updateSummaryNotification(account, notificationData)
@@ -106,22 +99,22 @@ internal open class NewMailNotifications(
         if (notificationData.newMessagesCount == 0) {
             clearNewMailNotifications(account)
         } else {
-            createSummaryNotification(account, notificationData, true)
+            createSummaryNotification(account, notificationData, silent = true)
         }
     }
 
     private fun createSummaryNotification(account: Account, notificationData: NotificationData, silent: Boolean) {
-        val notification = deviceNotifications.buildSummaryNotification(account, notificationData, silent)
+        val notification = messageSummaryNotifications.buildSummaryNotification(account, notificationData, silent)
         val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
         notificationManager.notify(notificationId, notification)
     }
 
-    private fun createStackedNotification(account: Account, holder: NotificationHolder) {
+    private fun createSingleMessageNotification(account: Account, holder: NotificationHolder) {
         if (isPrivacyModeEnabled) {
             return
         }
 
-        val notification = wearNotifications.buildStackedNotification(account, holder)
+        val notification = singleMessageNotifications.buildSingleMessageNotification(account, holder)
         val notificationId = holder.notificationId
         notificationManager.notify(notificationId, notification)
     }

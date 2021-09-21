@@ -78,6 +78,19 @@ class SyncNotificationsTest : RobolectricTest() {
     }
 
     @Test
+    fun testShowEmptyFetchingMailNotification() {
+        val notificationId = getFetchingMailNotificationId(account)
+
+        syncNotifications.showEmptyFetchingMailNotification(account)
+
+        verify(notificationManager).notify(notificationId, notification)
+        verify(builder).setSmallIcon(resourceProvider.iconCheckingMail)
+        verify(builder).setContentTitle("Checking mail")
+        verify(builder).setContentText(ACCOUNT_NAME)
+        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+    }
+
+    @Test
     fun testClearSendFailedNotification() {
         val notificationId = getFetchingMailNotificationId(account)
 

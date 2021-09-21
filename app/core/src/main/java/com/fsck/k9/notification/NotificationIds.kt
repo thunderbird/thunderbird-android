@@ -13,11 +13,11 @@ internal object NotificationIds {
     private const val OFFSET_AUTHENTICATION_ERROR_OUTGOING = 4
     private const val OFFSET_FETCHING_MAIL = 5
     private const val OFFSET_NEW_MAIL_SUMMARY = 6
-    private const val OFFSET_NEW_MAIL_STACKED = 7
-    private const val NUMBER_OF_DEVICE_NOTIFICATIONS = 7
-    private const val NUMBER_OF_STACKED_NOTIFICATIONS = NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS
+    private const val OFFSET_NEW_MAIL_SINGLE = 7
+    private const val NUMBER_OF_MISC_ACCOUNT_NOTIFICATIONS = 7
+    private const val NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = NotificationData.MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
     private const val NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT =
-        NUMBER_OF_DEVICE_NOTIFICATIONS + NUMBER_OF_STACKED_NOTIFICATIONS
+        NUMBER_OF_MISC_ACCOUNT_NOTIFICATIONS + NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
 
     @JvmStatic
     fun getNewMailSummaryNotificationId(account: Account): Int {
@@ -25,10 +25,10 @@ internal object NotificationIds {
     }
 
     @JvmStatic
-    fun getNewMailStackedNotificationId(account: Account, index: Int): Int {
-        require(index in 0 until NUMBER_OF_STACKED_NOTIFICATIONS) { "Invalid index: $index" }
+    fun getSingleMessageNotificationId(account: Account, index: Int): Int {
+        require(index in 0 until NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) { "Invalid index: $index" }
 
-        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_STACKED + index
+        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_SINGLE + index
     }
 
     @JvmStatic

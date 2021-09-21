@@ -58,16 +58,6 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/material_drawer_swipe_refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start">
+    <include layout="@layout/drawer_contents"/>
 
-        <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
-            android:id="@+id/material_drawer_slider"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

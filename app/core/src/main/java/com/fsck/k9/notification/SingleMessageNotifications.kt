@@ -4,20 +4,27 @@ import android.app.Notification
 import androidx.core.app.NotificationCompat
 import com.fsck.k9.Account
 import com.fsck.k9.K9
-import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.notification.NotificationIds.getNewMailSummaryNotificationId
 
-internal open class WearNotifications(
+internal open class SingleMessageNotifications(
     notificationHelper: NotificationHelper,
     actionCreator: NotificationActionCreator,
     resourceProvider: NotificationResourceProvider
 ) : BaseNotifications(notificationHelper, actionCreator, resourceProvider) {
 
-    fun buildStackedNotification(account: Account, holder: NotificationHolder): Notification {
+    fun buildSingleMessageNotification(account: Account, holder: NotificationHolder): Notification {
         val notificationId = holder.notificationId
+        return createSingleMessageNotificationBuilder(account, holder, notificationId)
+            .setNotificationSilent()
+            .build()
+    }
+
+    fun createSingleMessageNotificationBuilder(
+        account: Account,
+        holder: NotificationHolder,
+        notificationId: Int
+    ): NotificationCompat.Builder {
         val content = holder.content
         val builder = createBigTextStyleNotification(account, holder, notificationId)
-        builder.setNotificationSilent()
 
         val deletePendingIntent = actionCreator.createDismissMessagePendingIntent(
             context, content.messageReference, holder.notificationId
@@ -26,68 +33,7 @@ internal open class WearNotifications(
 
         addActions(builder, account, holder)
 
-        return builder.build()
-    }
-
-    fun addSummaryActions(builder: NotificationCompat.Builder, notificationData: NotificationData) {
-        val wearableExtender = NotificationCompat.WearableExtender()
-
-        addMarkAllAsReadAction(wearableExtender, notificationData)
-
-        if (isDeleteActionAvailableForWear()) {
-            addDeleteAllAction(wearableExtender, notificationData)
-        }
-
-        if (isArchiveActionAvailableForWear(notificationData.account)) {
-            addArchiveAllAction(wearableExtender, notificationData)
-        }
-
-        builder.extend(wearableExtender)
-    }
-
-    private fun addMarkAllAsReadAction(
-        wearableExtender: NotificationCompat.WearableExtender,
-        notificationData: NotificationData
-    ) {
-        val icon = resourceProvider.wearIconMarkAsRead
-        val title = resourceProvider.actionMarkAllAsRead()
-        val account = notificationData.account
-        val messageReferences = notificationData.getAllMessageReferences()
-        val notificationId = getNewMailSummaryNotificationId(account)
-        val action = actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId)
-        val markAsReadAction = NotificationCompat.Action.Builder(icon, title, action).build()
-
-        wearableExtender.addAction(markAsReadAction)
-    }
-
-    private fun addDeleteAllAction(
-        wearableExtender: NotificationCompat.WearableExtender,
-        notificationData: NotificationData
-    ) {
-        val icon = resourceProvider.wearIconDelete
-        val title = resourceProvider.actionDeleteAll()
-        val account = notificationData.account
-        val messageReferences = notificationData.getAllMessageReferences()
-        val notificationId = getNewMailSummaryNotificationId(account)
-        val action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId)
-        val deleteAction = NotificationCompat.Action.Builder(icon, title, action).build()
-
-        wearableExtender.addAction(deleteAction)
-    }
-
-    private fun addArchiveAllAction(
-        wearableExtender: NotificationCompat.WearableExtender,
-        notificationData: NotificationData
-    ) {
-        val icon = resourceProvider.wearIconArchive
-        val title = resourceProvider.actionArchiveAll()
-        val account = notificationData.account
-        val messageReferences = notificationData.getAllMessageReferences()
-        val notificationId = getNewMailSummaryNotificationId(account)
-        val action = actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId)
-        val archiveAction = NotificationCompat.Action.Builder(icon, title, action).build()
-
-        wearableExtender.addAction(archiveAction)
+        return builder
     }
 
     private fun addActions(builder: NotificationCompat.Builder, account: Account, holder: NotificationHolder) {
@@ -219,23 +165,10 @@ internal open class WearNotifications(
     }
 
     private fun isArchiveActionAvailableForWear(account: Account): Boolean {
-        return isMovePossible(account, account.archiveFolderId)
+        return account.archiveFolderId != null
     }
 
     private fun isSpamActionAvailableForWear(account: Account): Boolean {
-        return !K9.isConfirmSpam && isMovePossible(account, account.spamFolderId)
-    }
-
-    private fun isMovePossible(account: Account, destinationFolderId: Long?): Boolean {
-        if (destinationFolderId == null) {
-            return false
-        }
-
-        val controller = createMessagingController()
-        return controller.isMoveCapable(account)
-    }
-
-    protected open fun createMessagingController(): MessagingController {
-        return MessagingController.getInstance(context)
+        return account.spamFolderId != null && !K9.isConfirmSpam
     }
 }

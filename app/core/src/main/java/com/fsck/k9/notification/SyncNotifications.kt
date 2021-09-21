@@ -94,6 +94,35 @@ internal class SyncNotifications(
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
+    fun showEmptyFetchingMailNotification(account: Account) {
+        val title = resourceProvider.checkingMailTitle()
+        val text = account.description
+        val notificationId = NotificationIds.getFetchingMailNotificationId(account)
+
+        val notificationBuilder = notificationHelper
+            .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
+            .setSmallIcon(resourceProvider.iconCheckingMail)
+            .setWhen(System.currentTimeMillis())
+            .setOngoing(true)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
+
+        if (NOTIFICATION_LED_WHILE_SYNCING) {
+            notificationHelper.configureNotification(
+                builder = notificationBuilder,
+                ringtone = null,
+                vibrationPattern = null,
+                ledColor = account.notificationSetting.ledColor,
+                ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
+                ringAndVibrate = true
+            )
+        }
+
+        notificationManager.notify(notificationId, notificationBuilder.build())
+    }
+
     fun clearFetchingMailNotification(account: Account) {
         val notificationId = NotificationIds.getFetchingMailNotificationId(account)
         notificationManager.cancel(notificationId)

@@ -594,19 +594,17 @@ public class MessagingController {
      */
     public void synchronizeMailbox(Account account, long folderId, MessagingListener listener) {
         putBackground("synchronizeMailbox", listener, () ->
-                synchronizeMailboxSynchronous(account, folderId, listener)
+                synchronizeMailboxSynchronous(account, folderId, listener, new NotificationState())
         );
     }
 
     public void synchronizeMailboxBlocking(Account account, String folderServerId) {
         long folderId = getFolderId(account, folderServerId);
 
-        account.setRingNotified(false);
-
         final CountDownLatch latch = new CountDownLatch(1);
         putBackground("synchronizeMailbox", null, () -> {
             try {
-                synchronizeMailboxSynchronous(account, folderId, null);
+                synchronizeMailboxSynchronous(account, folderId, null, new NotificationState());
             } finally {
                 latch.countDown();
             }
@@ -626,11 +624,12 @@ public class MessagingController {
      * TODO Break this method up into smaller chunks.
      */
     @VisibleForTesting
-    void synchronizeMailboxSynchronous(Account account, long folderId, MessagingListener listener) {
+    void synchronizeMailboxSynchronous(Account account, long folderId, MessagingListener listener,
+            NotificationState notificationState) {
         refreshFolderListIfStale(account);
 
         Backend backend = getBackend(account);
-        syncFolder(account, folderId, listener, backend);
+        syncFolder(account, folderId, listener, backend, notificationState);
     }
 
     private void refreshFolderListIfStale(Account account) {
@@ -645,7 +644,8 @@ public class MessagingController {
         }
     }
 
-    private void syncFolder(Account account, long folderId, MessagingListener listener, Backend backend) {
+    private void syncFolder(Account account, long folderId, MessagingListener listener, Backend backend,
+            NotificationState notificationState) {
         ServerSettings serverSettings = account.getIncomingServerSettings();
         if (serverSettings.isMissingCredentials()) {
             handleAuthenticationFailure(account, true);
@@ -681,7 +681,8 @@ public class MessagingController {
 
         String folderServerId = localFolder.getServerId();
         SyncConfig syncConfig = createSyncConfig(account);
-        ControllerSyncListener syncListener = new ControllerSyncListener(account, listener, suppressNotifications);
+        ControllerSyncListener syncListener =
+                new ControllerSyncListener(account, listener, suppressNotifications, notificationState);
 
         backend.sync(folderServerId, syncConfig, syncListener);
 
@@ -2376,7 +2377,7 @@ public class MessagingController {
 
         Timber.i("Synchronizing account %s", account.getDescription());
 
-        account.setRingNotified(false);
+        NotificationState notificationState = new NotificationState();
 
         sendPendingMessages(account, listener);
 
@@ -2416,7 +2417,7 @@ public class MessagingController {
 
                     continue;
                 }
-                synchronizeFolder(account, folder, ignoreLastCheckedTime, listener);
+                synchronizeFolder(account, folder, ignoreLastCheckedTime, listener, notificationState);
             }
         } catch (MessagingException e) {
             Timber.e(e, "Unable to synchronize account %s", account.getName());
@@ -2426,7 +2427,8 @@ public class MessagingController {
                         public void run() {
                             Timber.v("Clearing notification flag for %s", account.getDescription());
 
-                            account.setRingNotified(false);
+                            clearFetchingMailNotification(account);
+
                             if (getUnreadMessageCount(account) == 0) {
                                 notificationController.clearNewMailNotifications(account);
                             }
@@ -2439,14 +2441,14 @@ public class MessagingController {
     }
 
     private void synchronizeFolder(Account account, LocalFolder folder, boolean ignoreLastCheckedTime,
-            MessagingListener listener) {
+            MessagingListener listener, NotificationState notificationState) {
         putBackground("sync" + folder.getServerId(), null, () -> {
-            synchronizeFolderInBackground(account, folder, ignoreLastCheckedTime, listener);
+            synchronizeFolderInBackground(account, folder, ignoreLastCheckedTime, listener, notificationState);
         });
     }
 
     private void synchronizeFolderInBackground(Account account, LocalFolder folder, boolean ignoreLastCheckedTime,
-            MessagingListener listener) {
+            MessagingListener listener, NotificationState notificationState) {
         Timber.v("Folder %s was last synced @ %tc", folder.getServerId(), folder.getLastChecked());
 
         if (!ignoreLastCheckedTime) {
@@ -2469,9 +2471,9 @@ public class MessagingController {
         try {
             showFetchingMailNotificationIfNecessary(account, folder);
             try {
-                synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener);
+                synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener, notificationState);
             } finally {
-                clearFetchingMailNotificationIfNecessary(account);
+                showEmptyFetchingMailNotificationIfNecessary(account);
             }
         } catch (Exception e) {
             Timber.e(e, "Exception while processing folder %s:%s", account.getDescription(), folder.getServerId());
@@ -2484,12 +2486,15 @@ public class MessagingController {
         }
     }
 
-    private void clearFetchingMailNotificationIfNecessary(Account account) {
+    private void showEmptyFetchingMailNotificationIfNecessary(Account account) {
         if (account.isNotifySync()) {
-            notificationController.clearFetchingMailNotification(account);
+            notificationController.showEmptyFetchingMailNotification(account);
         }
     }
 
+    private void clearFetchingMailNotification(Account account) {
+        notificationController.clearFetchingMailNotification(account);
+    }
 
     public void compact(final Account account, final MessagingListener ml) {
         putBackground("compact:" + account.getDescription(), ml, new Runnable() {
@@ -2658,13 +2663,16 @@ public class MessagingController {
         private final LocalStore localStore;
         private final int previousUnreadMessageCount;
         private final boolean suppressNotifications;
+        private final NotificationState notificationState;
         boolean syncFailed = false;
 
 
-        ControllerSyncListener(Account account, MessagingListener listener, boolean suppressNotifications) {
+        ControllerSyncListener(Account account, MessagingListener listener, boolean suppressNotifications,
+                NotificationState notificationState) {
             this.account = account;
             this.listener = listener;
             this.suppressNotifications = suppressNotifications;
+            this.notificationState = notificationState;
             this.localStore = getLocalStoreOrThrow(account);
 
             previousUnreadMessageCount = getUnreadMessageCount(account);
@@ -2725,7 +2733,9 @@ public class MessagingController {
                     notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                 Timber.v("Creating notification for message %s:%s", localFolder.getName(), message.getUid());
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
-                notificationController.addNewMailNotification(account, message, previousUnreadMessageCount);
+                boolean silent = notificationState.wasNotified();
+                notificationController.addNewMailNotification(account, message, previousUnreadMessageCount, silent);
+                notificationState.setWasNotified(true);
             }
 
             if (!message.isSet(Flag.SEEN)) {
