@@ -646,7 +646,6 @@ open class MessageList :
         openFolderTransaction.replace(R.id.message_list_container, messageListFragment)
 
         this.messageListFragment = messageListFragment
-
         this.openFolderTransaction = openFolderTransaction
     }
 
@@ -951,12 +950,7 @@ open class MessageList :
             messageViewFragment?.onMoveToDrafts()
             return true
         } else if (id == R.id.show_headers) {
-            startActivity(
-                MessageSourceActivity.createLaunchIntent(
-                    this,
-                    messageViewFragment!!.messageReference
-                )
-            ) // TODO: !!
+            startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
             return true
         }
 
@@ -1508,9 +1502,10 @@ open class MessageList :
 
         if (requestCode and REQUEST_FLAG_PENDING_INTENT != 0) {
             val originalRequestCode = requestCode xor REQUEST_FLAG_PENDING_INTENT
+            // TODO: => is the following code still OK??
             if (messageViewPagerFragment != null) {
                 messageViewPagerFragment!!.activeMessageViewFragment
-                    ?.onPendingIntentResult(originalRequestCode, resultCode, data) // TODO ?.
+                    ?.onPendingIntentResult(originalRequestCode, resultCode, data)
             }
         }
     }
@@ -1616,16 +1611,6 @@ open class MessageList :
 
     override fun setActiveMessage(reference: MessageReference) {
         messageListFragment?.setActiveMessage(reference)
-    }
-
-    private inner class StorageListenerImplementation : StorageListener {
-        override fun onUnmount(providerId: String) {
-            if (account?.localStorageProviderId == providerId) {
-                runOnUiThread { onAccountUnavailable() }
-            }
-        }
-
-        override fun onMount(providerId: String) = Unit
     }
 
     private enum class DisplayMode {
