@@ -84,7 +84,8 @@ open class MessageList :
     MessageViewFragmentListener,
     FragmentManager.OnBackStackChangedListener,
     OnSwitchCompleteListener,
-    PermissionUiHelper {
+    PermissionUiHelper,
+    MessageViewPagerFragment.MessageViewPagerFragmentListener {
 
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
 
@@ -262,7 +263,7 @@ open class MessageList :
     private fun findFragments() {
         val fragmentManager = supportFragmentManager
         messageListFragment = fragmentManager.findFragmentById(R.id.message_list_container) as MessageListFragment?
-        messageViewPagerFragment = fragmentManager.findFragmentById(R.id.message_viewpager_container) as MessageViewPagerFragment?
+        messageViewPagerFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEWPAGER) as MessageViewPagerFragment?
         messageListFragment?.let { messageListFragment ->
             initializeFromLocalSearch(messageListFragment.localSearch)
         }
@@ -284,19 +285,9 @@ open class MessageList :
             this.messageListFragment = messageListFragment
         }
 
-        val hasMessageViewPagerFragment = messageViewPagerFragment != null
-        if (!hasMessageViewPagerFragment) {
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            val messageViewPagerFragment1 = MessageViewPagerFragment(this)
-            fragmentTransaction.add(R.id.message_viewpager_container, messageViewPagerFragment1)
-            fragmentTransaction.commit()
-
-            messageViewPagerFragment = messageViewPagerFragment1
-        }
-
         // Check if the fragment wasn't restarted and has a MessageReference in the arguments.
         // If so, open the referenced message.
-        if (!hasMessageListFragment && messageReference != null) {
+        if (!hasMessageListFragment && messageViewPagerFragment == null && messageReference != null) {
             openMessage(messageReference!!)
         }
     }
@@ -734,11 +725,11 @@ open class MessageList :
     private fun onCustomKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (!event.hasNoModifiers()) return false
 
-        val messageViewFragment = messageViewPagerFragment!!.activeMessageViewFragment
+        val messageViewFragment = messageViewPagerFragment?.activeMessageViewFragment
         when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_UP -> {
                 if (displayMode != DisplayMode.MESSAGE_LIST && K9.isUseVolumeKeysForNavigation) {
-                    messageViewPagerFragment!!.showPreviousMessage()
+                    messageViewPagerFragment?.showPreviousMessage()
                     return true
                 } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
                     messageListFragment!!.onMoveUp()
@@ -747,7 +738,7 @@ open class MessageList :
             }
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 if (displayMode != DisplayMode.MESSAGE_LIST && K9.isUseVolumeKeysForNavigation) {
-                    messageViewPagerFragment!!.showNextMessage()
+                    messageViewPagerFragment?.showNextMessage()
                     return true
                 } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
                     messageListFragment!!.onMoveDown()
@@ -831,11 +822,11 @@ open class MessageList :
                 return true
             }
             KeyEvent.KEYCODE_J, KeyEvent.KEYCODE_P -> {
-                messageViewPagerFragment!!.showPreviousMessage()
+                messageViewPagerFragment?.showPreviousMessage()
                 return true
             }
             KeyEvent.KEYCODE_N, KeyEvent.KEYCODE_K -> {
-                messageViewPagerFragment!!.showNextMessage()
+                messageViewPagerFragment?.showNextMessage()
                 return true
             }
             KeyEvent.KEYCODE_H -> {
@@ -849,14 +840,14 @@ open class MessageList :
             }
             KeyEvent.KEYCODE_DPAD_LEFT -> {
                 return if (displayMode == DisplayMode.MESSAGE_VIEW) {
-                    messageViewPagerFragment!!.showPreviousMessage()
+                    messageViewPagerFragment?.showPreviousMessage() ?: false
                 } else {
                     false
                 }
             }
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
                 return if (displayMode == DisplayMode.MESSAGE_VIEW) {
-                    messageViewPagerFragment!!.showNextMessage()
+                    messageViewPagerFragment?.showNextMessage() ?: false
                 } else {
                     false
                 }
@@ -879,7 +870,7 @@ open class MessageList :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        val messageViewFragment = messageViewPagerFragment!!.activeMessageViewFragment
+        val messageViewFragment = messageViewPagerFragment?.activeMessageViewFragment
         if (id == android.R.id.home) {
             if (displayMode != DisplayMode.MESSAGE_VIEW && !isAdditionalMessageListDisplayed) {
                 if (isDrawerEnabled) {
@@ -935,10 +926,10 @@ open class MessageList :
             messageListFragment!!.confirmMarkAllAsRead()
             return true
         } else if (id == R.id.next_message) { // MessageViewPager
-            messageViewPagerFragment!!.showNextMessage()
+            messageViewPagerFragment?.showNextMessage()
             return true
         } else if (id == R.id.previous_message) {
-            messageViewPagerFragment!!.showPreviousMessage()
+            messageViewPagerFragment?.showPreviousMessage()
             return true
         } else if (id == R.id.delete) {
             messageViewFragment?.onDelete()
@@ -1210,10 +1201,6 @@ open class MessageList :
         }
     }
 
-    fun configureMenu() {
-        configureMenu(menu)
-    }
-
     protected fun onAccountUnavailable() {
         // TODO: Find better way to handle this case.
         Timber.i("Account is unavailable right now: $account")
@@ -1251,10 +1238,11 @@ open class MessageList :
                 messageListFragment!!.setActiveMessage(messageReference)
             }
 
-            // TODO: messageViewPagerFragment should never be null here!!
-            if (messageViewPagerFragment != null) {
-                messageViewPagerFragment!!.showMessage(messageReference)
-            }
+            val fragment = MessageViewPagerFragment.newInstance(messageReference)
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.message_viewpager_container, fragment, FRAGMENT_TAG_MESSAGE_VIEWPAGER)
+            fragmentTransaction.commit()
+            messageViewPagerFragment = fragment
 
             if (displayMode != DisplayMode.SPLIT_VIEW) {
                 showMessageView()
@@ -1362,7 +1350,7 @@ open class MessageList :
         val fragmentManager = supportFragmentManager
         if (fragmentManager.findFragmentByTag(FRAGMENT_TAG_PLACEHOLDER) == null) {
             val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.message_view_container, messageViewPlaceHolder!!, FRAGMENT_TAG_PLACEHOLDER)
+            fragmentTransaction.replace(R.id.message_viewpager_container, messageViewPlaceHolder!!, FRAGMENT_TAG_PLACEHOLDER)
             fragmentTransaction.commit()
         }
 
@@ -1516,7 +1504,7 @@ open class MessageList :
 
     override fun onSwitchComplete(displayedChild: Int) {
         if (displayedChild == 0) {
-//            removeMessageViewPagerFragment()
+            removeMessageViewPagerFragment()
         }
     }
 
@@ -1627,25 +1615,33 @@ open class MessageList :
         permissionUiHelper.requestPermission(permission)
     }
 
-    fun getMessageCount(): Int {
+    override fun configureMenu() {
+        configureMenu(menu)
+    }
+
+    override fun getMessageCount(): Int {
         if (messageListFragment != null) {
             return messageListFragment!!.getCount()
         }
         throw UninitializedPropertyAccessException()
     }
 
-    fun getMessagePosition(reference: MessageReference): Int {
+    override fun getMessagePosition(reference: MessageReference): Int {
         if (messageListFragment != null) {
             return messageListFragment!!.getPosition(reference)
         }
         throw UninitializedPropertyAccessException()
     }
 
-    fun getMessageReference(position: Int): MessageReference {
+    override fun getMessageReference(position: Int): MessageReference {
         if (messageListFragment != null) {
             return messageListFragment!!.getReferenceForPosition(position)
         }
         throw UninitializedPropertyAccessException()
+    }
+
+    override fun setActiveMessage(reference: MessageReference) {
+        messageListFragment?.setActiveMessage(reference)
     }
 
     private inner class StorageListenerImplementation : StorageListener {
@@ -1685,7 +1681,7 @@ open class MessageList :
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
         private const val STATE_FIRST_BACK_STACK_ID = "firstBackstackId"
 
-        private const val FRAGMENT_TAG_MESSAGE_VIEW = "MessageViewFragment"
+        private const val FRAGMENT_TAG_MESSAGE_VIEWPAGER = "MessageViewPagerFragment"
         private const val FRAGMENT_TAG_PLACEHOLDER = "MessageViewPlaceholder"
 
         // Used for navigating to next/previous message

@@ -10,15 +10,43 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.fsck.k9.DI.get
-import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.ThemeManager
 
-class MessageViewPagerFragment(private val messageList: MessageList) : Fragment() {
+class MessageViewPagerFragment : Fragment() {
     private val themeManager = get(ThemeManager::class.java)
+    private lateinit var messageList: MessageViewPagerFragmentListener
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: MessageFragmentStateAdapter
+    private lateinit var initialMessage: MessageReference
+
+    companion object {
+        private const val ARG_ACTIVE_MESSAGE = "activeMessage"
+
+        fun newInstance(reference: MessageReference): MessageViewPagerFragment {
+            val fragment = MessageViewPagerFragment()
+            val args = Bundle()
+            args.putString(ARG_ACTIVE_MESSAGE, reference.toIdentityString())
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        messageList = try {
+            context as MessageViewPagerFragmentListener
+        } catch (e: ClassCastException) {
+            error("${context.javaClass} must implement MessageViewPagerFragmentListener")
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val reference = requireArguments().getString(ARG_ACTIVE_MESSAGE)
+        initialMessage = MessageReference.parse(reference)!!
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -39,19 +67,36 @@ class MessageViewPagerFragment(private val messageList: MessageList) : Fragment(
                 super.onPageScrollStateChanged(state)
             }
         })
+        viewPager.post { setActiveMessage() }
         return view
+    }
+
+    override fun onDestroy() {
+        val reference = getMessageReference(viewPager.currentItem)
+        if (reference != null) {
+            requireArguments().putString(ARG_ACTIVE_MESSAGE, reference.toIdentityString())
+        }
+        super.onDestroy()
     }
 
     private fun viewPagerSettled() {
         viewPager.post {
             messageList.configureMenu()
             adapter.resetWebView()
+            val reference = getMessageReference(viewPager.currentItem)
+            if (reference != null) {
+                messageList.setActiveMessage(reference)
+            }
         }
     }
 
     val activeMessageViewFragment: MessageViewFragment?
         get() {
-            return adapter.getActiveMessageViewFragment()
+            return try {
+                adapter.getActiveMessageViewFragment()
+            } catch (e: Exception) {
+                null
+            }
         }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -59,12 +104,10 @@ class MessageViewPagerFragment(private val messageList: MessageList) : Fragment(
         adapter.notifyDataSetChanged()
     }
 
-    fun showMessage(messageReference: MessageReference?) {
-        if (messageReference != null) {
-            val position = getMessagePosition(messageReference)
-            if (position >= 0) {
-                viewPager.setCurrentItem(position, true)
-            }
+    private fun setActiveMessage() {
+        val position = getMessagePosition(initialMessage)
+        if (position >= 0) {
+            viewPager.setCurrentItem(position, false)
         }
     }
 
@@ -114,5 +157,13 @@ class MessageViewPagerFragment(private val messageList: MessageList) : Fragment(
 
     fun getActivePosition(): Int {
         return viewPager.currentItem
+    }
+
+    interface MessageViewPagerFragmentListener {
+        fun getMessageCount(): Int
+        fun getMessagePosition(reference: MessageReference): Int
+        fun getMessageReference(position: Int): MessageReference
+        fun configureMenu()
+        fun setActiveMessage(reference: MessageReference)
     }
 }
