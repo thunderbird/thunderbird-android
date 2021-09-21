@@ -16,7 +16,6 @@ class AccountSettingsDataStore(
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
-            "account_default" -> account == preferences.defaultAccount
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView
             "mark_message_as_read_on_delete" -> account.isMarkMessageAsReadOnDelete
             "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions
@@ -44,12 +43,6 @@ class AccountSettingsDataStore(
 
     override fun putBoolean(key: String, value: Boolean) {
         when (key) {
-            "account_default" -> {
-                executorService.execute {
-                    preferences.defaultAccount = account
-                }
-                return
-            }
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView = value
             "mark_message_as_read_on_delete" -> account.isMarkMessageAsReadOnDelete = value
             "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions = value

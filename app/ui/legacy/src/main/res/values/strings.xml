@@ -504,8 +504,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_settings_push_advanced_title">Advanced</string>
     <string name="account_settings_title_fmt">Account settings</string>
-    <string name="account_settings_default_label">Default account</string>
-    <string name="account_settings_default_summary">Send mail from this account by default</string>
     <string name="account_settings_notify_label">New mail notifications</string>
 
     <string name="account_settings_folder_notify_new_mail_mode_label">Notifications folders</string>
