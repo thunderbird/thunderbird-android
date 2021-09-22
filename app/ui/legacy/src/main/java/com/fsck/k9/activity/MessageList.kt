@@ -851,108 +851,139 @@ open class MessageList :
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         val messageViewFragment = messageViewPagerFragment?.activeMessageViewFragment
-        if (id == android.R.id.home) {
-            if (displayMode != DisplayMode.MESSAGE_VIEW && !isAdditionalMessageListDisplayed) {
-                if (isDrawerEnabled) {
-                    if (drawer!!.isOpen) {
-                        drawer!!.close()
+        when (id) {
+            android.R.id.home -> {
+                if (displayMode != DisplayMode.MESSAGE_VIEW && !isAdditionalMessageListDisplayed) {
+                    if (isDrawerEnabled) {
+                        if (drawer!!.isOpen) {
+                            drawer!!.close()
+                        } else {
+                            drawer!!.open()
+                        }
                     } else {
-                        drawer!!.open()
+                        finish()
                     }
                 } else {
-                    finish()
+                    goBack()
                 }
-            } else {
-                goBack()
+                return true
             }
-            return true
-        } else if (id == R.id.compose) {
-            messageListFragment!!.onCompose()
-            return true
-        } else if (id == R.id.toggle_message_view_theme) {
-            onToggleTheme()
-            return true
-        } else if (id == R.id.set_sort_date) { // MessageList
-            messageListFragment!!.changeSort(SortType.SORT_DATE)
-            return true
-        } else if (id == R.id.set_sort_arrival) {
-            messageListFragment!!.changeSort(SortType.SORT_ARRIVAL)
-            return true
-        } else if (id == R.id.set_sort_subject) {
-            messageListFragment!!.changeSort(SortType.SORT_SUBJECT)
-            return true
-        } else if (id == R.id.set_sort_sender) {
-            messageListFragment!!.changeSort(SortType.SORT_SENDER)
-            return true
-        } else if (id == R.id.set_sort_flag) {
-            messageListFragment!!.changeSort(SortType.SORT_FLAGGED)
-            return true
-        } else if (id == R.id.set_sort_unread) {
-            messageListFragment!!.changeSort(SortType.SORT_UNREAD)
-            return true
-        } else if (id == R.id.set_sort_attach) {
-            messageListFragment!!.changeSort(SortType.SORT_ATTACHMENT)
-            return true
-        } else if (id == R.id.select_all) {
-            messageListFragment!!.selectAll()
-            return true
-        } else if (id == R.id.search_remote) {
-            messageListFragment!!.onRemoteSearch()
-            return true
-        } else if (id == R.id.search_everywhere) {
-            searchEverywhere()
-            return true
-        } else if (id == R.id.mark_all_as_read) {
-            messageListFragment!!.confirmMarkAllAsRead()
-            return true
-        } else if (id == R.id.next_message) { // MessageViewPager
-            messageViewPagerFragment?.showNextMessage()
-            return true
-        } else if (id == R.id.previous_message) {
-            messageViewPagerFragment?.showPreviousMessage()
-            return true
-        } else if (id == R.id.delete) {
-            messageViewFragment?.onDelete()
-            return true
-        } else if (id == R.id.reply) {
-            messageViewFragment?.onReply()
-            return true
-        } else if (id == R.id.reply_all) {
-            messageViewFragment?.onReplyAll()
-            return true
-        } else if (id == R.id.forward) {
-            messageViewFragment?.onForward()
-            return true
-        } else if (id == R.id.forward_as_attachment) {
-            messageViewFragment?.onForwardAsAttachment()
-            return true
-        } else if (id == R.id.edit_as_new_message) {
-            messageViewFragment?.onEditAsNewMessage()
-            return true
-        } else if (id == R.id.share) {
-            messageViewFragment?.onSendAlternate()
-            return true
-        } else if (id == R.id.toggle_unread) {
-            messageViewFragment?.onToggleRead()
-            return true
-        } else if (id == R.id.archive || id == R.id.refile_archive) {
-            messageViewFragment?.onArchive()
-            return true
-        } else if (id == R.id.spam || id == R.id.refile_spam) {
-            messageViewFragment?.onSpam()
-            return true
-        } else if (id == R.id.move || id == R.id.refile_move) {
-            messageViewFragment?.onMove()
-            return true
-        } else if (id == R.id.copy || id == R.id.refile_copy) {
-            messageViewFragment?.onCopy()
-            return true
-        } else if (id == R.id.move_to_drafts) {
-            messageViewFragment?.onMoveToDrafts()
-            return true
-        } else if (id == R.id.show_headers) {
-            startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
-            return true
+            R.id.compose -> {
+                messageListFragment!!.onCompose()
+                return true
+            }
+            R.id.toggle_message_view_theme -> {
+                onToggleTheme()
+                return true
+            }
+            R.id.set_sort_date -> { // MessageList
+                messageListFragment!!.changeSort(SortType.SORT_DATE)
+                return true
+            }
+            R.id.set_sort_arrival -> {
+                messageListFragment!!.changeSort(SortType.SORT_ARRIVAL)
+                return true
+            }
+            R.id.set_sort_subject -> {
+                messageListFragment!!.changeSort(SortType.SORT_SUBJECT)
+                return true
+            }
+            R.id.set_sort_sender -> {
+                messageListFragment!!.changeSort(SortType.SORT_SENDER)
+                return true
+            }
+            R.id.set_sort_flag -> {
+                messageListFragment!!.changeSort(SortType.SORT_FLAGGED)
+                return true
+            }
+            R.id.set_sort_unread -> {
+                messageListFragment!!.changeSort(SortType.SORT_UNREAD)
+                return true
+            }
+            R.id.set_sort_attach -> {
+                messageListFragment!!.changeSort(SortType.SORT_ATTACHMENT)
+                return true
+            }
+            R.id.select_all -> {
+                messageListFragment!!.selectAll()
+                return true
+            }
+            R.id.search_remote -> {
+                messageListFragment!!.onRemoteSearch()
+                return true
+            }
+            R.id.search_everywhere -> {
+                searchEverywhere()
+                return true
+            }
+            R.id.mark_all_as_read -> {
+                messageListFragment!!.confirmMarkAllAsRead()
+                return true
+            }
+            R.id.next_message -> { // MessageViewPager
+                messageViewPagerFragment?.showNextMessage()
+                return true
+            }
+            R.id.previous_message -> {
+                messageViewPagerFragment?.showPreviousMessage()
+                return true
+            }
+            R.id.delete -> {
+                messageViewFragment?.onDelete()
+                return true
+            }
+            R.id.reply -> {
+                messageViewFragment?.onReply()
+                return true
+            }
+            R.id.reply_all -> {
+                messageViewFragment?.onReplyAll()
+                return true
+            }
+            R.id.forward -> {
+                messageViewFragment?.onForward()
+                return true
+            }
+            R.id.forward_as_attachment -> {
+                messageViewFragment?.onForwardAsAttachment()
+                return true
+            }
+            R.id.edit_as_new_message -> {
+                messageViewFragment?.onEditAsNewMessage()
+                return true
+            }
+            R.id.share -> {
+                messageViewFragment?.onSendAlternate()
+                return true
+            }
+            R.id.toggle_unread -> {
+                messageViewFragment?.onToggleRead()
+                return true
+            }
+            R.id.archive, R.id.refile_archive -> {
+                messageViewFragment?.onArchive()
+                return true
+            }
+            R.id.spam, R.id.refile_spam -> {
+                messageViewFragment?.onSpam()
+                return true
+            }
+            R.id.move, R.id.refile_move -> {
+                messageViewFragment?.onMove()
+                return true
+            }
+            R.id.copy, R.id.refile_copy -> {
+                messageViewFragment?.onCopy()
+                return true
+            }
+            R.id.move_to_drafts -> {
+                messageViewFragment?.onMoveToDrafts()
+                return true
+            }
+            R.id.show_headers -> {
+                startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
+                return true
+            }
         }
 
         if (!singleFolderMode) {
