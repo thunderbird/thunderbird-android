@@ -3,7 +3,6 @@ package com.fsck.k9.notification
 import android.util.SparseArray
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
-import com.fsck.k9.K9
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
 
@@ -110,17 +109,10 @@ internal open class NewMailNotifications(
     }
 
     private fun createSingleMessageNotification(account: Account, holder: NotificationHolder) {
-        if (isPrivacyModeEnabled) {
-            return
-        }
-
         val notification = singleMessageNotifications.buildSingleMessageNotification(account, holder)
         val notificationId = holder.notificationId
         notificationManager.notify(notificationId, notification)
     }
-
-    private val isPrivacyModeEnabled: Boolean
-        get() = K9.notificationHideSubject !== K9.NotificationHideSubject.NEVER
 
     private val notificationManager: NotificationManagerCompat
         get() = notificationHelper.getNotificationManager()

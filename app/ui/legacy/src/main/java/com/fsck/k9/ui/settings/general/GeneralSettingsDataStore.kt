@@ -103,7 +103,6 @@ class GeneralSettingsDataStore(
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
             "background_ops" -> K9.backgroundOps.name
-            "notification_hide_subject" -> K9.notificationHideSubject.name
             "quiet_time_starts" -> K9.quietTimeStarts
             "quiet_time_ends" -> K9.quietTimeEnds
             "account_name_font" -> K9.fontSizes.accountName.toString()
@@ -143,7 +142,6 @@ class GeneralSettingsDataStore(
                 K9.lockScreenNotificationVisibility = K9.LockScreenNotificationVisibility.valueOf(value)
             }
             "background_ops" -> setBackgroundOps(value)
-            "notification_hide_subject" -> K9.notificationHideSubject = K9.NotificationHideSubject.valueOf(value)
             "quiet_time_starts" -> K9.quietTimeStarts = value
             "quiet_time_ends" -> K9.quietTimeEnds = value
             "account_name_font" -> K9.fontSizes.accountName = value.toInt()

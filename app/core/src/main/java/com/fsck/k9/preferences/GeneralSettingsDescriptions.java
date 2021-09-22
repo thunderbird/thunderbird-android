@@ -16,7 +16,6 @@ import com.fsck.k9.Account.SortType;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.AppTheme;
@@ -132,10 +131,6 @@ public class GeneralSettingsDescriptions {
                 new V(1, new BooleanSetting(false)),
                 new V(69, null)
         ));
-        s.put("keyguardPrivacy", Settings.versions(
-                new V(1, new BooleanSetting(false)),
-                new V(12, null)
-        ));
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
         ));
@@ -194,9 +189,6 @@ public class GeneralSettingsDescriptions {
         ));
         s.put("useVolumeKeysForNavigation", Settings.versions(
                 new V(1, new BooleanSetting(false))
-        ));
-        s.put("notificationHideSubject", Settings.versions(
-                new V(12, new EnumSetting<>(NotificationHideSubject.class, NotificationHideSubject.NEVER))
         ));
         s.put("useBackgroundAsUnreadIndicator", Settings.versions(
                 new V(19, new BooleanSetting(true)),
@@ -290,7 +282,6 @@ public class GeneralSettingsDescriptions {
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<>();
-        u.put(12, new SettingsUpgraderV12());
         u.put(24, new SettingsUpgraderV24());
         u.put(31, new SettingsUpgraderV31());
         u.put(58, new SettingsUpgraderV58());
@@ -320,27 +311,6 @@ public class GeneralSettingsDescriptions {
             }
         }
         return result;
-    }
-
-    /**
-     * Upgrades the settings from version 11 to 12
-     *
-     * Map the 'keyguardPrivacy' value to the new NotificationHideSubject enum.
-     */
-    private static class SettingsUpgraderV12 implements SettingsUpgrader {
-
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            Boolean keyguardPrivacy = (Boolean) settings.get("keyguardPrivacy");
-            if (keyguardPrivacy != null && keyguardPrivacy) {
-                // current setting: only show subject when unlocked
-                settings.put("notificationHideSubject", NotificationHideSubject.WHEN_LOCKED);
-            } else {
-                // always show subject [old default]
-                settings.put("notificationHideSubject", NotificationHideSubject.NEVER);
-            }
-            return new HashSet<>(Collections.singletonList("keyguardPrivacy"));
-        }
     }
 
     /**
