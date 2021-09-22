@@ -9,12 +9,12 @@ import timber.log.Timber
 import android.os.PowerManager as SystemPowerManager
 import android.os.PowerManager.WakeLock as SystemWakeLock
 
-internal class TracingPowerManager(private val systemPowerManager: SystemPowerManager) : PowerManager {
+internal class AndroidPowerManager(private val systemPowerManager: SystemPowerManager) : PowerManager {
     override fun newWakeLock(tag: String): WakeLock {
-        return TracingWakeLock(SystemPowerManager.PARTIAL_WAKE_LOCK, tag)
+        return AndroidWakeLock(SystemPowerManager.PARTIAL_WAKE_LOCK, tag)
     }
 
-    inner class TracingWakeLock(flags: Int, val tag: String?) : WakeLock {
+    inner class AndroidWakeLock(flags: Int, val tag: String?) : WakeLock {
         private val wakeLock: SystemWakeLock = systemPowerManager.newWakeLock(flags, tag)
         private val id = wakeLockId.getAndIncrement()
 
@@ -25,7 +25,7 @@ internal class TracingPowerManager(private val systemPowerManager: SystemPowerMa
         private var timeout: Long? = null
 
         init {
-            Timber.v("TracingWakeLock for tag %s / id %d: Create", tag, id)
+            Timber.v("AndroidWakeLock for tag %s / id %d: Create", tag, id)
         }
 
         override fun acquire(timeout: Long) {
@@ -33,7 +33,7 @@ internal class TracingPowerManager(private val systemPowerManager: SystemPowerMa
                 wakeLock.acquire(timeout)
             }
 
-            Timber.v("TracingWakeLock for tag %s / id %d for %d ms: acquired", tag, id, timeout)
+            Timber.v("AndroidWakeLock for tag %s / id %d for %d ms: acquired", tag, id, timeout)
 
             if (startTime == null) {
                 startTime = SystemClock.elapsedRealtime()
@@ -48,7 +48,7 @@ internal class TracingPowerManager(private val systemPowerManager: SystemPowerMa
                 wakeLock.acquire()
             }
 
-            Timber.v("TracingWakeLock for tag %s / id %d: acquired with no timeout.", tag, id)
+            Timber.v("AndroidWakeLock for tag %s / id %d: acquired with no timeout.", tag, id)
 
             if (startTime == null) {
                 startTime = SystemClock.elapsedRealtime()
@@ -69,11 +69,11 @@ internal class TracingPowerManager(private val systemPowerManager: SystemPowerMa
                 val endTime = SystemClock.elapsedRealtime()
 
                 Timber.v(
-                    "TracingWakeLock for tag %s / id %d: releasing after %d ms, timeout = %d ms",
+                    "AndroidWakeLock for tag %s / id %d: releasing after %d ms, timeout = %d ms",
                     tag, id, endTime - startTime, timeout
                 )
             } else {
-                Timber.v("TracingWakeLock for tag %s / id %d, timeout = %d ms: releasing", tag, id, timeout)
+                Timber.v("AndroidWakeLock for tag %s / id %d, timeout = %d ms: releasing", tag, id, timeout)
             }
 
             synchronized(wakeLock) {

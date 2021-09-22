@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 val powerModule = module {
     factory { get<Context>().getSystemService(Context.POWER_SERVICE) as android.os.PowerManager }
-    single<PowerManager> { TracingPowerManager(systemPowerManager = get()) }
+    single<PowerManager> { AndroidPowerManager(systemPowerManager = get()) }
 }
