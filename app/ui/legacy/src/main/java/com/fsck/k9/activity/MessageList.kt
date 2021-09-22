@@ -56,6 +56,7 @@ import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageViewFragment
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.MessageViewPagerFragment
+import com.fsck.k9.ui.messageview.MessageViewPagerFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
 import com.fsck.k9.ui.onboarding.OnboardingActivity
 import com.fsck.k9.ui.permissions.K9PermissionUiHelper
@@ -83,7 +84,7 @@ open class MessageList :
     FragmentManager.OnBackStackChangedListener,
     OnSwitchCompleteListener,
     PermissionUiHelper,
-    MessageViewPagerFragment.MessageViewPagerFragmentListener {
+    MessageViewPagerFragmentListener {
 
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
 
@@ -1590,7 +1591,7 @@ open class MessageList :
 
     override fun getMessageCount(): Int {
         if (messageListFragment != null) {
-            return messageListFragment!!.getCount()
+            return messageListFragment!!.getMessageCount()
         }
         throw UninitializedPropertyAccessException()
     }
@@ -1609,8 +1610,8 @@ open class MessageList :
         throw UninitializedPropertyAccessException()
     }
 
-    override fun setActiveMessage(reference: MessageReference) {
-        messageListFragment?.setActiveMessage(reference)
+    override fun scrollToMessage(reference: MessageReference) {
+        messageListFragment!!.scrollToMessage(reference)
     }
 
     private enum class DisplayMode {

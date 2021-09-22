@@ -85,7 +85,7 @@ class MessageViewPagerFragment : Fragment() {
             adapter.resetWebView()
             val reference = getMessageReference(viewPager.currentItem)
             if (reference != null) {
-                messageList.setActiveMessage(reference)
+                messageList.scrollToMessage(reference)
             }
         }
     }
@@ -158,12 +158,12 @@ class MessageViewPagerFragment : Fragment() {
     fun getActivePosition(): Int {
         return viewPager.currentItem
     }
+}
 
-    interface MessageViewPagerFragmentListener {
-        fun getMessageCount(): Int
-        fun getMessagePosition(reference: MessageReference): Int
-        fun getMessageReference(position: Int): MessageReference
-        fun configureMenu()
-        fun setActiveMessage(reference: MessageReference)
-    }
+interface MessageViewPagerFragmentListener {
+    fun getMessageCount(): Int
+    fun getMessagePosition(reference: MessageReference): Int
+    fun getMessageReference(position: Int): MessageReference
+    fun configureMenu()
+    fun scrollToMessage(reference: MessageReference)
 }

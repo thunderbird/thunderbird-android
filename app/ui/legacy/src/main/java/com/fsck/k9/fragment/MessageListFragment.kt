@@ -1931,7 +1931,17 @@ class MessageListFragment :
         }
     }
 
-    fun getCount(): Int {
+    fun getMessageCount(): Int {
         return adapter.count
+    }
+
+    fun scrollToMessage(activeMessage: MessageReference) {
+        setActiveMessage(activeMessage)
+        val position = getPosition(activeMessage)
+        val viewPosition = adapterToListViewPosition(position)
+        if (viewPosition != AdapterView.INVALID_POSITION && (viewPosition < listView.firstVisiblePosition
+                || viewPosition > listView.lastVisiblePosition)) {
+            listView.smoothScrollToPosition(viewPosition)
+        }
     }
 }
