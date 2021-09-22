@@ -569,7 +569,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         clientCertificateAlias);
                 mAccount.setOutgoingServerSettings(transportServer);
 
-                AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mMakeDefault);
+                AccountSetupOutgoing.actionOutgoingSettings(this, mAccount);
             }
         }
     }

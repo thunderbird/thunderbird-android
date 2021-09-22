@@ -16,11 +16,6 @@
             android:key="account_description"
             android:title="@string/account_settings_description_label" />
 
-        <CheckBoxPreference
-            android:key="account_default"
-            android:summary="@string/account_settings_default_summary"
-            android:title="@string/account_settings_default_label" />
-
         <com.takisoft.preferencex.ColorPickerPreference
             android:key="chip_color"
             android:summary="@string/account_settings_color_summary"

@@ -185,27 +185,8 @@ class Preferences internal constructor(
         notifyAccountsChangeListeners()
     }
 
-    var defaultAccount: Account?
-        get() {
-            return getDefaultAccountOrNull() ?: accounts.firstOrNull()?.also { newDefaultAccount ->
-                defaultAccount = newDefaultAccount
-            }
-        }
-        set(account) {
-            requireNotNull(account)
-
-            createStorageEditor()
-                .putString("defaultAccountUuid", account.uuid)
-                .commit()
-        }
-
-    private fun getDefaultAccountOrNull(): Account? {
-        return synchronized(accountLock) {
-            storage.getString("defaultAccountUuid", null)?.let { defaultAccountUuid ->
-                getAccount(defaultAccountUuid)
-            }
-        }
-    }
+    val defaultAccount: Account?
+        get() = accounts.firstOrNull()
 
     fun saveAccount(account: Account) {
         ensureAssignedAccountNumber(account)
