@@ -67,7 +67,7 @@ class MessageViewPagerFragment : Fragment() {
                 super.onPageScrollStateChanged(state)
             }
         })
-        viewPager.post { setActiveMessage() }
+        viewPager.post { setInitialMessage() }
         return view
     }
 
@@ -104,8 +104,9 @@ class MessageViewPagerFragment : Fragment() {
         adapter.notifyDataSetChanged()
     }
 
-    private fun setActiveMessage() {
+    private fun setInitialMessage() {
         val position = getMessagePosition(initialMessage)
+        // TODO: position == -1 if we got here by clicking a Notification drop down (perhaps the message list has not been refreshed ??)
         if (position >= 0) {
             viewPager.setCurrentItem(position, false)
         }
