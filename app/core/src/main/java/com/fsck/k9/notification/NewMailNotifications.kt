@@ -30,7 +30,12 @@ internal open class NewMailNotifications(
                 cancelNotification(notificationId)
             }
 
-            createSingleMessageNotification(account, result.notificationHolder)
+            if (notificationData.isSingleMessageNotification) {
+                createSingleMessageNotificationWithLockScreenNotification(account, notificationData)
+            } else {
+                createSingleMessageNotification(account, result.notificationHolder)
+            }
+
             createSummaryNotification(account, notificationData, silent)
         }
     }
@@ -44,7 +49,9 @@ internal open class NewMailNotifications(
 
             cancelNotification(result.notificationId)
 
-            if (result.shouldCreateNotification) {
+            if (notificationData.isSingleMessageNotification) {
+                createSingleMessageNotificationWithLockScreenNotification(account, notificationData)
+            } else if (result.shouldCreateNotification) {
                 createSingleMessageNotification(account, result.notificationHolder)
             }
 
@@ -110,6 +117,23 @@ internal open class NewMailNotifications(
 
     private fun createSingleMessageNotification(account: Account, holder: NotificationHolder) {
         val notification = singleMessageNotifications.buildSingleMessageNotification(account, holder)
+        val notificationId = holder.notificationId
+        notificationManager.notify(notificationId, notification)
+    }
+
+    // When there's only one notification the "public version" of the notification that might be displayed on a secure
+    // lockscreen isn't taken from the summary notification, but from the single "grouped" notification.
+    private fun createSingleMessageNotificationWithLockScreenNotification(
+        account: Account,
+        notificationData: NotificationData
+    ) {
+        val holder = notificationData.holderForLatestNotification
+        val notification = singleMessageNotifications.buildSingleMessageNotificationWithLockScreenNotification(
+            account,
+            holder,
+            notificationData
+        )
+
         val notificationId = holder.notificationId
         notificationManager.notify(notificationId, notification)
     }

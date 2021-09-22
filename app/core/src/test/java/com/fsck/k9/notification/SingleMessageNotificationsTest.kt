@@ -34,7 +34,8 @@ class SingleMessageNotificationsTest : RobolectricTest() {
     private val notifications = SingleMessageNotifications(
         notificationHelper = createNotificationHelper(builder),
         actionCreator = actionCreator,
-        resourceProvider = resourceProvider
+        resourceProvider = resourceProvider,
+        lockScreenNotification = mock()
     )
 
     @Test

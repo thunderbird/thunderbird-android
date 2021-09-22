@@ -173,7 +173,8 @@ class SummaryNotificationsTest : RobolectricTest() {
         val singleMessageNotifications = TestSingleMessageNotifications(
             notificationHelper = notificationHelper,
             actionCreator = mock(),
-            resourceProvider = resourceProvider
+            resourceProvider = resourceProvider,
+            lockScreenNotification = mock()
         )
 
         return TestMessageSummaryNotifications(
@@ -218,11 +219,13 @@ class SummaryNotificationsTest : RobolectricTest() {
     internal inner class TestSingleMessageNotifications(
         notificationHelper: NotificationHelper,
         actionCreator: NotificationActionCreator,
-        resourceProvider: NotificationResourceProvider
+        resourceProvider: NotificationResourceProvider,
+        lockScreenNotification: LockScreenNotification
     ) : SingleMessageNotifications(
         notificationHelper,
         actionCreator,
-        resourceProvider
+        resourceProvider,
+        lockScreenNotification
     ) {
         override fun createBigTextStyle(builder: NotificationCompat.Builder?): NotificationCompat.BigTextStyle {
             return bigTextStyle
