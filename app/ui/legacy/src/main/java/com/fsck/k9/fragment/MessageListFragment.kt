@@ -1939,8 +1939,11 @@ class MessageListFragment :
         setActiveMessage(activeMessage)
         val position = getPosition(activeMessage)
         val viewPosition = adapterToListViewPosition(position)
-        if (viewPosition != AdapterView.INVALID_POSITION && (viewPosition < listView.firstVisiblePosition
-                || viewPosition > listView.lastVisiblePosition)) {
+        if (viewPosition != AdapterView.INVALID_POSITION && (
+            viewPosition <= listView.firstVisiblePosition ||
+                viewPosition >= listView.lastVisiblePosition
+            )
+        ) {
             listView.smoothScrollToPosition(viewPosition)
         }
     }
