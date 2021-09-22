@@ -23,7 +23,6 @@ import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
-import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 import timber.log.Timber;
 
@@ -238,66 +237,50 @@ public class LocalMessage extends MimeMessage {
     }
 
     public void setCachedDecryptedSubject(final String decryptedSubject) throws MessagingException {
-        try {
-            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        LocalMessage.super.setFlag(Flag.X_SUBJECT_DECRYPTED, true);
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
+        this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                LocalMessage.super.setFlag(Flag.X_SUBJECT_DECRYPTED, true);
 
-                    ContentValues cv = new ContentValues();
-                    cv.put("subject", decryptedSubject);
-                    cv.put("flags", LocalStore.serializeFlags(getFlags()));
+                ContentValues cv = new ContentValues();
+                cv.put("subject", decryptedSubject);
+                cv.put("flags", LocalStore.serializeFlags(getFlags()));
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
+                db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
-                    return null;
-                }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+                return null;
+            }
+        });
 
         this.localStore.notifyChange();
     }
 
     @Override
     public void setFlag(final Flag flag, final boolean set) throws MessagingException {
-
-        try {
-            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        if (flag == Flag.DELETED && set) {
-                            delete();
-                        }
-
-                        LocalMessage.super.setFlag(flag, set);
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
-                    /*
-                     * Set the flags on the message.
-                     */
-                    ContentValues cv = new ContentValues();
-                    cv.put("flags", LocalStore.serializeFlags(getFlags()));
-                    cv.put("read", isSet(Flag.SEEN) ? 1 : 0);
-                    cv.put("flagged", isSet(Flag.FLAGGED) ? 1 : 0);
-                    cv.put("answered", isSet(Flag.ANSWERED) ? 1 : 0);
-                    cv.put("forwarded", isSet(Flag.FORWARDED) ? 1 : 0);
-
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
-
-                    return null;
+        this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                if (flag == Flag.DELETED && set) {
+                    delete();
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+
+                LocalMessage.super.setFlag(flag, set);
+
+                /*
+                 * Set the flags on the message.
+                 */
+                ContentValues cv = new ContentValues();
+                cv.put("flags", LocalStore.serializeFlags(getFlags()));
+                cv.put("read", isSet(Flag.SEEN) ? 1 : 0);
+                cv.put("flagged", isSet(Flag.FLAGGED) ? 1 : 0);
+                cv.put("answered", isSet(Flag.ANSWERED) ? 1 : 0);
+                cv.put("forwarded", isSet(Flag.FORWARDED) ? 1 : 0);
+
+                db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
+
+                return null;
+            }
+        });
 
         this.localStore.notifyChange();
     }
@@ -307,48 +290,40 @@ public class LocalMessage extends MimeMessage {
      * row since we need to retain the UID for synchronization purposes.
      */
     public void delete() throws MessagingException {
-        try {
-            localStore.getDatabase().execute(true, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    ContentValues cv = new ContentValues();
-                    cv.put("deleted", 1);
-                    cv.put("preview_type", DatabasePreviewType.fromPreviewType(PreviewType.NONE).getDatabaseValue());
-                    cv.put("read", 0);
-                    cv.put("flagged", 0);
-                    cv.put("answered", 0);
-                    cv.put("forwarded", 0);
-                    cv.putNull("subject");
-                    cv.putNull("sender_list");
-                    cv.putNull("date");
-                    cv.putNull("to_list");
-                    cv.putNull("cc_list");
-                    cv.putNull("bcc_list");
-                    cv.putNull("preview");
-                    cv.putNull("reply_to_list");
-                    cv.putNull("message_part_id");
-                    cv.putNull("flags");
-                    cv.putNull("attachment_count");
-                    cv.putNull("internal_date");
-                    cv.putNull("mime_type");
-                    cv.putNull("encryption_type");
+        localStore.getDatabase().execute(true, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                ContentValues cv = new ContentValues();
+                cv.put("deleted", 1);
+                cv.put("preview_type", DatabasePreviewType.fromPreviewType(PreviewType.NONE).getDatabaseValue());
+                cv.put("read", 0);
+                cv.put("flagged", 0);
+                cv.put("answered", 0);
+                cv.put("forwarded", 0);
+                cv.putNull("subject");
+                cv.putNull("sender_list");
+                cv.putNull("date");
+                cv.putNull("to_list");
+                cv.putNull("cc_list");
+                cv.putNull("bcc_list");
+                cv.putNull("preview");
+                cv.putNull("reply_to_list");
+                cv.putNull("message_part_id");
+                cv.putNull("flags");
+                cv.putNull("attachment_count");
+                cv.putNull("internal_date");
+                cv.putNull("mime_type");
+                cv.putNull("encryption_type");
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
+                db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
-                    try {
-                        ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
+                mFolder.deleteMessagePartsAndDataFromDisk(messagePartId);
 
-                    getFolder().deleteFulltextIndexEntry(db, databaseId);
+                getFolder().deleteFulltextIndexEntry(db, databaseId);
 
-                    return null;
-                }
-            });
-        } catch (WrappedException e) {
-            throw (MessagingException) e.getCause();
-        }
+                return null;
+            }
+        });
 
         localStore.notifyChange();
     }
@@ -358,30 +333,22 @@ public class LocalMessage extends MimeMessage {
             throw new AssertionError("method must only be used in developer mode!");
         }
 
-        try {
-            localStore.getDatabase().execute(true, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
-                    ContentValues cv = new ContentValues();
-                    cv.putNull("message_part_id");
+        localStore.getDatabase().execute(true, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                ContentValues cv = new ContentValues();
+                cv.putNull("message_part_id");
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
+                db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
-                    try {
-                        ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
+                mFolder.deleteMessagePartsAndDataFromDisk(messagePartId);
 
-                    setFlag(Flag.X_DOWNLOADED_FULL, false);
-                    setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
+                setFlag(Flag.X_DOWNLOADED_FULL, false);
+                setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
 
-                    return null;
-                }
-            });
-        } catch (WrappedException e) {
-            throw (MessagingException) e.getCause();
-        }
+                return null;
+            }
+        });
 
         localStore.notifyChange();
     }

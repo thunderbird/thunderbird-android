@@ -34,7 +34,6 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.SizeAware;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
-import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
 import org.apache.commons.io.IOUtils;
@@ -141,38 +140,32 @@ public class LocalFolder {
             return;
         }
 
-        try {
-            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    Cursor cursor = null;
-                    try {
-                        String baseQuery = "SELECT " + LocalStore.GET_FOLDER_COLS + " FROM folders ";
+        this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                Cursor cursor = null;
+                try {
+                    String baseQuery = "SELECT " + LocalStore.GET_FOLDER_COLS + " FROM folders ";
 
-                        if (serverId != null) {
-                            cursor = db.rawQuery(baseQuery + "where folders.server_id = ?", new String[] { serverId });
-                        } else {
-                            cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(
-                                    databaseId) });
-                        }
-
-                        if (cursor.moveToFirst() && !cursor.isNull(LocalStore.FOLDER_ID_INDEX)) {
-                            open(cursor);
-                        } else {
-                            throw new MessagingException("LocalFolder.open(): Folder not found: " +
-                                    serverId + " (" + databaseId + ")", true);
-                        }
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    } finally {
-                        Utility.closeQuietly(cursor);
+                    if (serverId != null) {
+                        cursor = db.rawQuery(baseQuery + "where folders.server_id = ?", new String[] { serverId });
+                    } else {
+                        cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(
+                                databaseId) });
                     }
-                    return null;
+
+                    if (cursor.moveToFirst() && !cursor.isNull(LocalStore.FOLDER_ID_INDEX)) {
+                        open(cursor);
+                    } else {
+                        throw new MessagingException("LocalFolder.open(): Folder not found: " +
+                                serverId + " (" + databaseId + ")", true);
+                    }
+                } finally {
+                    Utility.closeQuietly(cursor);
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+                return null;
+            }
+        });
     }
 
     void open(Cursor cursor) throws MessagingException {
@@ -215,17 +208,13 @@ public class LocalFolder {
     }
 
     public void setName(String name) throws MessagingException {
-        try {
-            open();
+        open();
 
-            if (name.equals(this.name)) {
-                return;
-            }
-
-            this.name = name;
-        } catch (MessagingException e) {
-            throw new WrappedException(e);
+        if (name.equals(this.name)) {
+            return;
         }
+
+        this.name = name;
         updateFolderColumn("name", name);
     }
 
@@ -241,7 +230,7 @@ public class LocalFolder {
     public boolean exists() throws MessagingException {
         return this.localStore.getDatabase().execute(false, new DbCallback<Boolean>() {
             @Override
-            public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException {
+            public Boolean doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
                 try {
                     cursor = db.rawQuery("SELECT id FROM folders where id = ?",
@@ -268,29 +257,25 @@ public class LocalFolder {
             open();
         }
 
-        try {
-            return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
-                @Override
-                public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    int unreadMessageCount = 0;
-                    Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                            "folder_id = ? AND empty = 0 AND deleted = 0 AND read=0",
-                            new String[] { Long.toString(databaseId) }, null, null, null);
+        return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
+            @Override
+            public Integer doDbWork(final SQLiteDatabase db) {
+                int unreadMessageCount = 0;
+                Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
+                        "folder_id = ? AND empty = 0 AND deleted = 0 AND read=0",
+                        new String[] { Long.toString(databaseId) }, null, null, null);
 
-                    try {
-                        if (cursor.moveToFirst()) {
-                            unreadMessageCount = cursor.getInt(0);
-                        }
-                    } finally {
-                        cursor.close();
+                try {
+                    if (cursor.moveToFirst()) {
+                        unreadMessageCount = cursor.getInt(0);
                     }
-
-                    return unreadMessageCount;
+                } finally {
+                    cursor.close();
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+
+                return unreadMessageCount;
+            }
+        });
     }
 
     private int getStarredMessageCount() throws MessagingException {
@@ -298,29 +283,25 @@ public class LocalFolder {
             open();
         }
 
-        try {
-            return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
-                @Override
-                public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    int starredMessageCount = 0;
-                    Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                            "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged = 1",
-                            new String[] { Long.toString(databaseId) }, null, null, null);
+        return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
+            @Override
+            public Integer doDbWork(final SQLiteDatabase db) {
+                int starredMessageCount = 0;
+                Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
+                        "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged = 1",
+                        new String[] { Long.toString(databaseId) }, null, null, null);
 
-                    try {
-                        if (cursor.moveToFirst()) {
-                            starredMessageCount = cursor.getInt(0);
-                        }
-                    } finally {
-                        cursor.close();
+                try {
+                    if (cursor.moveToFirst()) {
+                        starredMessageCount = cursor.getInt(0);
                     }
-
-                    return starredMessageCount;
+                } finally {
+                    cursor.close();
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+
+                return starredMessageCount;
+            }
+        });
     }
 
     public int getVisibleLimit() throws MessagingException {
@@ -353,22 +334,14 @@ public class LocalFolder {
     }
 
     private void updateFolderColumn(final String column, final Object value) throws MessagingException {
-        try {
-            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        open();
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
-                    db.execSQL("UPDATE folders SET " + column + " = ? WHERE id = ?", new Object[] { value, databaseId });
-                    return null;
-                }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+        this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                open();
+                db.execSQL("UPDATE folders SET " + column + " = ? WHERE id = ?", new Object[] { value, databaseId });
+                return null;
+            }
+        });
     }
 
     public FolderClass getDisplayClass() {
@@ -447,26 +420,18 @@ public class LocalFolder {
 
     public void fetch(final List<LocalMessage> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)
     throws MessagingException {
-        try {
-            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        open();
-                        if (fp.contains(FetchProfile.Item.BODY)) {
-                            for (LocalMessage message : messages) {
-                                loadMessageParts(db, message);
-                            }
-                        }
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
+        this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                open();
+                if (fp.contains(FetchProfile.Item.BODY)) {
+                    for (LocalMessage message : messages) {
+                        loadMessageParts(db, message);
                     }
-                    return null;
                 }
-            });
-        } catch (WrappedException e) {
-            throw (MessagingException) e.getCause();
-        }
+                return null;
+            }
+        });
     }
 
     private void loadMessageParts(SQLiteDatabase db, LocalMessage message) throws MessagingException {
@@ -575,71 +540,55 @@ public class LocalFolder {
     }
 
     public String getMessageUidById(final long id) throws MessagingException {
-        try {
-            return this.localStore.getDatabase().execute(false, new DbCallback<String>() {
-                @Override
-                public String doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        open();
-                        Cursor cursor = null;
+        return this.localStore.getDatabase().execute(false, new DbCallback<String>() {
+            @Override
+            public String doDbWork(final SQLiteDatabase db) throws MessagingException {
+                open();
+                Cursor cursor = null;
 
-                        try {
-                            cursor = db.rawQuery(
-                                    "SELECT uid FROM messages WHERE id = ? AND folder_id = ?",
-                                    new String[] { Long.toString(id), Long.toString(LocalFolder.this.databaseId) });
-                            if (!cursor.moveToNext()) {
-                                return null;
-                            }
-                            return cursor.getString(0);
-                        } finally {
-                            Utility.closeQuietly(cursor);
-                        }
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
+                try {
+                    cursor = db.rawQuery(
+                            "SELECT uid FROM messages WHERE id = ? AND folder_id = ?",
+                            new String[] { Long.toString(id), Long.toString(LocalFolder.this.databaseId) });
+                    if (!cursor.moveToNext()) {
+                        return null;
                     }
+                    return cursor.getString(0);
+                } finally {
+                    Utility.closeQuietly(cursor);
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+            }
+        });
     }
 
     public LocalMessage getMessage(final String uid) throws MessagingException {
-        try {
-            return this.localStore.getDatabase().execute(false, new DbCallback<LocalMessage>() {
-                @Override
-                public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        open();
-                        LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this);
-                        Cursor cursor = null;
+        return this.localStore.getDatabase().execute(false, new DbCallback<LocalMessage>() {
+            @Override
+            public LocalMessage doDbWork(final SQLiteDatabase db) throws MessagingException {
+                open();
+                LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this);
+                Cursor cursor = null;
 
-                        try {
-                            cursor = db.rawQuery(
-                                    "SELECT " +
-                                    LocalStore.GET_MESSAGES_COLS +
-                                    "FROM messages " +
-                                    "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
-                                    "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                                    "WHERE uid = ? AND folder_id = ?",
-                                    new String[] { message.getUid(), Long.toString(databaseId) });
+                try {
+                    cursor = db.rawQuery(
+                            "SELECT " +
+                            LocalStore.GET_MESSAGES_COLS +
+                            "FROM messages " +
+                            "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
+                            "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                            "WHERE uid = ? AND folder_id = ?",
+                            new String[] { message.getUid(), Long.toString(databaseId) });
 
-                            if (!cursor.moveToNext()) {
-                                return null;
-                            }
-                            message.populateFromGetMessageCursor(cursor);
-                        } finally {
-                            Utility.closeQuietly(cursor);
-                        }
-                        return message;
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
+                    if (!cursor.moveToNext()) {
+                        return null;
                     }
+                    message.populateFromGetMessageCursor(cursor);
+                } finally {
+                    Utility.closeQuietly(cursor);
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+                return message;
+            }
+        });
     }
 
     @Nullable
@@ -676,65 +625,21 @@ public class LocalFolder {
 
     public List<LocalMessage> getMessages(final MessageRetrievalListener<LocalMessage> listener,
             final boolean includeDeleted) throws MessagingException {
-        try {
-            return  localStore.getDatabase().execute(false, new DbCallback<List<LocalMessage>>() {
-                @Override
-                public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        open();
-                        return LocalFolder.this.localStore.getMessages(listener, LocalFolder.this,
-                                "SELECT " + LocalStore.GET_MESSAGES_COLS +
-                                "FROM messages " +
-                                "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
-                                "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                                "WHERE empty = 0 AND " +
-                                (includeDeleted ? "" : "deleted = 0 AND ") +
-                                "folder_id = ? ORDER BY date DESC",
-                                new String[] { Long.toString(databaseId) });
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
-                }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
-    }
-
-    public List<String> getAllMessageUids() throws MessagingException {
-        try {
-            return  localStore.getDatabase().execute(false, new DbCallback<List<String>>() {
-                @Override
-                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    Cursor cursor = null;
-                    ArrayList<String> result = new ArrayList<>();
-
-                    try {
-                        open();
-
-                        cursor = db.rawQuery(
-                                "SELECT uid " +
-                                    "FROM messages " +
-                                        "WHERE empty = 0 AND deleted = 0 AND " +
-                                        "folder_id = ? ORDER BY date DESC",
-                                new String[] { Long.toString(databaseId) });
-
-                        while (cursor.moveToNext()) {
-                            String uid = cursor.getString(0);
-                            result.add(uid);
-                        }
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    } finally {
-                        Utility.closeQuietly(cursor);
-                    }
-
-                    return result;
-                }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+        return localStore.getDatabase().execute(false, new DbCallback<List<LocalMessage>>() {
+            @Override
+            public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws MessagingException {
+                open();
+                return LocalFolder.this.localStore.getMessages(listener, LocalFolder.this,
+                        "SELECT " + LocalStore.GET_MESSAGES_COLS +
+                        "FROM messages " +
+                        "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
+                        "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                        "WHERE empty = 0 AND " +
+                        (includeDeleted ? "" : "deleted = 0 AND ") +
+                        "folder_id = ? ORDER BY date DESC",
+                        new String[] { Long.toString(databaseId) });
+            }
+        });
     }
 
     public List<LocalMessage> getMessagesByUids(@NonNull List<String> uids) throws MessagingException {
@@ -773,24 +678,16 @@ public class LocalFolder {
         return messages;
     }
 
-    public void destroyMessages(final List<LocalMessage> messages) {
-        try {
-            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    for (LocalMessage message : messages) {
-                        try {
-                            message.destroy();
-                        } catch (MessagingException e) {
-                            throw new WrappedException(e);
-                        }
-                    }
-                    return null;
+    public void destroyMessages(final List<LocalMessage> messages) throws MessagingException {
+        this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                for (LocalMessage message : messages) {
+                    message.destroy();
                 }
-            });
-        } catch (MessagingException e) {
-            throw new WrappedException(e);
-        }
+                return null;
+            }
+        });
     }
 
     private void moveTemporaryFile(File tempFile, String messagePartId) throws IOException {
@@ -974,7 +871,7 @@ public class LocalFolder {
 
         localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+            public Void doDbWork(final SQLiteDatabase db) {
                 long messagePartId;
 
                 Cursor cursor = db.query("message_parts", new String[] { "id" }, "root = ? AND server_extra = ?",
@@ -1013,7 +910,7 @@ public class LocalFolder {
         cv.put("uid", message.getUid());
         this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+            public Void doDbWork(final SQLiteDatabase db) {
                 db.update("messages", cv, "id = ?", new String[]
                         { Long.toString(message.getDatabaseId()) });
                 return null;
@@ -1029,25 +926,21 @@ public class LocalFolder {
         open();
 
         // Use one transaction to set all flags
-        try {
-            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+        this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) {
 
-                    for (LocalMessage message : messages) {
-                        try {
-                            message.setFlags(flags, value);
-                        } catch (MessagingException e) {
-                            Timber.e(e, "Something went wrong while setting flag");
-                        }
+                for (LocalMessage message : messages) {
+                    try {
+                        message.setFlags(flags, value);
+                    } catch (MessagingException e) {
+                        Timber.e(e, "Something went wrong while setting flag");
                     }
-
-                    return null;
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+
+                return null;
+            }
+        });
     }
 
     public void setFlags(final Set<Flag> flags, boolean value)
@@ -1063,39 +956,31 @@ public class LocalFolder {
 
         open();
 
-        try {
-            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        Cursor cursor = db.query("messages", new String[] { "message_part_id" },
-                                "folder_id = ? AND empty = 0",
-                                folderIdArg, null, null, null);
-                        try {
-                            while (cursor.moveToNext()) {
-                                long messagePartId = cursor.getLong(0);
-                                deleteMessageDataFromDisk(messagePartId);
-                            }
-                        } finally {
-                            cursor.close();
-                        }
-
-                        db.execSQL("DELETE FROM threads WHERE message_id IN " +
-                                "(SELECT id FROM messages WHERE folder_id = ?)", folderIdArg);
-                        db.execSQL("DELETE FROM messages WHERE folder_id = ?", folderIdArg);
-
-                        setMoreMessages(MoreMessages.UNKNOWN);
-                        resetLastChecked(db);
-
-                        return null;
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
+        this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                Cursor cursor = db.query("messages", new String[] { "message_part_id" },
+                        "folder_id = ? AND empty = 0",
+                        folderIdArg, null, null, null);
+                try {
+                    while (cursor.moveToNext()) {
+                        long messagePartId = cursor.getLong(0);
+                        deleteMessageDataFromDisk(messagePartId);
                     }
+                } finally {
+                    cursor.close();
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+
+                db.execSQL("DELETE FROM threads WHERE message_id IN " +
+                        "(SELECT id FROM messages WHERE folder_id = ?)", folderIdArg);
+                db.execSQL("DELETE FROM messages WHERE folder_id = ?", folderIdArg);
+
+                setMoreMessages(MoreMessages.UNKNOWN);
+                resetLastChecked(db);
+
+                return null;
+            }
+        });
 
         this.localStore.notifyChange();
 
@@ -1163,65 +1048,57 @@ public class LocalFolder {
 
     private void destroyMessage(final long messageId, final long messagePartId, final String messageIdHeader)
             throws MessagingException {
-        try {
-            localStore.getDatabase().execute(true, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    try {
-                        deleteMessagePartsAndDataFromDisk(messagePartId);
+        localStore.getDatabase().execute(true, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
+                deleteMessagePartsAndDataFromDisk(messagePartId);
 
-                        deleteFulltextIndexEntry(db, messageId);
+                deleteFulltextIndexEntry(db, messageId);
 
-                        if (hasThreadChildren(db, messageId)) {
-                            // This message has children in the thread structure so we need to
-                            // make it an empty message.
-                            ContentValues cv = new ContentValues();
-                            cv.put("id", messageId);
-                            cv.put("folder_id", getDatabaseId());
-                            cv.put("deleted", 0);
-                            cv.put("message_id", messageIdHeader);
-                            cv.put("empty", 1);
+                if (hasThreadChildren(db, messageId)) {
+                    // This message has children in the thread structure so we need to
+                    // make it an empty message.
+                    ContentValues cv = new ContentValues();
+                    cv.put("id", messageId);
+                    cv.put("folder_id", getDatabaseId());
+                    cv.put("deleted", 0);
+                    cv.put("message_id", messageIdHeader);
+                    cv.put("empty", 1);
 
-                            db.replace("messages", null, cv);
+                    db.replace("messages", null, cv);
 
-                            // Nothing else to do
-                            return null;
-                        }
-
-                        // Get the message ID of the parent message if it's empty
-                        long currentId = getEmptyThreadParent(db, messageId);
-
-                        // Delete the placeholder message
-                        deleteMessageRow(db, messageId);
-
-                        /*
-                         * Walk the thread tree to delete all empty parents without children
-                         */
-
-                        while (currentId != -1) {
-                            if (hasThreadChildren(db, currentId)) {
-                                // We made sure there are no empty leaf nodes and can stop now.
-                                break;
-                            }
-
-                            // Get ID of the (empty) parent for the next iteration
-                            long newId = getEmptyThreadParent(db, currentId);
-
-                            // Delete the empty message
-                            deleteMessageRow(db, currentId);
-
-                            currentId = newId;
-                        }
-
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
+                    // Nothing else to do
                     return null;
                 }
-            });
-        } catch (WrappedException e) {
-            throw (MessagingException) e.getCause();
-        }
+
+                // Get the message ID of the parent message if it's empty
+                long currentId = getEmptyThreadParent(db, messageId);
+
+                // Delete the placeholder message
+                deleteMessageRow(db, messageId);
+
+                /*
+                 * Walk the thread tree to delete all empty parents without children
+                 */
+
+                while (currentId != -1) {
+                    if (hasThreadChildren(db, currentId)) {
+                        // We made sure there are no empty leaf nodes and can stop now.
+                        break;
+                    }
+
+                    // Get ID of the (empty) parent for the next iteration
+                    long newId = getEmptyThreadParent(db, currentId);
+
+                    // Delete the empty message
+                    deleteMessageRow(db, currentId);
+
+                    currentId = newId;
+                }
+
+                return null;
+            }
+        });
 
         localStore.notifyChange();
     }
@@ -1299,7 +1176,7 @@ public class LocalFolder {
     private void deleteMessageParts(final long rootMessagePartId) throws MessagingException {
         localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+            public Void doDbWork(final SQLiteDatabase db) {
                 db.delete("message_parts", "root = ?", new String[] { Long.toString(rootMessagePartId) });
                 return null;
             }
@@ -1309,7 +1186,7 @@ public class LocalFolder {
     private void deleteMessageDataFromDisk(final long rootMessagePartId) throws MessagingException {
         localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+            public Void doDbWork(final SQLiteDatabase db) {
                 deleteMessagePartsFromDisk(db, rootMessagePartId);
                 return null;
             }
@@ -1347,73 +1224,65 @@ public class LocalFolder {
     public List<String> extractNewMessages(final List<String> messageServerIds)
             throws MessagingException {
 
-        try {
-            return this.localStore.getDatabase().execute(false, new DbCallback<List<String>>() {
-                @Override
-                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException {
+        return this.localStore.getDatabase().execute(false, new DbCallback<List<String>>() {
+            @Override
+            public List<String> doDbWork(final SQLiteDatabase db) throws MessagingException {
+                open();
+
+                List<String> result = new ArrayList<>();
+
+                List<String> selectionArgs = new ArrayList<>();
+                Set<String> existingMessages = new HashSet<>();
+                int start = 0;
+
+                while (start < messageServerIds.size()) {
+                    StringBuilder selection = new StringBuilder();
+
+                    selection.append("folder_id = ? AND UID IN (");
+                    selectionArgs.add(Long.toString(databaseId));
+
+                    int count = Math.min(messageServerIds.size() - start, LocalStore.UID_CHECK_BATCH_SIZE);
+
+                    for (int i = start, end = start + count; i < end; i++) {
+                        if (i > start) {
+                            selection.append(",?");
+                        } else {
+                            selection.append("?");
+                        }
+
+                        selectionArgs.add(messageServerIds.get(i));
+                    }
+
+                    selection.append(")");
+
+                    Cursor cursor = db.query("messages", LocalStore.UID_CHECK_PROJECTION,
+                            selection.toString(), selectionArgs.toArray(LocalStore.EMPTY_STRING_ARRAY),
+                            null, null, null);
+
                     try {
-                        open();
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
+                        while (cursor.moveToNext()) {
+                            String uid = cursor.getString(0);
+                            existingMessages.add(uid);
+                        }
+                    } finally {
+                        Utility.closeQuietly(cursor);
                     }
 
-                    List<String> result = new ArrayList<>();
-
-                    List<String> selectionArgs = new ArrayList<>();
-                    Set<String> existingMessages = new HashSet<>();
-                    int start = 0;
-
-                    while (start < messageServerIds.size()) {
-                        StringBuilder selection = new StringBuilder();
-
-                        selection.append("folder_id = ? AND UID IN (");
-                        selectionArgs.add(Long.toString(databaseId));
-
-                        int count = Math.min(messageServerIds.size() - start, LocalStore.UID_CHECK_BATCH_SIZE);
-
-                        for (int i = start, end = start + count; i < end; i++) {
-                            if (i > start) {
-                                selection.append(",?");
-                            } else {
-                                selection.append("?");
-                            }
-
-                            selectionArgs.add(messageServerIds.get(i));
+                    for (int i = start, end = start + count; i < end; i++) {
+                        String messageServerId = messageServerIds.get(i);
+                        if (!existingMessages.contains(messageServerId)) {
+                            result.add(messageServerId);
                         }
-
-                        selection.append(")");
-
-                        Cursor cursor = db.query("messages", LocalStore.UID_CHECK_PROJECTION,
-                                selection.toString(), selectionArgs.toArray(LocalStore.EMPTY_STRING_ARRAY),
-                                null, null, null);
-
-                        try {
-                            while (cursor.moveToNext()) {
-                                String uid = cursor.getString(0);
-                                existingMessages.add(uid);
-                            }
-                        } finally {
-                            Utility.closeQuietly(cursor);
-                        }
-
-                        for (int i = start, end = start + count; i < end; i++) {
-                            String messageServerId = messageServerIds.get(i);
-                            if (!existingMessages.contains(messageServerId)) {
-                                result.add(messageServerId);
-                            }
-                        }
-
-                        existingMessages.clear();
-                        selectionArgs.clear();
-                        start += count;
                     }
 
-                    return result;
+                    existingMessages.clear();
+                    selectionArgs.clear();
+                    start += count;
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
+
+                return result;
+            }
+        });
     }
 
     private Account getAccount() {
