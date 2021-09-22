@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
 
@@ -65,6 +64,8 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.power.PowerManager;
+import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mailstore.FolderDetailsAccessor;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -79,8 +80,6 @@ import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
-import com.fsck.k9.power.TracingPowerManager;
-import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import org.jetbrains.annotations.NotNull;
@@ -2265,15 +2264,16 @@ public class MessagingController {
             final boolean useManualWakeLock,
             final MessagingListener listener) {
 
-        TracingWakeLock twakeLock = null;
+        final WakeLock wakeLock;
         if (useManualWakeLock) {
-            TracingPowerManager pm = TracingPowerManager.getPowerManager(context);
+            PowerManager pm = DI.get(PowerManager.class);
 
-            twakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9 MessagingController.checkMail");
-            twakeLock.setReferenceCounted(false);
-            twakeLock.acquire(K9.MANUAL_WAKE_LOCK_TIMEOUT);
+            wakeLock = pm.newWakeLock("K9 MessagingController.checkMail");
+            wakeLock.setReferenceCounted(false);
+            wakeLock.acquire(K9.MANUAL_WAKE_LOCK_TIMEOUT);
+        } else {
+            wakeLock = null;
         }
-        final TracingWakeLock wakeLock = twakeLock;
 
         for (MessagingListener l : getListeners(listener)) {
             l.checkMailStarted(context, account);

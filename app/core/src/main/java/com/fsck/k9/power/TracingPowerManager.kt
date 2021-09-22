@@ -1,7 +1,6 @@
 package com.fsck.k9.power
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.SystemClock
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.power.WakeLock
@@ -10,19 +9,13 @@ import timber.log.Timber
 import android.os.PowerManager as SystemPowerManager
 import android.os.PowerManager.WakeLock as SystemWakeLock
 
-class TracingPowerManager private constructor(context: Context) : PowerManager {
-    private val powerManager = context.getSystemService(Context.POWER_SERVICE) as SystemPowerManager
-
+internal class TracingPowerManager(private val systemPowerManager: SystemPowerManager) : PowerManager {
     override fun newWakeLock(tag: String): WakeLock {
         return TracingWakeLock(SystemPowerManager.PARTIAL_WAKE_LOCK, tag)
     }
 
-    fun newWakeLock(flags: Int, tag: String?): TracingWakeLock {
-        return TracingWakeLock(flags, tag)
-    }
-
     inner class TracingWakeLock(flags: Int, val tag: String?) : WakeLock {
-        private val wakeLock: SystemWakeLock = powerManager.newWakeLock(flags, tag)
+        private val wakeLock: SystemWakeLock = systemPowerManager.newWakeLock(flags, tag)
         private val id = wakeLockId.getAndIncrement()
 
         @Volatile
@@ -93,19 +86,5 @@ class TracingPowerManager private constructor(context: Context) : PowerManager {
 
     companion object {
         private val wakeLockId = AtomicInteger(0)
-        private var tracingPowerManager: TracingPowerManager? = null
-
-        @JvmStatic
-        @Synchronized
-        fun getPowerManager(context: Context): TracingPowerManager {
-            return tracingPowerManager ?: createPowerManager(context.applicationContext).also {
-                tracingPowerManager = it
-            }
-        }
-
-        private fun createPowerManager(appContext: Context): TracingPowerManager {
-            Timber.v("Creating TracingPowerManager")
-            return TracingPowerManager(appContext)
-        }
     }
 }

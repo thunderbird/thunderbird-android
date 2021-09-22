@@ -27,7 +27,6 @@ val mainModule = module {
     single { get<Context>().resources }
     single { get<Context>().contentResolver }
     single { LocalStoreProvider() }
-    single<PowerManager> { TracingPowerManager.getPowerManager(get()) }
     single { Contacts.getInstance(get()) }
     single { LocalKeyStore(directoryProvider = get()) }
     single { TrustManagerFactory.createInstance(get()) }
