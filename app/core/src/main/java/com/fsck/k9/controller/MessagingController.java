@@ -1313,7 +1313,6 @@ public class MessagingController {
         localFolder.fetch(Collections.singletonList(message), fp, null);
 
         notificationController.removeNewMailNotification(account, message.makeMessageReference());
-        markMessageAsReadOnView(account, message);
 
         return message;
     }
@@ -1336,7 +1335,7 @@ public class MessagingController {
         return message;
     }
 
-    private void markMessageAsReadOnView(Account account, LocalMessage message)
+    public void markMessageAsReadOnView(Account account, LocalMessage message)
             throws MessagingException {
 
         if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {

@@ -87,6 +87,7 @@ class MessageViewPagerFragment : Fragment() {
             if (reference != null) {
                 messageList.scrollToMessage(reference)
             }
+            activeMessageViewFragment?.markMessageAsReadOnView()
         }
     }
 
@@ -109,6 +110,7 @@ class MessageViewPagerFragment : Fragment() {
         // TODO: position == -1 if we got here by clicking a Notification drop down (perhaps the message list has not been refreshed ??)
         if (position >= 0) {
             viewPager.setCurrentItem(position, false)
+            viewPagerSettled()
         }
     }
 

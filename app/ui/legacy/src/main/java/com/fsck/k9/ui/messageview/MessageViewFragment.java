@@ -36,6 +36,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
@@ -734,6 +735,16 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     @Override
     public void onClickShowCryptoKey() {
         messageCryptoPresenter.onClickShowCryptoKey();
+    }
+
+    public void markMessageAsReadOnView() {
+        try {
+            if (mController != null && mAccount != null && mMessage != null) {
+                mController.markMessageAsReadOnView(mAccount, mMessage);
+            }
+        } catch (MessagingException e) {
+            // TODO: this should never happen!!
+        }
     }
 
     public interface MessageViewFragmentListener {
