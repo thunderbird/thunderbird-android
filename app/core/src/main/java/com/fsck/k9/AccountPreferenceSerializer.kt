@@ -580,7 +580,7 @@ class AccountPreferenceSerializer(
             isStripSignature = DEFAULT_STRIP_SIGNATURE
             isSyncRemoteDeletions = true
             openPgpKey = NO_OPENPGP_KEY
-            isAllowRemoteSearch = false
+            isAllowRemoteSearch = true
             isRemoteSearchFullText = false
             remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS
             isUploadSentMessages = true

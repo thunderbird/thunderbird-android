@@ -407,6 +407,7 @@
         android:title="@string/account_settings_search">
 
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="remote_search_enabled"
             android:summary="@string/account_settings_remote_search_enabled_summary"
             android:title="@string/account_settings_remote_search_enabled" />
