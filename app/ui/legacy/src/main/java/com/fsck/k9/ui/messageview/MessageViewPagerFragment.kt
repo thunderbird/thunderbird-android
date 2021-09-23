@@ -87,7 +87,7 @@ class MessageViewPagerFragment : Fragment() {
             if (reference != null) {
                 messageList.scrollToMessage(reference)
             }
-            activeMessageViewFragment?.markMessageAsReadOnView()
+            activeMessageViewFragment?.setMessageViewed()
         }
     }
 

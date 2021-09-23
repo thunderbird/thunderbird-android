@@ -117,6 +117,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private AttachmentViewInfo currentAttachmentViewInfo;
 
+    private boolean mMessageViewed = false;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -737,14 +739,22 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         messageCryptoPresenter.onClickShowCryptoKey();
     }
 
-    public void markMessageAsReadOnView() {
-        try {
-            if (mController != null && mAccount != null && mMessage != null) {
+    private void onIfMessageViewed() {
+        if (mMessageViewed && mController != null && mAccount != null && mMessage != null && !mMessage.isSet(Flag.SEEN)) {
+            try {
                 mController.markMessageAsReadOnView(mAccount, mMessage);
+                if (mMessage.isSet(Flag.SEEN)) {
+                    mFragmentListener.updateMenu();
+                }
+            } catch (MessagingException e) {
+                // TODO: this should never happen!!
             }
-        } catch (MessagingException e) {
-            // TODO: this should never happen!!
         }
+    }
+
+    public void setMessageViewed() {
+        mMessageViewed = true;
+        onIfMessageViewed();
     }
 
     public interface MessageViewFragmentListener {
@@ -763,12 +773,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         return mInitialized ;
     }
 
-
     private MessageLoaderCallbacks messageLoaderCallbacks = new MessageLoaderCallbacks() {
         @Override
         public void onMessageDataLoadFinished(LocalMessage message) {
             mMessage = message;
 
+            onIfMessageViewed();
             displayHeaderForLoadingMessage(message);
             mMessageView.setToLoadingState();
             showProgressThreshold = null;
