@@ -1,0 +1,36 @@
+MIME-Version: 1.0
+From: Robert Floyd <robert.floyd@example.com>
+Date: Mon, 04 Dec 1978 12:00:00 -0500
+Message-ID: <turing1978@cketti.de>
+Subject: The Paradigms of Programming
+To: Alan Turing <alan@turing.example>
+Content-Type: multipart/alternative; boundary=089e0118419206e64304d85af860
+
+--089e0118419206e64304d85af860
+Content-Type: text/plain; charset=UTF-8
+
+Today I want to talk about the paradigms of programming, how they affect 
+our success as designers of computer programs, how they should be taught, 
+and how they should be embodied in our programming languages. 
+A familiar example of a paradigm of programming is the technique of 
+structured programming, which appears to be the dominant paradigm in most 
+current treatments of programming methodology. Structured programming, as 
+formulated by Dijkstra, Wirth, and Parnas, among others, consists of two 
+phases. 
+
+--089e0118419206e64304d85af860
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Today I want to talk about the paradigms of programmi=
+ng, how they affect our success as designers of computer programs, how they=
+ should be taught, and how they should be embodied in our programming langu=
+ages.=C2=A0</div>
+<div>A familiar example of a paradigm of programming is the technique of st=
+ructured programming, which appears to be the dominant paradigm in most cur=
+rent treatments of programming methodology. Structured programming, as form=
+ulated by Dijkstra, Wirth, and Parnas, among others, consists of two phases=
+.=C2=A0</div>
+</div>
+
+--089e0118419206e64304d85af860--

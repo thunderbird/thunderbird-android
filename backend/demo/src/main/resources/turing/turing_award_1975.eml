@@ -1,0 +1,30 @@
+MIME-Version: 1.0
+From: Allen Newell <allen.newell@example.com>
+Cc: Herbert Simon <herbert.simon@example.com>
+Date: Mon, 20 Oct 1975 12:00:00 -0500
+Message-ID: <turing1975@cketti.de>
+Subject: Computer Science as Empirical Inquiry: Symbols and Search
+To: Alan Turing <alan@turing.example>
+Content-Type: multipart/alternative; boundary=047d7b450b1092035304d85abf33
+
+--047d7b450b1092035304d85abf33
+Content-Type: text/plain; charset=UTF-8
+
+Computer science is the study of the phenomena surrounding computers. The 
+founders of this society understood this very well when they called 
+themselves the Association for Computing Machinery. The machine---not just 
+the hardware, but the programmed, living machine--is the organism we study.
+
+--047d7b450b1092035304d85abf33
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Computer science is the study of the phenomena surrounding=
+ computers. The founders of this society understood this very well when the=
+y called themselves the Association for Computing Machinery. The machine---=
+not just the hardware, but the programmed, living machine--is the organism =
+we study.<br>
+
+</div>
+
+--047d7b450b1092035304d85abf33--

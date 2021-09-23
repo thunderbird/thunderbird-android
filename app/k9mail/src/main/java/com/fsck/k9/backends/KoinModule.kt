@@ -1,5 +1,7 @@
 package com.fsck.k9.backends
 
+import app.k9mail.dev.developmentBackends
+import app.k9mail.dev.developmentModuleAdditions
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.imap.BackendIdleRefreshManager
 import com.fsck.k9.backend.imap.SystemAlarmManager
@@ -13,7 +15,7 @@ val backendsModule = module {
                 "imap" to get<ImapBackendFactory>(),
                 "pop3" to get<Pop3BackendFactory>(),
                 "webdav" to get<WebDavBackendFactory>()
-            )
+            ) + developmentBackends()
         )
     }
     single {
@@ -30,4 +32,6 @@ val backendsModule = module {
     single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
     single { Pop3BackendFactory(get(), get()) }
     single { WebDavBackendFactory(get(), get(), get()) }
+
+    developmentModuleAdditions()
 }

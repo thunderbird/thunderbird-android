@@ -32,6 +32,7 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.ConnectionSettings;
+import com.fsck.k9.ui.settings.ExtraAccountDiscovery;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -279,6 +280,12 @@ public class AccountSetupBasics extends K9Activity
         }
 
         String email = mEmailView.getText().toString();
+
+        ConnectionSettings extraConnectionSettings = ExtraAccountDiscovery.discover(email);
+        if (extraConnectionSettings != null) {
+            finishAutoSetup(extraConnectionSettings);
+            return;
+        }
 
         ConnectionSettings connectionSettings = providersXmlDiscoveryDiscover(email, DiscoveryTarget.INCOMING_AND_OUTGOING);
         if (connectionSettings != null) {

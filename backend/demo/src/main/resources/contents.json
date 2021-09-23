@@ -1,0 +1,53 @@
+{
+  "inbox": {
+    "name": "Inbox",
+    "type": "INBOX",
+    "messageServerIds": ["intro"]
+  },
+  "trash": {
+    "name": "Trash",
+    "type": "TRASH",
+    "messageServerIds": []
+  },
+  "drafts": {
+    "name": "Drafts",
+    "type": "DRAFTS",
+    "messageServerIds": []
+  },
+  "sent": {
+    "name": "Sent",
+    "type": "SENT",
+    "messageServerIds": []
+  },
+  "archive": {
+    "name": "Archive",
+    "type": "ARCHIVE",
+    "messageServerIds": []
+  },
+  "spam": {
+    "name": "Spam",
+    "type": "SPAM",
+    "messageServerIds": []
+  },
+  "turing": {
+    "name": "Turing Awards",
+    "type": "REGULAR",
+    "messageServerIds": [
+      "turing_award_1966",
+      "turing_award_1967",
+      "turing_award_1968",
+      "turing_award_1970",
+      "turing_award_1971",
+      "turing_award_1972",
+      "turing_award_1975",
+      "turing_award_1977",
+      "turing_award_1978",
+      "turing_award_1979",
+      "turing_award_1981",
+      "turing_award_1983",
+      "turing_award_1987",
+      "turing_award_1991",
+      "turing_award_1996"
+    ]
+  }
+}
