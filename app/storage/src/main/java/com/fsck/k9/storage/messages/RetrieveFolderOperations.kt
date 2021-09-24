@@ -131,6 +131,22 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
         }
     }
 
+    fun getFolderServerId(folderId: Long): String? {
+        return lockableDatabase.execute(false) { db ->
+            db.query(
+                "folders",
+                arrayOf("server_id"),
+                "id = ?",
+                arrayOf(folderId.toString()),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) cursor.getString(0) else null
+            }
+        }
+    }
+
     fun getMessageCount(folderId: Long): Int {
         return lockableDatabase.execute(false) { db ->
             db.rawQuery(

@@ -134,6 +134,10 @@ class K9MessageStore(
         return retrieveFolderOperations.getFolderId(folderServerId)
     }
 
+    override fun getFolderServerId(folderId: Long): String? {
+        return retrieveFolderOperations.getFolderServerId(folderId)
+    }
+
     override fun getMessageCount(folderId: Long): Int {
         return retrieveFolderOperations.getMessageCount(folderId)
     }
