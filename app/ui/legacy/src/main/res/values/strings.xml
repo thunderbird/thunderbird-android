@@ -406,9 +406,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Other</string>
 
-    <string name="local_storage_provider_external_label">External storage (SD card)</string>
-    <string name="local_storage_provider_internal_label">Regular internal storage</string>
-
     <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_setup_expunge_policy_immediately">Immediately</string>
     <string name="account_setup_expunge_policy_on_poll">When polling</string>
