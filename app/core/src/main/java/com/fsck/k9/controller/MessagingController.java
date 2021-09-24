@@ -265,9 +265,13 @@ public class MessagingController {
         }
     }
 
-    private String getFolderServerId(Account account, long folderId) throws MessagingException {
-        LocalStore localStore = getLocalStoreOrThrow(account);
-        return localStore.getFolderServerId(folderId);
+    private String getFolderServerId(Account account, long folderId) {
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        String folderServerId = messageStore.getFolderServerId(folderId);
+        if (folderServerId == null) {
+            throw new IllegalStateException("Folder not found (ID: " + folderId + ")");
+        }
+        return folderServerId;
     }
 
     private long getFolderId(Account account, String folderServerId) {
