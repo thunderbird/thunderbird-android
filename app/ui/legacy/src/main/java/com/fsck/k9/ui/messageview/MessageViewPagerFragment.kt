@@ -101,7 +101,7 @@ class MessageViewPagerFragment : Fragment() {
         }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun notifyMessageListFragmentChanged() {
+    fun onMessageListDirty() {
         adapter.notifyDataSetChanged()
     }
 

@@ -1445,6 +1445,8 @@ class MessageListFragment :
         cleanupSelected(messageListItems)
         adapter.selected = selected
 
+        val messageListDirty = isMessageListDirty(messageListItems)
+
         adapter.messages = messageListItems
 
         resetActionMode()
@@ -1463,6 +1465,23 @@ class MessageListFragment :
             currentFolder.moreMessages = messageListInfo.hasMoreMessages
             updateFooterView()
         }
+
+        if (messageListDirty) {
+            fragmentListener.onMessageListDirty()
+        }
+    }
+
+    private fun isMessageListDirty(newMessages: List<MessageListItem>): Boolean {
+        val oldMessages = adapter.messages
+        if (oldMessages == null || oldMessages.count() != newMessages.count()) {
+            return true
+        }
+        for (i in 0 until oldMessages.count()) {
+            if (oldMessages[i].messageUid != newMessages[i].messageUid) {
+                return true
+            }
+        }
+        return false
     }
 
     private fun cleanupSelected(messageListItems: List<MessageListItem>) {
@@ -1901,6 +1920,7 @@ class MessageListFragment :
         fun remoteSearchStarted()
         fun goBack()
         fun updateMenu()
+        fun onMessageListDirty()
 
         companion object {
             const val MAX_PROGRESS = 10000

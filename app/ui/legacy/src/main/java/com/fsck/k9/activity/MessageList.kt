@@ -104,13 +104,6 @@ open class MessageList :
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
-        set(value) {
-            val changing = (field != value)
-            field = value
-            if (changing) {
-                messageViewPagerFragment?.notifyMessageListFragmentChanged()
-            }
-        }
     private var messageViewPagerFragment: MessageViewPagerFragment? = null
     private var firstBackStackId = -1
     private var account: Account? = null
@@ -1481,6 +1474,10 @@ open class MessageList :
 
     override fun updateMenu() {
         invalidateOptionsMenu()
+    }
+
+    override fun onMessageListDirty() {
+        messageViewPagerFragment?.onMessageListDirty()
     }
 
     override fun disableDeleteAction() {
