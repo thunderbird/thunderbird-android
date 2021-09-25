@@ -16,10 +16,10 @@ import com.fsck.k9.ui.base.ThemeManager
 
 class MessageViewPagerFragment : Fragment() {
     private val themeManager = get(ThemeManager::class.java)
-    private lateinit var messageList: MessageViewPagerFragmentListener
+    private lateinit var fragmentListener: MessageViewPagerFragmentListener
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: MessageViewPagerAdapter
-    private lateinit var initialMessage: MessageReference
+    private var targetMessage: MessageReference? = null
 
     companion object {
         private const val ARG_ACTIVE_MESSAGE = "activeMessage"
@@ -35,7 +35,7 @@ class MessageViewPagerFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        messageList = try {
+        fragmentListener = try {
             context as MessageViewPagerFragmentListener
         } catch (e: ClassCastException) {
             error("${context.javaClass} must implement MessageViewPagerFragmentListener")
@@ -45,7 +45,7 @@ class MessageViewPagerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val reference = requireArguments().getString(ARG_ACTIVE_MESSAGE)
-        initialMessage = MessageReference.parse(reference)!!
+        targetMessage = MessageReference.parse(reference)!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,7 +67,7 @@ class MessageViewPagerFragment : Fragment() {
                 super.onPageScrollStateChanged(state)
             }
         })
-        viewPager.post { setInitialMessage() }
+        viewPager.post { tryShowTargetMessage() }
         return view
     }
 
@@ -81,11 +81,11 @@ class MessageViewPagerFragment : Fragment() {
 
     private fun viewPagerSettled() {
         viewPager.post {
-            messageList.configureMenu()
+            fragmentListener.configureMenu()
             adapter.resetWebView()
             val reference = getMessageReference(viewPager.currentItem)
             if (reference != null) {
-                messageList.scrollToMessage(reference)
+                fragmentListener.scrollToMessage(reference)
             }
             activeMessageViewFragment?.setMessageViewed()
         }
@@ -103,14 +103,17 @@ class MessageViewPagerFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     fun onMessageListDirty() {
         adapter.notifyDataSetChanged()
+        tryShowTargetMessage()
     }
 
-    private fun setInitialMessage() {
-        val position = getMessagePosition(initialMessage)
-        // TODO: position == -1 if we got here by clicking a Notification drop down (perhaps the message list has not been refreshed ??)
-        if (position >= 0) {
-            viewPager.setCurrentItem(position, false)
-            viewPagerSettled()
+    private fun tryShowTargetMessage() {
+        if (targetMessage != null) {
+            val position = getMessagePosition(targetMessage!!)
+            if (0 <= position) {
+                viewPager.setCurrentItem(position, false)
+                viewPagerSettled()
+                targetMessage = null
+            }
         }
     }
 
@@ -136,7 +139,7 @@ class MessageViewPagerFragment : Fragment() {
 
     fun getMessageCount(): Int {
         return try {
-            messageList.getMessageCount()
+            fragmentListener.getMessageCount()
         } catch (e: Exception) {
             0
         }
@@ -144,7 +147,7 @@ class MessageViewPagerFragment : Fragment() {
 
     private fun getMessagePosition(reference: MessageReference): Int {
         return try {
-            messageList.getMessagePosition(reference)
+            fragmentListener.getMessagePosition(reference)
         } catch (e: Exception) {
             -1
         }
@@ -152,7 +155,7 @@ class MessageViewPagerFragment : Fragment() {
 
     fun getMessageReference(position: Int): MessageReference? {
         return try {
-            messageList.getMessageReference(position)
+            fragmentListener.getMessageReference(position)
         } catch (e: Exception) {
             null
         }
