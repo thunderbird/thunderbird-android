@@ -6,6 +6,7 @@ import android.view.View
 import android.webkit.WebView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.ui.R
 import java.lang.ref.WeakReference
 
@@ -17,17 +18,21 @@ class MessageViewPagerAdapter(
      *  This is a 'weak' cache of created fragments, so we can find them again if needed,
      *  but they will be disposed when the ViewPager releases them
      */
-    private val fragmentCache = mutableMapOf<Int, WeakReference<MessageViewFragment>>()
+    private val fragmentCache = mutableMapOf<Long, WeakReference<MessageViewFragment>>()
 
     override fun createFragment(position: Int): MessageViewFragment {
         val reference = viewPagerFragment.getMessageReference(position)
         val fragment = MessageViewFragment.newInstance(reference)
-        fragmentCache[position] = WeakReference(fragment)
+        fragmentCache[getMessageUid(reference)] = WeakReference(fragment)
         return fragment
     }
 
     override fun getItemCount(): Int {
         return viewPagerFragment.getMessageCount()
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getMessageUid(viewPagerFragment.getMessageReference(position))
     }
 
     /**
@@ -45,10 +50,15 @@ class MessageViewPagerAdapter(
         )
     }
 
+    private fun getMessageUid(reference: MessageReference?): Long {
+        return reference?.toIdentityString().hashCode().toLong()
+    }
+
     private var webView: WebView? = null
         get() {
             if (field == null) {
-                val view: View? = getActiveMessageViewFragment()?.view?.findViewById(R.id.message_content)
+                val reference = viewPagerFragment.getMessageReference(viewPagerFragment.getActivePosition())
+                val view: View? = getMessageViewFragment(reference)?.view?.findViewById(R.id.message_content)
                 field = if (view is WebView) view else null
             }
             return field
@@ -75,9 +85,8 @@ class MessageViewPagerAdapter(
         }
     }
 
-    fun getActiveMessageViewFragment(): MessageViewFragment? {
-        val position = viewPagerFragment.getActivePosition()
-        return fragmentCache[position]?.get()
+    fun getMessageViewFragment(reference: MessageReference?): MessageViewFragment? {
+        return fragmentCache[getMessageUid(reference)]?.get()
     }
 
     fun resetWebView() {
