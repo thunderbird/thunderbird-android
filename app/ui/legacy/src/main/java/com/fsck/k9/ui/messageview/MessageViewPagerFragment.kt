@@ -20,6 +20,7 @@ class MessageViewPagerFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: MessageViewPagerAdapter
     private var targetMessage: MessageReference? = null
+    private var showedMessage: MessageReference? = null
 
     companion object {
         private const val ARG_ACTIVE_MESSAGE = "activeMessage"
@@ -86,6 +87,7 @@ class MessageViewPagerFragment : Fragment() {
             val reference = getMessageReference(viewPager.currentItem)
             if (reference != null) {
                 fragmentListener.scrollToMessage(reference)
+                showedMessage = reference
             }
             activeMessageViewFragment?.setMessageViewed()
         }
@@ -94,7 +96,8 @@ class MessageViewPagerFragment : Fragment() {
     val activeMessageViewFragment: MessageViewFragment?
         get() {
             return try {
-                adapter.getActiveMessageViewFragment()
+                val reference = getMessageReference(getActivePosition())
+                adapter.getMessageViewFragment(reference)
             } catch (e: Exception) {
                 null
             }
@@ -102,6 +105,9 @@ class MessageViewPagerFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun onMessageListDirty() {
+        if (targetMessage == null) {
+            targetMessage = showedMessage
+        }
         adapter.notifyDataSetChanged()
         tryShowTargetMessage()
     }
