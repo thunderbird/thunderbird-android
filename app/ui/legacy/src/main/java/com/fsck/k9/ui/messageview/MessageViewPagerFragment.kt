@@ -45,8 +45,16 @@ class MessageViewPagerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val reference = requireArguments().getString(ARG_ACTIVE_MESSAGE)
-        targetMessage = MessageReference.parse(reference)!!
+        val arguments = arguments
+        if (arguments != null) {
+            val reference = arguments.getString(ARG_ACTIVE_MESSAGE)
+            if (reference != null && !reference.isEmpty()) {
+                targetMessage = MessageReference.parse(reference)
+                return
+            }
+        }
+        targetMessage = null
+        return
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -73,9 +81,14 @@ class MessageViewPagerFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        val reference = getMessageReference(viewPager.currentItem)
-        if (reference != null) {
-            requireArguments().putString(ARG_ACTIVE_MESSAGE, reference.toIdentityString())
+        val arguments = arguments
+        if (arguments != null) {
+            var referenceId: String? = null
+            val reference = getMessageReference(viewPager.currentItem)
+            if (reference != null) {
+                referenceId = reference.toIdentityString()
+            }
+            arguments.putString(ARG_ACTIVE_MESSAGE, referenceId)
         }
         super.onDestroy()
     }
