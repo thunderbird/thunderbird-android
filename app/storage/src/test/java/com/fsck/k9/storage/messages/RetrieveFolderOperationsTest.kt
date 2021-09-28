@@ -303,6 +303,25 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `get folder server id`() {
+        val (_, folderId2) = listOf(
+            sqliteDatabase.createFolder(serverId = "folder1"),
+            sqliteDatabase.createFolder(serverId = "folder2"),
+        )
+
+        val result = retrieveFolderOperations.getFolderServerId(folderId2)
+
+        assertThat(result).isEqualTo("folder2")
+    }
+
+    @Test
+    fun `get folder server id should return null if no folder was found`() {
+        val result = retrieveFolderOperations.getFolderServerId(folderId = 1)
+
+        assertThat(result).isNull()
+    }
+
+    @Test
     fun `get message count from empty folder`() {
         val folderId = sqliteDatabase.createFolder()
 

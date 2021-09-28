@@ -177,6 +177,11 @@ interface MessageStore {
     fun getFolderId(folderServerId: String): Long?
 
     /**
+     * Find a folder with the given store ID and return its server ID.
+     */
+    fun getFolderServerId(folderId: Long): String?
+
+    /**
      * Retrieve the number of messages in a folder.
      */
     fun getMessageCount(folderId: Long): Int

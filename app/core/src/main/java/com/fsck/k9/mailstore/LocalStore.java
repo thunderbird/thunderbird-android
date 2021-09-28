@@ -687,21 +687,6 @@ public class LocalStore {
         return new File(attachmentDirectory, attachmentId);
     }
 
-    public String getFolderServerId(long folderId) throws MessagingException {
-        return database.execute(false, db -> {
-            try (Cursor cursor = db.query("folders", new String[] { "server_id" },
-                    "id = ?", new String[] { Long.toString(folderId) },
-                    null, null, null)
-            ) {
-                if (cursor.moveToFirst() && !cursor.isNull(0)) {
-                    return cursor.getString(0);
-                } else {
-                    throw new MessagingException("Folder not found by database ID: " + folderId, true);
-                }
-            }
-        });
-    }
-
     public static class AttachmentInfo {
         public String name;
         public long size;
