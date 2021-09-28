@@ -97,6 +97,8 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="choose_account_title">Choose Account</string>
     <string name="choose_folder_title">Choose Folder</string>
+    <string name="choose_folder_move_title">Move to…</string>
+    <string name="choose_folder_copy_title">Copy to…</string>
 
     <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
