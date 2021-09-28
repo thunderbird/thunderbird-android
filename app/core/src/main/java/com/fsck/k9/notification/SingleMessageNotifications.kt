@@ -8,13 +8,28 @@ import com.fsck.k9.K9
 internal open class SingleMessageNotifications(
     notificationHelper: NotificationHelper,
     actionCreator: NotificationActionCreator,
-    resourceProvider: NotificationResourceProvider
+    resourceProvider: NotificationResourceProvider,
+    private val lockScreenNotification: LockScreenNotification,
 ) : BaseNotifications(notificationHelper, actionCreator, resourceProvider) {
 
     fun buildSingleMessageNotification(account: Account, holder: NotificationHolder): Notification {
         val notificationId = holder.notificationId
         return createSingleMessageNotificationBuilder(account, holder, notificationId)
             .setNotificationSilent()
+            .build()
+    }
+
+    fun buildSingleMessageNotificationWithLockScreenNotification(
+        account: Account,
+        holder: NotificationHolder,
+        notificationData: NotificationData
+    ): Notification {
+        val notificationId = holder.notificationId
+        return createSingleMessageNotificationBuilder(account, holder, notificationId)
+            .setNotificationSilent()
+            .apply {
+                lockScreenNotification.configureLockScreenNotification(this, notificationData)
+            }
             .build()
     }
 

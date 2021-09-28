@@ -288,9 +288,13 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         return MessageReference("account", 1, number.toString(), null)
     }
 
-    private fun addToSingleMessageNotifications(notificationHolder: NotificationHolder, notificationToReturn: Notification) {
-        whenever(singleMessageNotifications.buildSingleMessageNotification(account, notificationHolder))
-            .thenReturn(notificationToReturn)
+    private fun addToSingleMessageNotifications(
+        notificationHolder: NotificationHolder,
+        notificationToReturn: Notification
+    ) {
+        stubbing(singleMessageNotifications) {
+            on { buildSingleMessageNotification(account, notificationHolder) } doReturn notificationToReturn
+        }
     }
 
     private fun whenAddingContentReturn(content: NotificationContent, result: AddNotificationResult) {
