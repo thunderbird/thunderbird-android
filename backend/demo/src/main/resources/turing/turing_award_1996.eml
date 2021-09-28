@@ -1,0 +1,28 @@
+MIME-Version: 1.0
+From: Amir Pnueli <amir.pnueli@example.com>
+Date: Thu, 15 Feb 1996 12:00:00 -0500
+Message-ID: <turing1996@cketti.de>
+Subject: Verification Engineering: A Future Profession
+To: Alan Turing <alan@turing.example>
+Content-Type: multipart/alternative; boundary=bcaec54fbb222acf6704d85aa523
+
+--bcaec54fbb222acf6704d85aa523
+Content-Type: text/plain; charset=UTF-8
+
+It is time that formal verification (of both software and hardware systems) 
+be demoted from an art practiced by the enlightened few to an activity 
+routinely and mundanely performed by a cadre of Verification Engineers (a 
+new profession), as a standard part of the system development process.
+
+--bcaec54fbb222acf6704d85aa523
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>It is time that formal verification (of both software=
+ and hardware systems) be demoted from an art practiced by the enlightened =
+few to an activity routinely and mundanely performed by a cadre of Verifica=
+tion Engineers (a new profession), as a standard part of the system develop=
+ment process.</div>
+</div>
+
+--bcaec54fbb222acf6704d85aa523--

@@ -1,0 +1,39 @@
+MIME-Version: 1.0
+From: "John W. Backus" <john.backus@example.com>
+Date: Mon, 17 Oct 1977 12:00:00 -0700
+Message-ID: <turing1977@cketti.de>
+Subject: Can Programming Be Liberated from the von Neumann Style? A Functional
+ Style and Its Algebra of Programs
+To: Alan Turing <alan@turing.example>
+Content-Type: multipart/alternative; boundary=047d7b5d9bdd8a36e804d85ade47
+
+--047d7b5d9bdd8a36e804d85ade47
+Content-Type: text/plain; charset=UTF-8
+
+Conventional programming languages are growing ever more enormous, but not 
+stronger. Inherent defects at the most basic level cause them to be both 
+fat and weak: their primitive word-at-a-time style of programming inherited 
+from their common ancestor--the von Neumann computer, their close coupling 
+of semantics to state transitions, their division of programming into a 
+world of expressions and a world of statements, their inability to 
+effectively use powerful combining forms for building new programs from 
+existing ones, and their lack of useful mathematical properties for 
+reasoning about 
+programs.
+
+--047d7b5d9bdd8a36e804d85ade47
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Conventional programming languages are growing ever m=
+ore enormous, but not stronger. Inherent defects at the most basic level ca=
+use them to be both fat and weak: their primitive word-at-a-time style of p=
+rogramming inherited from their common ancestor--the von Neumann computer, =
+their close coupling of semantics to state transitions, their division of p=
+rogramming into a world of expressions and a world of statements, their ina=
+bility to effectively use powerful combining forms for building new program=
+s from existing ones, and their lack of useful mathematical properties for =
+reasoning about=C2=A0</div>
+<div>programs.</div></div>
+
+--047d7b5d9bdd8a36e804d85ade47--

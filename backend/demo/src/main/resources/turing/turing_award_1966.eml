@@ -1,0 +1,84 @@
+MIME-Version: 1.0
+From: "Alan J. Perlis" <alan.perlis@example.com>
+Date: Sat, 01 Jan 1966 12:00:00 -0400
+Message-ID: <turing1966@cketti.de>
+Subject: The Synthesis of Algorithmic Systems
+To: Alan Turing <alan@turing.example>
+Content-Type: multipart/alternative; boundary=047d7b450b100959e604d85a5320
+
+--047d7b450b100959e604d85a5320
+Content-Type: text/plain; charset=UTF-8
+
+Both knowledge and wisdom extend man's reach. Knowledge led to computers, 
+wisdom to chopsticks. Unfortunately our association is overinvolved with 
+the former. The latter will have to wait for a more sublime day. 
+On what does and will the fame of Turing rest? That he proved a theorem 
+showing that for a general computing device--later dubbed a "Turing 
+machine"--there existed functions which it could not compute? I doubt it. 
+More likely it rests on the model he invented and employed: his formal 
+mechanism. 
+This model has captured the imagination and mobilized the thoughts of a 
+generation of scientists. It has provided a basis for arguments leading to 
+theories. His model has proved so useful that its generated activity has 
+been distributed not only in mathematics, but through several technologies 
+as well. The arguments that have been employed are not always formal and 
+the consequent creations not all abstract. 
+Indeed a most fruitful consequence of the Turing machine has been with the 
+creation, study and computation of functions which are computable, i.e., in 
+computer programming. This is not surprising since computers can compute so 
+much more than we yet know how to specify. 
+I am sure that all will agree that this model has been enormously valuable. 
+History will forgive me for not devoting any attention in this lecture to 
+the effect which Turing had on the development of the general-purpose 
+digital computer, which has further accelerated our involvement with the 
+theory and practice of computation. 
+Since the appearance of Turing's model there have, of course, been others 
+which have concerned and benefited us in computing. I think, however, that 
+only one has had an effect as great as Turing's: the formal mechanism 
+called ALGOL Many will immediately disagree, pointing out that too few of 
+us have understood it or used it. 
+While such has, unhappily, been the case, it is not the point. The impulse 
+given by ALGOL to the development of research in computer science is 
+relevant while the number of adherents is not. ALGOL, too, has mobilized 
+our thoughts and has provided us with a basis for our arguments. 
+
+--047d7b450b100959e604d85a5320
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Both knowledge and wisdom extend man&#39;s reach. Kno=
+wledge led to computers, wisdom to chopsticks. Unfortunately our associatio=
+n is overinvolved with the former. The latter will have to wait for a more =
+sublime day.=C2=A0</div>
+<div>On what does and will the fame of Turing rest? That he proved a theore=
+m showing that for a general computing device--later dubbed a &quot;Turing =
+machine&quot;--there existed functions which it could not compute? I doubt =
+it. More likely it rests on the model he invented and employed: his formal =
+mechanism.=C2=A0</div>
+<div>This model has captured the imagination and mobilized the thoughts of =
+a generation of scientists. It has provided a basis for arguments leading t=
+o theories. His model has proved so useful that its generated activity has =
+been distributed not only in mathematics, but through several technologies =
+as well. The arguments that have been employed are not always formal and th=
+e consequent creations not all abstract.=C2=A0</div>
+<div>Indeed a most fruitful consequence of the Turing machine has been with=
+ the creation, study and computation of functions which are computable, i.e=
+., in computer programming. This is not surprising since computers can comp=
+ute so much more than we yet know how to specify.=C2=A0</div>
+<div>I am sure that all will agree that this model has been enormously valu=
+able. History will forgive me for not devoting any attention in this lectur=
+e to the effect which Turing had on the development of the general-purpose =
+digital computer, which has further accelerated our involvement with the th=
+eory and practice of computation.=C2=A0</div>
+<div>Since the appearance of Turing&#39;s model there have, of course, been=
+ others which have concerned and benefited us in computing. I think, howeve=
+r, that only one has had an effect as great as Turing&#39;s: the formal mec=
+hanism called ALGOL Many will immediately disagree, pointing out that too f=
+ew of us have understood it or used it.=C2=A0</div>
+<div>While such has, unhappily, been the case, it is not the point. The imp=
+ulse given by ALGOL to the development of research in computer science is r=
+elevant while the number of adherents is not. ALGOL, too, has mobilized our=
+ thoughts and has provided us with a basis for our arguments.=C2=A0</div>
+</div>
+
+--047d7b450b100959e604d85a5320--
