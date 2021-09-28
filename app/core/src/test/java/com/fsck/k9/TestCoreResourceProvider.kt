@@ -7,14 +7,6 @@ class TestCoreResourceProvider : CoreResourceProvider {
 
     override fun defaultIdentityDescription() = "initial identity"
 
-    override fun internalStorageProviderName(): String {
-        throw UnsupportedOperationException("not implemented")
-    }
-
-    override fun externalStorageProviderName(): String {
-        throw UnsupportedOperationException("not implemented")
-    }
-
     override fun contactDisplayNamePrefix() = "To:"
     override fun contactUnknownSender() = "<Unknown Sender>"
     override fun contactUnknownRecipient() = "<Unknown Recipient>"

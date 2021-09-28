@@ -9,12 +9,6 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
     override fun defaultSignature(): String = context.getString(R.string.default_signature)
     override fun defaultIdentityDescription(): String = context.getString(R.string.default_identity_description)
 
-    override fun internalStorageProviderName(): String =
-        context.getString(R.string.local_storage_provider_internal_label)
-
-    override fun externalStorageProviderName(): String =
-        context.getString(R.string.local_storage_provider_external_label)
-
     override fun contactDisplayNamePrefix(): String = context.getString(R.string.message_to_label)
     override fun contactUnknownSender(): String = context.getString(R.string.unknown_sender)
     override fun contactUnknownRecipient(): String = context.getString(R.string.unknown_recipient)

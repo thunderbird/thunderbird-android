@@ -6,12 +6,11 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import android.content.Context;
 import android.os.Environment;
 
-import com.fsck.k9.CoreResourceProvider;
-import com.fsck.k9.DI;
 
 /**
  * Manager for different {@link StorageProvider} -classes that abstract access
@@ -55,14 +54,6 @@ public class StorageManager {
          *            Never <code>null</code>.
          */
         void init(Context context);
-
-        /**
-         * @param context
-         *            Never <code>null</code>.
-         * @return A user displayable, localized name for this provider. Never
-         *         <code>null</code>.
-         */
-        String getName(Context context);
 
         /**
          * Some implementations may not be able to return valid File handles
@@ -120,12 +111,6 @@ public class StorageManager {
     public static class InternalStorageProvider implements StorageProvider {
         public static final String ID = "InternalStorage";
 
-        private final CoreResourceProvider resourceProvider;
-
-        public InternalStorageProvider(CoreResourceProvider resourceProvider) {
-            this.resourceProvider = resourceProvider;
-        }
-
         @Override
         public String getId() {
             return ID;
@@ -133,11 +118,6 @@ public class StorageManager {
 
         @Override
         public void init(Context context) {
-        }
-
-        @Override
-        public String getName(Context context) {
-            return resourceProvider.internalStorageProviderName();
         }
 
         @Override
@@ -178,17 +158,11 @@ public class StorageManager {
     public static class ExternalStorageProvider implements StorageProvider {
         public static final String ID = "ExternalStorage";
 
-        private final CoreResourceProvider resourceProvider;
-
         /**
          * Chosen base directory.
          */
         private File mApplicationDirectory;
 
-
-        public ExternalStorageProvider(CoreResourceProvider resourceProvider) {
-            this.resourceProvider = resourceProvider;
-        }
 
         @Override
         public String getId() {
@@ -198,11 +172,6 @@ public class StorageManager {
         @Override
         public void init(Context context) {
             mApplicationDirectory = context.getExternalFilesDir(null);
-        }
-
-        @Override
-        public String getName(Context context) {
-            return resourceProvider.externalStorageProviderName();
         }
 
         @Override
@@ -233,8 +202,7 @@ public class StorageManager {
     public static synchronized StorageManager getInstance(final Context context) {
         if (instance == null) {
             Context applicationContext = context.getApplicationContext();
-            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-            instance = new StorageManager(applicationContext, resourceProvider);
+            instance = new StorageManager(applicationContext);
         }
         return instance;
     }
@@ -245,7 +213,7 @@ public class StorageManager {
      * @throws NullPointerException
      *             If <tt>context</tt> is <code>null</code>.
      */
-    protected StorageManager(final Context context, CoreResourceProvider resourceProvider) throws NullPointerException {
+    protected StorageManager(final Context context) throws NullPointerException {
         if (context == null) {
             throw new NullPointerException("No Context given");
         }
@@ -262,8 +230,9 @@ public class StorageManager {
          * be considered as the default provider !!!
          */
         final List<StorageProvider> allProviders = Arrays.asList(
-                new InternalStorageProvider(resourceProvider),
-                new ExternalStorageProvider(resourceProvider));
+                new InternalStorageProvider(),
+                new ExternalStorageProvider()
+        );
         for (final StorageProvider provider : allProviders) {
             // check for provider compatibility
             if (provider.isSupported(context)) {
@@ -319,17 +288,7 @@ public class StorageManager {
         return provider.getAttachmentDirectory(context, dbName);
     }
 
-    /**
-     * @return A map of available providers names, indexed by their ID. Never
-     *         <code>null</code>.
-     * @see StorageManager
-     * @see StorageProvider#isSupported(Context)
-     */
-    public Map<String, String> getAvailableProviders() {
-        final Map<String, String> result = new LinkedHashMap<>();
-        for (final Map.Entry<String, StorageProvider> entry : mProviders.entrySet()) {
-            result.put(entry.getKey(), entry.getValue().getName(context));
-        }
-        return result;
+    public Set<String> getAvailableProviders() {
+        return mProviders.keySet();
     }
 }

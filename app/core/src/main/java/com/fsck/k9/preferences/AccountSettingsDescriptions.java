@@ -413,8 +413,8 @@ public class AccountSettingsDescriptions {
         @Override
         public String fromString(String value) {
             StorageManager storageManager = StorageManager.getInstance(context);
-            Map<String, String> providers = storageManager.getAvailableProviders();
-            if (providers.containsKey(value)) {
+            Set<String> providers = storageManager.getAvailableProviders();
+            if (providers.contains(value)) {
                 return value;
             }
             throw new RuntimeException("Validation failed");
