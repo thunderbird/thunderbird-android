@@ -60,7 +60,9 @@ class K9BackendStorage(
         }
 
         override fun deleteFolders(folderServerIds: List<String>) {
-            messageStore.deleteFolders(folderServerIds)
+            if (folderServerIds.isNotEmpty()) {
+                messageStore.deleteFolders(folderServerIds)
+            }
         }
 
         override fun changeFolder(folderServerId: String, name: String, type: RemoteFolderType) {
