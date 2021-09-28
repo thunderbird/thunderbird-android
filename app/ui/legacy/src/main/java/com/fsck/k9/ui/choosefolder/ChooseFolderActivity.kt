@@ -51,6 +51,7 @@ class ChooseFolderActivity : K9Activity() {
             return
         }
 
+        initializeActionBar()
         initializeFolderList()
 
         viewModel.getFolders().observe(this) { folders ->
@@ -82,6 +83,12 @@ class ChooseFolderActivity : K9Activity() {
 
     private fun getInitialDisplayMode(): FolderMode {
         return if (showDisplayableOnly) account.folderDisplayMode else account.folderTargetMode
+    }
+
+    private fun initializeActionBar() {
+        val actionBar = supportActionBar ?: error("Action bar missing")
+        actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_close)
     }
 
     private fun initializeFolderList() {
@@ -161,6 +168,7 @@ class ChooseFolderActivity : K9Activity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            android.R.id.home -> finish()
             R.id.display_1st_class -> setDisplayMode(FolderMode.FIRST_CLASS)
             R.id.display_1st_and_2nd_class -> setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
             R.id.display_not_second_class -> setDisplayMode(FolderMode.NOT_SECOND_CLASS)
