@@ -281,7 +281,7 @@ class NotificationDataTest : RobolectricTest() {
     }
 
     private fun createMessageReference(uid: String): MessageReference {
-        return MessageReference(ACCOUNT_UUID, FOLDER_ID, uid, null)
+        return MessageReference(ACCOUNT_UUID, FOLDER_ID, uid)
     }
 
     private fun createNotificationContent(uid: String): NotificationContent {

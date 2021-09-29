@@ -156,7 +156,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
     private fun createFakeAccount(): Account = mock()
 
     private fun createMessageReference(): MessageReference {
-        return MessageReference(ACCOUNT_UUID, FOLDER_ID, UID, null)
+        return MessageReference(ACCOUNT_UUID, FOLDER_ID, UID)
     }
 
     private fun createFakeLocalMessage(messageReference: MessageReference): LocalMessage {

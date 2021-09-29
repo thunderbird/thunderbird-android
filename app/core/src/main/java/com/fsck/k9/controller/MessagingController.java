@@ -1919,7 +1919,7 @@ public class MessagingController {
             localFolder.open();
             String uid = localFolder.getMessageUidById(id);
             if (uid != null) {
-                MessageReference messageReference = new MessageReference(account.getUuid(), folderId, uid, null);
+                MessageReference messageReference = new MessageReference(account.getUuid(), folderId, uid);
                 deleteMessage(messageReference);
             }
         } catch (MessagingException me) {
@@ -2706,7 +2706,7 @@ public class MessagingController {
 
             String accountUuid = account.getUuid();
             long folderId = getFolderId(account, folderServerId);
-            MessageReference messageReference = new MessageReference(accountUuid, folderId, messageServerId, null);
+            MessageReference messageReference = new MessageReference(accountUuid, folderId, messageServerId);
             notificationController.removeNewMailNotification(account, messageReference);
         }
 

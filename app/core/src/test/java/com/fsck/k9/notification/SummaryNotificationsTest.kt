@@ -153,7 +153,7 @@ class SummaryNotificationsTest : RobolectricTest() {
     }
 
     private fun createFakeNotificationData(account: Account): NotificationData {
-        val messageReference = MessageReference("irrelevant", 1, "irrelevant", null)
+        val messageReference = MessageReference("irrelevant", 1, "irrelevant")
         val content = NotificationContent(messageReference, SENDER, SUBJECT, PREVIEW, SUMMARY, false)
         val content2 = NotificationContent(messageReference, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true)
         return mock {

@@ -379,7 +379,7 @@ public class LocalMessage extends MimeMessage {
         if (messageReference == null) {
             String accountUuid = getFolder().getAccountUuid();
             long folderId = getFolder().getDatabaseId();
-            messageReference = new MessageReference(accountUuid, folderId, mUid, null);
+            messageReference = new MessageReference(accountUuid, folderId, mUid);
         }
         return messageReference;
     }
