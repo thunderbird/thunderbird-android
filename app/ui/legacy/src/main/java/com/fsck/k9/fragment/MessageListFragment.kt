@@ -1254,7 +1254,7 @@ class MessageListFragment :
 
     private fun getReferenceForPosition(position: Int): MessageReference {
         val item = adapter.getItem(position)
-        return MessageReference(item.account.uuid, item.folderId, item.messageUid, null)
+        return MessageReference(item.account.uuid, item.folderId, item.messageUid)
     }
 
     private fun openMessageAtPosition(position: Int) {
@@ -1309,7 +1309,7 @@ class MessageListFragment :
             return adapter.messages
                 .asSequence()
                 .filter { it.uniqueId in selected }
-                .map { MessageReference(it.account.uuid, it.folderId, it.messageUid, null) }
+                .map { MessageReference(it.account.uuid, it.folderId, it.messageUid) }
                 .toList()
         }
 

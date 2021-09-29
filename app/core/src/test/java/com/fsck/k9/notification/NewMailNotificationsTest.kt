@@ -245,7 +245,7 @@ class NewMailNotificationsTest : K9RobolectricTest() {
     private fun createLocalMessage(): LocalMessage = mock()
 
     private fun createNotificationContent(): NotificationContent {
-        val messageReference = MessageReference("irrelevant", 1, "irrelevant", null)
+        val messageReference = MessageReference("irrelevant", 1, "irrelevant")
         return NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false)
     }
 
@@ -285,7 +285,7 @@ class NewMailNotificationsTest : K9RobolectricTest() {
     private fun createSingleMessageNotifications(): SingleMessageNotifications = mock()
 
     private fun createMessageReference(number: Int): MessageReference {
-        return MessageReference("account", 1, number.toString(), null)
+        return MessageReference("account", 1, number.toString())
     }
 
     private fun addToSingleMessageNotifications(

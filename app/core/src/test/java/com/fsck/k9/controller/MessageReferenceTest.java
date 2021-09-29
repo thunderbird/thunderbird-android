@@ -1,7 +1,6 @@
 package com.fsck.k9.controller;
 
 
-import com.fsck.k9.mail.Flag;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -14,68 +13,36 @@ import static org.junit.Assert.assertNotNull;
 public class MessageReferenceTest {
 
     @Test
-    public void checkIdentityStringFromMessageReferenceWithoutFlag() {
+    public void checkIdentityStringFromMessageReference() {
         MessageReference messageReference = createMessageReference("o hai!", 2, "10101010");
 
         assertEquals("#:byBoYWkh:Mg==:MTAxMDEwMTA=", messageReference.toIdentityString());
     }
 
     @Test
-    public void checkIdentityStringFromMessageReferenceWithFlag() {
-        MessageReference messageReference = createMessageReferenceWithFlag("o hai!", 2, "10101010", Flag.ANSWERED);
-
-        assertEquals("#:byBoYWkh:Mg==:MTAxMDEwMTA=:ANSWERED", messageReference.toIdentityString());
-    }
-
-    @Test
-    public void parseIdentityStringWithoutFlag() {
+    public void parseIdentityString() {
         MessageReference messageReference = MessageReference.parse("#:byBoYWkh:Mg==:MTAxMDEwMTA=");
 
         assertNotNull(messageReference);
         assertEquals("o hai!", messageReference.getAccountUuid());
         assertEquals(2, messageReference.getFolderId());
         assertEquals("10101010", messageReference.getUid());
-        assertNull(messageReference.getFlag());
-    }
-
-    @Test
-    public void parseIdentityStringWithFlag() {
-        MessageReference messageReference = MessageReference.parse("#:byBoYWkh:Mg==:MTAxMDEwMTA=:ANSWERED");
-
-        assertNotNull(messageReference);
-        assertEquals("o hai!", messageReference.getAccountUuid());
-        assertEquals(2, messageReference.getFolderId());
-        assertEquals("10101010", messageReference.getUid());
-        assertEquals(Flag.ANSWERED, messageReference.getFlag());
     }
 
     @Test
     public void checkMessageReferenceWithChangedUid() {
-        MessageReference messageReferenceOne = createMessageReferenceWithFlag("account", 1, "uid", Flag.SEEN);
+        MessageReference messageReferenceOne = createMessageReference("account", 1, "uid");
         
         MessageReference messageReferenceTwo = messageReferenceOne.withModifiedUid("---");
 
         assertEquals("account", messageReferenceTwo.getAccountUuid());
         assertEquals(1, messageReferenceTwo.getFolderId());
         assertEquals("---", messageReferenceTwo.getUid());
-        assertEquals(Flag.SEEN, messageReferenceTwo.getFlag());
-    }
-
-    @Test
-    public void checkMessageReferenceWithChangedFlag() {
-        MessageReference messageReferenceOne = createMessageReferenceWithFlag("account", 1, "uid", Flag.ANSWERED);
-        
-        MessageReference messageReferenceTwo = messageReferenceOne.withModifiedFlag(Flag.DELETED);
-
-        assertEquals("account", messageReferenceTwo.getAccountUuid());
-        assertEquals(1, messageReferenceTwo.getFolderId());
-        assertEquals("uid", messageReferenceTwo.getUid());
-        assertEquals(Flag.DELETED, messageReferenceTwo.getFlag());
     }
 
     @Test
     public void parseIdentityStringContainingBadVersionNumber() {
-        MessageReference messageReference = MessageReference.parse("@:byBoYWkh:MTAxMDEwMTA=:ANSWERED");
+        MessageReference messageReference = MessageReference.parse("@:byBoYWkh:MTAxMDEwMTA=");
 
         assertNull(messageReference);
     }
@@ -89,16 +56,8 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void parseIdentityStringWithCorruptFlag() {
-        MessageReference messageReference =
-                MessageReference.parse("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
-
-        assertNull(messageReference);
-    }
-
-    @Test
     public void equalsWithAnObjectShouldReturnFalse() {
-        MessageReference messageReference = new MessageReference("a", 1, "c", null);
+        MessageReference messageReference = new MessageReference("a", 1, "c");
         Object object = new Object();
 
         assertFalse(messageReference.equals(object));
@@ -190,11 +149,7 @@ public class MessageReferenceTest {
     }
 
     private MessageReference createMessageReference(String accountUuid, long folderId, String uid) {
-        return new MessageReference(accountUuid, folderId, uid, null);
-    }
-
-    private MessageReference createMessageReferenceWithFlag(String accountUuid, long folderId, String uid, Flag flag) {
-        return new MessageReference(accountUuid, folderId, uid, flag);
+        return new MessageReference(accountUuid, folderId, uid);
     }
 
     private void assertEqualsReturnsTrueSymmetrically(MessageReference referenceOne, MessageReference referenceTwo) {

@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 
 import androidx.annotation.Nullable;
 
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.filter.Base64;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +20,6 @@ public class MessageReference {
     private final String accountUuid;
     private final long folderId;
     private final String uid;
-    private final Flag flag;
 
 
     @Nullable
@@ -39,25 +37,13 @@ public class MessageReference {
         long folderId = Long.parseLong(Base64.decode(tokens.nextToken()));
         String uid = Base64.decode(tokens.nextToken());
 
-        if (!tokens.hasMoreTokens()) {
-            return new MessageReference(accountUuid, folderId, uid, null);
-        }
-
-        Flag flag;
-        try {
-            flag = Flag.valueOf(tokens.nextToken());
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-
-        return new MessageReference(accountUuid, folderId, uid, flag);
+        return new MessageReference(accountUuid, folderId, uid);
     }
 
-    public MessageReference(String accountUuid, long folderId, String uid, Flag flag) {
+    public MessageReference(String accountUuid, long folderId, String uid) {
         this.accountUuid = checkNotNull(accountUuid);
         this.folderId = folderId;
         this.uid = checkNotNull(uid);
-        this.flag = flag;
     }
 
     public String toIdentityString() {
@@ -70,10 +56,6 @@ public class MessageReference {
         refString.append(Base64.encode(Long.toString(folderId)));
         refString.append(IDENTITY_SEPARATOR);
         refString.append(Base64.encode(uid));
-        if (flag != null) {
-            refString.append(IDENTITY_SEPARATOR);
-            refString.append(flag.name());
-        }
 
         return refString.toString();
     }
@@ -109,7 +91,6 @@ public class MessageReference {
                "accountUuid='" + accountUuid + '\'' +
                ", folderId='" + folderId + '\'' +
                ", uid='" + uid + '\'' +
-               ", flag=" + flag +
                '}';
     }
 
@@ -125,15 +106,7 @@ public class MessageReference {
         return uid;
     }
 
-    public Flag getFlag() {
-        return flag;
-    }
-
     public MessageReference withModifiedUid(String newUid) {
-        return new MessageReference(accountUuid, folderId, newUid, flag);
-    }
-
-    public MessageReference withModifiedFlag(Flag newFlag) {
-        return new MessageReference(accountUuid, folderId, uid, newFlag);
+        return new MessageReference(accountUuid, folderId, newUid);
     }
 }

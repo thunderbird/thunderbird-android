@@ -203,6 +203,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     // relates to the message being replied to, forwarded, or edited TODO split up?
     private MessageReference relatedMessageReference;
+    private Flag relatedFlag = null;
     /**
      * Indicates that the source message has been processed at least once and should not
      * be processed on any subsequent loads. This protects us from adding attachments that
@@ -447,7 +448,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         if (action == Action.REPLY || action == Action.REPLY_ALL) {
-            relatedMessageReference = relatedMessageReference.withModifiedFlag(Flag.ANSWERED);
+            relatedFlag = Flag.ANSWERED;
+        } else if (action == Action.FORWARD || action == Action.FORWARD_AS_ATTACHMENT) {
+            relatedFlag = Flag.FORWARDED;
         }
 
         if (action == Action.REPLY || action == Action.REPLY_ALL ||
@@ -457,10 +460,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             // Explicitly set focus to "To:" input field (see issue 2998)
             recipientMvpView.requestFocusOnToField();
-        }
-
-        if (action == Action.FORWARD || action == Action.FORWARD_AS_ATTACHMENT) {
-            relatedMessageReference = relatedMessageReference.withModifiedFlag(Flag.FORWARDED);
         }
 
         updateMessageFormat();
@@ -1463,10 +1462,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         final Long draftId;
         final String plaintextSubject;
         final MessageReference messageReference;
+        final Flag flag;
 
         SendMessageTask(MessagingController messagingController, Preferences preferences, Account account,
                 Contacts contacts, Message message, Long draftId, String plaintextSubject,
-                MessageReference messageReference) {
+                MessageReference messageReference, Flag flag) {
             this.messagingController = messagingController;
             this.preferences = preferences;
             this.account = account;
@@ -1475,6 +1475,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             this.draftId = draftId;
             this.plaintextSubject = plaintextSubject;
             this.messageReference = messageReference;
+            this.flag = flag;
         }
 
         @Override
@@ -1483,7 +1484,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 contacts.markAsContacted(message.getRecipients(RecipientType.TO));
                 contacts.markAsContacted(message.getRecipients(RecipientType.CC));
                 contacts.markAsContacted(message.getRecipients(RecipientType.BCC));
-                updateReferencedMessage();
+                addFlagToReferencedMessage();
             } catch (Exception e) {
                 Timber.e(e, "Failed to mark contact as contacted.");
             }
@@ -1500,13 +1501,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         /**
          * Set the flag on the referenced message(indicated we replied / forwarded the message)
          **/
-        private void updateReferencedMessage() {
-            if (messageReference != null && messageReference.getFlag() != null) {
+        private void addFlagToReferencedMessage() {
+            if (messageReference != null && flag != null) {
                 String accountUuid = messageReference.getAccountUuid();
                 Account account = preferences.getAccount(accountUuid);
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
-                Flag flag = messageReference.getFlag();
 
                 Timber.d("Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
 
@@ -1600,7 +1600,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             currentMessageBuilder = null;
             new SendMessageTask(messagingController, preferences, account, contacts, message,
-                    draftMessageId, plaintextSubject, relatedMessageReference).execute();
+                    draftMessageId, plaintextSubject, relatedMessageReference, relatedFlag).execute();
             finish();
         }
     }
