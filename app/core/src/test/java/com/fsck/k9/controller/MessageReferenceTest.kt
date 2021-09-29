@@ -1,146 +1,61 @@
-package com.fsck.k9.controller;
+package com.fsck.k9.controller
 
+import com.google.common.truth.Truth.assertThat
+import kotlin.test.assertNotNull
+import org.junit.Test
 
-import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
-
-
-public class MessageReferenceTest {
-
+class MessageReferenceTest {
     @Test
-    public void checkIdentityStringFromMessageReference() {
-        MessageReference messageReference = createMessageReference("o hai!", 2, "10101010");
+    fun checkIdentityStringFromMessageReference() {
+        val messageReference = MessageReference("o hai!", 2, "10101010")
 
-        assertEquals("#:byBoYWkh:Mg==:MTAxMDEwMTA=", messageReference.toIdentityString());
+        val serialized = messageReference.toIdentityString()
+
+        assertThat(serialized).isEqualTo("#:byBoYWkh:Mg==:MTAxMDEwMTA=")
     }
 
     @Test
-    public void parseIdentityString() {
-        MessageReference messageReference = MessageReference.parse("#:byBoYWkh:Mg==:MTAxMDEwMTA=");
+    fun parseIdentityString() {
+        val result = MessageReference.parse("#:byBoYWkh:Mg==:MTAxMDEwMTA=")
 
-        assertNotNull(messageReference);
-        assertEquals("o hai!", messageReference.getAccountUuid());
-        assertEquals(2, messageReference.getFolderId());
-        assertEquals("10101010", messageReference.getUid());
+        assertNotNull(result) { messageReference ->
+            assertThat(messageReference.accountUuid).isEqualTo("o hai!")
+            assertThat(messageReference.folderId).isEqualTo(2)
+            assertThat(messageReference.uid).isEqualTo("10101010")
+        }
     }
 
     @Test
-    public void checkMessageReferenceWithChangedUid() {
-        MessageReference messageReferenceOne = createMessageReference("account", 1, "uid");
-        
-        MessageReference messageReferenceTwo = messageReferenceOne.withModifiedUid("---");
+    fun parseIdentityStringContainingBadVersionNumber() {
+        val messageReference = MessageReference.parse("@:byBoYWkh:MTAxMDEwMTA=")
 
-        assertEquals("account", messageReferenceTwo.getAccountUuid());
-        assertEquals(1, messageReferenceTwo.getFolderId());
-        assertEquals("---", messageReferenceTwo.getUid());
+        assertThat(messageReference).isNull()
     }
 
     @Test
-    public void parseIdentityStringContainingBadVersionNumber() {
-        MessageReference messageReference = MessageReference.parse("@:byBoYWkh:MTAxMDEwMTA=");
+    fun parseNullIdentityString() {
+        val messageReference = MessageReference.parse(null)
 
-        assertNull(messageReference);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Test
-    public void parseNullIdentityString() {
-        MessageReference messageReference = MessageReference.parse(null);
-
-        assertNull(messageReference);
+        assertThat(messageReference).isNull()
     }
 
     @Test
-    public void equalsWithAnObjectShouldReturnFalse() {
-        MessageReference messageReference = new MessageReference("a", 1, "c");
-        Object object = new Object();
+    fun checkMessageReferenceWithChangedUid() {
+        val messageReferenceOne = MessageReference("account", 1, "uid")
 
-        assertFalse(messageReference.equals(object));
-    }
+        val messageReference = messageReferenceOne.withModifiedUid("---")
 
-    @SuppressWarnings({"ObjectEqualsNull", "ConstantConditions"})
-    @Test
-    public void equalsWithNullShouldReturnFalse() {
-        MessageReference messageReference = createMessageReference("account", 1, "uid");
-
-        assertFalse(messageReference.equals(null));
-    }
-
-    @SuppressWarnings("EqualsWithItself")
-    @Test
-    public void equalsWithSameMessageReferenceShouldReturnTrue() {
-        MessageReference messageReference = createMessageReference("account", 1, "uid");
-
-        assertTrue(messageReference.equals(messageReference));
+        assertThat(messageReference.accountUuid).isEqualTo("account")
+        assertThat(messageReference.folderId).isEqualTo(1)
+        assertThat(messageReference.uid).isEqualTo("---")
     }
 
     @Test
-    public void equalsWithMessageReferenceContainingSameDataShouldReturnTrue() {
-        MessageReference messageReferenceOne = createMessageReference("account", 1, "uid");
-        MessageReference messageReferenceTwo = createMessageReference("account", 1, "uid");
+    fun alternativeEquals() {
+        val messageReference = MessageReference("account", 1, "uid")
 
-        assertEqualsReturnsTrueSymmetrically(messageReferenceOne, messageReferenceTwo);
-    }
+        val equalsResult = messageReference.equals("account", 1, "uid")
 
-    @Test
-    public void equalsWithMessageReferenceContainingDifferentAccountUuidShouldReturnFalse() {
-        MessageReference messageReferenceOne = createMessageReference("account", 1, "uid");
-        MessageReference messageReferenceTwo = createMessageReference("-------", 1, "uid");
-
-        assertEqualsReturnsFalseSymmetrically(messageReferenceOne, messageReferenceTwo);
-    }
-
-    @Test
-    public void equalsWithMessageReferenceContainingDifferentFolderNameShouldReturnFalse() {
-        MessageReference messageReferenceOne = createMessageReference("account", 1, "uid");
-        MessageReference messageReferenceTwo = createMessageReference("account", 8, "uid");
-
-        assertEqualsReturnsFalseSymmetrically(messageReferenceOne, messageReferenceTwo);
-    }
-
-    @Test
-    public void equalsWithMessageReferenceContainingDifferentUidShouldReturnFalse() {
-        MessageReference messageReferenceOne = createMessageReference("account", 1, "uid");
-        MessageReference messageReferenceTwo = createMessageReference("account", 1, "---");
-
-        assertEqualsReturnsFalseSymmetrically(messageReferenceOne, messageReferenceTwo);
-    }
-
-    @Test
-    public void alternativeEquals() {
-        MessageReference messageReference = createMessageReference("account", 1, "uid");
-
-        boolean equalsResult = messageReference.equals("account", 1, "uid");
-
-        assertTrue(equalsResult);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void constructor_withNullAccount_shouldThrow() {
-        createMessageReference(null, 1, "uid");
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void constructor_withNullUid_shouldThrow() {
-        createMessageReference("account", 1, null);
-    }
-
-    private MessageReference createMessageReference(String accountUuid, long folderId, String uid) {
-        return new MessageReference(accountUuid, folderId, uid);
-    }
-
-    private void assertEqualsReturnsTrueSymmetrically(MessageReference referenceOne, MessageReference referenceTwo) {
-        assertTrue(referenceOne.equals(referenceTwo));
-        assertTrue(referenceTwo.equals(referenceOne));
-    }
-
-    private void assertEqualsReturnsFalseSymmetrically(MessageReference referenceOne, MessageReference referenceTwo) {
-        assertFalse(referenceOne.equals(referenceTwo));
-        assertFalse(referenceTwo.equals(referenceOne));
+        assertThat(equalsResult).isTrue()
     }
 }
