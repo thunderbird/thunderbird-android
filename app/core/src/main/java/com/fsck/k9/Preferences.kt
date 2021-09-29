@@ -115,8 +115,13 @@ class Preferences internal constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getAccountFlow(accountUuid: String): Flow<Account> {
-        return callbackFlow<Account> {
-            val initialAccount = getAccount(accountUuid) ?: return@callbackFlow
+        return callbackFlow {
+            val initialAccount = getAccount(accountUuid)
+            if (initialAccount == null) {
+                close()
+                return@callbackFlow
+            }
+
             send(initialAccount)
 
             val listener = AccountsChangeListener {
@@ -124,7 +129,7 @@ class Preferences internal constructor(
                 if (account != null) {
                     sendBlockingSilently(account)
                 } else {
-                    channel.close()
+                    close()
                 }
             }
             addOnAccountsChangeListener(listener)
