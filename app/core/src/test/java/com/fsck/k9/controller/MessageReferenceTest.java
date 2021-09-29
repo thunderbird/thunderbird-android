@@ -120,24 +120,6 @@ public class MessageReferenceTest {
         assertTrue(equalsResult);
     }
 
-    @Test
-    public void equals_withNullAccount_shouldReturnFalse() {
-        MessageReference messageReference = createMessageReference("account", 1, "uid");
-
-        boolean equalsResult = messageReference.equals(null, 1, "uid");
-
-        assertFalse(equalsResult);
-    }
-
-    @Test
-    public void equals_withNullUid_shouldReturnFalse() {
-        MessageReference messageReference = createMessageReference("account", 1, "uid");
-
-        boolean equalsResult = messageReference.equals("account", 1, null);
-
-        assertFalse(equalsResult);
-    }
-
     @Test(expected = NullPointerException.class)
     public void constructor_withNullAccount_shouldThrow() {
         createMessageReference(null, 1, "uid");
