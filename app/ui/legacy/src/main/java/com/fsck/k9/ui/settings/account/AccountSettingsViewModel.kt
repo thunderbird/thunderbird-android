@@ -3,24 +3,24 @@ package com.fsck.k9.ui.settings.account
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.fsck.k9.Account
-import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.mailstore.SpecialFolderSelectionStrategy
-import com.fsck.k9.ui.account.AccountsLiveData
+import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AccountSettingsViewModel(
-    private val preferences: Preferences,
+    private val accountManager: AccountManager,
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy
 ) : ViewModel() {
-    val accounts = AccountsLiveData(preferences)
+    val accounts = accountManager.getAccountsFlow().asLiveData()
     private val accountLiveData = MutableLiveData<Account>()
     private val foldersLiveData = MutableLiveData<RemoteFolderInfo>()
 
@@ -49,7 +49,7 @@ class AccountSettingsViewModel(
     }
 
     private fun loadAccount(accountUuid: String): Account {
-        return preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
+        return accountManager.getAccount(accountUuid) ?: error("Account $accountUuid not found")
     }
 
     fun getFolders(account: Account): LiveData<RemoteFolderInfo> {
