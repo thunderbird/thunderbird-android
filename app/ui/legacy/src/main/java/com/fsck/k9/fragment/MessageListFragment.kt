@@ -985,7 +985,14 @@ class MessageListFragment :
             else -> null
         }
 
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folderId, messages.first().accountUuid, null, messages)
+        displayFolderChoice(
+            operation = FolderOperation.MOVE,
+            requestCode = ACTIVITY_CHOOSE_FOLDER_MOVE,
+            sourceFolderId = folderId,
+            accountUuid = messages.first().accountUuid,
+            lastSelectedFolderId = null,
+            messages = messages
+        )
     }
 
     private fun onCopy(message: MessageReference) {
@@ -1001,18 +1008,31 @@ class MessageListFragment :
             else -> null
         }
 
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folderId, messages.first().accountUuid, null, messages)
+        displayFolderChoice(
+            operation = FolderOperation.COPY,
+            requestCode = ACTIVITY_CHOOSE_FOLDER_COPY,
+            sourceFolderId = folderId,
+            accountUuid = messages.first().accountUuid,
+            lastSelectedFolderId = null,
+            messages = messages
+        )
     }
 
     private fun displayFolderChoice(
+        operation: FolderOperation,
         requestCode: Int,
         sourceFolderId: Long?,
         accountUuid: String,
         lastSelectedFolderId: Long?,
         messages: List<MessageReference>
     ) {
+        val action = when (operation) {
+            FolderOperation.COPY -> ChooseFolderActivity.Action.COPY
+            FolderOperation.MOVE -> ChooseFolderActivity.Action.MOVE
+        }
         val intent = ChooseFolderActivity.buildLaunchIntent(
             context = requireContext(),
+            action = action,
             accountUuid = accountUuid,
             currentFolderId = sourceFolderId,
             scrollToFolderId = lastSelectedFolderId,

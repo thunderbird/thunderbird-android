@@ -58,6 +58,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val intent = ChooseFolderActivity.buildLaunchIntent(
                 context = requireContext(),
+                action = ChooseFolderActivity.Action.CHOOSE,
                 accountUuid = selectedAccountUuid!!,
                 showDisplayableOnly = true
             )
