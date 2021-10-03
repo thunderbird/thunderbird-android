@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.settings
 
 import com.fsck.k9.helper.NamedThreadFactory
-import com.fsck.k9.ui.account.AccountsLiveData
 import com.fsck.k9.ui.settings.account.AccountSettingsDataStoreFactory
 import com.fsck.k9.ui.settings.account.AccountSettingsViewModel
 import com.fsck.k9.ui.settings.export.SettingsExportViewModel
@@ -15,8 +14,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val settingsUiModule = module {
-    factory { AccountsLiveData(get()) }
-    viewModel { SettingsViewModel(accountManager = get(), accounts = get()) }
+    viewModel { SettingsViewModel(accountManager = get()) }
 
     factory { GeneralSettingsDataStore(jobManager = get(), themeManager = get(), appLanguageManager = get()) }
     single(named("SaveSettingsExecutorService")) {

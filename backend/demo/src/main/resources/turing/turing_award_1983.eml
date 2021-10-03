@@ -1,0 +1,46 @@
+MIME-Version: 1.0
+From: Dennis Ritchie <dennis.ritchie@example.com>
+Date: Mon, 24 Oct 1983 12:00:00 -0400
+Message-ID: <turing1983@cketti.de>
+Subject: Reflections on Software Research
+To: Alan Turing <alan@turing.example>
+Content-Type: multipart/alternative; boundary=bcaec54fbb2250035a04d85aabcd
+
+--bcaec54fbb2250035a04d85aabcd
+Content-Type: text/plain; charset=UTF-8
+
+The UNIX operating system has suddenly become news, but it is not new. It 
+began in 1969 when Ken Thompson discovered a little-used PDP-7 computer and 
+set out to fashion a computing environment that he liked, His work soon 
+attracted me; I joined in the enterprise, though most of the ideas, and 
+most of the work for that matter, were his. Before long, others from our 
+group in the research area of AT&T Bell Laboratories were using the system; 
+Joe Ossanna, Doug Mcllroy, and 
+Bob Morris were especially enthusiastic critics and contributors, tn 1971, 
+we acquired a PDP-11, and by the end of that year we were supporting our 
+first real users: three typists entering patent applications. In 1973, the 
+system was rewritten in the C language, and in that year, too, it was first 
+described publicly at the Operating Systems Principles conference; the 
+resulting paper appeared in Communications of the ACM the next year. 
+
+--bcaec54fbb2250035a04d85aabcd
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>The UNIX operating system has suddenly become news, b=
+ut it is not new. It began in 1969 when Ken Thompson discovered a little-us=
+ed PDP-7 computer and set out to fashion a computing environment that he li=
+ked, His work soon attracted me; I joined in the enterprise, though most of=
+ the ideas, and most of the work for that matter, were his. Before long, ot=
+hers from our group in the research area of AT&amp;T Bell Laboratories were=
+ using the system; Joe Ossanna, Doug Mcllroy, and=C2=A0</div>
+<div>Bob Morris were especially enthusiastic critics and contributors, tn 1=
+971, we acquired a PDP-11, and by the end of that year we were supporting o=
+ur first real users: three typists entering patent applications. In 1973, t=
+he system was rewritten in the C language, and in that year, too, it was fi=
+rst described publicly at the Operating Systems Principles conference; the =
+resulting paper appeared in Communications of the ACM the next year.=C2=A0<=
+/div>
+</div>
+
+--bcaec54fbb2250035a04d85aabcd--

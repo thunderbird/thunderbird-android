@@ -266,11 +266,6 @@ public class SettingsImporter {
 
                     StorageEditor editor = preferences.createStorageEditor();
 
-                    String defaultAccountUuid = storage.getString("defaultAccountUuid", null);
-                    if (defaultAccountUuid == null) {
-                        putString(editor, "defaultAccountUuid", accountUuids.get(0));
-                    }
-
                     if (!editor.commit()) {
                         throw new SettingsImportExportException("Failed to set default account");
                     }

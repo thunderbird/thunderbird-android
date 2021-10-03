@@ -3,8 +3,6 @@ package com.fsck.k9.notification
 import android.app.Notification
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
-import com.fsck.k9.K9
-import com.fsck.k9.K9.NotificationHideSubject
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
@@ -14,7 +12,6 @@ import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -80,26 +77,6 @@ class NewMailNotificationsTest : K9RobolectricTest() {
     }
 
     @Test
-    fun testAddNewMailNotificationWithPrivacyModeEnabled() {
-        enablePrivacyMode()
-        val notificationIndex = 0
-        val message = createLocalMessage()
-        val content = createNotificationContent()
-        val holder = createNotificationHolder(content, notificationIndex)
-        addToNotificationContentCreator(message, content)
-        whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
-        val singleMessageNotification = createNotification()
-        addToSummaryNotifications(singleMessageNotification)
-
-        newMailNotifications.addNewMailNotification(account, message, 42, silent = false)
-
-        val singleMessageNotificationId = NotificationIds.getSingleMessageNotificationId(account, notificationIndex)
-        val summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account)
-        verify(notificationManager, never()).notify(eq(singleMessageNotificationId), any())
-        verify(notificationManager).notify(summaryNotificationId, singleMessageNotification)
-    }
-
-    @Test
     fun testAddNewMailNotificationTwice() {
         val notificationIndexOne = 0
         val notificationIndexTwo = 1
@@ -142,7 +119,6 @@ class NewMailNotificationsTest : K9RobolectricTest() {
 
     @Test
     fun testRemoveNewMailNotificationWithUnknownMessageReference() {
-        enablePrivacyMode()
         val messageReference = createMessageReference(1)
         val notificationIndex = 0
         val message = createLocalMessage()
@@ -162,7 +138,6 @@ class NewMailNotificationsTest : K9RobolectricTest() {
 
     @Test
     fun testRemoveNewMailNotification() {
-        enablePrivacyMode()
         val messageReference = createMessageReference(1)
         val notificationIndex = 0
         val notificationId = NotificationIds.getSingleMessageNotificationId(account, notificationIndex)
@@ -270,7 +245,7 @@ class NewMailNotificationsTest : K9RobolectricTest() {
     private fun createLocalMessage(): LocalMessage = mock()
 
     private fun createNotificationContent(): NotificationContent {
-        val messageReference = MessageReference("irrelevant", 1, "irrelevant", null)
+        val messageReference = MessageReference("irrelevant", 1, "irrelevant")
         return NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false)
     }
 
@@ -310,12 +285,16 @@ class NewMailNotificationsTest : K9RobolectricTest() {
     private fun createSingleMessageNotifications(): SingleMessageNotifications = mock()
 
     private fun createMessageReference(number: Int): MessageReference {
-        return MessageReference("account", 1, number.toString(), null)
+        return MessageReference("account", 1, number.toString())
     }
 
-    private fun addToSingleMessageNotifications(notificationHolder: NotificationHolder, notificationToReturn: Notification) {
-        whenever(singleMessageNotifications.buildSingleMessageNotification(account, notificationHolder))
-            .thenReturn(notificationToReturn)
+    private fun addToSingleMessageNotifications(
+        notificationHolder: NotificationHolder,
+        notificationToReturn: Notification
+    ) {
+        stubbing(singleMessageNotifications) {
+            on { buildSingleMessageNotification(account, notificationHolder) } doReturn notificationToReturn
+        }
     }
 
     private fun whenAddingContentReturn(content: NotificationContent, result: AddNotificationResult) {
@@ -338,10 +317,6 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         stubbing(newMailNotifications.notificationData) {
             on { getActiveNotificationIds() } doReturn notificationIds
         }
-    }
-
-    private fun enablePrivacyMode() {
-        K9.notificationHideSubject = NotificationHideSubject.ALWAYS
     }
 
     internal class TestNewMailNotifications(

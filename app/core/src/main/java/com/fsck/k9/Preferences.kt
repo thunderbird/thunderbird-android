@@ -115,8 +115,13 @@ class Preferences internal constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getAccountFlow(accountUuid: String): Flow<Account> {
-        return callbackFlow<Account> {
-            val initialAccount = getAccount(accountUuid) ?: return@callbackFlow
+        return callbackFlow {
+            val initialAccount = getAccount(accountUuid)
+            if (initialAccount == null) {
+                close()
+                return@callbackFlow
+            }
+
             send(initialAccount)
 
             val listener = AccountsChangeListener {
@@ -124,7 +129,7 @@ class Preferences internal constructor(
                 if (account != null) {
                     sendBlockingSilently(account)
                 } else {
-                    channel.close()
+                    close()
                 }
             }
             addOnAccountsChangeListener(listener)
@@ -185,27 +190,8 @@ class Preferences internal constructor(
         notifyAccountsChangeListeners()
     }
 
-    var defaultAccount: Account?
-        get() {
-            return getDefaultAccountOrNull() ?: accounts.firstOrNull()?.also { newDefaultAccount ->
-                defaultAccount = newDefaultAccount
-            }
-        }
-        set(account) {
-            requireNotNull(account)
-
-            createStorageEditor()
-                .putString("defaultAccountUuid", account.uuid)
-                .commit()
-        }
-
-    private fun getDefaultAccountOrNull(): Account? {
-        return synchronized(accountLock) {
-            storage.getString("defaultAccountUuid", null)?.let { defaultAccountUuid ->
-                getAccount(defaultAccountUuid)
-            }
-        }
-    }
+    val defaultAccount: Account?
+        get() = accounts.firstOrNull()
 
     fun saveAccount(account: Account) {
         ensureAssignedAccountNumber(account)

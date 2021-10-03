@@ -1,12 +1,9 @@
 package com.fsck.k9.notification
 
-import android.app.KeyguardManager
 import android.app.Notification
-import android.content.Context
 import androidx.core.app.NotificationCompat
 import com.fsck.k9.Account
 import com.fsck.k9.K9
-import com.fsck.k9.K9.NotificationHideSubject
 import com.fsck.k9.K9.NotificationQuickDelete
 import com.fsck.k9.notification.NotificationGroupKeys.getGroupKey
 import com.fsck.k9.notification.NotificationIds.getNewMailSummaryNotificationId
@@ -23,9 +20,6 @@ internal open class MessageSummaryNotifications(
         val unreadMessageCount = notificationData.unreadMessageCount
 
         val builder = when {
-            isPrivacyModeActive -> {
-                createSimpleSummaryNotification(account, unreadMessageCount)
-            }
             notificationData.isSingleMessageNotification -> {
                 val holder = notificationData.holderForLatestNotification
                 createSingleMessageNotification(account, holder)
@@ -56,21 +50,6 @@ internal open class MessageSummaryNotifications(
         )
 
         return builder.build()
-    }
-
-    private fun createSimpleSummaryNotification(account: Account, unreadMessageCount: Int): NotificationCompat.Builder {
-        val accountName = notificationHelper.getAccountName(account)
-        val newMailText = resourceProvider.newMailTitle()
-        val unreadMessageCountText = resourceProvider.newMailUnreadMessageCount(unreadMessageCount, accountName)
-        val notificationId = getNewMailSummaryNotificationId(account)
-        val contentIntent = actionCreator.createViewFolderListPendingIntent(account, notificationId)
-
-        return createAndInitializeNotificationBuilder(account)
-            .setNumber(unreadMessageCount)
-            .setTicker(newMailText)
-            .setContentTitle(unreadMessageCountText)
-            .setContentText(newMailText)
-            .setContentIntent(contentIntent)
     }
 
     private fun createSingleMessageNotification(
@@ -224,15 +203,6 @@ internal open class MessageSummaryNotifications(
     private fun isArchiveActionAvailableForWear(account: Account): Boolean {
         return account.archiveFolderId != null
     }
-
-    private val isPrivacyModeActive: Boolean
-        get() {
-            val keyguardService = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-            val privacyModeAlwaysEnabled = K9.notificationHideSubject === NotificationHideSubject.ALWAYS
-            val privacyModeEnabledWhenLocked = K9.notificationHideSubject === NotificationHideSubject.WHEN_LOCKED
-            val screenLocked = keyguardService.inKeyguardRestrictedInputMode()
-            return privacyModeAlwaysEnabled || privacyModeEnabledWhenLocked && screenLocked
-        }
 
     protected open fun createInboxStyle(builder: NotificationCompat.Builder?): NotificationCompat.InboxStyle {
         return NotificationCompat.InboxStyle(builder)

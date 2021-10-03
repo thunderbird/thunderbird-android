@@ -84,7 +84,7 @@ class BaseNotificationsTest {
         return NotificationHolder(
             notificationId = notificationId,
             content = NotificationContent(
-                messageReference = MessageReference("irrelevant", 1, "irrelevant", null),
+                messageReference = MessageReference("irrelevant", 1, "irrelevant"),
                 sender = SENDER,
                 subject = SUBJECT,
                 preview = NOTIFICATION_PREVIEW,

@@ -156,9 +156,6 @@ object K9 : EarlyInit {
     var isConfirmMarkAllRead = true
 
     @JvmStatic
-    var notificationHideSubject = NotificationHideSubject.NEVER
-
-    @JvmStatic
     var notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
 
     @JvmStatic
@@ -345,7 +342,6 @@ object K9 : EarlyInit {
         val sortAscendingSetting = storage.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
 
-        notificationHideSubject = storage.getEnum("notificationHideSubject", NotificationHideSubject.NEVER)
         notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.ALWAYS)
 
         lockScreenNotificationVisibility = storage.getEnum(
@@ -426,7 +422,6 @@ object K9 : EarlyInit {
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
 
-        editor.putString("notificationHideSubject", notificationHideSubject.toString())
         editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
@@ -520,15 +515,6 @@ object K9 : EarlyInit {
 
     enum class BACKGROUND_OPS {
         ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
-    }
-
-    /**
-     * Controls when to hide the subject in the notification area.
-     */
-    enum class NotificationHideSubject {
-        ALWAYS,
-        WHEN_LOCKED,
-        NEVER
     }
 
     /**

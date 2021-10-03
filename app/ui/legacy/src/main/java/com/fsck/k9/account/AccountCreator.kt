@@ -20,6 +20,7 @@ class AccountCreator(private val preferences: Preferences, private val resources
             Protocols.IMAP -> DeletePolicy.ON_DELETE
             Protocols.POP3 -> DeletePolicy.NEVER
             Protocols.WEBDAV -> DeletePolicy.ON_DELETE
+            "demo" -> DeletePolicy.ON_DELETE
             else -> throw AssertionError("Unhandled case: $type")
         }
     }
@@ -60,10 +61,10 @@ class AccountCreator(private val preferences: Preferences, private val resources
             return accountColors.random()
         }
 
-        return availableColors.shuffled().minOf { color ->
+        return availableColors.shuffled().minByOrNull { color ->
             val index = DEFAULT_COLORS.indexOf(color)
             if (index != -1) index else DEFAULT_COLORS.size
-        }
+        } ?: error("availableColors must not be empty")
     }
 
     companion object {

@@ -5,7 +5,6 @@ import androidx.core.app.NotificationCompat
 import androidx.test.core.app.ApplicationProvider
 import com.fsck.k9.Account
 import com.fsck.k9.K9
-import com.fsck.k9.K9.NotificationHideSubject
 import com.fsck.k9.K9.NotificationQuickDelete
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.controller.MessageReference
@@ -47,25 +46,7 @@ class SummaryNotificationsTest : RobolectricTest() {
     private val notifications = createSummaryNotifications(builder, lockScreenNotification)
 
     @Test
-    fun buildSummaryNotification_withPrivacyModeActive() {
-        K9.notificationHideSubject = NotificationHideSubject.ALWAYS
-
-        val result = notifications.buildSummaryNotification(account, notificationData, false)
-
-        verify(builder).setSmallIcon(resourceProvider.iconNewMail)
-        verify(builder).color = ACCOUNT_COLOR
-        verify(builder).setAutoCancel(true)
-        verify(builder).setNumber(UNREAD_MESSAGE_COUNT)
-        verify(builder).setTicker("New mail")
-        verify(builder).setContentText("New mail")
-        verify(builder).setContentTitle("$UNREAD_MESSAGE_COUNT Unread ($ACCOUNT_NAME)")
-        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData)
-        assertThat(result).isEqualTo(notification)
-    }
-
-    @Test
     fun buildSummaryNotification_withSingleMessageNotification() {
-        K9.notificationHideSubject = NotificationHideSubject.NEVER
         K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
         stubbing(notificationData) {
             on { isSingleMessageNotification } doReturn true
@@ -90,7 +71,6 @@ class SummaryNotificationsTest : RobolectricTest() {
 
     @Test
     fun buildSummaryNotification_withMultiMessageNotification() {
-        K9.notificationHideSubject = NotificationHideSubject.NEVER
         K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
         stubbing(notificationData) {
             on { isSingleMessageNotification } doReturn false
@@ -121,7 +101,6 @@ class SummaryNotificationsTest : RobolectricTest() {
 
     @Test
     fun buildSummaryNotification_withAdditionalMessages() {
-        K9.notificationHideSubject = NotificationHideSubject.NEVER
         K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
         stubbing(notificationData) {
             on { isSingleMessageNotification } doReturn false
@@ -136,7 +115,6 @@ class SummaryNotificationsTest : RobolectricTest() {
 
     @Test
     fun buildSummaryNotification_withoutDeleteAllAction() {
-        K9.notificationHideSubject = NotificationHideSubject.NEVER
         K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.NEVER
         stubbing(notificationData) {
             on { isSingleMessageNotification } doReturn false
@@ -150,7 +128,6 @@ class SummaryNotificationsTest : RobolectricTest() {
     @Test
     @Throws(Exception::class)
     fun buildSummaryNotification_withoutDeleteAction() {
-        K9.notificationHideSubject = NotificationHideSubject.NEVER
         K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.NEVER
         stubbing(notificationData) {
             on { isSingleMessageNotification } doReturn true
@@ -176,7 +153,7 @@ class SummaryNotificationsTest : RobolectricTest() {
     }
 
     private fun createFakeNotificationData(account: Account): NotificationData {
-        val messageReference = MessageReference("irrelevant", 1, "irrelevant", null)
+        val messageReference = MessageReference("irrelevant", 1, "irrelevant")
         val content = NotificationContent(messageReference, SENDER, SUBJECT, PREVIEW, SUMMARY, false)
         val content2 = NotificationContent(messageReference, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true)
         return mock {
@@ -196,7 +173,8 @@ class SummaryNotificationsTest : RobolectricTest() {
         val singleMessageNotifications = TestSingleMessageNotifications(
             notificationHelper = notificationHelper,
             actionCreator = mock(),
-            resourceProvider = resourceProvider
+            resourceProvider = resourceProvider,
+            lockScreenNotification = mock()
         )
 
         return TestMessageSummaryNotifications(
@@ -241,11 +219,13 @@ class SummaryNotificationsTest : RobolectricTest() {
     internal inner class TestSingleMessageNotifications(
         notificationHelper: NotificationHelper,
         actionCreator: NotificationActionCreator,
-        resourceProvider: NotificationResourceProvider
+        resourceProvider: NotificationResourceProvider,
+        lockScreenNotification: LockScreenNotification
     ) : SingleMessageNotifications(
         notificationHelper,
         actionCreator,
-        resourceProvider
+        resourceProvider,
+        lockScreenNotification
     ) {
         override fun createBigTextStyle(builder: NotificationCompat.Builder?): NotificationCompat.BigTextStyle {
             return bigTextStyle

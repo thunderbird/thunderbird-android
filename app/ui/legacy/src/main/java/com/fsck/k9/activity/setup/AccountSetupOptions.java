@@ -21,8 +21,6 @@ import com.fsck.k9.ui.base.K9Activity;
 public class AccountSetupOptions extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
 
-    private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
-
     private Spinner mCheckFrequencyView;
 
     private Spinner mDisplayCountView;
@@ -32,10 +30,9 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
     private Account mAccount;
 
-    public static void actionOptions(Context context, Account account, boolean makeDefault) {
+    public static void actionOptions(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupOptions.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
         context.startActivity(i);
     }
 
@@ -115,10 +112,6 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mAccount.setFolderPushMode(Account.FolderMode.NONE);
 
         Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
-        if (mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()) ||
-                getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false)) {
-            Preferences.getPreferences(this).setDefaultAccount(mAccount);
-        }
         Core.setServicesEnabled(this);
         AccountSetupNames.actionSetNames(this, mAccount);
     }

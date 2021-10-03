@@ -102,7 +102,7 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     private static String getMemoryKey(Account account, long folderId) {
-        return account.getDescription() + ":" + folderId;
+        return account.getUuid() + ":" + folderId;
     }
 
     private enum MemorizingState { STARTED, FINISHED, FAILED }

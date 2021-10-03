@@ -1,9 +1,9 @@
 package com.fsck.k9.ui.settings
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.fsck.k9.Account
 import com.fsck.k9.preferences.AccountManager
-import com.fsck.k9.ui.account.AccountsLiveData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,8 +15,8 @@ internal class SettingsViewModel(
     private val accountManager: AccountManager,
     private val coroutineScope: CoroutineScope = GlobalScope,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    val accounts: AccountsLiveData
 ) : ViewModel() {
+    val accounts = accountManager.getAccountsFlow().asLiveData()
 
     fun moveAccount(account: Account, newPosition: Int) {
         coroutineScope.launch(coroutineDispatcher) {

@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-kapt'
+
+if (rootProject.testCoverage) {
+    apply plugin: 'jacoco'
+}
+
+dependencies {
+    api project(":backend:api")
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "com.squareup.moshi:moshi:${versions.moshi}"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
+
+    testImplementation project(":mail:testing")
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled rootProject.testCoverage
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
+    }
+}

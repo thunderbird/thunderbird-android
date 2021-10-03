@@ -409,7 +409,7 @@ open class MessageList :
                 if (account.accountNumber.toString() == accountId) {
                     val folderId = segmentList[1].toLong()
                     val messageUid = segmentList[2]
-                    val messageReference = MessageReference(account.uuid, folderId, messageUid, null)
+                    val messageReference = MessageReference(account.uuid, folderId, messageUid)
 
                     return LaunchData(
                         search = messageReference.toLocalSearch(),

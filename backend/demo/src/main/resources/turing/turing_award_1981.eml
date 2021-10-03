@@ -1,0 +1,51 @@
+MIME-Version: 1.0
+From: "Edgar F. Codd" <edgar.codd@example.com>
+Date: Wed, 11 Nov 1981 12:00:00 -0800
+Message-ID: <turing1981@cketti.de>
+Subject: Relational Database: A Practical Foundation for Productivity
+To: Alan Turing <alan@turing.example>
+Content-Type: multipart/alternative; boundary=047d7bfd026c782f2404d85ab4b8
+
+--047d7bfd026c782f2404d85ab4b8
+Content-Type: text/plain; charset=UTF-8
+
+It is well known that the growth in demands from end users for new 
+applications is outstripping the capability of data processing departments 
+to implement the corresponding application programs. There are two 
+complementary approaches to attacking this problem (and both approaches are 
+needed): one is to put end users into direct touch with the information 
+stored in computers; the other is to increase the productivity of data 
+processing professionals in the development of application programs. It is 
+less well known that a single technology, relational database management, 
+provides a practical foundation for both approaches. It is explained why 
+this 
+is so. 
+While developing this productivity theme, it is noted that the time has 
+come to draw a very sharp line between relational and non-relational 
+database systems, so that the label "relational" will not be used in 
+misleading ways. 
+The key to drawing this line is something called a "relational processing 
+capability."
+
+--047d7bfd026c782f2404d85ab4b8
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>It is well known that the growth in demands from end =
+users for new applications is outstripping the capability of data processin=
+g departments to implement the corresponding application programs. There ar=
+e two complementary approaches to attacking this problem (and both approach=
+es are needed): one is to put end users into direct touch with the informat=
+ion stored in computers; the other is to increase the productivity of data =
+processing professionals in the development of application programs. It is =
+less well known that a single technology, relational database management, p=
+rovides a practical foundation for both approaches. It is explained why thi=
+s=C2=A0</div>
+<div><div>is so.=C2=A0</div><div>While developing this productivity theme, =
+it is noted that the time has come to draw a very sharp line between relati=
+onal and non-relational database systems, so that the label &quot;relationa=
+l&quot; will not be used in misleading ways.=C2=A0</div>
+<div>The key to drawing this line is something called a &quot;relational pr=
+ocessing capability.&quot;</div></div></div>
+
+--047d7bfd026c782f2404d85ab4b8--

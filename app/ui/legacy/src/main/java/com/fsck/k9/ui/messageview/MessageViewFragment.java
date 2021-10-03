@@ -388,7 +388,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_MOVE);
+        startRefileActivity(FolderOperation.MOVE, ACTIVITY_CHOOSE_FOLDER_MOVE);
 
     }
 
@@ -403,7 +403,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY);
+        startRefileActivity(FolderOperation.COPY, ACTIVITY_CHOOSE_FOLDER_COPY);
     }
 
     public void onMoveToDrafts() {
@@ -424,11 +424,18 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         onRefile(mAccount.getSpamFolderId());
     }
 
-    private void startRefileActivity(int requestCode) {
+    private void startRefileActivity(FolderOperation operation, int requestCode) {
         String accountUuid = mAccount.getUuid();
         long currentFolderId = mMessageReference.getFolderId();
         Long scrollToFolderId = mAccount.getLastSelectedFolderId();
-        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireActivity(), accountUuid, currentFolderId,
+        final ChooseFolderActivity.Action action;
+        if (operation == FolderOperation.MOVE) {
+            action = ChooseFolderActivity.Action.MOVE;
+        } else {
+            action = ChooseFolderActivity.Action.COPY;
+        }
+
+        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireActivity(), action, accountUuid, currentFolderId,
                 scrollToFolderId, false, mMessageReference);
 
         startActivityForResult(intent, requestCode);

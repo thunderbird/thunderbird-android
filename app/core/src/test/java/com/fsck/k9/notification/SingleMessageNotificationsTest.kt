@@ -34,7 +34,8 @@ class SingleMessageNotificationsTest : RobolectricTest() {
     private val notifications = SingleMessageNotifications(
         notificationHelper = createNotificationHelper(builder),
         actionCreator = actionCreator,
-        resourceProvider = resourceProvider
+        resourceProvider = resourceProvider,
+        lockScreenNotification = mock()
     )
 
     @Test
@@ -197,7 +198,7 @@ class SingleMessageNotificationsTest : RobolectricTest() {
     }
 
     private fun createMessageReference(number: Int): MessageReference {
-        return MessageReference("account", 1, number.toString(), null)
+        return MessageReference("account", 1, number.toString())
     }
 
     private fun createFakePendingIntent(requestCode: Int): PendingIntent {

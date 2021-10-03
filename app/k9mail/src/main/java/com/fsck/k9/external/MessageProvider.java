@@ -160,7 +160,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (myAccount != null) {
-            MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderId, msgUid, null);
+            MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderId, msgUid);
             MessagingController controller = MessagingController.getInstance(getContext());
             controller.deleteMessage(messageReference);
         }

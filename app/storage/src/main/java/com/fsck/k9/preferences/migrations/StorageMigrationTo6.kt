@@ -10,21 +10,8 @@ class StorageMigrationTo6(
     private val migrationsHelper: StorageMigrationsHelper
 ) {
     fun performLegacyMigrations() {
-        rewriteKeyguardPrivacy()
         rewriteTheme()
         migrateOpenPgpGlobalToAccountSettings()
-    }
-
-    private fun rewriteKeyguardPrivacy() {
-        val notificationHideSubject = migrationsHelper.readValue(db, "notificationHideSubject")
-        if (notificationHideSubject == null) {
-            val keyguardPrivacy = migrationsHelper.readValue(db, "keyguardPrivacy")
-            if (keyguardPrivacy?.toBoolean() == true) {
-                migrationsHelper.writeValue(db, "notificationHideSubject", "WHEN_LOCKED")
-            } else {
-                migrationsHelper.writeValue(db, "notificationHideSubject", "NEVER")
-            }
-        }
     }
 
     private fun rewriteTheme() {

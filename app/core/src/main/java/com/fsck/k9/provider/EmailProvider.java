@@ -27,7 +27,6 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.LockableDatabase;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
-import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.search.SqlQueryBuilder;
 
 
@@ -276,7 +275,7 @@ public class EmailProvider extends ContentProvider {
         try {
             return database.execute(false, new DbCallback<Cursor>() {
                 @Override
-                public Cursor doDbWork(SQLiteDatabase db) throws WrappedException {
+                public Cursor doDbWork(SQLiteDatabase db) {
 
                     String where;
                     if (TextUtils.isEmpty(selection)) {
@@ -338,7 +337,7 @@ public class EmailProvider extends ContentProvider {
         try {
             return database.execute(false, new DbCallback<Cursor>() {
                 @Override
-                public Cursor doDbWork(SQLiteDatabase db) throws WrappedException {
+                public Cursor doDbWork(SQLiteDatabase db) {
 
                     StringBuilder query = new StringBuilder();
 
@@ -462,7 +461,7 @@ public class EmailProvider extends ContentProvider {
         try {
             return database.execute(false, new DbCallback<Cursor>() {
                 @Override
-                public Cursor doDbWork(SQLiteDatabase db) throws WrappedException {
+                public Cursor doDbWork(SQLiteDatabase db) {
 
                     StringBuilder query = new StringBuilder();
                     query.append("SELECT ");

@@ -10,7 +10,7 @@ class AddNotificationResultTest {
     private val notificationHolder = NotificationHolder(
         notificationId = NOTIFICATION_ID,
         content = NotificationContent(
-            messageReference = MessageReference("irrelevant", 1, "irrelevant", null),
+            messageReference = MessageReference("irrelevant", 1, "irrelevant"),
             sender = "irrelevant",
             subject = "irrelevant",
             preview = "irrelevant",
