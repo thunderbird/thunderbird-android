@@ -878,4 +878,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public MessageReference getMessageRef() {
         return mMessageReference;
     }
+
+    private enum FolderOperation {
+        COPY, MOVE
+    }
 }
