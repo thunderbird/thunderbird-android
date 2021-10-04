@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.viewpager2.widget.ViewPager2
 import com.fsck.k9.DI.get
 import com.fsck.k9.controller.MessageReference
@@ -76,6 +77,7 @@ class MessageViewPagerFragment : Fragment() {
                 super.onPageScrollStateChanged(state)
             }
         })
+        viewPager.addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.HORIZONTAL))
         viewPager.post { tryShowTargetMessage() }
         return view
     }
