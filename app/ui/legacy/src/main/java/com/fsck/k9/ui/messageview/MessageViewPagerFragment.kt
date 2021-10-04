@@ -2,11 +2,15 @@ package com.fsck.k9.ui.messageview
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
+import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.viewpager2.widget.ViewPager2
@@ -14,6 +18,7 @@ import com.fsck.k9.DI.get
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.ThemeManager
+import kotlin.math.abs
 
 class MessageViewPagerFragment : Fragment() {
     private val themeManager = get(ThemeManager::class.java)
@@ -49,7 +54,7 @@ class MessageViewPagerFragment : Fragment() {
         val arguments = arguments
         if (arguments != null) {
             val reference = arguments.getString(ARG_ACTIVE_MESSAGE)
-            if (reference != null && !reference.isEmpty()) {
+            if (reference != null && reference.isNotEmpty()) {
                 targetMessage = MessageReference.parse(reference)
                 return
             }
@@ -98,7 +103,7 @@ class MessageViewPagerFragment : Fragment() {
     private fun viewPagerSettled() {
         viewPager.post {
             fragmentListener.configureMenu()
-            adapter.resetWebView()
+            webView = null
             val reference = getMessageReference(viewPager.currentItem)
             if (reference != null) {
                 fragmentListener.scrollToMessage(reference)
@@ -182,8 +187,49 @@ class MessageViewPagerFragment : Fragment() {
         }
     }
 
-    fun getActivePosition(): Int {
+    private fun getActivePosition(): Int {
         return viewPager.currentItem
+    }
+
+    private var webView: WebView? = null
+        get() {
+            if (field == null) {
+                val reference = getMessageReference(getActivePosition())
+                val view: View? = adapter.getMessageViewFragment(reference)?.view?.findViewById(R.id.message_content)
+                field = if (view is WebView) view else null
+            }
+            return field
+        }
+
+    private var downEvent: MotionEvent? = null
+
+    fun doInterceptTouchEvent(thisEvent: MotionEvent) {
+        if (webView != null) {
+            val webViewRect = Rect()
+            val webViewOrigin = IntArray(2)
+            webView!!.getHitRect(webViewRect)
+            webView!!.getLocationOnScreen(webViewOrigin)
+            webViewRect.offset(webViewOrigin[0], webViewOrigin[1])
+            if (webViewRect.contains(thisEvent.rawX.toInt(), thisEvent.rawY.toInt())) {
+                when (thisEvent.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> {
+                        downEvent = MotionEvent.obtainNoHistory(thisEvent)
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val dX = thisEvent.x - downEvent!!.x
+                        val dY = thisEvent.y - downEvent!!.y
+                        if ((abs(dX) > abs(dY)) && (abs(dX) > ViewConfiguration.get(webView!!.context).scaledTouchSlop)) {
+                            val canScrollLeft = webView!!.canScrollHorizontally(-1)
+                            val canScrollRight = webView!!.canScrollHorizontally(1)
+                            val canScrollEither = canScrollRight || canScrollLeft
+                            val parentIntercept =
+                                (!canScrollEither) || ((dX > 0) && !canScrollLeft) || ((dX < 0) && !canScrollRight)
+                            webView!!.parent?.requestDisallowInterceptTouchEvent(!parentIntercept)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
