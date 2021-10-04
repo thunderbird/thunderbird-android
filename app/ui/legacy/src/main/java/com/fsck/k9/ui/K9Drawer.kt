@@ -258,7 +258,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         var newActiveProfile: IProfile? = null
         val accountItems = displayAccounts.map { displayAccount ->
             val account = displayAccount.account
-            val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
 
             val drawerColors = getDrawerColorsForAccount(account)
             val selectedTextColor = drawerColors.accentColor.toSelectedColorStateList()
@@ -267,7 +266,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 isNameShown = true
                 nameText = account.description ?: ""
                 descriptionText = account.email
-                identifier = drawerId
+                identifier = account.drawerId
                 tag = account
                 textColor = selectedTextColor
                 descriptionTextColor = selectedTextColor
@@ -309,7 +308,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     fun updateUserAccountsAndFolders(account: Account?) {
         if (account != null) {
             initializeWithAccountColor(account)
-            headerView.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
+            headerView.setActiveProfile(account.drawerId)
             foldersViewModel.loadFolders(account)
         }
 
@@ -389,9 +388,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             }
         }
 
+        val accountOffset = folderList.accountId.toLong() shl DRAWER_ACCOUNT_SHIFT
         for (displayFolder in folderList.folders) {
             val folder = displayFolder.folder
-            val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
+            val drawerId = accountOffset + folder.id
 
             val drawerItem = FolderDrawerItem().apply {
                 iconRes = folderIconProvider.getFolderIcon(folder.type)
@@ -522,10 +522,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val IProfile.accountUuid: String?
         get() = (this.tag as? Account)?.uuid
 
+    private val Account.drawerId: Long
+        get() = (accountNumber + 1).toLong()
+
     companion object {
-        // Bit shift for identifiers of user folders items, to leave space for other items
-        private const val DRAWER_FOLDER_SHIFT: Int = 20
-        private const val DRAWER_ACCOUNT_SHIFT: Int = 3
+        // Use the lower 48 bits for the folder ID, the upper bits for the account's drawer ID
+        private const val DRAWER_ACCOUNT_SHIFT: Int = 48
 
         private const val DRAWER_ID_UNIFIED_INBOX: Long = 0
         private const val DRAWER_ID_DIVIDER: Long = 1
