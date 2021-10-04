@@ -306,4 +306,24 @@ public class HtmlConverterTest {
 
         assertEquals("https://domain.example/path/", result);
     }
+
+    @Test
+    public void htmlToText_withLineBreaksInHtml() {
+        String input = "One\nTwo\r\nThree";
+
+        String result = HtmlConverter.htmlToText(input);
+
+        assertEquals("One Two Three", result);
+    }
+
+    @Test
+    public void htmlToText_withLongTextLine_shouldNotAddLineBreaksToOutput() {
+        String input = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet finibus felis, " +
+                "viverra ullamcorper justo. Suspendisse potenti. Etiam erat sem, interdum a condimentum quis, " +
+                "fringilla quis orci.";
+
+        String result = HtmlConverter.htmlToText(input);
+
+        assertEquals(input, result);
+    }
 }
