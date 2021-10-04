@@ -24,7 +24,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
 import com.fsck.k9.mail.Address;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**

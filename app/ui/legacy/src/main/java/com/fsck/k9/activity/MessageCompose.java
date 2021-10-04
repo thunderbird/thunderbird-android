@@ -25,9 +25,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -46,6 +43,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.Account;
@@ -115,7 +115,6 @@ import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.fsck.k9.ui.permissions.K9PermissionUiHelper;
 import com.fsck.k9.ui.permissions.Permission;
 import com.fsck.k9.ui.permissions.PermissionUiHelper;
-
 import org.jetbrains.annotations.NotNull;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpApi;

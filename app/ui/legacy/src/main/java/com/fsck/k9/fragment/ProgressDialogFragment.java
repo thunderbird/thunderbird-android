@@ -1,10 +1,12 @@
 package com.fsck.k9.fragment;
 
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.fragment.app.DialogFragment;
 
 

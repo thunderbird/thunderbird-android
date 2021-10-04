@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail;
 
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
-
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import timber.log.Timber;

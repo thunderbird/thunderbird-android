@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail.ssl;
 
+
 import java.net.Socket;
 import java.security.Principal;
 import java.security.PrivateKey;
@@ -10,16 +11,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.X509ExtendedKeyManager;
-import javax.security.auth.x500.X500Principal;
-
 import android.content.Context;
 import android.security.KeyChain;
 import android.security.KeyChainException;
 
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessagingException;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.X509ExtendedKeyManager;
+import javax.security.auth.x500.X500Principal;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason;

@@ -1,5 +1,10 @@
 package com.fsck.k9.activity.compose;
 
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +16,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Adapter for the <em>Choose identity</em> list view.

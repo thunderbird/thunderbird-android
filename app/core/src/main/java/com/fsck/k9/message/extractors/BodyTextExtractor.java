@@ -2,13 +2,12 @@ package com.fsck.k9.message.extractors;
 
 
 import androidx.annotation.NonNull;
-import timber.log.Timber;
-
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.message.html.HtmlConverter;
+import timber.log.Timber;
 
 
 //TODO: Get rid of this class and use MessageViewInfoExtractor instead

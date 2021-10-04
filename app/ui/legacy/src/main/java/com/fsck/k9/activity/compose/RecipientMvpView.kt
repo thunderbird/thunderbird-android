@@ -19,7 +19,6 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.view.RecipientSelectView
 import com.fsck.k9.view.RecipientSelectView.Recipient
 import com.fsck.k9.view.ToolableViewAnimator
-import java.lang.AssertionError
 
 class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChangeListener, View.OnClickListener {
     private val toView: RecipientSelectView = activity.findViewById(R.id.to)

@@ -5,19 +5,12 @@ import java.util.Map;
 
 import android.os.Bundle;
 
-import com.fsck.k9.DI;
-import timber.log.Timber;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
+import com.fsck.k9.DI;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
-import com.fsck.k9.message.extractors.BodyTextExtractor;
-import com.fsck.k9.message.html.HtmlConverter;
-import com.fsck.k9.message.quote.HtmlQuoteCreator;
-import com.fsck.k9.message.quote.TextQuoteCreator;
-import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
@@ -25,11 +18,17 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.IdentityField;
-import com.fsck.k9.message.quote.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.extractors.BodyTextExtractor;
+import com.fsck.k9.message.html.HtmlConverter;
+import com.fsck.k9.message.quote.HtmlQuoteCreator;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
+import com.fsck.k9.message.quote.TextQuoteCreator;
+import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.message.signature.TextSignatureRemover;
+import timber.log.Timber;
 
 
 public class QuotedMessagePresenter {

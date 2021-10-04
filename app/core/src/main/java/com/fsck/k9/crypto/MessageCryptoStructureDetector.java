@@ -9,7 +9,6 @@ import java.util.Stack;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
 import com.fsck.k9.helper.StringHelper;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;

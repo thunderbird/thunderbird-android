@@ -20,7 +20,13 @@ import com.fsck.k9.mail.MessagingException;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
-import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.DELE_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.LIST_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.QUIT_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.RETR_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.STAT_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.TOP_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.UIDL_COMMAND;
 
 
 /**

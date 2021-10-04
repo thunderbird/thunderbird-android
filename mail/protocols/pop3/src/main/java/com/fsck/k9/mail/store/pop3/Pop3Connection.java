@@ -34,7 +34,18 @@ import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapa
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT;
 import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT;
-import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.AUTH_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.AUTH_CRAM_MD5_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.AUTH_EXTERNAL_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.AUTH_PLAIN_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.CAPA_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.PASS_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.SASL_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.STLS_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.STLS_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.TOP_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.UIDL_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.USER_COMMAND;
 
 
 class Pop3Connection {

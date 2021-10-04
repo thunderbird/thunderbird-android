@@ -5,11 +5,10 @@ import java.io.InputStream;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
-
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import timber.log.Timber;

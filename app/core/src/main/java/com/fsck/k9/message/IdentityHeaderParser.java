@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import android.net.Uri;
-import timber.log.Timber;
 
 import com.fsck.k9.mail.filter.Base64;
+import timber.log.Timber;
 
 
 public class IdentityHeaderParser {

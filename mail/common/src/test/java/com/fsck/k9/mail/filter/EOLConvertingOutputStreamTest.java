@@ -1,10 +1,10 @@
 package com.fsck.k9.mail.filter;
 
 
+import java.io.ByteArrayOutputStream;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.ByteArrayOutputStream;
 
 import static org.junit.Assert.assertEquals;
 

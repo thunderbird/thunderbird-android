@@ -9,7 +9,6 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
 import okio.ByteString;

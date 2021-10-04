@@ -8,8 +8,8 @@ import java.io.InputStream;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import androidx.loader.content.AsyncTaskLoader;
 
+import androidx.loader.content.AsyncTaskLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.message.Attachment.LoadingState;
 import de.cketti.safecontentresolver.SafeContentResolver;

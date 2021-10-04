@@ -3,10 +3,7 @@ package com.fsck.k9.view;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
-import timber.log.Timber;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
@@ -14,8 +11,11 @@ import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-import com.fsck.k9.ui.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.fsck.k9.mailstore.AttachmentResolver;
+import com.fsck.k9.ui.R;
+import timber.log.Timber;
 
 
 public class MessageWebView extends WebView {

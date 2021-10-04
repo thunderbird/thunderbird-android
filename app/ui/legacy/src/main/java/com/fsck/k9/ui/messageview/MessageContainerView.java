@@ -30,8 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.DI;
-import com.fsck.k9.message.html.DisplayHtml;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
@@ -39,6 +37,8 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.message.html.DisplayHtml;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;

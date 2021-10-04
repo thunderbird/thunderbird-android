@@ -1,11 +1,6 @@
 
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.MimeType;
-import com.fsck.k9.mail.Multipart;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,7 +8,11 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import androidx.annotation.NonNull;
-
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.MimeType;
+import com.fsck.k9.mail.Multipart;
 import org.jetbrains.annotations.NotNull;
 
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;

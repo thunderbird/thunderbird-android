@@ -2,7 +2,6 @@ package com.fsck.k9.crypto.openpgp;
 
 
 import androidx.annotation.NonNull;
-
 import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;

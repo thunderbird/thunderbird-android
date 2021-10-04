@@ -24,14 +24,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
 import com.fsck.k9.Account;
 import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
-import com.fsck.k9.controller.MessageCounts;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.controller.MessageCounts;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
 import com.fsck.k9.controller.PendingCommandSerializer;
 import com.fsck.k9.helper.Utility;

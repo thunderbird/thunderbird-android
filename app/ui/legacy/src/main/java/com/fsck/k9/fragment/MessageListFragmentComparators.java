@@ -1,9 +1,10 @@
 package com.fsck.k9.fragment;
 
-import android.database.Cursor;
 
 import java.util.Comparator;
 import java.util.List;
+
+import android.database.Cursor;
 
 /**
  * A set of {@link Comparator} classes used for {@link Cursor} data comparison.

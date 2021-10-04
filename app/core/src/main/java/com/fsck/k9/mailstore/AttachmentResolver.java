@@ -7,18 +7,17 @@ import java.util.Map;
 import java.util.Stack;
 
 import android.net.Uri;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
-
 import com.fsck.k9.DI;
-import timber.log.Timber;
-
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
+import timber.log.Timber;
 
 
 /**

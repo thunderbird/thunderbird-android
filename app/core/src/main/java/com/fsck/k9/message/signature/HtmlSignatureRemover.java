@@ -4,7 +4,6 @@ package com.fsck.k9.message.signature;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
-
 import com.fsck.k9.helper.jsoup.AdvancedNodeTraversor;
 import com.fsck.k9.helper.jsoup.NodeFilter;
 import com.fsck.k9.message.html.HtmlProcessor;

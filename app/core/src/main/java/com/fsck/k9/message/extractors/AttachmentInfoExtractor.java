@@ -9,12 +9,10 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.net.Uri;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
-import timber.log.Timber;
 import androidx.annotation.WorkerThread;
-
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -26,6 +24,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalPart;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.provider.DecryptedFileProvider;
+import timber.log.Timber;
 
 
 public class AttachmentInfoExtractor {

@@ -6,9 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import timber.log.Timber;
-
 import org.apache.commons.io.IOUtils;
+import timber.log.Timber;
 
 
 public class FileHelper {

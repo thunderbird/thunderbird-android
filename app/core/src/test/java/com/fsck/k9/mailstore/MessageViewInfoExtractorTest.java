@@ -12,8 +12,8 @@ import java.util.TimeZone;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import androidx.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.TestCoreResourceProvider;

@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Set;
 
 import android.net.ConnectivityManager;
-import androidx.annotation.Nullable;
 
+import androidx.annotation.Nullable;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;

@@ -9,7 +9,6 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
-
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Address;

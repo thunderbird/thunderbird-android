@@ -1,10 +1,10 @@
 package com.fsck.k9.storage.messages
 
+import org.junit.Assert.fail as junitFail
 import com.fsck.k9.K9
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.junit.Assert.fail as junitFail
 
 private const val SOURCE_FOLDER_ID = 3L
 private const val DESTINATION_FOLDER_ID = 23L

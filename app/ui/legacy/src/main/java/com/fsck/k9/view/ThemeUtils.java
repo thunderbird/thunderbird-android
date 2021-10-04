@@ -3,10 +3,11 @@ package com.fsck.k9.view;
 
 import android.content.Context;
 import android.content.res.Resources.Theme;
+import android.util.TypedValue;
+
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.UiThread;
-import android.util.TypedValue;
 
 
 public class ThemeUtils {

@@ -1,9 +1,10 @@
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Part;
 
 import java.util.List;
+
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Part;
 
 /**
  * Empty marker class interface the class hierarchy used by

@@ -1,14 +1,16 @@
 package com.fsck.k9.activity.setup;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;

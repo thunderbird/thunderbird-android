@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;

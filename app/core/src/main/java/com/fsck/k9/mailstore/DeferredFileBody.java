@@ -12,14 +12,13 @@ import java.io.OutputStream;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import timber.log.Timber;
-
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.RawDataBody;
 import com.fsck.k9.mail.internet.SizeAware;
 import com.fsck.k9.mailstore.util.DeferredFileOutputStream;
 import com.fsck.k9.mailstore.util.FileFactory;
 import org.apache.commons.io.IOUtils;
+import timber.log.Timber;
 
 
 /** This is a body where the data is memory-backed at first and switches to file-backed if it gets larger.

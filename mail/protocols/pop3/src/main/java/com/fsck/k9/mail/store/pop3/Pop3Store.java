@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
-
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MessagingException;

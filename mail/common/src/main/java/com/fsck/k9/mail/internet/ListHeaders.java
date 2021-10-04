@@ -1,12 +1,12 @@
 package com.fsck.k9.mail.internet;
 
 
-import android.net.Uri;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import android.net.Uri;
 
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.mail.Address;

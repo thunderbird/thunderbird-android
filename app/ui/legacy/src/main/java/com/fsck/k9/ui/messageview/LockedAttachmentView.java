@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
 
-import com.fsck.k9.ui.R;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.view.ToolableViewAnimator;
 
 

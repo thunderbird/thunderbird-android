@@ -1,11 +1,11 @@
 package com.fsck.k9.activity.misc;
 
+
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fsck.k9.mail.internet.MimeUtility;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

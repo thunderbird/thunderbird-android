@@ -4,15 +4,14 @@ package com.fsck.k9.message.quote;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
-import timber.log.Timber;
-
-import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.message.html.HtmlConverter;
+import timber.log.Timber;
 
 
 public class HtmlQuoteCreator {

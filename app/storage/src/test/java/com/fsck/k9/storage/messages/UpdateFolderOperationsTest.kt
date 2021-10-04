@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import com.fsck.k9.mail.FolderType as RemoteFolderType
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderDetails
@@ -8,7 +9,6 @@ import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class UpdateFolderOperationsTest : RobolectricTest() {
     private val sqliteDatabase = createDatabase()

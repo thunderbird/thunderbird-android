@@ -13,15 +13,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 import androidx.core.content.FileProvider;
-import timber.log.Timber;
-
 import com.fsck.k9.K9;
 import okio.ByteString;
 import org.apache.commons.io.IOUtils;
+import timber.log.Timber;
 
 
 public class AttachmentTempFileProvider extends FileProvider {

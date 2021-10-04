@@ -1,14 +1,14 @@
 package com.fsck.k9.search;
 
+
 import java.util.List;
 
-import com.fsck.k9.DI;
-import timber.log.Timber;
-
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
+import timber.log.Timber;
 
 
 public class SqlQueryBuilder {

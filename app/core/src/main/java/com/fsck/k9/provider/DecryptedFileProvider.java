@@ -14,19 +14,19 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
+import android.text.TextUtils;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import android.text.TextUtils;
-import timber.log.Timber;
-
 import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.util.FileFactory;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
+import timber.log.Timber;
 
 
 public class DecryptedFileProvider extends FileProvider {

@@ -2,6 +2,8 @@
 package com.fsck.k9.activity.setup;
 
 
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -26,11 +28,9 @@ import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
-import com.fsck.k9.helper.EmailHelper;
-import com.fsck.k9.setup.ServerNameSuggester;
-import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.job.K9JobManager;
 import com.fsck.k9.mail.AuthType;
@@ -41,13 +41,12 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.preferences.Protocols;
+import com.fsck.k9.setup.ServerNameSuggester;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.ui.base.extensions.TextInputLayoutHelper;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
-
-import java.util.Map;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import timber.log.Timber;

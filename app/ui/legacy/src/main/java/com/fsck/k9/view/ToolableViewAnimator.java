@@ -27,13 +27,13 @@ package com.fsck.k9.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ViewAnimator;
 
+import androidx.annotation.NonNull;
 import com.fsck.k9.ui.R;
 
 

@@ -3,8 +3,8 @@ package com.fsck.k9.message.extractors;
 
 import android.content.Context;
 import android.net.Uri;
-import androidx.annotation.Nullable;
 
+import androidx.annotation.Nullable;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;

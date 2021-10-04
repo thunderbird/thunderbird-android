@@ -1,7 +1,7 @@
 package com.fsck.k9.network
 
-import android.os.Build
 import android.net.ConnectivityManager as SystemConnectivityManager
+import android.os.Build
 
 interface ConnectivityManager {
     fun start()

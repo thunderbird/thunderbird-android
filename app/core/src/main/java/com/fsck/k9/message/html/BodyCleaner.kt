@@ -1,8 +1,8 @@
 package com.fsck.k9.message.html
 
+import org.jsoup.safety.Whitelist as AllowList
 import org.jsoup.nodes.Document
 import org.jsoup.safety.Cleaner
-import org.jsoup.safety.Whitelist as AllowList
 
 internal class BodyCleaner {
     private val cleaner: Cleaner

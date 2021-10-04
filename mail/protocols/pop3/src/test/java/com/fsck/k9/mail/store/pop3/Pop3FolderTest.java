@@ -1,21 +1,20 @@
 package com.fsck.k9.mail.store.pop3;
 
 
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.FetchProfile.Item;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.internet.BinaryTempFileBody;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.FetchProfile.Item;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

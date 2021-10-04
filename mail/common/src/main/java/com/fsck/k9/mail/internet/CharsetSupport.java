@@ -1,17 +1,16 @@
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-
-import org.apache.commons.io.IOUtils;
-import timber.log.Timber;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.util.Locale;
+
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import org.apache.commons.io.IOUtils;
+import timber.log.Timber;
 
 import static com.fsck.k9.mail.internet.JisSupport.SHIFT_JIS;
 

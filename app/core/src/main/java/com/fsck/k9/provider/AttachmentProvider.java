@@ -11,20 +11,19 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.fsck.k9.DI;
-import com.fsck.k9.mailstore.LocalStoreProvider;
-import timber.log.Timber;
-
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
+import timber.log.Timber;
 
 
 /**

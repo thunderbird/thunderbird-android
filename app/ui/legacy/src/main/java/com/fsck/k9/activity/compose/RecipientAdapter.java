@@ -7,8 +7,6 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -20,6 +18,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;

@@ -1,16 +1,16 @@
 package com.fsck.k9.mailstore;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
-import org.apache.james.mime4j.util.MimeUtil;
-
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64OutputStream;
+import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
+import org.apache.james.mime4j.util.MimeUtil;
 
 /**
  * Superclass for attachments that contain binary data.

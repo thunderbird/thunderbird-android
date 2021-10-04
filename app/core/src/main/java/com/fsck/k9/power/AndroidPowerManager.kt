@@ -1,13 +1,13 @@
 package com.fsck.k9.power
 
+import android.os.PowerManager as SystemPowerManager
+import android.os.PowerManager.WakeLock as SystemWakeLock
 import android.annotation.SuppressLint
 import android.os.SystemClock
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.power.WakeLock
 import java.util.concurrent.atomic.AtomicInteger
 import timber.log.Timber
-import android.os.PowerManager as SystemPowerManager
-import android.os.PowerManager.WakeLock as SystemWakeLock
 
 internal class AndroidPowerManager(private val systemPowerManager: SystemPowerManager) : PowerManager {
     override fun newWakeLock(tag: String): WakeLock {

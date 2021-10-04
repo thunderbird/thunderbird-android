@@ -8,8 +8,8 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 
+import androidx.annotation.Nullable;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;

@@ -3,8 +3,8 @@ package com.fsck.k9.ui.crypto;
 
 import android.content.Context;
 
-import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.IOpenPgpService2;
+import org.openintents.openpgp.util.OpenPgpApi;
 
 
 public class OpenPgpApiFactory {

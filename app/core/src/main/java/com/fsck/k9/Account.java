@@ -11,15 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mailstore.StorageManager;
-import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

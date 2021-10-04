@@ -9,9 +9,9 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
 import com.fsck.k9.Account;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.MessageViewInfo;

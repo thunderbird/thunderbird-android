@@ -16,7 +16,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
-
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyFactory;

@@ -1,9 +1,10 @@
 package com.fsck.k9.activity.setup;
 
+
 import android.content.res.Resources;
 
-import com.fsck.k9.ui.R;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.ui.R;
 
 class ConnectionSecurityHolder {
     final ConnectionSecurity connectionSecurity;

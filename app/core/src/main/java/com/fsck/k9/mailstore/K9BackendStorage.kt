@@ -1,10 +1,10 @@
 package com.fsck.k9.mailstore
 
+import com.fsck.k9.mail.FolderType as RemoteFolderType
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
-import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class K9BackendStorage(
     private val messageStore: MessageStore,

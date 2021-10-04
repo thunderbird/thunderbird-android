@@ -1,5 +1,6 @@
 package com.fsck.k9
 
+import org.koin.java.KoinJavaComponent.get as koinGet
 import android.app.Application
 import com.fsck.k9.core.BuildConfig
 import org.koin.android.ext.koin.androidContext
@@ -9,7 +10,6 @@ import org.koin.core.module.Module
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.java.KoinJavaComponent.getKoin
-import org.koin.java.KoinJavaComponent.get as koinGet
 
 object DI {
     private const val DEBUG = false

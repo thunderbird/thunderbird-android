@@ -14,9 +14,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import androidx.annotation.WorkerThread;
 import android.widget.Toast;
 
+import androidx.annotation.WorkerThread;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;

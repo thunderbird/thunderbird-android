@@ -1,14 +1,14 @@
 package com.fsck.k9.preferences.migrations.migration12;
 
 
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.ServerSettings;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 

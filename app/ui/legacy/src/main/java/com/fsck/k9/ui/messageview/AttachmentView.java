@@ -13,9 +13,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.K9;
+import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.SizeFormatter;
-import com.fsck.k9.mailstore.AttachmentViewInfo;
 
 
 public class AttachmentView extends FrameLayout implements OnClickListener {

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
 import android.content.pm.PackageManager.DONT_KILL_APP
-import java.lang.Exception
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber

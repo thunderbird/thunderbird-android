@@ -1,10 +1,10 @@
 package com.fsck.k9.ui.folders
 
+import com.fsck.k9.mail.FolderType as LegacyFolderType
 import android.content.res.Resources
 import android.util.TypedValue
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.ui.R
-import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 class FolderIconProvider(private val theme: Resources.Theme) {
     private val iconFolderInboxResId: Int

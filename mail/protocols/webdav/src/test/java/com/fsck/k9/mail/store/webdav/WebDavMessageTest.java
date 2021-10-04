@@ -2,7 +2,6 @@ package com.fsck.k9.mail.store.webdav;
 
 
 import com.fsck.k9.mail.MessagingException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

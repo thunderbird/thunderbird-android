@@ -2,7 +2,6 @@ package com.fsck.k9.controller;
 
 
 import androidx.annotation.NonNull;
-
 import com.fsck.k9.mail.Message;
 import org.junit.Before;
 import org.junit.Test;

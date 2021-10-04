@@ -2,11 +2,10 @@ package com.fsck.k9.mailstore;
 
 
 import android.app.PendingIntent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.fsck.k9.mail.internet.MimeBodyPart;
-
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;

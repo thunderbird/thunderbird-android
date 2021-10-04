@@ -11,13 +11,13 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Binder;
-import androidx.core.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import androidx.core.content.ContextCompat;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.external.MessageProvider;

@@ -17,6 +17,10 @@
 
 package com.fsck.k9.view;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -26,9 +30,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.webkit.WebView;
 import android.widget.ScrollView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A {@link ScrollView} that will never lock scrolling in a particular direction.

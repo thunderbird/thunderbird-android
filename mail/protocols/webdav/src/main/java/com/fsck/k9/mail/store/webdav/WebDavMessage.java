@@ -1,11 +1,11 @@
 package com.fsck.k9.mail.store.webdav;
 
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.internet.MimeMessage;
 
 import java.util.Locale;
 import java.util.Map;
 
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.MimeMessage;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;

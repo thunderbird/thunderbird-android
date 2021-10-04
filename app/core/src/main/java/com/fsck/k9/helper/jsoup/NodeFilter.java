@@ -2,7 +2,6 @@ package com.fsck.k9.helper.jsoup;
 
 
 import androidx.annotation.NonNull;
-
 import org.jsoup.nodes.Node;
 
 

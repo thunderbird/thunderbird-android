@@ -17,7 +17,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
-
 import javax.net.ssl.SSLException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

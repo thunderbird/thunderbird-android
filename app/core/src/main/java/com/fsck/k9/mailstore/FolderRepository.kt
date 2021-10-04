@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore
 
+import com.fsck.k9.mail.FolderType as RemoteFolderType
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.DI
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FolderRepository(

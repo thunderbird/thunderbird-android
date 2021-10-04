@@ -16,10 +16,10 @@ import android.widget.EditText;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.MessageList;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.base.K9Activity;
 
 public class AccountSetupNames extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";

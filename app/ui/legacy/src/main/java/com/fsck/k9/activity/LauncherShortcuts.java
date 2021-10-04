@@ -1,13 +1,14 @@
 package com.fsck.k9.activity;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BaseAccount;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.search.SearchAccount;
+import com.fsck.k9.ui.R;
 
 public class LauncherShortcuts extends AccountList {
     @Override

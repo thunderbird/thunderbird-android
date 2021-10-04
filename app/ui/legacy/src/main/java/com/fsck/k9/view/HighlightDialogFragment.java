@@ -5,10 +5,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import androidx.fragment.app.DialogFragment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.fragment.app.DialogFragment;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.compose.SimpleHighlightView;
 

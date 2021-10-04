@@ -1,15 +1,15 @@
 package com.fsck.k9.helper;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.net.Uri;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.internet.MessageIdParser;
 import com.fsck.k9.mail.internet.MimeHeaderParserException;
 import timber.log.Timber;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public final class MailTo {

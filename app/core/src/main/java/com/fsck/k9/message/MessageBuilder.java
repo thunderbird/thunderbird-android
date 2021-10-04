@@ -10,12 +10,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
 
-import com.fsck.k9.CoreResourceProvider;
-import com.fsck.k9.mail.internet.AddressHeaderBuilder;
-import com.fsck.k9.mail.internet.Headers;
-import timber.log.Timber;
-
 import com.fsck.k9.Account.QuoteStyle;
+import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;
@@ -24,6 +20,8 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.AddressHeaderBuilder;
+import com.fsck.k9.mail.internet.Headers;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -36,6 +34,7 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.apache.james.mime4j.util.MimeUtil;
+import timber.log.Timber;
 
 
 public abstract class MessageBuilder {

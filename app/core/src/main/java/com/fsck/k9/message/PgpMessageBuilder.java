@@ -9,10 +9,10 @@ import java.util.Arrays;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -27,7 +27,6 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.internet.Headers;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;

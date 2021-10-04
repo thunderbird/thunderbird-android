@@ -2,10 +2,8 @@ package com.fsck.k9.message.extractors;
 
 
 import androidx.annotation.NonNull;
-
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
-
 import timber.log.Timber;
 
 

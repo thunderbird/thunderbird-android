@@ -8,10 +8,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import androidx.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.annotation.IdRes;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.HighlightDialogFragment;
 

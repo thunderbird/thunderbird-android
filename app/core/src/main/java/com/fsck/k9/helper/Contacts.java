@@ -1,6 +1,8 @@
 package com.fsck.k9.helper;
 
 
+import java.util.HashMap;
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -9,13 +11,11 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import timber.log.Timber;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
+
 import androidx.core.content.ContextCompat;
-
 import com.fsck.k9.mail.Address;
-
-import java.util.HashMap;
+import timber.log.Timber;
 
 /**
  * Helper class to access the contacts stored on the device.

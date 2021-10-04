@@ -8,8 +8,6 @@ import android.content.res.Resources;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.AttrRes;
-import androidx.annotation.DrawableRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +17,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
 import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.ui.R;

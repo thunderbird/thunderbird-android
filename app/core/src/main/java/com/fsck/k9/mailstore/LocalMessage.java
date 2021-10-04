@@ -10,8 +10,8 @@ import java.util.Objects;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import androidx.annotation.VisibleForTesting;
 
+import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;

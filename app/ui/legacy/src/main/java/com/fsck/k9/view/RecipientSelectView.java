@@ -16,11 +16,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract.Contacts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.app.LoaderManager.LoaderCallbacks;
-import androidx.loader.content.Loader;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -33,19 +28,24 @@ import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.app.LoaderManager.LoaderCallbacks;
+import androidx.loader.content.Loader;
 import com.fsck.k9.K9;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
 import com.fsck.k9.activity.AlternateRecipientAdapter.AlternateRecipientListener;
 import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.activity.compose.RecipientLoader;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.compose.RecipientCircleImageView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import org.apache.james.mime4j.util.CharsetUtil;
 import timber.log.Timber;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.fsck.k9.FontSizes.FONT_DEFAULT;
 

@@ -1,20 +1,5 @@
 package com.fsck.k9.mail.store.webdav;
 
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.FolderType;
-import com.fsck.k9.mail.K9MailLib;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.StringEntity;
-import timber.log.Timber;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -32,6 +17,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FolderType;
+import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.StringEntity;
+import timber.log.Timber;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_WEBDAV;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;

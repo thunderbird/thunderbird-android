@@ -1,7 +1,7 @@
 package com.fsck.k9.message.html
 
-import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist as AllowList
+import org.jsoup.Jsoup
 
 object HtmlHelper {
     @JvmStatic

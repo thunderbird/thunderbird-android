@@ -1,13 +1,14 @@
 
 package com.fsck.k9.mail;
 
+
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import javax.net.ssl.SSLHandshakeException;
-
 import android.security.KeyChainException;
+
+import javax.net.ssl.SSLHandshakeException;
 
 public class CertificateValidationException extends MessagingException {
     public static final long serialVersionUID = -1;

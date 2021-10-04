@@ -1,19 +1,20 @@
 
 package com.fsck.k9.view;
 
-import com.fsck.k9.ui.R;
 
 import android.app.Activity;
 import android.content.Context;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.util.AttributeSet;
-import timber.log.Timber;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import com.fsck.k9.ui.R;
+import timber.log.Timber;
 
 public class ClientCertificateSpinner extends LinearLayout {
     Activity mActivity;

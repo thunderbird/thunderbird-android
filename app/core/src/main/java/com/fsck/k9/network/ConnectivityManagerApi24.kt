@@ -1,12 +1,12 @@
 package com.fsck.k9.network
 
+import android.net.ConnectivityManager as SystemConnectivityManager
 import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.annotation.RequiresApi
 import timber.log.Timber
-import android.net.ConnectivityManager as SystemConnectivityManager
 
 @RequiresApi(Build.VERSION_CODES.N)
 internal class ConnectivityManagerApi24(
