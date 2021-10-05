@@ -273,10 +273,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="global_settings_privacy_hide_useragent_detail">從郵件標頭中移除 K-9 的 User-Agent</string>
   <string name="global_settings_privacy_hide_timezone">隱藏時區</string>
   <string name="global_settings_privacy_hide_timezone_detail">在郵件標頭及回覆標頭中使用 UTC 時間而不是本地時間</string>
-  <string name="global_settings_notification_hide_subject_title">在通知時隱藏主題</string>
-  <string name="global_settings_notification_hide_subject_never">絕不</string>
-  <string name="global_settings_notification_hide_subject_when_locked">當裝置上鎖時</string>
-  <string name="global_settings_notification_hide_subject_always">總是</string>
   <string name="global_settings_notification_quick_delete_title">顯示「刪除」按鈕</string>
   <string name="global_settings_notification_quick_delete_never">絕不</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">針對單一訊息通知</string>
@@ -342,8 +338,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_incoming_mobile_label">行動網路</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">其他</string>
-  <string name="local_storage_provider_external_label">外部儲存 (記憶卡)</string>
-  <string name="local_storage_provider_internal_label">手機內部儲存</string>
   <string name="account_setup_expunge_policy_label">抹除刪除的郵件</string>
   <string name="account_setup_expunge_policy_immediately">立刻</string>
   <string name="account_setup_expunge_policy_on_poll">接收郵件時</string>
@@ -419,8 +413,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_failed_dlg_continue_action">繼續</string>
   <string name="account_settings_push_advanced_title">進階</string>
   <string name="account_settings_title_fmt">帳號設定</string>
-  <string name="account_settings_default_label">預設帳號</string>
-  <string name="account_settings_default_summary">預設使用這個帳號寄送郵件</string>
   <string name="account_settings_notify_label">新郵件通知</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">通知信件匣</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>

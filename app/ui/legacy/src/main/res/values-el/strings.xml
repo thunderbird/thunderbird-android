@@ -276,10 +276,6 @@
   <string name="global_settings_privacy_hide_useragent_detail">Αφαίρεση του Πράκτορα-χρήστη K-9 από την επικεφαλίδα του μηνύματος</string>
   <string name="global_settings_privacy_hide_timezone">Απόκρυψη ζώνης ώρας</string>
   <string name="global_settings_privacy_hide_timezone_detail">Χρήση της Συντονισμένης Παγκόσμιας Ώρας έναντι της τοπικής ζώνης ώρας, στις επικεφαλίδες αλληλογραφίας και απάντησης</string>
-  <string name="global_settings_notification_hide_subject_title">Απόκρυψη θέματος στις ειδοποιήσεις</string>
-  <string name="global_settings_notification_hide_subject_never">Ποτέ</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Όταν η συσκευή είναι κλειδωμένη</string>
-  <string name="global_settings_notification_hide_subject_always">Πάντοτε</string>
   <string name="global_settings_notification_quick_delete_title">Εμφάνιση κουμπιού «Διαγραφή»</string>
   <string name="global_settings_notification_quick_delete_never">Ποτέ</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Για ειδοποίηση ενός μηνύματος</string>
@@ -345,8 +341,6 @@
   <string name="account_setup_incoming_mobile_label">Κινητής</string>
   <string name="account_setup_incoming_wifi_label">Ασύρματης Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Άλλο</string>
-  <string name="local_storage_provider_external_label">Εξωτερική αποθήκευση (SD card)</string>
-  <string name="local_storage_provider_internal_label">Κανονική εσωτερική αποθήκευση</string>
   <string name="account_setup_expunge_policy_label">Εξάλειψη διαγραμμένων μηνυμάτων</string>
   <string name="account_setup_expunge_policy_immediately">Αμέσως</string>
   <string name="account_setup_expunge_policy_on_poll">Κατά την ενημέρωση</string>
@@ -422,8 +416,6 @@
   <string name="account_setup_failed_dlg_continue_action">Συνέχεια</string>
   <string name="account_settings_push_advanced_title">Προχωρημένα</string>
   <string name="account_settings_title_fmt">Ρυθμίσεις λογαριασμού</string>
-  <string name="account_settings_default_label">Εξ ορισμού λογαριασμός</string>
-  <string name="account_settings_default_summary">Αποστολή ταχυδρομείου από αυτό το λογαριασμό εξ ορισμού</string>
   <string name="account_settings_notify_label">Ειδοποιήσεις νέων μηνυμάτων</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Φάκελοι ειδοποιήσεων</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Όλοι</string>

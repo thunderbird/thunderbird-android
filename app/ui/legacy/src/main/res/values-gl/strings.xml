@@ -238,10 +238,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="global_settings_privacy_hide_useragent_detail">Quitar K-9 User-Agent dos cabezallos do correo</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
   <string name="global_settings_privacy_hide_timezone_detail">Utilizar UTC no lugar da hora local nos cabezallos do correo e as respostas</string>
-  <string name="global_settings_notification_hide_subject_title">Agochar asunto nas notificacións</string>
-  <string name="global_settings_notification_hide_subject_never">Nunca</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Cando o dispositivo está bloqueado</string>
-  <string name="global_settings_notification_hide_subject_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_title">Mostar botón \'Eliminar\'</string>
   <string name="global_settings_notification_quick_delete_never">Nunca</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Para notificacións de mensaxes individuais</string>
@@ -304,8 +300,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_incoming_mobile_label">Móbil</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Outras</string>
-  <string name="local_storage_provider_external_label">Almacenamento externo (SD)</string>
-  <string name="local_storage_provider_internal_label">Almacenamento interno</string>
   <string name="account_setup_expunge_policy_label">Erradicar borrados</string>
   <string name="account_setup_expunge_policy_immediately">Inmediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante comprobación</string>
@@ -381,8 +375,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avanzado</string>
   <string name="account_settings_title_fmt">Configuración de conta</string>
-  <string name="account_settings_default_label">Conta por defecto</string>
-  <string name="account_settings_default_summary">Enviar correo dende esta conta por defecto</string>
   <string name="account_settings_notify_label">Notificar correo novo</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Cartafoles de notificacións</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>

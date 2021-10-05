@@ -270,10 +270,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="global_settings_privacy_hide_useragent_detail">Прыбраць \"K-9 User-Agent\" з загалоўкаў лістоў</string>
   <string name="global_settings_privacy_hide_timezone">Схаваць часавы пояс</string>
   <string name="global_settings_privacy_hide_timezone_detail">Выкарыстоўваць у загалоўках лістоў UTC замест мясцовага часу</string>
-  <string name="global_settings_notification_hide_subject_title">Схаваць тэму ў апавяшчэнні</string>
-  <string name="global_settings_notification_hide_subject_never">Ніколі</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Калі прылада заблакаваная</string>
-  <string name="global_settings_notification_hide_subject_always">Заўсёды</string>
   <string name="global_settings_notification_quick_delete_title">Паказваць кнопку выдалення</string>
   <string name="global_settings_notification_quick_delete_never">Ніколі</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Для аднаго ліста</string>
@@ -336,8 +332,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_incoming_mobile_label">Мабільныя</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Іншыя</string>
-  <string name="local_storage_provider_external_label">Вонкавае сховішча (картка памяці)</string>
-  <string name="local_storage_provider_internal_label">Унутранае сховішча</string>
   <string name="account_setup_expunge_policy_label">Сціранне выдаленых лістоў з сервера</string>
   <string name="account_setup_expunge_policy_immediately">Неадкладна</string>
   <string name="account_setup_expunge_policy_on_poll">Падчас праверкі</string>
@@ -413,8 +407,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_failed_dlg_continue_action">Працягнуць</string>
   <string name="account_settings_push_advanced_title">Дадаткова</string>
   <string name="account_settings_title_fmt">Налады акаўнта</string>
-  <string name="account_settings_default_label">Прадвызначаны акаўнт</string>
-  <string name="account_settings_default_summary">Прадвызначана адпраўляць пошту з гэтага акаўнта</string>
   <string name="account_settings_notify_label">Апавяшчэнне пра новую пошту</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Апавяшчэнні каталогаў</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Усе</string>

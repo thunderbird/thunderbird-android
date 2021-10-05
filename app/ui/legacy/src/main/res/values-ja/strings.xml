@@ -273,10 +273,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_privacy_hide_useragent_detail">メールヘッダからK-9のUser-Agentヘッダを削除する</string>
   <string name="global_settings_privacy_hide_timezone">タイムゾーンを隠す</string>
   <string name="global_settings_privacy_hide_timezone_detail">メールヘッダと返信ヘッダにローカルタイムゾーンの代わりにUTCを利用します</string>
-  <string name="global_settings_notification_hide_subject_title">通知時にメールの題名を隠すか</string>
-  <string name="global_settings_notification_hide_subject_never">常に表示する</string>
-  <string name="global_settings_notification_hide_subject_when_locked">ロック時のみ隠す</string>
-  <string name="global_settings_notification_hide_subject_always">常に隠す</string>
   <string name="global_settings_notification_quick_delete_title">削除ボタンを表示</string>
   <string name="global_settings_notification_quick_delete_never">常に表示しない</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">通知メッセージが1件の場合</string>
@@ -342,8 +338,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_incoming_mobile_label">モバイル</string>
   <string name="account_setup_incoming_wifi_label">WiFi</string>
   <string name="account_setup_incoming_other_label">その他</string>
-  <string name="local_storage_provider_external_label">外部ストレージ (SDカード)</string>
-  <string name="local_storage_provider_internal_label">内部ストレージ</string>
   <string name="account_setup_expunge_policy_label">サーバから削除したメッセージを消す</string>
   <string name="account_setup_expunge_policy_immediately">削除または移動後即時</string>
   <string name="account_setup_expunge_policy_on_poll">同期のタイミングで</string>
@@ -419,8 +413,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_failed_dlg_continue_action">続行</string>
   <string name="account_settings_push_advanced_title">プッシュ接続の拡張設定</string>
   <string name="account_settings_title_fmt">アカウント設定</string>
-  <string name="account_settings_default_label">標準アカウント</string>
-  <string name="account_settings_default_summary">このアカウントをメール送信に利用する</string>
   <string name="account_settings_notify_label">受信メール通知</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">通知するフォルダ</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">すべて</string>

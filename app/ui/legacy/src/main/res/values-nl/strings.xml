@@ -23,7 +23,7 @@
   <string name="changelog_version_title">Versie %s</string>
   <string name="changelog_recent_changes_title">Wat is er nieuw</string>
   <string name="changelog_show_recent_changes">Laat veranderingen zien als de app recent is bijgewerkt</string>
-  <string name="changelog_snackbar_text">Ontdek wat er nieuw is in deze uitgave</string>
+  <string name="changelog_snackbar_text">Ontdek wat er nieuw is in deze versie</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Welkom bij K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[ <p> K-9 Mail is een gratis krachtige e-mail client voor Android. </p><p> De verbeterde mogelijkheden bestaan uit ondermeer:
@@ -73,6 +73,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="compose_title_forward_as_attachment">Doorsturen als bijlage</string>
   <string name="choose_account_title">Kies account</string>
   <string name="choose_folder_title">Kies een map</string>
+  <string name="choose_folder_move_title">Verplaatsen naar …</string>
+  <string name="choose_folder_copy_title">Kopiëren naar …</string>
   <string name="status_loading_account_folder">Peiling <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Koppen ophalen <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Verzenden <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -249,7 +251,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_show_contact_name_label">Toon naam uit contactenlijst</string>
   <string name="global_settings_show_contact_name_summary">Gebruik naam uit het adresboek</string>
   <string name="global_settings_registered_name_color_label">Kleuren contacten</string>
-  <string name="global_settings_registered_name_color_changed">Kleur de namen in uw contact lijst</string>
+  <string name="global_settings_registered_name_color_changed">Kleur de namen in jouw contact lijst</string>
   <string name="global_settings_messageview_fixedwidth_label">Vaste breedte lettertypen</string>
   <string name="global_settings_messageview_fixedwidth_summary">Gebruik een lettertype met vaste breedte bij het weergeven van plain-tekstberichten</string>
   <string name="global_settings_messageview_autofit_width_label">Berichten auto-passen</string>
@@ -259,7 +261,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_messageview_show_next_label">Volgend bericht laten zien na verwijderen</string>
   <string name="global_settings_messageview_show_next_summary">Standaard volgend bericht laten zien na verwijderen</string>
   <string name="global_settings_confirm_actions_title">Bevestig acties</string>
-  <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoert</string>
+  <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer je de geselecteerde acties uitvoert</string>
   <string name="global_settings_confirm_action_delete">Verwijder</string>
   <string name="global_settings_confirm_action_delete_starred">Berichten met een ster verwijderen (in berichtweergave)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
@@ -270,10 +272,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_privacy_hide_useragent_detail">K-9 gebruikersagent van e-mailkoppen verwijderen</string>
   <string name="global_settings_privacy_hide_timezone">Tijdzone verbergen</string>
   <string name="global_settings_privacy_hide_timezone_detail">Gebruik UTC in plaats van de lokale tijdzone in de e-mailkoppen en bij het antwoorden van e-mail</string>
-  <string name="global_settings_notification_hide_subject_title">Verberg onderwerp in notificaties</string>
-  <string name="global_settings_notification_hide_subject_never">Nooit</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Als toestel vergrendeld is</string>
-  <string name="global_settings_notification_hide_subject_always">Altijd</string>
   <string name="global_settings_notification_quick_delete_title">Toon \'Verwijder\' knop</string>
   <string name="global_settings_notification_quick_delete_never">Nooit</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Notificatie voor los bericht</string>
@@ -339,8 +337,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_incoming_mobile_label">Mobiel</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Anders</string>
-  <string name="local_storage_provider_external_label">Externe opslag (SD-kaart)</string>
-  <string name="local_storage_provider_internal_label">Reguliere interne opslag</string>
   <string name="account_setup_expunge_policy_label">Wissen berichten</string>
   <string name="account_setup_expunge_policy_immediately">Onmiddellijk na verwijderen of verplaatsen</string>
   <string name="account_setup_expunge_policy_on_poll">Tijdens iedere peiling</string>
@@ -383,7 +379,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_options_mail_check_frequency_12hour">Elke 12 uur</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Elke 24 uur</string>
   <string name="account_setup_options_enable_push_label">Push mail voor dit account toestaan</string>
-  <string name="account_setup_options_enable_push_summary">Als uw server dit ondersteunt, zullen nieuwe berichten direct verschijnen. Deze optie kan drastisch verbeteringen of verslechteringen van prestaties teweeg brengen.</string>
+  <string name="account_setup_options_enable_push_summary">Als jouw server dit ondersteunt, zullen nieuwe berichten direct verschijnen. Deze optie kan drastisch verbeteringen of verslechteringen van prestaties teweeg brengen.</string>
   <string name="idle_refresh_period_label">Vernieuw inactieve verbinding</string>
   <string name="idle_refresh_period_2min">Elke 2 minuten</string>
   <string name="idle_refresh_period_3min">Elke 3 minuten</string>
@@ -410,14 +406,12 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen omdat deze niet gesynchroniseerd is met de server</string>
   <string name="account_setup_failed_dlg_title">Setup kon niet afronden</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">De server presenteerde een ongeldig SSL certificaat. Dit kan komen door een verkeerd geconfigureerde server. Dit kan ook komen doordat iemand U of Uw mailserver aan probeert te vallen. Als U niet zeker weet wat er aan de hand is klik dan op Reject en neem contact op met de beheerder van Uw mailserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">De server presenteerde een ongeldig SSL certificaat. Dit kan komen door een verkeerd geconfigureerde server. Dit kan ook komen doordat iemand jouw mailserver aan probeert te vallen. Als je niet zeker weet wat er aan de hand is klik dan op Reject en neem contact op met de beheerder van de mailserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding met server maken.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details aanpassen</string>
   <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
   <string name="account_settings_push_advanced_title">Geavanceerd</string>
   <string name="account_settings_title_fmt">Algemene instellingen</string>
-  <string name="account_settings_default_label">Standaard account</string>
-  <string name="account_settings_default_summary">Standaard e-mail verzenden vanaf dit account</string>
   <string name="account_settings_notify_label">Nieuwe e-mail notificatie</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Notificatie mappen</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Alles</string>
@@ -450,7 +444,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_default_quoted_text_shown_label">Citeer bericht bij antwoorden</string>
   <string name="account_settings_default_quoted_text_shown_summary">Neem orginele bericht mee in het antwoord.</string>
   <string name="account_settings_reply_after_quote_label">Antwoorden na citaat</string>
-  <string name="account_settings_reply_after_quote_summary">Wanneer u antwoord op berichten, zal het originele bericht boven uw antwoord staan.</string>
+  <string name="account_settings_reply_after_quote_summary">Wanneer je antwoord op een bericht, zal het originele bericht boven jouw antwoord staan.</string>
   <string name="account_settings_strip_signature_label">Verwijder handtekening bij reactie</string>
   <string name="account_settings_strip_signature_summary">Handtekeningen worden verwijderd bij geciteerde berichten</string>
   <string name="account_settings_message_format_label">Berichtopmaak</string>
@@ -904,6 +898,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="recipient_bcc">BCC</string>
   <string name="recipient_to">Aan</string>
   <string name="recipient_from">Van</string>
+  <string name="reply_to_label">Antwoorden aan</string>
   <string name="unknown_recipient">&lt;Onbekende ontvanger&gt;</string>
   <string name="unknown_sender">&lt;Onbekende verzender&gt;</string>
   <string name="address_type_home">Privé</string>
@@ -1007,7 +1002,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="enable_encryption">Versleuteling inschakelen</string>
   <string name="disable_encryption">Versleuteling uitschakelen</string>
   <string name="openpgp_description_text1">Versleuteling maakt dat berichten alleen door de ontvanger gelezen kunnen worden, en niemand anders.</string>
-  <string name="openpgp_description_text3">Versleuteling is alleen beschikbaar als alle ontvangers dit ondersteunen, en zij moeten U eerder reeds een e-mail gestuurd hebben.</string>
+  <string name="openpgp_description_text3">Versleuteling is alleen beschikbaar als alle ontvangers dit ondersteunen, en zij moeten je reeds eerder een e-mail gestuurd hebben.</string>
   <string name="openpgp_description_text2">Schakel versleuteling aan of uit met dit icoon.</string>
   <string name="openpgp_enabled_error_gotit">Ik snap het</string>
   <string name="openpgp_enabled_error_back">Terug</string>
@@ -1032,19 +1027,19 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="ac_transfer_title">Autocrypt Setup bericht</string>
   <string name="ac_transfer_intro">Een Autocrypt Setup bericht deelt uw eind-tot-eind instellingen op een beveiligde manier met andere apparaten.</string>
   <string name="ac_transfer_button_send">Verstuur Setup bericht</string>
-  <string name="ac_transfer_will_be_sent">Het bericht wordt verstuurd naar uw adres:</string>
+  <string name="ac_transfer_will_be_sent">Het bericht wordt verstuurd naar jouw adres:</string>
   <string name="ac_transfer_generating">Instelbericht aan het genereren ...</string>
   <string name="ac_transfer_sending_to">Bericht sturen naar:</string>
-  <string name="ac_transfer_finish">Om te voltooien, open het bericht op uw andere apparaat en voer de Setup Code in.</string>
+  <string name="ac_transfer_finish">Om te voltooien, open het bericht op je andere apparaat en voer de Setup Code in.</string>
   <string name="ac_transfer_show_code">Setup Code weergeven</string>
   <string name="ac_transfer_msg_subject">Autocrypt Setup bericht</string>
-  <string name="ac_transfer_msg_body">Dit bericht bevat alle informatie om uw Autocrypt instellingen met geheime sleutel beveiligd over te brengen vanaf uw oorspronkelijke apparaat.
+  <string name="ac_transfer_msg_body">Dit bericht bevat alle informatie om jouw Autocrypt instellingen met geheime sleutel beveiligd over te brengen vanaf jouw oorspronkelijke apparaat.
 
-Volg de instructies op uw nieuwe apparaat om daarop Autocrypt in te stellen.
+Volg de instructies op je nieuwe apparaat om daarop Autocrypt in te stellen.
 
-U kunt dit bericht bewaren als backup voor uw geheime sleutel. Als u dit wilt doen, schrijf dan het wachtwoord op en bewaar het op een veilige plek.
+Je kunt dit bericht bewaren als backup voor jouw geheime sleutel. Als je dit wilt doen, schrijf dan het wachtwoord op en bewaar het op een veilige plek.
 </string>
-  <string name="ac_transfer_error_send">Er is een fout opgetreden tijdens het verzenden van het bericht. Controleer uw netwerk verbinding en uitgaande server configuratie.</string>
+  <string name="ac_transfer_error_send">Er is een fout opgetreden tijdens het verzenden van het bericht. Controleer de netwerk verbinding en uitgaande server configuratie.</string>
   <string name="switch_on">Aan</string>
   <string name="switch_off">Uit</string>
   <string name="navigation_drawer_open">Open</string>

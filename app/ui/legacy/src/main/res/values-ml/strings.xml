@@ -266,10 +266,6 @@
   <string name="global_settings_privacy_hide_useragent_detail">മെയിൽ തലക്കെട്ടുകളിൽ നിന്ന് കെ-9 യൂസർ-ഏജന്റിനെ നീക്കം ചെയ്യുക</string>
   <string name="global_settings_privacy_hide_timezone">സമയ മേഖല മറയ്ക്കൂ</string>
   <string name="global_settings_privacy_hide_timezone_detail">മെയിൽ‌ തലക്കെട്ടുകളിലും മറുപടി ശീർ‌ഷകത്തിലും പ്രാദേശിക സമയമേഖലയ്‌ക്ക് പകരം യു‌ടി‌സി ഉപയോഗിക്കുക, </string>
-  <string name="global_settings_notification_hide_subject_title">അറിയിപ്പുകളിൽ വിഷയം മറയ്‌ക്കുക</string>
-  <string name="global_settings_notification_hide_subject_never">ഒരിക്കലും</string>
-  <string name="global_settings_notification_hide_subject_when_locked">ഉപകരണം ലോക്കുചെയ്യുമ്പോൾ</string>
-  <string name="global_settings_notification_hide_subject_always">എല്ലായ്പ്പോഴും</string>
   <string name="global_settings_notification_quick_delete_title">\'ഇല്ലാതാക്കുക\' ബട്ടൺ കാണിക്കുക</string>
   <string name="global_settings_notification_quick_delete_never">ഒരിക്കലും</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">ഒരൊറ്റ സന്ദേശ അറിയിപ്പിനായി</string>
@@ -332,8 +328,6 @@
   <string name="account_setup_incoming_mobile_label">മൊബൈൽ</string>
   <string name="account_setup_incoming_wifi_label">വൈഫൈ</string>
   <string name="account_setup_incoming_other_label">മറ്റുള്ളവ</string>
-  <string name="local_storage_provider_external_label">ബാഹ്യ സംഭരണം (SD കാർഡ്)</string>
-  <string name="local_storage_provider_internal_label">പതിവ് ആന്തരിക സംഭരണം</string>
   <string name="account_setup_expunge_policy_label">സെർവറിൽ ഇല്ലാതാക്കിയ സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
   <string name="account_setup_expunge_policy_immediately">ഉടനെ</string>
   <string name="account_setup_expunge_policy_on_poll">പോളിംഗ് നടത്തുമ്പോൾ</string>
@@ -409,8 +403,6 @@
   <string name="account_setup_failed_dlg_continue_action">തുടരുക</string>
   <string name="account_settings_push_advanced_title">വിപുലമായത്</string>
   <string name="account_settings_title_fmt">അക്കൗണ്ട് സജ്ജീകരണങ്ങൾ</string>
-  <string name="account_settings_default_label">സ്ഥിരസ്ഥിതി അക്കൗണ്ട്</string>
-  <string name="account_settings_default_summary">സ്ഥിരസ്ഥിതിയായി ഈ അക്കൗണ്ടിൽ നിന്ന് മെയിൽ അയയ്ക്കുക</string>
   <string name="account_settings_notify_label">പുതിയ മെയിൽ അറിയിപ്പുകൾ</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">അറിയിപ്പുകൾ ഫോൾഡറുകൾ</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">എല്ലാം</string>

@@ -78,6 +78,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="compose_title_forward_as_attachment">Përcille si bashkëngjitje</string>
   <string name="choose_account_title">Zgjidhni Llogari</string>
   <string name="choose_folder_title">Zgjidhni Dosje</string>
+  <string name="choose_folder_move_title">Shpjereni te…</string>
+  <string name="choose_folder_copy_title">Kopjojeni te…</string>
   <string name="status_loading_account_folder">Vjelje <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Po sillen kryet <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Dërgim <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -276,10 +278,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="global_settings_privacy_hide_useragent_detail">Hiqeni K-9 User-Agent nga kryet e email-it</string>
   <string name="global_settings_privacy_hide_timezone">Fshihe zonën kohore</string>
   <string name="global_settings_privacy_hide_timezone_detail">Përdorni UTC, në vend se zonën kohore vendore, te krye email-esh dhe krye përgjigjesh</string>
-  <string name="global_settings_notification_hide_subject_title">Fshihe subjektin gjatë njoftimesh</string>
-  <string name="global_settings_notification_hide_subject_never">Kurrë</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Kur pajisja është e kyçur</string>
-  <string name="global_settings_notification_hide_subject_always">Përherë</string>
   <string name="global_settings_notification_quick_delete_title">Shfaq butonin \'Fshije\'</string>
   <string name="global_settings_notification_quick_delete_never">Kurrë</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Për njoftim mesazhi njësh</string>
@@ -345,8 +343,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_incoming_mobile_label">Celular</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Tjetër</string>
-  <string name="local_storage_provider_external_label">Depozitë e jashtme (Kartë SD)</string>
-  <string name="local_storage_provider_internal_label">Depozitë e brendshme e rëndomtë</string>
   <string name="account_setup_expunge_policy_label">Hiqi dhe në shërbyes mesazhet e fshira</string>
   <string name="account_setup_expunge_policy_immediately">Menjëherë</string>
   <string name="account_setup_expunge_policy_on_poll">Kur vilet</string>
@@ -422,8 +418,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_failed_dlg_continue_action">Vazhdo</string>
   <string name="account_settings_push_advanced_title">Të mëtejshme</string>
   <string name="account_settings_title_fmt">Rregullime llogarie</string>
-  <string name="account_settings_default_label">Llogaria parazgjedhje</string>
-  <string name="account_settings_default_summary">Si parazgjedhje, postën dërgoje nga kjo llogari</string>
   <string name="account_settings_notify_label">Njoftime email-i të ri</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Dosje njoftimesh</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Krejt</string>
@@ -910,6 +904,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Për</string>
   <string name="recipient_from">Nga</string>
+  <string name="reply_to_label">Përgjigjuni</string>
   <string name="unknown_recipient">&lt;Marrës i Panjohur&gt;</string>
   <string name="unknown_sender">&lt;Dërgues i Panjohur&gt;</string>
   <string name="address_type_home">Shtëpie</string>

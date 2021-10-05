@@ -77,6 +77,8 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="compose_title_forward_as_attachment">Přeposlat jako přílohu</string>
   <string name="choose_account_title">Zvolte účet</string>
   <string name="choose_folder_title">Výběr složky</string>
+  <string name="choose_folder_move_title">Přesunout do…</string>
+  <string name="choose_folder_copy_title">Zkopírovat do…</string>
   <string name="status_loading_account_folder">Dotazování <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Stahování záhlaví <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Odesílání <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -279,10 +281,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="global_settings_privacy_hide_useragent_detail">Odstraňovat z hlaviček e-mailů informaci o K-9 (user agent)</string>
   <string name="global_settings_privacy_hide_timezone">Skrýt časovou zónu</string>
   <string name="global_settings_privacy_hide_timezone_detail">Používat v hlavičkách e-mailů a odpovědí univerzální čas (UTC) namísto toho místního</string>
-  <string name="global_settings_notification_hide_subject_title">Schovej předmet v upozorněních</string>
-  <string name="global_settings_notification_hide_subject_never">Nikdy</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Když je telefon uzamčený</string>
-  <string name="global_settings_notification_hide_subject_always">Vždy</string>
   <string name="global_settings_notification_quick_delete_title">Zobrazit tlačítko \'Smazat\'</string>
   <string name="global_settings_notification_quick_delete_never">Nikdy</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Pro mazaní jedné zprávy</string>
@@ -348,8 +346,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_incoming_mobile_label">Mobilní</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Jiná</string>
-  <string name="local_storage_provider_external_label">Externí úložiště (SD karta)</string>
-  <string name="local_storage_provider_internal_label">Obvyklé vnitřní úložiště</string>
   <string name="account_setup_expunge_policy_label">Odstranit smazané zprávy</string>
   <string name="account_setup_expunge_policy_immediately">Ihned</string>
   <string name="account_setup_expunge_policy_on_poll">Při dotazování</string>
@@ -425,8 +421,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_failed_dlg_continue_action">Pokračovat</string>
   <string name="account_settings_push_advanced_title">Rozšířené</string>
   <string name="account_settings_title_fmt">Nastavení účtu</string>
-  <string name="account_settings_default_label">Výchozí účet</string>
-  <string name="account_settings_default_summary">Tento účet jako výchozí pro odesílání</string>
   <string name="account_settings_notify_label">Oznamování nové pošty</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Složky oznámení</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Všechny</string>
@@ -923,6 +917,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="recipient_bcc">Skrytá kopie</string>
   <string name="recipient_to">Komu</string>
   <string name="recipient_from">Odesílatel</string>
+  <string name="reply_to_label">Odpovědět komu</string>
   <string name="unknown_recipient">&lt;Neznámý příjemce&gt;</string>
   <string name="unknown_sender">&lt;Neznámý odesilatel&gt;</string>
   <string name="address_type_home">Domov</string>

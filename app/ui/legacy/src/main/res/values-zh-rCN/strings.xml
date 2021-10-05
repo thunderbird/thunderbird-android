@@ -78,6 +78,8 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="compose_title_forward_as_attachment">作为附件转发</string>
   <string name="choose_account_title">切换账户</string>
   <string name="choose_folder_title">选择文件夹</string>
+  <string name="choose_folder_move_title">移动至…</string>
+  <string name="choose_folder_copy_title">复制到…</string>
   <string name="status_loading_account_folder">收取 <xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">获取邮件头：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">发送中 <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -273,10 +275,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="global_settings_privacy_hide_useragent_detail">从邮件头中移除 K-9 的 User-Agent</string>
   <string name="global_settings_privacy_hide_timezone">隐藏时区</string>
   <string name="global_settings_privacy_hide_timezone_detail">在邮件头及恢复头中使用UTC时间而不是本地时间</string>
-  <string name="global_settings_notification_hide_subject_title">在通知中隐藏主题</string>
-  <string name="global_settings_notification_hide_subject_never">从不</string>
-  <string name="global_settings_notification_hide_subject_when_locked">当设备锁定时</string>
-  <string name="global_settings_notification_hide_subject_always">总是</string>
   <string name="global_settings_notification_quick_delete_title">显示“删除”按钮</string>
   <string name="global_settings_notification_quick_delete_never">从不</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">为单条消息通知</string>
@@ -342,8 +340,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_incoming_mobile_label">手机移动网络</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">其他</string>
-  <string name="local_storage_provider_external_label">外部存储（SD 卡）</string>
-  <string name="local_storage_provider_internal_label">正常内部存储</string>
   <string name="account_setup_expunge_policy_label">抹掉删除的邮件</string>
   <string name="account_setup_expunge_policy_immediately">立刻</string>
   <string name="account_setup_expunge_policy_on_poll">接收邮件时</string>
@@ -419,8 +415,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_failed_dlg_continue_action">继续</string>
   <string name="account_settings_push_advanced_title">高级</string>
   <string name="account_settings_title_fmt">通用设置</string>
-  <string name="account_settings_default_label">默认账户</string>
-  <string name="account_settings_default_summary">默认使用这个账户发送邮件</string>
   <string name="account_settings_notify_label">新邮件通知</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">提醒文件夹</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>
@@ -902,6 +896,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="recipient_bcc">秘送</string>
   <string name="recipient_to">收件人</string>
   <string name="recipient_from">发件人</string>
+  <string name="reply_to_label">回复给</string>
   <string name="unknown_recipient">&lt;未知收件人&gt;</string>
   <string name="unknown_sender">&lt;未知发件人&gt;</string>
   <string name="address_type_home">住宅</string>

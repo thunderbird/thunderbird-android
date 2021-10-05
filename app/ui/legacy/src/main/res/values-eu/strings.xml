@@ -273,10 +273,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_privacy_hide_useragent_detail">Kendu K-9 erabiltzaile-agentea posta goiburuetatik</string>
   <string name="global_settings_privacy_hide_timezone">Ezkutatu ordu-zona</string>
   <string name="global_settings_privacy_hide_timezone_detail">Erabili UTC tokiko ordu-zonaren ordez posta goiburuetan eta erantzunen goiburuan</string>
-  <string name="global_settings_notification_hide_subject_title">Ezkutatu gaia jakinarazpenetan</string>
-  <string name="global_settings_notification_hide_subject_never">Inoiz ez</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Gailua blokeatuta dagoenean</string>
-  <string name="global_settings_notification_hide_subject_always">Beti</string>
   <string name="global_settings_notification_quick_delete_title">Erakutsi \'Ezabatu\' botoia</string>
   <string name="global_settings_notification_quick_delete_never">Inoiz ez</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Mezu bakarreko jakinarazpenetarako</string>
@@ -339,8 +335,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_incoming_mobile_label">Mugikorra</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Bestelakoak</string>
-  <string name="local_storage_provider_external_label">Kanpoko biltegia (SD txartela)</string>
-  <string name="local_storage_provider_internal_label">Ohiko barne biltegiratzea</string>
   <string name="account_setup_expunge_policy_label">Ezabatu hemen ere zerbitzaritik ezabatutako mezuak</string>
   <string name="account_setup_expunge_policy_immediately">Berehala</string>
   <string name="account_setup_expunge_policy_on_poll">Atzitzean</string>
@@ -416,8 +410,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_failed_dlg_continue_action">Jarraitu</string>
   <string name="account_settings_push_advanced_title">Aurreratua</string>
   <string name="account_settings_title_fmt">Kontu ezarpenak</string>
-  <string name="account_settings_default_label">Kontu lehenetsia</string>
-  <string name="account_settings_default_summary">Bidali posta kontu honetatik era lehenetsian</string>
   <string name="account_settings_notify_label">Posta berrien jakinarazpenak</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Jakinarazpenen karpeta</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Guztiak</string>

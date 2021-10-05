@@ -77,6 +77,8 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="compose_title_forward_as_attachment">Posreduj kot prilogo</string>
   <string name="choose_account_title">Izbor računa</string>
   <string name="choose_folder_title">Izbor mape</string>
+  <string name="choose_folder_move_title">Premakni v …</string>
+  <string name="choose_folder_copy_title">Kopiraj v …</string>
   <string name="status_loading_account_folder">Izpraševanje <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Prejemanje glav <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Pošiljanje <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -279,10 +281,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstrani podatke programa K-9 iz glave pošte</string>
   <string name="global_settings_privacy_hide_timezone">Skrij časovni pas</string>
   <string name="global_settings_privacy_hide_timezone_detail">V glavah poštnih sporočil se uporabi čas UTC in ne krajevni čas</string>
-  <string name="global_settings_notification_hide_subject_title">Skrivanje izpisa zadeve sporočila v obvestilih</string>
-  <string name="global_settings_notification_hide_subject_never">Vedno pokaži zadevo</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Skrij, ko je naprava zaklenjena</string>
-  <string name="global_settings_notification_hide_subject_always">Vedno skrij zadevo</string>
   <string name="global_settings_notification_quick_delete_title">Prikaz gumba za brisanje sporočil</string>
   <string name="global_settings_notification_quick_delete_never">Nikoli ne pokaži</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Le pri obvestilih enega sporočila</string>
@@ -348,8 +346,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_incoming_mobile_label">Mobilno</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Drugo</string>
-  <string name="local_storage_provider_external_label">Zunanji pomnilnik (kartica SD)</string>
-  <string name="local_storage_provider_internal_label">Notranji pomnilnik naprave</string>
   <string name="account_setup_expunge_policy_label">Počisti izbrisana sporočila na strežniku</string>
   <string name="account_setup_expunge_policy_immediately">Počisti takoj</string>
   <string name="account_setup_expunge_policy_on_poll">Počisti med izpraševanjem</string>
@@ -425,8 +421,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_failed_dlg_continue_action">Nadaljuj</string>
   <string name="account_settings_push_advanced_title">Napredne možnosti</string>
   <string name="account_settings_title_fmt">Nastavitve računa</string>
-  <string name="account_settings_default_label">Privzeti račun</string>
-  <string name="account_settings_default_summary">Izbrana možnost določa, da bo za pošiljanje privzeto uporabljen ta račun</string>
   <string name="account_settings_notify_label">Obvestila za prejem nove pošte</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Prikaz obvestil</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Za vse ravni map</string>
@@ -923,6 +917,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="recipient_bcc">Skp</string>
   <string name="recipient_to">Za</string>
   <string name="recipient_from">Od</string>
+  <string name="reply_to_label">Odgovori na</string>
   <string name="unknown_recipient">&lt;Neznani prejemnik&gt;</string>
   <string name="unknown_sender">&lt;Neznani pošiljatelj&gt;</string>
   <string name="address_type_home">Domači</string>

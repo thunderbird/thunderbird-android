@@ -279,10 +279,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_privacy_hide_useragent_detail">Usuń User-Agent K-9 z nagłówka wiadomości</string>
   <string name="global_settings_privacy_hide_timezone">Ukryj strefę czasową</string>
   <string name="global_settings_privacy_hide_timezone_detail">Używaj czasu UTC zamiast czasu lokalnego w nagłówkach wiadomości i odpowiedzi</string>
-  <string name="global_settings_notification_hide_subject_title">Ukryj temat w powiadomieniach</string>
-  <string name="global_settings_notification_hide_subject_never">Nigdy</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Gdy urządzenie jest zablokowane</string>
-  <string name="global_settings_notification_hide_subject_always">Zawsze</string>
   <string name="global_settings_notification_quick_delete_title">Pokazuj przycisk „Usuń”</string>
   <string name="global_settings_notification_quick_delete_never">Nigdy</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Dla powiadomień o pojedynczych wiadomościach</string>
@@ -348,8 +344,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_incoming_mobile_label">2G/3G</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Inne</string>
-  <string name="local_storage_provider_external_label">Pamięć zewnętrzna (karta SD)</string>
-  <string name="local_storage_provider_internal_label">Zwykła pamięć wewnętrzna</string>
   <string name="account_setup_expunge_policy_label">Kasowanie usuniętych wiadomości na serwerze</string>
   <string name="account_setup_expunge_policy_immediately">Od razu</string>
   <string name="account_setup_expunge_policy_on_poll">Podczas każdego pobrania</string>
@@ -425,8 +419,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_failed_dlg_continue_action">Kontynuuj</string>
   <string name="account_settings_push_advanced_title">Zaawansowane</string>
   <string name="account_settings_title_fmt">Ustawienia ogólne</string>
-  <string name="account_settings_default_label">Konto domyślne</string>
-  <string name="account_settings_default_summary">Domyślnie wysyłaj wiadomości z tego konta</string>
   <string name="account_settings_notify_label">Nowe wiadomości</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Powiadomienia z folderów</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Wszystkie</string>

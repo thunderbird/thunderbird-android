@@ -7,8 +7,8 @@
   <string name="shortcuts_title">K-9 kontoj</string>
   <string name="unread_widget_label">K-9 nelegitaj mesaĝoj</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_copyright_fmt">Kopirajto 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Parta kopirajto 2006-<xliff:g>%s</xliff:g> la Malfermkoda Projekto Android (AOSP).</string>
+  <string name="app_authors">Programistoj de K-9</string>
+  <string name="app_copyright_fmt">Kopirajto 2008-<xliff:g>%s</xliff:g> programistoj de K-9. Parta kopirajto 2006-<xliff:g>%s</xliff:g> la Malfermkoda Projekto Android (AOSP).</string>
   <string name="source_code">Fontkodo</string>
   <string name="app_license">Apache License, versio 2.0</string>
   <string name="about_project_title">Malfermkoda projekto</string>
@@ -21,6 +21,9 @@
   <string name="changelog_title">Ŝanĝoprotokolo</string>
   <string name="changelog_loading_error">Ne povas enlegi la ŝanĝoprotokolon.</string>
   <string name="changelog_version_title">Versio %s</string>
+  <string name="changelog_recent_changes_title">Kio estas nova</string>
+  <string name="changelog_show_recent_changes">Montri lastajn ŝanĝojn je ĝisdatigo de la aplikaĵo</string>
+  <string name="changelog_snackbar_text">Kio estas nova en tiu ĉi versio</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bonvenon al K-9 Retpoŝtilo</string>
   <string name="accounts_welcome"><![CDATA[
@@ -65,7 +68,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="about_title">Pri K-9 Retpoŝtilo</string>
   <string name="accounts_title">Kontoj</string>
   <string name="folders_title">Mesaĝujoj</string>
-  <string name="advanced">Spertaj</string>
+  <string name="advanced">Spertulaj</string>
   <string name="compose_title_compose">Krei</string>
   <string name="compose_title_reply">Respondi</string>
   <string name="compose_title_reply_all">Respondi al ĉiuj</string>
@@ -73,6 +76,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="compose_title_forward_as_attachment">Plusendi kiel kunsendaĵon</string>
   <string name="choose_account_title">Elektu konton</string>
   <string name="choose_folder_title">Elekti mesaĝujon</string>
+  <string name="choose_folder_move_title">Movi al…</string>
+  <string name="choose_folder_copy_title">Kopii al…</string>
   <string name="status_loading_account_folder">Kontrolado: <xliff:g id="account">%s</xliff:g>: <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Ŝargado de kapoj: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Sendado: <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -106,12 +111,14 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="discard_action">Ignori</string>
   <string name="save_draft_action">Konservi kiel malneton</string>
   <string name="check_mail_action">Kontroli retpoŝton</string>
+  <string name="check_all_mail_action">Kontroli retpoŝton (ĉiuj kontoj)</string>
   <string name="send_messages_action">Sendi mesaĝojn</string>
   <string name="refresh_folders_action">Aktualigi liston</string>
   <string name="filter_folders_action">Serĉi mesaĝujon</string>
   <string name="add_account_action">Aldoni konton</string>
   <string name="compose_action">Krei</string>
   <string name="search_action">Serĉi</string>
+  <string name="search_everywhere_action">Serĉi ĉie</string>
   <string name="search_results">Serĉ-rezultoj</string>
   <string name="preferences_action">Agordoj</string>
   <string name="folders_action">Administri mesaĝujojn</string>
@@ -178,7 +185,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="notification_bg_send_ticker">Sendado de retletero: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sendado de retletero</string>
   <string name="notification_bg_title_separator">:</string>
-  <string name="notification_channel_push_title">Sinkronigi (Puŝi)</string>
+  <string name="notification_channel_push_title">Samtempigo (puŝ-sciigo)</string>
   <string name="notification_channel_push_description">Vidigita atendante novajn mesaĝojn</string>
   <string name="notification_channel_messages_title">Mesaĝoj</string>
   <string name="notification_channel_messages_description">Sciigoj pri novaj mesaĝoj</string>
@@ -268,16 +275,12 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="global_settings_privacy_hide_useragent_detail">Forviŝi nomon de klienta aplikaĵo K-9 el mesaĝokapo</string>
   <string name="global_settings_privacy_hide_timezone">Kaŝi horzonon</string>
   <string name="global_settings_privacy_hide_timezone_detail">Uzi UTC anstataŭ lokan horzonon en mesaĝokapo kaj respond-kampo</string>
-  <string name="global_settings_notification_hide_subject_title">Kaŝi temon en sciigoj</string>
-  <string name="global_settings_notification_hide_subject_never">Neniam</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Kiam aparato estas ŝlosita</string>
-  <string name="global_settings_notification_hide_subject_always">Ĉiam</string>
   <string name="global_settings_notification_quick_delete_title">Montri butonon \'Forigi\'</string>
   <string name="global_settings_notification_quick_delete_never">Neniam</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Por sciigoj pri unuopa mesaĝo</string>
   <string name="global_settings_notification_quick_delete_always">Ĉiam</string>
-  <string name="global_settings_lock_screen_notification_visibility_title">Sciigoj sur ŝlosita ekrano</string>
-  <string name="global_settings_lock_screen_notification_visibility_nothing">Sen sciigoj sur ŝlosita ekrano</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Sciigoj sur ŝlos-ekrano</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Sen sciigoj sur ŝlos-ekrano</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Aplikaĵa nomo</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Kiom da nelegitaj mesaĝoj</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Kiom da mesaĝoj kaj sendintoj</string>
@@ -293,6 +296,9 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_basics_password_hint">Pasvorto</string>
   <string name="account_setup_basics_show_password">Montri pasvorton</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Por vidigi vian pasvorton tie ĉi, aktivigu la ŝlos-ekranon ĉe via aparato.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verigi vian identigon</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Malŝlosu por vidi vian pasvorton</string>
   <string name="account_setup_basics_manual_setup_action">Agordi permane</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Elŝutado de informoj pri konto\u2026</string>
@@ -316,9 +322,9 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_incoming_username_label">Uzantnomo</string>
   <string name="account_setup_incoming_password_label">Pasvorto</string>
   <string name="account_setup_incoming_client_certificate_label">Klienta atestilo</string>
-  <string name="account_setup_incoming_pop_server_label">POP3 servilo</string>
-  <string name="account_setup_incoming_imap_server_label">IMAP servilo</string>
-  <string name="account_setup_incoming_webdav_server_label">\'Exchange\' servilo</string>
+  <string name="account_setup_incoming_pop_server_label">POP3-servilo</string>
+  <string name="account_setup_incoming_imap_server_label">IMAP-servilo</string>
+  <string name="account_setup_incoming_webdav_server_label">Exchange-servilo</string>
   <string name="account_setup_incoming_port_label">Pordo</string>
   <string name="account_setup_incoming_security_label">Sekureco</string>
   <string name="account_setup_incoming_auth_type_label">Aŭtentigo</string>
@@ -334,8 +340,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_incoming_mobile_label">Movtelefona</string>
   <string name="account_setup_incoming_wifi_label">Vifio</string>
   <string name="account_setup_incoming_other_label">Alia</string>
-  <string name="local_storage_provider_external_label">Ekstera memoro (SD-karto)</string>
-  <string name="local_storage_provider_internal_label">Norma interna memoro</string>
   <string name="account_setup_expunge_policy_label">Forviŝi forigitajn mesaĝojn el servilo</string>
   <string name="account_setup_expunge_policy_immediately">Senprokraste</string>
   <string name="account_setup_expunge_policy_on_poll">Je ĉiu elŝutado</string>
@@ -356,7 +360,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_incoming_webdav_mailbox_path_label">Retpoŝta kromnomo</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">Malnepra</string>
   <string name="account_setup_outgoing_title">Agordoj de elira servilo</string>
-  <string name="account_setup_outgoing_smtp_server_label">SMTP servilo</string>
+  <string name="account_setup_outgoing_smtp_server_label">SMTP-servilo</string>
   <string name="account_setup_outgoing_port_label">Pordo</string>
   <string name="account_setup_outgoing_security_label">Sekureco</string>
   <string name="account_setup_outgoing_require_login_label">Aŭtentigo postulata</string>
@@ -369,25 +373,25 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="compact_action">Kompaktigi konton</string>
   <string name="account_setup_options_mail_check_frequency_label">Ofteco de mesaĝuj-elŝuto</string>
   <string name="account_setup_options_mail_check_frequency_never">Neniam</string>
-  <string name="account_setup_options_mail_check_frequency_15min">Je ĉiu 15 minutoj</string>
-  <string name="account_setup_options_mail_check_frequency_30min">Je ĉiu 30 minutoj</string>
+  <string name="account_setup_options_mail_check_frequency_15min">Je ĉiuj 15 minutoj</string>
+  <string name="account_setup_options_mail_check_frequency_30min">Je ĉiuj 30 minutoj</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Ĉiuhore</string>
-  <string name="account_setup_options_mail_check_frequency_2hour">Je ĉiu 2 horoj</string>
-  <string name="account_setup_options_mail_check_frequency_3hour">Je ĉiu 3 horoj</string>
-  <string name="account_setup_options_mail_check_frequency_6hour">Je ĉiu 6 horoj</string>
-  <string name="account_setup_options_mail_check_frequency_12hour">Je ĉiu 12 horoj</string>
-  <string name="account_setup_options_mail_check_frequency_24hour">Je ĉiu 24 horoj</string>
+  <string name="account_setup_options_mail_check_frequency_2hour">Je ĉiuj 2 horoj</string>
+  <string name="account_setup_options_mail_check_frequency_3hour">Je ĉiuj 3 horoj</string>
+  <string name="account_setup_options_mail_check_frequency_6hour">Je ĉiuj 6 horoj</string>
+  <string name="account_setup_options_mail_check_frequency_12hour">Je ĉiuj 12 horoj</string>
+  <string name="account_setup_options_mail_check_frequency_24hour">Je ĉiuj 24 horoj</string>
   <string name="account_setup_options_enable_push_label">Aktivigi puŝ-retleteroj por tiu ĉi konto</string>
   <string name="account_setup_options_enable_push_summary">Se la servilo subtenas ĝin, novaj mesaĝoj aperos senprokraste. Tiu ĉi eblo povus signife plibonigi aŭ malbonigi rendimenton.</string>
-  <string name="idle_refresh_period_label">Aktualigi IDLE-konekto</string>
-  <string name="idle_refresh_period_2min">Je ĉiu 2 minutoj</string>
-  <string name="idle_refresh_period_3min">Je ĉiu 3 minutoj</string>
-  <string name="idle_refresh_period_6min">Je ĉiu 6 minutoj</string>
-  <string name="idle_refresh_period_12min">Je ĉiu 12 minutoj</string>
-  <string name="idle_refresh_period_24min">Je ĉiu 24 minutoj</string>
-  <string name="idle_refresh_period_36min">Je ĉiu 36 minutoj</string>
-  <string name="idle_refresh_period_48min">Je ĉiu 48 minutoj</string>
-  <string name="idle_refresh_period_60min">Je ĉiu 60 minutoj</string>
+  <string name="idle_refresh_period_label">Aktualigi IDLE-konekton</string>
+  <string name="idle_refresh_period_2min">Je ĉiuj 2 minutoj</string>
+  <string name="idle_refresh_period_3min">Je ĉiuj 3 minutoj</string>
+  <string name="idle_refresh_period_6min">Je ĉiuj 6 minutoj</string>
+  <string name="idle_refresh_period_12min">Je ĉiuj 12 minutoj</string>
+  <string name="idle_refresh_period_24min">Je ĉiuj 24 minutoj</string>
+  <string name="idle_refresh_period_36min">Je ĉiuj 36 minutoj</string>
+  <string name="idle_refresh_period_48min">Je ĉiuj 48 minutoj</string>
+  <string name="idle_refresh_period_60min">Je ĉiuj 60 minutoj</string>
   <string name="account_setup_options_notify_label">Sciigi kiam retletero alvenas</string>
   <string name="account_setup_options_notify_sync_label">Sciigi kiam retpoŝto estas kontrolata</string>
   <string name="account_setup_options_mail_display_count_label">Kiom da mesaĝoj montri</string>
@@ -411,8 +415,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_failed_dlg_continue_action">Pluigi</string>
   <string name="account_settings_push_advanced_title">Spertaj</string>
   <string name="account_settings_title_fmt">Agordoj de konto</string>
-  <string name="account_settings_default_label">Ĉefa konto</string>
-  <string name="account_settings_default_summary">Implicite sendas mesaĝojn per tiu ĉi konto</string>
   <string name="account_settings_notify_label">Sciigoj pri novaj mesaĝoj</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Sciigoj el mesaĝujoj</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">El ĉiuj</string>
@@ -428,10 +430,15 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_notify_self_summary">Montras sciigojn pri mesaĝoj, kiujn mi sendas</string>
   <string name="account_notify_contacts_mail_only_label">Nur kontaktoj</string>
   <string name="account_notify_contacts_mail_only_summary">Montras sciigojn nur pri mesaĝojn el konataj kontaktoj</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignori babilejajn mesaĝojn</string>
+  <string name="account_settings_ignore_chat_messages_summary">Ne montri sciigojn pri mesaĝoj, kiuj apartenas al retpoŝta babilejo</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marki kiel legitan je malfermo</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markas mesaĝon kiel nelegitan, kiam ĝi estas malfermita por montri</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marki kiel legitan je forigo</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Markas mesaĝon kiel nelegitan, kiam ĝi estas forigata</string>
+  <string name="account_settings_notification_channels_label">Kategorioj de sciigoj</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Agordi sciigojn pri novaj mesaĝoj</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Agordi sciigojn pri eraroj kaj stato</string>
   <string name="account_settings_show_pictures_label">Ĉiam montri bildojn</string>
   <string name="account_settings_show_pictures_never">Ne</string>
   <string name="account_settings_show_pictures_only_from_contacts">De kontaktoj</string>
@@ -547,6 +554,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="folder_settings_folder_push_mode_normal">Neniu klaso</string>
   <string name="folder_settings_folder_push_mode_first_class">Klaso 1</string>
   <string name="folder_settings_folder_push_mode_second_class">Klaso 2</string>
+  <string name="folder_settings_folder_push_mode_inherited">Sama kiel samtempig-klaso</string>
   <string name="folder_settings_folder_notify_mode_label">Sciig-klaso de mesaĝujo</string>
   <string name="folder_settings_folder_notify_mode_normal">Neniu klaso</string>
   <string name="folder_settings_folder_notify_mode_first_class">Klaso 1</string>
@@ -683,6 +691,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="volume_navigation_message">En vido de mesaĝoj</string>
   <string name="volume_navigation_list">En vidoj de listoj</string>
   <string name="show_unified_inbox_title">Montri unuigitan ricevujon</string>
+  <string name="show_starred_count_title">Montri nombron da steletoj</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- nelegita</string>
   <string name="search_all_messages_title">Ĉiuj mesaĝoj</string>
@@ -892,6 +901,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="recipient_bcc">Kaŝkopio</string>
   <string name="recipient_to">Al</string>
   <string name="recipient_from">De</string>
+  <string name="reply_to_label">Respondo al</string>
   <string name="unknown_recipient">&lt;nekonata ricevonto&gt;</string>
   <string name="unknown_sender">&lt;nekonata sendinto&gt;</string>
   <string name="address_type_home">Hejmo</string>
@@ -1041,5 +1051,16 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
   <string name="permission_contacts_rationale_title">Permesu aliron al kontaktoj</string>
   <string name="permission_contacts_rationale_message">Por ebligi al K-9 sugesti kontaktojn kaj vidigi iliajn nomojn kaj fotojn, la aplikaĵo postulas aliron al viaj kontaktoj.</string>
   <string name="generic_loading_error">Eraro okazis dum enlegi datumojn</string>
-  <string name="push_notification_state_initializing">Komencante ...</string>
+  <string name="push_notification_state_initializing">Komencante…</string>
+  <string name="push_notification_state_listening">Atendante novajn retleterojn</string>
+  <string name="push_notification_state_wait_background_sync">Haltigita ĝis “fona samtempigo” estos aktiva</string>
+  <string name="push_notification_state_wait_network">Haltigita ĝis interreta konekto estos disponebla</string>
+  <string name="push_notification_info">Frapetu por pli da informoj.</string>
+  <string name="push_info_title">Informoj pri samtempigo</string>
+  <string name="push_info_notification_explanation_text">Dum uzi puŝ-sciigojn pri novaj retleteroj, la aplikaĵo K-9 Retpoŝtilo subtenas konekton al la retpoŝta servilo. La operaciumo Android postulas por ke la aplikaĵo montru sciigon dum labori fone. %s</string>
+  <string name="push_info_configure_notification_text">Tamen Android ebligas kaŝi tiun sciigon.</string>
+  <string name="push_info_learn_more_text">Pli da informoj</string>
+  <string name="push_info_configure_notification_action">Agordi sciigon</string>
+  <string name="push_info_disable_push_text">Se vi ne bezonas tujajn sciigojn pri novaj mesaĝoj, malaktivigu puŝ-sciigojn kaj uzu periodajn petojn «pooling». Periodaj petoj «pooling» kontrolas pri novaj retleteroj en ripetiĝanta tempintervalo kaj ne postulas vidigi la puŝ-sciigon,</string>
+  <string name="push_info_disable_push_action">Malaktivigi puŝ-sciigojn</string>
 </resources>

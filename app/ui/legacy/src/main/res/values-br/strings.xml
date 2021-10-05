@@ -257,10 +257,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="global_settings_privacy_hide_useragent_detail">Dilemel User-agent K-9 eus talbennoù ar postel</string>
   <string name="global_settings_privacy_hide_timezone">Kuzhat ar gwerzhid-eur</string>
   <string name="global_settings_privacy_hide_timezone_detail">Arverañ UTC e plas ar gwerzhid-eur lec’hel e talbennoù ar postel hag ar respont</string>
-  <string name="global_settings_notification_hide_subject_title">Kuzhat an danvez er rebuziñ</string>
-  <string name="global_settings_notification_hide_subject_never">Morse</string>
-  <string name="global_settings_notification_hide_subject_when_locked">P’eo prennet an trevnad</string>
-  <string name="global_settings_notification_hide_subject_always">Atav</string>
   <string name="global_settings_notification_quick_delete_title">Diskouez an afell ’Dilemel’</string>
   <string name="global_settings_notification_quick_delete_never">Morse</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Evit ar rebuzadurioù gant ur gemennadenn</string>
@@ -323,8 +319,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_incoming_mobile_label">Hezoug</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">All</string>
-  <string name="local_storage_provider_external_label">Kadaviñ diavaez (Kartenn SD)</string>
-  <string name="local_storage_provider_internal_label">Kadaviñ diabarzh ordinal</string>
   <string name="account_setup_expunge_policy_label">Dilemel ar c’hemennadennoù diverket war an dafariad</string>
   <string name="account_setup_expunge_policy_immediately">Diouzhtu</string>
   <string name="account_setup_expunge_policy_on_poll">En ur gerc’hat</string>
@@ -400,8 +394,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_failed_dlg_continue_action">Kenderc’hel</string>
   <string name="account_settings_push_advanced_title">Kemplezhoc’h</string>
   <string name="account_settings_title_fmt">Arventennoù ar gont</string>
-  <string name="account_settings_default_label">Kont dre ziouer</string>
-  <string name="account_settings_default_summary">Kas posteloù gant ar gont-mañ dre ziouer</string>
   <string name="account_settings_notify_label">Rebuzadurioù posteloù nevez</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Teuliadoù rebuzadurioù</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Pep tra</string>

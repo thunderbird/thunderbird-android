@@ -264,10 +264,6 @@
   <string name="global_settings_privacy_hide_useragent">إخفاء عميل البريد</string>
   <string name="global_settings_privacy_hide_useragent_detail">احذف مُعرف بريد كية-9 من ترويسات الرسالة</string>
   <string name="global_settings_privacy_hide_timezone">احذف التوقيت</string>
-  <string name="global_settings_notification_hide_subject_title">إخفاء العنوان في الإشعارات</string>
-  <string name="global_settings_notification_hide_subject_never">أبدًا</string>
-  <string name="global_settings_notification_hide_subject_when_locked">عندما يكون الجهاز مغلقًا</string>
-  <string name="global_settings_notification_hide_subject_always">دائمًا</string>
   <string name="global_settings_notification_quick_delete_title">إظهار زر ’الحذف‘</string>
   <string name="global_settings_notification_quick_delete_never">أبدًا</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">للإشعارات ذات الرسالة الواحدة</string>
@@ -324,8 +320,6 @@
   <string name="account_setup_incoming_mobile_label">الجوال</string>
   <string name="account_setup_incoming_wifi_label">الواي فاي</string>
   <string name="account_setup_incoming_other_label">أخرى</string>
-  <string name="local_storage_provider_external_label">التخزين الخارجي (بطاقة الذاكرة)</string>
-  <string name="local_storage_provider_internal_label">ذاكرة التخزين العادي الداخلية</string>
   <string name="account_setup_expunge_policy_label">إزالة الرسائل المحذوفة من الخادوم أيضا</string>
   <string name="account_setup_expunge_policy_immediately">فورًا</string>
   <string name="account_setup_expunge_policy_on_poll">عند الإستجواب</string>
@@ -389,8 +383,6 @@
   <string name="account_setup_failed_dlg_continue_action">مواصلة</string>
   <string name="account_settings_push_advanced_title">متقدمة</string>
   <string name="account_settings_title_fmt">إعدادات الحساب</string>
-  <string name="account_settings_default_label">الحساب الإفتراضي</string>
-  <string name="account_settings_default_summary">إبعث الرسائل من هذا الحساب افتراضيا</string>
   <string name="account_settings_notify_label">إشعارات البريد الجديد</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">مجلد الإخطارات</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">الكل</string>

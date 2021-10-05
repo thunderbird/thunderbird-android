@@ -271,10 +271,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_privacy_hide_useragent_detail">Odstrániť používateľského agenta K-9 z hlavičiek správ</string>
   <string name="global_settings_privacy_hide_timezone">Skryť časové pásmo</string>
   <string name="global_settings_privacy_hide_timezone_detail">Použiť UTC ako časové pásmo v hlavičkách správ</string>
-  <string name="global_settings_notification_hide_subject_title">Skryť predmet v oznámení</string>
-  <string name="global_settings_notification_hide_subject_never">Nikdy</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Pri uzamknutom zariadení</string>
-  <string name="global_settings_notification_hide_subject_always">Vždy</string>
   <string name="global_settings_notification_quick_delete_title">Zobraziť tlačidlo \'Vymazať\'</string>
   <string name="global_settings_notification_quick_delete_never">Nikdy</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Oznámenie pre jednu správu</string>
@@ -337,8 +333,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_incoming_mobile_label">Mobilná</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Iná</string>
-  <string name="local_storage_provider_external_label">Externý ukladací priestor (Karta SD)</string>
-  <string name="local_storage_provider_internal_label">Interný ukladací priestor</string>
   <string name="account_setup_expunge_policy_label">Odstrániť vymazané správy zo servera</string>
   <string name="account_setup_expunge_policy_immediately">Ihneď</string>
   <string name="account_setup_expunge_policy_on_poll">Pri synchronizovaní</string>
@@ -414,8 +408,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_failed_dlg_continue_action">Pokračovať</string>
   <string name="account_settings_push_advanced_title">Pokročilé</string>
   <string name="account_settings_title_fmt">Nastavenia účtu</string>
-  <string name="account_settings_default_label">Predvolený účet</string>
-  <string name="account_settings_default_summary">Odosielať e-maily z tohto účtu</string>
   <string name="account_settings_notify_label">Oznámenia o nových správach</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Priečinky oznámení</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Všetky</string>

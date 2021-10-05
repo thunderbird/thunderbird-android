@@ -241,10 +241,6 @@
   <string name="global_settings_privacy_hide_useragent_detail">Thoir air falbh an raon Mail User-Agent o bhannan-cinn phost</string>
   <string name="global_settings_privacy_hide_timezone">Falaich an roinn-tìde</string>
   <string name="global_settings_privacy_hide_timezone_detail">Cleachd UTC an àite na roinn-tìde ionadail ann am bannan-cinn phost is fhreagairtean</string>
-  <string name="global_settings_notification_hide_subject_title">Falaich an cuspair ann am brathan</string>
-  <string name="global_settings_notification_hide_subject_never">Chan ann idir</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Nuair a bhios an t-uidheam glaiste</string>
-  <string name="global_settings_notification_hide_subject_always">An-còmhnaidh</string>
   <string name="global_settings_notification_quick_delete_title">Seall am putan “Sguab às”</string>
   <string name="global_settings_notification_quick_delete_never">Chan ann idir</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Airson brath aon teachdaireachd</string>
@@ -308,8 +304,6 @@
   <string name="account_setup_incoming_mobile_label">Mobile</string>
   <string name="account_setup_incoming_wifi_label">WiFi</string>
   <string name="account_setup_incoming_other_label">Eile</string>
-  <string name="local_storage_provider_external_label">Stòras air an taobh a-muigh (cairt SD)</string>
-  <string name="local_storage_provider_internal_label">Stòras inntearnail àbhaisteach</string>
   <string name="account_setup_expunge_policy_label">Ma sguabas mi às teachdaireachd, sguab às an fhrithealaiche e</string>
   <string name="account_setup_expunge_policy_immediately">Sa bhad</string>
   <string name="account_setup_expunge_policy_on_poll">Aig an ath-cheasnachadh</string>
@@ -389,8 +383,6 @@
   <string name="account_setup_failed_dlg_continue_action">Lean air adhart</string>
   <string name="account_settings_push_advanced_title">Adhartach</string>
   <string name="account_settings_title_fmt">Roghainnean a’ chunntais</string>
-  <string name="account_settings_default_label">An cunntas bunaiteach</string>
-  <string name="account_settings_default_summary">Cuir post on chunntas seo a ghnàth</string>
   <string name="account_settings_notify_label">Brathan mu phost ùr</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Pasganan a chuireas brath</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Na h-uile</string>

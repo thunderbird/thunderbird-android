@@ -269,10 +269,6 @@
   <string name="global_settings_privacy_hide_useragent_detail">Уклања К-9 идентификацију из заглавља поруке</string>
   <string name="global_settings_privacy_hide_timezone">Сакриј временску зону</string>
   <string name="global_settings_privacy_hide_timezone_detail">Коришћење УТЦ уместо локалне зоне у заглављима</string>
-  <string name="global_settings_notification_hide_subject_title">Сакриј тему у обавештењима</string>
-  <string name="global_settings_notification_hide_subject_never">никад</string>
-  <string name="global_settings_notification_hide_subject_when_locked">кад је уређај закључан</string>
-  <string name="global_settings_notification_hide_subject_always">увек</string>
   <string name="global_settings_notification_quick_delete_title">Прикажи дугме за брисање</string>
   <string name="global_settings_notification_quick_delete_never">никад</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">у обавештењу једне поруке</string>
@@ -335,8 +331,6 @@
   <string name="account_setup_incoming_mobile_label">мобилној</string>
   <string name="account_setup_incoming_wifi_label">бежичној</string>
   <string name="account_setup_incoming_other_label">осталим</string>
-  <string name="local_storage_provider_external_label">Спољашње складиште (СД картица)</string>
-  <string name="local_storage_provider_internal_label">Обично унутрашње складиште</string>
   <string name="account_setup_expunge_policy_label">Уклони обрисане поруке са сервера</string>
   <string name="account_setup_expunge_policy_immediately">одмах</string>
   <string name="account_setup_expunge_policy_on_poll">приликом провере</string>
@@ -412,8 +406,6 @@
   <string name="account_setup_failed_dlg_continue_action">Настави</string>
   <string name="account_settings_push_advanced_title">Напредно</string>
   <string name="account_settings_title_fmt">Поставке налога</string>
-  <string name="account_settings_default_label">Подразумевани налог</string>
-  <string name="account_settings_default_summary">Подразумевано шаљи пошту са овог налога</string>
   <string name="account_settings_notify_label">Обавештења о новој пошти</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Обавештења за фасцикле</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">све</string>

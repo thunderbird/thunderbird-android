@@ -110,6 +110,7 @@
   <string name="discard_action">دورانداختن</string>
   <string name="save_draft_action">ذخیره در پیش‌نویس</string>
   <string name="check_mail_action">به‌روزآوری رایانامه‌ها</string>
+  <string name="check_all_mail_action">بررسی رایانامه‌ها در تمامی حساب‌ها</string>
   <string name="send_messages_action">ارسال پیام‌ها</string>
   <string name="refresh_folders_action">بازآوری لیست پوشه‌ها</string>
   <string name="filter_folders_action">یافتن پوشه</string>
@@ -274,10 +275,6 @@
   <string name="global_settings_privacy_hide_useragent_detail">شناسهٔ K-9 User-Agent را از سرایند رایانامه‌ها بردار</string>
   <string name="global_settings_privacy_hide_timezone">منطقهٔ زمانی را مخفی کن</string>
   <string name="global_settings_privacy_hide_timezone_detail">در سرایند رایانامه و سرایند پاسخ به‌جای زمان محلی از UTC استفاده کن</string>
-  <string name="global_settings_notification_hide_subject_title">پنهان‌کردن موضوع در اعلان‌ها</string>
-  <string name="global_settings_notification_hide_subject_never">هرگز</string>
-  <string name="global_settings_notification_hide_subject_when_locked">هنگامی که دستگاه قفل است</string>
-  <string name="global_settings_notification_hide_subject_always">همیشه</string>
   <string name="global_settings_notification_quick_delete_title">نمایش دکمهٔ «حذف»</string>
   <string name="global_settings_notification_quick_delete_never">هرگز</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">برای اعلان پیام تکی</string>
@@ -299,6 +296,9 @@
   <string name="account_setup_basics_password_hint">گذرواژه</string>
   <string name="account_setup_basics_show_password">نمایش گذرواژه</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">برای دیدن گذرواژه‌تان در این قسمت، قفل صفحه در این دستگاه را فعال کنید.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">هویت‌تان را تایید کنید</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">برای دیدن گذرواژه، قفل را باز کنید</string>
   <string name="account_setup_basics_manual_setup_action">تنظیم دستی</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">بازیابی اطلاعات حساب کاربری\u2026</string>
@@ -340,8 +340,6 @@
   <string name="account_setup_incoming_mobile_label">دادهٔ همراه</string>
   <string name="account_setup_incoming_wifi_label">وای‌فای</string>
   <string name="account_setup_incoming_other_label">سایر</string>
-  <string name="local_storage_provider_external_label">حافظهٔ خارجی (کارت SD)</string>
-  <string name="local_storage_provider_internal_label">حافظهٔ داخلی همیشگی</string>
   <string name="account_setup_expunge_policy_label">پیام‌های حذف‌شده را در کارساز پاک کن</string>
   <string name="account_setup_expunge_policy_immediately">فوراً</string>
   <string name="account_setup_expunge_policy_on_poll">در زمان سرکشی</string>
@@ -417,8 +415,6 @@
   <string name="account_setup_failed_dlg_continue_action">ادامه</string>
   <string name="account_settings_push_advanced_title">پیشرفته</string>
   <string name="account_settings_title_fmt">تنظیمات حساب</string>
-  <string name="account_settings_default_label">حساب پیش‌فرض</string>
-  <string name="account_settings_default_summary">به‌طور پیش‌فرض رایانامه‌ها را با این حساب بفرست</string>
   <string name="account_settings_notify_label">اعلان‌های رایانامهٔ جدید</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">پوشه‌های دارای اعلان</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">همه</string>
@@ -434,10 +430,15 @@
   <string name="account_settings_notify_self_summary">برای پیام‌هایی که فرستادم یک اعلان نمایش بده</string>
   <string name="account_notify_contacts_mail_only_label">فقط مخاطبان</string>
   <string name="account_notify_contacts_mail_only_summary">فقط برای پیام مخاطبانِ شناس، اعلان بده</string>
+  <string name="account_settings_ignore_chat_messages_label">نادیده گرفتن پیام‌های گفتگو</string>
+  <string name="account_settings_ignore_chat_messages_summary">اعلان‌ها مرتبط با  پیام‌های متعلق به یک گفتگوی رایانامه‌ای را نمایش نده</string>
   <string name="account_settings_mark_message_as_read_on_view_label">اگر باز شد نشان بزن که خواندم</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">زمانی که یک پیام را باز کردید به‌عنوان خوانده علامت بخورد</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">هنگام حذف، نشان بزن که خواندم</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">پیام حذف‌شده را نشان بزن که خوانده‌ام</string>
+  <string name="account_settings_notification_channels_label">دسته‌بندی‌های اعلان</string>
+  <string name="account_settings_open_notification_settings_messages_summary">پیکربندی اعلانات برای پیام‌های جدید</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">پیکربندی اعلانات مربوط به وضعیت و خطا</string>
   <string name="account_settings_show_pictures_label">همیشه عکس‌ها را نشان بده</string>
   <string name="account_settings_show_pictures_never">خیر</string>
   <string name="account_settings_show_pictures_only_from_contacts">از مخاطبان</string>
@@ -690,6 +691,7 @@
   <string name="volume_navigation_message">در نماهای پیام</string>
   <string name="volume_navigation_list">در نماهای لیستی</string>
   <string name="show_unified_inbox_title">نمایش صندوق یکپارچه</string>
+  <string name="show_starred_count_title">نمایش تعداد ستاره‌ها</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- نخوانده</string>
   <string name="search_all_messages_title">همهٔ پیام‌ها</string>
@@ -899,6 +901,7 @@
   <string name="recipient_bcc">مخفیانه به</string>
   <string name="recipient_to">به</string>
   <string name="recipient_from">از</string>
+  <string name="reply_to_label">پاسخ به</string>
   <string name="unknown_recipient">&lt;گیرندهٔ ناشناس&gt;</string>
   <string name="unknown_sender">&lt;فرستندهٔ ناشناس&gt;</string>
   <string name="address_type_home">خانه</string>

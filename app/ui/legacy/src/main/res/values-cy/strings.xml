@@ -267,10 +267,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="global_settings_privacy_hide_useragent_detail">Cuddio\'r Cleient K-9 o benynnau negeseuon</string>
   <string name="global_settings_privacy_hide_timezone">Cuddio cylchfa amser</string>
   <string name="global_settings_privacy_hide_timezone_detail">Defnyddio amser UTC yn hytrach na chylchfa amser lleol (e.e. GMT, BST) ym mhenynnau negeseuon ac atebion</string>
-  <string name="global_settings_notification_hide_subject_title">Cuddio\'r pwnc mewn hysbysiadau</string>
-  <string name="global_settings_notification_hide_subject_never">Byth</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Pan mae\'r ddyfais ar glo</string>
-  <string name="global_settings_notification_hide_subject_always">O hyd</string>
   <string name="global_settings_notification_quick_delete_title">Dangos y botwm \'Dileu\'</string>
   <string name="global_settings_notification_quick_delete_never">Byth</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Pan fydd hysbysiad un neges</string>
@@ -333,8 +329,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_incoming_mobile_label">Symudol</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Arall</string>
-  <string name="local_storage_provider_external_label">Storfa allanol (cerdyn SD)</string>
-  <string name="local_storage_provider_internal_label">Storfa mewnol arferol</string>
   <string name="account_setup_expunge_policy_label">Dileu negeseuon sydd wedi eu dileu o\'r gweinydd</string>
   <string name="account_setup_expunge_policy_immediately">Yn syth</string>
   <string name="account_setup_expunge_policy_on_poll">Wrth wirio am negeseuon</string>
@@ -410,8 +404,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_failed_dlg_continue_action">Parhau</string>
   <string name="account_settings_push_advanced_title">Uwch</string>
   <string name="account_settings_title_fmt">Gosodiadau cyfrif</string>
-  <string name="account_settings_default_label">Cyfrif rhagosodedig</string>
-  <string name="account_settings_default_summary">Anfon negeseuon o\'r cyfrif hwn fel arferiad</string>
   <string name="account_settings_notify_label">Hysbysiadau negeseuon newydd</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Ffolderi i hysbysu amdanynt</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Pob un</string>
