@@ -77,6 +77,8 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="compose_title_forward_as_attachment">Transférer en tant que fichier joint</string>
   <string name="choose_account_title">Choisir un  compte</string>
   <string name="choose_folder_title">Choisir un dossier</string>
+  <string name="choose_folder_move_title">Déplacer vers…</string>
+  <string name="choose_folder_copy_title">Copier vers…</string>
   <string name="status_loading_account_folder">Scrutation. <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Récup. entêtes <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Envoi <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -276,10 +278,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="global_settings_privacy_hide_useragent_detail">Supprimer l’agent utilisateur K-9 des en-têtes de courriels</string>
   <string name="global_settings_privacy_hide_timezone">Cacher le fuseau horaire</string>
   <string name="global_settings_privacy_hide_timezone_detail">Utiliser UTC au lieu du fuseau horaire local dans les en-têtes de courriel et de réponse</string>
-  <string name="global_settings_notification_hide_subject_title">Cacher l’objet dans les notifications</string>
-  <string name="global_settings_notification_hide_subject_never">Jamais</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Quand l’appareil est verrouillé</string>
-  <string name="global_settings_notification_hide_subject_always">Toujours</string>
   <string name="global_settings_notification_quick_delete_title">Afficher le bouton Supprimer</string>
   <string name="global_settings_notification_quick_delete_never">Jamais</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Pour une notification de courriel unique</string>
@@ -345,8 +343,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_setup_incoming_mobile_label">mobile</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">autre</string>
-  <string name="local_storage_provider_external_label">Stockage externe (carte SD)</string>
-  <string name="local_storage_provider_internal_label">Stockage interne habituel</string>
   <string name="account_setup_expunge_policy_label">Effacer les courriels supprimés du serveur</string>
   <string name="account_setup_expunge_policy_immediately">Immédiatement</string>
   <string name="account_setup_expunge_policy_on_poll">Lors de la scrutation</string>
@@ -422,8 +418,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_setup_failed_dlg_continue_action">Continuer</string>
   <string name="account_settings_push_advanced_title">Avancé</string>
   <string name="account_settings_title_fmt">Paramètres du compte</string>
-  <string name="account_settings_default_label">Compte par défaut</string>
-  <string name="account_settings_default_summary">Envoyer par défaut les courriels avec ce compte</string>
   <string name="account_settings_notify_label">Notifications de nouveaux courriels</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Dossiers des notifications</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Tous</string>
@@ -910,6 +904,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="recipient_bcc">Cci</string>
   <string name="recipient_to">À</string>
   <string name="recipient_from">De</string>
+  <string name="reply_to_label">Répondre à</string>
   <string name="unknown_recipient">&lt;Le destinataire est inconnu&gt;</string>
   <string name="unknown_sender">&lt;L’expéditeur est inconnu&gt;</string>
   <string name="address_type_home">Domicile</string>

@@ -76,6 +76,8 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="compose_title_forward_as_attachment">Reenviar como adjunto</string>
   <string name="choose_account_title">Elige una cuenta</string>
   <string name="choose_folder_title">Selecciona una carpeta</string>
+  <string name="choose_folder_move_title">Mover a...</string>
+  <string name="choose_folder_copy_title">Copiar a...</string>
   <string name="status_loading_account_folder">Comprobando <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Recuperando cabeceras <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Enviando <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -144,7 +146,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="empty_trash_action">Vaciar papelera</string>
   <string name="expunge_action">Purgar</string>
   <string name="about_action">Acerca de</string>
-  <string name="prefs_title">Configuración</string>
+  <string name="prefs_title">Ajustes</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(Sin asunto)</string>
   <string name="general_no_sender">Sin remitente</string>
@@ -273,20 +275,16 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de K-9 de las cabeceras del mensaje, el destinatario no verá qué programa de correo usas</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
   <string name="global_settings_privacy_hide_timezone_detail">Usar UTC («tiempo universal coordinado») en lugar de la zona horaria local en las cabeceras de mensaje y cabeceras de respuesta</string>
-  <string name="global_settings_notification_hide_subject_title">Ocultar asunto en notificaciones</string>
-  <string name="global_settings_notification_hide_subject_never">Nunca</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Cuando el dispositivo está bloqueado</string>
-  <string name="global_settings_notification_hide_subject_always">Siempre</string>
   <string name="global_settings_notification_quick_delete_title">Mostrar el botón «Borrar»</string>
   <string name="global_settings_notification_quick_delete_never">Nunca</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Para notificaciones de un mensaje</string>
   <string name="global_settings_notification_quick_delete_always">Siempre</string>
-  <string name="global_settings_lock_screen_notification_visibility_title">Notificaciones en pantalla bloqueada</string>
-  <string name="global_settings_lock_screen_notification_visibility_nothing">Sin notificaciones en pantalla bloqueada</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Ver notificaciones al bloquear la pantalla</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">No mostrar notificaciones al bloquear</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nombre de la aplicación</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Cuenta de mensajes no leídos</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Cuenta de mensajes y remitentes</string>
-  <string name="global_settings_lock_screen_notification_visibility_everything">Igual que con la pantalla desbloqueada</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Mismo comportamiento que al desbloquear</string>
   <string name="quiet_time">Horario de descanso</string>
   <string name="quiet_time_description">Desactivar y silenciar los sonidos, alertas y luces de notificación por la noche</string>
   <string name="quiet_time_notification">Desactivar notificaciones</string>
@@ -298,7 +296,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_basics_password_hint">Contraseña</string>
   <string name="account_setup_basics_show_password">Mostrar la contraseña</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-  <string name="account_setup_basics_show_password_need_lock">Para ver tu contraseña activa la pantalla de bloqueo en tu dispositivo.</string>
+  <string name="account_setup_basics_show_password_need_lock">Para ver tu contraseña, activa la pantalla de bloqueo en tu dispositivo.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifica tu identidad</string>
   <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloquea para ver tu contraseña</string>
   <string name="account_setup_basics_manual_setup_action">Configuración manual</string>
@@ -342,8 +340,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_incoming_mobile_label">Móvil</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Otras</string>
-  <string name="local_storage_provider_external_label">Almacenamiento externo (tarjeta SD)</string>
-  <string name="local_storage_provider_internal_label">Almacenamiento interno</string>
   <string name="account_setup_expunge_policy_label">Eliminar mensajes borrados en el servidor</string>
   <string name="account_setup_expunge_policy_immediately">Inmediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante comprobación</string>
@@ -363,7 +359,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_incoming_webdav_auth_path_hint">Opcional</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Alias del buzón</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">Opcional</string>
-  <string name="account_setup_outgoing_title">Correo saliente</string>
+  <string name="account_setup_outgoing_title">Configuración de correo saliente</string>
   <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
   <string name="account_setup_outgoing_port_label">Puerto</string>
   <string name="account_setup_outgoing_security_label">Tipo de Seguridad</string>
@@ -418,9 +414,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalles</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avanzado</string>
-  <string name="account_settings_title_fmt">Configuración de cuenta</string>
-  <string name="account_settings_default_label">Cuenta predeterminada</string>
-  <string name="account_settings_default_summary">Enviar mensajes desde esta cuenta de manera predeterminada</string>
+  <string name="account_settings_title_fmt">Ajustes de la cuenta</string>
   <string name="account_settings_notify_label">Notificar mensajes nuevos</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Carpetas de notificaciones</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>
@@ -468,7 +462,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_settings_quote_style_header">Cabecera (como Outlook)</string>
   <string name="account_settings_upload_sent_messages_label">Subir mensajes enviados</string>
   <string name="account_settings_upload_sent_messages_summary">Subir mensajes a la carpeta Enviados luego de enviarlos</string>
-  <string name="account_settings_general_title">Configuración general</string>
+  <string name="account_settings_general_title">Ajustes generales</string>
   <string name="account_settings_reading_mail">Al leer el correo</string>
   <string name="account_settings_sync">Comprobación de correo</string>
   <string name="account_settings_folders">Carpetas</string>
@@ -544,7 +538,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_settings_sync_remote_deletetions_label">Sincronizar con el borrado remoto</string>
   <string name="account_settings_sync_remote_deletetions_summary">Eliminar los mensajes cuando se borren del servidor</string>
   <string name="account_settings_openpgp_missing">Falta la aplicación OpenPGP, ¿se ha desinstalado?</string>
-  <string name="folder_settings_title">Configuración de carpeta</string>
+  <string name="folder_settings_title">Ajustes de carpetas</string>
   <string name="folder_settings_in_top_group_label">Mostrar al principio</string>
   <string name="folder_settings_in_top_group_summary">Mostrar cerca del principio de la lista</string>
   <string name="folder_settings_folder_display_mode_label">Tipos de carpeta mostrados</string>
@@ -783,12 +777,12 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Respaldo</string>
   <string name="settings_list_miscellaneous_category">Varios</string>
-  <string name="settings_export_title">Exportar opciones</string>
+  <string name="settings_export_title">Exportar ajustes</string>
   <string name="settings_export_button">Exportar</string>
   <string name="settings_export_share_button">Compartir</string>
   <string name="settings_export_progress_text">Exportando ajustes…</string>
   <string name="settings_export_success_generic">Se han exportado correctamente los ajustes</string>
-  <string name="settings_export_failure">Fallo al exportar los ajustes</string>
+  <string name="settings_export_failure">La exportación de ajustes ha fallado</string>
   <string name="settings_import_title">Importar ajustes</string>
   <string name="settings_import_pick_document_button">Seleccionar archivo</string>
   <string name="settings_import_button">Importar</string>
@@ -907,6 +901,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="recipient_bcc">Cco</string>
   <string name="recipient_to">A</string>
   <string name="recipient_from">De</string>
+  <string name="reply_to_label">Responder a</string>
   <string name="unknown_recipient">&lt;Destinatario desconocido&gt;</string>
   <string name="unknown_sender">&lt;Remitente desconocido&gt;</string>
   <string name="address_type_home">Casa</string>
@@ -1000,7 +995,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Este correo está cifrado</string>
   <string name="crypto_no_provider_message">Este correo ha sido cifrado con OpenPGP.\nPara leerlo es necesario instalar y configurar una aplicación compatible con OpenPGP.</string>
-  <string name="crypto_no_provider_button">Ir a Ajustes</string>
+  <string name="crypto_no_provider_button">Ir a los ajustes</string>
   <string name="mail_list_widget_text">Lista de mensajes de K-9</string>
   <string name="mail_list_widget_loading">Cargando mensajes…</string>
   <string name="fetching_folders_failed">No se ha podido recuperar la lista de carpetas</string>
@@ -1021,7 +1016,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="dialog_autocrypt_mutual_description_1">Normalmente, los mensajes se cifran por elección o cuando se responde a un mensaje cifrado.</string>
   <string name="dialog_autocrypt_mutual_description_2">Si tanto el remitente como los destinatarios activan el modo mutuo, el cifrado se activará de forma predefinida.</string>
   <string name="dialog_autocrypt_mutual_learn_more">Puedes <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">pulsar aquí</a> para leer más sobre el tema.</string>
-  <string name="general_settings_title">Configuración general</string>
+  <string name="general_settings_title">Ajustes generales</string>
   <string name="dialog_openkeychain_info_title">Sin aplicación OpenPGP instalada</string>
   <string name="dialog_openkeychain_info_install">Instalar</string>
   <string name="dialog_openkeychain_info_text">K-9 Mail necesita OpenKeychain para el cifrado de extremo a extremo.</string>

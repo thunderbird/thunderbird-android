@@ -175,10 +175,6 @@
   <string name="global_settings_confirm_action_delete_starred">Pašalinti pažymėtus žvaigždute (pranešimų rodinyje)</string>
   <string name="global_settings_confirm_action_spam">Brukalas</string>
   <string name="global_settings_confirm_action_delete_notif">Pašalinti</string>
-  <string name="global_settings_notification_hide_subject_title">Pranešimuose slėpti temą</string>
-  <string name="global_settings_notification_hide_subject_never">Niekada</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Kai įrenginys užrakintas</string>
-  <string name="global_settings_notification_hide_subject_always">Visada</string>
   <string name="global_settings_notification_quick_delete_title">Rodyti mygtuką „Šalinti“</string>
   <string name="global_settings_notification_quick_delete_never">Niekada</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Vieno laiško pranešimui</string>
@@ -224,8 +220,6 @@
   <string name="account_setup_incoming_mobile_label">Mobilus</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Kita</string>
-  <string name="local_storage_provider_external_label">Išorinė saugykla (SD kortelė)</string>
-  <string name="local_storage_provider_internal_label">Įprasta vidinė saugykla</string>
   <string name="account_setup_expunge_policy_label">Pašalinti ištrintus laiškus serveryje</string>
   <string name="account_setup_expunge_policy_immediately">Tuojau pat</string>
   <string name="account_setup_expunge_policy_on_poll">Kai užklausiama</string>
@@ -294,8 +288,6 @@
   <string name="account_setup_failed_dlg_continue_action">Tęsti</string>
   <string name="account_settings_push_advanced_title">Išplėstinis</string>
   <string name="account_settings_title_fmt">Aplanko nustatymai</string>
-  <string name="account_settings_default_label">Numatytoji paskyra</string>
-  <string name="account_settings_default_summary">Pagal nutylėjimą laiškus siųsti iš šios paskyros</string>
   <string name="account_settings_notify_label">Pranešimai apie naujus laiškus</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Visi</string>
   <string name="account_settings_folder_notify_new_mail_mode_first_class">Tik 1 klasės aplankai</string>

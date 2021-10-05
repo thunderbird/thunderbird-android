@@ -274,10 +274,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="global_settings_privacy_hide_useragent_detail">Fjern K-9 Bruger-Agent fra mail headers</string>
   <string name="global_settings_privacy_hide_timezone">Skjul tidszone</string>
   <string name="global_settings_privacy_hide_timezone_detail">Brug UTC som tidszone i mail headers og svar header</string>
-  <string name="global_settings_notification_hide_subject_title">Skjul emne i beskedbjælke</string>
-  <string name="global_settings_notification_hide_subject_never">Aldrig</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Når enhed er låst</string>
-  <string name="global_settings_notification_hide_subject_always">Altid</string>
   <string name="global_settings_notification_quick_delete_title">Vis \'Slet\' knap</string>
   <string name="global_settings_notification_quick_delete_never">Aldrig</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">For enkelt-meddelelsesbesked</string>
@@ -340,8 +336,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_incoming_mobile_label">Mobilt netværk</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Andet</string>
-  <string name="local_storage_provider_external_label">Eksternt lager (SD kort)</string>
-  <string name="local_storage_provider_internal_label">Almindelig internt lager</string>
   <string name="account_setup_expunge_policy_label">Ryd slettede mails</string>
   <string name="account_setup_expunge_policy_immediately">Umiddelbart efter sletning</string>
   <string name="account_setup_expunge_policy_on_poll">I forbindelse med hentning af mails</string>
@@ -417,8 +411,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_failed_dlg_continue_action">Fortsæt</string>
   <string name="account_settings_push_advanced_title">Avanceret</string>
   <string name="account_settings_title_fmt">Konto opsætning</string>
-  <string name="account_settings_default_label">Standard konto</string>
-  <string name="account_settings_default_summary">Send mail fra denne konto som standard</string>
   <string name="account_settings_notify_label">Vis besked når ny mail er modtaget</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Påmindelses mapper</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Alle</string>

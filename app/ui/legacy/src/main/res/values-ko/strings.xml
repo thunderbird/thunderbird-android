@@ -206,10 +206,6 @@
   <string name="global_settings_privacy_hide_useragent">메일 클라이언트를 숨김</string>
   <string name="global_settings_privacy_hide_useragent_detail">메일 헤더에서 K-9 User Agent 제거</string>
   <string name="global_settings_privacy_hide_timezone">시간 구역을 숨기기</string>
-  <string name="global_settings_notification_hide_subject_title">알림에 제목 숨기기</string>
-  <string name="global_settings_notification_hide_subject_never">하지 않음</string>
-  <string name="global_settings_notification_hide_subject_when_locked">폰이 잠겨 있을 때</string>
-  <string name="global_settings_notification_hide_subject_always">항상</string>
   <string name="global_settings_notification_quick_delete_title">\'삭제\' 버튼 보이기</string>
   <string name="global_settings_notification_quick_delete_never">하지 않음</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">알림에 메시지가 하나뿐일 때만</string>
@@ -270,8 +266,6 @@
   <string name="account_setup_incoming_mobile_label">모바일 네트워크</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">기타</string>
-  <string name="local_storage_provider_external_label">외부 저장장치(SD card)</string>
-  <string name="local_storage_provider_internal_label">일반적인 내부 저장장치</string>
   <string name="account_setup_expunge_policy_label">삭제된 메시지를 제거</string>
   <string name="account_setup_expunge_policy_immediately">즉시</string>
   <string name="account_setup_expunge_policy_on_poll">수신 시</string>
@@ -346,8 +340,6 @@
   <string name="account_setup_failed_dlg_continue_action">계속</string>
   <string name="account_settings_push_advanced_title">고급</string>
   <string name="account_settings_title_fmt">계정 설정</string>
-  <string name="account_settings_default_label">기본 계정</string>
-  <string name="account_settings_default_summary">보내기 기본 계정으로 사용합니다</string>
   <string name="account_settings_notify_label">새 메일 알림</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">알림 폴더</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">모두</string>

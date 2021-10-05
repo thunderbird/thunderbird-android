@@ -265,10 +265,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="global_settings_privacy_hide_useragent_detail">Buang User-Agent K-9 dari tajuk surel</string>
   <string name="global_settings_privacy_hide_timezone">Sembunyikan zona waktu</string>
   <string name="global_settings_privacy_hide_timezone_detail">Gunakan UTC, bukan zona waktu lokal di header email dan header balasan</string>
-  <string name="global_settings_notification_hide_subject_title">Sembunyikan subyek dalam notifikasi</string>
-  <string name="global_settings_notification_hide_subject_never">Tidak pernah</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Ketika perangkat di kunci</string>
-  <string name="global_settings_notification_hide_subject_always">Selalu</string>
   <string name="global_settings_notification_quick_delete_title">Tampilkan tombol \'Hapus\'</string>
   <string name="global_settings_notification_quick_delete_never">Tidak pernah</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Untuk notifikasi pesan tunggal</string>
@@ -331,8 +327,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_incoming_mobile_label">Mobile</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Lainnya</string>
-  <string name="local_storage_provider_external_label">Penyimpanan eksternal (kartu SD)</string>
-  <string name="local_storage_provider_internal_label">Penyimpanan internal umum</string>
   <string name="account_setup_expunge_policy_label">Hapus pesan yang dihapus di server</string>
   <string name="account_setup_expunge_policy_immediately">Segera</string>
   <string name="account_setup_expunge_policy_on_poll">Ketika menarik</string>
@@ -408,8 +402,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_failed_dlg_continue_action">Lanjutkan</string>
   <string name="account_settings_push_advanced_title">Lanjutan</string>
   <string name="account_settings_title_fmt">Pengaturan akun</string>
-  <string name="account_settings_default_label">Akun bawaan</string>
-  <string name="account_settings_default_summary">Kirim email dari akun ini secara bawaan</string>
   <string name="account_settings_notify_label">Pemberitahuan surat baru</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Folder notifikasi</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Semua</string>

@@ -110,6 +110,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="discard_action">Çıkart</string>
   <string name="save_draft_action">Taslak olarak Kaydet</string>
   <string name="check_mail_action">Postayı Kontrol et</string>
+  <string name="check_all_mail_action">Tüm hesaplardaki e-postaları kontrol edin</string>
   <string name="send_messages_action">İletileri Gönder</string>
   <string name="refresh_folders_action">Klasörleri yinele</string>
   <string name="filter_folders_action">Klasör bul</string>
@@ -273,10 +274,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="global_settings_privacy_hide_useragent_detail">Posta başlığından K-9 Kullanıcı Aracısını kaldır</string>
   <string name="global_settings_privacy_hide_timezone">Zaman dilimini gizle</string>
   <string name="global_settings_privacy_hide_timezone_detail">Posta ve yanıt başlıklarında yerel zaman dilimi yerine UTC kullan</string>
-  <string name="global_settings_notification_hide_subject_title">Bildirimlerde konuyu gizle</string>
-  <string name="global_settings_notification_hide_subject_never">Hiçbir zaman</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Cihaz kilitlendiği zaman</string>
-  <string name="global_settings_notification_hide_subject_always">Her zaman</string>
   <string name="global_settings_notification_quick_delete_title">\'Sil\' butonunu göster</string>
   <string name="global_settings_notification_quick_delete_never">Hiçbir zaman</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Tek bir mesaj bildirimi için</string>
@@ -298,6 +295,9 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_basics_password_hint">Parola</string>
   <string name="account_setup_basics_show_password">Parolayı göster</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Şifrenizi görmek için ekran kilidini etkinleştirin.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Kimliğinizi doğrulayın</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Şifrenizi görmek için kilidi açın</string>
   <string name="account_setup_basics_manual_setup_action">El ile ayar</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Hesap bilgisi alınıyor\u2026</string>
@@ -339,8 +339,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_incoming_mobile_label">Cep Telefonu</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Diğer</string>
-  <string name="local_storage_provider_external_label">Harici depolama (SD kart)</string>
-  <string name="local_storage_provider_internal_label">Düzenli dahili depolama</string>
   <string name="account_setup_expunge_policy_label">Sunucudan silinen mesajları temizle</string>
   <string name="account_setup_expunge_policy_immediately">Hemen</string>
   <string name="account_setup_expunge_policy_on_poll">Oylama  zamanı</string>
@@ -416,8 +414,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_failed_dlg_continue_action">Devam</string>
   <string name="account_settings_push_advanced_title">Gelişmiş</string>
   <string name="account_settings_title_fmt">Hesap ayarları</string>
-  <string name="account_settings_default_label">Öntanımlı hesap</string>
-  <string name="account_settings_default_summary">Postayı varsayılan olarak bu hesaptan gönder</string>
   <string name="account_settings_notify_label">Yeni posta bildirimleri</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Bildirimler klasörü</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Hepsi</string>
@@ -433,6 +429,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_notify_self_summary">Gönderdiğim mesajlar için bir bildirim göster</string>
   <string name="account_notify_contacts_mail_only_label">Sadece kişiler</string>
   <string name="account_notify_contacts_mail_only_summary">Sadece bilinen kişilerden gelen mesajlar için bildirim göster</string>
+  <string name="account_settings_ignore_chat_messages_label">Sohbet mesajlarını yoksay</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Açılan iletiyi okundu olarak işaretle</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Mesaj okunmak üzere açıldığında okundu olarak işaretle</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Silindiğinde okundu olarak işaretle</string>
@@ -1058,4 +1055,5 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <string name="push_notification_info">Daha fazlasını öğrenmek için dokunun.</string>
   <string name="push_info_configure_notification_text">Aynı zamanda Android de bildirimleri gizlemenize olanak sağlamaktadır.</string>
   <string name="push_info_learn_more_text">Daha fazlasını öğren</string>
+  <string name="push_info_configure_notification_action">Bildirimleri ayarla</string>
 </resources>

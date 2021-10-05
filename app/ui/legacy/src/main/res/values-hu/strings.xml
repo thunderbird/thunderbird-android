@@ -273,10 +273,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_privacy_hide_useragent_detail">A K-9 azonosító eltávolítása a levél fejlécéből</string>
   <string name="global_settings_privacy_hide_timezone">Időzóna elrejtése</string>
   <string name="global_settings_privacy_hide_timezone_detail">UTC használata a helyi időzóna helyett a levelek fejlécében és a válasz fejlécében</string>
-  <string name="global_settings_notification_hide_subject_title">Tárgy elrejtése az értesítésekben</string>
-  <string name="global_settings_notification_hide_subject_never">Soha</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Ha a készülék zárolt</string>
-  <string name="global_settings_notification_hide_subject_always">Mindig</string>
   <string name="global_settings_notification_quick_delete_title">„Törlés” gomb megjelenítése</string>
   <string name="global_settings_notification_quick_delete_never">Soha</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Önálló üzenet értesítésénél</string>
@@ -342,8 +338,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_incoming_mobile_label">Mobil</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Egyéb</string>
-  <string name="local_storage_provider_external_label">Külső tárhely (SD-kártya)</string>
-  <string name="local_storage_provider_internal_label">Szabályos belső tárhely</string>
   <string name="account_setup_expunge_policy_label">Törölt üzenetek végleges törlése a kiszolgálóról</string>
   <string name="account_setup_expunge_policy_immediately">Azonnal</string>
   <string name="account_setup_expunge_policy_on_poll">Lekérdezéskor</string>
@@ -419,8 +413,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_failed_dlg_continue_action">Folytatás</string>
   <string name="account_settings_push_advanced_title">Bővített</string>
   <string name="account_settings_title_fmt">Fiók beállításai</string>
-  <string name="account_settings_default_label">Alapértelmezett fiók</string>
-  <string name="account_settings_default_summary">Levél küldése alapértelmezetten ebből a fiókból</string>
   <string name="account_settings_notify_label">Új levél értesítések</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Értesítések mappái</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Összes</string>
@@ -907,6 +899,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="recipient_bcc">Titkos másolat</string>
   <string name="recipient_to">Címzett</string>
   <string name="recipient_from">Feladó</string>
+  <string name="reply_to_label">Válasz címzettje</string>
   <string name="unknown_recipient">&lt;Címzett ismeretlen&gt;</string>
   <string name="unknown_sender">&lt;Feladó ismeretlen&gt;</string>
   <string name="address_type_home">Otthon</string>

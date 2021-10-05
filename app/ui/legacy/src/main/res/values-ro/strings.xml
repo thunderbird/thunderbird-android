@@ -77,6 +77,8 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="compose_title_forward_as_attachment">Trimite atașat</string>
   <string name="choose_account_title">Alege contul</string>
   <string name="choose_folder_title">Alege dosar</string>
+  <string name="choose_folder_move_title">Mutați la...</string>
+  <string name="choose_folder_copy_title">Copiați la...</string>
   <string name="status_loading_account_folder">Interogare <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Se obțin antetele <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Se trimite <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -110,6 +112,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="discard_action">Renunță</string>
   <string name="save_draft_action">Salvează ca ciornă</string>
   <string name="check_mail_action">Verifică email</string>
+  <string name="check_all_mail_action">Verificarea corespondenței în toate conturile</string>
   <string name="send_messages_action">Trimite mesaje</string>
   <string name="refresh_folders_action">Reîmprospătează lista de dosare</string>
   <string name="filter_folders_action">Găsește dosar</string>
@@ -276,10 +279,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="global_settings_privacy_hide_useragent_detail">Elimină K-9 User-Agent din anteturile mesajelor</string>
   <string name="global_settings_privacy_hide_timezone">Ascunde fusul orar</string>
   <string name="global_settings_privacy_hide_timezone_detail">Folosește UTC în locul fusului orar local în antetul mesajelor și al răspunsurilor</string>
-  <string name="global_settings_notification_hide_subject_title">Ascunde subiect în notificări</string>
-  <string name="global_settings_notification_hide_subject_never">Niciodată</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Când dispozitivul este blocat</string>
-  <string name="global_settings_notification_hide_subject_always">Întotdeauna</string>
   <string name="global_settings_notification_quick_delete_title">Arată butonul \'Ştergere\'</string>
   <string name="global_settings_notification_quick_delete_never">Niciodată</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Pentru notificarea unui singur mesaj</string>
@@ -301,6 +300,9 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="account_setup_basics_password_hint">Parolă</string>
   <string name="account_setup_basics_show_password">Arată parola</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Pentru a vă vedea parola aici, activați blocarea ecranului pe acest dispozitiv.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verifică-ți identitatea</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Deblocare pentru a vedea parola dumneavoastră</string>
   <string name="account_setup_basics_manual_setup_action">Setare manuală</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Preluarea informațiilor de cont\u2026</string>
@@ -342,8 +344,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="account_setup_incoming_mobile_label">Mobil</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Altceva</string>
-  <string name="local_storage_provider_external_label">Stocare externă (card SD)</string>
-  <string name="local_storage_provider_internal_label">Stocare internă normală</string>
   <string name="account_setup_expunge_policy_label">Elimină mesajele şterse de pe server</string>
   <string name="account_setup_expunge_policy_immediately">Imediat</string>
   <string name="account_setup_expunge_policy_on_poll">Când interoghează</string>
@@ -421,8 +421,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_setup_failed_dlg_continue_action">Continuă</string>
   <string name="account_settings_push_advanced_title">Avansat</string>
   <string name="account_settings_title_fmt">Setări cont</string>
-  <string name="account_settings_default_label">Cont implicit</string>
-  <string name="account_settings_default_summary">Trimite mail din acest cont în mod implicit</string>
   <string name="account_settings_notify_label">Notificări mail noi</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Dosare notificări</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Toate</string>
@@ -438,10 +436,15 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_notify_self_summary">Arată o notificare pentru mesajele pe care le-am trimis</string>
   <string name="account_notify_contacts_mail_only_label">Doar contacte</string>
   <string name="account_notify_contacts_mail_only_summary">Arată notificări doar pentru mesaje de la persoane cunoscute</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignorați mesajele de chat</string>
+  <string name="account_settings_ignore_chat_messages_summary">Ignorați mesajele de chat</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marchează ca citit la deschidere</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marchează mesaj ca citit când e deschis pentru vizualizare</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marchează ca citit la ștergere</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marchează un mesaj ca citit când este șters</string>
+  <string name="account_settings_notification_channels_label">Categorii de notificări</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Configurați notificările pentru mesaje noi</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Configurați notificările de eroare și de stare</string>
   <string name="account_settings_show_pictures_label">Arată întotdeauna imaginile</string>
   <string name="account_settings_show_pictures_never">Nu</string>
   <string name="account_settings_show_pictures_only_from_contacts">De la contacte</string>
@@ -694,6 +697,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="volume_navigation_message">Vizualizări în mesaj</string>
   <string name="volume_navigation_list">Vizualizări în listă</string>
   <string name="show_unified_inbox_title">Afișați Cutia poștală de intrare unificată</string>
+  <string name="show_starred_count_title">Afișați numărul de stele</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Necitite</string>
   <string name="search_all_messages_title">Toate mesajele</string>
@@ -908,6 +912,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Către</string>
   <string name="recipient_from">De la</string>
+  <string name="reply_to_label">Răspundeți la</string>
   <string name="unknown_recipient">&lt;Unknown Recipient&gt;</string>
   <string name="unknown_sender">&lt;Unknown Sender&gt;</string>
   <string name="address_type_home">Acasă</string>

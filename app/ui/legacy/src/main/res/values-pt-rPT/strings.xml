@@ -258,10 +258,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_privacy_hide_useragent_detail">Remover o \"User-Agent\" do K-9 dos cabeçalhos dos emails</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar fuso horário</string>
   <string name="global_settings_privacy_hide_timezone_detail">Usar UTC em vez do fuso horário local nos cabeçalhos dos emails e no cabeçalho de resposta</string>
-  <string name="global_settings_notification_hide_subject_title">Ocultar assunto nas notificações</string>
-  <string name="global_settings_notification_hide_subject_never">Nunca</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Quando o dispositivo está bloqueado</string>
-  <string name="global_settings_notification_hide_subject_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_title">Mostrar botão \'Eliminar\'</string>
   <string name="global_settings_notification_quick_delete_never">Nunca</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Para notificações de apenas uma mensagem</string>
@@ -324,8 +320,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_incoming_mobile_label">Móvel</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Outras</string>
-  <string name="local_storage_provider_external_label">Armazenamento externo (cartão SD)</string>
-  <string name="local_storage_provider_internal_label">Armazenamento na memória interna</string>
   <string name="account_setup_expunge_policy_label">Apagar mensagens eliminadas no servidor</string>
   <string name="account_setup_expunge_policy_immediately">Imediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Na verificação</string>
@@ -401,8 +395,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avançado</string>
   <string name="account_settings_title_fmt">Configurações da conta</string>
-  <string name="account_settings_default_label">Conta predefinida</string>
-  <string name="account_settings_default_summary">Enviar email a partir desta conta por predefinição</string>
   <string name="account_settings_notify_label">Notificação de novos emails</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Notificações de pastas</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>

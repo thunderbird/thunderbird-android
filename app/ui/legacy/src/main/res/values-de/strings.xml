@@ -78,6 +78,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="compose_title_forward_as_attachment">Als Anhang weiterleiten</string>
   <string name="choose_account_title">Konto auswählen</string>
   <string name="choose_folder_title">Ordner auswählen</string>
+  <string name="choose_folder_move_title">Verschieben nach…</string>
+  <string name="choose_folder_copy_title">Kopieren nach…</string>
   <string name="status_loading_account_folder">Lade <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Lade Kopfzeilen in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Sende <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -275,10 +277,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_privacy_hide_useragent_detail">K-9 Benutzer-Agent aus E-Mail-Kopfzeilen entfernen</string>
   <string name="global_settings_privacy_hide_timezone">Zeitzone ausblenden</string>
   <string name="global_settings_privacy_hide_timezone_detail">UTC statt lokaler Zeitzone in E-Mail-Kopfzeilen und Antwort-Kopfzeilen verwenden</string>
-  <string name="global_settings_notification_hide_subject_title">Betreff in Benachrichtigungen verbergen</string>
-  <string name="global_settings_notification_hide_subject_never">Niemals</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Wenn der Bildschirm gesperrt ist</string>
-  <string name="global_settings_notification_hide_subject_always">Immer</string>
   <string name="global_settings_notification_quick_delete_title">Löschen erlauben</string>
   <string name="global_settings_notification_quick_delete_never">Nie</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Für einzelne Nachricht</string>
@@ -344,8 +342,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_incoming_mobile_label">Mobil</string>
   <string name="account_setup_incoming_wifi_label">WLAN</string>
   <string name="account_setup_incoming_other_label">Anderes</string>
-  <string name="local_storage_provider_external_label">Externer Speicher (SD-Karte)</string>
-  <string name="local_storage_provider_internal_label">Interner Speicher</string>
   <string name="account_setup_expunge_policy_label">Ordner bereinigen (Expunge)</string>
   <string name="account_setup_expunge_policy_immediately">Sofort nach Verschieben oder Kopieren</string>
   <string name="account_setup_expunge_policy_on_poll">Bei jedem Abrufen</string>
@@ -422,8 +418,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_failed_dlg_continue_action">Weiter</string>
   <string name="account_settings_push_advanced_title">Erweitert</string>
   <string name="account_settings_title_fmt">Kontoeinstellungen</string>
-  <string name="account_settings_default_label">Standardkonto</string>
-  <string name="account_settings_default_summary">Standardmäßig Nachrichten von diesem Konto aus senden</string>
   <string name="account_settings_notify_label">Bei neuen Nachrichten</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Benachrichtigungsordner</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Alle</string>
@@ -910,6 +904,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="recipient_bcc">BCC</string>
   <string name="recipient_to">An</string>
   <string name="recipient_from">Von</string>
+  <string name="reply_to_label">Antworten an</string>
   <string name="unknown_recipient">&lt;Unbekannter Empfänger&gt;</string>
   <string name="unknown_sender">&lt;Unbekannter Absender&gt;</string>
   <string name="address_type_home">Zuhause</string>

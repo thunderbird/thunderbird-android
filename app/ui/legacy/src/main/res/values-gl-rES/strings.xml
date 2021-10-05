@@ -182,10 +182,6 @@
   <string name="global_settings_confirm_menu_discard">Desbotar mensaxe</string>
   <string name="global_settings_confirm_action_delete_notif">Eliminar (das notificacións)</string>
   <string name="global_settings_privacy_hide_useragent_detail">Quitar o User-Agent K-9 das cabeceiras do correo</string>
-  <string name="global_settings_notification_hide_subject_title">Agochar asunto nas notificacións</string>
-  <string name="global_settings_notification_hide_subject_never">Nunca</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Cando o dispositivo está bloqueado</string>
-  <string name="global_settings_notification_hide_subject_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_title">Mostrar botón \'Eliminar\'</string>
   <string name="global_settings_notification_quick_delete_never">Nunca</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Para notificacións dunha mensaxe</string>
@@ -247,8 +243,6 @@
   <string name="account_setup_incoming_mobile_label">Móbil</string>
   <string name="account_setup_incoming_wifi_label">Wifi</string>
   <string name="account_setup_incoming_other_label">Outras</string>
-  <string name="local_storage_provider_external_label">Almacenamento externo (tarxeta SD)</string>
-  <string name="local_storage_provider_internal_label">Almacenamento interno</string>
   <string name="account_setup_expunge_policy_label">Eliminar mensaxes borradas no servidor</string>
   <string name="account_setup_expunge_policy_immediately">Inmediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante a comprobación</string>
@@ -322,8 +316,6 @@
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avanzado</string>
   <string name="account_settings_title_fmt">Axustes da conta</string>
-  <string name="account_settings_default_label">Conta predefinida</string>
-  <string name="account_settings_default_summary">Establecer esta conta como predefinida para enviar correo</string>
   <string name="account_settings_notify_label">Notificacións de correo novo</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Notificacións dos cartafoles</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Todo</string>

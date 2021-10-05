@@ -192,9 +192,6 @@
   <string name="global_settings_confirm_action_delete_starred">מחק הודעות שמסומנות בכוכב (בתצוגת הודעה)</string>
   <string name="global_settings_confirm_action_spam">דואר זבל</string>
   <string name="global_settings_confirm_menu_discard">מחק הודעה</string>
-  <string name="global_settings_notification_hide_subject_never">אף פעם</string>
-  <string name="global_settings_notification_hide_subject_when_locked">כשהמכשיר נעול</string>
-  <string name="global_settings_notification_hide_subject_always">תמיד</string>
   <string name="global_settings_notification_quick_delete_title">הצג את הכפתור \'מחק\'</string>
   <string name="global_settings_notification_quick_delete_never">אף פעם</string>
   <string name="global_settings_notification_quick_delete_always">תמיד</string>
@@ -239,8 +236,6 @@
   <string name="account_setup_incoming_mobile_label">סלולרי</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">אחר</string>
-  <string name="local_storage_provider_external_label">אחסון חיצוני (כרטיס SD)</string>
-  <string name="local_storage_provider_internal_label">אחסון פנימי רגיל</string>
   <string name="account_setup_expunge_policy_label">למחוק הודעות שנמחקו</string>
   <string name="account_setup_expunge_policy_immediately">מיד</string>
   <string name="account_setup_expunge_policy_on_poll">When polling</string>
@@ -305,8 +300,6 @@
   <string name="account_setup_failed_dlg_continue_action">המשך</string>
   <string name="account_settings_push_advanced_title">מתקדם</string>
   <string name="account_settings_title_fmt">הגדרות חשבון</string>
-  <string name="account_settings_default_label">חשבון ברירת מחדל</string>
-  <string name="account_settings_default_summary">לשלוח דואר מחשבון זה כברירת מחדל</string>
   <string name="account_settings_notify_label">התראות על הודעה חדשה</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">הכל</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">כלום</string>

@@ -279,10 +279,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="global_settings_privacy_hide_useragent_detail">Прибрати K-9 User-Agent з поштових заголовків</string>
   <string name="global_settings_privacy_hide_timezone">Приховати часову зону</string>
   <string name="global_settings_privacy_hide_timezone_detail">Використовувати UTC замість місцевого часу в заголовках листів та відповідей</string>
-  <string name="global_settings_notification_hide_subject_title">Приховувати тему в сповіщеннях</string>
-  <string name="global_settings_notification_hide_subject_never">Ніколи</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Коли пристрій заблоковано</string>
-  <string name="global_settings_notification_hide_subject_always">Завжди</string>
   <string name="global_settings_notification_quick_delete_title">Показувати кнопку \"Видалити\"</string>
   <string name="global_settings_notification_quick_delete_never">Ніколи</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">У сповіщенні з одним повідомленням</string>
@@ -345,8 +341,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_incoming_mobile_label">Мобільний інтернет</string>
   <string name="account_setup_incoming_wifi_label">WI-FI</string>
   <string name="account_setup_incoming_other_label">Інше</string>
-  <string name="local_storage_provider_external_label">Зовнішня пам’ять (SD-карта)</string>
-  <string name="local_storage_provider_internal_label">Постійна внутрішня пам’ять</string>
   <string name="account_setup_expunge_policy_label">Стирати видалені повідомлення на сервері</string>
   <string name="account_setup_expunge_policy_immediately">Негайно</string>
   <string name="account_setup_expunge_policy_on_poll">При опитуванні сервера</string>
@@ -422,8 +416,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_failed_dlg_continue_action">Продовжити</string>
   <string name="account_settings_push_advanced_title">Додатково</string>
   <string name="account_settings_title_fmt">Параметри облікового запису</string>
-  <string name="account_settings_default_label">Типовий обліковий запис</string>
-  <string name="account_settings_default_summary">Типово надсилати пошту з цього облікового запису</string>
   <string name="account_settings_notify_label">Сповіщення про нову пошту</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Теки, щодо яких показуються сповіщення</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Усі</string>

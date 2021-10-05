@@ -77,6 +77,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="compose_title_forward_as_attachment">Encaminhar como anexo</string>
   <string name="choose_account_title">Selecionar conta</string>
   <string name="choose_folder_title">Escolher a pasta</string>
+  <string name="choose_folder_move_title">Mover para...</string>
+  <string name="choose_folder_copy_title">Copiar para...</string>
   <string name="status_loading_account_folder">Verificar <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Buscando os cabeçalhos <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Enviando <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -274,10 +276,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="global_settings_privacy_hide_useragent_detail">Remove o User-Agent do K-9 dos cabeçalhos das mensagens</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar o fuso horário</string>
   <string name="global_settings_privacy_hide_timezone_detail">Usar UTC ao invés do fuso horário local nos cabeçalhos das mensagens e das respostas</string>
-  <string name="global_settings_notification_hide_subject_title">Ocultar o assunto nas notificações</string>
-  <string name="global_settings_notification_hide_subject_never">Nunca</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Quando o dispositivo estiver bloqueado</string>
-  <string name="global_settings_notification_hide_subject_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_title">Exibir o botão \'Excluir\'</string>
   <string name="global_settings_notification_quick_delete_never">Nunca</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Nas notificações de mensagens individuais</string>
@@ -343,8 +341,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_incoming_mobile_label">Rede móvel</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Outras</string>
-  <string name="local_storage_provider_external_label">Armazenamento externo (cartão SD)</string>
-  <string name="local_storage_provider_internal_label">Armazenamento interno regular</string>
   <string name="account_setup_expunge_policy_label">Apagar no servidor as mensagens excluídas localmente</string>
   <string name="account_setup_expunge_policy_immediately">Imediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante a verificação</string>
@@ -420,8 +416,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avançado</string>
   <string name="account_settings_title_fmt">Configurações da conta</string>
-  <string name="account_settings_default_label">Conta padrão</string>
-  <string name="account_settings_default_summary">Usar esta conta como padrão para envio de e-mail</string>
   <string name="account_settings_notify_label">Novas notificações de e-mail</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Notificações de pastas</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>
@@ -908,6 +902,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="recipient_bcc">Cco</string>
   <string name="recipient_to">Para</string>
   <string name="recipient_from">De</string>
+  <string name="reply_to_label">Responder para</string>
   <string name="unknown_recipient">&lt;Destinatário desconhecido&gt;</string>
   <string name="unknown_sender">&lt;Remetente desconhecido&gt;</string>
   <string name="address_type_home">Casa</string>

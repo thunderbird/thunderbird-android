@@ -77,6 +77,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="compose_title_forward_as_attachment">Vidarebefordra som bilaga</string>
   <string name="choose_account_title">Välj konto</string>
   <string name="choose_folder_title">Välj mapp</string>
+  <string name="choose_folder_move_title">Flytta till…</string>
+  <string name="choose_folder_copy_title">Kopiera till…</string>
   <string name="status_loading_account_folder">Kontrollerar <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Hämtar rubriker <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Skickar <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -275,10 +277,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="global_settings_privacy_hide_useragent_detail">Ta bort K-9-användaragent från meddelanderubriker</string>
   <string name="global_settings_privacy_hide_timezone">Dölj tidszon</string>
   <string name="global_settings_privacy_hide_timezone_detail">Använd UTC istället för lokal tidszon i postrubriker och svarsrubrik</string>
-  <string name="global_settings_notification_hide_subject_title">Dölj ämne i aviseringar</string>
-  <string name="global_settings_notification_hide_subject_never">Aldrig</string>
-  <string name="global_settings_notification_hide_subject_when_locked">När enheten är låst</string>
-  <string name="global_settings_notification_hide_subject_always">Alltid</string>
   <string name="global_settings_notification_quick_delete_title">Visa knappen \"Ta bort\"</string>
   <string name="global_settings_notification_quick_delete_never">Aldrig</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">För enstaka meddelandeavisering</string>
@@ -344,8 +342,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_incoming_mobile_label">Mobilt nätverk</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Annat</string>
-  <string name="local_storage_provider_external_label">Extern lagring (SD-kort)</string>
-  <string name="local_storage_provider_internal_label">Vanlig intern lagring</string>
   <string name="account_setup_expunge_policy_label">Ta bort borttagna meddelanden från servern</string>
   <string name="account_setup_expunge_policy_immediately">Direkt</string>
   <string name="account_setup_expunge_policy_on_poll">Vid e-postkontroll</string>
@@ -421,8 +417,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_failed_dlg_continue_action">Fortsätt</string>
   <string name="account_settings_push_advanced_title">Avancerat</string>
   <string name="account_settings_title_fmt">Kontoinställningar</string>
-  <string name="account_settings_default_label">Standardkonto</string>
-  <string name="account_settings_default_summary">Skicka e-post från detta konto som standard</string>
   <string name="account_settings_notify_label">Aviseringar vid ny e-post</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Aviseringsmappar</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Alla</string>
@@ -909,6 +903,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="recipient_bcc">Blindkopia</string>
   <string name="recipient_to">Till</string>
   <string name="recipient_from">Från</string>
+  <string name="reply_to_label">Svara till</string>
   <string name="unknown_recipient">&lt;Okänd mottagare&gt;</string>
   <string name="unknown_sender">&lt;Okänd avsändare&gt;</string>
   <string name="address_type_home">Hem</string>

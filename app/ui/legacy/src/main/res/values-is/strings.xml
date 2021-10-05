@@ -274,10 +274,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_privacy_hide_useragent_detail">Fjarlægja kennistreng K-9 úr pósthausum</string>
   <string name="global_settings_privacy_hide_timezone">Fela tímabelti</string>
   <string name="global_settings_privacy_hide_timezone_detail">Nota UTC sem staðvært tímabelti í pósthausum og svarhausum</string>
-  <string name="global_settings_notification_hide_subject_title">Fela viðfangsefni í tilkynningum</string>
-  <string name="global_settings_notification_hide_subject_never">Aldrei</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Þegar tækið er læst</string>
-  <string name="global_settings_notification_hide_subject_always">Alltaf</string>
   <string name="global_settings_notification_quick_delete_title">Sýna \'Eyða\' hnapp</string>
   <string name="global_settings_notification_quick_delete_never">Aldrei</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Fyrir tilkynningu um stakan póst</string>
@@ -340,8 +336,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_incoming_mobile_label">Farsímakerfi</string>
   <string name="account_setup_incoming_wifi_label">Þráðlausu Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Annað</string>
-  <string name="local_storage_provider_external_label">Ytri geymsla (SD-minniskort)</string>
-  <string name="local_storage_provider_internal_label">Venjuleg innri geymsla</string>
   <string name="account_setup_expunge_policy_label">Þurrka út eyddum skilaboðum á póstþjóni</string>
   <string name="account_setup_expunge_policy_immediately">Strax</string>
   <string name="account_setup_expunge_policy_on_poll">Við athuganir</string>
@@ -417,8 +411,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_failed_dlg_continue_action">Áfram</string>
   <string name="account_settings_push_advanced_title">Ítarlegt</string>
   <string name="account_settings_title_fmt">Aðgangsstillingar</string>
-  <string name="account_settings_default_label">Sjálfgefinn aðgangur</string>
-  <string name="account_settings_default_summary">Senda póst sjálfgefið úr þessum aðgangi</string>
   <string name="account_settings_notify_label">Tilkynningar um nýjan póst</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Tilkynningamöppur</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Allar</string>

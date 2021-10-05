@@ -277,10 +277,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="global_settings_privacy_hide_useragent_detail">Убрать K-9 User-Agent из заголовков сообщений</string>
   <string name="global_settings_privacy_hide_timezone">Скрыть временную зону</string>
   <string name="global_settings_privacy_hide_timezone_detail">Использовать UTC вместо местного времени в заголовках сообщений</string>
-  <string name="global_settings_notification_hide_subject_title">Скрыть тему в уведомлении</string>
-  <string name="global_settings_notification_hide_subject_never">Никогда</string>
-  <string name="global_settings_notification_hide_subject_when_locked">При блокировке</string>
-  <string name="global_settings_notification_hide_subject_always">Всегда</string>
   <string name="global_settings_notification_quick_delete_title">Кнопка \"Удалить\"</string>
   <string name="global_settings_notification_quick_delete_never">Никогда</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Для одиночного</string>
@@ -343,8 +339,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_incoming_mobile_label">Мобильные</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Прочие</string>
-  <string name="local_storage_provider_external_label">Карта памяти</string>
-  <string name="local_storage_provider_internal_label">Внутренняя память</string>
   <string name="account_setup_expunge_policy_label">Стирать удалённые с сервера</string>
   <string name="account_setup_expunge_policy_immediately">Немедленно</string>
   <string name="account_setup_expunge_policy_on_poll">При проверке</string>
@@ -420,8 +414,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_failed_dlg_continue_action">Продолжить</string>
   <string name="account_settings_push_advanced_title">Дополнительно</string>
   <string name="account_settings_title_fmt">Настройки ящика</string>
-  <string name="account_settings_default_label">Ящик по умолчанию</string>
-  <string name="account_settings_default_summary">По умолчанию отправлять почту с этого ящика</string>
   <string name="account_settings_notify_label">Уведомить о почте</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Уведомления папок</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Все</string>

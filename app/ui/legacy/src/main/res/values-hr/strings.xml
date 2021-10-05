@@ -229,10 +229,6 @@
   <string name="global_settings_privacy_hide_useragent_detail">Makni K-9 Korisničkog agenta iz zaglavlja pošte</string>
   <string name="global_settings_privacy_hide_timezone">Sakrij vremensku zonu</string>
   <string name="global_settings_privacy_hide_timezone_detail">Koristi UTC umjesto lokalne vremenske zone u zaglavlju mail-a i zaglavlju odgovora</string>
-  <string name="global_settings_notification_hide_subject_title">Sakrij subjekt u obavijesti</string>
-  <string name="global_settings_notification_hide_subject_never">Nikad</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Kad je uređaj zaključan</string>
-  <string name="global_settings_notification_hide_subject_always">Uvijek</string>
   <string name="global_settings_notification_quick_delete_title">Prikaži gumb \'Obriši\'</string>
   <string name="global_settings_notification_quick_delete_never">Nikada</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Za pojedinačnu obavijest poruke</string>
@@ -295,8 +291,6 @@
   <string name="account_setup_incoming_mobile_label">Mobilna</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Ostalo</string>
-  <string name="local_storage_provider_external_label">Vanjska pohrana (SD kartica)</string>
-  <string name="local_storage_provider_internal_label">regularna unutarnja pohrana</string>
   <string name="account_setup_expunge_policy_label">Obriši izbrisane poruke sa poslužitelja</string>
   <string name="account_setup_expunge_policy_immediately">Odmah</string>
   <string name="account_setup_expunge_policy_on_poll">Prilikom provjere</string>
@@ -372,8 +366,6 @@
   <string name="account_setup_failed_dlg_continue_action">Nastavi</string>
   <string name="account_settings_push_advanced_title">Napredno</string>
   <string name="account_settings_title_fmt">Postavke računa</string>
-  <string name="account_settings_default_label">Zadani račun</string>
-  <string name="account_settings_default_summary">Pošalji poštu s ovog računa po zadanom</string>
   <string name="account_settings_notify_label">Nova obavijest pošte</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Mapa obavijesti</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Svi</string>

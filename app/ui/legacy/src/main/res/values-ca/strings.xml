@@ -275,10 +275,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_privacy_hide_useragent_detail">Suprimeix el nom K-9 User-Agent de les capçaleres del missatge</string>
   <string name="global_settings_privacy_hide_timezone">Amaga el fus horari</string>
   <string name="global_settings_privacy_hide_timezone_detail">Fes servir UTC en comptes de l\'hora local a les capçaleres dels missatges i a la capçalera de resposta</string>
-  <string name="global_settings_notification_hide_subject_title">Amaga l\'assumpte a les notificacions</string>
-  <string name="global_settings_notification_hide_subject_never">Mai</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Quan el telèfon està bloquejat</string>
-  <string name="global_settings_notification_hide_subject_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_title">Mostra el botó \"Elimina\"</string>
   <string name="global_settings_notification_quick_delete_never">Mai</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Per a notificacions d\'un sol missatge</string>
@@ -301,6 +297,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_basics_show_password">Mostra la contrasenya</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Per veure la contrasenya aquí, activeu el bloqueig de pantalla en aquest dispositiu.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verifiqueu la identitat</string>
   <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloqueu-ho per veure la contrasenya.</string>
   <string name="account_setup_basics_manual_setup_action">Configuració manual</string>
   <string name="account_setup_check_settings_title"/>
@@ -343,8 +340,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_incoming_mobile_label">Mòbil</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Altres</string>
-  <string name="local_storage_provider_external_label">Emmagatzematge extern (targeta SD)</string>
-  <string name="local_storage_provider_internal_label">Emmagatzematge intern</string>
   <string name="account_setup_expunge_policy_label">Elimina missatges esborrats al servidor</string>
   <string name="account_setup_expunge_policy_immediately">Immediatament</string>
   <string name="account_setup_expunge_policy_on_poll">Quan es comprova</string>
@@ -420,8 +415,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_failed_dlg_continue_action">Continua</string>
   <string name="account_settings_push_advanced_title">Avançat</string>
   <string name="account_settings_title_fmt">Configuració del compte</string>
-  <string name="account_settings_default_label">Compte per defecte</string>
-  <string name="account_settings_default_summary">Envia el correu per defecte des d\'aquest compte.</string>
   <string name="account_settings_notify_label">Notificacions noves de correu</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Carpetes de notificacions</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Tot</string>
@@ -908,6 +901,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="recipient_bcc">C/o</string>
   <string name="recipient_to">A</string>
   <string name="recipient_from">De:</string>
+  <string name="reply_to_label">Respon a</string>
   <string name="unknown_recipient">&lt;Destinatari desconegut&gt;</string>
   <string name="unknown_sender">&lt;Remitent desconegut&gt;</string>
   <string name="address_type_home">Casa</string>

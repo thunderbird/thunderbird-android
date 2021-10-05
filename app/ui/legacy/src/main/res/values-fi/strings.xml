@@ -77,6 +77,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="compose_title_forward_as_attachment">Välitä liitteenä</string>
   <string name="choose_account_title">Valitse tili</string>
   <string name="choose_folder_title">Valitse kansio</string>
+  <string name="choose_folder_move_title">Siirrä…</string>
+  <string name="choose_folder_copy_title">Kopioi…</string>
   <string name="status_loading_account_folder">Ladataan <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Haetaan otsikkotietoja <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Lähetetään <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -274,10 +276,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_privacy_hide_useragent_detail">Poista K-9-tunnistetiedot viestin otsaketiedoista</string>
   <string name="global_settings_privacy_hide_timezone">Piilota aikavyöhyke</string>
   <string name="global_settings_privacy_hide_timezone_detail">Käytä UTC-aikaa paikallisen aikavyöhykkeen sijaan sähköpostin otsakkeissa</string>
-  <string name="global_settings_notification_hide_subject_title">Piilota aihe ilmoituksissa</string>
-  <string name="global_settings_notification_hide_subject_never">Ei koskaan</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Kun laite on lukittu</string>
-  <string name="global_settings_notification_hide_subject_always">Aina</string>
   <string name="global_settings_notification_quick_delete_title">Näytä Poista-painike</string>
   <string name="global_settings_notification_quick_delete_never">Ei koskaan</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Yksittäisen viestin ilmoituksessa</string>
@@ -343,8 +341,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_incoming_mobile_label">Mobiili</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Muu</string>
-  <string name="local_storage_provider_external_label">Ulkoinen muisti (SD-kortti)</string>
-  <string name="local_storage_provider_internal_label">Sisäinen muisti</string>
   <string name="account_setup_expunge_policy_label">Poista viestit</string>
   <string name="account_setup_expunge_policy_immediately">Heti</string>
   <string name="account_setup_expunge_policy_on_poll">Tarkistettaessa</string>
@@ -420,8 +416,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_failed_dlg_continue_action">Jatka</string>
   <string name="account_settings_push_advanced_title">Lisäasetukset</string>
   <string name="account_settings_title_fmt">Yleiset</string>
-  <string name="account_settings_default_label">Oletustili</string>
-  <string name="account_settings_default_summary">Lähetä postit oletusarvoisesti tältä tililtä</string>
   <string name="account_settings_notify_label">Saapuneiden viestien ilmoitukset</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Ilmoitukset kansioista</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Kaikki</string>
@@ -908,6 +902,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="recipient_bcc">Piilokopio</string>
   <string name="recipient_to">Vastaanottaja</string>
   <string name="recipient_from">Lähettäjä</string>
+  <string name="reply_to_label">Vastausosoite</string>
   <string name="unknown_recipient">&lt;Tuntematon vastaanottaja&gt;</string>
   <string name="unknown_sender">&lt;Tuntematon lähettäjä&gt;</string>
   <string name="address_type_home">Koti</string>

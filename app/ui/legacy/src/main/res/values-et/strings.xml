@@ -241,10 +241,6 @@
   <string name="global_settings_privacy_hide_useragent_detail">Eemalda K-9 User-Agent meili päistest</string>
   <string name="global_settings_privacy_hide_timezone">Peida ajavöönd</string>
   <string name="global_settings_privacy_hide_timezone_detail">Kasuta UTCd kohaliku ajavööndi asemel meili päistes ja vastuse päises</string>
-  <string name="global_settings_notification_hide_subject_title">Peida teadetes teema</string>
-  <string name="global_settings_notification_hide_subject_never">Mitte kunagi</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Kui seade on lukustatud</string>
-  <string name="global_settings_notification_hide_subject_always">Alati</string>
   <string name="global_settings_notification_quick_delete_title">Näita \"Kustuta\" nuppu</string>
   <string name="global_settings_notification_quick_delete_never">Mitte kunagi</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Ühest kirjast teatamiseks</string>
@@ -307,8 +303,6 @@
   <string name="account_setup_incoming_mobile_label">Mobiilne</string>
   <string name="account_setup_incoming_wifi_label">WiFi</string>
   <string name="account_setup_incoming_other_label">Muu</string>
-  <string name="local_storage_provider_external_label">Välismälu (SD-kaart)</string>
-  <string name="local_storage_provider_internal_label">Tavaline sisemälu</string>
   <string name="account_setup_expunge_policy_label">Eemalda kustutatud kirjad serverist</string>
   <string name="account_setup_expunge_policy_immediately">Koheselt</string>
   <string name="account_setup_expunge_policy_on_poll">Andmete kontrollimisel</string>
@@ -386,8 +380,6 @@
   <string name="account_setup_failed_dlg_continue_action">Jätka</string>
   <string name="account_settings_push_advanced_title">Täpsemalt</string>
   <string name="account_settings_title_fmt">Konto sätted</string>
-  <string name="account_settings_default_label">Vaikimisi konto</string>
-  <string name="account_settings_default_summary">Saada e-kirjad vaikimisi sellelt kontolt</string>
   <string name="account_settings_notify_label">Uue sõnumi teated</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Teadete kaust</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Kõik</string>

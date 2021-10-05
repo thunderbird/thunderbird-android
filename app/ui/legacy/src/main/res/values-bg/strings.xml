@@ -272,10 +272,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_privacy_hide_useragent_detail">Премахване на K-9 хедъра за потребителски агент</string>
   <string name="global_settings_privacy_hide_timezone">Скриване на времевата зона</string>
   <string name="global_settings_privacy_hide_timezone_detail">Използване на UTC вместо локално време в header-a и reply header-a</string>
-  <string name="global_settings_notification_hide_subject_title">Скрий темата в известяванията</string>
-  <string name="global_settings_notification_hide_subject_never">Никога</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Когато у-вото е заключено</string>
-  <string name="global_settings_notification_hide_subject_always">Винаги</string>
   <string name="global_settings_notification_quick_delete_title">Показвай бутон `Изтрий`</string>
   <string name="global_settings_notification_quick_delete_never">Никога</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">За отделни съобщения</string>
@@ -338,8 +334,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_incoming_mobile_label">Мобилна</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Друга</string>
-  <string name="local_storage_provider_external_label">Външна памет (SD карта)</string>
-  <string name="local_storage_provider_internal_label">Вътрешна памет</string>
   <string name="account_setup_expunge_policy_label">Премахни изтритите от сървъра съобщения</string>
   <string name="account_setup_expunge_policy_immediately">Веднага</string>
   <string name="account_setup_expunge_policy_on_poll">При проверка</string>
@@ -415,8 +409,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_failed_dlg_continue_action">Продължи</string>
   <string name="account_settings_push_advanced_title">Разширени</string>
   <string name="account_settings_title_fmt">Настройки на профила</string>
-  <string name="account_settings_default_label">Профил по подразбиране</string>
-  <string name="account_settings_default_summary">Изпращане на поща от този профил по подразбиране</string>
   <string name="account_settings_notify_label">Ново известие за поща</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Папка с известия</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Всички</string>
