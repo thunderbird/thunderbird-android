@@ -22,7 +22,6 @@ object HtmlToPlainText {
 }
 
 private class FormattingVisitor : NodeVisitor {
-    private var width = 0
     private val output = StringBuilder()
     private var collectLinkText = false
     private var linkText = StringBuilder()
@@ -73,36 +72,11 @@ private class FormattingVisitor : NodeVisitor {
     }
 
     private fun append(text: String) {
-        if (text.startsWith("\n")) {
-            width = 0
-        }
-
         if (text == " " && (output.isEmpty() || output.last() in listOf(' ', '\n'))) {
             return
         }
 
-        if (text.length + width > MAX_WIDTH) {
-            val words = text.split(Regex("\\s+"))
-            for (i in words.indices) {
-                var word = words[i]
-
-                val last = i == words.size - 1
-                if (!last) {
-                    word = "$word "
-                }
-
-                if (word.length + width > MAX_WIDTH) {
-                    output.append("\n").append(word)
-                    width = word.length
-                } else {
-                    output.append(word)
-                    width += word.length
-                }
-            }
-        } else {
-            output.append(text)
-            width += text.length
-        }
+        output.append(text)
     }
 
     private fun startNewLine() {
@@ -133,9 +107,5 @@ private class FormattingVisitor : NodeVisitor {
         }
 
         return output.substring(0, lastIndex + 1)
-    }
-
-    companion object {
-        private const val MAX_WIDTH = 76
     }
 }
