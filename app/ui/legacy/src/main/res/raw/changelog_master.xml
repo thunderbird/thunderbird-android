@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.904" versioncode="29004" date="2021-10-05">
+        <change>Tweaked toolbar in move/copy screens</change>
+        <change>Fixed a bug where line breaks were added when editing a draft</change>
+        <change>Fixed animation when switching accounts</change>
+        <change>Fixed crash that could occur when deleting an account</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.903" versioncode="29003" date="2021-09-28">
         <change>Removed the "default account" setting; the first account in the list is now automatically the default account</change>
         <change>Removed the "hide subject in notifications" setting; use the "lock screen notifications" setting instead</change>
