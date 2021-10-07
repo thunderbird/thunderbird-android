@@ -19,7 +19,6 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stubbing
 
-private const val UNREAD_MESSAGE_COUNT = 42
 private const val NEW_MESSAGE_COUNT = 2
 private const val ACCOUNT_NAME = "accountName"
 private const val ACCOUNT_NUMBER = 3
@@ -157,7 +156,6 @@ class SummaryNotificationsTest : RobolectricTest() {
         val content = NotificationContent(messageReference, SENDER, SUBJECT, PREVIEW, SUMMARY, false)
         val content2 = NotificationContent(messageReference, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true)
         return mock {
-            on { unreadMessageCount } doReturn UNREAD_MESSAGE_COUNT
             on { newMessagesCount } doReturn NEW_MESSAGE_COUNT
             on { this.account } doReturn account
             on { getContentForSummaryNotification() } doReturn listOf(content, content2)

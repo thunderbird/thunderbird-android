@@ -17,15 +17,13 @@ internal open class MessageSummaryNotifications(
 ) : BaseNotifications(notificationHelper, actionCreator, resourceProvider) {
 
     fun buildSummaryNotification(account: Account, notificationData: NotificationData, silent: Boolean): Notification {
-        val unreadMessageCount = notificationData.unreadMessageCount
-
         val builder = when {
             notificationData.isSingleMessageNotification -> {
                 val holder = notificationData.holderForLatestNotification
                 createSingleMessageNotification(account, holder)
             }
             else -> {
-                createInboxStyleSummaryNotification(account, notificationData, unreadMessageCount)
+                createInboxStyleSummaryNotification(account, notificationData)
             }
         }
 
@@ -65,8 +63,7 @@ internal open class MessageSummaryNotifications(
 
     private fun createInboxStyleSummaryNotification(
         account: Account,
-        notificationData: NotificationData,
-        unreadMessageCount: Int
+        notificationData: NotificationData
     ): NotificationCompat.Builder {
         val latestNotification = notificationData.holderForLatestNotification
         val newMessagesCount = notificationData.newMessagesCount
@@ -80,7 +77,7 @@ internal open class MessageSummaryNotifications(
         val groupKey = getGroupKey(account)
 
         val builder = createAndInitializeNotificationBuilder(account)
-            .setNumber(unreadMessageCount)
+            .setNumber(newMessagesCount)
             .setTicker(latestNotification.content.summary)
             .setGroup(groupKey)
             .setGroupSummary(true)

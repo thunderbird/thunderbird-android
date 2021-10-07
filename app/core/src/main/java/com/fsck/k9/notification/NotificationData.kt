@@ -8,13 +8,10 @@ import java.util.LinkedList
 /**
  * A holder class for pending new mail notifications.
  */
-internal class NotificationData(val account: Account, private val initialUnreadMessageCount: Int) {
+internal class NotificationData(val account: Account) {
     private val activeNotifications = LinkedList<NotificationHolder>()
     private val additionalNotifications = LinkedList<NotificationContent>()
     private val notificationIdsInUse = SparseBooleanArray()
-
-    val unreadMessageCount: Int
-        get() = initialUnreadMessageCount + newMessagesCount
 
     val newMessagesCount: Int
         get() = activeNotifications.size + additionalNotifications.size

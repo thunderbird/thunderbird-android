@@ -18,11 +18,11 @@ internal open class NewMailNotifications(
     private val notifications = SparseArray<NotificationData>()
     private val lock = Any()
 
-    fun addNewMailNotification(account: Account, message: LocalMessage, unreadMessageCount: Int, silent: Boolean) {
+    fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean) {
         val content = contentCreator.createFromMessage(account, message)
 
         synchronized(lock) {
-            val notificationData = getOrCreateNotificationData(account, unreadMessageCount)
+            val notificationData = getOrCreateNotificationData(account)
 
             val result = notificationData.addNotificationContent(content)
             if (result.shouldCancelNotification) {
@@ -70,12 +70,12 @@ internal open class NewMailNotifications(
         cancelNotification(notificationId)
     }
 
-    private fun getOrCreateNotificationData(account: Account, unreadMessageCount: Int): NotificationData {
+    private fun getOrCreateNotificationData(account: Account): NotificationData {
         val notificationData = getNotificationData(account)
         if (notificationData != null) return notificationData
 
         val accountNumber = account.accountNumber
-        val newNotificationHolder = createNotificationData(account, unreadMessageCount)
+        val newNotificationHolder = createNotificationData(account)
         notifications.put(accountNumber, newNotificationHolder)
 
         return newNotificationHolder
@@ -93,8 +93,8 @@ internal open class NewMailNotifications(
         return notificationData
     }
 
-    protected open fun createNotificationData(account: Account, unreadMessageCount: Int): NotificationData {
-        return NotificationData(account, unreadMessageCount)
+    protected open fun createNotificationData(account: Account): NotificationData {
+        return NotificationData(account)
     }
 
     private fun cancelNotification(notificationId: Int) {

@@ -15,7 +15,7 @@ private const val FOLDER_ID = 42L
 
 class NotificationDataTest : RobolectricTest() {
     private val account = createFakeAccount()
-    private val notificationData = NotificationData(account, 0)
+    private val notificationData = NotificationData(account)
 
     @Test
     fun testAddNotificationContent() {
@@ -107,20 +107,6 @@ class NotificationDataTest : RobolectricTest() {
         val contentTwo = createNotificationContent("2")
         notificationData.addNotificationContent(contentTwo)
         assertThat(notificationData.newMessagesCount).isEqualTo(2)
-    }
-
-    @Test
-    fun testUnreadMessagesCount() {
-        val notificationData = NotificationData(account, 42)
-        assertThat(notificationData.unreadMessageCount).isEqualTo(42)
-
-        val content = createNotificationContent("1")
-        notificationData.addNotificationContent(content)
-        assertThat(notificationData.unreadMessageCount).isEqualTo(43)
-
-        val contentTwo = createNotificationContent("2")
-        notificationData.addNotificationContent(contentTwo)
-        assertThat(notificationData.unreadMessageCount).isEqualTo(44)
     }
 
     @Test

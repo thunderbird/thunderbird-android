@@ -18,7 +18,6 @@ import org.mockito.kotlin.stubbing
 
 private const val ACCOUNT_NAME = "Hugo"
 private const val NEW_MESSAGE_COUNT = 3
-private const val UNREAD_MESSAGE_COUNT = 4
 
 class LockScreenNotificationTest : RobolectricTest() {
     private val resourceProvider = TestNotificationResourceProvider()
@@ -66,7 +65,6 @@ class LockScreenNotificationTest : RobolectricTest() {
         )
         stubbing(notificationData) {
             on { newMessagesCount } doReturn 1
-            on { unreadMessageCount } doReturn 1
             on { holderForLatestNotification } doReturn holder
         }
 
@@ -87,14 +85,13 @@ class LockScreenNotificationTest : RobolectricTest() {
         val content3 = createNotificationContent("\"Peter Lustig\" <peter@example.com>")
         stubbing(notificationData) {
             on { newMessagesCount } doReturn NEW_MESSAGE_COUNT
-            on { unreadMessageCount } doReturn UNREAD_MESSAGE_COUNT
             on { getContentForSummaryNotification() } doReturn listOf(content1, content2, content3)
         }
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
         verify(publicBuilder).setSmallIcon(resourceProvider.iconNewMail)
-        verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT)
+        verify(publicBuilder).setNumber(NEW_MESSAGE_COUNT)
         verify(publicBuilder).setContentTitle("$NEW_MESSAGE_COUNT new messages")
         verify(publicBuilder).setContentText(
             "alice@example.com, Bob <bob@example.com>, \"Peter Lustig\" <peter@example.com>"
@@ -133,13 +130,12 @@ class LockScreenNotificationTest : RobolectricTest() {
         K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
         stubbing(notificationData) {
             on { newMessagesCount } doReturn NEW_MESSAGE_COUNT
-            on { unreadMessageCount } doReturn UNREAD_MESSAGE_COUNT
         }
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData)
 
         verify(publicBuilder).setSmallIcon(resourceProvider.iconNewMail)
-        verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT)
+        verify(publicBuilder).setNumber(NEW_MESSAGE_COUNT)
         verify(publicBuilder).setContentTitle("$NEW_MESSAGE_COUNT new messages")
         verify(publicBuilder).setContentText(ACCOUNT_NAME)
         verify(builder).setPublicVersion(publicBuilder.build())

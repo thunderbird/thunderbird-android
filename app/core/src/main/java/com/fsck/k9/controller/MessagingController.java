@@ -2614,7 +2614,6 @@ public class MessagingController {
         private final Account account;
         private final MessagingListener listener;
         private final LocalStore localStore;
-        private final int previousUnreadMessageCount;
         private final boolean suppressNotifications;
         private final NotificationState notificationState;
         boolean syncFailed = false;
@@ -2627,8 +2626,6 @@ public class MessagingController {
             this.suppressNotifications = suppressNotifications;
             this.notificationState = notificationState;
             this.localStore = getLocalStoreOrThrow(account);
-
-            previousUnreadMessageCount = getUnreadMessageCount(account);
         }
 
         @Override
@@ -2687,7 +2684,7 @@ public class MessagingController {
                 Timber.v("Creating notification for message %s:%s", localFolder.getName(), message.getUid());
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 boolean silent = notificationState.wasNotified();
-                notificationController.addNewMailNotification(account, message, previousUnreadMessageCount, silent);
+                notificationController.addNewMailNotification(account, message, silent);
                 notificationState.setWasNotified(true);
             }
 

@@ -58,14 +58,13 @@ internal class LockScreenNotification(
 
     private fun createPublicNotification(notificationData: NotificationData): NotificationCompat.Builder {
         val account = notificationData.account
-        val newMessages = notificationData.newMessagesCount
-        val unreadCount = notificationData.unreadMessageCount
-        val title = resourceProvider.newMessagesTitle(newMessages)
+        val newMessagesCount = notificationData.newMessagesCount
+        val title = resourceProvider.newMessagesTitle(newMessagesCount)
 
         return notificationHelper.createNotificationBuilder(account, NotificationChannelManager.ChannelType.MESSAGES)
             .setSmallIcon(resourceProvider.iconNewMail)
             .setColor(account.chipColor)
-            .setNumber(unreadCount)
+            .setNumber(newMessagesCount)
             .setContentTitle(title)
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
     }
