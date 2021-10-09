@@ -2,6 +2,7 @@ package com.fsck.k9.ui.messageview
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color.RED
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.ContextThemeWrapper
@@ -11,8 +12,10 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.EdgeEffect
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.fsck.k9.DI.get
 import com.fsck.k9.controller.MessageReference
@@ -37,6 +40,15 @@ class MessageViewPagerFragment : Fragment() {
             args.putString(ARG_ACTIVE_MESSAGE, reference.toIdentityString())
             fragment.arguments = args
             return fragment
+        }
+    }
+
+    /**
+     *  Modify the over scroll edge effect colour from white (which one cannot see) to red
+     */
+    val redEdgeEffectFactory: RecyclerView.EdgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
+        override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
+            return EdgeEffect(view.context).apply { color = RED }
         }
     }
 
@@ -203,7 +215,10 @@ class MessageViewPagerFragment : Fragment() {
 
     private var downEvent: MotionEvent? = null
 
-    fun doInterceptTouchEvent(thisEvent: MotionEvent) {
+    /**
+     * Let the WebView capture left/right swipe actions when it is scrollable
+     */
+    fun onInterceptTouchEvent(thisEvent: MotionEvent) {
         if (webView != null) {
             val webViewRect = Rect()
             val webViewOrigin = IntArray(2)

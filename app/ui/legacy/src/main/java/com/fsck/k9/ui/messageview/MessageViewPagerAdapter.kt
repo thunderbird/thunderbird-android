@@ -31,15 +31,13 @@ class MessageViewPagerAdapter(
         return getMessageUid(viewPagerFragment.getMessageReference(position))
     }
 
-    /**
-     *  This lets the WebView capture swipe actions if it is scrollable
-     */
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
+        recyclerView.edgeEffectFactory = viewPagerFragment.redEdgeEffectFactory
         recyclerView.addOnItemTouchListener(
             object : RecyclerView.SimpleOnItemTouchListener() {
                 override fun onInterceptTouchEvent(view: RecyclerView, event: MotionEvent): Boolean {
-                    viewPagerFragment.doInterceptTouchEvent(event)
+                    viewPagerFragment.onInterceptTouchEvent(event)
                     return super.onInterceptTouchEvent(view, event)
                 }
             }
