@@ -2,7 +2,7 @@ package com.fsck.k9.ui.messageview
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color.RED
+import android.graphics.Color.DKGRAY
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.ContextThemeWrapper
@@ -44,11 +44,11 @@ class MessageViewPagerFragment : Fragment() {
     }
 
     /**
-     *  Modify the over scroll edge effect colour from white (which one cannot see) to red
+     *  Modify the over scroll edge effect colour from white (which one cannot see) to dark gray
      */
-    val redEdgeEffectFactory: RecyclerView.EdgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
+    val edgeEffectFactory: RecyclerView.EdgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
         override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
-            return EdgeEffect(view.context).apply { color = RED }
+            return EdgeEffect(view.context).apply { color = DKGRAY }
         }
     }
 

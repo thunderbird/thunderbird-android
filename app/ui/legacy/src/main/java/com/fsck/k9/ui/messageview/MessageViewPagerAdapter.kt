@@ -33,7 +33,7 @@ class MessageViewPagerAdapter(
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        recyclerView.edgeEffectFactory = viewPagerFragment.redEdgeEffectFactory
+        recyclerView.edgeEffectFactory = viewPagerFragment.edgeEffectFactory
         recyclerView.addOnItemTouchListener(
             object : RecyclerView.SimpleOnItemTouchListener() {
                 override fun onInterceptTouchEvent(view: RecyclerView, event: MotionEvent): Boolean {
