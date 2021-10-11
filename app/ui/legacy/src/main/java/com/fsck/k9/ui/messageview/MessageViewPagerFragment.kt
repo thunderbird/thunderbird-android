@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color.DKGRAY
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -231,18 +230,19 @@ class MessageViewPagerFragment : Fragment() {
                     MotionEvent.ACTION_DOWN -> {
                         downEvent = MotionEvent.obtainNoHistory(thisEvent)
                     }
+                    MotionEvent.ACTION_POINTER_DOWN -> {
+                        webView!!.parent?.requestDisallowInterceptTouchEvent(true)
+                    }
                     MotionEvent.ACTION_MOVE -> {
-                        if (thisEvent.pointerCount == 1) {
-                            val dX = thisEvent.x - downEvent!!.x
-                            val dY = thisEvent.y - downEvent!!.y
-                            if ((abs(dX) > abs(dY)) && (abs(dX) > ViewConfiguration.get(webView!!.context).scaledTouchSlop)) {
-                                val canScrollLeft = webView!!.canScrollHorizontally(-1)
-                                val canScrollRight = webView!!.canScrollHorizontally(1)
-                                val canScrollEither = canScrollRight || canScrollLeft
-                                val parentIntercept =
-                                    (!canScrollEither) || ((dX > 0) && !canScrollLeft) || ((dX < 0) && !canScrollRight)
-                                webView!!.parent?.requestDisallowInterceptTouchEvent(!parentIntercept)
-                            }
+                        val dX = thisEvent.x - downEvent!!.x
+                        val dY = thisEvent.y - downEvent!!.y
+                        if ((abs(dX) > abs(dY)) && (abs(dX) > ViewConfiguration.get(webView!!.context).scaledTouchSlop)) {
+                            val canScrollLeft = webView!!.canScrollHorizontally(-1)
+                            val canScrollRight = webView!!.canScrollHorizontally(1)
+                            val canScrollEither = canScrollRight || canScrollLeft
+                            val parentIntercept =
+                                (!canScrollEither) || ((dX > 0) && !canScrollLeft) || ((dX < 0) && !canScrollRight)
+                            webView!!.parent?.requestDisallowInterceptTouchEvent(!parentIntercept)
                         }
                     }
                 }
