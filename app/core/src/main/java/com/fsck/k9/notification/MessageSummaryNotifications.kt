@@ -5,16 +5,17 @@ import androidx.core.app.NotificationCompat
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.K9.NotificationQuickDelete
+import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import com.fsck.k9.notification.NotificationGroupKeys.getGroupKey
 import com.fsck.k9.notification.NotificationIds.getNewMailSummaryNotificationId
 
 internal open class MessageSummaryNotifications(
-    notificationHelper: NotificationHelper,
-    actionCreator: NotificationActionCreator,
+    private val notificationHelper: NotificationHelper,
+    private val actionCreator: NotificationActionCreator,
     private val lockScreenNotification: LockScreenNotification,
     private val singleMessageNotifications: SingleMessageNotifications,
-    resourceProvider: NotificationResourceProvider
-) : BaseNotifications(notificationHelper, actionCreator, resourceProvider) {
+    private val resourceProvider: NotificationResourceProvider
+) {
 
     fun buildSummaryNotification(account: Account, notificationData: NotificationData, silent: Boolean): Notification {
         val builder = when {
@@ -76,7 +77,12 @@ internal open class MessageSummaryNotifications(
         }
         val groupKey = getGroupKey(account)
 
-        val builder = createAndInitializeNotificationBuilder(account)
+        val builder = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
+            .setSmallIcon(resourceProvider.iconNewMail)
+            .setColor(account.chipColor)
+            .setWhen(System.currentTimeMillis())
+            .setAutoCancel(true)
+            .setCategory(NotificationCompat.CATEGORY_EMAIL)
             .setNumber(newMessagesCount)
             .setTicker(latestNotification.content.summary)
             .setGroup(groupKey)
@@ -195,6 +201,10 @@ internal open class MessageSummaryNotifications(
 
     private fun isDeleteActionAvailableForWear(): Boolean {
         return isDeleteActionEnabled() && !K9.isConfirmDeleteFromNotification
+    }
+
+    private fun isDeleteActionEnabled(): Boolean {
+        return K9.notificationQuickDeleteBehaviour != NotificationQuickDelete.NEVER
     }
 
     private fun isArchiveActionAvailableForWear(account: Account): Boolean {
