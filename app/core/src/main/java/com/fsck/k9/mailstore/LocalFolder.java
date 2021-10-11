@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.controller.MessageCounts;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
@@ -248,10 +247,6 @@ public class LocalFolder {
         });
     }
 
-    public MessageCounts getMessageCounts() throws MessagingException {
-        return new MessageCounts(getUnreadMessageCount(), getStarredMessageCount());
-    }
-
     public int getUnreadMessageCount() throws MessagingException {
         if (databaseId == -1L) {
             open();
@@ -274,32 +269,6 @@ public class LocalFolder {
                 }
 
                 return unreadMessageCount;
-            }
-        });
-    }
-
-    private int getStarredMessageCount() throws MessagingException {
-        if (databaseId == -1L) {
-            open();
-        }
-
-        return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
-            @Override
-            public Integer doDbWork(final SQLiteDatabase db) {
-                int starredMessageCount = 0;
-                Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                        "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged = 1",
-                        new String[] { Long.toString(databaseId) }, null, null, null);
-
-                try {
-                    if (cursor.moveToFirst()) {
-                        starredMessageCount = cursor.getInt(0);
-                    }
-                } finally {
-                    cursor.close();
-                }
-
-                return starredMessageCount;
             }
         });
     }
@@ -352,24 +321,12 @@ public class LocalFolder {
         return (FolderClass.INHERITED == syncClass) ? getDisplayClass() : syncClass;
     }
 
-    public FolderClass getRawSyncClass() {
-        return syncClass;
-    }
-
     public FolderClass getNotifyClass() {
         return (FolderClass.INHERITED == notifyClass) ? getPushClass() : notifyClass;
     }
 
-    public FolderClass getRawNotifyClass() {
-        return notifyClass;
-    }
-
     public FolderClass getPushClass() {
         return (FolderClass.INHERITED == pushClass) ? getSyncClass() : pushClass;
-    }
-
-    public FolderClass getRawPushClass() {
-        return pushClass;
     }
 
     public void setDisplayClass(FolderClass displayClass) throws MessagingException {
