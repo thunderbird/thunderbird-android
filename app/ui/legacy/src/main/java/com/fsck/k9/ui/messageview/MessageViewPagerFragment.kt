@@ -220,6 +220,13 @@ class MessageViewPagerFragment : Fragment() {
      */
     fun onInterceptTouchEvent(thisEvent: MotionEvent) {
         if (webView != null) {
+            when (thisEvent.actionMasked) {
+                MotionEvent.ACTION_DOWN,
+                MotionEvent.ACTION_CANCEL,
+                MotionEvent.ACTION_UP -> {
+                    webView!!.parent?.requestDisallowInterceptTouchEvent(false)
+                }
+            }
             val webViewRect = Rect()
             val webViewOrigin = IntArray(2)
             webView!!.getHitRect(webViewRect)
@@ -237,12 +244,9 @@ class MessageViewPagerFragment : Fragment() {
                         val dX = thisEvent.x - downEvent!!.x
                         val dY = thisEvent.y - downEvent!!.y
                         if ((abs(dX) > abs(dY)) && (abs(dX) > ViewConfiguration.get(webView!!.context).scaledTouchSlop)) {
-                            val canScrollLeft = webView!!.canScrollHorizontally(-1)
-                            val canScrollRight = webView!!.canScrollHorizontally(1)
-                            val canScrollEither = canScrollRight || canScrollLeft
-                            val parentIntercept =
-                                (!canScrollEither) || ((dX > 0) && !canScrollLeft) || ((dX < 0) && !canScrollRight)
-                            webView!!.parent?.requestDisallowInterceptTouchEvent(!parentIntercept)
+                            if (webView!!.canScrollHorizontally(-dX.toInt())) {
+                                webView!!.parent?.requestDisallowInterceptTouchEvent(true)
+                            }
                         }
                     }
                 }
