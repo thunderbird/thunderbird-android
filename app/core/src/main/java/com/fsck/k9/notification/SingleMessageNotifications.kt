@@ -4,13 +4,14 @@ import android.app.Notification
 import androidx.core.app.NotificationCompat
 import com.fsck.k9.Account
 import com.fsck.k9.K9
+import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 
 internal open class SingleMessageNotifications(
-    notificationHelper: NotificationHelper,
-    actionCreator: NotificationActionCreator,
-    resourceProvider: NotificationResourceProvider,
+    private val notificationHelper: NotificationHelper,
+    private val actionCreator: NotificationActionCreator,
+    private val resourceProvider: NotificationResourceProvider,
     private val lockScreenNotification: LockScreenNotification,
-) : BaseNotifications(notificationHelper, actionCreator, resourceProvider) {
+) {
 
     fun buildSingleMessageNotification(account: Account, holder: NotificationHolder): Notification {
         val notificationId = holder.notificationId
@@ -38,11 +39,31 @@ internal open class SingleMessageNotifications(
         holder: NotificationHolder,
         notificationId: Int
     ): NotificationCompat.Builder {
+        val accountName = notificationHelper.getAccountName(account)
         val content = holder.content
-        val builder = createBigTextStyleNotification(account, holder, notificationId)
+        val groupKey = NotificationGroupKeys.getGroupKey(account)
+
+        val builder = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
+            .setSmallIcon(resourceProvider.iconNewMail)
+            .setColor(account.chipColor)
+            .setWhen(System.currentTimeMillis())
+            .setAutoCancel(true)
+            .setCategory(NotificationCompat.CATEGORY_EMAIL)
+            .setTicker(content.summary)
+            .setGroup(groupKey)
+            .setContentTitle(content.sender)
+            .setContentText(content.subject)
+            .setSubText(accountName)
+
+        val style = createBigTextStyle(builder)
+        style.bigText(content.preview)
+        builder.setStyle(style)
+
+        val contentIntent = actionCreator.createViewMessagePendingIntent(content.messageReference, notificationId)
+        builder.setContentIntent(contentIntent)
 
         val deletePendingIntent = actionCreator.createDismissMessagePendingIntent(
-            context, content.messageReference, holder.notificationId
+            notificationHelper.getContext(), content.messageReference, holder.notificationId
         )
         builder.setDeleteIntent(deletePendingIntent)
 
@@ -179,11 +200,19 @@ internal open class SingleMessageNotifications(
         return isDeleteActionEnabled() && !K9.isConfirmDeleteFromNotification
     }
 
+    private fun isDeleteActionEnabled(): Boolean {
+        return K9.notificationQuickDeleteBehaviour != K9.NotificationQuickDelete.NEVER
+    }
+
     private fun isArchiveActionAvailableForWear(account: Account): Boolean {
         return account.archiveFolderId != null
     }
 
     private fun isSpamActionAvailableForWear(account: Account): Boolean {
         return account.spamFolderId != null && !K9.isConfirmSpam
+    }
+
+    protected open fun createBigTextStyle(builder: NotificationCompat.Builder?): NotificationCompat.BigTextStyle {
+        return NotificationCompat.BigTextStyle(builder)
     }
 }
