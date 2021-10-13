@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.VelocityTracker
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ class MessageViewPagerFragment : Fragment() {
 
     companion object {
         private const val ARG_ACTIVE_MESSAGE = "activeMessage"
+        private const val FLING_THRESHOLD = 5000 // pixels per second
 
         fun newInstance(reference: MessageReference): MessageViewPagerFragment {
             val fragment = MessageViewPagerFragment()
@@ -214,36 +216,55 @@ class MessageViewPagerFragment : Fragment() {
         }
 
     private var downEvent: MotionEvent? = null
+    private var flingTracker: VelocityTracker? = null
+    private var flingDirection: Int = 0
 
     /**
      * Let the WebView capture left/right swipe actions when it is scrollable
      */
-    fun onInterceptTouchEvent(thisEvent: MotionEvent) {
+    @SuppressLint("Recycle")
+    fun onInterceptTouchEvent(thisEvent: MotionEvent): Boolean {
         if (webView != null) {
             when (thisEvent.actionMasked) {
-                MotionEvent.ACTION_DOWN,
+                MotionEvent.ACTION_DOWN -> {
+                    val webViewRect = Rect()
+                    val webViewOrigin = IntArray(2)
+                    webView!!.getLocationOnScreen(webViewOrigin)
+                    webView!!.getHitRect(webViewRect)
+                    webViewRect.offset(webViewOrigin[0], webViewOrigin[1])
+                    if (webViewRect.contains(thisEvent.rawX.toInt(), thisEvent.rawY.toInt())) {
+                        downEvent = MotionEvent.obtainNoHistory(thisEvent)
+                        flingTracker?.clear()
+                        flingTracker = flingTracker ?: VelocityTracker.obtain()
+                        flingTracker?.addMovement(thisEvent)
+                    } else {
+                        downEvent = null
+                    }
+                    flingDirection = 0
+                }
                 MotionEvent.ACTION_CANCEL,
                 MotionEvent.ACTION_UP -> {
-                    webView!!.parent?.requestDisallowInterceptTouchEvent(false)
+                    downEvent = null
+                    flingTracker?.recycle()
+                    flingTracker = null
+                    flingDirection = 0
                 }
-            }
-            val webViewRect = Rect()
-            val webViewOrigin = IntArray(2)
-            webView!!.getHitRect(webViewRect)
-            webView!!.getLocationOnScreen(webViewOrigin)
-            webViewRect.offset(webViewOrigin[0], webViewOrigin[1])
-            if (webViewRect.contains(thisEvent.rawX.toInt(), thisEvent.rawY.toInt())) {
-                when (thisEvent.actionMasked) {
-                    MotionEvent.ACTION_DOWN -> {
-                        downEvent = MotionEvent.obtainNoHistory(thisEvent)
-                    }
-                    MotionEvent.ACTION_POINTER_DOWN -> {
-                        webView!!.parent?.requestDisallowInterceptTouchEvent(true)
-                    }
-                    MotionEvent.ACTION_MOVE -> {
+                MotionEvent.ACTION_POINTER_DOWN -> {
+                    webView!!.parent?.requestDisallowInterceptTouchEvent(true)
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (downEvent != null) {
+                        flingTracker?.apply {
+                            addMovement(thisEvent)
+                            computeCurrentVelocity(1000)
+                        }
+                        val velocityX = flingTracker?.getXVelocity(0)?.toInt() ?: 0
+                        if ((abs(velocityX) > FLING_THRESHOLD) && webView!!.canScrollHorizontally(-velocityX)) {
+                            flingDirection = velocityX / abs(velocityX)
+                            return true
+                        }
                         val dX = thisEvent.x - downEvent!!.x
-                        val dY = thisEvent.y - downEvent!!.y
-                        if ((abs(dX) > abs(dY)) && (abs(dX) > ViewConfiguration.get(webView!!.context).scaledTouchSlop)) {
+                        if (abs(dX) > ViewConfiguration.get(webView!!.context).scaledTouchSlop) {
                             if (webView!!.canScrollHorizontally(-dX.toInt())) {
                                 webView!!.parent?.requestDisallowInterceptTouchEvent(true)
                             }
@@ -252,6 +273,27 @@ class MessageViewPagerFragment : Fragment() {
                 }
             }
         }
+        return false
+    }
+
+    fun onTouchEvent(thisEvent: MotionEvent): Boolean {
+        if ((downEvent != null) && (webView != null) && (flingDirection != 0)) {
+            if (thisEvent.actionMasked == MotionEvent.ACTION_UP) {
+                val currentItem = viewPager.currentItem
+                val scrollDelta = if (flingDirection < 0) {
+                    10000 // TODO get the correct horizontal scroll limit value
+                } else {
+                    -webView!!.scrollX
+                }
+                viewPager.post {
+                    viewPager.setCurrentItem(currentItem, false)
+                    webView!!.scrollBy(scrollDelta, 0)
+                }
+                flingDirection = 0
+            }
+            return true
+        }
+        return false
     }
 }
 

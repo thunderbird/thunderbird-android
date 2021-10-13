@@ -37,8 +37,12 @@ class MessageViewPagerAdapter(
         recyclerView.addOnItemTouchListener(
             object : RecyclerView.SimpleOnItemTouchListener() {
                 override fun onInterceptTouchEvent(view: RecyclerView, event: MotionEvent): Boolean {
-                    viewPagerFragment.onInterceptTouchEvent(event)
-                    return super.onInterceptTouchEvent(view, event)
+                    return viewPagerFragment.onInterceptTouchEvent(event)
+                }
+                override fun onTouchEvent(view: RecyclerView, event: MotionEvent) {
+                    if (!viewPagerFragment.onTouchEvent(event)) {
+                        super.onTouchEvent(view, event)
+                    }
                 }
             }
         )
