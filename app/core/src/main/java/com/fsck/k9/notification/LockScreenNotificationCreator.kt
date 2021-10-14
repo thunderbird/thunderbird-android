@@ -5,7 +5,7 @@ import androidx.core.app.NotificationCompat
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
 
-internal class LockScreenNotification(
+internal class LockScreenNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val resourceProvider: NotificationResourceProvider
 ) {

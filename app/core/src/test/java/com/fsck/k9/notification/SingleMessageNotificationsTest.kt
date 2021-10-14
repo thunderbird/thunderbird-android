@@ -35,7 +35,7 @@ class SingleMessageNotificationsTest : RobolectricTest() {
         notificationHelper = createNotificationHelper(builder),
         actionCreator = actionCreator,
         resourceProvider = resourceProvider,
-        lockScreenNotification = mock()
+        lockScreenNotificationCreator = mock()
     )
 
     @Test

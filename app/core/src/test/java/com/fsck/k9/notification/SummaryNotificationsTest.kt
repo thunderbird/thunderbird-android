@@ -41,8 +41,8 @@ class SummaryNotificationsTest : RobolectricTest() {
     private val notificationData = createFakeNotificationData(account)
     private val builder = createFakeNotificationBuilder()
     private val builder2 = createFakeNotificationBuilder()
-    private val lockScreenNotification = mock<LockScreenNotification>()
-    private val notifications = createSummaryNotifications(builder, lockScreenNotification)
+    private val lockScreenNotificationCreator = mock<LockScreenNotificationCreator>()
+    private val notifications = createSummaryNotifications(builder, lockScreenNotificationCreator)
 
     @Test
     fun buildSummaryNotification_withSingleMessageNotification() {
@@ -64,7 +64,7 @@ class SummaryNotificationsTest : RobolectricTest() {
         verify(builder).addAction(resourceProvider.iconReply, "Reply", null)
         verify(builder).addAction(resourceProvider.iconMarkAsRead, "Mark Read", null)
         verify(builder).addAction(resourceProvider.iconDelete, "Delete", null)
-        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData)
+        verify(lockScreenNotificationCreator).configureLockScreenNotification(builder, notificationData)
         assertThat(result).isEqualTo(notification)
     }
 
@@ -94,7 +94,7 @@ class SummaryNotificationsTest : RobolectricTest() {
         verify(notifications.inboxStyle).addLine(SUMMARY_2)
         verify(builder).addAction(resourceProvider.iconMarkAsRead, "Mark Read", null)
         verify(builder).addAction(resourceProvider.iconDelete, "Delete", null)
-        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData)
+        verify(lockScreenNotificationCreator).configureLockScreenNotification(builder, notificationData)
         assertThat(result).isEqualTo(notification)
     }
 
@@ -165,20 +165,20 @@ class SummaryNotificationsTest : RobolectricTest() {
 
     private fun createSummaryNotifications(
         builder: NotificationCompat.Builder,
-        lockScreenNotification: LockScreenNotification
+        lockScreenNotificationCreator: LockScreenNotificationCreator
     ): TestMessageSummaryNotifications {
         val notificationHelper = createFakeNotificationHelper(builder)
         val singleMessageNotifications = TestSingleMessageNotifications(
             notificationHelper = notificationHelper,
             actionCreator = mock(),
             resourceProvider = resourceProvider,
-            lockScreenNotification = mock()
+            lockScreenNotificationCreator = mock()
         )
 
         return TestMessageSummaryNotifications(
             notificationHelper = notificationHelper,
             actionCreator = mock(),
-            lockScreenNotification = lockScreenNotification,
+            lockScreenNotificationCreator = lockScreenNotificationCreator,
             singleMessageNotifications = singleMessageNotifications,
             resourceProvider = resourceProvider
         )
@@ -197,13 +197,13 @@ class SummaryNotificationsTest : RobolectricTest() {
     internal class TestMessageSummaryNotifications(
         notificationHelper: NotificationHelper,
         actionCreator: NotificationActionCreator,
-        lockScreenNotification: LockScreenNotification,
+        lockScreenNotificationCreator: LockScreenNotificationCreator,
         singleMessageNotifications: SingleMessageNotifications,
         resourceProvider: NotificationResourceProvider
     ) : MessageSummaryNotifications(
         notificationHelper,
         actionCreator,
-        lockScreenNotification,
+        lockScreenNotificationCreator,
         singleMessageNotifications,
         resourceProvider
     ) {
@@ -218,12 +218,12 @@ class SummaryNotificationsTest : RobolectricTest() {
         notificationHelper: NotificationHelper,
         actionCreator: NotificationActionCreator,
         resourceProvider: NotificationResourceProvider,
-        lockScreenNotification: LockScreenNotification
+        lockScreenNotificationCreator: LockScreenNotificationCreator
     ) : SingleMessageNotifications(
         notificationHelper,
         actionCreator,
         resourceProvider,
-        lockScreenNotification
+        lockScreenNotificationCreator
     ) {
         override fun createBigTextStyle(builder: NotificationCompat.Builder?): NotificationCompat.BigTextStyle {
             return bigTextStyle

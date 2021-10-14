@@ -34,7 +34,7 @@ val coreNotificationModule = module {
     single { NotificationContentCreator(get(), get()) }
     single { SingleMessageNotifications(get(), get(), get(), get()) }
     single { MessageSummaryNotifications(get(), get(), get(), get(), get()) }
-    single { LockScreenNotification(get(), get()) }
+    single { LockScreenNotificationCreator(get(), get()) }
     single {
         PushNotificationManager(
             context = get(),

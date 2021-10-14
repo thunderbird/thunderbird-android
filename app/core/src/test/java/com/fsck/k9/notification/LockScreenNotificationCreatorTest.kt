@@ -19,12 +19,12 @@ import org.mockito.kotlin.stubbing
 private const val ACCOUNT_NAME = "Hugo"
 private const val NEW_MESSAGE_COUNT = 3
 
-class LockScreenNotificationTest : RobolectricTest() {
+class LockScreenNotificationCreatorTest : RobolectricTest() {
     private val resourceProvider = TestNotificationResourceProvider()
     private val builder = createFakeNotificationBuilder()
     private val publicBuilder = createFakeNotificationBuilder()
     private var notificationData = createFakeNotificationData()
-    private var lockScreenNotification = LockScreenNotification(
+    private var notificationCreator = LockScreenNotificationCreator(
         notificationHelper = createFakeNotificationHelper(publicBuilder),
         resourceProvider = resourceProvider
     )
@@ -33,7 +33,7 @@ class LockScreenNotificationTest : RobolectricTest() {
     fun configureLockScreenNotification_NOTHING() {
         K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.NOTHING
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
+        notificationCreator.configureLockScreenNotification(builder, notificationData)
 
         verify(builder).setVisibility(NotificationCompat.VISIBILITY_SECRET)
     }
@@ -42,7 +42,7 @@ class LockScreenNotificationTest : RobolectricTest() {
     fun configureLockScreenNotification_APP_NAME() {
         K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.APP_NAME
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
+        notificationCreator.configureLockScreenNotification(builder, notificationData)
 
         verify(builder).setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
     }
@@ -51,7 +51,7 @@ class LockScreenNotificationTest : RobolectricTest() {
     fun configureLockScreenNotification_EVERYTHING() {
         K9.lockScreenNotificationVisibility = LockScreenNotificationVisibility.EVERYTHING
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
+        notificationCreator.configureLockScreenNotification(builder, notificationData)
 
         verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
@@ -68,7 +68,7 @@ class LockScreenNotificationTest : RobolectricTest() {
             on { holderForLatestNotification } doReturn holder
         }
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
+        notificationCreator.configureLockScreenNotification(builder, notificationData)
 
         verify(publicBuilder).setSmallIcon(resourceProvider.iconNewMail)
         verify(publicBuilder).setNumber(1)
@@ -88,7 +88,7 @@ class LockScreenNotificationTest : RobolectricTest() {
             on { getContentForSummaryNotification() } doReturn listOf(content1, content2, content3)
         }
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
+        notificationCreator.configureLockScreenNotification(builder, notificationData)
 
         verify(publicBuilder).setSmallIcon(resourceProvider.iconNewMail)
         verify(publicBuilder).setNumber(NEW_MESSAGE_COUNT)
@@ -103,7 +103,7 @@ class LockScreenNotificationTest : RobolectricTest() {
     fun configureLockScreenNotification_SENDERS_makeSureWeGetEnoughSenderNames() {
         assertThat(
             NotificationData.MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION >=
-                LockScreenNotification.MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION
+                LockScreenNotificationCreator.MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION
         ).isTrue()
     }
 
@@ -116,7 +116,7 @@ class LockScreenNotificationTest : RobolectricTest() {
         val content5 = createNotificationContent("ed@example.com")
         val content6 = createNotificationContent("fiona@example.com")
 
-        val result = lockScreenNotification.createCommaSeparatedListOfSenders(
+        val result = notificationCreator.createCommaSeparatedListOfSenders(
             listOf(content1, content2, content3, content4, content5, content6)
         )
 
@@ -132,7 +132,7 @@ class LockScreenNotificationTest : RobolectricTest() {
             on { newMessagesCount } doReturn NEW_MESSAGE_COUNT
         }
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
+        notificationCreator.configureLockScreenNotification(builder, notificationData)
 
         verify(publicBuilder).setSmallIcon(resourceProvider.iconNewMail)
         verify(publicBuilder).setNumber(NEW_MESSAGE_COUNT)
