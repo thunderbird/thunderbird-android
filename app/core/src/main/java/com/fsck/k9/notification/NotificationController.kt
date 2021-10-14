@@ -10,7 +10,7 @@ class NotificationController internal constructor(
     private val authenticationErrorNotificationController: AuthenticationErrorNotificationController,
     private val syncNotificationController: SyncNotificationController,
     private val sendFailedNotificationController: SendFailedNotificationController,
-    private val newMailNotifications: NewMailNotifications
+    private val newMailNotificationController: NewMailNotificationController
 ) {
     fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
         certificateErrorNotificationController.showCertificateErrorNotification(account, incoming)
@@ -57,14 +57,14 @@ class NotificationController internal constructor(
     }
 
     fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean) {
-        newMailNotifications.addNewMailNotification(account, message, silent)
+        newMailNotificationController.addNewMailNotification(account, message, silent)
     }
 
     fun removeNewMailNotification(account: Account, messageReference: MessageReference) {
-        newMailNotifications.removeNewMailNotification(account, messageReference)
+        newMailNotificationController.removeNewMailNotification(account, messageReference)
     }
 
     fun clearNewMailNotifications(account: Account) {
-        newMailNotifications.clearNewMailNotifications(account)
+        newMailNotificationController.clearNewMailNotifications(account)
     }
 }

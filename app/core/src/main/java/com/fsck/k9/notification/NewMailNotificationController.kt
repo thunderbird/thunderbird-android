@@ -9,7 +9,7 @@ import com.fsck.k9.mailstore.LocalMessage
 /**
  * Handle notifications for new messages.
  */
-internal open class NewMailNotifications(
+internal open class NewMailNotificationController(
     private val notificationHelper: NotificationHelper,
     private val contentCreator: NotificationContentCreator,
     private val summaryNotificationCreator: SummaryNotificationCreator,
