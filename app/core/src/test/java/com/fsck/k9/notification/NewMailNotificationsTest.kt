@@ -24,12 +24,12 @@ class NewMailNotificationsTest : K9RobolectricTest() {
     private val account = createAccount()
     private val notificationManager = createNotificationManager()
     private val contentCreator = createNotificationContentCreator()
-    private val messageSummaryNotifications = createMessageSummaryNotifications()
+    private val summaryNotificationCreator = createSummaryNotificationCreator()
     private val singleMessageNotificationCreator = createSingleMessageNotificationCreator()
     private val newMailNotifications = TestNewMailNotifications(
         notificationHelper = createNotificationHelper(notificationManager),
         contentCreator = contentCreator,
-        messageSummaryNotifications = messageSummaryNotifications,
+        summaryNotificationCreator = summaryNotificationCreator,
         singleMessageNotificationCreator = singleMessageNotificationCreator
     )
 
@@ -43,8 +43,8 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
         val singleMessageNotification = createNotification()
         val summaryNotification = createNotification()
-        addToSingleMessageNotifications(holder, singleMessageNotification)
-        addToSummaryNotifications(summaryNotification)
+        addToSingleMessageNotificationCreator(holder, singleMessageNotification)
+        addToSummaryNotificationCreator(summaryNotification)
 
         newMailNotifications.addNewMailNotification(account, message, silent = false)
 
@@ -64,8 +64,8 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         whenAddingContentReturn(content, AddNotificationResult.replaceNotification(holder))
         val singleMessageNotification = createNotification()
         val summaryNotification = createNotification()
-        addToSingleMessageNotifications(holder, singleMessageNotification)
-        addToSummaryNotifications(summaryNotification)
+        addToSingleMessageNotificationCreator(holder, singleMessageNotification)
+        addToSummaryNotificationCreator(summaryNotification)
 
         newMailNotifications.addNewMailNotification(account, message, silent = false)
 
@@ -93,9 +93,9 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         val singleMessageNotificationOne = createNotification()
         val singleMessageNotificationTwo = createNotification()
         val summaryNotification = createNotification()
-        addToSingleMessageNotifications(holderOne, singleMessageNotificationOne)
-        addToSingleMessageNotifications(holderTwo, singleMessageNotificationTwo)
-        addToSummaryNotifications(summaryNotification)
+        addToSingleMessageNotificationCreator(holderOne, singleMessageNotificationOne)
+        addToSingleMessageNotificationCreator(holderTwo, singleMessageNotificationTwo)
+        addToSummaryNotificationCreator(summaryNotification)
 
         newMailNotifications.addNewMailNotification(account, messageOne, silent = false)
         newMailNotifications.addNewMailNotification(account, messageTwo, silent = false)
@@ -127,7 +127,7 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         addToNotificationContentCreator(message, content)
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
         val summaryNotification = createNotification()
-        addToSummaryNotifications(summaryNotification)
+        addToSummaryNotificationCreator(summaryNotification)
         newMailNotifications.addNewMailNotification(account, message, silent = false)
         whenRemovingContentReturn(messageReference, RemoveNotificationResult.unknownNotification())
 
@@ -147,7 +147,7 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         addToNotificationContentCreator(message, content)
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
         val summaryNotification = createNotification()
-        addToSummaryNotifications(summaryNotification)
+        addToSummaryNotificationCreator(summaryNotification)
         newMailNotifications.addNewMailNotification(account, message, silent = false)
         whenRemovingContentReturn(messageReference, RemoveNotificationResult.cancelNotification(notificationId))
 
@@ -169,7 +169,7 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         addToNotificationContentCreator(message, content)
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder))
         val summaryNotification = createNotification()
-        addToSummaryNotifications(summaryNotification)
+        addToSummaryNotificationCreator(summaryNotification)
         newMailNotifications.addNewMailNotification(account, message, silent = false)
         whenRemovingContentReturn(messageReference, RemoveNotificationResult.cancelNotification(notificationId))
         whenever(newMailNotifications.notificationData.newMessagesCount).thenReturn(0)
@@ -195,11 +195,11 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         addToNotificationContentCreator(message, contentOne)
         whenAddingContentReturn(contentOne, AddNotificationResult.newNotification(holderOne))
         val summaryNotification = createNotification()
-        addToSummaryNotifications(summaryNotification)
+        addToSummaryNotificationCreator(summaryNotification)
         val singleMessageNotificationOne = createNotification()
         val singleMessageNotificationTwo = createNotification()
-        addToSingleMessageNotifications(holderOne, singleMessageNotificationOne)
-        addToSingleMessageNotifications(holderTwo, singleMessageNotificationTwo)
+        addToSingleMessageNotificationCreator(holderOne, singleMessageNotificationOne)
+        addToSingleMessageNotificationCreator(holderTwo, singleMessageNotificationTwo)
         newMailNotifications.addNewMailNotification(account, message, silent = false)
         whenRemovingContentReturn(messageReference, RemoveNotificationResult.createNotification(holderTwo))
 
@@ -270,10 +270,10 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         }
     }
 
-    private fun createMessageSummaryNotifications(): MessageSummaryNotifications = mock()
+    private fun createSummaryNotificationCreator(): SummaryNotificationCreator = mock()
 
-    private fun addToSummaryNotifications(notificationToReturn: Notification) {
-        stubbing(messageSummaryNotifications) {
+    private fun addToSummaryNotificationCreator(notificationToReturn: Notification) {
+        stubbing(summaryNotificationCreator) {
             on {
                 buildSummaryNotification(eq(account), eq(newMailNotifications.notificationData), anyBoolean())
             } doReturn notificationToReturn
@@ -288,7 +288,7 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         return MessageReference("account", 1, number.toString())
     }
 
-    private fun addToSingleMessageNotifications(
+    private fun addToSingleMessageNotificationCreator(
         notificationHolder: NotificationHolder,
         notificationToReturn: Notification
     ) {
@@ -322,10 +322,10 @@ class NewMailNotificationsTest : K9RobolectricTest() {
     internal class TestNewMailNotifications(
         notificationHelper: NotificationHelper,
         contentCreator: NotificationContentCreator,
-        messageSummaryNotifications: MessageSummaryNotifications,
+        summaryNotificationCreator: SummaryNotificationCreator,
         singleMessageNotificationCreator: SingleMessageNotificationCreator
     ) : NewMailNotifications(
-        notificationHelper, contentCreator, messageSummaryNotifications, singleMessageNotificationCreator
+        notificationHelper, contentCreator, summaryNotificationCreator, singleMessageNotificationCreator
     ) {
         val notificationData = mock<NotificationData>()
 

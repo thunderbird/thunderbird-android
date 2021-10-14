@@ -9,7 +9,7 @@ import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import com.fsck.k9.notification.NotificationGroupKeys.getGroupKey
 import com.fsck.k9.notification.NotificationIds.getNewMailSummaryNotificationId
 
-internal open class MessageSummaryNotifications(
+internal open class SummaryNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val lockScreenNotificationCreator: LockScreenNotificationCreator,

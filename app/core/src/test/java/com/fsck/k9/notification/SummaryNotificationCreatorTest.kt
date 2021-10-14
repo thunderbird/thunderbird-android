@@ -33,7 +33,7 @@ private const val SUBJECT_2 = "subject2"
 private const val SENDER_2 = "sender2"
 private const val NOTIFICATION_ID = 23
 
-class SummaryNotificationsTest : RobolectricTest() {
+class SummaryNotificationCreatorTest : RobolectricTest() {
     private val notification = mock<Notification>()
     private val bigTextStyle = mockBuilder<NotificationCompat.BigTextStyle>()
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
@@ -42,7 +42,7 @@ class SummaryNotificationsTest : RobolectricTest() {
     private val builder = createFakeNotificationBuilder()
     private val builder2 = createFakeNotificationBuilder()
     private val lockScreenNotificationCreator = mock<LockScreenNotificationCreator>()
-    private val notifications = createSummaryNotifications(builder, lockScreenNotificationCreator)
+    private val notificationCreator = createSummaryNotificationCreator(builder, lockScreenNotificationCreator)
 
     @Test
     fun buildSummaryNotification_withSingleMessageNotification() {
@@ -51,7 +51,7 @@ class SummaryNotificationsTest : RobolectricTest() {
             on { isSingleMessageNotification } doReturn true
         }
 
-        val result = notifications.buildSummaryNotification(account, notificationData, false)
+        val result = notificationCreator.buildSummaryNotification(account, notificationData, false)
 
         verify(builder).setSmallIcon(resourceProvider.iconNewMail)
         verify(builder).color = ACCOUNT_COLOR
@@ -76,7 +76,7 @@ class SummaryNotificationsTest : RobolectricTest() {
             on { containsStarredMessages() } doReturn true
         }
 
-        val result = notifications.buildSummaryNotification(account, notificationData, false)
+        val result = notificationCreator.buildSummaryNotification(account, notificationData, false)
 
         verify(builder).setSmallIcon(resourceProvider.iconNewMail)
         verify(builder).color = ACCOUNT_COLOR
@@ -87,11 +87,11 @@ class SummaryNotificationsTest : RobolectricTest() {
         verify(builder).setGroup("newMailNotifications-$ACCOUNT_NUMBER")
         verify(builder).setGroupSummary(true)
         verify(builder).priority = NotificationCompat.PRIORITY_HIGH
-        verify(builder).setStyle(notifications.inboxStyle)
-        verify(notifications.inboxStyle).setBigContentTitle("$NEW_MESSAGE_COUNT new messages")
-        verify(notifications.inboxStyle).setSummaryText(ACCOUNT_NAME)
-        verify(notifications.inboxStyle).addLine(SUMMARY)
-        verify(notifications.inboxStyle).addLine(SUMMARY_2)
+        verify(builder).setStyle(notificationCreator.inboxStyle)
+        verify(notificationCreator.inboxStyle).setBigContentTitle("$NEW_MESSAGE_COUNT new messages")
+        verify(notificationCreator.inboxStyle).setSummaryText(ACCOUNT_NAME)
+        verify(notificationCreator.inboxStyle).addLine(SUMMARY)
+        verify(notificationCreator.inboxStyle).addLine(SUMMARY_2)
         verify(builder).addAction(resourceProvider.iconMarkAsRead, "Mark Read", null)
         verify(builder).addAction(resourceProvider.iconDelete, "Delete", null)
         verify(lockScreenNotificationCreator).configureLockScreenNotification(builder, notificationData)
@@ -107,9 +107,9 @@ class SummaryNotificationsTest : RobolectricTest() {
             on { getSummaryOverflowMessagesCount() } doReturn 23
         }
 
-        notifications.buildSummaryNotification(account, notificationData, false)
+        notificationCreator.buildSummaryNotification(account, notificationData, false)
 
-        verify(notifications.inboxStyle).setSummaryText("+ 23 more on $ACCOUNT_NAME")
+        verify(notificationCreator.inboxStyle).setSummaryText("+ 23 more on $ACCOUNT_NAME")
     }
 
     @Test
@@ -119,7 +119,7 @@ class SummaryNotificationsTest : RobolectricTest() {
             on { isSingleMessageNotification } doReturn false
         }
 
-        notifications.buildSummaryNotification(account, notificationData, false)
+        notificationCreator.buildSummaryNotification(account, notificationData, false)
 
         verify(builder, never()).addAction(resourceProvider.iconDelete, "Delete", null)
     }
@@ -132,7 +132,7 @@ class SummaryNotificationsTest : RobolectricTest() {
             on { isSingleMessageNotification } doReturn true
         }
 
-        notifications.buildSummaryNotification(account, notificationData, false)
+        notificationCreator.buildSummaryNotification(account, notificationData, false)
 
         verify(builder, never()).addAction(resourceProvider.iconDelete, "Delete", null)
     }
@@ -163,10 +163,10 @@ class SummaryNotificationsTest : RobolectricTest() {
         }
     }
 
-    private fun createSummaryNotifications(
+    private fun createSummaryNotificationCreator(
         builder: NotificationCompat.Builder,
         lockScreenNotificationCreator: LockScreenNotificationCreator
-    ): TestMessageSummaryNotifications {
+    ): TestSummaryNotificationCreator {
         val notificationHelper = createFakeNotificationHelper(builder)
         val singleMessageNotificationCreator = TestSingleMessageNotificationCreator(
             notificationHelper = notificationHelper,
@@ -175,7 +175,7 @@ class SummaryNotificationsTest : RobolectricTest() {
             lockScreenNotificationCreator = mock()
         )
 
-        return TestMessageSummaryNotifications(
+        return TestSummaryNotificationCreator(
             notificationHelper = notificationHelper,
             actionCreator = mock(),
             lockScreenNotificationCreator = lockScreenNotificationCreator,
@@ -194,13 +194,13 @@ class SummaryNotificationsTest : RobolectricTest() {
         }
     }
 
-    internal class TestMessageSummaryNotifications(
+    internal class TestSummaryNotificationCreator(
         notificationHelper: NotificationHelper,
         actionCreator: NotificationActionCreator,
         lockScreenNotificationCreator: LockScreenNotificationCreator,
         singleMessageNotificationCreator: SingleMessageNotificationCreator,
         resourceProvider: NotificationResourceProvider
-    ) : MessageSummaryNotifications(
+    ) : SummaryNotificationCreator(
         notificationHelper,
         actionCreator,
         lockScreenNotificationCreator,

@@ -33,7 +33,7 @@ val coreNotificationModule = module {
     single { NewMailNotifications(get(), get(), get(), get()) }
     single { NotificationContentCreator(get(), get()) }
     single { SingleMessageNotificationCreator(get(), get(), get(), get()) }
-    single { MessageSummaryNotifications(get(), get(), get(), get(), get()) }
+    single { SummaryNotificationCreator(get(), get(), get(), get(), get()) }
     single { LockScreenNotificationCreator(get(), get()) }
     single {
         PushNotificationManager(
