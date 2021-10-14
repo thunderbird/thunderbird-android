@@ -7,7 +7,7 @@ import com.fsck.k9.mailstore.LocalMessage
 
 class NotificationController internal constructor(
     private val certificateErrorNotifications: CertificateErrorNotifications,
-    private val authenticationErrorNotifications: AuthenticationErrorNotifications,
+    private val authenticationErrorNotificationController: AuthenticationErrorNotificationController,
     private val syncNotifications: SyncNotifications,
     private val sendFailedNotifications: SendFailedNotifications,
     private val newMailNotifications: NewMailNotifications
@@ -21,11 +21,11 @@ class NotificationController internal constructor(
     }
 
     fun showAuthenticationErrorNotification(account: Account, incoming: Boolean) {
-        authenticationErrorNotifications.showAuthenticationErrorNotification(account, incoming)
+        authenticationErrorNotificationController.showAuthenticationErrorNotification(account, incoming)
     }
 
     fun clearAuthenticationErrorNotification(account: Account, incoming: Boolean) {
-        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, incoming)
+        authenticationErrorNotificationController.clearAuthenticationErrorNotification(account, incoming)
     }
 
     fun showSendingNotification(account: Account) {

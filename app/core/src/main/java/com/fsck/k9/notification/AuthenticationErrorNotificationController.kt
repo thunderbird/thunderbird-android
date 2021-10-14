@@ -5,7 +5,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
 
-internal open class AuthenticationErrorNotifications(
+internal open class AuthenticationErrorNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider

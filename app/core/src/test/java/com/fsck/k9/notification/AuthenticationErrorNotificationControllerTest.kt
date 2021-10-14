@@ -19,21 +19,21 @@ private const val OUTGOING = false
 private const val ACCOUNT_NUMBER = 1
 private const val ACCOUNT_NAME = "TestAccount"
 
-class AuthenticationErrorNotificationsTest : RobolectricTest() {
+class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
     private val resourceProvider = TestNotificationResourceProvider()
     private val notification = mock<Notification>()
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
     private val notificationHelper = createFakeNotificationHelper(notificationManager, builder)
     private val account = createFakeAccount()
-    private val authenticationErrorNotifications = TestAuthenticationErrorNotifications()
+    private val controller = TestAuthenticationErrorNotificationController()
     private val contentIntent = mock<PendingIntent>()
 
     @Test
     fun showAuthenticationErrorNotification_withIncomingServer_shouldCreateNotification() {
         val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING)
 
-        authenticationErrorNotifications.showAuthenticationErrorNotification(account, INCOMING)
+        controller.showAuthenticationErrorNotification(account, INCOMING)
 
         verify(notificationManager).notify(notificationId, notification)
         assertAuthenticationErrorNotificationContents()
@@ -43,7 +43,7 @@ class AuthenticationErrorNotificationsTest : RobolectricTest() {
     fun clearAuthenticationErrorNotification_withIncomingServer_shouldCancelNotification() {
         val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING)
 
-        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, INCOMING)
+        controller.clearAuthenticationErrorNotification(account, INCOMING)
 
         verify(notificationManager).cancel(notificationId)
     }
@@ -52,7 +52,7 @@ class AuthenticationErrorNotificationsTest : RobolectricTest() {
     fun showAuthenticationErrorNotification_withOutgoingServer_shouldCreateNotification() {
         val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING)
 
-        authenticationErrorNotifications.showAuthenticationErrorNotification(account, OUTGOING)
+        controller.showAuthenticationErrorNotification(account, OUTGOING)
 
         verify(notificationManager).notify(notificationId, notification)
         assertAuthenticationErrorNotificationContents()
@@ -62,7 +62,7 @@ class AuthenticationErrorNotificationsTest : RobolectricTest() {
     fun clearAuthenticationErrorNotification_withOutgoingServer_shouldCancelNotification() {
         val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING)
 
-        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, OUTGOING)
+        controller.clearAuthenticationErrorNotification(account, OUTGOING)
 
         verify(notificationManager).cancel(notificationId)
     }
@@ -100,8 +100,8 @@ class AuthenticationErrorNotificationsTest : RobolectricTest() {
         }
     }
 
-    internal inner class TestAuthenticationErrorNotifications :
-        AuthenticationErrorNotifications(notificationHelper, mock(), resourceProvider) {
+    internal inner class TestAuthenticationErrorNotificationController :
+        AuthenticationErrorNotificationController(notificationHelper, mock(), resourceProvider) {
 
         override fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
             return contentIntent
