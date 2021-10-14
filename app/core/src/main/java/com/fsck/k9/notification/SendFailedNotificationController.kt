@@ -5,7 +5,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
 import com.fsck.k9.helper.ExceptionHelper
 
-internal class SendFailedNotifications(
+internal class SendFailedNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionBuilder: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider

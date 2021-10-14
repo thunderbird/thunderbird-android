@@ -9,7 +9,7 @@ class NotificationController internal constructor(
     private val certificateErrorNotificationController: CertificateErrorNotificationController,
     private val authenticationErrorNotificationController: AuthenticationErrorNotificationController,
     private val syncNotifications: SyncNotifications,
-    private val sendFailedNotifications: SendFailedNotifications,
+    private val sendFailedNotificationController: SendFailedNotificationController,
     private val newMailNotifications: NewMailNotifications
 ) {
     fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
@@ -37,11 +37,11 @@ class NotificationController internal constructor(
     }
 
     fun showSendFailedNotification(account: Account, exception: Exception) {
-        sendFailedNotifications.showSendFailedNotification(account, exception)
+        sendFailedNotificationController.showSendFailedNotification(account, exception)
     }
 
     fun clearSendFailedNotification(account: Account) {
-        sendFailedNotifications.clearSendFailedNotification(account)
+        sendFailedNotificationController.clearSendFailedNotification(account)
     }
 
     fun showFetchingMailNotification(account: Account, folder: LocalFolder) {

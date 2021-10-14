@@ -18,7 +18,7 @@ import org.mockito.kotlin.mock
 private const val ACCOUNT_NUMBER = 1
 private const val ACCOUNT_NAME = "TestAccount"
 
-class SendFailedNotificationsTest : RobolectricTest() {
+class SendFailedNotificationControllerTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
     private val notification = mock<Notification>()
     private val notificationManager = mock<NotificationManagerCompat>()
@@ -26,7 +26,7 @@ class SendFailedNotificationsTest : RobolectricTest() {
     private val account = createFakeAccount()
     private val contentIntent = mock<PendingIntent>()
     private val notificationId = NotificationIds.getSendFailedNotificationId(account)
-    private val sendFailedNotifications = SendFailedNotifications(
+    private val controller = SendFailedNotificationController(
         notificationHelper = createFakeNotificationHelper(notificationManager, builder),
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider
@@ -36,7 +36,7 @@ class SendFailedNotificationsTest : RobolectricTest() {
     fun testShowSendFailedNotification() {
         val exception = Exception()
 
-        sendFailedNotifications.showSendFailedNotification(account, exception)
+        controller.showSendFailedNotification(account, exception)
 
         verify(notificationManager).notify(notificationId, notification)
         verify(builder).setSmallIcon(resourceProvider.iconWarning)
@@ -49,7 +49,7 @@ class SendFailedNotificationsTest : RobolectricTest() {
 
     @Test
     fun testClearSendFailedNotification() {
-        sendFailedNotifications.clearSendFailedNotification(account)
+        controller.clearSendFailedNotification(account)
 
         verify(notificationManager).cancel(notificationId)
     }
