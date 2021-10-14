@@ -6,18 +6,18 @@ import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 
 class NotificationController internal constructor(
-    private val certificateErrorNotifications: CertificateErrorNotifications,
+    private val certificateErrorNotificationController: CertificateErrorNotificationController,
     private val authenticationErrorNotificationController: AuthenticationErrorNotificationController,
     private val syncNotifications: SyncNotifications,
     private val sendFailedNotifications: SendFailedNotifications,
     private val newMailNotifications: NewMailNotifications
 ) {
     fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
-        certificateErrorNotifications.showCertificateErrorNotification(account, incoming)
+        certificateErrorNotificationController.showCertificateErrorNotification(account, incoming)
     }
 
     fun clearCertificateErrorNotifications(account: Account, incoming: Boolean) {
-        certificateErrorNotifications.clearCertificateErrorNotifications(account, incoming)
+        certificateErrorNotificationController.clearCertificateErrorNotifications(account, incoming)
     }
 
     fun showAuthenticationErrorNotification(account: Account, incoming: Boolean) {

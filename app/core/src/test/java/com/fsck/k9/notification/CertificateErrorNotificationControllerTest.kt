@@ -19,21 +19,21 @@ private const val OUTGOING = false
 private const val ACCOUNT_NUMBER = 1
 private const val ACCOUNT_NAME = "TestAccount"
 
-class CertificateErrorNotificationsTest : RobolectricTest() {
+class CertificateErrorNotificationControllerTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
     private val notification = mock<Notification>()
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
     private val notificationHelper = createFakeNotificationHelper(notificationManager, builder)
     private val account = createFakeAccount()
-    private val certificateErrorNotifications = TestCertificateErrorNotifications()
+    private val controller = TestCertificateErrorNotificationController()
     private val contentIntent = mock<PendingIntent>()
 
     @Test
     fun testShowCertificateErrorNotificationForIncomingServer() {
         val notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING)
 
-        certificateErrorNotifications.showCertificateErrorNotification(account, INCOMING)
+        controller.showCertificateErrorNotification(account, INCOMING)
 
         verify(notificationManager).notify(notificationId, notification)
         assertCertificateErrorNotificationContents()
@@ -43,7 +43,7 @@ class CertificateErrorNotificationsTest : RobolectricTest() {
     fun testClearCertificateErrorNotificationsForIncomingServer() {
         val notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING)
 
-        certificateErrorNotifications.clearCertificateErrorNotifications(account, INCOMING)
+        controller.clearCertificateErrorNotifications(account, INCOMING)
 
         verify(notificationManager).cancel(notificationId)
     }
@@ -52,7 +52,7 @@ class CertificateErrorNotificationsTest : RobolectricTest() {
     fun testShowCertificateErrorNotificationForOutgoingServer() {
         val notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING)
 
-        certificateErrorNotifications.showCertificateErrorNotification(account, OUTGOING)
+        controller.showCertificateErrorNotification(account, OUTGOING)
 
         verify(notificationManager).notify(notificationId, notification)
         assertCertificateErrorNotificationContents()
@@ -62,7 +62,7 @@ class CertificateErrorNotificationsTest : RobolectricTest() {
     fun testClearCertificateErrorNotificationsForOutgoingServer() {
         val notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING)
 
-        certificateErrorNotifications.clearCertificateErrorNotifications(account, OUTGOING)
+        controller.clearCertificateErrorNotifications(account, OUTGOING)
 
         verify(notificationManager).cancel(notificationId)
     }
@@ -101,7 +101,7 @@ class CertificateErrorNotificationsTest : RobolectricTest() {
         }
     }
 
-    internal inner class TestCertificateErrorNotifications : CertificateErrorNotifications(
+    internal inner class TestCertificateErrorNotificationController : CertificateErrorNotificationController(
         notificationHelper, mock(), resourceProvider
     ) {
         override fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
