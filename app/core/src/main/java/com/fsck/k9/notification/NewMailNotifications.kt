@@ -13,7 +13,7 @@ internal open class NewMailNotifications(
     private val notificationHelper: NotificationHelper,
     private val contentCreator: NotificationContentCreator,
     private val messageSummaryNotifications: MessageSummaryNotifications,
-    private val singleMessageNotifications: SingleMessageNotifications
+    private val singleMessageNotificationCreator: SingleMessageNotificationCreator
 ) {
     private val notifications = SparseArray<NotificationData>()
     private val lock = Any()
@@ -116,7 +116,7 @@ internal open class NewMailNotifications(
     }
 
     private fun createSingleMessageNotification(account: Account, holder: NotificationHolder) {
-        val notification = singleMessageNotifications.buildSingleMessageNotification(account, holder)
+        val notification = singleMessageNotificationCreator.buildSingleMessageNotification(account, holder)
         val notificationId = holder.notificationId
         notificationManager.notify(notificationId, notification)
     }
@@ -128,7 +128,7 @@ internal open class NewMailNotifications(
         notificationData: NotificationData
     ) {
         val holder = notificationData.holderForLatestNotification
-        val notification = singleMessageNotifications.buildSingleMessageNotificationWithLockScreenNotification(
+        val notification = singleMessageNotificationCreator.buildSingleMessageNotificationWithLockScreenNotification(
             account,
             holder,
             notificationData

@@ -168,7 +168,7 @@ class SummaryNotificationsTest : RobolectricTest() {
         lockScreenNotificationCreator: LockScreenNotificationCreator
     ): TestMessageSummaryNotifications {
         val notificationHelper = createFakeNotificationHelper(builder)
-        val singleMessageNotifications = TestSingleMessageNotifications(
+        val singleMessageNotificationCreator = TestSingleMessageNotificationCreator(
             notificationHelper = notificationHelper,
             actionCreator = mock(),
             resourceProvider = resourceProvider,
@@ -179,7 +179,7 @@ class SummaryNotificationsTest : RobolectricTest() {
             notificationHelper = notificationHelper,
             actionCreator = mock(),
             lockScreenNotificationCreator = lockScreenNotificationCreator,
-            singleMessageNotifications = singleMessageNotifications,
+            singleMessageNotificationCreator = singleMessageNotificationCreator,
             resourceProvider = resourceProvider
         )
     }
@@ -198,13 +198,13 @@ class SummaryNotificationsTest : RobolectricTest() {
         notificationHelper: NotificationHelper,
         actionCreator: NotificationActionCreator,
         lockScreenNotificationCreator: LockScreenNotificationCreator,
-        singleMessageNotifications: SingleMessageNotifications,
+        singleMessageNotificationCreator: SingleMessageNotificationCreator,
         resourceProvider: NotificationResourceProvider
     ) : MessageSummaryNotifications(
         notificationHelper,
         actionCreator,
         lockScreenNotificationCreator,
-        singleMessageNotifications,
+        singleMessageNotificationCreator,
         resourceProvider
     ) {
         val inboxStyle = mockBuilder<NotificationCompat.InboxStyle>()
@@ -214,12 +214,12 @@ class SummaryNotificationsTest : RobolectricTest() {
         }
     }
 
-    internal inner class TestSingleMessageNotifications(
+    internal inner class TestSingleMessageNotificationCreator(
         notificationHelper: NotificationHelper,
         actionCreator: NotificationActionCreator,
         resourceProvider: NotificationResourceProvider,
         lockScreenNotificationCreator: LockScreenNotificationCreator
-    ) : SingleMessageNotifications(
+    ) : SingleMessageNotificationCreator(
         notificationHelper,
         actionCreator,
         resourceProvider,

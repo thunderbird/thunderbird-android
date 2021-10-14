@@ -25,12 +25,12 @@ class NewMailNotificationsTest : K9RobolectricTest() {
     private val notificationManager = createNotificationManager()
     private val contentCreator = createNotificationContentCreator()
     private val messageSummaryNotifications = createMessageSummaryNotifications()
-    private val singleMessageNotifications = createSingleMessageNotifications()
+    private val singleMessageNotificationCreator = createSingleMessageNotificationCreator()
     private val newMailNotifications = TestNewMailNotifications(
         notificationHelper = createNotificationHelper(notificationManager),
         contentCreator = contentCreator,
         messageSummaryNotifications = messageSummaryNotifications,
-        singleMessageNotifications = singleMessageNotifications
+        singleMessageNotificationCreator = singleMessageNotificationCreator
     )
 
     @Test
@@ -282,7 +282,7 @@ class NewMailNotificationsTest : K9RobolectricTest() {
 
     private fun createNotification(): Notification = mock()
 
-    private fun createSingleMessageNotifications(): SingleMessageNotifications = mock()
+    private fun createSingleMessageNotificationCreator(): SingleMessageNotificationCreator = mock()
 
     private fun createMessageReference(number: Int): MessageReference {
         return MessageReference("account", 1, number.toString())
@@ -292,7 +292,7 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         notificationHolder: NotificationHolder,
         notificationToReturn: Notification
     ) {
-        stubbing(singleMessageNotifications) {
+        stubbing(singleMessageNotificationCreator) {
             on { buildSingleMessageNotification(account, notificationHolder) } doReturn notificationToReturn
         }
     }
@@ -323,9 +323,9 @@ class NewMailNotificationsTest : K9RobolectricTest() {
         notificationHelper: NotificationHelper,
         contentCreator: NotificationContentCreator,
         messageSummaryNotifications: MessageSummaryNotifications,
-        singleMessageNotifications: SingleMessageNotifications
+        singleMessageNotificationCreator: SingleMessageNotificationCreator
     ) : NewMailNotifications(
-        notificationHelper, contentCreator, messageSummaryNotifications, singleMessageNotifications
+        notificationHelper, contentCreator, messageSummaryNotifications, singleMessageNotificationCreator
     ) {
         val notificationData = mock<NotificationData>()
 

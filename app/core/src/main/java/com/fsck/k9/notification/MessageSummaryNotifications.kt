@@ -13,7 +13,7 @@ internal open class MessageSummaryNotifications(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val lockScreenNotificationCreator: LockScreenNotificationCreator,
-    private val singleMessageNotifications: SingleMessageNotifications,
+    private val singleMessageNotificationCreator: SingleMessageNotificationCreator,
     private val resourceProvider: NotificationResourceProvider
 ) {
 
@@ -56,7 +56,7 @@ internal open class MessageSummaryNotifications(
         holder: NotificationHolder
     ): NotificationCompat.Builder {
         val notificationId = getNewMailSummaryNotificationId(account)
-        val builder = singleMessageNotifications.createSingleMessageNotificationBuilder(account, holder, notificationId)
+        val builder = singleMessageNotificationCreator.createSingleMessageNotificationBuilder(account, holder, notificationId)
         builder.setGroupSummary(true)
 
         return builder

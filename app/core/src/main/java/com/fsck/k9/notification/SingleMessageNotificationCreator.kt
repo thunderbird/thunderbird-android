@@ -6,7 +6,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 
-internal open class SingleMessageNotifications(
+internal open class SingleMessageNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
