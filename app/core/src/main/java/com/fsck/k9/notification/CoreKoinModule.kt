@@ -28,7 +28,7 @@ val coreNotificationModule = module {
     }
     single { CertificateErrorNotificationController(get(), get(), get()) }
     single { AuthenticationErrorNotificationController(get(), get(), get()) }
-    single { SyncNotifications(get(), get(), get()) }
+    single { SyncNotificationController(get(), get(), get()) }
     single { SendFailedNotificationController(get(), get(), get()) }
     single { NewMailNotifications(get(), get(), get(), get()) }
     single { NotificationContentCreator(get(), get()) }

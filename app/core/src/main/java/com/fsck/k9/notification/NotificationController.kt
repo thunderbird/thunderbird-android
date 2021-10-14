@@ -8,7 +8,7 @@ import com.fsck.k9.mailstore.LocalMessage
 class NotificationController internal constructor(
     private val certificateErrorNotificationController: CertificateErrorNotificationController,
     private val authenticationErrorNotificationController: AuthenticationErrorNotificationController,
-    private val syncNotifications: SyncNotifications,
+    private val syncNotificationController: SyncNotificationController,
     private val sendFailedNotificationController: SendFailedNotificationController,
     private val newMailNotifications: NewMailNotifications
 ) {
@@ -29,11 +29,11 @@ class NotificationController internal constructor(
     }
 
     fun showSendingNotification(account: Account) {
-        syncNotifications.showSendingNotification(account)
+        syncNotificationController.showSendingNotification(account)
     }
 
     fun clearSendingNotification(account: Account) {
-        syncNotifications.clearSendingNotification(account)
+        syncNotificationController.clearSendingNotification(account)
     }
 
     fun showSendFailedNotification(account: Account, exception: Exception) {
@@ -45,15 +45,15 @@ class NotificationController internal constructor(
     }
 
     fun showFetchingMailNotification(account: Account, folder: LocalFolder) {
-        syncNotifications.showFetchingMailNotification(account, folder)
+        syncNotificationController.showFetchingMailNotification(account, folder)
     }
 
     fun showEmptyFetchingMailNotification(account: Account) {
-        syncNotifications.showEmptyFetchingMailNotification(account)
+        syncNotificationController.showEmptyFetchingMailNotification(account)
     }
 
     fun clearFetchingMailNotification(account: Account) {
-        syncNotifications.clearFetchingMailNotification(account)
+        syncNotificationController.clearFetchingMailNotification(account)
     }
 
     fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean) {
