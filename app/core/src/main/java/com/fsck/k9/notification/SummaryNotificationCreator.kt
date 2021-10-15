@@ -9,11 +9,11 @@ import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import com.fsck.k9.notification.NotificationGroupKeys.getGroupKey
 import com.fsck.k9.notification.NotificationIds.getNewMailSummaryNotificationId
 
-internal open class MessageSummaryNotifications(
+internal open class SummaryNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
-    private val lockScreenNotification: LockScreenNotification,
-    private val singleMessageNotifications: SingleMessageNotifications,
+    private val lockScreenNotificationCreator: LockScreenNotificationCreator,
+    private val singleMessageNotificationCreator: SingleMessageNotificationCreator,
     private val resourceProvider: NotificationResourceProvider
 ) {
 
@@ -36,7 +36,7 @@ internal open class MessageSummaryNotifications(
         val deletePendingIntent = actionCreator.createDismissAllMessagesPendingIntent(account, notificationId)
         builder.setDeleteIntent(deletePendingIntent)
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData)
+        lockScreenNotificationCreator.configureLockScreenNotification(builder, notificationData)
 
         val notificationSetting = account.notificationSetting
         notificationHelper.configureNotification(
@@ -56,7 +56,7 @@ internal open class MessageSummaryNotifications(
         holder: NotificationHolder
     ): NotificationCompat.Builder {
         val notificationId = getNewMailSummaryNotificationId(account)
-        val builder = singleMessageNotifications.createSingleMessageNotificationBuilder(account, holder, notificationId)
+        val builder = singleMessageNotificationCreator.createSingleMessageNotificationBuilder(account, holder, notificationId)
         builder.setGroupSummary(true)
 
         return builder

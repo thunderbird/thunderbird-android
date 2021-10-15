@@ -7,7 +7,7 @@ import com.fsck.k9.mailstore.LocalFolder
 
 private const val NOTIFICATION_LED_WHILE_SYNCING = false
 
-internal class SyncNotifications(
+internal class SyncNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionBuilder: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider

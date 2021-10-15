@@ -8,15 +8,23 @@ import java.util.concurrent.Executors
 import org.koin.dsl.module
 
 val coreNotificationModule = module {
-    single { NotificationController(get(), get(), get(), get(), get()) }
+    single {
+        NotificationController(
+            certificateErrorNotificationController = get(),
+            authenticationErrorNotificationController = get(),
+            syncNotificationController = get(),
+            sendFailedNotificationController = get(),
+            newMailNotificationController = get()
+        )
+    }
     single { NotificationManagerCompat.from(get()) }
-    single { NotificationHelper(get(), get(), get()) }
+    single { NotificationHelper(context = get(), notificationManager = get(), channelUtils = get()) }
     single {
         NotificationChannelManager(
-            get(),
-            Executors.newSingleThreadExecutor(),
-            get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
-            get()
+            preferences = get(),
+            backgroundExecutor = Executors.newSingleThreadExecutor(),
+            notificationManager = get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
+            resourceProvider = get()
         )
     }
     single {
@@ -26,15 +34,53 @@ val coreNotificationModule = module {
             serverSettingsSerializer = get()
         )
     }
-    single { CertificateErrorNotifications(get(), get(), get()) }
-    single { AuthenticationErrorNotifications(get(), get(), get()) }
-    single { SyncNotifications(get(), get(), get()) }
-    single { SendFailedNotifications(get(), get(), get()) }
-    single { NewMailNotifications(get(), get(), get(), get()) }
-    single { NotificationContentCreator(get(), get()) }
-    single { SingleMessageNotifications(get(), get(), get(), get()) }
-    single { MessageSummaryNotifications(get(), get(), get(), get(), get()) }
-    single { LockScreenNotification(get(), get()) }
+    single {
+        CertificateErrorNotificationController(
+            notificationHelper = get(),
+            actionCreator = get(),
+            resourceProvider = get()
+        )
+    }
+    single {
+        AuthenticationErrorNotificationController(
+            notificationHelper = get(),
+            actionCreator = get(),
+            resourceProvider = get()
+        )
+    }
+    single {
+        SyncNotificationController(notificationHelper = get(), actionBuilder = get(), resourceProvider = get())
+    }
+    single {
+        SendFailedNotificationController(notificationHelper = get(), actionBuilder = get(), resourceProvider = get())
+    }
+    single {
+        NewMailNotificationController(
+            notificationHelper = get(),
+            contentCreator = get(),
+            summaryNotificationCreator = get(),
+            singleMessageNotificationCreator = get()
+        )
+    }
+    single { NotificationContentCreator(context = get(), resourceProvider = get()) }
+    single {
+        SingleMessageNotificationCreator(
+            notificationHelper = get(),
+            actionCreator = get(),
+            resourceProvider = get(),
+            lockScreenNotificationCreator = get()
+        )
+    }
+    single {
+        SummaryNotificationCreator(
+            notificationHelper = get(),
+            actionCreator = get(),
+            lockScreenNotificationCreator = get(),
+            singleMessageNotificationCreator = get(),
+            resourceProvider = get()
+        )
+    }
+    single { LockScreenNotificationCreator(notificationHelper = get(), resourceProvider = get()) }
     single {
         PushNotificationManager(
             context = get(),

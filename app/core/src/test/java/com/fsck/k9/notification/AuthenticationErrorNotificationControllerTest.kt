@@ -19,64 +19,64 @@ private const val OUTGOING = false
 private const val ACCOUNT_NUMBER = 1
 private const val ACCOUNT_NAME = "TestAccount"
 
-class CertificateErrorNotificationsTest : RobolectricTest() {
-    private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
+class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
+    private val resourceProvider = TestNotificationResourceProvider()
     private val notification = mock<Notification>()
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
     private val notificationHelper = createFakeNotificationHelper(notificationManager, builder)
     private val account = createFakeAccount()
-    private val certificateErrorNotifications = TestCertificateErrorNotifications()
+    private val controller = TestAuthenticationErrorNotificationController()
     private val contentIntent = mock<PendingIntent>()
 
     @Test
-    fun testShowCertificateErrorNotificationForIncomingServer() {
-        val notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING)
+    fun showAuthenticationErrorNotification_withIncomingServer_shouldCreateNotification() {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING)
 
-        certificateErrorNotifications.showCertificateErrorNotification(account, INCOMING)
+        controller.showAuthenticationErrorNotification(account, INCOMING)
 
         verify(notificationManager).notify(notificationId, notification)
-        assertCertificateErrorNotificationContents()
+        assertAuthenticationErrorNotificationContents()
     }
 
     @Test
-    fun testClearCertificateErrorNotificationsForIncomingServer() {
-        val notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING)
+    fun clearAuthenticationErrorNotification_withIncomingServer_shouldCancelNotification() {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING)
 
-        certificateErrorNotifications.clearCertificateErrorNotifications(account, INCOMING)
+        controller.clearAuthenticationErrorNotification(account, INCOMING)
 
         verify(notificationManager).cancel(notificationId)
     }
 
     @Test
-    fun testShowCertificateErrorNotificationForOutgoingServer() {
-        val notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING)
+    fun showAuthenticationErrorNotification_withOutgoingServer_shouldCreateNotification() {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING)
 
-        certificateErrorNotifications.showCertificateErrorNotification(account, OUTGOING)
+        controller.showAuthenticationErrorNotification(account, OUTGOING)
 
         verify(notificationManager).notify(notificationId, notification)
-        assertCertificateErrorNotificationContents()
+        assertAuthenticationErrorNotificationContents()
     }
 
     @Test
-    fun testClearCertificateErrorNotificationsForOutgoingServer() {
-        val notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING)
+    fun clearAuthenticationErrorNotification_withOutgoingServer_shouldCancelNotification() {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING)
 
-        certificateErrorNotifications.clearCertificateErrorNotifications(account, OUTGOING)
+        controller.clearAuthenticationErrorNotification(account, OUTGOING)
 
         verify(notificationManager).cancel(notificationId)
     }
 
-    private fun assertCertificateErrorNotificationContents() {
+    private fun assertAuthenticationErrorNotificationContents() {
         verify(builder).setSmallIcon(resourceProvider.iconWarning)
-        verify(builder).setTicker("Certificate error for $ACCOUNT_NAME")
-        verify(builder).setContentTitle("Certificate error for $ACCOUNT_NAME")
-        verify(builder).setContentText("Check your server settings")
+        verify(builder).setTicker("Authentication failed")
+        verify(builder).setContentTitle("Authentication failed")
+        verify(builder).setContentText("Authentication failed for $ACCOUNT_NAME. Update your server settings.")
         verify(builder).setContentIntent(contentIntent)
         verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 
-    private fun createFakeNotificationBuilder(notification: Notification): NotificationCompat.Builder {
+    private fun createFakeNotificationBuilder(notification: Notification?): NotificationCompat.Builder {
         return mockBuilder {
             on { build() } doReturn notification
         }
@@ -97,13 +97,12 @@ class CertificateErrorNotificationsTest : RobolectricTest() {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { description } doReturn ACCOUNT_NAME
-            on { uuid } doReturn "test-uuid"
         }
     }
 
-    internal inner class TestCertificateErrorNotifications : CertificateErrorNotifications(
-        notificationHelper, mock(), resourceProvider
-    ) {
+    internal inner class TestAuthenticationErrorNotificationController :
+        AuthenticationErrorNotificationController(notificationHelper, mock(), resourceProvider) {
+
         override fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
             return contentIntent
         }

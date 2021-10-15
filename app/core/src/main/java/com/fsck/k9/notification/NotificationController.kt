@@ -6,65 +6,65 @@ import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 
 class NotificationController internal constructor(
-    private val certificateErrorNotifications: CertificateErrorNotifications,
-    private val authenticationErrorNotifications: AuthenticationErrorNotifications,
-    private val syncNotifications: SyncNotifications,
-    private val sendFailedNotifications: SendFailedNotifications,
-    private val newMailNotifications: NewMailNotifications
+    private val certificateErrorNotificationController: CertificateErrorNotificationController,
+    private val authenticationErrorNotificationController: AuthenticationErrorNotificationController,
+    private val syncNotificationController: SyncNotificationController,
+    private val sendFailedNotificationController: SendFailedNotificationController,
+    private val newMailNotificationController: NewMailNotificationController
 ) {
     fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
-        certificateErrorNotifications.showCertificateErrorNotification(account, incoming)
+        certificateErrorNotificationController.showCertificateErrorNotification(account, incoming)
     }
 
     fun clearCertificateErrorNotifications(account: Account, incoming: Boolean) {
-        certificateErrorNotifications.clearCertificateErrorNotifications(account, incoming)
+        certificateErrorNotificationController.clearCertificateErrorNotifications(account, incoming)
     }
 
     fun showAuthenticationErrorNotification(account: Account, incoming: Boolean) {
-        authenticationErrorNotifications.showAuthenticationErrorNotification(account, incoming)
+        authenticationErrorNotificationController.showAuthenticationErrorNotification(account, incoming)
     }
 
     fun clearAuthenticationErrorNotification(account: Account, incoming: Boolean) {
-        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, incoming)
+        authenticationErrorNotificationController.clearAuthenticationErrorNotification(account, incoming)
     }
 
     fun showSendingNotification(account: Account) {
-        syncNotifications.showSendingNotification(account)
+        syncNotificationController.showSendingNotification(account)
     }
 
     fun clearSendingNotification(account: Account) {
-        syncNotifications.clearSendingNotification(account)
+        syncNotificationController.clearSendingNotification(account)
     }
 
     fun showSendFailedNotification(account: Account, exception: Exception) {
-        sendFailedNotifications.showSendFailedNotification(account, exception)
+        sendFailedNotificationController.showSendFailedNotification(account, exception)
     }
 
     fun clearSendFailedNotification(account: Account) {
-        sendFailedNotifications.clearSendFailedNotification(account)
+        sendFailedNotificationController.clearSendFailedNotification(account)
     }
 
     fun showFetchingMailNotification(account: Account, folder: LocalFolder) {
-        syncNotifications.showFetchingMailNotification(account, folder)
+        syncNotificationController.showFetchingMailNotification(account, folder)
     }
 
     fun showEmptyFetchingMailNotification(account: Account) {
-        syncNotifications.showEmptyFetchingMailNotification(account)
+        syncNotificationController.showEmptyFetchingMailNotification(account)
     }
 
     fun clearFetchingMailNotification(account: Account) {
-        syncNotifications.clearFetchingMailNotification(account)
+        syncNotificationController.clearFetchingMailNotification(account)
     }
 
     fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean) {
-        newMailNotifications.addNewMailNotification(account, message, silent)
+        newMailNotificationController.addNewMailNotification(account, message, silent)
     }
 
     fun removeNewMailNotification(account: Account, messageReference: MessageReference) {
-        newMailNotifications.removeNewMailNotification(account, messageReference)
+        newMailNotificationController.removeNewMailNotification(account, messageReference)
     }
 
     fun clearNewMailNotifications(account: Account) {
-        newMailNotifications.clearNewMailNotifications(account)
+        newMailNotificationController.clearNewMailNotifications(account)
     }
 }

@@ -25,17 +25,17 @@ import org.mockito.kotlin.whenever
 private const val ACCOUNT_NUMBER = 42
 private const val ACCOUNT_NAME = "accountName"
 
-class SingleMessageNotificationsTest : RobolectricTest() {
+class SingleMessageNotificationCreatorTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
     private val account = createAccount()
     private val notification = mock<Notification>()
     private val builder = createNotificationBuilder(notification)
     private val actionCreator = mock<NotificationActionCreator>()
-    private val notifications = SingleMessageNotifications(
+    private val notificationCreator = SingleMessageNotificationCreator(
         notificationHelper = createNotificationHelper(builder),
         actionCreator = actionCreator,
         resourceProvider = resourceProvider,
-        lockScreenNotification = mock()
+        lockScreenNotificationCreator = mock()
     )
 
     @Test
@@ -58,7 +58,7 @@ class SingleMessageNotificationsTest : RobolectricTest() {
             markAsReadPendingIntent
         )
 
-        val result = notifications.buildSingleMessageNotification(account, holder)
+        val result = notificationCreator.buildSingleMessageNotification(account, holder)
 
         assertThat(result).isEqualTo(notification)
         verifyExtendWasOnlyCalledOnce()
@@ -80,7 +80,7 @@ class SingleMessageNotificationsTest : RobolectricTest() {
             deletePendingIntent
         )
 
-        val result = notifications.buildSingleMessageNotification(account, holder)
+        val result = notificationCreator.buildSingleMessageNotification(account, holder)
 
         assertThat(result).isEqualTo(notification)
         verifyExtendWasOnlyCalledOnce()
@@ -100,7 +100,7 @@ class SingleMessageNotificationsTest : RobolectricTest() {
             archivePendingIntent
         )
 
-        val result = notifications.buildSingleMessageNotification(account, holder)
+        val result = notificationCreator.buildSingleMessageNotification(account, holder)
 
         assertThat(result).isEqualTo(notification)
         verifyExtendWasOnlyCalledOnce()
@@ -120,7 +120,7 @@ class SingleMessageNotificationsTest : RobolectricTest() {
             markAsSpamPendingIntent
         )
 
-        val result = notifications.buildSingleMessageNotification(account, holder)
+        val result = notificationCreator.buildSingleMessageNotification(account, holder)
 
         assertThat(result).isEqualTo(notification)
         verifyExtendWasOnlyCalledOnce()

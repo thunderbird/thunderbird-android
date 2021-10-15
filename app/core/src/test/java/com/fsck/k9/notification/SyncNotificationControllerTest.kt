@@ -24,14 +24,14 @@ private const val ACCOUNT_NAME = "TestAccount"
 private const val FOLDER_SERVER_ID = "INBOX"
 private const val FOLDER_NAME = "Inbox"
 
-class SyncNotificationsTest : RobolectricTest() {
+class SyncNotificationControllerTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
     private val notification = mock<Notification>()
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
     private val account = createFakeAccount()
     private val contentIntent = mock<PendingIntent>()
-    private val syncNotifications = SyncNotifications(
+    private val controller = SyncNotificationController(
         notificationHelper = createFakeNotificationHelper(notificationManager, builder),
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider
@@ -41,7 +41,7 @@ class SyncNotificationsTest : RobolectricTest() {
     fun testShowSendingNotification() {
         val notificationId = getFetchingMailNotificationId(account)
 
-        syncNotifications.showSendingNotification(account)
+        controller.showSendingNotification(account)
 
         verify(notificationManager).notify(notificationId, notification)
         verify(builder).setSmallIcon(resourceProvider.iconSendingMail)
@@ -56,7 +56,7 @@ class SyncNotificationsTest : RobolectricTest() {
     fun testClearSendingNotification() {
         val notificationId = getFetchingMailNotificationId(account)
 
-        syncNotifications.clearSendingNotification(account)
+        controller.clearSendingNotification(account)
 
         verify(notificationManager).cancel(notificationId)
     }
@@ -66,7 +66,7 @@ class SyncNotificationsTest : RobolectricTest() {
         val localFolder = createFakeLocalFolder()
         val notificationId = getFetchingMailNotificationId(account)
 
-        syncNotifications.showFetchingMailNotification(account, localFolder)
+        controller.showFetchingMailNotification(account, localFolder)
 
         verify(notificationManager).notify(notificationId, notification)
         verify(builder).setSmallIcon(resourceProvider.iconCheckingMail)
@@ -81,7 +81,7 @@ class SyncNotificationsTest : RobolectricTest() {
     fun testShowEmptyFetchingMailNotification() {
         val notificationId = getFetchingMailNotificationId(account)
 
-        syncNotifications.showEmptyFetchingMailNotification(account)
+        controller.showEmptyFetchingMailNotification(account)
 
         verify(notificationManager).notify(notificationId, notification)
         verify(builder).setSmallIcon(resourceProvider.iconCheckingMail)
@@ -94,7 +94,7 @@ class SyncNotificationsTest : RobolectricTest() {
     fun testClearSendFailedNotification() {
         val notificationId = getFetchingMailNotificationId(account)
 
-        syncNotifications.clearFetchingMailNotification(account)
+        controller.clearFetchingMailNotification(account)
 
         verify(notificationManager).cancel(notificationId)
     }

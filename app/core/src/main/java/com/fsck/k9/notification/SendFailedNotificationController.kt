@@ -1,20 +1,23 @@
 package com.fsck.k9.notification
 
-import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
+import com.fsck.k9.helper.ExceptionHelper
 
-internal open class AuthenticationErrorNotifications(
+internal class SendFailedNotificationController(
     private val notificationHelper: NotificationHelper,
-    private val actionCreator: NotificationActionCreator,
+    private val actionBuilder: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider
 ) {
-    fun showAuthenticationErrorNotification(account: Account, incoming: Boolean) {
-        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming)
-        val editServerSettingsPendingIntent = createContentIntent(account, incoming)
-        val title = resourceProvider.authenticationErrorTitle()
-        val text = resourceProvider.authenticationErrorBody(account.description)
+    fun showSendFailedNotification(account: Account, exception: Exception) {
+        val title = resourceProvider.sendFailedTitle()
+        val text = ExceptionHelper.getRootCauseMessage(exception)
+
+        val notificationId = NotificationIds.getSendFailedNotificationId(account)
+        val folderListPendingIntent = actionBuilder.createViewFolderListPendingIntent(
+            account, notificationId
+        )
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
@@ -24,7 +27,7 @@ internal open class AuthenticationErrorNotifications(
             .setTicker(title)
             .setContentTitle(title)
             .setContentText(text)
-            .setContentIntent(editServerSettingsPendingIntent)
+            .setContentIntent(folderListPendingIntent)
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setCategory(NotificationCompat.CATEGORY_ERROR)
@@ -41,17 +44,9 @@ internal open class AuthenticationErrorNotifications(
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    fun clearAuthenticationErrorNotification(account: Account, incoming: Boolean) {
-        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming)
+    fun clearSendFailedNotification(account: Account) {
+        val notificationId = NotificationIds.getSendFailedNotificationId(account)
         notificationManager.cancel(notificationId)
-    }
-
-    protected open fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
-        return if (incoming) {
-            actionCreator.getEditIncomingServerSettingsIntent(account)
-        } else {
-            actionCreator.getEditOutgoingServerSettingsIntent(account)
-        }
     }
 
     private val notificationManager: NotificationManagerCompat

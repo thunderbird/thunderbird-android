@@ -6,11 +6,11 @@ import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 
-internal open class SingleMessageNotifications(
+internal open class SingleMessageNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
-    private val lockScreenNotification: LockScreenNotification,
+    private val lockScreenNotificationCreator: LockScreenNotificationCreator,
 ) {
 
     fun buildSingleMessageNotification(account: Account, holder: NotificationHolder): Notification {
@@ -29,7 +29,7 @@ internal open class SingleMessageNotifications(
         return createSingleMessageNotificationBuilder(account, holder, notificationId)
             .setNotificationSilent()
             .apply {
-                lockScreenNotification.configureLockScreenNotification(this, notificationData)
+                lockScreenNotificationCreator.configureLockScreenNotification(this, notificationData)
             }
             .build()
     }

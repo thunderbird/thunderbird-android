@@ -9,11 +9,11 @@ import com.fsck.k9.mailstore.LocalMessage
 /**
  * Handle notifications for new messages.
  */
-internal open class NewMailNotifications(
+internal open class NewMailNotificationController(
     private val notificationHelper: NotificationHelper,
     private val contentCreator: NotificationContentCreator,
-    private val messageSummaryNotifications: MessageSummaryNotifications,
-    private val singleMessageNotifications: SingleMessageNotifications
+    private val summaryNotificationCreator: SummaryNotificationCreator,
+    private val singleMessageNotificationCreator: SingleMessageNotificationCreator
 ) {
     private val notifications = SparseArray<NotificationData>()
     private val lock = Any()
@@ -110,13 +110,13 @@ internal open class NewMailNotifications(
     }
 
     private fun createSummaryNotification(account: Account, notificationData: NotificationData, silent: Boolean) {
-        val notification = messageSummaryNotifications.buildSummaryNotification(account, notificationData, silent)
+        val notification = summaryNotificationCreator.buildSummaryNotification(account, notificationData, silent)
         val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
         notificationManager.notify(notificationId, notification)
     }
 
     private fun createSingleMessageNotification(account: Account, holder: NotificationHolder) {
-        val notification = singleMessageNotifications.buildSingleMessageNotification(account, holder)
+        val notification = singleMessageNotificationCreator.buildSingleMessageNotification(account, holder)
         val notificationId = holder.notificationId
         notificationManager.notify(notificationId, notification)
     }
@@ -128,7 +128,7 @@ internal open class NewMailNotifications(
         notificationData: NotificationData
     ) {
         val holder = notificationData.holderForLatestNotification
-        val notification = singleMessageNotifications.buildSingleMessageNotificationWithLockScreenNotification(
+        val notification = singleMessageNotificationCreator.buildSingleMessageNotificationWithLockScreenNotification(
             account,
             holder,
             notificationData

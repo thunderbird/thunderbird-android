@@ -1,23 +1,20 @@
 package com.fsck.k9.notification
 
+import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
-import com.fsck.k9.helper.ExceptionHelper
 
-internal class SendFailedNotifications(
+internal open class CertificateErrorNotificationController(
     private val notificationHelper: NotificationHelper,
-    private val actionBuilder: NotificationActionCreator,
+    private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider
 ) {
-    fun showSendFailedNotification(account: Account, exception: Exception) {
-        val title = resourceProvider.sendFailedTitle()
-        val text = ExceptionHelper.getRootCauseMessage(exception)
-
-        val notificationId = NotificationIds.getSendFailedNotificationId(account)
-        val folderListPendingIntent = actionBuilder.createViewFolderListPendingIntent(
-            account, notificationId
-        )
+    fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
+        val notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming)
+        val editServerSettingsPendingIntent = createContentIntent(account, incoming)
+        val title = resourceProvider.certificateErrorTitle(account.description)
+        val text = resourceProvider.certificateErrorBody()
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
@@ -27,7 +24,7 @@ internal class SendFailedNotifications(
             .setTicker(title)
             .setContentTitle(title)
             .setContentText(text)
-            .setContentIntent(folderListPendingIntent)
+            .setContentIntent(editServerSettingsPendingIntent)
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setCategory(NotificationCompat.CATEGORY_ERROR)
@@ -44,9 +41,17 @@ internal class SendFailedNotifications(
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    fun clearSendFailedNotification(account: Account) {
-        val notificationId = NotificationIds.getSendFailedNotificationId(account)
+    fun clearCertificateErrorNotifications(account: Account, incoming: Boolean) {
+        val notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming)
         notificationManager.cancel(notificationId)
+    }
+
+    protected open fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
+        return if (incoming) {
+            actionCreator.getEditIncomingServerSettingsIntent(account)
+        } else {
+            actionCreator.getEditOutgoingServerSettingsIntent(account)
+        }
     }
 
     private val notificationManager: NotificationManagerCompat

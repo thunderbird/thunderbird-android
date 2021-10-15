@@ -5,16 +5,16 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
 
-internal open class CertificateErrorNotifications(
+internal open class AuthenticationErrorNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider
 ) {
-    fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
-        val notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming)
+    fun showAuthenticationErrorNotification(account: Account, incoming: Boolean) {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming)
         val editServerSettingsPendingIntent = createContentIntent(account, incoming)
-        val title = resourceProvider.certificateErrorTitle(account.description)
-        val text = resourceProvider.certificateErrorBody()
+        val title = resourceProvider.authenticationErrorTitle()
+        val text = resourceProvider.authenticationErrorBody(account.description)
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
@@ -41,8 +41,8 @@ internal open class CertificateErrorNotifications(
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    fun clearCertificateErrorNotifications(account: Account, incoming: Boolean) {
-        val notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming)
+    fun clearAuthenticationErrorNotification(account: Account, incoming: Boolean) {
+        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming)
         notificationManager.cancel(notificationId)
     }
 
