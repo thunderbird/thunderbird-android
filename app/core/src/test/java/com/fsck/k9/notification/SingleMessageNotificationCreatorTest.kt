@@ -9,7 +9,6 @@ import com.fsck.k9.K9
 import com.fsck.k9.K9.NotificationQuickDelete
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.controller.MessageReference
-import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.testing.MockHelper.mockBuilder
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -158,11 +157,6 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
         whenever(account.spamFolderId).thenReturn(11L)
     }
 
-    private fun disableOptionalSummaryActions() {
-        disableDeleteAction()
-        disableArchiveAction()
-    }
-
     private fun createNotificationBuilder(notification: Notification): NotificationCompat.Builder {
         return mockBuilder {
             on { build() } doReturn notification
@@ -183,14 +177,14 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
         }
     }
 
-    private fun createMessagingController(): MessagingController {
-        return mock {
-            on { isMoveCapable(account) } doReturn true
-        }
-    }
-
     private fun createNotificationContent(messageReference: MessageReference): NotificationContent {
-        return NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false)
+        return NotificationContent(
+            messageReference = messageReference,
+            sender = "irrelevant",
+            subject = "irrelevant",
+            preview = "irrelevant",
+            summary = "irrelevant"
+        )
     }
 
     private fun createNotificationHolder(notificationId: Int, content: NotificationContent): NotificationHolder {
@@ -203,17 +197,6 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
 
     private fun createFakePendingIntent(requestCode: Int): PendingIntent {
         return PendingIntent.getActivity(ApplicationProvider.getApplicationContext(), requestCode, null, 0)
-    }
-
-    private fun createMessageReferenceList(): ArrayList<MessageReference> {
-        return arrayListOf(createMessageReference(1), createMessageReference(2))
-    }
-
-    private fun createNotificationData(messageReferences: ArrayList<MessageReference>): NotificationData {
-        return mock {
-            on { account } doReturn account
-            on { getAllMessageReferences() } doReturn messageReferences
-        }
     }
 
     private fun verifyExtendWasOnlyCalledOnce() {

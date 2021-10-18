@@ -7,6 +7,5 @@ internal class NotificationContent(
     val sender: String,
     val subject: String,
     val preview: CharSequence,
-    val summary: CharSequence,
-    val isStarred: Boolean
+    val summary: CharSequence
 )

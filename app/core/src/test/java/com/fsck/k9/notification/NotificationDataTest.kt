@@ -110,32 +110,6 @@ class NotificationDataTest : RobolectricTest() {
     }
 
     @Test
-    fun testContainsStarredMessages() {
-        assertThat(notificationData.containsStarredMessages()).isFalse()
-
-        notificationData.addNotificationContent(createNotificationContentForStarredMessage())
-
-        assertThat(notificationData.containsStarredMessages()).isTrue()
-    }
-
-    @Test
-    fun testContainsStarredMessagesWithAdditionalMessages() {
-        notificationData.addNotificationContent(createNotificationContent("1"))
-        notificationData.addNotificationContent(createNotificationContent("2"))
-        notificationData.addNotificationContent(createNotificationContent("3"))
-        notificationData.addNotificationContent(createNotificationContent("4"))
-        notificationData.addNotificationContent(createNotificationContent("5"))
-        notificationData.addNotificationContent(createNotificationContent("6"))
-        notificationData.addNotificationContent(createNotificationContent("7"))
-        notificationData.addNotificationContent(createNotificationContent("8"))
-        assertThat(notificationData.containsStarredMessages()).isFalse()
-
-        notificationData.addNotificationContent(createNotificationContentForStarredMessage())
-
-        assertThat(notificationData.containsStarredMessages()).isTrue()
-    }
-
-    @Test
     fun testIsSingleMessageNotification() {
         assertThat(notificationData.isSingleMessageNotification).isFalse()
 
@@ -276,11 +250,12 @@ class NotificationDataTest : RobolectricTest() {
     }
 
     private fun createNotificationContent(messageReference: MessageReference): NotificationContent {
-        return NotificationContent(messageReference, "", "", "", "", false)
-    }
-
-    private fun createNotificationContentForStarredMessage(): NotificationContent {
-        val messageReference = createMessageReference("42")
-        return NotificationContent(messageReference, "", "", "", "", true)
+        return NotificationContent(
+            messageReference = messageReference,
+            sender = "irrelevant",
+            subject = "irrelevant",
+            preview = "irrelevant",
+            summary = "irrelevant"
+        )
     }
 }

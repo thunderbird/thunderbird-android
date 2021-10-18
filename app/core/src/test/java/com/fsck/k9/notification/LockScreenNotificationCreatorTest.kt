@@ -169,7 +169,13 @@ class LockScreenNotificationCreatorTest : RobolectricTest() {
     }
 
     private fun createNotificationContent(sender: String): NotificationContent {
-        val messageReference = MessageReference("irrelevant", 1, "irrelevant")
-        return NotificationContent(messageReference, sender, "irrelevant", "irrelevant", "irrelevant", false)
+        val messageReference = MessageReference(accountUuid = "irrelevant", folderId = 1, uid = "irrelevant")
+        return NotificationContent(
+            messageReference = messageReference,
+            sender = sender,
+            subject = "irrelevant",
+            preview = "irrelevant",
+            summary = "irrelevant"
+        )
     }
 }

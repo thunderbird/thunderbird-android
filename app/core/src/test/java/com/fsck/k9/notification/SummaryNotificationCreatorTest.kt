@@ -73,7 +73,6 @@ class SummaryNotificationCreatorTest : RobolectricTest() {
         K9.notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
         stubbing(notificationData) {
             on { isSingleMessageNotification } doReturn false
-            on { containsStarredMessages() } doReturn true
         }
 
         val result = notificationCreator.buildSummaryNotification(account, notificationData, false)
@@ -86,7 +85,6 @@ class SummaryNotificationCreatorTest : RobolectricTest() {
         verify(builder).setSubText(ACCOUNT_NAME)
         verify(builder).setGroup("newMailNotifications-$ACCOUNT_NUMBER")
         verify(builder).setGroupSummary(true)
-        verify(builder).priority = NotificationCompat.PRIORITY_HIGH
         verify(builder).setStyle(notificationCreator.inboxStyle)
         verify(notificationCreator.inboxStyle).setBigContentTitle("$NEW_MESSAGE_COUNT new messages")
         verify(notificationCreator.inboxStyle).setSummaryText(ACCOUNT_NAME)
@@ -153,8 +151,8 @@ class SummaryNotificationCreatorTest : RobolectricTest() {
 
     private fun createFakeNotificationData(account: Account): NotificationData {
         val messageReference = MessageReference("irrelevant", 1, "irrelevant")
-        val content = NotificationContent(messageReference, SENDER, SUBJECT, PREVIEW, SUMMARY, false)
-        val content2 = NotificationContent(messageReference, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true)
+        val content = NotificationContent(messageReference, SENDER, SUBJECT, PREVIEW, SUMMARY)
+        val content2 = NotificationContent(messageReference, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2)
         return mock {
             on { newMessagesCount } doReturn NEW_MESSAGE_COUNT
             on { this.account } doReturn account

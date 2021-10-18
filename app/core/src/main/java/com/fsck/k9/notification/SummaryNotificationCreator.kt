@@ -28,10 +28,6 @@ internal open class SummaryNotificationCreator(
             }
         }
 
-        if (notificationData.containsStarredMessages()) {
-            builder.priority = NotificationCompat.PRIORITY_HIGH
-        }
-
         val notificationId = getNewMailSummaryNotificationId(account)
         val deletePendingIntent = actionCreator.createDismissAllMessagesPendingIntent(account, notificationId)
         builder.setDeleteIntent(deletePendingIntent)
