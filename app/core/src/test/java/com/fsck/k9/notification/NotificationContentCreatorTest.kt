@@ -5,7 +5,6 @@ import com.fsck.k9.Account
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType
@@ -42,7 +41,6 @@ class NotificationContentCreatorTest : RobolectricTest() {
         assertThat(content.subject).isEqualTo(SUBJECT)
         assertThat(content.preview.toString()).isEqualTo("$SUBJECT\n$PREVIEW")
         assertThat(content.summary.toString()).isEqualTo("$SENDER_NAME $SUBJECT")
-        assertThat(content.isStarred).isFalse()
     }
 
     @Test
@@ -119,17 +117,6 @@ class NotificationContentCreatorTest : RobolectricTest() {
 
         assertThat(content.sender).isEqualTo("To:Bob")
         assertThat(content.summary.toString()).isEqualTo("To:Bob $SUBJECT")
-    }
-
-    @Test
-    fun createFromMessage_withStarredMessage() {
-        stubbing(message) {
-            on { isSet(Flag.FLAGGED) } doReturn true
-        }
-
-        val content = contentCreator.createFromMessage(account, message)
-
-        assertThat(content.isStarred).isTrue()
     }
 
     @Test

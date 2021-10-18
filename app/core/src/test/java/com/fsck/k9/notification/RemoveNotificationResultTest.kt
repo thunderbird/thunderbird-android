@@ -17,8 +17,7 @@ class RemoveNotificationResultTest {
             sender = "irrelevant",
             subject = "irrelevant",
             preview = "irrelevant",
-            summary = "irrelevant",
-            isStarred = false
+            summary = "irrelevant"
         )
     )
 

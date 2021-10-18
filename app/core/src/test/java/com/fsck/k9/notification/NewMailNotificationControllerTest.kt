@@ -245,8 +245,14 @@ class NewMailNotificationControllerTest : K9RobolectricTest() {
     private fun createLocalMessage(): LocalMessage = mock()
 
     private fun createNotificationContent(): NotificationContent {
-        val messageReference = MessageReference("irrelevant", 1, "irrelevant")
-        return NotificationContent(messageReference, "irrelevant", "irrelevant", "irrelevant", "irrelevant", false)
+        val messageReference = MessageReference(accountUuid = "irrelevant", folderId = 1, uid = "irrelevant")
+        return NotificationContent(
+            messageReference = messageReference,
+            sender = "irrelevant",
+            subject = "irrelevant",
+            preview = "irrelevant",
+            summary = "irrelevant"
+        )
     }
 
     private fun createNotificationHolder(content: NotificationContent, index: Int): NotificationHolder {

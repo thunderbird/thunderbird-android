@@ -80,10 +80,6 @@ internal class NotificationData(val account: Account) {
         return NotificationHolder(notificationId, content)
     }
 
-    fun containsStarredMessages(): Boolean {
-        return activeNotifications.any { it.content.isStarred } || additionalNotifications.any { it.isStarred }
-    }
-
     fun hasSummaryOverflowMessages(): Boolean {
         return activeNotifications.size > MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
     }
