@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-import android.util.SparseBooleanArray
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
 import java.util.LinkedList
@@ -11,7 +10,7 @@ import java.util.LinkedList
 internal class NotificationData(val account: Account) {
     private val activeNotifications = LinkedList<NotificationHolder>()
     private val additionalNotifications = LinkedList<NotificationContent>()
-    private val notificationIdsInUse = SparseBooleanArray()
+    private val notificationIdsInUse = mutableMapOf<Int, Boolean>()
 
     val newMessagesCount: Int
         get() = activeNotifications.size + additionalNotifications.size
@@ -65,15 +64,15 @@ internal class NotificationData(val account: Account) {
     }
 
     private fun isNotificationInUse(notificationId: Int): Boolean {
-        return notificationIdsInUse[notificationId]
+        return notificationIdsInUse[notificationId] ?: false
     }
 
     private fun markNotificationIdAsInUse(notificationId: Int) {
-        notificationIdsInUse.put(notificationId, true)
+        notificationIdsInUse[notificationId] = true
     }
 
     private fun markNotificationIdAsFree(notificationId: Int) {
-        notificationIdsInUse.delete(notificationId)
+        notificationIdsInUse.remove(notificationId)
     }
 
     private fun createNotificationHolder(notificationId: Int, content: NotificationContent): NotificationHolder {
@@ -100,8 +99,8 @@ internal class NotificationData(val account: Account) {
             .toList()
     }
 
-    fun getActiveNotificationIds(): IntArray {
-        return activeNotifications.map { it.notificationId }.toIntArray()
+    fun getActiveNotificationIds(): List<Int> {
+        return activeNotifications.map { it.notificationId }
     }
 
     fun removeNotificationForMessage(messageReference: MessageReference): RemoveNotificationResult {

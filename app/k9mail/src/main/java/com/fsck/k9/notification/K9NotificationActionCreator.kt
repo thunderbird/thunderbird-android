@@ -68,7 +68,6 @@ internal class K9NotificationActionCreator(
     }
 
     override fun createDismissMessagePendingIntent(
-        context: Context,
         messageReference: MessageReference,
         notificationId: Int
     ): PendingIntent {

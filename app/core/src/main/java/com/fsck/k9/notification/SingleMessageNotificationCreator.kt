@@ -1,218 +1,185 @@
 package com.fsck.k9.notification
 
-import android.app.Notification
+import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
-import com.fsck.k9.Account
-import com.fsck.k9.K9
+import androidx.core.app.NotificationCompat.WearableExtender
+import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
+import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
-internal open class SingleMessageNotificationCreator(
+internal class SingleMessageNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
     private val lockScreenNotificationCreator: LockScreenNotificationCreator,
+    private val notificationManager: NotificationManagerCompat
 ) {
+    fun createSingleNotification(
+        baseNotificationData: BaseNotificationData,
+        singleNotificationData: SingleNotificationData,
+        isGroupSummary: Boolean = false
+    ) {
+        val account = baseNotificationData.account
+        val notificationId = singleNotificationData.notificationId
+        val content = singleNotificationData.content
 
-    fun buildSingleMessageNotification(account: Account, holder: NotificationHolder): Notification {
-        val notificationId = holder.notificationId
-        return createSingleMessageNotificationBuilder(account, holder, notificationId)
-            .setNotificationSilent()
-            .build()
-    }
-
-    fun buildSingleMessageNotificationWithLockScreenNotification(
-        account: Account,
-        holder: NotificationHolder,
-        notificationData: NotificationData
-    ): Notification {
-        val notificationId = holder.notificationId
-        return createSingleMessageNotificationBuilder(account, holder, notificationId)
-            .setNotificationSilent()
-            .apply {
-                lockScreenNotificationCreator.configureLockScreenNotification(this, notificationData)
-            }
-            .build()
-    }
-
-    fun createSingleMessageNotificationBuilder(
-        account: Account,
-        holder: NotificationHolder,
-        notificationId: Int
-    ): NotificationCompat.Builder {
-        val accountName = notificationHelper.getAccountName(account)
-        val content = holder.content
-        val groupKey = NotificationGroupKeys.getGroupKey(account)
-
-        val builder = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
-            .setSmallIcon(resourceProvider.iconNewMail)
-            .setColor(account.chipColor)
-            .setWhen(System.currentTimeMillis())
-            .setAutoCancel(true)
+        val notification = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
+            .setAutoCancel(true)
+            .setGroup(baseNotificationData.groupKey)
+            .setGroupSummary(isGroupSummary)
+            .setSmallIcon(resourceProvider.iconNewMail)
+            .setColor(baseNotificationData.color)
+            .setWhen(singleNotificationData.timestamp)
             .setTicker(content.summary)
-            .setGroup(groupKey)
             .setContentTitle(content.sender)
             .setContentText(content.subject)
-            .setSubText(accountName)
+            .setSubText(baseNotificationData.accountName)
+            .setBigText(content.preview)
+            .setContentIntent(createViewIntent(content, notificationId))
+            .setDeleteIntent(createDismissIntent(content, notificationId))
+            .setDeviceActions(singleNotificationData)
+            .setWearActions(singleNotificationData)
+            .setAppearance(singleNotificationData.isSilent, baseNotificationData.appearance)
+            .setLockScreenNotification(baseNotificationData, singleNotificationData.addLockScreenNotification)
+            .build()
 
-        val style = createBigTextStyle(builder)
-        style.bigText(content.preview)
-        builder.setStyle(style)
-
-        val contentIntent = actionCreator.createViewMessagePendingIntent(content.messageReference, notificationId)
-        builder.setContentIntent(contentIntent)
-
-        val deletePendingIntent = actionCreator.createDismissMessagePendingIntent(
-            notificationHelper.getContext(), content.messageReference, holder.notificationId
-        )
-        builder.setDeleteIntent(deletePendingIntent)
-
-        addActions(builder, account, holder)
-
-        return builder
+        notificationManager.notify(notificationId, notification)
     }
 
-    private fun addActions(builder: NotificationCompat.Builder, account: Account, holder: NotificationHolder) {
-        addDeviceActions(builder, holder)
-        addWearActions(builder, account, holder)
+    private fun NotificationBuilder.setBigText(text: CharSequence) = apply {
+        setStyle(NotificationCompat.BigTextStyle().bigText(text))
     }
 
-    private fun addDeviceActions(builder: NotificationCompat.Builder, holder: NotificationHolder) {
-        addDeviceReplyAction(builder, holder)
-        addDeviceMarkAsReadAction(builder, holder)
-        addDeviceDeleteAction(builder, holder)
+    private fun createViewIntent(content: NotificationContent, notificationId: Int): PendingIntent {
+        return actionCreator.createViewMessagePendingIntent(content.messageReference, notificationId)
     }
 
-    private fun addDeviceReplyAction(builder: NotificationCompat.Builder, holder: NotificationHolder) {
+    private fun createDismissIntent(content: NotificationContent, notificationId: Int): PendingIntent {
+        return actionCreator.createDismissMessagePendingIntent(content.messageReference, notificationId)
+    }
+
+    private fun NotificationBuilder.setDeviceActions(notificationData: SingleNotificationData) = apply {
+        val actions = notificationData.actions
+        for (action in actions) {
+            when (action) {
+                NotificationAction.Reply -> addReplyAction(notificationData)
+                NotificationAction.MarkAsRead -> addMarkAsReadAction(notificationData)
+                NotificationAction.Delete -> addDeleteAction(notificationData)
+            }
+        }
+    }
+
+    private fun NotificationBuilder.addReplyAction(notificationData: SingleNotificationData) {
         val icon = resourceProvider.iconReply
         val title = resourceProvider.actionReply()
-        val content = holder.content
+        val content = notificationData.content
         val messageReference = content.messageReference
         val replyToMessagePendingIntent =
-            actionCreator.createReplyPendingIntent(messageReference, holder.notificationId)
+            actionCreator.createReplyPendingIntent(messageReference, notificationData.notificationId)
 
-        builder.addAction(icon, title, replyToMessagePendingIntent)
+        addAction(icon, title, replyToMessagePendingIntent)
     }
 
-    private fun addDeviceMarkAsReadAction(builder: NotificationCompat.Builder, holder: NotificationHolder) {
+    private fun NotificationBuilder.addMarkAsReadAction(notificationData: SingleNotificationData) {
         val icon = resourceProvider.iconMarkAsRead
         val title = resourceProvider.actionMarkAsRead()
-        val content = holder.content
-        val notificationId = holder.notificationId
+        val content = notificationData.content
+        val notificationId = notificationData.notificationId
         val messageReference = content.messageReference
         val action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId)
 
-        builder.addAction(icon, title, action)
+        addAction(icon, title, action)
     }
 
-    private fun addDeviceDeleteAction(builder: NotificationCompat.Builder, holder: NotificationHolder) {
-        if (!isDeleteActionEnabled()) {
-            return
-        }
-
+    private fun NotificationBuilder.addDeleteAction(notificationData: SingleNotificationData) {
         val icon = resourceProvider.iconDelete
         val title = resourceProvider.actionDelete()
-        val content = holder.content
-        val notificationId = holder.notificationId
+        val content = notificationData.content
+        val notificationId = notificationData.notificationId
         val messageReference = content.messageReference
         val action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId)
 
-        builder.addAction(icon, title, action)
+        addAction(icon, title, action)
     }
 
-    private fun addWearActions(builder: NotificationCompat.Builder, account: Account, holder: NotificationHolder) {
-        val wearableExtender = NotificationCompat.WearableExtender()
-
-        addReplyAction(wearableExtender, holder)
-        addMarkAsReadAction(wearableExtender, holder)
-
-        if (isDeleteActionAvailableForWear()) {
-            addDeleteAction(wearableExtender, holder)
+    private fun NotificationBuilder.setWearActions(notificationData: SingleNotificationData) = apply {
+        val wearableExtender = WearableExtender().apply {
+            for (action in notificationData.wearActions) {
+                when (action) {
+                    WearNotificationAction.Reply -> addReplyAction(notificationData)
+                    WearNotificationAction.MarkAsRead -> addMarkAsReadAction(notificationData)
+                    WearNotificationAction.Delete -> addDeleteAction(notificationData)
+                    WearNotificationAction.Archive -> addArchiveAction(notificationData)
+                    WearNotificationAction.Spam -> addMarkAsSpamAction(notificationData)
+                }
+            }
         }
 
-        if (isArchiveActionAvailableForWear(account)) {
-            addArchiveAction(wearableExtender, holder)
-        }
-
-        if (isSpamActionAvailableForWear(account)) {
-            addMarkAsSpamAction(wearableExtender, holder)
-        }
-
-        builder.extend(wearableExtender)
+        extend(wearableExtender)
     }
 
-    private fun addReplyAction(wearableExtender: NotificationCompat.WearableExtender, holder: NotificationHolder) {
+    private fun WearableExtender.addReplyAction(notificationData: SingleNotificationData) {
         val icon = resourceProvider.wearIconReplyAll
         val title = resourceProvider.actionReply()
-        val messageReference = holder.content.messageReference
-        val notificationId = holder.notificationId
+        val messageReference = notificationData.content.messageReference
+        val notificationId = notificationData.notificationId
         val action = actionCreator.createReplyPendingIntent(messageReference, notificationId)
         val replyAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
-        wearableExtender.addAction(replyAction)
+        addAction(replyAction)
     }
 
-    private fun addMarkAsReadAction(wearableExtender: NotificationCompat.WearableExtender, holder: NotificationHolder) {
+    private fun WearableExtender.addMarkAsReadAction(notificationData: SingleNotificationData) {
         val icon = resourceProvider.wearIconMarkAsRead
         val title = resourceProvider.actionMarkAsRead()
-        val messageReference = holder.content.messageReference
-        val notificationId = holder.notificationId
+        val messageReference = notificationData.content.messageReference
+        val notificationId = notificationData.notificationId
         val action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId)
         val markAsReadAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
-        wearableExtender.addAction(markAsReadAction)
+        addAction(markAsReadAction)
     }
 
-    private fun addDeleteAction(wearableExtender: NotificationCompat.WearableExtender, holder: NotificationHolder) {
+    private fun WearableExtender.addDeleteAction(notificationData: SingleNotificationData) {
         val icon = resourceProvider.wearIconDelete
         val title = resourceProvider.actionDelete()
-        val messageReference = holder.content.messageReference
-        val notificationId = holder.notificationId
+        val messageReference = notificationData.content.messageReference
+        val notificationId = notificationData.notificationId
         val action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId)
         val deleteAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
-        wearableExtender.addAction(deleteAction)
+        addAction(deleteAction)
     }
 
-    private fun addArchiveAction(wearableExtender: NotificationCompat.WearableExtender, holder: NotificationHolder) {
+    private fun WearableExtender.addArchiveAction(notificationData: SingleNotificationData) {
         val icon = resourceProvider.wearIconArchive
         val title = resourceProvider.actionArchive()
-        val messageReference = holder.content.messageReference
-        val notificationId = holder.notificationId
+        val messageReference = notificationData.content.messageReference
+        val notificationId = notificationData.notificationId
         val action = actionCreator.createArchiveMessagePendingIntent(messageReference, notificationId)
         val archiveAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
-        wearableExtender.addAction(archiveAction)
+        addAction(archiveAction)
     }
 
-    private fun addMarkAsSpamAction(wearableExtender: NotificationCompat.WearableExtender, holder: NotificationHolder) {
+    private fun WearableExtender.addMarkAsSpamAction(notificationData: SingleNotificationData) {
         val icon = resourceProvider.wearIconMarkAsSpam
         val title = resourceProvider.actionMarkAsSpam()
-        val messageReference = holder.content.messageReference
-        val notificationId = holder.notificationId
+        val messageReference = notificationData.content.messageReference
+        val notificationId = notificationData.notificationId
         val action = actionCreator.createMarkMessageAsSpamPendingIntent(messageReference, notificationId)
         val spamAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
-        wearableExtender.addAction(spamAction)
+        addAction(spamAction)
     }
 
-    private fun isDeleteActionAvailableForWear(): Boolean {
-        return isDeleteActionEnabled() && !K9.isConfirmDeleteFromNotification
-    }
-
-    private fun isDeleteActionEnabled(): Boolean {
-        return K9.notificationQuickDeleteBehaviour != K9.NotificationQuickDelete.NEVER
-    }
-
-    private fun isArchiveActionAvailableForWear(account: Account): Boolean {
-        return account.archiveFolderId != null
-    }
-
-    private fun isSpamActionAvailableForWear(account: Account): Boolean {
-        return account.spamFolderId != null && !K9.isConfirmSpam
-    }
-
-    protected open fun createBigTextStyle(builder: NotificationCompat.Builder?): NotificationCompat.BigTextStyle {
-        return NotificationCompat.BigTextStyle(builder)
+    private fun NotificationBuilder.setLockScreenNotification(
+        notificationData: BaseNotificationData,
+        addLockScreenNotification: Boolean
+    ) = apply {
+        if (addLockScreenNotification) {
+            lockScreenNotificationCreator.configureLockScreenNotification(this, notificationData)
+        }
     }
 }
