@@ -22,7 +22,8 @@ import com.fsck.k9.DI.get
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.ThemeManager
-import kotlin.math.abs
+import kotlin.math.absoluteValue
+import kotlin.math.sign
 
 class MessageViewPagerFragment : Fragment() {
     private val themeManager = get(ThemeManager::class.java)
@@ -130,7 +131,7 @@ class MessageViewPagerFragment : Fragment() {
     val activeMessageViewFragment: MessageViewFragment?
         get() {
             return try {
-                val reference = getMessageReference(getActivePosition())
+                val reference = getMessageReference(viewPager.currentItem)
                 adapter.getMessageViewFragment(reference)
             } catch (e: Exception) {
                 null
@@ -201,29 +202,65 @@ class MessageViewPagerFragment : Fragment() {
         }
     }
 
-    private fun getActivePosition(): Int {
-        return viewPager.currentItem
-    }
-
     private var webView: WebView? = null
         get() {
             if (field == null) {
-                val reference = getMessageReference(getActivePosition())
+                val reference = getMessageReference(viewPager.currentItem)
                 val view: View? = adapter.getMessageViewFragment(reference)?.view?.findViewById(R.id.message_content)
                 field = if (view is WebView) view else null
             }
             return field
         }
 
-    private var downEvent: MotionEvent? = null
+    /**
+     *  WebView extension function to scroll the WebView by means of API calls
+     */
+    private fun WebView.externalScrollBy(scrollX: Float) {
+        val newScrollX = startScrollX + scrollX
+        if (newScrollX < this.scrollX) {
+            // scroll left
+            this.scrollTo(newScrollX.coerceAtLeast(0f).toInt(), this.scrollY)
+        } else {
+            // scroll right; coerceAtMost() not possible because right scroll limit not exposed by API
+            while (this.canScrollHorizontally(1) && (newScrollX > this.scrollX)) {
+                this.scrollBy(5, 0)
+            }
+        }
+    }
+
+    private var startEvent: MotionEvent? = null
+    private var startScrollX = 0
     private var flingTracker: VelocityTracker? = null
-    private var flingDirection: Int = 0
+
+    @SuppressLint("Recycle")
+    private fun obtainScrollParameters(event: MotionEvent) {
+        startEvent = MotionEvent.obtainNoHistory(event)
+        startScrollX = webView!!.scrollX
+        flingTracker?.clear()
+        flingTracker = flingTracker ?: VelocityTracker.obtain()
+        flingTracker?.addMovement(event)
+    }
+
+    private fun recycleScrollParameters() {
+        startEvent?.recycle()
+        flingTracker?.recycle()
+        startEvent = null
+        flingTracker = null
+    }
+
+    private fun getScrollFlingXVelocity(event: MotionEvent): Float {
+        flingTracker?.apply {
+            addMovement(event)
+            computeCurrentVelocity(1000)
+            return -getXVelocity(0)
+        }
+        return 0f
+    }
 
     /**
      * Let the WebView capture left/right swipe actions when it is scrollable
      */
-    @SuppressLint("Recycle")
-    fun onInterceptTouchEvent(thisEvent: MotionEvent): Boolean {
+    fun onInterceptTouchEvent(recyclerView: RecyclerView, thisEvent: MotionEvent): Boolean {
         if (webView != null) {
             when (thisEvent.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
@@ -232,66 +269,52 @@ class MessageViewPagerFragment : Fragment() {
                     webView!!.getLocationOnScreen(webViewOrigin)
                     webView!!.getHitRect(webViewRect)
                     webViewRect.offset(webViewOrigin[0], webViewOrigin[1])
-                    if (webViewRect.contains(thisEvent.rawX.toInt(), thisEvent.rawY.toInt())) {
-                        downEvent = MotionEvent.obtainNoHistory(thisEvent)
-                        flingTracker?.clear()
-                        flingTracker = flingTracker ?: VelocityTracker.obtain()
-                        flingTracker?.addMovement(thisEvent)
+                    if (webViewRect.contains(thisEvent.rawX.toInt(), thisEvent.rawY.toInt()) &&
+                        (webView!!.canScrollHorizontally(-1) || webView!!.canScrollHorizontally(1))
+                    ) {
+                        obtainScrollParameters(thisEvent)
                     } else {
-                        downEvent = null
+                        recycleScrollParameters()
                     }
-                    flingDirection = 0
                 }
                 MotionEvent.ACTION_CANCEL,
                 MotionEvent.ACTION_UP -> {
-                    downEvent = null
-                    flingTracker?.recycle()
-                    flingTracker = null
-                    flingDirection = 0
+                    webView!!.parent?.requestDisallowInterceptTouchEvent(false)
+                    recycleScrollParameters()
                 }
                 MotionEvent.ACTION_POINTER_DOWN -> {
                     webView!!.parent?.requestDisallowInterceptTouchEvent(true)
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    if (downEvent != null) {
-                        flingTracker?.apply {
-                            addMovement(thisEvent)
-                            computeCurrentVelocity(1000)
-                        }
-                        val velocityX = flingTracker?.getXVelocity(0)?.toInt() ?: 0
-                        if ((abs(velocityX) > FLING_THRESHOLD) && webView!!.canScrollHorizontally(-velocityX)) {
-                            flingDirection = velocityX / abs(velocityX)
-                            return true
-                        }
-                        val dX = thisEvent.x - downEvent!!.x
-                        if (abs(dX) > ViewConfiguration.get(webView!!.context).scaledTouchSlop) {
-                            if (webView!!.canScrollHorizontally(-dX.toInt())) {
-                                webView!!.parent?.requestDisallowInterceptTouchEvent(true)
+                    if (startEvent != null) {
+                        val vX = getScrollFlingXVelocity(thisEvent).toInt()
+                        if ((vX.absoluteValue > FLING_THRESHOLD) && (webView!!.canScrollHorizontally(vX.sign))) {
+                            webView!!.flingScroll(vX, 0)
+                            viewPager.setCurrentItem(viewPager.currentItem, false)
+                        } else {
+                            val dX = startEvent!!.x - thisEvent.x
+                            val dY = startEvent!!.y - thisEvent.y
+                            val slop = ViewConfiguration.get(webView!!.context).scaledTouchSlop
+                            if ((dX.absoluteValue > slop) && (dX.absoluteValue > dY.absoluteValue)) {
+                                if (webView!!.canScrollHorizontally(dX.sign.toInt())) {
+                                    webView!!.parent?.requestDisallowInterceptTouchEvent(true)
+                                    /**
+                                     * There exist special edge cases where the ViewPager has already started
+                                     * to scroll before requestDisallowInterceptTouchEvent(true) gets called,
+                                     * i.e. the ViewPager already started intercepting the gesture, and in those
+                                     * cases the ViewPager does NOT honour the request to disallow intercepts; so
+                                     * we call WebView.extendedScrollToX() to handle the scrolling instead.
+                                     */
+                                    if (recyclerView.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
+                                        webView!!.externalScrollBy(dX)
+                                        viewPager.setCurrentItem(viewPager.currentItem, false)
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        return false
-    }
-
-    fun onTouchEvent(thisEvent: MotionEvent): Boolean {
-        if ((downEvent != null) && (webView != null) && (flingDirection != 0)) {
-            if (thisEvent.actionMasked == MotionEvent.ACTION_UP) {
-                val currentItem = viewPager.currentItem
-                val scrollDelta = if (flingDirection < 0) {
-                    10000 // TODO get the correct horizontal scroll limit value
-                } else {
-                    -webView!!.scrollX
-                }
-                viewPager.post {
-                    viewPager.setCurrentItem(currentItem, false)
-                    webView!!.scrollBy(scrollDelta, 0)
-                }
-                flingDirection = 0
-            }
-            return true
         }
         return false
     }
