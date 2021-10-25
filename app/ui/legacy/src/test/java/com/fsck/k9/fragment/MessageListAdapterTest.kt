@@ -13,11 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fsck.k9.Account
-import com.fsck.k9.Clock
 import com.fsck.k9.FontSizes
 import com.fsck.k9.FontSizes.FONT_DEFAULT
 import com.fsck.k9.FontSizes.LARGE
 import com.fsck.k9.RobolectricTest
+import com.fsck.k9.TestClock
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.textString
@@ -464,7 +464,7 @@ class MessageListAdapterTest : RobolectricTest() {
             contactsPictureLoader = contactsPictureLoader,
             listItemListener = listItemListener,
             appearance = appearance,
-            relativeDateTimeFormatter = RelativeDateTimeFormatter(context, Clock.INSTANCE)
+            relativeDateTimeFormatter = RelativeDateTimeFormatter(context, TestClock())
         )
     }
 

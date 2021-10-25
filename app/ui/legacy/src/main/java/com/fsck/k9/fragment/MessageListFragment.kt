@@ -70,6 +70,7 @@ class MessageListFragment :
     private val folderNameFormatter: FolderNameFormatter by lazy { folderNameFormatterFactory.create(requireContext()) }
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
+    private val clock: Clock by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -252,7 +253,7 @@ class MessageListFragment :
             contactsPictureLoader = ContactPicture.getContactPictureLoader(),
             listItemListener = this,
             appearance = messageListAppearance,
-            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), Clock.INSTANCE)
+            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock)
         )
 
         adapter.activeMessage = activeMessage

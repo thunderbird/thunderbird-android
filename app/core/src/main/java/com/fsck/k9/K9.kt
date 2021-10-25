@@ -268,7 +268,8 @@ object K9 : EarlyInit {
                 return false
             }
 
-            val quietTimeChecker = QuietTimeChecker(Clock.INSTANCE, quietTimeStarts, quietTimeEnds)
+            val clock = DI.get<Clock>()
+            val quietTimeChecker = QuietTimeChecker(clock, quietTimeStarts, quietTimeEnds)
             return quietTimeChecker.isQuietTime
         }
 
