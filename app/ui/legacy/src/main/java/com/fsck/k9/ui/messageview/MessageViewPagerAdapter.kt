@@ -27,10 +27,6 @@ class MessageViewPagerAdapter(
         return viewPagerFragment.getMessageCount()
     }
 
-    override fun getItemId(position: Int): Long {
-        return getMessageUid(viewPagerFragment.getMessageReference(position))
-    }
-
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         recyclerView.edgeEffectFactory = viewPagerFragment.edgeEffectFactory
