@@ -47,8 +47,8 @@ public class MessageWebView extends WebView {
          */
         try {
             getSettings().setBlockNetworkLoads(shouldBlockNetworkData);
-        } catch(SecurityException e) {
-            Timber.e(e, "SecurityException in blockNetworkData(final boolean shouldBlockNetworkData)");
+        } catch (SecurityException e) {
+            Timber.e(e, "Failed to unblock network loads. Missing INTERNET permission?");
         }
     }
 
