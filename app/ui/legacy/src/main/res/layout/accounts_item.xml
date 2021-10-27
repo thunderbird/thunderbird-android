@@ -2,6 +2,7 @@
 <LinearLayout
         android:id="@+id/accounts_item_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
@@ -13,9 +14,9 @@
             android:id="@+id/chip"
             android:layout_height="match_parent"
             android:layout_width="8dip"
-            android:background="#ff336699"
             android:layout_marginRight="8dip"
-            />
+            tools:background="@sample/accounts.json/data/color"
+        />
 
 
     <LinearLayout
@@ -33,7 +34,8 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textAppearance="@style/TextAppearance.K9.Medium"/>
+                android:textAppearance="@style/TextAppearance.K9.Medium"
+                tools:text="@sample/accounts.json/data/name"/>
 
         <TextView
                 android:id="@+id/email"
@@ -42,7 +44,8 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textAppearance="@style/TextAppearance.K9.Small"/>
+                android:textAppearance="@style/TextAppearance.K9.Small"
+                tools:text="@sample/accounts.json/data/email"/>
 
     </LinearLayout>
 

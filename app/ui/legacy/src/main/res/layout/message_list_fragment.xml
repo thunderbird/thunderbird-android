@@ -2,14 +2,17 @@
 
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swiperefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.fsck.k9.fragment.MessageListFragment">
 
     <ListView
         android:id="@+id/message_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="5" />
+        android:layout_weight="5"
+        tools:listitem="@layout/message_list_item"/>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

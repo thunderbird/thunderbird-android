@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -9,7 +10,8 @@
     <View
         android:id="@+id/chip"
         android:layout_height="fill_parent"
-        android:layout_width="6dp"/>
+        android:layout_width="6dp"
+        tools:background="@sample/accounts.json/data/color"/>
 
     <TextView
         android:id="@+id/name"
@@ -22,6 +24,7 @@
         android:paddingRight="4dp"
         android:paddingBottom="8dp"
         android:textColor="?android:attr/textColorPrimary"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="@sample/accounts.json/data/name"/>
 
 </LinearLayout>

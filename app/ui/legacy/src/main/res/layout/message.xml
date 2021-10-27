@@ -8,7 +8,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_weight="1"
-    android:background="?attr/messageViewBackgroundColor">
+    android:background="?attr/messageViewBackgroundColor"
+    tools:context=".messageview.MessageViewFragment">
 
     <com.fsck.k9.view.NonLockingScrollView
         android:layout_width="fill_parent"
@@ -93,6 +94,7 @@
         android:text="@string/message_view_download_remainder"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:layout_width="fill_parent"/>
+        android:layout_width="fill_parent"
+        tools:visibility="visible"/>
 
 </com.fsck.k9.ui.messageview.MessageTopView>

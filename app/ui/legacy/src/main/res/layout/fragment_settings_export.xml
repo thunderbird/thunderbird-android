@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".settings.export.SettingsExportFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/settingsExportList"
@@ -13,7 +14,8 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/settings_export_account_list_item" />
+        tools:listitem="@layout/settings_export_account_list_item"
+        tools:itemCount="3"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomBar"

@@ -17,7 +17,8 @@
         <View
             android:id="@+id/chip"
             android:layout_width="8dip"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:background="#FF1976D2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,8 +85,9 @@
                         android:id="@+id/contact_badge"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:layout_marginLeft="8dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp" />
+                        tools:src="@drawable/ic_contact_picture"/>
 
                     <!-- State icons -->
                     <LinearLayout
