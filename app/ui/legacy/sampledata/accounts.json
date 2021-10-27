@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "name": "Personal",
+      "email": "user@domain.example",
+      "color": "#FF1976D2"
+    },
+    {
+      "name": "Work",
+      "email": "firstname.lastname@work.example",
+      "color": "#FFE91E63"
+    },
+    {
+      "name": "Club",
+      "email": "name@sportsclub.example",
+      "color": "#FFFFB300"
+    }
+  ]
+}

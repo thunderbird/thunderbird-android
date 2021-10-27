@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fsck.k9.ui">
 
+    <application android:theme="@style/Theme.K9.Light" />
+
     <queries>
         <intent>
             <!-- Used to check whether to display the "Add from Contacts" menu item in the compose screen -->

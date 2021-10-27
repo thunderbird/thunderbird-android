@@ -17,7 +17,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="&#x200B;" />
 
     <TextView
         android:id="@+id/accountDisplayName"
@@ -32,7 +33,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Account name" />
+        tools:text="@sample/accounts.json/data/name" />
 
     <TextView
         android:id="@+id/accountEmail"
@@ -46,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/accountDisplayName"
-        tools:text="user@domain.example" />
+        tools:text="@sample/accounts.json/data/email" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

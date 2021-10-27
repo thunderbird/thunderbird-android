@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
@@ -16,7 +17,8 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:textColor="?android:attr/textColorPrimary"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Initial identity" />
 
     <TextView
         android:id="@+id/description"
@@ -25,6 +27,7 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:textColor="?android:attr/textColorSecondary"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Firstname Lastname &lt;user@domain.example&gt;" />
 
 </LinearLayout>

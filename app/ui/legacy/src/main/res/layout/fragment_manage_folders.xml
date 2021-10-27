@@ -7,4 +7,5 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/folder_list_item" />
+    tools:listitem="@layout/folder_list_item"
+    tools:context=".managefolders.ManageFoldersFragment" />

@@ -6,6 +6,7 @@
               android:layout_height="wrap_content"
               android:orientation="horizontal"
               android:layout_gravity="center_vertical"
+              tools:layout_height="?android:attr/listPreferredItemHeight"
         >
 
     <FrameLayout
@@ -63,7 +64,8 @@
                 android:longClickable="false"
                 android:layout_alignWithParentIfMissing="false"
                 android:gravity="top"
-                android:layout_alignParentBottom="false"/>
+                android:layout_alignParentBottom="false"
+                tools:text="Message preview"/>
 
         <LinearLayout
                 android:id="@+id/subject_wrapper"
@@ -79,7 +81,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="4dp"
-                app:srcCompat="@drawable/ic_account_color" />
+                app:srcCompat="@drawable/ic_account_color"
+                tools:tint="#FF1976D2"/>
 
             <ImageView
                 android:id="@+id/status"
@@ -99,6 +102,7 @@
                     android:singleLine="true"
                     android:textAppearance="@style/TextAppearance.K9.MediumSmall"
                     android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Subject"
                     />
 
             <TextView
@@ -114,6 +118,7 @@
                     android:paddingBottom="1dip"
                     android:paddingLeft="4dip"
                     android:focusable="false"
+                    tools:text="3"
                     />
         </LinearLayout>
 
@@ -139,7 +144,8 @@
                 android:paddingRight="8dip"
                 android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.K9.Small"
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:textColor="?android:attr/textColorSecondary"
+                tools:text="Oct 27"/>
 
         <CheckBox
                 android:id="@+id/star"
@@ -153,7 +159,8 @@
                 android:paddingRight="4dip"
                 android:focusable="false"
                 android:visibility="visible"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                tools:text="&#x200B;"/>
 
 
     </RelativeLayout>
