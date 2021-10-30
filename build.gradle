@@ -15,7 +15,7 @@ buildscript {
                 'kotlinCoroutines': '1.5.2',
                 'androidxAppCompat': '1.3.1',
                 'androidxActivity': '1.4.0',
-                'androidxRecyclerView': '1.1.0',
+                'androidxRecyclerView': '1.2.1',
                 'androidxLifecycle': '2.4.0',
                 'androidxAnnotation': '1.2.0',
                 'androidxBiometric': '1.1.0',
