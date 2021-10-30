@@ -41,7 +41,7 @@ buildscript {
                 'minidns': '1.0.0',
                 'glide': '4.12.0',
 
-                'androidxTestRunner': '1.3.0',
+                'androidxTestRunner': '1.4.0',
                 'junit': '4.13.2',
                 'robolectric': '4.5.1',
                 'mockito': '3.9.0',
