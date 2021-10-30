@@ -8,7 +8,7 @@ dependencies {
 
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
-    api "org.koin:koin-androidx-viewmodel:${versions.koin}"
+    api "io.insert-koin:koin-android:${versions.koin}"
 
     api "androidx.annotation:annotation:${versions.androidxAnnotation}"
 
@@ -37,7 +37,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "org.jdom:jdom2:2.0.6"
-    testImplementation "org.koin:koin-test:${versions.koin}"
+    testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
 }
 
 android {
