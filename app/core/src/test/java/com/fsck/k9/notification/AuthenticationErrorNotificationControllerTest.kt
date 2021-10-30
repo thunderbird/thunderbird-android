@@ -76,7 +76,7 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
         verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 
-    private fun createFakeNotificationBuilder(notification: Notification?): NotificationCompat.Builder {
+    private fun createFakeNotificationBuilder(notification: Notification): NotificationCompat.Builder {
         return mockBuilder {
             on { build() } doReturn notification
         }
