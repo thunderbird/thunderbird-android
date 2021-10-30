@@ -247,6 +247,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="debug_enable_sensitive_logging_summary">May show passwords in logs.</string>
     <string name="debug_export_logs_title">Export logs</string>
     <string name="debug_export_logs_success">Export successful. Logs might contain sensitive information. Be careful who you send them to.</string>
+    <string name="debug_export_logs_failure">Export failed.</string>
 
     <string name="message_list_load_more_messages_action">Load more messages</string>
     <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>

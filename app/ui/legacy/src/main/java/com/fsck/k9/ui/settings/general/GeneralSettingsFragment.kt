@@ -5,23 +5,29 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.lifecycleScope
+import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.preference.ListPreference
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.withArguments
 import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
-import java.io.IOException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.apache.commons.io.IOUtils
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
+    private val viewModel: GeneralSettingsViewModel by viewModel()
     private val dataStore: GeneralSettingsDataStore by inject()
+
     private var rootKey: String? = null
+    private var currentUiState: GeneralSettingsUiState? = null
+    private var snackbar: Snackbar? = null
+
+    private val exportLogsResultContract = registerForActivityResult(CreateDocument()) { contentUri ->
+        if (contentUri != null) {
+            viewModel.exportLogs(contentUri)
+        }
+    }
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = dataStore
@@ -30,6 +36,15 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.general_settings, rootKey)
 
         initializeTheme()
+
+        viewModel.uiState.observe(this) { uiState ->
+            updateUiState(uiState)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dismissSnackbar()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -38,37 +53,21 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (rootKey == "debug_preferences") {
+        if (rootKey == PREFERENCE_SCREEN_DEBUGGING) {
             inflater.inflate(R.menu.debug_settings_option, menu)
+            currentUiState?.let { uiState ->
+                menu.findItem(R.id.exportLogs).isEnabled = uiState.isExportLogsMenuEnabled
+            }
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.exportLogs) {
-            exportLogsResultContract.launch("k9mail-logs.txt")
+            exportLogsResultContract.launch(GeneralSettingsViewModel.DEFAULT_FILENAME)
             return true
         }
-        return super.onOptionsItemSelected(item)
-    }
 
-    private val exportLogsResultContract = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
-        if (uri != null) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val message = try {
-                    requireContext().contentResolver.openOutputStream(uri).use { outputFile ->
-                        Runtime.getRuntime().exec("logcat -d").inputStream.use { logOutput ->
-                            IOUtils.copy(logOutput, outputFile)
-                        }
-                    }
-                    getString(R.string.debug_export_logs_success)
-                } catch (e: IOException) {
-                    e.message.toString()
-                }
-                withContext(Dispatchers.Main) {
-                    Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
-                }
-            }
-        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initializeTheme() {
@@ -80,8 +79,45 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    private fun updateUiState(uiState: GeneralSettingsUiState) {
+        val oldUiState = currentUiState
+        currentUiState = uiState
+
+        if (oldUiState?.isExportLogsMenuEnabled != uiState.isExportLogsMenuEnabled) {
+            setExportLogsMenuEnabled()
+        }
+
+        if (oldUiState?.snackbarState != uiState.snackbarState) {
+            setSnackbarState(uiState.snackbarState)
+        }
+    }
+
+    private fun setExportLogsMenuEnabled() {
+        requireActivity().invalidateOptionsMenu()
+    }
+
+    private fun setSnackbarState(snackbarState: SnackbarState) {
+        when (snackbarState) {
+            SnackbarState.Hidden -> dismissSnackbar()
+            SnackbarState.ExportLogSuccess -> showSnackbar(R.string.debug_export_logs_success)
+            SnackbarState.ExportLogFailure -> showSnackbar(R.string.debug_export_logs_failure)
+        }
+    }
+
+    private fun dismissSnackbar() {
+        snackbar?.dismiss()
+        snackbar = null
+    }
+
+    private fun showSnackbar(message: Int) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_INDEFINITE)
+            .also { snackbar = it }
+            .show()
+    }
+
     companion object {
         private const val PREFERENCE_THEME = "theme"
+        private const val PREFERENCE_SCREEN_DEBUGGING = "debug_preferences"
 
         fun create(rootKey: String? = null) = GeneralSettingsFragment().withArguments(ARG_PREFERENCE_ROOT to rootKey)
     }

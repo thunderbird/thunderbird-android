@@ -6,6 +6,7 @@ import com.fsck.k9.controller.push.controllerPushModule
 import com.fsck.k9.crypto.openPgpModule
 import com.fsck.k9.helper.helperModule
 import com.fsck.k9.job.jobModule
+import com.fsck.k9.logging.loggingModule
 import com.fsck.k9.mailstore.mailStoreModule
 import com.fsck.k9.message.extractors.extractorModule
 import com.fsck.k9.message.html.htmlModule
@@ -32,5 +33,6 @@ val coreModules = listOf(
     helperModule,
     preferencesModule,
     connectivityModule,
-    powerModule
+    powerModule,
+    loggingModule
 )
