@@ -36,7 +36,7 @@ buildscript {
                 'timber': '5.0.1',
                 'koin': '3.1.3',
                 'commonsIo': '2.11.0',
-                'mime4j': '0.8.3',
+                'mime4j': '0.8.6',
                 'okhttp': '4.9.1',
                 'minidns': '1.0.0',
                 'glide': '4.12.0',
