@@ -26,8 +26,8 @@ import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -322,8 +322,8 @@ public class RecipientLoaderTest extends RobolectricTest {
         when(contentResolver
                 .query(eq(Email.CONTENT_URI),
                         aryEq(PROJECTION),
-                        isNull(String.class),
-                        isNull(String[].class),
+                        isNull(),
+                        isNull(),
                         nullable(String.class))).thenReturn(cursor);
 
     }

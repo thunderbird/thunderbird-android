@@ -44,8 +44,8 @@ buildscript {
                 'androidxTestRunner': '1.4.0',
                 'junit': '4.13.2',
                 'robolectric': '4.6.1',
-                'mockito': '3.9.0',
-                'mockitoKotlin': '3.1.0',
+                'mockito': '4.0.0',
+                'mockitoKotlin': '4.0.0',
                 'truth': '1.1.2',
 
                 'ktlint': '0.40.0'
