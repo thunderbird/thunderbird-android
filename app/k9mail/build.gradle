@@ -89,9 +89,12 @@ android {
         }
     }
 
-    // Do not abort build if lint finds errors
     lintOptions {
+        checkDependencies true
+
+        // Do not abort build if lint finds errors
         abortOnError false
+
         lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
     }
 
