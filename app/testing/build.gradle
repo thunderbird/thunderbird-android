@@ -6,7 +6,7 @@ dependencies {
 
     api "junit:junit:${versions.junit}"
     api "org.robolectric:robolectric:${versions.robolectric}"
-    api "org.koin:koin-core:${versions.koin}"
+    api "io.insert-koin:koin-core:${versions.koin}"
     api "org.mockito:mockito-core:${versions.mockito}"
     api "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
 }

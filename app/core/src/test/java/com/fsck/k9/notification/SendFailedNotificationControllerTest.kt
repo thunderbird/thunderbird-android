@@ -54,7 +54,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
         verify(notificationManager).cancel(notificationId)
     }
 
-    private fun createFakeNotificationBuilder(notification: Notification?): NotificationCompat.Builder {
+    private fun createFakeNotificationBuilder(notification: Notification): NotificationCompat.Builder {
         return mockBuilder {
             on { build() } doReturn notification
         }

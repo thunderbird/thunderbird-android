@@ -5,6 +5,7 @@ dependencies {
     implementation project(":app:core")
 
     api "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
+    api "androidx.activity:activity:${versions.androidxActivity}"
     api "com.google.android.material:material:${versions.materialComponents}"
     api "androidx.navigation:navigation-fragment-ktx:${versions.androidxNavigation}"
     api "androidx.navigation:navigation-ui-ktx:${versions.androidxNavigation}"

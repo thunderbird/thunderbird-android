@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 buildscript {
     ext {
         buildConfig = [
-                'compileSdk': 30,
+                'compileSdk': 31,
                 'targetSdk': 30,
                 'minSdk': 21,
                 'buildTools': '30.0.3',
@@ -11,41 +11,42 @@ buildscript {
         ]
 
         versions = [
-                'kotlin': '1.5.30',
-                'kotlinCoroutines': '1.5.1',
-                'androidxAppCompat': '1.2.0',
-                'androidxRecyclerView': '1.1.0',
-                'androidxLifecycle': '2.3.1',
+                'kotlin': '1.5.31',
+                'kotlinCoroutines': '1.5.2',
+                'androidxAppCompat': '1.3.1',
+                'androidxActivity': '1.4.0',
+                'androidxRecyclerView': '1.2.1',
+                'androidxLifecycle': '2.4.0',
                 'androidxAnnotation': '1.2.0',
                 'androidxBiometric': '1.1.0',
                 'androidxNavigation': '2.3.5',
-                'androidxConstraintLayout': '2.0.4',
-                'androidxWorkManager': '2.5.0',
-                'androidxFragment': '1.3.3',
+                'androidxConstraintLayout': '2.1.1',
+                'androidxWorkManager': '2.7.0',
+                'androidxFragment': '1.3.6',
                 'androidxLocalBroadcastManager': '1.0.0',
-                'androidxCore': '1.3.2',
+                'androidxCore': '1.7.0',
                 'androidxCardView': '1.0.0',
                 'androidxPreference': '1.1.1',
-                'androidxTestCore': '1.3.0',
-                'materialComponents': '1.3.0',
-                'fastAdapter': '5.4.1',
+                'androidxTestCore': '1.4.0',
+                'materialComponents': '1.4.0',
+                'fastAdapter': '5.5.1',
                 'preferencesFix': '1.1.0',
                 'okio': '2.10.0',
                 'moshi': '1.12.0',
-                'timber': '4.7.1',
-                'koin': '2.2.2',
-                'commonsIo': '2.6',
-                'mime4j': '0.8.3',
-                'okhttp': '4.9.1',
+                'timber': '5.0.1',
+                'koin': '3.1.3',
+                'commonsIo': '2.11.0',
+                'mime4j': '0.8.6',
+                'okhttp': '4.9.2',
                 'minidns': '1.0.0',
                 'glide': '4.12.0',
 
-                'androidxTestRunner': '1.3.0',
+                'androidxTestRunner': '1.4.0',
                 'junit': '4.13.2',
-                'robolectric': '4.5.1',
-                'mockito': '3.9.0',
-                'mockitoKotlin': '3.1.0',
-                'truth': '1.1.2',
+                'robolectric': '4.6.1',
+                'mockito': '4.0.0',
+                'mockitoKotlin': '4.0.0',
+                'truth': '1.1.3',
 
                 'ktlint': '0.40.0'
         ]
@@ -62,7 +63,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.3'
+        classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
     }
