@@ -81,7 +81,7 @@ android {
 
         debug {
             applicationIdSuffix ".debug"
-            testCoverageEnabled true
+            testCoverageEnabled rootProject.testCoverage
 
             minifyEnabled false
 
