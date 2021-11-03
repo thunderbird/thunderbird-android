@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
 if (rootProject.testCoverage) {
-    apply from: "$project.rootDir/jacoco.gradle"
+    apply from: "$rootDir/jacoco.gradle"
 }
 
 dependencies {

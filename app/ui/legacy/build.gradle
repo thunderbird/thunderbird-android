@@ -3,7 +3,7 @@ apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.plugin.parcelize'
 
 if (rootProject.testCoverage) {
-    apply from: "$project.rootDir/jacoco.gradle"
+    apply from: "$rootDir/jacoco.gradle"
 }
 
 dependencies {
