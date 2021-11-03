@@ -72,7 +72,7 @@ buildscript {
 }
 
 project.ext {
-    testCoverage = true
+    testCoverage = project.hasProperty('testCoverage')
 }
 
 subprojects {
