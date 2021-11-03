@@ -1,217 +1,195 @@
+package com.fsck.k9.mail.internet
 
-package com.fsck.k9.mail.internet;
-
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import okio.Buffer;
-import okio.ByteString;
-import okio.Okio;
-import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
-import org.apache.james.mime4j.util.CharsetUtil;
-import timber.log.Timber;
-
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.MessagingException
+import java.io.ByteArrayInputStream
+import java.io.IOException
+import okio.Buffer
+import okio.ByteString
+import okio.ByteString.Companion.decodeBase64
+import okio.buffer
+import okio.source
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream
+import org.apache.james.mime4j.util.CharsetUtil
+import timber.log.Timber
 
 /**
- * Static methods for decoding strings, byte arrays and encoded words.
+ * Decoder for encoded words (RFC 2047).
  *
- * This class is copied from the org.apache.james.mime4j.decoder.DecoderUtil class.  It's modified here in order to
- * decode emoji characters in the Subject headers.  The method to decode emoji depends on the MimeMessage class because
- * it has to be determined with the sender address, the mailer and so on.
+ * This class is based on `org.apache.james.mime4j.decoder.DecoderUtil`. It was modified in order to support early
+ * non-Unicode emoji variants.
  */
-class DecoderUtil {
+internal object DecoderUtil {
     /**
      * Decodes a string containing encoded words as defined by RFC 2047.
-     * Encoded words in have the form
-     * =?charset?enc?Encoded word?= where enc is either 'Q' or 'q' for
+     *
+     * Encoded words have the form `=?charset?enc?Encoded word?=` where `enc` is either 'Q' or 'q' for
      * quoted-printable and 'B' or 'b' for Base64.
      *
-     * ANDROID:  COPIED FROM A NEWER VERSION OF MIME4J
-     *
-     * @param body the string to decode.
-     * @param message the message which has the string.
-     * @return the decoded string.
+     * @param body The string to decode.
+     * @param message The message containing the string. It will be used to figure out which JIS variant to use for
+     *     charset decoding. May be `null`.
+     * @return The decoded string.
      */
-    public static String decodeEncodedWords(String body, Message message) {
+    @JvmStatic
+    fun decodeEncodedWords(body: String, message: Message?): String {
+        // Most strings will not include "=?". So a quick test can prevent unneeded work.
+        if (!body.contains("=?")) return body
 
-        // ANDROID:  Most strings will not include "=?" so a quick test can prevent unneeded
-        // object creation.  This could also be handled via lazy creation of the StringBuilder.
-        if (!body.contains("=?")) {
-            return body;
-        }
-
-        EncodedWord previousWord = null;
-        int previousEnd = 0;
-
-        StringBuilder sb = new StringBuilder();
+        var previousWord: EncodedWord? = null
+        var previousEnd = 0
+        val output = StringBuilder()
 
         while (true) {
-            int begin = body.indexOf("=?", previousEnd);
+            val begin = body.indexOf("=?", previousEnd)
             if (begin == -1) {
-                decodePreviousAndAppendSuffix(sb, previousWord, body, previousEnd);
-                return sb.toString();
+                decodePreviousAndAppendSuffix(output, previousWord, body, previousEnd)
+                return output.toString()
             }
 
-            // ANDROID:  The mime4j original version has an error here.  It gets confused if
-            // the encoded string begins with an '=' (just after "?Q?").  This patch seeks forward
-            // to find the two '?' in the "header", before looking for the final "?=".
-            int qm1 = body.indexOf('?', begin + 2);
+            val qm1 = body.indexOf('?', begin + 2)
             if (qm1 == -1) {
-                decodePreviousAndAppendSuffix(sb, previousWord, body, previousEnd);
-                return sb.toString();
+                decodePreviousAndAppendSuffix(output, previousWord, body, previousEnd)
+                return output.toString()
             }
 
-            int qm2 = body.indexOf('?', qm1 + 1);
+            val qm2 = body.indexOf('?', qm1 + 1)
             if (qm2 == -1) {
-                decodePreviousAndAppendSuffix(sb, previousWord, body, previousEnd);
-                return sb.toString();
+                decodePreviousAndAppendSuffix(output, previousWord, body, previousEnd)
+                return output.toString()
             }
 
-            int end = body.indexOf("?=", qm2 + 1);
+            var end = body.indexOf("?=", qm2 + 1)
             if (end == -1) {
-                decodePreviousAndAppendSuffix(sb, previousWord, body, previousEnd);
-                return sb.toString();
+                decodePreviousAndAppendSuffix(output, previousWord, body, previousEnd)
+                return output.toString()
             }
-            end += 2;
+            end += 2
 
-            String sep = body.substring(previousEnd, begin);
-
-            EncodedWord word = extractEncodedWord(body, begin, end, message);
+            val sep = body.substring(previousEnd, begin)
+            val word = extractEncodedWord(body, begin, end, message)
 
             if (previousWord == null) {
-                sb.append(sep);
+                output.append(sep)
                 if (word == null) {
-                    sb.append(body, begin, end);
+                    output.append(body, begin, end)
                 }
+            } else if (word == null) {
+                output.append(charsetDecode(previousWord))
+                output.append(sep)
+                output.append(body, begin, end)
+            } else if (!CharsetUtil.isWhitespace(sep)) {
+                output.append(charsetDecode(previousWord))
+                output.append(sep)
+            } else if (previousWord.isTypeEqualTo(word)) {
+                word.data = previousWord.data + word.data
             } else {
-                if (word == null) {
-                    sb.append(charsetDecode(previousWord));
-                    sb.append(sep);
-                    sb.append(body, begin, end);
-                } else {
-                    if (!CharsetUtil.isWhitespace(sep)) {
-                        sb.append(charsetDecode(previousWord));
-                        sb.append(sep);
-                    } else if (previousWord.encoding.equals(word.encoding) &&
-                            previousWord.charset.equals(word.charset)) {
-                        word.data = concat(previousWord.data, word.data);
-                    } else {
-                        sb.append(charsetDecode(previousWord));
-                    }
-                }
+                output.append(charsetDecode(previousWord))
             }
 
-            previousWord = word;
-            previousEnd = end;
+            previousWord = word
+            previousEnd = end
         }
     }
 
-    private static void decodePreviousAndAppendSuffix(StringBuilder sb, EncodedWord previousWord, String body,
-            int previousEnd) {
-
+    private fun decodePreviousAndAppendSuffix(
+        output: StringBuilder,
+        previousWord: EncodedWord?,
+        body: String,
+        previousEnd: Int
+    ) {
         if (previousWord != null) {
-            sb.append(charsetDecode(previousWord));
+            output.append(charsetDecode(previousWord))
         }
-
-        sb.append(body.substring(previousEnd));
+        output.append(body, previousEnd, body.length)
     }
 
-    private static String charsetDecode(EncodedWord word) {
-        try {
-            InputStream inputStream = new Buffer().write(word.data).inputStream();
-            return CharsetSupport.readToString(inputStream, word.charset);
-        } catch (IOException e) {
-            return null;
+    private fun charsetDecode(word: EncodedWord): String? {
+        return try {
+            val inputStream = Buffer().write(word.data).inputStream()
+            CharsetSupport.readToString(inputStream, word.charset)
+        } catch (e: IOException) {
+            null
         }
     }
 
-    private static EncodedWord extractEncodedWord(String body, int begin, int end, Message message) {
-        int qm1 = body.indexOf('?', begin + 2);
-        if (qm1 == end - 2)
-            return null;
+    private fun extractEncodedWord(body: String, begin: Int, end: Int, message: Message?): EncodedWord? {
+        val qm1 = body.indexOf('?', begin + 2)
+        if (qm1 == end - 2) return null
 
-        int qm2 = body.indexOf('?', qm1 + 1);
-        if (qm2 == end - 2)
-            return null;
+        val qm2 = body.indexOf('?', qm1 + 1)
+        if (qm2 == end - 2) return null
 
         // Extract charset, skipping language information if present (example: =?utf-8*en?Q?Text?=)
-        String charsetPart = body.substring(begin + 2, qm1);
-        int languageSuffixStart = charsetPart.indexOf('*');
-        boolean languageSuffixFound = languageSuffixStart != -1;
-        String mimeCharset = languageSuffixFound ? charsetPart.substring(0, languageSuffixStart) : charsetPart;
+        val charsetPart = body.substring(begin + 2, qm1)
+        val languageSuffixStart = charsetPart.indexOf('*')
+        val languageSuffixFound = languageSuffixStart != -1
+        val mimeCharset = if (languageSuffixFound) charsetPart.substring(0, languageSuffixStart) else charsetPart
 
-        String encoding = body.substring(qm1 + 1, qm2);
-        String encodedText = body.substring(qm2 + 1, end - 2);
+        val encoding = body.substring(qm1 + 1, qm2)
+        val encodedText = body.substring(qm2 + 1, end - 2)
 
-        String charset;
-        try {
-            charset = CharsetSupport.fixupCharset(mimeCharset, message);
-        } catch (MessagingException e) {
-            return null;
+        val charset = try {
+            CharsetSupport.fixupCharset(mimeCharset, message)
+        } catch (e: MessagingException) {
+            return null
         }
 
         if (encodedText.isEmpty()) {
-            Timber.w("Missing encoded text in encoded word: '%s'", body.substring(begin, end));
-            return null;
+            Timber.w("Missing encoded text in encoded word: '%s'", body.substring(begin, end))
+            return null
         }
 
-        EncodedWord encodedWord = new EncodedWord();
-        encodedWord.charset = charset;
-        if (encoding.equalsIgnoreCase("Q")) {
-            encodedWord.encoding = "Q";
-            encodedWord.data = decodeQ(encodedText);
-        } else if (encoding.equalsIgnoreCase("B")) {
-            encodedWord.encoding = "B";
-            encodedWord.data = decodeB(encodedText);
+        return if (encoding.equals("Q", ignoreCase = true)) {
+            EncodedWord(charset, Encoding.Q, decodeQ(encodedText))
+        } else if (encoding.equals("B", ignoreCase = true)) {
+            EncodedWord(charset, Encoding.B, decodeB(encodedText))
         } else {
-            Timber.w("Warning: Unknown encoding in encoded word '%s'", body.substring(begin, end));
-            return null;
+            Timber.w("Warning: Unknown encoding in encoded word '%s'", body.substring(begin, end))
+            null
         }
-        return encodedWord;
     }
 
-    private static ByteString decodeQ(String encodedWord) {
-        /*
-         * Replace _ with =20
-         */
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < encodedWord.length(); i++) {
-            char c = encodedWord.charAt(i);
-            if (c == '_') {
-                sb.append("=20");
-            } else {
-                sb.append(c);
+    private fun decodeQ(encodedWord: String): ByteString {
+        // Replace _ with =20
+        val bytes = buildString {
+            for (character in encodedWord) {
+                if (character == '_') {
+                    append("=20")
+                } else {
+                    append(character)
+                }
+            }
+        }.toByteArray(Charsets.US_ASCII)
+
+        return QuotedPrintableInputStream(ByteArrayInputStream(bytes)).use { inputStream ->
+            try {
+                inputStream.source().buffer().readByteString()
+            } catch (e: IOException) {
+                ByteString.EMPTY
             }
         }
+    }
 
-        byte[] bytes = sb.toString().getBytes(Charset.forName("US-ASCII"));
+    private fun decodeB(encodedText: String): ByteString {
+        return encodedText.decodeBase64() ?: ByteString.EMPTY
+    }
 
-        QuotedPrintableInputStream is = new QuotedPrintableInputStream(new ByteArrayInputStream(bytes));
-        try {
-            return Okio.buffer(Okio.source(is)).readByteString();
-        } catch (IOException e) {
-            return null;
+    private operator fun ByteString.plus(second: ByteString): ByteString {
+        return Buffer().write(this).write(second).readByteString()
+    }
+
+    private class EncodedWord(
+        val charset: String,
+        val encoding: Encoding,
+        var data: ByteString
+    ) {
+        fun isTypeEqualTo(other: EncodedWord): Boolean {
+            return encoding == other.encoding && charset == other.charset
         }
     }
 
-    private static ByteString decodeB(String encodedText) {
-        ByteString decoded = ByteString.decodeBase64(encodedText);
-        return decoded == null ? ByteString.EMPTY : decoded;
-    }
-
-    private static ByteString concat(ByteString first, ByteString second) {
-        return new Buffer().write(first).write(second).readByteString();
-    }
-
-
-    private static class EncodedWord {
-        private String charset;
-        private String encoding;
-        private ByteString data;
+    private enum class Encoding {
+        Q, B
     }
 }
