@@ -3,26 +3,26 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 buildscript {
     ext {
         buildConfig = [
-                'compileSdk': 31,
-                'targetSdk': 30,
-                'minSdk': 21,
-                'buildTools': '30.0.3',
+                'compileSdk'    : 31,
+                'targetSdk'     : 30,
+                'minSdk'        : 21,
+                'buildTools'    : '30.0.3',
                 'robolectricSdk': 30
         ]
 
         versions = [
-                'kotlin': '1.5.31',
-                'kotlinCoroutines': '1.5.2',
-                'androidxAppCompat': '1.3.1',
-                'androidxActivity': '1.4.0',
-                'androidxRecyclerView': '1.2.1',
-                'androidxLifecycle': '2.4.0',
-                'androidxAnnotation': '1.2.0',
-                'androidxBiometric': '1.1.0',
-                'androidxNavigation': '2.3.5',
-                'androidxConstraintLayout': '2.1.1',
-                'androidxWorkManager': '2.7.0',
-                'androidxFragment': '1.3.6',
+                'kotlin'                       : '1.5.31',
+                'kotlinCoroutines'             : '1.5.2',
+                'androidxAppCompat'            : '1.3.1',
+                'androidxActivity'             : '1.4.0',
+                'androidxRecyclerView'         : '1.2.1',
+                'androidxLifecycle'            : '2.4.0',
+                'androidxAnnotation'           : '1.2.0',
+                'androidxBiometric'            : '1.1.0',
+                'androidxNavigation'           : '2.3.5',
+                'androidxConstraintLayout'     : '2.1.1',
+                'androidxWorkManager'          : '2.7.0',
+                'androidxFragment'             : '1.3.6',
                 'androidxLocalBroadcastManager': '1.0.0',
                 'androidxCore'                 : '1.7.0',
                 'androidxCardView'             : '1.0.0',
