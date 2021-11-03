@@ -10,7 +10,12 @@ tasks.withType(Test) {
 }
 
 android {
-    testBuildType "debug"
+
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+    }
 
     testOptions {
         unitTests {
