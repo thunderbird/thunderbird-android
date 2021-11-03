@@ -5,10 +5,6 @@ if (rootProject.testCoverage) {
     apply from: "$project.rootDir/jacoco.gradle"
 }
 
-if (rootProject.testCoverage) {
-    apply plugin: 'jacoco'
-}
-
 dependencies {
     api project(":backend:api")
     api project(":mail:protocols:webdav")
