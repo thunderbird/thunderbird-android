@@ -81,7 +81,7 @@ internal object DecoderUtil {
             } else if (!CharsetUtil.isWhitespace(sep)) {
                 output.append(charsetDecode(previousWord))
                 output.append(sep)
-            } else if (previousWord.isTypeEqualTo(word)) {
+            } else if (previousWord.canBeCombinedWith(word)) {
                 word.data = previousWord.data + word.data
             } else {
                 output.append(charsetDecode(previousWord))
@@ -179,13 +179,19 @@ internal object DecoderUtil {
         return Buffer().write(this).write(second).readByteString()
     }
 
+    private val ASCII_ESCAPE_SEQUENCE = byteArrayOf(0x1B, 0x28, 0x42)
+
     private class EncodedWord(
         val charset: String,
         val encoding: Encoding,
         var data: ByteString
     ) {
-        fun isTypeEqualTo(other: EncodedWord): Boolean {
-            return encoding == other.encoding && charset == other.charset
+        fun canBeCombinedWith(other: EncodedWord): Boolean {
+            return encoding == other.encoding && charset == other.charset && !isAsciiEscapeSequence()
+        }
+
+        private fun isAsciiEscapeSequence(): Boolean {
+            return charset.startsWith("ISO-2022-JP", ignoreCase = true) && data.endsWith(ASCII_ESCAPE_SEQUENCE)
         }
     }
 

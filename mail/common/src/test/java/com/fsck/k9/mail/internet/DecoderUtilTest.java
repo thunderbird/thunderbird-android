@@ -220,6 +220,16 @@ public class DecoderUtilTest {
         assertInputDecodesToExpected("=?utf-8*de?b?R3LDvMOfZQ==?=", "Grüße");
     }
 
+    @Test
+    public void decodeEncodedWords_withMultipleIso2022JpEncodedWordsProperlyEndingWithSwitchingToAscii() {
+        // If we try to combine the base64-decoded data of both encoded words and only then perform the charset
+        // decoding, we end up with an escape sequence switching to ASCII (end of first encoded word) followed by an
+        // escape sequence switching to JIS X 0208:1983 (start of second encoded word). The decoder on Android reports
+        // an error for this case, leading to a replacement character being inserted.
+        // We use the ISO-2022-JP-TEST charset to get Android's behavior on the JVM. See TestCharsetProvider.
+        assertInputDecodesToExpected("=?ISO-2022-JP-TEST?B?GyRCRnxLXDhsJEhGfEtcOGwkSEZ8S1w4bCROJUElJyVDGyhC?=\r\n" +
+                " =?ISO-2022-JP-TEST?B?GyRCJS8bKEI=?=", "日本語と日本語と日本語のチェック");
+    }
 
     private void assertInputDecodesToExpected(String input, String expected) {
         String decodedText = DecoderUtil.decodeEncodedWords(input, null);
