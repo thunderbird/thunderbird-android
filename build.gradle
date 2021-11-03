@@ -66,11 +66,12 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
+        classpath 'org.jacoco:org.jacoco.core:0.8.7'
     }
 }
 
 project.ext {
-    testCoverage = project.hasProperty('testCoverage')
+    testCoverage = true
 }
 
 subprojects {
@@ -99,5 +100,15 @@ subprojects {
     apply plugin: 'org.jlleitschuh.gradle.ktlint'
     ktlint {
         version = versions.ktlint
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            eachDependency { details ->
+                if ('org.jacoco' == details.requested.group) {
+                    details.useVersion "0.8.7"
+                }
+            }
+        }
     }
 }
