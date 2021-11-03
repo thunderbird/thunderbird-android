@@ -1,10 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
-if (rootProject.testCoverage) {
-    apply plugin: 'jacoco'
-}
-
 dependencies {
     api project(":backend:api")
     api project(":mail:protocols:pop3")

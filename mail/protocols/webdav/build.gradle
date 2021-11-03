@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 if (rootProject.testCoverage) {
-    apply plugin: 'jacoco'
+    apply from: "$project.rootDir/jacoco.gradle"
 }
 
 dependencies {
