@@ -82,14 +82,14 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
 
     reports {
         html {
-            enabled false
+            enabled true
         }
         xml {
             enabled true
         }
 
         xml.destination file("${rootProject.buildDir}/reports/jacocoTestReport${project.name}.xml")
-        html.destination file("${buildDir}/reports/jacocoTestReport${project.name}")
+        html.destination file("${rootProject.buildDir}/reports/jacocoTestReport${project.name}")
     }
 
     def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: jacocoFileFilter)
