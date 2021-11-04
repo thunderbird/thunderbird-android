@@ -44,11 +44,11 @@ android {
     buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
-        applicationId "com.fsck.k9"
-        testApplicationId "com.fsck.k9.tests"
+        applicationId "com.mudita.mail"
+        testApplicationId "com.mudita.mail.tests"
 
-        versionCode 29004
-        versionName '5.905-SNAPSHOT'
+        versionCode 1
+        versionName '1.0'
 
         // Keep in sync with the resource string array 'supported_languages'
         resConfigs "in", "br", "ca", "cs", "cy", "da", "de", "et", "en", "en_GB", "es", "eo", "eu", "fr", "gd", "gl",
