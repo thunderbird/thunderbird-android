@@ -3,7 +3,7 @@ apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
 
 if (rootProject.testCoverage) {
-    apply from: "$project.rootDir/jacoco.gradle"
+    apply plugin: 'jacoco'
 }
 
 dependencies {

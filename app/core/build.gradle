@@ -2,10 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.plugin.parcelize'
 
-if (rootProject.testCoverage) {
-    apply from: "$project.rootDir/jacoco.gradle"
-}
-
 dependencies {
     api project(":mail:common")
     api project(":backend:api")

@@ -72,7 +72,7 @@ buildscript {
 }
 
 project.ext {
-    testCoverage = true
+    testCoverage = project.hasProperty('testCoverage')
 }
 
 subprojects {
@@ -110,6 +110,15 @@ subprojects {
                     details.useVersion versions.jacoco
                 }
             }
+        }
+    }
+
+    afterEvaluate { project ->
+        if (rootProject.testCoverage &&
+                project.hasProperty("android") &&
+                new File("${project.projectDir}/src/test").exists()
+        ) {
+            project.apply from: "$rootDir/jacoco.gradle"
         }
     }
 }
