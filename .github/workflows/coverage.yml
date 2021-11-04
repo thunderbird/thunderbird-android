@@ -1,4 +1,4 @@
-name: "Test and report"
+name: "Rerun test and report"
 on: [ pull_request ]
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
       with:
         java-version: 11
     - name: Build with Gradle
-      run: ./gradlew jacocoTestReport
+      run: ./gradlew -PtestCoverage jacocoTestReport
     - name: Upload coverage report
       uses: codecov/codecov-action@v2
       with:
