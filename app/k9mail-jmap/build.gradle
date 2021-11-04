@@ -44,11 +44,11 @@ android {
     buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
-        applicationId "com.fsck.k9.jmap"
-        testApplicationId "com.fsck.k9.jmap.tests"
+        applicationId "com.mudita.mail.jmap"
+        testApplicationId "com.mudita.mail.jmap.tests"
 
         versionCode 1
-        versionName 'JMAP DEV'
+        versionName '1.0-JMAP-DEV'
 
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
