@@ -112,6 +112,15 @@ subprojects {
             }
         }
     }
+
+    afterEvaluate { project ->
+        if (rootProject.testCoverage &&
+                project.hasProperty("android") &&
+                new File("${project.projectDir}/src/test").exists()
+        ) {
+            project.apply from: "$rootDir/jacoco.gradle"
+        }
+    }
 }
 
 task clean(type: Delete) {
