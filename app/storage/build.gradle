@@ -50,4 +50,8 @@ android {
             includeAndroidResources = true
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
