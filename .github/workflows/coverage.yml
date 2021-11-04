@@ -10,7 +10,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Build with Gradle
+    - name: "Run test and generate coverage"
       run: ./gradlew -PtestCoverage jacocoTestReport
     - name: Upload coverage report
       uses: codecov/codecov-action@v2
