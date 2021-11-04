@@ -1,10 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
-if (rootProject.testCoverage) {
-    apply from: "$rootDir/jacoco.gradle"
-}
-
 dependencies {
     api "io.insert-koin:koin-core:${versions.koin}"
 
