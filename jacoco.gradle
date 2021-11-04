@@ -87,7 +87,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
 
     reports {
         html {
-            enabled true
+            enabled false
         }
         xml {
             enabled true
