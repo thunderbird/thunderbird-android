@@ -101,7 +101,7 @@
         <item name="messageViewBackgroundColor">#ffffffff</item>
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus</item>
         <item name="attachmentCardBackground">#e8e8e8</item>
-        <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
+        <item name="contactPictureFallbackDefaultBackgroundColor">@color/grey_light</item>
         <item name="contactTokenBackgroundColor">#ccc</item>
         <item name="composerBackgroundColor">@android:color/background_light</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
