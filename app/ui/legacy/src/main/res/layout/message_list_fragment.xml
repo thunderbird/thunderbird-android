@@ -10,7 +10,7 @@
     <ListView
         android:id="@+id/message_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
         android:nestedScrollingEnabled="true"
         android:paddingTop="8dp"
