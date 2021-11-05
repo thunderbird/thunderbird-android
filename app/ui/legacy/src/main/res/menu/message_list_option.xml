@@ -151,13 +151,6 @@
           app:showAsAction="never"
           android:title="@string/show_headers_action"/>
 
-    <!-- always -->
-    <item
-        android:id="@+id/compose"
-        android:icon="?attr/iconActionCompose"
-        app:showAsAction="ifRoom"
-        android:title="@string/compose_action"/>
-
     <!-- MessageList -->
     <item
         android:id="@+id/set_sort"
