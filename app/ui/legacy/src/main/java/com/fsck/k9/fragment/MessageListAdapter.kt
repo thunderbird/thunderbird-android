@@ -3,7 +3,6 @@ package com.fsck.k9.fragment
 import android.content.Context
 import android.content.res.Resources
 import android.content.res.Resources.Theme
-import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.Spannable
@@ -51,6 +50,7 @@ class MessageListAdapter internal constructor(
     private val selectedItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListSelectedBackgroundColor)
     private val readItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListReadItemBackgroundColor)
     private val unreadItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)
+    private val defaultItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListDefaultBackgroundColor)
 
     var messages: List<MessageListItem> = emptyList()
         set(value) {
@@ -265,7 +265,7 @@ class MessageListAdapter internal constructor(
             selected -> selectedItemBackgroundColor
             backGroundAsReadIndicator && read -> readItemBackgroundColor
             backGroundAsReadIndicator && !read -> unreadItemBackgroundColor
-            else -> Color.TRANSPARENT
+            else -> defaultItemBackgroundColor
         }
 
         view.setBackgroundColor(backgroundColor)
