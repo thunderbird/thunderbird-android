@@ -26,7 +26,7 @@ class ContactLetterBitmapCreator(
             isAntiAlias = true
             style = Paint.Style.FILL
             setARGB(255, 20, 25, 31)
-            textSize = pictureSizeInPx.toFloat() * 0.65f
+            textSize = pictureSizeInPx.toFloat() * 0.45f
         }
 
         val rect = Rect()
