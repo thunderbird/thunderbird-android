@@ -25,7 +25,7 @@ class ContactLetterBitmapCreator(
         val paint = Paint().apply {
             isAntiAlias = true
             style = Paint.Style.FILL
-            setARGB(255, 255, 255, 255)
+            setARGB(255, 20, 25, 31)
             textSize = pictureSizeInPx.toFloat() * 0.65f
         }
 
@@ -48,12 +48,11 @@ class ContactLetterBitmapCreator(
         }
 
         val hash = address.hashCode()
-        if (config.useDarkTheme) {
+        return if (config.useDarkTheme) {
             val colorIndex = (hash and Integer.MAX_VALUE) % BACKGROUND_COLORS_DARK.size
-            return BACKGROUND_COLORS_DARK[colorIndex]
+            BACKGROUND_COLORS_DARK[colorIndex]
         } else {
-            val colorIndex = (hash and Integer.MAX_VALUE) % BACKGROUND_COLORS_LIGHT.size
-            return BACKGROUND_COLORS_LIGHT[colorIndex]
+            BACKGROUND_COLOR_LIGHT_GREY
         }
     }
 
@@ -62,23 +61,7 @@ class ContactLetterBitmapCreator(
     }
 
     companion object {
-        private val BACKGROUND_COLORS_LIGHT = intArrayOf(
-            MaterialColors.RED_300,
-            MaterialColors.DEEP_PURPLE_300,
-            MaterialColors.LIGHT_BLUE_300,
-            MaterialColors.GREEN_300,
-            MaterialColors.DEEP_ORANGE_300,
-            MaterialColors.BLUE_GREY_300,
-            MaterialColors.PINK_300,
-            MaterialColors.INDIGO_300,
-            MaterialColors.CYAN_300,
-            MaterialColors.AMBER_400,
-            MaterialColors.BROWN_300,
-            MaterialColors.PURPLE_300,
-            MaterialColors.BLUE_300,
-            MaterialColors.TEAL_300,
-            MaterialColors.ORANGE_400
-        )
+        private const val BACKGROUND_COLOR_LIGHT_GREY = 0xFFEBEBEB.toInt()
 
         private val BACKGROUND_COLORS_DARK = intArrayOf(
             MaterialColors.RED_600,
