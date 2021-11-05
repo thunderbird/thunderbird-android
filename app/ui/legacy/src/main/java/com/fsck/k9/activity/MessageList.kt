@@ -1193,8 +1193,10 @@ open class MessageList :
         ) {
             fab.fadeOut()
         }
-        if (!(displayMode == DisplayMode.MESSAGE_VIEW || messageListFragment == null ||
-                !messageListFragment!!.isInitialized)
+        if (!(
+            displayMode == DisplayMode.MESSAGE_VIEW || messageListFragment == null ||
+                !messageListFragment!!.isInitialized
+            )
         ) {
             fab.fadeIn()
         }
