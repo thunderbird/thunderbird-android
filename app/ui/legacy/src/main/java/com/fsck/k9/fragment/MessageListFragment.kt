@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
@@ -50,7 +51,6 @@ import com.fsck.k9.ui.messagelist.MessageListConfig
 import com.fsck.k9.ui.messagelist.MessageListInfo
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.messagelist.MessageListViewModel
-import java.util.HashSet
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
 import org.koin.android.ext.android.inject
@@ -62,7 +62,8 @@ class MessageListFragment :
     OnItemClickListener,
     OnItemLongClickListener,
     ConfirmationDialogFragmentListener,
-    MessageListItemActionListener {
+    MessageListItemActionListener,
+    HasScrollingListView {
 
     private val viewModel: MessageListViewModel by viewModel()
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
@@ -221,6 +222,8 @@ class MessageListFragment :
         swipeRefreshLayout.isEnabled = false
     }
 
+    private var listenerBuilder: (() -> AbsListView.OnScrollListener)? = null
+
     private fun initializeListView(view: View) {
         listView = view.findViewById(R.id.message_list)
         with(listView) {
@@ -231,6 +234,7 @@ class MessageListFragment :
             isScrollingCacheEnabled = false
             onItemClickListener = this@MessageListFragment
             onItemLongClickListener = this@MessageListFragment
+            listenerBuilder?.invoke()?.let(::setOnScrollListener)
         }
     }
 
@@ -414,6 +418,8 @@ class MessageListFragment :
 
     override fun onDestroyView() {
         savedListState = listView.onSaveInstanceState()
+        listenerBuilder = null
+        listView.setOnScrollListener(null)
         super.onDestroyView()
     }
 
@@ -1909,6 +1915,10 @@ class MessageListFragment :
 
     private enum class FolderOperation {
         COPY, MOVE
+    }
+
+    override fun setOnScrollListenerBuildingAction(action: () -> AbsListView.OnScrollListener) {
+        listenerBuilder = action
     }
 
     interface MessageListFragmentListener {
