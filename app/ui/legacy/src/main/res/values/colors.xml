@@ -15,4 +15,10 @@
     <color name="md_grey_900">#212121</color>
 
     <color name="material_drawer_profile_icon">#F9F9F9</color>
+
+    <color name="grey_light">#EBEBEB</color>
+    <color name="grey_medium">#D7D9DB</color>
+    <color name="grey_dark">#545A5E</color>
+    <color name="white_pure">#FFFFFF</color>
+    <color name="black_pure">#000000</color>
 </resources>
