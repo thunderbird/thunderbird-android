@@ -33,6 +33,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.fragment.HasScrollingListView
 import com.fsck.k9.fragment.MessageListFragment
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.helper.Contacts
@@ -1188,7 +1189,7 @@ open class MessageList :
     private fun configureFloatingActionButtonVisibility() {
         val fab = getFab() ?: return
         if (displayMode == DisplayMode.MESSAGE_LIST || messageViewFragment == null ||
-                !messageViewFragment!!.isInitialized
+            !messageViewFragment!!.isInitialized
         ) {
             fab.fadeOut()
         }
@@ -1207,10 +1208,10 @@ open class MessageList :
         }
 
     private fun setupListViewWithFloatingActionButtonInteraction(
-        messageListFragment: MessageListFragment?
+        hasScrollingListView: HasScrollingListView?
     ) {
         val fab = getFab() ?: return
-        messageListFragment?.setOnScrollListener {
+        hasScrollingListView?.setOnScrollListenerBuildingAction {
             object : AbsListView.OnScrollListener {
                 override fun onScrollStateChanged(p0: AbsListView?, p1: Int) {}
 
