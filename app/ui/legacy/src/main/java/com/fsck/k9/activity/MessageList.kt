@@ -14,6 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -62,8 +63,12 @@ import com.fsck.k9.ui.permissions.Permission
 import com.fsck.k9.ui.permissions.PermissionUiHelper
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
+import com.fsck.k9.view.fadeIn
+import com.fsck.k9.view.fadeOut
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.materialdrawer.util.getOptimalDrawerWidth
+import kotlin.properties.Delegates
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
@@ -100,13 +105,16 @@ open class MessageList :
     private var menu: Menu? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
-    private var messageListFragment: MessageListFragment? = null
+    private var messageListFragment: MessageListFragment? by Delegates.observable(null) { _, _, fragment ->
+        setupListViewWithFloatingActionButtonInteraction(fragment)
+    }
     private var messageViewFragment: MessageViewFragment? = null
     private var firstBackStackId = -1
     private var account: Account? = null
     private var search: LocalSearch? = null
     private var singleFolderMode = false
     private var lastDirection = if (K9.isMessageViewShowNext) NEXT else PREVIOUS
+    private var fab: FloatingActionButton? = null
 
     private var messageListActivityAppearance: MessageListActivityAppearance? = null
 
@@ -206,6 +214,9 @@ open class MessageList :
         if (savedInstanceState == null) {
             checkAndRequestPermissions()
         }
+
+        setupFloatingActionButtonClickListener()
+        configureFloatingActionButtonVisibility()
     }
 
     public override fun onNewIntent(intent: Intent) {
@@ -870,9 +881,6 @@ open class MessageList :
                 goBack()
             }
             return true
-        } else if (id == R.id.compose) {
-            messageListFragment!!.onCompose()
-            return true
         } else if (id == R.id.toggle_message_view_theme) {
             onToggleTheme()
             return true
@@ -1041,7 +1049,6 @@ open class MessageList :
             menu.findItem(R.id.previous_message).isVisible = false
             menu.findItem(R.id.single_message_options).isVisible = false
             menu.findItem(R.id.delete).isVisible = false
-            menu.findItem(R.id.compose).isVisible = false
             menu.findItem(R.id.archive).isVisible = false
             menu.findItem(R.id.move).isVisible = false
             menu.findItem(R.id.copy).isVisible = false
@@ -1152,7 +1159,6 @@ open class MessageList :
         } else {
             menu.findItem(R.id.set_sort).isVisible = true
             menu.findItem(R.id.select_all).isVisible = true
-            menu.findItem(R.id.compose).isVisible = true
             menu.findItem(R.id.mark_all_as_read).isVisible = messageListFragment!!.isMarkAllAsReadSupported
 
             if (!messageListFragment!!.isSingleAccountMode) {
@@ -1175,6 +1181,51 @@ open class MessageList :
             val messageListFragment = messageListFragment!!
             if (messageListFragment.isManualSearch && !messageListFragment.localSearch.searchAllAccounts()) {
                 menu.findItem(R.id.search_everywhere).isVisible = true
+            }
+        }
+    }
+
+    private fun configureFloatingActionButtonVisibility() {
+        val fab = getFab() ?: return
+        if (displayMode == DisplayMode.MESSAGE_LIST || messageViewFragment == null ||
+                !messageViewFragment!!.isInitialized
+        ) {
+            fab.fadeOut()
+        }
+        if (!(displayMode == DisplayMode.MESSAGE_VIEW || messageListFragment == null ||
+                !messageListFragment!!.isInitialized)
+        ) {
+            fab.fadeIn()
+        }
+    }
+
+    private fun getFab() = fab ?: findViewById<FloatingActionButton?>(R.id.fab).also { fab = it }
+
+    private fun setupFloatingActionButtonClickListener() =
+        getFab()?.setOnClickListener {
+            messageListFragment?.onCompose()
+        }
+
+    private fun setupListViewWithFloatingActionButtonInteraction(
+        messageListFragment: MessageListFragment?
+    ) {
+        val fab = getFab() ?: return
+        messageListFragment?.setOnScrollListener {
+            object : AbsListView.OnScrollListener {
+                override fun onScrollStateChanged(p0: AbsListView?, p1: Int) {}
+
+                override fun onScroll(
+                    p0: AbsListView?,
+                    firstVisibleItem: Int,
+                    visibleItemCount: Int,
+                    totalItemCount: Int
+                ) {
+                    when {
+                        visibleItemCount == totalItemCount -> fab.fadeIn()
+                        (firstVisibleItem + visibleItemCount) != totalItemCount -> fab.fadeIn()
+                        else -> fab.fadeOut()
+                    }
+                }
             }
         }
     }
@@ -1255,8 +1306,8 @@ open class MessageList :
         if (displayMode == DisplayMode.SPLIT_VIEW) {
             showMessageViewPlaceHolder()
         }
-
         configureMenu(menu)
+        configureFloatingActionButtonVisibility()
     }
 
     private fun addMessageListFragment(fragment: MessageListFragment, addToBackStack: Boolean) {
@@ -1350,6 +1401,7 @@ open class MessageList :
     override fun remoteSearchStarted() {
         // Remove action button for remote search
         configureMenu(menu)
+        configureFloatingActionButtonVisibility()
     }
 
     override fun goBack() {
@@ -1423,6 +1475,7 @@ open class MessageList :
 
         showDefaultTitleView()
         configureMenu(menu)
+        configureFloatingActionButtonVisibility()
     }
 
     private fun setDrawerLockState() {
@@ -1449,6 +1502,7 @@ open class MessageList :
 
         showMessageTitleView()
         configureMenu(menu)
+        configureFloatingActionButtonVisibility()
     }
 
     override fun updateMenu() {
