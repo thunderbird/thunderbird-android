@@ -21,4 +21,6 @@
     <color name="grey_dark">#545A5E</color>
     <color name="white_pure">#FFFFFF</color>
     <color name="black_pure">#000000</color>
+
+    <color name="compose_text_label">@color/grey_dark</color>
 </resources>
