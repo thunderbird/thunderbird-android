@@ -10,9 +10,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="12dip"
-        android:layout_marginStart="12dip"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:animateLayoutChanges="true"
         android:minHeight="50dp"
         android:animateLayoutChanges="true">
 
@@ -196,8 +198,9 @@
     <LinearLayout
         android:id="@+id/reply_to_wrapper"
         android:layout_width="match_parent"
-        android:layout_marginLeft="12dip"
-        android:layout_marginRight="12dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -235,8 +238,9 @@
     <RelativeLayout
         android:id="@+id/to_wrapper"
         android:layout_width="match_parent"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
         android:minHeight="50dp">
 
         <TextView
@@ -304,9 +308,7 @@
         android:id="@+id/cc_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="12dip"
-        android:layout_marginRight="12dip"
+        android:layout_marginLeft="16dip"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -348,8 +350,8 @@
     <LinearLayout
         android:id="@+id/bcc_wrapper"
         android:layout_width="match_parent"
-        android:layout_marginLeft="12dip"
-        android:layout_marginRight="12dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="gone">
