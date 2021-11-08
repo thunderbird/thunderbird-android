@@ -31,9 +31,6 @@
                 android:hint="@string/message_compose_subject_hint"
                 android:imeOptions="actionNext|flagNoExtractUi"
                 android:inputType="textEmailSubject|textAutoCorrect|textCapSentences"
-                android:imeOptions="actionNext|flagNoExtractUi"
-                android:singleLine="true"
-                android:background="@android:color/transparent"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:singleLine="true" />
@@ -57,11 +54,10 @@
             android:hint="@string/message_compose_content_hint"
             android:imeOptions="actionDone|flagNoEnterAction|flagNoExtractUi"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-            android:imeOptions="actionDone|flagNoEnterAction|flagNoExtractUi"
             android:minLines="3"
-            android:paddingLeft="12dip"
-            android:paddingRight="12dip"
-            style="@style/ComposeEditTextLarge"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
             tools:ignore="InefficientWeight" />
 
         <EditText
