@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbarStyle="insideOverlay"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:scrollbarStyle="insideOverlay">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <include layout="@layout/message_compose_recipients" />
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginLeft="12dip"
-            android:layout_marginRight="12dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:minHeight="50dp">
+            android:minHeight="50dp"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/subject"
+                style="@style/ComposeEditTextLarge"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:hint="@string/message_compose_subject_hint"
+                android:imeOptions="actionNext|flagNoExtractUi"
                 android:inputType="textEmailSubject|textAutoCorrect|textCapSentences"
                 android:imeOptions="actionNext|flagNoExtractUi"
                 android:singleLine="true"
                 android:background="@android:color/transparent"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                style="@style/ComposeEditTextLarge"
-                />
+                android:singleLine="true" />
         </LinearLayout>
 
         <View
@@ -43,15 +44,18 @@
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
 
-        <!-- We have to use "wrap_content" (not "0dip") for "layout_height", otherwise the
+        <!-- We have to use "wrap_content" (not "0dp") for "layout_height", otherwise the
              EditText won't properly grow in height while the user is typing the message -->
         <EditText
             android:id="@+id/message_content"
+            style="@style/ComposeEditTextLarge"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@null"
             android:gravity="top"
             android:hint="@string/message_compose_content_hint"
+            android:imeOptions="actionDone|flagNoEnterAction|flagNoExtractUi"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
             android:imeOptions="actionDone|flagNoEnterAction|flagNoExtractUi"
             android:minLines="3"
@@ -65,20 +69,20 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="top"
-            android:minLines="0"
             android:hint="@string/message_compose_signature_hint"
-            android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
             android:imeOptions="flagNoExtractUi"
+            android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+            android:minLines="0"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Button
             android:id="@+id/quoted_text_show"
-            android:text="@string/message_compose_show_quoted_text_action"
-            android:textSize="16sp"
-            android:padding="0dip"
-            android:layout_gravity="right"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
+            android:layout_gravity="right"
+            android:padding="0dp"
+            android:text="@string/message_compose_show_quoted_text_action"
+            android:textSize="16sp" />
 
         <!-- Quoted text bar -->
         <RelativeLayout
@@ -91,15 +95,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:minLines="3"
-                android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:imeOptions="flagNoExtractUi"
+                android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+                android:minLines="3"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <com.fsck.k9.view.MessageWebView
                 android:id="@+id/quoted_html"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                   android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/quoted_text_buttons"
@@ -110,18 +114,18 @@
 
                 <ImageButton
                     android:id="@+id/quoted_text_edit"
-                    android:contentDescription="@string/message_compose_description_edit_quoted_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dip"
-                    android:background="@drawable/btn_edit" />
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/btn_edit"
+                    android:contentDescription="@string/message_compose_description_edit_quoted_text" />
 
                 <ImageButton
                     android:id="@+id/quoted_text_delete"
-                    android:contentDescription="@string/message_compose_description_delete_quoted_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_dialog" />
+                    android:background="@drawable/btn_dialog"
+                    android:contentDescription="@string/message_compose_description_delete_quoted_text" />
 
             </LinearLayout>
 
@@ -132,10 +136,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="top"
-            android:minLines="0"
             android:hint="@string/message_compose_signature_hint"
-            android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
             android:imeOptions="flagNoExtractUi"
+            android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+            android:minLines="0"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <!--
