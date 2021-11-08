@@ -14,11 +14,14 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">@color/white_pure</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:windowBackground">@color/grey_light</item>
         <item name="colorPrimary">@color/white_pure</item>
-        <item name="colorPrimaryDark">@color/md_grey_100</item>
-        <item name="android:textColorSecondary">@color/black_pure</item>
+        <item name="colorPrimaryDark">@color/white_pure</item>
+        <item name="colorAccent">@color/black_pure</item>
+        <item name="android:textColorPrimary">@color/black_pure</item>
+        <item name="android:textColorSecondary">@color/grey_dark</item>
+        <item name="android:textColorHint">@color/grey_dark</item>
         <item name="bottomBarBackground">@color/md_grey_50</item>
-
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
         <item name="iconFolder">@drawable/ic_folder</item>
@@ -135,11 +138,14 @@
         <item name="android:navigationBarColor">#000000</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowBackground">@color/grey_light</item>
         <item name="colorPrimary">@color/md_grey_900</item>
-        <item name="colorAccent">@color/black_pure</item>
+        <item name="colorAccent">@color/white_pure</item>
         <item name="colorPrimaryDark">@color/md_grey_900</item>
+        <item name="android:textColorSecondary">@color/white_pure</item>
+        <item name="android:textColorPrimary">@color/white_pure</item>
+        <item name="android:textColorHint">@color/grey_dark</item>
         <item name="bottomBarBackground">@color/md_grey_900</item>
-
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
         <item name="iconFolder">@drawable/ic_folder</item>
