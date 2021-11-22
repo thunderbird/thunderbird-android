@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.K9;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.helper.ContextHelper;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 
@@ -122,7 +123,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
 
     public void refreshThumbnail() {
         Context context = getContext();
-        if (context instanceof Activity && ((Activity) context).isDestroyed()) {
+        Activity activity = ContextHelper.findActivity(context);
+        if (activity != null && activity.isDestroyed()) {
             // Do nothing because Glide would throw an exception
             return;
         }
