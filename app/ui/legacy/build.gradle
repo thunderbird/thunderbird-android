@@ -23,6 +23,7 @@ dependencies {
     implementation "com.takisoft.preferencex:preferencex-colorpicker:${versions.preferencesFix}"
     implementation "com.takisoft.preferencex:preferencex-ringtone:${versions.preferencesFix}"
     implementation "androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
@@ -63,6 +64,8 @@ dependencies {
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.kotlinCoroutines}"
+    testImplementation "app.cash.turbine:turbine:${versions.turbine}"
 }
 
 android {
