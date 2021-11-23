@@ -11,8 +11,11 @@ class AutoExpandFolderBackendFoldersRefreshListener(
     private val account: Account,
     private val folderRepository: FolderRepository
 ) : BackendFoldersRefreshListener {
+    private var isFirstSync = false
 
-    override fun onBeforeFolderListRefresh() = Unit
+    override fun onBeforeFolderListRefresh() {
+        isFirstSync = account.inboxFolderId == null
+    }
 
     override fun onAfterFolderListRefresh() {
         checkAutoExpandFolder()
@@ -32,6 +35,10 @@ class AutoExpandFolderBackendFoldersRefreshListener(
             if (!folderRepository.isFolderPresent(account, autoExpandFolderId)) {
                 account.autoExpandFolderId = null
             }
+        }
+
+        if (isFirstSync && account.autoExpandFolderId == null) {
+            account.autoExpandFolderId = account.inboxFolderId
         }
     }
 
