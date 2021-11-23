@@ -785,20 +785,15 @@ public class LocalFolder {
     }
 
     private long decodeAndCountBytes(InputStream rawInputStream, String encoding, long fallbackValue) {
-        InputStream decodingInputStream = localStore.getDecodingInputStream(rawInputStream, encoding);
-        try {
-            CountingOutputStream countingOutputStream = new CountingOutputStream();
-            try {
-                IOUtils.copy(decodingInputStream, countingOutputStream);
+        try (InputStream decodingInputStream = localStore.getDecodingInputStream(rawInputStream, encoding)) {
 
+            try (CountingOutputStream countingOutputStream = new CountingOutputStream()) {
+                IOUtils.copy(decodingInputStream, countingOutputStream);
                 return countingOutputStream.getCount();
-            } catch (IOException e) {
-                return fallbackValue;
             }
-        } finally {
-            try {
-                decodingInputStream.close();
-            } catch (IOException e) { /* ignore */ }
+
+        } catch (IOException e) {
+            return fallbackValue;
         }
     }
 
