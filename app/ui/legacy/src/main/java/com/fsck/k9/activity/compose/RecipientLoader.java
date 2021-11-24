@@ -110,8 +110,12 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                 return timesContactedDiff;
             }
 
-            if (lhs.sortKey == null || rhs.sortKey == null) {
+            if (lhs.sortKey == null && rhs.sortKey == null) {
                 return 0;
+            } else if (lhs.sortKey == null) {
+                return 1;
+            } else if (rhs.sortKey == null) {
+                return -1;
             }
 
             return CASE_INSENSITIVE_ORDER.compare(lhs.sortKey, rhs.sortKey);
