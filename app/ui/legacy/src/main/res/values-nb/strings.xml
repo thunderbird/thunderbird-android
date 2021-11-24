@@ -273,7 +273,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Varslinger på låseskjerm</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen varslinger på låseskjerm</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Programnavn</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Antall uleste meldinger</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Meldingsantall og avsendere</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Samme som når skjermen er ulåst</string>
   <string name="quiet_time">Stilletid</string>

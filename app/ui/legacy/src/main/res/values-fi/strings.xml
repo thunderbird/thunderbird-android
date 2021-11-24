@@ -203,6 +203,9 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="debug_enable_debug_logging_summary">Kirjoita lokiin laajempi kuvaus ongelmista</string>
   <string name="debug_enable_sensitive_logging_title">Kirjaa lokiin arkaluontoisia tietoja</string>
   <string name="debug_enable_sensitive_logging_summary">Salasanat saattavat näkyä lokeissa.</string>
+  <string name="debug_export_logs_title">Vie lokit</string>
+  <string name="debug_export_logs_success">Vienti onnistui. Lokit saattavat sisältää arkaluonteista tietoa. Pidä ne tallessa ja ole varovainen sen suhteen, kenelle ne lähetät.</string>
+  <string name="debug_export_logs_failure">Vienti epäonnistui.</string>
   <string name="message_list_load_more_messages_action">Lataa lisää viestejä</string>
   <string name="message_to_fmt">Vastaanottaja: <xliff:g id="counterParty"> %s </xliff:g></string>
   <string name="message_compose_subject_hint">Aihe</string>
@@ -283,7 +286,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_lock_screen_notification_visibility_title">Lukitusnäytön ilmoitukset</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ei lukitusnäytön ilmoituksia</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Sovelluksen nimi</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Lukemattomien viestien määrä</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Uusien viestien määrä</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Viestien määrä ja lähettäjät</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Sama kuin näytön ollessa lukittuna</string>
   <string name="quiet_time">Hiljainen aika</string>

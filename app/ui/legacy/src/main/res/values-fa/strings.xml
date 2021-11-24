@@ -77,6 +77,8 @@
   <string name="compose_title_forward_as_attachment">هدایت به‌شکل پیوست</string>
   <string name="choose_account_title">انتخاب حساب</string>
   <string name="choose_folder_title">انتخاب پوشه</string>
+  <string name="choose_folder_move_title">انتقال به...</string>
+  <string name="choose_folder_copy_title">کپی به...</string>
   <string name="status_loading_account_folder">سرکشی به <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">واکشی سرایندها <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">در حال ارسال <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -102,7 +104,7 @@
   <string name="forward_action">هدایت</string>
   <string name="forward_as_attachment_action">هدایت به‌شکل پیوست</string>
   <string name="edit_as_new_message_action">ویرایش به‌عنوان پیام جدید</string>
-  <string name="move_action">انتقال به</string>
+  <string name="move_action">انتقال</string>
   <string name="move_to_drafts_action">انتقال به پیش‌نویس‌ها</string>
   <string name="single_message_options_action">ارسال…</string>
   <string name="refile_action">سامان‌دهی...</string>
@@ -128,7 +130,7 @@
   <string name="send_alternate_chooser_title">انتخاب فرستنده</string>
   <string name="flag_action">افزودن ستاره</string>
   <string name="unflag_action">حذف ستاره</string>
-  <string name="copy_action">کپی به</string>
+  <string name="copy_action">کپی</string>
   <string name="show_headers_action">نمایش سرایندها</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">نشانی‌ها در بریده‌دان کپی شد</item>
@@ -282,7 +284,7 @@
   <string name="global_settings_lock_screen_notification_visibility_title">اعلان‌های صفحهٔ قفل</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">در صفحهٔ قفل اعلانی نباشد</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">نام برنامه</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">تعداد پیام‌های نخوانده</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">تعداد پیام‌های جدید</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">تعداد پیام و فرستندگان</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">همانند زمانی که صفحه قفل نیست</string>
   <string name="quiet_time">زمان خاموشی</string>
@@ -437,8 +439,8 @@
   <string name="account_settings_mark_message_as_read_on_delete_label">هنگام حذف، نشان بزن که خواندم</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">پیام حذف‌شده را نشان بزن که خوانده‌ام</string>
   <string name="account_settings_notification_channels_label">دسته‌بندی‌های اعلان</string>
-  <string name="account_settings_open_notification_settings_messages_summary">پیکربندی اعلانات برای پیام‌های جدید</string>
-  <string name="account_settings_open_notification_settings_miscellaneous_summary">پیکربندی اعلانات مربوط به وضعیت و خطا</string>
+  <string name="account_settings_open_notification_settings_messages_summary">اعلان برای پیام‌های جدید را پیکربندی کنید</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">اعلان‌های وضعیت و خطا را پیکربندی کنید</string>
   <string name="account_settings_show_pictures_label">همیشه عکس‌ها را نشان بده</string>
   <string name="account_settings_show_pictures_never">خیر</string>
   <string name="account_settings_show_pictures_only_from_contacts">از مخاطبان</string>
@@ -691,7 +693,7 @@
   <string name="volume_navigation_message">در نماهای پیام</string>
   <string name="volume_navigation_list">در نماهای لیستی</string>
   <string name="show_unified_inbox_title">نمایش صندوق یکپارچه</string>
-  <string name="show_starred_count_title">نمایش تعداد ستاره‌ها</string>
+  <string name="show_starred_count_title">نمایش تعداد ستاره‌دارها</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- نخوانده</string>
   <string name="search_all_messages_title">همهٔ پیام‌ها</string>

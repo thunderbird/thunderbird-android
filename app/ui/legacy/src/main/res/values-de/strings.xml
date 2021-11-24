@@ -203,7 +203,10 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="debug_enable_debug_logging_title">Fehlerprotokoll aktivieren</string>
   <string name="debug_enable_debug_logging_summary">Zusätzliche Informationen zur Fehlerdiagnose protokollieren</string>
   <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen protokollieren</string>
-  <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau protokollieren.</string>
+  <string name="debug_enable_sensitive_logging_summary">Passwörter können in Protokollen sichtbar sein.</string>
+  <string name="debug_export_logs_title">Protokolle exportieren</string>
+  <string name="debug_export_logs_success">Export erfolgreich. Die Protokolle können sensible Informationen enthalten. Achten Sie darauf, an wen Sie sie senden.</string>
+  <string name="debug_export_logs_failure">Export fehlgeschlagen.</string>
   <string name="message_list_load_more_messages_action">Weitere Nachrichten laden</string>
   <string name="message_to_fmt">An:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Betreff</string>
@@ -284,7 +287,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_lock_screen_notification_visibility_title">Sperrbildschirm-Benachrichtigungen</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Keine Sperrbildschirm-Benachrichtigungen</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Anwendungsname</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Anzahl der ungelesenen Nachrichten</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Anzahl der neuen Nachrichten</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Nachrichtenanzahl und Absender</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Wie bei entsperrtem Bildschirm</string>
   <string name="quiet_time">Ruhezeit</string>

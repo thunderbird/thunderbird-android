@@ -279,7 +279,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_lock_screen_notification_visibility_title">Start scherm notificatie</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Geen start scherm notificatie</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">App naam</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Ongelezen berichten teller</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Aantal nieuwe berichten</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Berichten teller (ook verzonden)</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Hetzelfde. Ook na schermontgrendeling</string>
   <string name="quiet_time">Stilteperiode</string>

@@ -175,7 +175,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="notification_action_delete_all">Borrar todo</string>
   <string name="notification_action_archive">Archivo</string>
   <string name="notification_action_archive_all">Archivar todo</string>
-  <string name="notification_action_spam">Correo no deseado</string>
+  <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_title">Error de certificado para <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Comprueba los ajustes del servidor</string>
   <string name="notification_authentication_error_title">Fallo de autenticación</string>
@@ -192,7 +192,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="notification_channel_miscellaneous_title">Varios</string>
   <string name="notification_channel_miscellaneous_description">Otras notificaciones, como errores y otros mensajes.</string>
   <string name="special_mailbox_name_inbox">Bandeja de entrada</string>
-  <string name="special_mailbox_name_outbox">Salida</string>
+  <string name="special_mailbox_name_outbox">Bandeja de salida</string>
   <string name="special_mailbox_name_drafts">Borradores</string>
   <string name="special_mailbox_name_trash">Papelera</string>
   <string name="special_mailbox_name_sent">Enviados</string>
@@ -202,6 +202,9 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="debug_enable_debug_logging_summary">Registrar el estado del programa con información adicional para diagnosticar posibles problemas</string>
   <string name="debug_enable_sensitive_logging_title">Incluir información sensible</string>
   <string name="debug_enable_sensitive_logging_summary">Incluir información privada (como contraseñas) en texto plano en el registro de depuración</string>
+  <string name="debug_export_logs_title">Exportar registros de depuración</string>
+  <string name="debug_export_logs_success">Se han exportado correctamente. Ten en cuenta que los registros pueden contener datos privados; así que ten cuidado y asegúrate de que te fias de las personas a las que se los mandas.</string>
+  <string name="debug_export_logs_failure">No se han podido exportar los registros.</string>
   <string name="message_list_load_more_messages_action">Cargar más correos</string>
   <string name="message_to_fmt">Para:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Asunto</string>
@@ -282,7 +285,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="global_settings_lock_screen_notification_visibility_title">Ver notificaciones al bloquear la pantalla</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">No mostrar notificaciones al bloquear</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nombre de la aplicación</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Cuenta de mensajes no leídos</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Número de mensajes nuevos</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Cuenta de mensajes y remitentes</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Mismo comportamiento que al desbloquear</string>
   <string name="quiet_time">Horario de descanso</string>

@@ -77,6 +77,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="compose_title_forward_as_attachment">Áframsenda sem viðhengi</string>
   <string name="choose_account_title">Veldu aðgang</string>
   <string name="choose_folder_title">Veldu möppu</string>
+  <string name="choose_folder_move_title">Færa í…</string>
+  <string name="choose_folder_copy_title">Afrita í…</string>
   <string name="status_loading_account_folder">Athuga <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Sæki hausa <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Sendi <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -110,6 +112,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="discard_action">Henda</string>
   <string name="save_draft_action">Vista sem drög</string>
   <string name="check_mail_action">Athuga póst</string>
+  <string name="check_all_mail_action">Athuga póst á öllum aðgöngum</string>
   <string name="send_messages_action">Senda póst</string>
   <string name="refresh_folders_action">Endurnýja möppulista</string>
   <string name="filter_folders_action">Finna möppu</string>
@@ -281,7 +284,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_lock_screen_notification_visibility_title">Tilkynningar á skjálæsingu</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Engar tilkynningar á skjálæsingu</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nafn forritsins</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Fjöldi ólesinna skilaboða</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Fjöldi skilaboða og sendenda</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Sama og þegar skjárinn er ólæstur</string>
   <string name="quiet_time">Kyrrðarstund</string>
@@ -295,6 +297,9 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_basics_password_hint">Lykilorð</string>
   <string name="account_setup_basics_show_password">Sýna lykilorð</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Til að skoða lykilorðið þitt hér skaltu virkja skjálæsingu á þessu tæki</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Sannreyndu auðkennin þín</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Aflæstu til að skoða lykilorðið þitt</string>
   <string name="account_setup_basics_manual_setup_action">Handvirk uppsetning</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Næ í upplýsingar um aðgang\u2026</string>
@@ -426,10 +431,15 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_notify_self_summary">Birta tilkynningu fyrir skilaboð sem ég sendi</string>
   <string name="account_notify_contacts_mail_only_label">Einungis tengiliðir</string>
   <string name="account_notify_contacts_mail_only_summary">Einungis birta tilkynningar fyrir skilaboð frá þekktum tengiliðum</string>
+  <string name="account_settings_ignore_chat_messages_label">Hunsa spjallskilaboð</string>
+  <string name="account_settings_ignore_chat_messages_summary">Ekki birta tilkynningar vegna skilaboða sem tilheyra spjalli í tölvupósti</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Merkja sem lesið þegar er opnað</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Merkja skilaboð sem lesin þegar þau eru opnuð til lestrar</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Merkja sem lesið þegar er eytt</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Merkja skilaboð sem lesin þegar þeim er eytt</string>
+  <string name="account_settings_notification_channels_label">Flokkar tilkynninga</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Stilla tilkynningar vegna nýrra skilaboða</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Stilla tilkynningar vegna stöðu- og villumeldinga</string>
   <string name="account_settings_show_pictures_label">Alltaf sýna myndir</string>
   <string name="account_settings_show_pictures_never">Nei</string>
   <string name="account_settings_show_pictures_only_from_contacts">Frá tengiliðum</string>
@@ -682,6 +692,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="volume_navigation_message">Í skilaboðasýnum</string>
   <string name="volume_navigation_list">Í listasýnum</string>
   <string name="show_unified_inbox_title">Birta sameinað innhólf</string>
+  <string name="show_starred_count_title">Birta fjölda stjarna</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Ólesið</string>
   <string name="search_all_messages_title">Öll skilaboð</string>
@@ -891,6 +902,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="recipient_bcc">Falið afrit</string>
   <string name="recipient_to">Til</string>
   <string name="recipient_from">Frá</string>
+  <string name="reply_to_label">Svara</string>
   <string name="unknown_recipient">&lt;Óþekktur viðtakandi&gt;</string>
   <string name="unknown_sender">&lt;Óþekktur sendandi&gt;</string>
   <string name="address_type_home">Heima</string>

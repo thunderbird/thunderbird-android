@@ -283,7 +283,6 @@
   <string name="global_settings_lock_screen_notification_visibility_title">Ειδοποιήσεις οθόνης κλειδώματος</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Χωρίς ειδοποιήσεις οθόνης κλειδώματος</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Όνομα εφαρμογής</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Αριθμός μη αναγνωσμένων μηνυμάτων</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Αριθμός μηνυμάτων και αποστολείς</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Ομοίως με τότε που η οθόνη είναι ξεκλείδωτη</string>
   <string name="quiet_time">Ώρες Ησυχίας</string>

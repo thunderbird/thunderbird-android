@@ -78,6 +78,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="compose_title_forward_as_attachment">添付として転送</string>
   <string name="choose_account_title">アカウントの選択</string>
   <string name="choose_folder_title">フォルダ選択</string>
+  <string name="choose_folder_move_title">…へ移動</string>
+  <string name="choose_folder_copy_title">…へコピー</string>
   <string name="status_loading_account_folder">受信 <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">ヘッダ取込 <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">送信 <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -280,7 +282,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_lock_screen_notification_visibility_title">ロック画面通知</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">ロック画面通知なし</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">アプリケーション名</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">未読件数</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">新着メッセージ件数</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">メッセージ件数と送信者</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">画面ロックの解除と同じ</string>
   <string name="quiet_time">夜間時間帯</string>
@@ -895,6 +897,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">宛先</string>
   <string name="recipient_from">送信者</string>
+  <string name="reply_to_label">返信先</string>
   <string name="unknown_recipient">&lt;不明な受信者&gt;</string>
   <string name="unknown_sender">&lt;不明な送信者&gt;</string>
   <string name="address_type_home">自宅</string>

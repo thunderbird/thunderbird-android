@@ -286,7 +286,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_lock_screen_notification_visibility_title">Powiadomienia na ekranie blokady</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Bez powiadomień na ekranie blokady</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nazwa aplikacji</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Liczba nieprzeczytanych wiadomości</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Nadawcy i liczba wiadomości</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Tak samo, jak przy odblokowanym ekranie</string>
   <string name="quiet_time">Okres ciszy</string>

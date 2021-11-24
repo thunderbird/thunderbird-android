@@ -203,6 +203,9 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="debug_enable_debug_logging_summary">Relatar informações de diagnósticos extras</string>
   <string name="debug_enable_sensitive_logging_title">Relatar informações confidencias</string>
   <string name="debug_enable_sensitive_logging_summary">Pode exibir senhas nos relatórios</string>
+  <string name="debug_export_logs_title">Exportar relatórios</string>
+  <string name="debug_export_logs_success">Exportado com sucesso. Os relatórios podem conter informação sensível. Tome cuidado ao enviá-los para alguém.</string>
+  <string name="debug_export_logs_failure">Não foi possível exportar.</string>
   <string name="message_list_load_more_messages_action">Carregar mais mensagens</string>
   <string name="message_to_fmt">Para:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Assunto</string>
@@ -283,7 +286,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="global_settings_lock_screen_notification_visibility_title">Notificações na tela de bloqueio</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Sem notificações na tela de bloqueio</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nome do aplicativo</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Número de mensagens não lidas</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Número de mensagens novas</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Número de mensagens e remetentes</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">O mesmo de quando a tela está desbloqueada</string>
   <string name="quiet_time">Período de silêncio</string>

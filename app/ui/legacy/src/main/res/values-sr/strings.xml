@@ -276,7 +276,6 @@
   <string name="global_settings_lock_screen_notification_visibility_title">Подаци на закључаном екрану</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">без обавештења</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">назив програма</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">број непрочитаних порука</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">број порука и пошиљаоци</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">као и кад је откључан екран</string>
   <string name="quiet_time">Тихи сати</string>

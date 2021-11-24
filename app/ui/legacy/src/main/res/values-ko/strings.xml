@@ -213,7 +213,6 @@
   <string name="global_settings_lock_screen_notification_visibility_title">잠금 화면 알림</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">잠금 화면 알림 없음</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">앱 이름</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">읽지 않은 메세지 개수</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">메세지 개수와 발신자</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">화면이 잠금 해제되었을때와 동일</string>
   <string name="quiet_time">무음 시간</string>

@@ -77,6 +77,8 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="compose_title_forward_as_attachment">Pārsūtīt kā pielikumu</string>
   <string name="choose_account_title">Izvēlēties kontu</string>
   <string name="choose_folder_title">Izvēlēties mapi</string>
+  <string name="choose_folder_move_title">Pārvietot uz ...</string>
+  <string name="choose_folder_copy_title">Kopēt uz ...</string>
   <string name="status_loading_account_folder">Pārbauda <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Saņem vēstuļu papildinformāciju <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Sūta <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -284,7 +286,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Paziņojumi bloķētā ekrānā</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nekādus paziņojumus bloķētā ekrānā</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Aplikācijas nosaukums</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Saskaitīt nelasītās vēstules</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Jauno vēstuļu skaits</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Vēstuļu skaitīšana un sūtītāji</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Tāds pats, kad ekrāns ir atbloķēts</string>
   <string name="quiet_time">Miera laiks</string>
@@ -299,6 +301,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_basics_show_password">Rādīt paroli</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Lai apskatītos savu paroli, ieslēdziet ekrāna bloķēšanu savā ierīcē.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Apstiprināt savu identitāti</string>
   <string name="account_setup_basics_show_password_biometrics_subtitle">Atbloķēt, lai varētu apskatīties savu paroli</string>
   <string name="account_setup_basics_manual_setup_action">Pašrocīga iestatīšana</string>
   <string name="account_setup_check_settings_title"/>
@@ -907,6 +910,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Kam</string>
   <string name="recipient_from">No kā</string>
+  <string name="reply_to_label">Atbildēt</string>
   <string name="unknown_recipient">&lt;Nezināms saņēmējs&gt;</string>
   <string name="unknown_sender">&lt;Nezināms sūtītājs&gt;</string>
   <string name="address_type_home">Mājas</string>

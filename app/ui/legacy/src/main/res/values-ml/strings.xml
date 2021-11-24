@@ -273,7 +273,6 @@
   <string name="global_settings_lock_screen_notification_visibility_title">ലോക്ക് സ്ക്രീൻ അറിയിപ്പുകൾ</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">ലോക്ക് സ്ക്രീൻ അറിയിപ്പുകളൊന്നുമില്ല</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">അപ്ലിക്കേഷന്റെ പേര്</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">വായിക്കാത്ത സന്ദേശങ്ങളുടെ എണ്ണം</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">സന്ദേശങ്ങളുടെ എണ്ണവും അയച്ചവരും</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">സ്‌ക്രീൻ അൺലോക്കുചെയ്‌തതിന് സമാനമാണ്</string>
   <string name="quiet_time">ശാന്തമായ സമയം</string>

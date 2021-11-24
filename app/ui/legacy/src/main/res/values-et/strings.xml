@@ -13,10 +13,13 @@
   <string name="app_license">Apache litsents, versioon 2.0</string>
   <string name="about_project_title">Avatud lähtekoodiga projekt</string>
   <string name="about_website_title">Veebileht</string>
+  <string name="user_forum_title">Foorum huvilistele</string>
+  <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Teegid</string>
   <string name="license">Litsents</string>
   <string name="changelog_title">Muudatuste logi</string>
+  <string name="changelog_loading_error">Muudatuste logi laadimine ei õnnestunud</string>
   <string name="changelog_version_title">Versioon %s</string>
   <string name="changelog_recent_changes_title">Rakenduse muudatused</string>
   <string name="changelog_show_recent_changes">Pärast rakenduse uuendamist näita viimaseid muudatusi</string>
@@ -45,6 +48,8 @@
   <string name="compose_title_forward_as_attachment">Saada edasi manusena</string>
   <string name="choose_account_title">Vali konto</string>
   <string name="choose_folder_title">Vali kaust</string>
+  <string name="choose_folder_move_title">Teisalda…</string>
+  <string name="choose_folder_copy_title">Kopeeri…</string>
   <string name="status_loading_account_folder">Kontrollib olekut <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Toob pealkirju <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Saadab <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -78,6 +83,7 @@
   <string name="discard_action">Loobu</string>
   <string name="save_draft_action">Salvesta mustandina</string>
   <string name="check_mail_action">Kontrolli e-kirju</string>
+  <string name="check_all_mail_action">Kontrolli kirju kõikidel kontodel</string>
   <string name="send_messages_action">Saada kirjad</string>
   <string name="refresh_folders_action">Värskenda kaustade nimekirja</string>
   <string name="filter_folders_action">Leia kaust</string>
@@ -248,7 +254,7 @@
   <string name="global_settings_lock_screen_notification_visibility_title">Lukustuskuva teatised</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ühtegi lukustuskuva teatist</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Rakenduse nimi</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Lugemata kirjade arv</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Uusi sõnumeid</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Kirjade arv ja saatjad</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Sama, kui ekraan lukustamata</string>
   <string name="quiet_time">Vaikne aeg</string>
@@ -398,6 +404,10 @@
   <string name="account_settings_mark_message_as_read_on_view_label">Pärast avamist märgi loetuks</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Märgi sõnum loetuks, kui see on vaatamiseks avatud</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Pärast kustutamist märgi loetuks</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Kustutamisel märgi kiri loetuks</string>
+  <string name="account_settings_notification_channels_label">Teavituste kategooriad</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Seadista uute sõnumite teavitusi</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Seadista vigade ja olekute teavitusi</string>
   <string name="account_settings_show_pictures_label">Näita alati pilte</string>
   <string name="account_settings_show_pictures_never">Ei</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kontaktidelt</string>
@@ -773,7 +783,7 @@
   <string name="webview_contextmenu_link_share_action">Jaga linki</string>
   <string name="webview_contextmenu_link_copy_action">Kopeeri link lõikelauale</string>
   <string name="webview_contextmenu_link_clipboard_label">Link</string>
-  <string name="webview_contextmenu_link_text_copy_action">Kopeeri lingi tekt lõikelauale</string>
+  <string name="webview_contextmenu_link_text_copy_action">Kopeeri lingi tekst lõikelauale</string>
   <string name="webview_contextmenu_link_text_clipboard_label">Lingi tekst</string>
   <string name="webview_contextmenu_image_title">Pilt</string>
   <string name="webview_contextmenu_image_view_action">Vaata pilti</string>
@@ -869,6 +879,7 @@
   <string name="disable_sign_only">Blokeeri PGP ainult-allkirjastamine</string>
   <string name="openpgp_inline_title">PGP/INLINE režiiim</string>
   <string name="openpgp_inline_plus_compat">Mõned kliendid toetavad ainult seda vormingut</string>
+  <string name="openpgp_inline_minus_transit">Allkirjad võivad serverite vahel saates katki minna</string>
   <string name="openpgp_inline_minus_attach">Manused pole toetatud</string>
   <string name="openpgp_inline_ok">Arusaadav!</string>
   <string name="openpgp_inline_disable">Blokeeri</string>
@@ -908,6 +919,7 @@
   <string name="crypto_no_provider_button">Ava sätted</string>
   <string name="mail_list_widget_text">K-9 sõnumite nimekiri</string>
   <string name="mail_list_widget_loading">Sõnumite laadimine...</string>
+  <string name="fetching_folders_failed">Kaustade loendi laadimine ebaõnnestus</string>
   <string name="openpgp_enabled_error_title">Krüpteerimine poe võimalik</string>
   <string name="enable_encryption">Võimalda krüpteerimine</string>
   <string name="disable_encryption">Blokeeri krüpteerimine</string>
@@ -929,4 +941,7 @@
   <string name="navigation_drawer_close">Sulge</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Luba juurdepääs kontaktidele</string>
+  <string name="push_notification_info">Lisateabe saamiseks klõpsi</string>
+  <string name="push_info_learn_more_text">Lisateave</string>
+  <string name="push_info_configure_notification_action">Seadista teavitusi</string>
 </resources>

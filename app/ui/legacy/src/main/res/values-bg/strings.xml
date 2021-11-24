@@ -279,7 +279,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_lock_screen_notification_visibility_title">Известия при заключен екран</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Без известия при заключен екран</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Име на програмата</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Брояч на непрочетени съобщения</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Брояч на съобщения и изпращачи</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Същото, както когато екранът е заключен</string>
   <string name="quiet_time">Тих режим</string>
