@@ -278,7 +278,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_lock_screen_notification_visibility_title">Oznámenia na obrazovke uzamknutia</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Žiadne oznámenia na obrazovke uzamknutia</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Názov aplikácie</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Počet neprečítaných správ</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Počet správ a odosielatelia</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Rovnaké ako pri odomknutej obrazovke</string>
   <string name="quiet_time">Čas ticha</string>

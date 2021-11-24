@@ -78,6 +78,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="compose_title_forward_as_attachment">Inoltra come allegato</string>
   <string name="choose_account_title">Scegli account</string>
   <string name="choose_folder_title">Scegli cartella</string>
+  <string name="choose_folder_move_title">Sposta in...</string>
+  <string name="choose_folder_copy_title">Copia in...</string>
   <string name="status_loading_account_folder">Recupero da <xliff:g id="account">%s</xliff:g>: <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Recupero intestazioni <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Invio <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -283,7 +285,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="global_settings_lock_screen_notification_visibility_title">Notifiche schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nessuna notifica sulla schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nome applicazione</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Numero messaggi non letti</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Numero nuovi messaggi</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Numero messaggi e mittenti</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Come quando lo schermo è sbloccato</string>
   <string name="quiet_time">Modalità silenziosa</string>
@@ -298,6 +300,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_basics_show_password">Mostra password</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Per visualizzare la tua password qui, abilita il blocco dello schermo su questo dispositivo.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verifica la tua identità</string>
   <string name="account_setup_basics_show_password_biometrics_subtitle">Sblocca per visualizzare la tua password</string>
   <string name="account_setup_basics_manual_setup_action">Configurazione manuale</string>
   <string name="account_setup_check_settings_title"/>
@@ -431,6 +434,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_notify_contacts_mail_only_label">Solo contatti</string>
   <string name="account_notify_contacts_mail_only_summary">Mostra notifiche solo per i messaggi da contatti conosciuti</string>
   <string name="account_settings_ignore_chat_messages_label">Ignora i messaggi di chat</string>
+  <string name="account_settings_ignore_chat_messages_summary">Non visualizzare notifiche per i messaggi appartenenti ad una chat</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca come letto all\'apertura</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca un messaggio come letto quando viene aperto per la visualizzazione</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marca come letto all\'eliminazione </string>
@@ -900,6 +904,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="recipient_bcc">Ccn</string>
   <string name="recipient_to">A</string>
   <string name="recipient_from">Da</string>
+  <string name="reply_to_label">Rispondi a</string>
   <string name="unknown_recipient">&lt;Destinatario sconosciuto&gt;</string>
   <string name="unknown_sender">&lt;Mittente sconosciuto&gt;</string>
   <string name="address_type_home">Casa</string>

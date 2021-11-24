@@ -204,6 +204,9 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="debug_enable_debug_logging_summary">Logga extra diagnostisk information</string>
   <string name="debug_enable_sensitive_logging_title">Logga känslig information</string>
   <string name="debug_enable_sensitive_logging_summary">Kan visa lösenord i loggarna.</string>
+  <string name="debug_export_logs_title">Exportera loggar</string>
+  <string name="debug_export_logs_success">Exporten lyckades. Loggar kan innehålla känslig information. Var försiktig med vem du skickar dem till.</string>
+  <string name="debug_export_logs_failure">Exporten misslyckades.</string>
   <string name="message_list_load_more_messages_action">Läs in fler meddelanden</string>
   <string name="message_to_fmt">Till:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Ämne</string>
@@ -284,7 +287,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="global_settings_lock_screen_notification_visibility_title">Aviseringar på låsskärmen</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Inga aviseringar på låsskärmen</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Applikationsnamn</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Antal olästa meddelanden</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Nytt meddelandeantal</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Meddelandeantal och avsändare</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Samma som när skärmen är olåst</string>
   <string name="quiet_time">Tyst tid</string>

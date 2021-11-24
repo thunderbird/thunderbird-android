@@ -205,6 +205,9 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="debug_enable_debug_logging_summary">Regjistro të dhëna ekstra diagnostikimesh</string>
   <string name="debug_enable_sensitive_logging_title">Regjistro të dhëna konfidenciale</string>
   <string name="debug_enable_sensitive_logging_summary">Mund të shfaqë fjalëkalime te regjistrat </string>
+  <string name="debug_export_logs_title">Eksportoni regjistra</string>
+  <string name="debug_export_logs_success">Eksportim i suksesshëm. Regjistrat mund të përmbajnë të dhëna rezervat. Bëni kujdes kujt ia dërgoni.</string>
+  <string name="debug_export_logs_failure">Eksportimi dështoi.</string>
   <string name="message_list_load_more_messages_action">Ngarko më tepër mesazhe</string>
   <string name="message_to_fmt">Për:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Subjekt</string>
@@ -285,7 +288,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="global_settings_lock_screen_notification_visibility_title">Njoftime Nën Ekran të Kyçur</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Pa njoftime nën ekran të kyçur</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Emër aplikacioni</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Numër mesazhesh të palexuar</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Numër mesazhesh të rinj</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Numër mesazhesh de dërgues</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Njësoj si kur ekrani është i kyçur</string>
   <string name="quiet_time">Qetësi</string>

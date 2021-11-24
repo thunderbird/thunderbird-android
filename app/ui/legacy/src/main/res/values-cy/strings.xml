@@ -274,7 +274,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="global_settings_lock_screen_notification_visibility_title">Hysbysiadau ar y Sgrin Cloi</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Dim hysbysiadau ar y sgrin cloi</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Enw\'r ap</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Nifer o negeseuon heb eu darllen</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Anfonwyr a nifer o negeseuon</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Yr un fath a phan nad yw\'r sgrin ar gloi</string>
   <string name="quiet_time">Amser Distawrwydd</string>

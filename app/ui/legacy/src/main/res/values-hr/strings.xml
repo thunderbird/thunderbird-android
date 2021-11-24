@@ -236,7 +236,6 @@
   <string name="global_settings_lock_screen_notification_visibility_title">Obavijesti Zaključanog Zaslona</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nema obavijesti zaključanog zaslona</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Naziv aplikacije</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Broj nepročitanih poruka</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Broj poruka i pošiljatelja</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Isto kao kod otključanog zaslona</string>
   <string name="quiet_time">Tiho Vrijeme</string>

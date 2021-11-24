@@ -248,7 +248,6 @@
   <string name="global_settings_lock_screen_notification_visibility_title">Brathan air an sgrìn-ghlasaidh</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Na seall brathan air an sgrìn-ghlasaidh</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Ainm na h-aplacaid</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Co mheud teachdaireachd gun leughadh</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Co mheud teachdaireachd is seòladair</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">An aon rud nuair nach bi an sgrìn glaiste</string>
   <string name="quiet_time">Amannan sàmhach</string>

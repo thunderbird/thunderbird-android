@@ -280,7 +280,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_lock_screen_notification_visibility_title">Jakinarazpenak Blokeatutako Pantailan</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Jakinarazpenik ez blokeatutako pantailan</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Aplikazioaren izena</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Irakurri gabeko mezuen kopurua</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Mezu kopurua eta bidaltzaileak</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Pantaila desblokeatuta dagoenean bezala</string>
   <string name="quiet_time">Alertarik gabeko aldia</string>

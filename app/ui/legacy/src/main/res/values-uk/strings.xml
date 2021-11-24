@@ -286,7 +286,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="global_settings_lock_screen_notification_visibility_title">Сповіщення на заблокованому екрані</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Без сповіщень на заблокованому екрані</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Ім\'я додатку</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Кількість непрочитаних повідомлень</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Кількість повідомлень і відправники</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Так само, як і при розблокованому екрані</string>
   <string name="quiet_time">Тиха Година</string>

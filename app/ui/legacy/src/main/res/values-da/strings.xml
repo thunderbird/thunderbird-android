@@ -281,7 +281,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="global_settings_lock_screen_notification_visibility_title">Besked på låseskærmen</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen besked på låseskærmen </string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Programnavn</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Antal ulæste meddelelser</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Antal mails og afsendere</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Samme som når skærmen er ulåst</string>
   <string name="quiet_time">Tidsrum med stilhed</string>

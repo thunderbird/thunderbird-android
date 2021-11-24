@@ -272,7 +272,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="global_settings_lock_screen_notification_visibility_title">Notifikasi Layar Penguncian</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Tidak ada pemberitahuan layar kunci</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nama aplikasi</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Jumlah pesan belum dibaca</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Jumlah pesan dan pengirim</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Sama seperti saat layar tidak dikunci</string>
   <string name="quiet_time">Waktu Hening</string>

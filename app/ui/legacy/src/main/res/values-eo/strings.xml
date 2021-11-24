@@ -282,7 +282,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="global_settings_lock_screen_notification_visibility_title">Sciigoj sur ŝlos-ekrano</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Sen sciigoj sur ŝlos-ekrano</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Aplikaĵa nomo</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Kiom da nelegitaj mesaĝoj</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Kiom da novaj mesaĝoj</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Kiom da mesaĝoj kaj sendintoj</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Same kiel sur malŝlosita ekrano</string>
   <string name="quiet_time">Silenta tempo</string>

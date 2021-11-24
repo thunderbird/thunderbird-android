@@ -271,7 +271,6 @@
   <string name="global_settings_lock_screen_notification_visibility_title">إشعارات الشاشة المقفلة</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">لا إشعارات في قفل الشاشة</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">اسم التطبيق</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">تعداد الرسائل غير المقروءة</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">تعداد الرسائل و المُرسِلين</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">الشيء نفسه عندما تكون الشاشة غير مقفلة</string>
   <string name="quiet_time">وقت الهدوء</string>

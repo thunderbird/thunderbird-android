@@ -265,7 +265,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_lock_screen_notification_visibility_title">Notificações no ecrã de bloqueio</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Sem notificações no ecrã de bloqueio</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nome da aplicação</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Número de mensagens não lidas</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Número de mensagens e remetentes</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">O mesmo quando o ecrã está desbloqueado</string>
   <string name="quiet_time">Período de sossego</string>

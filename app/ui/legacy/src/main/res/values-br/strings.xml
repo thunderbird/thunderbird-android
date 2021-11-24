@@ -264,7 +264,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="global_settings_lock_screen_notification_visibility_title">Rebuzadurioù ar skramm-prennañ</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Rebuzadur ebet er skramm prennañ</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Anv an arload</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Niver a gemennadennoù anlennet</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Niver a gemennadennoù ha kaserien</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Memes tra ha p’eo dibrenn ar skramm</string>
   <string name="quiet_time">Prantad didrouz</string>

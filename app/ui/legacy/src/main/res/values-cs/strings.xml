@@ -208,6 +208,9 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="debug_enable_debug_logging_summary">Zaznamenávat rozšířené diagnostické informace</string>
   <string name="debug_enable_sensitive_logging_title">Záznamenávat citlivé informace</string>
   <string name="debug_enable_sensitive_logging_summary">V záznamech mohou být zobrazena hesla</string>
+  <string name="debug_export_logs_title">Exportovat záznamy událostí</string>
+  <string name="debug_export_logs_success">Export úspěšný. Záznamy událostí mohou obsahovat citlivé informace. Buďte opatrní s tím, komu je pošlete.</string>
+  <string name="debug_export_logs_failure">Export se nezdařil.</string>
   <string name="message_list_load_more_messages_action">Načti více zpráv</string>
   <string name="message_to_fmt">Komu:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Předmět</string>
@@ -288,7 +291,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="global_settings_lock_screen_notification_visibility_title">Oznámení na uzamčené obrazovce</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Žádná oznámení na uzamčené obrazovce</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Jméno aplikace</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Počet nepřečtených zpráv</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Počet nových zpráv</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Počet zpráv a odesilatelů</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Stejné jako při odemčené obrazovce</string>
   <string name="quiet_time">Doba klidu</string>

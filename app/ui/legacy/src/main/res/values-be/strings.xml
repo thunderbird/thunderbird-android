@@ -277,7 +277,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="global_settings_lock_screen_notification_visibility_title">Апавяшчэнні на экране блакавання</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Прыбраць з экрана блакавання</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Назва праграмы</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Лічыльнік непрачытаных лістоў</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Лічыльнік лістоў і адпраўнікі</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Як без блакавання</string>
   <string name="quiet_time">Перыяд цішыні</string>

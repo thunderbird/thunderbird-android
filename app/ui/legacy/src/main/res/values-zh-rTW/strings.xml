@@ -78,6 +78,8 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="compose_title_forward_as_attachment">以附件形式轉寄</string>
   <string name="choose_account_title">選取帳號</string>
   <string name="choose_folder_title">選取信件匣</string>
+  <string name="choose_folder_move_title">移至...</string>
+  <string name="choose_folder_copy_title">複製至...</string>
   <string name="status_loading_account_folder">正在接收<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">正在接收郵件標頭<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">正在寄送<xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -280,7 +282,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="global_settings_lock_screen_notification_visibility_title">螢幕鎖定通知</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">無螢幕鎖定通知</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">應用程式名稱</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">未讀訊息數</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">新訊息總數</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">訊息數及寄件人</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">與解除螢幕鎖定時相同</string>
   <string name="quiet_time">靜音時間</string>
@@ -894,6 +896,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="recipient_bcc">密件副本</string>
   <string name="recipient_to">收件人</string>
   <string name="recipient_from">寄件人：</string>
+  <string name="reply_to_label">回覆給</string>
   <string name="unknown_recipient">&lt;未知收件人&gt;</string>
   <string name="unknown_sender">&lt;未知寄件人&gt;</string>
   <string name="address_type_home">住家</string>

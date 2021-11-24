@@ -77,6 +77,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="compose_title_forward_as_attachment">Reenvia com a adjunt</string>
   <string name="choose_account_title">Trieu un compte</string>
   <string name="choose_folder_title">Tria carpeta</string>
+  <string name="choose_folder_move_title">Mou a...</string>
+  <string name="choose_folder_copy_title">Copia a...</string>
   <string name="status_loading_account_folder">Comprova <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">S\'estan recuperant capçaleres <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">S\'està enviant <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -282,7 +284,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_lock_screen_notification_visibility_title">Bloqueja les notificacions de pantalla</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">No bloquegis les notificacions de pantalla</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nom de l\'aplicació</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Compte de missatges no llegits</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Compte de missatges nou</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Compte de missatges i remitents</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">El mateix que amb la pantalla desbloquejada</string>
   <string name="quiet_time">Mode silenciós</string>

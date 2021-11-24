@@ -202,6 +202,9 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="debug_enable_debug_logging_summary">记录额外的调试信息</string>
   <string name="debug_enable_sensitive_logging_title">记录敏感信息</string>
   <string name="debug_enable_sensitive_logging_summary">将会在日志中显示密码。</string>
+  <string name="debug_export_logs_title">导出日志</string>
+  <string name="debug_export_logs_success">导出成功。日志可能包含敏感信息。小心选择你要发给的人。</string>
+  <string name="debug_export_logs_failure">导出失败</string>
   <string name="message_list_load_more_messages_action">加载更多邮件</string>
   <string name="message_to_fmt">收件人: <xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">主题</string>
@@ -282,7 +285,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="global_settings_lock_screen_notification_visibility_title">屏幕锁定通知</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">无屏幕锁定通知</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">应用程序名称</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">未读消息计数</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">新消息总数</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">消息计数及发件人</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">与解除屏幕锁定时相同</string>
   <string name="quiet_time">免打扰时间</string>

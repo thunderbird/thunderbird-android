@@ -76,6 +76,8 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="compose_title_forward_as_attachment">Továbbítás mellékletként</string>
   <string name="choose_account_title">Fiók választása</string>
   <string name="choose_folder_title">Mappa választása</string>
+  <string name="choose_folder_move_title">Áthelyezés…</string>
+  <string name="choose_folder_copy_title">Másolás…</string>
   <string name="status_loading_account_folder">Lekérés <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Fejlécek beolvasása <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account"> <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>küldése folyamatban van...</string>
@@ -280,7 +282,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_lock_screen_notification_visibility_title">Képernyőzár értesítések</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nincsenek képernyőzár értesítések</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Alkalmazás neve</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Olvasatlan üzenetek száma</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Új üzenetek száma</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Üzenet számlálók és feladók</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Ugyanaz, mint feloldott képernyőnél</string>
   <string name="quiet_time">Csendes idő</string>
