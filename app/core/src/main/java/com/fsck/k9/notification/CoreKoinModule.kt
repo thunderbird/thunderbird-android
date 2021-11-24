@@ -56,31 +56,45 @@ val coreNotificationModule = module {
     }
     single {
         NewMailNotificationController(
-            notificationHelper = get(),
-            contentCreator = get(),
+            notificationManager = get(),
+            newMailNotificationManager = get(),
             summaryNotificationCreator = get(),
             singleMessageNotificationCreator = get()
         )
     }
-    single { NotificationContentCreator(context = get(), resourceProvider = get()) }
     single {
+        NewMailNotificationManager(
+            contentCreator = get(),
+            baseNotificationDataCreator = get(),
+            singleMessageNotificationDataCreator = get(),
+            summaryNotificationDataCreator = get(),
+            clock = get()
+        )
+    }
+    factory { NotificationContentCreator(context = get(), resourceProvider = get()) }
+    factory { BaseNotificationDataCreator() }
+    factory { SingleMessageNotificationDataCreator() }
+    factory { SummaryNotificationDataCreator(singleMessageNotificationDataCreator = get()) }
+    factory {
         SingleMessageNotificationCreator(
             notificationHelper = get(),
             actionCreator = get(),
             resourceProvider = get(),
-            lockScreenNotificationCreator = get()
+            lockScreenNotificationCreator = get(),
+            notificationManager = get()
         )
     }
-    single {
+    factory {
         SummaryNotificationCreator(
             notificationHelper = get(),
             actionCreator = get(),
             lockScreenNotificationCreator = get(),
             singleMessageNotificationCreator = get(),
-            resourceProvider = get()
+            resourceProvider = get(),
+            notificationManager = get()
         )
     }
-    single { LockScreenNotificationCreator(notificationHelper = get(), resourceProvider = get()) }
+    factory { LockScreenNotificationCreator(notificationHelper = get(), resourceProvider = get()) }
     single {
         PushNotificationManager(
             context = get(),

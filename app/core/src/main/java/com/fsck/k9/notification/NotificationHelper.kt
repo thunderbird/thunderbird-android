@@ -78,13 +78,38 @@ class NotificationHelper(
     }
 
     companion object {
-        private const val NOTIFICATION_LED_ON_TIME = 500
-        private const val NOTIFICATION_LED_OFF_TIME = 2000
+        internal const val NOTIFICATION_LED_ON_TIME = 500
+        internal const val NOTIFICATION_LED_OFF_TIME = 2000
         private const val NOTIFICATION_LED_FAST_ON_TIME = 100
         private const val NOTIFICATION_LED_FAST_OFF_TIME = 100
 
         internal const val NOTIFICATION_LED_BLINK_SLOW = 0
         internal const val NOTIFICATION_LED_BLINK_FAST = 1
         internal const val NOTIFICATION_LED_FAILURE_COLOR = -0x10000
+    }
+}
+
+internal fun NotificationCompat.Builder.setAppearance(
+    silent: Boolean,
+    appearance: NotificationAppearance
+): NotificationCompat.Builder = apply {
+    if (silent) {
+        setSilent(true)
+    } else {
+        if (!appearance.ringtone.isNullOrEmpty()) {
+            setSound(Uri.parse(appearance.ringtone))
+        }
+
+        if (appearance.vibrationPattern != null) {
+            setVibrate(appearance.vibrationPattern)
+        }
+
+        if (appearance.ledColor != null) {
+            setLights(
+                appearance.ledColor,
+                NotificationHelper.NOTIFICATION_LED_ON_TIME,
+                NotificationHelper.NOTIFICATION_LED_OFF_TIME
+            )
+        }
     }
 }
