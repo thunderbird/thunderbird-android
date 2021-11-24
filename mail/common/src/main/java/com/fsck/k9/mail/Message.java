@@ -159,16 +159,12 @@ public abstract class Message implements Part, Body {
     public abstract void setEncoding(String encoding) throws MessagingException;
 
     public long calculateSize() {
-        try {
-
-            CountingOutputStream out = new CountingOutputStream();
+        try (CountingOutputStream out = new CountingOutputStream()) {
             EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(out);
             writeTo(eolOut);
             eolOut.flush();
             return out.getCount();
-        } catch (IOException e) {
-            Timber.e(e, "Failed to calculate a message size");
-        } catch (MessagingException e) {
+        } catch (IOException | MessagingException e) {
             Timber.e(e, "Failed to calculate a message size");
         }
         return 0;

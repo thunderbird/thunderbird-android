@@ -21,10 +21,8 @@ class ProgressBodyFactory extends DefaultBodyFactory {
 
     @Override
     protected void copyData(InputStream inputStream, OutputStream outputStream) throws IOException {
-        final CountingOutputStream countingOutputStream = new CountingOutputStream(outputStream);
-
         Timer timer = new Timer();
-        try {
+        try (CountingOutputStream countingOutputStream = new CountingOutputStream(outputStream)) {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {

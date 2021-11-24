@@ -113,23 +113,18 @@ public class TextBody implements Body, SizeAware {
     }
 
     private long getLengthWhenQuotedPrintableEncoded(byte[] bytes) throws IOException {
-        CountingOutputStream countingOutputStream = new CountingOutputStream();
-        writeSignSafeQuotedPrintable(countingOutputStream, bytes);
-        return countingOutputStream.getCount();
+        try (CountingOutputStream countingOutputStream = new CountingOutputStream()) {
+            writeSignSafeQuotedPrintable(countingOutputStream, bytes);
+            return countingOutputStream.getCount();
+        }
     }
 
     private void writeSignSafeQuotedPrintable(OutputStream out, byte[] bytes) throws IOException {
-        SignSafeOutputStream signSafeOutputStream = new SignSafeOutputStream(out);
-        try {
-            QuotedPrintableOutputStream signSafeQuotedPrintableOutputStream =
-                    new QuotedPrintableOutputStream(signSafeOutputStream, false);
-            try {
+        try (SignSafeOutputStream signSafeOutputStream = new SignSafeOutputStream(out)) {
+            try (QuotedPrintableOutputStream signSafeQuotedPrintableOutputStream = new QuotedPrintableOutputStream(
+                    signSafeOutputStream, false)) {
                 signSafeQuotedPrintableOutputStream.write(bytes);
-            } finally {
-                signSafeQuotedPrintableOutputStream.close();
             }
-        } finally {
-            signSafeOutputStream.close();
         }
     }
 
