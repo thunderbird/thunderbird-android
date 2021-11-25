@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 80;
+    static final int DB_VERSION = 81;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -248,5 +248,15 @@ class StoreSchemaDefinition implements SchemaDefinition {
 
         db.execSQL("DROP TABLE IF EXISTS messages_fulltext");
         db.execSQL("CREATE VIRTUAL TABLE messages_fulltext USING fts4 (fulltext)");
+
+        db.execSQL("DROP TABLE IF EXISTS notifications");
+        db.execSQL("CREATE TABLE notifications (" +
+                "message_id INTEGER PRIMARY KEY NOT NULL REFERENCES messages(id) ON DELETE CASCADE," +
+                "notification_id INTEGER UNIQUE," +
+                "timestamp INTEGER NOT NULL" +
+                ")");
+
+        db.execSQL("DROP INDEX IF EXISTS notifications_timestamp");
+        db.execSQL("CREATE INDEX IF NOT EXISTS notifications_timestamp ON notifications(timestamp)");
     }
 }
