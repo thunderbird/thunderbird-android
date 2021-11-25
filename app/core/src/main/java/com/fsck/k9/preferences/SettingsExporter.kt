@@ -268,17 +268,29 @@ class SettingsExporter(
         folderRepository: FolderRepository,
         serializer: XmlSerializer
     ) {
-        fun writeFolderNameSetting(key: String, folderId: Long?, importedFolderServerId: String?) {
+        fun writeFolderNameSetting(
+            key: String,
+            folderId: Long?,
+            importedFolderServerId: String?,
+            writeEmptyValue: Boolean = false
+        ) {
             val folderServerId = folderId?.let {
                 folderRepository.getFolderServerId(account, folderId)
             } ?: importedFolderServerId
 
             if (folderServerId != null) {
                 writeAccountSettingIfValid(serializer, key, folderServerId, account)
+            } else if (writeEmptyValue) {
+                writeAccountSettingIfValid(serializer, key, valueString = "", account)
             }
         }
 
-        writeFolderNameSetting("autoExpandFolderName", account.autoExpandFolderId, account.importedAutoExpandFolder)
+        writeFolderNameSetting(
+            "autoExpandFolderName",
+            account.autoExpandFolderId,
+            account.importedAutoExpandFolder,
+            writeEmptyValue = true
+        )
         writeFolderNameSetting("archiveFolderName", account.archiveFolderId, account.importedArchiveFolder)
         writeFolderNameSetting("draftsFolderName", account.draftsFolderId, account.importedDraftsFolder)
         writeFolderNameSetting("sentFolderName", account.sentFolderId, account.importedSentFolder)
