@@ -24,7 +24,7 @@
             android:layout_gravity="center_vertical"
             app:srcCompat="@drawable/status_signature"
             android:scaleType="fitCenter"
-            android:tint="@color/light_black"
+            app:tint="@color/light_black"
             />
 
         <TextView
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:padding="6dp"
             app:srcCompat="@drawable/status_lock_disabled"
-            android:tint="?attr/openpgp_dark_grey"
+            app:tint="?attr/openpgp_dark_grey"
             />
 
         <ImageView
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:padding="6dp"
             app:srcCompat="@drawable/status_lock"
-            android:tint="?attr/openpgp_green"
+            app:tint="?attr/openpgp_green"
             />
 
     </LinearLayout>

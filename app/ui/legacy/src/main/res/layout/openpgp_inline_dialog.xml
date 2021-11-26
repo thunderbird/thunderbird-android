@@ -22,7 +22,7 @@
             android:layout_gravity="center_vertical"
             app:srcCompat="@drawable/compatibility"
             android:scaleType="fitCenter"
-            android:tint="@color/light_black"
+            app:tint="@color/light_black"
             />
 
         <TextView
