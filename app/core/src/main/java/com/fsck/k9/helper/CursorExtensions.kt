@@ -23,3 +23,15 @@ fun Cursor.getLongOrNull(columnName: String): Long? {
     val columnIndex = getColumnIndex(columnName)
     return if (isNull(columnIndex)) null else getLong(columnIndex)
 }
+
+fun Cursor.getStringOrThrow(columnName: String): String {
+    return getStringOrNull(columnName) ?: error("Column $columnName must not be null")
+}
+
+fun Cursor.getIntOrThrow(columnName: String): Int {
+    return getIntOrNull(columnName) ?: error("Column $columnName must not be null")
+}
+
+fun Cursor.getLongOrThrow(columnName: String): Long {
+    return getLongOrNull(columnName) ?: error("Column $columnName must not be null")
+}
