@@ -8,7 +8,6 @@
   <string name="unread_widget_label">K-9 - Ólesið</string>
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 hundatemjararnir</string>
-  <string name="app_copyright_fmt">Höfundarréttur 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Höfundarréttur að hluta 2006-<xliff:g>%s</xliff:g> til Android Open Source verkefnisins.</string>
   <string name="source_code">Grunnkóði</string>
   <string name="app_license">Apache notkunarleyfi, útgáfa 2.0</string>
   <string name="about_project_title">Verkefni með opnum grunnkóða</string>
@@ -61,14 +60,12 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_delete_dlg_instructions_fmt">Aðgangurinn \"<xliff:g id="account">%s</xliff:g>\" verður fjarlægður úr K-9 póstinum.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Höfundar</string>
-  <string name="app_revision">Útgáfuupplýsingar</string>
   <string name="read_messages_label">Lesa tölvupósta</string>
   <string name="read_messages_desc">Leyfa þessu forriti að lesa tölvupóstana mína.</string>
   <string name="delete_messages_label">Eyða tölvupóstum</string>
   <string name="delete_messages_desc">Leyfa þessu forriti að eyða tölvupóstum.</string>
   <string name="about_title">Um K-9 póstinn</string>
   <string name="accounts_title">Aðgangar</string>
-  <string name="folders_title">Möppur</string>
   <string name="advanced">Ítarlegt</string>
   <string name="compose_title_compose">Semja</string>
   <string name="compose_title_reply">Svara</string>
@@ -79,12 +76,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="choose_folder_title">Veldu möppu</string>
   <string name="choose_folder_move_title">Færa í…</string>
   <string name="choose_folder_copy_title">Afrita í…</string>
-  <string name="status_loading_account_folder">Athuga <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">Sæki hausa <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">Sendi <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Vinn <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">Samstilling óvirk</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valið</string>
   <string name="next_action">Næsta</string>
   <string name="previous_action">Fyrra</string>
@@ -92,10 +83,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="okay_action">Í lagi</string>
   <string name="cancel_action">Hætta við</string>
   <string name="send_action">Senda</string>
-  <string name="send_again_action">Senda aftur</string>
   <string name="empty_subject">Viðfangsefni er autt, smelltu aftur til að senda samt</string>
-  <string name="select_action">Velja</string>
-  <string name="deselect_action">Afvelja</string>
   <string name="reply_action">Svara</string>
   <string name="reply_all_action">Svara öllum</string>
   <string name="delete_action">Fjarlægja</string>
@@ -161,8 +149,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="account_size_changed">Aðgangurinn \"<xliff:g id="account">%s</xliff:g>\" minnkaði úr <xliff:g id="oldSize">%s</xliff:g> í <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">Þjappa \"<xliff:g id="account">%s</xliff:g>\" aðganginum</string>
   <string name="notification_new_title">Nýr póstur</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> ný skilaboð</item>
@@ -230,20 +216,14 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Afrit:</string>
   <string name="message_view_bcc_label">Falið afrit:</string>
-  <string name="message_view_attachment_view_action">Opna</string>
-  <string name="message_view_attachment_download_action">Vista</string>
   <string name="message_view_status_attachment_not_saved">Tókst ekki að vista viðhengi</string>
   <string name="message_view_show_pictures_action">Sýna myndir</string>
   <string name="message_view_no_viewer">Gat ekki fundið neitt skoðunarforrit fyrir <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Niðurhala heil skilaboð</string>
-  <string name="message_view_toast_unable_to_display_message">Náði ekki að birta skilaboð</string>
   <string name="message_view_sender_label">í gegnum %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">Búið er að ná í alla hausa, en það eru engir viðbótarhausar sem hægt er að sækja.</string>
-  <string name="message_additional_headers_retrieval_failed">Mistókst að sækja viðbótarhausa úr gagnagrunni eða af póstþjóni.</string>
   <string name="from_same_sender">Fleira frá þessum sendanda</string>
   <string name="search_from_format">Frá <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">Aflúsa / Hreinsa meginmál skilaboða</string>
   <string name="message_discarded_toast">Skilaboðum hent</string>
   <string name="message_saved_toast">Skilaboð vistuð sem drög</string>
   <string name="global_settings_flag_label">Birta stjörnur</string>
@@ -295,7 +275,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_basics_title">Setja upp nýjan aðgang</string>
   <string name="account_setup_basics_email_hint">Netfang</string>
   <string name="account_setup_basics_password_hint">Lykilorð</string>
-  <string name="account_setup_basics_show_password">Sýna lykilorð</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Til að skoða lykilorðið þitt hér skaltu virkja skjálæsingu á þessu tæki</string>
   <string name="account_setup_basics_show_password_biometrics_title">Sannreyndu auðkennin þín</string>
@@ -355,11 +334,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_incoming_subscribed_folders_only_label">Sýna einungis möppur í áskrift</string>
   <string name="account_setup_auto_expand_folder">Fletta möppu út sjálfvirkt</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA-slóð</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Valkvætt</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Slóð auðkenningar</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Valkvætt</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Samnefni pósthólfs</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Valkvætt</string>
   <string name="account_setup_outgoing_title">Stillingar sendinga-póstþjóns</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-þjónn</string>
   <string name="account_setup_outgoing_port_label">Gátt</string>
@@ -371,7 +347,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" er ekki gilt með \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Ógild uppsetning: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Valkostir aðgangs</string>
-  <string name="compact_action">Þjappa aðgangi</string>
   <string name="account_setup_options_mail_check_frequency_label">Tíðni athugana á möppu</string>
   <string name="account_setup_options_mail_check_frequency_never">Aldrei</string>
   <string name="account_setup_options_mail_check_frequency_15min">Á 15 mínútna fresti</string>
@@ -382,8 +357,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_options_mail_check_frequency_6hour">Á 6 klukkustunda fresti</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Á 12 klukkustunda fresti</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Á 24 klukkustunda fresti</string>
-  <string name="account_setup_options_enable_push_label">Virkja ýtipóst fyrir þennan aðgang</string>
-  <string name="account_setup_options_enable_push_summary">Ef póstþjónninn þinn styður þennan eiginleika, munu ný skilaboð birtast jafnóðum. Þessi valkostur getur haft gríðarleg áhrif á afköst - bætt þau eða hamlað.</string>
   <string name="idle_refresh_period_label">Endurnýja IDLE-tengingu</string>
   <string name="idle_refresh_period_2min">Á 2 mínútna fresti</string>
   <string name="idle_refresh_period_3min">Á 3 mínútna fresti</string>
@@ -394,7 +367,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="idle_refresh_period_48min">Á 48 mínútna fresti</string>
   <string name="idle_refresh_period_60min">Á 60 mínútna fresti</string>
   <string name="account_setup_options_notify_label">Láta mig vita þegar nýr póstur berst</string>
-  <string name="account_setup_options_notify_sync_label">Láta mig vita þegar athugað er með nýjan póst</string>
   <string name="account_setup_options_mail_display_count_label">Fjöldi skilaboða sem á að birta</string>
   <string name="account_setup_options_mail_display_count_10">10 skilaboð</string>
   <string name="account_setup_options_mail_display_count_25">25 skilaboð</string>
@@ -481,7 +453,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_mail_check_frequency_label">Tíðni athugana á möppu</string>
   <string name="account_settings_color_label">Litur aðgangsins</string>
   <string name="account_settings_color_summary">Liturinn sem notaður er til að auðkenna þennan aðgang í listum</string>
-  <string name="account_settings_color_none">Enginn litur</string>
   <string name="account_settings_led_color_label">Litur LED-merkis fyrir tilkynningar</string>
   <string name="account_settings_led_color_summary">Litur LED-merkis sem tækið á að blikka við tilkynningar fyrir þennan aðgang</string>
   <string name="account_settings_mail_display_count_label">Stærð staðværrar möppu</string>
@@ -693,10 +664,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="volume_navigation_list">Í listasýnum</string>
   <string name="show_unified_inbox_title">Birta sameinað innhólf</string>
   <string name="show_starred_count_title">Birta fjölda stjarna</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier">- Ólesið</string>
-  <string name="search_all_messages_title">Öll skilaboð</string>
-  <string name="search_all_messages_detail">Öll skilaboð í leitanlegum möppum</string>
   <string name="integrated_inbox_title">Sameinað innhólf</string>
   <string name="integrated_inbox_detail">Öll skilaboð í sameinuðum möppum</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Sameina</string>
@@ -729,8 +696,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="font_size_message_view_subject">Viðfangsefni</string>
   <string name="font_size_message_view_date">Tími og dagsetning</string>
   <string name="font_size_message_view_content">Efni skilaboða</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Samsetning skilaboða</string>
   <string name="font_size_message_compose_input">Inntaksreitir texta</string>
   <string name="font_size_default">Sjálfgefið</string>
@@ -999,8 +964,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="crypto_no_provider_button">Fara í stillingar</string>
   <string name="mail_list_widget_text">Skilaboðalisti K-9</string>
   <string name="mail_list_widget_loading">Hleður skilaboð…</string>
-  <string name="fetching_folders_failed">Mistókst að sækja möppulista</string>
-  <string name="error_recipient_crypto_retrieve">Villa við að fá stöðu viðtakanda frá OpenPGP-veitu!</string>
   <string name="openpgp_enabled_error_title">Dulritun er ekki möguleg</string>
   <string name="openpgp_enabled_error_msg">Sumir valinna viðtakenda styðja ekki við þennan eiginleika!</string>
   <string name="enable_encryption">Virkja dulritun</string>
@@ -1046,8 +1009,6 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
   <string name="ac_transfer_error_send">Villa kom upp við að senda skilaboðin. Athugaðu internettenginguna þína og uppsetningu þjóns fyrir útsendan póst.</string>
   <string name="switch_on">Kveikt</string>
   <string name="switch_off">Slökkt</string>
-  <string name="navigation_drawer_open">Opna</string>
-  <string name="navigation_drawer_close">Loka</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Leyfa aðgang að tengiliðum</string>
   <string name="permission_contacts_rationale_message">Til að geta komið með uppástungur um tengiliði og til að birta nöfn tengiliða og myndir, þá þarf forritið aðganga að tengiliðunum þínum.</string>

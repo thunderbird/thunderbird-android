@@ -21,7 +21,6 @@
   <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronised with the server</string>
   <string name="account_settings_color_label">Account colour</string>
   <string name="account_settings_color_summary">The accent colour of this account used in folder and account list</string>
-  <string name="account_settings_color_none">No colour</string>
   <string name="account_settings_led_color_label">Notification LED colour</string>
   <string name="account_settings_led_color_summary">The colour your device LED should blink for this account</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognised Certificate</string>

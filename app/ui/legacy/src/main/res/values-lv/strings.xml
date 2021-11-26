@@ -8,7 +8,6 @@
   <string name="unread_widget_label">K-9 Nelasīts</string>
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Suņa Staigātāji</string>
-  <string name="app_copyright_fmt">Autortiesības 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Daļējas autortiesības 2006-<xliff:g>%s</xliff:g> Android atvērtā koda projekts.</string>
   <string name="source_code">Avota kods</string>
   <string name="app_license">Apache licence, Versija 2.0</string>
   <string name="about_project_title">Atvērtā koda projekts</string>
@@ -61,14 +60,12 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="account_delete_dlg_instructions_fmt">Konts \"<xliff:g id="account">%s</xliff:g>\" tiks noņemts no K-9 Pasta.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autori</string>
-  <string name="app_revision">Informācija par izmaiņām</string>
   <string name="read_messages_label">Izlasīt e-pastus</string>
   <string name="read_messages_desc">Atļauj šai aplikācijai lasīt Jūsu e-pastus</string>
   <string name="delete_messages_label">Izdzēst e-pastus</string>
   <string name="delete_messages_desc">Atļauj šai aplikācijai izdzēst Jūsu e-pastus</string>
   <string name="about_title">Par K-9 Pastu</string>
   <string name="accounts_title">Konti</string>
-  <string name="folders_title">Mapes</string>
   <string name="advanced">Detalizētāk</string>
   <string name="compose_title_compose">Rakstīt vēstuli</string>
   <string name="compose_title_reply">Atbildēt</string>
@@ -79,12 +76,6 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="choose_folder_title">Izvēlēties mapi</string>
   <string name="choose_folder_move_title">Pārvietot uz ...</string>
   <string name="choose_folder_copy_title">Kopēt uz ...</string>
-  <string name="status_loading_account_folder">Pārbauda <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">Saņem vēstuļu papildinformāciju <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">Sūta <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">Sinhronizācija atslēgta</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> atzīmēts</string>
   <string name="next_action">Nākošais</string>
   <string name="previous_action">Iepriekšējais</string>
@@ -92,10 +83,7 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="okay_action">Labi</string>
   <string name="cancel_action">Atcelt</string>
   <string name="send_action">Sūtīt</string>
-  <string name="send_again_action">Sūtīt vēlreiz</string>
   <string name="empty_subject">Nav vēstules temata! Noklikšķiniet vēlreiz, lai tik un tā nosūtītu!</string>
-  <string name="select_action">Atzīmēt</string>
-  <string name="deselect_action">Noņemt atzīmi</string>
   <string name="reply_action">Atbildēt</string>
   <string name="reply_all_action">Atbildēt visiem</string>
   <string name="delete_action">Izdzēst</string>
@@ -162,8 +150,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="account_size_changed">Konts \"<xliff:g id="account">%s</xliff:g>\" sarucis no <xliff:g id="oldSize">%s</xliff:g> līdz <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">Saspiest kontu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Jauna vēstule</string>
   <plurals name="notification_new_messages_title">
     <item quantity="zero"><xliff:g id="new_message_count">%d</xliff:g> nav jaunu vēstuļu</item>
@@ -232,20 +218,14 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="message_to_label">Kam:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Neredzamais:</string>
-  <string name="message_view_attachment_view_action">Atvērt</string>
-  <string name="message_view_attachment_download_action">Saglabāt</string>
   <string name="message_view_status_attachment_not_saved">Nevar saglabāt pielikumu.</string>
   <string name="message_view_show_pictures_action">Rādīt bildes</string>
   <string name="message_view_no_viewer">Nevar atrast programmu, lai atvērtu <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">lejupielādēt pilnu vēstuli</string>
-  <string name="message_view_toast_unable_to_display_message">Nevar parādīt vēstuli</string>
   <string name="message_view_sender_label">caur %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">Visa vēstules papildinformācija tika lejupielādēta, bet nav nekādas papildinformācijas, ko parādīt.</string>
-  <string name="message_additional_headers_retrieval_failed">Vēstules papildinformācijas iegūšana no datu bāzes vai e-pasta servera neizdevās.</string>
   <string name="from_same_sender">Vairāk no šī sūtītāja</string>
   <string name="search_from_format">No <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">Atkļūdot / nodzēst vēstules tekstu</string>
   <string name="message_discarded_toast">Vēstule tika izmesta</string>
   <string name="message_saved_toast">Vēstule saglabāta kā melnraksts</string>
   <string name="global_settings_flag_label">Rādīt zvaigznītes</string>
@@ -298,7 +278,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_basics_title">Uzlikt jaunu kontu</string>
   <string name="account_setup_basics_email_hint">E-pasta adrese</string>
   <string name="account_setup_basics_password_hint">Parole</string>
-  <string name="account_setup_basics_show_password">Rādīt paroli</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Lai apskatītos savu paroli, ieslēdziet ekrāna bloķēšanu savā ierīcē.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Apstiprināt savu identitāti</string>
@@ -358,11 +337,8 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Rādīt tikai izvēlētās mapes</string>
   <string name="account_setup_auto_expand_folder">Automātiski izvērst mapi</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA ceļš</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Nav obligāti</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Identifikācijas ceļš</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Nav obligāti</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Pastkastes aizstājvārds</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Nav obligāti</string>
   <string name="account_setup_outgoing_title">Izejošā servera iestatījumi</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP serveris</string>
   <string name="account_setup_outgoing_port_label">Ports</string>
@@ -374,7 +350,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nav derīgs ar \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Nederīgi iestatījumi: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Konta iespējas</string>
-  <string name="compact_action">Kompakts konts</string>
   <string name="account_setup_options_mail_check_frequency_label">Mapes pārbaudes biežums</string>
   <string name="account_setup_options_mail_check_frequency_never">Nekad</string>
   <string name="account_setup_options_mail_check_frequency_15min">Katras 15 minūtes</string>
@@ -385,8 +360,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_options_mail_check_frequency_6hour">Katras 6 stundas</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Katras 12 stundas</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Katras 24 stundas</string>
-  <string name="account_setup_options_enable_push_label">Iestatīt pasta lejupielādēšanu šim kontam</string>
-  <string name="account_setup_options_enable_push_summary">Ja Jūsu serveris to atbalstīs, jaunas vēstules parādīsies nekavējotes. Šī iespēja var gan ievērojami uzlabot, gan arī samazināt veiktspēju.</string>
   <string name="idle_refresh_period_label">Atsvaidzināt IDLE savienojumu</string>
   <string name="idle_refresh_period_2min">Katras 2 minūtes</string>
   <string name="idle_refresh_period_3min">Katras 3 minūtes</string>
@@ -397,7 +370,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="idle_refresh_period_48min">Katras 48 minūtes</string>
   <string name="idle_refresh_period_60min">Katras 60 minūtes</string>
   <string name="account_setup_options_notify_label">Paziņot, kad saņemts jauns pasts</string>
-  <string name="account_setup_options_notify_sync_label">Paziņot, kad pasts tiek pārbaudīts</string>
   <string name="account_setup_options_mail_display_count_label">Vēstuļu skaits, ko parādīt</string>
   <string name="account_setup_options_mail_display_count_10">10 vēstules</string>
   <string name="account_setup_options_mail_display_count_25">25 vēstules</string>
@@ -484,7 +456,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_mail_check_frequency_label">Mapes pārbaudes biežums</string>
   <string name="account_settings_color_label">Konta krāsa</string>
   <string name="account_settings_color_summary">Noteicošā šī konta krāsa mapju un konta sarakstā</string>
-  <string name="account_settings_color_none">Bez krāsas</string>
   <string name="account_settings_led_color_label">Paziņojuma LED krāsa</string>
   <string name="account_settings_led_color_summary">Krāsa, kādā jūsu ierīces LED būtu jāmirgo šim kontam</string>
   <string name="account_settings_mail_display_count_label">Vietējās mapes izmērs</string>
@@ -696,10 +667,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="volume_navigation_list">Saraksta skatā</string>
   <string name="show_unified_inbox_title">Rādīt apvienoto pastkasti</string>
   <string name="show_starred_count_title">Parādīt atzīmēto vēstuļu skaitu</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier">- nelasīts</string>
-  <string name="search_all_messages_title">Visas vēstules</string>
-  <string name="search_all_messages_detail">Visas vēstules mapēs, kurās var meklēt</string>
   <string name="integrated_inbox_title">Apvienotā pastkaste</string>
   <string name="integrated_inbox_detail">Visas vēstules apvienotajās mapēs</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Apvienot</string>
@@ -732,8 +699,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="font_size_message_view_subject">Temats</string>
   <string name="font_size_message_view_date">Laiks un datums</string>
   <string name="font_size_message_view_content">Vēstules pamatteksts</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Vēstules rakstīšana</string>
   <string name="font_size_message_compose_input">Teksta ievades lauki</string>
   <string name="font_size_default">Noklusējums</string>
@@ -1007,8 +972,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="crypto_no_provider_button">Doties uz iestatījumiem</string>
   <string name="mail_list_widget_text">K-9 Vēstuļu saraksts</string>
   <string name="mail_list_widget_loading">Ielādē vēstules…</string>
-  <string name="fetching_folders_failed">Neizdevās saņemt mapju sarakstu</string>
-  <string name="error_recipient_crypto_retrieve">Kļūda, saņemot saņēmēja statusu no OpenPGP lietotnes!</string>
   <string name="openpgp_enabled_error_title">Nevar iešifrēt</string>
   <string name="openpgp_enabled_error_msg">Daži no izvēlētajiem saņēmējiem šo iespēju neatbalsta!</string>
   <string name="enable_encryption">Ieslēgt šifrēšanu</string>
@@ -1054,8 +1017,6 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <string name="ac_transfer_error_send">Kļūdas dēl neizdevās nosūtīt vēstuli. Lūdzu, pārbaudiet tīkla savienojumu un izejošā servera iestatījumus!</string>
   <string name="switch_on">Ieslēgt</string>
   <string name="switch_off">Izslēgt</string>
-  <string name="navigation_drawer_open">Atvērt</string>
-  <string name="navigation_drawer_close">Aizvērt</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Atļaut piekļuvi kontaktiem</string>
   <string name="permission_contacts_rationale_message">Lai ieteiktu kontaktus un parādītu to vārdus un attēlus, lietotnei nepieciešama atļauja piekļūt Jūsu kontaktiem.</string>

@@ -8,7 +8,6 @@
   <string name="unread_widget_label">رسائل K-9 غير المقروءة</string>
   <!--Used in the about dialog-->
   <string name="app_authors">فريق The K-9 Dog Walkers</string>
-  <string name="app_copyright_fmt">حقوق النشر محفوظة 2008 - <xliff:g>%s</xliff:g> The K-9 Dog Walkers. جزء من حقوق النشر محفوظة 2006 - <xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">الكود المصدري</string>
   <string name="app_license">Apache License, Version 2.0</string>
   <string name="about_project_title">مشروع مفتوح المصدر</string>
@@ -54,14 +53,12 @@
   <string name="account_delete_dlg_instructions_fmt">سيُحذف الحساب \"<xliff:g id="account">%s</xliff:g>\" من الحسابات في K-9.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">الناشرين</string>
-  <string name="app_revision">معلومات المراجعة</string>
   <string name="read_messages_label">الرسائل المقروءة</string>
   <string name="read_messages_desc">السماح لهذا التطبيق بقراءة البريد الإلكتروني</string>
   <string name="delete_messages_label">حذف الرسائل</string>
   <string name="delete_messages_desc">السماح لهذا التطبيق بحذف رسائل البريد الإلكتروني</string>
   <string name="about_title">عن بريد K-9</string>
   <string name="accounts_title">الحسابات</string>
-  <string name="folders_title">المجلدات</string>
   <string name="advanced">متقدمة</string>
   <string name="compose_title_compose">أنشِئ</string>
   <string name="compose_title_reply">رُد</string>
@@ -70,12 +67,6 @@
   <string name="compose_title_forward_as_attachment">إعادة توجيه كمُرفَقات</string>
   <string name="choose_account_title">إختر حساب</string>
   <string name="choose_folder_title">إختر مجلد</string>
-  <string name="status_loading_account_folder">تحديث <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> <xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">سحب الترويسات <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> <xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">إرسال <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">معالجة <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020 <xliff:g id="completed">%d</xliff:g>\<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">المُزامنه معطلة</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> محدد</string>
   <string name="next_action">التالي</string>
   <string name="previous_action">السابق</string>
@@ -83,10 +74,7 @@
   <string name="okay_action">حسنًا</string>
   <string name="cancel_action">إلغ</string>
   <string name="send_action">أرسل</string>
-  <string name="send_again_action">أرسل مجددًا</string>
   <string name="empty_subject">موضوع الرسالة فارغ، أنقر مرة أخرى لمواصلة الإرسال</string>
-  <string name="select_action">حدد</string>
-  <string name="deselect_action">إلغ التحديد</string>
   <string name="reply_action">رُد</string>
   <string name="reply_all_action">رُد على الكل</string>
   <string name="delete_action">احذف</string>
@@ -154,8 +142,6 @@
   <string name="size_format_megabytes">%.1f ميجا</string>
   <string name="size_format_kilobytes">%.1f كيلو</string>
   <string name="size_format_bytes">%d بايت</string>
-  <string name="account_size_changed">تم تقليص الحساب \"<xliff:g id="account">%s</xliff:g> من <xliff:g id="oldSize">%s</xliff:g> الى <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">يتم ضغط \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">رسالة جديدة</string>
   <plurals name="notification_new_messages_title">
     <item quantity="zero"><xliff:g id="new_message_count">%d</xliff:g> ﻻ رسائل</item>
@@ -223,20 +209,14 @@
   <string name="message_to_label">إلى :</string>
   <string name="message_view_cc_label">نسخة كربونية :</string>
   <string name="message_view_bcc_label">نسخة مخفية:</string>
-  <string name="message_view_attachment_view_action">افتح</string>
-  <string name="message_view_attachment_download_action">احفظ</string>
   <string name="message_view_status_attachment_not_saved">غير قادر على حفظ المُرفَق.</string>
   <string name="message_view_show_pictures_action">اظهر الصور</string>
   <string name="message_view_no_viewer">يتعذر إيجاب تطبيق لعرض <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">تنزيل الرسالة كاملةً</string>
-  <string name="message_view_toast_unable_to_display_message">ﻻ يُمكن عرض الرسالة</string>
   <string name="message_view_sender_label">عبر %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">تم تنزيل جميع الترويسات ولكن لا يوجد ترويسات إضافية لعرضها.</string>
-  <string name="message_additional_headers_retrieval_failed">فشل استرداد الترويسات الإضافية من قاعدة بيانات أو من الخادم.</string>
   <string name="from_same_sender">المزيد من هذا المُرسِل</string>
   <string name="search_from_format">مِن طرف <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">تشخيص \ حذف محتويات الرسالة</string>
   <string name="message_discarded_toast">تم إلغاء الرسالة</string>
   <string name="message_saved_toast">تم الإحتفاظ بالرسالة كمسودة</string>
   <string name="global_settings_flag_label">إظهار النجوم</string>
@@ -281,7 +261,6 @@
   <string name="account_setup_basics_title">إعداد حساب جديد</string>
   <string name="account_setup_basics_email_hint">عنوان البريد الإليكتروني</string>
   <string name="account_setup_basics_password_hint">كلمة السِّر</string>
-  <string name="account_setup_basics_show_password">اظهر كلمة السِّر</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">الإعداد يدويا</string>
   <string name="account_setup_check_settings_title"/>
@@ -331,11 +310,8 @@
   <string name="spam_folder_label">مجلد البريد المزعج</string>
   <string name="account_setup_auto_expand_folder">توسيع المجلد تلقائيا</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">مسار OWA</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">اختياري</string>
   <string name="account_setup_incoming_webdav_auth_path_label">مسار المصادقة</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">اختياري</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">علبة بريد التحويل</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">اختياري</string>
   <string name="account_setup_outgoing_title">إعدادات الخادم الخارج</string>
   <string name="account_setup_outgoing_smtp_server_label">خادم SMTP</string>
   <string name="account_setup_outgoing_port_label">المَنفذ</string>
@@ -345,7 +321,6 @@
   <string name="account_setup_outgoing_password_label">كلمة السِّر</string>
   <string name="account_setup_outgoing_authentication_label">المصادقة</string>
   <string name="account_setup_options_title">خيارات الحساب</string>
-  <string name="compact_action">تضغيط الحساب</string>
   <string name="account_setup_options_mail_check_frequency_never">أبدًا</string>
   <string name="account_setup_options_mail_check_frequency_15min">كل 15 دقيقة</string>
   <string name="account_setup_options_mail_check_frequency_30min">كل 30 دقيقة</string>
@@ -429,7 +404,6 @@
   <string name="account_settings_crypto_summary_on">متصل بـ %s</string>
   <string name="account_settings_crypto_summary_config">الضبط جارٍ...</string>
   <string name="account_settings_color_label">لون الحساب</string>
-  <string name="account_settings_color_none">مِن دون لون</string>
   <string name="account_settings_led_color_label">لون ضوء التنبيهات</string>
   <string name="account_settings_mail_display_count_label">حجم المجلد المحلي</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -607,9 +581,6 @@
   <string name="account_setup_push_limit_1000">1000 مجلد</string>
   <string name="animations_title">الحركة</string>
   <string name="volume_navigation_title">التصفح عبر أزرار التحكم في الصوت</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier"> - غير المقروءة</string>
-  <string name="search_all_messages_title">كل الرسائل</string>
   <string name="integrated_inbox_title">البريد الوارد الموحَّد</string>
   <string name="integrated_inbox_detail">كل الرسائل في مجلدات موحَّدة</string>
   <string name="folder_settings_include_in_integrated_inbox_label">التوحيد</string>
@@ -638,8 +609,6 @@
   <string name="font_size_message_view_subject">العنوان</string>
   <string name="font_size_message_view_date">الوقت والتاريخ</string>
   <string name="font_size_message_view_content">نصّ الرسالة</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">إنشاء الرسالة</string>
   <string name="font_size_message_compose_input">حقول إدخال النص</string>
   <string name="font_size_default">الإفتراضي</string>
@@ -789,7 +758,6 @@
   <string name="crypto_no_provider_title">هذه الرسالة مُعماة</string>
   <string name="mail_list_widget_text">قائمة رسائل K-9</string>
   <string name="mail_list_widget_loading">يُحمل الرسائل…</string>
-  <string name="fetching_folders_failed">فشلت عملية جلب قائمة المجلدات</string>
   <string name="openpgp_enabled_error_title">التعمية غير ممكنة</string>
   <string name="enable_encryption">تنشيط التعمية</string>
   <string name="disable_encryption">تعطيل التعمية</string>
@@ -805,8 +773,6 @@
   <string name="ac_transfer_sending_to">إرسال رسالة إلى:</string>
   <string name="switch_on">مُفعّل</string>
   <string name="switch_off">مُوقّف</string>
-  <string name="navigation_drawer_open">افتح</string>
-  <string name="navigation_drawer_close">اغلق</string>
   <!--permissions-->
   <string name="push_info_learn_more_text">لمعرفة المزيد</string>
 </resources>

@@ -8,7 +8,6 @@
   <string name="unread_widget_label">കെ-9 വായിക്കാത്തവ</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">സോഴ്സ് കോഡ്</string>
   <string name="app_license">അപ്പാച്ചെ ലൈസൻസ്, പതിപ്പ് 2.0</string>
   <string name="about_project_title">ഓപ്പൺ സോഴ്സ് പ്രോജക്റ്റ്</string>
@@ -58,14 +57,12 @@
   <string name="account_delete_dlg_instructions_fmt">കെ-9 മെയിലിൽ നിന്ന്  \"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് നീക്കംചെയ്യും. </string>
   <!--=== General strings ==================================================================-->
   <string name="authors">രചയിതാക്കൾ</string>
-  <string name="app_revision">പുനരവലോകന വിവരങ്ങൾ</string>
   <string name="read_messages_label">ഇ-മെയിലുകൾ വായിക്കുക</string>
   <string name="read_messages_desc">നിങ്ങളുടെ ഇമെയിലുകൾ വായിക്കാൻ ഈ അപ്ലിക്കേഷനെ അനുവദിക്കുന്നു.</string>
   <string name="delete_messages_label">ഇമെയിലുകൾ ഇല്ലാതാക്കുക</string>
   <string name="delete_messages_desc">നിങ്ങളുടെ ഇമെയിലുകൾ ഇല്ലാതാക്കാൻ ഈ അപ്ലിക്കേഷനെ അനുവദിക്കുന്നു.</string>
   <string name="about_title">കെ-9 മെയിലിനെക്കുറിച്ച്</string>
   <string name="accounts_title">അക്കൗണ്ടുകൾ</string>
-  <string name="folders_title">ഫോൾഡറുകൾ</string>
   <string name="advanced">വിപുലമായത്</string>
   <string name="compose_title_compose">രചിക്കുക</string>
   <string name="compose_title_reply">മറുപടി പറയുക</string>
@@ -74,12 +71,6 @@
   <string name="compose_title_forward_as_attachment">അറ്റാച്ചുമെന്റായി ഫോർവേഡ് ചെയ്യുക</string>
   <string name="choose_account_title">അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
   <string name="choose_folder_title">ഫോൾഡർ തിരഞ്ഞെടുക്കുക</string>
-  <string name="status_loading_account_folder">പോൾ<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">തലക്കെട്ടുകൾ ലഭ്യമാക്കുന്നു <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">അയയ്ക്കുന്നു <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">സമന്വയിപ്പിക്കൽ പ്രവർത്തനരഹിതമാക്കി</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> തിരഞ്ഞെടുത്തു</string>
   <string name="next_action">അടുത്തത്</string>
   <string name="previous_action">മുമ്പത്തെ</string>
@@ -87,10 +78,7 @@
   <string name="okay_action">ശരി</string>
   <string name="cancel_action">റദ്ദാക്കുക</string>
   <string name="send_action">അയയ്ക്കുക</string>
-  <string name="send_again_action">വീണ്ടും അയയ്ക്കുക</string>
   <string name="empty_subject">വിഷയം ശൂന്യമാണ്, ഏതുവിധേനയും അയയ്‌ക്കാൻ വീണ്ടും ക്ലിക്കുചെയ്യുക</string>
-  <string name="select_action">തിരഞ്ഞെടുക്കുക</string>
-  <string name="deselect_action">തിരഞ്ഞെടുത്തത് മാറ്റുക</string>
   <string name="reply_action">മറുപടി പറയുക</string>
   <string name="reply_all_action">എല്ലാത്തിനും മറുപടി പറയുക</string>
   <string name="delete_action">ഇല്ലാതാക്കുക</string>
@@ -152,8 +140,6 @@
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="account_size_changed">അക്കൗണ്ട് \"<xliff:g id="account">%s</xliff:g>\" <xliff:g id="oldSize">%s</xliff:g>ൽ നിന്നും <xliff:g id="newSize">%s</xliff:g> ആയി ചുരുങ്ങി</string>
-  <string name="compacting_account">അക്കൗണ്ട് \"<xliff:g id="account">%s</xliff:g>\" ഒതുക്കുന്നു</string>
   <string name="notification_new_title">പുതിയ മെയിൽ</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one">പുതിയ <xliff:g id="new_message_count">%d</xliff:g> സന്ദേശം</item>
@@ -219,20 +205,14 @@
   <string name="message_to_label">സ്വീകർത്താവ്:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
-  <string name="message_view_attachment_view_action">തുറക്കുക</string>
-  <string name="message_view_attachment_download_action">സേവ്</string>
   <string name="message_view_status_attachment_not_saved">അറ്റാച്ചുമെന്റ് സേവ് ചെയ്യാനായില്ല.</string>
   <string name="message_view_show_pictures_action">ചിത്രങ്ങൾ കാണിക്കുക</string>
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> എന്നതിനുള്ള വീക്ഷണസഹായസാമഗ്രി കണ്ടെത്താനായില്ല.</string>
   <string name="message_view_download_remainder">പൂർണ്ണ സന്ദേശം ഡൗൺ‌ലോഡു ചെയ്യുക</string>
-  <string name="message_view_toast_unable_to_display_message">സന്ദേശം പ്രദർശിപ്പിക്കാൻ കഴിയുന്നില്ല</string>
   <string name="message_view_sender_label">%1$s വഴി</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">എല്ലാ തലക്കെട്ടുകളും ഡൗൺ‌ലോഡുചെയ്‌തു, പക്ഷേ പ്രദർശിപ്പിക്കുന്നതിന് അധിക തലക്കെട്ടുകളൊന്നുമില്ല.</string>
-  <string name="message_additional_headers_retrieval_failed">ഡാറ്റാബേസ് അല്ലെങ്കിൽ മെയിൽ സെർവറിൽ നിന്ന് അധിക തലക്കെട്ടുകൾ വീണ്ടെടുക്കുന്നത് പരാജയപ്പെട്ടു.</string>
   <string name="from_same_sender">ഈ അയച്ചയാളിൽ നിന്ന് കൂടുതൽ</string>
   <string name="search_from_format"><xliff:g id="sender">%s</xliff:g> ൽ നിന്ന്</string>
-  <string name="debug_delete_local_body">ഡീബഗ് / സന്ദേശ ബോഡി ശൂന്യമാക്കുക</string>
   <string name="message_discarded_toast">സന്ദേശം നിരസിച്ചു</string>
   <string name="message_saved_toast">സന്ദേശം ഡ്രാഫ്റ്റായി സംരക്ഷിച്ചു</string>
   <string name="global_settings_flag_label">നക്ഷത്രങ്ങൾ കാണിക്കുക</string>
@@ -284,7 +264,6 @@
   <string name="account_setup_basics_title">ഒരു പുതിയ അക്കൗണ്ട് സജ്ജമാക്കുക</string>
   <string name="account_setup_basics_email_hint">ഇമെയിൽ വിലാസം</string>
   <string name="account_setup_basics_password_hint">രഹസ്യവാചകം</string>
-  <string name="account_setup_basics_show_password">രഹസ്യവാചകം പ്രദർശിപ്പിക്കുക</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">സ്വമേധയാലുള്ള സജ്ജീകരണം</string>
   <string name="account_setup_check_settings_title"/>
@@ -341,11 +320,8 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">സബ്‌സ്‌ക്രൈബുചെയ്‌ത ഫോൾഡറുകൾ മാത്രം കാണിക്കുക</string>
   <string name="account_setup_auto_expand_folder">ഫോൾഡർ യാന്ത്രികമായി വികസിപ്പിക്കുക</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA പാത</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">ഐച്ഛികം</string>
   <string name="account_setup_incoming_webdav_auth_path_label">പ്രാമാണീകരണ പാത</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">ഐച്ഛികം</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">മെയിൽ‌ബോക്സ് അപരനാമം</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">ഐച്ഛികം</string>
   <string name="account_setup_outgoing_title">ഔട്ട്‌ഗോയിംഗ് സെർവർ ക്രമീകരണങ്ങൾ</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP സെർവർ</string>
   <string name="account_setup_outgoing_port_label">പോർട്ട്</string>
@@ -357,7 +333,6 @@
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" ഉപയോഗിച്ച് സാധുവല്ല</string>
   <string name="account_setup_bad_uri">അസാധുവായ സജ്ജീകരണം: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">അക്കൗണ്ട് ഓപ്ഷനുകൾ</string>
-  <string name="compact_action">കോം‌പാക്റ്റ് അക്കൗണ്ട്</string>
   <string name="account_setup_options_mail_check_frequency_label">ഫോൾഡർ വോട്ടെടുപ്പ് ആവൃത്തി</string>
   <string name="account_setup_options_mail_check_frequency_never">ഒരിക്കലും</string>
   <string name="account_setup_options_mail_check_frequency_15min">ഓരോ 15 മിനിറ്റിലും</string>
@@ -368,8 +343,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">ഓരോ 6 മണിക്കൂറിലും</string>
   <string name="account_setup_options_mail_check_frequency_12hour">ഓരോ 12 മണിക്കൂറിലും</string>
   <string name="account_setup_options_mail_check_frequency_24hour">ഓരോ 24 മണിക്കൂറിലും</string>
-  <string name="account_setup_options_enable_push_label">ഈ അക്കൗണ്ടിനായി പുഷ് മെയിൽ പ്രവർത്തനക്ഷമമാക്കുക</string>
-  <string name="account_setup_options_enable_push_summary">നിങ്ങളുടെ സെർവർ ഇതിനെ പിന്തുണയ്ക്കുന്നുവെങ്കിൽ, പുതിയ സന്ദേശങ്ങൾ തൽക്ഷണം ദൃശ്യമാകും. ഈ ഓപ്ഷന് പ്രകടനം നാടകീയമായി മെച്ചപ്പെടുത്താനോ കുറയ്ക്കാനോ കഴിയും.</string>
   <string name="idle_refresh_period_label">IDLE കണക്ഷൻ പുതുക്കുക</string>
   <string name="idle_refresh_period_2min">ഓരോ 2 മിനിറ്റിലും</string>
   <string name="idle_refresh_period_3min">ഓരോ 3 മിനിറ്റിലും</string>
@@ -380,7 +353,6 @@
   <string name="idle_refresh_period_48min">ഓരോ 48 മിനിറ്റിലും</string>
   <string name="idle_refresh_period_60min">ഓരോ 60 മിനിറ്റിലും</string>
   <string name="account_setup_options_notify_label">മെയിൽ വരുമ്പോൾ എന്നെ അറിയിക്കുക</string>
-  <string name="account_setup_options_notify_sync_label">മെയിൽ പരിശോധിക്കുമ്പോൾ എന്നെ അറിയിക്കുക</string>
   <string name="account_setup_options_mail_display_count_label">പ്രദർശിപ്പിക്കേണ്ട സന്ദേശങ്ങളുടെ എണ്ണം</string>
   <string name="account_setup_options_mail_display_count_10">10 സന്ദേശങ്ങൾ</string>
   <string name="account_setup_options_mail_display_count_25">25 സന്ദേശങ്ങൾ</string>
@@ -462,7 +434,6 @@
   <string name="account_settings_mail_check_frequency_label">ഫോൾഡർ വോട്ടെടുപ്പ് ആവൃത്തി</string>
   <string name="account_settings_color_label">അക്കൗണ്ട് നിറം</string>
   <string name="account_settings_color_summary">ഫോൾഡറിലും അക്കൗണ്ട് ലിസ്റ്റിലും ഈ അക്കൗണ്ടിന്റെ ഊന്നിപ്പറഞ്ഞ നിറം ഉപയോഗിക്കുന്നു</string>
-  <string name="account_settings_color_none">നിറമില്ല</string>
   <string name="account_settings_led_color_label">അറിയിപ്പ് LED നിറം</string>
   <string name="account_settings_led_color_summary">നിങ്ങളുടെ ഉപകരണത്തിന്റെ LED നിറം ഈ അക്കൗണ്ടിനായി മിന്നിമറയണം</string>
   <string name="account_settings_mail_display_count_label">പ്രാദേശിക ഫോൾഡർ വലുപ്പം</string>
@@ -672,10 +643,6 @@
   <string name="volume_navigation_message">സന്ദേശ കാഴ്‌ചകളിൽ</string>
   <string name="volume_navigation_list">ലിസ്റ്റ് കാഴ്‌ചകളിൽ</string>
   <string name="show_unified_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ് കാണിക്കുക</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier">- വായിക്കാത്തത്</string>
-  <string name="search_all_messages_title">എല്ലാ സന്ദേശങ്ങളും</string>
-  <string name="search_all_messages_detail">തിരയാൻ‌ കഴിയുന്ന ഫോൾ‌ഡറുകളിലെ എല്ലാ സന്ദേശങ്ങളും</string>
   <string name="integrated_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
   <string name="integrated_inbox_detail">ഏകീകൃത ഫോൾഡറുകളിലെ എല്ലാ സന്ദേശങ്ങളും</string>
   <string name="folder_settings_include_in_integrated_inbox_label">ഏകീകരിക്കുക</string>
@@ -708,8 +675,6 @@
   <string name="font_size_message_view_subject">വിഷയം</string>
   <string name="font_size_message_view_date">സമയവും തീയതിയും</string>
   <string name="font_size_message_view_content">സന്ദേശ ബോഡി</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">സന്ദേശ ഘടന</string>
   <string name="font_size_message_compose_input">ടെക്സ്റ്റ് ഇൻപുട്ട് ഫീൽഡുകൾ</string>
   <string name="font_size_default">സ്ഥിരസ്ഥിതി</string>
@@ -976,8 +941,6 @@
   <string name="crypto_no_provider_button">ക്രമീകരണങ്ങളിലേക്ക് പോകുക</string>
   <string name="mail_list_widget_text">കെ-9 സന്ദേശ പട്ടിക</string>
   <string name="mail_list_widget_loading">സന്ദേശങ്ങൾ ലോഡുചെയ്യുന്നു...</string>
-  <string name="fetching_folders_failed">ഫോൾഡർ ലിസ്റ്റ് നേടുന്നത് പരാജയപ്പെട്ടു</string>
-  <string name="error_recipient_crypto_retrieve">OpenPGP ദാതാവിൽ നിന്ന് സ്വീകർത്താവിന്റെ നില വീണ്ടെടുക്കുന്നതിൽ പിശക്!</string>
   <string name="openpgp_enabled_error_title">എൻക്രിപ്ഷൻ സാധ്യമല്ല</string>
   <string name="openpgp_enabled_error_msg">തിരഞ്ഞെടുത്ത ചില സ്വീകർത്താക്കൾ ഈ സവിശേഷതയെ പിന്തുണയ്ക്കുന്നില്ല!</string>
   <string name="enable_encryption">എൻക്രിപ്ഷൻ പ്രാപ്തമാക്കുക</string>
@@ -1023,8 +986,6 @@
   <string name="ac_transfer_error_send">സന്ദേശം അയയ്ക്കുമ്പോൾ ഒരു പിശക് സംഭവിച്ചു. നിങ്ങളുടെ നെറ്റ്‌വർക്ക് കണക്റ്റിവിറ്റിയും ഔട്ട്‌ഗോയിംഗ് സെർവർ സജ്ജീകരണങ്ങളും പരിശോധിക്കുക.</string>
   <string name="switch_on">ഓൺ</string>
   <string name="switch_off">ഓഫ്</string>
-  <string name="navigation_drawer_open">തുറക്കുക</string>
-  <string name="navigation_drawer_close">അടയ്ക്കുക</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">കോൺ‌ടാക്റ്റുകളിലേക്ക് പ്രവേശനം അനുവദിക്കുക</string>
   <string name="permission_contacts_rationale_message">കോൺ‌ടാക്റ്റ് നിർദ്ദേശങ്ങൾ‌ നൽ‌കുന്നതിനും കോൺ‌ടാക്റ്റ് നാമങ്ങളും ഫോട്ടോകളും പ്രദർശിപ്പിക്കുന്നതിനും, അപ്ലിക്കേഷന് നിങ്ങളുടെ കോൺ‌ടാക്റ്റുകളിലേക്ക് പ്രവേശനം ആവശ്യമാണ്.</string>
