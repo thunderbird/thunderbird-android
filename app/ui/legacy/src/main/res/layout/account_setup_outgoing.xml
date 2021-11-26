@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:hint="@string/account_setup_incoming_port_label"
+                    android:hint="@string/account_setup_outgoing_port_label"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
