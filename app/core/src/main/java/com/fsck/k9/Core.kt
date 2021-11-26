@@ -15,13 +15,10 @@ object Core : EarlyInit {
      * This needs to be called from [Application#onCreate][android.app.Application#onCreate] before calling through
      * to the super class's `onCreate` implementation and before initializing the dependency injection library.
      */
-    fun earlyInit(context: Context) {
+    fun earlyInit() {
         if (K9.DEVELOPER_MODE) {
             enableStrictMode()
         }
-
-        val packageName = context.packageName
-        K9.Intents.init(packageName)
     }
 
     fun init(context: Context) {

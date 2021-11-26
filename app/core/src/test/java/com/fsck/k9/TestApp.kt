@@ -16,7 +16,7 @@ import org.mockito.kotlin.mock
 
 class TestApp : Application() {
     override fun onCreate() {
-        Core.earlyInit(this)
+        Core.earlyInit()
 
         super.onCreate()
         DI.start(this, coreModules + storageModule + testModule)

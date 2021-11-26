@@ -543,14 +543,4 @@ object K9 : EarlyInit {
         NEVER,
         WHEN_IN_LANDSCAPE
     }
-
-    object Intents {
-        object Share {
-            lateinit var EXTRA_FROM: String
-        }
-
-        internal fun init(packageName: String) {
-            Share.EXTRA_FROM = "$packageName.intent.extra.SENDER"
-        }
-    }
 }
