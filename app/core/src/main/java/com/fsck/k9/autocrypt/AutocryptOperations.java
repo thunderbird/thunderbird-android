@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -94,7 +95,8 @@ public class AutocryptOperations {
             List<AutocryptGossipHeader> autocryptGossipHeaders, Date effectiveDate) {
         Bundle updates = new Bundle();
         for (AutocryptGossipHeader autocryptGossipHeader : autocryptGossipHeaders) {
-            boolean isAcceptedAddress = gossipAcceptedAddresses.contains(autocryptGossipHeader.addr.toLowerCase());
+            String normalizedAddress = autocryptGossipHeader.addr.toLowerCase(Locale.ROOT);
+            boolean isAcceptedAddress = gossipAcceptedAddresses.contains(normalizedAddress);
             if (!isAcceptedAddress) {
                 continue;
             }
@@ -122,7 +124,7 @@ public class AutocryptOperations {
         for (Address address : message.getRecipients(recipientType)) {
             String addr = address.getAddress();
             if (addr != null) {
-                result.add(addr.toLowerCase());
+                result.add(addr.toLowerCase(Locale.ROOT));
             }
         }
     }
