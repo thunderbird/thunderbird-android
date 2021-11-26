@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="?attr/backgroundColorChooseAccountHeader"
-    android:gravity="left|center_vertical">
+    android:gravity="start|center_vertical">
     <View
         android:id="@+id/chip"
         android:layout_height="fill_parent"
@@ -20,8 +20,8 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:paddingTop="8dp"
-        android:paddingLeft="18dp"
-        android:paddingRight="4dp"
+        android:paddingStart="18dp"
+        android:paddingEnd="4dp"
         android:paddingBottom="8dp"
         android:textColor="?android:attr/textColorPrimary"
         android:textAppearance="?android:attr/textAppearanceMedium"

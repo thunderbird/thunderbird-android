@@ -22,7 +22,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:text="@string/about_title"
@@ -53,7 +54,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="30dp">
+                android:paddingStart="30dp"
+                android:paddingEnd="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -93,7 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="30dp">
+                android:paddingStart="30dp"
+                android:paddingEnd="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -132,7 +135,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="30dp">
+                android:paddingStart="30dp"
+                android:paddingEnd="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -171,7 +175,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="30dp">
+                android:paddingStart="30dp"
+                android:paddingEnd="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -189,7 +194,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
             android:paddingTop="32dp"
             android:paddingBottom="16dp"
             android:text="@string/about_project_title"
@@ -220,7 +226,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="30dp">
+                android:paddingStart="30dp"
+                android:paddingEnd="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -259,7 +266,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="30dp">
+                android:paddingStart="30dp"
+                android:paddingEnd="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -298,7 +306,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="30dp">
+                android:paddingStart="30dp"
+                android:paddingEnd="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -337,7 +346,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="30dp">
+                android:paddingStart="30dp"
+                android:paddingEnd="0dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -356,7 +366,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
             android:paddingTop="32dp"
             android:paddingBottom="16dp"
             android:text="@string/about_libraries"

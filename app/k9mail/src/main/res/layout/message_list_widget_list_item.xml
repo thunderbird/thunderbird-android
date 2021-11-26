@@ -24,9 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
             tools:text="25 May" />
 
         <ImageView
@@ -36,9 +34,7 @@
             android:layout_alignBottom="@+id/mail_date"
             android:layout_centerInParent="true"
             android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
             android:layout_toStartOf="@+id/mail_date"
-            android:layout_toLeftOf="@+id/mail_date"
             android:src="@drawable/ic_messagelist_attachment_light"
             android:visibility="gone"
             tools:visibility="visible" />
@@ -48,11 +44,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="start"
             android:layout_toStartOf="@id/attachment"
-            android:layout_toLeftOf="@id/attachment"
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="16sp"
@@ -64,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/sender"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingBottom="2dp"
@@ -77,7 +70,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/mail_subject"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:maxLines="1"
             android:textSize="13sp"
             tools:text="Towel Day is celebrated every year on 25 May as a tribute to the author Douglas Adams by his fans." />

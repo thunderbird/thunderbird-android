@@ -38,8 +38,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dip"
-                android:layout_marginStart="6dip"
+                android:layout_marginStart="6dp"
                 android:singleLine="true"
                 android:ellipsize="end"
                 tools:text="Mr. Firstname Lastname"
@@ -51,8 +50,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dip"
-                android:layout_marginStart="6dip"
+                android:layout_marginStart="6dp"
                 android:singleLine="true"
                 android:ellipsize="end"
                 tools:text="Other"
@@ -118,7 +116,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
+                android:layout_gravity="start|center_vertical"
                 app:srcCompat="@drawable/status_dots"
                 app:tint="?attr/openpgp_grey" />
 
@@ -126,7 +124,7 @@
                 android:id="@+id/alternate_crypto_status_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
+                android:layout_gravity="start|center_vertical"
                 tools:src="@drawable/status_lock_dots_2"
                 tools:tint="?attr/openpgp_grey"
                 />

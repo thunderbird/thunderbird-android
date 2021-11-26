@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
@@ -31,9 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
             android:paddingTop="8dp"
-            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
             android:paddingBottom="8dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem"

@@ -52,6 +52,7 @@
         android:theme="@style/Theme.K9.Startup"
         android:resizeableActivity="true"
         android:allowBackup="false"
+        android:supportsRtl="true"
         tools:replace="android:theme"
         tools:ignore="UnusedAttribute">
 

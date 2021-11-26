@@ -7,8 +7,8 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
     android:gravity="center_vertical"
-    android:paddingLeft="12dp"
-    android:paddingRight="4dp">
+    android:paddingStart="12dp"
+    android:paddingEnd="4dp">
 
     <TextView
         android:id="@+id/name"
