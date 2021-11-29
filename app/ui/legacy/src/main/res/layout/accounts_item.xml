@@ -13,8 +13,8 @@
     <View
             android:id="@+id/chip"
             android:layout_height="match_parent"
-            android:layout_width="8dip"
-            android:layout_marginRight="8dip"
+            android:layout_width="8dp"
+            android:layout_marginEnd="8dp"
             tools:background="@sample/accounts.json/data/color"
         />
 
@@ -25,7 +25,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center_vertical"
-            android:paddingLeft="1dip">
+            android:paddingStart="1dp"
+            android:paddingEnd="0dp">
 
         <TextView
                 android:id="@+id/description"

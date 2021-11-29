@@ -1526,7 +1526,7 @@ public class MessagingController {
                     OutboxState outboxState = outboxStateRepository.getOutboxState(messageId);
 
                     if (outboxState.getSendState() != SendState.READY) {
-                        Timber.v("Skipping sending message " + message.getUid());
+                        Timber.v("Skipping sending message %s", message.getUid());
                         notificationController.showSendFailedNotification(account,
                                 new MessagingException(message.getSubject()));
                         continue;

@@ -8,7 +8,6 @@
   <string name="unread_widget_label">Post gun leughadh</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, luchd-coiseachd nan con K-9.</string>
-  <string name="app_copyright_fmt">Còir-lethbhreac 2008-<xliff:g>%s</xliff:g> Luchd-coiseachd nan con K-9. Cuid dhen chòir-lethbhreac 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="source_code">An còd tùsail</string>
   <string name="app_license">Fo cheadachas Apache, tionndadh 2.0.</string>
   <string name="about_project_title">Pròiseact le tùs fosgailte</string>
@@ -35,7 +34,6 @@
   <string name="delete_messages_label">Puist-d a sguabadh às</string>
   <string name="delete_messages_desc">Leig leis an aplacaid seo na puist-d agad a sguabadh às.</string>
   <string name="accounts_title">Cunntasan</string>
-  <string name="folders_title">Pasganan</string>
   <string name="advanced">Adhartach</string>
   <string name="compose_title_compose">Sgrìobh</string>
   <string name="compose_title_reply">Freagair</string>
@@ -44,12 +42,6 @@
   <string name="compose_title_forward_as_attachment">Sìn air adhart mar cheanglachan</string>
   <string name="choose_account_title">Tagh cunntas</string>
   <string name="choose_folder_title">Tagh pasgan</string>
-  <string name="status_loading_account_folder">Ceasnaich <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">A’ faighinn nam bannan-cinn <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">A’ cur <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Pròiseas <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress"> <xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">Chaidh an sioncronachadh a chur à comas</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> air a thaghadh</string>
   <string name="next_action">Air adhart</string>
   <string name="previous_action">Ais ais</string>
@@ -57,10 +49,7 @@
   <string name="okay_action">Ceart ma-thà</string>
   <string name="cancel_action">Sguir dheth</string>
   <string name="send_action">Cuir</string>
-  <string name="send_again_action">Cuir a-rithist</string>
   <string name="empty_subject">Tha an cuspair falamh, thoir gnogag a-rithist airson a chur co-dhiù</string>
-  <string name="select_action">Tagh</string>
-  <string name="deselect_action">Dì-thagh</string>
   <string name="reply_action">Freagair</string>
   <string name="reply_all_action">Freagair na h-uile</string>
   <string name="delete_action">Sguab às</string>
@@ -127,8 +116,6 @@
   <string name="size_format_megabytes">%.1fMB</string>
   <string name="size_format_kilobytes">%.1fkB</string>
   <string name="size_format_bytes">%dB</string>
-  <string name="account_size_changed">Bha an cunntas “<xliff:g id="account">%s</xliff:g>” <xliff:g id="oldSize">%s</xliff:g> is chan eil e ach <xliff:g id="newSize">%s</xliff:g> a-nis</string>
-  <string name="compacting_account">A’ dùmhlachadh a’ chunntais “<xliff:g id="account">%s</xliff:g>”</string>
   <string name="notification_new_title">Post ùr</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> teachdaireachd ùr</item>
@@ -194,20 +181,14 @@
   <string name="message_to_label">Gu:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
-  <string name="message_view_attachment_view_action">Fosgail</string>
-  <string name="message_view_attachment_download_action">Sàbhail</string>
   <string name="message_view_status_attachment_not_saved">Cha b’ urrainn dhuinn an ceanglachan a shàbhaladh.</string>
   <string name="message_view_show_pictures_action">Seall na dealbhan</string>
   <string name="message_view_no_viewer">Chan urrainn dhuinn aplacaid a lorg a sheallas <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Luchdaich a-nuas an teachdaireachd shlàn</string>
-  <string name="message_view_toast_unable_to_display_message">Chan urrainn dhuinn an teachdaireachd a shealltainn</string>
   <string name="message_view_sender_label">slighe %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">Chaidh gach bann-cinn a luchdadh a-nuas ach chan eil bann-cinn eile ann a ghabhas a shealltainn.</string>
-  <string name="message_additional_headers_retrieval_failed">Cha b’ urrainn dhuinn bannan-cinn a bharrachd fhaighinn on stòr-dàta no o fhrithealaiche a’ phuist.</string>
   <string name="from_same_sender">Barrachd on t-seòladair seo</string>
   <string name="search_from_format">O <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">Dì-bhugaich / Falamhaich bodhaig na teachdaireachd</string>
   <string name="message_discarded_toast">Chaidh an teachdaireachd a thilgeil air falbh</string>
   <string name="message_saved_toast">Chaidh an teachdaireachd a shàbhaladh mar dhreachd</string>
   <string name="global_settings_flag_label">Seall na rionnagan</string>
@@ -259,7 +240,6 @@
   <string name="account_setup_basics_title">Suidhich cunntas ùr</string>
   <string name="account_setup_basics_email_hint">Seòladh puist-d</string>
   <string name="account_setup_basics_password_hint">Facal-faire</string>
-  <string name="account_setup_basics_show_password">Seall am facal-faire</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_biometrics_title">Dearbh cò thusa</string>
   <string name="account_setup_basics_manual_setup_action">Suidheachadh a làimh</string>
@@ -317,11 +297,8 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Na seall ach pasganan le fo-sgrìobhadh</string>
   <string name="account_setup_auto_expand_folder">Leudaich am pasgan gu fèin-obrachail</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Slighe OWA</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Roghainneil</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Slighe an dearbhaidh</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Roghainneil</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Alias a’ bhogsa-phuist</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Roghainneil</string>
   <string name="account_setup_outgoing_title">Roghainnean an fhrithealaiche a-mach</string>
   <string name="account_setup_outgoing_smtp_server_label">Frithealaiche SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>
@@ -333,7 +310,6 @@
   <string name="account_setup_outgoing_invalid_setting_combo_notice">Chan eil “<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>” dligheach mu choinneamh “<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>”</string>
   <string name="account_setup_bad_uri">Suidheachadh mì-dhligheach: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Roghainnean a’ chunntais</string>
-  <string name="compact_action">Dùmhlaich an cunntas</string>
   <string name="account_setup_options_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post\?</string>
   <string name="account_setup_options_mail_check_frequency_never">Chan ann idir</string>
   <string name="account_setup_options_mail_check_frequency_15min">Gach cairteal na h-uarach</string>
@@ -344,8 +320,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">Gach 6 uairean a thìde</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Gach 12 uair a thìde</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Gach 24 uair a thìde</string>
-  <string name="account_setup_options_enable_push_label">Cuir post putaidh an comas airson a’ chunntais seo</string>
-  <string name="account_setup_options_enable_push_summary">Ma bheir am frithealaiche agad taic dha, nochdaidh teachdaireachdan ùra sa bhad. Faodaidh buaidh mhòr (math no dona) a bhith aig an roghainn seo air dèanadas.</string>
   <string name="idle_refresh_period_label">Ath-nuadhaich an ceangal IDLE</string>
   <string name="idle_refresh_period_2min">Gach 2 mhionaid</string>
   <string name="idle_refresh_period_3min">Gach 3 mionaidean</string>
@@ -356,7 +330,6 @@
   <string name="idle_refresh_period_48min">Gach 48 mionaid</string>
   <string name="idle_refresh_period_60min">Gach uair a thìde</string>
   <string name="account_setup_options_notify_label">Thoir brath dhomh nuair a ruigeas post</string>
-  <string name="account_setup_options_notify_sync_label">Thoir brath dhomh nuair a thathar a’ toirt sùil airson post</string>
   <string name="account_setup_options_mail_display_count_label">Co mheud teachdaireachd a thèid a shealltainn</string>
   <string name="account_setup_options_mail_display_count_10">10 teachdaireachdan</string>
   <string name="account_setup_options_mail_display_count_25">25 teachdaireachd</string>
@@ -663,10 +636,6 @@
   <string name="volume_navigation_message">Ann an seallaidhean theachdaireachdan</string>
   <string name="volume_navigation_list">Ann an seallaidhean liostaichean</string>
   <string name="show_unified_inbox_title">Seall an t-oll-bhogsa</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier">– Gun leughadh</string>
-  <string name="search_all_messages_title">Na h-uile teachdaireachd</string>
-  <string name="search_all_messages_detail">Na h-uile teachdaireachd ann am pasgan so-luirg</string>
   <string name="integrated_inbox_title">An t-oll-bhogsa</string>
   <string name="integrated_inbox_detail">Na h-uile teachdaireachd ann am pasganan co-aonaichte</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Co-aonaich</string>
@@ -698,8 +667,6 @@
   <string name="font_size_message_view_subject">Cuspair</string>
   <string name="font_size_message_view_date">Ceann-là ’s àm</string>
   <string name="font_size_message_view_content">Bodhaig na teachdaireachd</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Sgrìobhadh theachdaireachdan</string>
   <string name="font_size_message_compose_input">Raointean ion-chur teacsa</string>
   <string name="font_size_default">Bun-roghainn</string>
@@ -944,8 +911,6 @@
   <string name="crypto_no_provider_button">Tagh aplacaid OpenPGP</string>
   <string name="mail_list_widget_text">Liosta theachdaireachdan puist</string>
   <string name="mail_list_widget_loading">A’ luchdadh nan teachdaireachdan…</string>
-  <string name="fetching_folders_failed">Cha b’ urrainn dhuinn liosta nam pasgan fhaighinn</string>
-  <string name="error_recipient_crypto_retrieve">Mearachd a’ faighinn staid an fhaighteir on t-solaraiche OpenPGP!</string>
   <string name="openpgp_enabled_error_title">Cha ghabh a chrioptachadh</string>
   <string name="openpgp_enabled_error_msg">Cha chuir gach faightear a thagh thu taic ris a’ ghleus seo!</string>
   <string name="enable_encryption">Cuir crioptachadh an comas</string>
@@ -965,7 +930,5 @@
   <string name="general_settings_title">Roghainnean coitcheann</string>
   <string name="ac_transfer_title">Teachdaireachd suidheachaidh Autocrypt</string>
   <string name="ac_transfer_msg_subject">Teachdaireachd suidheachaidh Autocrypt</string>
-  <string name="navigation_drawer_open">Fosgail</string>
-  <string name="navigation_drawer_close">Dùin</string>
   <!--permissions-->
 </resources>

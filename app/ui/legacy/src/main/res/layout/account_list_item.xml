@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="8dp">
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp">
 
         <ImageView
             android:layout_width="40dp"
@@ -27,8 +28,8 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="24dp"
-            android:paddingRight="16dp">
+            android:paddingStart="24dp"
+            android:paddingEnd="16dp">
 
             <TextView
                 android:id="@+id/name"

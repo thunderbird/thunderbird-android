@@ -8,7 +8,6 @@
   <string name="unread_widget_label">K-9 ulæst</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Visse dele Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">Kildekode</string>
   <string name="app_license">Apache licens, version 2.0</string>
   <string name="about_project_title">Opensource Projekt</string>
@@ -61,14 +60,12 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Forfattere</string>
-  <string name="app_revision">Revision information</string>
   <string name="read_messages_label">Læse e-post</string>
   <string name="read_messages_desc">Tillad dette program at læse dine mails.</string>
   <string name="delete_messages_label">Slet mails</string>
   <string name="delete_messages_desc">Tillad dette program at slette dine mails.</string>
   <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konti</string>
-  <string name="folders_title">Mapper</string>
   <string name="advanced">Avanceret</string>
   <string name="compose_title_compose">Skrive</string>
   <string name="compose_title_reply">Svar</string>
@@ -77,12 +74,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="compose_title_forward_as_attachment">Videresend som vedhæftet</string>
   <string name="choose_account_title">Vælg konto</string>
   <string name="choose_folder_title">Vælg mappe</string>
-  <string name="status_loading_account_folder">Synkroniserer <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">Henter headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">Sender <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Behandler <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">Synkronisering deaktiveret</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
   <string name="next_action">Næste</string>
   <string name="previous_action">Forrige</string>
@@ -90,10 +81,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="okay_action">O.k.</string>
   <string name="cancel_action">Annullér</string>
   <string name="send_action">Send</string>
-  <string name="send_again_action">Send igen</string>
   <string name="empty_subject">Emnefeltet er tomt; klik igen for at sende alligevel</string>
-  <string name="select_action">Vælg</string>
-  <string name="deselect_action">Fravælg</string>
   <string name="reply_action">Svar</string>
   <string name="reply_all_action">Svar alle</string>
   <string name="delete_action">Slet</string>
@@ -158,8 +146,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="account_size_changed">Konto \"<xliff:g id="account">%s</xliff:g>\" nedbragt fra <xliff:g id="oldSize">%s</xliff:g> til <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">Komprimerer konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny mail</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g>nyt brev</item>
@@ -227,20 +213,14 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
-  <string name="message_view_attachment_view_action">Åben</string>
-  <string name="message_view_attachment_download_action">Gem</string>
   <string name="message_view_status_attachment_not_saved">Kunne ikke gemme vedhæftning.</string>
   <string name="message_view_show_pictures_action">Vis billeder</string>
   <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hent hele meddelelsen</string>
-  <string name="message_view_toast_unable_to_display_message">Ikke i stand til at vise meddelelse</string>
   <string name="message_view_sender_label">via %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">Alle mail headers er blevet hentet, og der kan ikke vises yderligere headers.</string>
-  <string name="message_additional_headers_retrieval_failed">Hentning af yderligere headers fra database eller mail server mislykkedes.</string>
   <string name="from_same_sender">Flere fra denne afsender</string>
   <string name="search_from_format">Fra <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">Fejlfind / Ryd meddelelsesbrødtekst</string>
   <string name="message_discarded_toast">Mail kasseret</string>
   <string name="message_saved_toast">Mail gemt som kladde</string>
   <string name="global_settings_flag_label">Vis stjerner</string>
@@ -292,7 +272,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_basics_title">Opsætning af ny konto</string>
   <string name="account_setup_basics_email_hint">Mail addresse</string>
   <string name="account_setup_basics_password_hint">Password</string>
-  <string name="account_setup_basics_show_password">Vis kodeord</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
   <string name="account_setup_check_settings_title"/>
@@ -349,11 +328,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_incoming_subscribed_folders_only_label">Vis kun mapper du abonerer på</string>
   <string name="account_setup_auto_expand_folder">Udvid mapper automatisk</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Sti til WebDav (Exchange)</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Frivilligt</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Sti til autentifikation</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Frivilligt</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Sti til mailboks (alias)</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Frivilligt</string>
   <string name="account_setup_outgoing_title">Udgående serverindstillinger</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
   <string name="account_setup_outgoing_port_label">Port</string>
@@ -365,7 +341,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" er ikke gyldig med \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Ugyldig opsætning: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Kontoindstillinger</string>
-  <string name="compact_action">Komprimer</string>
   <string name="account_setup_options_mail_check_frequency_label">Frekvens for hentning af mail</string>
   <string name="account_setup_options_mail_check_frequency_never">Aldrig</string>
   <string name="account_setup_options_mail_check_frequency_15min">Hver 15 minut</string>
@@ -376,8 +351,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_options_mail_check_frequency_6hour">Hver 6 time</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Hver 12 time</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Hver 24 time</string>
-  <string name="account_setup_options_enable_push_label">Aktiver push-mail for denne konto</string>
-  <string name="account_setup_options_enable_push_summary">Hvis din server understøtter dette, vil nye mails blive leveret øjeblikkeligt. Denne indstilling kan både indebære forbedret og forringet performance.</string>
   <string name="idle_refresh_period_label">Forny IDLE forbindelse</string>
   <string name="idle_refresh_period_2min">Hver 2 minut</string>
   <string name="idle_refresh_period_3min">Hver 3 minut</string>
@@ -388,7 +361,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="idle_refresh_period_48min">Hver 48 minut</string>
   <string name="idle_refresh_period_60min">Hver 60 minut</string>
   <string name="account_setup_options_notify_label">Vis besked når mails ankommer</string>
-  <string name="account_setup_options_notify_sync_label">Vis besked når mail hentes</string>
   <string name="account_setup_options_mail_display_count_label">Antal viste mails</string>
   <string name="account_setup_options_mail_display_count_10">10 mails</string>
   <string name="account_setup_options_mail_display_count_25">25 mails</string>
@@ -470,7 +442,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_mail_check_frequency_label">Frekvens for hentning af mails</string>
   <string name="account_settings_color_label">Kontofarve</string>
   <string name="account_settings_color_summary">Vælg en farve til konto (benyttes ved mappevisning og listning af konti)</string>
-  <string name="account_settings_color_none">Ingen farve</string>
   <string name="account_settings_led_color_label">LED-farve ved besked</string>
   <string name="account_settings_led_color_summary">Vælg den farve som din telefonens LED skal benytte for denne konto</string>
   <string name="account_settings_mail_display_count_label">Lokal mappestørrelse</string>
@@ -681,10 +652,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="volume_navigation_message">Mail-visning</string>
   <string name="volume_navigation_list">Diverse listevisninger</string>
   <string name="show_unified_inbox_title">Vis Fælles Indbakke</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier"> - Ulæste</string>
-  <string name="search_all_messages_title">Alle mails</string>
-  <string name="search_all_messages_detail">Alle mails i søgbare mapper</string>
   <string name="integrated_inbox_title">Fælles indbakke</string>
   <string name="integrated_inbox_detail">Alle mails i fælles mapper</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Inkluder i fælles indbakke</string>
@@ -717,8 +684,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="font_size_message_view_subject">Emne</string>
   <string name="font_size_message_view_date">Tid og dato</string>
   <string name="font_size_message_view_content">Indhold</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Meddelelses redigering</string>
   <string name="font_size_message_compose_input">Tekst input felter</string>
   <string name="font_size_default">Standard</string>
@@ -986,8 +951,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="crypto_no_provider_button">Gå til opsætning</string>
   <string name="mail_list_widget_text">K-9 Meddelelsesliste</string>
   <string name="mail_list_widget_loading">Indlæser meddelelser…</string>
-  <string name="fetching_folders_failed">Hentning af mappeliste mislykkedes</string>
-  <string name="error_recipient_crypto_retrieve">Fejl ved hentning af modtagerstatus fra OpenPGP-udbyder!</string>
   <string name="openpgp_enabled_error_title">Kryptering var ikke mulig</string>
   <string name="openpgp_enabled_error_msg">Nogle af de valgte modtagere understøtter ikke denne funktion!</string>
   <string name="enable_encryption">Aktivér kryptering</string>
@@ -1033,8 +996,6 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <string name="ac_transfer_error_send">Fejl opstod under sending af besked. Kontrollere netværk forbindelse og udgående server indstilling.</string>
   <string name="switch_on">Til</string>
   <string name="switch_off">Fra</string>
-  <string name="navigation_drawer_open">Åben</string>
-  <string name="navigation_drawer_close">Luk</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Tillade adgang til kontakter</string>
   <string name="permission_contacts_rationale_message">For at kunne levere kontaktforslag og vise kontaktnavne og fotos, skal programmet have adgang til kontakter.</string>

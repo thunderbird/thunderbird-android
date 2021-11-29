@@ -7,8 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/ic_chevron_right_black_24dp"
-        android:tint="@color/status_todo_chevron"
-        />
+        app:tint="@color/status_todo_chevron" />
 
     <ProgressBar
         android:layout_width="match_parent"
@@ -20,14 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/ic_check_black_24dp"
-        android:tint="@color/status_ok_checkmark"
-        />
+        app:tint="@color/status_ok_checkmark" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/ic_close_black_24dp"
-        android:tint="@color/status_error_cross"
-        />
+        app:tint="@color/status_error_cross" />
 
 </merge>

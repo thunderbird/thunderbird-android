@@ -8,7 +8,6 @@
   <string name="unread_widget_label">К-9 непрочитане</string>
   <!--Used in the about dialog-->
   <string name="app_authors">К-9 развојни тим</string>
-  <string name="app_copyright_fmt">Ауторска права 2008-<xliff:g>%s</xliff:g> K-9 развојни тим. Део ауторских права 2006-<xliff:g>%s</xliff:g> Андроид пројекат отвореног кoда.</string>
   <string name="source_code">Изворни код</string>
   <string name="app_license">Апач лиценца, верзије 2.0</string>
   <string name="about_project_title">Пројекат отвореног кода</string>
@@ -58,14 +57,12 @@
   <string name="account_delete_dlg_instructions_fmt">Налог „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњен из К-9 Поште.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Аутори</string>
-  <string name="app_revision">Подаци о ревизији</string>
   <string name="read_messages_label">читање е-поште</string>
   <string name="read_messages_desc">Дозвољава овој апликацији читање ваше е-поште.</string>
   <string name="delete_messages_label">брисање е-поште</string>
   <string name="delete_messages_desc">Дозвољава овој апликацији брисање ваше е-поште.</string>
   <string name="about_title">О К-9 пошти</string>
   <string name="accounts_title">Налози</string>
-  <string name="folders_title">Фасцикле</string>
   <string name="advanced">Напредно</string>
   <string name="compose_title_compose">Састави</string>
   <string name="compose_title_reply">Одговори</string>
@@ -74,12 +71,6 @@
   <string name="compose_title_forward_as_attachment">Проследи као прилог</string>
   <string name="choose_account_title">Избор налога</string>
   <string name="choose_folder_title">Избор фасцикле</string>
-  <string name="status_loading_account_folder">Проверавам <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">Добављам заглавља <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">Шаљем <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Обрађујем <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">Синхронизација онемогућена</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> изабрано</string>
   <string name="next_action">Следеће</string>
   <string name="previous_action">Претходно</string>
@@ -87,10 +78,7 @@
   <string name="okay_action">У реду</string>
   <string name="cancel_action">Одустани</string>
   <string name="send_action">Пошаљи</string>
-  <string name="send_again_action">Пошаљи поново</string>
   <string name="empty_subject">Тема је празна. Тапните да ипак пошаљете</string>
-  <string name="select_action">Изабери</string>
-  <string name="deselect_action">Поништи избор</string>
   <string name="reply_action">Одговори</string>
   <string name="reply_all_action">Одговори свима</string>
   <string name="delete_action">Обриши</string>
@@ -154,8 +142,6 @@
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f кB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="account_size_changed">Налог „<xliff:g id="account">%s</xliff:g>“ смањен са <xliff:g id="oldSize">%s</xliff:g> на <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">Сажимање налога „<xliff:g id="account">%s</xliff:g>“</string>
   <string name="notification_new_title">Нова пошта</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> нова порука</item>
@@ -222,20 +208,14 @@
   <string name="message_to_label">За:</string>
   <string name="message_view_cc_label">Коп:</string>
   <string name="message_view_bcc_label">СКоп:</string>
-  <string name="message_view_attachment_view_action">Отвори</string>
-  <string name="message_view_attachment_download_action">Сачувај</string>
   <string name="message_view_status_attachment_not_saved">Не могу да сачувам прилог.</string>
   <string name="message_view_show_pictures_action">Приказуј слике</string>
   <string name="message_view_no_viewer">Не могу да нађем прегледач за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Преузми читаву поруку</string>
-  <string name="message_view_toast_unable_to_display_message">Не могу да прикажем поруку</string>
   <string name="message_view_sender_label">проследи %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">Сва заглавља су преузета, али нема додатних заглавља за приказ.</string>
-  <string name="message_additional_headers_retrieval_failed">Добављање додатних заглавља из базе података или са сервера поште није успело.</string>
   <string name="from_same_sender">Још од овог пошиљаоца</string>
   <string name="search_from_format">Од <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">Исправи / очисти тело поруке</string>
   <string name="message_discarded_toast">Порука одбачена</string>
   <string name="message_saved_toast">Порука сачувана у нацрте</string>
   <string name="global_settings_flag_label">Прикажи звездице</string>
@@ -287,7 +267,6 @@
   <string name="account_setup_basics_title">Постави нови налог</string>
   <string name="account_setup_basics_email_hint">Адреса е-поште</string>
   <string name="account_setup_basics_password_hint">Лозинка</string>
-  <string name="account_setup_basics_show_password">Прикажи лозинку</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ручна постава</string>
   <string name="account_setup_check_settings_title"/>
@@ -344,11 +323,8 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Прикажи само претплаћене фасцикле</string>
   <string name="account_setup_auto_expand_folder">Аутоматски рашири фасциклу</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">„OWA“ путања</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Необавезно</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Путања аутентификације</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Необавезно</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Алијас сандучета</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Необавезно</string>
   <string name="account_setup_outgoing_title">Поставке за одлазни сервер</string>
   <string name="account_setup_outgoing_smtp_server_label">СМТП сервер</string>
   <string name="account_setup_outgoing_port_label">Порт</string>
@@ -360,7 +336,6 @@
   <string name="account_setup_outgoing_invalid_setting_combo_notice">„<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>“ није исправно са „<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>“</string>
   <string name="account_setup_bad_uri">Неисправна постава: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Опције налога</string>
-  <string name="compact_action">Сажми налог</string>
   <string name="account_setup_options_mail_check_frequency_label">Проверавање фасцикли</string>
   <string name="account_setup_options_mail_check_frequency_never">никад</string>
   <string name="account_setup_options_mail_check_frequency_15min">на 15 минута</string>
@@ -371,8 +346,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">на 6 сати</string>
   <string name="account_setup_options_mail_check_frequency_12hour">на 12 сати</string>
   <string name="account_setup_options_mail_check_frequency_24hour">на 24 сата</string>
-  <string name="account_setup_options_enable_push_label">Омогући гурање поште за овај налог</string>
-  <string name="account_setup_options_enable_push_summary">Ако ваш сервер подржава, нове поруке ће се приказивати одмах. Ово може драматично да побољша или погорша перформансе.</string>
   <string name="idle_refresh_period_label">Освежавање неактивне везе</string>
   <string name="idle_refresh_period_2min">на 2 минута</string>
   <string name="idle_refresh_period_3min">на 3 минута</string>
@@ -383,7 +356,6 @@
   <string name="idle_refresh_period_48min">на 48 минута</string>
   <string name="idle_refresh_period_60min">на 60 минута</string>
   <string name="account_setup_options_notify_label">Обавести ме кад стигне пошта</string>
-  <string name="account_setup_options_notify_sync_label">Обавести ме током провере поште</string>
   <string name="account_setup_options_mail_display_count_label">Број порука за приказ</string>
   <string name="account_setup_options_mail_display_count_10">10 порука</string>
   <string name="account_setup_options_mail_display_count_25">25 порука</string>
@@ -465,7 +437,6 @@
   <string name="account_settings_mail_check_frequency_label">Учестаност провере фасцикли</string>
   <string name="account_settings_color_label">Боја налога</string>
   <string name="account_settings_color_summary">Боја за истицање овог налога. Користи се за списак фасцикли и налога</string>
-  <string name="account_settings_color_none">Без боје</string>
   <string name="account_settings_led_color_label">Боја ЛЕД обавештења</string>
   <string name="account_settings_led_color_summary">Боја трепћућег ЛЕД светла за овај налог</string>
   <string name="account_settings_mail_display_count_label">Величина локалне фасцикле</string>
@@ -675,10 +646,6 @@
   <string name="volume_navigation_message">у приказу порука</string>
   <string name="volume_navigation_list">у приказу спискова</string>
   <string name="show_unified_inbox_title">Прикажи обједињено сандуче</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier"> - непрочитане</string>
-  <string name="search_all_messages_title">Све поруке</string>
-  <string name="search_all_messages_detail">Све поруке у претраживим фасциклама</string>
   <string name="integrated_inbox_title">Обједињено сандуче</string>
   <string name="integrated_inbox_detail">Све поруке у једном сандучету</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Обједини</string>
@@ -711,8 +678,6 @@
   <string name="font_size_message_view_subject">Тема</string>
   <string name="font_size_message_view_date">Време и датум</string>
   <string name="font_size_message_view_content">Тело поруке</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Састављање поруке</string>
   <string name="font_size_message_compose_input">Поља за унос текста</string>
   <string name="font_size_default">подразумеван</string>
@@ -984,8 +949,6 @@
   <string name="crypto_no_provider_button">Иди на Поставке</string>
   <string name="mail_list_widget_text">К-9 списак порука</string>
   <string name="mail_list_widget_loading">Учитавам поруке…</string>
-  <string name="fetching_folders_failed">Добављање списка фасцикли није успело</string>
-  <string name="error_recipient_crypto_retrieve">Грешка при добављању статуса примаоца од ОпенПГП провајдера!</string>
   <string name="openpgp_enabled_error_title">Шифровање није могуће</string>
   <string name="openpgp_enabled_error_msg">Неки од изабраних прималаца не подржавају ово!</string>
   <string name="enable_encryption">Укључи шифровање</string>
@@ -1031,8 +994,6 @@
   <string name="ac_transfer_error_send">Дошло је до грешке при слању поруке. Проверите повезаност на мрежу и поставке одлазног сервера.</string>
   <string name="switch_on">Укљ</string>
   <string name="switch_off">Иск</string>
-  <string name="navigation_drawer_open">Отвори</string>
-  <string name="navigation_drawer_close">Затвори</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Дозволи приступ контактима</string>
   <string name="permission_contacts_rationale_message">Да би давала предлоге, приказивала имена и слике контаката, апликацији је потребна дозвола за приступ контактима.</string>

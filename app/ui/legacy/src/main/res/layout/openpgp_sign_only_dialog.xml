@@ -24,8 +24,7 @@
             android:layout_gravity="center_vertical"
             app:srcCompat="@drawable/status_signature"
             android:scaleType="fitCenter"
-            android:tint="@color/light_black"
-            />
+            app:tint="@color/light_black" />
 
         <TextView
             android:layout_width="wrap_content"

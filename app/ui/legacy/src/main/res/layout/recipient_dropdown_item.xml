@@ -11,7 +11,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:id="@+id/contact_photo"
         tools:src="@drawable/ic_contact_picture"
         />
@@ -27,7 +27,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="6dip"
+            android:paddingStart="6dp"
+            android:paddingEnd="0dp"
             android:singleLine="true"
             android:ellipsize="end"
             tools:text="Mr. Firstname Lastname"
@@ -38,7 +39,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="12dip"
+            android:paddingStart="12dp"
+            android:paddingEnd="0dp"
             android:singleLine="true"
             android:ellipsize="end"
             tools:text="address@example.com"
@@ -57,16 +59,15 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             app:srcCompat="@drawable/status_dots"
-            android:tint="?attr/openpgp_grey"
-            />
+            app:tint="?attr/openpgp_grey" />
 
         <ImageView
             android:id="@+id/contact_crypto_status_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             tools:src="@drawable/status_lock_dots_2"
             tools:tint="?attr/openpgp_grey"
             />
@@ -80,7 +81,7 @@
         android:layout_margin="13dp"
         android:id="@+id/contact_crypto_status_icon_simple"
         app:srcCompat="@drawable/status_lock"
-        android:tint="?attr/openpgp_black"
+        app:tint="?attr/openpgp_black"
         android:visibility="gone"
         tools:visibility="visible"
         />

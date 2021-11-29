@@ -16,6 +16,7 @@ import com.fsck.k9.preferences.Settings.SettingsDescription
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 import org.xmlpull.v1.XmlSerializer
 import timber.log.Timber
 
@@ -445,7 +446,7 @@ class SettingsExporter(
 
     fun generateDatedExportFileName(): String {
         val now = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         return String.format("%s_%s.%s", EXPORT_FILENAME_PREFIX, dateFormat.format(now.time), EXPORT_FILENAME_SUFFIX)
     }
 

@@ -52,7 +52,9 @@
         android:theme="@style/Theme.K9.Startup"
         android:resizeableActivity="true"
         android:allowBackup="false"
-        tools:replace="android:theme">
+        android:supportsRtl="true"
+        tools:replace="android:theme"
+        tools:ignore="UnusedAttribute">
 
         <meta-data
             android:name="android.app.default_searchable"
@@ -180,7 +182,9 @@
             android:targetActivity=".activity.MessageList"
             android:exported="true" />
 
-        <activity android:name=".activity.MessageList">
+        <activity
+            android:name=".activity.MessageList"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -205,7 +209,7 @@
             android:name=".activity.MessageCompose"
             android:configChanges="locale"
             android:enabled="false"
-            android:label="@string/app_name">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO"/>
                 <data android:scheme="mailto"/>
@@ -243,7 +247,8 @@
             android:name=".activity.Search"
             android:configChanges="locale"
             android:label="@string/search_action"
-            android:uiOptions="splitActionBarWhenNarrow">
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -256,14 +261,17 @@
         <activity
             android:name=".activity.LauncherShortcuts"
             android:configChanges="locale"
-            android:label="@string/shortcuts_title">
+            android:label="@string/shortcuts_title"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".widget.unread.UnreadWidgetConfigurationActivity">
+        <activity
+            android:name=".widget.unread.UnreadWidgetConfigurationActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
@@ -312,7 +320,8 @@
         <receiver
             android:name=".provider.UnreadWidgetProvider"
             android:icon="@drawable/ic_launcher"
-            android:label="@string/unread_widget_label">
+            android:label="@string/unread_widget_label"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -324,7 +333,8 @@
         <receiver
             android:name=".widget.list.MessageListWidgetProvider"
             android:icon="@drawable/message_list_widget_preview"
-            android:label="@string/mail_list_widget_text">
+            android:label="@string/mail_list_widget_text"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -358,7 +368,8 @@
 
         <service
             android:name="com.fsck.k9.directshare.K9ChooserTargetService"
-            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE" >
+            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.service.chooser.ChooserTargetService" />
             </intent-filter>
