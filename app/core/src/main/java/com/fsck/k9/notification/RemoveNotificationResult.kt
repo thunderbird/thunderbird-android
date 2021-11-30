@@ -11,7 +11,6 @@ internal class RemoveNotificationResult private constructor(
             return field
         }
 
-    @get:JvmName("shouldCreateNotification")
     val shouldCreateNotification: Boolean
         get() = holder != null
 
@@ -19,7 +18,6 @@ internal class RemoveNotificationResult private constructor(
         get() = holder ?: error("shouldCreateNotification == false")
 
     companion object {
-        @JvmStatic
         fun createNotification(notificationHolder: NotificationHolder): RemoveNotificationResult {
             return RemoveNotificationResult(
                 holder = notificationHolder,
@@ -28,7 +26,6 @@ internal class RemoveNotificationResult private constructor(
             )
         }
 
-        @JvmStatic
         fun cancelNotification(notificationId: Int): RemoveNotificationResult {
             return RemoveNotificationResult(
                 holder = null,
@@ -37,7 +34,6 @@ internal class RemoveNotificationResult private constructor(
             )
         }
 
-        @JvmStatic
         fun unknownNotification(): RemoveNotificationResult {
             return RemoveNotificationResult(holder = null, notificationId = 0, isUnknownNotification = true)
         }
