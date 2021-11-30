@@ -268,7 +268,7 @@ class SingleMessageNotificationDataCreatorTest {
 
     private fun createNotificationData(content: NotificationContent): NotificationData {
         return NotificationData(account).apply {
-            addNotificationContent(content)
+            addNotificationContent(content, timestamp = 0L)
         }
     }
 }

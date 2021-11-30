@@ -13,6 +13,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 
+private val TIMESTAMP = 0L
+
 class SummaryNotificationDataCreatorTest {
     private val account = createAccount()
     private val notificationDataCreator = SummaryNotificationDataCreator(SingleMessageNotificationDataCreator())
@@ -40,7 +42,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = false
         )
 
@@ -54,7 +55,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = false
         )
 
@@ -69,7 +69,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = false
         )
 
@@ -84,7 +83,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = false
         )
 
@@ -99,7 +97,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = false
         )
 
@@ -113,7 +110,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = true
         )
 
@@ -122,7 +118,7 @@ class SummaryNotificationDataCreatorTest {
             NotificationIds.getNewMailSummaryNotificationId(account)
         )
         assertThat(summaryNotificationData.isSilent).isTrue()
-        assertThat(summaryNotificationData.timestamp).isEqualTo(9000)
+        assertThat(summaryNotificationData.timestamp).isEqualTo(TIMESTAMP)
     }
 
     @Test
@@ -131,7 +127,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = true
         )
 
@@ -148,7 +143,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = true
         )
 
@@ -165,7 +159,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = true
         )
 
@@ -182,7 +175,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = true
         )
 
@@ -198,7 +190,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = true
         )
 
@@ -214,7 +205,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = true
         )
 
@@ -229,7 +219,6 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            timestamp = 9000,
             silent = true
         )
 
@@ -272,7 +261,7 @@ class SummaryNotificationDataCreatorTest {
     ): NotificationData {
         return NotificationData(account).apply {
             for (content in contentList) {
-                addNotificationContent(content)
+                addNotificationContent(content, TIMESTAMP)
             }
         }
     }

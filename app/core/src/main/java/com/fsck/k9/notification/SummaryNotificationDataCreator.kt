@@ -6,11 +6,8 @@ import com.fsck.k9.K9
 internal class SummaryNotificationDataCreator(
     private val singleMessageNotificationDataCreator: SingleMessageNotificationDataCreator
 ) {
-    fun createSummaryNotificationData(
-        data: NotificationData,
-        timestamp: Long,
-        silent: Boolean
-    ): SummaryNotificationData {
+    fun createSummaryNotificationData(data: NotificationData, silent: Boolean): SummaryNotificationData {
+        val timestamp = data.holderForLatestNotification.timestamp
         val shouldBeSilent = silent || K9.isQuietTime
         return if (data.isSingleMessageNotification) {
             createSummarySingleNotificationData(data, timestamp, shouldBeSilent)

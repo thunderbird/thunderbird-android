@@ -181,7 +181,8 @@ class BaseNotificationDataCreatorTest {
                     preview = "irrelevant",
                     summary = "irrelevant",
                     subject = "irrelevant"
-                )
+                ),
+                timestamp = 0L
             )
         }
         return notificationData
