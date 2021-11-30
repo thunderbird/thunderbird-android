@@ -23,12 +23,13 @@ internal class NewMailNotificationManager(
 
         synchronized(lock) {
             val notificationData = getOrCreateNotificationData(account)
-            val result = notificationData.addNotificationContent(content)
+            val result = notificationData.addNotificationContent(content, timestamp = now())
 
             val singleNotificationData = createSingleNotificationData(
                 account = account,
                 notificationId = result.notificationHolder.notificationId,
                 content = result.notificationHolder.content,
+                timestamp = result.notificationHolder.timestamp,
                 addLockScreenNotification = notificationData.isSingleMessageNotification
             )
 
@@ -69,6 +70,7 @@ internal class NewMailNotificationManager(
                     account = account,
                     notificationId = result.notificationHolder.notificationId,
                     content = result.notificationHolder.content,
+                    timestamp = result.notificationHolder.timestamp,
                     addLockScreenNotification = notificationData.isSingleMessageNotification
                 )
                 listOf(singleNotificationData)
@@ -101,19 +103,20 @@ internal class NewMailNotificationManager(
         account: Account,
         notificationId: Int,
         content: NotificationContent,
+        timestamp: Long,
         addLockScreenNotification: Boolean
     ): SingleNotificationData {
         return singleMessageNotificationDataCreator.createSingleNotificationData(
             account,
             notificationId,
             content,
-            timestamp = now(),
+            timestamp,
             addLockScreenNotification
         )
     }
 
     private fun createSummaryNotificationData(data: NotificationData, silent: Boolean): SummaryNotificationData {
-        return summaryNotificationDataCreator.createSummaryNotificationData(data, timestamp = now(), silent)
+        return summaryNotificationDataCreator.createSummaryNotificationData(data, silent)
     }
 
     private fun getOrCreateNotificationData(account: Account): NotificationData {

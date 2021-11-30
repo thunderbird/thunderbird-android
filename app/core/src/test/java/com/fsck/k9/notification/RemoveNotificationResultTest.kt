@@ -12,6 +12,7 @@ private const val NOTIFICATION_ID = 23
 class RemoveNotificationResultTest {
     private val notificationHolder = NotificationHolder(
         notificationId = NOTIFICATION_ID,
+        timestamp = 0L,
         content = NotificationContent(
             messageReference = MessageReference("irrelevant", 1, "irrelevant"),
             sender = "irrelevant",

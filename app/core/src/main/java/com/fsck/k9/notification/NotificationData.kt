@@ -9,7 +9,7 @@ import java.util.LinkedList
  */
 internal class NotificationData(val account: Account) {
     private val activeNotifications = LinkedList<NotificationHolder>()
-    private val additionalNotifications = LinkedList<NotificationContent>()
+    private val additionalNotifications = LinkedList<InactiveNotificationHolder>()
     private val notificationIdsInUse = mutableMapOf<Int, Boolean>()
 
     val newMessagesCount: Int
@@ -24,7 +24,7 @@ internal class NotificationData(val account: Account) {
     private val isMaxNumberOfActiveNotificationsReached: Boolean
         get() = activeNotifications.size == MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
 
-    fun addNotificationContent(content: NotificationContent): AddNotificationResult {
+    fun addNotificationContent(content: NotificationContent, timestamp: Long): AddNotificationResult {
         val notificationId: Int
         val cancelNotificationIdBeforeReuse: Boolean
         if (isMaxNumberOfActiveNotificationsReached) {
@@ -37,7 +37,7 @@ internal class NotificationData(val account: Account) {
             cancelNotificationIdBeforeReuse = false
         }
 
-        val notificationHolder = createNotificationHolder(notificationId, content)
+        val notificationHolder = NotificationHolder(notificationId, timestamp, content)
         activeNotifications.addFirst(notificationHolder)
 
         return if (cancelNotificationIdBeforeReuse) {
@@ -48,7 +48,9 @@ internal class NotificationData(val account: Account) {
     }
 
     private fun addToAdditionalNotifications(notificationHolder: NotificationHolder) {
-        additionalNotifications.addFirst(notificationHolder.content)
+        additionalNotifications.addFirst(
+            InactiveNotificationHolder(notificationHolder.timestamp, notificationHolder.content)
+        )
     }
 
     private fun getNewNotificationId(): Int {
@@ -73,10 +75,6 @@ internal class NotificationData(val account: Account) {
 
     private fun markNotificationIdAsFree(notificationId: Int) {
         notificationIdsInUse.remove(notificationId)
-    }
-
-    private fun createNotificationHolder(notificationId: Int, content: NotificationContent): NotificationHolder {
-        return NotificationHolder(notificationId, content)
     }
 
     fun hasSummaryOverflowMessages(): Boolean {
@@ -115,8 +113,8 @@ internal class NotificationData(val account: Account) {
         return if (additionalNotifications.isEmpty()) {
             RemoveNotificationResult.cancelNotification(notificationId)
         } else {
-            val newContent = additionalNotifications.removeFirst()
-            val replacement = createNotificationHolder(notificationId, newContent)
+            val replacementHolder = additionalNotifications.removeFirst()
+            val replacement = NotificationHolder(notificationId, replacementHolder.timestamp, replacementHolder.content)
             activeNotifications.addLast(replacement)
             RemoveNotificationResult.createNotification(replacement)
         }
@@ -134,8 +132,8 @@ internal class NotificationData(val account: Account) {
             messageReferences.add(holder.content.messageReference)
         }
 
-        for (content in additionalNotifications) {
-            messageReferences.add(content.messageReference)
+        for (holder in additionalNotifications) {
+            messageReferences.add(holder.content.messageReference)
         }
 
         return messageReferences
