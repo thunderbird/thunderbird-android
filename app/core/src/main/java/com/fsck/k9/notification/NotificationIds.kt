@@ -15,7 +15,7 @@ internal object NotificationIds {
     private const val OFFSET_NEW_MAIL_SUMMARY = 6
     private const val OFFSET_NEW_MAIL_SINGLE = 7
     private const val NUMBER_OF_MISC_ACCOUNT_NOTIFICATIONS = 7
-    private const val NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = NotificationData.MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
+    private const val NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
     private const val NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT =
         NUMBER_OF_MISC_ACCOUNT_NOTIFICATIONS + NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
 
@@ -27,6 +27,13 @@ internal object NotificationIds {
         require(index in 0 until NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) { "Invalid index: $index" }
 
         return getBaseNotificationId(account) + OFFSET_NEW_MAIL_SINGLE + index
+    }
+
+    fun getAllMessageNotificationIds(account: Account): List<Int> {
+        val singleMessageNotificationIdRange = (0 until NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) +
+            (getBaseNotificationId(account) + OFFSET_NEW_MAIL_SINGLE)
+
+        return singleMessageNotificationIdRange.toList() + getNewMailSummaryNotificationId(account)
     }
 
     fun getFetchingMailNotificationId(account: Account): Int {

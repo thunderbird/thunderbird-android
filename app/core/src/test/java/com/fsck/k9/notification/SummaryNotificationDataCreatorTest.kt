@@ -259,11 +259,11 @@ class SummaryNotificationDataCreatorTest {
     private fun createNotificationData(
         contentList: List<NotificationContent> = listOf(createNotificationContent())
     ): NotificationData {
-        return NotificationData(account).apply {
-            for (content in contentList) {
-                addNotificationContent(content, TIMESTAMP)
-            }
+        val activeNotifications = contentList.mapIndexed { index, content ->
+            NotificationHolder(notificationId = index, TIMESTAMP, content)
         }
+
+        return NotificationData(account, activeNotifications, inactiveNotifications = emptyList())
     }
 
     @OptIn(ExperimentalStdlibApi::class)

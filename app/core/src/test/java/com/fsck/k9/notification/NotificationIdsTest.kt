@@ -94,7 +94,7 @@ class NotificationIdsTest {
             NotificationIds.getAuthenticationErrorNotificationId(account, false),
             NotificationIds.getFetchingMailNotificationId(account),
             NotificationIds.getNewMailSummaryNotificationId(account),
-        ) + (0 until NotificationData.MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS).map { index ->
+        ) + (0 until MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS).map { index ->
             NotificationIds.getSingleMessageNotificationId(account, index)
         }
     }

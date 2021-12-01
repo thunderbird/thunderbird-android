@@ -33,7 +33,7 @@ internal class SingleMessageNotificationDataCreator {
                 notificationId = NotificationIds.getNewMailSummaryNotificationId(data.account),
                 isSilent = silent,
                 timestamp = timestamp,
-                content = data.holderForLatestNotification.content,
+                content = data.activeNotifications.first().content,
                 actions = createSingleNotificationActions(),
                 wearActions = createSingleNotificationWearActions(data.account),
                 addLockScreenNotification = false,

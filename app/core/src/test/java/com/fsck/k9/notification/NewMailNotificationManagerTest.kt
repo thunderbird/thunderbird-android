@@ -227,7 +227,7 @@ class NewMailNotificationManagerTest {
         assertNotNull(result) { data ->
             assertThat(data.cancelNotificationIds).hasSize(1)
             assertThat(data.baseNotificationData.newMessagesCount)
-                .isEqualTo(NotificationData.MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
+                .isEqualTo(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
 
             val singleNotificationData = data.singleNotificationData.first()
             assertThat(singleNotificationData.notificationId).isEqualTo(data.cancelNotificationIds.first())
@@ -253,7 +253,7 @@ class NewMailNotificationManagerTest {
     }
 
     private fun addMaximumNumberOfNotifications() {
-        repeat(NotificationData.MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) { index ->
+        repeat(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) { index ->
             val message = addMessageToNotificationContentCreator(
                 sender = "sender",
                 subject = "subject",

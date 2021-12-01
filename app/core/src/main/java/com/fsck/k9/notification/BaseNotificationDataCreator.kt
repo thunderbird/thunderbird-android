@@ -37,8 +37,8 @@ internal class BaseNotificationDataCreator {
     }
 
     private fun getSenderNames(data: NotificationData): String {
-        return data.getContentForSummaryNotification().asSequence()
-            .map { it.sender }
+        return data.activeNotifications.asSequence()
+            .map { it.content.sender }
             .distinct()
             .take(MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION)
             .joinToString()
