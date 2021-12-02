@@ -2,12 +2,15 @@ package com.fsck.k9.notification
 
 import com.fsck.k9.Account
 import com.fsck.k9.K9
+import com.fsck.k9.controller.MessageReference
+
+private const val MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5
 
 internal class SummaryNotificationDataCreator(
     private val singleMessageNotificationDataCreator: SingleMessageNotificationDataCreator
 ) {
     fun createSummaryNotificationData(data: NotificationData, silent: Boolean): SummaryNotificationData {
-        val timestamp = data.holderForLatestNotification.timestamp
+        val timestamp = data.latestTimestamp
         val shouldBeSilent = silent || K9.isQuietTime
         return if (data.isSingleMessageNotification) {
             createSummarySingleNotificationData(data, timestamp, shouldBeSilent)
@@ -33,16 +36,12 @@ internal class SummaryNotificationDataCreator(
             notificationId = NotificationIds.getNewMailSummaryNotificationId(data.account),
             isSilent = silent,
             timestamp = timestamp,
-            content = getSummaryContent(data),
-            additionalMessagesCount = data.getSummaryOverflowMessagesCount(),
-            messageReferences = data.getAllMessageReferences(),
+            content = data.summaryContent,
+            additionalMessagesCount = data.additionalMessagesCount,
+            messageReferences = data.messageReferences,
             actions = createSummaryNotificationActions(),
             wearActions = createSummaryWearNotificationActions(data.account)
         )
-    }
-
-    private fun getSummaryContent(data: NotificationData): List<CharSequence> {
-        return data.getContentForSummaryNotification().map { it.summary }
     }
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -79,4 +78,31 @@ internal class SummaryNotificationDataCreator(
     private fun isDeleteActionAvailableForWear(): Boolean {
         return isDeleteActionEnabled() && !K9.isConfirmDeleteFromNotification
     }
+
+    private val NotificationData.latestTimestamp: Long
+        get() = activeNotifications.first().timestamp
+
+    private val NotificationData.summaryContent: List<CharSequence>
+        get() {
+            return activeNotifications.asSequence()
+                .map { it.content.summary }
+                .take(MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION)
+                .toList()
+        }
+
+    private val NotificationData.additionalMessagesCount: Int
+        get() = (newMessagesCount - MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION).coerceAtLeast(0)
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private val NotificationData.messageReferences: List<MessageReference>
+        get() {
+            return buildList(capacity = newMessagesCount) {
+                for (activeNotification in activeNotifications) {
+                    add(activeNotification.content.messageReference)
+                }
+                for (inactiveNotification in inactiveNotifications) {
+                    add(inactiveNotification.content.messageReference)
+                }
+            }
+        }
 }

@@ -267,8 +267,16 @@ class SingleMessageNotificationDataCreatorTest {
     )
 
     private fun createNotificationData(content: NotificationContent): NotificationData {
-        return NotificationData(account).apply {
-            addNotificationContent(content, timestamp = 0L)
-        }
+        return NotificationData(
+            account,
+            activeNotifications = listOf(
+                NotificationHolder(
+                    notificationId = 1,
+                    timestamp = 0,
+                    content = content
+                )
+            ),
+            inactiveNotifications = emptyList()
+        )
     }
 }

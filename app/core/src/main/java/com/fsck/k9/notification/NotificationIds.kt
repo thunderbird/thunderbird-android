@@ -15,40 +15,41 @@ internal object NotificationIds {
     private const val OFFSET_NEW_MAIL_SUMMARY = 6
     private const val OFFSET_NEW_MAIL_SINGLE = 7
     private const val NUMBER_OF_MISC_ACCOUNT_NOTIFICATIONS = 7
-    private const val NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = NotificationData.MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
+    private const val NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
     private const val NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT =
         NUMBER_OF_MISC_ACCOUNT_NOTIFICATIONS + NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS
 
-    @JvmStatic
     fun getNewMailSummaryNotificationId(account: Account): Int {
         return getBaseNotificationId(account) + OFFSET_NEW_MAIL_SUMMARY
     }
 
-    @JvmStatic
     fun getSingleMessageNotificationId(account: Account, index: Int): Int {
         require(index in 0 until NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) { "Invalid index: $index" }
 
         return getBaseNotificationId(account) + OFFSET_NEW_MAIL_SINGLE + index
     }
 
-    @JvmStatic
+    fun getAllMessageNotificationIds(account: Account): List<Int> {
+        val singleMessageNotificationIdRange = (0 until NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) +
+            (getBaseNotificationId(account) + OFFSET_NEW_MAIL_SINGLE)
+
+        return singleMessageNotificationIdRange.toList() + getNewMailSummaryNotificationId(account)
+    }
+
     fun getFetchingMailNotificationId(account: Account): Int {
         return getBaseNotificationId(account) + OFFSET_FETCHING_MAIL
     }
 
-    @JvmStatic
     fun getSendFailedNotificationId(account: Account): Int {
         return getBaseNotificationId(account) + OFFSET_SEND_FAILED_NOTIFICATION
     }
 
-    @JvmStatic
     fun getCertificateErrorNotificationId(account: Account, incoming: Boolean): Int {
         val offset = if (incoming) OFFSET_CERTIFICATE_ERROR_INCOMING else OFFSET_CERTIFICATE_ERROR_OUTGOING
 
         return getBaseNotificationId(account) + offset
     }
 
-    @JvmStatic
     fun getAuthenticationErrorNotificationId(account: Account, incoming: Boolean): Int {
         val offset = if (incoming) OFFSET_AUTHENTICATION_ERROR_INCOMING else OFFSET_AUTHENTICATION_ERROR_OUTGOING
 

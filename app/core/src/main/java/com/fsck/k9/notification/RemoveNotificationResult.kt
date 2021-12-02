@@ -1,45 +1,48 @@
 package com.fsck.k9.notification
 
 internal class RemoveNotificationResult private constructor(
+    val notificationData: NotificationData,
     private val holder: NotificationHolder?,
-    notificationId: Int,
-    val isUnknownNotification: Boolean
+    private val notificationId: Int?
 ) {
-    val notificationId: Int = notificationId
-        get() {
-            check(!isUnknownNotification) { "isUnknownNotification == true" }
-            return field
-        }
-
-    @get:JvmName("shouldCreateNotification")
     val shouldCreateNotification: Boolean
         get() = holder != null
 
     val notificationHolder: NotificationHolder
         get() = holder ?: error("shouldCreateNotification == false")
 
+    val shouldCancelNotification: Boolean
+        get() = notificationId != null
+
+    val cancelNotificationId: Int
+        get() = notificationId ?: error("shouldCancelNotification == false")
+
     companion object {
-        @JvmStatic
-        fun createNotification(notificationHolder: NotificationHolder): RemoveNotificationResult {
+        fun cancelNotification(notificationData: NotificationData, notificationId: Int): RemoveNotificationResult {
             return RemoveNotificationResult(
-                holder = notificationHolder,
-                notificationId = notificationHolder.notificationId,
-                isUnknownNotification = false
-            )
-        }
-
-        @JvmStatic
-        fun cancelNotification(notificationId: Int): RemoveNotificationResult {
-            return RemoveNotificationResult(
+                notificationData = notificationData,
                 holder = null,
-                notificationId = notificationId,
-                isUnknownNotification = false
+                notificationId = notificationId
             )
         }
 
-        @JvmStatic
-        fun unknownNotification(): RemoveNotificationResult {
-            return RemoveNotificationResult(holder = null, notificationId = 0, isUnknownNotification = true)
+        fun replaceNotification(
+            notificationData: NotificationData,
+            notificationHolder: NotificationHolder
+        ): RemoveNotificationResult {
+            return RemoveNotificationResult(
+                notificationData = notificationData,
+                holder = notificationHolder,
+                notificationId = notificationHolder.notificationId
+            )
+        }
+
+        fun recreateSummaryNotification(notificationData: NotificationData): RemoveNotificationResult {
+            return RemoveNotificationResult(
+                notificationData = notificationData,
+                holder = null,
+                notificationId = null
+            )
         }
     }
 }
