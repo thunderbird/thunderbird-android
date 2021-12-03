@@ -65,6 +65,7 @@ val coreNotificationModule = module {
     single {
         NewMailNotificationManager(
             contentCreator = get(),
+            notificationRepository = get(),
             baseNotificationDataCreator = get(),
             singleMessageNotificationDataCreator = get(),
             summaryNotificationDataCreator = get(),
@@ -103,4 +104,5 @@ val coreNotificationModule = module {
             notificationManager = get()
         )
     }
+    single { NotificationRepository(notificationStoreProvider = get()) }
 }

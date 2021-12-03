@@ -23,6 +23,7 @@ class NewMailNotificationManagerTest {
     private val clock = TestClock(TIMESTAMP)
     private val manager = NewMailNotificationManager(
         notificationContentCreator,
+        createNotificationRepository(),
         BaseNotificationDataCreator(),
         SingleMessageNotificationDataCreator(),
         SummaryNotificationDataCreator(SingleMessageNotificationDataCreator()),
@@ -287,5 +288,17 @@ class NewMailNotificationManagerTest {
 
     private fun createMessageReference(messageUid: String): MessageReference {
         return MessageReference(ACCOUNT_UUID, FOLDER_ID, messageUid)
+    }
+
+    private fun createNotificationRepository(): NotificationRepository {
+        val notificationStoreProvider = object : NotificationStoreProvider {
+            override fun getNotificationStore(account: Account): NotificationStore {
+                return object : NotificationStore {
+                    override fun persistNotificationChanges(operations: List<NotificationStoreOperation>) = Unit
+                    override fun clearNotifications() = Unit
+                }
+            }
+        }
+        return NotificationRepository(notificationStoreProvider)
     }
 }

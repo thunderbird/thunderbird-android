@@ -2,6 +2,7 @@ package com.fsck.k9.notification
 
 internal class AddNotificationResult private constructor(
     val notificationData: NotificationData,
+    val notificationStoreOperations: List<NotificationStoreOperation>,
     val notificationHolder: NotificationHolder,
     val shouldCancelNotification: Boolean
 ) {
@@ -14,16 +15,28 @@ internal class AddNotificationResult private constructor(
     companion object {
         fun newNotification(
             notificationData: NotificationData,
+            notificationStoreOperations: List<NotificationStoreOperation>,
             notificationHolder: NotificationHolder
         ): AddNotificationResult {
-            return AddNotificationResult(notificationData, notificationHolder, shouldCancelNotification = false)
+            return AddNotificationResult(
+                notificationData,
+                notificationStoreOperations,
+                notificationHolder,
+                shouldCancelNotification = false
+            )
         }
 
         fun replaceNotification(
             notificationData: NotificationData,
+            notificationStoreOperations: List<NotificationStoreOperation>,
             notificationHolder: NotificationHolder
         ): AddNotificationResult {
-            return AddNotificationResult(notificationData, notificationHolder, shouldCancelNotification = true)
+            return AddNotificationResult(
+                notificationData,
+                notificationStoreOperations,
+                notificationHolder,
+                shouldCancelNotification = true
+            )
         }
     }
 }

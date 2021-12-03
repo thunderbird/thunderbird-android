@@ -26,23 +26,32 @@ internal class NotificationDataStore {
             val notificationId = lastNotificationHolder.notificationId
             val notificationHolder = NotificationHolder(notificationId, timestamp, content)
 
+            val operations = listOf(
+                NotificationStoreOperation.ChangeToInactive(lastNotificationHolder.content.messageReference),
+                NotificationStoreOperation.Add(content.messageReference, notificationId, timestamp)
+            )
+
             val newNotificationData = notificationData.copy(
                 activeNotifications = listOf(notificationHolder) + notificationData.activeNotifications.dropLast(1),
                 inactiveNotifications = listOf(inactiveNotificationHolder) + notificationData.inactiveNotifications
             )
             notificationDataMap[account.uuid] = newNotificationData
 
-            AddNotificationResult.replaceNotification(newNotificationData, notificationHolder)
+            AddNotificationResult.replaceNotification(newNotificationData, operations, notificationHolder)
         } else {
             val notificationId = notificationData.getNewNotificationId()
             val notificationHolder = NotificationHolder(notificationId, timestamp, content)
+
+            val operations = listOf(
+                NotificationStoreOperation.Add(content.messageReference, notificationId, timestamp)
+            )
 
             val newNotificationData = notificationData.copy(
                 activeNotifications = listOf(notificationHolder) + notificationData.activeNotifications
             )
             notificationDataMap[account.uuid] = newNotificationData
 
-            AddNotificationResult.newNotification(newNotificationData, notificationHolder)
+            AddNotificationResult.newNotification(newNotificationData, operations, notificationHolder)
         }
     }
 
@@ -60,15 +69,27 @@ internal class NotificationDataStore {
                 it.content.messageReference == messageReference
             } ?: return null
 
+            val operations = listOf(
+                NotificationStoreOperation.Remove(messageReference)
+            )
+
             val newNotificationData = notificationData.copy(
                 inactiveNotifications = notificationData.inactiveNotifications - inactiveNotificationHolder
             )
             notificationDataMap[account.uuid] = newNotificationData
 
-            RemoveNotificationResult.recreateSummaryNotification(newNotificationData)
+            RemoveNotificationResult.recreateSummaryNotification(newNotificationData, operations)
         } else if (notificationData.inactiveNotifications.isNotEmpty()) {
             val newNotificationHolder = notificationData.inactiveNotifications.first()
                 .toNotificationHolder(notificationHolder.notificationId)
+
+            val operations = listOf(
+                NotificationStoreOperation.Remove(messageReference),
+                NotificationStoreOperation.ChangeToActive(
+                    newNotificationHolder.content.messageReference,
+                    newNotificationHolder.notificationId
+                )
+            )
 
             val newNotificationData = notificationData.copy(
                 activeNotifications = notificationData.activeNotifications - notificationHolder + newNotificationHolder,
@@ -76,14 +97,22 @@ internal class NotificationDataStore {
             )
             notificationDataMap[account.uuid] = newNotificationData
 
-            RemoveNotificationResult.replaceNotification(newNotificationData, newNotificationHolder)
+            RemoveNotificationResult.replaceNotification(newNotificationData, operations, newNotificationHolder)
         } else {
+            val operations = listOf(
+                NotificationStoreOperation.Remove(messageReference),
+            )
+
             val newNotificationData = notificationData.copy(
                 activeNotifications = notificationData.activeNotifications - notificationHolder
             )
             notificationDataMap[account.uuid] = newNotificationData
 
-            RemoveNotificationResult.cancelNotification(newNotificationData, notificationHolder.notificationId)
+            RemoveNotificationResult.cancelNotification(
+                newNotificationData,
+                operations,
+                notificationHolder.notificationId
+            )
         }
     }
 
