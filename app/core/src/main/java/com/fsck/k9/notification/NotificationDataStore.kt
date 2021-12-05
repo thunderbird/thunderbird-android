@@ -16,6 +16,19 @@ internal class NotificationDataStore {
     private val notificationDataMap = mutableMapOf<String, NotificationData>()
 
     @Synchronized
+    fun initializeAccount(
+        account: Account,
+        activeNotifications: List<NotificationHolder>,
+        inactiveNotifications: List<InactiveNotificationHolder>
+    ): NotificationData {
+        require(activeNotifications.size <= MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
+
+        return NotificationData(account, activeNotifications, inactiveNotifications).also { notificationData ->
+            notificationDataMap[account.uuid] = notificationData
+        }
+    }
+
+    @Synchronized
     fun addNotification(account: Account, content: NotificationContent, timestamp: Long): AddNotificationResult {
         val notificationData = getNotificationData(account)
 

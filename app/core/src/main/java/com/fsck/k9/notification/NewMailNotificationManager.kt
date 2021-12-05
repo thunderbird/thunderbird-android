@@ -16,6 +16,28 @@ internal class NewMailNotificationManager(
     private val summaryNotificationDataCreator: SummaryNotificationDataCreator,
     private val clock: Clock
 ) {
+    fun restoreNewMailNotifications(account: Account): NewMailNotificationData? {
+        val notificationData = notificationRepository.restoreNotifications(account) ?: return null
+
+        val addLockScreenNotification = notificationData.isSingleMessageNotification
+        val singleNotificationDataList = notificationData.activeNotifications.map { notificationHolder ->
+            createSingleNotificationData(
+                account = account,
+                notificationId = notificationHolder.notificationId,
+                content = notificationHolder.content,
+                timestamp = notificationHolder.timestamp,
+                addLockScreenNotification = addLockScreenNotification
+            )
+        }
+
+        return NewMailNotificationData(
+            cancelNotificationIds = emptyList(),
+            baseNotificationData = createBaseNotificationData(notificationData),
+            singleNotificationData = singleNotificationDataList,
+            summaryNotificationData = createSummaryNotificationData(notificationData, silent = true)
+        )
+    }
+
     fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean): NewMailNotificationData {
         val content = contentCreator.createFromMessage(account, message)
 

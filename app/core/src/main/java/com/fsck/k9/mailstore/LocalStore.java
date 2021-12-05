@@ -27,6 +27,7 @@ import android.net.Uri;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
+import androidx.core.database.CursorKt;
 import com.fsck.k9.Account;
 import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
@@ -109,6 +110,9 @@ public class LocalStore {
     static final int MSG_INDEX_MIME_TYPE = 23;
     static final int MSG_INDEX_PREVIEW_TYPE = 24;
     static final int MSG_INDEX_HEADER_DATA = 25;
+
+    static final int MSG_INDEX_NOTIFICATION_ID = 26;
+    static final int MSG_INDEX_NOTIFICATION_TIMESTAMP = 27;
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, " +
@@ -1084,6 +1088,35 @@ public class LocalStore {
 
     public MessageCounts getMessageCounts(LocalSearch search) throws MessagingException {
         return new MessageCounts(getUnreadMessageCount(search), getStarredMessageCount(search));
+    }
+
+    public List<NotificationMessage> getNotificationMessages() throws MessagingException {
+        return database.execute(false, db -> {
+            try (Cursor cursor = db.rawQuery(
+                    "SELECT " + GET_MESSAGES_COLS + ", notifications.notification_id, notifications.timestamp " +
+                            "FROM notifications " +
+                            "JOIN messages ON (messages.id = notifications.message_id) " +
+                            "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                            "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
+                            "LEFT JOIN folders ON (folders.id = messages.folder_id) " +
+                            "ORDER BY notifications.timestamp DESC", null)
+            ) {
+                List<NotificationMessage> messages = new ArrayList<>(cursor.getCount());
+                while (cursor.moveToNext()) {
+                    long folderId = cursor.getLong(MSG_INDEX_FOLDER_ID);
+                    LocalFolder folder = getFolder(folderId);
+                    LocalMessage message = new LocalMessage(LocalStore.this, null, folder);
+                    message.populateFromGetMessageCursor(cursor);
+
+                    Integer notificationId = CursorKt.getIntOrNull(cursor, MSG_INDEX_NOTIFICATION_ID);
+                    long notificationTimeStamp = cursor.getLong(MSG_INDEX_NOTIFICATION_TIMESTAMP);
+
+                    messages.add(new NotificationMessage(message, notificationId, notificationTimeStamp));
+                }
+
+                return messages;
+            }
+        });
     }
 
     public static String getColumnNameForFlag(Flag flag) {

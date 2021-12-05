@@ -104,5 +104,11 @@ val coreNotificationModule = module {
             notificationManager = get()
         )
     }
-    single { NotificationRepository(notificationStoreProvider = get()) }
+    single {
+        NotificationRepository(
+            notificationStoreProvider = get(),
+            localStoreProvider = get(),
+            notificationContentCreator = get()
+        )
+    }
 }

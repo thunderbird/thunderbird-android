@@ -5,11 +5,19 @@ import android.content.Context
 import android.content.pm.PackageManager
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mail.internet.BinaryTempFileBody
+import com.fsck.k9.notification.NotificationController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.core.qualifier.named
 
 object Core : EarlyInit {
     private val context: Context by inject()
     private val appConfig: AppConfig by inject()
     private val jobManager: K9JobManager by inject()
+    private val appCoroutineScope: CoroutineScope by inject(named("AppCoroutineScope"))
+    private val preferences: Preferences by inject()
+    private val notificationController: NotificationController by inject()
 
     /**
      * This needs to be called from [Application#onCreate][android.app.Application#onCreate] before calling through
@@ -25,6 +33,8 @@ object Core : EarlyInit {
         BinaryTempFileBody.setTempDirectory(context.cacheDir)
 
         setServicesEnabled(context)
+
+        restoreNotifications()
     }
 
     /**
@@ -66,6 +76,13 @@ object Core : EarlyInit {
 
         if (enabled) {
             jobManager.scheduleAllMailJobs()
+        }
+    }
+
+    private fun restoreNotifications() {
+        appCoroutineScope.launch(Dispatchers.IO) {
+            val accounts = preferences.accounts
+            notificationController.restoreNewMailNotifications(accounts)
         }
     }
 }
