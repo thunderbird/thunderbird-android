@@ -329,14 +329,11 @@
             android:summary="@string/account_settings_ignore_chat_messages_summary"
             android:title="@string/account_settings_ignore_chat_messages_label" />
 
-        <com.takisoft.preferencex.RingtonePreference
+        <com.fsck.k9.ui.settings.account.NotificationSoundPreference
             android:defaultValue="content://settings/system/notification_sound"
             android:dependency="account_notify"
             android:key="account_ringtone"
-            android:ringtoneType="notification"
-            android:showSilent="true"
-            android:title="@string/account_settings_ringtone"
-            app:pref_summaryHasRingtone="%s" />
+            android:title="@string/account_settings_ringtone" />
 
         <CheckBoxPreference
             android:defaultValue="false"
