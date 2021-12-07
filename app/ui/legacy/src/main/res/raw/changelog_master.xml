@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.906" versioncode="29006" date="2021-12-07">
+        <change>Set the auto-expand folder to 'Inbox' by default</change>
+        <change>Restore 'new mail' notifications when the app is restarted</change>
+        <change>Switched ringtone picker so custom notification sounds can be supported (Android 7 and older)</change>
+        <change>Fixed bug where vibration for notifications couldn't be disabled (Android 7 and older)</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.905" versioncode="29005" date="2021-11-24">
         <change>Set subject when forwarding a message as attachment</change>
         <change>Added a menu option to export the debug log under Settings → General settings → Debugging</change>
