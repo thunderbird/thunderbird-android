@@ -202,7 +202,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_view_no_viewer">Incapaz de encontrar visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Transferir mensagem completa</string>
   <string name="message_view_sender_label">via %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Mais deste remetente</string>
   <string name="search_from_format">De <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Mensagem rejeitada</string>

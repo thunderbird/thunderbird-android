@@ -13,7 +13,6 @@
   <!--=== General strings ==================================================================-->
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="global_settings_registered_name_color_label">Colourise contacts</string>
   <string name="global_settings_registered_name_color_changed">Colourise names in your contact list</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->

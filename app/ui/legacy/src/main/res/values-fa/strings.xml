@@ -45,7 +45,7 @@
   <li>ذخیرهٔ پیوست‌ها در کارت SD</li>
   <li>خالی‌کردن زباله‌دان</li>
   <li>مرتب‌سازی پیام‌ها</li>
-  <li>و خیلی قابلیت‌های دیگر...</li>
+  <li>و خیلی قابلیت‌های دیگر…</li>
 </ul>
 <p>
 لطفاً توجه کنید که K-9، مانند بسیاری از برنامه‌های مدیریت رایانامه، از بیشتر حساب‌های رایگان Hotmail پشتیبانی نمی‌کند و هنگام برقراری ارتباط‌ با Microsoft Exchange مشکلاتی وجود دارد.
@@ -74,8 +74,8 @@
   <string name="compose_title_forward_as_attachment">هدایت به‌شکل پیوست</string>
   <string name="choose_account_title">انتخاب حساب</string>
   <string name="choose_folder_title">انتخاب پوشه</string>
-  <string name="choose_folder_move_title">انتقال به...</string>
-  <string name="choose_folder_copy_title">کپی به...</string>
+  <string name="choose_folder_move_title">انتقال به…</string>
+  <string name="choose_folder_copy_title">کپی به…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> انتخاب</string>
   <string name="next_action">بعدی</string>
   <string name="previous_action">قبلی</string>
@@ -95,7 +95,7 @@
   <string name="move_action">انتقال</string>
   <string name="move_to_drafts_action">انتقال به پیش‌نویس‌ها</string>
   <string name="single_message_options_action">ارسال…</string>
-  <string name="refile_action">سامان‌دهی...</string>
+  <string name="refile_action">سامان‌دهی…</string>
   <string name="done_action">انجام شد</string>
   <string name="discard_action">دورانداختن</string>
   <string name="save_draft_action">ذخیره در پیش‌نویس</string>
@@ -178,7 +178,7 @@
   <string name="notification_channel_messages_title">پیام‌ها</string>
   <string name="notification_channel_messages_description">اعلان‌های مربوط به پیام‌ها</string>
   <string name="notification_channel_miscellaneous_title">متفرقه</string>
-  <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و...</string>
+  <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و…</string>
   <string name="special_mailbox_name_inbox">صندوق ورودی</string>
   <string name="special_mailbox_name_outbox">صندوق خروجی</string>
   <string name="special_mailbox_name_drafts">پیش‌نویس‌ها</string>
@@ -221,7 +221,6 @@
   <string name="message_view_no_viewer">نمایش‌دهنده‌ای برای <xliff:g id="mimetype">%s</xliff:g> پیدا نشد.</string>
   <string name="message_view_download_remainder">دانلود پیام کامل</string>
   <string name="message_view_sender_label">از طریق %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">بیشتر از این فرستنده</string>
   <string name="search_from_format">از <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">پیام از بین رفت</string>
@@ -447,7 +446,7 @@
   <string name="account_settings_crypto_key">پیکربندی کلید سرتاسر</string>
   <string name="account_settings_crypto_summary_off">برنامه‌ای برای OpenPGP پیکربندی نشده</string>
   <string name="account_settings_crypto_summary_on">به %s متصل شد</string>
-  <string name="account_settings_crypto_summary_config">در حال پیکربندی...</string>
+  <string name="account_settings_crypto_summary_config">در حال پیکربندی…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">ذخیرهٔ همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده ذخیره می‌شوند</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">پیش‌نویس‌ها فقط در صورتی رمزنگاری شوند که رمزنگاری فعال باشد</string>
@@ -599,7 +598,7 @@
   <string name="sort_unread_last">ابتدا، پیام‌های خوانده</string>
   <string name="sort_attach_first">ابتدا، پیام‌های پیوست‌دار</string>
   <string name="sort_unattached_first">ابتدا، پیام‌های بی‌پیوست</string>
-  <string name="sort_by">به ترتیبِ...</string>
+  <string name="sort_by">به ترتیبِ…</string>
   <string name="sort_by_date">تاریخ</string>
   <string name="sort_by_arrival">رسیدن</string>
   <string name="sort_by_subject">موضوع</string>
@@ -747,7 +746,7 @@
   <string name="settings_export_title">برون‌برد تنظیمات</string>
   <string name="settings_export_button">برون‌برد</string>
   <string name="settings_export_share_button">اشتراک‌گذاری</string>
-  <string name="settings_export_progress_text">در حال برون‌برد تنظیمات...</string>
+  <string name="settings_export_progress_text">در حال برون‌برد تنظیمات…</string>
   <string name="settings_export_success_generic">برون‌برد تنظیمات موفقیت‌آمیز بود</string>
   <string name="settings_export_failure">برون‌برد تنظیمات ناموفق بود</string>
   <string name="settings_import_title">درون‌برد تنظیمات</string>
@@ -773,7 +772,7 @@
   <string name="settings_import_outgoing_server_password_hint">گذرواژهٔ کارساز خروجی</string>
   <string name="settings_import_use_same_password_for_outgoing_server">برای کارساز خروجی از همان گذرواژه استفاده کن</string>
   <string name="server_name_format">نام کارساز:<xliff:g id="hostname">%s</xliff:g></string>
-  <string name="unread_widget_select_account">نمایش تعداد نخوانده‌ها برای...</string>
+  <string name="unread_widget_select_account">نمایش تعداد نخوانده‌ها برای…</string>
   <string name="unread_widget_account_title">حساب</string>
   <string name="unread_widget_account_summary">حسابی که تعداد نخوانده‌های آن باید نشان داده شود</string>
   <string name="unread_widget_unified_inbox_account_summary">صندوق ورودی یکپارچه</string>
@@ -835,7 +834,7 @@
   <string name="global_settings_threaded_view_label">نمای مکالمه‌ای</string>
   <string name="global_settings_threaded_view_summary">گروه‌بندی پیام‌ها بر اساس گفتگو</string>
   <string name="upgrade_databases_title">ارتقای پایگاه‌داده</string>
-  <string name="upgrade_databases_unspecified">ارتقای پایگاه‌داده...</string>
+  <string name="upgrade_databases_unspecified">ارتقای پایگاه‌داده…</string>
   <string name="upgrade_database_format">ارتقای پایگاه‌دادهٔ حساب «<xliff:g id="account">%s</xliff:g>»</string>
   <string name="global_settings_splitview_mode_label">صفحهٔ دوبخشی</string>
   <string name="global_settings_splitview_always">همیشه</string>
@@ -849,10 +848,10 @@
   <string name="global_settings_colorize_missing_contact_pictures_summary">برای مخاطبان بدون عکس از رنگ استفاده کن</string>
   <string name="global_settings_messageview_visible_refile_actions_title">کنش‌های پیام نمایان</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">کنش‌های انتخابی را در منوی نمایش پیام نشان می‌دهد</string>
-  <string name="loading_attachment">بارگیری پیوست...</string>
+  <string name="loading_attachment">بارگیری پیوست…</string>
   <string name="fetching_attachment_dialog_title_send">ارسال پیام</string>
   <string name="fetching_attachment_dialog_title_save">ذخیرهٔ پیش‌نویس</string>
-  <string name="fetching_attachment_dialog_message">واکشی پیوست...</string>
+  <string name="fetching_attachment_dialog_message">واکشی پیوست…</string>
   <string name="auth_external_error">احراز هویت ناموفق بود. کارساز توانایی SASL EXTERNAL را از خود نشان نمی‌دهد. می‌تواند به‌سبب مشکلی با گواهی کارخواه (منقضی‌شده، گواهی ناشناخته) یا مشکلات دیگری در پیکربندی آن باشد.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">از گواهی کارخواه استفاده کن</string>
@@ -940,7 +939,7 @@
   <string name="locked_attach_unlock">قفل‌گشایی</string>
   <string name="locked_attach_unencrypted">این بخش رمزنگاری نشده و شاید ناامن باشد.</string>
   <string name="locked_attach_title">پیوستِ محافظت‌نشده</string>
-  <string name="message_progress_text">بارگیری...</string>
+  <string name="message_progress_text">بارگیری…</string>
   <string name="messageview_decrypt_cancelled">رمزگشایی لغو شد.</string>
   <string name="messageview_decrypt_retry">تلاش دوباره</string>
   <string name="messageview_decrypt_incomplete">برای رمزگشایی باید پیام رمزنگاری‌شده را کامل دانلود کنید.</string>
@@ -964,7 +963,7 @@
   <string name="crypto_no_provider_message">این رایانامه با OpenPGP رمزنگاری شده است.\nبرای خواندن آن، باید برنامه‌ای سازگار با OpenPGP را نصب و پیکربندی کنید.</string>
   <string name="crypto_no_provider_button">برو به تنظیمات</string>
   <string name="mail_list_widget_text">لیست پیام K-9</string>
-  <string name="mail_list_widget_loading">بارگیری پیام‌ها...</string>
+  <string name="mail_list_widget_loading">بارگیری پیام‌ها…</string>
   <string name="openpgp_enabled_error_title">رمزنگاری ممکن نیست</string>
   <string name="openpgp_enabled_error_msg">بعضی از گیرندگان انتخابی از این ویژگی پشتیبانی نمی‌کنند!</string>
   <string name="enable_encryption">فعال‌سازی رمزنگاری</string>
@@ -996,7 +995,7 @@
   <string name="ac_transfer_intro">یک پیام راه‌انداز Autocrypt، راه‌انداز سرتاسر شما را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک می‌گذارد.</string>
   <string name="ac_transfer_button_send">ارسال پیام راه‌انداز</string>
   <string name="ac_transfer_will_be_sent">پیام به نشانی شما ارسال خواهد شد:</string>
-  <string name="ac_transfer_generating">در حال ساخت پیام راه‌انداز...</string>
+  <string name="ac_transfer_generating">در حال ساخت پیام راه‌انداز…</string>
   <string name="ac_transfer_sending_to">ارسال پیام به:</string>
   <string name="ac_transfer_finish">برای تکمیل کار، پیام را روی دستگاه دیگرتان باز کنید و کد راه‌انداز را وارد کنید.</string>
   <string name="ac_transfer_show_code">نمایش کد راه‌انداز</string>
@@ -1014,7 +1013,7 @@
   <string name="permission_contacts_rationale_title">اجازهٔ دسترسی به مخاطبان را بدهید</string>
   <string name="permission_contacts_rationale_message">برای پیشنهاد مخاطب و نمایش نام و عکس مخاطب، برنامه نیاز دارد به مخاطبان شما دسترسی داشته باشد.</string>
   <string name="generic_loading_error">هنگام بارکردن داده، خطایی رخ داد</string>
-  <string name="push_notification_state_initializing">مقداردهی اولیه...</string>
+  <string name="push_notification_state_initializing">مقداردهی اولیه…</string>
   <string name="push_notification_state_listening">در انتظار رایانامه‌های جدید</string>
   <string name="push_notification_state_wait_background_sync">می‌خوابد تا هنگامی که اجازهٔ همگام‌سازی در پس‌زمینه داده شود</string>
   <string name="push_notification_state_wait_network">می‌خوابد تا هنگامی که شبکه در دسترس باشد</string>

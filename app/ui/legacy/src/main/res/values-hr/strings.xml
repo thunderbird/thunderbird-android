@@ -174,7 +174,6 @@
   <string name="message_view_no_viewer">Ne mogu pronaći preglednik za <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Preuzmi cijelu poruku</string>
   <string name="message_view_sender_label">putem %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Više od ovog pošiljatelja</string>
   <string name="search_from_format">Od <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Poruka odbačena</string>
@@ -391,7 +390,7 @@
   <string name="account_settings_crypto_key">Podešavanje ključa za s kraja na kraj</string>
   <string name="account_settings_crypto_summary_off">OpenPGP aplikacija nije podešena</string>
   <string name="account_settings_crypto_summary_on">Povezano na %s</string>
-  <string name="account_settings_crypto_summary_config">Podešavam...</string>
+  <string name="account_settings_crypto_summary_config">Podešavam…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Pohrani sve skice šifrirano</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Sve skice će biti pohranjene šifrirano</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Šifriraj skice samo ukoliko je šifriranje uključeno</string>
@@ -892,7 +891,7 @@
   <string name="crypto_no_provider_message">Ova e-poruka je šifrirana korištenjem OpenPGP.\nDa bi ste je pročitali, potrebno je da instalirate i postavite odgovarajuću OpenPGP aplikaciju.</string>
   <string name="crypto_no_provider_button">Idi u Postavke</string>
   <string name="mail_list_widget_text">K-9 Popis Poruka</string>
-  <string name="mail_list_widget_loading">Učitavam poruke...</string>
+  <string name="mail_list_widget_loading">Učitavam poruke…</string>
   <string name="openpgp_enabled_error_title">Šifriranje nije moguće</string>
   <string name="enable_encryption">Uključi šifriranje</string>
   <string name="disable_encryption">Onemogući šifriranje</string>
@@ -916,7 +915,7 @@
   <string name="ac_transfer_setting_summary">Sigurno podijeli podešavanja s kraja na kraj sa drugim uređajima</string>
   <string name="ac_transfer_button_send">Pošalji poruku za podešavanje</string>
   <string name="ac_transfer_will_be_sent">Poruka će biti poslana na vašu adresu:</string>
-  <string name="ac_transfer_generating">Generisanje poruke za podešavanje...</string>
+  <string name="ac_transfer_generating">Generisanje poruke za podešavanje…</string>
   <string name="ac_transfer_sending_to">Šaljem poruku:</string>
   <string name="ac_transfer_finish">Da bi završili, otvorite poruku na vašem drugom uređaju i unesite kod podešavanja.</string>
   <string name="ac_transfer_show_code">Prikaži kod podešavanja</string>

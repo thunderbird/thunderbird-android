@@ -74,7 +74,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="forward_as_attachment_action">Reenviar como anexo</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
-  <string name="refile_action">Arquivar...</string>
+  <string name="refile_action">Arquivar…</string>
   <string name="done_action">Feito</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Gardar coma borrador</string>
@@ -183,7 +183,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="message_view_no_viewer">Imposible atopar visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
   <string name="message_view_sender_label">vía %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Máis deste remitente</string>
   <string name="search_from_format">De <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Mensaxes descartadas</string>
@@ -657,14 +656,14 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="settings_list_miscellaneous_category">Varios</string>
   <string name="settings_export_button">Exportar</string>
   <string name="settings_export_share_button">Compartir</string>
-  <string name="settings_export_progress_text">Exportando axustes...</string>
+  <string name="settings_export_progress_text">Exportando axustes…</string>
   <string name="settings_export_success_generic">Gardáronse correctamente os axustes</string>
   <string name="settings_export_failure">Fallou ao exportar axustes</string>
   <string name="settings_import_title">Importar axustes</string>
   <string name="settings_import_button">Importar</string>
   <string name="settings_import">Importar axustes</string>
-  <string name="settings_importing">Importando axustes...</string>
-  <string name="unread_widget_select_account">Mostrar conta de non lidas para...</string>
+  <string name="settings_importing">Importando axustes…</string>
+  <string name="unread_widget_select_account">Mostrar conta de non lidas para…</string>
   <string name="unread_widget_account_title">Conta</string>
   <string name="unread_widget_account_summary">A conta para a cal se mostrará o número de non lidos</string>
   <string name="unread_widget_unified_inbox_account_summary">Caixa de entrada unificada</string>
@@ -842,7 +841,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="crypto_no_provider_title">Este correo está cifrado</string>
   <string name="crypto_no_provider_message">Este correo foi cifrado con OpenPGP.\nPara lelo, precisa instalar e configurar un app compatible con OpenPGP</string>
   <string name="mail_list_widget_text">Lista de mensaxes K-9</string>
-  <string name="mail_list_widget_loading">Cargando mensaxes...</string>
+  <string name="mail_list_widget_loading">Cargando mensaxes…</string>
   <string name="openpgp_enabled_error_title">Cifrado non posible</string>
   <string name="openpgp_enabled_error_msg">Algún dos destinatarios seleccionados non soportan esta característica!</string>
   <string name="enable_encryption">Habilitar cifrado</string>

@@ -219,7 +219,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="message_view_no_viewer">Nem sikerült megjelenítőt találni ehhez: <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Teljes üzenet letöltése</string>
   <string name="message_view_sender_label">ezen keresztül: %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Továbbiak ettől a feladótól</string>
   <string name="search_from_format">Innen: <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Az üzenet elvetésre került.</string>

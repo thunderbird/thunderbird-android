@@ -134,7 +134,6 @@
   <string name="message_view_show_pictures_action">Mostrar imaxes</string>
   <string name="message_view_no_viewer">Non é posible atopar un visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Máis deste remitente</string>
   <string name="message_discarded_toast">Mensaxe descartada</string>
   <string name="message_saved_toast">Mensaxe gardada como borrador</string>

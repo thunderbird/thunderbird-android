@@ -223,7 +223,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="message_view_no_viewer">Nie moge znaleźć programu do wyświetlenia pliku <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Pobierz całą wiadomość</string>
   <string name="message_view_sender_label">przez %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Więcej od tego nadawcy</string>
   <string name="search_from_format">Od <xliff:g id="sender"> %s </xliff:g></string>
   <string name="message_discarded_toast">Wiadomość usunięta</string>
@@ -447,7 +446,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_crypto_key">Skonfiguruj szyfrowanie pomiędzy urządzeniami końcowymi \"end-to-end\"</string>
   <string name="account_settings_crypto_summary_off">Brak skonfigurowanej aplikacji OpenPGP</string>
   <string name="account_settings_crypto_summary_on">Połączono z %s</string>
-  <string name="account_settings_crypto_summary_config">Konfigurowanie...</string>
+  <string name="account_settings_crypto_summary_config">Konfigurowanie…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Szyfruj wszystkie składowane szkice</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Wszystkie szkice będą szyfrowane</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Szyfruj szkice tylko jeśli szyfrowanie jest wspierane</string>
@@ -1023,7 +1022,7 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <string name="permission_contacts_rationale_title">Pozwól na dostęp do kontaktów</string>
   <string name="permission_contacts_rationale_message">Aby włączyć sugestie kontaktów i wyświetlać nazwy oraz zdjęcia aplikacja wymaga dostępu do kontaktów.</string>
   <string name="generic_loading_error">Podczas ładowania danych wystąpił błąd</string>
-  <string name="push_notification_state_initializing">Inicjowanie...</string>
+  <string name="push_notification_state_initializing">Inicjowanie…</string>
   <string name="push_notification_state_listening">Oczekiwanie na nowe emaile</string>
   <string name="push_notification_state_wait_background_sync">Uśpione, dopóki synchronizacja w tle nie będzie dozwolona</string>
   <string name="push_notification_state_wait_network">Uśpione, dopóki sieć nie będzie dostępna</string>

@@ -74,8 +74,8 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="compose_title_forward_as_attachment">Trimite atașat</string>
   <string name="choose_account_title">Alege contul</string>
   <string name="choose_folder_title">Alege dosar</string>
-  <string name="choose_folder_move_title">Mutați la...</string>
-  <string name="choose_folder_copy_title">Copiați la...</string>
+  <string name="choose_folder_move_title">Mutați la…</string>
+  <string name="choose_folder_copy_title">Copiați la…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selectate</string>
   <string name="next_action">Înainte</string>
   <string name="previous_action">Înapoi</string>
@@ -223,7 +223,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="message_view_no_viewer">Nu se poate găsi vizualizator pentru <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descarcă mesajul complet</string>
   <string name="message_view_sender_label">via %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Mai multe de la acest expeditor</string>
   <string name="search_from_format">De la <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Mesaj aruncat</string>
@@ -451,7 +450,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_crypto_key">Configurare cheie punct-la-punct</string>
   <string name="account_settings_crypto_summary_off">Nicio aplicație OpenPGP instalată</string>
   <string name="account_settings_crypto_summary_on">Conectat la %s</string>
-  <string name="account_settings_crypto_summary_config">Configurare...</string>
+  <string name="account_settings_crypto_summary_config">Configurare…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Stochează toate ciornele criptate</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Toate ciornele vor fi stocate criptate</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Criptează ciornele doar dacă criptarea este activată</string>
@@ -1005,7 +1004,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="ac_transfer_intro">Un Mesaj Setare Autocriptare împarte în siguranță setările tale punct-la-punct cu alte dispozitive.</string>
   <string name="ac_transfer_button_send">Trimite Mesaj Setare</string>
   <string name="ac_transfer_will_be_sent">Mesajul va fi trimis la adresa ta:</string>
-  <string name="ac_transfer_generating">Generare mesaj setare...</string>
+  <string name="ac_transfer_generating">Generare mesaj setare…</string>
   <string name="ac_transfer_sending_to">Se trimite mesaj la:</string>
   <string name="ac_transfer_finish">Pentru a încheia, deschide mesajul pe celălalt dispozitiv și introdu codul de setare.</string>
   <string name="ac_transfer_show_code">Arată Codul de Setare</string>
@@ -1023,7 +1022,7 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
   <string name="permission_contacts_rationale_title">Permite accesul contactelor</string>
   <string name="permission_contacts_rationale_message">Pentru a putea oferi sugestii de contacte și a afișa numele și pozele contactelor, aplicația are nevoie de acces la contactele tale.</string>
   <string name="generic_loading_error">A apărut o eroare la încărcarea datelor</string>
-  <string name="push_notification_state_initializing">Inițializare...</string>
+  <string name="push_notification_state_initializing">Inițializare…</string>
   <string name="push_notification_state_listening">Așteptând noi e-mailuri</string>
   <string name="push_notification_state_wait_background_sync">Adormire până când este permisă sincronizarea în fundal</string>
   <string name="push_notification_state_wait_network">În așteptare până când rețeaua este disponibilă</string>

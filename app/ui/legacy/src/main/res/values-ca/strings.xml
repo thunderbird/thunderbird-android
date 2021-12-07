@@ -74,8 +74,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="compose_title_forward_as_attachment">Reenvia com a adjunt</string>
   <string name="choose_account_title">Trieu un compte</string>
   <string name="choose_folder_title">Tria carpeta</string>
-  <string name="choose_folder_move_title">Mou a...</string>
-  <string name="choose_folder_copy_title">Copia a...</string>
+  <string name="choose_folder_move_title">Mou a…</string>
+  <string name="choose_folder_copy_title">Copia a…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionats</string>
   <string name="next_action">Següent</string>
   <string name="previous_action">Anterior</string>
@@ -190,6 +190,9 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="debug_enable_debug_logging_summary">Registra informació extra de diagnòstic</string>
   <string name="debug_enable_sensitive_logging_title">Registra informació sensible</string>
   <string name="debug_enable_sensitive_logging_summary">Pot mostrar les contrasenyes als registres.</string>
+  <string name="debug_export_logs_title">Exporta els registres</string>
+  <string name="debug_export_logs_success">Exportació correcta. Els registres poden contenir informació sensible. Tingueu en compte a qui els envieu.</string>
+  <string name="debug_export_logs_failure">Ha fallat l\'exportació.</string>
   <string name="message_list_load_more_messages_action">Carrega més missatges</string>
   <string name="message_to_fmt">A: <xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Assumpte</string>
@@ -221,7 +224,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_view_no_viewer">No s\'ha pogut trobar un visualitzador per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Baixa el missatge complet</string>
   <string name="message_view_sender_label">mitjançant %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Més d\'aquest remitent</string>
   <string name="search_from_format">De <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">S\'ha descartat el missatge</string>
@@ -447,7 +449,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_crypto_key">Configureu la clau d\'extrem a extrem</string>
   <string name="account_settings_crypto_summary_off">No hi ha cap aplicació d\'OpenPGP configurada.</string>
   <string name="account_settings_crypto_summary_on">Connectat a %s</string>
-  <string name="account_settings_crypto_summary_config">Es configura...</string>
+  <string name="account_settings_crypto_summary_config">Es configura…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Desa tots els esborranys encriptats</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Tots els esborranys es desaran encriptats</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Encripta els esborranys només si l\'encriptació està habilitada</string>
@@ -457,7 +459,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_led_color_label">Color del LED de notificació</string>
   <string name="account_settings_led_color_summary">El color en què ha de fer pampallugues el LED del telèfon per a aquest compte</string>
   <string name="account_settings_mail_display_count_label">Mida de la carpeta local</string>
-  <string name="account_settings_autodownload_message_size_label">Recupera missatges fins a...</string>
+  <string name="account_settings_autodownload_message_size_label">Recupera missatges fins a…</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
   <string name="account_settings_autodownload_message_size_2">2 KiB</string>
   <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -614,7 +616,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_view_help_key">Del (o D) - Elimina\nR - Respon\nA - Respon a tothom\nC - Escriu\nF - Reenvia\nM - Mou\nV - Arxiva\nY - Copia\nZ - Marca com a (no) llegit\nG - Estel\nO - Per tipus\nI - Per ordre\nQ - Torna a les carpetes\nS - Selecciona  / desmarca\nJ o P - Missatge anterior n\K o N - Missatge següent</string>
   <string name="message_list_help_key">Del (o D) - Elimina\nC - Escriu\nM - Mou\nV - Arxiva\nY - Copia\nZ - Marca com a (no) llegit\nG - Estel\nO - Tipus de classificació\nI - Ordre de classificació\nQ - Torna a les carpetes\nS - Selecciona  / desmarca</string>
   <string name="folder_list_filter_hint">El nom de carpeta conté</string>
-  <string name="folder_list_display_mode_label">Carpetes...</string>
+  <string name="folder_list_display_mode_label">Carpetes…</string>
   <string name="folder_list_display_mode_all">Mostra totes les carpetes</string>
   <string name="folder_list_display_mode_first_class">Mostra només carpetes de 1a classe</string>
   <string name="folder_list_display_mode_first_and_second_class">Mostra carpetes de 1a i 2a classe</string>
@@ -747,7 +749,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_export_title">Exporta la configuració</string>
   <string name="settings_export_button">Exporta</string>
   <string name="settings_export_share_button">Comparteix</string>
-  <string name="settings_export_progress_text">S\'està exportant la configuració...</string>
+  <string name="settings_export_progress_text">S\'està exportant la configuració…</string>
   <string name="settings_export_success_generic">La configuració s\'ha exportat correctament.</string>
   <string name="settings_export_failure">Ha fallat exportar la configuració.</string>
   <string name="settings_import_title">Importa la configuració</string>
@@ -764,7 +766,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_import_status_error">Fallada d\'importació</string>
   <string name="settings_import_later_button">Més tard</string>
   <string name="settings_import">Importa la configuració</string>
-  <string name="settings_importing">S\'està important la configuració...</string>
+  <string name="settings_importing">S\'està important la configuració…</string>
   <plurals name="settings_import_password_prompt">
     <item quantity="one">Per poder usar el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar la contrasenya del servidor. </item>
     <item quantity="other">Per poder fer servir el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar les contrasenyes del servidor. </item>
@@ -773,7 +775,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_import_outgoing_server_password_hint">Contrasenya del servidor de sortida</string>
   <string name="settings_import_use_same_password_for_outgoing_server">Fes servir la mateixa contrasenya per al servidor de sortida.</string>
   <string name="server_name_format">Nom del servidor: <xliff:g id="hostname">%s</xliff:g></string>
-  <string name="unread_widget_select_account">Mostra el recompte de no llegits per a...</string>
+  <string name="unread_widget_select_account">Mostra el recompte de no llegits per a…</string>
   <string name="unread_widget_account_title">Compte</string>
   <string name="unread_widget_account_summary">El compte per al qual s\'ha de mostrar el nombre de missatges no llegits.</string>
   <string name="unread_widget_unified_inbox_account_summary">Bústia unificada</string>
@@ -835,7 +837,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_threaded_view_label">Vista de fil de discussió</string>
   <string name="global_settings_threaded_view_summary">Recull els missatges del mateix fil de discussió</string>
   <string name="upgrade_databases_title">Actualització de les bases de dades</string>
-  <string name="upgrade_databases_unspecified">S\'estan actualitzant les bases de dades...</string>
+  <string name="upgrade_databases_unspecified">S\'estan actualitzant les bases de dades…</string>
   <string name="upgrade_database_format">S\'està actualitzant la base de dades del compte \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="global_settings_splitview_mode_label">Mostra amb pantalla dividida</string>
   <string name="global_settings_splitview_always">Sempre</string>
@@ -940,7 +942,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="locked_attach_unlock">Desbloqueja</string>
   <string name="locked_attach_unencrypted">Aquesta part no estava encriptada i pot no ser segura.</string>
   <string name="locked_attach_title">Adjunt no protegit</string>
-  <string name="message_progress_text">S\'està carregant...</string>
+  <string name="message_progress_text">S\'està carregant…</string>
   <string name="messageview_decrypt_cancelled">S\'ha cancel·lat la desencriptació.</string>
   <string name="messageview_decrypt_retry">Torna-hi</string>
   <string name="messageview_decrypt_incomplete">Cal baixar el missatge encriptat per desencriptar-lo.</string>
@@ -964,7 +966,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
   <string name="crypto_no_provider_button">Ves a la configuració</string>
   <string name="mail_list_widget_text">Llista de missatges del K-9</string>
-  <string name="mail_list_widget_loading">S\'està carregant missatges...</string>
+  <string name="mail_list_widget_loading">S\'està carregant missatges…</string>
   <string name="openpgp_enabled_error_title">Encriptació no possible</string>
   <string name="openpgp_enabled_error_msg">Alguns dels destinataris seleccionats no admeten aquesta característica!</string>
   <string name="enable_encryption">Habilita l\'encriptació</string>
@@ -996,7 +998,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="ac_transfer_intro">Un missatge de configuració d\'autoencriptació comparteix amb seguretat la configuració d\'extrem a extrem amb altres dispositius.</string>
   <string name="ac_transfer_button_send">Envia un missatge de configuració</string>
   <string name="ac_transfer_will_be_sent">El missatge s\'enviarà a la vostra adreça:</string>
-  <string name="ac_transfer_generating">Es genera el missatge de configuració...</string>
+  <string name="ac_transfer_generating">Es genera el missatge de configuració…</string>
   <string name="ac_transfer_sending_to">S\'envia el missatge a:</string>
   <string name="ac_transfer_finish">Per acabar, obriu el missatge a l\'altre dispositiu i introduïu-hi el codi de configuració.</string>
   <string name="ac_transfer_show_code">Mostra el codi de configuració</string>
@@ -1014,7 +1016,7 @@ Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la v
   <string name="permission_contacts_rationale_title">Permet l\'accés als contactes</string>
   <string name="permission_contacts_rationale_message">Per poder proporcionar suggeriments de contactes i mostrar-ne els noms i fotografies, l\'aplicació necessita accés als vostres contactes.</string>
   <string name="generic_loading_error">S\'ha produït un error en carregar les dades</string>
-  <string name="push_notification_state_initializing">S\'inicia...</string>
+  <string name="push_notification_state_initializing">S\'inicia…</string>
   <string name="push_notification_state_listening">S\'està esperant nous correus electrònics</string>
   <string name="push_notification_state_wait_background_sync">Inactiu fins que es permeti la sincronització</string>
   <string name="push_notification_state_wait_network">Inactiu fins que la xarxa estigui disponible</string>

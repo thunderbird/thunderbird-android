@@ -74,8 +74,8 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="compose_title_forward_as_attachment">Pārsūtīt kā pielikumu</string>
   <string name="choose_account_title">Izvēlēties kontu</string>
   <string name="choose_folder_title">Izvēlēties mapi</string>
-  <string name="choose_folder_move_title">Pārvietot uz ...</string>
-  <string name="choose_folder_copy_title">Kopēt uz ...</string>
+  <string name="choose_folder_move_title">Pārvietot uz…</string>
+  <string name="choose_folder_copy_title">Kopēt uz…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> atzīmēts</string>
   <string name="next_action">Nākošais</string>
   <string name="previous_action">Iepriekšējais</string>
@@ -192,6 +192,9 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="debug_enable_debug_logging_summary">Reģistrēt papildus diagnostisko informāciju</string>
   <string name="debug_enable_sensitive_logging_title">Reģistrēt slepeno informāciju</string>
   <string name="debug_enable_sensitive_logging_summary">Drīkst reģistros rādīt paroles.</string>
+  <string name="debug_export_logs_title">Eksportēt žurnālus</string>
+  <string name="debug_export_logs_success">Eksportēšana izdevās. Žurnālos var būt personiski dati, tāpēc pārdomājiet labi, pirms tos kādam sūtāt.</string>
+  <string name="debug_export_logs_failure">Eksportēšana neizdevās.</string>
   <string name="message_list_load_more_messages_action">Ielādēt vairāk vēstuļu</string>
   <string name="message_to_fmt">Kam:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Temats</string>
@@ -223,7 +226,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="message_view_no_viewer">Nevar atrast programmu, lai atvērtu <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">lejupielādēt pilnu vēstuli</string>
   <string name="message_view_sender_label">caur %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Vairāk no šī sūtītāja</string>
   <string name="search_from_format">No <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Vēstule tika izmesta</string>
@@ -449,7 +451,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_crypto_key">Iestatīt privātās šifrēšanas atslēgu</string>
   <string name="account_settings_crypto_summary_off">OpenPGP lietotne nav iestatīta</string>
   <string name="account_settings_crypto_summary_on">Pievienots pie %s</string>
-  <string name="account_settings_crypto_summary_config">Notiek iestatīšana...</string>
+  <string name="account_settings_crypto_summary_config">Notiek iestatīšana…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Saglabāt visus melrakstus šifrētā veidā</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Visi melnraksti tiks saglabāti šifrētā veidā</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Šifrēt melnrakstus tikai tad, ja ieslēgta šifrēšana</string>
@@ -765,7 +767,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="settings_import_status_success">Importēts veiksmīgi</string>
   <string name="settings_import_status_password_required">Nepieciešama parole</string>
   <string name="settings_import_status_not_imported">Nav importēts</string>
-  <string name="settings_import_status_error">Imports neizdevās</string>
+  <string name="settings_import_status_error">Importēšana neizdevās</string>
   <string name="settings_import_later_button">Vēlāk</string>
   <string name="settings_import">Importēšanas iestatījumi</string>
   <string name="settings_importing">Importē iestatījumus…</string>
@@ -1003,7 +1005,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="ac_transfer_intro">Automātisks vēstules šifrēšanas iestatījums ļauj droši dalīties ar citām ierīcēm.</string>
   <string name="ac_transfer_button_send">Nosūtīt iestatījumu vēstuli</string>
   <string name="ac_transfer_will_be_sent">Vēstule tiks nosūtīta uz Jūsu adresi:</string>
-  <string name="ac_transfer_generating">Izveido iestatījumu vēstuli...</string>
+  <string name="ac_transfer_generating">Izveido iestatījumu vēstuli…</string>
   <string name="ac_transfer_sending_to">Sūta vēstuli:</string>
   <string name="ac_transfer_finish">Lai pabeigtu, vēstule jāatver citā ierīcē un jāievada iestatīšanas kods.</string>
   <string name="ac_transfer_show_code">Parādīt iestatījumu kodu</string>
@@ -1021,7 +1023,7 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <string name="permission_contacts_rationale_title">Atļaut piekļuvi kontaktiem</string>
   <string name="permission_contacts_rationale_message">Lai ieteiktu kontaktus un parādītu to vārdus un attēlus, lietotnei nepieciešama atļauja piekļūt Jūsu kontaktiem.</string>
   <string name="generic_loading_error">Lejupielādējot datus notika kāda kļūda</string>
-  <string name="push_notification_state_initializing">Inicializē...</string>
+  <string name="push_notification_state_initializing">Inicializē…</string>
   <string name="push_notification_state_listening">Gaida jaunas vēstules</string>
   <string name="push_notification_state_wait_background_sync">Snaust, kamēr atļauta fona sinhronizēšana</string>
   <string name="push_notification_state_wait_network">Snaust, kamēr pieejams tīkls</string>

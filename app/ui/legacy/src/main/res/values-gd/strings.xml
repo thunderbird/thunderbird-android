@@ -186,7 +186,6 @@
   <string name="message_view_no_viewer">Chan urrainn dhuinn aplacaid a lorg a sheallas <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Luchdaich a-nuas an teachdaireachd shlàn</string>
   <string name="message_view_sender_label">slighe %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Barrachd on t-seòladair seo</string>
   <string name="search_from_format">O <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Chaidh an teachdaireachd a thilgeil air falbh</string>

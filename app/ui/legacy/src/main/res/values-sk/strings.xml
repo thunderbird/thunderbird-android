@@ -215,7 +215,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="message_view_no_viewer">Nemožno nájsť prehliadač pre <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Stiahnuť kompletnú správu</string>
   <string name="message_view_sender_label">cez %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Viac od tohto odosielateľa</string>
   <string name="search_from_format">Od <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Správa bola zahodená</string>
@@ -432,7 +431,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_crypto_key">Nastaviť kľúč pre koncové šifrovanie </string>
   <string name="account_settings_crypto_summary_off">Nie je nastavená aplikácia pre OpenPGP</string>
   <string name="account_settings_crypto_summary_on">Pripojené k %s</string>
-  <string name="account_settings_crypto_summary_config">Nastavuje sa...</string>
+  <string name="account_settings_crypto_summary_config">Nastavuje sa…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Ukladať všetky koncepty zašifrované </string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Všetky koncepty sa budú ukladať zašifrované</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Šifrovať koncepty len keď je zapnuté šifrovanie</string>

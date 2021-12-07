@@ -218,7 +218,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hent hele meddelelsen</string>
   <string name="message_view_sender_label">via %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Flere fra denne afsender</string>
   <string name="search_from_format">Fra <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Mail kasseret</string>
@@ -734,7 +733,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_export_title">Eksportér opsætning</string>
   <string name="settings_export_button">Eksportér</string>
   <string name="settings_export_share_button">Del</string>
-  <string name="settings_export_progress_text">Eksporterer opsætning...</string>
+  <string name="settings_export_progress_text">Eksporterer opsætning…</string>
   <string name="settings_export_success_generic">Indstillinger succesfuldt eksporteret</string>
   <string name="settings_export_failure">Eksport af indstillinger fejlede</string>
   <string name="settings_import_title">Importér opsætning</string>
@@ -1000,7 +999,7 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <string name="permission_contacts_rationale_title">Tillade adgang til kontakter</string>
   <string name="permission_contacts_rationale_message">For at kunne levere kontaktforslag og vise kontaktnavne og fotos, skal programmet have adgang til kontakter.</string>
   <string name="generic_loading_error">En fejl opstod under indlæsning af data</string>
-  <string name="push_notification_state_initializing">Initialiserer...</string>
+  <string name="push_notification_state_initializing">Initialiserer…</string>
   <string name="push_notification_state_listening">Venter på nye emails</string>
   <string name="push_notification_state_wait_background_sync">I dvale indtil baggrundssynkronisering er tilladt</string>
   <string name="push_notification_state_wait_network">I dvale indtil netværk er tilgængelig</string>

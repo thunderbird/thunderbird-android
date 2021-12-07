@@ -78,8 +78,8 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="forward_action">Treuzkas</string>
   <string name="forward_as_attachment_action">Treuzkas evel stagadenn</string>
   <string name="move_action">Dilec’hiañ</string>
-  <string name="single_message_options_action">Kas...</string>
-  <string name="refile_action">Kemman ar rummad...</string>
+  <string name="single_message_options_action">Kas…</string>
+  <string name="refile_action">Kemman ar rummad…</string>
   <string name="done_action">Graet</string>
   <string name="discard_action">Dilezel</string>
   <string name="save_draft_action">Enrollañ evel brouilhed</string>
@@ -201,7 +201,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="message_view_no_viewer">N’haller ket kavout ur gwelerez evit <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Pellgargañ ar gemennadenn glok</string>
   <string name="message_view_sender_label">dre %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Muioc’h a-berzh ar c’haser-mañ</string>
   <string name="search_from_format">A-berzh <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Kemennadenn dilezet</string>
@@ -416,7 +415,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_settings_crypto_key">Kefluniañ an alc\'hwez penn-ouzh-penn</string>
   <string name="account_settings_crypto_summary_off">Arload OpenPGP ebet kefluniet</string>
   <string name="account_settings_crypto_summary_on">Kennasket ouzh %s</string>
-  <string name="account_settings_crypto_summary_config">O kefluniañ...</string>
+  <string name="account_settings_crypto_summary_config">O kefluniañ…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Kadaviñ an holl vrouilhedoù enrineget</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">An holl vrouilhedoù a vo kadavet enrineget</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Enrinegañ ar brouilhedoù m\'eo gweredekaet an enrinegañ nemetken</string>
@@ -553,7 +552,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="sort_unread_last">Kemennadennoù lennet da gentañ</string>
   <string name="sort_attach_first">Kemennadennoù gant stagadennoù da gentañ</string>
   <string name="sort_unattached_first">Kemennadennoù hep stagadenn da gentañ</string>
-  <string name="sort_by">Urzhiañ dre...</string>
+  <string name="sort_by">Urzhiañ dre…</string>
   <string name="sort_by_date">Deiziad</string>
   <string name="sort_by_arrival">Degouezh</string>
   <string name="sort_by_subject">Danvez</string>
@@ -697,14 +696,14 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="settings_list_miscellaneous_category">Liesseurt</string>
   <string name="settings_export_button">Ezporzhiañ</string>
   <string name="settings_export_share_button">Rannañ</string>
-  <string name="settings_export_progress_text">Oc’h ezporzhiañ an arventennoù...</string>
+  <string name="settings_export_progress_text">Oc’h ezporzhiañ an arventennoù…</string>
   <string name="settings_export_success_generic">Arventennoù ezporzhiet gant berzh</string>
   <string name="settings_export_failure">C’hwitadenn war ezporzhiañ an arventennoù</string>
   <string name="settings_import_title">Enporzhiañ an arventennoù</string>
   <string name="settings_import_button">Enporzhiañ</string>
   <string name="settings_import">Enporzhiañ an arventennoù</string>
-  <string name="settings_importing">Oc’h enporzhiañ an arventennoù...</string>
-  <string name="unread_widget_select_account">Diskouez an niver a bosteloù anlennet evit...</string>
+  <string name="settings_importing">Oc’h enporzhiañ an arventennoù…</string>
+  <string name="unread_widget_select_account">Diskouez an niver a bosteloù anlennet evit…</string>
   <string name="unread_widget_account_title">Kont</string>
   <string name="unread_widget_account_summary">Ar gont implijet evit diskouez an niver a gemennadennoù anlennet</string>
   <string name="unread_widget_unified_inbox_account_summary">Boest degemer unanet</string>
@@ -770,7 +769,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="global_settings_threaded_view_label">Gwell e neudennoù</string>
   <string name="global_settings_threaded_view_summary">Strollañ ar c’hemennadennoù dre gaozeadenn</string>
   <string name="upgrade_databases_title">Oc’h hizivaat ar stlennvon</string>
-  <string name="upgrade_databases_unspecified">Oc’h hizivaat ar stlennvonioù...</string>
+  <string name="upgrade_databases_unspecified">Oc’h hizivaat ar stlennvonioù…</string>
   <string name="upgrade_database_format">Oc’h hizivaat stlennvon ar gont \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="global_settings_splitview_mode_label">Diskouez ar skramm disrannet</string>
   <string name="global_settings_splitview_always">Atav</string>
@@ -784,10 +783,10 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="global_settings_colorize_missing_contact_pictures_summary">Livañ skeudennoù an darempredoù a vank</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Gweredoù kemennadennoù gwelus</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Diskouez ar gweredoù diuzet el lañser gwel kemennadenn</string>
-  <string name="loading_attachment">O kargañ ar genstagadenn...</string>
+  <string name="loading_attachment">O kargañ ar genstagadenn…</string>
   <string name="fetching_attachment_dialog_title_send">O kas ar gemennadenn</string>
   <string name="fetching_attachment_dialog_title_save">Oc’h enrollañ ar brouilhed</string>
-  <string name="fetching_attachment_dialog_message">O kerc’hat ar genstagadenn...</string>
+  <string name="fetching_attachment_dialog_message">O kerc’hat ar genstagadenn…</string>
   <string name="auth_external_error">N’haller ket dilesa. N’eo ket brudet ar varregezh SASL EXTERNAL gant an dafariad. Gallout a ra bezañ abalamour d’ur gudenn gant testeni an arval (diamzeret, aotrouniezh testeni dianav) pe ur gudenn kefluniadur all. </string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Arverañ testeni an arval</string>
@@ -872,7 +871,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="locked_attach_unlock">Dibrennañ</string>
   <string name="locked_attach_unencrypted">N’eo ket enrineget al lodenn-mañ ha marteze n’eo ket diogel.</string>
   <string name="locked_attach_title">N’eo ket gwarezet ar genstagadenn</string>
-  <string name="message_progress_text">O kargañ...</string>
+  <string name="message_progress_text">O kargañ…</string>
   <string name="messageview_decrypt_cancelled">Nullet eo bet an ezrinegañ.</string>
   <string name="messageview_decrypt_retry">Adklask</string>
   <string name="messageview_decrypt_incomplete">Ar c’hemennadennoù enrineget a rank bezañ pellgarget evit o ezrinegañ.</string>
@@ -896,7 +895,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="crypto_no_provider_message">Enrineget eo bet ar postel-mañ gant OpenPGP.\nEvit gallout e lenn e rankit staliañ ha kefluniañ un arload OpenPGP keverlec’h.</string>
   <string name="crypto_no_provider_button">Mont d\'an arventennoù</string>
   <string name="mail_list_widget_text">Roll kemennadennoù K-9</string>
-  <string name="mail_list_widget_loading">O kargañ kemennadennoù...</string>
+  <string name="mail_list_widget_loading">O kargañ kemennadennoù…</string>
   <string name="openpgp_enabled_error_title">N’eo ket posupl enrinegañ</string>
   <string name="openpgp_enabled_error_msg">Ul lodenn eus an degemererien ne skoront ket ar c’heweriuster-mañ!</string>
   <string name="enable_encryption">Gweredekaat an enrinegañ</string>
@@ -928,7 +927,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="ac_transfer_intro">Ur gemennadenn kefluniañ Autocrypt a rann ho kefluniadur penn-ouzh-penn gant trevnadoù all en un doare diogel.</string>
   <string name="ac_transfer_button_send">Kas ar gemennadenn gefluniañ</string>
   <string name="ac_transfer_will_be_sent">Kaset e vo ar gemennadenn d\'ho chomlec\'h:</string>
-  <string name="ac_transfer_generating">O genel ar c\'hemennadennoù kefluniañ...</string>
+  <string name="ac_transfer_generating">O genel ar c\'hemennadennoù kefluniañ…</string>
   <string name="ac_transfer_sending_to">O kas ar gemennadenn da:</string>
   <string name="ac_transfer_finish">Evit echuiñ, digorit ar gemennadenn war ho trevnad all hag enankit ar boneg kefluniañ.</string>
   <string name="ac_transfer_show_code">Diskouez ar boneg kefluniañ</string>
