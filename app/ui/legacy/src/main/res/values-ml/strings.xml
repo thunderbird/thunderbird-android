@@ -89,7 +89,7 @@
   <string name="edit_as_new_message_action">പുതിയ സന്ദേശമായി എഡിറ്റ് ചെയ്യുക</string>
   <string name="move_action">നീക്കുക</string>
   <string name="move_to_drafts_action">ഡ്രാഫ്റ്റുകളിലേക്ക് നീക്കുക</string>
-  <string name="single_message_options_action">അയയ്ക്കുക...</string>
+  <string name="single_message_options_action">അയയ്ക്കുക…</string>
   <string name="refile_action">പുതുക്കുക…</string>
   <string name="done_action">ചെയ്തു</string>
   <string name="discard_action">നിരസിക്കുക</string>
@@ -210,7 +210,6 @@
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> എന്നതിനുള്ള വീക്ഷണസഹായസാമഗ്രി കണ്ടെത്താനായില്ല.</string>
   <string name="message_view_download_remainder">പൂർണ്ണ സന്ദേശം ഡൗൺ‌ലോഡു ചെയ്യുക</string>
   <string name="message_view_sender_label">%1$s വഴി</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">ഈ അയച്ചയാളിൽ നിന്ന് കൂടുതൽ</string>
   <string name="search_from_format"><xliff:g id="sender">%s</xliff:g> ൽ നിന്ന്</string>
   <string name="message_discarded_toast">സന്ദേശം നിരസിച്ചു</string>
@@ -593,7 +592,7 @@
   <string name="message_view_help_key">Del (അല്ലെങ്കിൽ D) - ഇല്ലാതാക്കുക\nR - മറുപടി\nA - എല്ലാത്തിനുമായി മറുപടി നൽകുക\nC - രചിക്കുക\nF - ഫോർവേഡ്\nM - നീക്കുക\nV - ആർക്കൈവ്\nY - പകർത്തുക\nZ - (ഇല്ല) വായിച്ചതായി അടയാളപ്പെടുത്തുക\nG - നക്ഷത്രമിടുക\nO - അടുക്കുക തരം\nI - ക്രമം\nQ - ഫോൾഡറുകളിലേക്ക് മടങ്ങുക\nS - തിരഞ്ഞെടുക്കുക / തിരഞ്ഞെടുത്തത് മാറ്റുക\nJ or P - മുമ്പത്തെ സന്ദേശം\nK or N - അടുത്ത സന്ദേശം</string>
   <string name="message_list_help_key">Del (അല്ലെങ്കിൽ D) - ഇല്ലാതാക്കുക\nC - രചിക്കുക\nM - നീക്കുക\nV - ആർക്കൈവ്\nY - പകർത്തുക\nZ - (ഇല്ല) വായിച്ചതായി അടയാളപ്പെടുത്തുക\nG - നക്ഷത്രമിടുക\nO - അടുക്കൽ തരം\nI - അടുക്കൽ ക്രമം\nQ - ഫോൾഡറുകളിലേക്ക് മടങ്ങുക\nS - തിരഞ്ഞെടുക്കുക / തിരഞ്ഞെടുത്തത് മാറ്റുക</string>
   <string name="folder_list_filter_hint">ഫോൾഡറിന്റെ പേരിൽ അടങ്ങിയിരിക്കുന്നു</string>
-  <string name="folder_list_display_mode_label">ഫോൾഡറുകൾ കാണിക്കൂ...</string>
+  <string name="folder_list_display_mode_label">ഫോൾഡറുകൾ കാണിക്കൂ…</string>
   <string name="folder_list_display_mode_all">എല്ലാ ഫോൾഡറുകളും</string>
   <string name="folder_list_display_mode_first_class">1 ആം ക്ലാസ് ഫോൾഡറുകൾ</string>
   <string name="folder_list_display_mode_first_and_second_class">1ആം &amp; 2ആം ക്ലാസ് ഫോൾഡറുകൾ</string>
@@ -812,7 +811,7 @@
   <string name="global_settings_threaded_view_label">ത്രെഡുചെയ്‌ത കാഴ്ച</string>
   <string name="global_settings_threaded_view_summary">സംഭാഷണത്തിലൂടെ സന്ദേശങ്ങൾ ഗ്രൂപ്പ് ചെയ്യുക</string>
   <string name="upgrade_databases_title">ഡാറ്റാബേസുകൾ‌ നവീകരിക്കുന്നു</string>
-  <string name="upgrade_databases_unspecified">ഡാറ്റാബേസുകൾ‌ നവീകരിക്കുന്നു...</string>
+  <string name="upgrade_databases_unspecified">ഡാറ്റാബേസുകൾ‌ നവീകരിക്കുന്നു…</string>
   <string name="upgrade_database_format">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ടിന്റെ ഡാറ്റാബേസ് നവീകരിക്കുന്നു</string>
   <string name="global_settings_splitview_mode_label">പിളർ സ്ക്രീൻ കാണിക്കുക</string>
   <string name="global_settings_splitview_always">എല്ലായ്പ്പോഴും</string>
@@ -940,7 +939,7 @@
   <string name="crypto_no_provider_message">ഈ ഇമെയിൽ ഓപ്പൺപിജിപി ഉപയോഗിച്ച് എൻക്രിപ്റ്റുചെയ്‌തതാണ്.\nഇത് വായിക്കാൻ, നിങ്ങൾ ഒരു അനുയോജ്യമായ ഓപ്പൺപിജിപി അപ്ലിക്കേഷൻ ഇൻസ്റ്റാളുചെയ്‌ത് ക്രമീകരിക്കേണ്ടതുണ്ട്. </string>
   <string name="crypto_no_provider_button">ക്രമീകരണങ്ങളിലേക്ക് പോകുക</string>
   <string name="mail_list_widget_text">കെ-9 സന്ദേശ പട്ടിക</string>
-  <string name="mail_list_widget_loading">സന്ദേശങ്ങൾ ലോഡുചെയ്യുന്നു...</string>
+  <string name="mail_list_widget_loading">സന്ദേശങ്ങൾ ലോഡുചെയ്യുന്നു…</string>
   <string name="openpgp_enabled_error_title">എൻക്രിപ്ഷൻ സാധ്യമല്ല</string>
   <string name="openpgp_enabled_error_msg">തിരഞ്ഞെടുത്ത ചില സ്വീകർത്താക്കൾ ഈ സവിശേഷതയെ പിന്തുണയ്ക്കുന്നില്ല!</string>
   <string name="enable_encryption">എൻക്രിപ്ഷൻ പ്രാപ്തമാക്കുക</string>

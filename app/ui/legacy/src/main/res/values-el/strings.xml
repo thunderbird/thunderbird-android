@@ -220,7 +220,6 @@
   <string name="message_view_no_viewer">Δεν υπάρχει πρόγραμμα προβολής για <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Λήψη πλήρους μηνύματος</string>
   <string name="message_view_sender_label">μέσω %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Από τον ίδιο αποστολέα</string>
   <string name="search_from_format">Από <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε.</string>
@@ -445,7 +444,7 @@
   <string name="account_settings_crypto_key">Ρύθμιση διατερματικού κλειδιού</string>
   <string name="account_settings_crypto_summary_off">Δεν έχει ρυθμιστεί εφαρμογή OpenPGP</string>
   <string name="account_settings_crypto_summary_on">Συνδεδεμένος σε %s</string>
-  <string name="account_settings_crypto_summary_config">Διαμόρφωση...</string>
+  <string name="account_settings_crypto_summary_config">Διαμόρφωση…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Αποθήκευση όλων των πρόχειρων ως κρυπτογραφημένα</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Όλα τα πρόχειρα θα αποθηκεύονται κρυπτογραφημένα</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Κρυπτογράφηση πρόχειρων μόνο εάν είναι ενεργοποιημένη η λειτουργία κρυπτογράφησης</string>
@@ -961,7 +960,7 @@
   <string name="crypto_no_provider_message">Αυτό το μήνυμα έχει κρυπτογραφηθεί με το OpenPGP.\nΓια να το διαβάσετε, πρέπει να εγκαταστήσετε και να ρυθμίσετε τις παραμέτρους μιας συμβατής εφαρμογής OpenPGP.</string>
   <string name="crypto_no_provider_button">Μετάβαση στις Ρυθμίσεις</string>
   <string name="mail_list_widget_text">Λίστα Μηνυμάτων του K-9</string>
-  <string name="mail_list_widget_loading">Φόρτωση μηνυμάτων...</string>
+  <string name="mail_list_widget_loading">Φόρτωση μηνυμάτων…</string>
   <string name="openpgp_enabled_error_title">Δεν είναι δυνατή η κρυπτογράφηση</string>
   <string name="openpgp_enabled_error_msg">Ορισμένοι από τους επιλεγμένους παραλήπτες δεν υποστηρίζουν αυτήν τη δυνατότητα!</string>
   <string name="enable_encryption">Ενεργοποίηση Κρυπτογράφησης</string>
@@ -993,7 +992,7 @@
   <string name="ac_transfer_intro">Ένα Μήνυμα Ρύθμισης Autocrypt μοιράζεται, με ασφάλεια, τη διατερματική σας ρύθμιση με άλλες συσκευές.</string>
   <string name="ac_transfer_button_send">Αποστολή Μηνύματος Ρύθμισης</string>
   <string name="ac_transfer_will_be_sent">Το μήνυμα θα σταλεί στη διεύθυνσή σας:</string>
-  <string name="ac_transfer_generating">Δημιουργία μηνύματος ρύθμισης...</string>
+  <string name="ac_transfer_generating">Δημιουργία μηνύματος ρύθμισης…</string>
   <string name="ac_transfer_sending_to">Αποστολή μηνύματος σε:</string>
   <string name="ac_transfer_finish">Για να τελειώσετε, ανοίξτε το μήνυμα στην άλλη συσκευή σας και καταχωρίστε τον κωδικό ρύθμισης.</string>
   <string name="ac_transfer_show_code">Εμφάνιση Κωδικού Ρύθμισης</string>
@@ -1011,7 +1010,7 @@
   <string name="permission_contacts_rationale_title">Να επιτρέπεται η πρόσβαση στις επαφές</string>
   <string name="permission_contacts_rationale_message">Για να είναι δυνατή η παροχή προτάσεων επαφών και η εμφάνιση των ονομάτων και φωτογραφιών των επαφών, η εφαρμογή χρειάζεται πρόσβαση στις επαφές σας.</string>
   <string name="generic_loading_error">Προέκυψε σφάλμα κατά τη φόρτωση των δεδομένων</string>
-  <string name="push_notification_state_initializing">Αρχικοποίηση...</string>
+  <string name="push_notification_state_initializing">Αρχικοποίηση…</string>
   <string name="push_notification_state_listening">Αναμονή για νέα μηνύματα</string>
   <string name="push_notification_state_wait_background_sync">Σε αδράνεια μέχρι να επιτραπεί ο συγχρονισμός στο παρασκήνιο</string>
   <string name="push_notification_state_wait_network">Σε αδράνεια μέχρι να υπάρξει διαθέσιμο δίκτυο</string>

@@ -185,6 +185,9 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="debug_enable_debug_logging_summary">Log extra diagnostische informatie</string>
   <string name="debug_enable_sensitive_logging_title">Log gevoelige informatie</string>
   <string name="debug_enable_sensitive_logging_summary">Kan wachtwoorden laten zien in logs.</string>
+  <string name="debug_export_logs_title">Logs exporteren</string>
+  <string name="debug_export_logs_success">Exporteren is geslaagd. Er zit mogelijk persoonlijke informatie in de logs. Kies verstandig naar wie je je logs stuurt.</string>
+  <string name="debug_export_logs_failure">Exporteren is mislukt</string>
   <string name="message_list_load_more_messages_action">Laad meer berichten</string>
   <string name="message_to_fmt">Aan:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Onderwerp</string>
@@ -216,7 +219,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="message_view_no_viewer">Niet in staat viewer te vinden voor <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Download compleet bericht</string>
   <string name="message_view_sender_label">via %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Meer van deze afzender</string>
   <string name="search_from_format">Van <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Bericht verwijderd</string>
@@ -442,7 +444,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_crypto_key">Eind-tot-eind sleutel instellen</string>
   <string name="account_settings_crypto_summary_off">Geen OpenPGP app ingesteld</string>
   <string name="account_settings_crypto_summary_on">Verbonden met %s</string>
-  <string name="account_settings_crypto_summary_config">Aan het configureren ...</string>
+  <string name="account_settings_crypto_summary_config">Aan het configureren …</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Sla alle concepten versleuteld op.</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Alle concepten zullen versleuteld worden opgeslagen</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Versleutel concepten alleen als versleuteling is ingeschakeld</string>
@@ -991,7 +993,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="ac_transfer_intro">Een Autocrypt Setup bericht deelt uw eind-tot-eind instellingen op een beveiligde manier met andere apparaten.</string>
   <string name="ac_transfer_button_send">Verstuur Setup bericht</string>
   <string name="ac_transfer_will_be_sent">Het bericht wordt verstuurd naar jouw adres:</string>
-  <string name="ac_transfer_generating">Instelbericht aan het genereren ...</string>
+  <string name="ac_transfer_generating">Instelbericht aan het genereren …</string>
   <string name="ac_transfer_sending_to">Bericht sturen naar:</string>
   <string name="ac_transfer_finish">Om te voltooien, open het bericht op je andere apparaat en voer de Setup Code in.</string>
   <string name="ac_transfer_show_code">Setup Code weergeven</string>

@@ -211,7 +211,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="message_view_no_viewer">Methwyd cael hyd i ap er mwyn darllen <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Lawrlwytho\'r neges gyfan</string>
   <string name="message_view_sender_label">trwy %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Rhagor gan yr anfonwr hwn</string>
   <string name="search_from_format">Oddi wrth <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Dileuwyd y neges</string>
@@ -428,7 +427,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_settings_crypto_key">Ffurfweddu\'r allwedd pen-i-ben</string>
   <string name="account_settings_crypto_summary_off">Nid oes ap OpenPGP wedi ei ffurfweddu</string>
   <string name="account_settings_crypto_summary_on">Cysylltwyd â %s</string>
-  <string name="account_settings_crypto_summary_config">Yn ffurfweddu...</string>
+  <string name="account_settings_crypto_summary_config">Yn ffurfweddu…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Storio pob drafft wedi\'i amgryptio</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Caiff pob drafft ei gadw wedi\'i amgryptio</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Amgryptio negeseuon drafft dim ond os yw amgryptio wedi\'i alluogi</string>
@@ -982,7 +981,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="ac_transfer_intro">Mae Neges Gosod Awtoamgryptio yn rhannu dy osodiad pen-i-ben yn ddiogel gyda dyfeisiau eraill.</string>
   <string name="ac_transfer_button_send">Anfon Neges Gosod</string>
   <string name="ac_transfer_will_be_sent">Caiff y neges ei anfon i dy gyfeiriad e-bost:</string>
-  <string name="ac_transfer_generating">Yn creu\'r neges gosod...</string>
+  <string name="ac_transfer_generating">Yn creu\'r neges gosod…</string>
   <string name="ac_transfer_sending_to">Yn anfon neges at:</string>
   <string name="ac_transfer_finish">I orffen, agora\'r neges ar dy ddyfais arall a rhoi\'r cod gosod.</string>
   <string name="ac_transfer_show_code">Dangos Cod Gosod</string>

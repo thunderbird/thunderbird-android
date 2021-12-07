@@ -73,8 +73,8 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="compose_title_forward_as_attachment">Reenviar como adjunto</string>
   <string name="choose_account_title">Elige una cuenta</string>
   <string name="choose_folder_title">Selecciona una carpeta</string>
-  <string name="choose_folder_move_title">Mover a...</string>
-  <string name="choose_folder_copy_title">Copiar a...</string>
+  <string name="choose_folder_move_title">Mover a…</string>
+  <string name="choose_folder_copy_title">Copiar a…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionados</string>
   <string name="next_action">Siguiente</string>
   <string name="previous_action">Anterior</string>
@@ -222,7 +222,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="message_view_no_viewer">Imposible encontrar visor de <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaje completo</string>
   <string name="message_view_sender_label">vía %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Más de este remitente</string>
   <string name="search_from_format">Desde <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Mensaje descartado</string>
@@ -448,7 +447,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_settings_crypto_key">Configurar clave de extremo a extremo</string>
   <string name="account_settings_crypto_summary_off">Sin aplicación OpenPGP configurada</string>
   <string name="account_settings_crypto_summary_on">Conectado a %s</string>
-  <string name="account_settings_crypto_summary_config">Configurando...</string>
+  <string name="account_settings_crypto_summary_config">Configurando…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Almacenar todos los borradores cifrados</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Todos los borradores se guardarán de forma segura</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Cifrar borradores solamente si está disponible el cifrado</string>
@@ -997,7 +996,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="ac_transfer_intro">Un mensaje de configuración Autocrypt comparte de manera segura su configuración con otros dispositivos. </string>
   <string name="ac_transfer_button_send">Enviar mensaje de configuración</string>
   <string name="ac_transfer_will_be_sent">El mensaje se enviará a esta dirección:</string>
-  <string name="ac_transfer_generating">Generando mensaje de configuración...</string>
+  <string name="ac_transfer_generating">Generando mensaje de configuración…</string>
   <string name="ac_transfer_sending_to">Enviando mensaje a:</string>
   <string name="ac_transfer_finish">Para finalizar, abra el mensaje en su otro dispositivo e introduzca el código de configuración.</string>
   <string name="ac_transfer_show_code">Mostrar código de configuración</string>
@@ -1015,7 +1014,7 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
   <string name="permission_contacts_rationale_title">Permitir acceso a contactos</string>
   <string name="permission_contacts_rationale_message">Para poder proveer sugerencias de contactos y mostrar sus nombres la aplicación necesita acceso a los contactos locales del dispositivo.</string>
   <string name="generic_loading_error">Se produjo un error al cargar los datos</string>
-  <string name="push_notification_state_initializing">Iniciando...</string>
+  <string name="push_notification_state_initializing">Iniciando…</string>
   <string name="push_notification_state_listening">Esperando correos electrónicos nuevos</string>
   <string name="push_notification_state_wait_background_sync">Esperar hasta que se permita la sincronización en segundo plano</string>
   <string name="push_notification_state_wait_network">Esperar hasta que la red esté disponible</string>

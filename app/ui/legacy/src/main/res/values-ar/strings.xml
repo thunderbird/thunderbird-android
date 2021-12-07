@@ -38,7 +38,7 @@
 <li>حفظ المرفقات الى بطاقة الذاكرة</li>
 <li>تفريغ المحذوفات</li>
 <li>تصنيف الرسائل</li>
-<li>... والمزيد</li>
+<li>… والمزيد</li>
 </ul>
 <p>
 يرجى الملاحظة أن K-9 لا يدعم معظم حسابات Hotmail المجانية وكما هو الحال في معظم برامج البريد، هذا البرنامج يعاني من مشاكل غريبة مع Microsoft Exchange.
@@ -214,7 +214,6 @@
   <string name="message_view_no_viewer">يتعذر إيجاب تطبيق لعرض <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">تنزيل الرسالة كاملةً</string>
   <string name="message_view_sender_label">عبر %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">المزيد من هذا المُرسِل</string>
   <string name="search_from_format">مِن طرف <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">تم إلغاء الرسالة</string>
@@ -402,7 +401,7 @@
   <string name="account_settings_crypto_app">تنشيط دعم أوبن بي جي بي</string>
   <string name="account_settings_crypto_app_select_title">إختيار تطبيق أوبن بي جي بي</string>
   <string name="account_settings_crypto_summary_on">متصل بـ %s</string>
-  <string name="account_settings_crypto_summary_config">الضبط جارٍ...</string>
+  <string name="account_settings_crypto_summary_config">الضبط جارٍ…</string>
   <string name="account_settings_color_label">لون الحساب</string>
   <string name="account_settings_led_color_label">لون ضوء التنبيهات</string>
   <string name="account_settings_mail_display_count_label">حجم المجلد المحلي</string>

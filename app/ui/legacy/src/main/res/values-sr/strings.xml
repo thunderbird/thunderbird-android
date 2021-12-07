@@ -213,7 +213,6 @@
   <string name="message_view_no_viewer">Не могу да нађем прегледач за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Преузми читаву поруку</string>
   <string name="message_view_sender_label">проследи %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Још од овог пошиљаоца</string>
   <string name="search_from_format">Од <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Порука одбачена</string>
@@ -430,7 +429,7 @@
   <string name="account_settings_crypto_key">Подеси кључ за шифровање</string>
   <string name="account_settings_crypto_summary_off">Нема подешене ОпенПГП апликације </string>
   <string name="account_settings_crypto_summary_on">Повезан са %s</string>
-  <string name="account_settings_crypto_summary_config">Подешавам...</string>
+  <string name="account_settings_crypto_summary_config">Подешавам…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Све нацрте складишти шифровано</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Сви нацрти биће складиштени шифровано</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Шифруј нацрте само ако је шифровање укључено</string>
@@ -980,7 +979,7 @@
   <string name="ac_transfer_intro">Порука поставки аутошифровања безбедно размењује поставу шифровања са другим јединицама.</string>
   <string name="ac_transfer_button_send">Пошаљи поруку поставке</string>
   <string name="ac_transfer_will_be_sent">Порука ће бити послата на вашу адресу:</string>
-  <string name="ac_transfer_generating">Генеришем поруку поставке...</string>
+  <string name="ac_transfer_generating">Генеришем поруку поставке…</string>
   <string name="ac_transfer_sending_to">Шаљем поруку на:</string>
   <string name="ac_transfer_finish">Да завршите, отворите поруку на другом вашем уређају и унесите код поставке.</string>
   <string name="ac_transfer_show_code">Прикажи код поставке</string>

@@ -149,7 +149,6 @@
   <string name="message_view_show_pictures_action">הצג תמונות</string>
   <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">עוד מהשולח הזה</string>
   <string name="message_discarded_toast">ההודעה נמחקה</string>
   <string name="message_saved_toast">ההודעה נשמרה כטיוטה</string>

@@ -129,7 +129,6 @@
   <string name="message_view_show_pictures_action">Rodyti paveikslėlius</string>
   <string name="message_view_no_viewer">Nepavyko rasto <xliff:g id="mimetype">%s</xliff:g> peržiūros programos.</string>
   <string name="message_view_download_remainder">Parsiųsti visą laišką</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Daugiau iš šio siuntėjo</string>
   <string name="message_discarded_toast">Laiškas pašalintas</string>
   <string name="message_saved_toast">Laiškas išsaugotas kaip juodraštis</string>

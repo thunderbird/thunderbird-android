@@ -218,7 +218,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> için görüntüleyici bulunamadı.</string>
   <string name="message_view_download_remainder">Mesajın tamamını indir</string>
   <string name="message_view_sender_label">%1$skanalıyla</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Bu göndericiden daha fazla ileti</string>
   <string name="search_from_format">Kimden <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Mesaj silindi</string>
@@ -442,7 +441,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_crypto_key">uçtan uca anahtarını yapılandırma</string>
   <string name="account_settings_crypto_summary_off">Yapılandırılmış OpenPGP uygulaması yok</string>
   <string name="account_settings_crypto_summary_on">%s\'e bağlı</string>
-  <string name="account_settings_crypto_summary_config">Yapılandırılıyor...</string>
+  <string name="account_settings_crypto_summary_config">Yapılandırılıyor…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Tüm taslakları şifreli olarak sakla</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Tüm taslaklar şifreli olarak depolanacak</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Taslakları yalnızca şifreleme etkinse şifrele</string>
@@ -990,7 +989,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="ac_transfer_intro">Bir Autocrypt Kurulum iletisi uçtan uca kurulumunuzu diğer aygıtlarla güvenli bir şekilde paylaşır.</string>
   <string name="ac_transfer_button_send">Kurulum İletisi Gönder</string>
   <string name="ac_transfer_will_be_sent">İleti adresinize gönderilecek:</string>
-  <string name="ac_transfer_generating">Kurulum iletisi oluşturuluyor...</string>
+  <string name="ac_transfer_generating">Kurulum iletisi oluşturuluyor…</string>
   <string name="ac_transfer_sending_to">İleti şuraya gönderiliyor:</string>
   <string name="ac_transfer_finish">Bitirmek için, iletinizi diğer aygıtınızda açın ve kurulum kodunu girin.</string>
   <string name="ac_transfer_show_code">Kurulum Kodunu Göster</string>
@@ -1008,7 +1007,7 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <string name="permission_contacts_rationale_title">Kişilere erişime izin ver</string>
   <string name="permission_contacts_rationale_message">Kişilerle ilgili öneriler sunabilmek, kişi adlarını ve fotoğraflarını görüntüleyebilmek için uygulamanın kişilerinize erişmesi gerekir.</string>
   <string name="generic_loading_error">Veriler yüklenirken bir hata oluştu </string>
-  <string name="push_notification_state_initializing">Başlatılıyor...</string>
+  <string name="push_notification_state_initializing">Başlatılıyor…</string>
   <string name="push_notification_state_listening">Yeni e-postalar bekleniyor</string>
   <string name="push_notification_state_wait_background_sync">Arkaplan senkronizasyonuna izin verilene kadar uyku halinde</string>
   <string name="push_notification_state_wait_network">Şebekeye erişene kadar uyku halinde</string>

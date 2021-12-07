@@ -222,7 +222,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="message_view_no_viewer">无法打开<xliff:g id="mimetype">%s</xliff:g>。找不到可以阅读该文件的程序。</string>
   <string name="message_view_download_remainder">下载完整邮件</string>
   <string name="message_view_sender_label">通过  %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">来自这个发件人的更多邮件</string>
   <string name="search_from_format">发送自 <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">邮件已丢弃</string>
@@ -1010,7 +1009,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="permission_contacts_rationale_title">允许访问联系人</string>
   <string name="permission_contacts_rationale_message">为了能够提供联系人建议，并显示联系人姓名和照片，应用程序需要访问你的联系人。</string>
   <string name="generic_loading_error">加载数据期间发生了一个错误</string>
-  <string name="push_notification_state_initializing">初始化·...</string>
+  <string name="push_notification_state_initializing">初始化·…</string>
   <string name="push_notification_state_listening">正在等待新消息</string>
   <string name="push_notification_state_wait_background_sync">等待后台同步许可</string>
   <string name="push_notification_state_wait_network">等待网络可用</string>

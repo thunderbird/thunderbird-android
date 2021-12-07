@@ -224,7 +224,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="message_view_no_viewer">Kan inte hitta visare för <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hämta hela meddelandet</string>
   <string name="message_view_sender_label">via %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Mer från denna avsändare</string>
   <string name="search_from_format">Från <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Meddelandet kasserades</string>
@@ -999,7 +998,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="ac_transfer_intro">Ett Autocrypt-inställningsmeddelande delar säkert din ände-till-ände-inställning med andra enheter.</string>
   <string name="ac_transfer_button_send">Skicka inställningsmeddelande</string>
   <string name="ac_transfer_will_be_sent">Meddelandet skickas till din adress:</string>
-  <string name="ac_transfer_generating">Genererar installationsmeddelande...</string>
+  <string name="ac_transfer_generating">Genererar installationsmeddelande…</string>
   <string name="ac_transfer_sending_to">Skickar meddelande till:</string>
   <string name="ac_transfer_finish">För att slutföra, öppna meddelandet på din andra enhet och ange inställningskoden.</string>
   <string name="ac_transfer_show_code">Visa inställningskod</string>
@@ -1017,7 +1016,7 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
   <string name="permission_contacts_rationale_title">Tillåt åtkomst till kontakter</string>
   <string name="permission_contacts_rationale_message">För att kunna ge kontaktförslag och visa kontaktnamn och foton behöver appen tillgång till dina kontakter.</string>
   <string name="generic_loading_error">Ett fel uppstod när data lästes in</string>
-  <string name="push_notification_state_initializing">Initierar...</string>
+  <string name="push_notification_state_initializing">Initierar…</string>
   <string name="push_notification_state_listening">Väntar på nya e-postmeddelanden</string>
   <string name="push_notification_state_wait_background_sync">Sover tills bakgrundssynkronisering är tillåten</string>
   <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>

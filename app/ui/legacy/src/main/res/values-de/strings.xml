@@ -223,7 +223,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
   <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
   <string name="message_view_sender_label">über %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Mehr von diesem Absender</string>
   <string name="search_from_format">Von <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Nachricht wurde verworfen</string>
@@ -450,7 +449,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_crypto_key">Ende-zu-Ende-Schlüssel konfigurieren</string>
   <string name="account_settings_crypto_summary_off">Keine OpenPGP-App konfiguriert</string>
   <string name="account_settings_crypto_summary_on">Verbunden mit %s</string>
-  <string name="account_settings_crypto_summary_config">Konfigurieren...</string>
+  <string name="account_settings_crypto_summary_config">Konfigurieren…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Alle Entwürfe verschlüsselt speichern</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Alle Entwürfe werden verschlüsselt gespeichert</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Entwürfe nur verschlüsseln, wenn Verschlüsselung aktiviert ist</string>
@@ -1018,7 +1017,7 @@ Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schl
   <string name="permission_contacts_rationale_title">Zugriff auf Kontakte erlauben</string>
   <string name="permission_contacts_rationale_message">Damit die App Kontakte vorschlagen sowie Namen und Fotos der Kontakte anzeigen kann, benötigt sie Zugriff auf Ihre Kontakte.</string>
   <string name="generic_loading_error">Beim Laden der Daten ist ein Fehler aufgetreten</string>
-  <string name="push_notification_state_initializing">Initialisieren...</string>
+  <string name="push_notification_state_initializing">Initialisieren…</string>
   <string name="push_notification_state_listening">Warte auf neue E-Mails</string>
   <string name="push_notification_state_wait_background_sync">Wartet, bis die Hintergrundsynchronisation erlaubt ist</string>
   <string name="push_notification_state_wait_network">Wartet, bis ein Netzwerk verfügbar ist</string>

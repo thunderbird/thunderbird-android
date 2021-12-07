@@ -214,7 +214,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="message_view_no_viewer">Няма праграмы для прагляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Спампаваць ліст цалкам</string>
   <string name="message_view_sender_label">ад %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Усё ліставанне</string>
   <string name="search_from_format">Ад <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Ліст скасаваны</string>
@@ -931,7 +930,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="locked_attach_unlock">Разблакаваць</string>
   <string name="locked_attach_unencrypted">Гэтая частка незашыфраваная, таму небяспечная.</string>
   <string name="locked_attach_title">Неабароненыя ўкладзеныя файлы</string>
-  <string name="message_progress_text">Загрузка...</string>
+  <string name="message_progress_text">Загрузка…</string>
   <string name="messageview_decrypt_cancelled">Расшыфроўка скасаваная.</string>
   <string name="messageview_decrypt_retry">Паўтарыць</string>
   <string name="messageview_decrypt_incomplete">Для расшыфроўкі зашыфраваны ліст патрэбна спампаваць.</string>

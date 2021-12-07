@@ -228,7 +228,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="message_view_no_viewer">Ni mogoče najti pregledovalnika za vrsto <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Prejmi celotno sporočilo</string>
   <string name="message_view_sender_label">prek %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="from_same_sender">Poišči več sporočil tega pošiljatelja</string>
   <string name="search_from_format">Od <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Sporočilo je zavrženo.</string>
@@ -454,7 +453,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_crypto_key">Nastavitev ključa celovitega šifriranja</string>
   <string name="account_settings_crypto_summary_off">Ni nastavljenega programa OpenPGP</string>
   <string name="account_settings_crypto_summary_on">Povezano na %s</string>
-  <string name="account_settings_crypto_summary_config">Poteka nastavljanje ...</string>
+  <string name="account_settings_crypto_summary_config">Poteka nastavljanje …</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Shrani vse osnutke šifrirano</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Vsi osnutki bodo shranjeni šifrirano</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Šifriraj osnutke samo, če je omogočeno šifriranje</string>
@@ -1013,7 +1012,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="ac_transfer_intro">Nastavitveno sporočilo šifriranja AutoCrypt varno deli vašo celovito nastavitev z drugimi napravami.</string>
   <string name="ac_transfer_button_send">Pošlji nastavitveno sporočilo</string>
   <string name="ac_transfer_will_be_sent">Sporočilo bo poslano na naslov:</string>
-  <string name="ac_transfer_generating">Poteka ustvarjanje nastavitvenega sporočila ...</string>
+  <string name="ac_transfer_generating">Poteka ustvarjanje nastavitvenega sporočila …</string>
   <string name="ac_transfer_sending_to">Pošiljanje sporočila za:</string>
   <string name="ac_transfer_finish">Za dokončanje odprite sporočilo na drugi napravi in vpišite kodo nastavitve.</string>
   <string name="ac_transfer_show_code">Pokaži kodo nastavitev</string>
