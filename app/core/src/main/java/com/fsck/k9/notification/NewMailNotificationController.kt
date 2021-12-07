@@ -14,6 +14,16 @@ internal class NewMailNotificationController(
     private val summaryNotificationCreator: SummaryNotificationCreator,
     private val singleMessageNotificationCreator: SingleMessageNotificationCreator
 ) {
+    fun restoreNewMailNotifications(accounts: List<Account>) {
+        for (account in accounts) {
+            val notificationData = newMailNotificationManager.restoreNewMailNotifications(account)
+
+            if (notificationData != null) {
+                processNewMailNotificationData(notificationData)
+            }
+        }
+    }
+
     fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean) {
         val notificationData = newMailNotificationManager.addNewMailNotification(account, message, silent)
 

@@ -56,6 +56,10 @@ class NotificationController internal constructor(
         syncNotificationController.clearFetchingMailNotification(account)
     }
 
+    fun restoreNewMailNotifications(accounts: List<Account>) {
+        newMailNotificationController.restoreNewMailNotifications(accounts)
+    }
+
     fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean) {
         newMailNotificationController.addNewMailNotification(account, message, silent)
     }
