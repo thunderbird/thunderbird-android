@@ -248,7 +248,6 @@ class NewMailNotificationManagerTest {
         return Account(ACCOUNT_UUID).apply {
             description = ACCOUNT_NAME
             chipColor = ACCOUNT_COLOR
-            notificationSetting.vibrateTimes = 1
         }
     }
 

@@ -148,6 +148,7 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `vibration pattern`() {
+        account.notificationSetting.isVibrateEnabled = true
         account.notificationSetting.vibratePattern = 3
         account.notificationSetting.vibrateTimes = 2
         val notificationData = createNotificationData()
@@ -192,7 +193,6 @@ class BaseNotificationDataCreatorTest {
         return Account("00000000-0000-4000-0000-000000000000").apply {
             description = "account name"
             identities = listOf(Identity())
-            notificationSetting.vibrateTimes = 1
         }
     }
 }
