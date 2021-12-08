@@ -14,6 +14,7 @@ import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 
 private const val ACCOUNT_NUMBER = 1
 private const val ACCOUNT_NAME = "TestAccount"
@@ -21,13 +22,15 @@ private const val ACCOUNT_NAME = "TestAccount"
 class SendFailedNotificationControllerTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
     private val notification = mock<Notification>()
+    private val lockScreenNotification = mock<Notification>()
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
+    private val lockScreenNotificationBuilder = createFakeNotificationBuilder(lockScreenNotification)
     private val account = createFakeAccount()
     private val contentIntent = mock<PendingIntent>()
     private val notificationId = NotificationIds.getSendFailedNotificationId(account)
     private val controller = SendFailedNotificationController(
-        notificationHelper = createFakeNotificationHelper(notificationManager, builder),
+        notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider
     )
@@ -44,7 +47,10 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
         verify(builder).setContentTitle("Failed to send some messages")
         verify(builder).setContentText("Exception")
         verify(builder).setContentIntent(contentIntent)
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        verify(builder).setPublicVersion(lockScreenNotification)
+        verify(lockScreenNotificationBuilder).setContentTitle("Failed to send some messages")
+        verify(lockScreenNotificationBuilder, never()).setContentText(any())
+        verify(lockScreenNotificationBuilder, never()).setTicker(any())
     }
 
     @Test
@@ -62,12 +68,13 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
 
     private fun createFakeNotificationHelper(
         notificationManager: NotificationManagerCompat,
-        builder: NotificationCompat.Builder
+        notificationBuilder: NotificationCompat.Builder,
+        lockScreenNotificationBuilder: NotificationCompat.Builder
     ): NotificationHelper {
         return mock {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()
             on { getNotificationManager() } doReturn notificationManager
-            on { createNotificationBuilder(any(), any()) } doReturn builder
+            on { createNotificationBuilder(any(), any()) }.doReturn(notificationBuilder, lockScreenNotificationBuilder)
         }
     }
 
