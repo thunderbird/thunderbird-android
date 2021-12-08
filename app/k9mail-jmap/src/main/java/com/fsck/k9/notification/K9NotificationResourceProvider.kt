@@ -36,6 +36,8 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
     override fun authenticationErrorBody(accountName: String): String =
         context.getString(R.string.notification_authentication_error_text, accountName)
 
+    override fun certificateErrorTitle(): String = context.getString(R.string.notification_certificate_error_public)
+
     override fun certificateErrorTitle(accountName: String): String =
         context.getString(R.string.notification_certificate_error_title, accountName)
 

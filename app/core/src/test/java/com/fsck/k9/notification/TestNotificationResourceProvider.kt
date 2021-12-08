@@ -26,6 +26,8 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override fun authenticationErrorBody(accountName: String): String =
         "Authentication failed for $accountName. Update your server settings."
 
+    override fun certificateErrorTitle(): String = "Certificate error"
+
     override fun certificateErrorTitle(accountName: String): String = "Certificate error for $accountName"
 
     override fun certificateErrorBody(): String = "Check your server settings"

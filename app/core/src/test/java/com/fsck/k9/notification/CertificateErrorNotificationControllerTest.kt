@@ -13,6 +13,7 @@ import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 
 private const val INCOMING = true
 private const val OUTGOING = false
@@ -22,9 +23,15 @@ private const val ACCOUNT_NAME = "TestAccount"
 class CertificateErrorNotificationControllerTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
     private val notification = mock<Notification>()
+    private val lockScreenNotification = mock<Notification>()
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
-    private val notificationHelper = createFakeNotificationHelper(notificationManager, builder)
+    private val lockScreenNotificationBuilder = createFakeNotificationBuilder(lockScreenNotification)
+    private val notificationHelper = createFakeNotificationHelper(
+        notificationManager,
+        builder,
+        lockScreenNotificationBuilder
+    )
     private val account = createFakeAccount()
     private val controller = TestCertificateErrorNotificationController()
     private val contentIntent = mock<PendingIntent>()
@@ -73,7 +80,10 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
         verify(builder).setContentTitle("Certificate error for $ACCOUNT_NAME")
         verify(builder).setContentText("Check your server settings")
         verify(builder).setContentIntent(contentIntent)
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        verify(builder).setPublicVersion(lockScreenNotification)
+        verify(lockScreenNotificationBuilder).setContentTitle("Certificate error")
+        verify(lockScreenNotificationBuilder, never()).setContentText(any())
+        verify(lockScreenNotificationBuilder, never()).setTicker(any())
     }
 
     private fun createFakeNotificationBuilder(notification: Notification): NotificationCompat.Builder {
@@ -84,12 +94,13 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
 
     private fun createFakeNotificationHelper(
         notificationManager: NotificationManagerCompat,
-        builder: NotificationCompat.Builder
+        notificationBuilder: NotificationCompat.Builder,
+        lockScreenNotificationBuilder: NotificationCompat.Builder
     ): NotificationHelper {
         return mock {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()
             on { getNotificationManager() } doReturn notificationManager
-            on { createNotificationBuilder(any(), any()) } doReturn builder
+            on { createNotificationBuilder(any(), any()) }.doReturn(notificationBuilder, lockScreenNotificationBuilder)
         }
     }
 
