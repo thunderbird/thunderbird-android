@@ -18,6 +18,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 
 private const val ACCOUNT_NUMBER = 1
 private const val ACCOUNT_NAME = "TestAccount"
@@ -27,12 +28,14 @@ private const val FOLDER_NAME = "Inbox"
 class SyncNotificationControllerTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
     private val notification = mock<Notification>()
+    private val lockScreenNotification = mock<Notification>()
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
+    private val lockScreenNotificationBuilder = createFakeNotificationBuilder(lockScreenNotification)
     private val account = createFakeAccount()
     private val contentIntent = mock<PendingIntent>()
     private val controller = SyncNotificationController(
-        notificationHelper = createFakeNotificationHelper(notificationManager, builder),
+        notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider
     )
@@ -49,7 +52,10 @@ class SyncNotificationControllerTest : RobolectricTest() {
         verify(builder).setContentTitle("Sending mail")
         verify(builder).setContentText(ACCOUNT_NAME)
         verify(builder).setContentIntent(contentIntent)
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        verify(builder).setPublicVersion(lockScreenNotification)
+        verify(lockScreenNotificationBuilder).setContentTitle("Sending mail")
+        verify(lockScreenNotificationBuilder, never()).setContentText(any())
+        verify(lockScreenNotificationBuilder, never()).setTicker(any())
     }
 
     @Test
@@ -74,7 +80,10 @@ class SyncNotificationControllerTest : RobolectricTest() {
         verify(builder).setContentTitle("Checking mail")
         verify(builder).setContentText("$ACCOUNT_NAME:$FOLDER_NAME")
         verify(builder).setContentIntent(contentIntent)
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        verify(builder).setPublicVersion(lockScreenNotification)
+        verify(lockScreenNotificationBuilder).setContentTitle("Checking mail")
+        verify(lockScreenNotificationBuilder, never()).setContentText(any())
+        verify(lockScreenNotificationBuilder, never()).setTicker(any())
     }
 
     @Test
@@ -87,7 +96,10 @@ class SyncNotificationControllerTest : RobolectricTest() {
         verify(builder).setSmallIcon(resourceProvider.iconCheckingMail)
         verify(builder).setContentTitle("Checking mail")
         verify(builder).setContentText(ACCOUNT_NAME)
-        verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        verify(builder).setPublicVersion(lockScreenNotification)
+        verify(lockScreenNotificationBuilder).setContentTitle("Checking mail")
+        verify(lockScreenNotificationBuilder, never()).setContentText(any())
+        verify(lockScreenNotificationBuilder, never()).setTicker(any())
     }
 
     @Test
@@ -107,12 +119,13 @@ class SyncNotificationControllerTest : RobolectricTest() {
 
     private fun createFakeNotificationHelper(
         notificationManager: NotificationManagerCompat,
-        builder: NotificationCompat.Builder
+        notificationBuilder: NotificationCompat.Builder,
+        lockScreenNotificationBuilder: NotificationCompat.Builder
     ): NotificationHelper {
         return mock {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()
             on { getNotificationManager() } doReturn notificationManager
-            on { createNotificationBuilder(any(), any()) } doReturn builder
+            on { createNotificationBuilder(any(), any()) }.doReturn(notificationBuilder, lockScreenNotificationBuilder)
             on { getAccountName(any()) } doReturn ACCOUNT_NAME
         }
     }
