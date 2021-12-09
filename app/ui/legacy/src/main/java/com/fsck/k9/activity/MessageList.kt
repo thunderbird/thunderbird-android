@@ -215,6 +215,12 @@ open class MessageList :
             return
         }
 
+        if (intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) {
+            // There's nothing to do if the default launcher Intent was used.
+            // This only brings the existing screen to the foreground.
+            return
+        }
+
         setIntent(intent)
 
         if (firstBackStackId >= 0) {
