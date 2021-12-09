@@ -1672,6 +1672,21 @@ open class MessageList :
             }
         }
 
+        fun createUnifiedInboxIntent(context: Context, account: Account): Intent {
+            return Intent(context, MessageList::class.java).apply {
+                val search = SearchAccount.createUnifiedInboxAccount().relatedSearch
+
+                // TODO: Use 'account' parameter
+
+                putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
+                putExtra(EXTRA_NO_THREADING, false)
+
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+        }
+
         @JvmStatic
         fun shortcutIntent(context: Context?, specialFolder: String?): Intent {
             return Intent(context, MessageList::class.java).apply {
