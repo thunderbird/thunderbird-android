@@ -135,6 +135,7 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
         }
 
         Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setData(item.uri);
         remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent);
 
