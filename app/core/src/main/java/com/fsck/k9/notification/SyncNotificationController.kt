@@ -27,6 +27,7 @@ internal class SyncNotificationController(
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconSendingMail)
+            .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
             .setTicker(tickerText)
@@ -72,6 +73,7 @@ internal class SyncNotificationController(
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconCheckingMail)
+            .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
             .setTicker(tickerText)
@@ -103,6 +105,7 @@ internal class SyncNotificationController(
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconCheckingMail)
+            .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
             .setContentTitle(title)
@@ -133,6 +136,7 @@ internal class SyncNotificationController(
         return notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconSendingMail)
+            .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setContentTitle(resourceProvider.sendingMailTitle())
             .build()
@@ -142,6 +146,7 @@ internal class SyncNotificationController(
         return notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconCheckingMail)
+            .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setContentTitle(resourceProvider.checkingMailTitle())
             .build()

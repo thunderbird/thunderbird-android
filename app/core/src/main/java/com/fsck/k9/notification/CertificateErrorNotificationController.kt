@@ -20,6 +20,7 @@ internal open class CertificateErrorNotificationController(
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconWarning)
+            .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setAutoCancel(true)
             .setTicker(title)
@@ -59,6 +60,7 @@ internal open class CertificateErrorNotificationController(
         return notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconWarning)
+            .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setContentTitle(resourceProvider.certificateErrorTitle())
             .build()

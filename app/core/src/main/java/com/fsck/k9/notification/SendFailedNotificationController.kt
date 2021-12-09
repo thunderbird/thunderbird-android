@@ -23,6 +23,7 @@ internal class SendFailedNotificationController(
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconWarning)
+            .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setAutoCancel(true)
             .setTicker(title)
@@ -54,6 +55,7 @@ internal class SendFailedNotificationController(
         return notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconWarning)
+            .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setContentTitle(resourceProvider.sendFailedTitle())
             .build()
