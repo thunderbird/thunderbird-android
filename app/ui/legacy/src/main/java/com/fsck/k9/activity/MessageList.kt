@@ -384,8 +384,11 @@ open class MessageList :
             launchData.search
         }
 
-        // Don't switch the currently active account when opening the Unified Inbox
-        val account = account?.takeIf { launchData.search.isUnifiedInbox } ?: search.firstAccount()
+        // If no account has been specified, keep the currently active account when opening the Unified Inbox
+        val account = launchData.account
+            ?: account?.takeIf { launchData.search.isUnifiedInbox }
+            ?: search.firstAccount()
+
         if (account == null) {
             finish()
             return false
@@ -462,8 +465,11 @@ open class MessageList :
             // regular LocalSearch object was passed
             val search = ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR)
             val noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false)
+            val account = intent.getStringExtra(EXTRA_ACCOUNT)?.let { accountUuid ->
+                preferences.getAccount(accountUuid)
+            }
 
-            return LaunchData(search = search, noThreading = noThreading)
+            return LaunchData(search = search, account = account, noThreading = noThreading)
         } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCE)) {
             val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
             val messageReference = MessageReference.parse(messageReferenceString)
@@ -1606,6 +1612,7 @@ open class MessageList :
 
     private class LaunchData(
         val search: LocalSearch,
+        val account: Account? = null,
         val messageReference: MessageReference? = null,
         val noThreading: Boolean = false,
         val messageViewOnly: Boolean = false
@@ -1618,6 +1625,7 @@ open class MessageList :
         private const val ACTION_SHORTCUT = "shortcut"
         private const val EXTRA_SPECIAL_FOLDER = "special_folder"
 
+        private const val EXTRA_ACCOUNT = "account_uuid"
         private const val EXTRA_MESSAGE_REFERENCE = "message_reference"
 
         // used for remote search
@@ -1676,8 +1684,7 @@ open class MessageList :
             return Intent(context, MessageList::class.java).apply {
                 val search = SearchAccount.createUnifiedInboxAccount().relatedSearch
 
-                // TODO: Use 'account' parameter
-
+                putExtra(EXTRA_ACCOUNT, account.uuid)
                 putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
                 putExtra(EXTRA_NO_THREADING, false)
 
