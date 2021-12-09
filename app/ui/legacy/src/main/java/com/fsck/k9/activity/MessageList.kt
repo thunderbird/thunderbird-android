@@ -120,10 +120,9 @@ open class MessageList :
     private var messageReference: MessageReference? = null
 
     /**
-     * `true` when the message list was displayed once. This is used in
-     * [.onBackPressed] to decide whether to go from the message view to the message list or
-     * finish the activity.
+     * If this is `true`, only the message view will be displayed and pressing the back button will finish the Activity.
      */
+    private var messageViewOnly = false
     private var messageListWasDisplayed = false
     private var viewSwitcher: ViewSwitcher? = null
     private lateinit var recentChangesSnackbar: Snackbar
@@ -397,6 +396,7 @@ open class MessageList :
         singleFolderMode = search.folderIds.size == 1
         noThreading = launchData.noThreading
         messageReference = launchData.messageReference
+        messageViewOnly = launchData.messageViewOnly
 
         return true
     }
@@ -417,7 +417,8 @@ open class MessageList :
 
                     return LaunchData(
                         search = messageReference.toLocalSearch(),
-                        messageReference = messageReference
+                        messageReference = messageReference,
+                        messageViewOnly = true
                     )
                 }
             }
@@ -542,6 +543,7 @@ open class MessageList :
         super.onSaveInstanceState(outState)
 
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
+        outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
         outState.putInt(STATE_FIRST_BACK_STACK_ID, firstBackStackId)
     }
@@ -549,6 +551,7 @@ open class MessageList :
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
+        messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
         firstBackStackId = savedInstanceState.getInt(STATE_FIRST_BACK_STACK_ID)
     }
@@ -665,8 +668,12 @@ open class MessageList :
     override fun onBackPressed() {
         if (isDrawerEnabled && drawer!!.isOpen) {
             drawer!!.close()
-        } else if (displayMode == DisplayMode.MESSAGE_VIEW && messageListWasDisplayed) {
-            showMessageList()
+        } else if (displayMode == DisplayMode.MESSAGE_VIEW) {
+            if (messageViewOnly) {
+                finish()
+            } else {
+                showMessageList()
+            }
         } else if (this::searchView.isInitialized && !searchView.isIconified) {
             searchView.isIconified = true
         } else {
@@ -1419,6 +1426,7 @@ open class MessageList :
     }
 
     private fun showMessageList() {
+        messageViewOnly = false
         messageListWasDisplayed = true
         displayMode = DisplayMode.MESSAGE_LIST
         viewSwitcher!!.showFirstView()
@@ -1599,7 +1607,8 @@ open class MessageList :
     private class LaunchData(
         val search: LocalSearch,
         val messageReference: MessageReference? = null,
-        val noThreading: Boolean = false
+        val noThreading: Boolean = false,
+        val messageViewOnly: Boolean = false
     )
 
     companion object : KoinComponent {
@@ -1616,6 +1625,7 @@ open class MessageList :
         private const val EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder"
 
         private const val STATE_DISPLAY_MODE = "displayMode"
+        private const val STATE_MESSAGE_VIEW_ONLY = "messageViewOnly"
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
         private const val STATE_FIRST_BACK_STACK_ID = "firstBackstackId"
 
