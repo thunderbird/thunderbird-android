@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 81;
+    static final int DB_VERSION = 82;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -140,8 +140,19 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "answered INTEGER default 0, " +
                 "forwarded INTEGER default 0, " +
                 "message_part_id INTEGER," +
-                "encryption_type TEXT" +
+                "encryption_type TEXT," +
+                "new_message INTEGER DEFAULT 0" +
                 ")");
+
+        db.execSQL("DROP INDEX IF EXISTS new_messages");
+        db.execSQL("CREATE INDEX IF NOT EXISTS new_messages ON messages(new_message)");
+
+        db.execSQL("CREATE TRIGGER new_message_reset " +
+                "AFTER UPDATE OF read ON messages " +
+                "FOR EACH ROW WHEN NEW.read = 1 AND NEW.new_message = 1 " +
+                "BEGIN " +
+                "UPDATE messages SET new_message = 0 WHERE ROWID = NEW.ROWID; " +
+                "END");
 
         db.execSQL("DROP TABLE IF EXISTS message_parts");
         db.execSQL("CREATE TABLE message_parts (" +
