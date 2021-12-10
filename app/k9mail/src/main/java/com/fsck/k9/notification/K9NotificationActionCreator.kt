@@ -10,6 +10,7 @@ import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.activity.setup.AccountSetupIncoming
 import com.fsck.k9.activity.setup.AccountSetupOutgoing
 import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.notification.DeleteConfirmationActivity
@@ -26,7 +27,8 @@ import com.fsck.k9.ui.notification.DeleteConfirmationActivity
  */
 internal class K9NotificationActionCreator(
     private val context: Context,
-    private val defaultFolderProvider: DefaultFolderProvider
+    private val defaultFolderProvider: DefaultFolderProvider,
+    private val messageStoreManager: MessageStoreManager
 ) : NotificationActionCreator {
 
     override fun createViewMessagePendingIntent(
@@ -47,9 +49,12 @@ internal class K9NotificationActionCreator(
         messageReferences: List<MessageReference>,
         notificationId: Int
     ): PendingIntent {
-        val folderServerId = getFolderIdOfAllMessages(messageReferences)
-        val intent = if (folderServerId != null) {
-            createMessageListIntent(account, folderServerId)
+        val folderIds = extractFolderIds(messageReferences)
+
+        val intent = if (K9.isShowUnifiedInbox && areAllIncludedInUnifiedInbox(account, folderIds)) {
+            createUnifiedInboxIntent(account)
+        } else if (folderIds.size == 1) {
+            createMessageListIntent(account, folderIds.first())
         } else {
             createMessageListIntent(account)
         }
@@ -225,10 +230,16 @@ internal class K9NotificationActionCreator(
         return MessageList.actionDisplayMessageIntent(context, message)
     }
 
-    private fun getFolderIdOfAllMessages(messageReferences: List<MessageReference>): Long? {
-        val firstMessage = messageReferences.first()
-        val folderId = firstMessage.folderId
+    private fun createUnifiedInboxIntent(account: Account): Intent {
+        return MessageList.createUnifiedInboxIntent(context, account)
+    }
 
-        return if (messageReferences.all { it.folderId == folderId }) folderId else null
+    private fun extractFolderIds(messageReferences: List<MessageReference>): Set<Long> {
+        return messageReferences.asSequence().map { it.folderId }.toSet()
+    }
+
+    private fun areAllIncludedInUnifiedInbox(account: Account, folderIds: Collection<Long>): Boolean {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.areAllIncludedInUnifiedInbox(folderIds)
     }
 }

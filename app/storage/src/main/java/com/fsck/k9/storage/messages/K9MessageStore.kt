@@ -37,6 +37,7 @@ class K9MessageStore(
     private val deleteMessageOperations = DeleteMessageOperations(database, attachmentFileManager)
     private val createFolderOperations = CreateFolderOperations(database)
     private val retrieveFolderOperations = RetrieveFolderOperations(database)
+    private val checkFolderOperations = CheckFolderOperations(database)
     private val updateFolderOperations = UpdateFolderOperations(database)
     private val deleteFolderOperations = DeleteFolderOperations(database, attachmentFileManager)
     private val keyValueStoreOperations = KeyValueStoreOperations(database)
@@ -128,6 +129,10 @@ class K9MessageStore(
         mapper: FolderMapper<T>
     ): List<T> {
         return retrieveFolderOperations.getDisplayFolders(displayMode, outboxFolderId, mapper)
+    }
+
+    override fun areAllIncludedInUnifiedInbox(folderIds: Collection<Long>): Boolean {
+        return checkFolderOperations.areAllIncludedInUnifiedInbox(folderIds)
     }
 
     override fun getFolderId(folderServerId: String): Long? {
