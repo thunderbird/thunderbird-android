@@ -43,6 +43,11 @@ class NotifierMessageStore(
         notifyChange()
     }
 
+    override fun setNewMessageState(folderId: Long, messageServerId: String, newMessage: Boolean) {
+        messageStore.setNewMessageState(folderId, messageServerId, newMessage)
+        notifyChange()
+    }
+
     override fun destroyMessages(folderId: Long, messageServerIds: Collection<String>) {
         messageStore.destroyMessages(folderId, messageServerIds)
         notifyChange()

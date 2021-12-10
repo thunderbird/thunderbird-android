@@ -3,10 +3,12 @@ package com.fsck.k9.notification
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mailstore.LocalStoreProvider
+import com.fsck.k9.mailstore.MessageStoreManager
 
 internal class NotificationRepository(
     private val notificationStoreProvider: NotificationStoreProvider,
     private val localStoreProvider: LocalStoreProvider,
+    private val messageStoreManager: MessageStoreManager,
     private val notificationContentCreator: NotificationContentCreator
 ) {
     private val notificationDataStore = NotificationDataStore()
@@ -58,6 +60,34 @@ internal class NotificationRepository(
     private fun persistNotificationDataStoreChanges(account: Account, operations: List<NotificationStoreOperation>) {
         val notificationStore = notificationStoreProvider.getNotificationStore(account)
         notificationStore.persistNotificationChanges(operations)
+
+        setNewMessageState(account, operations)
+    }
+
+    private fun setNewMessageState(account: Account, operations: List<NotificationStoreOperation>) {
+        val messageStore = messageStoreManager.getMessageStore(account)
+
+        for (operation in operations) {
+            when (operation) {
+                is NotificationStoreOperation.Add -> {
+                    val messageReference = operation.messageReference
+                    messageStore.setNewMessageState(
+                        folderId = messageReference.folderId,
+                        messageServerId = messageReference.uid,
+                        newMessage = true
+                    )
+                }
+                is NotificationStoreOperation.Remove -> {
+                    val messageReference = operation.messageReference
+                    messageStore.setNewMessageState(
+                        folderId = messageReference.folderId,
+                        messageServerId = messageReference.uid,
+                        newMessage = false
+                    )
+                }
+                else -> Unit
+            }
+        }
     }
 
     private fun clearNotificationStore(account: Account) {

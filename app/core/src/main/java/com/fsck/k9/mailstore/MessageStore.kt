@@ -79,6 +79,11 @@ interface MessageStore {
     fun setMessageFlag(folderId: Long, messageServerId: String, flag: Flag, set: Boolean)
 
     /**
+     * Set whether a message should be considered as new.
+     */
+    fun setNewMessageState(folderId: Long, messageServerId: String, newMessage: Boolean)
+
+    /**
      * Retrieve the server ID for a given message.
      */
     fun getMessageServerId(messageId: Long): String

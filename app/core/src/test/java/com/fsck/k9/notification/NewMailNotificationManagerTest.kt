@@ -6,6 +6,7 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LocalStoreProvider
+import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.mailstore.NotificationMessage
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.assertNotNull
@@ -429,14 +430,18 @@ class NewMailNotificationManagerTest {
     }
 
     private fun createNotificationRepository(): NotificationRepository {
-        val notificationStoreProvider = object : NotificationStoreProvider {
-            override fun getNotificationStore(account: Account): NotificationStore {
-                return object : NotificationStore {
-                    override fun persistNotificationChanges(operations: List<NotificationStoreOperation>) = Unit
-                    override fun clearNotifications() = Unit
-                }
-            }
+        val notificationStoreProvider = mock<NotificationStoreProvider> {
+            on { getNotificationStore(account) } doReturn mock()
         }
-        return NotificationRepository(notificationStoreProvider, localStoreProvider, notificationContentCreator)
+        val messageStoreManager = mock<MessageStoreManager> {
+            on { getMessageStore(account) } doReturn mock()
+        }
+
+        return NotificationRepository(
+            notificationStoreProvider,
+            localStoreProvider,
+            messageStoreManager,
+            notificationContentCreator
+        )
     }
 }
