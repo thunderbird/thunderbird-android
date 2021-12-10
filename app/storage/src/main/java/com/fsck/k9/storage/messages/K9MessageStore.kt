@@ -72,6 +72,10 @@ class K9MessageStore(
         updateMessageOperations.setNewMessageState(folderId, messageServerId, newMessage)
     }
 
+    override fun clearNewMessageState() {
+        updateMessageOperations.clearNewMessageState()
+    }
+
     override fun getMessageServerId(messageId: Long): String {
         return retrieveMessageOperations.getMessageServerId(messageId)
     }

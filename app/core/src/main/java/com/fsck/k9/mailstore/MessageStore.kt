@@ -84,6 +84,11 @@ interface MessageStore {
     fun setNewMessageState(folderId: Long, messageServerId: String, newMessage: Boolean)
 
     /**
+     * Clear the new message state for all messages.
+     */
+    fun clearNewMessageState()
+
+    /**
      * Retrieve the server ID for a given message.
      */
     fun getMessageServerId(messageId: Long): String

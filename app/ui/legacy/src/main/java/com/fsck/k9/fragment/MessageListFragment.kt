@@ -417,6 +417,10 @@ class MessageListFragment :
     }
 
     override fun onDestroyView() {
+        if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
+            messagingController.clearNewMessages(account)
+        }
+
         savedListState = listView.onSaveInstanceState()
         super.onDestroyView()
     }

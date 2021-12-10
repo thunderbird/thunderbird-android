@@ -19,4 +19,10 @@ internal class UpdateMessageOperations(private val lockableDatabase: LockableDat
             )
         }
     }
+
+    fun clearNewMessageState() {
+        lockableDatabase.execute(false) { database ->
+            database.execSQL("UPDATE messages SET new_message = 0")
+        }
+    }
 }

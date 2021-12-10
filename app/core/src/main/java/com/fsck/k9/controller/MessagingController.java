@@ -1365,6 +1365,15 @@ public class MessagingController {
         messageStore.setNewMessageState(folderId, messageServerId, false);
     }
 
+    public void clearNewMessages(Account account) {
+        put("clearNewMessages", null, () -> clearNewMessagesBlocking(account));
+    }
+
+    private void clearNewMessagesBlocking(Account account) {
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        messageStore.clearNewMessageState();
+    }
+
     public void loadAttachment(final Account account, final LocalMessage message, final Part part,
             final MessagingListener listener) {
 
