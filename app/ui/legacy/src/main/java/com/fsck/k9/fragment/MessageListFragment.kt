@@ -123,6 +123,9 @@ class MessageListFragment :
     private val isUnifiedInbox: Boolean
         get() = localSearch.id == SearchAccount.UNIFIED_INBOX
 
+    private val isNewMessagesView: Boolean
+        get() = localSearch.id == SearchAccount.NEW_MESSAGES
+
     /**
      * `true` after [.onCreate] was executed. Used in [.updateTitle] to
      * make sure we don't access member variables before initialization is complete.
@@ -326,6 +329,7 @@ class MessageListFragment :
     private fun setWindowTitle() {
         val title = when {
             isUnifiedInbox -> getString(R.string.integrated_inbox_title)
+            isNewMessagesView -> getString(R.string.new_messages_title)
             isManualSearch -> getString(R.string.search_results)
             isThreadDisplay -> threadTitle ?: ""
             isSingleFolderMode -> currentFolder!!.displayName

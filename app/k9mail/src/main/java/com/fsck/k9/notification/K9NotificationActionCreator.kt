@@ -56,7 +56,7 @@ internal class K9NotificationActionCreator(
         } else if (folderIds.size == 1) {
             createMessageListIntent(account, folderIds.first())
         } else {
-            createMessageListIntent(account)
+            createNewMessagesIntent(account)
         }
 
         return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -232,6 +232,10 @@ internal class K9NotificationActionCreator(
 
     private fun createUnifiedInboxIntent(account: Account): Intent {
         return MessageList.createUnifiedInboxIntent(context, account)
+    }
+
+    private fun createNewMessagesIntent(account: Account): Intent {
+        return MessageList.createNewMessagesIntent(context, account)
     }
 
     private fun extractFolderIds(messageReferences: List<MessageReference>): Set<Long> {
