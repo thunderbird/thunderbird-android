@@ -1316,7 +1316,7 @@ public class MessagingController {
         localFolder.fetch(Collections.singletonList(message), fp, null);
 
         notificationController.removeNewMailNotification(account, message.makeMessageReference());
-        markMessageAsReadOnView(account, message);
+        markMessageAsOpened(account, message);
 
         return message;
     }
@@ -1339,15 +1339,30 @@ public class MessagingController {
         return message;
     }
 
-    private void markMessageAsReadOnView(Account account, LocalMessage message)
-            throws MessagingException {
-
-        if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
-            List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
-            setFlag(account, messageIds, Flag.SEEN, true);
-
-            message.setFlagInternal(Flag.SEEN, true);
+    private void markMessageAsOpened(Account account, LocalMessage message) throws MessagingException {
+        if (!message.isSet(Flag.SEEN)) {
+            if (account.isMarkMessageAsReadOnView()) {
+                markMessageAsReadOnView(account, message);
+            } else {
+                // Marking a message as read will automatically mark it as "not new". But if we don't mark the message
+                // as read on opening, we have to manually mark it as "not new".
+                markMessageAsNotNew(account, message);
+            }
         }
+    }
+
+    private void markMessageAsReadOnView(Account account, LocalMessage message) throws MessagingException {
+        List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
+        setFlag(account, messageIds, Flag.SEEN, true);
+
+        message.setFlagInternal(Flag.SEEN, true);
+    }
+
+    private void markMessageAsNotNew(Account account, LocalMessage message) {
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        long folderId = message.getFolder().getDatabaseId();
+        String messageServerId = message.getUid();
+        messageStore.setNewMessageState(folderId, messageServerId, false);
     }
 
     public void loadAttachment(final Account account, final LocalMessage message, final Part part,
