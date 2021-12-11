@@ -100,8 +100,8 @@ internal class NewMailNotificationManager(
         )
     }
 
-    fun clearNewMailNotifications(account: Account): List<Int> {
-        notificationRepository.clearNotifications(account)
+    fun clearNewMailNotifications(account: Account, clearNewMessageState: Boolean): List<Int> {
+        notificationRepository.clearNotifications(account, clearNewMessageState)
         return NotificationIds.getAllMessageNotificationIds(account)
     }
 

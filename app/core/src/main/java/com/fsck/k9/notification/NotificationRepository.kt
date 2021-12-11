@@ -51,9 +51,12 @@ internal class NotificationRepository(
     }
 
     @Synchronized
-    fun clearNotifications(account: Account) {
-        return notificationDataStore.clearNotifications(account).also {
-            clearNotificationStore(account)
+    fun clearNotifications(account: Account, clearNewMessageState: Boolean) {
+        notificationDataStore.clearNotifications(account)
+        clearNotificationStore(account)
+
+        if (clearNewMessageState) {
+            clearNewMessageState(account)
         }
     }
 
@@ -88,6 +91,11 @@ internal class NotificationRepository(
                 else -> Unit
             }
         }
+    }
+
+    private fun clearNewMessageState(account: Account) {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        messageStore.clearNewMessageState()
     }
 
     private fun clearNotificationStore(account: Account) {

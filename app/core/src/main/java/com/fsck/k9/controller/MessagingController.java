@@ -2407,7 +2407,7 @@ public class MessagingController {
                             clearFetchingMailNotification(account);
 
                             if (getUnreadMessageCount(account) == 0) {
-                                notificationController.clearNewMailNotifications(account);
+                                notificationController.clearNewMailNotifications(account, false);
                             }
                         }
                     }
@@ -2493,7 +2493,7 @@ public class MessagingController {
     }
 
     public void deleteAccount(Account account) {
-        notificationController.clearNewMailNotifications(account);
+        notificationController.clearNewMailNotifications(account, false);
         memorizingMessagingListener.removeAccount(account);
     }
 
@@ -2549,8 +2549,14 @@ public class MessagingController {
         }
     }
 
+    public void removeNotificationsForAccount(Account account) {
+        put("removeNotificationsForAccount", null, () -> {
+            notificationController.clearNewMailNotifications(account, false);
+        });
+    }
+
     public void cancelNotificationsForAccount(Account account) {
-        notificationController.clearNewMailNotifications(account);
+        notificationController.clearNewMailNotifications(account, true);
     }
 
     public void cancelNotificationForMessage(Account account, MessageReference messageReference) {

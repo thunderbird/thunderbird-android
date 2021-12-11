@@ -476,7 +476,8 @@ class MessageListFragment :
         messagingController.addListener(activityListener)
 
         for (account in localSearch.getAccounts(preferences)) {
-            messagingController.cancelNotificationsForAccount(account)
+            // TODO: Only remove notifications for messages in the currently displayed message list
+            messagingController.removeNotificationsForAccount(account)
         }
 
         updateTitle()
