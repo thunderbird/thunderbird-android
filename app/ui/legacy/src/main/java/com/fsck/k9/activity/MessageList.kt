@@ -1694,6 +1694,16 @@ open class MessageList :
             }
         }
 
+        fun createNewMessagesIntent(context: Context, account: Account): Intent {
+            val search = LocalSearch().apply {
+                id = SearchAccount.NEW_MESSAGES
+                addAccountUuid(account.uuid)
+                and(SearchField.NEW_MESSAGE, "1", SearchSpecification.Attribute.EQUALS)
+            }
+
+            return intentDisplaySearch(context, search, noThreading = false, newTask = true, clearTop = true)
+        }
+
         @JvmStatic
         fun shortcutIntent(context: Context?, specialFolder: String?): Intent {
             return Intent(context, MessageList::class.java).apply {

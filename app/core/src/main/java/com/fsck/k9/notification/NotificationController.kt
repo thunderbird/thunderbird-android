@@ -68,7 +68,7 @@ class NotificationController internal constructor(
         newMailNotificationController.removeNewMailNotification(account, messageReference)
     }
 
-    fun clearNewMailNotifications(account: Account) {
-        newMailNotificationController.clearNewMailNotifications(account)
+    fun clearNewMailNotifications(account: Account, clearNewMessageState: Boolean) {
+        newMailNotificationController.clearNewMailNotifications(account, clearNewMessageState)
     }
 }

@@ -14,6 +14,7 @@ import com.fsck.k9.search.SearchSpecification.SearchField;
  */
 public class SearchAccount implements BaseAccount {
     public static final String UNIFIED_INBOX = "unified_inbox";
+    public static final String NEW_MESSAGES = "new_messages";
 
 
     // create the unified inbox meta account ( all accounts is default when none specified )

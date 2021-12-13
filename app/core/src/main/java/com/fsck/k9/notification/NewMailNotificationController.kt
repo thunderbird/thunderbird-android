@@ -38,8 +38,8 @@ internal class NewMailNotificationController(
         }
     }
 
-    fun clearNewMailNotifications(account: Account) {
-        val cancelNotificationIds = newMailNotificationManager.clearNewMailNotifications(account)
+    fun clearNewMailNotifications(account: Account, clearNewMessageState: Boolean) {
+        val cancelNotificationIds = newMailNotificationManager.clearNewMailNotifications(account, clearNewMessageState)
 
         cancelNotifications(cancelNotificationIds)
     }
