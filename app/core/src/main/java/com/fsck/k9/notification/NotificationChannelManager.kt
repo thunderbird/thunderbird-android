@@ -137,12 +137,13 @@ class NotificationChannelManager(
     }
 
     fun getChannelIdFor(account: Account, channelType: ChannelType): String {
-        val accountUuid = account.uuid
-
         return if (channelType == ChannelType.MESSAGES) {
-            "messages_channel_$accountUuid"
+            "messages_channel_${account.uuid}${account.messagesNotificationChannelSuffix}"
         } else {
-            "miscellaneous_channel_$accountUuid"
+            "miscellaneous_channel_${account.uuid}"
         }
     }
+
+    private val Account.messagesNotificationChannelSuffix: String
+        get() = messagesNotificationChannelVersion.let { version -> if (version == 0) "" else "_$version" }
 }
