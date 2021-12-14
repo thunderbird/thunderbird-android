@@ -616,6 +616,10 @@ public class Account implements BaseAccount {
         messagesNotificationChannelVersion = notificationChannelVersion;
     }
 
+    public synchronized void incrementMessagesNotificationChannelVersion() {
+        messagesNotificationChannelVersion++;
+    }
+
     public synchronized SortType getSortType() {
         return sortType;
     }
