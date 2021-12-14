@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.settings.account
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -32,6 +33,7 @@ import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.fsck.k9.ui.withArguments
+import com.takisoft.preferencex.ColorPickerPreference
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -48,6 +50,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val accountRemover: BackgroundAccountRemover by inject()
     private val notificationChannelManager: NotificationChannelManager by inject()
     private lateinit var dataStore: AccountSettingsDataStore
+    private var notificationLightColorPreference: ColorPickerPreference? = null
 
     private val accountUuid: String by lazy {
         checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
@@ -89,6 +92,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         // we might be returning from OpenPgpAppSelectDialog, make sure settings are up to date
         val account = getAccount()
         initializeCryptoSettings(account)
+
+        updateNotificationLightColorPreference(account)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -182,6 +187,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeNotifications(account: Account) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            findPreference<ColorPickerPreference>(PREFERENCE_NOTIFICATION_LIGHT_COLOR)?.let { preference ->
+                notificationLightColorPreference = preference
+                preference.dependency = null
+                preference.isEnabled = false
+            }
+
             PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference<Preference>(it).remove() }
 
             findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES)?.let {
@@ -194,6 +205,19 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             }
         } else {
             findPreference<PreferenceCategory>(PREFERENCE_NOTIFICATION_CHANNELS).remove()
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private fun updateNotificationLightColorPreference(account: Account) {
+        notificationLightColorPreference?.let { preference ->
+            val notificationLightConfiguration = notificationChannelManager.getNotificationLightConfiguration(account)
+            val blinkLightsEnabled = notificationLightConfiguration.isEnabled
+
+            preference.isEnabled = blinkLightsEnabled
+            if (blinkLightsEnabled) {
+                preference.color = notificationLightConfiguration.color
+            }
         }
     }
 
@@ -384,6 +408,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_SENT_FOLDER = "sent_folder"
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
+        private const val PREFERENCE_NOTIFICATION_LIGHT_COLOR = "led_color"
         private const val PREFERENCE_NOTIFICATION_CHANNELS = "notification_channels"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES = "open_notification_settings_messages"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS = "open_notification_settings_miscellaneous"
@@ -395,7 +420,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             "account_vibrate_pattern",
             "account_vibrate_times",
             "account_led",
-            "led_color"
         )
 
         private const val DIALOG_DELETE_ACCOUNT = 1

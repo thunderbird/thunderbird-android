@@ -144,6 +144,22 @@ class NotificationChannelManager(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getNotificationLightConfiguration(account: Account): NotificationLightConfiguration {
+        val channelId = getChannelIdFor(account, ChannelType.MESSAGES)
+        val notificationChannel = notificationManager.getNotificationChannel(channelId)
+
+        return NotificationLightConfiguration(
+            isEnabled = notificationChannel.shouldShowLights(),
+            color = notificationChannel.lightColor
+        )
+    }
+
     private val Account.messagesNotificationChannelSuffix: String
         get() = messagesNotificationChannelVersion.let { version -> if (version == 0) "" else "_$version" }
 }
+
+data class NotificationLightConfiguration(
+    val isEnabled: Boolean,
+    val color: Int
+)
