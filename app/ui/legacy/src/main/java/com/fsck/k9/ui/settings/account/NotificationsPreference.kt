@@ -13,6 +13,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import com.takisoft.preferencex.PreferenceFragmentCompat
 
+typealias NotificationChannelIdProvider = () -> String
+
 @SuppressLint("RestrictedApi")
 @RequiresApi(Build.VERSION_CODES.O)
 class NotificationsPreference
@@ -27,18 +29,21 @@ constructor(
     defStyleRes: Int = 0
 ) : Preference(context, attrs, defStyleAttr, defStyleRes) {
 
-    var notificationChannelId: String? = null
+    var notificationChannelIdProvider: NotificationChannelIdProvider? = null
 
     override fun onClick() {
-        val intent = if (notificationChannelId == null) {
-            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-        } else {
-            Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
-                putExtra(Settings.EXTRA_CHANNEL_ID, notificationChannelId)
+        notificationChannelIdProvider.let { provider ->
+            val intent = if (provider == null) {
+                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+            } else {
+                val notificationChannelId = provider.invoke()
+                Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                    putExtra(Settings.EXTRA_CHANNEL_ID, notificationChannelId)
+                }
             }
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, this.context.packageName)
+            startActivity(this.context, intent, null)
         }
-        intent.putExtra(Settings.EXTRA_APP_PACKAGE, this.context.packageName)
-        startActivity(this.context, intent, null)
     }
 
     companion object {

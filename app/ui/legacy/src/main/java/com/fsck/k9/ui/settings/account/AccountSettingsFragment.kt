@@ -196,12 +196,15 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference<Preference>(it).remove() }
 
             findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES)?.let {
-                it.notificationChannelId = notificationChannelManager.getChannelIdFor(account, ChannelType.MESSAGES)
+                it.notificationChannelIdProvider = {
+                    notificationChannelManager.getChannelIdFor(account, ChannelType.MESSAGES)
+                }
             }
 
             findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS)?.let {
-                it.notificationChannelId =
+                it.notificationChannelIdProvider = {
                     notificationChannelManager.getChannelIdFor(account, ChannelType.MISCELLANEOUS)
+                }
             }
         } else {
             findPreference<PreferenceCategory>(PREFERENCE_NOTIFICATION_CHANNELS).remove()
