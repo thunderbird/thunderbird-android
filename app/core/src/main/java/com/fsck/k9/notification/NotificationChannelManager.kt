@@ -6,8 +6,10 @@ import android.app.NotificationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.fsck.k9.Account
+import com.fsck.k9.NotificationSetting
 import com.fsck.k9.Preferences
 import java.util.concurrent.Executor
+import timber.log.Timber
 
 class NotificationChannelManager(
     private val preferences: Preferences,
@@ -137,12 +139,84 @@ class NotificationChannelManager(
     }
 
     fun getChannelIdFor(account: Account, channelType: ChannelType): String {
-        val accountUuid = account.uuid
-
         return if (channelType == ChannelType.MESSAGES) {
-            "messages_channel_$accountUuid"
+            "messages_channel_${account.uuid}${account.messagesNotificationChannelSuffix}"
         } else {
-            "miscellaneous_channel_$accountUuid"
+            "miscellaneous_channel_${account.uuid}"
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getNotificationLightConfiguration(account: Account): NotificationLightConfiguration {
+        val channelId = getChannelIdFor(account, ChannelType.MESSAGES)
+        val notificationChannel = notificationManager.getNotificationChannel(channelId)
+
+        return NotificationLightConfiguration(
+            isEnabled = notificationChannel.shouldShowLights(),
+            color = notificationChannel.lightColor
+        )
+    }
+
+    fun recreateMessagesNotificationChannel(account: Account) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+
+        val oldChannelId = getChannelIdFor(account, ChannelType.MESSAGES)
+        val oldNotificationChannel = notificationManager.getNotificationChannel(oldChannelId)
+
+        if (oldNotificationChannel.matches(account.notificationSetting)) {
+            Timber.v("Not recreating NotificationChannel. The current one already matches the app's settings.")
+            return
+        }
+
+        notificationManager.deleteNotificationChannel(oldChannelId)
+
+        account.incrementMessagesNotificationChannelVersion()
+
+        val newChannelId = getChannelIdFor(account, ChannelType.MESSAGES)
+        val channelName = resourceProvider.messagesChannelName
+        val importance = oldNotificationChannel.importance
+
+        val newNotificationChannel = NotificationChannel(newChannelId, channelName, importance).apply {
+            description = resourceProvider.messagesChannelDescription
+            group = account.uuid
+
+            copyPropertiesFrom(oldNotificationChannel)
+            copyPropertiesFrom(account.notificationSetting)
+        }
+
+        Timber.v("Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
+        notificationManager.createNotificationChannel(newNotificationChannel)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun NotificationChannel.matches(notificationSetting: NotificationSetting): Boolean {
+        return lightColor == notificationSetting.ledColor
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun NotificationChannel.copyPropertiesFrom(otherNotificationChannel: NotificationChannel) {
+        setShowBadge(otherNotificationChannel.canShowBadge())
+        setSound(otherNotificationChannel.sound, otherNotificationChannel.audioAttributes)
+        vibrationPattern = otherNotificationChannel.vibrationPattern
+        enableVibration(otherNotificationChannel.shouldVibrate())
+        enableLights(otherNotificationChannel.shouldShowLights())
+        setBypassDnd(otherNotificationChannel.canBypassDnd())
+        lockscreenVisibility = otherNotificationChannel.lockscreenVisibility
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            setAllowBubbles(otherNotificationChannel.canBubble())
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun NotificationChannel.copyPropertiesFrom(notificationSetting: NotificationSetting) {
+        lightColor = notificationSetting.ledColor
+    }
+
+    private val Account.messagesNotificationChannelSuffix: String
+        get() = messagesNotificationChannelVersion.let { version -> if (version == 0) "" else "_$version" }
 }
+
+data class NotificationLightConfiguration(
+    val isEnabled: Boolean,
+    val color: Int
+)
