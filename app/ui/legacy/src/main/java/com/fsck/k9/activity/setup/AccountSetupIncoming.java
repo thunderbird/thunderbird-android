@@ -46,6 +46,7 @@ import com.fsck.k9.ui.base.extensions.TextInputLayoutHelper;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
+import java.util.Locale;
 import java.util.Map;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -312,7 +313,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             if (settings.port != -1) {
-                mPortView.setText(String.format("%d", settings.port));
+                mPortView.setText(String.format(Locale.ROOT, "%d", settings.port));
             } else {
                 updatePortFromSecurityType();
             }

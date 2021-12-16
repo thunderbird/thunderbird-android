@@ -10,7 +10,7 @@ import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.helper.SizeFormatter
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.annotation.KoinInternal
+import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.logger.PrintLogger
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent
@@ -31,17 +31,17 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
     }
     val autocryptTransferView = mock<AutocryptKeyTransferActivity>()
 
-    @KoinInternal
+    @KoinInternalApi
     @Test
     fun testDependencyTree() {
         KoinJavaComponent.getKoin().setupLogger(PrintLogger())
 
         getKoin().checkModules {
-            create<OpenPgpApiManager> { parametersOf(lifecycleOwner) }
+            withParameter<OpenPgpApiManager> { lifecycleOwner }
             create<AutocryptKeyTransferPresenter> { parametersOf(lifecycleOwner, autocryptTransferView) }
-            create<FolderNameFormatter> { parametersOf(RuntimeEnvironment.application) }
-            create<SizeFormatter> { parametersOf(RuntimeEnvironment.application) }
-            create<ChangelogViewModel> { parametersOf(ChangeLogMode.CHANGE_LOG) }
+            withParameter<FolderNameFormatter> { RuntimeEnvironment.application }
+            withParameter<SizeFormatter> { RuntimeEnvironment.application }
+            withParameter<ChangelogViewModel> { ChangeLogMode.CHANGE_LOG }
         }
     }
 }

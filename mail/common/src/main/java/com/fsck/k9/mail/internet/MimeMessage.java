@@ -638,7 +638,7 @@ public class MimeMessage extends Message {
     public MimeBodyPart toBodyPart() throws MessagingException {
         MimeHeader contentHeaders = new MimeHeader();
         for (String header : mHeader.getHeaderNames()) {
-            if (header.toLowerCase().startsWith("content-")) {
+            if (header.toLowerCase(Locale.ROOT).startsWith("content-")) {
                 for (String value : mHeader.getHeader(header)) {
                     contentHeaders.addHeader(header, value);
                 }

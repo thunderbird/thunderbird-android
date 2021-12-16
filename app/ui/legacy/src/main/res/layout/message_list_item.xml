@@ -6,6 +6,7 @@
               android:layout_height="wrap_content"
               android:orientation="horizontal"
               android:layout_gravity="center_vertical"
+              tools:layout_height="?android:attr/listPreferredItemHeight"
         >
 
     <FrameLayout
@@ -13,9 +14,9 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="3dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -39,7 +40,7 @@
             android:id="@+id/list_item_inner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
             android:paddingTop="5dip"
             android:clickable="false"
             android:focusable="false"
@@ -51,10 +52,10 @@
                 android:id="@+id/preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/star"
-                android:layout_marginLeft="1dip"
-                android:layout_marginRight="3dip"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/star"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="3dp"
                 android:bufferType="spannable"
                 android:layout_below="@+id/subject_wrapper"
                 android:singleLine="false"
@@ -63,7 +64,8 @@
                 android:longClickable="false"
                 android:layout_alignWithParentIfMissing="false"
                 android:gravity="top"
-                android:layout_alignParentBottom="false"/>
+                android:layout_alignParentBottom="false"
+                tools:text="Message preview"/>
 
         <LinearLayout
                 android:id="@+id/subject_wrapper"
@@ -79,7 +81,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="4dp"
-                app:srcCompat="@drawable/ic_account_color" />
+                app:srcCompat="@drawable/ic_account_color"
+                tools:tint="#FF1976D2"/>
 
             <ImageView
                 android:id="@+id/status"
@@ -93,12 +96,13 @@
                     android:layout_width="0dp"
                     android:layout_weight="0.7"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dip"
-                    android:layout_marginLeft="1dip"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginStart="1dp"
                     android:ellipsize="marquee"
                     android:singleLine="true"
                     android:textAppearance="@style/TextAppearance.K9.MediumSmall"
                     android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Subject"
                     />
 
             <TextView
@@ -108,12 +112,13 @@
                     android:background="?attr/messageListThreadCountBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dip"
-                    android:layout_marginRight="4dip"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="4dp"
                     android:paddingRight="4dip"
                     android:paddingBottom="1dip"
                     android:paddingLeft="4dip"
                     android:focusable="false"
+                    tools:text="3"
                     />
         </LinearLayout>
 
@@ -134,12 +139,13 @@
                 android:layout_alignTop="@+id/subject_wrapper"
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:paddingLeft="3dip"
-                android:paddingRight="8dip"
+                android:layout_alignParentEnd="true"
+                android:paddingStart="3dp"
+                android:paddingEnd="8dp"
                 android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.K9.Small"
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:textColor="?android:attr/textColorSecondary"
+                tools:text="Oct 27"/>
 
         <CheckBox
                 android:id="@+id/star"
@@ -147,13 +153,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_below="@+id/date"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:paddingTop="5dip"
-                android:paddingLeft="2dip"
-                android:paddingRight="4dip"
+                android:paddingStart="2dp"
+                android:paddingEnd="4dp"
                 android:focusable="false"
                 android:visibility="visible"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                tools:text="&#x200B;"/>
 
 
     </RelativeLayout>

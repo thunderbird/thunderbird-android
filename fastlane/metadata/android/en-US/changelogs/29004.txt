@@ -1,0 +1,5 @@
+- Tweaked toolbar in move/copy screens
+- Fixed a bug where line breaks were added when editing a draft
+- Fixed animation when switching accounts
+- Fixed crash that could occur when deleting an account
+- Updated translations

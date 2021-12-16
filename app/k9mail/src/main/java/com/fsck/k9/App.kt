@@ -29,7 +29,7 @@ class App : Application() {
     private var appLanguageManagerInitialized = false
 
     override fun onCreate() {
-        Core.earlyInit(this)
+        Core.earlyInit()
 
         super.onCreate()
 

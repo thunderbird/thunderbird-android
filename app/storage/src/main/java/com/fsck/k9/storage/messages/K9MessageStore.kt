@@ -33,10 +33,12 @@ class K9MessageStore(
     private val copyMessageOperations = CopyMessageOperations(database, attachmentFileManager, threadMessageOperations)
     private val moveMessageOperations = MoveMessageOperations(database, threadMessageOperations)
     private val flagMessageOperations = FlagMessageOperations(database)
+    private val updateMessageOperations = UpdateMessageOperations(database)
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
     private val deleteMessageOperations = DeleteMessageOperations(database, attachmentFileManager)
     private val createFolderOperations = CreateFolderOperations(database)
     private val retrieveFolderOperations = RetrieveFolderOperations(database)
+    private val checkFolderOperations = CheckFolderOperations(database)
     private val updateFolderOperations = UpdateFolderOperations(database)
     private val deleteFolderOperations = DeleteFolderOperations(database, attachmentFileManager)
     private val keyValueStoreOperations = KeyValueStoreOperations(database)
@@ -64,6 +66,14 @@ class K9MessageStore(
 
     override fun setMessageFlag(folderId: Long, messageServerId: String, flag: Flag, set: Boolean) {
         flagMessageOperations.setMessageFlag(folderId, messageServerId, flag, set)
+    }
+
+    override fun setNewMessageState(folderId: Long, messageServerId: String, newMessage: Boolean) {
+        updateMessageOperations.setNewMessageState(folderId, messageServerId, newMessage)
+    }
+
+    override fun clearNewMessageState() {
+        updateMessageOperations.clearNewMessageState()
     }
 
     override fun getMessageServerId(messageId: Long): String {
@@ -128,6 +138,10 @@ class K9MessageStore(
         mapper: FolderMapper<T>
     ): List<T> {
         return retrieveFolderOperations.getDisplayFolders(displayMode, outboxFolderId, mapper)
+    }
+
+    override fun areAllIncludedInUnifiedInbox(folderIds: Collection<Long>): Boolean {
+        return checkFolderOperations.areAllIncludedInUnifiedInbox(folderIds)
     }
 
     override fun getFolderId(folderServerId: String): Long? {

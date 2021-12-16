@@ -66,7 +66,8 @@ public class MessageViewInfo {
     }
 
     public static MessageViewInfo createForMetadataOnly(Message message, boolean isMessageIncomplete) {
-        return new MessageViewInfo(message, isMessageIncomplete, null, null, false, null, null, null, null, null, null);
+        String subject = message.getSubject();
+        return new MessageViewInfo(message, isMessageIncomplete, null, subject, false, null, null, null, null, null, null);
     }
 
     MessageViewInfo withCryptoData(CryptoResultAnnotation rootPartAnnotation, String extraViewableText,

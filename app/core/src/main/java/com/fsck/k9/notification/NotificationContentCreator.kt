@@ -6,7 +6,6 @@ import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.MessageHelper
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType
@@ -23,8 +22,7 @@ internal class NotificationContentCreator(
             sender = getMessageSenderForDisplay(sender),
             subject = getMessageSubject(message),
             preview = getMessagePreview(message),
-            summary = buildMessageSummary(sender, getMessageSubject(message)),
-            isStarred = message.isSet(Flag.FLAGGED)
+            summary = buildMessageSummary(sender, getMessageSubject(message))
         )
     }
 

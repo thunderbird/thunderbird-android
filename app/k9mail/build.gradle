@@ -36,7 +36,7 @@ dependencies {
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "org.koin:koin-test:${versions.koin}"
+    testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
 }
 
 android {
@@ -47,8 +47,8 @@ android {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 29003
-        versionName '5.904-SNAPSHOT'
+        versionCode 29006
+        versionName '5.907-SNAPSHOT'
 
         // Keep in sync with the resource string array 'supported_languages'
         resConfigs "in", "br", "ca", "cs", "cy", "da", "de", "et", "en", "en_GB", "es", "eo", "eu", "fr", "gd", "gl",
@@ -89,9 +89,12 @@ android {
         }
     }
 
-    // Do not abort build if lint finds errors
     lintOptions {
+        checkDependencies true
+
+        // Do not abort build if lint finds errors
         abortOnError false
+
         lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
     }
 

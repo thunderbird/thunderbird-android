@@ -8,7 +8,6 @@
   <string name="unread_widget_label">K-9 未读</string>
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 遛狗人</string>
-  <string name="app_copyright_fmt">K-9 遛狗人 版权所有 2008-<xliff:g>%s</xliff:g> 。 部分版权归属 Android 开源项目 2006-<xliff:g>%s</xliff:g> 。</string>
   <string name="source_code">源代码</string>
   <string name="app_license">Apache许可证，2.0版</string>
   <string name="about_project_title">开源项目</string>
@@ -62,14 +61,12 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_delete_dlg_instructions_fmt">即将从 K-9 Mail 中移除账户“<xliff:g id="account">%s</xliff:g>”。</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">作者</string>
-  <string name="app_revision">修订信息</string>
   <string name="read_messages_label">读取邮件</string>
   <string name="read_messages_desc">允许该程序读取邮件。</string>
   <string name="delete_messages_label">删除邮件</string>
   <string name="delete_messages_desc">允许该程序删除邮件。</string>
   <string name="about_title">关于 K-9 Mail</string>
   <string name="accounts_title">账户</string>
-  <string name="folders_title">文件夹</string>
   <string name="advanced">高级</string>
   <string name="compose_title_compose">撰写邮件</string>
   <string name="compose_title_reply">回复</string>
@@ -78,12 +75,8 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="compose_title_forward_as_attachment">作为附件转发</string>
   <string name="choose_account_title">切换账户</string>
   <string name="choose_folder_title">选择文件夹</string>
-  <string name="status_loading_account_folder">收取 <xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">获取邮件头：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">发送中 <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">正在处理 <xliff:g id="command">%s</xliff:g>: <xliff:g id="progress">%s</xliff:g>: <xliff:g id="account">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">同步已禁用</string>
+  <string name="choose_folder_move_title">移动至…</string>
+  <string name="choose_folder_copy_title">复制到…</string>
   <string name="actionbar_selected">已选择 <xliff:g id="selection_count">%d</xliff:g> 个</string>
   <string name="next_action">前进</string>
   <string name="previous_action">后退</string>
@@ -91,10 +84,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="okay_action">确定</string>
   <string name="cancel_action">取消</string>
   <string name="send_action">发送</string>
-  <string name="send_again_action">重新发送</string>
   <string name="empty_subject">主题为空，确认发送请再次点击。</string>
-  <string name="select_action">选择</string>
-  <string name="deselect_action">取消选择</string>
   <string name="reply_action">回复</string>
   <string name="reply_all_action">回复全部</string>
   <string name="delete_action">删除</string>
@@ -158,8 +148,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="size_format_megabytes">%.1fMB</string>
   <string name="size_format_kilobytes">%.1fKB</string>
   <string name="size_format_bytes">%dB</string>
-  <string name="account_size_changed">账户“<xliff:g id="account">%s</xliff:g>”已从<xliff:g id="oldSize">%s</xliff:g>缩小到<xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">正在压缩账户“<xliff:g id="account">%s</xliff:g>”</string>
   <string name="notification_new_title">您有新邮件</string>
   <plurals name="notification_new_messages_title">
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 条新消息</item>
@@ -200,6 +188,9 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="debug_enable_debug_logging_summary">记录额外的调试信息</string>
   <string name="debug_enable_sensitive_logging_title">记录敏感信息</string>
   <string name="debug_enable_sensitive_logging_summary">将会在日志中显示密码。</string>
+  <string name="debug_export_logs_title">导出日志</string>
+  <string name="debug_export_logs_success">导出成功。日志可能包含敏感信息。小心选择你要发给的人。</string>
+  <string name="debug_export_logs_failure">导出失败</string>
   <string name="message_list_load_more_messages_action">加载更多邮件</string>
   <string name="message_to_fmt">收件人: <xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">主题</string>
@@ -226,20 +217,13 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="message_to_label">收件人：</string>
   <string name="message_view_cc_label">抄送：</string>
   <string name="message_view_bcc_label">密送:</string>
-  <string name="message_view_attachment_view_action">打开</string>
-  <string name="message_view_attachment_download_action">保存</string>
   <string name="message_view_status_attachment_not_saved">无法保存附件。</string>
   <string name="message_view_show_pictures_action">显示图片</string>
   <string name="message_view_no_viewer">无法打开<xliff:g id="mimetype">%s</xliff:g>。找不到可以阅读该文件的程序。</string>
   <string name="message_view_download_remainder">下载完整邮件</string>
-  <string name="message_view_toast_unable_to_display_message">无法显示邮件</string>
   <string name="message_view_sender_label">通过  %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">全部邮件的信息都已经下载，但是当前没有额外的邮件信息可以显示。</string>
-  <string name="message_additional_headers_retrieval_failed">从数据库或邮件服务器获取额外的邮件信息失败。</string>
   <string name="from_same_sender">来自这个发件人的更多邮件</string>
   <string name="search_from_format">发送自 <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">调试/删除消息正文</string>
   <string name="message_discarded_toast">邮件已丢弃</string>
   <string name="message_saved_toast">邮件已保存为草稿</string>
   <string name="global_settings_flag_label">显示星标</string>
@@ -273,10 +257,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="global_settings_privacy_hide_useragent_detail">从邮件头中移除 K-9 的 User-Agent</string>
   <string name="global_settings_privacy_hide_timezone">隐藏时区</string>
   <string name="global_settings_privacy_hide_timezone_detail">在邮件头及恢复头中使用UTC时间而不是本地时间</string>
-  <string name="global_settings_notification_hide_subject_title">在通知中隐藏主题</string>
-  <string name="global_settings_notification_hide_subject_never">从不</string>
-  <string name="global_settings_notification_hide_subject_when_locked">当设备锁定时</string>
-  <string name="global_settings_notification_hide_subject_always">总是</string>
   <string name="global_settings_notification_quick_delete_title">显示“删除”按钮</string>
   <string name="global_settings_notification_quick_delete_never">从不</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">为单条消息通知</string>
@@ -284,7 +264,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="global_settings_lock_screen_notification_visibility_title">屏幕锁定通知</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">无屏幕锁定通知</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">应用程序名称</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">未读消息计数</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">新消息总数</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">消息计数及发件人</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">与解除屏幕锁定时相同</string>
   <string name="quiet_time">免打扰时间</string>
@@ -296,7 +276,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_basics_title">设置新账户</string>
   <string name="account_setup_basics_email_hint">电子邮件地址</string>
   <string name="account_setup_basics_password_hint">密码</string>
-  <string name="account_setup_basics_show_password">显示密码</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">要查看您的密码，请在此设备上启用屏幕锁定。</string>
   <string name="account_setup_basics_show_password_biometrics_title">验证你的身份</string>
@@ -342,8 +321,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_incoming_mobile_label">手机移动网络</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">其他</string>
-  <string name="local_storage_provider_external_label">外部存储（SD 卡）</string>
-  <string name="local_storage_provider_internal_label">正常内部存储</string>
   <string name="account_setup_expunge_policy_label">抹掉删除的邮件</string>
   <string name="account_setup_expunge_policy_immediately">立刻</string>
   <string name="account_setup_expunge_policy_on_poll">接收邮件时</string>
@@ -358,11 +335,8 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_incoming_subscribed_folders_only_label">只显示订阅的文件夹</string>
   <string name="account_setup_auto_expand_folder">自动展开文件夹</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA 路径</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">可选</string>
   <string name="account_setup_incoming_webdav_auth_path_label">身份验证路径</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">可选</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">邮箱路径</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">可选</string>
   <string name="account_setup_outgoing_title">发件服务器设置</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP 服务器</string>
   <string name="account_setup_outgoing_port_label">端口</string>
@@ -374,7 +348,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" 对于 \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" 无效</string>
   <string name="account_setup_bad_uri">无效的设置：<xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">账户选项</string>
-  <string name="compact_action">压缩</string>
   <string name="account_setup_options_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_setup_options_mail_check_frequency_never">从不</string>
   <string name="account_setup_options_mail_check_frequency_15min">15 分钟一次</string>
@@ -385,8 +358,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_options_mail_check_frequency_6hour">6 小时一次</string>
   <string name="account_setup_options_mail_check_frequency_12hour">12 小时一次</string>
   <string name="account_setup_options_mail_check_frequency_24hour">24 小时一次</string>
-  <string name="account_setup_options_enable_push_label">在这个账户上启用推送邮件</string>
-  <string name="account_setup_options_enable_push_summary">如果你的邮件服务器支持这个功能，那么新邮件将会立刻显示在手机上。这个选项可能大幅的提升性能，也可能严重的影响性能。</string>
   <string name="idle_refresh_period_label">刷新IDLE连接</string>
   <string name="idle_refresh_period_2min">2 分钟一次</string>
   <string name="idle_refresh_period_3min">3 分钟一次</string>
@@ -397,7 +368,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="idle_refresh_period_48min">48 分钟一次</string>
   <string name="idle_refresh_period_60min">60 分钟一次</string>
   <string name="account_setup_options_notify_label">有新邮件时通知我</string>
-  <string name="account_setup_options_notify_sync_label">检查新邮件时通知我</string>
   <string name="account_setup_options_mail_display_count_label">邮件显示数量</string>
   <string name="account_setup_options_mail_display_count_10">10 封</string>
   <string name="account_setup_options_mail_display_count_25">25 封</string>
@@ -419,8 +389,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_failed_dlg_continue_action">继续</string>
   <string name="account_settings_push_advanced_title">高级</string>
   <string name="account_settings_title_fmt">通用设置</string>
-  <string name="account_settings_default_label">默认账户</string>
-  <string name="account_settings_default_summary">默认使用这个账户发送邮件</string>
   <string name="account_settings_notify_label">新邮件通知</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">提醒文件夹</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>
@@ -486,7 +454,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_settings_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_settings_color_label">账户颜色</string>
   <string name="account_settings_color_summary">选择账户在文件夹和账户列表中显示时所使用的颜色</string>
-  <string name="account_settings_color_none">没有颜色</string>
   <string name="account_settings_led_color_label">通知 LED 灯颜色</string>
   <string name="account_settings_led_color_summary">选择手机提示该账户信息时 LED 灯闪烁的颜色</string>
   <string name="account_settings_mail_display_count_label">本地文件夹大小</string>
@@ -698,10 +665,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="volume_navigation_list">不同的列表视图</string>
   <string name="show_unified_inbox_title">显示全局收件箱</string>
   <string name="show_starred_count_title">显示星标邮件数</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier"> - 未读</string>
-  <string name="search_all_messages_title">所有邮件</string>
-  <string name="search_all_messages_detail">可搜索文件夹中的所有邮件</string>
   <string name="integrated_inbox_title">全局收件箱</string>
   <string name="integrated_inbox_detail">全局收件箱中的所有邮件</string>
   <string name="folder_settings_include_in_integrated_inbox_label">全局</string>
@@ -734,8 +697,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="font_size_message_view_subject">主题</string>
   <string name="font_size_message_view_date">日期</string>
   <string name="font_size_message_view_content">邮件内容</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">撰写邮件</string>
   <string name="font_size_message_compose_input">文本输入框</string>
   <string name="font_size_default">默认</string>
@@ -902,6 +863,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="recipient_bcc">秘送</string>
   <string name="recipient_to">收件人</string>
   <string name="recipient_from">发件人</string>
+  <string name="reply_to_label">回复给</string>
   <string name="unknown_recipient">&lt;未知收件人&gt;</string>
   <string name="unknown_sender">&lt;未知发件人&gt;</string>
   <string name="address_type_home">住宅</string>
@@ -998,8 +960,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="crypto_no_provider_button">前往设置</string>
   <string name="mail_list_widget_text">K-9消息列表</string>
   <string name="mail_list_widget_loading">正在加载邮件……</string>
-  <string name="fetching_folders_failed">获取文件夹列表失败</string>
-  <string name="error_recipient_crypto_retrieve">检索支持 OpenPGP 的接收者状态错误！</string>
   <string name="openpgp_enabled_error_title">无法加密</string>
   <string name="openpgp_enabled_error_msg">某些选定的收件人不支持此功能！</string>
   <string name="enable_encryption">启用加密</string>
@@ -1045,13 +1005,11 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="ac_transfer_error_send">发送消息时出现错误。请检查您的网络连接与发件服务器设置。</string>
   <string name="switch_on">开</string>
   <string name="switch_off">关</string>
-  <string name="navigation_drawer_open">打开</string>
-  <string name="navigation_drawer_close">关闭</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">允许访问联系人</string>
   <string name="permission_contacts_rationale_message">为了能够提供联系人建议，并显示联系人姓名和照片，应用程序需要访问你的联系人。</string>
   <string name="generic_loading_error">加载数据期间发生了一个错误</string>
-  <string name="push_notification_state_initializing">初始化·...</string>
+  <string name="push_notification_state_initializing">初始化·…</string>
   <string name="push_notification_state_listening">正在等待新消息</string>
   <string name="push_notification_state_wait_background_sync">等待后台同步许可</string>
   <string name="push_notification_state_wait_network">等待网络可用</string>

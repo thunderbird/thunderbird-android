@@ -101,7 +101,7 @@ class EditIdentity : K9Activity() {
         outState.putParcelable(EXTRA_IDENTITY, identity)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.edit_identity_menu, menu)
         return true
     }

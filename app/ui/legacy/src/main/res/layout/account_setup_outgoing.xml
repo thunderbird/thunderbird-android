@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    tools:context="com.fsck.k9.activity.setup.AccountSetupOutgoing">
 
     <include layout="@layout/toolbar"/>
 
@@ -59,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:hint="@string/account_setup_incoming_port_label"
+                    android:hint="@string/account_setup_outgoing_port_label"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,7 +143,8 @@
 
                 <com.fsck.k9.view.ClientCertificateSpinner
                     android:id="@+id/account_client_certificate_spinner"
-                    android:paddingLeft="6dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="0dp"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent" />
             </LinearLayout>

@@ -17,7 +17,8 @@
         android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="&#x200B;" />
 
     <ImageView
         android:id="@+id/statusIcon"
@@ -46,7 +47,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Account name" />
+        tools:text="@sample/accounts.json/data/name" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

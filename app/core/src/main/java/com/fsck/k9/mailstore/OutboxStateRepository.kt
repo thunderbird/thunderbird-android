@@ -2,6 +2,10 @@ package com.fsck.k9.mailstore
 
 import android.content.ContentValues
 import com.fsck.k9.Clock
+import com.fsck.k9.helper.getIntOrThrow
+import com.fsck.k9.helper.getLongOrThrow
+import com.fsck.k9.helper.getStringOrNull
+import com.fsck.k9.helper.getStringOrThrow
 
 class OutboxStateRepository(private val database: LockableDatabase, private val clock: Clock) {
 
@@ -17,11 +21,10 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
                     throw IllegalStateException("No outbox_state entry for message with id $messageId")
                 }
 
-                val sendStateString = cursor.getString(cursor.getColumnIndex(COLUMN_SEND_STATE))
-                val numberOfSendAttempts = cursor.getInt(cursor.getColumnIndex(COLUMN_NUMBER_OF_SEND_ATTEMPTS))
-                val sendErrorTimestamp = cursor.getLong(cursor.getColumnIndex(COLUMN_ERROR_TIMESTAMP))
-                val sendErrorColumnIndex = cursor.getColumnIndex(COLUMN_ERROR)
-                val sendError = if (cursor.isNull(sendErrorColumnIndex)) null else cursor.getString(sendErrorColumnIndex)
+                val sendStateString = cursor.getStringOrThrow(COLUMN_SEND_STATE)
+                val numberOfSendAttempts = cursor.getIntOrThrow(COLUMN_NUMBER_OF_SEND_ATTEMPTS)
+                val sendErrorTimestamp = cursor.getLongOrThrow(COLUMN_ERROR_TIMESTAMP)
+                val sendError = cursor.getStringOrNull(COLUMN_ERROR)
 
                 val sendState = SendState.fromDatabaseName(sendStateString)
 

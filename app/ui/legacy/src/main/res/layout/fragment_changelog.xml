@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:showIn="@layout/activity_recent_changes"
+    tools:context=".changelog.ChangelogFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/changelog_list"
@@ -15,7 +17,8 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/show_recent_changes_checkbox"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        tools:listitem="@layout/changelog_list_release_item"/>
 
     <ProgressBar
         android:id="@+id/changelog_loading"

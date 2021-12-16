@@ -7,7 +7,6 @@
   <string name="shortcuts_title">K-9 paskyros</string>
   <string name="unread_widget_label">K-9 neskaityta</string>
   <!--Used in the about dialog-->
-  <string name="app_copyright_fmt">Autorinės teisės 2008-<xliff:g>%s</xliff:g> K-9 Dog Walkers. Dalis autorinių teisių priklauso 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Sveiki atvykę į „K-9 Mail“</string>
   <!--Default signature-->
@@ -19,19 +18,12 @@
   <string name="delete_messages_label">Šalinti laiškus</string>
   <string name="delete_messages_desc">Leidžia programai šalinti jūsų laiškus.</string>
   <string name="accounts_title">Paskyros</string>
-  <string name="folders_title">Aplankai</string>
   <string name="advanced">Išplėstinis</string>
   <string name="compose_title_compose">Sukurti</string>
   <string name="compose_title_reply">Atsakyti</string>
   <string name="compose_title_reply_all">Atsakyti visiems</string>
   <string name="compose_title_forward">Persiųsti</string>
   <string name="choose_folder_title">Pasirinkite aplanką</string>
-  <string name="status_loading_account_folder">Užklausiama <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">Gaunamos antraštės <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">Siunčiama <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Apdorojama <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">Sinchronizavimas išjungtas</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
   <string name="next_action">Kitas</string>
   <string name="previous_action">Ankstesnis</string>
@@ -39,9 +31,6 @@
   <string name="okay_action">Gerai</string>
   <string name="cancel_action">Atsisakyti</string>
   <string name="send_action">Siųsti</string>
-  <string name="send_again_action">Siųsti iš naujo</string>
-  <string name="select_action">Pasirinkti</string>
-  <string name="deselect_action">Nebežymėti</string>
   <string name="reply_action">Atsakyti</string>
   <string name="reply_all_action">Atsakyti visiems</string>
   <string name="delete_action">Šalinti</string>
@@ -90,8 +79,6 @@
   <string name="status_network_error">Prisijungimo klaida</string>
   <string name="status_invalid_id_error">Laiškas nerastas</string>
   <string name="load_more_messages_fmt">Įkelti dar iki <xliff:g id="messages_to_load">%d</xliff:g> laiškų</string>
-  <string name="account_size_changed"> Paskyra \"<xliff:g id="account">%s</xliff:g>\" sumažinta nuo <xliff:g id="oldSize">%s</xliff:g> iki <xliff:g id="newSize">%s</xliff:g> </string>
-  <string name="compacting_account">Suspaudžiama paskyra  \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Naujas laiškas</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Neskaitytų (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_action_reply">Atsakyti</string>
@@ -139,14 +126,9 @@
   <string name="message_view_from_format">Nuo: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Kam:</string>
   <string name="message_view_cc_label">Cc:</string>
-  <string name="message_view_attachment_view_action">Atverti</string>
-  <string name="message_view_attachment_download_action">Išsaugoti</string>
   <string name="message_view_show_pictures_action">Rodyti paveikslėlius</string>
   <string name="message_view_no_viewer">Nepavyko rasto <xliff:g id="mimetype">%s</xliff:g> peržiūros programos.</string>
   <string name="message_view_download_remainder">Parsiųsti visą laišką</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">Visos antraštės parsiųstos, bet nėra ką rodyti.</string>
-  <string name="message_additional_headers_retrieval_failed">Gauti papildomų antraščių iš duomenų bazės ar pašto serverio nepavyko.</string>
   <string name="from_same_sender">Daugiau iš šio siuntėjo</string>
   <string name="message_discarded_toast">Laiškas pašalintas</string>
   <string name="message_saved_toast">Laiškas išsaugotas kaip juodraštis</string>
@@ -175,10 +157,6 @@
   <string name="global_settings_confirm_action_delete_starred">Pašalinti pažymėtus žvaigždute (pranešimų rodinyje)</string>
   <string name="global_settings_confirm_action_spam">Brukalas</string>
   <string name="global_settings_confirm_action_delete_notif">Pašalinti</string>
-  <string name="global_settings_notification_hide_subject_title">Pranešimuose slėpti temą</string>
-  <string name="global_settings_notification_hide_subject_never">Niekada</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Kai įrenginys užrakintas</string>
-  <string name="global_settings_notification_hide_subject_always">Visada</string>
   <string name="global_settings_notification_quick_delete_title">Rodyti mygtuką „Šalinti“</string>
   <string name="global_settings_notification_quick_delete_never">Niekada</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Vieno laiško pranešimui</string>
@@ -224,8 +202,6 @@
   <string name="account_setup_incoming_mobile_label">Mobilus</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Kita</string>
-  <string name="local_storage_provider_external_label">Išorinė saugykla (SD kortelė)</string>
-  <string name="local_storage_provider_internal_label">Įprasta vidinė saugykla</string>
   <string name="account_setup_expunge_policy_label">Pašalinti ištrintus laiškus serveryje</string>
   <string name="account_setup_expunge_policy_immediately">Tuojau pat</string>
   <string name="account_setup_expunge_policy_on_poll">Kai užklausiama</string>
@@ -240,11 +216,8 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Rodyti tik prenumeruotus aplankus</string>
   <string name="account_setup_auto_expand_folder">Automatiškai išskleisti aplanką</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA kelias</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Nebūtina</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Tapatybės tikrinimo kelias</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Nebūtina</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Pašto dėžutės pavadinimas</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Nebūtina</string>
   <string name="account_setup_outgoing_title">Siunčiamųjų laiškų serveris</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP serveris</string>
   <string name="account_setup_outgoing_port_label">Prievadas</string>
@@ -255,7 +228,6 @@
   <string name="account_setup_outgoing_authentication_label">Tapatumo nustatymas</string>
   <string name="account_setup_bad_uri">Netinkamai nustatyta: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Paskyros parinktys</string>
-  <string name="compact_action">Suspausti paskyrą</string>
   <string name="account_setup_options_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
   <string name="account_setup_options_mail_check_frequency_never">Niekada</string>
   <string name="account_setup_options_mail_check_frequency_15min">Kas 15 minučių</string>
@@ -266,8 +238,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">Kas 6 valandas</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Kas 12 valandų</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Kas 24 valandas</string>
-  <string name="account_setup_options_enable_push_label">Įgalinti šios paskyros pašto siuntimą</string>
-  <string name="account_setup_options_enable_push_summary">Jei jūsų serveris tai palaiko, nauji laiškai pasirodys iškart. Ši galimybė gali drastiškai pagerinti ar pabloginti greitaveiką.</string>
   <string name="idle_refresh_period_label">Atnaujinti IDLE prisijungimą</string>
   <string name="idle_refresh_period_2min">Kas 2 minutes</string>
   <string name="idle_refresh_period_3min">Kas 3 minutes</string>
@@ -278,7 +248,6 @@
   <string name="idle_refresh_period_48min">Kas 48 minutes</string>
   <string name="idle_refresh_period_60min">Kas 60 minučių</string>
   <string name="account_setup_options_notify_label">Pranešti apie naujus laiškus</string>
-  <string name="account_setup_options_notify_sync_label">Pranešti kai tikrinamas paštas</string>
   <string name="account_setup_options_mail_display_count_label">Rodyti laiškų</string>
   <string name="account_setup_options_mail_display_count_10">10 laiškų</string>
   <string name="account_setup_options_mail_display_count_25">25 laiškai</string>
@@ -294,8 +263,6 @@
   <string name="account_setup_failed_dlg_continue_action">Tęsti</string>
   <string name="account_settings_push_advanced_title">Išplėstinis</string>
   <string name="account_settings_title_fmt">Aplanko nustatymai</string>
-  <string name="account_settings_default_label">Numatytoji paskyra</string>
-  <string name="account_settings_default_summary">Pagal nutylėjimą laiškus siųsti iš šios paskyros</string>
   <string name="account_settings_notify_label">Pranešimai apie naujus laiškus</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Visi</string>
   <string name="account_settings_folder_notify_new_mail_mode_first_class">Tik 1 klasės aplankai</string>
@@ -520,10 +487,6 @@
   <string name="volume_navigation_title">Navigacija garso klavišais</string>
   <string name="volume_navigation_message">Pranešimų rodinyje</string>
   <string name="volume_navigation_list">Sąrašo rodiniuose</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier">- Neskaityta</string>
-  <string name="search_all_messages_title">Visos žinutės</string>
-  <string name="search_all_messages_detail">Visi laiškai ieškomųjų aplankuose</string>
   <string name="integrated_inbox_title">Suvestiniai gautieji</string>
   <string name="integrated_inbox_detail">Visi laiškai suvestiniuose aplankuose</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Suvesti</string>
@@ -666,7 +629,5 @@
   <string name="message_progress_text">Įkeliama…</string>
   <string name="openpgp_enabled_error_back">Atgal</string>
   <string name="general_settings_title">Bendri nustatymai</string>
-  <string name="navigation_drawer_open">Atverti</string>
-  <string name="navigation_drawer_close">Užverti</string>
   <!--permissions-->
 </resources>

@@ -1,0 +1,48 @@
+{
+  "data": [
+    {
+      "name": "Inbox",
+      "icon": "?attr/iconFolderInbox"
+    },
+    {
+      "name": "Outbox",
+      "icon": "?attr/iconFolderOutbox"
+    },
+    {
+      "name": "Archive",
+      "icon": "?attr/iconFolderArchive"
+    },
+    {
+      "name": "Drafts",
+      "icon": "?attr/iconFolderDrafts"
+    },
+    {
+      "name": "Sent",
+      "icon": "?attr/iconFolderSent"
+    },
+    {
+      "name": "Spam",
+      "icon": "?attr/iconFolderSpam"
+    },
+    {
+      "name": "Trash",
+      "icon": "?attr/iconFolderTrash"
+    },
+    {
+      "name": "Regular folder",
+      "icon": "?attr/iconFolder"
+    },
+    {
+      "name": "Another folder",
+      "icon": "?attr/iconFolder"
+    },
+    {
+      "name": "And yet another folder",
+      "icon": "?attr/iconFolder"
+    },
+    {
+      "name": "Folder",
+      "icon": "?attr/iconFolder"
+    }
+  ]
+}

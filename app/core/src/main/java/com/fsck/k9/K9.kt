@@ -268,7 +268,8 @@ object K9 : EarlyInit {
                 return false
             }
 
-            val quietTimeChecker = QuietTimeChecker(Clock.INSTANCE, quietTimeStarts, quietTimeEnds)
+            val clock = DI.get<Clock>()
+            val quietTimeChecker = QuietTimeChecker(clock, quietTimeStarts, quietTimeEnds)
             return quietTimeChecker.isQuietTime
         }
 
@@ -541,15 +542,5 @@ object K9 : EarlyInit {
         ALWAYS,
         NEVER,
         WHEN_IN_LANDSCAPE
-    }
-
-    object Intents {
-        object Share {
-            lateinit var EXTRA_FROM: String
-        }
-
-        internal fun init(packageName: String) {
-            Share.EXTRA_FROM = "$packageName.intent.extra.SENDER"
-        }
     }
 }

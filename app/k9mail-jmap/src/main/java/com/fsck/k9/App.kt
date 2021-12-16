@@ -12,7 +12,7 @@ class App : Application() {
     private val themeManager: ThemeManager by inject()
 
     override fun onCreate() {
-        Core.earlyInit(this)
+        Core.earlyInit()
 
         super.onCreate()
 

@@ -68,6 +68,7 @@ public interface SearchSpecification extends Parcelable {
         THREAD_ID,
         ID,
         INTEGRATE,
+        NEW_MESSAGE,
         READ,
         FLAGGED,
         DISPLAY_CLASS,

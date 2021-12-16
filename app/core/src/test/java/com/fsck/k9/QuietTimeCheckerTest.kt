@@ -4,11 +4,9 @@ import java.util.Calendar
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.mockito.Mockito.mock
-import org.mockito.kotlin.whenever
 
 class QuietTimeCheckerTest {
-    private val clock = mock(Clock::class.java)
+    private val clock = TestClock()
 
     @Test
     fun endTimeBeforeStartTime_timeIsBeforeEndOfQuietTime() {
@@ -113,7 +111,6 @@ class QuietTimeCheckerTest {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
 
-        val timeInMillis = calendar.timeInMillis
-        whenever(clock.time).thenReturn(timeInMillis)
+        clock.time = calendar.timeInMillis
     }
 }

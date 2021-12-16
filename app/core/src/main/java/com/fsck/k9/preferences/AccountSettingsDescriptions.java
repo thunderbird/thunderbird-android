@@ -60,7 +60,8 @@ public class AccountSettingsDescriptions {
                 new V(53, new StringSetting(null))
         ));
         s.put("autoExpandFolderName", Settings.versions(
-                new V(1, new StringSetting("INBOX"))
+                new V(1, new StringSetting("INBOX")),
+                new V(78, new StringSetting(null))
         ));
         s.put("automaticCheckIntervalMinutes", Settings.versions(
                 new V(1, new IntegerResourceSetting(-1, R.array.check_frequency_values)),

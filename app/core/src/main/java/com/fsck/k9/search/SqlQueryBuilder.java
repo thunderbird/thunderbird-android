@@ -150,6 +150,10 @@ public class SqlQueryBuilder {
                 columnName = "integrate";
                 break;
             }
+            case NEW_MESSAGE: {
+                columnName = "new_message";
+                break;
+            }
             case READ: {
                 columnName = "read";
                 break;
@@ -247,6 +251,7 @@ public class SqlQueryBuilder {
             case FOLDER:
             case ID:
             case INTEGRATE:
+            case NEW_MESSAGE:
             case THREAD_ID:
             case READ:
             case FLAGGED: {

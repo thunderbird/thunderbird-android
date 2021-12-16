@@ -8,7 +8,6 @@
   <string name="unread_widget_label">K-9-lukematon</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_copyright_fmt">Tekijänoikeudet 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Osittaiset tekijänoikeudet -<xliff:g>%s</xliff:g> Androidin avoimen lähdekoodin hanke.</string>
   <string name="source_code">Lähdekoodi</string>
   <string name="app_license">Apache-lisenssi, versio 2.0</string>
   <string name="about_project_title">Avoimen lähdekoodin projekti</string>
@@ -61,14 +60,12 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mailista.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Tekijät</string>
-  <string name="app_revision">Versiotiedot</string>
   <string name="read_messages_label">Lue sähköpostit</string>
   <string name="read_messages_desc">Antaa sovellukselle luvan lukea sähköpostisi.</string>
   <string name="delete_messages_label">Poista sähköpostit</string>
   <string name="delete_messages_desc">Antaa sovellukselle luvan poistaa sähköposteja.</string>
   <string name="about_title">Tietoja K-9 Mailista</string>
   <string name="accounts_title">Tilit</string>
-  <string name="folders_title">Kansiot</string>
   <string name="advanced">Lisäasetukset</string>
   <string name="compose_title_compose">Kirjoita</string>
   <string name="compose_title_reply">Vastaa</string>
@@ -77,12 +74,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="compose_title_forward_as_attachment">Välitä liitteenä</string>
   <string name="choose_account_title">Valitse tili</string>
   <string name="choose_folder_title">Valitse kansio</string>
-  <string name="status_loading_account_folder">Ladataan <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">Haetaan otsikkotietoja <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">Lähetetään <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Käsitellään <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">Synkronointi pois päältä</string>
+  <string name="choose_folder_move_title">Siirrä…</string>
+  <string name="choose_folder_copy_title">Kopioi…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
   <string name="next_action">Seuraava</string>
   <string name="previous_action">Edellinen</string>
@@ -90,10 +83,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="okay_action">OK</string>
   <string name="cancel_action">Peruuta</string>
   <string name="send_action">Lähetä</string>
-  <string name="send_again_action">Lähetä uudelleen</string>
   <string name="empty_subject">Aihe on tyhjä, napsauta uudelleen lähettääksesi silti</string>
-  <string name="select_action">Valitse</string>
-  <string name="deselect_action">Poista valinta</string>
   <string name="reply_action">Vastaa</string>
   <string name="reply_all_action">Vastaa kaikille</string>
   <string name="delete_action">Poista</string>
@@ -104,8 +94,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="edit_as_new_message_action">Muokkaa uutena viestinä</string>
   <string name="move_action">Siirrä</string>
   <string name="move_to_drafts_action">Siirrä luonnoksiin</string>
-  <string name="single_message_options_action">Lähetä...</string>
-  <string name="refile_action">Siirrä kansioon...</string>
+  <string name="single_message_options_action">Lähetä…</string>
+  <string name="refile_action">Siirrä kansioon…</string>
   <string name="done_action">Valmis</string>
   <string name="discard_action">Hylkää</string>
   <string name="save_draft_action">Tallenna luonnoksena</string>
@@ -158,8 +148,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="size_format_megabytes">%.1f Mt</string>
   <string name="size_format_kilobytes">%.1f kt</string>
   <string name="size_format_bytes">%d t</string>
-  <string name="account_size_changed">Tilin \"<xliff:g id="account">%s</xliff:g>\" vanha koko <xliff:g id="oldSize">%s</xliff:g> on nyt <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">Tiivistetään tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Uusi sähköpostiviesti</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> uusi viesti</item>
@@ -201,6 +189,9 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="debug_enable_debug_logging_summary">Kirjoita lokiin laajempi kuvaus ongelmista</string>
   <string name="debug_enable_sensitive_logging_title">Kirjaa lokiin arkaluontoisia tietoja</string>
   <string name="debug_enable_sensitive_logging_summary">Salasanat saattavat näkyä lokeissa.</string>
+  <string name="debug_export_logs_title">Vie lokit</string>
+  <string name="debug_export_logs_success">Vienti onnistui. Lokit saattavat sisältää arkaluonteista tietoa. Pidä ne tallessa ja ole varovainen sen suhteen, kenelle ne lähetät.</string>
+  <string name="debug_export_logs_failure">Vienti epäonnistui.</string>
   <string name="message_list_load_more_messages_action">Lataa lisää viestejä</string>
   <string name="message_to_fmt">Vastaanottaja: <xliff:g id="counterParty"> %s </xliff:g></string>
   <string name="message_compose_subject_hint">Aihe</string>
@@ -227,20 +218,13 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="message_to_label">Vast.ottaja:</string>
   <string name="message_view_cc_label">Kopio:</string>
   <string name="message_view_bcc_label">Piilokopio:</string>
-  <string name="message_view_attachment_view_action">Avaa</string>
-  <string name="message_view_attachment_download_action">Tallenna</string>
   <string name="message_view_status_attachment_not_saved">Liitteen tallentaminen epäonnistui.</string>
   <string name="message_view_show_pictures_action">Näytä kuvat</string>
   <string name="message_view_no_viewer">Tiedostotyypille <xliff:g id="mimetype">%s</xliff:g> ei löydy katseluohjelmaa.</string>
   <string name="message_view_download_remainder">Lataa koko viesti</string>
-  <string name="message_view_toast_unable_to_display_message">Viestin näyttäminen ei onnistu</string>
   <string name="message_view_sender_label">%1$s kautta</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">Kaikki otsikkotiedot on ladattu, mutta näytettäviä ei ole enempää.</string>
-  <string name="message_additional_headers_retrieval_failed">Lisäotsikkotietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
   <string name="from_same_sender">Lisää samalta lähettäjältä</string>
   <string name="search_from_format">Lähettäjä <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">Vianjäljitys / Tyhjennä viestin sisältö</string>
   <string name="message_discarded_toast">Viesti peruutettu</string>
   <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
   <string name="global_settings_flag_label">Näytä tähdet</string>
@@ -274,10 +258,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_privacy_hide_useragent_detail">Poista K-9-tunnistetiedot viestin otsaketiedoista</string>
   <string name="global_settings_privacy_hide_timezone">Piilota aikavyöhyke</string>
   <string name="global_settings_privacy_hide_timezone_detail">Käytä UTC-aikaa paikallisen aikavyöhykkeen sijaan sähköpostin otsakkeissa</string>
-  <string name="global_settings_notification_hide_subject_title">Piilota aihe ilmoituksissa</string>
-  <string name="global_settings_notification_hide_subject_never">Ei koskaan</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Kun laite on lukittu</string>
-  <string name="global_settings_notification_hide_subject_always">Aina</string>
   <string name="global_settings_notification_quick_delete_title">Näytä Poista-painike</string>
   <string name="global_settings_notification_quick_delete_never">Ei koskaan</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Yksittäisen viestin ilmoituksessa</string>
@@ -285,7 +265,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_lock_screen_notification_visibility_title">Lukitusnäytön ilmoitukset</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ei lukitusnäytön ilmoituksia</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Sovelluksen nimi</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Lukemattomien viestien määrä</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Uusien viestien määrä</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Viestien määrä ja lähettäjät</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Sama kuin näytön ollessa lukittuna</string>
   <string name="quiet_time">Hiljainen aika</string>
@@ -297,7 +277,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_basics_title">Lisää uusi tili</string>
   <string name="account_setup_basics_email_hint">Sähköpostiosoite</string>
   <string name="account_setup_basics_password_hint">Salasana</string>
-  <string name="account_setup_basics_show_password">Näytä salasana</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Jotta näet salasanasi tässä, ota käyttöön laitteen näytön lukitus.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Vahvista henkilöllisyytesi</string>
@@ -343,8 +322,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_incoming_mobile_label">Mobiili</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Muu</string>
-  <string name="local_storage_provider_external_label">Ulkoinen muisti (SD-kortti)</string>
-  <string name="local_storage_provider_internal_label">Sisäinen muisti</string>
   <string name="account_setup_expunge_policy_label">Poista viestit</string>
   <string name="account_setup_expunge_policy_immediately">Heti</string>
   <string name="account_setup_expunge_policy_on_poll">Tarkistettaessa</string>
@@ -359,11 +336,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
   <string name="account_setup_auto_expand_folder">Avaa kansio automaattisesti</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA-polku</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Valinnainen</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Autentikointipolku</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Valinnainen</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Postilaatikon polku</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Valinnainen</string>
   <string name="account_setup_outgoing_title">Lähtevän postin palvelimen asetukset</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-palvelin</string>
   <string name="account_setup_outgoing_port_label">Portti</string>
@@ -375,7 +349,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei ole kelvollinen asetuksen \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" kanssa</string>
   <string name="account_setup_bad_uri">Virheellinen asetus: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Tilin asetukset</string>
-  <string name="compact_action">Tiivistä</string>
   <string name="account_setup_options_mail_check_frequency_label">Viestien tarkistus</string>
   <string name="account_setup_options_mail_check_frequency_never">Ei koskaan</string>
   <string name="account_setup_options_mail_check_frequency_15min">Joka 15 minuutti</string>
@@ -386,8 +359,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_options_mail_check_frequency_6hour">Joka 6 tunti</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Joka 12 tunti</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Joka 24 tunti</string>
-  <string name="account_setup_options_enable_push_label">Ota käyttöön push-viestit tälle tilille</string>
-  <string name="account_setup_options_enable_push_summary">Jos palvelin tukee ominaisuutta, uudet viestit tulevat välittömästi. Tämä valinta saattaa parantaa tai huonontaa suorituskykyä huomattavasti.</string>
   <string name="idle_refresh_period_label">Päivitä IDLE-yhteys</string>
   <string name="idle_refresh_period_2min">Joka 2 minuutti</string>
   <string name="idle_refresh_period_3min">Joka 3 minuutti</string>
@@ -398,7 +369,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="idle_refresh_period_48min">Joka 48 minuutti</string>
   <string name="idle_refresh_period_60min">Joka 60 minuutti</string>
   <string name="account_setup_options_notify_label">Ilmoitus postin saapumisesta</string>
-  <string name="account_setup_options_notify_sync_label">Ilmoitus postin tarkistamisesta</string>
   <string name="account_setup_options_mail_display_count_label">Näytettävien viestien lukumäärä</string>
   <string name="account_setup_options_mail_display_count_10">10 kansiota</string>
   <string name="account_setup_options_mail_display_count_25">25 kansiota</string>
@@ -420,8 +390,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_failed_dlg_continue_action">Jatka</string>
   <string name="account_settings_push_advanced_title">Lisäasetukset</string>
   <string name="account_settings_title_fmt">Yleiset</string>
-  <string name="account_settings_default_label">Oletustili</string>
-  <string name="account_settings_default_summary">Lähetä postit oletusarvoisesti tältä tililtä</string>
   <string name="account_settings_notify_label">Saapuneiden viestien ilmoitukset</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Ilmoitukset kansioista</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Kaikki</string>
@@ -487,7 +455,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_settings_mail_check_frequency_label">Kansioiden tarkistus</string>
   <string name="account_settings_color_label">Tilin väri</string>
   <string name="account_settings_color_summary">Valitse väri tilin kansio- ja tililistaan</string>
-  <string name="account_settings_color_none">Ei väriä</string>
   <string name="account_settings_led_color_label">LED-ilmoitusvalon väri</string>
   <string name="account_settings_led_color_summary">Valitse väri, jota laitteesi vilkuttaa tälle tilille</string>
   <string name="account_settings_mail_display_count_label">Paikallisen kansion koko</string>
@@ -699,10 +666,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="volume_navigation_list">Erilaisia listanäkymiä</string>
   <string name="show_unified_inbox_title">Näytä \"Yhdistetty saapuneet\"</string>
   <string name="show_starred_count_title">Näytä tähdellä merkittyjen viestien määrä</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier"> - Lukemattomat</string>
-  <string name="search_all_messages_title">Kaikki viestit</string>
-  <string name="search_all_messages_detail">Kaikki viestit kansioissa, joihin voidaan tehdä hakuja</string>
   <string name="integrated_inbox_title">Yhdistetty saapuneet</string>
   <string name="integrated_inbox_detail">Kaikki viestit Yhdistetty saapuneet -kansiossa</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Yhdistä</string>
@@ -735,8 +698,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="font_size_message_view_subject">Viestin aihe</string>
   <string name="font_size_message_view_date">Aika ja päivämäärä</string>
   <string name="font_size_message_view_content">Viestin sisältö</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Viestin kirjoitus</string>
   <string name="font_size_message_compose_input">Tekstinsyöttökentät</string>
   <string name="font_size_default">Oletus</string>
@@ -908,6 +869,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="recipient_bcc">Piilokopio</string>
   <string name="recipient_to">Vastaanottaja</string>
   <string name="recipient_from">Lähettäjä</string>
+  <string name="reply_to_label">Vastausosoite</string>
   <string name="unknown_recipient">&lt;Tuntematon vastaanottaja&gt;</string>
   <string name="unknown_sender">&lt;Tuntematon lähettäjä&gt;</string>
   <string name="address_type_home">Koti</string>
@@ -1004,8 +966,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="crypto_no_provider_button">Siirry asetuksiin</string>
   <string name="mail_list_widget_text">K-9-viestiluettelo</string>
   <string name="mail_list_widget_loading">Ladataan viestejä…</string>
-  <string name="fetching_folders_failed">Kansioluettelon noutaminen epäonnistui</string>
-  <string name="error_recipient_crypto_retrieve">Vastaanottajan tilan hakeminen OpenPGP-tarjoajalta epäonnistui!</string>
   <string name="openpgp_enabled_error_title">Salaus ei ole mahdollista</string>
   <string name="openpgp_enabled_error_msg">Jotkut valitut vastaanottajat eivät tue tätä ominaisuutta!</string>
   <string name="enable_encryption">Käytä salausta</string>
@@ -1051,8 +1011,6 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
   <string name="ac_transfer_error_send">Viestiä lähettäessä tapahtui virhe. Tarkista verkkoyhteyden tila ja lähtevän postin palvelimen asetukset.</string>
   <string name="switch_on">Päällä</string>
   <string name="switch_off">Pois</string>
-  <string name="navigation_drawer_open">Avaa</string>
-  <string name="navigation_drawer_close">Sulje</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Salli pääsy yhteystietoihin</string>
   <string name="permission_contacts_rationale_message">Tämä sovellus vaatii käyttöoikeuden yhteystietoihisi, jotta sovellus voi tehdä ehdotuksia yhteystietoihin liittyen ja näyttää yhteystietojen nimiä sekä kuvia.</string>

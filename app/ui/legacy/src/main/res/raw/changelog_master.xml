@@ -5,6 +5,31 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.906" versioncode="29006" date="2021-12-07">
+        <change>Set the auto-expand folder to 'Inbox' by default</change>
+        <change>Restore 'new mail' notifications when the app is restarted</change>
+        <change>Switched ringtone picker so custom notification sounds can be supported (Android 7 and older)</change>
+        <change>Fixed bug where vibration for notifications couldn't be disabled (Android 7 and older)</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.905" versioncode="29005" date="2021-11-24">
+        <change>Set subject when forwarding a message as attachment</change>
+        <change>Added a menu option to export the debug log under Settings → General settings → Debugging</change>
+        <change>Don't display "unread count" in notifications; only number of new messages</change>
+        <change>Properly decode multiple encoded words using the ISO-2022-JP charset (e.g. in subjects)</change>
+        <change>Fixed a crash when users left the message view screen before the download of an image attachment was complete</change>
+        <change>Don't crash when loading images without internet permission (could only happen with custom ROMs)</change>
+        <change>Fixed a rare crash when auto-completing email addresses in the compose screen</change>
+        <change>A lot of internal changes and cleanup</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.904" versioncode="29004" date="2021-10-05">
+        <change>Tweaked toolbar in move/copy screens</change>
+        <change>Fixed a bug where line breaks were added when editing a draft</change>
+        <change>Fixed animation when switching accounts</change>
+        <change>Fixed crash that could occur when deleting an account</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.903" versioncode="29003" date="2021-09-28">
         <change>Removed the "default account" setting; the first account in the list is now automatically the default account</change>
         <change>Removed the "hide subject in notifications" setting; use the "lock screen notifications" setting instead</change>

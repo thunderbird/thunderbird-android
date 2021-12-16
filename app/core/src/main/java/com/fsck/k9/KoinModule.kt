@@ -30,7 +30,7 @@ val mainModule = module {
     single { TrustManagerFactory.createInstance(get()) }
     single { LocalKeyStoreManager(get()) }
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
-    single { Clock.INSTANCE }
+    single<Clock> { RealClock() }
     factory { ServerNameSuggester() }
     factory { EmailAddressValidator() }
     factory { ServerSettingsSerializer() }

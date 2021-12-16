@@ -18,7 +18,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="32dp"
-        tools:src="@drawable/ic_drafts_folder" />
+        tools:srcCompat="@sample/folders.json/data/icon" />
 
     <TextView
         android:id="@+id/folder_name"
@@ -30,6 +30,6 @@
         android:paddingBottom="12dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?android:attr/textColorPrimary"
-        tools:text="Parent Folder/Sub Folder/Sub Folder/Folder name" />
+        tools:text="@sample/folders.json/data/name" />
 
 </LinearLayout>

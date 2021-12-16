@@ -5,14 +5,17 @@ import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
 import com.fsck.k9.job.K9JobManager
+import com.fsck.k9.notification.NotificationChannelManager
 import java.util.concurrent.ExecutorService
 
 class AccountSettingsDataStore(
     private val preferences: Preferences,
     private val executorService: ExecutorService,
     private val account: Account,
-    private val jobManager: K9JobManager
+    private val jobManager: K9JobManager,
+    private val notificationChannelManager: NotificationChannelManager
 ) : PreferenceDataStore() {
+    private var notificationSettingsChanged = false
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
@@ -81,7 +84,7 @@ class AccountSettingsDataStore(
     override fun putInt(key: String?, value: Int) {
         when (key) {
             "chip_color" -> account.chipColor = value
-            "led_color" -> account.notificationSetting.ledColor = value
+            "led_color" -> setNotificationLightColor(value)
             else -> return
         }
 
@@ -191,8 +194,20 @@ class AccountSettingsDataStore(
         saveSettingsInBackground()
     }
 
+    private fun setNotificationLightColor(value: Int) {
+        if (account.notificationSetting.ledColor != value) {
+            account.notificationSetting.ledColor = value
+            notificationSettingsChanged = true
+        }
+    }
+
     fun saveSettingsInBackground() {
         executorService.execute {
+            if (notificationSettingsChanged) {
+                notificationChannelManager.recreateMessagesNotificationChannel(account)
+            }
+
+            notificationSettingsChanged = false
             saveSettings()
         }
     }

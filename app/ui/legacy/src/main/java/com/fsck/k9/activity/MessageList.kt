@@ -123,10 +123,9 @@ open class MessageList :
     private var messageReference: MessageReference? = null
 
     /**
-     * `true` when the message list was displayed once. This is used in
-     * [.onBackPressed] to decide whether to go from the message view to the message list or
-     * finish the activity.
+     * If this is `true`, only the message view will be displayed and pressing the back button will finish the Activity.
      */
+    private var messageViewOnly = false
     private var messageListWasDisplayed = false
     private var viewSwitcher: ViewSwitcher? = null
     private lateinit var recentChangesSnackbar: Snackbar
@@ -215,6 +214,12 @@ open class MessageList :
         super.onNewIntent(intent)
 
         if (isFinishing) {
+            return
+        }
+
+        if (intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) {
+            // There's nothing to do if the default launcher Intent was used.
+            // This only brings the existing screen to the foreground.
             return
         }
 
@@ -381,8 +386,11 @@ open class MessageList :
             launchData.search
         }
 
-        // Don't switch the currently active account when opening the Unified Inbox
-        val account = account?.takeIf { launchData.search.isUnifiedInbox } ?: search.firstAccount()
+        // If no account has been specified, keep the currently active account when opening the Unified Inbox
+        val account = launchData.account
+            ?: account?.takeIf { launchData.search.isUnifiedInbox }
+            ?: search.firstAccount()
+
         if (account == null) {
             finish()
             return false
@@ -393,6 +401,7 @@ open class MessageList :
         singleFolderMode = search.folderIds.size == 1
         noThreading = launchData.noThreading
         messageReference = launchData.messageReference
+        messageViewOnly = launchData.messageViewOnly
 
         return true
     }
@@ -413,7 +422,8 @@ open class MessageList :
 
                     return LaunchData(
                         search = messageReference.toLocalSearch(),
-                        messageReference = messageReference
+                        messageReference = messageReference,
+                        messageViewOnly = true
                     )
                 }
             }
@@ -457,8 +467,11 @@ open class MessageList :
             // regular LocalSearch object was passed
             val search = ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR)
             val noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false)
+            val account = intent.getStringExtra(EXTRA_ACCOUNT)?.let { accountUuid ->
+                preferences.getAccount(accountUuid)
+            }
 
-            return LaunchData(search = search, noThreading = noThreading)
+            return LaunchData(search = search, account = account, noThreading = noThreading)
         } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCE)) {
             val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
             val messageReference = MessageReference.parse(messageReferenceString)
@@ -538,6 +551,7 @@ open class MessageList :
         super.onSaveInstanceState(outState)
 
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
+        outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
         outState.putInt(STATE_FIRST_BACK_STACK_ID, firstBackStackId)
     }
@@ -545,6 +559,7 @@ open class MessageList :
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
+        messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
         firstBackStackId = savedInstanceState.getInt(STATE_FIRST_BACK_STACK_ID)
     }
@@ -661,8 +676,12 @@ open class MessageList :
     override fun onBackPressed() {
         if (isDrawerEnabled && drawer!!.isOpen) {
             drawer!!.close()
-        } else if (displayMode == DisplayMode.MESSAGE_VIEW && messageListWasDisplayed) {
-            showMessageList()
+        } else if (displayMode == DisplayMode.MESSAGE_VIEW) {
+            if (messageViewOnly) {
+                finish()
+            } else {
+                showMessageList()
+            }
         } else if (this::searchView.isInitialized && !searchView.isIconified) {
             searchView.isIconified = true
         } else {
@@ -1434,6 +1453,7 @@ open class MessageList :
     }
 
     private fun showMessageList() {
+        messageViewOnly = false
         messageListWasDisplayed = true
         displayMode = DisplayMode.MESSAGE_LIST
         viewSwitcher!!.showFirstView()
@@ -1648,8 +1668,10 @@ open class MessageList :
 
     private class LaunchData(
         val search: LocalSearch,
+        val account: Account? = null,
         val messageReference: MessageReference? = null,
-        val noThreading: Boolean = false
+        val noThreading: Boolean = false,
+        val messageViewOnly: Boolean = false
     )
 
     companion object : KoinComponent {
@@ -1659,6 +1681,7 @@ open class MessageList :
         private const val ACTION_SHORTCUT = "shortcut"
         private const val EXTRA_SPECIAL_FOLDER = "special_folder"
 
+        private const val EXTRA_ACCOUNT = "account_uuid"
         private const val EXTRA_MESSAGE_REFERENCE = "message_reference"
 
         // used for remote search
@@ -1666,6 +1689,7 @@ open class MessageList :
         private const val EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder"
 
         private const val STATE_DISPLAY_MODE = "displayMode"
+        private const val STATE_MESSAGE_VIEW_ONLY = "messageViewOnly"
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
         private const val STATE_FIRST_BACK_STACK_ID = "firstBackstackId"
 
@@ -1710,6 +1734,30 @@ open class MessageList :
                 if (clearTop) addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 if (newTask) addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
+        }
+
+        fun createUnifiedInboxIntent(context: Context, account: Account): Intent {
+            return Intent(context, MessageList::class.java).apply {
+                val search = SearchAccount.createUnifiedInboxAccount().relatedSearch
+
+                putExtra(EXTRA_ACCOUNT, account.uuid)
+                putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
+                putExtra(EXTRA_NO_THREADING, false)
+
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+        }
+
+        fun createNewMessagesIntent(context: Context, account: Account): Intent {
+            val search = LocalSearch().apply {
+                id = SearchAccount.NEW_MESSAGES
+                addAccountUuid(account.uuid)
+                and(SearchField.NEW_MESSAGE, "1", SearchSpecification.Attribute.EQUALS)
+            }
+
+            return intentDisplaySearch(context, search, noThreading = false, newTask = true, clearTop = true)
         }
 
         @JvmStatic

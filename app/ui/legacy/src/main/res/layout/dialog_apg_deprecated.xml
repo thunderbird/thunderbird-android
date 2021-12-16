@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    tools:context=".dialog.ApgDeprecationWarningDialog">
 
     <RelativeLayout
         android:orientation="vertical"
@@ -15,9 +17,7 @@
             android:text="@string/apg_deprecated_1"
             style="?android:textAppearanceMedium"
             android:id="@+id/textView"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
         <LinearLayout
@@ -49,7 +49,6 @@
             android:layout_width="wrap_content"
             android:id="@+id/layout_bullet_2"
             android:layout_below="@+id/layout_bullet_1"
-            android:layout_alignLeft="@+id/layout_bullet_1"
             android:layout_alignStart="@+id/layout_bullet_1"
             >
 

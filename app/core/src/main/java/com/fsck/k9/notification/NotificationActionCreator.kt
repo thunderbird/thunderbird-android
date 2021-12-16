@@ -1,7 +1,6 @@
 package com.fsck.k9.notification
 
 import android.app.PendingIntent
-import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
 
@@ -21,7 +20,6 @@ interface NotificationActionCreator {
     fun createDismissAllMessagesPendingIntent(account: Account, notificationId: Int): PendingIntent
 
     fun createDismissMessagePendingIntent(
-        context: Context,
         messageReference: MessageReference,
         notificationId: Int
     ): PendingIntent

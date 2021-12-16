@@ -8,7 +8,6 @@
   <string name="unread_widget_label">نخوانده‌های K-9</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">کد منبع</string>
   <string name="app_license">مجوز آپاچی، نسخهٔ ۲٫۰</string>
   <string name="about_project_title">پروژهٔ متن‌باز</string>
@@ -46,7 +45,7 @@
   <li>ذخیرهٔ پیوست‌ها در کارت SD</li>
   <li>خالی‌کردن زباله‌دان</li>
   <li>مرتب‌سازی پیام‌ها</li>
-  <li>و خیلی قابلیت‌های دیگر...</li>
+  <li>و خیلی قابلیت‌های دیگر…</li>
 </ul>
 <p>
 لطفاً توجه کنید که K-9، مانند بسیاری از برنامه‌های مدیریت رایانامه، از بیشتر حساب‌های رایگان Hotmail پشتیبانی نمی‌کند و هنگام برقراری ارتباط‌ با Microsoft Exchange مشکلاتی وجود دارد.
@@ -61,14 +60,12 @@
   <string name="account_delete_dlg_instructions_fmt">حساب «<xliff:g id="account">%s</xliff:g>» از K-9 Mail حذف خواهد شد.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">سازندگان</string>
-  <string name="app_revision">اطلاعات نسخه‌ها</string>
   <string name="read_messages_label">خواندن رایانامه‌ها</string>
   <string name="read_messages_desc">به این برنامه اجازه می‌دهد رایانامه‌های شما را بخواند.</string>
   <string name="delete_messages_label">پاک‌کردن رایانامه‌ها</string>
   <string name="delete_messages_desc">به این برنامه اجازه می‌دهد رایانامه‌های شما را پاک کند.</string>
   <string name="about_title">دربارهٔ K-9 Mail</string>
   <string name="accounts_title">حساب‌ها</string>
-  <string name="folders_title">پوشه‌ها</string>
   <string name="advanced">پیشرفته</string>
   <string name="compose_title_compose">نوشتن</string>
   <string name="compose_title_reply">پاسخ</string>
@@ -77,12 +74,8 @@
   <string name="compose_title_forward_as_attachment">هدایت به‌شکل پیوست</string>
   <string name="choose_account_title">انتخاب حساب</string>
   <string name="choose_folder_title">انتخاب پوشه</string>
-  <string name="status_loading_account_folder">سرکشی به <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">واکشی سرایندها <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">در حال ارسال <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">پردازش <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">همگام‌سازی غیرفعال شد</string>
+  <string name="choose_folder_move_title">انتقال به…</string>
+  <string name="choose_folder_copy_title">کپی به…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> انتخاب</string>
   <string name="next_action">بعدی</string>
   <string name="previous_action">قبلی</string>
@@ -90,10 +83,7 @@
   <string name="okay_action">خب</string>
   <string name="cancel_action">لغو</string>
   <string name="send_action">ارسال</string>
-  <string name="send_again_action">دوباره بفرست</string>
   <string name="empty_subject">موضوع خالی است، دوباره بزنید می‌رود</string>
-  <string name="select_action">انتخاب</string>
-  <string name="deselect_action">بی‌انتخاب</string>
   <string name="reply_action">پاسخ</string>
   <string name="reply_all_action">پاسخ به همه</string>
   <string name="delete_action">حذف</string>
@@ -102,14 +92,15 @@
   <string name="forward_action">هدایت</string>
   <string name="forward_as_attachment_action">هدایت به‌شکل پیوست</string>
   <string name="edit_as_new_message_action">ویرایش به‌عنوان پیام جدید</string>
-  <string name="move_action">انتقال به</string>
+  <string name="move_action">انتقال</string>
   <string name="move_to_drafts_action">انتقال به پیش‌نویس‌ها</string>
   <string name="single_message_options_action">ارسال…</string>
-  <string name="refile_action">سامان‌دهی...</string>
+  <string name="refile_action">سامان‌دهی…</string>
   <string name="done_action">انجام شد</string>
   <string name="discard_action">دورانداختن</string>
   <string name="save_draft_action">ذخیره در پیش‌نویس</string>
   <string name="check_mail_action">به‌روزآوری رایانامه‌ها</string>
+  <string name="check_all_mail_action">بررسی رایانامه‌ها در تمامی حساب‌ها</string>
   <string name="send_messages_action">ارسال پیام‌ها</string>
   <string name="refresh_folders_action">بازآوری لیست پوشه‌ها</string>
   <string name="filter_folders_action">یافتن پوشه</string>
@@ -127,7 +118,7 @@
   <string name="send_alternate_chooser_title">انتخاب فرستنده</string>
   <string name="flag_action">افزودن ستاره</string>
   <string name="unflag_action">حذف ستاره</string>
-  <string name="copy_action">کپی به</string>
+  <string name="copy_action">کپی</string>
   <string name="show_headers_action">نمایش سرایندها</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">نشانی‌ها در بریده‌دان کپی شد</item>
@@ -158,8 +149,6 @@
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="account_size_changed">حجم حساب «<xliff:g id="account">%s</xliff:g>» از <xliff:g id="oldSize">%s</xliff:g> به <xliff:g id="newSize">%s</xliff:g> کاهش پیدا کرد</string>
-  <string name="compacting_account">در حال فشرده‌سازی حساب «<xliff:g id="account">%s</xliff:g>»</string>
   <string name="notification_new_title">رایانامهٔ جدید</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> نامهٔ جدید</item>
@@ -189,7 +178,7 @@
   <string name="notification_channel_messages_title">پیام‌ها</string>
   <string name="notification_channel_messages_description">اعلان‌های مربوط به پیام‌ها</string>
   <string name="notification_channel_miscellaneous_title">متفرقه</string>
-  <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و...</string>
+  <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و…</string>
   <string name="special_mailbox_name_inbox">صندوق ورودی</string>
   <string name="special_mailbox_name_outbox">صندوق خروجی</string>
   <string name="special_mailbox_name_drafts">پیش‌نویس‌ها</string>
@@ -227,20 +216,13 @@
   <string name="message_to_label">به:</string>
   <string name="message_view_cc_label">رونوشت به:</string>
   <string name="message_view_bcc_label">مخفیانه به:</string>
-  <string name="message_view_attachment_view_action">باز</string>
-  <string name="message_view_attachment_download_action">ذخیره</string>
   <string name="message_view_status_attachment_not_saved">نمی‌توان پیوست را ذخیره کرد.</string>
   <string name="message_view_show_pictures_action">نمایش تصاویر</string>
   <string name="message_view_no_viewer">نمایش‌دهنده‌ای برای <xliff:g id="mimetype">%s</xliff:g> پیدا نشد.</string>
   <string name="message_view_download_remainder">دانلود پیام کامل</string>
-  <string name="message_view_toast_unable_to_display_message">نمی‌توان پیام را نمایش داد</string>
   <string name="message_view_sender_label">از طریق %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">همهٔ سرایندها دانلود شده است، اما سرایند دیگری برای نمایش وجود ندارد.</string>
-  <string name="message_additional_headers_retrieval_failed">بازیابی سرایندهای بیشتر از پایگاه‌داده یا کارساز رایانامه ناموفق بود.</string>
   <string name="from_same_sender">بیشتر از این فرستنده</string>
   <string name="search_from_format">از <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">عیب‌یابی / پاک‌سازی بدنهٔ پیام</string>
   <string name="message_discarded_toast">پیام از بین رفت</string>
   <string name="message_saved_toast">پیش‌نویس پیام ذخیره شد</string>
   <string name="global_settings_flag_label">نمایش ستاره‌ها</string>
@@ -274,10 +256,6 @@
   <string name="global_settings_privacy_hide_useragent_detail">شناسهٔ K-9 User-Agent را از سرایند رایانامه‌ها بردار</string>
   <string name="global_settings_privacy_hide_timezone">منطقهٔ زمانی را مخفی کن</string>
   <string name="global_settings_privacy_hide_timezone_detail">در سرایند رایانامه و سرایند پاسخ به‌جای زمان محلی از UTC استفاده کن</string>
-  <string name="global_settings_notification_hide_subject_title">پنهان‌کردن موضوع در اعلان‌ها</string>
-  <string name="global_settings_notification_hide_subject_never">هرگز</string>
-  <string name="global_settings_notification_hide_subject_when_locked">هنگامی که دستگاه قفل است</string>
-  <string name="global_settings_notification_hide_subject_always">همیشه</string>
   <string name="global_settings_notification_quick_delete_title">نمایش دکمهٔ «حذف»</string>
   <string name="global_settings_notification_quick_delete_never">هرگز</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">برای اعلان پیام تکی</string>
@@ -285,7 +263,7 @@
   <string name="global_settings_lock_screen_notification_visibility_title">اعلان‌های صفحهٔ قفل</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">در صفحهٔ قفل اعلانی نباشد</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">نام برنامه</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">تعداد پیام‌های نخوانده</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">تعداد پیام‌های جدید</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">تعداد پیام و فرستندگان</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">همانند زمانی که صفحه قفل نیست</string>
   <string name="quiet_time">زمان خاموشی</string>
@@ -297,8 +275,10 @@
   <string name="account_setup_basics_title">راه‌اندازی حساب کاربری جدید</string>
   <string name="account_setup_basics_email_hint">نشانی رایانامه </string>
   <string name="account_setup_basics_password_hint">گذرواژه</string>
-  <string name="account_setup_basics_show_password">نمایش گذرواژه</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">برای دیدن گذرواژه‌تان در این قسمت، قفل صفحه در این دستگاه را فعال کنید.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">هویت‌تان را تایید کنید</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">برای دیدن گذرواژه، قفل را باز کنید</string>
   <string name="account_setup_basics_manual_setup_action">تنظیم دستی</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">بازیابی اطلاعات حساب کاربری\u2026</string>
@@ -340,8 +320,6 @@
   <string name="account_setup_incoming_mobile_label">دادهٔ همراه</string>
   <string name="account_setup_incoming_wifi_label">وای‌فای</string>
   <string name="account_setup_incoming_other_label">سایر</string>
-  <string name="local_storage_provider_external_label">حافظهٔ خارجی (کارت SD)</string>
-  <string name="local_storage_provider_internal_label">حافظهٔ داخلی همیشگی</string>
   <string name="account_setup_expunge_policy_label">پیام‌های حذف‌شده را در کارساز پاک کن</string>
   <string name="account_setup_expunge_policy_immediately">فوراً</string>
   <string name="account_setup_expunge_policy_on_poll">در زمان سرکشی</string>
@@ -356,11 +334,8 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">فقط پوشه‌هایی که مشترک آن‌ها هستم را نمایش بده</string>
   <string name="account_setup_auto_expand_folder">پوشهٔ آغازین</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">مسیر OWA</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">اختیاری</string>
   <string name="account_setup_incoming_webdav_auth_path_label">مسیر احراز هویت</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">اختیاری</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">نام مستعار صندوق پستی</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">اختیاری</string>
   <string name="account_setup_outgoing_title">تنظیمات کارساز خروجی </string>
   <string name="account_setup_outgoing_smtp_server_label">کارساز SMTP</string>
   <string name="account_setup_outgoing_port_label">درگاه</string>
@@ -372,7 +347,6 @@
   <string name="account_setup_outgoing_invalid_setting_combo_notice">«<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>» با «<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>» معتبر نیست</string>
   <string name="account_setup_bad_uri">پیکربندی نادرست: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">گزینه‌های حساب کاربری</string>
-  <string name="compact_action">فشرده‌سازی حساب</string>
   <string name="account_setup_options_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
   <string name="account_setup_options_mail_check_frequency_never">هرگز</string>
   <string name="account_setup_options_mail_check_frequency_15min">هر ۱۵ دقیقه</string>
@@ -383,8 +357,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">هر ۶ ساعت</string>
   <string name="account_setup_options_mail_check_frequency_12hour">هر ۱۲ ساعت</string>
   <string name="account_setup_options_mail_check_frequency_24hour">هر ۲۴ ساعت</string>
-  <string name="account_setup_options_enable_push_label">پیشرانی رایانامه (Push Mail) برای این حساب فعال شود</string>
-  <string name="account_setup_options_enable_push_summary">اگر کارساز شما آن را پشتیبانی کند پیام‌های جدید بلافاصله ظاهر می‌شوند. این گزینه می‌تواند کارایی را به‌شدت افزایش یا کاهش دهد.</string>
   <string name="idle_refresh_period_label">تازه‌کردن اتصال IDLE</string>
   <string name="idle_refresh_period_2min">هر ۲ دقیقه</string>
   <string name="idle_refresh_period_3min">هر ۳ دقیقه</string>
@@ -395,7 +367,6 @@
   <string name="idle_refresh_period_48min">هر ۴۸ دقیقه</string>
   <string name="idle_refresh_period_60min">هر ۶۰ دقیقه</string>
   <string name="account_setup_options_notify_label">هر زمان رایانامه رسید به من خبر بده</string>
-  <string name="account_setup_options_notify_sync_label">حین به‌روزآوری رایانامه‌ها به من خبر بده</string>
   <string name="account_setup_options_mail_display_count_label">تعداد پیام‌ها برای نمایش</string>
   <string name="account_setup_options_mail_display_count_10">۱۰ پیام</string>
   <string name="account_setup_options_mail_display_count_25">۲۵ پیام</string>
@@ -417,8 +388,6 @@
   <string name="account_setup_failed_dlg_continue_action">ادامه</string>
   <string name="account_settings_push_advanced_title">پیشرفته</string>
   <string name="account_settings_title_fmt">تنظیمات حساب</string>
-  <string name="account_settings_default_label">حساب پیش‌فرض</string>
-  <string name="account_settings_default_summary">به‌طور پیش‌فرض رایانامه‌ها را با این حساب بفرست</string>
   <string name="account_settings_notify_label">اعلان‌های رایانامهٔ جدید</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">پوشه‌های دارای اعلان</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">همه</string>
@@ -434,10 +403,15 @@
   <string name="account_settings_notify_self_summary">برای پیام‌هایی که فرستادم یک اعلان نمایش بده</string>
   <string name="account_notify_contacts_mail_only_label">فقط مخاطبان</string>
   <string name="account_notify_contacts_mail_only_summary">فقط برای پیام مخاطبانِ شناس، اعلان بده</string>
+  <string name="account_settings_ignore_chat_messages_label">نادیده گرفتن پیام‌های گفتگو</string>
+  <string name="account_settings_ignore_chat_messages_summary">اعلان‌ها مرتبط با  پیام‌های متعلق به یک گفتگوی رایانامه‌ای را نمایش نده</string>
   <string name="account_settings_mark_message_as_read_on_view_label">اگر باز شد نشان بزن که خواندم</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">زمانی که یک پیام را باز کردید به‌عنوان خوانده علامت بخورد</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">هنگام حذف، نشان بزن که خواندم</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">پیام حذف‌شده را نشان بزن که خوانده‌ام</string>
+  <string name="account_settings_notification_channels_label">دسته‌بندی‌های اعلان</string>
+  <string name="account_settings_open_notification_settings_messages_summary">اعلان برای پیام‌های جدید را پیکربندی کنید</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">اعلان‌های وضعیت و خطا را پیکربندی کنید</string>
   <string name="account_settings_show_pictures_label">همیشه عکس‌ها را نشان بده</string>
   <string name="account_settings_show_pictures_never">خیر</string>
   <string name="account_settings_show_pictures_only_from_contacts">از مخاطبان</string>
@@ -472,14 +446,13 @@
   <string name="account_settings_crypto_key">پیکربندی کلید سرتاسر</string>
   <string name="account_settings_crypto_summary_off">برنامه‌ای برای OpenPGP پیکربندی نشده</string>
   <string name="account_settings_crypto_summary_on">به %s متصل شد</string>
-  <string name="account_settings_crypto_summary_config">در حال پیکربندی...</string>
+  <string name="account_settings_crypto_summary_config">در حال پیکربندی…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">ذخیرهٔ همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده ذخیره می‌شوند</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">پیش‌نویس‌ها فقط در صورتی رمزنگاری شوند که رمزنگاری فعال باشد</string>
   <string name="account_settings_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
   <string name="account_settings_color_label">رنگ حساب کاربری</string>
   <string name="account_settings_color_summary">رنگ مشخصهٔ این حساب که در لیست پوشه‌ها و حساب‌ها استفاده می‌شود</string>
-  <string name="account_settings_color_none">بی‌رنگ</string>
   <string name="account_settings_led_color_label">رنگ اعلان LED</string>
   <string name="account_settings_led_color_summary">برای این حساب کاربری چراغ LED دستگاهتان به چه رنگی چشمک بزند</string>
   <string name="account_settings_mail_display_count_label">گنجایش پوشهٔ محلی</string>
@@ -625,7 +598,7 @@
   <string name="sort_unread_last">ابتدا، پیام‌های خوانده</string>
   <string name="sort_attach_first">ابتدا، پیام‌های پیوست‌دار</string>
   <string name="sort_unattached_first">ابتدا، پیام‌های بی‌پیوست</string>
-  <string name="sort_by">به ترتیبِ...</string>
+  <string name="sort_by">به ترتیبِ…</string>
   <string name="sort_by_date">تاریخ</string>
   <string name="sort_by_arrival">رسیدن</string>
   <string name="sort_by_subject">موضوع</string>
@@ -690,10 +663,7 @@
   <string name="volume_navigation_message">در نماهای پیام</string>
   <string name="volume_navigation_list">در نماهای لیستی</string>
   <string name="show_unified_inbox_title">نمایش صندوق یکپارچه</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier">- نخوانده</string>
-  <string name="search_all_messages_title">همهٔ پیام‌ها</string>
-  <string name="search_all_messages_detail">همهٔ پیام‌های پوشه‌های قابل‌جستجو</string>
+  <string name="show_starred_count_title">نمایش تعداد ستاره‌دارها</string>
   <string name="integrated_inbox_title">صندوق ورودی یکپارچه</string>
   <string name="integrated_inbox_detail">همهٔ پیام‌های صندوق ورودی یکپارچه</string>
   <string name="folder_settings_include_in_integrated_inbox_label">یکپارچگی</string>
@@ -726,8 +696,6 @@
   <string name="font_size_message_view_subject">موضوع</string>
   <string name="font_size_message_view_date">ساعت و تاریخ</string>
   <string name="font_size_message_view_content">متن پیام</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">نوشتن پیام</string>
   <string name="font_size_message_compose_input">فیلدهای ورود متن</string>
   <string name="font_size_default">پیش‌فرض</string>
@@ -778,7 +746,7 @@
   <string name="settings_export_title">برون‌برد تنظیمات</string>
   <string name="settings_export_button">برون‌برد</string>
   <string name="settings_export_share_button">اشتراک‌گذاری</string>
-  <string name="settings_export_progress_text">در حال برون‌برد تنظیمات...</string>
+  <string name="settings_export_progress_text">در حال برون‌برد تنظیمات…</string>
   <string name="settings_export_success_generic">برون‌برد تنظیمات موفقیت‌آمیز بود</string>
   <string name="settings_export_failure">برون‌برد تنظیمات ناموفق بود</string>
   <string name="settings_import_title">درون‌برد تنظیمات</string>
@@ -804,7 +772,7 @@
   <string name="settings_import_outgoing_server_password_hint">گذرواژهٔ کارساز خروجی</string>
   <string name="settings_import_use_same_password_for_outgoing_server">برای کارساز خروجی از همان گذرواژه استفاده کن</string>
   <string name="server_name_format">نام کارساز:<xliff:g id="hostname">%s</xliff:g></string>
-  <string name="unread_widget_select_account">نمایش تعداد نخوانده‌ها برای...</string>
+  <string name="unread_widget_select_account">نمایش تعداد نخوانده‌ها برای…</string>
   <string name="unread_widget_account_title">حساب</string>
   <string name="unread_widget_account_summary">حسابی که تعداد نخوانده‌های آن باید نشان داده شود</string>
   <string name="unread_widget_unified_inbox_account_summary">صندوق ورودی یکپارچه</string>
@@ -866,7 +834,7 @@
   <string name="global_settings_threaded_view_label">نمای مکالمه‌ای</string>
   <string name="global_settings_threaded_view_summary">گروه‌بندی پیام‌ها بر اساس گفتگو</string>
   <string name="upgrade_databases_title">ارتقای پایگاه‌داده</string>
-  <string name="upgrade_databases_unspecified">ارتقای پایگاه‌داده...</string>
+  <string name="upgrade_databases_unspecified">ارتقای پایگاه‌داده…</string>
   <string name="upgrade_database_format">ارتقای پایگاه‌دادهٔ حساب «<xliff:g id="account">%s</xliff:g>»</string>
   <string name="global_settings_splitview_mode_label">صفحهٔ دوبخشی</string>
   <string name="global_settings_splitview_always">همیشه</string>
@@ -880,10 +848,10 @@
   <string name="global_settings_colorize_missing_contact_pictures_summary">برای مخاطبان بدون عکس از رنگ استفاده کن</string>
   <string name="global_settings_messageview_visible_refile_actions_title">کنش‌های پیام نمایان</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">کنش‌های انتخابی را در منوی نمایش پیام نشان می‌دهد</string>
-  <string name="loading_attachment">بارگیری پیوست...</string>
+  <string name="loading_attachment">بارگیری پیوست…</string>
   <string name="fetching_attachment_dialog_title_send">ارسال پیام</string>
   <string name="fetching_attachment_dialog_title_save">ذخیرهٔ پیش‌نویس</string>
-  <string name="fetching_attachment_dialog_message">واکشی پیوست...</string>
+  <string name="fetching_attachment_dialog_message">واکشی پیوست…</string>
   <string name="auth_external_error">احراز هویت ناموفق بود. کارساز توانایی SASL EXTERNAL را از خود نشان نمی‌دهد. می‌تواند به‌سبب مشکلی با گواهی کارخواه (منقضی‌شده، گواهی ناشناخته) یا مشکلات دیگری در پیکربندی آن باشد.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">از گواهی کارخواه استفاده کن</string>
@@ -899,6 +867,7 @@
   <string name="recipient_bcc">مخفیانه به</string>
   <string name="recipient_to">به</string>
   <string name="recipient_from">از</string>
+  <string name="reply_to_label">پاسخ به</string>
   <string name="unknown_recipient">&lt;گیرندهٔ ناشناس&gt;</string>
   <string name="unknown_sender">&lt;فرستندهٔ ناشناس&gt;</string>
   <string name="address_type_home">خانه</string>
@@ -970,7 +939,7 @@
   <string name="locked_attach_unlock">قفل‌گشایی</string>
   <string name="locked_attach_unencrypted">این بخش رمزنگاری نشده و شاید ناامن باشد.</string>
   <string name="locked_attach_title">پیوستِ محافظت‌نشده</string>
-  <string name="message_progress_text">بارگیری...</string>
+  <string name="message_progress_text">بارگیری…</string>
   <string name="messageview_decrypt_cancelled">رمزگشایی لغو شد.</string>
   <string name="messageview_decrypt_retry">تلاش دوباره</string>
   <string name="messageview_decrypt_incomplete">برای رمزگشایی باید پیام رمزنگاری‌شده را کامل دانلود کنید.</string>
@@ -994,9 +963,7 @@
   <string name="crypto_no_provider_message">این رایانامه با OpenPGP رمزنگاری شده است.\nبرای خواندن آن، باید برنامه‌ای سازگار با OpenPGP را نصب و پیکربندی کنید.</string>
   <string name="crypto_no_provider_button">برو به تنظیمات</string>
   <string name="mail_list_widget_text">لیست پیام K-9</string>
-  <string name="mail_list_widget_loading">بارگیری پیام‌ها...</string>
-  <string name="fetching_folders_failed">واکشی لیست پوشه ناموفق بود</string>
-  <string name="error_recipient_crypto_retrieve">هنگام بازیابی وضعیت گیرنده از فراهم‌ساز OpenPGP خطایی رخ داد!</string>
+  <string name="mail_list_widget_loading">بارگیری پیام‌ها…</string>
   <string name="openpgp_enabled_error_title">رمزنگاری ممکن نیست</string>
   <string name="openpgp_enabled_error_msg">بعضی از گیرندگان انتخابی از این ویژگی پشتیبانی نمی‌کنند!</string>
   <string name="enable_encryption">فعال‌سازی رمزنگاری</string>
@@ -1028,7 +995,7 @@
   <string name="ac_transfer_intro">یک پیام راه‌انداز Autocrypt، راه‌انداز سرتاسر شما را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک می‌گذارد.</string>
   <string name="ac_transfer_button_send">ارسال پیام راه‌انداز</string>
   <string name="ac_transfer_will_be_sent">پیام به نشانی شما ارسال خواهد شد:</string>
-  <string name="ac_transfer_generating">در حال ساخت پیام راه‌انداز...</string>
+  <string name="ac_transfer_generating">در حال ساخت پیام راه‌انداز…</string>
   <string name="ac_transfer_sending_to">ارسال پیام به:</string>
   <string name="ac_transfer_finish">برای تکمیل کار، پیام را روی دستگاه دیگرتان باز کنید و کد راه‌انداز را وارد کنید.</string>
   <string name="ac_transfer_show_code">نمایش کد راه‌انداز</string>
@@ -1042,13 +1009,11 @@
   <string name="ac_transfer_error_send">هنگام ارسال پیام خطایی رخ داد. لطفاً اتصال شبکه‌تان و پیکربندی کارساز خروجی را بررسی کنید.</string>
   <string name="switch_on">روشن</string>
   <string name="switch_off">خاموش</string>
-  <string name="navigation_drawer_open">باز</string>
-  <string name="navigation_drawer_close">بستن</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">اجازهٔ دسترسی به مخاطبان را بدهید</string>
   <string name="permission_contacts_rationale_message">برای پیشنهاد مخاطب و نمایش نام و عکس مخاطب، برنامه نیاز دارد به مخاطبان شما دسترسی داشته باشد.</string>
   <string name="generic_loading_error">هنگام بارکردن داده، خطایی رخ داد</string>
-  <string name="push_notification_state_initializing">مقداردهی اولیه...</string>
+  <string name="push_notification_state_initializing">مقداردهی اولیه…</string>
   <string name="push_notification_state_listening">در انتظار رایانامه‌های جدید</string>
   <string name="push_notification_state_wait_background_sync">می‌خوابد تا هنگامی که اجازهٔ همگام‌سازی در پس‌زمینه داده شود</string>
   <string name="push_notification_state_wait_network">می‌خوابد تا هنگامی که شبکه در دسترس باشد</string>

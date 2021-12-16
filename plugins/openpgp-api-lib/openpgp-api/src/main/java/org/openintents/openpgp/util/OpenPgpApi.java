@@ -25,22 +25,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.ParcelFileDescriptorUtil.DataSinkTransferThread;
 import org.openintents.openpgp.util.ParcelFileDescriptorUtil.DataSourceTransferThread;
+import timber.log.Timber;
 
 
 public class OpenPgpApi {
-
-    public static final String TAG = "OpenPgp API";
 
     public static final String SERVICE_INTENT_2 = "org.openintents.openpgp.IOpenPgpService2";
 
@@ -478,7 +475,7 @@ public class OpenPgpApi {
             pumpThread.join();
             return new OpenPgpDataResult<>(result, pumpThread.getResult());
         } catch (Exception e) {
-            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
+            Timber.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -515,7 +512,7 @@ public class OpenPgpApi {
 
             return result;
         } catch (Exception e) {
-            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
+            Timber.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -600,7 +597,7 @@ public class OpenPgpApi {
 
             return result;
         } catch (Exception e) {
-            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
+            Timber.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -629,7 +626,7 @@ public class OpenPgpApi {
 
             return result;
         } catch (Exception e) {
-            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
+            Timber.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -646,7 +643,7 @@ public class OpenPgpApi {
             try {
                 input.close();
             } catch (IOException e) {
-                Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
+                Timber.e(e, "IOException when closing ParcelFileDescriptor!");
             }
         }
     }

@@ -1,45 +1,60 @@
 package com.fsck.k9.notification
 
 internal class RemoveNotificationResult private constructor(
+    val notificationData: NotificationData,
+    val notificationStoreOperations: List<NotificationStoreOperation>,
     private val holder: NotificationHolder?,
-    notificationId: Int,
-    val isUnknownNotification: Boolean
+    private val notificationId: Int?
 ) {
-    val notificationId: Int = notificationId
-        get() {
-            check(!isUnknownNotification) { "isUnknownNotification == true" }
-            return field
-        }
-
-    @get:JvmName("shouldCreateNotification")
     val shouldCreateNotification: Boolean
         get() = holder != null
 
     val notificationHolder: NotificationHolder
         get() = holder ?: error("shouldCreateNotification == false")
 
+    val shouldCancelNotification: Boolean
+        get() = notificationId != null
+
+    val cancelNotificationId: Int
+        get() = notificationId ?: error("shouldCancelNotification == false")
+
     companion object {
-        @JvmStatic
-        fun createNotification(notificationHolder: NotificationHolder): RemoveNotificationResult {
+        fun cancelNotification(
+            notificationData: NotificationData,
+            notificationStoreOperations: List<NotificationStoreOperation>,
+            notificationId: Int
+        ): RemoveNotificationResult {
             return RemoveNotificationResult(
-                holder = notificationHolder,
-                notificationId = notificationHolder.notificationId,
-                isUnknownNotification = false
-            )
-        }
-
-        @JvmStatic
-        fun cancelNotification(notificationId: Int): RemoveNotificationResult {
-            return RemoveNotificationResult(
+                notificationData = notificationData,
+                notificationStoreOperations = notificationStoreOperations,
                 holder = null,
-                notificationId = notificationId,
-                isUnknownNotification = false
+                notificationId = notificationId
             )
         }
 
-        @JvmStatic
-        fun unknownNotification(): RemoveNotificationResult {
-            return RemoveNotificationResult(holder = null, notificationId = 0, isUnknownNotification = true)
+        fun replaceNotification(
+            notificationData: NotificationData,
+            notificationStoreOperations: List<NotificationStoreOperation>,
+            notificationHolder: NotificationHolder
+        ): RemoveNotificationResult {
+            return RemoveNotificationResult(
+                notificationData = notificationData,
+                notificationStoreOperations = notificationStoreOperations,
+                holder = notificationHolder,
+                notificationId = notificationHolder.notificationId
+            )
+        }
+
+        fun recreateSummaryNotification(
+            notificationData: NotificationData,
+            notificationStoreOperations: List<NotificationStoreOperation>
+        ): RemoveNotificationResult {
+            return RemoveNotificationResult(
+                notificationData = notificationData,
+                notificationStoreOperations = notificationStoreOperations,
+                holder = null,
+                notificationId = null
+            )
         }
     }
 }

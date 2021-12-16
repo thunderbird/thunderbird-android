@@ -305,9 +305,10 @@ internal class SaveMessageOperations(
     private fun decodeAndCountBytes(rawInputStream: InputStream, encoding: String, fallbackValue: Long): Long {
         return try {
             getDecodingInputStream(rawInputStream, encoding).use { decodingInputStream ->
-                val countingOutputStream = CountingOutputStream()
-                IOUtils.copy(decodingInputStream, countingOutputStream)
-                countingOutputStream.count
+                CountingOutputStream().use { countingOutputStream ->
+                    IOUtils.copy(decodingInputStream, countingOutputStream)
+                    countingOutputStream.count
+                }
             }
         } catch (e: IOException) {
             fallbackValue

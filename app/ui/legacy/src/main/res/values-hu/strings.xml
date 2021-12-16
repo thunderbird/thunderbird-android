@@ -8,7 +8,6 @@
   <string name="unread_widget_label">K-9 olvasatlan</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Egyes részek: Copyright 2006-<xliff:g>%s</xliff:g>az Android Nyílt Forráskódú Projekt.</string>
   <string name="source_code">Forráskód</string>
   <string name="app_license">Apache licenc, 2.0-s verzió</string>
   <string name="about_project_title">Nyílt forráskódú projekt</string>
@@ -60,14 +59,12 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a K-9 Mail alkalmazásból.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Szerzők</string>
-  <string name="app_revision">Kiadási megjegyzések</string>
   <string name="read_messages_label">E-mailek olvasása</string>
   <string name="read_messages_desc">Az alkalmazás olvashatja az emaileket.</string>
   <string name="delete_messages_label">E-mailek törlése</string>
   <string name="delete_messages_desc">Az alkalmazás törölheti ez e-maileket.</string>
   <string name="about_title">A K-9 Mail névjegye</string>
   <string name="accounts_title">Fiókok</string>
-  <string name="folders_title">Mappák</string>
   <string name="advanced">Bővített</string>
   <string name="compose_title_compose">Írás</string>
   <string name="compose_title_reply">Válasz</string>
@@ -76,12 +73,8 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="compose_title_forward_as_attachment">Továbbítás mellékletként</string>
   <string name="choose_account_title">Fiók választása</string>
   <string name="choose_folder_title">Mappa választása</string>
-  <string name="status_loading_account_folder">Lekérés <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">Fejlécek beolvasása <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account"> <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>küldése folyamatban van...</string>
-  <string name="status_processing_account">Feldolgozás <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">A szinkronizálás letiltásra került.</string>
+  <string name="choose_folder_move_title">Áthelyezés…</string>
+  <string name="choose_folder_copy_title">Másolás…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> kiválasztva</string>
   <string name="next_action">Következő</string>
   <string name="previous_action">Előző</string>
@@ -89,10 +82,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="okay_action">OK</string>
   <string name="cancel_action">Mégse</string>
   <string name="send_action">Küldés</string>
-  <string name="send_again_action">Küldés újra</string>
   <string name="empty_subject">A tárgy üres. Kattintás újra a küldés erőltetéséhez.</string>
-  <string name="select_action">Kijelölés</string>
-  <string name="deselect_action">Kijelölés törlése</string>
   <string name="reply_action">Válasz</string>
   <string name="reply_all_action">Válasz mindenkinek</string>
   <string name="delete_action">Törlés</string>
@@ -157,8 +147,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="account_size_changed">A(z) „<xliff:g id="account">%s</xliff:g>” fiók tömörítésre került: <xliff:g id="oldSize">%s</xliff:g>=&gt; <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">A(z) „<xliff:g id="account">%s</xliff:g>” fiók tömörítése folyamatban van.</string>
   <string name="notification_new_title">Új levél</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
@@ -226,20 +214,13 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="message_to_label">Címzett:</string>
   <string name="message_view_cc_label">Másolat:</string>
   <string name="message_view_bcc_label">Titkos másolat:</string>
-  <string name="message_view_attachment_view_action">Megnyitás</string>
-  <string name="message_view_attachment_download_action">Mentés</string>
   <string name="message_view_status_attachment_not_saved">Nem lehet elmenteni a mellékletet.</string>
   <string name="message_view_show_pictures_action">Fényképek megjelenítése</string>
   <string name="message_view_no_viewer">Nem sikerült megjelenítőt találni ehhez: <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Teljes üzenet letöltése</string>
-  <string name="message_view_toast_unable_to_display_message">Az üzenet nem jeleníthető meg</string>
   <string name="message_view_sender_label">ezen keresztül: %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">Az összes fejléc letöltésre került, de nincsenek további megjelenítendő fejlécek.</string>
-  <string name="message_additional_headers_retrieval_failed">A további fejlécek letöltése az adatbázisból vagy a levelezőkiszolgálóról sikertelen.</string>
   <string name="from_same_sender">Továbbiak ettől a feladótól</string>
   <string name="search_from_format">Innen: <xliff:g id="sender">%s</xliff:g></string>
-  <string name="debug_delete_local_body">Üzenet törzsének hibakeresése vagy kiürítése</string>
   <string name="message_discarded_toast">Az üzenet elvetésre került.</string>
   <string name="message_saved_toast">Az üzenet vázlatként lett elmentve.</string>
   <string name="global_settings_flag_label">Csillagok megjelenítése</string>
@@ -273,10 +254,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_privacy_hide_useragent_detail">A K-9 azonosító eltávolítása a levél fejlécéből</string>
   <string name="global_settings_privacy_hide_timezone">Időzóna elrejtése</string>
   <string name="global_settings_privacy_hide_timezone_detail">UTC használata a helyi időzóna helyett a levelek fejlécében és a válasz fejlécében</string>
-  <string name="global_settings_notification_hide_subject_title">Tárgy elrejtése az értesítésekben</string>
-  <string name="global_settings_notification_hide_subject_never">Soha</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Ha a készülék zárolt</string>
-  <string name="global_settings_notification_hide_subject_always">Mindig</string>
   <string name="global_settings_notification_quick_delete_title">„Törlés” gomb megjelenítése</string>
   <string name="global_settings_notification_quick_delete_never">Soha</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Önálló üzenet értesítésénél</string>
@@ -284,7 +261,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_lock_screen_notification_visibility_title">Képernyőzár értesítések</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nincsenek képernyőzár értesítések</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Alkalmazás neve</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Olvasatlan üzenetek száma</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Új üzenetek száma</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Üzenet számlálók és feladók</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Ugyanaz, mint feloldott képernyőnél</string>
   <string name="quiet_time">Csendes idő</string>
@@ -296,7 +273,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_basics_title">Új fiók beállítása</string>
   <string name="account_setup_basics_email_hint">E-mail-cím</string>
   <string name="account_setup_basics_password_hint">Jelszó</string>
-  <string name="account_setup_basics_show_password">Jelszó megjelenítése</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Ha itt szeretné megtekinteni jelszavát, engedélyezze a képernyőzárat ezen az eszközön.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Személyazonosság ellenőrzése</string>
@@ -342,8 +318,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_incoming_mobile_label">Mobil</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Egyéb</string>
-  <string name="local_storage_provider_external_label">Külső tárhely (SD-kártya)</string>
-  <string name="local_storage_provider_internal_label">Szabályos belső tárhely</string>
   <string name="account_setup_expunge_policy_label">Törölt üzenetek végleges törlése a kiszolgálóról</string>
   <string name="account_setup_expunge_policy_immediately">Azonnal</string>
   <string name="account_setup_expunge_policy_on_poll">Lekérdezéskor</string>
@@ -358,11 +332,8 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_incoming_subscribed_folders_only_label">Csak feliratkozott mappák megjelenítése</string>
   <string name="account_setup_auto_expand_folder">Mappa automatikus kinyitása</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA útvonal</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Nem kötelező</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Hitelesítési útvonal</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Nem kötelező</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Postafiók álnév</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Nem kötelező</string>
   <string name="account_setup_outgoing_title">Kimenő kiszolgáló beállításai</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP kiszolgáló</string>
   <string name="account_setup_outgoing_port_label">Port</string>
@@ -374,7 +345,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_outgoing_invalid_setting_combo_notice">„<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>” nem érvényes ezzel: „<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>”</string>
   <string name="account_setup_bad_uri">Érvénytelen beállítás: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Fiók beállításai</string>
-  <string name="compact_action">Fiók tömörítése</string>
   <string name="account_setup_options_mail_check_frequency_label">Mappa lekérdezésének gyakorisága</string>
   <string name="account_setup_options_mail_check_frequency_never">Soha</string>
   <string name="account_setup_options_mail_check_frequency_15min">15 percenként</string>
@@ -385,8 +355,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_options_mail_check_frequency_6hour">6 óránként</string>
   <string name="account_setup_options_mail_check_frequency_12hour">12 óránként</string>
   <string name="account_setup_options_mail_check_frequency_24hour">24 óránként</string>
-  <string name="account_setup_options_enable_push_label">Levél küldésének engedélyezése ennél a fióknál</string>
-  <string name="account_setup_options_enable_push_summary">Ha a kiszolgáló támogatja, akkor az új üzenetek azonnal megjelennek. Ez az lehetőség drámaian növelheti vagy csökkenti a teljesítményt.</string>
   <string name="idle_refresh_period_label">IDLE kapcsolat frissítése</string>
   <string name="idle_refresh_period_2min">2 percenként</string>
   <string name="idle_refresh_period_3min">3 percenként</string>
@@ -397,7 +365,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="idle_refresh_period_48min">48 percenként</string>
   <string name="idle_refresh_period_60min">60 percenként</string>
   <string name="account_setup_options_notify_label">Értesítés, amikor levél érkezik</string>
-  <string name="account_setup_options_notify_sync_label">Értesítés levél ellenőrzéskor</string>
   <string name="account_setup_options_mail_display_count_label">Megjelenítendő üzenetek száma</string>
   <string name="account_setup_options_mail_display_count_10">10 üzenet</string>
   <string name="account_setup_options_mail_display_count_25">25 üzenet</string>
@@ -419,8 +386,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_failed_dlg_continue_action">Folytatás</string>
   <string name="account_settings_push_advanced_title">Bővített</string>
   <string name="account_settings_title_fmt">Fiók beállításai</string>
-  <string name="account_settings_default_label">Alapértelmezett fiók</string>
-  <string name="account_settings_default_summary">Levél küldése alapértelmezetten ebből a fiókból</string>
   <string name="account_settings_notify_label">Új levél értesítések</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Értesítések mappái</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Összes</string>
@@ -486,7 +451,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_settings_mail_check_frequency_label">Mappa lekérdezésének gyakorisága</string>
   <string name="account_settings_color_label">Fiókszín</string>
   <string name="account_settings_color_summary">A fiókban és a fióklistában használt fiók kiemelt színe</string>
-  <string name="account_settings_color_none">Nincs szín</string>
   <string name="account_settings_led_color_label">Értesítési LED színe</string>
   <string name="account_settings_led_color_summary">Az eszköz villogó LED-ének színe ennél a fióknál</string>
   <string name="account_settings_mail_display_count_label">Helyi mappa mérete</string>
@@ -698,10 +662,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="volume_navigation_list">Listanézetekben</string>
   <string name="show_unified_inbox_title">Egységes beérkezett üzenetek megjelenítése</string>
   <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier">– Olvasatlan</string>
-  <string name="search_all_messages_title">Összes üzenet</string>
-  <string name="search_all_messages_detail">Az összes üzenet kereshető mappákban</string>
   <string name="integrated_inbox_title">Egységes beérkezett üzenetek</string>
   <string name="integrated_inbox_detail">Az összes üzenet egységes mappákban</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Egyesítés</string>
@@ -734,8 +694,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="font_size_message_view_subject">Tárgy</string>
   <string name="font_size_message_view_date">Idő és dátum</string>
   <string name="font_size_message_view_content">Üzenet törzse</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Üzenet írása</string>
   <string name="font_size_message_compose_input">Szöveg beviteli mezők</string>
   <string name="font_size_default">Alapértelmezett</string>
@@ -907,6 +865,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="recipient_bcc">Titkos másolat</string>
   <string name="recipient_to">Címzett</string>
   <string name="recipient_from">Feladó</string>
+  <string name="reply_to_label">Válasz címzettje</string>
   <string name="unknown_recipient">&lt;Címzett ismeretlen&gt;</string>
   <string name="unknown_sender">&lt;Feladó ismeretlen&gt;</string>
   <string name="address_type_home">Otthon</string>
@@ -1003,8 +962,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="crypto_no_provider_button">Ugrás a beállításokhoz</string>
   <string name="mail_list_widget_text">K-9 üzenetlista</string>
   <string name="mail_list_widget_loading">Üzenetek betöltése…</string>
-  <string name="fetching_folders_failed">A mappalista lekérése sikertelen</string>
-  <string name="error_recipient_crypto_retrieve">Hiba a címzettek állapotának lekérésekor az OpenPGP szolgáltatótól!</string>
   <string name="openpgp_enabled_error_title">A titkosítás nem lehetséges</string>
   <string name="openpgp_enabled_error_msg">Néhány kiválasztott címzett nem támogatja ezt a funkciót!</string>
   <string name="enable_encryption">Titkosítás engedélyezése</string>
@@ -1050,8 +1007,6 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <string name="ac_transfer_error_send">Hiba történt az üzenet elküldése során. Ellenőrizze a hálózati kapcsolatot és a kimenő kiszolgáló beállítását.</string>
   <string name="switch_on">Be</string>
   <string name="switch_off">Ki</string>
-  <string name="navigation_drawer_open">Megnyitás</string>
-  <string name="navigation_drawer_close">Bezárás</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Hozzáférés engedélyezése a partnerekhez</string>
   <string name="permission_contacts_rationale_message">Ahhoz, hogy partnerjavaslatokat tudjon tenni és meg tudja jeleníteni a partner nevét és fényképeit, az alkalmazásnak hozzáférésre van szüksége a partnereihez.</string>

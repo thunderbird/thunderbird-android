@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="12dip"
-        android:layout_marginStart="12dip"
+        android:layout_marginStart="12dp"
         android:minHeight="50dp"
         android:animateLayoutChanges="true">
 
@@ -23,7 +22,8 @@
             android:layout_gravity="center_vertical"
             android:id="@+id/from_label"
             android:paddingTop="8dp"
-            android:paddingRight="8dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:minWidth="50dp"
             android:text="@string/recipient_from"
@@ -62,8 +62,7 @@
                 android:layout_margin="8dp"
                 android:id="@+id/crypto_special_inline"
                 app:srcCompat="@drawable/compatibility"
-                android:tint="@color/light_black"
-                />
+                app:tint="@color/light_black" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -72,8 +71,7 @@
                 android:layout_margin="8dp"
                 android:id="@+id/crypto_special_sign_only"
                 app:srcCompat="@drawable/status_signature"
-                android:tint="?attr/openpgp_blue"
-                />
+                app:tint="?attr/openpgp_blue" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -87,16 +85,14 @@
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
                     app:srcCompat="@drawable/status_signature"
-                    android:tint="?attr/openpgp_blue"
-                    />
+                    app:tint="?attr/openpgp_blue" />
 
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:layout_gravity="right|bottom"
+                    android:layout_gravity="end|bottom"
                     app:srcCompat="@drawable/compatibility"
-                    android:tint="@color/light_black"
-                    />
+                    app:tint="@color/light_black" />
             </FrameLayout>
 
         </com.fsck.k9.view.ToolableViewAnimator>
@@ -105,7 +101,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
             android:clipChildren="false"
             android:id="@+id/crypto_status_anchor"
@@ -127,8 +122,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/crypto_status_disabled"
                     app:srcCompat="@drawable/status_lock_disabled"
-                    android:tint="?attr/openpgp_dark_grey"
-                    />
+                    app:tint="?attr/openpgp_dark_grey" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -136,8 +130,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/crypto_status_enabled"
                     app:srcCompat="@drawable/status_lock"
-                    android:tint="?attr/openpgp_green"
-                    />
+                    app:tint="?attr/openpgp_green" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -148,18 +141,16 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
+                        android:layout_gravity="start|center_vertical"
                         app:srcCompat="@drawable/status_dots"
-                        android:tint="?attr/openpgp_grey"
-                        />
+                        app:tint="?attr/openpgp_grey" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
+                        android:layout_gravity="start|center_vertical"
                         app:srcCompat="@drawable/status_lock_dots_3"
-                        android:tint="?attr/openpgp_green"
-                        />
+                        app:tint="?attr/openpgp_green" />
 
                 </FrameLayout>
 
@@ -169,8 +160,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/crypto_status_error"
                     app:srcCompat="@drawable/status_lock_error"
-                    android:tint="?attr/openpgp_red"
-                    />
+                    app:tint="?attr/openpgp_red" />
 
             </com.fsck.k9.view.ToolableViewAnimator>
 
@@ -180,9 +170,6 @@
             android:id="@+id/reply_to_expander_container"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_margin="12dp"
             android:inAnimation="@anim/fade_in"
@@ -228,7 +215,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:paddingRight="8dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:minWidth="50dp"
             android:id="@+id/reply_to_label"
@@ -269,7 +257,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:paddingTop="8dp"
-            android:paddingRight="8dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:id="@+id/to_label"
             android:labelFor="@+id/to"
@@ -282,9 +271,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/to_label"
             android:layout_toEndOf="@id/to_label"
-            android:layout_marginRight="30dp"
             android:layout_marginEnd="30dp"
             android:inputType="textEmailAddress|textMultiLine"
             android:imeOptions="actionNext"
@@ -300,7 +287,6 @@
         <ViewAnimator
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:id="@+id/recipient_expander_container"
@@ -345,7 +331,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:paddingRight="8dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:minWidth="50dp"
             android:id="@+id/cc_label"
@@ -391,7 +378,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:paddingRight="8dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:minWidth="50dp"
             android:id="@+id/bcc_label"

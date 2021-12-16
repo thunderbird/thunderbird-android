@@ -13,7 +13,6 @@
 
     <!-- Used in the about dialog -->
     <string name="app_authors">The K-9 Dog Walkers</string>
-    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="source_code">Source code</string>
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="about_project_title">Open Source Project</string>
@@ -77,7 +76,6 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- === General strings ================================================================== -->
 
     <string name="authors">Authors</string>
-    <string name="app_revision">Revision Information</string>
 
     <string name="read_messages_label">Read Emails</string>
     <string name="read_messages_desc">Allows this application to read your Emails.</string>
@@ -86,7 +84,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="about_title">About K-9 Mail</string>
     <string name="accounts_title">Accounts</string>
-    <string name="folders_title">Folders</string>
     <string name="advanced">Advanced</string>
 
     <string name="compose_title_compose">Compose</string>
@@ -100,14 +97,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="choose_folder_move_title">Move to…</string>
     <string name="choose_folder_copy_title">Copy to…</string>
 
-    <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_loading_account_folder_headers">Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_sending_account">Sending <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-
-    <string name="status_syncing_off">Syncing disabled</string>
-
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
     <string name="next_action">Next</string>
     <string name="previous_action">Previous</string>
@@ -115,10 +104,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="okay_action">OK</string>
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
-    <string name="send_again_action">Send Again</string>
     <string name="empty_subject">Subject is empty, click again to send anyway</string>
-    <string name="select_action">Select</string>
-    <string name="deselect_action">Deselect</string>
     <string name="reply_action">Reply</string>
     <string name="reply_all_action">Reply all</string>
     <string name="delete_action">Delete</string>
@@ -144,6 +130,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="search_action">Search</string>
     <string name="search_everywhere_action">Search everywhere</string>
     <string name="search_results">Search results</string>
+    <string name="new_messages_title">New messages</string>
     <string name="preferences_action">Settings</string>
     <string name="folders_action">Manage folders</string>
     <string name="account_settings_action">Account settings</string>
@@ -193,10 +180,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>
 
-    <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" shrunk from <xliff:g id="oldSize">%s</xliff:g> to <xliff:g id="newSize">%s</xliff:g></string>
-
-    <string name="compacting_account">Compacting account \"<xliff:g id="account">%s</xliff:g>\"</string>
-
     <string name="notification_new_title">New mail</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> new message</item>
@@ -213,6 +196,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_action_archive">Archive</string>
     <string name="notification_action_archive_all">Archive All</string>
     <string name="notification_action_spam">Spam</string>
+    <string name="notification_certificate_error_public">Certificate error</string>
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
 
@@ -245,6 +229,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
     <string name="debug_enable_sensitive_logging_title">Log sensitive information</string>
     <string name="debug_enable_sensitive_logging_summary">May show passwords in logs.</string>
+    <string name="debug_export_logs_title">Export logs</string>
+    <string name="debug_export_logs_success">Export successful. Logs might contain sensitive information. Be careful who you send them to.</string>
+    <string name="debug_export_logs_failure">Export failed.</string>
 
     <string name="message_list_load_more_messages_action">Load more messages</string>
     <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -274,22 +261,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
-    <string name="message_view_attachment_view_action">Open</string>
-    <string name="message_view_attachment_download_action">Save</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment.</string>
     <string name="message_view_show_pictures_action">Show pictures</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>
-    <string name="message_view_toast_unable_to_display_message">Unable to display message</string>
     <string name="message_view_sender_label">via %1$s</string>
-
-    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
-    <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
-    <string name="message_additional_headers_retrieval_failed">The retrieval of additional headers from the database or mail server failed.</string>
 
     <string name="from_same_sender">More from this sender</string>
     <string name="search_from_format">From <xliff:g id="sender">%s</xliff:g></string>
-    <string name="debug_delete_local_body">Debug / Clear message body</string>
 
     <string name="message_discarded_toast">Message discarded</string>
     <string name="message_saved_toast">Message saved as draft</string>
@@ -339,7 +318,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_lock_screen_notification_visibility_title">Lock Screen Notifications</string>
     <string name="global_settings_lock_screen_notification_visibility_nothing">No lock screen notifications</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Application name</string>
-    <string name="global_settings_lock_screen_notification_visibility_message_count">Unread message count</string>
+    <string name="global_settings_lock_screen_notification_visibility_message_count">New message count</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">Message count and senders</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">Same as when screen unlocked</string>
 
@@ -353,7 +332,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_email_hint">Email address</string>
     <string name="account_setup_basics_password_hint">Password</string>
-    <string name="account_setup_basics_show_password">Show password</string>
 
     <!-- Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app -->
     <string name="account_setup_basics_show_password_need_lock">To view your password here, enable screen lock on this device.</string>
@@ -426,12 +404,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_auto_expand_folder">Auto-expand folder</string>
 
     <string name="account_setup_incoming_webdav_path_prefix_label">OWA path</string>
-    <string name="account_setup_incoming_webdav_path_prefix_hint">Optional</string>
 
     <string name="account_setup_incoming_webdav_auth_path_label">Authentication path</string>
-    <string name="account_setup_incoming_webdav_auth_path_hint">Optional</string>
     <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox alias</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_hint">Optional</string>
 
     <string name="account_setup_outgoing_title">Outgoing server settings</string>
     <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
@@ -447,8 +422,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_setup_options_title">Account options</string>
 
-    <string name="compact_action">Compact account</string>
-
     <string name="account_setup_options_mail_check_frequency_label">Folder poll frequency</string>
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
     <string name="account_setup_options_mail_check_frequency_15min">Every 15 minutes</string>
@@ -460,8 +433,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_options_mail_check_frequency_12hour">Every 12 hours</string>
     <string name="account_setup_options_mail_check_frequency_24hour">Every 24 hours</string>
 
-    <string name="account_setup_options_enable_push_label">Enable push mail for this account</string>
-    <string name="account_setup_options_enable_push_summary">If your server supports it, new messages will appear instantly. This option can dramatically improve or hurt performance.</string>
     <string name="idle_refresh_period_label">Refresh IDLE connection</string>
     <string name="idle_refresh_period_2min">Every 2 minutes</string>
     <string name="idle_refresh_period_3min">Every 3 minutes</string>
@@ -473,7 +444,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="idle_refresh_period_60min">Every 60 minutes</string>
 
     <string name="account_setup_options_notify_label">Notify me when mail arrives</string>
-    <string name="account_setup_options_notify_sync_label">Notify me while mail is being checked</string>
 
     <string name="account_setup_options_mail_display_count_label">Number of messages to display</string>
     <string name="account_setup_options_mail_display_count_10">10 messages</string>
@@ -579,7 +549,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">The accent color of this account used in folder and account list</string>
-    <string name="account_settings_color_none">No color</string>
 
     <string name="account_settings_led_color_label">Notification LED color</string>
     <string name="account_settings_led_color_summary">The color your device LED should blink for this account</string>
@@ -837,12 +806,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
     <string name="show_starred_count_title">Show starred count</string>
 
-    <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="unread_modifier"> - Unread</string>
-
-    <string name="search_all_messages_title">All messages</string>
-    <string name="search_all_messages_detail">All messages in searchable folders</string>
-
     <string name="integrated_inbox_title">Unified Inbox</string>
     <string name="integrated_inbox_detail">All messages in unified folders</string>
 
@@ -883,8 +846,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_message_view_subject">Subject</string>
     <string name="font_size_message_view_date">Time and date</string>
     <string name="font_size_message_view_content">Message body</string>
-    <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-    <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
 
     <string name="font_size_message_compose">Message composition</string>
     <string name="font_size_message_compose_input">Text input fields</string>
@@ -1204,8 +1165,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="mail_list_widget_loading">Loading messages…</string>
-    <string name="fetching_folders_failed">Fetching folder list failed</string>
-    <string name="error_recipient_crypto_retrieve">Error retrieving recipient status from OpenPGP provider!</string>
 
     <string name="openpgp_enabled_error_title">Encryption not possible</string>
     <string name="openpgp_enabled_error_msg">Some of the selected recipients don\'t support this feature!</string>
@@ -1261,9 +1220,6 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
-
-    <string name="navigation_drawer_open">Open</string>
-    <string name="navigation_drawer_close">Close</string>
 
     <!-- permissions -->
     <string name="permission_contacts_rationale_title">Allow access to contacts</string>

@@ -79,6 +79,16 @@ interface MessageStore {
     fun setMessageFlag(folderId: Long, messageServerId: String, flag: Flag, set: Boolean)
 
     /**
+     * Set whether a message should be considered as new.
+     */
+    fun setNewMessageState(folderId: Long, messageServerId: String, newMessage: Boolean)
+
+    /**
+     * Clear the new message state for all messages.
+     */
+    fun clearNewMessageState()
+
+    /**
      * Retrieve the server ID for a given message.
      */
     fun getMessageServerId(messageId: Long): String
@@ -170,6 +180,11 @@ interface MessageStore {
      * For the Outbox the total number of messages will be returned.
      */
     fun <T> getDisplayFolders(displayMode: FolderMode, outboxFolderId: Long?, mapper: FolderMapper<T>): List<T>
+
+    /**
+     * Check if all given folders are included in the Unified Inbox.
+     */
+    fun areAllIncludedInUnifiedInbox(folderIds: Collection<Long>): Boolean
 
     /**
      * Find a folder with the given server ID and return its store ID.

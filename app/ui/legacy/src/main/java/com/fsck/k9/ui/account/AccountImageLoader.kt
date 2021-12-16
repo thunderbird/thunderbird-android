@@ -1,10 +1,10 @@
 package com.fsck.k9.ui.account
 
-import android.app.Activity
 import android.content.Context
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.fsck.k9.ui.helper.findActivity
 
 /**
  * Load the account image into an [ImageView].
@@ -28,7 +28,7 @@ class AccountImageLoader(private val accountFallbackImageProvider: AccountFallba
     }
 
     private inline fun Context.ifNotDestroyed(block: (Context) -> Unit) {
-        if ((this as? Activity)?.isDestroyed == true) {
+        if (findActivity()?.isDestroyed == true) {
             // Do nothing because Glide would throw an exception
         } else {
             block(this)

@@ -70,6 +70,7 @@ class MessageListFragment :
     private val folderNameFormatter: FolderNameFormatter by lazy { folderNameFormatterFactory.create(requireContext()) }
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
+    private val clock: Clock by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -121,6 +122,9 @@ class MessageListFragment :
 
     private val isUnifiedInbox: Boolean
         get() = localSearch.id == SearchAccount.UNIFIED_INBOX
+
+    private val isNewMessagesView: Boolean
+        get() = localSearch.id == SearchAccount.NEW_MESSAGES
 
     /**
      * `true` after [.onCreate] was executed. Used in [.updateTitle] to
@@ -252,7 +256,7 @@ class MessageListFragment :
             contactsPictureLoader = ContactPicture.getContactPictureLoader(),
             listItemListener = this,
             appearance = messageListAppearance,
-            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), Clock.INSTANCE)
+            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock)
         )
 
         adapter.activeMessage = activeMessage
@@ -325,6 +329,7 @@ class MessageListFragment :
     private fun setWindowTitle() {
         val title = when {
             isUnifiedInbox -> getString(R.string.integrated_inbox_title)
+            isNewMessagesView -> getString(R.string.new_messages_title)
             isManualSearch -> getString(R.string.search_results)
             isThreadDisplay -> threadTitle ?: ""
             isSingleFolderMode -> currentFolder!!.displayName
@@ -412,6 +417,10 @@ class MessageListFragment :
     }
 
     override fun onDestroyView() {
+        if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
+            messagingController.clearNewMessages(account)
+        }
+
         savedListState = listView.onSaveInstanceState()
         super.onDestroyView()
     }
@@ -467,7 +476,8 @@ class MessageListFragment :
         messagingController.addListener(activityListener)
 
         for (account in localSearch.getAccounts(preferences)) {
-            messagingController.cancelNotificationsForAccount(account)
+            // TODO: Only remove notifications for messages in the currently displayed message list
+            messagingController.removeNotificationsForAccount(account)
         }
 
         updateTitle()

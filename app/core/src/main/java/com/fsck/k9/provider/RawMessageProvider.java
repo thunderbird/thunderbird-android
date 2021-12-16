@@ -99,8 +99,7 @@ public class RawMessageProvider extends ContentProvider {
 
     private long computeMessageSize(LocalMessage message) {
         // TODO: Store message size in database when saving message so this can be a simple lookup instead.
-        try {
-            CountingOutputStream countingOutputStream = new CountingOutputStream();
+        try (CountingOutputStream countingOutputStream = new CountingOutputStream()) {
             message.writeTo(countingOutputStream);
             return countingOutputStream.getCount();
         } catch (IOException | MessagingException e) {

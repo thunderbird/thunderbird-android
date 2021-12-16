@@ -7,11 +7,21 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
 
     <application>
+
         <provider
-            android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="${applicationId}.workmanager-init"
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            tools:node="remove" />
+            tools:node="merge">
+
+            <!-- We initialize WorkManager manually -->
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+
+        </provider>
+
     </application>
 
 </manifest>

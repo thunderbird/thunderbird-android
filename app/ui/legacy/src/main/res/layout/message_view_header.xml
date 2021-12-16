@@ -17,7 +17,8 @@
         <View
             android:id="@+id/chip"
             android:layout_width="8dip"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:background="#FF1976D2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +53,7 @@
                     android:layout_gravity="center"
                     android:padding="6dp"
                     app:srcCompat="@drawable/status_lock_disabled"
-                    android:tint="?attr/openpgp_grey"
+                    app:tint="?attr/openpgp_grey"
                     android:background="?selectableItemBackground"
                     android:visibility="gone"
                     />
@@ -84,8 +85,9 @@
                         android:id="@+id/contact_badge"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp" />
+                        tools:src="@drawable/ic_contact_picture"/>
 
                     <!-- State icons -->
                     <LinearLayout
@@ -102,14 +104,16 @@
                             android:id="@+id/answered"
                             android:layout_width="32sp"
                             android:layout_height="32sp"
-                            android:paddingRight="2dip"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="2dp"
                             android:background="?attr/messageListAnswered" />
 
                         <View
                             android:id="@+id/forwarded"
                             android:layout_width="22sp"
                             android:layout_height="22sp"
-                            android:paddingRight="4dip"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="4dp"
                             android:background="?attr/messageListForwarded" />
 
                     </LinearLayout>
@@ -120,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="6dip"
-                    android:layout_marginLeft="2dp" >
+                    android:layout_marginStart="2dp" >
 
                     <!-- From -->
                     <TextView
@@ -128,11 +132,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/status_icon_strip"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/status_icon_strip"
                         android:layout_alignBottom="@+id/status_icon_strip"
                         android:paddingTop="0dp"
-                        android:paddingRight="6dip"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="6dp"
                         android:singleLine="true"
                         android:ellipsize="end"
                         android:textColor="?android:attr/textColorPrimary"
@@ -147,8 +152,8 @@
                         android:id="@+id/sender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/status_icon_strip"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/status_icon_strip"
                         android:paddingTop="0dp"
                         android:layout_below="@+id/from"
                         android:ellipsize="end"
@@ -164,10 +169,11 @@
                         android:id="@+id/to_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/from"
+                        android:layout_alignStart="@+id/from"
                         android:layout_alignBaseline="@+id/to"
                         android:paddingTop="2dp"
-                        android:paddingRight="4dp"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="4dp"
                         android:text="@string/message_to_label"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textAppearance="@style/TextAppearance.K9.MediumSmall"
@@ -177,7 +183,7 @@
                         android:id="@+id/to"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/to_label"
+                        android:layout_toEndOf="@+id/to_label"
                         android:layout_below="@+id/sender"
                         android:maxLines="2"
                         android:ellipsize="end"
@@ -191,10 +197,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/to_label"
-                        android:layout_alignLeft="@+id/to_label"
+                        android:layout_alignStart="@+id/to_label"
                         android:layout_alignBaseline="@+id/cc"
                         android:paddingTop="2dp"
-                        android:paddingRight="4dp"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="4dp"
                         android:text="@string/message_view_cc_label"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textStyle="bold"
@@ -204,7 +211,7 @@
                         android:id="@+id/cc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/cc_label"
+                        android:layout_toEndOf="@+id/cc_label"
                         android:layout_below="@+id/to"
                         android:maxLines="2"
                         android:ellipsize="end"
@@ -218,10 +225,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/cc_label"
-                        android:layout_alignLeft="@+id/cc_label"
+                        android:layout_alignStart="@+id/cc_label"
                         android:layout_alignBaseline="@+id/bcc"
                         android:paddingTop="2dp"
-                        android:paddingRight="4dp"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="4dp"
                         android:text="@string/message_view_bcc_label"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textStyle="bold"
@@ -231,7 +239,7 @@
                         android:id="@+id/bcc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/bcc_label"
+                        android:layout_toEndOf="@+id/bcc_label"
                         android:layout_below="@+id/cc"
                         android:maxLines="2"
                         android:ellipsize="end"
@@ -245,7 +253,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/bcc"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:paddingTop="8dp"
                         android:singleLine="true"
                         android:ellipsize="none"
@@ -256,7 +264,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:id="@+id/status_icon_strip"

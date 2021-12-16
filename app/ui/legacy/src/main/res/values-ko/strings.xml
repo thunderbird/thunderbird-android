@@ -7,7 +7,6 @@
   <string name="shortcuts_title">K-9 계정</string>
   <string name="unread_widget_label">K-9 읽지 않은 메일</string>
   <!--Used in the about dialog-->
-  <string name="app_copyright_fmt">저작권: 2008년 -<xliff:g>%s</xliff:g> The K-9 Dog Walkers. 일부의 저작권: 2006년-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 메일을 사용하시게 된 것을 환영합니다</string>
   <!--Default signature-->
@@ -20,7 +19,6 @@
   <string name="delete_messages_label">이메일 삭제</string>
   <string name="delete_messages_desc">K-9이 이메일을 삭제하도록 합니다</string>
   <string name="accounts_title">계정</string>
-  <string name="folders_title">폴더</string>
   <string name="advanced">고급</string>
   <string name="compose_title_compose">작성</string>
   <string name="compose_title_reply">답장</string>
@@ -29,12 +27,6 @@
   <string name="compose_title_forward_as_attachment">첨부 파일 형태로 전달</string>
   <string name="choose_account_title">계정 선택</string>
   <string name="choose_folder_title">폴더 선택</string>
-  <string name="status_loading_account_folder"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g> 받는 중</string>
-  <string name="status_loading_account_folder_headers"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g> 헤더 정보 가져 오는 중</string>
-  <string name="status_sending_account"><xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g> 보내는 중</string>
-  <string name="status_processing_account"><xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g> 처리 중</string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">동기화 비활성화</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택</string>
   <string name="next_action">다음</string>
   <string name="previous_action">이전</string>
@@ -42,10 +34,7 @@
   <string name="okay_action">확인</string>
   <string name="cancel_action">취소</string>
   <string name="send_action">전송</string>
-  <string name="send_again_action">재전송</string>
   <string name="empty_subject">제목이 비어있지만, 재클릭시 전송</string>
-  <string name="select_action">선택</string>
-  <string name="deselect_action">선택 해제</string>
   <string name="reply_action">회신</string>
   <string name="reply_all_action">전체회신</string>
   <string name="delete_action">지우기</string>
@@ -99,8 +88,6 @@
   <string name="status_invalid_id_error">메시지를 찾을 수 없습니다</string>
   <string name="status_loading_error">메시지 로딩 에러</string>
   <string name="load_more_messages_fmt">최대 <xliff:g id="messages_to_load">%d</xliff:g>개 더 불러오기</string>
-  <string name="account_size_changed">\"<xliff:g id="account">%s</xliff:g>\" 계정이 차지하는 용량이 <xliff:g id="oldSize">%s</xliff:g> 에서 <xliff:g id="newSize">%s</xliff:g> 로 줄었습니다</string>
-  <string name="compacting_account">계정 최적화 \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">새 메일</string>
   <plurals name="notification_new_messages_title">
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 새 메세지</item>
@@ -161,19 +148,12 @@
   <string name="message_to_label">수신자:</string>
   <string name="message_view_cc_label">참조:</string>
   <string name="message_view_bcc_label">Bcc:</string>
-  <string name="message_view_attachment_view_action">열기</string>
-  <string name="message_view_attachment_download_action">저장</string>
   <string name="message_view_show_pictures_action">그림 보기</string>
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>에 대한 뷰어를 찾을 수 없습니다.</string>
   <string name="message_view_download_remainder">메시지의 남은 부분 다운로드</string>
-  <string name="message_view_toast_unable_to_display_message">메시지를 볼 수 없습니다.</string>
   <string name="message_view_sender_label">%1$s을 통하여</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">모든 헤더의 다운로드가 완료되었습니다. 더 이상 보여 줄 헤더 정보가 없습니다.</string>
-  <string name="message_additional_headers_retrieval_failed">이 데이터베이스 혹은 메일 서버에서 더 이상의 헤더 정보를 가져오는데 실패했습니다.</string>
   <string name="from_same_sender">이 발신자에 대한 추가 작업</string>
   <string name="search_from_format"><xliff:g id="sender">%s</xliff:g>이 씀:</string>
-  <string name="debug_delete_local_body">디버그 / 메세지 바디 초기화</string>
   <string name="message_discarded_toast">삭제됨</string>
   <string name="message_saved_toast">임시 보관함에 저장되었습니다</string>
   <string name="global_settings_flag_label">별표 보기</string>
@@ -206,10 +186,6 @@
   <string name="global_settings_privacy_hide_useragent">메일 클라이언트를 숨김</string>
   <string name="global_settings_privacy_hide_useragent_detail">메일 헤더에서 K-9 User Agent 제거</string>
   <string name="global_settings_privacy_hide_timezone">시간 구역을 숨기기</string>
-  <string name="global_settings_notification_hide_subject_title">알림에 제목 숨기기</string>
-  <string name="global_settings_notification_hide_subject_never">하지 않음</string>
-  <string name="global_settings_notification_hide_subject_when_locked">폰이 잠겨 있을 때</string>
-  <string name="global_settings_notification_hide_subject_always">항상</string>
   <string name="global_settings_notification_quick_delete_title">\'삭제\' 버튼 보이기</string>
   <string name="global_settings_notification_quick_delete_never">하지 않음</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">알림에 메시지가 하나뿐일 때만</string>
@@ -217,7 +193,6 @@
   <string name="global_settings_lock_screen_notification_visibility_title">잠금 화면 알림</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">잠금 화면 알림 없음</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">앱 이름</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">읽지 않은 메세지 개수</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">메세지 개수와 발신자</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">화면이 잠금 해제되었을때와 동일</string>
   <string name="quiet_time">무음 시간</string>
@@ -228,7 +203,6 @@
   <string name="account_setup_basics_title">계정 추가</string>
   <string name="account_setup_basics_email_hint">이메일 주소</string>
   <string name="account_setup_basics_password_hint">비밀번호</string>
-  <string name="account_setup_basics_show_password">암호 표시</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">수동 설정</string>
   <string name="account_setup_check_settings_title"/>
@@ -270,8 +244,6 @@
   <string name="account_setup_incoming_mobile_label">모바일 네트워크</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">기타</string>
-  <string name="local_storage_provider_external_label">외부 저장장치(SD card)</string>
-  <string name="local_storage_provider_internal_label">일반적인 내부 저장장치</string>
   <string name="account_setup_expunge_policy_label">삭제된 메시지를 제거</string>
   <string name="account_setup_expunge_policy_immediately">즉시</string>
   <string name="account_setup_expunge_policy_on_poll">수신 시</string>
@@ -286,11 +258,8 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">설정한 폴더만 보기</string>
   <string name="account_setup_auto_expand_folder">폴더 자동 펼치기</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA 경로</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">옵션</string>
   <string name="account_setup_incoming_webdav_auth_path_label">인증 경로</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">옵션</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">편지함 별명</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">옵션</string>
   <string name="account_setup_outgoing_title">보내기 서버 설정</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP 서버</string>
   <string name="account_setup_outgoing_port_label">포트번호</string>
@@ -301,7 +270,6 @@
   <string name="account_setup_outgoing_authentication_label">인증 유형</string>
   <string name="account_setup_bad_uri">잘못된 설정: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">계정 옵션</string>
-  <string name="compact_action">최적화</string>
   <string name="account_setup_options_mail_check_frequency_label">폴더 수신 빈도</string>
   <string name="account_setup_options_mail_check_frequency_never">하지 않음</string>
   <string name="account_setup_options_mail_check_frequency_15min">15분마다</string>
@@ -312,8 +280,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">6시간마다</string>
   <string name="account_setup_options_mail_check_frequency_12hour">12시간마다</string>
   <string name="account_setup_options_mail_check_frequency_24hour">24시간마다</string>
-  <string name="account_setup_options_enable_push_label">이 계정의 푸시 메일 사용</string>
-  <string name="account_setup_options_enable_push_summary">만약 해당 계정 서버가 푸시를 지원할 경우 새로운 메시지가 있을 경우 바로 보여질 것입니다. 이 기능은 성능을 매우 향상시킬 수 있습니다.</string>
   <string name="idle_refresh_period_label">IDLE 연결 새로고침</string>
   <string name="idle_refresh_period_2min">2분마다</string>
   <string name="idle_refresh_period_3min">3분마다</string>
@@ -324,7 +290,6 @@
   <string name="idle_refresh_period_48min">48분마다</string>
   <string name="idle_refresh_period_60min">60분마다</string>
   <string name="account_setup_options_notify_label">메일 도착시 알림</string>
-  <string name="account_setup_options_notify_sync_label">메일 확인시 알림</string>
   <string name="account_setup_options_mail_display_count_label">화면에 보여질 메시지 수</string>
   <string name="account_setup_options_mail_display_count_10">10 메시지</string>
   <string name="account_setup_options_mail_display_count_25">25 메시지</string>
@@ -346,8 +311,6 @@
   <string name="account_setup_failed_dlg_continue_action">계속</string>
   <string name="account_settings_push_advanced_title">고급</string>
   <string name="account_settings_title_fmt">계정 설정</string>
-  <string name="account_settings_default_label">기본 계정</string>
-  <string name="account_settings_default_summary">보내기 기본 계정으로 사용합니다</string>
   <string name="account_settings_notify_label">새 메일 알림</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">알림 폴더</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">모두</string>
@@ -580,10 +543,6 @@
   <string name="volume_navigation_title">볼륨 키 탐색</string>
   <string name="volume_navigation_message">메시지 뷰</string>
   <string name="volume_navigation_list">다양한 리스트 뷰</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier"> - 읽지 않은 메일 수</string>
-  <string name="search_all_messages_title">모든 편지</string>
-  <string name="search_all_messages_detail">검색 가능한 모든 편지</string>
   <string name="integrated_inbox_title">통합 편지함</string>
   <string name="integrated_inbox_detail">통합된 폴더의 모든 이메일</string>
   <string name="folder_settings_include_in_integrated_inbox_label">통합</string>
@@ -796,7 +755,6 @@
   <string name="apg_deprecated_ok">알았습니다!</string>
   <string name="apg">APG</string>
   <string name="crypto_no_provider_button">설정으로 움직이기</string>
-  <string name="error_recipient_crypto_retrieve">OpenPGP 제공자가 주는 받는 사람의 상태 확인에 에러가 발생했습니다!</string>
   <string name="openpgp_enabled_error_title">암호화가 불가능합니다</string>
   <string name="openpgp_enabled_error_msg">선택된 몇몇 받는 사람들은 이 기능을 지원하지 않습니다!</string>
   <string name="enable_encryption">암호화 사용</string>
@@ -818,7 +776,5 @@
   <string name="ac_transfer_msg_subject">오토크립트 설정의 메시지</string>
   <string name="switch_on">커져 있음</string>
   <string name="switch_off">꺼 있음</string>
-  <string name="navigation_drawer_open">열기</string>
-  <string name="navigation_drawer_close">닫기</string>
   <!--permissions-->
 </resources>

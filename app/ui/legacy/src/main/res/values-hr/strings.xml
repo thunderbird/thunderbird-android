@@ -8,7 +8,6 @@
   <string name="unread_widget_label">K-9 Nepročitano</string>
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Šetač Pasa</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="app_license">Apache Licenca, Verzija 2.0</string>
   <string name="about_libraries">Knjižnice</string>
   <string name="license">Licenca</string>
@@ -20,14 +19,12 @@
   <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" će biti maknut iz K-9 Maila.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autori</string>
-  <string name="app_revision">Informacije o inačici</string>
   <string name="read_messages_label">Čitanje E-Pošte</string>
   <string name="read_messages_desc">Dopušta ovoj aplikaciji čitanje vaše E-Pošte</string>
   <string name="delete_messages_label">Brisanje E-Pošte</string>
   <string name="delete_messages_desc">Dopušta ovoj aplikaciji brisanje vaše E-Pošte.</string>
   <string name="about_title">O K-9 Mail</string>
   <string name="accounts_title">Računi</string>
-  <string name="folders_title">Mape</string>
   <string name="advanced">Napredno</string>
   <string name="compose_title_compose">Sastavi</string>
   <string name="compose_title_reply">Odgovori</string>
@@ -36,12 +33,6 @@
   <string name="compose_title_forward_as_attachment">Proslijedi kao privitak</string>
   <string name="choose_account_title">Odaberite račun</string>
   <string name="choose_folder_title">Odaberite Mapu</string>
-  <string name="status_loading_account_folder">Provjera <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_loading_account_folder_headers">Dobavljanje zaglavlja <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_sending_account">Šaljem <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Obrađujem <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">Sinhroniziranje je onemogućeno</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> odabrano</string>
   <string name="next_action">Slijedeća</string>
   <string name="previous_action">Prethodna</string>
@@ -49,10 +40,7 @@
   <string name="okay_action">U REDU</string>
   <string name="cancel_action">Otkaži</string>
   <string name="send_action">Pošalji</string>
-  <string name="send_again_action">Pošalji Ponovno</string>
   <string name="empty_subject">Subjekt je prazan, kliknite ponovno da svejedno pošaljete</string>
-  <string name="select_action">Označi</string>
-  <string name="deselect_action">Odznači</string>
   <string name="reply_action">Odgovori</string>
   <string name="reply_all_action">Odgovori svima</string>
   <string name="delete_action">Obriši</string>
@@ -115,8 +103,6 @@
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="account_size_changed">Račun \"<xliff:g id="account">%s</xliff:g>\" smanjeno sa <xliff:g id="oldSize">%s</xliff:g> na <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">Zbijanje računa \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nova pošta</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nova poruka</item>
@@ -183,17 +169,11 @@
   <string name="message_to_label">Za:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
-  <string name="message_view_attachment_view_action">Otvori</string>
-  <string name="message_view_attachment_download_action">Spremi</string>
   <string name="message_view_status_attachment_not_saved">Nije moguće spremiti privitak.</string>
   <string name="message_view_show_pictures_action">Prikaži slike</string>
   <string name="message_view_no_viewer">Ne mogu pronaći preglednik za <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Preuzmi cijelu poruku</string>
-  <string name="message_view_toast_unable_to_display_message">Prikaz poruke nije moguć</string>
   <string name="message_view_sender_label">putem %1$s</string>
-  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_no_additional_headers_available">Sva zaglavlja su preuzeta, ali nema dodatnih zaglavlja za prikaz.</string>
-  <string name="message_additional_headers_retrieval_failed">Dohvat dodatnih zaglavlja iz baze podataka ili poslužitelja pošte nije uspio.</string>
   <string name="from_same_sender">Više od ovog pošiljatelja</string>
   <string name="search_from_format">Od <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Poruka odbačena</string>
@@ -229,10 +209,6 @@
   <string name="global_settings_privacy_hide_useragent_detail">Makni K-9 Korisničkog agenta iz zaglavlja pošte</string>
   <string name="global_settings_privacy_hide_timezone">Sakrij vremensku zonu</string>
   <string name="global_settings_privacy_hide_timezone_detail">Koristi UTC umjesto lokalne vremenske zone u zaglavlju mail-a i zaglavlju odgovora</string>
-  <string name="global_settings_notification_hide_subject_title">Sakrij subjekt u obavijesti</string>
-  <string name="global_settings_notification_hide_subject_never">Nikad</string>
-  <string name="global_settings_notification_hide_subject_when_locked">Kad je uređaj zaključan</string>
-  <string name="global_settings_notification_hide_subject_always">Uvijek</string>
   <string name="global_settings_notification_quick_delete_title">Prikaži gumb \'Obriši\'</string>
   <string name="global_settings_notification_quick_delete_never">Nikada</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Za pojedinačnu obavijest poruke</string>
@@ -240,7 +216,6 @@
   <string name="global_settings_lock_screen_notification_visibility_title">Obavijesti Zaključanog Zaslona</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nema obavijesti zaključanog zaslona</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Naziv aplikacije</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Broj nepročitanih poruka</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Broj poruka i pošiljatelja</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Isto kao kod otključanog zaslona</string>
   <string name="quiet_time">Tiho Vrijeme</string>
@@ -252,7 +227,6 @@
   <string name="account_setup_basics_title">Postavi novi račun</string>
   <string name="account_setup_basics_email_hint">Adresa E-Pošte</string>
   <string name="account_setup_basics_password_hint">Lozinka</string>
-  <string name="account_setup_basics_show_password">Prikaži lozinku</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ručno postavljanje</string>
   <string name="account_setup_check_settings_title"/>
@@ -295,8 +269,6 @@
   <string name="account_setup_incoming_mobile_label">Mobilna</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Ostalo</string>
-  <string name="local_storage_provider_external_label">Vanjska pohrana (SD kartica)</string>
-  <string name="local_storage_provider_internal_label">regularna unutarnja pohrana</string>
   <string name="account_setup_expunge_policy_label">Obriši izbrisane poruke sa poslužitelja</string>
   <string name="account_setup_expunge_policy_immediately">Odmah</string>
   <string name="account_setup_expunge_policy_on_poll">Prilikom provjere</string>
@@ -311,11 +283,8 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Prikaži samo pretplaćene mape</string>
   <string name="account_setup_auto_expand_folder">Automatsko proširivanje mapa</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA putanja</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Opcionalno</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Putanja identifikacije</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Opcionalno</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Alias poštanskog sandučića</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Opcionalno</string>
   <string name="account_setup_outgoing_title">Postavke odlaznog poslužitelja</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP poslužitelj</string>
   <string name="account_setup_outgoing_port_label">Ulaz</string>
@@ -327,7 +296,6 @@
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nije važeća sa \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Nevažeće postavljanje: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Opcije računa</string>
-  <string name="compact_action">Sažmi račun</string>
   <string name="account_setup_options_mail_check_frequency_label">Učestalost provjera mapa</string>
   <string name="account_setup_options_mail_check_frequency_never">Nikad</string>
   <string name="account_setup_options_mail_check_frequency_15min">Svakih 15 minuta</string>
@@ -338,8 +306,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">Svakih 6 sati</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Svakih 12 sati</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Svaka 24 sata</string>
-  <string name="account_setup_options_enable_push_label">Omogući poštu guranja za ovaj račun</string>
-  <string name="account_setup_options_enable_push_summary">Ako vaš poslužitelj podržava, nove poruke će se prikazivati odmah. Ova opcija može dramatično poboljšati ili pogoršati performanse.</string>
   <string name="idle_refresh_period_label">Osvježi BESPOSLENU vezu</string>
   <string name="idle_refresh_period_2min">Svake 2 minute</string>
   <string name="idle_refresh_period_3min">Svake 3 minute</string>
@@ -350,7 +316,6 @@
   <string name="idle_refresh_period_48min">Svakih 48 minuta</string>
   <string name="idle_refresh_period_60min">Svakih 60 minuta</string>
   <string name="account_setup_options_notify_label">Obavijesti me kod primitka pošte</string>
-  <string name="account_setup_options_notify_sync_label">Obavijesti me prilikom provjere pošte</string>
   <string name="account_setup_options_mail_display_count_label">Broj poruka za prikaz</string>
   <string name="account_setup_options_mail_display_count_10">10 poruka</string>
   <string name="account_setup_options_mail_display_count_25">25 poruka</string>
@@ -372,8 +337,6 @@
   <string name="account_setup_failed_dlg_continue_action">Nastavi</string>
   <string name="account_settings_push_advanced_title">Napredno</string>
   <string name="account_settings_title_fmt">Postavke računa</string>
-  <string name="account_settings_default_label">Zadani račun</string>
-  <string name="account_settings_default_summary">Pošalji poštu s ovog računa po zadanom</string>
   <string name="account_settings_notify_label">Nova obavijest pošte</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Mapa obavijesti</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Svi</string>
@@ -427,14 +390,13 @@
   <string name="account_settings_crypto_key">Podešavanje ključa za s kraja na kraj</string>
   <string name="account_settings_crypto_summary_off">OpenPGP aplikacija nije podešena</string>
   <string name="account_settings_crypto_summary_on">Povezano na %s</string>
-  <string name="account_settings_crypto_summary_config">Podešavam...</string>
+  <string name="account_settings_crypto_summary_config">Podešavam…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Pohrani sve skice šifrirano</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Sve skice će biti pohranjene šifrirano</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Šifriraj skice samo ukoliko je šifriranje uključeno</string>
   <string name="account_settings_mail_check_frequency_label">Učestalost provjere mape</string>
   <string name="account_settings_color_label">Boja računa</string>
   <string name="account_settings_color_summary">Oznaka boje za ovaj račun koristi se za mape i popis računa</string>
-  <string name="account_settings_color_none">Bez boje</string>
   <string name="account_settings_led_color_label">Boja LED obavijesti</string>
   <string name="account_settings_led_color_summary">LED boja vašeg uređaja koja bi trebala treptati za ovaj račun</string>
   <string name="account_settings_mail_display_count_label">Veličina lokalne mape</string>
@@ -643,10 +605,6 @@
   <string name="volume_navigation_title">Navigacija tipkama glasnoće</string>
   <string name="volume_navigation_message">U pregledu poruka</string>
   <string name="volume_navigation_list">U pregledu popisa</string>
-  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="unread_modifier">- Nepročitano</string>
-  <string name="search_all_messages_title">Sve poruke</string>
-  <string name="search_all_messages_detail">Sve poruke uključene u mape pretraživanja</string>
   <string name="integrated_inbox_title">Objedinjena Dolazna Pošta</string>
   <string name="integrated_inbox_detail">Sve poruke u objedinjenim mapama</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Objedini</string>
@@ -679,8 +637,6 @@
   <string name="font_size_message_view_subject">Subjekt</string>
   <string name="font_size_message_view_date">Vrijeme i datum</string>
   <string name="font_size_message_view_content">Tijelo poruke</string>
-  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
-  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Sastavljanje poruke</string>
   <string name="font_size_message_compose_input">Polja unosa teksta</string>
   <string name="font_size_default">Zadano</string>
@@ -935,8 +891,7 @@
   <string name="crypto_no_provider_message">Ova e-poruka je šifrirana korištenjem OpenPGP.\nDa bi ste je pročitali, potrebno je da instalirate i postavite odgovarajuću OpenPGP aplikaciju.</string>
   <string name="crypto_no_provider_button">Idi u Postavke</string>
   <string name="mail_list_widget_text">K-9 Popis Poruka</string>
-  <string name="mail_list_widget_loading">Učitavam poruke...</string>
-  <string name="fetching_folders_failed">Dobavljanje popisa mape nije uspjelo</string>
+  <string name="mail_list_widget_loading">Učitavam poruke…</string>
   <string name="openpgp_enabled_error_title">Šifriranje nije moguće</string>
   <string name="enable_encryption">Uključi šifriranje</string>
   <string name="disable_encryption">Onemogući šifriranje</string>
@@ -960,15 +915,13 @@
   <string name="ac_transfer_setting_summary">Sigurno podijeli podešavanja s kraja na kraj sa drugim uređajima</string>
   <string name="ac_transfer_button_send">Pošalji poruku za podešavanje</string>
   <string name="ac_transfer_will_be_sent">Poruka će biti poslana na vašu adresu:</string>
-  <string name="ac_transfer_generating">Generisanje poruke za podešavanje...</string>
+  <string name="ac_transfer_generating">Generisanje poruke za podešavanje…</string>
   <string name="ac_transfer_sending_to">Šaljem poruku:</string>
   <string name="ac_transfer_finish">Da bi završili, otvorite poruku na vašem drugom uređaju i unesite kod podešavanja.</string>
   <string name="ac_transfer_show_code">Prikaži kod podešavanja</string>
   <string name="ac_transfer_error_send">Došlo je do greške prilikom slanja poruke. Molimo provjerite da li ste povezani na mrežu i postavke izlaznog servera.</string>
   <string name="switch_on">Uključeno</string>
   <string name="switch_off">Isključeno</string>
-  <string name="navigation_drawer_open">Otvori</string>
-  <string name="navigation_drawer_close">Zatvori</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Dopusti pristup kontaktima</string>
 </resources>

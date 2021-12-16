@@ -45,7 +45,11 @@ public class MessageWebView extends WebView {
          * will network images that are already in the WebView cache.
          *
          */
-        getSettings().setBlockNetworkLoads(shouldBlockNetworkData);
+        try {
+            getSettings().setBlockNetworkLoads(shouldBlockNetworkData);
+        } catch (SecurityException e) {
+            Timber.e(e, "Failed to unblock network loads. Missing INTERNET permission?");
+        }
     }
 
 

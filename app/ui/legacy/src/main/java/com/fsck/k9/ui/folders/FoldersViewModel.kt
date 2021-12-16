@@ -30,13 +30,20 @@ class FoldersViewModel(
     private val foldersFlow = inputFlow
         .flatMapLatest { account ->
             if (account == null) {
-                flowOf(emptyList())
+                flowOf(0 to emptyList())
             } else {
                 folderRepository.getDisplayFoldersFlow(account)
+                    .map { displayFolders ->
+                        account.accountNumber to displayFolders
+                    }
             }
         }
-        .map { displayFolders ->
-            FolderList(unifiedInbox = createDisplayUnifiedInbox(), folders = displayFolders)
+        .map { (accountNumber, displayFolders) ->
+            FolderList(
+                unifiedInbox = createDisplayUnifiedInbox(),
+                accountId = accountNumber + 1,
+                folders = displayFolders
+            )
         }
         .flowOn(backgroundDispatcher)
 
@@ -68,6 +75,7 @@ class FoldersViewModel(
 
 data class FolderList(
     val unifiedInbox: DisplayUnifiedInbox?,
+    val accountId: Int,
     val folders: List<DisplayFolder>
 )
 

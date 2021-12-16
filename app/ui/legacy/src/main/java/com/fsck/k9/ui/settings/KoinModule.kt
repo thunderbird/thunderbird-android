@@ -5,6 +5,7 @@ import com.fsck.k9.ui.settings.account.AccountSettingsDataStoreFactory
 import com.fsck.k9.ui.settings.account.AccountSettingsViewModel
 import com.fsck.k9.ui.settings.export.SettingsExportViewModel
 import com.fsck.k9.ui.settings.general.GeneralSettingsDataStore
+import com.fsck.k9.ui.settings.general.GeneralSettingsViewModel
 import com.fsck.k9.ui.settings.import.AccountActivator
 import com.fsck.k9.ui.settings.import.SettingsImportResultViewModel
 import com.fsck.k9.ui.settings.import.SettingsImportViewModel
@@ -16,13 +17,21 @@ import org.koin.dsl.module
 val settingsUiModule = module {
     viewModel { SettingsViewModel(accountManager = get()) }
 
+    viewModel { GeneralSettingsViewModel(logFileWriter = get()) }
     factory { GeneralSettingsDataStore(jobManager = get(), themeManager = get(), appLanguageManager = get()) }
     single(named("SaveSettingsExecutorService")) {
         Executors.newSingleThreadExecutor(NamedThreadFactory("SaveSettings"))
     }
 
     viewModel { AccountSettingsViewModel(get(), get(), get()) }
-    single { AccountSettingsDataStoreFactory(get(), get(), get(named("SaveSettingsExecutorService"))) }
+    single {
+        AccountSettingsDataStoreFactory(
+            preferences = get(),
+            jobManager = get(),
+            executorService = get(named("SaveSettingsExecutorService")),
+            notificationChannelManager = get()
+        )
+    }
 
     viewModel { SettingsExportViewModel(context = get(), preferences = get(), settingsExporter = get()) }
     viewModel { SettingsImportViewModel(get(), get()) }

@@ -24,6 +24,7 @@ interface NotificationResourceProvider {
     fun authenticationErrorTitle(): String
     fun authenticationErrorBody(accountName: String): String
 
+    fun certificateErrorTitle(): String
     fun certificateErrorTitle(accountName: String): String
     fun certificateErrorBody(): String
 

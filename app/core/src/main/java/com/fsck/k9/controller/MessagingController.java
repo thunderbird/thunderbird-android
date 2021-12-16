@@ -1316,6 +1316,7 @@ public class MessagingController {
         localFolder.fetch(Collections.singletonList(message), fp, null);
 
         notificationController.removeNewMailNotification(account, message.makeMessageReference());
+        markMessageAsOpened(account, message);
 
         return message;
     }
@@ -1338,15 +1339,39 @@ public class MessagingController {
         return message;
     }
 
-    public void markMessageAsReadOnView(Account account, LocalMessage message)
-            throws MessagingException {
-
-        if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
-            List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
-            setFlag(account, messageIds, Flag.SEEN, true);
-
-            message.setFlagInternal(Flag.SEEN, true);
+    private void markMessageAsOpened(Account account, LocalMessage message) throws MessagingException {
+        if (!message.isSet(Flag.SEEN)) {
+            if (account.isMarkMessageAsReadOnView()) {
+                markMessageAsReadOnView(account, message);
+            } else {
+                // Marking a message as read will automatically mark it as "not new". But if we don't mark the message
+                // as read on opening, we have to manually mark it as "not new".
+                markMessageAsNotNew(account, message);
+            }
         }
+    }
+
+    private void markMessageAsReadOnView(Account account, LocalMessage message) throws MessagingException {
+        List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
+        setFlag(account, messageIds, Flag.SEEN, true);
+
+        message.setFlagInternal(Flag.SEEN, true);
+    }
+
+    private void markMessageAsNotNew(Account account, LocalMessage message) {
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        long folderId = message.getFolder().getDatabaseId();
+        String messageServerId = message.getUid();
+        messageStore.setNewMessageState(folderId, messageServerId, false);
+    }
+
+    public void clearNewMessages(Account account) {
+        put("clearNewMessages", null, () -> clearNewMessagesBlocking(account));
+    }
+
+    private void clearNewMessagesBlocking(Account account) {
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        messageStore.clearNewMessageState();
     }
 
     public void loadAttachment(final Account account, final LocalMessage message, final Part part,
@@ -1525,7 +1550,7 @@ public class MessagingController {
                     OutboxState outboxState = outboxStateRepository.getOutboxState(messageId);
 
                     if (outboxState.getSendState() != SendState.READY) {
-                        Timber.v("Skipping sending message " + message.getUid());
+                        Timber.v("Skipping sending message %s", message.getUid());
                         notificationController.showSendFailedNotification(account,
                                 new MessagingException(message.getSubject()));
                         continue;
@@ -2382,7 +2407,7 @@ public class MessagingController {
                             clearFetchingMailNotification(account);
 
                             if (getUnreadMessageCount(account) == 0) {
-                                notificationController.clearNewMailNotifications(account);
+                                notificationController.clearNewMailNotifications(account, false);
                             }
                         }
                     }
@@ -2468,7 +2493,7 @@ public class MessagingController {
     }
 
     public void deleteAccount(Account account) {
-        notificationController.clearNewMailNotifications(account);
+        notificationController.clearNewMailNotifications(account, false);
         memorizingMessagingListener.removeAccount(account);
     }
 
@@ -2524,8 +2549,14 @@ public class MessagingController {
         }
     }
 
+    public void removeNotificationsForAccount(Account account) {
+        put("removeNotificationsForAccount", null, () -> {
+            notificationController.clearNewMailNotifications(account, false);
+        });
+    }
+
     public void cancelNotificationsForAccount(Account account) {
-        notificationController.clearNewMailNotifications(account);
+        notificationController.clearNewMailNotifications(account, true);
     }
 
     public void cancelNotificationForMessage(Account account, MessageReference messageReference) {
@@ -2613,7 +2644,6 @@ public class MessagingController {
         private final Account account;
         private final MessagingListener listener;
         private final LocalStore localStore;
-        private final int previousUnreadMessageCount;
         private final boolean suppressNotifications;
         private final NotificationState notificationState;
         boolean syncFailed = false;
@@ -2626,8 +2656,6 @@ public class MessagingController {
             this.suppressNotifications = suppressNotifications;
             this.notificationState = notificationState;
             this.localStore = getLocalStoreOrThrow(account);
-
-            previousUnreadMessageCount = getUnreadMessageCount(account);
         }
 
         @Override
@@ -2686,7 +2714,7 @@ public class MessagingController {
                 Timber.v("Creating notification for message %s:%s", localFolder.getName(), message.getUid());
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 boolean silent = notificationState.wasNotified();
-                notificationController.addNewMailNotification(account, message, previousUnreadMessageCount, silent);
+                notificationController.addNewMailNotification(account, message, silent);
                 notificationState.setWasNotified(true);
             }
 
