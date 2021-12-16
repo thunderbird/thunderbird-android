@@ -1351,7 +1351,7 @@ public class MessagingController {
         }
     }
 
-    private void markMessageAsReadOnView(Account account, LocalMessage message) throws MessagingException {
+    public void markMessageAsReadOnView(Account account, LocalMessage message) throws MessagingException {
         List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
         setFlag(account, messageIds, Flag.SEEN, true);
 
