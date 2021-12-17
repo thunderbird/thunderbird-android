@@ -420,8 +420,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf(
             "account_ringtone",
             "account_vibrate",
-            "account_vibrate_pattern",
-            "account_vibrate_times",
+            "account_combined_vibration_pattern",
             "account_led",
         )
 

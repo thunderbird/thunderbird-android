@@ -217,7 +217,7 @@ public class AccountSettingsDescriptions {
                 new V(1, new IntegerResourceSetting(0, R.array.vibrate_pattern_values))
         ));
         s.put("vibrateTimes", Settings.versions(
-                new V(1, new IntegerResourceSetting(5, R.array.vibrate_times_label))
+                new V(1, new IntegerRangeSetting(1, 10, 5))
         ));
         s.put("allowRemoteSearch", Settings.versions(
                 new V(18, new BooleanSetting(true))
