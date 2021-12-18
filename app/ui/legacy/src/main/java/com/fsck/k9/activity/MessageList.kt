@@ -715,7 +715,7 @@ open class MessageList :
     private fun onCustomKeyDown(event: KeyEvent): Boolean {
         if (!event.hasNoModifiers()) return false
 
-        when(event.keyCode) {
+        when (event.keyCode) {
             KeyEvent.KEYCODE_VOLUME_UP -> {
                 if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
                     K9.isUseVolumeKeysForNavigation
@@ -762,7 +762,7 @@ open class MessageList :
             }
         }
 
-        when(if (event.unicodeChar != 0) event.unicodeChar.toChar() else null) {
+        when (if (event.unicodeChar != 0) event.unicodeChar.toChar() else null) {
             'c' -> {
                 messageListFragment!!.onCompose()
                 return true
