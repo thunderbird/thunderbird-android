@@ -739,11 +739,7 @@ open class MessageList :
                 }
             }
             KeyEvent.KEYCODE_DEL -> {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment!!.onDelete()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onDelete()
-                }
+                onDeleteHotKey()
                 return true
             }
             KeyEvent.KEYCODE_DPAD_LEFT -> {
@@ -776,11 +772,7 @@ open class MessageList :
                 return true
             }
             'd' -> {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment!!.onDelete()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onDelete()
-                }
+                onDeleteHotKey()
                 return true
             }
             's' -> {
@@ -869,6 +861,14 @@ open class MessageList :
         }
 
         return false
+    }
+
+    private fun onDeleteHotKey() {
+        if (displayMode == DisplayMode.MESSAGE_LIST) {
+            messageListFragment!!.onDelete()
+        } else if (messageViewFragment != null) {
+            messageViewFragment!!.onDelete()
+        }
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
