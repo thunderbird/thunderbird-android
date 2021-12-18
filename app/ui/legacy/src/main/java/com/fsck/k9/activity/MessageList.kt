@@ -661,7 +661,7 @@ open class MessageList :
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         var eventHandled = false
         if (KeyEvent.ACTION_DOWN == event.action) {
-            eventHandled = onCustomKeyDown(event.keyCode, event)
+            eventHandled = onCustomKeyDown(event)
         }
 
         if (!eventHandled) {
@@ -712,10 +712,10 @@ open class MessageList :
      *
      * @return `true` if this event was consumed.
      */
-    private fun onCustomKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+    private fun onCustomKeyDown(event: KeyEvent): Boolean {
         if (!event.hasNoModifiers()) return false
 
-        when (keyCode) {
+        when (event.keyCode) {
             KeyEvent.KEYCODE_VOLUME_UP -> {
                 if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
                     K9.isUseVolumeKeysForNavigation
@@ -738,107 +738,8 @@ open class MessageList :
                     return true
                 }
             }
-            KeyEvent.KEYCODE_C -> {
-                messageListFragment!!.onCompose()
-                return true
-            }
-            KeyEvent.KEYCODE_O -> {
-                messageListFragment!!.onCycleSort()
-                return true
-            }
-            KeyEvent.KEYCODE_I -> {
-                messageListFragment!!.onReverseSort()
-                return true
-            }
-            KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_D -> {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment!!.onDelete()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onDelete()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_S -> {
-                messageListFragment!!.toggleMessageSelect()
-                return true
-            }
-            KeyEvent.KEYCODE_G -> {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment!!.onToggleFlagged()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onToggleFlagged()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_M -> {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment!!.onMove()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onMove()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_V -> {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment!!.onArchive()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onArchive()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_Y -> {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment!!.onCopy()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onCopy()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_Z -> {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment!!.onToggleRead()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onToggleRead()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_F -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onForward()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_A -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onReplyAll()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_R -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onReply()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_J, KeyEvent.KEYCODE_P -> {
-                if (messageViewFragment != null) {
-                    showPreviousMessage()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_N, KeyEvent.KEYCODE_K -> {
-                if (messageViewFragment != null) {
-                    showNextMessage()
-                }
-                return true
-            }
-            KeyEvent.KEYCODE_H -> {
-                val toast = if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG)
-                } else {
-                    Toast.makeText(this, R.string.message_view_help_key, Toast.LENGTH_LONG)
-                }
-                toast.show()
+            KeyEvent.KEYCODE_DEL -> {
+                onDeleteHotKey()
                 return true
             }
             KeyEvent.KEYCODE_DPAD_LEFT -> {
@@ -857,7 +758,117 @@ open class MessageList :
             }
         }
 
+        when (if (event.unicodeChar != 0) event.unicodeChar.toChar() else null) {
+            'c' -> {
+                messageListFragment!!.onCompose()
+                return true
+            }
+            'o' -> {
+                messageListFragment!!.onCycleSort()
+                return true
+            }
+            'i' -> {
+                messageListFragment!!.onReverseSort()
+                return true
+            }
+            'd' -> {
+                onDeleteHotKey()
+                return true
+            }
+            's' -> {
+                messageListFragment!!.toggleMessageSelect()
+                return true
+            }
+            'g' -> {
+                if (displayMode == DisplayMode.MESSAGE_LIST) {
+                    messageListFragment!!.onToggleFlagged()
+                } else if (messageViewFragment != null) {
+                    messageViewFragment!!.onToggleFlagged()
+                }
+                return true
+            }
+            'm' -> {
+                if (displayMode == DisplayMode.MESSAGE_LIST) {
+                    messageListFragment!!.onMove()
+                } else if (messageViewFragment != null) {
+                    messageViewFragment!!.onMove()
+                }
+                return true
+            }
+            'v' -> {
+                if (displayMode == DisplayMode.MESSAGE_LIST) {
+                    messageListFragment!!.onArchive()
+                } else if (messageViewFragment != null) {
+                    messageViewFragment!!.onArchive()
+                }
+                return true
+            }
+            'y' -> {
+                if (displayMode == DisplayMode.MESSAGE_LIST) {
+                    messageListFragment!!.onCopy()
+                } else if (messageViewFragment != null) {
+                    messageViewFragment!!.onCopy()
+                }
+                return true
+            }
+            'z' -> {
+                if (displayMode == DisplayMode.MESSAGE_LIST) {
+                    messageListFragment!!.onToggleRead()
+                } else if (messageViewFragment != null) {
+                    messageViewFragment!!.onToggleRead()
+                }
+                return true
+            }
+            'f' -> {
+                if (messageViewFragment != null) {
+                    messageViewFragment!!.onForward()
+                }
+                return true
+            }
+            'a' -> {
+                if (messageViewFragment != null) {
+                    messageViewFragment!!.onReplyAll()
+                }
+                return true
+            }
+            'r' -> {
+                if (messageViewFragment != null) {
+                    messageViewFragment!!.onReply()
+                }
+                return true
+            }
+            'j', 'p' -> {
+                if (messageViewFragment != null) {
+                    showPreviousMessage()
+                }
+                return true
+            }
+            'n', 'k' -> {
+                if (messageViewFragment != null) {
+                    showNextMessage()
+                }
+                return true
+            }
+            'h' -> {
+                val toast = if (displayMode == DisplayMode.MESSAGE_LIST) {
+                    Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG)
+                } else {
+                    Toast.makeText(this, R.string.message_view_help_key, Toast.LENGTH_LONG)
+                }
+                toast.show()
+                return true
+            }
+        }
+
         return false
+    }
+
+    private fun onDeleteHotKey() {
+        if (displayMode == DisplayMode.MESSAGE_LIST) {
+            messageListFragment!!.onDelete()
+        } else if (messageViewFragment != null) {
+            messageViewFragment!!.onDelete()
+        }
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
