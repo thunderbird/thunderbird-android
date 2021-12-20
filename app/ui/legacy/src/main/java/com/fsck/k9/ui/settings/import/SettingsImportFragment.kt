@@ -15,13 +15,16 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsImportFragment : Fragment() {
+    private val themeManager: ThemeManager by inject()
     private val viewModel: SettingsImportViewModel by viewModel()
     private val resultViewModel: SettingsImportResultViewModel by sharedViewModel()
 
@@ -113,6 +116,13 @@ class SettingsImportFragment : Fragment() {
                 statusText.text = getString(R.string.settings_import_failure)
             }
             StatusText.HIDDEN -> statusText.text = null
+        }
+
+        if (model.statusText == StatusText.IMPORT_SUCCESS ||
+            model.statusText == StatusText.IMPORT_SUCCESS_PASSWORD_REQUIRED ||
+            model.statusText == StatusText.IMPORT_PARTIAL_FAILURE
+        ) {
+            themeManager.updateAppTheme()
         }
 
         setSettingsList(model.settingsList, model.isSettingsListEnabled)
