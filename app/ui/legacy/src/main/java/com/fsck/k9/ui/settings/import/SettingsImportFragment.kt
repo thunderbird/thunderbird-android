@@ -34,7 +34,7 @@ class SettingsImportFragment : Fragment() {
 
     private val pickDocumentReceiver = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         when (it.resultCode) {
-            REQUEST_PICK_DOCUMENT -> handlePickDocumentResult(it.resultCode, it.data)
+            Activity.RESULT_OK -> handlePickDocumentResult(it.data)
         }
     }
 
@@ -202,9 +202,9 @@ class SettingsImportFragment : Fragment() {
         }
     }
 
-    private fun handlePickDocumentResult(resultCode: Int, data: Intent?) {
+    private fun handlePickDocumentResult(data: Intent?) {
         val contentUri = data?.data
-        if (resultCode == Activity.RESULT_OK && contentUri != null) {
+        if (contentUri != null) {
             viewModel.onDocumentPicked(contentUri)
         } else {
             viewModel.onDocumentPickCanceled()
