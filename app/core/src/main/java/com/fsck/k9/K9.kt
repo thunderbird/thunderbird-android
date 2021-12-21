@@ -119,9 +119,6 @@ object K9 : EarlyInit {
     @JvmStatic
     var k9Language = ""
 
-    var messageViewTheme = SubTheme.USE_GLOBAL
-    var messageComposeTheme = SubTheme.USE_GLOBAL
-
     @JvmStatic
     var isFixedMessageViewTheme = true
 
@@ -367,10 +364,6 @@ object K9 : EarlyInit {
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
 
         k9Language = storage.getString("language", "")
-
-        messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL)
-        messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL)
-        isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
     }
 
     internal fun save(editor: StorageEditor) {
@@ -403,9 +396,6 @@ object K9 : EarlyInit {
         editor.putBoolean("hideTimeZone", isHideTimeZone)
 
         editor.putString("language", k9Language)
-        editor.putEnum("messageViewTheme", messageViewTheme)
-        editor.putEnum("messageComposeTheme", messageComposeTheme)
-        editor.putBoolean("fixedMessageViewTheme", isFixedMessageViewTheme)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)
         editor.putBoolean("confirmDiscardMessage", isConfirmDiscardMessage)
@@ -495,12 +485,6 @@ object K9 : EarlyInit {
     const val PUSH_WAKE_LOCK_TIMEOUT = K9MailLib.PUSH_WAKE_LOCK_TIMEOUT
     const val MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000
     const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
-
-    enum class SubTheme {
-        LIGHT,
-        DARK,
-        USE_GLOBAL
-    }
 
     enum class BACKGROUND_OPS {
         ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC

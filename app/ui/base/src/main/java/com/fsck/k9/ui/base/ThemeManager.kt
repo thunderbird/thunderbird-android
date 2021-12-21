@@ -5,10 +5,9 @@ import android.content.res.Configuration
 import android.os.Build
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
-import com.fsck.k9.K9
-import com.fsck.k9.K9.SubTheme
 import com.fsck.k9.preferences.AppTheme
 import com.fsck.k9.preferences.GeneralSettingsManager
+import com.fsck.k9.preferences.SubTheme
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -28,21 +27,21 @@ class ThemeManager(
         }
 
     val messageViewTheme: Theme
-        get() = resolveTheme(K9.messageViewTheme)
+        get() = resolveTheme(generalSettingsManager.getSettings().messageViewTheme)
 
     val messageComposeTheme: Theme
-        get() = resolveTheme(K9.messageComposeTheme)
+        get() = resolveTheme(generalSettingsManager.getSettings().messageComposeTheme)
 
     @get:StyleRes
     val appThemeResourceId: Int = themeProvider.appThemeResourceId
 
     @get:StyleRes
     val messageViewThemeResourceId: Int
-        get() = getSubThemeResourceId(K9.messageViewTheme)
+        get() = getSubThemeResourceId(generalSettingsManager.getSettings().messageViewTheme)
 
     @get:StyleRes
     val messageComposeThemeResourceId: Int
-        get() = getSubThemeResourceId(K9.messageComposeTheme)
+        get() = getSubThemeResourceId(generalSettingsManager.getSettings().messageComposeTheme)
 
     @get:StyleRes
     val dialogThemeResourceId: Int = themeProvider.dialogThemeResourceId
@@ -77,12 +76,10 @@ class ThemeManager(
 
     fun toggleMessageViewTheme() {
         if (messageViewTheme === Theme.DARK) {
-            K9.messageViewTheme = SubTheme.LIGHT
+            generalSettingsManager.setMessageViewTheme(SubTheme.LIGHT)
         } else {
-            K9.messageViewTheme = SubTheme.DARK
+            generalSettingsManager.setMessageViewTheme(SubTheme.DARK)
         }
-
-        K9.saveSettingsAsync()
     }
 
     private fun getSubThemeResourceId(subTheme: SubTheme): Int = when (subTheme) {

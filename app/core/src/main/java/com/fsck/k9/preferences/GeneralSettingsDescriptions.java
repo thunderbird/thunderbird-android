@@ -18,7 +18,6 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
-import com.fsck.k9.K9.SubTheme;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;

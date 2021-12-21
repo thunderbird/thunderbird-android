@@ -13,7 +13,10 @@ package com.fsck.k9.preferences
 data class GeneralSettings(
     val backgroundSync: BackgroundSync,
     val showRecentChanges: Boolean,
-    val appTheme: AppTheme
+    val appTheme: AppTheme,
+    val messageViewTheme: SubTheme,
+    val messageComposeTheme: SubTheme,
+    val fixedMessageViewTheme: Boolean
 )
 
 enum class BackgroundSync {
@@ -26,4 +29,10 @@ enum class AppTheme {
     LIGHT,
     DARK,
     FOLLOW_SYSTEM
+}
+
+enum class SubTheme {
+    LIGHT,
+    DARK,
+    USE_GLOBAL
 }

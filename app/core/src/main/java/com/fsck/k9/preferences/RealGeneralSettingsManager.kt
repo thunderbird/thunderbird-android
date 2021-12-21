@@ -104,9 +104,24 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(appTheme = appTheme).persist()
     }
 
+    override fun setMessageViewTheme(subTheme: SubTheme) {
+        getSettings().copy(messageViewTheme = subTheme).persist()
+    }
+
+    override fun setMessageComposeTheme(subTheme: SubTheme) {
+        getSettings().copy(messageComposeTheme = subTheme).persist()
+    }
+
+    override fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
+        getSettings().copy(fixedMessageViewTheme = fixedMessageViewTheme).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
+        editor.putEnum("messageViewTheme", settings.messageViewTheme)
+        editor.putEnum("messageComposeTheme", settings.messageComposeTheme)
+        editor.putBoolean("fixedMessageViewTheme", settings.fixedMessageViewTheme)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -115,7 +130,10 @@ internal class RealGeneralSettingsManager(
         val settings = GeneralSettings(
             backgroundSync = K9.backgroundOps.toBackgroundSync(),
             showRecentChanges = storage.getBoolean("showRecentChanges", true),
-            appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM)
+            appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM),
+            messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL),
+            messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL),
+            fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
         )
 
         updateSettingsFlow(settings)
