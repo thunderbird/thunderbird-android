@@ -2,16 +2,16 @@ package com.fsck.k9.ui.settings.general
 
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
-import com.fsck.k9.K9.AppTheme
 import com.fsck.k9.K9.SubTheme
 import com.fsck.k9.job.K9JobManager
+import com.fsck.k9.preferences.AppTheme
+import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.ui.base.AppLanguageManager
-import com.fsck.k9.ui.base.ThemeManager
 
 class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,
-    private val themeManager: ThemeManager,
-    private val appLanguageManager: AppLanguageManager
+    private val appLanguageManager: AppLanguageManager,
+    private val generalSettingsManager: GeneralSettingsManager
 ) : PreferenceDataStore() {
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
@@ -95,7 +95,7 @@ class GeneralSettingsDataStore(
     override fun getString(key: String, defValue: String?): String? {
         return when (key) {
             "language" -> appLanguageManager.getAppLanguage()
-            "theme" -> appThemeToString(K9.appTheme)
+            "theme" -> appThemeToString(generalSettingsManager.getSettings().appTheme)
             "message_compose_theme" -> subThemeToString(K9.messageComposeTheme)
             "messageViewTheme" -> subThemeToString(K9.messageViewTheme)
             "messagelist_preview_lines" -> K9.messageListPreviewLines.toString()
@@ -230,8 +230,7 @@ class GeneralSettingsDataStore(
     }
 
     private fun setTheme(value: String?) {
-        K9.appTheme = stringToAppTheme(value)
-        themeManager.updateAppTheme()
+        generalSettingsManager.setAppTheme(stringToAppTheme(value))
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {

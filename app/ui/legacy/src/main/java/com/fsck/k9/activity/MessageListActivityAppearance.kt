@@ -3,7 +3,6 @@ package com.fsck.k9.activity
 import com.fsck.k9.K9
 
 data class MessageListActivityAppearance(
-    val appTheme: K9.AppTheme,
     val isShowUnifiedInbox: Boolean,
     val isShowMessageListStars: Boolean,
     val isShowCorrespondentNames: Boolean,
@@ -33,7 +32,6 @@ data class MessageListActivityAppearance(
 
     companion object {
         fun create() = MessageListActivityAppearance(
-            appTheme = K9.appTheme,
             isShowUnifiedInbox = K9.isShowUnifiedInbox,
             isShowMessageListStars = K9.isShowMessageListStars,
             isShowCorrespondentNames = K9.isShowCorrespondentNames,

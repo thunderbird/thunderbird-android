@@ -119,9 +119,6 @@ object K9 : EarlyInit {
     @JvmStatic
     var k9Language = ""
 
-    @JvmStatic
-    var appTheme = AppTheme.FOLLOW_SYSTEM
-
     var messageViewTheme = SubTheme.USE_GLOBAL
     var messageComposeTheme = SubTheme.USE_GLOBAL
 
@@ -371,8 +368,6 @@ object K9 : EarlyInit {
 
         k9Language = storage.getString("language", "")
 
-        appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM)
-
         messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL)
         messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL)
         isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
@@ -408,7 +403,6 @@ object K9 : EarlyInit {
         editor.putBoolean("hideTimeZone", isHideTimeZone)
 
         editor.putString("language", k9Language)
-        editor.putEnum("theme", appTheme)
         editor.putEnum("messageViewTheme", messageViewTheme)
         editor.putEnum("messageComposeTheme", messageComposeTheme)
         editor.putBoolean("fixedMessageViewTheme", isFixedMessageViewTheme)
@@ -501,12 +495,6 @@ object K9 : EarlyInit {
     const val PUSH_WAKE_LOCK_TIMEOUT = K9MailLib.PUSH_WAKE_LOCK_TIMEOUT
     const val MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000
     const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
-
-    enum class AppTheme {
-        LIGHT,
-        DARK,
-        FOLLOW_SYSTEM
-    }
 
     enum class SubTheme {
         LIGHT,

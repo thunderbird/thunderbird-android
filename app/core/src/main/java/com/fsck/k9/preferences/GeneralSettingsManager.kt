@@ -12,4 +12,5 @@ interface GeneralSettingsManager {
     fun getSettingsFlow(): Flow<GeneralSettings>
 
     fun setShowRecentChanges(showRecentChanges: Boolean)
+    fun setAppTheme(appTheme: AppTheme)
 }

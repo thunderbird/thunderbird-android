@@ -18,7 +18,6 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
-import com.fsck.k9.K9.AppTheme;
 import com.fsck.k9.K9.SubTheme;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
@@ -463,7 +462,7 @@ public class GeneralSettingsDescriptions {
         @Override
         public AppTheme fromString(String value) throws InvalidSettingValueException {
             try {
-                return K9.AppTheme.valueOf(value);
+                return AppTheme.valueOf(value);
             } catch (IllegalArgumentException e) {
                 throw new InvalidSettingValueException();
             }

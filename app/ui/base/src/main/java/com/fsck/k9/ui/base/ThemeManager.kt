@@ -6,15 +6,22 @@ import android.os.Build
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
 import com.fsck.k9.K9
-import com.fsck.k9.K9.AppTheme
 import com.fsck.k9.K9.SubTheme
+import com.fsck.k9.preferences.AppTheme
+import com.fsck.k9.preferences.GeneralSettingsManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 class ThemeManager(
     private val context: Context,
-    private val themeProvider: ThemeProvider
+    private val themeProvider: ThemeProvider,
+    private val generalSettingsManager: GeneralSettingsManager
 ) {
     val appTheme: Theme
-        get() = when (K9.appTheme) {
+        get() = when (generalSettingsManager.getSettings().appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
             AppTheme.FOLLOW_SYSTEM -> if (Build.VERSION.SDK_INT < 28) Theme.LIGHT else getSystemTheme()
@@ -44,11 +51,17 @@ class ThemeManager(
     val translucentDialogThemeResourceId: Int = themeProvider.translucentDialogThemeResourceId
 
     fun init() {
-        updateAppTheme()
+        generalSettingsManager.getSettingsFlow()
+            .map { it.appTheme }
+            .distinctUntilChanged()
+            .onEach {
+                updateAppTheme(it)
+            }
+            .launchIn(GlobalScope)
     }
 
-    fun updateAppTheme() {
-        val defaultNightMode = when (K9.appTheme) {
+    private fun updateAppTheme(appTheme: AppTheme) {
+        val defaultNightMode = when (appTheme) {
             AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
             AppTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
             AppTheme.FOLLOW_SYSTEM -> {
