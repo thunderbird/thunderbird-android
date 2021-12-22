@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
+import com.fsck.k9.NotificationSetting
 import com.takisoft.preferencex.PreferenceFragmentCompat
 
 /**
@@ -23,10 +24,10 @@ constructor(
     ),
     defStyleRes: Int = 0
 ) : ListPreference(context, attrs, defStyleAttr, defStyleRes) {
-    internal var vibrationPattern: Int = 0
+    internal var vibrationPattern: Int = DEFAULT_VIBRATION_PATTERN
         private set
 
-    internal var vibrationTimes: Int = 1
+    internal var vibrationTimes: Int = DEFAULT_VIBRATION_TIMES
         private set
 
     override fun onSetInitialValue(defaultValue: Any?) {
@@ -53,12 +54,34 @@ constructor(
         updateSummary()
     }
 
+    fun setVibrationPatternFromSystem(combinedPattern: List<Long>?) {
+        if (combinedPattern == null || combinedPattern.size < 2 || combinedPattern.size % 2 != 0) {
+            setVibrationPattern(DEFAULT_VIBRATION_PATTERN, DEFAULT_VIBRATION_TIMES)
+            return
+        }
+
+        val combinedPatternArray = combinedPattern.toLongArray()
+        val vibrationTimes = combinedPattern.size / 2
+        val vibrationPattern = entryValues.asSequence()
+            .map { entryValue -> entryValue.toString().toInt() }
+            .firstOrNull { vibrationPattern ->
+                val testPattern = NotificationSetting.getVibration(vibrationPattern, vibrationTimes)
+
+                testPattern.contentEquals(combinedPatternArray)
+            } ?: DEFAULT_VIBRATION_PATTERN
+
+        setVibrationPattern(vibrationPattern, vibrationTimes)
+    }
+
     private fun updateSummary() {
         val index = entryValues.indexOf(vibrationPattern.toString())
         summary = entries[index]
     }
 
     companion object {
+        private const val DEFAULT_VIBRATION_PATTERN = 0
+        private const val DEFAULT_VIBRATION_TIMES = 1
+
         init {
             PreferenceFragmentCompat.registerPreferenceFragment(
                 VibrationPatternPreference::class.java, VibrationPatternDialogFragment::class.java

@@ -147,13 +147,15 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getNotificationLightConfiguration(account: Account): NotificationLightConfiguration {
+    fun getNotificationConfiguration(account: Account): NotificationConfiguration {
         val channelId = getChannelIdFor(account, ChannelType.MESSAGES)
         val notificationChannel = notificationManager.getNotificationChannel(channelId)
 
-        return NotificationLightConfiguration(
-            isEnabled = notificationChannel.shouldShowLights(),
-            color = notificationChannel.lightColor
+        return NotificationConfiguration(
+            isBlinkLightsEnabled = notificationChannel.shouldShowLights(),
+            lightColor = notificationChannel.lightColor,
+            isVibrationEnabled = notificationChannel.shouldVibrate(),
+            vibrationPattern = notificationChannel.vibrationPattern?.toList()
         )
     }
 
@@ -190,14 +192,14 @@ class NotificationChannelManager(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun NotificationChannel.matches(notificationSetting: NotificationSetting): Boolean {
-        return lightColor == notificationSetting.ledColor
+        return lightColor == notificationSetting.ledColor &&
+            vibrationPattern.contentEquals(notificationSetting.vibration)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun NotificationChannel.copyPropertiesFrom(otherNotificationChannel: NotificationChannel) {
         setShowBadge(otherNotificationChannel.canShowBadge())
         setSound(otherNotificationChannel.sound, otherNotificationChannel.audioAttributes)
-        vibrationPattern = otherNotificationChannel.vibrationPattern
         enableVibration(otherNotificationChannel.shouldVibrate())
         enableLights(otherNotificationChannel.shouldShowLights())
         setBypassDnd(otherNotificationChannel.canBypassDnd())
@@ -210,13 +212,18 @@ class NotificationChannelManager(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun NotificationChannel.copyPropertiesFrom(notificationSetting: NotificationSetting) {
         lightColor = notificationSetting.ledColor
+        if (shouldVibrate()) {
+            vibrationPattern = notificationSetting.vibration
+        }
     }
 
     private val Account.messagesNotificationChannelSuffix: String
         get() = messagesNotificationChannelVersion.let { version -> if (version == 0) "" else "_$version" }
 }
 
-data class NotificationLightConfiguration(
-    val isEnabled: Boolean,
-    val color: Int
+data class NotificationConfiguration(
+    val isBlinkLightsEnabled: Boolean,
+    val lightColor: Int,
+    val isVibrationEnabled: Boolean,
+    val vibrationPattern: List<Long>?
 )
