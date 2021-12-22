@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fsck.k9.ui">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:theme="@style/Theme.K9.Light"
         android:supportsRtl="true" />

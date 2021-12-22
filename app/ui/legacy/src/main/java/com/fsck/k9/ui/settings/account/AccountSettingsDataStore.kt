@@ -136,8 +136,7 @@ class AccountSettingsDataStore(
             "spam_folder" -> loadSpecialFolder(account.spamFolderId, account.spamFolderSelection)
             "trash_folder" -> loadSpecialFolder(account.trashFolderId, account.trashFolderSelection)
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode.name
-            "account_vibrate_pattern" -> account.notificationSetting.vibratePattern.toString()
-            "account_vibrate_times" -> account.notificationSetting.vibrateTimes.toString()
+            "account_combined_vibration_pattern" -> getCombinedVibrationPattern()
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
             "account_ringtone" -> account.notificationSetting.ringtone
             else -> defValue
@@ -181,8 +180,7 @@ class AccountSettingsDataStore(
             "spam_folder" -> saveSpecialFolderSelection(value, account::setSpamFolderId)
             "trash_folder" -> saveSpecialFolderSelection(value, account::setTrashFolderId)
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode = Account.FolderMode.valueOf(value)
-            "account_vibrate_pattern" -> account.notificationSetting.vibratePattern = value.toInt()
-            "account_vibrate_times" -> account.notificationSetting.vibrateTimes = value.toInt()
+            "account_combined_vibration_pattern" -> setCombinedVibrationPattern(value)
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
             "account_ringtone" -> with(account.notificationSetting) {
                 isRingEnabled = true
@@ -247,5 +245,18 @@ class AccountSettingsDataStore(
         }
 
         return prefix + (specialFolderId?.toString() ?: FolderListPreference.NO_FOLDER_VALUE)
+    }
+
+    private fun getCombinedVibrationPattern(): String {
+        return VibrationPatternPreference.encode(
+            vibrationPattern = account.notificationSetting.vibratePattern,
+            vibrationTimes = account.notificationSetting.vibrateTimes
+        )
+    }
+
+    private fun setCombinedVibrationPattern(value: String) {
+        val (vibrationPattern, vibrationTimes) = VibrationPatternPreference.decode(value)
+        account.notificationSetting.vibratePattern = vibrationPattern
+        account.notificationSetting.vibrateTimes = vibrationTimes
     }
 }
