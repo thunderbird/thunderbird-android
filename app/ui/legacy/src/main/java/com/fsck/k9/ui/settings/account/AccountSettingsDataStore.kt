@@ -258,5 +258,6 @@ class AccountSettingsDataStore(
         val (vibrationPattern, vibrationTimes) = VibrationPatternPreference.decode(value)
         account.notificationSetting.vibratePattern = vibrationPattern
         account.notificationSetting.vibrateTimes = vibrationTimes
+        notificationSettingsChanged = true
     }
 }

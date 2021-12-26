@@ -51,6 +51,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val notificationChannelManager: NotificationChannelManager by inject()
     private lateinit var dataStore: AccountSettingsDataStore
     private var notificationLightColorPreference: ColorPickerPreference? = null
+    private var notificationVibrationPatternPreference: VibrationPatternPreference? = null
 
     private val accountUuid: String by lazy {
         checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
@@ -93,7 +94,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         val account = getAccount()
         initializeCryptoSettings(account)
 
-        updateNotificationLightColorPreference(account)
+        maybeUpdateNotificationPreferences(account)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -193,6 +194,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 preference.isEnabled = false
             }
 
+            findPreference<VibrationPatternPreference>(PREFERENCE_NOTIFICATION_VIBRATION_PATTERN)?.let { preference ->
+                notificationVibrationPatternPreference = preference
+                preference.dependency = null
+                preference.isEnabled = false
+            }
+
             PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference<Preference>(it).remove() }
 
             findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES)?.let {
@@ -211,15 +218,29 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    @SuppressLint("NewApi")
-    private fun updateNotificationLightColorPreference(account: Account) {
-        notificationLightColorPreference?.let { preference ->
-            val notificationLightConfiguration = notificationChannelManager.getNotificationLightConfiguration(account)
-            val blinkLightsEnabled = notificationLightConfiguration.isEnabled
+    private fun maybeUpdateNotificationPreferences(account: Account) {
+        if (notificationLightColorPreference != null || notificationVibrationPatternPreference != null) {
+            updateNotificationPreferences(account)
+        }
+    }
 
+    @SuppressLint("NewApi")
+    private fun updateNotificationPreferences(account: Account) {
+        val notificationConfiguration = notificationChannelManager.getNotificationConfiguration(account)
+
+        notificationLightColorPreference?.let { preference ->
+            val blinkLightsEnabled = notificationConfiguration.isBlinkLightsEnabled
             preference.isEnabled = blinkLightsEnabled
             if (blinkLightsEnabled) {
-                preference.color = notificationLightConfiguration.color
+                preference.color = notificationConfiguration.lightColor
+            }
+        }
+
+        notificationVibrationPatternPreference?.let { preference ->
+            val vibrationEnabled = notificationConfiguration.isVibrationEnabled
+            preference.isEnabled = vibrationEnabled
+            if (vibrationEnabled) {
+                preference.setVibrationPatternFromSystem(notificationConfiguration.vibrationPattern)
             }
         }
     }
@@ -412,6 +433,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
         private const val PREFERENCE_NOTIFICATION_LIGHT_COLOR = "led_color"
+        private const val PREFERENCE_NOTIFICATION_VIBRATION_PATTERN = "account_combined_vibration_pattern"
         private const val PREFERENCE_NOTIFICATION_CHANNELS = "notification_channels"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES = "open_notification_settings_messages"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS = "open_notification_settings_miscellaneous"
@@ -420,7 +442,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf(
             "account_ringtone",
             "account_vibrate",
-            "account_combined_vibration_pattern",
             "account_led",
         )
 
