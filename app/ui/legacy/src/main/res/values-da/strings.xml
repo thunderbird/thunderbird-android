@@ -530,13 +530,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="notifications_title">Beskeder</string>
   <string name="account_settings_vibrate_enable">Vibrer</string>
   <string name="account_settings_vibrate_summary">Vibrer når mail ankommer</string>
-  <string name="account_settings_vibrate_pattern_label">Vibrations mønstre</string>
-  <string name="account_settings_vibrate_pattern_default">default</string>
-  <string name="account_settings_vibrate_pattern_1">mønster 1</string>
-  <string name="account_settings_vibrate_pattern_2">mønster 2</string>
-  <string name="account_settings_vibrate_pattern_3">mønster 3</string>
-  <string name="account_settings_vibrate_pattern_4">mønster 4</string>
-  <string name="account_settings_vibrate_pattern_5">mønster 5</string>
+  <string name="account_settings_vibrate_pattern_default">Standard</string>
   <string name="account_settings_vibrate_times">Gentag vibration</string>
   <string name="account_settings_ringtone">Ringetone ved ny mail</string>
   <string name="account_settings_led_label">Blinkende LED</string>

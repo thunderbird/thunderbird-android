@@ -349,13 +349,6 @@
   <string name="notifications_title">התראות</string>
   <string name="account_settings_vibrate_enable">רטט</string>
   <string name="account_settings_vibrate_summary">תרטוט שמגיע מייל</string>
-  <string name="account_settings_vibrate_pattern_label">דפוסי רטט</string>
-  <string name="account_settings_vibrate_pattern_default">ברירת מחדל</string>
-  <string name="account_settings_vibrate_pattern_1">דפוס 1</string>
-  <string name="account_settings_vibrate_pattern_2">דפוס 2</string>
-  <string name="account_settings_vibrate_pattern_3">דפוס 3</string>
-  <string name="account_settings_vibrate_pattern_4">דפוס 4</string>
-  <string name="account_settings_vibrate_pattern_5">דפוס 5</string>
   <string name="account_settings_vibrate_times">חזור על הרט</string>
   <string name="account_settings_ringtone">רינגטון מייל חדש</string>
   <string name="account_settings_led_label">הבהוב LED</string>

@@ -542,13 +542,7 @@
   <string name="notifications_title">اعلان‌ها</string>
   <string name="account_settings_vibrate_enable">لرزش</string>
   <string name="account_settings_vibrate_summary">لرزش به‌هنگام رسیدن رایانامه</string>
-  <string name="account_settings_vibrate_pattern_label">الگوهای لرزش</string>
   <string name="account_settings_vibrate_pattern_default">پیش‌فرض</string>
-  <string name="account_settings_vibrate_pattern_1">الگوی ۱</string>
-  <string name="account_settings_vibrate_pattern_2">الگوی ۲</string>
-  <string name="account_settings_vibrate_pattern_3">الگوی ۳</string>
-  <string name="account_settings_vibrate_pattern_4">الگوی ۴</string>
-  <string name="account_settings_vibrate_pattern_5">الگوی ۵</string>
   <string name="account_settings_vibrate_times">تکرار لرزش</string>
   <string name="account_settings_ringtone">زنگ رایانامهٔ جدید</string>
   <string name="account_settings_led_label">چشمک‌زدن LED</string>

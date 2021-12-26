@@ -528,13 +528,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="notifications_title">Jakinarazpenak</string>
   <string name="account_settings_vibrate_enable">Bibratu</string>
   <string name="account_settings_vibrate_summary">Bibratu posta iristean</string>
-  <string name="account_settings_vibrate_pattern_label">Bibrazio ereduak</string>
-  <string name="account_settings_vibrate_pattern_default">lehenetsia</string>
-  <string name="account_settings_vibrate_pattern_1">1 eredua</string>
-  <string name="account_settings_vibrate_pattern_2">2 eredua</string>
-  <string name="account_settings_vibrate_pattern_3">3 eredua</string>
-  <string name="account_settings_vibrate_pattern_4">4 eredua</string>
-  <string name="account_settings_vibrate_pattern_5">5 eredua</string>
+  <string name="account_settings_vibrate_pattern_default">Lehenetsia</string>
   <string name="account_settings_vibrate_times">Errepikatu bibrazioa</string>
   <string name="account_settings_ringtone">Posta berrirako txirrin-tonua</string>
   <string name="account_settings_led_label">LED keinatzea</string>

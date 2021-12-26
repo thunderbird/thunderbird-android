@@ -543,13 +543,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="notifications_title">Notifiche</string>
   <string name="account_settings_vibrate_enable">Vibrazione</string>
   <string name="account_settings_vibrate_summary">Vibra quando arriva un messaggio</string>
-  <string name="account_settings_vibrate_pattern_label">Tipo di vibrazione</string>
-  <string name="account_settings_vibrate_pattern_default">predefinito</string>
-  <string name="account_settings_vibrate_pattern_1">tipo 1</string>
-  <string name="account_settings_vibrate_pattern_2">tipo 2</string>
-  <string name="account_settings_vibrate_pattern_3">tipo 3</string>
-  <string name="account_settings_vibrate_pattern_4">tipo 4</string>
-  <string name="account_settings_vibrate_pattern_5">tipo 5</string>
+  <string name="account_settings_vibrate_pattern_default">Predefinito</string>
   <string name="account_settings_vibrate_times">Ripeti vibrazione</string>
   <string name="account_settings_ringtone">Suoneria nuovo messaggio</string>
   <string name="account_settings_led_label">LED lampeggiante</string>

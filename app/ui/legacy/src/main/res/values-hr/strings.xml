@@ -485,13 +485,7 @@
   <string name="notifications_title">Obavijesti</string>
   <string name="account_settings_vibrate_enable">Vibriranje</string>
   <string name="account_settings_vibrate_summary">Vibrira nakon primitka e-pošte</string>
-  <string name="account_settings_vibrate_pattern_label">Uzorci vibriranja</string>
-  <string name="account_settings_vibrate_pattern_default">zadano</string>
-  <string name="account_settings_vibrate_pattern_1">uzorak 1</string>
-  <string name="account_settings_vibrate_pattern_2">uzorak 2</string>
-  <string name="account_settings_vibrate_pattern_3">uzorak 3</string>
-  <string name="account_settings_vibrate_pattern_4">uzorak 4</string>
-  <string name="account_settings_vibrate_pattern_5">uzorak 5</string>
+  <string name="account_settings_vibrate_pattern_default">Zadano</string>
   <string name="account_settings_vibrate_times">Ponavljajuće vibriranje</string>
   <string name="account_settings_ringtone">Zvono nove e-pošte</string>
   <string name="account_settings_led_label">LED treperenje</string>

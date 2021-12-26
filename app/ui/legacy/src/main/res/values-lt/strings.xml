@@ -373,13 +373,7 @@
   <string name="notifications_title">Pranešimai</string>
   <string name="account_settings_vibrate_enable">Vibruoti</string>
   <string name="account_settings_vibrate_summary">Gavus laišką vibruoti</string>
-  <string name="account_settings_vibrate_pattern_label">Vibracijų šablonai</string>
-  <string name="account_settings_vibrate_pattern_default">numatytasis</string>
-  <string name="account_settings_vibrate_pattern_1">forma 1</string>
-  <string name="account_settings_vibrate_pattern_2">forma 2</string>
-  <string name="account_settings_vibrate_pattern_3">forma 3</string>
-  <string name="account_settings_vibrate_pattern_4">forma 4</string>
-  <string name="account_settings_vibrate_pattern_5">forma 5</string>
+  <string name="account_settings_vibrate_pattern_default">Numatytas</string>
   <string name="account_settings_vibrate_times">Kartoti vibraciją</string>
   <string name="account_settings_ringtone">Naujo laiško skambėjimo tonas</string>
   <string name="account_settings_led_label">Mirksinti LED</string>

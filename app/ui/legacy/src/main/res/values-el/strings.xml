@@ -540,13 +540,7 @@
   <string name="notifications_title">Ειδοποιήσεις</string>
   <string name="account_settings_vibrate_enable">Δόνηση</string>
   <string name="account_settings_vibrate_summary">Δόνηση όταν φτάνει μήνυμα</string>
-  <string name="account_settings_vibrate_pattern_label">Τρόπος δόνησης</string>
   <string name="account_settings_vibrate_pattern_default">Εξ ορισμού</string>
-  <string name="account_settings_vibrate_pattern_1">Τύπος 1</string>
-  <string name="account_settings_vibrate_pattern_2">Τύπος 2</string>
-  <string name="account_settings_vibrate_pattern_3">Τύπος 3</string>
-  <string name="account_settings_vibrate_pattern_4">Τύπος 4</string>
-  <string name="account_settings_vibrate_pattern_5">Τύπος 5</string>
   <string name="account_settings_vibrate_times">Επανάληψη δόνησης</string>
   <string name="account_settings_ringtone">Κουδούνισμα με νέο μήνυμα</string>
   <string name="account_settings_led_label">Αναβοσβήσιμο λυχνίας</string>

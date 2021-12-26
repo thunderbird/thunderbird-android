@@ -526,13 +526,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="notifications_title">Oznámenia</string>
   <string name="account_settings_vibrate_enable">Vibrovanie</string>
   <string name="account_settings_vibrate_summary">Vibrovať pri doručení nového e-mailu</string>
-  <string name="account_settings_vibrate_pattern_label">Vzory vibrovania</string>
-  <string name="account_settings_vibrate_pattern_default">Predvolený</string>
-  <string name="account_settings_vibrate_pattern_1">Vzor 1</string>
-  <string name="account_settings_vibrate_pattern_2">Vzor 2</string>
-  <string name="account_settings_vibrate_pattern_3">Vzor 3</string>
-  <string name="account_settings_vibrate_pattern_4">Vzor 4</string>
-  <string name="account_settings_vibrate_pattern_5">Vzor 5</string>
+  <string name="account_settings_vibrate_pattern_default">Predvolené</string>
   <string name="account_settings_vibrate_times">Opakovať vibrovanie</string>
   <string name="account_settings_ringtone">Zvonenie pre novú správu</string>
   <string name="account_settings_led_label">Blikanie LED</string>

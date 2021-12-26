@@ -178,7 +178,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="notification_channel_miscellaneous_title">Egyebek</string>
   <string name="notification_channel_miscellaneous_description">Egyéb értesítések, például hibák, stb.</string>
   <string name="special_mailbox_name_inbox">Beérkezett üzenetek</string>
-  <string name="special_mailbox_name_outbox">Elküldött üzenetek</string>
+  <string name="special_mailbox_name_outbox">Kimenő üzenetek</string>
   <string name="special_mailbox_name_drafts">Piszkozatok</string>
   <string name="special_mailbox_name_trash">Kuka</string>
   <string name="special_mailbox_name_sent">Elküldött</string>
@@ -540,13 +540,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="notifications_title">Értesítések</string>
   <string name="account_settings_vibrate_enable">Rezgés</string>
   <string name="account_settings_vibrate_summary">Rezgés, amikor levél érkezik</string>
-  <string name="account_settings_vibrate_pattern_label">Rezgés mintái</string>
-  <string name="account_settings_vibrate_pattern_default">alapértelmezett</string>
-  <string name="account_settings_vibrate_pattern_1">1. minta</string>
-  <string name="account_settings_vibrate_pattern_2">2. minta</string>
-  <string name="account_settings_vibrate_pattern_3">3. minta</string>
-  <string name="account_settings_vibrate_pattern_4">4. minta</string>
-  <string name="account_settings_vibrate_pattern_5">5. minta</string>
+  <string name="account_settings_vibrate_pattern_default">Alapértelmezett</string>
   <string name="account_settings_vibrate_times">Rezgés ismétlése</string>
   <string name="account_settings_ringtone">Új levél csengőhangja</string>
   <string name="account_settings_led_label">LED villogása</string>

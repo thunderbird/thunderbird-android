@@ -540,13 +540,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="notifications_title">通知</string>
   <string name="account_settings_vibrate_enable">震動</string>
   <string name="account_settings_vibrate_summary">有新郵件時震動</string>
-  <string name="account_settings_vibrate_pattern_label">震動模式</string>
   <string name="account_settings_vibrate_pattern_default">預設</string>
-  <string name="account_settings_vibrate_pattern_1">模式一</string>
-  <string name="account_settings_vibrate_pattern_2">模式二</string>
-  <string name="account_settings_vibrate_pattern_3">模式三</string>
-  <string name="account_settings_vibrate_pattern_4">模式四</string>
-  <string name="account_settings_vibrate_pattern_5">模式五</string>
   <string name="account_settings_vibrate_times">重複震動</string>
   <string name="account_settings_ringtone">新郵件鈴聲</string>
   <string name="account_settings_led_label">閃爍LED燈</string>

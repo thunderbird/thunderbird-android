@@ -109,6 +109,7 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="search_action">Poišči</string>
   <string name="search_everywhere_action">Poišči povsod</string>
   <string name="search_results">Rezultati iskanja</string>
+  <string name="new_messages_title">Nova sporočila</string>
   <string name="preferences_action">Nastavitve</string>
   <string name="folders_action">Upravljanje z mapami</string>
   <string name="account_settings_action">Nastavitve računa</string>
@@ -168,6 +169,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="notification_action_archive">Arhiviraj</string>
   <string name="notification_action_archive_all">Arhiviraj vse</string>
   <string name="notification_action_spam">Označi kot neželeno pošto</string>
+  <string name="notification_certificate_error_public">Napaka potrdila</string>
   <string name="notification_certificate_error_title">Napaka potrdila za račun <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Preverite nastavitve strežnika</string>
   <string name="notification_authentication_error_title">Overjanje je spodletelo</string>
@@ -549,8 +551,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="notifications_title">Obvestila</string>
   <string name="account_settings_vibrate_enable">Tresenje naprave ob prejemu novega sporočila</string>
   <string name="account_settings_vibrate_summary">Ob obvestilu o prispeli pošti naj se naprava tudi zatrese</string>
-  <string name="account_settings_vibrate_pattern_label">Vzorec tresenja naprave</string>
-  <string name="account_settings_vibrate_pattern_default">privzeti vzorec</string>
+  <string name="account_settings_vibrate_pattern_label">Vzorec tresenja</string>
+  <string name="account_settings_vibrate_pattern_default">privzeto</string>
   <string name="account_settings_vibrate_pattern_1">Vzorec 1</string>
   <string name="account_settings_vibrate_pattern_2">Vzorec 2</string>
   <string name="account_settings_vibrate_pattern_3">Vzorec 3</string>

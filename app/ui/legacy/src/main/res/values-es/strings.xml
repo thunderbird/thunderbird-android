@@ -108,6 +108,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="search_action">Buscar</string>
   <string name="search_everywhere_action">Buscar en todas partes</string>
   <string name="search_results">Resultados de búsqueda</string>
+  <string name="new_messages_title">Mensajes nuevos</string>
   <string name="preferences_action">Ajustes</string>
   <string name="folders_action">Administrar carpetas</string>
   <string name="account_settings_action">Ajustes de la cuenta</string>
@@ -162,6 +163,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="notification_action_archive">Archivo</string>
   <string name="notification_action_archive_all">Archivar todo</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_public">El certificado no funciona</string>
   <string name="notification_certificate_error_title">Error de certificado para <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Comprueba los ajustes del servidor</string>
   <string name="notification_authentication_error_title">Fallo de autenticación</string>

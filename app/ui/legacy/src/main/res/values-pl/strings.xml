@@ -75,6 +75,8 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="compose_title_forward_as_attachment">Przekaż jako załącznik</string>
   <string name="choose_account_title">Wybierz konto</string>
   <string name="choose_folder_title">Wybierz folder</string>
+  <string name="choose_folder_move_title">Przenieś do...</string>
+  <string name="choose_folder_copy_title">Kopiuj do...</string>
   <string name="actionbar_selected">Wybrano <xliff:g id="selection_count">%d</xliff:g></string>
   <string name="next_action">Dalej</string>
   <string name="previous_action">Cofnij</string>
@@ -108,6 +110,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="search_action">Szukaj</string>
   <string name="search_everywhere_action">Szukaj wszędzie</string>
   <string name="search_results">Wyniki</string>
+  <string name="new_messages_title">Nowa wiadomość</string>
   <string name="preferences_action">Ustawienia</string>
   <string name="folders_action">Zarządzaj folderami</string>
   <string name="account_settings_action">Ustawienia konta</string>
@@ -166,6 +169,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="notification_action_archive">Archiwizuj</string>
   <string name="notification_action_archive_all">Archiwizuj wszystkie</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_public">Błąd certyfikatu</string>
   <string name="notification_certificate_error_title">Błąd certyfikatu dla <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Sprawdź ustawienia serwera</string>
   <string name="notification_authentication_error_title">Uwierzytelnianie nie powiodło się</string>
@@ -192,6 +196,9 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="debug_enable_debug_logging_summary">Loguj dodatkowe informacje diagnostyczne</string>
   <string name="debug_enable_sensitive_logging_title">Loguj poufne informacje</string>
   <string name="debug_enable_sensitive_logging_summary">Logi mogą zawierać Twoje hasła</string>
+  <string name="debug_export_logs_title">Eksportuj logi</string>
+  <string name="debug_export_logs_success">Eksportowanie przebiegło pomyślnie. Logi mogą zawierać wrażliwe informacje. Bądź ostrożny komu je udostępniasz.</string>
+  <string name="debug_export_logs_failure">Eksportowanie nie powiodło się.</string>
   <string name="message_list_load_more_messages_action">Pobierz więcej wiadomości</string>
   <string name="message_to_fmt">Do:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Temat</string>
@@ -265,6 +272,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_lock_screen_notification_visibility_title">Powiadomienia na ekranie blokady</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Bez powiadomień na ekranie blokady</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nazwa aplikacji</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">wiadomość nowych wiadomości.</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Nadawcy i liczba wiadomości</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Tak samo, jak przy odblokowanym ekranie</string>
   <string name="quiet_time">Okres ciszy</string>
@@ -542,13 +550,13 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="notifications_title">Powiadomienia</string>
   <string name="account_settings_vibrate_enable">Wibracja</string>
   <string name="account_settings_vibrate_summary">Wibruj, gdy są nowe wiadomości</string>
-  <string name="account_settings_vibrate_pattern_label">Schematy wibracji</string>
-  <string name="account_settings_vibrate_pattern_default">Domyślny</string>
-  <string name="account_settings_vibrate_pattern_1">Schemat 1</string>
-  <string name="account_settings_vibrate_pattern_2">Schemat 2</string>
-  <string name="account_settings_vibrate_pattern_3">Schemat 3</string>
-  <string name="account_settings_vibrate_pattern_4">Schemat 4</string>
-  <string name="account_settings_vibrate_pattern_5">Schemat 5</string>
+  <string name="account_settings_vibrate_pattern_label">Wzór wibracji.</string>
+  <string name="account_settings_vibrate_pattern_default">Standardowa</string>
+  <string name="account_settings_vibrate_pattern_1">Wzór 1</string>
+  <string name="account_settings_vibrate_pattern_2">Wzór 2</string>
+  <string name="account_settings_vibrate_pattern_3">Wzór 3</string>
+  <string name="account_settings_vibrate_pattern_4">Wzór 4</string>
+  <string name="account_settings_vibrate_pattern_5">Wzór 5</string>
   <string name="account_settings_vibrate_times">Liczba wibracji</string>
   <string name="account_settings_ringtone">Sygnał dzwiękowy</string>
   <string name="account_settings_led_label">Mrugaj diodą</string>
@@ -877,6 +885,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="recipient_bcc">UDW</string>
   <string name="recipient_to">Do</string>
   <string name="recipient_from">Od</string>
+  <string name="reply_to_label">Odpowiedz do</string>
   <string name="unknown_recipient">&lt;Nieznany odbiorca&gt;</string>
   <string name="unknown_sender">&lt;Nieznany nadawca&gt;</string>
   <string name="address_type_home">Dom</string>

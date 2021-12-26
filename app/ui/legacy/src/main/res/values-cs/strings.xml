@@ -109,6 +109,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="search_action">Hledat</string>
   <string name="search_everywhere_action">Hledat všude</string>
   <string name="search_results">Výsledky hledání</string>
+  <string name="new_messages_title">Nové zprávy</string>
   <string name="preferences_action">Možnosti</string>
   <string name="folders_action">Spravovat složky</string>
   <string name="account_settings_action">Nastavení účtu</string>
@@ -168,6 +169,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="notification_action_archive">Archivovat</string>
   <string name="notification_action_archive_all">Archivovat vše</string>
   <string name="notification_action_spam">Nevyžádaná</string>
+  <string name="notification_certificate_error_public">Chyba certifikátu</string>
   <string name="notification_certificate_error_title">Chyba certifikátu pro <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
   <string name="notification_authentication_error_title">Přihlášení se nezdařilo</string>
@@ -549,13 +551,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="notifications_title">Oznámení</string>
   <string name="account_settings_vibrate_enable">Vibrovat</string>
   <string name="account_settings_vibrate_summary">Vibrovat při příchodu zpráv</string>
-  <string name="account_settings_vibrate_pattern_label">Vzory vibrování</string>
-  <string name="account_settings_vibrate_pattern_default">výchozí</string>
-  <string name="account_settings_vibrate_pattern_1">vzorek 1</string>
-  <string name="account_settings_vibrate_pattern_2">vzorek 2</string>
-  <string name="account_settings_vibrate_pattern_3">vzorek 3</string>
-  <string name="account_settings_vibrate_pattern_4">vzorek 4</string>
-  <string name="account_settings_vibrate_pattern_5">vzorek 5</string>
+  <string name="account_settings_vibrate_pattern_default">Standardní</string>
   <string name="account_settings_vibrate_times">Opakovat vibrace</string>
   <string name="account_settings_ringtone">Zvuk při nové poště</string>
   <string name="account_settings_led_label">Blikání LED</string>

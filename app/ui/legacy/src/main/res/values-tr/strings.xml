@@ -537,13 +537,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="notifications_title">Bildirimler</string>
   <string name="account_settings_vibrate_enable">Titreşim</string>
   <string name="account_settings_vibrate_summary">Posta geldiğinde titret</string>
-  <string name="account_settings_vibrate_pattern_label">Titreme modeli</string>
-  <string name="account_settings_vibrate_pattern_default">Öntanımlı</string>
-  <string name="account_settings_vibrate_pattern_1">Model 1</string>
-  <string name="account_settings_vibrate_pattern_2">Model 2</string>
-  <string name="account_settings_vibrate_pattern_3">Model 3</string>
-  <string name="account_settings_vibrate_pattern_4">Model 4</string>
-  <string name="account_settings_vibrate_pattern_5">Model 5</string>
+  <string name="account_settings_vibrate_pattern_default">Varsayılan</string>
   <string name="account_settings_vibrate_times">Titreşimi tekrarla</string>
   <string name="account_settings_ringtone">Yeni posta zil sesi</string>
   <string name="account_settings_led_label">Yanıp sönen LED</string>

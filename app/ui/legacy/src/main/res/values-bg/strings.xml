@@ -513,13 +513,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="notifications_title">Известявания</string>
   <string name="account_settings_vibrate_enable">Вибрирай</string>
   <string name="account_settings_vibrate_summary">Вибрира, когато пристигне писмо</string>
-  <string name="account_settings_vibrate_pattern_label">Типове вибрация</string>
-  <string name="account_settings_vibrate_pattern_default">по подразбиране</string>
-  <string name="account_settings_vibrate_pattern_1">тип 1</string>
-  <string name="account_settings_vibrate_pattern_2">тип 2</string>
-  <string name="account_settings_vibrate_pattern_3">тип 3</string>
-  <string name="account_settings_vibrate_pattern_4">тип 4</string>
-  <string name="account_settings_vibrate_pattern_5">тип 5</string>
+  <string name="account_settings_vibrate_pattern_default">По подразбиране</string>
   <string name="account_settings_vibrate_times">Повтаряне на вибрацията</string>
   <string name="account_settings_ringtone">Звук за ново писмо</string>
   <string name="account_settings_led_label">Мигащ диод</string>
