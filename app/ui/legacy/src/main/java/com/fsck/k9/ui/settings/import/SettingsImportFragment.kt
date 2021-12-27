@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -28,12 +27,6 @@ class SettingsImportFragment : Fragment() {
 
     private lateinit var settingsImportAdapter: FastAdapter<ImportListItem<*>>
     private lateinit var itemAdapter: ItemAdapter<ImportListItem<*>>
-
-    private val pickDocumentReceiver = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        when (it.resultCode) {
-            Activity.RESULT_OK -> handlePickDocumentResult(it.data)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_import, container, false)
@@ -164,7 +157,7 @@ class SettingsImportFragment : Fragment() {
             type = "*/*"
             addCategory(Intent.CATEGORY_OPENABLE)
         }
-        pickDocumentReceiver.launch(createDocumentIntent)
+        startActivityForResult(createDocumentIntent, REQUEST_PICK_DOCUMENT)
     }
 
     private fun showPasswordPrompt(action: Action.PasswordPrompt) {
@@ -178,7 +171,7 @@ class SettingsImportFragment : Fragment() {
             targetFragment = this,
             requestCode = REQUEST_PASSWORD_PROMPT
         )
-        dialogFragment.show(parentFragmentManager, null)
+        dialogFragment.show(requireFragmentManager(), null)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -188,6 +181,7 @@ class SettingsImportFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
+            REQUEST_PICK_DOCUMENT -> handlePickDocumentResult(resultCode, data)
             REQUEST_PASSWORD_PROMPT -> handlePasswordPromptResult(resultCode, data)
         }
     }

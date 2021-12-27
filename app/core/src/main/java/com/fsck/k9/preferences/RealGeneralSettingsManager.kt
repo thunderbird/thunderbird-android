@@ -100,18 +100,22 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(showRecentChanges = showRecentChanges).persist()
     }
 
+    @Synchronized
     override fun setAppTheme(appTheme: AppTheme) {
         getSettings().copy(appTheme = appTheme).persist()
     }
 
+    @Synchronized
     override fun setMessageViewTheme(subTheme: SubTheme) {
         getSettings().copy(messageViewTheme = subTheme).persist()
     }
 
+    @Synchronized
     override fun setMessageComposeTheme(subTheme: SubTheme) {
         getSettings().copy(messageComposeTheme = subTheme).persist()
     }
 
+    @Synchronized
     override fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
         getSettings().copy(fixedMessageViewTheme = fixedMessageViewTheme).persist()
     }

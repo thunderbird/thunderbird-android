@@ -120,9 +120,6 @@ object K9 : EarlyInit {
     var k9Language = ""
 
     @JvmStatic
-    var isFixedMessageViewTheme = true
-
-    @JvmStatic
     val fontSizes = FontSizes()
 
     @JvmStatic

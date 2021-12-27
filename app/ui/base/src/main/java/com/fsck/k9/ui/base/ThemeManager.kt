@@ -6,8 +6,10 @@ import android.os.Build
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
 import com.fsck.k9.preferences.AppTheme
+import com.fsck.k9.preferences.GeneralSettings
 import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.preferences.SubTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -17,31 +19,36 @@ import kotlinx.coroutines.flow.onEach
 class ThemeManager(
     private val context: Context,
     private val themeProvider: ThemeProvider,
-    private val generalSettingsManager: GeneralSettingsManager
+    private val generalSettingsManager: GeneralSettingsManager,
+    private val appCoroutineScope: CoroutineScope,
 ) {
+
+    private val generalSettings: GeneralSettings
+        get() = generalSettingsManager.getSettings()
+
     val appTheme: Theme
-        get() = when (generalSettingsManager.getSettings().appTheme) {
+        get() = when (generalSettings.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
             AppTheme.FOLLOW_SYSTEM -> if (Build.VERSION.SDK_INT < 28) Theme.LIGHT else getSystemTheme()
         }
 
     val messageViewTheme: Theme
-        get() = resolveTheme(generalSettingsManager.getSettings().messageViewTheme)
+        get() = resolveTheme(generalSettings.messageViewTheme)
 
     val messageComposeTheme: Theme
-        get() = resolveTheme(generalSettingsManager.getSettings().messageComposeTheme)
+        get() = resolveTheme(generalSettings.messageComposeTheme)
 
     @get:StyleRes
     val appThemeResourceId: Int = themeProvider.appThemeResourceId
 
     @get:StyleRes
     val messageViewThemeResourceId: Int
-        get() = getSubThemeResourceId(generalSettingsManager.getSettings().messageViewTheme)
+        get() = getSubThemeResourceId(generalSettings.messageViewTheme)
 
     @get:StyleRes
     val messageComposeThemeResourceId: Int
-        get() = getSubThemeResourceId(generalSettingsManager.getSettings().messageComposeTheme)
+        get() = getSubThemeResourceId(generalSettings.messageComposeTheme)
 
     @get:StyleRes
     val dialogThemeResourceId: Int = themeProvider.dialogThemeResourceId
@@ -56,7 +63,7 @@ class ThemeManager(
             .onEach {
                 updateAppTheme(it)
             }
-            .launchIn(GlobalScope)
+            .launchIn(appCoroutineScope)
     }
 
     private fun updateAppTheme(appTheme: AppTheme) {
