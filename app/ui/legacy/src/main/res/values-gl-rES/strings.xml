@@ -399,13 +399,7 @@
   <string name="notifications_title">Notificacións</string>
   <string name="account_settings_vibrate_enable">Vibrar</string>
   <string name="account_settings_vibrate_summary">Vibrar cando chegue unha mensaxe</string>
-  <string name="account_settings_vibrate_pattern_label">Padróns de vibración</string>
-  <string name="account_settings_vibrate_pattern_default">predefinido</string>
-  <string name="account_settings_vibrate_pattern_1">padrón 1</string>
-  <string name="account_settings_vibrate_pattern_2">padrón 2</string>
-  <string name="account_settings_vibrate_pattern_3">padrón 3</string>
-  <string name="account_settings_vibrate_pattern_4">padrón 4</string>
-  <string name="account_settings_vibrate_pattern_5">padrón 5</string>
+  <string name="account_settings_vibrate_pattern_default">Predefinido</string>
   <string name="account_settings_vibrate_times">Repetir vibración</string>
   <string name="account_settings_ringtone">Son de correo novo</string>
   <string name="account_settings_led_label">Pestanexo LED</string>

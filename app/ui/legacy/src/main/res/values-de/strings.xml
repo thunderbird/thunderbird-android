@@ -109,6 +109,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="search_action">Suchen</string>
   <string name="search_everywhere_action">Überall suchen</string>
   <string name="search_results">Suchergebnisse</string>
+  <string name="new_messages_title">Neue Nachrichten</string>
   <string name="preferences_action">Einstellungen</string>
   <string name="folders_action">Ordner verwalten</string>
   <string name="account_settings_action">Kontoeinstellungen</string>
@@ -163,6 +164,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="notification_action_archive">Archiv</string>
   <string name="notification_action_archive_all">Alle archivieren</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_public">Zertifikatsfehler</string>
   <string name="notification_certificate_error_title">Zertifikatsproblem (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_certificate_error_text">Überprüfen Sie Ihre Servereinstellungen</string>
   <string name="notification_authentication_error_title">Authentifizierung fehlgeschlagen</string>

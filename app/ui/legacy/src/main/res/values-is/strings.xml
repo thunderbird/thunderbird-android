@@ -541,13 +541,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="notifications_title">Tilkynningar</string>
   <string name="account_settings_vibrate_enable">Titra</string>
   <string name="account_settings_vibrate_summary">Titra þegar nýr póstur berst</string>
-  <string name="account_settings_vibrate_pattern_label">Mynstur fyrir titring</string>
-  <string name="account_settings_vibrate_pattern_default">sjálfgefið</string>
-  <string name="account_settings_vibrate_pattern_1">mynstur 1</string>
-  <string name="account_settings_vibrate_pattern_2">mynstur 2</string>
-  <string name="account_settings_vibrate_pattern_3">mynstur 3</string>
-  <string name="account_settings_vibrate_pattern_4">mynstur 4</string>
-  <string name="account_settings_vibrate_pattern_5">mynstur 5</string>
+  <string name="account_settings_vibrate_pattern_default">Sjálfgefið</string>
   <string name="account_settings_vibrate_times">Endurtaka titring</string>
   <string name="account_settings_ringtone">Nýr hringitónn fyrir póst</string>
   <string name="account_settings_led_label">Blikka LED-merki</string>

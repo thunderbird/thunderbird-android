@@ -110,6 +110,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="search_action">Rechercher</string>
   <string name="search_everywhere_action">Chercher partout</string>
   <string name="search_results">Résultats de la recherche</string>
+  <string name="new_messages_title">Nouveaux messages</string>
   <string name="preferences_action">Paramètres</string>
   <string name="folders_action">Gérer les dossiers</string>
   <string name="account_settings_action">Paramètres du compte</string>
@@ -165,6 +166,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="notification_action_archive">Archiver</string>
   <string name="notification_action_archive_all">Tout archiver</string>
   <string name="notification_action_spam">Pourriel</string>
+  <string name="notification_certificate_error_public">Erreur de certificat</string>
   <string name="notification_certificate_error_title">Erreur de certificat pour (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_certificate_error_text">Vérifiez vos paramètres de serveur</string>
   <string name="notification_authentication_error_title">Échec d’authentification</string>
@@ -546,13 +548,13 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="notifications_title">Notifications</string>
   <string name="account_settings_vibrate_enable">Vibration</string>
   <string name="account_settings_vibrate_summary">Vibrer dès réception d’un courriel</string>
-  <string name="account_settings_vibrate_pattern_label">Modèles de vibration</string>
-  <string name="account_settings_vibrate_pattern_default">par défaut</string>
-  <string name="account_settings_vibrate_pattern_1">modèle 1</string>
-  <string name="account_settings_vibrate_pattern_2">modèle 2</string>
-  <string name="account_settings_vibrate_pattern_3">modèle 3</string>
-  <string name="account_settings_vibrate_pattern_4">modèle 4</string>
-  <string name="account_settings_vibrate_pattern_5">modèle 5</string>
+  <string name="account_settings_vibrate_pattern_label">Profil de vibration</string>
+  <string name="account_settings_vibrate_pattern_default">Par défaut</string>
+  <string name="account_settings_vibrate_pattern_1">Profil 1</string>
+  <string name="account_settings_vibrate_pattern_2">Profil 2</string>
+  <string name="account_settings_vibrate_pattern_3">Profil 3</string>
+  <string name="account_settings_vibrate_pattern_4">Profil 4</string>
+  <string name="account_settings_vibrate_pattern_5">Profil 5</string>
   <string name="account_settings_vibrate_times">Nombre de vibrations</string>
   <string name="account_settings_ringtone">Sonnerie de nouveaux courriels</string>
   <string name="account_settings_led_label">Clignotement DEL</string>

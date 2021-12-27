@@ -429,13 +429,7 @@
   <string name="notifications_title">알림</string>
   <string name="account_settings_vibrate_enable">진동</string>
   <string name="account_settings_vibrate_summary">메일 도착 시 진동합니다</string>
-  <string name="account_settings_vibrate_pattern_label">진동 패턴</string>
   <string name="account_settings_vibrate_pattern_default">기본</string>
-  <string name="account_settings_vibrate_pattern_1">패턴 1</string>
-  <string name="account_settings_vibrate_pattern_2">패턴 2</string>
-  <string name="account_settings_vibrate_pattern_3">패턴 3</string>
-  <string name="account_settings_vibrate_pattern_4">패턴 4</string>
-  <string name="account_settings_vibrate_pattern_5">패턴 5</string>
   <string name="account_settings_vibrate_times">진동 반복</string>
   <string name="account_settings_ringtone">새 메일 벨소리</string>
   <string name="account_settings_led_label">LED 깜박임</string>

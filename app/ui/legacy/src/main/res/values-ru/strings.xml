@@ -167,6 +167,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="notification_action_archive">Архив</string>
   <string name="notification_action_archive_all">В архив все</string>
   <string name="notification_action_spam">Спам</string>
+  <string name="notification_certificate_error_public">Ошибка сертификата</string>
   <string name="notification_certificate_error_title">Сбой сертификата <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
   <string name="notification_authentication_error_title">Сбой аутентификации</string>
@@ -548,13 +549,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="notifications_title">Уведомления</string>
   <string name="account_settings_vibrate_enable">Вибрация</string>
   <string name="account_settings_vibrate_summary">Вибрация при новой почте</string>
-  <string name="account_settings_vibrate_pattern_label">Ритм</string>
-  <string name="account_settings_vibrate_pattern_default">Обычный</string>
-  <string name="account_settings_vibrate_pattern_1">Ритм 1</string>
-  <string name="account_settings_vibrate_pattern_2">Ритм 2</string>
-  <string name="account_settings_vibrate_pattern_3">Ритм 3</string>
-  <string name="account_settings_vibrate_pattern_4">Ритм 4</string>
-  <string name="account_settings_vibrate_pattern_5">Ритм 5</string>
+  <string name="account_settings_vibrate_pattern_default">По умолчанию</string>
   <string name="account_settings_vibrate_times">Повтор</string>
   <string name="account_settings_ringtone">Мелодия</string>
   <string name="account_settings_led_label">Мигать LED-индикатором</string>

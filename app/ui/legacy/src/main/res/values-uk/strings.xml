@@ -538,13 +538,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="notifications_title">Сповіщення</string>
   <string name="account_settings_vibrate_enable">Вібрація</string>
   <string name="account_settings_vibrate_summary">Вібрація при отрманні нової пошти</string>
-  <string name="account_settings_vibrate_pattern_label">Шаблони вібрації</string>
-  <string name="account_settings_vibrate_pattern_default">типовий</string>
-  <string name="account_settings_vibrate_pattern_1">шаблон 1</string>
-  <string name="account_settings_vibrate_pattern_2">шаблон 2</string>
-  <string name="account_settings_vibrate_pattern_3">шаблон 3</string>
-  <string name="account_settings_vibrate_pattern_4">шаблон 4</string>
-  <string name="account_settings_vibrate_pattern_5">шаблон 5</string>
+  <string name="account_settings_vibrate_pattern_default">Типовий</string>
   <string name="account_settings_vibrate_times">Повторити вібрацію</string>
   <string name="account_settings_ringtone">Звук сповіщення про новий лист</string>
   <string name="account_settings_led_label">Блимання LED-індикатором</string>

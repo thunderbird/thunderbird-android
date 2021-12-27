@@ -109,6 +109,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="search_action">Cerca</string>
   <string name="search_everywhere_action">Cerca-ho per tot arreu</string>
   <string name="search_results">Cerca resultats</string>
+  <string name="new_messages_title">Missatges nous</string>
   <string name="preferences_action">Configuració</string>
   <string name="folders_action">Gestioneu les carpetes</string>
   <string name="account_settings_action">Configuració del compte</string>
@@ -164,6 +165,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="notification_action_archive">Arxiva</string>
   <string name="notification_action_archive_all">Arxiva-ho tot</string>
   <string name="notification_action_spam">Correu brossa</string>
+  <string name="notification_certificate_error_public">Error de certificat</string>
   <string name="notification_certificate_error_title">Error al certificat de <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Comproveu la configuració del servidor.</string>
   <string name="notification_authentication_error_title">Ha fallat l\'autenticació</string>
@@ -545,13 +547,13 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="notifications_title">Notificacions</string>
   <string name="account_settings_vibrate_enable">Vibra</string>
   <string name="account_settings_vibrate_summary">Vibra quan arribi correu</string>
-  <string name="account_settings_vibrate_pattern_label">Tipus de vibració</string>
-  <string name="account_settings_vibrate_pattern_default">per defecte</string>
-  <string name="account_settings_vibrate_pattern_1">Tipus 1</string>
-  <string name="account_settings_vibrate_pattern_2">Tipus 2</string>
-  <string name="account_settings_vibrate_pattern_3">Tipus 3</string>
-  <string name="account_settings_vibrate_pattern_4">Tipus 4</string>
-  <string name="account_settings_vibrate_pattern_5">Tipus 5</string>
+  <string name="account_settings_vibrate_pattern_label">Patró de vibració</string>
+  <string name="account_settings_vibrate_pattern_default">Per defecte</string>
+  <string name="account_settings_vibrate_pattern_1">Patró 1</string>
+  <string name="account_settings_vibrate_pattern_2">Patró 2</string>
+  <string name="account_settings_vibrate_pattern_3">Patró 3</string>
+  <string name="account_settings_vibrate_pattern_4">Patró 4</string>
+  <string name="account_settings_vibrate_pattern_5">Patró 5</string>
   <string name="account_settings_vibrate_times">Repeteix la vibració</string>
   <string name="account_settings_ringtone">So de correu nou</string>
   <string name="account_settings_led_label">LED intermitent</string>

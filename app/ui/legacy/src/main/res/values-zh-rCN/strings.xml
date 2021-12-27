@@ -110,6 +110,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="search_action">搜索</string>
   <string name="search_everywhere_action">在每个地方搜索</string>
   <string name="search_results">搜索结果</string>
+  <string name="new_messages_title">新邮件</string>
   <string name="preferences_action">设置</string>
   <string name="folders_action">管理文件夹</string>
   <string name="account_settings_action">账户设置</string>
@@ -162,6 +163,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="notification_action_archive">归档</string>
   <string name="notification_action_archive_all">全部归档</string>
   <string name="notification_action_spam">垃圾邮件</string>
+  <string name="notification_certificate_error_public">证书错误</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> 认证错误</string>
   <string name="notification_certificate_error_text">请检查您的服务器设置</string>
   <string name="notification_authentication_error_title">身份验证失败</string>
@@ -543,7 +545,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="notifications_title">通知</string>
   <string name="account_settings_vibrate_enable">震动</string>
   <string name="account_settings_vibrate_summary">有新邮件时震动</string>
-  <string name="account_settings_vibrate_pattern_label">震动模式</string>
+  <string name="account_settings_vibrate_pattern_label">振动模式</string>
   <string name="account_settings_vibrate_pattern_default">默认</string>
   <string name="account_settings_vibrate_pattern_1">模式一</string>
   <string name="account_settings_vibrate_pattern_2">模式二</string>

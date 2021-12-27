@@ -110,6 +110,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="search_action">Kërko</string>
   <string name="search_everywhere_action">Kërko kudo</string>
   <string name="search_results">Përfundime kërkimi</string>
+  <string name="new_messages_title">Mesazhe të rinj</string>
   <string name="preferences_action">Rregullime</string>
   <string name="folders_action">Administroni dosje</string>
   <string name="account_settings_action">Rregullime llogarie</string>
@@ -165,6 +166,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="notification_action_archive">Arkivoji</string>
   <string name="notification_action_archive_all">Arkivoji Krejt</string>
   <string name="notification_action_spam">Mesazh i Padëshiruar</string>
+  <string name="notification_certificate_error_public">Gabim dëshmie</string>
   <string name="notification_certificate_error_title">Gabim dëshmie për <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Kontrolloni rregullimet e shërbyesit tuaj</string>
   <string name="notification_authentication_error_title">Mirëfilltësimi dështoi</string>
@@ -546,13 +548,13 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="notifications_title">Njoftime</string>
   <string name="account_settings_vibrate_enable">Dridhu</string>
   <string name="account_settings_vibrate_summary">Dridhu kur mbërrin postë</string>
-  <string name="account_settings_vibrate_pattern_label">Rregullsi dridhjesh</string>
-  <string name="account_settings_vibrate_pattern_default">parazgjedhje</string>
-  <string name="account_settings_vibrate_pattern_1">rregullsia 1</string>
-  <string name="account_settings_vibrate_pattern_2">rregullsia 2</string>
-  <string name="account_settings_vibrate_pattern_3">rregullsia 3</string>
-  <string name="account_settings_vibrate_pattern_4">rregullsia 4</string>
-  <string name="account_settings_vibrate_pattern_5">rregullsia 5</string>
+  <string name="account_settings_vibrate_pattern_label">Rregullsi dridhjeje</string>
+  <string name="account_settings_vibrate_pattern_default">Parazgjedhje</string>
+  <string name="account_settings_vibrate_pattern_1">Rregullsi 1</string>
+  <string name="account_settings_vibrate_pattern_2">Rregullsi 2</string>
+  <string name="account_settings_vibrate_pattern_3">Rregullsi 3</string>
+  <string name="account_settings_vibrate_pattern_4">Rregullsi 4</string>
+  <string name="account_settings_vibrate_pattern_5">Rregullsi 5</string>
   <string name="account_settings_vibrate_times">Përsërite dridhjen</string>
   <string name="account_settings_ringtone">Zile për postë të re</string>
   <string name="account_settings_led_label">Xixëllo LED-in</string>

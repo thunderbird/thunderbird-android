@@ -109,6 +109,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="search_action">Caută</string>
   <string name="search_everywhere_action">Căutați peste tot</string>
   <string name="search_results">Rezultate căutare</string>
+  <string name="new_messages_title">Mesaje noi</string>
   <string name="preferences_action">Opțiuni</string>
   <string name="folders_action">Gestionează dosarele</string>
   <string name="account_settings_action">Opțiuni cont</string>
@@ -166,6 +167,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="notification_action_archive">Arhivă</string>
   <string name="notification_action_archive_all">Arhivează tot</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_public">Eroare de certificat</string>
   <string name="notification_certificate_error_title">Eroare de certificat pentru <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Verifică setările serverului</string>
   <string name="notification_authentication_error_title">Autentificarea a eșuat</string>
@@ -192,6 +194,9 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="debug_enable_debug_logging_summary">Jurnal informații suplimentare diagnostic</string>
   <string name="debug_enable_sensitive_logging_title">Jurnalizează informații sensibile</string>
   <string name="debug_enable_sensitive_logging_summary">Poate include parole în jurnale.</string>
+  <string name="debug_export_logs_title">Jurnalele de export</string>
+  <string name="debug_export_logs_success">Exportul a avut succes. Jurnalele pot conține informații sensibile. Aveți grijă cui le trimiteți.</string>
+  <string name="debug_export_logs_failure">Exportul a eșuat.</string>
   <string name="message_list_load_more_messages_action">Încarcă mai multe mesaje</string>
   <string name="message_to_fmt">Către:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Subiect</string>
@@ -546,13 +551,13 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="notifications_title">Notificări</string>
   <string name="account_settings_vibrate_enable">Vibrație</string>
   <string name="account_settings_vibrate_summary">Vibrează când vine mail</string>
-  <string name="account_settings_vibrate_pattern_label">Moduri vibrație</string>
-  <string name="account_settings_vibrate_pattern_default">implicit</string>
-  <string name="account_settings_vibrate_pattern_1">model 1</string>
-  <string name="account_settings_vibrate_pattern_2">model 2</string>
-  <string name="account_settings_vibrate_pattern_3">model 3</string>
-  <string name="account_settings_vibrate_pattern_4">model 4</string>
-  <string name="account_settings_vibrate_pattern_5">model 5</string>
+  <string name="account_settings_vibrate_pattern_label">Model de vibrații</string>
+  <string name="account_settings_vibrate_pattern_default">Implicit</string>
+  <string name="account_settings_vibrate_pattern_1">Modelul 1</string>
+  <string name="account_settings_vibrate_pattern_2">Modelul 2</string>
+  <string name="account_settings_vibrate_pattern_3">Modelul 3</string>
+  <string name="account_settings_vibrate_pattern_4">Modelul 4</string>
+  <string name="account_settings_vibrate_pattern_5">Modelul 5</string>
   <string name="account_settings_vibrate_times">Repetă vibrație</string>
   <string name="account_settings_ringtone">Ton mesaje noi</string>
   <string name="account_settings_led_label">Clipire LED</string>

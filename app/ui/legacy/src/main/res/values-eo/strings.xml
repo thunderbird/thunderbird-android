@@ -540,13 +540,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="notifications_title">Sciigoj</string>
   <string name="account_settings_vibrate_enable">Vibrado</string>
   <string name="account_settings_vibrate_summary">Vibradas kiam retletero alvenas</string>
-  <string name="account_settings_vibrate_pattern_label">Vibrad-sekvenco</string>
-  <string name="account_settings_vibrate_pattern_default">implicita</string>
-  <string name="account_settings_vibrate_pattern_1">sekvenco 1</string>
-  <string name="account_settings_vibrate_pattern_2">sekvenco 2</string>
-  <string name="account_settings_vibrate_pattern_3">sekvenco 3</string>
-  <string name="account_settings_vibrate_pattern_4">sekvenco 4</string>
-  <string name="account_settings_vibrate_pattern_5">sekvenco 5</string>
+  <string name="account_settings_vibrate_pattern_default">Norma</string>
   <string name="account_settings_vibrate_times">Kiom da vibroj</string>
   <string name="account_settings_ringtone">Son-sciigo pri nova mesaĝo</string>
   <string name="account_settings_led_label">LED-brileto</string>

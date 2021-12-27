@@ -520,13 +520,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="notifications_title">Notifikasi</string>
   <string name="account_settings_vibrate_enable">Getar</string>
   <string name="account_settings_vibrate_summary">Getar saat email tiba</string>
-  <string name="account_settings_vibrate_pattern_label">Pola getar</string>
   <string name="account_settings_vibrate_pattern_default">Bawaan</string>
-  <string name="account_settings_vibrate_pattern_1">Pola 1</string>
-  <string name="account_settings_vibrate_pattern_2">Pola 2</string>
-  <string name="account_settings_vibrate_pattern_3">Pola 3</string>
-  <string name="account_settings_vibrate_pattern_4">Pola 4</string>
-  <string name="account_settings_vibrate_pattern_5">Pola 5</string>
   <string name="account_settings_vibrate_times">Ulangi getar</string>
   <string name="account_settings_ringtone">Nada dering surat baru</string>
   <string name="account_settings_led_label">Kedip LED</string>

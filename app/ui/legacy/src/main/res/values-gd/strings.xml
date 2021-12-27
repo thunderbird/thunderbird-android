@@ -491,13 +491,7 @@
   <string name="notifications_title">Brathan</string>
   <string name="account_settings_vibrate_enable">Crith</string>
   <string name="account_settings_vibrate_summary">Dèan crith nuair a ruigeas post</string>
-  <string name="account_settings_vibrate_pattern_label">Pàtranan crith</string>
-  <string name="account_settings_vibrate_pattern_default">bun-roghainn</string>
-  <string name="account_settings_vibrate_pattern_1">pàtran 1</string>
-  <string name="account_settings_vibrate_pattern_2">pàtran 2</string>
-  <string name="account_settings_vibrate_pattern_3">pàtran 3</string>
-  <string name="account_settings_vibrate_pattern_4">pàtran 4</string>
-  <string name="account_settings_vibrate_pattern_5">pàtran 5</string>
+  <string name="account_settings_vibrate_pattern_default">Bun-roghainn</string>
   <string name="account_settings_vibrate_times">Crith a-rithist</string>
   <string name="account_settings_ringtone">Seirm a’ phuist ùir</string>
   <string name="account_settings_led_label">Boillsg an LED</string>

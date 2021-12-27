@@ -109,6 +109,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="search_action">Pesquisar</string>
   <string name="search_everywhere_action">Pesquisar em todos os lugares</string>
   <string name="search_results">Resultados da pesquisa</string>
+  <string name="new_messages_title">Novas mensagens</string>
   <string name="preferences_action">Configurações</string>
   <string name="folders_action">Gerenciar pastas</string>
   <string name="account_settings_action">Configurações da conta</string>
@@ -163,6 +164,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="notification_action_archive">Arquivar</string>
   <string name="notification_action_archive_all">Arquivar todas</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_public">Erro de certificado</string>
   <string name="notification_certificate_error_title">Erro no certificado de <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Verifique suas configurações de servidor</string>
   <string name="notification_authentication_error_title">Falha na autenticação</string>
@@ -544,13 +546,9 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="notifications_title">Notificações</string>
   <string name="account_settings_vibrate_enable">Vibrar</string>
   <string name="account_settings_vibrate_summary">Vibrar quando chegar mensagem</string>
-  <string name="account_settings_vibrate_pattern_label">Padrões de vibração</string>
-  <string name="account_settings_vibrate_pattern_default">padrão</string>
-  <string name="account_settings_vibrate_pattern_1">padrão 1</string>
-  <string name="account_settings_vibrate_pattern_2">padrão 2</string>
-  <string name="account_settings_vibrate_pattern_3">padrão 3</string>
-  <string name="account_settings_vibrate_pattern_4">padrão 4</string>
-  <string name="account_settings_vibrate_pattern_5">padrão 5</string>
+  <string name="account_settings_vibrate_pattern_label">Padrão de vibração</string>
+  <string name="account_settings_vibrate_pattern_default">Padrão</string>
+  <string name="account_settings_vibrate_pattern_1">Padrão 1</string>
   <string name="account_settings_vibrate_times">Repetir a vibração</string>
   <string name="account_settings_ringtone">Toque para novas mensagens</string>
   <string name="account_settings_led_label">Piscar LED</string>

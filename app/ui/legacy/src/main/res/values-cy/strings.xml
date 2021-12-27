@@ -522,13 +522,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="notifications_title">Hysbysiadau</string>
   <string name="account_settings_vibrate_enable">Dirgrynu</string>
   <string name="account_settings_vibrate_summary">Dirgrynu pan mae neges yn cyrraedd</string>
-  <string name="account_settings_vibrate_pattern_label">Patrymau dirgrynu</string>
-  <string name="account_settings_vibrate_pattern_default">rhagosodedig</string>
-  <string name="account_settings_vibrate_pattern_1">patrwm 1</string>
-  <string name="account_settings_vibrate_pattern_2">patrwm 2</string>
-  <string name="account_settings_vibrate_pattern_3">patrwm 3</string>
-  <string name="account_settings_vibrate_pattern_4">patrwm 4</string>
-  <string name="account_settings_vibrate_pattern_5">patrwm 5</string>
+  <string name="account_settings_vibrate_pattern_default">Rhagosodedig</string>
   <string name="account_settings_vibrate_times">Ail-adrodd dirgrynu</string>
   <string name="account_settings_ringtone">Sain neges newydd</string>
   <string name="account_settings_led_label">Fflachio LED</string>

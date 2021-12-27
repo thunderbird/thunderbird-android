@@ -543,13 +543,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="notifications_title">通知設定</string>
   <string name="account_settings_vibrate_enable">バイブレーション</string>
   <string name="account_settings_vibrate_summary">メール着信時バイブレーションをONにする</string>
-  <string name="account_settings_vibrate_pattern_label">バイブレーションパターン</string>
   <string name="account_settings_vibrate_pattern_default">デフォルト</string>
-  <string name="account_settings_vibrate_pattern_1">パターン 1</string>
-  <string name="account_settings_vibrate_pattern_2">パターン 2</string>
-  <string name="account_settings_vibrate_pattern_3">パターン 3</string>
-  <string name="account_settings_vibrate_pattern_4">パターン 4</string>
-  <string name="account_settings_vibrate_pattern_5">パターン 5</string>
   <string name="account_settings_vibrate_times">バイブレーションの繰り返し回数</string>
   <string name="account_settings_ringtone">通知音</string>
   <string name="account_settings_led_label">LEDを点滅</string>

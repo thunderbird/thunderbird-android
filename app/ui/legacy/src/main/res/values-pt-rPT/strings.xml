@@ -513,13 +513,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="notifications_title">Notificações</string>
   <string name="account_settings_vibrate_enable">Vibrar</string>
   <string name="account_settings_vibrate_summary">Vibrar na chegada de email</string>
-  <string name="account_settings_vibrate_pattern_label">Padrões de vibração</string>
-  <string name="account_settings_vibrate_pattern_default">predefinido</string>
-  <string name="account_settings_vibrate_pattern_1">padrão 1</string>
-  <string name="account_settings_vibrate_pattern_2">padrão 2</string>
-  <string name="account_settings_vibrate_pattern_3">padrão 3</string>
-  <string name="account_settings_vibrate_pattern_4">padrão 4</string>
-  <string name="account_settings_vibrate_pattern_5">padrão 5</string>
+  <string name="account_settings_vibrate_pattern_default">Predefinição</string>
   <string name="account_settings_vibrate_times">Repetir vibração</string>
   <string name="account_settings_ringtone">Tom de toque para novos emails</string>
   <string name="account_settings_led_label">Piscar LED</string>

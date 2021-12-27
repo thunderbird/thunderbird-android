@@ -524,13 +524,7 @@
   <string name="notifications_title">Обавештења</string>
   <string name="account_settings_vibrate_enable">Вибрација</string>
   <string name="account_settings_vibrate_summary">Вибрирај кад стигне пошта</string>
-  <string name="account_settings_vibrate_pattern_label">Шаблони вибрације</string>
   <string name="account_settings_vibrate_pattern_default">подразумеван</string>
-  <string name="account_settings_vibrate_pattern_1">шаблон 1</string>
-  <string name="account_settings_vibrate_pattern_2">шаблон 2</string>
-  <string name="account_settings_vibrate_pattern_3">шаблон 3</string>
-  <string name="account_settings_vibrate_pattern_4">шаблон 4</string>
-  <string name="account_settings_vibrate_pattern_5">шаблон 5</string>
   <string name="account_settings_vibrate_times">Понови вибрацију</string>
   <string name="account_settings_ringtone">Звук за нову пошту</string>
   <string name="account_settings_led_label">ЛЕД трептање</string>

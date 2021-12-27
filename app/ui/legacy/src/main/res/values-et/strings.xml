@@ -508,13 +508,7 @@
   <string name="notifications_title">Teated</string>
   <string name="account_settings_vibrate_enable">Vibreeri</string>
   <string name="account_settings_vibrate_summary">Vibreeri sõnumi saabumisel</string>
-  <string name="account_settings_vibrate_pattern_label">Värina muster</string>
-  <string name="account_settings_vibrate_pattern_default">vaikimisi</string>
-  <string name="account_settings_vibrate_pattern_1">muster 1</string>
-  <string name="account_settings_vibrate_pattern_2">muster 2</string>
-  <string name="account_settings_vibrate_pattern_3">muster 3</string>
-  <string name="account_settings_vibrate_pattern_4">muster 4</string>
-  <string name="account_settings_vibrate_pattern_5">muster 5</string>
+  <string name="account_settings_vibrate_pattern_default">Vaikimisi</string>
   <string name="account_settings_vibrate_times">Korda vibreerimist</string>
   <string name="account_settings_ringtone">Uue meilisõnumi helin</string>
   <string name="account_settings_led_label">Vilguta LEDi</string>

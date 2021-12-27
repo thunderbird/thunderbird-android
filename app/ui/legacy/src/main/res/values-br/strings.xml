@@ -496,13 +496,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="notifications_title">Rebuzadurioù</string>
   <string name="account_settings_vibrate_enable">Froumal</string>
   <string name="account_settings_vibrate_summary">Froumal pa zegouezh ur postel</string>
-  <string name="account_settings_vibrate_pattern_label">Doareoù froumal</string>
-  <string name="account_settings_vibrate_pattern_default">dre ziouer</string>
-  <string name="account_settings_vibrate_pattern_1">doare 1</string>
-  <string name="account_settings_vibrate_pattern_2">doare 2</string>
-  <string name="account_settings_vibrate_pattern_3">doare 3</string>
-  <string name="account_settings_vibrate_pattern_4">doare 4</string>
-  <string name="account_settings_vibrate_pattern_5">doare 5</string>
+  <string name="account_settings_vibrate_pattern_default">Dre ziouer</string>
   <string name="account_settings_vibrate_times">Adfroumal</string>
   <string name="account_settings_ringtone">Soniri postel nevez</string>
   <string name="account_settings_led_label">Blinkañ al LED</string>

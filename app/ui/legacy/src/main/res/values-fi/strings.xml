@@ -109,6 +109,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="search_action">Etsi</string>
   <string name="search_everywhere_action">Etsi kaikkialta</string>
   <string name="search_results">Hakutulokset</string>
+  <string name="new_messages_title">Uudet viestit</string>
   <string name="preferences_action">Asetukset</string>
   <string name="folders_action">Hallitse kansioita</string>
   <string name="account_settings_action">Tilin asetukset</string>
@@ -163,6 +164,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="notification_action_archive">Arkistoi</string>
   <string name="notification_action_archive_all">Arkistoi kaikki</string>
   <string name="notification_action_spam">Roskaposti</string>
+  <string name="notification_certificate_error_public">Varmennevirhe</string>
   <string name="notification_certificate_error_title">Varmennevirhe tilissä <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Tarkista palvelinasetuksesi</string>
   <string name="notification_authentication_error_title">Tunnistautuminen epäonnistui</string>
@@ -544,13 +546,13 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="notifications_title">Ilmoitukset</string>
   <string name="account_settings_vibrate_enable">Värinä</string>
   <string name="account_settings_vibrate_summary">Värinähälytys saapuvasta viestistä</string>
-  <string name="account_settings_vibrate_pattern_label">Värinän mallit</string>
-  <string name="account_settings_vibrate_pattern_default">oletus</string>
-  <string name="account_settings_vibrate_pattern_1">malli 1</string>
-  <string name="account_settings_vibrate_pattern_2">malli 2</string>
-  <string name="account_settings_vibrate_pattern_3">malli 3</string>
-  <string name="account_settings_vibrate_pattern_4">malli 4</string>
-  <string name="account_settings_vibrate_pattern_5">malli 5</string>
+  <string name="account_settings_vibrate_pattern_label">Värinän malli</string>
+  <string name="account_settings_vibrate_pattern_default">Oletus</string>
+  <string name="account_settings_vibrate_pattern_1">Malli 1</string>
+  <string name="account_settings_vibrate_pattern_2">Malli 2</string>
+  <string name="account_settings_vibrate_pattern_3">Malli 3</string>
+  <string name="account_settings_vibrate_pattern_4">Malli 4</string>
+  <string name="account_settings_vibrate_pattern_5">Malli 5</string>
   <string name="account_settings_vibrate_times">Värinöiden lukumäärä</string>
   <string name="account_settings_ringtone">Uuden viestin ilmoitusääni</string>
   <string name="account_settings_led_label">Merkkivalo vilkkuu</string>
