@@ -5,6 +5,17 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.907" versioncode="29007" date="2021-12-27">
+        <change>Added support for setting the notification vibration pattern on Android 8+</change>
+        <change>Added support for setting a custom notification light color on Android 8+</change>
+        <change>Fixed back button behavior when opening a single message from a notification</change>
+        <change>Improved behavior when clicking grouped notifications for new messages of an account</change>
+        <change>Hide sensitive information when sync and error notifications are displayed on the lock screen</change>
+        <change>The account color is now used for sync and error notifications</change>
+        <change>Hide notification vibration settings when there's no vibrator hardware</change>
+        <change>Fixed hotkey handling when using non-QWERTY keyboard layouts</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.906" versioncode="29006" date="2021-12-07">
         <change>Set the auto-expand folder to 'Inbox' by default</change>
         <change>Restore 'new mail' notifications when the app is restarted</change>
