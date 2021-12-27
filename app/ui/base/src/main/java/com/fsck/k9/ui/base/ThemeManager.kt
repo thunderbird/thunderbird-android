@@ -10,7 +10,6 @@ import com.fsck.k9.preferences.GeneralSettings
 import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.preferences.SubTheme
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map

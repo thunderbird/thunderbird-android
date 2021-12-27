@@ -229,14 +229,14 @@ class GeneralSettingsDataStore(
 
     private fun saveSettings() {
         if (skipSaveSettings) {
-            skipSaveSettings = false;
+            skipSaveSettings = false
         } else {
             K9.saveSettingsAsync()
         }
     }
 
     private fun setTheme(value: String) {
-        skipSaveSettings = true;
+        skipSaveSettings = true
         generalSettingsManager.setAppTheme(stringToAppTheme(value))
     }
 
@@ -251,7 +251,7 @@ class GeneralSettingsDataStore(
     }
 
     private fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
-        skipSaveSettings = true;
+        skipSaveSettings = true
         generalSettingsManager.setFixedMessageViewTheme(fixedMessageViewTheme)
     }
 
