@@ -186,9 +186,9 @@ class SettingsImportFragment : Fragment() {
         }
     }
 
-    private fun handlePickDocumentResult(data: Intent?) {
+    private fun handlePickDocumentResult(resultCode: Int, data: Intent?) {
         val contentUri = data?.data
-        if (contentUri != null) {
+        if (resultCode == Activity.RESULT_OK && contentUri != null) {
             viewModel.onDocumentPicked(contentUri)
         } else {
             viewModel.onDocumentPickCanceled()
