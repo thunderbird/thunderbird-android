@@ -38,6 +38,7 @@ import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
 import com.fsck.k9.notification.NotificationChannelManager
+import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.SearchSpecification
@@ -90,6 +91,7 @@ open class MessageList :
     private val channelUtils: NotificationChannelManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
+    private val generalSettingsManager: GeneralSettingsManager by inject()
 
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
@@ -528,8 +530,8 @@ open class MessageList :
         super.onResume()
 
         if (messageListActivityAppearance == null) {
-            messageListActivityAppearance = MessageListActivityAppearance.create()
-        } else if (messageListActivityAppearance != MessageListActivityAppearance.create()) {
+            messageListActivityAppearance = MessageListActivityAppearance.create(generalSettingsManager)
+        } else if (messageListActivityAppearance != MessageListActivityAppearance.create(generalSettingsManager)) {
             recreate()
         }
 
@@ -1100,7 +1102,7 @@ open class MessageList :
             }
 
             val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
-            if (K9.isFixedMessageViewTheme) {
+            if (generalSettingsManager.getSettings().fixedMessageViewTheme) {
                 toggleTheme.isVisible = false
             } else {
                 // Set title of menu item to switch to dark/light theme

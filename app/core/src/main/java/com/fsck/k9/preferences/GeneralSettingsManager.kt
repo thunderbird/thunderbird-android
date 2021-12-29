@@ -12,4 +12,8 @@ interface GeneralSettingsManager {
     fun getSettingsFlow(): Flow<GeneralSettings>
 
     fun setShowRecentChanges(showRecentChanges: Boolean)
+    fun setAppTheme(appTheme: AppTheme)
+    fun setMessageViewTheme(subTheme: SubTheme)
+    fun setMessageComposeTheme(subTheme: SubTheme)
+    fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean)
 }

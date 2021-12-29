@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * Retrieve and modify general settings.
@@ -99,8 +100,32 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(showRecentChanges = showRecentChanges).persist()
     }
 
+    @Synchronized
+    override fun setAppTheme(appTheme: AppTheme) {
+        getSettings().copy(appTheme = appTheme).persist()
+    }
+
+    @Synchronized
+    override fun setMessageViewTheme(subTheme: SubTheme) {
+        getSettings().copy(messageViewTheme = subTheme).persist()
+    }
+
+    @Synchronized
+    override fun setMessageComposeTheme(subTheme: SubTheme) {
+        getSettings().copy(messageComposeTheme = subTheme).persist()
+    }
+
+    @Synchronized
+    override fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
+        getSettings().copy(fixedMessageViewTheme = fixedMessageViewTheme).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
+        editor.putEnum("theme", settings.appTheme)
+        editor.putEnum("messageViewTheme", settings.messageViewTheme)
+        editor.putEnum("messageComposeTheme", settings.messageComposeTheme)
+        editor.putBoolean("fixedMessageViewTheme", settings.fixedMessageViewTheme)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -108,7 +133,11 @@ internal class RealGeneralSettingsManager(
 
         val settings = GeneralSettings(
             backgroundSync = K9.backgroundOps.toBackgroundSync(),
-            showRecentChanges = storage.getBoolean("showRecentChanges", true)
+            showRecentChanges = storage.getBoolean("showRecentChanges", true),
+            appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM),
+            messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL),
+            messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL),
+            fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
         )
 
         updateSettingsFlow(settings)
@@ -123,4 +152,22 @@ private fun K9.BACKGROUND_OPS.toBackgroundSync(): BackgroundSync {
         K9.BACKGROUND_OPS.NEVER -> BackgroundSync.NEVER
         K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC -> BackgroundSync.FOLLOW_SYSTEM_AUTO_SYNC
     }
+}
+
+private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {
+    return try {
+        val value = getString(key, null)
+        if (value != null) {
+            enumValueOf(value)
+        } else {
+            defaultValue
+        }
+    } catch (e: Exception) {
+        Timber.e("Couldn't read setting '%s'. Using default value instead.", key)
+        defaultValue
+    }
+}
+
+private fun <T : Enum<T>> StorageEditor.putEnum(key: String, value: T) {
+    putString(key, value.name)
 }

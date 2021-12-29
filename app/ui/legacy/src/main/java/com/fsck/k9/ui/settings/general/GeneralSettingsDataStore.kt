@@ -2,21 +2,23 @@ package com.fsck.k9.ui.settings.general
 
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
-import com.fsck.k9.K9.AppTheme
-import com.fsck.k9.K9.SubTheme
 import com.fsck.k9.job.K9JobManager
+import com.fsck.k9.preferences.AppTheme
+import com.fsck.k9.preferences.GeneralSettingsManager
+import com.fsck.k9.preferences.SubTheme
 import com.fsck.k9.ui.base.AppLanguageManager
-import com.fsck.k9.ui.base.ThemeManager
 
 class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,
-    private val themeManager: ThemeManager,
-    private val appLanguageManager: AppLanguageManager
+    private val appLanguageManager: AppLanguageManager,
+    private val generalSettingsManager: GeneralSettingsManager
 ) : PreferenceDataStore() {
+
+    private var skipSaveSettings = false
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
-            "fixed_message_view_theme" -> K9.isFixedMessageViewTheme
+            "fixed_message_view_theme" -> generalSettingsManager.getSettings().fixedMessageViewTheme
             "animations" -> K9.isShowAnimations
             "show_unified_inbox" -> K9.isShowUnifiedInbox
             "show_starred_count" -> K9.isShowStarredCount
@@ -45,7 +47,7 @@ class GeneralSettingsDataStore(
 
     override fun putBoolean(key: String, value: Boolean) {
         when (key) {
-            "fixed_message_view_theme" -> K9.isFixedMessageViewTheme = value
+            "fixed_message_view_theme" -> setFixedMessageViewTheme(value)
             "animations" -> K9.isShowAnimations = value
             "show_unified_inbox" -> K9.isShowUnifiedInbox = value
             "show_starred_count" -> K9.isShowStarredCount = value
@@ -95,9 +97,9 @@ class GeneralSettingsDataStore(
     override fun getString(key: String, defValue: String?): String? {
         return when (key) {
             "language" -> appLanguageManager.getAppLanguage()
-            "theme" -> appThemeToString(K9.appTheme)
-            "message_compose_theme" -> subThemeToString(K9.messageComposeTheme)
-            "messageViewTheme" -> subThemeToString(K9.messageViewTheme)
+            "theme" -> appThemeToString(generalSettingsManager.getSettings().appTheme)
+            "message_compose_theme" -> subThemeToString(generalSettingsManager.getSettings().messageComposeTheme)
+            "messageViewTheme" -> subThemeToString(generalSettingsManager.getSettings().messageViewTheme)
             "messagelist_preview_lines" -> K9.messageListPreviewLines.toString()
             "splitview_mode" -> K9.splitViewMode.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
@@ -131,8 +133,8 @@ class GeneralSettingsDataStore(
         when (key) {
             "language" -> appLanguageManager.setAppLanguage(value)
             "theme" -> setTheme(value)
-            "message_compose_theme" -> K9.messageComposeTheme = stringToSubTheme(value)
-            "messageViewTheme" -> K9.messageViewTheme = stringToSubTheme(value)
+            "message_compose_theme" -> setMessageComposeTheme(value)
+            "messageViewTheme" -> setMessageViewTheme(value)
             "messagelist_preview_lines" -> K9.messageListPreviewLines = value.toInt()
             "splitview_mode" -> K9.splitViewMode = K9.SplitViewMode.valueOf(value)
             "notification_quick_delete" -> {
@@ -226,12 +228,31 @@ class GeneralSettingsDataStore(
     }
 
     private fun saveSettings() {
-        K9.saveSettingsAsync()
+        if (skipSaveSettings) {
+            skipSaveSettings = false
+        } else {
+            K9.saveSettingsAsync()
+        }
     }
 
-    private fun setTheme(value: String?) {
-        K9.appTheme = stringToAppTheme(value)
-        themeManager.updateAppTheme()
+    private fun setTheme(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.setAppTheme(stringToAppTheme(value))
+    }
+
+    private fun setMessageComposeTheme(subThemeString: String) {
+        skipSaveSettings = true
+        generalSettingsManager.setMessageComposeTheme(stringToSubTheme(subThemeString))
+    }
+
+    private fun setMessageViewTheme(subThemeString: String) {
+        skipSaveSettings = true
+        generalSettingsManager.setMessageViewTheme(stringToSubTheme(subThemeString))
+    }
+
+    private fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setFixedMessageViewTheme(fixedMessageViewTheme)
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {
