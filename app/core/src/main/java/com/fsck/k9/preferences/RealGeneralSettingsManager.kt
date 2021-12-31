@@ -120,12 +120,18 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(fixedMessageViewTheme = fixedMessageViewTheme).persist()
     }
 
+    @Synchronized
+    override fun setShowAnimations(showAnimations: Boolean) {
+        getSettings().copy(showAnimations = showAnimations).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
         editor.putEnum("messageViewTheme", settings.messageViewTheme)
         editor.putEnum("messageComposeTheme", settings.messageComposeTheme)
         editor.putBoolean("fixedMessageViewTheme", settings.fixedMessageViewTheme)
+        editor.putBoolean("animations", settings.showAnimations)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -137,7 +143,8 @@ internal class RealGeneralSettingsManager(
             appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM),
             messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL),
             messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL),
-            fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
+            fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true),
+            showAnimations = storage.getBoolean("animations", true)
         )
 
         updateSettingsFlow(settings)

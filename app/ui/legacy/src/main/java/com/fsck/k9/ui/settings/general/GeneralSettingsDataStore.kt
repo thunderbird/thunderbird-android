@@ -19,7 +19,7 @@ class GeneralSettingsDataStore(
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
             "fixed_message_view_theme" -> generalSettingsManager.getSettings().fixedMessageViewTheme
-            "animations" -> K9.isShowAnimations
+            "animations" -> generalSettingsManager.getSettings().showAnimations
             "show_unified_inbox" -> K9.isShowUnifiedInbox
             "show_starred_count" -> K9.isShowStarredCount
             "messagelist_stars" -> K9.isShowMessageListStars
@@ -48,7 +48,7 @@ class GeneralSettingsDataStore(
     override fun putBoolean(key: String, value: Boolean) {
         when (key) {
             "fixed_message_view_theme" -> setFixedMessageViewTheme(value)
-            "animations" -> K9.isShowAnimations = value
+            "animations" -> setShowAnimations(value)
             "show_unified_inbox" -> K9.isShowUnifiedInbox = value
             "show_starred_count" -> K9.isShowStarredCount = value
             "messagelist_stars" -> K9.isShowMessageListStars = value
@@ -253,6 +253,11 @@ class GeneralSettingsDataStore(
     private fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setFixedMessageViewTheme(fixedMessageViewTheme)
+    }
+
+    private fun setShowAnimations(showAnimations: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setShowAnimations(showAnimations)
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {

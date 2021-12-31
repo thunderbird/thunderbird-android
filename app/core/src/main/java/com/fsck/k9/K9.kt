@@ -126,9 +126,6 @@ object K9 : EarlyInit {
     var backgroundOps = BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
 
     @JvmStatic
-    var isShowAnimations = true
-
-    @JvmStatic
     var isConfirmDelete = false
 
     @JvmStatic
@@ -295,7 +292,6 @@ object K9 : EarlyInit {
     fun loadPrefs(storage: Storage) {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
-        isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", true)
@@ -367,7 +363,6 @@ object K9 : EarlyInit {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
-        editor.putBoolean("animations", isShowAnimations)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)
         editor.putBoolean("autofitWidth", isAutoFitWidth)

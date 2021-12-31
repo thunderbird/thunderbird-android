@@ -126,7 +126,7 @@ open class MessageList :
      */
     private var messageViewOnly = false
     private var messageListWasDisplayed = false
-    private var viewSwitcher: ViewSwitcher? = null
+    private lateinit var viewSwitcher: ViewSwitcher
     private lateinit var recentChangesSnackbar: Snackbar
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -165,7 +165,8 @@ open class MessageList :
                 firstOutAnimation = AnimationUtils.loadAnimation(this@MessageList, R.anim.slide_out_right)
                 secondInAnimation = AnimationUtils.loadAnimation(this@MessageList, R.anim.slide_in_right)
                 secondOutAnimation = AnimationUtils.loadAnimation(this@MessageList, R.anim.slide_out_left)
-                setOnSwitchCompleteListener(this@MessageList)
+                generalSettingsManager = this@MessageList.generalSettingsManager
+                onSwitchCompleteListener = this@MessageList
             }
         }
 
@@ -1448,7 +1449,7 @@ open class MessageList :
         messageViewOnly = false
         messageListWasDisplayed = true
         displayMode = DisplayMode.MESSAGE_LIST
-        viewSwitcher!!.showFirstView()
+        viewSwitcher.showFirstView()
 
         messageListFragment!!.setActiveMessage(null)
 
@@ -1472,9 +1473,9 @@ open class MessageList :
         displayMode = DisplayMode.MESSAGE_VIEW
 
         if (!messageListWasDisplayed) {
-            viewSwitcher!!.animateFirstView = false
+            viewSwitcher.animateFirstView = false
         }
-        viewSwitcher!!.showSecondView()
+        viewSwitcher.showSecondView()
 
         if (isDrawerEnabled) {
             lockDrawer()
