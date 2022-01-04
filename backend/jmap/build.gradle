@@ -16,6 +16,7 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
 
     testImplementation project(":mail:testing")
+    testImplementation project(':backend:testing')
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation("com.squareup.okhttp3:mockwebserver:${versions.okhttp}")
 }

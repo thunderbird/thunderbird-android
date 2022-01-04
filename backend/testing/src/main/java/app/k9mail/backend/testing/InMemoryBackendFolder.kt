@@ -1,4 +1,4 @@
-package com.fsck.k9.backend.jmap
+package app.k9mail.backend.testing
 
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.mail.Flag
@@ -8,6 +8,8 @@ import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.Date
 import okio.Buffer
+import okio.buffer
+import okio.source
 import org.junit.Assert.assertEquals
 
 class InMemoryBackendFolder(override var name: String, var type: FolderType) : BackendFolder {
@@ -141,5 +143,10 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
 
     override fun setFolderExtraNumber(name: String, value: Long) {
         extraNumbers[name] = value
+    }
+
+    private fun loadResource(name: String): String {
+        val resourceAsStream = javaClass.getResourceAsStream(name) ?: error("Couldn't load resource: $name")
+        return resourceAsStream.use { it.source().buffer().readUtf8() }
     }
 }
