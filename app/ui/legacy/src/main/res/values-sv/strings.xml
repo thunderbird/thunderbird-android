@@ -547,7 +547,13 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="notifications_title">Aviseringar</string>
   <string name="account_settings_vibrate_enable">Vibrera</string>
   <string name="account_settings_vibrate_summary">Vibrera vid ankomst av e-post</string>
+  <string name="account_settings_vibrate_pattern_label">Vibrationsmönster</string>
   <string name="account_settings_vibrate_pattern_default">Standard</string>
+  <string name="account_settings_vibrate_pattern_1">Mönster 1</string>
+  <string name="account_settings_vibrate_pattern_2">Mönster 2</string>
+  <string name="account_settings_vibrate_pattern_3">Mönster 3</string>
+  <string name="account_settings_vibrate_pattern_4">Mönster 4</string>
+  <string name="account_settings_vibrate_pattern_5">Mönster 5</string>
   <string name="account_settings_vibrate_times">Antal vibrationer</string>
   <string name="account_settings_ringtone">Ljudsignal för ny e-post</string>
   <string name="account_settings_led_label">Blinkande LED</string>
