@@ -82,13 +82,6 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
         destroyMessages(messages.keys.toList())
     }
 
-    override fun getLastUid(): Long? {
-        // This is using string ordering because that's what K9BackendFolder is using, too.
-        return messages.keys
-            .maxOrNull()
-            ?.toLongOrNull()
-    }
-
     override fun getMoreMessages(): MoreMessages = moreMessages
 
     override fun setMoreMessages(moreMessages: MoreMessages) {

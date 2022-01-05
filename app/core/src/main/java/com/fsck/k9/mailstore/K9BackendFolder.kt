@@ -35,10 +35,6 @@ class K9BackendFolder(
         visibleLimit = init.visibleLimit
     }
 
-    override fun getLastUid(): Long? {
-        return messageStore.getLastUid(folderId)
-    }
-
     override fun getMessageServerIds(): Set<String> {
         return messageStore.getMessageServerIds(folderId)
     }

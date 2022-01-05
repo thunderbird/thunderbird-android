@@ -189,19 +189,4 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
             }
         }
     }
-
-    fun getLastUid(folderId: Long): Long? {
-        return lockableDatabase.execute(false) { database ->
-            database.rawQuery(
-                "SELECT MAX(uid) FROM messages WHERE folder_id = ?",
-                arrayOf(folderId.toString())
-            ).use { cursor ->
-                if (cursor.moveToFirst()) {
-                    cursor.getLongOrNull(0)
-                } else {
-                    null
-                }
-            }
-        }
-    }
 }

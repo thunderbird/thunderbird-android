@@ -79,16 +79,6 @@ class K9BackendFolderTest : K9RobolectricTest() {
     }
 
     @Test
-    fun getLastUid() {
-        createMessageInBackendFolder("200")
-        createMessageInBackendFolder("123")
-
-        val lastUid = backendFolder.getLastUid()
-
-        assertEquals(200L, lastUid)
-    }
-
-    @Test
     fun saveCompleteMessage_withoutServerId_shouldThrow() {
         val message = createMessage(messageServerId = null)
 
