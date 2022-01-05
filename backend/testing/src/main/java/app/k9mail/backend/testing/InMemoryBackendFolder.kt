@@ -1,6 +1,7 @@
 package app.k9mail.backend.testing
 
 import com.fsck.k9.backend.api.BackendFolder
+import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
@@ -17,6 +18,9 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
     val extraNumbers: MutableMap<String, Long> = mutableMapOf()
     private val messages = mutableMapOf<String, Message>()
     private val messageFlags = mutableMapOf<String, MutableSet<Flag>>()
+    private var moreMessages: MoreMessages = MoreMessages.UNKNOWN
+    private var status: String? = null
+    private var lastChecked = 0L
 
     override var visibleLimit: Int = 25
 
@@ -60,7 +64,11 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
     }
 
     override fun getAllMessagesAndEffectiveDates(): Map<String, Long?> {
-        throw UnsupportedOperationException("not implemented")
+        return messages
+            .map { (serverId, message) ->
+                serverId to message.sentDate.time
+            }
+            .toMap()
     }
 
     override fun destroyMessages(messageServerIds: List<String>) {
@@ -75,27 +83,28 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
     }
 
     override fun getLastUid(): Long? {
-        throw UnsupportedOperationException("not implemented")
+        // This is using string ordering because that's what K9BackendFolder is using, too.
+        return messages.keys
+            .maxOrNull()
+            ?.toLongOrNull()
     }
 
-    override fun getMoreMessages(): BackendFolder.MoreMessages {
-        throw UnsupportedOperationException("not implemented")
-    }
+    override fun getMoreMessages(): MoreMessages = moreMessages
 
-    override fun setMoreMessages(moreMessages: BackendFolder.MoreMessages) {
-        throw UnsupportedOperationException("not implemented")
+    override fun setMoreMessages(moreMessages: MoreMessages) {
+        this.moreMessages = moreMessages
     }
 
     override fun setLastChecked(timestamp: Long) {
-        throw UnsupportedOperationException("not implemented")
+        lastChecked = timestamp
     }
 
     override fun setStatus(status: String?) {
-        throw UnsupportedOperationException("not implemented")
+        this.status = status
     }
 
     override fun isMessagePresent(messageServerId: String): Boolean {
-        throw UnsupportedOperationException("not implemented")
+        return messages[messageServerId] != null
     }
 
     override fun getMessageFlags(messageServerId: String): Set<Flag> {
