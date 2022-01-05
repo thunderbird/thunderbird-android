@@ -170,27 +170,6 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
     }
 
     @Test
-    fun `get highest message uid`() {
-        val folderId = sqliteDatabase.createFolder()
-        sqliteDatabase.createMessage(uid = "42", folderId = folderId)
-        sqliteDatabase.createMessage(uid = "23", folderId = folderId)
-        sqliteDatabase.createMessage(uid = "27", folderId = folderId)
-
-        val highestUid = retrieveMessageOperations.getLastUid(folderId)
-
-        assertThat(highestUid).isEqualTo(42)
-    }
-
-    @Test
-    fun `get highest message uid should return null if there are no messages`() {
-        val folderId = sqliteDatabase.createFolder()
-
-        val highestUid = retrieveMessageOperations.getLastUid(folderId)
-
-        assertThat(highestUid).isNull()
-    }
-
-    @Test
     fun `get oldest message date`() {
         sqliteDatabase.createMessage(folderId = 1, date = 42)
         sqliteDatabase.createMessage(folderId = 1, date = 23)

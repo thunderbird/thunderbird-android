@@ -131,11 +131,6 @@ interface MessageStore {
     fun getHeaders(folderId: Long, messageServerId: String): List<Header>
 
     /**
-     * Get highest UID (message server ID)
-     */
-    fun getLastUid(folderId: Long): Long?
-
-    /**
      * Return the size of this message store in bytes.
      */
     fun getSize(): Long

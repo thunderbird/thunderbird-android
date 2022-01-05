@@ -1,6 +1,7 @@
-package com.fsck.k9.backend.jmap
+package app.k9mail.backend.testing
 
 import com.fsck.k9.backend.api.BackendFolder
+import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
@@ -8,6 +9,8 @@ import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.Date
 import okio.Buffer
+import okio.buffer
+import okio.source
 import org.junit.Assert.assertEquals
 
 class InMemoryBackendFolder(override var name: String, var type: FolderType) : BackendFolder {
@@ -15,6 +18,9 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
     val extraNumbers: MutableMap<String, Long> = mutableMapOf()
     private val messages = mutableMapOf<String, Message>()
     private val messageFlags = mutableMapOf<String, MutableSet<Flag>>()
+    private var moreMessages: MoreMessages = MoreMessages.UNKNOWN
+    private var status: String? = null
+    private var lastChecked = 0L
 
     override var visibleLimit: Int = 25
 
@@ -58,7 +64,11 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
     }
 
     override fun getAllMessagesAndEffectiveDates(): Map<String, Long?> {
-        throw UnsupportedOperationException("not implemented")
+        return messages
+            .map { (serverId, message) ->
+                serverId to message.sentDate.time
+            }
+            .toMap()
     }
 
     override fun destroyMessages(messageServerIds: List<String>) {
@@ -72,28 +82,22 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
         destroyMessages(messages.keys.toList())
     }
 
-    override fun getLastUid(): Long? {
-        throw UnsupportedOperationException("not implemented")
-    }
+    override fun getMoreMessages(): MoreMessages = moreMessages
 
-    override fun getMoreMessages(): BackendFolder.MoreMessages {
-        throw UnsupportedOperationException("not implemented")
-    }
-
-    override fun setMoreMessages(moreMessages: BackendFolder.MoreMessages) {
-        throw UnsupportedOperationException("not implemented")
+    override fun setMoreMessages(moreMessages: MoreMessages) {
+        this.moreMessages = moreMessages
     }
 
     override fun setLastChecked(timestamp: Long) {
-        throw UnsupportedOperationException("not implemented")
+        lastChecked = timestamp
     }
 
     override fun setStatus(status: String?) {
-        throw UnsupportedOperationException("not implemented")
+        this.status = status
     }
 
     override fun isMessagePresent(messageServerId: String): Boolean {
-        throw UnsupportedOperationException("not implemented")
+        return messages[messageServerId] != null
     }
 
     override fun getMessageFlags(messageServerId: String): Set<Flag> {
@@ -141,5 +145,10 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
 
     override fun setFolderExtraNumber(name: String, value: Long) {
         extraNumbers[name] = value
+    }
+
+    private fun loadResource(name: String): String {
+        val resourceAsStream = javaClass.getResourceAsStream(name) ?: error("Couldn't load resource: $name")
+        return resourceAsStream.use { it.source().buffer().readUtf8() }
     }
 }

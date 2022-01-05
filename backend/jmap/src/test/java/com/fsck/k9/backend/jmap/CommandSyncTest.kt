@@ -1,5 +1,7 @@
 package com.fsck.k9.backend.jmap
 
+import app.k9mail.backend.testing.InMemoryBackendFolder
+import app.k9mail.backend.testing.InMemoryBackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy

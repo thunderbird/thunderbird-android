@@ -108,10 +108,6 @@ class K9MessageStore(
         return retrieveMessageOperations.getHeaders(folderId, messageServerId)
     }
 
-    override fun getLastUid(folderId: Long): Long? {
-        return retrieveMessageOperations.getLastUid(folderId)
-    }
-
     override fun destroyMessages(folderId: Long, messageServerIds: Collection<String>) {
         deleteMessageOperations.destroyMessages(folderId, messageServerIds)
     }

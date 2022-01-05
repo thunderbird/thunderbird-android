@@ -1,0 +1,31 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+dependencies {
+    implementation project(":backend:api")
+    implementation "com.squareup.okio:okio:${versions.okio}"
+    implementation "junit:junit:${versions.junit}"
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
+    }
+}

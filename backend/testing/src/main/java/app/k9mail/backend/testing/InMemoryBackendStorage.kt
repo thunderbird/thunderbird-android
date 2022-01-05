@@ -1,4 +1,4 @@
-package com.fsck.k9.backend.jmap
+package app.k9mail.backend.testing
 
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
