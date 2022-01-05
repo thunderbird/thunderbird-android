@@ -14,7 +14,6 @@ import com.google.common.truth.Truth.assertThat
 import java.util.Date
 import org.apache.james.mime4j.dom.field.DateTimeField
 import org.apache.james.mime4j.field.DefaultFieldParser
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
@@ -166,7 +165,6 @@ class ImapSyncTest {
     }
 
     @Test
-    @Ignore("This is currently broken")
     fun `determining the highest UID should use numerical ordering`() {
         addMessageToBackendFolder(uid = 9)
         addMessageToBackendFolder(uid = 100)
@@ -216,6 +214,11 @@ class ImapSyncTest {
             setUid(messageServerId)
         }
         backendFolder.saveMessage(message, MessageDownloadState.FULL)
+
+        val highestKnownUid = backendFolder.getFolderExtraNumber("imapHighestKnownUid") ?: 0
+        if (uid > highestKnownUid) {
+            backendFolder.setFolderExtraNumber("imapHighestKnownUid", uid)
+        }
     }
 
     private fun addMessageToImapFolder(uid: Long, flags: Set<Flag> = emptySet(), date: String = DEFAULT_MESSAGE_DATE) {

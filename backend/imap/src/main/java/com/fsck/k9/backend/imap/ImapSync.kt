@@ -39,6 +39,7 @@ internal class ImapSync(
 
         var remoteFolder: ImapFolder? = null
         var backendFolder: BackendFolder? = null
+        var newHighestKnownUid: Long = 0
         try {
             Timber.v("SYNC: About to get local folder %s", folder)
 
@@ -90,6 +91,7 @@ internal class ImapSync(
                 Timber.d("SYNC: UIDVALIDITY for %s changed; clearing local message cache", folder)
                 backendFolder.clearAllMessages()
                 backendFolder.setFolderExtraNumber(EXTRA_UID_VALIDITY, uidValidity!!)
+                backendFolder.setFolderExtraNumber(EXTRA_HIGHEST_KNOWN_UID, 0)
             }
 
             /*
@@ -97,7 +99,7 @@ internal class ImapSync(
              * the uids within the list.
              */
 
-            val lastUid = backendFolder.getLastUid()
+            val highestKnownUid = backendFolder.getFolderExtraNumber(EXTRA_HIGHEST_KNOWN_UID) ?: 0
             var localUidMap: Map<String, Long?>? = backendFolder.getAllMessagesAndEffectiveDates()
 
             /*
@@ -142,6 +144,11 @@ internal class ImapSync(
                 for (thisMess in remoteMessageArray) {
                     headerProgress.incrementAndGet()
                     listener.syncHeadersProgress(folder, headerProgress.get(), messageCount)
+
+                    val uid = thisMess.uid.toLong()
+                    if (uid > highestKnownUid && uid > newHighestKnownUid) {
+                        newHighestKnownUid = uid
+                    }
 
                     val localMessageTimestamp = localUidMap!![thisMess.uid]
                     if (localMessageTimestamp == null || localMessageTimestamp >= earliestTimestamp) {
@@ -194,7 +201,7 @@ internal class ImapSync(
                 backendFolder,
                 remoteMessages,
                 false,
-                lastUid,
+                highestKnownUid,
                 listener
             )
 
@@ -239,6 +246,10 @@ internal class ImapSync(
                 System.currentTimeMillis()
             )
         } finally {
+            if (newHighestKnownUid > 0 && backendFolder != null) {
+                Timber.v("Saving new highest known UID: %d", newHighestKnownUid)
+                backendFolder.setFolderExtraNumber(EXTRA_HIGHEST_KNOWN_UID, newHighestKnownUid)
+            }
             remoteFolder?.close()
         }
     }
@@ -283,7 +294,7 @@ internal class ImapSync(
         backendFolder: BackendFolder,
         inputMessages: List<ImapMessage>,
         flagSyncOnly: Boolean,
-        lastUid: Long?,
+        highestKnownUid: Long?,
         listener: SyncListener
     ): Int {
         val folder = remoteFolder.serverId
@@ -369,7 +380,7 @@ internal class ImapSync(
             newMessages,
             todo,
             fp,
-            lastUid,
+            highestKnownUid,
             listener
         )
         smallMessages.clear()
@@ -387,7 +398,7 @@ internal class ImapSync(
             newMessages,
             todo,
             fp,
-            lastUid,
+            highestKnownUid,
             listener,
             maxDownloadSize
         )
@@ -442,12 +453,12 @@ internal class ImapSync(
         }
     }
 
-    private fun isOldMessage(messageServerId: String, lastUid: Long?): Boolean {
-        if (lastUid == null) return false
+    private fun isOldMessage(messageServerId: String, highestKnownUid: Long?): Boolean {
+        if (highestKnownUid == null) return false
 
         try {
             val messageUid = messageServerId.toLong()
-            return messageUid <= lastUid
+            return messageUid <= highestKnownUid
         } catch (e: NumberFormatException) {
             Timber.w(e, "Couldn't parse UID: %s", messageServerId)
         }
@@ -514,7 +525,7 @@ internal class ImapSync(
         newMessages: AtomicInteger,
         todo: Int,
         fetchProfile: FetchProfile,
-        lastUid: Long?,
+        highestKnownUid: Long?,
         listener: SyncListener
     ) {
         val folder = remoteFolder.serverId
@@ -545,7 +556,7 @@ internal class ImapSync(
                         // Update the listener with what we've found
                         listener.syncProgress(folder, progress.get(), todo)
 
-                        val isOldMessage = isOldMessage(messageServerId, lastUid)
+                        val isOldMessage = isOldMessage(messageServerId, highestKnownUid)
                         listener.syncNewMessage(folder, messageServerId, isOldMessage)
                     } catch (e: Exception) {
                         Timber.e(e, "SYNC: fetch small messages")
@@ -569,7 +580,7 @@ internal class ImapSync(
         newMessages: AtomicInteger,
         todo: Int,
         fetchProfile: FetchProfile,
-        lastUid: Long?,
+        highestKnownUid: Long?,
         listener: SyncListener,
         maxDownloadSize: Int
     ) {
@@ -603,7 +614,7 @@ internal class ImapSync(
 
             listener.syncProgress(folder, progress.get(), todo)
 
-            val isOldMessage = isOldMessage(messageServerId, lastUid)
+            val isOldMessage = isOldMessage(messageServerId, highestKnownUid)
             listener.syncNewMessage(folder, messageServerId, isOldMessage)
         }
 
@@ -737,5 +748,6 @@ internal class ImapSync(
 
     companion object {
         private const val EXTRA_UID_VALIDITY = "imapUidValidity"
+        private const val EXTRA_HIGHEST_KNOWN_UID = "imapHighestKnownUid"
     }
 }
