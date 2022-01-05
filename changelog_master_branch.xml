@@ -5,6 +5,11 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.908" versioncode="29008" date="2022-01-06">
+        <change>Fixed a bug where sometimes the app created notifications when downloading old messages</change>
+        <change>Fixed settings import so the imported theme is applied right away</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.907" versioncode="29007" date="2021-12-27">
         <change>Added support for setting the notification vibration pattern on Android 8+</change>
         <change>Added support for setting a custom notification light color on Android 8+</change>
