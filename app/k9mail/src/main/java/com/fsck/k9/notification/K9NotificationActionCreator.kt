@@ -35,7 +35,9 @@ internal class K9NotificationActionCreator(
         messageReference: MessageReference,
         notificationId: Int
     ): PendingIntent {
-        val intent = createMessageViewIntent(messageReference)
+        val openInUnifiedInbox = K9.isShowUnifiedInbox && isIncludedInUnifiedInbox(messageReference)
+        val intent = createMessageViewIntent(messageReference, openInUnifiedInbox)
+
         return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
@@ -226,8 +228,8 @@ internal class K9NotificationActionCreator(
         )
     }
 
-    private fun createMessageViewIntent(message: MessageReference): Intent {
-        return MessageList.actionDisplayMessageIntent(context, message)
+    private fun createMessageViewIntent(message: MessageReference, openInUnifiedInbox: Boolean): Intent {
+        return MessageList.actionDisplayMessageIntent(context, message, openInUnifiedInbox)
     }
 
     private fun createUnifiedInboxIntent(account: Account): Intent {
@@ -245,5 +247,10 @@ internal class K9NotificationActionCreator(
     private fun areAllIncludedInUnifiedInbox(account: Account, folderIds: Collection<Long>): Boolean {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.areAllIncludedInUnifiedInbox(folderIds)
+    }
+
+    private fun isIncludedInUnifiedInbox(messageReference: MessageReference): Boolean {
+        val messageStore = messageStoreManager.getMessageStore(messageReference.accountUuid)
+        return messageStore.areAllIncludedInUnifiedInbox(listOf(messageReference.folderId))
     }
 }

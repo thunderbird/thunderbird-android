@@ -463,6 +463,22 @@ open class MessageList :
                 search = search,
                 noThreading = true
             )
+        } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCE)) {
+            val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
+            val messageReference = MessageReference.parse(messageReferenceString)
+
+            if (messageReference != null) {
+                val search = if (intent.hasExtra(EXTRA_SEARCH)) {
+                    ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR)
+                } else {
+                    messageReference.toLocalSearch()
+                }
+
+                return LaunchData(
+                    search = search,
+                    messageReference = messageReference
+                )
+            }
         } else if (intent.hasExtra(EXTRA_SEARCH)) {
             // regular LocalSearch object was passed
             val search = ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR)
@@ -472,16 +488,6 @@ open class MessageList :
             }
 
             return LaunchData(search = search, account = account, noThreading = noThreading)
-        } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCE)) {
-            val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
-            val messageReference = MessageReference.parse(messageReferenceString)
-
-            if (messageReference != null) {
-                return LaunchData(
-                    search = messageReference.toLocalSearch(),
-                    messageReference = messageReference
-                )
-            }
         } else if (intent.hasExtra("account")) {
             val accountUuid = intent.getStringExtra("account")
             if (accountUuid != null) {
@@ -1741,12 +1747,21 @@ open class MessageList :
             return intentDisplaySearch(context, search, noThreading = false, newTask = true, clearTop = true)
         }
 
-        @JvmStatic
-        fun actionDisplayMessageIntent(context: Context?, messageReference: MessageReference): Intent {
+        fun actionDisplayMessageIntent(
+            context: Context,
+            messageReference: MessageReference,
+            openInUnifiedInbox: Boolean = false
+        ): Intent {
             return Intent(context, MessageList::class.java).apply {
+                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
+
+                if (openInUnifiedInbox) {
+                    val search = SearchAccount.createUnifiedInboxAccount().relatedSearch
+                    putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
+                }
+
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
             }
         }
 
