@@ -1662,6 +1662,10 @@ public class MessagingController {
                 processPendingCommands(account);
             }
         }
+
+        for (MessagingListener listener : getListeners()) {
+            listener.folderStatusChanged(account, account.getOutboxFolderId());
+        }
     }
 
     private void handleSendFailure(Account account, LocalFolder localFolder, Message message, Exception exception)
