@@ -1,9 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Support request
-    url: https://forum.k9mail.app/c/support
-    about: Ask the community for help
-  - name: Question?
-    url: https://forum.k9mail.app/c/general
-    about: For general questions about the project
-
+  - name: K-9 Mail Forum
+    url: https://forum.k9mail.app/
+    about: Most issues are not bugs. Ask the community for help.
