@@ -128,7 +128,7 @@ class NewMailNotificationManagerTest {
 
     @Test
     fun `remove notification when none was added before should return null`() {
-        val result = manager.removeNewMailNotification(account, createMessageReference("any"))
+        val result = manager.removeNewMailNotifications(account) { listOf(createMessageReference("any")) }
 
         assertThat(result).isNull()
     }
@@ -144,7 +144,7 @@ class NewMailNotificationManagerTest {
         )
         manager.addNewMailNotification(account, message, silent = false)
 
-        val result = manager.removeNewMailNotification(account, createMessageReference("untracked"))
+        val result = manager.removeNewMailNotifications(account) { listOf(createMessageReference("untracked")) }
 
         assertThat(result).isNull()
     }
@@ -160,7 +160,7 @@ class NewMailNotificationManagerTest {
         )
         manager.addNewMailNotification(account, message, silent = false)
 
-        val result = manager.removeNewMailNotification(account, createMessageReference("msg-1"))
+        val result = manager.removeNewMailNotifications(account) { listOf(createMessageReference("msg-1")) }
 
         assertNotNull(result) { data ->
             assertThat(data.cancelNotificationIds).containsExactly(
@@ -200,7 +200,7 @@ class NewMailNotificationManagerTest {
         )
         manager.addNewMailNotification(account, messageThree, silent = true)
 
-        val result = manager.removeNewMailNotification(account, createMessageReference("msg-2"))
+        val result = manager.removeNewMailNotifications(account) { listOf(createMessageReference("msg-2")) }
 
         assertNotNull(result) { data ->
             assertThat(data.cancelNotificationIds).isEqualTo(listOf(notificationIdTwo))
@@ -230,7 +230,7 @@ class NewMailNotificationManagerTest {
         manager.addNewMailNotification(account, message, silent = false)
         addMaximumNumberOfNotifications()
 
-        val result = manager.removeNewMailNotification(account, createMessageReference("msg-1"))
+        val result = manager.removeNewMailNotifications(account) { listOf(createMessageReference("msg-1")) }
 
         assertNotNull(result) { data ->
             assertThat(data.cancelNotificationIds).hasSize(1)

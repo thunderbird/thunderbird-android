@@ -63,39 +63,35 @@ internal class NewMailNotificationManager(
         )
     }
 
-    fun removeNewMailNotification(account: Account, messageReference: MessageReference): NewMailNotificationData? {
-        val result = notificationRepository.removeNotification(account, messageReference) ?: return null
+    fun removeNewMailNotifications(
+        account: Account,
+        selector: (List<MessageReference>) -> List<MessageReference>
+    ): NewMailNotificationData? {
+        val result = notificationRepository.removeNotifications(account, selector) ?: return null
 
         val cancelNotificationIds = when {
-            result.shouldCancelNotification && result.notificationData.isEmpty() -> {
-                listOf(NotificationIds.getNewMailSummaryNotificationId(account), result.cancelNotificationId)
-            }
-            result.shouldCancelNotification -> {
-                listOf(result.cancelNotificationId)
+            result.notificationData.isEmpty() -> {
+                result.cancelNotificationIds + NotificationIds.getNewMailSummaryNotificationId(account)
             }
             else -> {
-                emptyList()
+                result.cancelNotificationIds
             }
         }
 
-        val singleNotificationDataList = if (result.shouldCreateNotification) {
-            listOf(
-                createSingleNotificationData(
-                    account = account,
-                    notificationId = result.notificationHolder.notificationId,
-                    content = result.notificationHolder.content,
-                    timestamp = result.notificationHolder.timestamp,
-                    addLockScreenNotification = result.notificationData.isSingleMessageNotification
-                )
+        val singleNotificationData = result.notificationHolders.map { notificationHolder ->
+            createSingleNotificationData(
+                account = account,
+                notificationId = notificationHolder.notificationId,
+                content = notificationHolder.content,
+                timestamp = notificationHolder.timestamp,
+                addLockScreenNotification = result.notificationData.isSingleMessageNotification
             )
-        } else {
-            emptyList()
         }
 
         return NewMailNotificationData(
             cancelNotificationIds = cancelNotificationIds,
             baseNotificationData = createBaseNotificationData(result.notificationData),
-            singleNotificationData = singleNotificationDataList,
+            singleNotificationData = singleNotificationData,
             summaryNotificationData = createSummaryNotificationData(result.notificationData, silent = true)
         )
     }

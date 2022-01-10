@@ -53,12 +53,12 @@ class NotificationDataStoreTest : RobolectricTest() {
         val content = createNotificationContent("1")
         notificationDataStore.addNotification(account, content, TIMESTAMP)
 
-        val result = notificationDataStore.removeNotification(account, content.messageReference)
+        val result = notificationDataStore.removeNotifications(account) { listOf(content.messageReference) }
 
         assertNotNull(result) { removeResult ->
-            assertThat(removeResult.cancelNotificationId)
-                .isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 0))
-            assertThat(removeResult.shouldCreateNotification).isFalse()
+            assertThat(removeResult.cancelNotificationIds)
+                .containsExactly(NotificationIds.getSingleMessageNotificationId(account, 0))
+            assertThat(removeResult.notificationHolders).isEmpty()
         }
     }
 
@@ -77,16 +77,16 @@ class NotificationDataStoreTest : RobolectricTest() {
         val latestContent = createNotificationContent("10")
         notificationDataStore.addNotification(account, latestContent, TIMESTAMP)
 
-        val result = notificationDataStore.removeNotification(account, latestContent.messageReference)
+        val result = notificationDataStore.removeNotifications(account) { listOf(latestContent.messageReference) }
 
         assertNotNull(result) { removeResult ->
-            assertThat(removeResult.cancelNotificationId)
-                .isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 1))
-            assertThat(removeResult.shouldCreateNotification).isTrue()
-            assertNotNull(removeResult.notificationHolder) { holder ->
-                assertThat(holder.notificationId).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 1))
-                assertThat(holder.content).isEqualTo(content)
-            }
+            assertThat(removeResult.cancelNotificationIds)
+                .containsExactly(NotificationIds.getSingleMessageNotificationId(account, 1))
+            assertThat(removeResult.notificationHolders).hasSize(1)
+
+            val holder = removeResult.notificationHolders.first()
+            assertThat(holder.notificationId).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 1))
+            assertThat(holder.content).isEqualTo(content)
         }
     }
 
@@ -95,7 +95,7 @@ class NotificationDataStoreTest : RobolectricTest() {
         for (i in 1..MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS + 1) {
             val content = createNotificationContent(i.toString())
             notificationDataStore.addNotification(account, content, TIMESTAMP)
-            notificationDataStore.removeNotification(account, content.messageReference)
+            notificationDataStore.removeNotifications(account) { listOf(content.messageReference) }
         }
     }
 

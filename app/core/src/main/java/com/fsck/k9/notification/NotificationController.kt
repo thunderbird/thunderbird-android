@@ -65,7 +65,7 @@ class NotificationController internal constructor(
     }
 
     fun removeNewMailNotification(account: Account, messageReference: MessageReference) {
-        newMailNotificationController.removeNewMailNotification(account, messageReference)
+        newMailNotificationController.removeNewMailNotifications(account) { listOf(messageReference) }
     }
 
     fun clearNewMailNotifications(account: Account, clearNewMessageState: Boolean) {
