@@ -19,6 +19,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -588,9 +589,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return startedByExternalIntent;
     }
 
+
+    private SharedPreferences spGen;
+
+    private boolean isSubmit;
+
+
     @Override
     protected void onResume() {
-        super.onResume();
+        super.onResume();spGen = getSharedPreferences("MainActivity", MODE_PRIVATE);
+        subjectView.setText(spGen.getString("editSubject", ""));
+        messageContentView.setText(spGen.getString("editContent", ""));
+        isSubmit = false;
         messagingController.addListener(messagingListener);
     }
 
@@ -598,6 +608,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void onPause() {
         super.onPause();
         messagingController.removeListener(messagingListener);
+
+        SharedPreferences.Editor spGenEditor = spGen.edit();
+        if (isSubmit) {
+            spGenEditor.putString("editSubject", "");
+            spGenEditor.putString("editContent", "");
+        } else {
+            spGenEditor.putString("editSubject", subjectView.getText().toString());
+            spGenEditor.putString("editContent", messageContentView .getText().toString());
+        }
+        spGenEditor.commit();
 
         boolean isPausingOnConfigurationChange = (getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION)
                 == ActivityInfo.CONFIG_ORIENTATION;
@@ -789,6 +809,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void performSaveAfterChecks() {
+        isSubmit = true;
         currentMessageBuilder = createMessageBuilder(true);
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
@@ -797,6 +818,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void performSendAfterChecks() {
+        isSubmit = true;
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;
@@ -806,6 +828,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void onDiscard() {
+        isSubmit = true;
         if (draftMessageId != null) {
             messagingController.deleteDraft(account, draftMessageId);
         }
@@ -814,6 +837,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void finishWithoutChanges() {
+        isSubmit = true;
         draftMessageId = null;
         changesMadeSinceLastSave = false;
 
