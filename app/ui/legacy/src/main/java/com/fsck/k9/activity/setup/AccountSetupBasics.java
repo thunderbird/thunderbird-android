@@ -3,6 +3,7 @@ package com.fsck.k9.activity.setup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Core;
@@ -87,6 +89,33 @@ public class AccountSetupBasics extends K9Activity
         mManualSetupButton = findViewById(R.id.manual_setup);
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);
+    }
+
+    private SharedPreferences spGen;
+
+    private boolean isSubmit;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor spGenEditor = spGen.edit();
+        if (isSubmit) {
+            spGenEditor.putString("editEmail", "");
+            spGenEditor.putString("editPassword", "");
+        } else {
+            spGenEditor.putString("editEmail", mEmailView.getText().toString());
+            spGenEditor.putString("editPassword", mPasswordView.getText().toString());
+        }
+        spGenEditor.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        spGen = getSharedPreferences("AccountSetupBasic", MODE_PRIVATE);
+        mEmailView.setText(spGen.getString("editEmail", ""));
+        mPasswordView.setText(spGen.getString("editPassword", ""));
+        isSubmit = false;
     }
 
     private void initializeViewListeners() {
@@ -241,6 +270,7 @@ public class AccountSetupBasics extends K9Activity
 
         // Check incoming here.  Then check outgoing in onActivityResult()
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
+        isSubmit = true;
     }
 
     private ConnectionSettings providersXmlDiscoveryDiscover(String email, DiscoveryTarget discoveryTarget) {
@@ -346,6 +376,7 @@ public class AccountSetupBasics extends K9Activity
                 clientCertificateAlias);
 
         AccountSetupAccountType.actionSelectAccountType(this, mAccount, false, initialAccountSettings);
+        isSubmit = true;
     }
 
     public void onClick(View v) {
