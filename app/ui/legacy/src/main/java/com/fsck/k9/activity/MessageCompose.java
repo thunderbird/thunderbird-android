@@ -597,7 +597,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     protected void onResume() {
-        super.onResume();spGen = getSharedPreferences("MainActivity", MODE_PRIVATE);
+        super.onResume();
+        spGen = getSharedPreferences("MessageCompose", MODE_PRIVATE);
         subjectView.setText(spGen.getString("editSubject", ""));
         messageContentView.setText(spGen.getString("editContent", ""));
         isSubmit = false;
