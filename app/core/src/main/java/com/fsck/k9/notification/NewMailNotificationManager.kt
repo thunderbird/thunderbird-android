@@ -65,9 +65,10 @@ internal class NewMailNotificationManager(
 
     fun removeNewMailNotifications(
         account: Account,
+        clearNewMessageState: Boolean,
         selector: (List<MessageReference>) -> List<MessageReference>
     ): NewMailNotificationData? {
-        val result = notificationRepository.removeNotifications(account, selector) ?: return null
+        val result = notificationRepository.removeNotifications(account, clearNewMessageState, selector) ?: return null
 
         val cancelNotificationIds = when {
             result.notificationData.isEmpty() -> {

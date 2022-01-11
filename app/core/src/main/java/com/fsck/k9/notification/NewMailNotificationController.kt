@@ -30,8 +30,16 @@ internal class NewMailNotificationController(
         processNewMailNotificationData(notificationData)
     }
 
-    fun removeNewMailNotifications(account: Account, selector: (List<MessageReference>) -> List<MessageReference>) {
-        val notificationData = newMailNotificationManager.removeNewMailNotifications(account, selector)
+    fun removeNewMailNotifications(
+        account: Account,
+        clearNewMessageState: Boolean,
+        selector: (List<MessageReference>) -> List<MessageReference>
+    ) {
+        val notificationData = newMailNotificationManager.removeNewMailNotifications(
+            account,
+            clearNewMessageState,
+            selector
+        )
 
         if (notificationData != null) {
             processNewMailNotificationData(notificationData)
