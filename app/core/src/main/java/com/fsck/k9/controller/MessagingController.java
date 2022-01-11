@@ -127,6 +127,7 @@ public class MessagingController {
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final MessageCountsProvider messageCountsProvider;
     private final DraftOperations draftOperations;
+    private final NotificationOperations notificationOperations;
 
 
     private MessagingListener checkMailListener = null;
@@ -166,6 +167,7 @@ public class MessagingController {
         initializeControllerExtensions(controllerExtensions);
 
         draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
+        notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
@@ -2553,9 +2555,9 @@ public class MessagingController {
         }
     }
 
-    public void removeNotificationsForAccount(Account account) {
-        put("removeNotificationsForAccount", null, () -> {
-            notificationController.clearNewMailNotifications(account, false);
+    public void clearNotifications(LocalSearch search) {
+        put("clearNotifications", null, () -> {
+            notificationOperations.clearNotifications(search);
         });
     }
 

@@ -32,6 +32,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.MessageListFragment
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.helper.Contacts
@@ -44,6 +45,7 @@ import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.SearchSpecification
 import com.fsck.k9.search.SearchSpecification.SearchCondition
 import com.fsck.k9.search.SearchSpecification.SearchField
+import com.fsck.k9.search.isUnifiedInbox
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.K9Drawer
 import com.fsck.k9.ui.R
@@ -92,6 +94,7 @@ open class MessageList :
     private val defaultFolderProvider: DefaultFolderProvider by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
+    private val messagingController: MessagingController by inject()
 
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
@@ -347,6 +350,7 @@ open class MessageList :
                     }
                 }
                 setDrawerLockState()
+                onMessageListDisplayed()
             }
         }
     }
@@ -541,6 +545,10 @@ open class MessageList :
             recreate()
         }
 
+        if (displayMode != DisplayMode.MESSAGE_VIEW) {
+            onMessageListDisplayed()
+        }
+
         if (this !is Search) {
             // necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
             // when returning from search results
@@ -613,6 +621,8 @@ open class MessageList :
         search.addAllowedFolder(folderId)
 
         performSearch(search)
+
+        onMessageListDisplayed()
     }
 
     private fun openFolderImmediately(folderId: Long) {
@@ -1462,6 +1472,8 @@ open class MessageList :
 
         showDefaultTitleView()
         configureMenu(menu)
+
+        onMessageListDisplayed()
     }
 
     private fun setDrawerLockState() {
@@ -1517,6 +1529,14 @@ open class MessageList :
         if (displayedChild == 0) {
             removeMessageViewFragment()
         }
+    }
+
+    private fun onMessageListDisplayed() {
+        clearNotifications()
+    }
+
+    private fun clearNotifications() {
+        messagingController.clearNotifications(search)
     }
 
     override fun startIntentSenderForResult(
@@ -1590,9 +1610,6 @@ open class MessageList :
             preferences.getAccount(accountUuid)
         }
     }
-
-    private val LocalSearch.isUnifiedInbox: Boolean
-        get() = id == SearchAccount.UNIFIED_INBOX
 
     private fun MessageReference.toLocalSearch(): LocalSearch {
         return LocalSearch().apply {

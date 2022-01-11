@@ -69,62 +69,76 @@ internal class NotificationDataStore {
     }
 
     @Synchronized
-    fun removeNotification(account: Account, messageReference: MessageReference): RemoveNotificationResult? {
+    fun removeNotifications(
+        account: Account,
+        selector: (List<MessageReference>) -> List<MessageReference>
+    ): RemoveNotificationsResult? {
         val notificationData = getNotificationData(account)
         if (notificationData.isEmpty()) return null
 
-        val notificationHolder = notificationData.activeNotifications.firstOrNull {
-            it.content.messageReference == messageReference
+        val removeMessageReferences = selector.invoke(notificationData.messageReferences)
+
+        val operations = mutableListOf<NotificationStoreOperation>()
+        val newNotificationHolders = mutableListOf<NotificationHolder>()
+        val cancelNotificationIds = mutableListOf<Int>()
+
+        for (messageReference in removeMessageReferences) {
+            val notificationHolder = notificationData.activeNotifications.firstOrNull {
+                it.content.messageReference == messageReference
+            }
+
+            if (notificationHolder == null) {
+                val inactiveNotificationHolder = notificationData.inactiveNotifications.firstOrNull {
+                    it.content.messageReference == messageReference
+                } ?: continue
+
+                operations.add(NotificationStoreOperation.Remove(messageReference))
+
+                val newNotificationData = notificationData.copy(
+                    inactiveNotifications = notificationData.inactiveNotifications - inactiveNotificationHolder
+                )
+                notificationDataMap[account.uuid] = newNotificationData
+            } else if (notificationData.inactiveNotifications.isNotEmpty()) {
+                val newNotificationHolder = notificationData.inactiveNotifications.first()
+                    .toNotificationHolder(notificationHolder.notificationId)
+
+                newNotificationHolders.add(newNotificationHolder)
+                cancelNotificationIds.add(notificationHolder.notificationId)
+
+                operations.add(NotificationStoreOperation.Remove(messageReference))
+                operations.add(
+                    NotificationStoreOperation.ChangeToActive(
+                        newNotificationHolder.content.messageReference,
+                        newNotificationHolder.notificationId
+                    )
+                )
+
+                val newNotificationData = notificationData.copy(
+                    activeNotifications = notificationData.activeNotifications - notificationHolder +
+                        newNotificationHolder,
+                    inactiveNotifications = notificationData.inactiveNotifications.drop(1)
+                )
+                notificationDataMap[account.uuid] = newNotificationData
+            } else {
+                cancelNotificationIds.add(notificationHolder.notificationId)
+
+                operations.add(NotificationStoreOperation.Remove(messageReference))
+
+                val newNotificationData = notificationData.copy(
+                    activeNotifications = notificationData.activeNotifications - notificationHolder
+                )
+                notificationDataMap[account.uuid] = newNotificationData
+            }
         }
 
-        return if (notificationHolder == null) {
-            val inactiveNotificationHolder = notificationData.inactiveNotifications.firstOrNull {
-                it.content.messageReference == messageReference
-            } ?: return null
-
-            val operations = listOf(
-                NotificationStoreOperation.Remove(messageReference)
-            )
-
-            val newNotificationData = notificationData.copy(
-                inactiveNotifications = notificationData.inactiveNotifications - inactiveNotificationHolder
-            )
-            notificationDataMap[account.uuid] = newNotificationData
-
-            RemoveNotificationResult.recreateSummaryNotification(newNotificationData, operations)
-        } else if (notificationData.inactiveNotifications.isNotEmpty()) {
-            val newNotificationHolder = notificationData.inactiveNotifications.first()
-                .toNotificationHolder(notificationHolder.notificationId)
-
-            val operations = listOf(
-                NotificationStoreOperation.Remove(messageReference),
-                NotificationStoreOperation.ChangeToActive(
-                    newNotificationHolder.content.messageReference,
-                    newNotificationHolder.notificationId
-                )
-            )
-
-            val newNotificationData = notificationData.copy(
-                activeNotifications = notificationData.activeNotifications - notificationHolder + newNotificationHolder,
-                inactiveNotifications = notificationData.inactiveNotifications.drop(1)
-            )
-            notificationDataMap[account.uuid] = newNotificationData
-
-            RemoveNotificationResult.replaceNotification(newNotificationData, operations, newNotificationHolder)
+        return if (operations.isEmpty()) {
+            null
         } else {
-            val operations = listOf(
-                NotificationStoreOperation.Remove(messageReference),
-            )
-
-            val newNotificationData = notificationData.copy(
-                activeNotifications = notificationData.activeNotifications - notificationHolder
-            )
-            notificationDataMap[account.uuid] = newNotificationData
-
-            RemoveNotificationResult.cancelNotification(
-                newNotificationData,
-                operations,
-                notificationHolder.notificationId
+            RemoveNotificationsResult(
+                notificationData = getNotificationData(account),
+                notificationStoreOperations = operations,
+                notificationHolders = newNotificationHolders,
+                cancelNotificationIds = cancelNotificationIds
             )
         }
     }

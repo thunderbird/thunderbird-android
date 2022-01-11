@@ -44,9 +44,15 @@ internal class NotificationRepository(
     }
 
     @Synchronized
-    fun removeNotification(account: Account, messageReference: MessageReference): RemoveNotificationResult? {
-        return notificationDataStore.removeNotification(account, messageReference)?.also { result ->
-            persistNotificationDataStoreChanges(account, result.notificationStoreOperations)
+    fun removeNotifications(
+        account: Account,
+        clearNewMessageState: Boolean = true,
+        selector: (List<MessageReference>) -> List<MessageReference>
+    ): RemoveNotificationsResult? {
+        return notificationDataStore.removeNotifications(account, selector)?.also { result ->
+            if (clearNewMessageState) {
+                persistNotificationDataStoreChanges(account, result.notificationStoreOperations)
+            }
         }
     }
 

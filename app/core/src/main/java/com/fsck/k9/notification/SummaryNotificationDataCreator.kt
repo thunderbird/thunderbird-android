@@ -2,7 +2,6 @@ package com.fsck.k9.notification
 
 import com.fsck.k9.Account
 import com.fsck.k9.K9
-import com.fsck.k9.controller.MessageReference
 
 private const val MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5
 
@@ -92,17 +91,4 @@ internal class SummaryNotificationDataCreator(
 
     private val NotificationData.additionalMessagesCount: Int
         get() = (newMessagesCount - MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION).coerceAtLeast(0)
-
-    @OptIn(ExperimentalStdlibApi::class)
-    private val NotificationData.messageReferences: List<MessageReference>
-        get() {
-            return buildList(capacity = newMessagesCount) {
-                for (activeNotification in activeNotifications) {
-                    add(activeNotification.content.messageReference)
-                }
-                for (inactiveNotification in inactiveNotifications) {
-                    add(inactiveNotification.content.messageReference)
-                }
-            }
-        }
 }
