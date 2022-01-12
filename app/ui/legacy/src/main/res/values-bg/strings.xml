@@ -73,6 +73,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="compose_title_forward_as_attachment">Препрати като прикачен файл</string>
   <string name="choose_account_title">Изберете Профил</string>
   <string name="choose_folder_title">Избери Папка</string>
+  <string name="choose_folder_move_title">Премести в…</string>
+  <string name="choose_folder_copy_title">Копирай в…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> избрани</string>
   <string name="next_action">Следващ</string>
   <string name="previous_action">Предишен</string>
@@ -97,6 +99,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="discard_action">Отхвърли</string>
   <string name="save_draft_action">Запази като чернова</string>
   <string name="check_mail_action">Провери пощата</string>
+  <string name="check_all_mail_action">Провери пощата от всички акаунти</string>
   <string name="send_messages_action">Изпрати съобщения</string>
   <string name="refresh_folders_action">Обнови списъка с папки</string>
   <string name="filter_folders_action">Намери папка</string>
@@ -105,6 +108,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="search_action">Търси</string>
   <string name="search_everywhere_action">Търси навсякъде</string>
   <string name="search_results">Резултати от търсенето</string>
+  <string name="new_messages_title">Нови съобщения</string>
   <string name="preferences_action">Настройки</string>
   <string name="folders_action">Управление на папки</string>
   <string name="account_settings_action">Настройки на профила</string>
@@ -159,6 +163,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="notification_action_archive">Архивирайте</string>
   <string name="notification_action_archive_all">Архивирай всички</string>
   <string name="notification_action_spam">Спам</string>
+  <string name="notification_certificate_error_public">Грешка в сертификата</string>
   <string name="notification_certificate_error_title">Грешка в сертификата на <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Проверете настройките на сървара</string>
   <string name="notification_authentication_error_title">Неуспешна идентификация</string>
@@ -180,7 +185,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="special_mailbox_name_trash">Кошче</string>
   <string name="special_mailbox_name_sent">Изпратени</string>
   <string name="send_failure_subject">Грешка при изпращане на някой съобщения</string>
-  <string name="version">Version</string>
+  <string name="version">Версия</string>
   <string name="debug_enable_debug_logging_title">Включете доклада за дебъгване</string>
   <string name="debug_enable_debug_logging_summary">Записвайте допълнителна диагностична информация</string>
   <string name="debug_enable_sensitive_logging_title">Записвайте поверителна информация</string>
@@ -443,6 +448,11 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_led_color_summary">Цветът в който ще мига LED на вашето у-во за този профил</string>
   <string name="account_settings_mail_display_count_label">Размер на локалната папка</string>
   <string name="account_settings_autodownload_message_size_label">Получавай съобщения до</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
   <string name="account_settings_autodownload_message_size_any">без ограничение</string>
   <string name="account_settings_message_age_label">Синхронизиране на съобщенията от</string>
   <string name="account_settings_message_age_any">по всяко време</string>
@@ -979,7 +989,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="push_notification_state_initializing">Инициализира...</string>
   <string name="push_notification_state_listening">Изчаква за нови съобщения</string>
   <string name="push_notification_state_wait_background_sync">Заспива докато синхронизирането на заден фон е разрешено</string>
-  <string name="push_notification_state_wait_network">Заспива докато има мрежа</string>
+  <string name="push_notification_state_wait_network">Спи докато чака за мрежа</string>
   <string name="push_notification_info">Натиснете за да научите повече.</string>
   <string name="push_info_title">Push информация</string>
   <string name="push_info_notification_explanation_text">Когато използвате Push, K-9 Поща създава връзка до пощенския сървър. Андроид изисква показване на известие докато програмата е активна на заден фон. %s</string>

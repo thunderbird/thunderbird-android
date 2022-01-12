@@ -21,7 +21,7 @@
   <string name="changelog_loading_error">No se pudo cargar el registro de cambios.</string>
   <string name="changelog_version_title">Versión %s</string>
   <string name="changelog_recent_changes_title">Novedades</string>
-  <string name="changelog_show_recent_changes">Muestra cambios recientes cuando se actualiza la aplicación</string>
+  <string name="changelog_show_recent_changes">Ver cambios recientes al actualizar la aplicación</string>
   <string name="changelog_snackbar_text">Descubre las novedades de esta versión</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Te damos la bienvenida a K-9 Mail</string>
