@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.909" versioncode="29009" date="2022-01-12">
+        <change>Only remove notifications for messages currently being displayed</change>
+        <change>Open message from notification in Unified Inbox if possible</change>
+        <change>Fixed stale message count for the Outbox folder</change>
+        <change>Fixed search field not working properly when using a hardware keyboard</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.908" versioncode="29008" date="2022-01-06">
         <change>Fixed a bug where sometimes the app created notifications when downloading old messages</change>
         <change>Fixed settings import so the imported theme is applied right away</change>
