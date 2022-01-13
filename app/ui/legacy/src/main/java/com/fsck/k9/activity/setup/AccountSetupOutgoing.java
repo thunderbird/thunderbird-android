@@ -491,7 +491,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             clientCertificateAlias = mClientCertificateSpinner.getAlias();
         }
         if (mRequireLoginView.isChecked()) {
-            username = mUsernameView.getText().toString();
+            username = mUsernameView.getText().toString().trim();
             authType = getSelectedAuthType();
 
             if (AuthType.EXTERNAL != authType) {
