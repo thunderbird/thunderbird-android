@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 83;
+    static final int DB_VERSION = 84;
 
     private final MigrationsHelper migrationsHelper;
 

@@ -29,5 +29,6 @@ object Migrations {
         if (oldVersion < 81) MigrationTo81(db).addNotificationsTable()
         if (oldVersion < 82) MigrationTo82(db).addNewMessageColumn()
         if (oldVersion < 83) MigrationTo83(db, migrationsHelper).rewriteHighestKnownUid()
+        if (oldVersion < 84) MigrationTo84(db).rewriteAddresses()
     }
 }
