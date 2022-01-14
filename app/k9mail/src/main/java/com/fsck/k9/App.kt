@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import android.app.Application
+import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import com.fsck.k9.activity.MessageCompose
@@ -9,6 +10,7 @@ import com.fsck.k9.external.MessageProvider
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.base.extensions.currentLocale
+import com.fsck.k9.preferences.ManagedConfigurations
 import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,14 +29,16 @@ class App : Application() {
     private val appLanguageManager: AppLanguageManager by inject()
     private val appCoroutineScope: CoroutineScope = GlobalScope + Dispatchers.Main
     private var appLanguageManagerInitialized = false
+    private val enterpriseConfig: ManagedConfigurations = ManagedConfigurations()
 
     override fun onCreate() {
         Core.earlyInit()
 
+
         super.onCreate()
 
         DI.start(this, coreModules + uiModules + appModules)
-
+        enterpriseConfig.updateRestrictions(this)
         K9.init(this)
         Core.init(this)
         MessageProvider.init()

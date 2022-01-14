@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="AccountTypes">
+        <item>IMAP</item>
+        <item>POP3</item>
+    </array>
+    <string-array name="imapSecurityTypes">
+        <item>None</item>
+        <item>STARTTLS</item>
+        <item>SSL/TLS</item>
+    </string-array>
+    <string-array name="imapAuthenticationTypes">
+        <item>normal password</item>
+        <item>encrypted password</item>
+        <item>client certificate</item>
+    </string-array>
+    <string-array name="smtpSecurityTypes">
+        <item>None</item>
+        <item>STARTTLS</item>
+        <item>SSL/TLS</item>
+    </string-array>
+    <string-array name="smtpAuthenticationTypes">
+        <item>normal password</item>
+        <item>encrypted password</item>
+        <item>client certificate</item>
+    </string-array>
+    <string-array name="pop3SecurityTypes">
+        <item>None</item>
+        <item>STARTTLS</item>
+        <item>SSL/TLS</item>
+    </string-array>
+    <string-array name="pop3AuthenticationTypes">
+        <item>normal password</item>
+        <item>encrypted password</item>
+        <item>client certificate</item>
+    </string-array>
+</resources>

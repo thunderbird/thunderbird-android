@@ -75,6 +75,8 @@
             android:value="true"/>
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
             android:value="true" />
+        <meta-data android:name="android.content.APP_RESTRICTIONS"
+            android:resource="@xml/app_restrictions" />
 
         <!-- activity-alias so old launcher shortcuts work -->
         <!-- TODO: Remove after 2020-12-31 -->
