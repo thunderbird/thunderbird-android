@@ -4,6 +4,11 @@ package com.fsck.k9.preferences;
 import android.content.Context;
 import android.content.RestrictionsManager;
 import android.os.Bundle;
+import android.widget.EditText;
+
+import com.fsck.k9.core.R;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 
 //
@@ -81,6 +86,10 @@ public class ManagedConfigurations {
         this.notifyMeWhenMailArrives= appRestrictions.getBoolean("notifyMeWhenMailArrives");
         this.accountName= appRestrictions.getString("imapServer");
         this.senderName= appRestrictions.getString("imapServer");
+    }
+
+    public String getAccountName() {
+        return accountName;
     }
 
 

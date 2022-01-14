@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.preferences.ManagedConfigurations;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.ui.R;
@@ -32,6 +33,8 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
 
     private Button mDoneButton;
 
+    private ManagedConfigurations managedConfigurations;
+
     public static void actionSetNames(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupNames.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -46,6 +49,7 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
 
         mDescription = findViewById(R.id.account_description);
         mName = findViewById(R.id.account_name);
+        managedConfigurations.updateRestrictions(getApplicationContext());
         mDoneButton = findViewById(R.id.done);
         mDoneButton.setOnClickListener(this);
 
@@ -78,6 +82,10 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         }
         if (!Utility.requiredFieldValid(mName)) {
             mDoneButton.setEnabled(false);
+        }
+        if (managedConfigurations.getAccountName() != null){
+            mName.setText(managedConfigurations.getAccountName());
+            mName.setEnabled(false);
         }
     }
 
