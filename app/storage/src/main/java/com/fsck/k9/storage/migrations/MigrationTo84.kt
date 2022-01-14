@@ -2,41 +2,41 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
+import androidx.core.database.getStringOrNull
 import com.fsck.k9.helper.map
-import com.fsck.k9.mailstore.MigrationsHelper
 
 /**
  * Write the address fields to use ASCII 1 instead of ASCII 0 as separator.
  * Separator was previously ASCII 0 but this caused problems with LIKE and searching.
  */
-internal class MigrationTo84(private val db: SQLiteDatabase, private val migrationsHelper: MigrationsHelper) {
+internal class MigrationTo84(private val db: SQLiteDatabase) {
 
     fun rewriteAddresses() {
         val addressSets = db.rawQuery(
-            "SELECT id, to_list, cc_list, bcc_list, reply_to_list, sender_list FROM messages",
+            "SELECT id, to_list, cc_list, bcc_list, reply_to_list, sender_list FROM messages WHERE empty = 0 AND deleted = 0",
             null
         ).use { cursor ->
             cursor.map {
 
-                val colVals = ArrayList<String?>(5)
-                for (i in 1..5) {
-                    colVals.add(if (it.isNull(i)) null else it.getString(i))
-                }
-                it.getLong(0) to AddressSet(colVals[0], colVals[1], colVals[2], colVals[3], colVals[4])
+                val messageId = it.getLong(0)
+
+                messageId to AddressSet(
+                    toList = it.getStringOrNull(1),
+                    ccList = it.getStringOrNull(2),
+                    bccList = it.getStringOrNull(3),
+                    replyToList = it.getStringOrNull(4),
+                    senderList = it.getStringOrNull(5)
+                )
             }.toMap()
         }
 
-        var i = 0
         for ((messageId, addressSet) in addressSets) {
             rewriteAddresses(messageId, addressSet)
-            ++i
         }
     }
 
     private fun rewriteAddress(inAddress: String?): String? {
-        val oldSeparator = '\u0000'
-        val newSeparator = '\u0001'
-        return inAddress?.replace(oldSeparator, newSeparator)
+        return inAddress?.replace(oldChar = '\u0000', newChar = '\u0001')
     }
 
     private fun rewriteAddresses(messageId: Long, addressSet: AddressSet) {
@@ -51,4 +51,10 @@ internal class MigrationTo84(private val db: SQLiteDatabase, private val migrati
     }
 }
 
-private data class AddressSet(val toList: String?, val ccList: String?, val bccList: String?, val replyToList: String?, val senderList: String?)
+private data class AddressSet(
+    val toList: String?,
+    val ccList: String?,
+    val bccList: String?,
+    val replyToList: String?,
+    val senderList: String?
+)
