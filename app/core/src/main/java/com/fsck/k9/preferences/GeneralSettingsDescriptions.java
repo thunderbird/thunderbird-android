@@ -431,7 +431,9 @@ public class GeneralSettingsDescriptions {
         @Override
         public Set<String> upgrade(Map<String, Object> settings) {
             final Integer registeredNameColorValue = (Integer) settings.get("registeredNameColor");
-            if (registeredNameColorValue != null && registeredNameColorValue == 0xFF00008F) {
+
+            // -0xffff71 is equivalent to 0xFF00008F.toInt() in Kotlin
+            if (registeredNameColorValue != null && registeredNameColorValue == -0xffff71) {
                 settings.put("registeredNameColor", -638932 ); // #F6402C
             }
 
