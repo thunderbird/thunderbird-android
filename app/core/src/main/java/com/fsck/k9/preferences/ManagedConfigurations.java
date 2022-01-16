@@ -1,14 +1,13 @@
 package com.fsck.k9.preferences;
 
 
+import android.app.Application;
 import android.content.Context;
 import android.content.RestrictionsManager;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.os.Parcel;
 
-import com.fsck.k9.core.R;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import org.jetbrains.annotations.NotNull;
 
 
 //
@@ -53,8 +52,9 @@ public class ManagedConfigurations {
     private String accountName;
     private String senderName;
 
-    public void updateRestrictions(Context context){
-        RestrictionsManager restrictionsManager = (RestrictionsManager) context.getSystemService(Context.RESTRICTIONS_SERVICE);
+    public void updateRestrictions(Context context) {
+        RestrictionsManager restrictionsManager =
+                (RestrictionsManager) context.getSystemService(Context.RESTRICTIONS_SERVICE);
         Bundle appRestrictions = restrictionsManager.getApplicationRestrictions();
         this.accountType = appRestrictions.getString("accountType");
         //    IMAP Configs
@@ -75,26 +75,41 @@ public class ManagedConfigurations {
         this.smtpUsername = appRestrictions.getString("smtpUsername");
         this.smtpAuthentication = appRestrictions.getString("smtpAuthentication");
         // POP3 Config
-        this.pop3Server= appRestrictions.getString("pop3Server");
-        this.pop3Security= appRestrictions.getString("pop3Security");
-        this.pop3Port= appRestrictions.getInt("pop3Port");
-        this.pop3Username= appRestrictions.getString("pop3Username");
-        this.pop3Authentication= appRestrictions.getString("pop3Authentication");
+        this.pop3Server = appRestrictions.getString("pop3Server");
+        this.pop3Security = appRestrictions.getString("pop3Security");
+        this.pop3Port = appRestrictions.getInt("pop3Port");
+        this.pop3Username = appRestrictions.getString("pop3Username");
+        this.pop3Authentication = appRestrictions.getString("pop3Authentication");
         //    General Config
-        this.folderPollFrequency= appRestrictions.getInt("folderPollFrequency");
-        this.numberOfMessagesToDisplay= appRestrictions.getInt("numberOfMessagesToDisplay");
-        this.notifyMeWhenMailArrives= appRestrictions.getBoolean("notifyMeWhenMailArrives");
-        this.accountName= appRestrictions.getString("imapServer");
-        this.senderName= appRestrictions.getString("imapServer");
+        this.folderPollFrequency = appRestrictions.getInt("folderPollFrequency");
+        this.numberOfMessagesToDisplay = appRestrictions.getInt("numberOfMessagesToDisplay");
+        this.notifyMeWhenMailArrives = appRestrictions.getBoolean("notifyMeWhenMailArrives");
+        this.accountName = appRestrictions.getString("imapServer");
+        this.senderName = appRestrictions.getString("imapServer");
     }
 
     public String getAccountName() {
-        return accountName;
+        return this.accountName;
     }
 
+    public static String getRestrictionasString(Context context, String restrictionName){
+        RestrictionsManager restrictionsManager = (RestrictionsManager) context.getSystemService(Context.RESTRICTIONS_SERVICE);
+        Bundle appRestrictions = restrictionsManager.getApplicationRestrictions();
+        try {
+            return appRestrictions.getString(restrictionName);
+        }catch (NullPointerException e){
+            return "";
+        }
+    }
 
-
-
-
-
+    public static Boolean autoConfigAvailable(Context context){
+        Boolean available = true;
+        return available;
+    }
+    public static String getEmail(Context context){
+        RestrictionsManager restrictionsManager = (RestrictionsManager) context.getSystemService(Context.RESTRICTIONS_SERVICE);
+        Bundle restrictions = restrictionsManager.getApplicationRestrictions();
+        Bundle general = (Bundle) restrictions.get("General");
+        return general.getString("email");
+    }
 }

@@ -1,8 +1,10 @@
 package com.fsck.k9.activity.setup;
 
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.RestrictionsManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +22,7 @@ import com.fsck.k9.DI;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.preferences.ManagedConfigurations;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings;
@@ -91,6 +94,10 @@ public class AccountSetupBasics extends K9Activity
 
     private void initializeViewListeners() {
         mEmailView.addTextChangedListener(this);
+        String managedEmail = ManagedConfigurations.getEmail(getApplicationContext());
+        if (managedEmail != null){
+            mEmailView.setText(managedEmail);
+        }
         mPasswordView.addTextChangedListener(this);
         mClientCertificateCheckBox.setOnCheckedChangeListener(this);
         mClientCertificateSpinner.setOnClientCertificateChangedListener(this);
@@ -243,6 +250,12 @@ public class AccountSetupBasics extends K9Activity
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
     }
 
+    private void finishAutoSetupWithManageSettings(){
+        ManagedConfigurations test = new ManagedConfigurations();
+        test.updateRestrictions(getApplicationContext());
+//        RestrictionsManager restrictionsManager = (RestrictionsManager) getActivity().getSystemService(Context.ACCOUNT_SERVICE);
+    }
+
     private ConnectionSettings providersXmlDiscoveryDiscover(String email, DiscoveryTarget discoveryTarget) {
         DiscoveryResults discoveryResults = providersXmlDiscovery.discover(email, DiscoveryTarget.INCOMING_AND_OUTGOING);
         if (discoveryResults == null || (discoveryResults.getIncoming().size() < 1 || discoveryResults.getOutgoing().size() < 1)) {
@@ -292,6 +305,12 @@ public class AccountSetupBasics extends K9Activity
             finishAutoSetup(connectionSettings);
         } else {
             // We don't have default settings for this account, start the manual setup process.
+            onManualSetup();
+        }
+
+        if (ManagedConfigurations.autoConfigAvailable(getApplicationContext())){
+            finishAutoSetupWithManageSettings();
+        }else{
             onManualSetup();
         }
     }
