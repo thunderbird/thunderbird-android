@@ -24,8 +24,8 @@
     <string name="smtpServerDescription">set the SMTP-Host</string>
     <string name="smtpSecurity">smtpSecurity</string>
     <string name="smtpSecurityDescription">set the SMTP-Server Security</string>
-    <string name="snmtpPort">snmtpPort</string>
-    <string name="snmtpPortDescription">set the SMTP-Server Port</string>
+    <string name="smtpPort">smtpPort</string>
+    <string name="smtpPortDescription">set the SMTP-Server Port</string>
     <string name="requireSignIn">requireSignIn</string>
     <string name="requireSignInDescription">set to \"true\" if the SMTP-Server need a login</string>
     <string name="smtpUsername">smtpUsername</string>

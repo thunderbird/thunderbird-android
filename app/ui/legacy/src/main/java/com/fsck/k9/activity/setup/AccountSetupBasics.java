@@ -8,6 +8,7 @@ import android.content.RestrictionsManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -251,9 +252,26 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void finishAutoSetupWithManageSettings(){
-        ManagedConfigurations test = new ManagedConfigurations();
-        test.updateRestrictions(getApplicationContext());
-//        RestrictionsManager restrictionsManager = (RestrictionsManager) getActivity().getSystemService(Context.ACCOUNT_SERVICE);
+        ManagedConfigurations managedConfigurations = new ManagedConfigurations();
+        managedConfigurations.updateRestrictions(getApplicationContext());
+
+        String password = mPasswordView.getText().toString();
+        String email = managedConfigurations.getEmail();
+        String name = managedConfigurations.getName();
+
+        if (mAccount == null) {
+            mAccount = Preferences.getPreferences(this).newAccount();
+            mAccount.setChipColor(accountCreator.pickColor());
+        }
+
+        mAccount.setEmail(email);
+        mAccount.setIncomingServerSettings(managedConfigurations.getIncomingServerSettings(password));
+        mAccount.setOutgoingServerSettings(managedConfigurations.getOutgoingServerSettings(password));
+        mAccount.setDeletePolicy(accountCreator.getDefaultDeletePolicy(managedConfigurations.getIncomingServerSettings(password).type));
+        localFoldersCreator.createSpecialLocalFolders(mAccount);
+
+        AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
+
     }
 
     private ConnectionSettings providersXmlDiscoveryDiscover(String email, DiscoveryTarget discoveryTarget) {
@@ -294,6 +312,13 @@ public class AccountSetupBasics extends K9Activity
 
         String email = mEmailView.getText().toString();
 
+        if (ManagedConfigurations.autoConfigAvailable(getApplicationContext())){
+            finishAutoSetupWithManageSettings();
+            return;
+        }else{
+            onManualSetup();
+        }
+
         ConnectionSettings extraConnectionSettings = ExtraAccountDiscovery.discover(email);
         if (extraConnectionSettings != null) {
             finishAutoSetup(extraConnectionSettings);
@@ -305,12 +330,6 @@ public class AccountSetupBasics extends K9Activity
             finishAutoSetup(connectionSettings);
         } else {
             // We don't have default settings for this account, start the manual setup process.
-            onManualSetup();
-        }
-
-        if (ManagedConfigurations.autoConfigAvailable(getApplicationContext())){
-            finishAutoSetupWithManageSettings();
-        }else{
             onManualSetup();
         }
     }

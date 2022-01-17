@@ -6,7 +6,7 @@
         android:defaultValue=""
         android:description="@string/AccountTypeDescription"
         android:entryValues="@array/AccountTypes"
-        android:key="@string/accountType"
+        android:key="accountType"
         android:restrictionType="choice"
         android:title="@string/accountType"
         tools:ignore="ValidRestrictions" />
@@ -16,7 +16,7 @@
         <restriction
             android:defaultValue=""
             android:description="@string/imapServerDescription"
-            android:key="@string/imapServer"
+            android:key="imapServer"
             android:restrictionType="string"
             android:title="@string/imapServer"
             tools:ignore="ValidRestrictions" />
@@ -24,21 +24,21 @@
             android:defaultValue=""
             android:description="@string/imapSecurityDescription"
             android:entryValues="@array/imapSecurityTypes"
-            android:key="@string/imapSecurity"
+            android:key="imapSecurity"
             android:restrictionType="choice"
             android:title="@string/imapSecurity"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/imapPortDescription"
-            android:key="@string/imapPort"
+            android:key="imapPort"
             android:restrictionType="integer"
             android:title="@string/imapPort"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/imapUsernameDescription"
-            android:key="@string/imapUsername"
+            android:key="imapUsername"
             android:restrictionType="string"
             android:title="@string/imapUsername"
             tools:ignore="ValidRestrictions" />
@@ -46,35 +46,35 @@
             android:defaultValue=""
             android:description="@string/imapAuthenticationDescription"
             android:entryValues="@array/imapAuthenticationTypes"
-            android:key="@string/imapAuthentication"
+            android:key="imapAuthentication"
             android:restrictionType="choice"
             android:title="@string/imapAuthentication"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/autoDetectImapNamespaceDescription"
-            android:key="@string/autoDetectImapNamespace"
+            android:key="autoDetectImapNamespace"
             android:restrictionType="bool"
             android:title="@string/autoDetectImapNamespace"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/compressionOnMobileDescription"
-            android:key="@string/compressionOnMobile"
+            android:key="compressionOnMobile"
             android:restrictionType="bool"
             android:title="@string/compressionOnMobile"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/compressionOnWiFiDescription"
-            android:key="@string/compressionOnWiFi"
+            android:key="compressionOnWiFi"
             android:restrictionType="bool"
             android:title="@string/compressionOnWiFi"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/compressionOnOtherDescription"
-            android:key="@string/compressionOnOther"
+            android:key="compressionOnOther"
             android:restrictionType="bool"
             android:title="@string/compressionOnOther"
             tools:ignore="ValidRestrictions" />
@@ -85,43 +85,43 @@
         <restriction
             android:defaultValue=""
             android:description="@string/smtpServerDescription"
-            android:key="@string/smtpServer"
-            android:restrictionType="bool"
+            android:key="smtpServer"
+            android:restrictionType="string"
             android:title="@string/smtpServer"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/smtpSecurityDescription"
             android:entryValues="@array/smtpSecurityTypes"
-            android:key="@string/smtpSecurity"
-            android:restrictionType="bool"
+            android:key="smtpSecurity"
+            android:restrictionType="string"
             android:title="@string/smtpSecurity"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
-            android:description="@string/snmtpPortDescription"
-            android:key="@string/snmtpPort"
+            android:description="@string/smtpPortDescription"
+            android:key="smtpPort"
             android:restrictionType="integer"
-            android:title="@string/snmtpPort"
+            android:title="@string/smtpPort"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
-            android:description="@string/snmtpPortDescription"
-            android:key="@string/snmtpPort"
+            android:description="@string/smtpPortDescription"
+            android:key="smtpPort"
             android:restrictionType="integer"
-            android:title="@string/snmtpPort"
+            android:title="@string/smtpPort"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/requireSignInDescription"
-            android:key="@string/requireSignIn"
+            android:key="requireSignIn"
             android:restrictionType="bool"
             android:title="@string/requireSignIn"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/smtpUsernameDescription"
-            android:key="@string/smtpUsername"
+            android:key="smtpUsername"
             android:restrictionType="string"
             android:title="@string/smtpUsername"
             tools:ignore="ValidRestrictions" />
@@ -129,7 +129,7 @@
             android:defaultValue=""
             android:description="@string/smtpAuthenticationDescription"
             android:entryValues="@array/smtpAuthenticationTypes"
-            android:key="@string/smtpAuthentication"
+            android:key="smtpAuthentication"
             android:restrictionType="choice"
             android:title="@string/smtpAuthentication"
             tools:ignore="ValidRestrictions" />
@@ -140,34 +140,34 @@
         <restriction
             android:defaultValue=""
             android:description="@string/pop3ServerDescription"
-            android:key="@string/pop3Server"
+            android:key="pop3Server"
             android:restrictionType="string"
             android:title="@string/pop3Server"
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
             android:description="@string/pop3SecurityDescription"
-            android:key="@string/pop3Security"
+            android:key="pop3Security"
             android:entryValues="@array/pop3SecurityTypes"
             android:restrictionType="choice"
             android:title="@string/pop3Security"
             tools:ignore="ValidRestrictions" />
         <restriction
-            android:key="@string/pop3Port"
+            android:key="pop3Port"
             android:title="@string/pop3Port"
             android:restrictionType="integer"
             android:description="@string/pop3PortDescription"
             android:defaultValue=""
             tools:ignore="ValidRestrictions" />
         <restriction
-            android:key="@string/pop3Username"
+            android:key="pop3Username"
             android:title="@string/pop3Username"
             android:restrictionType="string"
             android:description="@string/pop3UsernameDescription"
             android:defaultValue=""
             tools:ignore="ValidRestrictions" />
         <restriction
-            android:key="@string/pop3Authentication"
+            android:key="pop3Authentication"
             android:title="@string/pop3Authentication"
             android:restrictionType="string"
             android:description="@string/pop3AuthenticationDescription"
@@ -179,37 +179,44 @@
         android:key="General"
         android:restrictionType="bundle">
         <restriction
-            android:key="@string/folderPollFrequency"
+            android:key="folderPollFrequency"
             android:title="@string/folderPollFrequency"
             android:restrictionType="integer"
             android:description="@string/folderPollFrequencyDescription"
             android:defaultValue=""
             tools:ignore="ValidRestrictions" />
         <restriction
-            android:key="@string/numberOfMessagesToDisplay"
+            android:key="numberOfMessagesToDisplay"
             android:title="@string/numberOfMessagesToDisplay"
             android:restrictionType="integer"
             android:description="@string/numberOfMessagesToDisplayDescription"
             android:defaultValue=""
             tools:ignore="ValidRestrictions" />
         <restriction
-            android:key="@string/notifyMeWhenMailArrives"
+            android:key="notifyMeWhenMailArrives"
             android:title="@string/notifyMeWhenMailArrives"
             android:restrictionType="bool"
             android:description="@string/notifyMeWhenMailArrivesDescription"
             android:defaultValue=""
             tools:ignore="ValidRestrictions" />
         <restriction
-            android:key="@string/accountName"
+            android:key="accountName"
             android:title="@string/accountName"
             android:restrictionType="string"
             android:description="@string/accountNameDescription"
             android:defaultValue=""
             tools:ignore="ValidRestrictions" />
         <restriction
-            android:key="@string/senderName"
+            android:key="senderName"
             android:title="@string/senderName"
-            android:restrictionType="bool"
+            android:restrictionType="string"
+            android:description="@string/senderNameDescription"
+            android:defaultValue=""
+            tools:ignore="ValidRestrictions" />
+        <restriction
+            android:key="email"
+            android:title="@string/senderName"
+            android:restrictionType="string"
             android:description="@string/senderNameDescription"
             android:defaultValue=""
             tools:ignore="ValidRestrictions" />

@@ -49,7 +49,6 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
 
         mDescription = findViewById(R.id.account_description);
         mName = findViewById(R.id.account_name);
-        managedConfigurations.updateRestrictions(getApplicationContext());
         mDoneButton = findViewById(R.id.done);
         mDoneButton.setOnClickListener(this);
 
@@ -82,10 +81,6 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         }
         if (!Utility.requiredFieldValid(mName)) {
             mDoneButton.setEnabled(false);
-        }
-        if (managedConfigurations.getAccountName() != null){
-            mName.setText(managedConfigurations.getAccountName());
-            mName.setEnabled(false);
         }
     }
 
