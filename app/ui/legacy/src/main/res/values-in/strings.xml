@@ -790,8 +790,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   </plurals>
   <string name="remote_search_error">Penelusuran jarak jauh gagal</string>
   <string name="account_settings_search">Cari</string>
-  <string name="account_settings_remote_search_enabled">Aktifkan pencarian server</string>
-  <string name="account_settings_remote_search_enabled_summary">Cari pesan di server selain yang ada di perangkat Anda</string>
   <string name="action_remote_search">Cari pesan di server</string>
   <string name="remote_search_unavailable_no_network">Sambungan jaringan diperlukan untuk pencarian server.</string>
   <string name="global_settings_background_as_unread_indicator_label">Ubah warna saat dibaca</string>

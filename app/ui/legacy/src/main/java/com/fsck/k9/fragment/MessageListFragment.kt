@@ -1436,7 +1436,7 @@ class MessageListFragment :
     }
 
     val isRemoteSearchAllowed: Boolean
-        get() = isManualSearch && !isRemoteSearch && isSingleFolderMode && account?.isAllowRemoteSearch == true
+        get() = isManualSearch && !isRemoteSearch && isSingleFolderMode
 
     fun onSearchRequested(query: String): Boolean {
         val folderId = currentFolder?.databaseId

@@ -839,8 +839,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   </plurals>
   <string name="remote_search_error">Căutare la distanță eșuată</string>
   <string name="account_settings_search">Căutare</string>
-  <string name="account_settings_remote_search_enabled">Activează căutarea pe server</string>
-  <string name="account_settings_remote_search_enabled_summary">Caută în mesajele de pe server în plus față de cele de pe dispozitiv</string>
   <string name="action_remote_search">Caută în mesajele de pe server</string>
   <string name="remote_search_unavailable_no_network">Este necesară conexiunea la rețea pentru căutarea pe server.</string>
   <string name="global_settings_background_as_unread_indicator_label">Schimbă culoarea după citire</string>

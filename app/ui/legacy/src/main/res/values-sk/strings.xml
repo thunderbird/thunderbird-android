@@ -794,8 +794,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="remote_search_sending_query">Odoslanie dotazu na server</string>
   <string name="remote_search_error">Vzdialené vyhľadávanie sa nepodarilo</string>
   <string name="account_settings_search">Vyhľadávanie</string>
-  <string name="account_settings_remote_search_enabled">Povoliť vyhľadávanie na serveri</string>
-  <string name="account_settings_remote_search_enabled_summary">Hľadať správy na serveri, okrem tých na vašom zariadení</string>
   <string name="action_remote_search">Vyhľadávať správy na serveri</string>
   <string name="remote_search_unavailable_no_network">Pripojenie k sieti je nevyhnutné pre vzdialené vyhľadávanie.</string>
   <string name="global_settings_background_as_unread_indicator_label">Zmeniť farbu po prečítaní</string>

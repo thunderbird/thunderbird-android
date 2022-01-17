@@ -806,8 +806,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   </plurals>
   <string name="remote_search_error">Methodd y chwilio o bell</string>
   <string name="account_settings_search">Chwilio</string>
-  <string name="account_settings_remote_search_enabled">Galluogi chwilio\'r gweinydd</string>
-  <string name="account_settings_remote_search_enabled_summary">Chwilio negeseuon ar y gweinydd yn ogystal â\'r rhai ar dy ddyfais.</string>
   <string name="action_remote_search">Chwilio negeseuon ar y gweinydd</string>
   <string name="remote_search_unavailable_no_network">Rhaid bod cysylltiad rhyngrwyd er mwyn chwilio\'r gweinydd.</string>
   <string name="global_settings_background_as_unread_indicator_label">Newid lliw ar ôl darllen</string>

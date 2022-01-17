@@ -823,8 +823,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   </plurals>
   <string name="remote_search_error">远程搜索失败</string>
   <string name="account_settings_search">搜索</string>
-  <string name="account_settings_remote_search_enabled">启用服务器搜索</string>
-  <string name="account_settings_remote_search_enabled_summary">除了您的设备之外也在服务器上进行搜索</string>
   <string name="action_remote_search">在服务器上搜索</string>
   <string name="remote_search_unavailable_no_network">服务器搜索需要网络连接。</string>
   <string name="global_settings_background_as_unread_indicator_label">阅读时改变颜色</string>

@@ -796,8 +796,6 @@
   </plurals>
   <string name="remote_search_error">വിദൂര തിരയൽ പരാജയപ്പെട്ടു</string>
   <string name="account_settings_search">തിരയുക</string>
-  <string name="account_settings_remote_search_enabled">സെർവർ തിരയൽ പ്രാപ്തമാക്കുക</string>
-  <string name="account_settings_remote_search_enabled_summary">നിങ്ങളുടെ ഉപകരണത്തിലുള്ളവയ്‌ക്ക് പുറമേ സെർവറിൽ സന്ദേശങ്ങൾ തിരയുക</string>
   <string name="action_remote_search">സെർവറിൽ സന്ദേശങ്ങൾ തിരയുക</string>
   <string name="remote_search_unavailable_no_network">സെർവർ തിരയലിനായി ഒരു നെറ്റ്‌വർക്ക് കണക്ഷൻ ആവശ്യമാണ്.</string>
   <string name="global_settings_background_as_unread_indicator_label">വായിക്കുമ്പോൾ നിറം മാറ്റുക</string>

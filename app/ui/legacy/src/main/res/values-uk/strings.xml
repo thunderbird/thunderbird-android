@@ -824,8 +824,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   </plurals>
   <string name="remote_search_error">Віддалений пошук не вдався</string>
   <string name="account_settings_search">Пошук</string>
-  <string name="account_settings_remote_search_enabled">Увімкнути пошук на сервері</string>
-  <string name="account_settings_remote_search_enabled_summary">Шукати повідомлення на сервері на додаток до тих, що є на вашому пристрої</string>
   <string name="action_remote_search">Шукати повідомлення на сервері</string>
   <string name="remote_search_unavailable_no_network">Для пошуку на сервері необхідне з\'єднання з мережею.</string>
   <string name="global_settings_background_as_unread_indicator_label">Змінювати колір при прочитанні</string>

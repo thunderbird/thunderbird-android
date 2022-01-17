@@ -782,8 +782,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   </plurals>
   <string name="remote_search_error">Eksternt søk mislyktes</string>
   <string name="account_settings_search">Søk</string>
-  <string name="account_settings_remote_search_enabled">Aktiver søk på tjener</string>
-  <string name="account_settings_remote_search_enabled_summary">Søk etter meldinger på tjeneren i tillegg til de på enheten din</string>
   <string name="action_remote_search">Søk etter meldinger på tjener</string>
   <string name="remote_search_unavailable_no_network">En nettverksforbindelse er nødvendig for søk på tjener.</string>
   <string name="global_settings_background_as_unread_indicator_label">Endre farge når lest</string>

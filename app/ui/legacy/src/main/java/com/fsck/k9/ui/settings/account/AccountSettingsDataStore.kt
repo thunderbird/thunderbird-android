@@ -36,7 +36,6 @@ class AccountSettingsDataStore(
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
             "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts
-            "remote_search_enabled" -> account.isAllowRemoteSearch
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
             "ignore_chat_messages" -> account.isIgnoreChatMessages
@@ -60,7 +59,6 @@ class AccountSettingsDataStore(
             "account_vibrate" -> account.notificationSetting.isVibrateEnabled = value
             "account_led" -> account.notificationSetting.setLed(value)
             "account_notify_sync" -> account.isNotifySync = value
-            "remote_search_enabled" -> account.isAllowRemoteSearch = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
             "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts = value

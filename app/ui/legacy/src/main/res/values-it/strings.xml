@@ -820,8 +820,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   </plurals>
   <string name="remote_search_error">Ricerca remota non riuscita</string>
   <string name="account_settings_search">Cerca</string>
-  <string name="account_settings_remote_search_enabled">Abilita la ricerca sul server</string>
-  <string name="account_settings_remote_search_enabled_summary">Cerca messaggi sul server oltre a quelli sul dispositivo</string>
   <string name="action_remote_search">Cerca messaggi sul server</string>
   <string name="remote_search_unavailable_no_network">Le ricerche sul server richiedono una connessione alla rete.</string>
   <string name="global_settings_background_as_unread_indicator_label">Cambia colore dopo la lettura</string>

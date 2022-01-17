@@ -769,8 +769,6 @@
   </plurals>
   <string name="remote_search_error">Dh’fhàillig an lorg cèin</string>
   <string name="account_settings_search">Lorg</string>
-  <string name="account_settings_remote_search_enabled">Cuir an comas lorg air an fhrithealaiche</string>
-  <string name="account_settings_remote_search_enabled_summary">Lorg teachdaireachdan air an fhrithealaiche a bharrachd air an fheadhainn air an uidheam agad</string>
   <string name="action_remote_search">Lorg teachdaireachdan air an fhrithealaiche</string>
   <string name="remote_search_unavailable_no_network">Feumaidh tu ceangal ris an lìonra mus urrainn dhut lorg a dhèanamh air an fhrithealaiche.</string>
   <string name="global_settings_background_as_unread_indicator_label">Atharraich an dath nuair a chaidh a leughadh</string>

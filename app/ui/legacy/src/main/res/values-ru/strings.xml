@@ -836,8 +836,6 @@ K-9 Mail — почтовый клиент для Android.
   </plurals>
   <string name="remote_search_error">Сбой поиска на сервере</string>
   <string name="account_settings_search">Поиск</string>
-  <string name="account_settings_remote_search_enabled">Поиск на сервере</string>
-  <string name="account_settings_remote_search_enabled_summary">Искать сообщения локально и на сервере</string>
   <string name="action_remote_search">Поиск на сервере</string>
   <string name="remote_search_unavailable_no_network">Для поиска на сервере необходимо подключение к сети</string>
   <string name="global_settings_background_as_unread_indicator_label">Менять цвет при прочтении</string>

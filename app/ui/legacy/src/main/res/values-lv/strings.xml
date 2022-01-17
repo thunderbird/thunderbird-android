@@ -829,8 +829,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   </plurals>
   <string name="remote_search_error">Attālinātā meklēšana neizdevās</string>
   <string name="account_settings_search">Meklēt</string>
-  <string name="account_settings_remote_search_enabled">Iestatīt meklēšanu serverī</string>
-  <string name="account_settings_remote_search_enabled_summary">Meklēt vēstules gan serverī, gan ierīcē</string>
   <string name="action_remote_search">Meklēt vēstules serverī</string>
   <string name="remote_search_unavailable_no_network">Nepieciešams tīkla savienojums, lai meklētu serverī.</string>
   <string name="global_settings_background_as_unread_indicator_label">Nomainīt krāsu pēc izlasīšanas</string>

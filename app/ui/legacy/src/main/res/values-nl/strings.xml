@@ -818,8 +818,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   </plurals>
   <string name="remote_search_error">Zoekopdracht mislukt</string>
   <string name="account_settings_search">Zoeken</string>
-  <string name="account_settings_remote_search_enabled">Server zoeken toestaan</string>
-  <string name="account_settings_remote_search_enabled_summary">Zoek berichten op de server en op je eigen toestel</string>
   <string name="action_remote_search">Zoek berichten op server</string>
   <string name="remote_search_unavailable_no_network">Er is een netwerk verbinding nodig voor server zoeken.</string>
   <string name="global_settings_background_as_unread_indicator_label">Kleur wijzigen na lezen</string>

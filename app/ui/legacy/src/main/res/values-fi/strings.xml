@@ -829,8 +829,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   </plurals>
   <string name="remote_search_error">Etähaku epäonnistui</string>
   <string name="account_settings_search">Hae</string>
-  <string name="account_settings_remote_search_enabled">Ota etähaku käyttöön</string>
-  <string name="account_settings_remote_search_enabled_summary">Etsi viestejä palvelimelta laitteessasi olevien lisäksi</string>
   <string name="action_remote_search">Etsi viestejä palvelimelta</string>
   <string name="remote_search_unavailable_no_network">Etähaku ei ole käytettävissä ilman verkkoyhteyttä.</string>
   <string name="global_settings_background_as_unread_indicator_label">Vaihda väriä kun luettu</string>

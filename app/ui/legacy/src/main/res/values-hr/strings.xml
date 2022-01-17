@@ -760,8 +760,6 @@
   </plurals>
   <string name="remote_search_error">Udaljeno pretraživanje nije uspjelo</string>
   <string name="account_settings_search">Pretraga</string>
-  <string name="account_settings_remote_search_enabled">Omogući pretraživanje poslužitelja</string>
-  <string name="account_settings_remote_search_enabled_summary">Pretraži poruke na poslužitelju a potom one na vašem uređaju</string>
   <string name="action_remote_search">Pretraži poruke na poslužitelju</string>
   <string name="remote_search_unavailable_no_network">Potrebna je mrežna veza za pretragu poslužitelja.</string>
   <string name="global_settings_background_as_unread_indicator_label">Promijeni boju kada je pročitano</string>

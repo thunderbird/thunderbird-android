@@ -829,8 +829,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   </plurals>
   <string name="remote_search_error">Não foi possível efetuar a pesquisa remota</string>
   <string name="account_settings_search">Pesquisar</string>
-  <string name="account_settings_remote_search_enabled">Habilitar pesquisa no servidor</string>
-  <string name="account_settings_remote_search_enabled_summary">Pesquisa mensagens também no servidor, além do seu dispositivo</string>
   <string name="action_remote_search">Pesquisar mensagens no servidor</string>
   <string name="remote_search_unavailable_no_network">É necessária uma conexão de rede para pesquisar no servidor.</string>
   <string name="global_settings_background_as_unread_indicator_label">Alterar a cor após a leitura</string>
