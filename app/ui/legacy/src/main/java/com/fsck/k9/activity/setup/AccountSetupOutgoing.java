@@ -22,6 +22,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
@@ -189,7 +190,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             }
             mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
 
-            if (settings.username != null && !settings.username.isEmpty()) {
+            if (!settings.username.isEmpty()) {
                 mUsernameView.setText(settings.username);
                 mRequireLoginView.setChecked(true);
                 mRequireLoginSettingsView.setVisibility(View.VISIBLE);
@@ -316,7 +317,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
         outState.putInt(STATE_SECURITY_TYPE_POSITION, mCurrentSecurityTypeViewPosition);
@@ -491,7 +492,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             clientCertificateAlias = mClientCertificateSpinner.getAlias();
         }
         if (mRequireLoginView.isChecked()) {
-            username = mUsernameView.getText().toString();
+            username = mUsernameView.getText().toString().trim();
             authType = getSelectedAuthType();
 
             if (AuthType.EXTERNAL != authType) {
@@ -543,12 +544,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
     };
 
-    OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
-        @Override
-        public void onClientCertificateChanged(String alias) {
-            validateFields();
-        }
-    };
+    OnClientCertificateChangedListener clientCertificateChangedListener = alias -> validateFields();
 
     private AuthType getSelectedAuthType() {
         AuthTypeHolder holder = (AuthTypeHolder) mAuthTypeView.getSelectedItem();

@@ -219,11 +219,11 @@ public class Address implements Serializable {
         int pairEndIndex = 0;
         int addressEndIndex = 0;
         while (pairStartIndex < length) {
-            pairEndIndex = addressList.indexOf(",\u0000", pairStartIndex);
+            pairEndIndex = addressList.indexOf(",\u0001", pairStartIndex);
             if (pairEndIndex == -1) {
                 pairEndIndex = length;
             }
-            addressEndIndex = addressList.indexOf(";\u0000", pairStartIndex);
+            addressEndIndex = addressList.indexOf(";\u0001", pairStartIndex);
             String address = null;
             String personal = null;
             if (addressEndIndex == -1 || addressEndIndex > pairEndIndex) {
@@ -241,8 +241,8 @@ public class Address implements Serializable {
     /**
      * Packs an address list into a String that is very quick to read
      * and parse. Packed lists can be unpacked with unpackAddressList()
-     * The packed list is a ",\u0000" separated list of:
-     * address;\u0000personal
+     * The packed list is a ",\u0001" separated list of:
+     * address;\u0001personal
      * @param addresses Array of addresses to pack.
      * @return Packed addresses.
      */
@@ -256,13 +256,13 @@ public class Address implements Serializable {
             sb.append(address.getAddress());
             String personal = address.getPersonal();
             if (personal != null) {
-                sb.append(";\u0000");
+                sb.append(";\u0001");
                 // Escape quotes in the address part on the way in
                 personal = personal.replaceAll("\"", "\\\"");
                 sb.append(personal);
             }
             if (i < count - 1) {
-                sb.append(",\u0000");
+                sb.append(",\u0001");
             }
         }
         return sb.toString();
