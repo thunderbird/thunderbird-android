@@ -221,5 +221,37 @@
             android:defaultValue=""
             tools:ignore="ValidRestrictions" />
     </restriction>
+    <restriction>
+        android:key="Folder"
+        android:restrictionType="bundle">
+        <restriction
+            android:key="archiveFolder"
+            android:title="@string/archiveFolder"
+            android:restrictionType="string"
+            android:description="@string/archiveFolderDescription"
+            android:defaultValue=""
+            tools:ignore="ValidRestrictions" />
+        <restriction
+            android:key="draftFolder"
+            android:title="@string/draftFolder"
+            android:restrictionType="string"
+            android:description="@string/draftFolderDescription"
+            android:defaultValue=""
+            tools:ignore="ValidRestrictions" />
+        <restriction
+            android:key="sentFolder"
+            android:title="@string/sentFolder"
+            android:restrictionType="string"
+            android:description="@string/sentFolderDescription"
+            android:defaultValue=""
+            tools:ignore="ValidRestrictions" />
+        <restriction
+            android:key="trashFolder"
+            android:title="@string/trashFolder"
+            android:restrictionType="string"
+            android:description="@string/trashFolderDescription"
+            android:defaultValue=""
+            tools:ignore="ValidRestrictions" />
+    </restriction>
 
 </restrictions>

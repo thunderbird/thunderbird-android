@@ -2,6 +2,8 @@ package com.fsck.k9.preferences;
 
 
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Application;
 import android.content.Context;
@@ -13,6 +15,7 @@ import androidx.core.widget.TintableImageSourceView;
 import com.fsck.k9.controller.ControllerExtension;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
 import org.jetbrains.annotations.NotNull;
@@ -58,9 +61,13 @@ public class ManagedConfigurations {
     private Integer numberOfMessagesToDisplay;
     private boolean notifyMeWhenMailArrives;
     private String accountName;
-
     private String senderName;
     private String email;
+    //  Folder Config
+    private String archiveFolder;
+    private String draftFolder;
+    private String sentFolder;
+    private String trashFolder;
 
     public void updateRestrictions(Context context) {
         RestrictionsManager restrictionsManager =
@@ -101,6 +108,12 @@ public class ManagedConfigurations {
         this.accountName = general.getString("imapServer");
         this.senderName = general.getString("imapServer");
         this.email = general.getString("email");
+        //  Folder Config
+        Bundle folder = (Bundle) appRestrictions.get("Folder");
+        this.archiveFolder = folder.getString("archiveFolder");
+        this.draftFolder = folder.getString("draftFolder");
+        this.sentFolder = folder.getString("draftFolder");
+        this.trashFolder = folder.getString("draftFolder");
     }
 
 
@@ -169,6 +182,7 @@ public class ManagedConfigurations {
             ConnectionSecurity imapSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
             AuthType authType = AuthType.PLAIN;
             String imapUsername = email;
+            Map<String,String> extras = new HashMap<String,String>();
             if(this.imapSecurity == null){
                 if(imapPort.equals(143)){
                     imapSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
@@ -195,7 +209,12 @@ public class ManagedConfigurations {
             if(this.imapUsername != null){
                 imapUsername = this.imapUsername;
             }
-            incoming = new ServerSettings("imap", imapServer, imapPort, imapSecurity, authType, imapUsername, password,null);
+            if(this.autoDetectImapNamespace){
+                extras.put("autoDetectNamespace","true");
+            }else {
+                extras.put("autoDetectNamespace","false");
+            }
+            incoming = new ServerSettings("imap", imapServer, imapPort, imapSecurity, authType, imapUsername, password,null,extras);
             return incoming;
         }else if(accountType.equalsIgnoreCase("pop3")){
             ConnectionSecurity pop3Security = ConnectionSecurity.SSL_TLS_REQUIRED;
@@ -266,4 +285,31 @@ public class ManagedConfigurations {
         return outgoing;
     }
 
+    public int getDisplayCount(){
+        if(this.numberOfMessagesToDisplay == 0){
+            return 25;
+        }else {
+            return this.numberOfMessagesToDisplay;
+        }
+    }
+
+    public int getCheckInterval(){
+        if(this.folderPollFrequency == 0){
+            return 60;
+        }else {
+            return folderPollFrequency;
+        }
+    }
+
+    public boolean getCompressionOnMobile() {
+        return compressionOnMobile;
+    }
+
+    public boolean getCompressionOnWiFi() {
+        return compressionOnWiFi;
+    }
+
+    public boolean getCompressionOnOther() {
+        return compressionOnOther;
+    }
 }

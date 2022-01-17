@@ -23,6 +23,7 @@ import com.fsck.k9.DI;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.preferences.ManagedConfigurations;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
@@ -268,6 +269,12 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setIncomingServerSettings(managedConfigurations.getIncomingServerSettings(password));
         mAccount.setOutgoingServerSettings(managedConfigurations.getOutgoingServerSettings(password));
         mAccount.setDeletePolicy(accountCreator.getDefaultDeletePolicy(managedConfigurations.getIncomingServerSettings(password).type));
+        mAccount.setDisplayCount(managedConfigurations.getDisplayCount());
+        mAccount.setAutomaticCheckIntervalMinutes(managedConfigurations.getCheckInterval());
+        mAccount.setCompression(NetworkType.MOBILE,managedConfigurations.getCompressionOnMobile());
+        mAccount.setCompression(NetworkType.WIFI,managedConfigurations.getCompressionOnWiFi());
+        mAccount.setCompression(NetworkType.OTHER,managedConfigurations.getCompressionOnOther());
+        mAccount.setSentFolderId();
         localFoldersCreator.createSpecialLocalFolders(mAccount);
 
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);

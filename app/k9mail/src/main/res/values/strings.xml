@@ -43,7 +43,7 @@
     <string name="pop3Authentication">pop3Authentication</string>
     <string name="pop3AuthenticationDescription">set the POP3-Server authentication-method</string>
     <string name="folderPollFrequency">folderPollFrequency</string>
-    <string name="folderPollFrequencyDescription">set the pull frequency</string>
+    <string name="folderPollFrequencyDescription">set the pull frequency(in min)</string>
     <string name="numberOfMessagesToDisplay">numberOfMessagesToDisplay</string>
     <string name="numberOfMessagesToDisplayDescription">set the number of messages per display</string>
     <string name="notifyMeWhenMailArrives">notifyMeWhenMailArrives</string>
@@ -52,4 +52,12 @@
     <string name="accountNameDescription">set the account-name</string>
     <string name="senderName">senderName</string>
     <string name="senderNameDescription">set the sender-name</string>
+    <string name="archiveFolder">archiveFolder</string>
+    <string name="archiveFolderDescription">set the archiveFolder</string>
+    <string name="draftFolder">draftFolder</string>
+    <string name="draftFolderDescription">set the draftFolder</string>
+    <string name="sentFolder">sentFolder</string>
+    <string name="sentFolderDescription">set the sentFolder</string>
+    <string name="trashFolder">trashFolder</string>
+    <string name="trashFolderDescription">set the trashFolder</string>
 </resources>
