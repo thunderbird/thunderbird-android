@@ -60,4 +60,6 @@
     <string name="sentFolderDescription">set the sentFolder</string>
     <string name="trashFolder">trashFolder</string>
     <string name="trashFolderDescription">set the trashFolder</string>
+    <string name="imapPrefix">imapPrefix</string>
+    <string name="imapPrefixDescription">set the IMAP-Prefix</string>
 </resources>

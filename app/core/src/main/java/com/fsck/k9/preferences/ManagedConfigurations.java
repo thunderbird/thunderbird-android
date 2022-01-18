@@ -20,6 +20,8 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
 import org.jetbrains.annotations.NotNull;
 
+import static java.util.Collections.emptyMap;
+
 
 //
 //
@@ -40,6 +42,7 @@ public class ManagedConfigurations {
     private String imapUsername;
     private String imapAuthentication;
     private boolean autoDetectImapNamespace = false;
+    private String imapPrefix;
     private boolean compressionOnMobile = false;
     private boolean compressionOnWiFi = false;
     private boolean compressionOnOther = false;
@@ -82,6 +85,7 @@ public class ManagedConfigurations {
         this.imapUsername = imap.getString("imapUsername");
         this.imapAuthentication = imap.getString("imapAuthentication");
         this.autoDetectImapNamespace = imap.getBoolean("autoDetectImapNamespace");
+        this.imapPrefix = imap.getString("imapPrefix");
         this.compressionOnMobile = imap.getBoolean("compressionOnMobile");
         this.compressionOnWiFi = imap.getBoolean("compressionOnWiFi");
         this.compressionOnOther = imap.getBoolean("compressionOnOther");
@@ -182,7 +186,9 @@ public class ManagedConfigurations {
             ConnectionSecurity imapSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
             AuthType authType = AuthType.PLAIN;
             String imapUsername = email;
-            Map<String,String> extras = new HashMap<String,String>();
+            Map<String, String> extra = new HashMap<>();
+            String autoDetectNamespace = "true";
+            String pathPrefix = "";
             if(this.imapSecurity == null){
                 if(imapPort.equals(143)){
                     imapSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
@@ -209,12 +215,15 @@ public class ManagedConfigurations {
             if(this.imapUsername != null){
                 imapUsername = this.imapUsername;
             }
-            if(this.autoDetectImapNamespace){
-                extras.put("autoDetectNamespace","true");
-            }else {
-                extras.put("autoDetectNamespace","false");
+            if(!this.autoDetectImapNamespace){
+                autoDetectNamespace = "false";
             }
-            incoming = new ServerSettings("imap", imapServer, imapPort, imapSecurity, authType, imapUsername, password,null,extras);
+            if(this.imapPrefix != null){
+                pathPrefix = this.imapPrefix;
+            }
+            extra.put("autoDetectNamespace",autoDetectNamespace);
+            extra.put("pathPrefix",pathPrefix);
+            incoming = new ServerSettings("imap", imapServer, imapPort, imapSecurity, authType, imapUsername, password,null,extra);
             return incoming;
         }else if(accountType.equalsIgnoreCase("pop3")){
             ConnectionSecurity pop3Security = ConnectionSecurity.SSL_TLS_REQUIRED;

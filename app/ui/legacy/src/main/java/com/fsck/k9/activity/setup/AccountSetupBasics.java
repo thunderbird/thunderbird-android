@@ -18,12 +18,18 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.SpecialFolderSelection;
 import com.fsck.k9.Core;
 import com.fsck.k9.DI;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mail.store.imap.ImapStoreSettings;
+import com.fsck.k9.mailstore.FolderRepository;
+import com.fsck.k9.mailstore.SpecialFolderBackendFoldersRefreshListener;
+import com.fsck.k9.mailstore.SpecialFolderSelectionStrategy;
+import com.fsck.k9.mailstore.SpecialFolderUpdater;
 import com.fsck.k9.preferences.ManagedConfigurations;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
@@ -37,6 +43,7 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.ConnectionSettings;
+import com.fsck.k9.ui.managefolders.FolderSettingsResult;
 import com.fsck.k9.ui.settings.ExtraAccountDiscovery;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
@@ -274,8 +281,9 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setCompression(NetworkType.MOBILE,managedConfigurations.getCompressionOnMobile());
         mAccount.setCompression(NetworkType.WIFI,managedConfigurations.getCompressionOnWiFi());
         mAccount.setCompression(NetworkType.OTHER,managedConfigurations.getCompressionOnOther());
-        mAccount.setSentFolderId();
         localFoldersCreator.createSpecialLocalFolders(mAccount);
+        mAccount.setImportedSentFolder("INBOX/Sent");
+
 
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
 

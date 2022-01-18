@@ -59,6 +59,13 @@
             tools:ignore="ValidRestrictions" />
         <restriction
             android:defaultValue=""
+            android:description="@string/imapPrefixDescription"
+            android:key="imapPrefix"
+            android:restrictionType="string"
+            android:title="@string/imapPrefix"
+            tools:ignore="ValidRestrictions" />
+        <restriction
+            android:defaultValue=""
             android:description="@string/compressionOnMobileDescription"
             android:key="compressionOnMobile"
             android:restrictionType="bool"
@@ -221,7 +228,7 @@
             android:defaultValue=""
             tools:ignore="ValidRestrictions" />
     </restriction>
-    <restriction>
+    <restriction
         android:key="Folder"
         android:restrictionType="bundle">
         <restriction
