@@ -265,7 +265,7 @@ public class AccountSetupBasics extends K9Activity
 
         String password = mPasswordView.getText().toString();
         String email = managedConfigurations.getEmail();
-        String name = managedConfigurations.getName();
+        String name = managedConfigurations.getAccountName();
 
         if (mAccount == null) {
             mAccount = Preferences.getPreferences(this).newAccount();
@@ -282,7 +282,9 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setCompression(NetworkType.WIFI,managedConfigurations.getCompressionOnWiFi());
         mAccount.setCompression(NetworkType.OTHER,managedConfigurations.getCompressionOnOther());
         localFoldersCreator.createSpecialLocalFolders(mAccount);
-        mAccount.setImportedSentFolder("INBOX/Sent");
+        managedConfigurations.setFolders(mAccount);
+        mAccount.setNotifyNewMail(managedConfigurations.getNotificationOnNewMail());
+        mAccount.setName(managedConfigurations.getSenderName());
 
 
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
@@ -409,4 +411,6 @@ public class AccountSetupBasics extends K9Activity
             onManualSetup();
         }
     }
+
+
 }

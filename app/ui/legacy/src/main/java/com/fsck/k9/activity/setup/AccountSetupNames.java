@@ -82,6 +82,15 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         if (!Utility.requiredFieldValid(mName)) {
             mDoneButton.setEnabled(false);
         }
+        ManagedConfigurations managedConfigurations = new ManagedConfigurations();
+        managedConfigurations.updateRestrictions(getApplicationContext());
+        if(managedConfigurations.getAccountName() != null ){
+            mDescription.setText(managedConfigurations.getAccountName());
+        }
+        if(managedConfigurations.getSenderName() != null){
+            mName.setText(managedConfigurations.getSenderName());
+        }
+
     }
 
     private void validateFields() {
