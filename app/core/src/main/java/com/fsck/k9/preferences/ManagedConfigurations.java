@@ -132,17 +132,45 @@ public class ManagedConfigurations {
         this.imapPort = imap.getInt("imapPort");
         this.imapUsername = imap.getString("imapUsername");
         this.imapAuthentication = imap.getString("imapAuthentication");
-        this.autoDetectImapNamespace = imap.getBoolean("autoDetectImapNamespace");
+
+        if(imap.getString("autoDetectImapNamespace").equalsIgnoreCase("true")){
+            this.autoDetectImapNamespace = true;
+        }else if(imap.getString("autoDetectImapNamespace").equalsIgnoreCase("false")){
+            this.autoDetectImapNamespace = false;
+        }
+
         this.imapPrefix = imap.getString("imapPrefix");
-        this.compressionOnMobile = imap.getBoolean("compressionOnMobile");
-        this.compressionOnWiFi = imap.getBoolean("compressionOnWiFi");
-        this.compressionOnOther = imap.getBoolean("compressionOnOther");
+
+        if(imap.getString("compressionOnMobile").equalsIgnoreCase("true")){
+            this.compressionOnMobile = true;
+        }else if(imap.getString("compressionOnMobile").equalsIgnoreCase("false")){
+            this.compressionOnMobile = false;
+        }
+
+        if(imap.getString("compressionOnWiFi").equalsIgnoreCase("true")){
+            this.compressionOnWiFi = true;
+        }else if(imap.getString("compressionOnWiFi").equalsIgnoreCase("false")){
+            this.compressionOnWiFi = false;
+        }
+
+        if(imap.getString("compressionOnOther").equalsIgnoreCase("true")){
+            this.compressionOnOther = true;
+        }else if(imap.getString("compressionOnOther").equalsIgnoreCase("false")){
+            this.compressionOnOther = false;
+        }
+
         //    SMTP Configs
         Bundle smtp = (Bundle) appRestrictions.get("SMTP");
         this.smtpServer = smtp.getString("smtpServer");
         this.smtpSecurity = smtp.getString("smtpSecurity");
         this.smtpPort = smtp.getInt("smtpPort");
-        this.requireSignIn = smtp.getBoolean("requireSignIn");
+
+        if(smtp.getString("requireSignIn").equalsIgnoreCase("true")){
+            this.requireSignIn = true;
+        }else if(smtp.getString("requireSignIn").equalsIgnoreCase("false")){
+            this.requireSignIn = false;
+        }
+
         this.smtpUsername = smtp.getString("smtpUsername");
         this.smtpAuthentication = smtp.getString("smtpAuthentication");
         // POP3 Config
@@ -156,7 +184,13 @@ public class ManagedConfigurations {
         Bundle general = (Bundle) appRestrictions.get("General");
         this.folderPollFrequency = general.getInt("folderPollFrequency");
         this.numberOfMessagesToDisplay = general.getInt("numberOfMessagesToDisplay");
-        this.notifyMeWhenMailArrives = general.getBoolean("notifyMeWhenMailArrives");
+
+        if(general.getString("notifyMeWhenMailArrives").equalsIgnoreCase("true")){
+            this.notifyMeWhenMailArrives = true;
+        }else if(general.getString("notifyMeWhenMailArrives").equalsIgnoreCase("false")) {
+            this.notifyMeWhenMailArrives = false;
+        }
+
         this.accountName = general.getString("accountName");
         this.senderName = general.getString("senderName");
         this.email = general.getString("email");
@@ -164,8 +198,8 @@ public class ManagedConfigurations {
         Bundle folder = (Bundle) appRestrictions.get("Folder");
         this.archiveFolder = folder.getString("archiveFolder");
         this.draftFolder = folder.getString("draftFolder");
-        this.sentFolder = folder.getString("sentFolder");
-        this.trashFolder = folder.getString("trashFolder");
+        this.sentFolder = folder.getString("sentFolder","");
+        this.trashFolder = folder.getString("trashFolder","");
     }
 
     public String getEmail() {
