@@ -173,7 +173,6 @@ public class Account implements BaseAccount {
     private boolean markMessageAsReadOnView;
     private boolean markMessageAsReadOnDelete;
     private boolean alwaysShowCcBcc;
-    private boolean allowRemoteSearch;
     private boolean remoteSearchFullText;
     private int remoteSearchNumResults;
     private boolean uploadSentMessages;
@@ -978,14 +977,6 @@ public class Account implements BaseAccount {
 
     public void setOpenPgpEncryptAllDrafts(boolean openPgpEncryptAllDrafts) {
         this.openPgpEncryptAllDrafts = openPgpEncryptAllDrafts;
-    }
-
-    public boolean isAllowRemoteSearch() {
-        return allowRemoteSearch;
-    }
-
-    public void setAllowRemoteSearch(boolean val) {
-        allowRemoteSearch = val;
     }
 
     public int getRemoteSearchNumResults() {

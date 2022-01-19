@@ -754,8 +754,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   </plurals>
   <string name="remote_search_error">C’hwitadenn war ar c’hlask</string>
   <string name="account_settings_search">Klask</string>
-  <string name="account_settings_remote_search_enabled">Gweredekaat klask war an dafariad</string>
-  <string name="account_settings_remote_search_enabled_summary">Klask kemennadennoù war an dafariad ouzhpenn d’ar re war ho trevnad</string>
   <string name="action_remote_search">Klask kemennadennoù war an dafariad</string>
   <string name="remote_search_unavailable_no_network">Ret eo deoc’h bezañ kennasket evit klask war an dafariad</string>
   <string name="global_settings_background_as_unread_indicator_label">Kemmañ al liv p’eo lennet</string>

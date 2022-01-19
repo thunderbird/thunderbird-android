@@ -816,8 +816,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   </plurals>
   <string name="remote_search_error">サーバ検索失敗</string>
   <string name="account_settings_search">検索</string>
-  <string name="account_settings_remote_search_enabled">サーバでの検索を有効にする</string>
-  <string name="account_settings_remote_search_enabled_summary">デバイス内での検索に加え、サーバでメッセージを検索する</string>
   <string name="action_remote_search">サーバでメッセージを検索する</string>
   <string name="remote_search_unavailable_no_network">サーバでの検索にはネットワーク接続が必要</string>
   <string name="global_settings_background_as_unread_indicator_label">既読の色を変更</string>

@@ -587,8 +587,6 @@
   <string name="remote_search_sending_query">Užklausiamas serveris</string>
   <string name="remote_search_error">Nuotolinė paieška nepavyko</string>
   <string name="account_settings_search">Ieškoti</string>
-  <string name="account_settings_remote_search_enabled">Įgalinti paiešką serveryje</string>
-  <string name="account_settings_remote_search_enabled_summary">Ieškoti laiškų ir serveryje, ne vien įrenginyje</string>
   <string name="action_remote_search">Ieškoti laiškų serveryje</string>
   <string name="remote_search_unavailable_no_network">Paieškai serveryje reikia interneto ryšio.</string>
   <string name="global_settings_threaded_view_label">Teminis rodinys</string>

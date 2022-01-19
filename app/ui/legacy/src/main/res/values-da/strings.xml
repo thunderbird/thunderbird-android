@@ -806,8 +806,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   </plurals>
   <string name="remote_search_error">Fjernsøgning fejlede</string>
   <string name="account_settings_search">Søg</string>
-  <string name="account_settings_remote_search_enabled">Aktiver søgning på server</string>
-  <string name="account_settings_remote_search_enabled_summary">Søg meddelelser på både enhed og server</string>
   <string name="action_remote_search">Søg i meddelelser på server</string>
   <string name="remote_search_unavailable_no_network">En netværksforbindelse er nødvendig når der søges på server.</string>
   <string name="global_settings_background_as_unread_indicator_label">Skift farve når læst</string>

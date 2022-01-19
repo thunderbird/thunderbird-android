@@ -844,8 +844,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   </plurals>
   <string name="remote_search_error">Oddaljeno iskanje je spodletelo</string>
   <string name="account_settings_search">Iskanje</string>
-  <string name="account_settings_remote_search_enabled">Omogoči iskanje na strežniku</string>
-  <string name="account_settings_remote_search_enabled_summary">Preišči krajevna in tudi neusklajena sporočila na strežniku</string>
   <string name="action_remote_search">Poišči sporočila na strežniku</string>
   <string name="remote_search_unavailable_no_network">Za iskanje na strežniku je zahtevana dejavna omrežna povezava.</string>
   <string name="global_settings_background_as_unread_indicator_label">Spremeni barvo prebranega sporočila</string>

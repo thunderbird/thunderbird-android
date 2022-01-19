@@ -831,8 +831,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   </plurals>
   <string name="remote_search_error">Échec de recherche distante</string>
   <string name="account_settings_search">Rechercher</string>
-  <string name="account_settings_remote_search_enabled">Activer la recherche sur le serveur</string>
-  <string name="account_settings_remote_search_enabled_summary">Rechercher des courriels sur le serveur en plus de ceux sur votre appareil</string>
   <string name="action_remote_search">Rechercher des courriels sur le serveur</string>
   <string name="remote_search_unavailable_no_network">Une connexion réseau est nécessaire pour la recherche sur le serveur.</string>
   <string name="global_settings_background_as_unread_indicator_label">Changer la couleur quand le courriel est lu</string>

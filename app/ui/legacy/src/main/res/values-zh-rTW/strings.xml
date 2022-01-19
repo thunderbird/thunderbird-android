@@ -812,8 +812,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   </plurals>
   <string name="remote_search_error">遠端搜尋失敗</string>
   <string name="account_settings_search">搜尋</string>
-  <string name="account_settings_remote_search_enabled">啟用伺服器搜尋</string>
-  <string name="account_settings_remote_search_enabled_summary">除了搜尋您的裝置外，同時搜尋伺服器上的訊息</string>
   <string name="action_remote_search">搜尋伺服器上的訊息內容</string>
   <string name="remote_search_unavailable_no_network">沒有網路連線，無法進行遠端搜尋。</string>
   <string name="global_settings_background_as_unread_indicator_label">讀取時變更顏色</string>

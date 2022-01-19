@@ -830,8 +830,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   </plurals>
   <string name="remote_search_error">No s\'ha pogut fer la cerca remota.</string>
   <string name="account_settings_search">Cerca</string>
-  <string name="account_settings_remote_search_enabled">Activa la cerca del servidor</string>
-  <string name="account_settings_remote_search_enabled_summary">Es cerquen els missatges al vostre dispositiu així com al servidor.</string>
   <string name="action_remote_search">Cerca missatges al servidor</string>
   <string name="remote_search_unavailable_no_network">No es pot fer la cerca sense connectivitat a la xarxa.</string>
   <string name="global_settings_background_as_unread_indicator_label">Canvia el color quan s\'hagi llegit</string>

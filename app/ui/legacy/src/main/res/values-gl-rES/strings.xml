@@ -615,8 +615,6 @@
   <string name="remote_search_sending_query">Enviando consulta ao servidor</string>
   <string name="remote_search_error">Erro na procura en remoto</string>
   <string name="account_settings_search">Procurar</string>
-  <string name="account_settings_remote_search_enabled">Habilitar procuras no servidor</string>
-  <string name="account_settings_remote_search_enabled_summary">Procurar mensaxes no servidor ademais de no teu dispositivo</string>
   <string name="action_remote_search">Procurar mensaxes no servidor</string>
   <string name="remote_search_unavailable_no_network">Requírese unha conexión á rede para procurar no servidor.</string>
   <string name="global_settings_threaded_view_label">Vistar en conversación</string>

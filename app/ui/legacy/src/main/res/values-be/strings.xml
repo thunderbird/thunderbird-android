@@ -811,8 +811,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   </plurals>
   <string name="remote_search_error">Не атрымалася выканаць адлеглы пошук</string>
   <string name="account_settings_search">Пошук</string>
-  <string name="account_settings_remote_search_enabled">Уключыць пошук на серверы</string>
-  <string name="account_settings_remote_search_enabled_summary">Шукаць лісты на серверы і прыладзе</string>
   <string name="action_remote_search">Пошук лістоў на серверы</string>
   <string name="remote_search_unavailable_no_network">Для пошуку на серверы патрабуецца злучэнне з сеткай.</string>
   <string name="global_settings_background_as_unread_indicator_label">Змяняць колер падчас чытання</string>
