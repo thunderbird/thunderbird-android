@@ -27,6 +27,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.preferences.ManagedConfigurations;
 import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.account.AccountCreator;
@@ -72,6 +73,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private AuthTypeAdapter mAuthTypeAdapter;
     private Button mNextButton;
     private Account mAccount;
+    private ManagedConfigurations managedConfigurations = new ManagedConfigurations();
 
     public static void actionOutgoingSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupOutgoing.class);
@@ -96,6 +98,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        managedConfigurations.updateRestrictions(getApplicationContext());
         setLayout(R.layout.account_setup_outgoing);
         setTitle(R.string.account_setup_outgoing_title);
 
@@ -164,55 +167,88 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
             updateViewFromSecurity(settings.connectionSecurity);
-            if (savedInstanceState == null) {
-                // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
-                mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getAuthPosition(settings.authenticationType);
-            } else {
-                mCurrentAuthTypeViewPosition = savedInstanceState.getInt(STATE_AUTH_TYPE_POSITION);
+
+            if(managedConfigurations.getSmtpAuthType() != null){
+                mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getAuthPosition(managedConfigurations.getSmtpAuthType());
+            }else {
+                if (savedInstanceState == null) {
+                    // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
+                    mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getAuthPosition(settings.authenticationType);
+                } else {
+                    mCurrentAuthTypeViewPosition = savedInstanceState.getInt(STATE_AUTH_TYPE_POSITION);
+                }
             }
+
+
             mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
             updateViewFromAuthType();
 
             // Select currently configured security type
-            if (savedInstanceState == null) {
-                mCurrentSecurityTypeViewPosition = settings.connectionSecurity.ordinal();
-            } else {
+            if(managedConfigurations.getSmtpSecurity() != null){
+                mCurrentSecurityTypeViewPosition = managedConfigurations.getSmtpSecurity().ordinal();
+            }else {
+                if (savedInstanceState == null) {
+                    mCurrentSecurityTypeViewPosition = settings.connectionSecurity.ordinal();
+                } else {
 
-                /*
-                 * Restore the spinner state now, before calling
-                 * setOnItemSelectedListener(), thus avoiding a call to
-                 * onItemSelected(). Then, when the system restores the state
-                 * (again) in onRestoreInstanceState(), The system will see that
-                 * the new state is the same as the current state (set here), so
-                 * once again onItemSelected() will not be called.
-                 */
-                mCurrentSecurityTypeViewPosition = savedInstanceState.getInt(STATE_SECURITY_TYPE_POSITION);
+                    /*
+                     * Restore the spinner state now, before calling
+                     * setOnItemSelectedListener(), thus avoiding a call to
+                     * onItemSelected(). Then, when the system restores the state
+                     * (again) in onRestoreInstanceState(), The system will see that
+                     * the new state is the same as the current state (set here), so
+                     * once again onItemSelected() will not be called.
+                     */
+                    mCurrentSecurityTypeViewPosition = savedInstanceState.getInt(STATE_SECURITY_TYPE_POSITION);
+                }
             }
+
             mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
 
-            if (!settings.username.isEmpty()) {
-                mUsernameView.setText(settings.username);
-                mRequireLoginView.setChecked(true);
-                mRequireLoginSettingsView.setVisibility(View.VISIBLE);
-            }
+            if(managedConfigurations.getSmtpRequireSignIng()){
+                if(managedConfigurations.getSmtpUsername() != null){
+                    mUsernameView.setText(managedConfigurations.getSmtpUsername());
+                    mRequireLoginView.setChecked(true);
+                    mRequireLoginSettingsView.setVisibility(View.VISIBLE);
+                }else {
+                    if (!settings.username.isEmpty()) {
+                        mUsernameView.setText(settings.username);
+                        mRequireLoginView.setChecked(true);
+                        mRequireLoginSettingsView.setVisibility(View.VISIBLE);
+                    }
+                }
 
-            if (settings.password != null) {
-                mPasswordView.setText(settings.password);
+                if (settings.password != null) {
+                    mPasswordView.setText(settings.password);
+                }
+
+            }else {
+                mRequireLoginView.setChecked(false);
             }
 
             if (settings.clientCertificateAlias != null) {
                 mClientCertificateSpinner.setAlias(settings.clientCertificateAlias);
             }
 
-            if (settings.host != null) {
-                mServerView.setText(settings.host);
+
+            if(managedConfigurations.getSmtpServer() != null){
+                mServerView.setText(managedConfigurations.getSmtpServer());
+            }else {
+                if (settings.host != null) {
+                    mServerView.setText(settings.host);
+                }
             }
 
-            if (settings.port != -1) {
-                mPortView.setText(String.format(Locale.ROOT, "%d", settings.port));
-            } else {
-                updatePortFromSecurityType();
+            if(managedConfigurations.getSmtpPort() != null){
+                mPortView.setText(String.format(Locale.ROOT, "%d", managedConfigurations.getSmtpPort()));
+            }else {
+                if (settings.port != -1) {
+                    mPortView.setText(String.format(Locale.ROOT, "%d", settings.port));
+                } else {
+                    updatePortFromSecurityType();
+                }
             }
+
             mCurrentPortViewSetting = mPortView.getText().toString();
         } catch (Exception e) {
             /*

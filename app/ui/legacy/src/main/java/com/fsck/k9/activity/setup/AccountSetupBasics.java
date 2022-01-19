@@ -75,6 +75,7 @@ public class AccountSetupBasics extends K9Activity
     private Button mManualSetupButton;
     private Account mAccount;
     private ViewGroup mAllowClientCertificateView;
+    private ManagedConfigurations managedConfigurations;
 
     private EmailAddressValidator mEmailValidator = new EmailAddressValidator();
     private boolean mCheckedIncoming = false;
@@ -260,9 +261,6 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void finishAutoSetupWithManageSettings(){
-        ManagedConfigurations managedConfigurations = new ManagedConfigurations();
-        managedConfigurations.updateRestrictions(getApplicationContext());
-
         String password = mPasswordView.getText().toString();
         String email = managedConfigurations.getEmail();
         String name = managedConfigurations.getAccountName();
@@ -285,6 +283,7 @@ public class AccountSetupBasics extends K9Activity
         managedConfigurations.setFolders(mAccount);
         mAccount.setNotifyNewMail(managedConfigurations.getNotificationOnNewMail());
         mAccount.setName(managedConfigurations.getSenderName());
+        mAccount.setDescription(managedConfigurations.getAccountName());
 
 
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
@@ -320,6 +319,8 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void onNext() {
+        this.managedConfigurations = new ManagedConfigurations();
+        managedConfigurations.updateRestrictions(getApplicationContext());
         if (mClientCertificateCheckBox.isChecked()) {
 
             // Auto-setup doesn't support client certificates.
@@ -375,7 +376,6 @@ public class AccountSetupBasics extends K9Activity
 
     private void onManualSetup() {
         String email = mEmailView.getText().toString();
-
         String password = null;
         String clientCertificateAlias = null;
         AuthType authenticationType;

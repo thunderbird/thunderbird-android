@@ -2,6 +2,7 @@ package com.fsck.k9.preferences;
 
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import android.content.Context;
@@ -12,6 +13,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
+import timber.log.Timber;
 
 
 //
@@ -155,8 +157,8 @@ public class ManagedConfigurations {
         this.folderPollFrequency = general.getInt("folderPollFrequency");
         this.numberOfMessagesToDisplay = general.getInt("numberOfMessagesToDisplay");
         this.notifyMeWhenMailArrives = general.getBoolean("notifyMeWhenMailArrives");
-        this.accountName = general.getString("imapServer");
-        this.senderName = general.getString("imapServer");
+        this.accountName = general.getString("accountName");
+        this.senderName = general.getString("senderName");
         this.email = general.getString("email");
         //  Folder Config
         Bundle folder = (Bundle) appRestrictions.get("Folder");
@@ -174,7 +176,7 @@ public class ManagedConfigurations {
         if (this.accountName == "") {
             return null;
         }
-        return null;
+        return this.accountName;
     }
 
     public ServerSettings getIncomingServerSettings(String password) {
@@ -350,9 +352,201 @@ public class ManagedConfigurations {
     }
 
     public String getSenderName() {
-        if (this.senderName.equals("")) {
+        if (this.senderName == "") {
             return null;
         }
         return this.senderName;
+    }
+
+    public AuthType getPop3AuthType(){
+        if (this.pop3Authentication != null || this.pop3Authentication != ""){
+            if(this.pop3Authentication.equalsIgnoreCase("normal password")){
+                return AuthType.PLAIN;
+            }else if (this.pop3Authentication.equalsIgnoreCase("encrypted password")){
+                return AuthType.CRAM_MD5;
+            }
+        }
+        return null;
+    }
+
+    public AuthType getImapAuthType(){
+        if(this.imapAuthentication != null || this.imapAuthentication != ""){
+            if(this.imapAuthentication.equalsIgnoreCase("normal password")){
+                return AuthType.PLAIN;
+            }else if (this.imapAuthentication.equalsIgnoreCase("encrypted password")){
+                return AuthType.CRAM_MD5;
+            }
+        }
+        return null;
+    }
+
+    public String getImapUsername() {
+        if(this.imapUsername == ""){
+            return null;
+        }
+        return this.imapUsername;
+    }
+
+    public String getPop3Username() {
+        if(this.pop3Username == ""){
+            return null;
+        }
+        return this.pop3Username;
+    }
+
+    public boolean getImapAutoDetectNamespace() {
+        return this.autoDetectImapNamespace;
+    }
+
+    public String getImapPathPrefix() {
+        if(this.imapPrefix == ""){
+            return null;
+        }
+        return this.imapPrefix;
+    }
+    
+    public ConnectionSecurity getImapSecurity(){
+        try{
+            if(this.imapSecurity != "" || this.imapSecurity != null){
+                if(this.imapSecurity.equalsIgnoreCase("none")){
+                    return ConnectionSecurity.NONE;
+                }else if(this.imapSecurity.equalsIgnoreCase("ssl/tls")){
+                    return ConnectionSecurity.SSL_TLS_REQUIRED;
+                }else if(this.imapSecurity.equalsIgnoreCase("starttls")){
+                    return ConnectionSecurity.STARTTLS_REQUIRED;
+                }
+            }
+            return null;
+        }catch (NullPointerException e){
+            Timber.i("No imapSecurity set");
+            return null;
+        }
+
+    }
+
+    public ConnectionSecurity getPop3Security() {
+        try{
+            if(this.pop3Security != "" || this.pop3Security != null){
+                if(this.pop3Security.equalsIgnoreCase("none")){
+                    return ConnectionSecurity.NONE;
+                }else if(this.pop3Security.equalsIgnoreCase("ssl/tls")){
+                    return ConnectionSecurity.SSL_TLS_REQUIRED;
+                }else if(this.pop3Security.equalsIgnoreCase("starttls")){
+                    return ConnectionSecurity.STARTTLS_REQUIRED;
+                }
+            }
+            return null;
+        }catch (NullPointerException e){
+            Timber.i("No pop3Security set");
+            return null;
+        }
+
+
+    }
+
+    public String getImapServer() {
+        if(this.imapServer == ""){
+            return null;
+        }
+        return this.imapServer;
+    }
+
+    public String getPop3Server() {
+        if(this.pop3Server == ""){
+            return null;
+        }
+        return this.pop3Server;
+    }
+
+    public Integer getImapPort() {
+        if(this.imapPort == 0 || this.imapPort.toString() == ""){
+            return null;
+        }
+        return this.imapPort;
+    }
+
+    public Integer getPop3Port() {
+        if(this.pop3Port == 0 || this.pop3Port.toString() == ""){
+            return null;
+        }
+        return this.pop3Port;
+    }
+
+    public AuthType getSmtpAuthType() {
+        try{
+            if(this.smtpAuthentication == null || this.smtpAuthentication == ""){
+                return null;
+            }else {
+                if(smtpAuthentication.equalsIgnoreCase("normal password")){
+                    return AuthType.PLAIN;
+                }else if(smtpAuthentication.equalsIgnoreCase("encrypted password")){
+                    return AuthType.CRAM_MD5;
+                }
+            }
+        }catch (NullPointerException e){
+            Timber.e("no smtpAuthentication set!");
+            return null;
+        }
+        return null;
+    }
+
+    public ConnectionSecurity getSmtpSecurity() {
+        try{
+            if(this.smtpSecurity == null || this.smtpSecurity == ""){
+                return null;
+            }else {
+                if(this.smtpSecurity.equalsIgnoreCase("none")){
+                    return ConnectionSecurity.NONE;
+                }else if(this.smtpSecurity.equalsIgnoreCase("ssl/tls")){
+                    return ConnectionSecurity.SSL_TLS_REQUIRED;
+                }else if(this.smtpSecurity.equalsIgnoreCase("starttls")){
+                    return ConnectionSecurity.STARTTLS_REQUIRED;
+                }
+            }
+        }catch (NullPointerException e){
+            Timber.i("no smtpSecurity set");
+            return null;
+        }
+        return null;
+    }
+
+    public String getSmtpUsername() {
+        try{
+            if(this.smtpUsername == ""){
+                return null;
+            }
+            return this.smtpUsername;
+        }catch (NullPointerException e){
+            Timber.i("no smtpUsername set");
+            return null;
+        }
+    }
+
+    public String getSmtpServer() {
+        try{
+            if(this.smtpUsername == ""){
+                return null;
+            }
+            return this.smtpUsername;
+        }catch (NullPointerException e){
+            Timber.i("no smtpServer set");
+            return null;
+        }
+    }
+
+    public Integer getSmtpPort() {
+        try{
+            if(this.smtpPort == 0 || this.smtpPort.toString() == ""){
+                return null;
+            }
+            return this.smtpPort;
+        }catch (NullPointerException e){
+            Timber.i("no smtpPort set");
+            return null;
+        }
+    }
+
+    public boolean getSmtpRequireSignIng() {
+        return this.requireSignIn;
     }
 }

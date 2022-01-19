@@ -75,6 +75,8 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         }
         if (mAccount.getName() != null) {
             mName.setText(mAccount.getName());
+        }else {
+            mName.setText(mAccount.getEmail());
         }
         if (!Utility.requiredFieldValid(mName)) {
             mDoneButton.setEnabled(false);
