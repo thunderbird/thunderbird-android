@@ -171,7 +171,7 @@ object K9 : EarlyInit {
     var isChangeContactNameColor = false
 
     @JvmStatic
-    var contactNameColor = -638932 // #F6402C
+    var contactNameColor = 0xFF1093F5.toInt()
 
     @JvmStatic
     var isShowContactPicture = true
@@ -315,7 +315,7 @@ object K9 : EarlyInit {
         isShowContactName = storage.getBoolean("showContactName", false)
         isShowContactPicture = storage.getBoolean("showContactPicture", true)
         isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
-        contactNameColor = storage.getInt("registeredNameColor", -638932) // #F6402C
+        contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
         isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
         isMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
         isMessageViewShowNext = storage.getBoolean("messageViewShowNext", false)

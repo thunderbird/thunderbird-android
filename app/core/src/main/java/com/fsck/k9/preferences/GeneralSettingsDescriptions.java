@@ -159,7 +159,7 @@ public class GeneralSettingsDescriptions {
         ));
         s.put("registeredNameColor", Settings.versions(
                 new V(1, new ColorSetting(0xFF00008F)),
-                new V(79, new ColorSetting(-638932)) // #F6402C
+                new V(79, new ColorSetting(0xFF1093F5))
         ));
         s.put("showContactName", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -420,10 +420,10 @@ public class GeneralSettingsDescriptions {
     }
 
     /**
-     * Upgrades the settings from version 75 to 76.
+     * Upgrades the settings from version 78 to 79.
      *
      * <p>
-     * Change default value of {@code registeredNameColor} from {@code 0xFF00008F} to {@code -638932 )} (#F6402C).
+     * Change default value of {@code registeredNameColor} to have enough contrast in both the light and dark theme.
      * </p>
      */
     private static class SettingsUpgraderV79 implements SettingsUpgrader {
@@ -432,9 +432,8 @@ public class GeneralSettingsDescriptions {
         public Set<String> upgrade(Map<String, Object> settings) {
             final Integer registeredNameColorValue = (Integer) settings.get("registeredNameColor");
 
-            // -0xffff71 is equivalent to 0xFF00008F.toInt() in Kotlin
-            if (registeredNameColorValue != null && registeredNameColorValue == -0xffff71) {
-                settings.put("registeredNameColor", -638932 ); // #F6402C
+            if (registeredNameColorValue != null && registeredNameColorValue == 0xFF00008F) {
+                settings.put("registeredNameColor", 0xFF1093F5);
             }
 
             return null;
