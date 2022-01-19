@@ -73,6 +73,7 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         if(mAccount.getDescription() != null){
             mDescription.setText(mAccount.getDescription());
         }else{
+            mAccount.setDescription(mAccount.getEmail());
             mDescription.setText(mAccount.getEmail());
         }
         if (mAccount.getName() != null) {
