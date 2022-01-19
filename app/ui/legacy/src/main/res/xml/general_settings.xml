@@ -293,7 +293,7 @@
                 android:dependency="messagelist_change_contact_name_color"
                 android:key="messagelist_contact_name_color"
                 android:title="Contact name color"
-                android:defaultValue="#F6402C" />
+                android:defaultValue="#FF1093F5" />
 
             <CheckBoxPreference
                 android:key="messagelist_show_contact_picture"
