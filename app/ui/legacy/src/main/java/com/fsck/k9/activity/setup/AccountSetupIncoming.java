@@ -28,6 +28,7 @@ import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.helper.EmailHelper;
+import com.fsck.k9.preferences.ManagedConfigurations;
 import com.fsck.k9.setup.ServerNameSuggester;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
@@ -95,6 +96,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private CheckBox mSubscribedFoldersOnly;
     private AuthTypeAdapter mAuthTypeAdapter;
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
+    private ManagedConfigurations managedConfigurations = new ManagedConfigurations();
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
@@ -121,6 +123,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        managedConfigurations.updateRestrictions(getApplicationContext());
         setLayout(R.layout.account_setup_incoming);
         setTitle(R.string.account_setup_incoming_title);
 
@@ -147,6 +150,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         TextInputLayout serverLayoutView = findViewById(R.id.account_server_layout);
 
         mNextButton.setOnClickListener(this);
+
 
         mImapAutoDetectNamespaceView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
@@ -201,10 +205,22 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             } else {
                 mCurrentAuthTypeViewPosition = savedInstanceState.getInt(STATE_AUTH_TYPE_POSITION);
             }
-            mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
+            if(settings.type.equals(Protocols.POP3) && managedConfigurations.getPop3AuthType() != null){
+                mAuthTypeView.setSelection(mAuthTypeAdapter.getAuthPosition(managedConfigurations.getPop3AuthType()),false);
+            }else if(settings.type.equals(Protocols.IMAP) && managedConfigurations.getImapAuthType() != null){
+                mAuthTypeView.setSelection(mAuthTypeAdapter.getAuthPosition(managedConfigurations.getImapAuthType()),false);
+            }else {
+                mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
+            }
             updateViewFromAuthType();
 
-            mUsernameView.setText(settings.username);
+            if(managedConfigurations.getImapUsername() != null && settings.type.equals(Protocols.IMAP)){
+                mUsernameView.setText(managedConfigurations.getImapUsername());
+            }else if(managedConfigurations.getPop3Username() != null && settings.type.equals(Protocols.POP3)){
+                mUsernameView.setText(managedConfigurations.getPop3Username());
+            }else {
+                mUsernameView.setText(settings.username);
+            }
 
             if (settings.password != null) {
                 mPasswordView.setText(settings.password);
@@ -231,8 +247,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 boolean autoDetectNamespace = ImapStoreSettings.getAutoDetectNamespace(settings);
                 String pathPrefix = ImapStoreSettings.getPathPrefix(settings);
 
-                mImapAutoDetectNamespaceView.setChecked(autoDetectNamespace);
-                if (pathPrefix != null) {
+                mImapAutoDetectNamespaceView.setChecked(managedConfigurations.getImapAutoDetectNamespace());
+                if(managedConfigurations.getImapPathPrefix() != null){
+                    mImapPathPrefixView.setText(managedConfigurations.getImapPathPrefix());
+                }else if (pathPrefix != null) {
                     mImapPathPrefixView.setText(pathPrefix);
                 }
 
@@ -300,23 +318,53 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                  */
                 mCurrentSecurityTypeViewPosition = savedInstanceState.getInt(STATE_SECURITY_TYPE_POSITION);
             }
+            if(managedConfigurations.getImapSecurity() != null && settings.type.equals(Protocols.IMAP)){
+                mCurrentSecurityTypeViewPosition = securityTypesAdapter.getConnectionSecurityPosition(managedConfigurations.getImapSecurity());
+            }else if(managedConfigurations.getPop3Security() != null && settings.type.equals(Protocols.POP3)){
+                mCurrentSecurityTypeViewPosition = securityTypesAdapter.getConnectionSecurityPosition(managedConfigurations.getPop3Security());
+            }
+
             mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
             updateViewFromSecurity();
 
-            mCompressionMobile.setChecked(mAccount.useCompression(NetworkType.MOBILE));
-            mCompressionWifi.setChecked(mAccount.useCompression(NetworkType.WIFI));
-            mCompressionOther.setChecked(mAccount.useCompression(NetworkType.OTHER));
-
-            if (settings.host != null) {
-                mServerView.setText(settings.host);
+            if(managedConfigurations.getCompressionOnMobile()){
+                mCompressionMobile.setChecked(true);
+            }else {
+                mCompressionMobile.setChecked(false);
+            }
+            if(managedConfigurations.getCompressionOnWiFi()){
+                mCompressionWifi.setChecked(true);
+            }else {
+                mCompressionWifi.setChecked(false);
+            }
+            if(managedConfigurations.getCompressionOnOther()){
+                mCompressionOther.setChecked(true);
+            }else {
+                mCompressionOther.setChecked(false);
             }
 
-            if (settings.port != -1) {
-                mPortView.setText(String.format(Locale.ROOT, "%d", settings.port));
-            } else {
-                updatePortFromSecurityType();
+            if(managedConfigurations.getImapServer() != null && settings.type.equals(Protocols.IMAP)){
+                mServerView.setText(managedConfigurations.getImapServer());
+            }else if(managedConfigurations.getPop3Server() != null && settings.type.equals(Protocols.POP3)){
+                mServerView.setText(managedConfigurations.getPop3Server());
+            }else{
+                if (settings.host != null) {
+                    mServerView.setText(settings.host);
+                }
+            }
+
+            if(managedConfigurations.getImapPort() != null && settings.type.equals(Protocols.IMAP)){
+                mPortView.setText(String.format(Locale.ROOT, "%d", managedConfigurations.getImapPort()));
+            }else if(managedConfigurations.getPop3Port() != null && settings.type.equals(Protocols.POP3)){
+                mPortView.setText(String.format(Locale.ROOT, "%d", managedConfigurations.getPop3Port()));
+            }else{
+                if (settings.port != -1) {
+                    mPortView.setText(String.format(Locale.ROOT, "%d", settings.port));
+                } else {
+                    updatePortFromSecurityType();
+                }
             }
             mCurrentPortViewSetting = mPortView.getText().toString();
 
