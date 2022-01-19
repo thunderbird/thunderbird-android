@@ -75,7 +75,7 @@ public class AccountSetupBasics extends K9Activity
     private Button mManualSetupButton;
     private Account mAccount;
     private ViewGroup mAllowClientCertificateView;
-    private ManagedConfigurations managedConfigurations;
+    private ManagedConfigurations managedConfigurations = new ManagedConfigurations();
 
     private EmailAddressValidator mEmailValidator = new EmailAddressValidator();
     private boolean mCheckedIncoming = false;
@@ -90,6 +90,7 @@ public class AccountSetupBasics extends K9Activity
         super.onCreate(savedInstanceState);
         setLayout(R.layout.account_setup_basics);
         setTitle(R.string.account_setup_basics_title);
+        managedConfigurations.updateRestrictions(getApplicationContext());
         mEmailView = findViewById(R.id.account_email);
         mPasswordView = findViewById(R.id.account_password);
         mClientCertificateCheckBox = findViewById(R.id.account_client_certificate);
@@ -263,7 +264,6 @@ public class AccountSetupBasics extends K9Activity
     private void finishAutoSetupWithManageSettings(){
         String password = mPasswordView.getText().toString();
         String email = managedConfigurations.getEmail();
-        String name = managedConfigurations.getAccountName();
 
         if (mAccount == null) {
             mAccount = Preferences.getPreferences(this).newAccount();
@@ -316,8 +316,6 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void onNext() {
-        this.managedConfigurations = new ManagedConfigurations();
-        managedConfigurations.updateRestrictions(getApplicationContext());
         if (mClientCertificateCheckBox.isChecked()) {
 
             // Auto-setup doesn't support client certificates.
@@ -363,7 +361,6 @@ public class AccountSetupBasics extends K9Activity
                 AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
             } else {
                 //We've successfully checked outgoing as well.
-                mAccount.setDescription(mAccount.getEmail());
                 Preferences.getPreferences(this).saveAccount(mAccount);
                 Core.setServicesEnabled(this);
                 AccountSetupNames.actionSetNames(this, mAccount);
@@ -391,7 +388,15 @@ public class AccountSetupBasics extends K9Activity
             mAccount = Preferences.getPreferences(this).newAccount();
             mAccount.setChipColor(accountCreator.pickColor());
         }
-        mAccount.setName(getOwnerName());
+
+        if(managedConfigurations.getSenderName() != null){
+            mAccount.setName(managedConfigurations.getSenderName());
+        }else{
+            mAccount.setName(getOwnerName());
+        }
+        if(managedConfigurations.getAccountName() != null){
+            mAccount.setDescription(managedConfigurations.getAccountName());
+        }
         mAccount.setEmail(email);
 
         InitialAccountSettings initialAccountSettings = new InitialAccountSettings(authenticationType, email, password,

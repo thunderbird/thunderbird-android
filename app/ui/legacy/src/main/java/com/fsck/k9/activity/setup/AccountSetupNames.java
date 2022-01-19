@@ -72,6 +72,8 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
 
         if(mAccount.getDescription() != null){
             mDescription.setText(mAccount.getDescription());
+        }else{
+            mDescription.setText(mAccount.getEmail());
         }
         if (mAccount.getName() != null) {
             mName.setText(mAccount.getName());
@@ -89,9 +91,6 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
     }
 
     protected void onNext() {
-        if (Utility.requiredFieldValid(mDescription)) {
-            mAccount.setDescription(mDescription.getText().toString());
-        }
         mAccount.setName(mName.getText().toString());
         mAccount.markSetupFinished();
         Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
