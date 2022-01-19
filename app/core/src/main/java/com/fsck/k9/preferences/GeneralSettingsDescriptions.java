@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
@@ -157,7 +158,8 @@ public class GeneralSettingsDescriptions {
                 new V(1, new TimeSetting("21:00"))
         ));
         s.put("registeredNameColor", Settings.versions(
-                new V(1, new ColorSetting(0xFF00008F))
+                new V(1, new ColorSetting(0xFF00008F)),
+                new V(79, new ColorSetting(0xFF1093F5))
         ));
         s.put("showContactName", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -284,6 +286,7 @@ public class GeneralSettingsDescriptions {
         u.put(31, new SettingsUpgraderV31());
         u.put(58, new SettingsUpgraderV58());
         u.put(69, new SettingsUpgraderV69());
+        u.put(79, new SettingsUpgraderV79());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -413,6 +416,27 @@ public class GeneralSettingsDescriptions {
             settings.put("showUnifiedInbox", showUnifiedInbox);
 
             return new HashSet<>(Collections.singleton("hideSpecialAccounts"));
+        }
+    }
+
+    /**
+     * Upgrades the settings from version 78 to 79.
+     *
+     * <p>
+     * Change default value of {@code registeredNameColor} to have enough contrast in both the light and dark theme.
+     * </p>
+     */
+    private static class SettingsUpgraderV79 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            final Integer registeredNameColorValue = (Integer) settings.get("registeredNameColor");
+
+            if (registeredNameColorValue != null && registeredNameColorValue == 0xFF00008F) {
+                settings.put("registeredNameColor", 0xFF1093F5);
+            }
+
+            return null;
         }
     }
 
