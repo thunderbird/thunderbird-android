@@ -439,11 +439,6 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.markMessageAsReadOnView")
         editor.remove("$accountUuid.markMessageAsReadOnDelete")
         editor.remove("$accountUuid.alwaysShowCcBcc")
-
-        // TODO: to leave this in or not? On one hand, if I don't leave it, this value will be "orphaned" and just hang
-        // around on the device once we remove this setting. OTOH, it may be overkill to keep this reference to an
-        // unused boolean value.
-        editor.remove("$accountUuid.allowRemoteSearch")
         editor.remove("$accountUuid.remoteSearchFullText")
         editor.remove("$accountUuid.remoteSearchNumResults")
         editor.remove("$accountUuid.uploadSentMessages")
