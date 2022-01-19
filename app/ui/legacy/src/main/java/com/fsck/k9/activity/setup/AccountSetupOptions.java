@@ -31,7 +31,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
     private Account mAccount;
 
-    private ManagedConfigurations managedConfigurations;
+    private ManagedConfigurations managedConfigurations = new ManagedConfigurations();
 
     public static void actionOptions(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupOptions.class);
@@ -44,6 +44,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setLayout(R.layout.account_setup_options);
         setTitle(R.string.account_setup_options_title);
+        managedConfigurations.updateRestrictions(getApplicationContext());
 
         mCheckFrequencyView = findViewById(R.id.account_check_frequency);
         mDisplayCountView = findViewById(R.id.account_display_count);
