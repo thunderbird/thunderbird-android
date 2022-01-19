@@ -70,27 +70,15 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
-        /*
-         * Since this field is considered optional, we don't set this here. If
-         * the user fills in a value we'll reset the current value, otherwise we
-         * just leave the saved value alone.
-         */
-        // mDescription.setText(mAccount.getDescription());
+        if(mAccount.getDescription() != null){
+            mDescription.setText(mAccount.getDescription());
+        }
         if (mAccount.getName() != null) {
             mName.setText(mAccount.getName());
         }
         if (!Utility.requiredFieldValid(mName)) {
             mDoneButton.setEnabled(false);
         }
-        ManagedConfigurations managedConfigurations = new ManagedConfigurations();
-        managedConfigurations.updateRestrictions(getApplicationContext());
-        if(managedConfigurations.getAccountName() != null ){
-            mDescription.setText(managedConfigurations.getAccountName());
-        }
-        if(managedConfigurations.getSenderName() != null){
-            mName.setText(managedConfigurations.getSenderName());
-        }
-
     }
 
     private void validateFields() {
