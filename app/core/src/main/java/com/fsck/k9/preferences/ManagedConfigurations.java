@@ -164,8 +164,8 @@ public class ManagedConfigurations {
         Bundle folder = (Bundle) appRestrictions.get("Folder");
         this.archiveFolder = folder.getString("archiveFolder");
         this.draftFolder = folder.getString("draftFolder");
-        this.sentFolder = folder.getString("draftFolder");
-        this.trashFolder = folder.getString("draftFolder");
+        this.sentFolder = folder.getString("sentFolder");
+        this.trashFolder = folder.getString("trashFolder");
     }
 
     public String getEmail() {
@@ -333,17 +333,36 @@ public class ManagedConfigurations {
     }
 
     public void setFolders(Account mAccount) {
-        if (this.sentFolder != null) {
-            mAccount.setImportedSentFolder(this.sentFolder);
+        try{
+            if (this.sentFolder != null || this.sentFolder == "") {
+                mAccount.setImportedSentFolder(this.sentFolder);
+            }
+        }catch (NullPointerException e){
+            Timber.i("no sentFolder set");
         }
-        if (this.archiveFolder != null) {
-            mAccount.setImportedArchiveFolder(this.archiveFolder);
+
+        try{
+            if (this.archiveFolder != null || this.archiveFolder == "") {
+                mAccount.setImportedSentFolder(this.archiveFolder);
+            }
+        }catch (NullPointerException e){
+            Timber.i("no archiveFolder set");
         }
-        if (this.trashFolder != null) {
-            mAccount.setImportedTrashFolder(this.trashFolder);
+
+        try{
+            if (this.trashFolder != null || this.trashFolder == "") {
+                mAccount.setImportedSentFolder(this.trashFolder);
+            }
+        }catch (NullPointerException e){
+            Timber.i("no trashFolder set");
         }
-        if (this.draftFolder != null) {
-            mAccount.setImportedDraftsFolder(this.draftFolder);
+
+        try{
+            if (this.draftFolder != null || this.draftFolder == "") {
+                mAccount.setImportedSentFolder(this.draftFolder);
+            }
+        }catch (NullPointerException e){
+            Timber.i("no trashFolder set");
         }
     }
 

@@ -285,7 +285,6 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setName(managedConfigurations.getSenderName());
         mAccount.setDescription(managedConfigurations.getAccountName());
 
-
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
 
     }
