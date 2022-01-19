@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import com.fsck.k9.Account;
 import com.fsck.k9.Core;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.preferences.ManagedConfigurations;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
 
@@ -29,6 +30,8 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
     private CheckBox mNotifyView;
 
     private Account mAccount;
+
+    private ManagedConfigurations managedConfigurations;
 
     public static void actionOptions(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupOptions.class);
@@ -94,7 +97,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
-        mNotifyView.setChecked(mAccount.isNotifyNewMail());
+        mNotifyView.setChecked(managedConfigurations.getNotificationOnNewMail());
         SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
                                             .getAutomaticCheckIntervalMinutes());
         SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount

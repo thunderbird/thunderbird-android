@@ -144,16 +144,6 @@
         android:key="General"
         android:restrictionType="bundle">
         <restriction
-            android:description="@string/folderPollFrequencyDescription"
-            android:key="folderPollFrequency"
-            android:restrictionType="integer"
-            android:title="@string/folderPollFrequency" />
-        <restriction
-            android:description="@string/numberOfMessagesToDisplayDescription"
-            android:key="numberOfMessagesToDisplay"
-            android:restrictionType="integer"
-            android:title="@string/numberOfMessagesToDisplay" />
-        <restriction
             android:description="@string/notifyMeWhenMailArrivesDescription"
             android:key="notifyMeWhenMailArrives"
             android:restrictionType="string"

@@ -274,8 +274,6 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setIncomingServerSettings(managedConfigurations.getIncomingServerSettings(password));
         mAccount.setOutgoingServerSettings(managedConfigurations.getOutgoingServerSettings(password));
         mAccount.setDeletePolicy(accountCreator.getDefaultDeletePolicy(managedConfigurations.getIncomingServerSettings(password).type));
-        mAccount.setDisplayCount(managedConfigurations.getDisplayCount());
-        mAccount.setAutomaticCheckIntervalMinutes(managedConfigurations.getCheckInterval());
         mAccount.setCompression(NetworkType.MOBILE,managedConfigurations.getCompressionOnMobile());
         mAccount.setCompression(NetworkType.WIFI,managedConfigurations.getCompressionOnWiFi());
         mAccount.setCompression(NetworkType.OTHER,managedConfigurations.getCompressionOnOther());

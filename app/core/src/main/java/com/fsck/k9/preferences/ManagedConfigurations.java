@@ -2,7 +2,6 @@ package com.fsck.k9.preferences;
 
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import android.content.Context;
@@ -53,8 +52,6 @@ public class ManagedConfigurations {
     private String pop3Username;
     private String pop3Authentication;
     //    General Config
-    private Integer folderPollFrequency;
-    private Integer numberOfMessagesToDisplay;
     private boolean notifyMeWhenMailArrives;
     private String accountName;
     private String senderName;
@@ -182,8 +179,6 @@ public class ManagedConfigurations {
         this.pop3Authentication = pop3.getString("pop3Authentication");
         //    General Config
         Bundle general = (Bundle) appRestrictions.get("General");
-        this.folderPollFrequency = general.getInt("folderPollFrequency");
-        this.numberOfMessagesToDisplay = general.getInt("numberOfMessagesToDisplay");
 
         if(general.getString("notifyMeWhenMailArrives").equalsIgnoreCase("true")){
             this.notifyMeWhenMailArrives = true;
@@ -336,22 +331,6 @@ public class ManagedConfigurations {
             return outgoing;
         }
 
-    }
-
-    public int getDisplayCount() {
-        if (this.numberOfMessagesToDisplay == 0) {
-            return 25;
-        } else {
-            return this.numberOfMessagesToDisplay;
-        }
-    }
-
-    public int getCheckInterval() {
-        if (this.folderPollFrequency == 0) {
-            return 60;
-        } else {
-            return folderPollFrequency;
-        }
     }
 
     public boolean getCompressionOnMobile() {
@@ -602,4 +581,5 @@ public class ManagedConfigurations {
     public boolean getSmtpRequireSignIng() {
         return this.requireSignIn;
     }
+
 }
