@@ -556,10 +556,10 @@ public class ManagedConfigurations {
 
     public String getSmtpServer() {
         try{
-            if(this.smtpUsername == ""){
+            if(this.smtpServer == ""){
                 return null;
             }
-            return this.smtpUsername;
+            return this.smtpServer;
         }catch (NullPointerException e){
             Timber.i("no smtpServer set");
             return null;
