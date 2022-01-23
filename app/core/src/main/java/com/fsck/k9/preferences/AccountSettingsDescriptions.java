@@ -219,9 +219,6 @@ public class AccountSettingsDescriptions {
         s.put("vibrateTimes", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 10, 5))
         ));
-        s.put("allowRemoteSearch", Settings.versions(
-                new V(18, new BooleanSetting(true))
-        ));
         s.put("remoteSearchNumResults", Settings.versions(
                 new V(18, new IntegerResourceSetting(AccountPreferenceSerializer.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
                         R.array.remote_search_num_results_values))

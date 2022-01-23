@@ -787,8 +787,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   </plurals>
   <string name="remote_search_error">A pesquisa remota falhou</string>
   <string name="account_settings_search">Pesquisa</string>
-  <string name="account_settings_remote_search_enabled">Ativar pesquisa no servidor</string>
-  <string name="account_settings_remote_search_enabled_summary">Pesquisar mensagens no servidor em adição às que se encontram no seu dispositivo</string>
   <string name="action_remote_search">Pesquisar mensagens no servidor</string>
   <string name="remote_search_unavailable_no_network">É necessária uma ligação à rede para pesquisar no servidor.</string>
   <string name="global_settings_background_as_unread_indicator_label">Mudar de cor quando lido</string>

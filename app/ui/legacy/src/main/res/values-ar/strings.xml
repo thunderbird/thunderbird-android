@@ -684,7 +684,6 @@
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="remote_search_sending_query">إرسال الطلب إلى الخادوم</string>
   <string name="account_settings_search">ابحث</string>
-  <string name="account_settings_remote_search_enabled">تمكين البحث في الخادوم</string>
   <string name="action_remote_search">ابحث عن الرسائل في الخادم</string>
   <string name="global_settings_background_as_unread_indicator_label">تغيير لون الرسالة بعد قراءتها</string>
   <string name="global_settings_threaded_view_summary">إجمع الرسائل في محادثات</string>

@@ -804,8 +804,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   </plurals>
   <string name="remote_search_error">Urruneko bilaketak huts egin du</string>
   <string name="account_settings_search">Bilatu</string>
-  <string name="account_settings_remote_search_enabled">Gaitu zerbitzarian bilatzea</string>
-  <string name="account_settings_remote_search_enabled_summary">Bilatu mezuak zerbitzarian zure gailuan dauden horiez gain</string>
   <string name="action_remote_search">Bilatu mezuak zerbitzarian</string>
   <string name="remote_search_unavailable_no_network">Zerbitzarian bilatzeko sareko konexioa behar da.</string>
   <string name="global_settings_background_as_unread_indicator_label">Aldatu kolorea irakurritakoan</string>

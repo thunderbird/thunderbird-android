@@ -799,8 +799,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   </plurals>
   <string name="remote_search_error">Търсенето на сървърва е неуспешно</string>
   <string name="account_settings_search">Търсене</string>
-  <string name="account_settings_remote_search_enabled">Разреши търсене на сървъра</string>
-  <string name="account_settings_remote_search_enabled_summary">Търсене на съобщения на сървъра, в допълнение към тези, на вашето устройство</string>
   <string name="action_remote_search">Търсене на съобщения в сървъра</string>
   <string name="remote_search_unavailable_no_network">Нужна е връзка с мрежата, за да бъде извършено търсене в сървъра.</string>
   <string name="global_settings_background_as_unread_indicator_label">Промяна на цвета след прочитане</string>

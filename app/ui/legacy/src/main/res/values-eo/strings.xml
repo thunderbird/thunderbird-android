@@ -817,8 +817,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   </plurals>
   <string name="remote_search_error">Fora serĉo fiaskis</string>
   <string name="account_settings_search">Serĉi</string>
-  <string name="account_settings_remote_search_enabled">Aktivigi serĉado en servilo</string>
-  <string name="account_settings_remote_search_enabled_summary">Serĉi mesaĝojn en la servilo kaj en via aparato</string>
   <string name="action_remote_search">Serĉi mesaĝojn en servilo</string>
   <string name="remote_search_unavailable_no_network">Interreta konekto estas bezonata por serĉi en servilo.</string>
   <string name="global_settings_background_as_unread_indicator_label">Ŝanĝi koloron se legita</string>

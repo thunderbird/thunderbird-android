@@ -843,8 +843,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   </plurals>
   <string name="remote_search_error">Wyszukiwanie na serwerze nie powiodło się</string>
   <string name="account_settings_search">Wyszukiwanie</string>
-  <string name="account_settings_remote_search_enabled">Włącz wyszukiwanie na serwerze</string>
-  <string name="account_settings_remote_search_enabled_summary">Szukaj wiadomości na serwerze oraz tych na urządzeniu</string>
   <string name="action_remote_search">Wyszukuj wiadomości na serwerze</string>
   <string name="remote_search_unavailable_no_network">Połączenie sieciowe jest wymagane aby korzystać z wyszukiwania na serwerze.</string>
   <string name="global_settings_background_as_unread_indicator_label">Zmień kolor przeczytanych</string>

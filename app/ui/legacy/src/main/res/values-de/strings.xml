@@ -830,8 +830,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   </plurals>
   <string name="remote_search_error">Suche fehlgeschlagen</string>
   <string name="account_settings_search">Suche</string>
-  <string name="account_settings_remote_search_enabled">Serverseitige Suche</string>
-  <string name="account_settings_remote_search_enabled_summary">Nachrichten nicht nur auf dem Gerät, sondern auch auf dem Server suchen</string>
   <string name="action_remote_search">Nachrichten auf Server suchen</string>
   <string name="remote_search_unavailable_no_network">Für die Suche auf dem Server ist eine Netzverbindung nötig.</string>
   <string name="global_settings_background_as_unread_indicator_label">Farbe ändern, wenn gelesen</string>

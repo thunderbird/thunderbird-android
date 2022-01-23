@@ -833,8 +833,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   </plurals>
   <string name="remote_search_error">Kaugotsing ebaõnnestus</string>
   <string name="account_settings_search">Otsi</string>
-  <string name="account_settings_remote_search_enabled">Luba serverist otsimine</string>
-  <string name="account_settings_remote_search_enabled_summary">Lisaks seadmes olevatele kirjadele otsi ka serveris asuvate kirjade seast</string>
   <string name="action_remote_search">Otsi serveris olevate kirjade seast</string>
   <string name="remote_search_unavailable_no_network">Serverist otsimiseks on vajalik võrguühendus.</string>
   <string name="global_settings_background_as_unread_indicator_label">Muuda lugemisel värvi</string>

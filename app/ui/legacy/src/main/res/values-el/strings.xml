@@ -817,8 +817,6 @@
   </plurals>
   <string name="remote_search_error">Η απομακρυσμένη αναζήτηση απέτυχε.</string>
   <string name="account_settings_search">Αναζήτηση</string>
-  <string name="account_settings_remote_search_enabled">Ενεργοποίηση αναζήτησης στον εξυπηρετητή</string>
-  <string name="account_settings_remote_search_enabled_summary">Αναζήτηση μηνυμάτων στον εξυπηρετητή, πέραν εκείνων που βρίσκονται στη συσκευή σας</string>
   <string name="action_remote_search">Αναζήτηση μηνυμάτων στον εξυπηρετητή</string>
   <string name="remote_search_unavailable_no_network">Η απομακρυσμένη αναζήτηση δεν είναι διαθέσιμη χωρίς σύνδεση δικτύου.</string>
   <string name="global_settings_background_as_unread_indicator_label">Αλλαγή χρώματος μετά την ανάγνωση</string>

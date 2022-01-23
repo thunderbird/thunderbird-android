@@ -828,8 +828,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   </plurals>
   <string name="remote_search_error">Ha fallado la búsqueda remota</string>
   <string name="account_settings_search">Buscar</string>
-  <string name="account_settings_remote_search_enabled">Habilitar búsqueda en servidor</string>
-  <string name="account_settings_remote_search_enabled_summary">Buscar mensajes en servidor y en dispositivo</string>
   <string name="action_remote_search">Buscar mensajes en servidor</string>
   <string name="remote_search_unavailable_no_network">No se puede buscar en remoto sin conexión de red.</string>
   <string name="global_settings_background_as_unread_indicator_label">Cambiar el color al leer</string>

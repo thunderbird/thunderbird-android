@@ -804,8 +804,6 @@
   </plurals>
   <string name="remote_search_error">Претрага сервера није успела</string>
   <string name="account_settings_search">Претрага</string>
-  <string name="account_settings_remote_search_enabled">Укључи и сервер у претрагу</string>
-  <string name="account_settings_remote_search_enabled_summary">Претраживаће и поруке на серверу уз оне на вашем уређају</string>
   <string name="action_remote_search">Тражи поруке на серверу</string>
   <string name="remote_search_unavailable_no_network">За претрагу сервера потребна је мрежна веза.</string>
   <string name="global_settings_background_as_unread_indicator_label">Промени боју након читања</string>

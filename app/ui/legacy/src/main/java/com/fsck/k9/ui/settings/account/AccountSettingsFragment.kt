@@ -185,7 +185,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         if (!messagingController.isPushCapable(account)) {
             findPreference<Preference>(PREFERENCE_PUSH_MODE)?.remove()
             findPreference<Preference>(PREFERENCE_ADVANCED_PUSH_SETTINGS)?.remove()
-            findPreference<Preference>(PREFERENCE_REMOTE_SEARCH)?.remove()
         }
     }
 
@@ -429,7 +428,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_MESSAGE_AGE = "account_message_age"
         private const val PREFERENCE_PUSH_MODE = "folder_push_mode"
         private const val PREFERENCE_ADVANCED_PUSH_SETTINGS = "push_advanced"
-        private const val PREFERENCE_REMOTE_SEARCH = "search"
         private const val PREFERENCE_OPENPGP_ENABLE = "openpgp_provider"
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"

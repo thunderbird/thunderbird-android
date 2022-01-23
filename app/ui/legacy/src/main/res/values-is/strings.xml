@@ -818,8 +818,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   </plurals>
   <string name="remote_search_error">Fjartengd leit mistókst</string>
   <string name="account_settings_search">Leita</string>
-  <string name="account_settings_remote_search_enabled">Virkja leit á póstþjóni</string>
-  <string name="account_settings_remote_search_enabled_summary">Leita að skilaboðum á póstþjóninum auk þeirra sem eru á tækinu þínu</string>
   <string name="action_remote_search">Leita að skilaboðum á póstþjóni</string>
   <string name="remote_search_unavailable_no_network">Nettenging er nauðsynleg til að geta leitað á póstþjóni.</string>
   <string name="global_settings_background_as_unread_indicator_label">Breyta lit þegar búið er að lesa</string>

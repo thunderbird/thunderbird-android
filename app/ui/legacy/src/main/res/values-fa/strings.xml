@@ -819,8 +819,6 @@
   </plurals>
   <string name="remote_search_error">جستجو از دور ناموفق بود</string>
   <string name="account_settings_search">جستجو</string>
-  <string name="account_settings_remote_search_enabled">فعال‌سازی جستجو در کارساز</string>
-  <string name="account_settings_remote_search_enabled_summary">هنگام جستجو علاوه بر پیام‌های روی دستگاه، پیام‌های روی کارساز را هم می‌گردد</string>
   <string name="action_remote_search">جستجوی پیام‌ها در کارساز</string>
   <string name="remote_search_unavailable_no_network">برای جستجو در کارساز به اتصال شبکه نیاز دارید.</string>
   <string name="global_settings_background_as_unread_indicator_label">تغییر رنگ پس از خواندن</string>

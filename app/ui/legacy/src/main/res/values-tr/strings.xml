@@ -814,8 +814,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   </plurals>
   <string name="remote_search_error">Başarısız uzaktan arama</string>
   <string name="account_settings_search">Ara</string>
-  <string name="account_settings_remote_search_enabled">Sunucu aramasını etkinleştir</string>
-  <string name="account_settings_remote_search_enabled_summary">Cihazınıza ek olarak sunucu üzerinde mesaj ara</string>
   <string name="action_remote_search">Sunucuda mesaj ara</string>
   <string name="remote_search_unavailable_no_network">Sunucuda arama için ağ bağlantısı gereklidir.</string>
   <string name="global_settings_background_as_unread_indicator_label">Okunduğunda rengi değiştir</string>

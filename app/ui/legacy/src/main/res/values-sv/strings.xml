@@ -830,8 +830,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   </plurals>
   <string name="remote_search_error">Fjärrsökning misslyckades</string>
   <string name="account_settings_search">Sök</string>
-  <string name="account_settings_remote_search_enabled">Aktivera serversökning</string>
-  <string name="account_settings_remote_search_enabled_summary">Sök även meddelanden på servern utöver de som finns på din enhet</string>
   <string name="action_remote_search">Sök meddelanden på servern</string>
   <string name="remote_search_unavailable_no_network">Nätverksanslutning krävs för att söka på servern.</string>
   <string name="global_settings_background_as_unread_indicator_label">Byt färg efter läst</string>

@@ -817,8 +817,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   </plurals>
   <string name="remote_search_error">A távoli keresés sikertelen</string>
   <string name="account_settings_search">Keresés</string>
-  <string name="account_settings_remote_search_enabled">Kiszolgálón keresés engedélyezése</string>
-  <string name="account_settings_remote_search_enabled_summary">Üzenetek keresése a kiszolgálón az eszközön lévők mellett</string>
   <string name="action_remote_search">Üzenetek keresése a kiszolgálón</string>
   <string name="remote_search_unavailable_no_network">Hálózati kapcsolat szükséges a kiszolgálón kereséshez.</string>
   <string name="global_settings_background_as_unread_indicator_label">Szín megváltoztatása olvasáskor</string>

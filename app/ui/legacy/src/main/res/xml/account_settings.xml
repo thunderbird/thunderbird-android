@@ -391,13 +391,7 @@
         android:key="search"
         android:title="@string/account_settings_search">
 
-        <CheckBoxPreference
-            android:key="remote_search_enabled"
-            android:summary="@string/account_settings_remote_search_enabled_summary"
-            android:title="@string/account_settings_remote_search_enabled" />
-
         <ListPreference
-            android:dependency="remote_search_enabled"
             android:dialogTitle="@string/account_settings_remote_search_num_label"
             android:entries="@array/remote_search_num_results_entries"
             android:entryValues="@array/remote_search_num_results_values"

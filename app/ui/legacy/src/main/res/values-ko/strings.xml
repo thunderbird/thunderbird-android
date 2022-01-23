@@ -657,8 +657,6 @@
   </plurals>
   <string name="remote_search_error">원격 검색 실패</string>
   <string name="account_settings_search">검색</string>
-  <string name="account_settings_remote_search_enabled">서버 검색 사용</string>
-  <string name="account_settings_remote_search_enabled_summary">장치에 있는 메일과 서버에 있는 메일을 모두 검색합니다</string>
   <string name="action_remote_search">서버에서 메시지 검색</string>
   <string name="remote_search_unavailable_no_network">네트워크 연결이 없어 서버 검색을 할 수 없습니다.</string>
   <string name="global_settings_threaded_view_label">대화형 보기</string>

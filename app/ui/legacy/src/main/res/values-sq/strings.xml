@@ -831,8 +831,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   </plurals>
   <string name="remote_search_error">Kërkimi në largësi dështoi</string>
   <string name="account_settings_search">Kërko</string>
-  <string name="account_settings_remote_search_enabled">Aktivizo kërkime në shërbyes</string>
-  <string name="account_settings_remote_search_enabled_summary">Kërkoni te mesazhet në shërbyes, përtej atyre te pajisja juaj</string>
   <string name="action_remote_search">Kërko mesazhe në shërbyes</string>
   <string name="remote_search_unavailable_no_network">Për kërkime në shërbyes lypset lidhje në rrjet.</string>
   <string name="global_settings_background_as_unread_indicator_label">Ndryshoji ngjyrën kur lexohet</string>
