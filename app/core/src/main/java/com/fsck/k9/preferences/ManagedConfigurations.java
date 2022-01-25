@@ -193,8 +193,8 @@ public class ManagedConfigurations {
         Bundle folder = (Bundle) appRestrictions.get("Folder");
         this.archiveFolder = folder.getString("archiveFolder");
         this.draftFolder = folder.getString("draftFolder");
-        this.sentFolder = folder.getString("sentFolder","");
-        this.trashFolder = folder.getString("trashFolder","");
+        this.sentFolder = folder.getString("sentFolder");
+        this.trashFolder = folder.getString("trashFolder");
     }
 
     public String getEmail() {
