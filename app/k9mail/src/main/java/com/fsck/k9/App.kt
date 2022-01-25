@@ -1,7 +1,6 @@
 package com.fsck.k9
 
 import android.app.Application
-import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import com.fsck.k9.activity.MessageCompose
@@ -32,10 +31,10 @@ class App : Application() {
     override fun onCreate() {
         Core.earlyInit()
 
-
         super.onCreate()
 
         DI.start(this, coreModules + uiModules + appModules)
+
         K9.init(this)
         Core.init(this)
         MessageProvider.init()
