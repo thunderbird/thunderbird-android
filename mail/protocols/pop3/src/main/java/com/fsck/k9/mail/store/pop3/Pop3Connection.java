@@ -176,40 +176,6 @@ class Pop3Connection {
     private Pop3Capabilities getCapabilities() throws IOException {
         Pop3Capabilities capabilities = new Pop3Capabilities();
         try {
-            /*
-             * Try sending an AUTH command with no arguments.
-             *
-             * The server may respond with a list of supported SASL
-             * authentication mechanisms.
-             *
-             * Ref.: http://tools.ietf.org/html/draft-myers-sasl-pop3-05
-             *
-             * While this never became a standard, there are servers that
-             * support it, and Thunderbird includes this check.
-             */
-            executeSimpleCommand(AUTH_COMMAND);
-            String response;
-            while ((response = readLine()) != null) {
-                if (response.equals(".")) {
-                    break;
-                }
-                response = response.toUpperCase(Locale.US);
-                switch (response) {
-                    case AUTH_PLAIN_CAPABILITY:
-                        capabilities.authPlain = true;
-                        break;
-                    case AUTH_CRAM_MD5_CAPABILITY:
-                        capabilities.cramMD5 = true;
-                        break;
-                    case AUTH_EXTERNAL_CAPABILITY:
-                        capabilities.external = true;
-                        break;
-                }
-            }
-        } catch (MessagingException ignored) {
-            // Assume AUTH command with no arguments is not supported.
-        }
-        try {
             executeSimpleCommand(CAPA_COMMAND);
             String response;
             while ((response = readLine()) != null) {
@@ -230,6 +196,9 @@ class Pop3Connection {
                     }
                     if (saslAuthMechanisms.contains(AUTH_CRAM_MD5_CAPABILITY)) {
                         capabilities.cramMD5 = true;
+                    }
+                    if (saslAuthMechanisms.contains(AUTH_EXTERNAL_CAPABILITY)) {
+                        capabilities.external = true;
                     }
                 }
             }

@@ -42,29 +42,19 @@ public class Pop3ConnectionTest {
     private static String username = "user";
     private static String password = "password";
     private static final String INITIAL_RESPONSE = "+OK POP3 server greeting\r\n";
-    private static final String AUTH = "AUTH\r\n";
-    private static final String AUTH_HANDLE_RESPONSE =
-            "+OK Listing of supported mechanisms follows\r\n" +
-            "PLAIN\r\n" +
-            "CRAM-MD5\r\n" +
-            "EXTERNAL\r\n" +
-            ".\r\n";
     private static final String CAPA =
             "CAPA\r\n";
     private static final String CAPA_RESPONSE =
             "+OK Listing of supported mechanisms follows\r\n" +
-            "PLAIN\r\n" +
-            "CRAM-MD5\r\n" +
-            "EXTERNAL\r\n" +
+            "SASL PLAIN CRAM-MD5 EXTERNAL\r\n" +
             ".\r\n";
     private static final String AUTH_PLAIN_WITH_LOGIN = "AUTH PLAIN\r\n" +
             new String(Base64.encodeBase64(("\000"+username+"\000"+password).getBytes())) + "\r\n";
     private static final String AUTH_PLAIN_AUTHENTICATED_RESPONSE = "+OK\r\n" + "+OK\r\n";
 
-    private static final String SUCCESSFUL_PLAIN_AUTH = AUTH + CAPA + AUTH_PLAIN_WITH_LOGIN;
+    private static final String SUCCESSFUL_PLAIN_AUTH = CAPA + AUTH_PLAIN_WITH_LOGIN;
     private static final String SUCCESSFUL_PLAIN_AUTH_RESPONSE =
             INITIAL_RESPONSE +
-            AUTH_HANDLE_RESPONSE +
             CAPA_RESPONSE +
             AUTH_PLAIN_AUTHENTICATED_RESPONSE;
 /**
@@ -323,12 +313,9 @@ public class Pop3ConnectionTest {
     private MockPop3Server setupUnavailableStartTLSConnection() throws IOException {new MockPop3Server();
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
+        server.output("SASL PLAIN");
         server.output(".");
         server.start();
         settings.setHost(server.getHost());
@@ -339,13 +326,10 @@ public class Pop3ConnectionTest {
 
     private void setupServerWithStartTLSAvailable(MockPop3Server server) {
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
         server.output("STLS");
+        server.output("SASL PLAIN");
         server.output(".");
     }
 
@@ -357,17 +341,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
+        server.output("SASL PLAIN CRAM-MD5 EXTERNAL");
         server.output(".");
         server.expect("AUTH PLAIN");
         server.output("+OK");
@@ -385,17 +361,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
+        server.output("SASL PLAIN CRAM-MD5 EXTERNAL");
         server.output(".");
         server.expect("AUTH PLAIN");
         server.output("+OK");
@@ -416,15 +384,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
+        server.output("SASL CRAM-MD5 EXTERNAL");
         server.output(".");
         server.expect("USER user");
         server.output("+OK");
@@ -445,15 +407,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
+        server.output("SASL CRAM-MD5 EXTERNAL");
         server.output(".");
         server.expect("USER user");
         server.output("+OK");
@@ -471,17 +427,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
+        server.output("SASL PLAIN CRAM-MD5 EXTERNAL");
         server.output(".");
         server.expect("AUTH CRAM-MD5");
         server.output("+ abcd");
@@ -500,17 +448,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
+        server.output("SASL PLAIN CRAM-MD5 EXTERNAL");
         server.output(".");
         server.expect("AUTH CRAM-MD5");
         server.output("+ abcd");
@@ -531,15 +471,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK abc<a>abcd");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("EXTERNAL");
+        server.output("SASL PLAIN EXTERNAL");
         server.output(".");
         server.expect("APOP user c8e8c560e385faaa6367d4145572b8ea");
         server.output("+OK");
@@ -556,15 +490,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK abc<a>abcd");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("EXTERNAL");
+        server.output("SASL PLAIN EXTERNAL");
         server.output(".");
         server.expect("APOP user c8e8c560e385faaa6367d4145572b8ea");
         server.output("-ERR");
@@ -583,17 +511,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
+        server.output("SASL CRAM-MD5 EXTERNAL");
         server.output(".");
         server.expect("AUTH EXTERNAL dXNlcg==");
         server.output("+OK");
@@ -609,16 +529,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
+        server.output("SASL PLAIN CRAM-MD5");
         server.output(".");
 
         try {
@@ -638,17 +551,9 @@ public class Pop3ConnectionTest {
 
         MockPop3Server server = new MockPop3Server();
         server.output("+OK POP3 server greeting");
-        server.expect("AUTH");
-        server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
-        server.output(".");
         server.expect("CAPA");
         server.output("+OK Listing of supported mechanisms follows");
-        server.output("PLAIN");
-        server.output("CRAM-MD5");
-        server.output("EXTERNAL");
+        server.output("SASL PLAIN CRAM-MD5 EXTERNAL");
         server.output(".");
         server.expect("AUTH EXTERNAL dXNlcg==");
         server.output("-ERR Invalid certificate");
