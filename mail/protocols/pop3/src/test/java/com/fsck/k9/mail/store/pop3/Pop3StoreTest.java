@@ -28,17 +28,9 @@ import static org.mockito.Mockito.when;
 
 public class Pop3StoreTest {
     private static final String INITIAL_RESPONSE = "+OK POP3 server greeting\r\n";
-    private static final String AUTH = "AUTH\r\n";
-    private static final String AUTH_HANDLE_RESPONSE = "+OK Listing of supported mechanisms follows\r\n" +
-            "PLAIN\r\n" +
-            "CRAM-MD5\r\n" +
-            "EXTERNAL\r\n" +
-            ".\r\n";
     private static final String CAPA = "CAPA\r\n";
     private static final String CAPA_RESPONSE = "+OK Listing of supported mechanisms follows\r\n" +
-            "PLAIN\r\n" +
-            "CRAM-MD5\r\n" +
-            "EXTERNAL\r\n" +
+            "SASL PLAIN CRAM-MD5 EXTERNAL\r\n" +
             ".\r\n";
     private static final String AUTH_PLAIN_WITH_LOGIN = "AUTH PLAIN\r\n" +
             new String(Base64.encodeBase64(("\000user\000password").getBytes())) + "\r\n";
@@ -94,7 +86,6 @@ public class Pop3StoreTest {
     public void checkSetting_whenUidlUnsupported_shouldThrowMessagingException()
             throws Exception {
         String response = INITIAL_RESPONSE +
-                AUTH_HANDLE_RESPONSE +
                 CAPA_RESPONSE +
                 AUTH_PLAIN_AUTHENTICATED_RESPONSE +
                 STAT_RESPONSE +
@@ -109,7 +100,6 @@ public class Pop3StoreTest {
     public void checkSetting_whenUidlSupported_shouldReturn()
             throws Exception {
         String response = INITIAL_RESPONSE +
-                AUTH_HANDLE_RESPONSE +
                 CAPA_RESPONSE +
                 AUTH_PLAIN_AUTHENTICATED_RESPONSE +
                 STAT_RESPONSE +
@@ -125,7 +115,6 @@ public class Pop3StoreTest {
     @Test
     public void open_withAuthResponseUsingAuthPlain_shouldRetrieveMessageCountOnAuthenticatedSocket() throws Exception {
         String response = INITIAL_RESPONSE +
-                AUTH_HANDLE_RESPONSE +
                 CAPA_RESPONSE +
                 AUTH_PLAIN_AUTHENTICATED_RESPONSE +
                 STAT_RESPONSE;
@@ -137,13 +126,12 @@ public class Pop3StoreTest {
         folder.open();
 
         assertEquals(20, folder.getMessageCount());
-        assertEquals(AUTH + CAPA + AUTH_PLAIN_WITH_LOGIN + STAT, byteArrayOutputStream.toString("UTF-8"));
+        assertEquals(CAPA + AUTH_PLAIN_WITH_LOGIN + STAT, byteArrayOutputStream.toString("UTF-8"));
     }
 
     @Test(expected = AuthenticationFailedException.class)
     public void open_withFailedAuth_shouldThrow() throws Exception {
         String response = INITIAL_RESPONSE +
-                AUTH_HANDLE_RESPONSE +
                 CAPA_RESPONSE +
                 AUTH_PLAIN_FAILED_RESPONSE;
         when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
