@@ -1,100 +1,75 @@
-package com.fsck.k9.message.html;
+package com.fsck.k9.message.html
 
+import org.jsoup.nodes.DataNode
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.jsoup.nodes.Node
+import org.jsoup.nodes.TextNode
+import org.jsoup.parser.Tag
+import org.jsoup.select.NodeTraversor
+import org.jsoup.select.NodeVisitor
 
-import java.util.List;
-import java.util.Locale;
+private val ALLOWED_TAGS = listOf("style", "meta")
 
-import org.jsoup.nodes.Attributes;
-import org.jsoup.nodes.DataNode;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
-import org.jsoup.parser.Tag;
-import org.jsoup.select.NodeTraversor;
-import org.jsoup.select.NodeVisitor;
-
-import static java.util.Arrays.asList;
-
-
-class HeadCleaner {
-    private static final List<String> ALLOWED_TAGS = asList("style", "meta");
-
-
-    public void clean(Document dirtyDocument, Document cleanedDocument) {
-        copySafeNodes(dirtyDocument.head(), cleanedDocument.head());
+internal class HeadCleaner {
+    fun clean(dirtyDocument: Document, cleanedDocument: Document) {
+        copySafeNodes(dirtyDocument.head(), cleanedDocument.head())
     }
 
-    private void copySafeNodes(Element source, Element destination) {
-        CleaningVisitor cleaningVisitor = new CleaningVisitor(source, destination);
-        NodeTraversor.traverse(cleaningVisitor, source);
+    private fun copySafeNodes(source: Element, destination: Element) {
+        val cleaningVisitor = CleaningVisitor(source, destination)
+        NodeTraversor.traverse(cleaningVisitor, source)
+    }
+}
+
+internal class CleaningVisitor(
+    private val root: Element,
+    private var destination: Element
+) : NodeVisitor {
+    private var elementToSkip: Element? = null
+
+    override fun head(source: Node, depth: Int) {
+        if (elementToSkip != null) return
+
+        if (source is Element) {
+            if (isSafeTag(source)) {
+                val sourceTag = source.tagName()
+                val destinationAttributes = source.attributes().clone()
+                val destinationChild = Element(Tag.valueOf(sourceTag), source.baseUri(), destinationAttributes)
+                destination.appendChild(destinationChild)
+                destination = destinationChild
+            } else if (source !== root) {
+                elementToSkip = source
+            }
+        } else if (source is TextNode) {
+            val destinationText = TextNode(source.wholeText)
+            destination.appendChild(destinationText)
+        } else if (source is DataNode && isSafeTag(source.parent())) {
+            val destinationData = DataNode(source.wholeData)
+            destination.appendChild(destinationData)
+        }
     }
 
-
-    static class CleaningVisitor implements NodeVisitor {
-        private final Element root;
-        private Element destination;
-        private Element elementToSkip;
-
-
-        CleaningVisitor(Element root, Element destination) {
-            this.root = root;
-            this.destination = destination;
+    override fun tail(source: Node, depth: Int) {
+        if (source === elementToSkip) {
+            elementToSkip = null
+        } else if (source is Element && isSafeTag(source)) {
+            destination = destination.parent()
         }
+    }
 
-        public void head(Node source, int depth) {
-            if (elementToSkip != null) {
-                return;
-            }
+    private fun isSafeTag(node: Node): Boolean {
+        if (isMetaRefresh(node)) return false
 
-            if (source instanceof Element) {
-                Element sourceElement = (Element) source;
+        val tag = node.nodeName().lowercase()
+        return tag in ALLOWED_TAGS
+    }
 
-                if (isSafeTag(sourceElement)) {
-                    String sourceTag = sourceElement.tagName();
-                    Attributes destinationAttributes = sourceElement.attributes().clone();
-                    Element destinationChild = new Element(Tag.valueOf(sourceTag), sourceElement.baseUri(), destinationAttributes);
+    private fun isMetaRefresh(node: Node): Boolean {
+        val tag = node.nodeName().lowercase()
+        if (tag != "meta") return false
 
-                    destination.appendChild(destinationChild);
-                    destination = destinationChild;
-                } else if (source != root) {
-                    elementToSkip = sourceElement;
-                }
-            } else if (source instanceof TextNode) {
-                TextNode sourceText = (TextNode) source;
-                TextNode destinationText = new TextNode(sourceText.getWholeText());
-                destination.appendChild(destinationText);
-            } else if (source instanceof DataNode && isSafeTag(source.parent())) {
-                DataNode sourceData = (DataNode) source;
-                DataNode destinationData = new DataNode(sourceData.getWholeData());
-                destination.appendChild(destinationData);
-            }
-        }
-
-        public void tail(Node source, int depth) {
-            if (source == elementToSkip) {
-                elementToSkip = null;
-            } else if (source instanceof Element && isSafeTag(source)) {
-                destination = destination.parent();
-            }
-        }
-
-        private boolean isSafeTag(Node node) {
-            if (isMetaRefresh(node)) {
-                return false;
-            }
-
-            String tag = node.nodeName().toLowerCase(Locale.ROOT);
-            return ALLOWED_TAGS.contains(tag);
-        }
-
-        private boolean isMetaRefresh(Node node) {
-            if (!"meta".equalsIgnoreCase(node.nodeName())) {
-                return false;
-            }
-
-            String attributeValue = node.attributes().getIgnoreCase("http-equiv");
-            return "refresh".equalsIgnoreCase(attributeValue.trim());
-        }
+        val attributeValue = node.attributes().getIgnoreCase("http-equiv").trim().lowercase()
+        return attributeValue == "refresh"
     }
 }
