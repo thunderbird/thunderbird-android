@@ -1,0 +1,1 @@
+- POP3: Changed the way the list of supported authentication methods is retrieved from the server
