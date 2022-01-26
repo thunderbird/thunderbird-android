@@ -2,10 +2,9 @@ package com.fsck.k9.message.html
 
 import org.jsoup.nodes.Document
 
-class HtmlProcessor internal constructor(
-    private val htmlSanitizer: HtmlSanitizer,
-    private val displayHtml: DisplayHtml
-) {
+class HtmlProcessor internal constructor(private val displayHtml: DisplayHtml) {
+    private val htmlSanitizer = HtmlSanitizer()
+
     fun processForDisplay(html: String?): String {
         return htmlSanitizer.sanitize(html)
             .addCustomHeadContents()

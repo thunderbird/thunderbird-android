@@ -3,7 +3,7 @@ package com.fsck.k9.message.html
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-class HtmlSanitizer {
+internal class HtmlSanitizer {
     private val headCleaner = HeadCleaner()
     private val bodyCleaner = BodyCleaner()
 
