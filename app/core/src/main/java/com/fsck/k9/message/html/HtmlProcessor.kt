@@ -1,38 +1,31 @@
-package com.fsck.k9.message.html;
+package com.fsck.k9.message.html
 
+import org.jsoup.nodes.Document
 
-import org.jsoup.nodes.Document;
-
-
-public class HtmlProcessor {
-    private final HtmlSanitizer htmlSanitizer;
-    private final DisplayHtml displayHtml;
-
-
-    HtmlProcessor(HtmlSanitizer htmlSanitizer, DisplayHtml displayHtml) {
-        this.htmlSanitizer = htmlSanitizer;
-        this.displayHtml = displayHtml;
+class HtmlProcessor internal constructor(
+    private val htmlSanitizer: HtmlSanitizer,
+    private val displayHtml: DisplayHtml
+) {
+    fun processForDisplay(html: String?): String {
+        return htmlSanitizer.sanitize(html)
+            .addCustomHeadContents()
+            .toCompactString()
     }
 
-    public String processForDisplay(String html) {
-        Document document = htmlSanitizer.sanitize(html);
-        addCustomHeadContents(document);
-
-        return toCompactString(document);
-    }
-
-    private void addCustomHeadContents(Document document) {
-        document.head().append("<meta name=\"viewport\" content=\"width=device-width\"/>" +
+    private fun Document.addCustomHeadContents() = apply {
+        head().append(
+            """<meta name="viewport" content="width=device-width"/>""" +
                 displayHtml.cssStyleTheme() +
                 displayHtml.cssStylePre() +
-                displayHtml.cssStyleSignature());
+                displayHtml.cssStyleSignature()
+        )
     }
 
-    public static String toCompactString(Document document) {
-        document.outputSettings()
-                .prettyPrint(false)
-                .indentAmount(0);
+    private fun Document.toCompactString(): String {
+        outputSettings()
+            .prettyPrint(false)
+            .indentAmount(0)
 
-        return document.html();
+        return html()
     }
 }

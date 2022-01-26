@@ -376,7 +376,13 @@ class HtmlSanitizerTest {
         )
     }
 
-    private fun Document.toCompactString() = HtmlProcessor.toCompactString(this)
+    private fun Document.toCompactString(): String {
+        outputSettings()
+            .prettyPrint(false)
+            .indentAmount(0)
+
+        return html()
+    }
 
     private fun String.trimLineBreaks() = replace("\n", "")
 }

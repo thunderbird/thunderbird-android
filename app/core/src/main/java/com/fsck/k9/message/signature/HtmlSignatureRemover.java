@@ -4,10 +4,8 @@ package com.fsck.k9.message.signature;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
-
 import com.fsck.k9.helper.jsoup.AdvancedNodeTraversor;
 import com.fsck.k9.helper.jsoup.NodeFilter;
-import com.fsck.k9.message.html.HtmlProcessor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,7 +25,15 @@ public class HtmlSignatureRemover {
         AdvancedNodeTraversor nodeTraversor = new AdvancedNodeTraversor(new StripSignatureFilter());
         nodeTraversor.filter(document.body());
 
-        return HtmlProcessor.toCompactString(document);
+        return toCompactString(document);
+    }
+
+    private String toCompactString(Document document) {
+        document.outputSettings()
+                .prettyPrint(false)
+                .indentAmount(0);
+
+        return document.html();
     }
 
 
