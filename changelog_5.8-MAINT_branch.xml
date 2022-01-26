@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.807" versioncode="28007" date="2022-01-26">
+        <change>POP3: Changed the way the list of supported authentication methods is retrieved from the server</change>
+    </release>
     <release version="5.806" versioncode="28006" date="2021-08-30">
         <change>Fixed the check for missing outgoing server credentials, again… hopefully 🤞</change>
     </release>
