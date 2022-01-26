@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document
 class HtmlProcessor(private val htmlHeadProvider: HtmlHeadProvider) {
     private val htmlSanitizer = HtmlSanitizer()
 
-    fun processForDisplay(html: String?): String {
+    fun processForDisplay(html: String): String {
         return htmlSanitizer.sanitize(html)
             .addCustomHeadContents()
             .toCompactString()
