@@ -2,7 +2,7 @@ package com.fsck.k9.message.html
 
 import org.jsoup.nodes.Document
 
-class HtmlProcessor internal constructor(private val displayHtml: DisplayHtml) {
+class HtmlProcessor internal constructor(private val htmlHeadProvider: HtmlHeadProvider) {
     private val htmlSanitizer = HtmlSanitizer()
 
     fun processForDisplay(html: String?): String {
@@ -12,12 +12,7 @@ class HtmlProcessor internal constructor(private val displayHtml: DisplayHtml) {
     }
 
     private fun Document.addCustomHeadContents() = apply {
-        head().append(
-            """<meta name="viewport" content="width=device-width"/>""" +
-                displayHtml.cssStyleTheme() +
-                displayHtml.cssStylePre() +
-                displayHtml.cssStyleSignature()
-        )
+        head().append(htmlHeadProvider.headHtml)
     }
 
     private fun Document.toCompactString(): String {
