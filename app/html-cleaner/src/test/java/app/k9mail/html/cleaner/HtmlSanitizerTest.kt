@@ -1,4 +1,4 @@
-package com.fsck.k9.message.html
+package app.k9mail.html.cleaner
 
 import com.google.common.truth.Truth.assertThat
 import org.jsoup.nodes.Document

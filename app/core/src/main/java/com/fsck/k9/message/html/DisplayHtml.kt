@@ -1,5 +1,7 @@
 package com.fsck.k9.message.html
 
+import app.k9mail.html.cleaner.HtmlHeadProvider
+
 class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
     override val headHtml: String
         get() {

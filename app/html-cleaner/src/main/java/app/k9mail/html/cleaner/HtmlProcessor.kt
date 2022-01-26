@@ -1,8 +1,8 @@
-package com.fsck.k9.message.html
+package app.k9mail.html.cleaner
 
 import org.jsoup.nodes.Document
 
-class HtmlProcessor internal constructor(private val htmlHeadProvider: HtmlHeadProvider) {
+class HtmlProcessor(private val htmlHeadProvider: HtmlHeadProvider) {
     private val htmlSanitizer = HtmlSanitizer()
 
     fun processForDisplay(html: String?): String {

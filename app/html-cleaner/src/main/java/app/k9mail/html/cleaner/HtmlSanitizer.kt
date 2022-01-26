@@ -1,4 +1,4 @@
-package com.fsck.k9.message.html
+package app.k9mail.html.cleaner
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
