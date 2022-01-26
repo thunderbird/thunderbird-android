@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./gradlew --quiet ":cli:html-cleaner-cli:installDist" < /dev/null && ./cli/html-cleaner-cli/build/install/html-cleaner-cli/bin/html-cleaner-cli "$@"
