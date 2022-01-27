@@ -16,9 +16,16 @@ internal class SendFailedNotificationController(
         val text = ExceptionHelper.getRootCauseMessage(exception)
 
         val notificationId = NotificationIds.getSendFailedNotificationId(account)
-        val folderListPendingIntent = actionBuilder.createViewFolderListPendingIntent(
-            account, notificationId
-        )
+        val pendingIntent =
+            if (account.outboxFolderId != null) {
+                actionBuilder.createViewFolderPendingIntent(
+                    account, account.outboxFolderId!!, notificationId
+                )
+            } else {
+                actionBuilder.createViewFolderListPendingIntent(
+                    account, notificationId
+                )
+            }
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
@@ -29,7 +36,7 @@ internal class SendFailedNotificationController(
             .setTicker(title)
             .setContentTitle(title)
             .setContentText(text)
-            .setContentIntent(folderListPendingIntent)
+            .setContentIntent(pendingIntent)
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setPublicVersion(createLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_ERROR)
