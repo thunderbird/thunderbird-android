@@ -16,16 +16,18 @@ internal class SendFailedNotificationController(
         val text = ExceptionHelper.getRootCauseMessage(exception)
 
         val notificationId = NotificationIds.getSendFailedNotificationId(account)
-        val pendingIntent =
-            if (account.outboxFolderId != null) {
+
+        val pendingIntent = account.outboxFolderId.let { outboxFolderId ->
+            if (outboxFolderId != null) {
                 actionBuilder.createViewFolderPendingIntent(
-                    account, account.outboxFolderId!!, notificationId
+                    account, outboxFolderId, notificationId
                 )
             } else {
                 actionBuilder.createViewFolderListPendingIntent(
                     account, notificationId
                 )
             }
+        }
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
