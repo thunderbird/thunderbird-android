@@ -10,6 +10,7 @@ import com.fsck.k9.RobolectricTest
 import com.fsck.k9.testing.MockHelper.mockBuilder
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -88,6 +89,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
     private fun createActionBuilder(contentIntent: PendingIntent): NotificationActionCreator {
         return mock {
             on { createViewFolderListPendingIntent(any(), anyInt()) } doReturn contentIntent
+            on { createViewFolderPendingIntent(any(), anyLong(), anyInt()) } doReturn contentIntent
         }
     }
 }
