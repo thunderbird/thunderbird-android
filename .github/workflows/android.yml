@@ -13,4 +13,4 @@ jobs:
       with:
         java-version: 11
     - name: Build with Gradle
-      run: ./gradlew assembleDebug testDebugUnitTest ktlintCheck
+      run: ./gradlew assembleDebug ktlintCheck testsOnCi

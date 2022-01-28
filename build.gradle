@@ -112,3 +112,10 @@ subprojects {
         version = versions.ktlint
     }
 }
+
+tasks.register('testsOnCi') {
+    dependsOn getSubprojects()
+            .collect { project -> project.tasks.withType(Test) }
+            .flatten()
+            .findAll { task -> task.name in ['testDebugUnitTest', 'test'] }
+}
