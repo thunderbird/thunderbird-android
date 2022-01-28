@@ -35,7 +35,7 @@ import com.fsck.k9.mail.internet.Viewable.MessageHeader;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor.ViewableExtractedText;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
-import com.fsck.k9.message.html.HtmlProcessor;
+import app.k9mail.html.cleaner.HtmlProcessor;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;

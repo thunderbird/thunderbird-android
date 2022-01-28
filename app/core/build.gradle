@@ -5,6 +5,7 @@ apply plugin: 'org.jetbrains.kotlin.plugin.parcelize'
 dependencies {
     api project(":mail:common")
     api project(":backend:api")
+    api project(":app:html-cleaner")
 
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
@@ -18,7 +19,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:${versions.androidxWorkManager}"
     implementation "androidx.fragment:fragment:${versions.androidxFragment}"
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
-    implementation "org.jsoup:jsoup:1.13.1"
+    implementation "org.jsoup:jsoup:${versions.jsoup}"
     implementation "com.squareup.moshi:moshi:${versions.moshi}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"

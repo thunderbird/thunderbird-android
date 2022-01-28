@@ -40,6 +40,7 @@ buildscript {
                 'okhttp': '4.9.2',
                 'minidns': '1.0.0',
                 'glide': '4.12.0',
+                'jsoup': '1.13.1',
 
                 'androidxTestRunner': '1.4.0',
                 'junit': '4.13.2',
@@ -110,4 +111,11 @@ subprojects {
     ktlint {
         version = versions.ktlint
     }
+}
+
+tasks.register('testsOnCi') {
+    dependsOn getSubprojects()
+            .collect { project -> project.tasks.withType(Test) }
+            .flatten()
+            .findAll { task -> task.name in ['testDebugUnitTest', 'test'] }
 }

@@ -1,0 +1,20 @@
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'application'
+
+version 'unspecified'
+
+application {
+    mainClass = "app.k9mail.cli.html.cleaner.MainKt"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':app:html-cleaner')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "com.github.ajalt.clikt:clikt:3.4.0"
+    implementation "com.squareup.okio:okio:${versions.okio}"
+}

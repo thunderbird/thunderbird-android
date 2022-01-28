@@ -23,7 +23,7 @@ import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.html.HtmlConverter;
-import com.fsck.k9.message.html.HtmlProcessor;
+import app.k9mail.html.cleaner.HtmlProcessor;
 import org.openintents.openpgp.util.OpenPgpUtils;
 import timber.log.Timber;
 

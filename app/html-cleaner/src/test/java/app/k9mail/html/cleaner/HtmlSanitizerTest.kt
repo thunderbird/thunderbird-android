@@ -1,4 +1,4 @@
-package com.fsck.k9.message.html
+package app.k9mail.html.cleaner
 
 import com.google.common.truth.Truth.assertThat
 import org.jsoup.nodes.Document
@@ -376,7 +376,13 @@ class HtmlSanitizerTest {
         )
     }
 
-    private fun Document.toCompactString() = HtmlProcessor.toCompactString(this)
+    private fun Document.toCompactString(): String {
+        outputSettings()
+            .prettyPrint(false)
+            .indentAmount(0)
+
+        return html()
+    }
 
     private fun String.trimLineBreaks() = replace("\n", "")
 }

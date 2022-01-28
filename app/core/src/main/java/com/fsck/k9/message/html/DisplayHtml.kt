@@ -1,6 +1,15 @@
 package com.fsck.k9.message.html
 
-class DisplayHtml(private val settings: HtmlSettings) {
+import app.k9mail.html.cleaner.HtmlHeadProvider
+
+class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
+    override val headHtml: String
+        get() {
+            return """<meta name="viewport" content="width=device-width"/>""" +
+                cssStyleTheme() +
+                cssStylePre() +
+                cssStyleSignature()
+        }
 
     fun wrapStatusMessage(status: CharSequence): String {
         return wrapMessageContent("<div style=\"text-align:center; color: grey;\">$status</div>")
@@ -16,7 +25,7 @@ class DisplayHtml(private val settings: HtmlSettings) {
             "</body></html>"
     }
 
-    fun cssStyleTheme(): String {
+    private fun cssStyleTheme(): String {
         return if (settings.useDarkMode) {
             "<style type=\"text/css\">" +
                 "* { background: black ! important; color: #F3F3F3 !important }" +
@@ -35,7 +44,7 @@ class DisplayHtml(private val settings: HtmlSettings) {
      * @return A `<style>` element that can be dynamically included in the HTML `<head>` element when messages are
      * displayed.
      */
-    fun cssStylePre(): String {
+    private fun cssStylePre(): String {
         val font = if (settings.useFixedWidthFont) "monospace" else "sans-serif"
 
         return "<style type=\"text/css\"> pre." + EmailTextToHtml.K9MAIL_CSS_CLASS +
@@ -43,7 +52,7 @@ class DisplayHtml(private val settings: HtmlSettings) {
             "font-family: " + font + "; margin-top: 0px}</style>"
     }
 
-    fun cssStyleSignature(): String {
+    private fun cssStyleSignature(): String {
         return """<style type="text/css">.k9mail-signature { opacity: 0.5 }</style>"""
     }
 }
