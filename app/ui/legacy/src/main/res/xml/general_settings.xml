@@ -292,7 +292,7 @@
             <com.takisoft.preferencex.ColorPickerPreference
                 android:dependency="messagelist_change_contact_name_color"
                 android:key="messagelist_contact_name_color"
-                android:title="Contact name color"
+                android:title="@string/general_settings_contact_name_color_label"
                 android:defaultValue="#FF1093F5" />
 
             <CheckBoxPreference
