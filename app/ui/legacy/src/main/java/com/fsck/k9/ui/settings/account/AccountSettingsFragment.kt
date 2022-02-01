@@ -54,7 +54,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val vibrator by lazy { requireContext().getSystemService<Vibrator>() }
     private lateinit var dataStore: AccountSettingsDataStore
     private var notificationLightColorPreference: ColorPickerPreference? = null
-    private var notificationVibrationPatternPreference: VibrationPatternPreference? = null
+    private var notificationVibrationPreference: VibrationPreference? = null
 
     private val accountUuid: String by lazy {
         checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
@@ -190,8 +190,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeNotifications(account: Account) {
         if (vibrator?.hasVibrator() != true) {
-            findPreference<Preference>(PREFERENCE_NOTIFICATION_VIBRATION_PATTERN)?.remove()
-            findPreference<Preference>(PREFERENCE_NOTIFICATION_ENABLE_VIBRATION)?.remove()
+            findPreference<Preference>(PREFERENCE_NOTIFICATION_VIBRATION)?.remove()
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -201,9 +200,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 preference.isEnabled = false
             }
 
-            findPreference<VibrationPatternPreference>(PREFERENCE_NOTIFICATION_VIBRATION_PATTERN)?.let { preference ->
-                notificationVibrationPatternPreference = preference
-                preference.dependency = null
+            findPreference<VibrationPreference>(PREFERENCE_NOTIFICATION_VIBRATION)?.let { preference ->
+                notificationVibrationPreference = preference
                 preference.isEnabled = false
             }
 
@@ -226,7 +224,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun maybeUpdateNotificationPreferences(account: Account) {
-        if (notificationLightColorPreference != null || notificationVibrationPatternPreference != null) {
+        if (notificationLightColorPreference != null || notificationVibrationPreference != null) {
             updateNotificationPreferences(account)
         }
     }
@@ -243,12 +241,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             }
         }
 
-        notificationVibrationPatternPreference?.let { preference ->
-            val vibrationEnabled = notificationConfiguration.isVibrationEnabled
-            preference.isEnabled = vibrationEnabled
-            if (vibrationEnabled) {
-                preference.setVibrationPatternFromSystem(notificationConfiguration.vibrationPattern)
-            }
+        notificationVibrationPreference?.let { preference ->
+            preference.setVibrationFromSystem(
+                isVibrationEnabled = notificationConfiguration.isVibrationEnabled,
+                combinedPattern = notificationConfiguration.vibrationPattern
+            )
+            preference.isEnabled = true
         }
     }
 
@@ -439,8 +437,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
         private const val PREFERENCE_NOTIFICATION_LIGHT_COLOR = "led_color"
-        private const val PREFERENCE_NOTIFICATION_ENABLE_VIBRATION = "account_vibrate"
-        private const val PREFERENCE_NOTIFICATION_VIBRATION_PATTERN = "account_combined_vibration_pattern"
+        private const val PREFERENCE_NOTIFICATION_VIBRATION = "account_combined_vibration"
         private const val PREFERENCE_NOTIFICATION_CHANNELS = "notification_channels"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES = "open_notification_settings_messages"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS = "open_notification_settings_miscellaneous"
@@ -448,7 +445,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
         private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf(
             "account_ringtone",
-            PREFERENCE_NOTIFICATION_ENABLE_VIBRATION,
             "account_led",
         )
 
