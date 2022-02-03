@@ -15,7 +15,7 @@ dependencies {
     testImplementation "androidx.test:core:${versions.androidxTestCore}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
 }
