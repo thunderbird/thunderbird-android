@@ -16,7 +16,7 @@ dependencies {
     testImplementation project(":mail:testing")
     testImplementation project(":backend:testing")
     testImplementation "junit:junit:${versions.junit}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.apache.james:apache-mime4j-dom:${versions.mime4j}"
