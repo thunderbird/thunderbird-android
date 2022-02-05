@@ -43,8 +43,15 @@ internal class BodyCleaner {
 
     fun clean(dirtyDocument: Document): Document {
         val cleanedDocument = cleaner.clean(dirtyDocument)
+        copyDocumentType(dirtyDocument, cleanedDocument)
         copyBodyAttributes(dirtyDocument, cleanedDocument)
         return cleanedDocument
+    }
+
+    private fun copyDocumentType(dirtyDocument: Document, cleanedDocument: Document) {
+        dirtyDocument.documentType()?.let { documentType ->
+            cleanedDocument.insertChildren(0, documentType)
+        }
     }
 
     private fun copyBodyAttributes(dirtyDocument: Document, cleanedDocument: Document) {
