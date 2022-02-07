@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.NetworkType;
@@ -704,9 +705,14 @@ public class Account implements BaseAccount {
         return oldMaxPushFolders != maxPushFolders;
     }
 
+    @NonNull
     @Override
     public synchronized String toString() {
-        return description;
+        if (K9.isSensitiveDebugLoggingEnabled()) {
+            return getDisplayName();
+        } else {
+            return accountUuid;
+        }
     }
 
     public synchronized void setCompression(NetworkType networkType, boolean useCompression) {

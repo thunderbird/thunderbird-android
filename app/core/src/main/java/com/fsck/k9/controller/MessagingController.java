@@ -263,7 +263,7 @@ public class MessagingController {
         try {
             return localStoreProvider.getInstance(account);
         } catch (MessagingException e) {
-            throw new IllegalStateException("Couldn't get LocalStore for account " + account.getDescription());
+            throw new IllegalStateException("Couldn't get LocalStore for account " + account);
         }
     }
 
@@ -676,7 +676,7 @@ public class MessagingController {
 
         if (commandException != null && !syncListener.syncFailed) {
             String rootMessage = getRootCauseMessage(commandException);
-            Timber.e("Root cause failure in %s:%s was '%s'", account.getDescription(), folderServerId, rootMessage);
+            Timber.e("Root cause failure in %s:%s was '%s'", account, folderServerId, rootMessage);
             updateFolderStatus(account, folderServerId, rootMessage);
             listener.synchronizeMailboxFailed(account, folderId, rootMessage);
         }
@@ -946,7 +946,7 @@ public class MessagingController {
 
         if (operation != MoveOrCopyFlavor.COPY) {
             if (backend.getSupportsExpunge() && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
-                Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolderServerId);
+                Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account, srcFolderServerId);
                 backend.expungeMessages(srcFolderServerId, uids);
             }
 
@@ -2109,7 +2109,7 @@ public class MessagingController {
                 }
             }
 
-            Timber.d("Delete policy for account %s is %s", account.getDescription(), account.getDeletePolicy());
+            Timber.d("Delete policy for account %s is %s", account, account.getDeletePolicy());
 
             Long outboxFolderId = account.getOutboxFolderId();
             if (outboxFolderId != null && folderId == outboxFolderId && supportsUpload(account)) {
@@ -2269,11 +2269,11 @@ public class MessagingController {
             }
         });
 
-        Timber.v("performPeriodicMailSync(%s) about to await latch release", account.getDescription());
+        Timber.v("performPeriodicMailSync(%s) about to await latch release", account);
 
         try {
             latch.await();
-            Timber.v("performPeriodicMailSync(%s) got latch release", account.getDescription());
+            Timber.v("performPeriodicMailSync(%s) got latch release", account);
         } catch (Exception e) {
             Timber.e(e, "Interrupted while awaiting latch release");
         }
@@ -2358,7 +2358,7 @@ public class MessagingController {
     private void checkMailForAccount(final Context context, final Account account,
             final boolean ignoreLastCheckedTime,
             final MessagingListener listener) {
-        Timber.i("Synchronizing account %s", account.getDescription());
+        Timber.i("Synchronizing account %s", account);
 
         NotificationState notificationState = new NotificationState();
 
@@ -2403,12 +2403,12 @@ public class MessagingController {
                 synchronizeFolder(account, folder, ignoreLastCheckedTime, listener, notificationState);
             }
         } catch (MessagingException e) {
-            Timber.e(e, "Unable to synchronize account %s", account.getName());
+            Timber.e(e, "Unable to synchronize account %s", account);
         } finally {
-            putBackground("clear notification flag for " + account.getDescription(), null, new Runnable() {
+            putBackground("clear notification flag for " + account, null, new Runnable() {
                         @Override
                         public void run() {
-                            Timber.v("Clearing notification flag for %s", account.getDescription());
+                            Timber.v("Clearing notification flag for %s", account);
 
                             clearFetchingMailNotification(account);
 
@@ -2459,7 +2459,7 @@ public class MessagingController {
                 showEmptyFetchingMailNotificationIfNecessary(account);
             }
         } catch (Exception e) {
-            Timber.e(e, "Exception while processing folder %s:%s", account.getDescription(), folder.getServerId());
+            Timber.e(e, "Exception while processing folder %s:%s", account, folder.getServerId());
         }
     }
 
@@ -2480,7 +2480,7 @@ public class MessagingController {
     }
 
     public void compact(final Account account, final MessagingListener ml) {
-        putBackground("compact:" + account.getDescription(), ml, new Runnable() {
+        putBackground("compact:" + account, ml, new Runnable() {
             @Override
             public void run() {
                 try {
@@ -2492,7 +2492,7 @@ public class MessagingController {
                         l.accountSizeChanged(account, oldSize, newSize);
                     }
                 } catch (Exception e) {
-                    Timber.e(e, "Failed to compact account %s", account.getDescription());
+                    Timber.e(e, "Failed to compact account %s", account);
                 }
             }
         });

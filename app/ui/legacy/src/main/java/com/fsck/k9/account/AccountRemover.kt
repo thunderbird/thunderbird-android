@@ -27,7 +27,7 @@ class AccountRemover(
             return
         }
 
-        val accountName = account.description
+        val accountName = account.toString()
         Timber.v("Removing account '%s'…", accountName)
 
         removeLocalStore(account)
@@ -47,7 +47,7 @@ class AccountRemover(
             val localStore = localStoreProvider.getInstance(account)
             localStore.delete()
         } catch (e: Exception) {
-            Timber.w(e, "Error removing message database for account '%s'", account.description)
+            Timber.w(e, "Error removing message database for account '%s'", account)
 
             // Ignore, this may lead to localStores on sd-cards that are currently not inserted to be left
         }
@@ -59,7 +59,7 @@ class AccountRemover(
         try {
             backendManager.removeBackend(account)
         } catch (e: Exception) {
-            Timber.e(e, "Failed to reset remote store for account %s", account.uuid)
+            Timber.e(e, "Failed to reset remote store for account %s", account)
         }
     }
 }
