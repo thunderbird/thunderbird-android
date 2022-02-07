@@ -197,7 +197,7 @@ public class AccountSetupBasics extends K9Activity
     private String getOwnerName() {
         String name = null;
         try {
-            name = getDefaultAccountName();
+            name = getDefaultSenderName();
         } catch (Exception e) {
             Timber.e(e, "Could not get default account name");
         }
@@ -208,11 +208,11 @@ public class AccountSetupBasics extends K9Activity
         return name;
     }
 
-    private String getDefaultAccountName() {
+    private String getDefaultSenderName() {
         String name = null;
         Account account = Preferences.getPreferences(this).getDefaultAccount();
         if (account != null) {
-            name = account.getName();
+            name = account.getSenderName();
         }
         return name;
     }
@@ -226,7 +226,7 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setChipColor(accountCreator.pickColor());
         }
 
-        mAccount.setName(getOwnerName());
+        mAccount.setSenderName(getOwnerName());
         mAccount.setEmail(email);
 
         ServerSettings incomingServerSettings = connectionSettings.getIncoming().newPassword(password);
@@ -339,7 +339,7 @@ public class AccountSetupBasics extends K9Activity
             mAccount = Preferences.getPreferences(this).newAccount();
             mAccount.setChipColor(accountCreator.pickColor());
         }
-        mAccount.setName(getOwnerName());
+        mAccount.setSenderName(getOwnerName());
         mAccount.setEmail(email);
 
         InitialAccountSettings initialAccountSettings = new InitialAccountSettings(authenticationType, email, password,

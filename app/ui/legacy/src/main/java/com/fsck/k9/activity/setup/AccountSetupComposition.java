@@ -58,7 +58,7 @@ public class AccountSetupComposition extends K9Activity {
         }
 
         mAccountName = findViewById(R.id.account_name);
-        mAccountName.setText(mAccount.getName());
+        mAccountName.setText(mAccount.getSenderName());
 
         mAccountEmail = findViewById(R.id.account_email);
         mAccountEmail.setText(mAccount.getEmail());
@@ -104,7 +104,7 @@ public class AccountSetupComposition extends K9Activity {
     private void saveSettings() {
         mAccount.setEmail(mAccountEmail.getText().toString());
         mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
-        mAccount.setName(mAccountName.getText().toString());
+        mAccount.setSenderName(mAccountName.getText().toString());
         mAccount.setSignatureUse(mAccountSignatureUse.isChecked());
         if (mAccountSignatureUse.isChecked()) {
             mAccount.setSignature(mAccountSignature.getText().toString());

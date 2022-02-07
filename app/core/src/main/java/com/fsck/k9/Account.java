@@ -267,11 +267,11 @@ public class Account implements BaseAccount {
         return description != null ? description : getEmail();
     }
 
-    public synchronized String getName() {
+    public synchronized String getSenderName() {
         return identities.get(0).getName();
     }
 
-    public synchronized void setName(String name) {
+    public synchronized void setSenderName(String name) {
         Identity newIdentity = identities.get(0).withName(name);
         identities.set(0, newIdentity);
     }
