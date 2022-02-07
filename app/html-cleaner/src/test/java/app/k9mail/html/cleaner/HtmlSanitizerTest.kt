@@ -376,6 +376,37 @@ class HtmlSanitizerTest {
         )
     }
 
+    @Test
+    fun `should keep HTML 5 doctype`() {
+        val html =
+            """
+            <!doctype html>
+            <html><head></head><body>text</body></html>
+            """.trimIndent().trimLineBreaks()
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(html)
+    }
+
+    @Test
+    fun `should keep HTML 4_01 doctype`() {
+        val html =
+            """
+            <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+            <html><head></head><body>text</body></html>
+            """.trimIndent().trimLineBreaks()
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(
+            """
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+            <html><head></head><body>text</body></html>
+            """.trimIndent().trimLineBreaks()
+        )
+    }
+
     private fun Document.toCompactString(): String {
         outputSettings()
             .prettyPrint(false)
