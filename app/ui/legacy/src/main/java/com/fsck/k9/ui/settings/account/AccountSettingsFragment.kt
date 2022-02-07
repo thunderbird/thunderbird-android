@@ -28,6 +28,7 @@ import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
+import com.fsck.k9.notification.NotificationLightDecoder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.settings.onClick
@@ -35,7 +36,6 @@ import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.fsck.k9.ui.withArguments
-import com.takisoft.preferencex.ColorPickerPreference
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -51,9 +51,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val messagingController: MessagingController by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private val notificationChannelManager: NotificationChannelManager by inject()
+    private val notificationLightDecoder: NotificationLightDecoder by inject()
+
     private val vibrator by lazy { requireContext().getSystemService<Vibrator>() }
     private lateinit var dataStore: AccountSettingsDataStore
-    private var notificationLightColorPreference: ColorPickerPreference? = null
+
+    private var notificationLightPreference: ListPreference? = null
     private var notificationVibrationPreference: VibrationPreference? = null
 
     private val accountUuid: String by lazy {
@@ -194,9 +197,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            findPreference<ColorPickerPreference>(PREFERENCE_NOTIFICATION_LIGHT_COLOR)?.let { preference ->
-                notificationLightColorPreference = preference
-                preference.dependency = null
+            findPreference<ListPreference>(PREFERENCE_NOTIFICATION_LIGHT)?.let { preference ->
+                notificationLightPreference = preference
                 preference.isEnabled = false
             }
 
@@ -224,7 +226,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun maybeUpdateNotificationPreferences(account: Account) {
-        if (notificationLightColorPreference != null || notificationVibrationPreference != null) {
+        if (notificationLightPreference != null || notificationVibrationPreference != null) {
             updateNotificationPreferences(account)
         }
     }
@@ -233,12 +235,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private fun updateNotificationPreferences(account: Account) {
         val notificationConfiguration = notificationChannelManager.getNotificationConfiguration(account)
 
-        notificationLightColorPreference?.let { preference ->
-            val blinkLightsEnabled = notificationConfiguration.isBlinkLightsEnabled
-            preference.isEnabled = blinkLightsEnabled
-            if (blinkLightsEnabled) {
-                preference.color = notificationConfiguration.lightColor
-            }
+        notificationLightPreference?.let { preference ->
+            val notificationLightSetting = notificationLightDecoder.decode(
+                isBlinkLightsEnabled = notificationConfiguration.isBlinkLightsEnabled,
+                lightColor = notificationConfiguration.lightColor,
+                accountColor = account.chipColor
+            )
+            preference.value = notificationLightSetting.name
+            preference.isEnabled = true
         }
 
         notificationVibrationPreference?.let { preference ->
@@ -436,7 +440,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_SENT_FOLDER = "sent_folder"
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
-        private const val PREFERENCE_NOTIFICATION_LIGHT_COLOR = "led_color"
+        private const val PREFERENCE_NOTIFICATION_LIGHT = "notification_light"
         private const val PREFERENCE_NOTIFICATION_VIBRATION = "account_combined_vibration"
         private const val PREFERENCE_NOTIFICATION_CHANNELS = "notification_channels"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES = "open_notification_settings_messages"
@@ -444,8 +448,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val DELETE_POLICY_MARK_AS_READ = "MARK_AS_READ"
 
         private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf(
-            "account_ringtone",
-            "account_led",
+            "account_ringtone"
         )
 
         private const val DIALOG_DELETE_ACCOUNT = 1

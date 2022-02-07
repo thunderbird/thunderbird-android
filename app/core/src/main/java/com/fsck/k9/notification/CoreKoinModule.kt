@@ -24,7 +24,8 @@ val coreNotificationModule = module {
             preferences = get(),
             backgroundExecutor = Executors.newSingleThreadExecutor(),
             notificationManager = get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
-            resourceProvider = get()
+            resourceProvider = get(),
+            notificationLightDecoder = get()
         )
     }
     single {
@@ -112,4 +113,5 @@ val coreNotificationModule = module {
             notificationContentCreator = get()
         )
     }
+    factory { NotificationLightDecoder() }
 }

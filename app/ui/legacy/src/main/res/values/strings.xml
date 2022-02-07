@@ -551,9 +551,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">The accent color of this account used in folder and account list</string>
 
-    <string name="account_settings_led_color_label">Notification LED color</string>
-    <string name="account_settings_led_color_summary">The color your device LED should blink for this account</string>
-
     <string name="account_settings_mail_display_count_label">Local folder size</string>
 
     <string name="account_settings_autodownload_message_size_label">Fetch messages up to</string>
@@ -666,8 +663,17 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_vibrate_times">Repeat vibration</string>
     <string name="account_settings_vibrate_summary_disabled">Disabled</string>
     <string name="account_settings_ringtone">New mail ringtone</string>
-    <string name="account_settings_led_label">Blink LED</string>
-    <string name="account_settings_led_summary">Blink LED when mail arrives</string>
+    <string name="account_settings_notification_light_label">Notification light</string>
+    <string name="account_settings_notification_light_disabled">Disabled</string>
+    <string name="account_settings_notification_light_account_color">Account color</string>
+    <string name="account_settings_notification_light_default_color">System default color</string>
+    <string name="account_settings_notification_light_white">White</string>
+    <string name="account_settings_notification_light_red">Red</string>
+    <string name="account_settings_notification_light_green">Green</string>
+    <string name="account_settings_notification_light_blue">Blue</string>
+    <string name="account_settings_notification_light_yellow">Yellow</string>
+    <string name="account_settings_notification_light_cyan">Cyan</string>
+    <string name="account_settings_notification_light_magenta">Magenta</string>
 
     <string name="account_settings_composition_title">Message composition options</string>
     <string name="account_settings_composition_label">Composition defaults</string>

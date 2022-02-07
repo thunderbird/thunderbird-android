@@ -141,8 +141,7 @@ class AccountPreferenceSerializer(
                 NotificationSettings(
                     isRingEnabled = storage.getBoolean("$accountUuid.ring", true),
                     ringtone = storage.getString("$accountUuid.ringtone", DEFAULT_RINGTONE_URI),
-                    isLedEnabled = storage.getBoolean("$accountUuid.led", true),
-                    ledColor = storage.getInt("$accountUuid.ledColor", chipColor),
+                    light = getEnumStringPref(storage, "$accountUuid.notificationLight", NotificationLight.Disabled),
                     isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false),
                     vibratePattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0)),
                     vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
@@ -328,8 +327,7 @@ class AccountPreferenceSerializer(
             editor.putInt("$accountUuid.vibrateTimes", notificationSettings.vibrateTimes)
             editor.putBoolean("$accountUuid.ring", notificationSettings.isRingEnabled)
             editor.putString("$accountUuid.ringtone", notificationSettings.ringtone)
-            editor.putBoolean("$accountUuid.led", notificationSettings.isLedEnabled)
-            editor.putInt("$accountUuid.ledColor", notificationSettings.ledColor)
+            editor.putString("$accountUuid.notificationLight", notificationSettings.light.name)
             editor.putLong("$accountUuid.lastSyncTime", lastSyncTime)
             editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
             editor.putBoolean("$accountUuid.isFinishedSetup", isFinishedSetup)
@@ -408,8 +406,7 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.maxPushFolders")
         editor.remove("$accountUuid.searchableFolders")
         editor.remove("$accountUuid.chipColor")
-        editor.remove("$accountUuid.led")
-        editor.remove("$accountUuid.ledColor")
+        editor.remove("$accountUuid.notificationLight")
         editor.remove("$accountUuid.subscribedFoldersOnly")
         editor.remove("$accountUuid.maximumPolledMessageAge")
         editor.remove("$accountUuid.maximumAutoDownloadMessageSize")
@@ -609,8 +606,7 @@ class AccountPreferenceSerializer(
                 NotificationSettings(
                     isRingEnabled = true,
                     ringtone = DEFAULT_RINGTONE_URI,
-                    isLedEnabled = false,
-                    ledColor = chipColor,
+                    light = NotificationLight.Disabled,
                     isVibrateEnabled = false,
                     vibratePattern = VibratePattern.Default,
                     vibrateTimes = 5

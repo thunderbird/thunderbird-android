@@ -6,8 +6,7 @@ package com.fsck.k9
 data class NotificationSettings(
     val isRingEnabled: Boolean = false,
     val ringtone: String? = null,
-    val isLedEnabled: Boolean = false,
-    val ledColor: Int = 0,
+    val light: NotificationLight = NotificationLight.Disabled,
     val isVibrateEnabled: Boolean = false,
     val vibratePattern: VibratePattern = VibratePattern.Default,
     val vibrateTimes: Int = 0

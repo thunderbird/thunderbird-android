@@ -4,15 +4,24 @@ import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
+import com.fsck.k9.notification.NotificationController
 import java.util.concurrent.ExecutorService
 
 class AccountSettingsDataStoreFactory(
     private val preferences: Preferences,
     private val jobManager: K9JobManager,
     private val executorService: ExecutorService,
-    private val notificationChannelManager: NotificationChannelManager
+    private val notificationChannelManager: NotificationChannelManager,
+    private val notificationController: NotificationController
 ) {
     fun create(account: Account): AccountSettingsDataStore {
-        return AccountSettingsDataStore(preferences, executorService, account, jobManager, notificationChannelManager)
+        return AccountSettingsDataStore(
+            preferences,
+            executorService,
+            account,
+            jobManager,
+            notificationChannelManager,
+            notificationController
+        )
     }
 }
