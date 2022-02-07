@@ -30,7 +30,6 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail
             "account_notify_self" -> account.isNotifySelfNewMail
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly
-            "account_vibrate" -> account.notificationSetting.isVibrateEnabled
             "account_led" -> account.notificationSetting.isLedEnabled
             "account_notify_sync" -> account.isNotifySync
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
@@ -56,7 +55,6 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail = value
             "account_notify_self" -> account.isNotifySelfNewMail = value
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value
-            "account_vibrate" -> account.notificationSetting.isVibrateEnabled = value
             "account_led" -> account.notificationSetting.setLed(value)
             "account_notify_sync" -> account.isNotifySync = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
@@ -134,7 +132,7 @@ class AccountSettingsDataStore(
             "spam_folder" -> loadSpecialFolder(account.spamFolderId, account.spamFolderSelection)
             "trash_folder" -> loadSpecialFolder(account.trashFolderId, account.trashFolderSelection)
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode.name
-            "account_combined_vibration_pattern" -> getCombinedVibrationPattern()
+            "account_combined_vibration" -> getCombinedVibrationValue()
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
             "account_ringtone" -> account.notificationSetting.ringtone
             else -> defValue
@@ -178,7 +176,7 @@ class AccountSettingsDataStore(
             "spam_folder" -> saveSpecialFolderSelection(value, account::setSpamFolderId)
             "trash_folder" -> saveSpecialFolderSelection(value, account::setTrashFolderId)
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode = Account.FolderMode.valueOf(value)
-            "account_combined_vibration_pattern" -> setCombinedVibrationPattern(value)
+            "account_combined_vibration" -> setCombinedVibrationValue(value)
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
             "account_ringtone" -> with(account.notificationSetting) {
                 isRingEnabled = true
@@ -245,15 +243,17 @@ class AccountSettingsDataStore(
         return prefix + (specialFolderId?.toString() ?: FolderListPreference.NO_FOLDER_VALUE)
     }
 
-    private fun getCombinedVibrationPattern(): String {
-        return VibrationPatternPreference.encode(
+    private fun getCombinedVibrationValue(): String {
+        return VibrationPreference.encode(
+            isVibrationEnabled = account.notificationSetting.isVibrateEnabled,
             vibrationPattern = account.notificationSetting.vibratePattern,
             vibrationTimes = account.notificationSetting.vibrateTimes
         )
     }
 
-    private fun setCombinedVibrationPattern(value: String) {
-        val (vibrationPattern, vibrationTimes) = VibrationPatternPreference.decode(value)
+    private fun setCombinedVibrationValue(value: String) {
+        val (isVibrationEnabled, vibrationPattern, vibrationTimes) = VibrationPreference.decode(value)
+        account.notificationSetting.isVibrateEnabled = isVibrationEnabled
         account.notificationSetting.vibratePattern = vibrationPattern
         account.notificationSetting.vibrateTimes = vibrationTimes
         notificationSettingsChanged = true

@@ -654,8 +654,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_description_label">Account name</string>
     <string name="account_settings_name_label">Your name</string>
     <string name="notifications_title">Notifications</string>
+    <string name="account_settings_vibration">Vibration</string>
     <string name="account_settings_vibrate_enable">Vibrate</string>
-    <string name="account_settings_vibrate_summary">Vibrate when mail arrives</string>
     <string name="account_settings_vibrate_pattern_label">Vibration pattern</string>
     <string name="account_settings_vibrate_pattern_default">Default</string>
     <string name="account_settings_vibrate_pattern_1">Pattern 1</string>
@@ -664,6 +664,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_vibrate_pattern_4">Pattern 4</string>
     <string name="account_settings_vibrate_pattern_5">Pattern 5</string>
     <string name="account_settings_vibrate_times">Repeat vibration</string>
+    <string name="account_settings_vibrate_summary_disabled">Disabled</string>
     <string name="account_settings_ringtone">New mail ringtone</string>
     <string name="account_settings_led_label">Blink LED</string>
     <string name="account_settings_led_summary">Blink LED when mail arrives</string>

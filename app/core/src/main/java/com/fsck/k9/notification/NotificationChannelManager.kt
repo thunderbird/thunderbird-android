@@ -212,9 +212,8 @@ class NotificationChannelManager(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun NotificationChannel.copyPropertiesFrom(notificationSetting: NotificationSetting) {
         lightColor = notificationSetting.ledColor
-        if (shouldVibrate()) {
-            vibrationPattern = notificationSetting.vibration
-        }
+        vibrationPattern = notificationSetting.vibration
+        enableVibration(notificationSetting.isVibrateEnabled)
     }
 
     private val Account.messagesNotificationChannelSuffix: String
