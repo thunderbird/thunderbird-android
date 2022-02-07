@@ -3,8 +3,12 @@ package com.fsck.k9.notification
 import com.fsck.k9.Account
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.core.BuildConfig
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.assertNotNull
+import org.junit.Assert.fail
+import org.junit.Assume.assumeFalse
+import org.junit.Assume.assumeTrue
 import org.junit.Test
 
 private const val ACCOUNT_UUID = "1-2-3"
@@ -125,6 +129,36 @@ class NotificationDataStoreTest : RobolectricTest() {
         val addResult = notificationDataStore.addNotification(account, content, TIMESTAMP)
 
         assertThat(addResult.notificationData.activeNotifications.first()).isEqualTo(addResult.notificationHolder)
+    }
+
+    @Test
+    fun `adding notification for same message twice should throw in debug build`() {
+        assumeTrue(BuildConfig.DEBUG)
+
+        val content1 = createNotificationContent("1")
+        val content2 = createNotificationContent("1")
+        notificationDataStore.addNotification(account, content1, TIMESTAMP)
+
+        try {
+            notificationDataStore.addNotification(account, content2, TIMESTAMP)
+            fail("Exception expected")
+        } catch (e: AssertionError) {
+            assertThat(e).hasMessageThat().matches("Notification for message .+ already exists")
+        }
+    }
+
+    @Test
+    fun `adding notification for same message twice should add another notification in release build`() {
+        assumeFalse(BuildConfig.DEBUG)
+
+        val content1 = createNotificationContent("1")
+        val content2 = createNotificationContent("1")
+
+        val addResult1 = notificationDataStore.addNotification(account, content1, TIMESTAMP)
+        val addResult2 = notificationDataStore.addNotification(account, content2, TIMESTAMP)
+
+        assertThat(addResult1.notificationHolder.notificationId)
+            .isNotEqualTo(addResult2.notificationHolder.notificationId)
     }
 
     private fun createAccount(): Account {

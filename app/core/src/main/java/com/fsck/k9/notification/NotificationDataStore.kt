@@ -2,6 +2,7 @@ package com.fsck.k9.notification
 
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.core.BuildConfig
 
 internal const val MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = 8
 
@@ -31,6 +32,11 @@ internal class NotificationDataStore {
     @Synchronized
     fun addNotification(account: Account, content: NotificationContent, timestamp: Long): AddNotificationResult {
         val notificationData = getNotificationData(account)
+        val messageReference = content.messageReference
+
+        if (BuildConfig.DEBUG && notificationData.contains(messageReference)) {
+            throw AssertionError("Notification for message $messageReference already exists")
+        }
 
         return if (notificationData.isMaxNumberOfActiveNotificationsReached) {
             val lastNotificationHolder = notificationData.activeNotifications.last()
@@ -41,7 +47,7 @@ internal class NotificationDataStore {
 
             val operations = listOf(
                 NotificationStoreOperation.ChangeToInactive(lastNotificationHolder.content.messageReference),
-                NotificationStoreOperation.Add(content.messageReference, notificationId, timestamp)
+                NotificationStoreOperation.Add(messageReference, notificationId, timestamp)
             )
 
             val newNotificationData = notificationData.copy(
@@ -56,7 +62,7 @@ internal class NotificationDataStore {
             val notificationHolder = NotificationHolder(notificationId, timestamp, content)
 
             val operations = listOf(
-                NotificationStoreOperation.Add(content.messageReference, notificationId, timestamp)
+                NotificationStoreOperation.Add(messageReference, notificationId, timestamp)
             )
 
             val newNotificationData = notificationData.copy(
@@ -167,6 +173,11 @@ internal class NotificationDataStore {
         }
 
         throw AssertionError("getNewNotificationId() called with no free notification ID")
+    }
+
+    private fun NotificationData.contains(messageReference: MessageReference): Boolean {
+        return activeNotifications.any { it.content.messageReference == messageReference } ||
+            inactiveNotifications.any { it.content.messageReference == messageReference }
     }
 
     private fun NotificationHolder.toInactiveNotificationHolder() = InactiveNotificationHolder(timestamp, content)
