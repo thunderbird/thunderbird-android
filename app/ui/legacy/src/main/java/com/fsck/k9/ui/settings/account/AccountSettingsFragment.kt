@@ -380,7 +380,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         val dialogFragment = ConfirmationDialogFragment.newInstance(
             DIALOG_DELETE_ACCOUNT,
             getString(R.string.account_delete_dlg_title),
-            getString(R.string.account_delete_dlg_instructions_fmt, getAccount().name),
+            getString(R.string.account_delete_dlg_instructions_fmt, getAccount().displayName),
             getString(R.string.okay_action),
             getString(R.string.cancel_action)
         )

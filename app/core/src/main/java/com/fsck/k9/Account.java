@@ -264,7 +264,7 @@ public class Account implements BaseAccount {
     }
 
     public String getDisplayName() {
-        return name != null ? name : getEmail();
+        return name != null && name.length() != 0 ? name : getEmail();
     }
 
     public synchronized String getSenderName() {

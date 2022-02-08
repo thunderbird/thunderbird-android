@@ -126,7 +126,6 @@ class SyncNotificationControllerTest : RobolectricTest() {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()
             on { getNotificationManager() } doReturn notificationManager
             on { createNotificationBuilder(any(), any()) }.doReturn(notificationBuilder, lockScreenNotificationBuilder)
-            on { getAccountName(any()) } doReturn ACCOUNT_NAME
         }
     }
 
@@ -134,6 +133,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { name } doReturn ACCOUNT_NAME
+            on { displayName } doReturn ACCOUNT_NAME
             on { outboxFolderId } doReturn 33L
         }
     }

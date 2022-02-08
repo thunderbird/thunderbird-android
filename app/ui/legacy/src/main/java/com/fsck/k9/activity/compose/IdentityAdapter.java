@@ -97,7 +97,7 @@ public class IdentityAdapter extends BaseAdapter {
 
             Account account = (Account) item;
             AccountHolder holder = (AccountHolder) view.getTag();
-            holder.name.setText(account.getName());
+            holder.name.setText(account.getDisplayName());
             holder.chip.setBackgroundColor(account.getChipColor());
         } else if (item instanceof IdentityContainer) {
             if (convertView != null && convertView.getTag() instanceof IdentityHolder) {

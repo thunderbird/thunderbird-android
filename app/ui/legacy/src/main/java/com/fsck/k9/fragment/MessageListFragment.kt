@@ -340,7 +340,7 @@ class MessageListFragment :
             if (account == null || isUnifiedInbox || preferences.accounts.size == 1) {
                 null
             } else {
-                account.name
+                account.displayName
             }
         }
 

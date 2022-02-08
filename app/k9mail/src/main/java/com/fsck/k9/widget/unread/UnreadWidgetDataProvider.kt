@@ -49,7 +49,7 @@ class UnreadWidgetDataProvider(
 
     private fun loadAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val account = preferences.getAccount(configuration.accountUuid) ?: return null
-        val title = account.name
+        val title = account.displayName
         val unreadCount = messagingController.getUnreadMessageCount(account)
         val clickIntent = getClickIntentForAccount(account)
 
@@ -66,7 +66,7 @@ class UnreadWidgetDataProvider(
         val account = preferences.getAccount(accountUuid) ?: return null
         val folderId = configuration.folderId ?: return null
 
-        val accountName = account.name
+        val accountName = account.displayName
         val folderDisplayName = getFolderDisplayName(account, folderId)
         val title = context.getString(R.string.unread_widget_title, accountName, folderDisplayName)
 

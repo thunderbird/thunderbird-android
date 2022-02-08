@@ -14,7 +14,7 @@ internal open class CertificateErrorNotificationController(
     fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
         val notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming)
         val editServerSettingsPendingIntent = createContentIntent(account, incoming)
-        val title = resourceProvider.certificateErrorTitle(account.name)
+        val title = resourceProvider.certificateErrorTitle(account.displayName)
         val text = resourceProvider.certificateErrorBody()
 
         val notificationBuilder = notificationHelper
