@@ -408,7 +408,7 @@ public class MessageProvider extends ContentProvider {
     public static class AccountExtractor implements FieldExtractor<MessageInfoHolder, String> {
         @Override
         public String getField(MessageInfoHolder source) {
-            return source.message.getAccount().getDescription();
+            return source.message.getAccount().getName();
         }
     }
 
@@ -599,7 +599,7 @@ public class MessageProvider extends ContentProvider {
                     if (AccountColumns.ACCOUNT_NUMBER.equals(field)) {
                         values[fieldIndex] = account.getAccountNumber();
                     } else if (AccountColumns.ACCOUNT_NAME.equals(field)) {
-                        values[fieldIndex] = account.getDescription();
+                        values[fieldIndex] = account.getName();
                     } else if (AccountColumns.ACCOUNT_UUID.equals(field)) {
                         values[fieldIndex] = account.getUuid();
                     } else if (AccountColumns.ACCOUNT_COLOR.equals(field)) {
@@ -662,7 +662,7 @@ public class MessageProvider extends ContentProvider {
             for (Account account : accounts) {
                 if (account.getAccountNumber() == accountNumber) {
                     myAccount = account;
-                    values[0] = myAccount.getDescription();
+                    values[0] = myAccount.getName();
                     values[1] = controller.getUnreadMessageCount(account);
                     cursor.addRow(values);
                 }

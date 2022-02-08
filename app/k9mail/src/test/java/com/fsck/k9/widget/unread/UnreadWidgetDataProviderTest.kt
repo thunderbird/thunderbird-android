@@ -84,7 +84,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
 
     fun createAccount(): Account = mock {
         on { uuid } doReturn ACCOUNT_UUID
-        on { description } doReturn ACCOUNT_DESCRIPTION
+        on { name } doReturn ACCOUNT_DESCRIPTION
     }
 
     fun createPreferences(): Preferences = mock {

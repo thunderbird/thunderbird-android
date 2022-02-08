@@ -108,7 +108,7 @@ public class Account implements BaseAccount {
      * storage
      */
     private String localStorageProviderId;
-    private String description;
+    private String name;
     private String alwaysBcc;
     private int automaticCheckIntervalMinutes;
     private int displayCount;
@@ -255,16 +255,16 @@ public class Account implements BaseAccount {
     }
 
     @Override
-    public synchronized String getDescription() {
-        return description;
+    public synchronized String getName() {
+        return name;
     }
 
-    public synchronized void setDescription(String description) {
-        this.description = description;
+    public synchronized void setName(String name) {
+        this.name = name;
     }
 
     public String getDisplayName() {
-        return description != null ? description : getEmail();
+        return name != null ? name : getEmail();
     }
 
     public synchronized String getSenderName() {

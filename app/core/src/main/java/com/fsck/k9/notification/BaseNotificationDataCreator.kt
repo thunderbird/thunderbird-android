@@ -22,7 +22,7 @@ internal class BaseNotificationDataCreator {
     }
 
     private fun getAccountName(account: Account): String {
-        val accountDescription = account.description?.takeIf { it.isNotEmpty() }
+        val accountDescription = account.name?.takeIf { it.isNotEmpty() }
         return accountDescription ?: account.email
     }
 

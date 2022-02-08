@@ -133,7 +133,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
     private fun createFakeAccount(): Account {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
-            on { description } doReturn ACCOUNT_NAME
+            on { name } doReturn ACCOUNT_NAME
             on { outboxFolderId } doReturn 33L
         }
     }

@@ -310,7 +310,7 @@ public class AccountSetupBasics extends K9Activity
                 AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
             } else {
                 //We've successfully checked outgoing as well.
-                mAccount.setDescription(mAccount.getEmail());
+                mAccount.setName(mAccount.getEmail());
                 Preferences.getPreferences(this).saveAccount(mAccount);
                 Core.setServicesEnabled(this);
                 AccountSetupNames.actionSetNames(this, mAccount);

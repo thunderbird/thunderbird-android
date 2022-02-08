@@ -33,7 +33,7 @@ public class LauncherShortcuts extends AccountList {
 
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        String description = account.getDescription();
+        String description = account.getName();
         if (description == null || description.isEmpty()) {
             description = account.getEmail();
         }

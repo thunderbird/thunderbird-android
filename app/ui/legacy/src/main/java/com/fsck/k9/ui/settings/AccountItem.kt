@@ -31,7 +31,7 @@ internal class AccountItem(
         val dragHandle: ImageView = view.findViewById(R.id.drag_handle)
 
         override fun bindView(item: AccountItem, payloads: List<Any>) {
-            name.text = item.account.description
+            name.text = item.account.name
             email.text = item.account.email
             dragHandle.isGone = !item.isDraggable
         }

@@ -78,7 +78,7 @@ class AccountSelectionSpinner : AppCompatSpinner {
             val email: TextView = view.findViewById(R.id.email)
 
             return view.apply {
-                name.text = account.description
+                name.text = account.name
                 email.text = account.email
             }
         }

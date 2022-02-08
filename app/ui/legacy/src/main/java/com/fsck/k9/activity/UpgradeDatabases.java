@@ -208,7 +208,7 @@ public class UpgradeDatabases extends K9Activity {
 
                 if (account != null) {
                     String formatString = getString(R.string.upgrade_database_format);
-                    String upgradeStatus = String.format(formatString, account.getDescription());
+                    String upgradeStatus = String.format(formatString, account.getName());
                     mUpgradeText.setText(upgradeStatus);
                 }
 

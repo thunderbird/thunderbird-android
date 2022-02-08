@@ -116,7 +116,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
                 view.setTag(holder);
             }
 
-            String description = account.getDescription();
+            String description = account.getName();
             if (account.getEmail().equals(description)) {
                 holder.email.setVisibility(View.GONE);
             } else {

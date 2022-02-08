@@ -15,7 +15,7 @@ internal open class AuthenticationErrorNotificationController(
         val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming)
         val editServerSettingsPendingIntent = createContentIntent(account, incoming)
         val title = resourceProvider.authenticationErrorTitle()
-        val text = resourceProvider.authenticationErrorBody(account.description)
+        val text = resourceProvider.authenticationErrorBody(account.name)
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)

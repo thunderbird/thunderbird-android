@@ -264,7 +264,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
             val accountItem = ProfileDrawerItem().apply {
                 isNameShown = true
-                nameText = account.description ?: ""
+                nameText = account.name ?: ""
                 descriptionText = account.email
                 identifier = account.drawerId
                 tag = account
