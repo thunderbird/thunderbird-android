@@ -16,7 +16,7 @@ import timber.log.Timber
 class MailSyncWorkerManager(private val workManager: WorkManager, val clock: Clock) {
 
     fun cancelMailSync(account: Account) {
-        Timber.v("Canceling mail sync worker for %s", account.description)
+        Timber.v("Canceling mail sync worker for %s", account)
         val uniqueWorkName = createUniqueWorkName(account.uuid)
         workManager.cancelUniqueWork(uniqueWorkName)
     }
@@ -25,7 +25,7 @@ class MailSyncWorkerManager(private val workManager: WorkManager, val clock: Clo
         if (isNeverSyncInBackground()) return
 
         getSyncIntervalIfEnabled(account)?.let { syncIntervalMinutes ->
-            Timber.v("Scheduling mail sync worker for %s", account.description)
+            Timber.v("Scheduling mail sync worker for %s", account)
             Timber.v("  sync interval: %d minutes", syncIntervalMinutes)
 
             val constraints = Constraints.Builder()

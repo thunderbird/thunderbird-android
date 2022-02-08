@@ -257,7 +257,7 @@ class SettingsExporter(
                     Timber.w(
                         "Account setting \"%s\" (%s) has invalid value \"%s\" in preference storage. " +
                             "This shouldn't happen!",
-                        keyPart, account.description, valueString
+                        keyPart, account, valueString
                     )
                 }
             }
