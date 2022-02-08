@@ -194,7 +194,7 @@ class NotificationChannelManager(
     private fun NotificationChannel.matches(notificationSettings: NotificationSettings): Boolean {
         return lightColor == notificationSettings.ledColor &&
             shouldVibrate() == notificationSettings.isVibrateEnabled &&
-            vibrationPattern.contentEquals(notificationSettings.vibration)
+            vibrationPattern.contentEquals(notificationSettings.vibrationPattern)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -213,7 +213,7 @@ class NotificationChannelManager(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun NotificationChannel.copyPropertiesFrom(notificationSettings: NotificationSettings) {
         lightColor = notificationSettings.ledColor
-        vibrationPattern = notificationSettings.vibration
+        vibrationPattern = notificationSettings.vibrationPattern
         enableVibration(notificationSettings.isVibrateEnabled)
     }
 

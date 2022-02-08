@@ -26,34 +26,18 @@ class NotificationSettings {
 
     @get:Synchronized
     @set:Synchronized
-    var vibratePattern = 0
+    var vibratePattern = VibratePattern.Default
 
     @get:Synchronized
     @set:Synchronized
     var vibrateTimes = 0
 
-    val vibration: LongArray
-        get() = getVibration(vibratePattern, vibrateTimes)
+    val vibrationPattern: LongArray
+        get() = getVibrationPattern(vibratePattern, vibrateTimes)
 
     companion object {
-        // These are "off, on" patterns, specified in milliseconds
-        private val defaultPattern = longArrayOf(300, 200)
-        private val pattern1 = longArrayOf(100, 200)
-        private val pattern2 = longArrayOf(100, 500)
-        private val pattern3 = longArrayOf(200, 200)
-        private val pattern4 = longArrayOf(200, 500)
-        private val pattern5 = longArrayOf(500, 500)
-
-        fun getVibration(pattern: Int, times: Int): LongArray {
-            val selectedPattern = when (pattern) {
-                1 -> pattern1
-                2 -> pattern2
-                3 -> pattern3
-                4 -> pattern4
-                5 -> pattern5
-                else -> defaultPattern
-            }
-
+        fun getVibrationPattern(vibratePattern: VibratePattern, times: Int): LongArray {
+            val selectedPattern = vibratePattern.vibrationPattern
             val repeatedPattern = LongArray(selectedPattern.size * times)
             for (n in 0 until times) {
                 System.arraycopy(selectedPattern, 0, repeatedPattern, n * selectedPattern.size, selectedPattern.size)
@@ -63,6 +47,41 @@ class NotificationSettings {
             repeatedPattern[0] = 0
 
             return repeatedPattern
+        }
+    }
+}
+
+enum class VibratePattern(
+    /**
+     * These are "off, on" patterns, specified in milliseconds.
+     */
+    val vibrationPattern: LongArray
+) {
+    Default(vibrationPattern = longArrayOf(300, 200)),
+    Pattern1(vibrationPattern = longArrayOf(100, 200)),
+    Pattern2(vibrationPattern = longArrayOf(100, 500)),
+    Pattern3(vibrationPattern = longArrayOf(200, 200)),
+    Pattern4(vibrationPattern = longArrayOf(200, 500)),
+    Pattern5(vibrationPattern = longArrayOf(500, 500));
+
+    fun serialize(): Int = when (this) {
+        Default -> 0
+        Pattern1 -> 1
+        Pattern2 -> 2
+        Pattern3 -> 3
+        Pattern4 -> 4
+        Pattern5 -> 5
+    }
+
+    companion object {
+        fun deserialize(value: Int): VibratePattern = when (value) {
+            0 -> Default
+            1 -> Pattern1
+            2 -> Pattern2
+            3 -> Pattern3
+            4 -> Pattern4
+            5 -> Pattern5
+            else -> error("Unknown VibratePattern value: $value")
         }
     }
 }

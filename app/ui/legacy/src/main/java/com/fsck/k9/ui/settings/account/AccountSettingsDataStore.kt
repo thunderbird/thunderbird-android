@@ -246,7 +246,7 @@ class AccountSettingsDataStore(
     private fun getCombinedVibrationValue(): String {
         return VibrationPreference.encode(
             isVibrationEnabled = account.notificationSettings.isVibrateEnabled,
-            vibrationPattern = account.notificationSettings.vibratePattern,
+            vibratePattern = account.notificationSettings.vibratePattern,
             vibrationTimes = account.notificationSettings.vibrateTimes
         )
     }

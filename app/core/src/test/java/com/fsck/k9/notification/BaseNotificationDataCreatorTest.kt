@@ -5,6 +5,7 @@ import com.fsck.k9.Identity
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
 import com.fsck.k9.NotificationSettings
+import com.fsck.k9.VibratePattern
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -149,13 +150,15 @@ class BaseNotificationDataCreatorTest {
     @Test
     fun `vibration pattern`() {
         account.notificationSettings.isVibrateEnabled = true
-        account.notificationSettings.vibratePattern = 3
+        account.notificationSettings.vibratePattern = VibratePattern.Pattern3
         account.notificationSettings.vibrateTimes = 2
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
-        assertThat(result.appearance.vibrationPattern).isEqualTo(NotificationSettings.getVibration(3, 2))
+        assertThat(result.appearance.vibrationPattern).isEqualTo(
+            NotificationSettings.getVibrationPattern(VibratePattern.Pattern3, 2)
+        )
     }
 
     @Test

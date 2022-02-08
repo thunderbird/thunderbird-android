@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
 import com.fsck.k9.NotificationSettings
+import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
 import com.takisoft.preferencex.PreferenceFragmentCompat
 
@@ -28,7 +29,7 @@ constructor(
     internal var isVibrationEnabled: Boolean = false
         private set
 
-    internal var vibrationPattern: Int = DEFAULT_VIBRATION_PATTERN
+    internal var vibratePattern = DEFAULT_VIBRATE_PATTERN
         private set
 
     internal var vibrationTimes: Int = DEFAULT_VIBRATION_TIMES
@@ -39,7 +40,7 @@ constructor(
         val (isVibrationEnabled, vibrationPattern, vibrationTimes) = decode(encoded)
 
         this.isVibrationEnabled = isVibrationEnabled
-        this.vibrationPattern = vibrationPattern
+        this.vibratePattern = vibrationPattern
         this.vibrationTimes = vibrationTimes
 
         updateSummary()
@@ -49,12 +50,12 @@ constructor(
         preferenceManager.showDialog(this)
     }
 
-    fun setVibration(isVibrationEnabled: Boolean, vibrationPattern: Int, vibrationTimes: Int) {
+    fun setVibration(isVibrationEnabled: Boolean, vibratePattern: VibratePattern, vibrationTimes: Int) {
         this.isVibrationEnabled = isVibrationEnabled
-        this.vibrationPattern = vibrationPattern
+        this.vibratePattern = vibratePattern
         this.vibrationTimes = vibrationTimes
 
-        val encoded = encode(isVibrationEnabled, vibrationPattern, vibrationTimes)
+        val encoded = encode(isVibrationEnabled, vibratePattern, vibrationTimes)
         persistString(encoded)
 
         updateSummary()
@@ -62,26 +63,29 @@ constructor(
 
     fun setVibrationFromSystem(isVibrationEnabled: Boolean, combinedPattern: List<Long>?) {
         if (combinedPattern == null || combinedPattern.size < 2 || combinedPattern.size % 2 != 0) {
-            setVibration(isVibrationEnabled, DEFAULT_VIBRATION_PATTERN, DEFAULT_VIBRATION_TIMES)
+            setVibration(isVibrationEnabled, DEFAULT_VIBRATE_PATTERN, DEFAULT_VIBRATION_TIMES)
             return
         }
 
         val combinedPatternArray = combinedPattern.toLongArray()
         val vibrationTimes = combinedPattern.size / 2
         val vibrationPattern = entryValues.asSequence()
-            .map { entryValue -> entryValue.toString().toInt() }
-            .firstOrNull { vibrationPattern ->
-                val testPattern = NotificationSettings.getVibration(vibrationPattern, vibrationTimes)
+            .map { entryValue ->
+                val serializedVibratePattern = entryValue.toString().toInt()
+                VibratePattern.deserialize(serializedVibratePattern)
+            }
+            .firstOrNull { vibratePattern ->
+                val testPattern = NotificationSettings.getVibrationPattern(vibratePattern, vibrationTimes)
 
                 testPattern.contentEquals(combinedPatternArray)
-            } ?: DEFAULT_VIBRATION_PATTERN
+            } ?: DEFAULT_VIBRATE_PATTERN
 
         setVibration(isVibrationEnabled, vibrationPattern, vibrationTimes)
     }
 
     private fun updateSummary() {
         summary = if (isVibrationEnabled) {
-            val index = entryValues.indexOf(vibrationPattern.toString())
+            val index = entryValues.indexOf(vibratePattern.serialize().toString())
             entries[index]
         } else {
             context.getString(R.string.account_settings_vibrate_summary_disabled)
@@ -89,7 +93,7 @@ constructor(
     }
 
     companion object {
-        private const val DEFAULT_VIBRATION_PATTERN = 0
+        private val DEFAULT_VIBRATE_PATTERN = VibratePattern.Default
         private const val DEFAULT_VIBRATION_TIMES = 1
 
         init {
@@ -98,14 +102,14 @@ constructor(
             )
         }
 
-        fun encode(isVibrationEnabled: Boolean, vibrationPattern: Int, vibrationTimes: Int): String {
-            return "$isVibrationEnabled|$vibrationPattern|$vibrationTimes"
+        fun encode(isVibrationEnabled: Boolean, vibratePattern: VibratePattern, vibrationTimes: Int): String {
+            return "$isVibrationEnabled|${vibratePattern.name}|$vibrationTimes"
         }
 
-        fun decode(encoded: String): Triple<Boolean, Int, Int> {
+        fun decode(encoded: String): Triple<Boolean, VibratePattern, Int> {
             val parts = encoded.split('|')
             val isVibrationEnabled = parts[0].toBoolean()
-            val vibrationPattern = parts[1].toInt()
+            val vibrationPattern = VibratePattern.valueOf(parts[1])
             val vibrationTimes = parts[2].toInt()
             return Triple(isVibrationEnabled, vibrationPattern, vibrationTimes)
         }

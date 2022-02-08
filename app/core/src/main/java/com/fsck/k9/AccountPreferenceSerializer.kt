@@ -138,7 +138,7 @@ class AccountPreferenceSerializer(
             showPictures = getEnumStringPref<ShowPictures>(storage, "$accountUuid.showPicturesEnum", ShowPictures.NEVER)
 
             notificationSettings.isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false)
-            notificationSettings.vibratePattern = storage.getInt("$accountUuid.vibratePattern", 0)
+            notificationSettings.vibratePattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0))
             notificationSettings.vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
             notificationSettings.isRingEnabled = storage.getBoolean("$accountUuid.ring", true)
             notificationSettings.ringtone = storage.getString(
@@ -323,7 +323,7 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
 
             editor.putBoolean("$accountUuid.vibrate", notificationSettings.isVibrateEnabled)
-            editor.putInt("$accountUuid.vibratePattern", notificationSettings.vibratePattern)
+            editor.putInt("$accountUuid.vibratePattern", notificationSettings.vibratePattern.serialize())
             editor.putInt("$accountUuid.vibrateTimes", notificationSettings.vibrateTimes)
             editor.putBoolean("$accountUuid.ring", notificationSettings.isRingEnabled)
             editor.putString("$accountUuid.ringtone", notificationSettings.ringtone)
@@ -606,7 +606,7 @@ class AccountPreferenceSerializer(
 
             with(notificationSettings) {
                 isVibrateEnabled = false
-                vibratePattern = 0
+                vibratePattern = VibratePattern.Default
                 vibrateTimes = 5
                 isRingEnabled = true
                 ringtone = "content://settings/system/notification_sound"

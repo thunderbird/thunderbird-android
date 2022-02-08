@@ -10,3 +10,8 @@ inline fun <reified T : Enum<T>> Bundle.getEnum(key: String, defaultValue: T): T
     val value = getString(key) ?: return defaultValue
     return enumValueOf(value)
 }
+
+inline fun <reified T : Enum<T>> Bundle.getEnum(key: String): T {
+    val value = getString(key) ?: error("Missing enum value for key '$key'")
+    return enumValueOf(value)
+}
