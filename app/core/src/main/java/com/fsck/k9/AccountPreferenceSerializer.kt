@@ -145,7 +145,7 @@ class AccountPreferenceSerializer(
                 "$accountUuid.ringtone",
                 "content://settings/system/notification_sound"
             )
-            notificationSettings.setLed(storage.getBoolean("$accountUuid.led", true))
+            notificationSettings.isLedEnabled = storage.getBoolean("$accountUuid.led", true)
             notificationSettings.ledColor = storage.getInt("$accountUuid.ledColor", chipColor)
 
             folderDisplayMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderDisplayMode", FolderMode.NOT_SECOND_CLASS)

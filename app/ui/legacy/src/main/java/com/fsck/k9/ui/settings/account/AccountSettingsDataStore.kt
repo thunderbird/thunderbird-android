@@ -55,7 +55,7 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail = value
             "account_notify_self" -> account.isNotifySelfNewMail = value
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value
-            "account_led" -> account.notificationSettings.setLed(value)
+            "account_led" -> account.notificationSettings.isLedEnabled = value
             "account_notify_sync" -> account.isNotifySync = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
