@@ -179,11 +179,6 @@ class AccountPreferenceSerializer(
             val isFinishedSetup = storage.getBoolean("$accountUuid.isFinishedSetup", true)
             if (isFinishedSetup) markSetupFinished()
 
-            // Use email address as account description if necessary
-            if (name == null) {
-                name = email
-            }
-
             resetChangeMarkers()
         }
     }

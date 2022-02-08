@@ -263,8 +263,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             val selectedTextColor = drawerColors.accentColor.toSelectedColorStateList()
 
             val accountItem = ProfileDrawerItem().apply {
-                isNameShown = true
-                nameText = account.name ?: ""
+                account.name.let { accountName ->
+                    isNameShown = accountName != null
+                    nameText = accountName.orEmpty()
+                }
                 descriptionText = account.email
                 identifier = account.drawerId
                 tag = account

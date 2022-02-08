@@ -27,7 +27,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:minHeight="?attr/listPreferredItemHeightSmall"
             android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:paddingBottom="4dp"
             android:paddingStart="24dp"
             android:paddingEnd="16dp">
 
@@ -48,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:paddingBottom="8dp"
+                android:paddingBottom="4dp"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 tools:text="test@example.org" />

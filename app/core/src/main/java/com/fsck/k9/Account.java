@@ -260,11 +260,15 @@ public class Account implements BaseAccount {
     }
 
     public synchronized void setName(String name) {
-        this.name = name;
+        if (name == null || name.isEmpty()) {
+            this.name = null;
+        } else {
+            this.name = name;
+        }
     }
 
     public String getDisplayName() {
-        return name != null && name.length() != 0 ? name : getEmail();
+        return name != null ? name : getEmail();
     }
 
     public synchronized String getSenderName() {
