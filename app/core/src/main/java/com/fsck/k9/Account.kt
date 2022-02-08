@@ -373,7 +373,8 @@ class Account(override val uuid: String) : BaseAccount {
         }
 
     @get:Synchronized
-    val notificationSettings = NotificationSettings()
+    var notificationSettings = NotificationSettings()
+        private set
 
     val displayName: String
         get() = name ?: email
@@ -591,6 +592,11 @@ class Account(override val uuid: String) : BaseAccount {
     @Synchronized
     fun markSetupFinished() {
         isFinishedSetup = true
+    }
+
+    @Synchronized
+    fun updateNotificationSettings(block: (oldNotificationSettings: NotificationSettings) -> NotificationSettings) {
+        notificationSettings = block(notificationSettings)
     }
 
     override fun toString(): String {

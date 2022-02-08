@@ -55,7 +55,7 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail = value
             "account_notify_self" -> account.isNotifySelfNewMail = value
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value
-            "account_led" -> account.notificationSettings.isLedEnabled = value
+            "account_led" -> account.updateNotificationSettings { it.copy(isLedEnabled = value) }
             "account_notify_sync" -> account.isNotifySync = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
@@ -178,10 +178,7 @@ class AccountSettingsDataStore(
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode = Account.FolderMode.valueOf(value)
             "account_combined_vibration" -> setCombinedVibrationValue(value)
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
-            "account_ringtone" -> with(account.notificationSettings) {
-                isRingEnabled = true
-                ringtone = value
-            }
+            "account_ringtone" -> account.updateNotificationSettings { it.copy(isRingEnabled = true, ringtone = value) }
             else -> return
         }
 
@@ -190,7 +187,7 @@ class AccountSettingsDataStore(
 
     private fun setNotificationLightColor(value: Int) {
         if (account.notificationSettings.ledColor != value) {
-            account.notificationSettings.ledColor = value
+            account.updateNotificationSettings { it.copy(ledColor = value) }
             notificationSettingsChanged = true
         }
     }
@@ -253,9 +250,13 @@ class AccountSettingsDataStore(
 
     private fun setCombinedVibrationValue(value: String) {
         val (isVibrationEnabled, vibrationPattern, vibrationTimes) = VibrationPreference.decode(value)
-        account.notificationSettings.isVibrateEnabled = isVibrationEnabled
-        account.notificationSettings.vibratePattern = vibrationPattern
-        account.notificationSettings.vibrateTimes = vibrationTimes
+        account.updateNotificationSettings { notificationSettings ->
+            notificationSettings.copy(
+                isVibrateEnabled = isVibrationEnabled,
+                vibratePattern = vibrationPattern,
+                vibrateTimes = vibrationTimes,
+            )
+        }
         notificationSettingsChanged = true
     }
 }

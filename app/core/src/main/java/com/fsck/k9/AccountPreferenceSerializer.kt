@@ -137,16 +137,17 @@ class AccountPreferenceSerializer(
 
             showPictures = getEnumStringPref<ShowPictures>(storage, "$accountUuid.showPicturesEnum", ShowPictures.NEVER)
 
-            notificationSettings.isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false)
-            notificationSettings.vibratePattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0))
-            notificationSettings.vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
-            notificationSettings.isRingEnabled = storage.getBoolean("$accountUuid.ring", true)
-            notificationSettings.ringtone = storage.getString(
-                "$accountUuid.ringtone",
-                "content://settings/system/notification_sound"
-            )
-            notificationSettings.isLedEnabled = storage.getBoolean("$accountUuid.led", true)
-            notificationSettings.ledColor = storage.getInt("$accountUuid.ledColor", chipColor)
+            updateNotificationSettings {
+                NotificationSettings(
+                    isRingEnabled = storage.getBoolean("$accountUuid.ring", true),
+                    ringtone = storage.getString("$accountUuid.ringtone", DEFAULT_RINGTONE_URI),
+                    isLedEnabled = storage.getBoolean("$accountUuid.led", true),
+                    ledColor = storage.getInt("$accountUuid.ledColor", chipColor),
+                    isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false),
+                    vibratePattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0)),
+                    vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
+                )
+            }
 
             folderDisplayMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderDisplayMode", FolderMode.NOT_SECOND_CLASS)
 
@@ -604,13 +605,16 @@ class AccountPreferenceSerializer(
             )
             identities.add(identity)
 
-            with(notificationSettings) {
-                isVibrateEnabled = false
-                vibratePattern = VibratePattern.Default
-                vibrateTimes = 5
-                isRingEnabled = true
-                ringtone = "content://settings/system/notification_sound"
-                ledColor = chipColor
+            updateNotificationSettings {
+                NotificationSettings(
+                    isRingEnabled = true,
+                    ringtone = DEFAULT_RINGTONE_URI,
+                    isLedEnabled = false,
+                    ledColor = chipColor,
+                    isVibrateEnabled = false,
+                    vibratePattern = VibratePattern.Default,
+                    vibrateTimes = 5
+                )
             }
 
             resetChangeMarkers()
@@ -640,5 +644,6 @@ class AccountPreferenceSerializer(
         const val DEFAULT_REPLY_AFTER_QUOTE = false
         const val DEFAULT_STRIP_SIGNATURE = true
         const val DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25
+        const val DEFAULT_RINGTONE_URI = "content://settings/system/notification_sound"
     }
 }

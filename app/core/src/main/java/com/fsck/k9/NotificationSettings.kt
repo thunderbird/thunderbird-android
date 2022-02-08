@@ -3,35 +3,15 @@ package com.fsck.k9
 /**
  * Describes how a notification should behave.
  */
-class NotificationSettings {
-    @get:Synchronized
-    @set:Synchronized
-    var isRingEnabled = false
-
-    @get:Synchronized
-    @set:Synchronized
-    var ringtone: String? = null
-
-    @get:Synchronized
-    @set:Synchronized
-    var isLedEnabled = false
-
-    @get:Synchronized
-    @set:Synchronized
-    var ledColor = 0
-
-    @get:Synchronized
-    @set:Synchronized
-    var isVibrateEnabled = false
-
-    @get:Synchronized
-    @set:Synchronized
-    var vibratePattern = VibratePattern.Default
-
-    @get:Synchronized
-    @set:Synchronized
-    var vibrateTimes = 0
-
+data class NotificationSettings(
+    val isRingEnabled: Boolean = false,
+    val ringtone: String? = null,
+    val isLedEnabled: Boolean = false,
+    val ledColor: Int = 0,
+    val isVibrateEnabled: Boolean = false,
+    val vibratePattern: VibratePattern = VibratePattern.Default,
+    val vibrateTimes: Int = 0
+) {
     val vibrationPattern: LongArray
         get() = getVibrationPattern(vibratePattern, vibrateTimes)
 

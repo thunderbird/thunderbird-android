@@ -139,7 +139,7 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun ringtone() {
-        account.notificationSettings.ringtone = "content://ringtone/1"
+        account.updateNotificationSettings { it.copy(ringtone = "content://ringtone/1") }
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
@@ -149,9 +149,9 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `vibration pattern`() {
-        account.notificationSettings.isVibrateEnabled = true
-        account.notificationSettings.vibratePattern = VibratePattern.Pattern3
-        account.notificationSettings.vibrateTimes = 2
+        account.updateNotificationSettings {
+            it.copy(isVibrateEnabled = true, vibratePattern = VibratePattern.Pattern3, vibrateTimes = 2)
+        }
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
@@ -163,7 +163,7 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `led color`() {
-        account.notificationSettings.ledColor = 0x00FF00
+        account.updateNotificationSettings { it.copy(ledColor = 0x00FF00) }
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
