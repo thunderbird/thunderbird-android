@@ -347,7 +347,7 @@ class NewMailNotificationManagerTest {
 
     private fun createAccount(): Account {
         return Account(ACCOUNT_UUID).apply {
-            name = ACCOUNT_NAME
+            setName(ACCOUNT_NAME)
             chipColor = ACCOUNT_COLOR
         }
     }

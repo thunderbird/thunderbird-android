@@ -143,7 +143,7 @@ class AccountSettingsDataStore(
         if (value == null) return
 
         when (key) {
-            "account_description" -> account.name = value
+            "account_description" -> account.setName(value)
             "show_pictures_enum" -> account.showPictures = Account.ShowPictures.valueOf(value)
             "account_display_count" -> account.displayCount = value.toInt()
             "account_message_age" -> account.maximumPolledMessageAge = value.toInt()

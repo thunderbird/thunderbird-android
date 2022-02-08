@@ -1,7 +1,7 @@
-package com.fsck.k9;
+package com.fsck.k9
 
-public interface BaseAccount {
-    String getEmail();
-    String getName();
-    String getUuid();
+interface BaseAccount {
+    val uuid: String
+    val name: String?
+    val email: String
 }

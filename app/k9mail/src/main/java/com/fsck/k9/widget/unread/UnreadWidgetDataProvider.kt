@@ -35,7 +35,7 @@ class UnreadWidgetDataProvider(
 
     private fun loadSearchAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
         val searchAccount = getSearchAccount(configuration.accountUuid)
-        val title = searchAccount.name
+        val title = searchAccount.name ?: searchAccount.email
         val unreadCount = messagingController.getUnreadMessageCount(searchAccount)
         val clickIntent = MessageList.intentDisplaySearch(context, searchAccount.relatedSearch, false, true, true)
 

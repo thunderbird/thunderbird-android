@@ -38,7 +38,7 @@ class AccountPreferenceSerializer(
                 storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", "")
             )
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
-            name = storage.getString("$accountUuid.description", null)
+            setName(storage.getString("$accountUuid.description", null))
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
             automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", DEFAULT_SYNC_INTERVAL)
             idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
