@@ -373,7 +373,7 @@ class Account(override val uuid: String) : BaseAccount {
         }
 
     @get:Synchronized
-    val notificationSetting = NotificationSetting()
+    val notificationSettings = NotificationSettings()
 
     val displayName: String
         get() = name ?: email

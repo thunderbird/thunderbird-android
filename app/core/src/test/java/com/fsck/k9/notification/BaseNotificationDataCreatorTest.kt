@@ -4,7 +4,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
-import com.fsck.k9.NotificationSetting
+import com.fsck.k9.NotificationSettings
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -138,7 +138,7 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun ringtone() {
-        account.notificationSetting.ringtone = "content://ringtone/1"
+        account.notificationSettings.ringtone = "content://ringtone/1"
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
@@ -148,19 +148,19 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `vibration pattern`() {
-        account.notificationSetting.isVibrateEnabled = true
-        account.notificationSetting.vibratePattern = 3
-        account.notificationSetting.vibrateTimes = 2
+        account.notificationSettings.isVibrateEnabled = true
+        account.notificationSettings.vibratePattern = 3
+        account.notificationSettings.vibrateTimes = 2
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
-        assertThat(result.appearance.vibrationPattern).isEqualTo(NotificationSetting.getVibration(3, 2))
+        assertThat(result.appearance.vibrationPattern).isEqualTo(NotificationSettings.getVibration(3, 2))
     }
 
     @Test
     fun `led color`() {
-        account.notificationSetting.ledColor = 0x00FF00
+        account.notificationSettings.ledColor = 0x00FF00
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)

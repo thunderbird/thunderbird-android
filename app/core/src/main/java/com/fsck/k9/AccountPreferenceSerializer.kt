@@ -137,16 +137,16 @@ class AccountPreferenceSerializer(
 
             showPictures = getEnumStringPref<ShowPictures>(storage, "$accountUuid.showPicturesEnum", ShowPictures.NEVER)
 
-            notificationSetting.isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false)
-            notificationSetting.vibratePattern = storage.getInt("$accountUuid.vibratePattern", 0)
-            notificationSetting.vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
-            notificationSetting.isRingEnabled = storage.getBoolean("$accountUuid.ring", true)
-            notificationSetting.ringtone = storage.getString(
+            notificationSettings.isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false)
+            notificationSettings.vibratePattern = storage.getInt("$accountUuid.vibratePattern", 0)
+            notificationSettings.vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
+            notificationSettings.isRingEnabled = storage.getBoolean("$accountUuid.ring", true)
+            notificationSettings.ringtone = storage.getString(
                 "$accountUuid.ringtone",
                 "content://settings/system/notification_sound"
             )
-            notificationSetting.setLed(storage.getBoolean("$accountUuid.led", true))
-            notificationSetting.ledColor = storage.getInt("$accountUuid.ledColor", chipColor)
+            notificationSettings.setLed(storage.getBoolean("$accountUuid.led", true))
+            notificationSettings.ledColor = storage.getInt("$accountUuid.ledColor", chipColor)
 
             folderDisplayMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderDisplayMode", FolderMode.NOT_SECOND_CLASS)
 
@@ -322,13 +322,13 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.markMessageAsReadOnDelete", isMarkMessageAsReadOnDelete)
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
 
-            editor.putBoolean("$accountUuid.vibrate", notificationSetting.isVibrateEnabled)
-            editor.putInt("$accountUuid.vibratePattern", notificationSetting.vibratePattern)
-            editor.putInt("$accountUuid.vibrateTimes", notificationSetting.vibrateTimes)
-            editor.putBoolean("$accountUuid.ring", notificationSetting.isRingEnabled)
-            editor.putString("$accountUuid.ringtone", notificationSetting.ringtone)
-            editor.putBoolean("$accountUuid.led", notificationSetting.isLedEnabled)
-            editor.putInt("$accountUuid.ledColor", notificationSetting.ledColor)
+            editor.putBoolean("$accountUuid.vibrate", notificationSettings.isVibrateEnabled)
+            editor.putInt("$accountUuid.vibratePattern", notificationSettings.vibratePattern)
+            editor.putInt("$accountUuid.vibrateTimes", notificationSettings.vibrateTimes)
+            editor.putBoolean("$accountUuid.ring", notificationSettings.isRingEnabled)
+            editor.putString("$accountUuid.ringtone", notificationSettings.ringtone)
+            editor.putBoolean("$accountUuid.led", notificationSettings.isLedEnabled)
+            editor.putInt("$accountUuid.ledColor", notificationSettings.ledColor)
             editor.putLong("$accountUuid.lastSyncTime", lastSyncTime)
             editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
             editor.putBoolean("$accountUuid.isFinishedSetup", isFinishedSetup)
@@ -604,7 +604,7 @@ class AccountPreferenceSerializer(
             )
             identities.add(identity)
 
-            with(notificationSetting) {
+            with(notificationSettings) {
                 isVibrateEnabled = false
                 vibratePattern = 0
                 vibrateTimes = 5

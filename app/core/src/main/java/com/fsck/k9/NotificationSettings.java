@@ -3,7 +3,7 @@ package com.fsck.k9;
 /**
  * Describes how a notification should behave.
  */
-public class NotificationSetting {
+public class NotificationSettings {
     private boolean ringEnabled;
     private String ringtoneUri;
 
