@@ -1,19 +1,19 @@
 package com.fsck.k9
 
-import com.fsck.k9.Account.DEFAULT_SORT_ASCENDING
-import com.fsck.k9.Account.DEFAULT_SORT_TYPE
-import com.fsck.k9.Account.DEFAULT_SYNC_INTERVAL
+import com.fsck.k9.Account.Companion.DEFAULT_SORT_ASCENDING
+import com.fsck.k9.Account.Companion.DEFAULT_SORT_TYPE
+import com.fsck.k9.Account.Companion.DEFAULT_SYNC_INTERVAL
+import com.fsck.k9.Account.Companion.NO_OPENPGP_KEY
+import com.fsck.k9.Account.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import com.fsck.k9.Account.DeletePolicy
 import com.fsck.k9.Account.Expunge
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Account.MessageFormat
-import com.fsck.k9.Account.NO_OPENPGP_KEY
 import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.Account.Searchable
 import com.fsck.k9.Account.ShowPictures
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.Account.SpecialFolderSelection
-import com.fsck.k9.Account.UNASSIGNED_ACCOUNT_NUMBER
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mailstore.StorageManager
@@ -38,7 +38,7 @@ class AccountPreferenceSerializer(
                 storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", "")
             )
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
-            setName(storage.getString("$accountUuid.description", null))
+            name = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
             automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", DEFAULT_SYNC_INTERVAL)
             idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
@@ -159,7 +159,7 @@ class AccountPreferenceSerializer(
             searchableFolders = getEnumStringPref<Searchable>(storage, "$accountUuid.searchableFolders", Searchable.ALL)
 
             isSignatureBeforeQuotedText = storage.getBoolean("$accountUuid.signatureBeforeQuotedText", false)
-            identities = loadIdentities(accountUuid, storage)
+            replaceIdentities(loadIdentities(accountUuid, storage))
 
             openPgpProvider = storage.getString("$accountUuid.openPgpProvider", "")
             openPgpKey = storage.getLong("$accountUuid.cryptoKey", NO_OPENPGP_KEY)
@@ -333,6 +333,7 @@ class AccountPreferenceSerializer(
             editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
             editor.putBoolean("$accountUuid.isFinishedSetup", isFinishedSetup)
 
+            val compressionMap = getCompressionMap()
             for (type in NetworkType.values()) {
                 val useCompression = compressionMap[type]
                 if (useCompression != null) {

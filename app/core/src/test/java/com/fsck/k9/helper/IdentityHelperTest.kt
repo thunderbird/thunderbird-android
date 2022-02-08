@@ -115,13 +115,15 @@ class IdentityHelperTest : RobolectricTest() {
     }
 
     private fun createDummyAccount() = Account(UUID.randomUUID().toString()).apply {
-        identities = listOf(
-            newIdentity("Default", DEFAULT_ADDRESS),
-            newIdentity("Identity 1", IDENTITY_1_ADDRESS),
-            newIdentity("Identity 2", IDENTITY_2_ADDRESS),
-            newIdentity("Identity 3", IDENTITY_3_ADDRESS),
-            newIdentity("Identity 4", IDENTITY_4_ADDRESS),
-            newIdentity("Identity 5", IDENTITY_5_ADDRESS)
+        replaceIdentities(
+            listOf(
+                newIdentity("Default", DEFAULT_ADDRESS),
+                newIdentity("Identity 1", IDENTITY_1_ADDRESS),
+                newIdentity("Identity 2", IDENTITY_2_ADDRESS),
+                newIdentity("Identity 3", IDENTITY_3_ADDRESS),
+                newIdentity("Identity 4", IDENTITY_4_ADDRESS),
+                newIdentity("Identity 5", IDENTITY_5_ADDRESS)
+            )
         )
     }
 

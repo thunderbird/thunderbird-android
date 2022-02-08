@@ -24,8 +24,8 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `account name from name property`() {
-        account.setName("name")
-        account.setEmail("irrelevant@k9mail.example")
+        account.name = "name"
+        account.email = "irrelevant@k9mail.example"
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
@@ -35,8 +35,8 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `account name is blank`() {
-        account.setName("")
-        account.setEmail("test@k9mail.example")
+        account.name = ""
+        account.email = "test@k9mail.example"
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
@@ -46,8 +46,8 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `account name is null`() {
-        account.setName(null)
-        account.setEmail("test@k9mail.example")
+        account.name = null
+        account.email = "test@k9mail.example"
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
@@ -191,8 +191,8 @@ class BaseNotificationDataCreatorTest {
 
     private fun createAccount(): Account {
         return Account("00000000-0000-4000-0000-000000000000").apply {
-            setName("account name")
-            identities = listOf(Identity())
+            name = "account name"
+            replaceIdentities(listOf(Identity()))
         }
     }
 }

@@ -143,18 +143,18 @@ class AccountSettingsDataStore(
         if (value == null) return
 
         when (key) {
-            "account_description" -> account.setName(value)
+            "account_description" -> account.name = value
             "show_pictures_enum" -> account.showPictures = Account.ShowPictures.valueOf(value)
             "account_display_count" -> account.displayCount = value.toInt()
             "account_message_age" -> account.maximumPolledMessageAge = value.toInt()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize = value.toInt()
             "account_check_frequency" -> {
-                if (account.setAutomaticCheckIntervalMinutes(value.toInt())) {
+                if (account.updateAutomaticCheckIntervalMinutes(value.toInt())) {
                     reschedulePoll()
                 }
             }
             "folder_sync_mode" -> {
-                if (account.setFolderSyncMode(Account.FolderMode.valueOf(value))) {
+                if (account.updateFolderSyncMode(Account.FolderMode.valueOf(value))) {
                     reschedulePoll()
                 }
             }
