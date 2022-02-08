@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.core.view.isVisible
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
 
@@ -64,7 +65,7 @@ class AccountSelectionSpinner : AppCompatSpinner {
 
             return view.apply {
                 name.text = title
-                email.text = account.email
+                email.text = account.displayName
             }
         }
 
@@ -78,8 +79,15 @@ class AccountSelectionSpinner : AppCompatSpinner {
             val email: TextView = view.findViewById(R.id.email)
 
             return view.apply {
-                name.text = account.description
-                email.text = account.email
+                val accountName = account.name
+                if (accountName != null) {
+                    name.text = accountName
+                    email.text = account.email
+                    email.isVisible = true
+                } else {
+                    name.text = account.email
+                    email.isVisible = false
+                }
             }
         }
     }

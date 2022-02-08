@@ -116,19 +116,15 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
                 view.setTag(holder);
             }
 
-            String description = account.getDescription();
-            if (account.getEmail().equals(description)) {
-                holder.email.setVisibility(View.GONE);
-            } else {
-                holder.email.setVisibility(View.VISIBLE);
+            String accountName = account.getName();
+            if (accountName != null) {
+                holder.description.setText(accountName);
                 holder.email.setText(account.getEmail());
+                holder.email.setVisibility(View.VISIBLE);
+            } else {
+                holder.description.setText(account.getEmail());
+                holder.email.setVisibility(View.GONE);
             }
-
-            if (description == null || description.isEmpty()) {
-                description = account.getEmail();
-            }
-
-            holder.description.setText(description);
 
             if (account instanceof Account) {
                 Account realAccount = (Account) account;

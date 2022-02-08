@@ -596,7 +596,7 @@ public class SettingsImporter {
                 continue;
             }
 
-            if (account.getDescription().equals(name)) {
+            if (account.getDisplayName().equals(name)) {
                 return true;
             }
         }

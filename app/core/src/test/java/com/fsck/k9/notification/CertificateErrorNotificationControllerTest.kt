@@ -107,7 +107,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
     private fun createFakeAccount(): Account {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
-            on { description } doReturn ACCOUNT_NAME
+            on { displayName } doReturn ACCOUNT_NAME
             on { uuid } doReturn "test-uuid"
         }
     }

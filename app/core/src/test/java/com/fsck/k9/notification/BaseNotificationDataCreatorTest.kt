@@ -23,19 +23,19 @@ class BaseNotificationDataCreatorTest {
     }
 
     @Test
-    fun `account name from description property`() {
-        account.description = "description"
+    fun `account name from name property`() {
+        account.name = "name"
         account.email = "irrelevant@k9mail.example"
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
-        assertThat(result.accountName).isEqualTo("description")
+        assertThat(result.accountName).isEqualTo("name")
     }
 
     @Test
-    fun `account description is blank`() {
-        account.description = ""
+    fun `account name is blank`() {
+        account.name = ""
         account.email = "test@k9mail.example"
         val notificationData = createNotificationData()
 
@@ -45,8 +45,8 @@ class BaseNotificationDataCreatorTest {
     }
 
     @Test
-    fun `account description is null`() {
-        account.description = null
+    fun `account name is null`() {
+        account.name = null
         account.email = "test@k9mail.example"
         val notificationData = createNotificationData()
 
@@ -191,7 +191,7 @@ class BaseNotificationDataCreatorTest {
 
     private fun createAccount(): Account {
         return Account("00000000-0000-4000-0000-000000000000").apply {
-            description = "account name"
+            name = "account name"
             identities = listOf(Identity())
         }
     }

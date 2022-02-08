@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
@@ -31,8 +32,16 @@ internal class AccountItem(
         val dragHandle: ImageView = view.findViewById(R.id.drag_handle)
 
         override fun bindView(item: AccountItem, payloads: List<Any>) {
-            name.text = item.account.description
-            email.text = item.account.email
+            val accountName = item.account.name
+            if (accountName != null) {
+                name.text = item.account.name
+                email.text = item.account.email
+                email.isVisible = true
+            } else {
+                name.text = item.account.email
+                email.isVisible = false
+            }
+
             dragHandle.isGone = !item.isDraggable
         }
 

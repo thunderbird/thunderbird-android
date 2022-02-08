@@ -62,7 +62,7 @@ class ImapBackendFactory(
     private fun createImapStoreConfig(account: Account): ImapStoreConfig {
         return object : ImapStoreConfig {
             override val logLabel
-                get() = account.description
+                get() = account.uuid
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
 

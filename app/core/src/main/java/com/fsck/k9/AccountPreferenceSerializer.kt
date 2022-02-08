@@ -38,7 +38,7 @@ class AccountPreferenceSerializer(
                 storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", "")
             )
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
-            description = storage.getString("$accountUuid.description", null)
+            name = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
             automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", DEFAULT_SYNC_INTERVAL)
             idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
@@ -179,11 +179,6 @@ class AccountPreferenceSerializer(
             val isFinishedSetup = storage.getBoolean("$accountUuid.isFinishedSetup", true)
             if (isFinishedSetup) markSetupFinished()
 
-            // Use email address as account description if necessary
-            if (description == null) {
-                description = email
-            }
-
             resetChangeMarkers()
         }
     }
@@ -248,7 +243,7 @@ class AccountPreferenceSerializer(
             editor.putString("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(incomingServerSettings))
             editor.putString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(outgoingServerSettings))
             editor.putString("$accountUuid.localStorageProvider", localStorageProviderId)
-            editor.putString("$accountUuid.description", description)
+            editor.putString("$accountUuid.description", name)
             editor.putString("$accountUuid.alwaysBcc", alwaysBcc)
             editor.putInt("$accountUuid.automaticCheckIntervalMinutes", automaticCheckIntervalMinutes)
             editor.putInt("$accountUuid.idleRefreshMinutes", idleRefreshMinutes)

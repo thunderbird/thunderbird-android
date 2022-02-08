@@ -20,13 +20,6 @@ class K9NotificationStrategy(private val contacts: Contacts) : NotificationStrat
         isOldMessage: Boolean
     ): Boolean {
 
-        // If we don't even have an account name, don't show the notification.
-        // (This happens during initial account setup)
-        if (account.name == null) {
-            Timber.v("No notification: Missing account name")
-            return false
-        }
-
         if (!K9.isNotificationDuringQuietTimeEnabled && K9.isQuietTime) {
             Timber.v("No notification: Quiet time is active")
             return false

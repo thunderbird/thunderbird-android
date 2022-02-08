@@ -14,7 +14,7 @@ internal class SyncNotificationController(
     private val resourceProvider: NotificationResourceProvider
 ) {
     fun showSendingNotification(account: Account) {
-        val accountName = notificationHelper.getAccountName(account)
+        val accountName = account.displayName
         val title = resourceProvider.sendingMailTitle()
         val tickerText = resourceProvider.sendingMailBody(accountName)
 
@@ -56,7 +56,7 @@ internal class SyncNotificationController(
     }
 
     fun showFetchingMailNotification(account: Account, folder: LocalFolder) {
-        val accountName = account.description
+        val accountName = account.displayName
         val folderId = folder.databaseId
         val folderName = folder.name
         val tickerText = resourceProvider.checkingMailTicker(accountName, folderName)
@@ -99,7 +99,7 @@ internal class SyncNotificationController(
 
     fun showEmptyFetchingMailNotification(account: Account) {
         val title = resourceProvider.checkingMailTitle()
-        val text = account.description
+        val text = account.displayName
         val notificationId = NotificationIds.getFetchingMailNotificationId(account)
 
         val notificationBuilder = notificationHelper

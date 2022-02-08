@@ -29,10 +29,10 @@ public class SearchAccount implements BaseAccount {
 
     private String mId;
     private String mEmail;
-    private String mDescription;
+    private String name;
     private LocalSearch mSearch;
 
-    public SearchAccount(String id, LocalSearch search, String description, String email)
+    public SearchAccount(String id, LocalSearch search, String name, String email)
             throws IllegalArgumentException {
 
         if (search == null) {
@@ -41,7 +41,7 @@ public class SearchAccount implements BaseAccount {
 
         mId = id;
         mSearch = search;
-        mDescription = description;
+        this.name = name;
         mEmail = email;
     }
 
@@ -54,17 +54,9 @@ public class SearchAccount implements BaseAccount {
         return mEmail;
     }
 
-    public synchronized void setEmail(String email) {
-        this.mEmail = email;
-    }
-
     @Override
-    public String getDescription() {
-        return mDescription;
-    }
-
-    public void setDescription(String description) {
-        this.mDescription = description;
+    public String getName() {
+        return name;
     }
 
     public LocalSearch getRelatedSearch() {

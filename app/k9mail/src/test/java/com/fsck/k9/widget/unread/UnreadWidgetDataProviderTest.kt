@@ -56,7 +56,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         val widgetData = provider.loadUnreadWidgetData(configuration)
 
         with(widgetData!!) {
-            assertThat(title).isEqualTo(ACCOUNT_DESCRIPTION)
+            assertThat(title).isEqualTo(ACCOUNT_NAME)
             assertThat(unreadCount).isEqualTo(ACCOUNT_UNREAD_COUNT)
         }
     }
@@ -68,7 +68,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         val widgetData = provider.loadUnreadWidgetData(configuration)
 
         with(widgetData!!) {
-            assertThat(title).isEqualTo("$ACCOUNT_DESCRIPTION - $LOCALIZED_FOLDER_NAME")
+            assertThat(title).isEqualTo("$ACCOUNT_NAME - $LOCALIZED_FOLDER_NAME")
             assertThat(unreadCount).isEqualTo(FOLDER_UNREAD_COUNT)
         }
     }
@@ -84,7 +84,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
 
     fun createAccount(): Account = mock {
         on { uuid } doReturn ACCOUNT_UUID
-        on { description } doReturn ACCOUNT_DESCRIPTION
+        on { displayName } doReturn ACCOUNT_NAME
     }
 
     fun createPreferences(): Preferences = mock {
@@ -120,7 +120,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
 
     companion object {
         const val ACCOUNT_UUID = "00000000-0000-0000-0000-000000000000"
-        const val ACCOUNT_DESCRIPTION = "Test account"
+        const val ACCOUNT_NAME = "Test account"
         const val FOLDER_ID = 23L
         const val SEARCH_ACCOUNT_UNREAD_COUNT = 1
         const val ACCOUNT_UNREAD_COUNT = 2

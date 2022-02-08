@@ -105,7 +105,7 @@ class AccountSettingsDataStore(
 
     override fun getString(key: String, defValue: String?): String? {
         return when (key) {
-            "account_description" -> account.description
+            "account_description" -> account.name
             "show_pictures_enum" -> account.showPictures.name
             "account_display_count" -> account.displayCount.toString()
             "account_message_age" -> account.maximumPolledMessageAge.toString()
@@ -143,7 +143,7 @@ class AccountSettingsDataStore(
         if (value == null) return
 
         when (key) {
-            "account_description" -> account.description = value
+            "account_description" -> account.name = value
             "show_pictures_enum" -> account.showPictures = Account.ShowPictures.valueOf(value)
             "account_display_count" -> account.displayCount = value.toInt()
             "account_message_age" -> account.maximumPolledMessageAge = value.toInt()

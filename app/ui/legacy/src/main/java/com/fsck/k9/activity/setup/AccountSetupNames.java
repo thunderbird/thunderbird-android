@@ -67,15 +67,11 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
-        /*
-         * Since this field is considered optional, we don't set this here. If
-         * the user fills in a value we'll reset the current value, otherwise we
-         * just leave the saved value alone.
-         */
-        // mDescription.setText(mAccount.getDescription());
-        if (mAccount.getName() != null) {
-            mName.setText(mAccount.getName());
+        String senderName = mAccount.getSenderName();
+        if (senderName != null) {
+            mName.setText(senderName);
         }
+
         if (!Utility.requiredFieldValid(mName)) {
             mDoneButton.setEnabled(false);
         }
@@ -88,9 +84,9 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
 
     protected void onNext() {
         if (Utility.requiredFieldValid(mDescription)) {
-            mAccount.setDescription(mDescription.getText().toString());
+            mAccount.setName(mDescription.getText().toString());
         }
-        mAccount.setName(mName.getText().toString());
+        mAccount.setSenderName(mName.getText().toString());
         mAccount.markSetupFinished();
         Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
         finishAffinity();

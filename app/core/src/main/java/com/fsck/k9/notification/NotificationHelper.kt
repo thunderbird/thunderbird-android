@@ -54,11 +54,6 @@ class NotificationHelper(
         }
     }
 
-    fun getAccountName(account: Account): String {
-        val accountDescription = account.description
-        return if (TextUtils.isEmpty(accountDescription)) account.email else accountDescription
-    }
-
     fun getContext(): Context {
         return context
     }

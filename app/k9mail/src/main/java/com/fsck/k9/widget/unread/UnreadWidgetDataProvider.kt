@@ -35,7 +35,7 @@ class UnreadWidgetDataProvider(
 
     private fun loadSearchAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
         val searchAccount = getSearchAccount(configuration.accountUuid)
-        val title = searchAccount.description
+        val title = searchAccount.name
         val unreadCount = messagingController.getUnreadMessageCount(searchAccount)
         val clickIntent = MessageList.intentDisplaySearch(context, searchAccount.relatedSearch, false, true, true)
 
@@ -49,7 +49,7 @@ class UnreadWidgetDataProvider(
 
     private fun loadAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val account = preferences.getAccount(configuration.accountUuid) ?: return null
-        val title = account.description
+        val title = account.displayName
         val unreadCount = messagingController.getUnreadMessageCount(account)
         val clickIntent = getClickIntentForAccount(account)
 
@@ -66,7 +66,7 @@ class UnreadWidgetDataProvider(
         val account = preferences.getAccount(accountUuid) ?: return null
         val folderId = configuration.folderId ?: return null
 
-        val accountName = account.description
+        val accountName = account.displayName
         val folderDisplayName = getFolderDisplayName(account, folderId)
         val title = context.getString(R.string.unread_widget_title, accountName, folderDisplayName)
 
