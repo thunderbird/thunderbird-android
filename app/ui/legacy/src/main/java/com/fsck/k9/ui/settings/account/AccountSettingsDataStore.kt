@@ -30,7 +30,7 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail
             "account_notify_self" -> account.isNotifySelfNewMail
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly
-            "account_led" -> account.notificationSetting.isLedEnabled
+            "account_led" -> account.notificationSettings.isLedEnabled
             "account_notify_sync" -> account.isNotifySync
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
@@ -55,7 +55,7 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail = value
             "account_notify_self" -> account.isNotifySelfNewMail = value
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value
-            "account_led" -> account.notificationSetting.setLed(value)
+            "account_led" -> account.updateNotificationSettings { it.copy(isLedEnabled = value) }
             "account_notify_sync" -> account.isNotifySync = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
@@ -72,7 +72,7 @@ class AccountSettingsDataStore(
     override fun getInt(key: String?, defValue: Int): Int {
         return when (key) {
             "chip_color" -> account.chipColor
-            "led_color" -> account.notificationSetting.ledColor
+            "led_color" -> account.notificationSettings.ledColor
             else -> defValue
         }
     }
@@ -134,7 +134,7 @@ class AccountSettingsDataStore(
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode.name
             "account_combined_vibration" -> getCombinedVibrationValue()
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
-            "account_ringtone" -> account.notificationSetting.ringtone
+            "account_ringtone" -> account.notificationSettings.ringtone
             else -> defValue
         }
     }
@@ -149,12 +149,12 @@ class AccountSettingsDataStore(
             "account_message_age" -> account.maximumPolledMessageAge = value.toInt()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize = value.toInt()
             "account_check_frequency" -> {
-                if (account.setAutomaticCheckIntervalMinutes(value.toInt())) {
+                if (account.updateAutomaticCheckIntervalMinutes(value.toInt())) {
                     reschedulePoll()
                 }
             }
             "folder_sync_mode" -> {
-                if (account.setFolderSyncMode(Account.FolderMode.valueOf(value))) {
+                if (account.updateFolderSyncMode(Account.FolderMode.valueOf(value))) {
                     reschedulePoll()
                 }
             }
@@ -178,10 +178,7 @@ class AccountSettingsDataStore(
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode = Account.FolderMode.valueOf(value)
             "account_combined_vibration" -> setCombinedVibrationValue(value)
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
-            "account_ringtone" -> with(account.notificationSetting) {
-                isRingEnabled = true
-                ringtone = value
-            }
+            "account_ringtone" -> account.updateNotificationSettings { it.copy(isRingEnabled = true, ringtone = value) }
             else -> return
         }
 
@@ -189,8 +186,8 @@ class AccountSettingsDataStore(
     }
 
     private fun setNotificationLightColor(value: Int) {
-        if (account.notificationSetting.ledColor != value) {
-            account.notificationSetting.ledColor = value
+        if (account.notificationSettings.ledColor != value) {
+            account.updateNotificationSettings { it.copy(ledColor = value) }
             notificationSettingsChanged = true
         }
     }
@@ -245,17 +242,21 @@ class AccountSettingsDataStore(
 
     private fun getCombinedVibrationValue(): String {
         return VibrationPreference.encode(
-            isVibrationEnabled = account.notificationSetting.isVibrateEnabled,
-            vibrationPattern = account.notificationSetting.vibratePattern,
-            vibrationTimes = account.notificationSetting.vibrateTimes
+            isVibrationEnabled = account.notificationSettings.isVibrateEnabled,
+            vibratePattern = account.notificationSettings.vibratePattern,
+            vibrationTimes = account.notificationSettings.vibrateTimes
         )
     }
 
     private fun setCombinedVibrationValue(value: String) {
         val (isVibrationEnabled, vibrationPattern, vibrationTimes) = VibrationPreference.decode(value)
-        account.notificationSetting.isVibrateEnabled = isVibrationEnabled
-        account.notificationSetting.vibratePattern = vibrationPattern
-        account.notificationSetting.vibrateTimes = vibrationTimes
+        account.updateNotificationSettings { notificationSettings ->
+            notificationSettings.copy(
+                isVibrateEnabled = isVibrationEnabled,
+                vibratePattern = vibrationPattern,
+                vibrateTimes = vibrationTimes,
+            )
+        }
         notificationSettingsChanged = true
     }
 }

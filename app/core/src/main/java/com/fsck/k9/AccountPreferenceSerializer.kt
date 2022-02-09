@@ -1,19 +1,19 @@
 package com.fsck.k9
 
-import com.fsck.k9.Account.DEFAULT_SORT_ASCENDING
-import com.fsck.k9.Account.DEFAULT_SORT_TYPE
-import com.fsck.k9.Account.DEFAULT_SYNC_INTERVAL
+import com.fsck.k9.Account.Companion.DEFAULT_SORT_ASCENDING
+import com.fsck.k9.Account.Companion.DEFAULT_SORT_TYPE
+import com.fsck.k9.Account.Companion.DEFAULT_SYNC_INTERVAL
+import com.fsck.k9.Account.Companion.NO_OPENPGP_KEY
+import com.fsck.k9.Account.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import com.fsck.k9.Account.DeletePolicy
 import com.fsck.k9.Account.Expunge
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Account.MessageFormat
-import com.fsck.k9.Account.NO_OPENPGP_KEY
 import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.Account.Searchable
 import com.fsck.k9.Account.ShowPictures
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.Account.SpecialFolderSelection
-import com.fsck.k9.Account.UNASSIGNED_ACCOUNT_NUMBER
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mailstore.StorageManager
@@ -137,16 +137,17 @@ class AccountPreferenceSerializer(
 
             showPictures = getEnumStringPref<ShowPictures>(storage, "$accountUuid.showPicturesEnum", ShowPictures.NEVER)
 
-            notificationSetting.isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false)
-            notificationSetting.vibratePattern = storage.getInt("$accountUuid.vibratePattern", 0)
-            notificationSetting.vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
-            notificationSetting.isRingEnabled = storage.getBoolean("$accountUuid.ring", true)
-            notificationSetting.ringtone = storage.getString(
-                "$accountUuid.ringtone",
-                "content://settings/system/notification_sound"
-            )
-            notificationSetting.setLed(storage.getBoolean("$accountUuid.led", true))
-            notificationSetting.ledColor = storage.getInt("$accountUuid.ledColor", chipColor)
+            updateNotificationSettings {
+                NotificationSettings(
+                    isRingEnabled = storage.getBoolean("$accountUuid.ring", true),
+                    ringtone = storage.getString("$accountUuid.ringtone", DEFAULT_RINGTONE_URI),
+                    isLedEnabled = storage.getBoolean("$accountUuid.led", true),
+                    ledColor = storage.getInt("$accountUuid.ledColor", chipColor),
+                    isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false),
+                    vibratePattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0)),
+                    vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
+                )
+            }
 
             folderDisplayMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderDisplayMode", FolderMode.NOT_SECOND_CLASS)
 
@@ -159,7 +160,7 @@ class AccountPreferenceSerializer(
             searchableFolders = getEnumStringPref<Searchable>(storage, "$accountUuid.searchableFolders", Searchable.ALL)
 
             isSignatureBeforeQuotedText = storage.getBoolean("$accountUuid.signatureBeforeQuotedText", false)
-            identities = loadIdentities(accountUuid, storage)
+            replaceIdentities(loadIdentities(accountUuid, storage))
 
             openPgpProvider = storage.getString("$accountUuid.openPgpProvider", "")
             openPgpKey = storage.getLong("$accountUuid.cryptoKey", NO_OPENPGP_KEY)
@@ -322,17 +323,18 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.markMessageAsReadOnDelete", isMarkMessageAsReadOnDelete)
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
 
-            editor.putBoolean("$accountUuid.vibrate", notificationSetting.isVibrateEnabled)
-            editor.putInt("$accountUuid.vibratePattern", notificationSetting.vibratePattern)
-            editor.putInt("$accountUuid.vibrateTimes", notificationSetting.vibrateTimes)
-            editor.putBoolean("$accountUuid.ring", notificationSetting.isRingEnabled)
-            editor.putString("$accountUuid.ringtone", notificationSetting.ringtone)
-            editor.putBoolean("$accountUuid.led", notificationSetting.isLedEnabled)
-            editor.putInt("$accountUuid.ledColor", notificationSetting.ledColor)
+            editor.putBoolean("$accountUuid.vibrate", notificationSettings.isVibrateEnabled)
+            editor.putInt("$accountUuid.vibratePattern", notificationSettings.vibratePattern.serialize())
+            editor.putInt("$accountUuid.vibrateTimes", notificationSettings.vibrateTimes)
+            editor.putBoolean("$accountUuid.ring", notificationSettings.isRingEnabled)
+            editor.putString("$accountUuid.ringtone", notificationSettings.ringtone)
+            editor.putBoolean("$accountUuid.led", notificationSettings.isLedEnabled)
+            editor.putInt("$accountUuid.ledColor", notificationSettings.ledColor)
             editor.putLong("$accountUuid.lastSyncTime", lastSyncTime)
             editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
             editor.putBoolean("$accountUuid.isFinishedSetup", isFinishedSetup)
 
+            val compressionMap = getCompressionMap()
             for (type in NetworkType.values()) {
                 val useCompression = compressionMap[type]
                 if (useCompression != null) {
@@ -603,13 +605,16 @@ class AccountPreferenceSerializer(
             )
             identities.add(identity)
 
-            with(notificationSetting) {
-                isVibrateEnabled = false
-                vibratePattern = 0
-                vibrateTimes = 5
-                isRingEnabled = true
-                ringtone = "content://settings/system/notification_sound"
-                ledColor = chipColor
+            updateNotificationSettings {
+                NotificationSettings(
+                    isRingEnabled = true,
+                    ringtone = DEFAULT_RINGTONE_URI,
+                    isLedEnabled = false,
+                    ledColor = chipColor,
+                    isVibrateEnabled = false,
+                    vibratePattern = VibratePattern.Default,
+                    vibrateTimes = 5
+                )
             }
 
             resetChangeMarkers()
@@ -639,5 +644,6 @@ class AccountPreferenceSerializer(
         const val DEFAULT_REPLY_AFTER_QUOTE = false
         const val DEFAULT_STRIP_SIGNATURE = true
         const val DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25
+        const val DEFAULT_RINGTONE_URI = "content://settings/system/notification_sound"
     }
 }

@@ -6,7 +6,7 @@ import android.app.NotificationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.fsck.k9.Account
-import com.fsck.k9.NotificationSetting
+import com.fsck.k9.NotificationSettings
 import com.fsck.k9.Preferences
 import java.util.concurrent.Executor
 import timber.log.Timber
@@ -165,7 +165,7 @@ class NotificationChannelManager(
         val oldChannelId = getChannelIdFor(account, ChannelType.MESSAGES)
         val oldNotificationChannel = notificationManager.getNotificationChannel(oldChannelId)
 
-        if (oldNotificationChannel.matches(account.notificationSetting)) {
+        if (oldNotificationChannel.matches(account.notificationSettings)) {
             Timber.v("Not recreating NotificationChannel. The current one already matches the app's settings.")
             return
         }
@@ -183,7 +183,7 @@ class NotificationChannelManager(
             group = account.uuid
 
             copyPropertiesFrom(oldNotificationChannel)
-            copyPropertiesFrom(account.notificationSetting)
+            copyPropertiesFrom(account.notificationSettings)
         }
 
         Timber.v("Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
@@ -191,10 +191,10 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun NotificationChannel.matches(notificationSetting: NotificationSetting): Boolean {
-        return lightColor == notificationSetting.ledColor &&
-            shouldVibrate() == notificationSetting.isVibrateEnabled &&
-            vibrationPattern.contentEquals(notificationSetting.vibration)
+    private fun NotificationChannel.matches(notificationSettings: NotificationSettings): Boolean {
+        return lightColor == notificationSettings.ledColor &&
+            shouldVibrate() == notificationSettings.isVibrateEnabled &&
+            vibrationPattern.contentEquals(notificationSettings.vibrationPattern)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -211,10 +211,10 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun NotificationChannel.copyPropertiesFrom(notificationSetting: NotificationSetting) {
-        lightColor = notificationSetting.ledColor
-        vibrationPattern = notificationSetting.vibration
-        enableVibration(notificationSetting.isVibrateEnabled)
+    private fun NotificationChannel.copyPropertiesFrom(notificationSettings: NotificationSettings) {
+        lightColor = notificationSettings.ledColor
+        vibrationPattern = notificationSettings.vibrationPattern
+        enableVibration(notificationSettings.isVibrateEnabled)
     }
 
     private val Account.messagesNotificationChannelSuffix: String

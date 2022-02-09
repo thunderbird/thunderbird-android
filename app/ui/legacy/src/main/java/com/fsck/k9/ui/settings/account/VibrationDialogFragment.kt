@@ -16,8 +16,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceDialogFragmentCompat
-import com.fsck.k9.NotificationSetting
+import com.fsck.k9.NotificationSettings
+import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.getEnum
+import com.fsck.k9.ui.putEnum
 
 class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
     private val vibrator by lazy { requireContext().getSystemService<Vibrator>() ?: error("Vibrator service missing") }
@@ -31,15 +34,15 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
         val context = requireContext()
 
         val isVibrationEnabled: Boolean
-        val vibrationPattern: Int
+        val vibratePattern: VibratePattern
         val vibrationTimes: Int
         if (savedInstanceState != null) {
             isVibrationEnabled = savedInstanceState.getBoolean(STATE_VIBRATE)
-            vibrationPattern = savedInstanceState.getInt(STATE_VIBRATION_PATTERN)
+            vibratePattern = savedInstanceState.getEnum(STATE_VIBRATE_PATTERN)
             vibrationTimes = savedInstanceState.getInt(STATE_VIBRATION_TIMES)
         } else {
             isVibrationEnabled = vibrationPreference.isVibrationEnabled
-            vibrationPattern = vibrationPreference.vibrationPattern
+            vibratePattern = vibrationPreference.vibratePattern
             vibrationTimes = vibrationPreference.vibrationTimes
         }
 
@@ -47,7 +50,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
             isVibrationEnabled,
             entries = vibrationPreference.entries.map { it.toString() },
             entryValues = vibrationPreference.entryValues.map { it.toString().toInt() },
-            vibrationPattern,
+            vibratePattern,
             vibrationTimes
         )
 
@@ -62,7 +65,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
         if (positiveResult) {
             vibrationPreference.setVibration(
                 isVibrationEnabled = adapter.isVibrationEnabled,
-                vibrationPattern = adapter.vibrationPattern,
+                vibratePattern = adapter.vibratePattern,
                 vibrationTimes = adapter.vibrationTimes
             )
         }
@@ -71,21 +74,21 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(STATE_VIBRATE, adapter.isVibrationEnabled)
-        outState.putInt(STATE_VIBRATION_PATTERN, adapter.vibrationPattern)
+        outState.putEnum(STATE_VIBRATE_PATTERN, adapter.vibratePattern)
         outState.putInt(STATE_VIBRATION_TIMES, adapter.vibrationTimes)
     }
 
     private fun playVibration() {
-        val vibrationPattern = adapter.vibrationPattern
+        val vibratePattern = adapter.vibratePattern
         val vibrationTimes = adapter.vibrationTimes
-        val combinedPattern = NotificationSetting.getVibration(vibrationPattern, vibrationTimes)
+        val vibrationPattern = NotificationSettings.getVibrationPattern(vibratePattern, vibrationTimes)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createWaveform(combinedPattern, -1)
+            val vibrationEffect = VibrationEffect.createWaveform(vibrationPattern, -1)
             vibrator.vibrate(vibrationEffect)
         } else {
             @Suppress("DEPRECATION")
-            vibrator.vibrate(combinedPattern, -1)
+            vibrator.vibrate(vibrationPattern, -1)
         }
     }
 
@@ -93,13 +96,13 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
         var isVibrationEnabled: Boolean,
         private val entries: List<String>,
         private val entryValues: List<Int>,
-        initialVibrationPattern: Int,
+        initialVibratePattern: VibratePattern,
         initialVibrationTimes: Int
     ) : BaseAdapter() {
-        private var checkedEntryIndex = entryValues.indexOf(initialVibrationPattern).takeIf { it != -1 } ?: 0
+        private var checkedEntryIndex = entryValues.indexOf(initialVibratePattern.serialize()).takeIf { it != -1 } ?: 0
 
-        val vibrationPattern: Int
-            get() = entryValues[checkedEntryIndex]
+        val vibratePattern: VibratePattern
+            get() = VibratePattern.deserialize(entryValues[checkedEntryIndex])
 
         var vibrationTimes = initialVibrationTimes
 
@@ -209,7 +212,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
 
     companion object {
         private const val STATE_VIBRATE = "vibrate"
-        private const val STATE_VIBRATION_PATTERN = "vibrationPattern"
+        private const val STATE_VIBRATE_PATTERN = "vibratePattern"
         private const val STATE_VIBRATION_TIMES = "vibrationTimes"
     }
 }
