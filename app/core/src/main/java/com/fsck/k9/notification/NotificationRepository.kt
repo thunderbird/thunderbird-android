@@ -39,7 +39,11 @@ internal class NotificationRepository(
     @Synchronized
     fun addNotification(account: Account, content: NotificationContent, timestamp: Long): AddNotificationResult {
         return notificationDataStore.addNotification(account, content, timestamp).also { result ->
-            persistNotificationDataStoreChanges(account, result.notificationStoreOperations)
+            persistNotificationDataStoreChanges(
+                account = account,
+                operations = result.notificationStoreOperations,
+                updateNewMessageState = true
+            )
         }
     }
 
@@ -50,9 +54,11 @@ internal class NotificationRepository(
         selector: (List<MessageReference>) -> List<MessageReference>
     ): RemoveNotificationsResult? {
         return notificationDataStore.removeNotifications(account, selector)?.also { result ->
-            if (clearNewMessageState) {
-                persistNotificationDataStoreChanges(account, result.notificationStoreOperations)
-            }
+            persistNotificationDataStoreChanges(
+                account = account,
+                operations = result.notificationStoreOperations,
+                updateNewMessageState = clearNewMessageState
+            )
         }
     }
 
@@ -66,11 +72,17 @@ internal class NotificationRepository(
         }
     }
 
-    private fun persistNotificationDataStoreChanges(account: Account, operations: List<NotificationStoreOperation>) {
+    private fun persistNotificationDataStoreChanges(
+        account: Account,
+        operations: List<NotificationStoreOperation>,
+        updateNewMessageState: Boolean
+    ) {
         val notificationStore = notificationStoreProvider.getNotificationStore(account)
         notificationStore.persistNotificationChanges(operations)
 
-        setNewMessageState(account, operations)
+        if (updateNewMessageState) {
+            setNewMessageState(account, operations)
+        }
     }
 
     private fun setNewMessageState(account: Account, operations: List<NotificationStoreOperation>) {
