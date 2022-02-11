@@ -10,8 +10,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.SystemClock;
-import androidx.annotation.CheckResult;
 
+import androidx.annotation.NonNull;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.preferences.migrations.StorageMigrations;
 import com.fsck.k9.preferences.migrations.StorageMigrationsHelper;
@@ -88,9 +88,10 @@ public class K9StoragePersister implements StoragePersister {
         }
     }
 
+    @NonNull
     @Override
-    public StorageEditor createStorageEditor(Storage storage) {
-        return new K9StorageEditor(storage, this);
+    public StorageEditor createStorageEditor(@NonNull StorageUpdater storageUpdater) {
+        return new K9StorageEditor(storageUpdater, this);
     }
 
     static class StoragePersistOperations {
@@ -136,14 +137,14 @@ public class K9StoragePersister implements StoragePersister {
         void onPersistTransactionSuccess(Map<String, String> workingStorage);
     }
 
+    @NonNull
     @Override
-    @CheckResult
-    public Map<String, String> loadValues() {
+    public Storage loadValues() {
         long startTime = SystemClock.elapsedRealtime();
         Timber.i("Loading preferences from DB into Storage");
 
         try (SQLiteDatabase database = openDB()) {
-            return readAllValues(database);
+            return new Storage(readAllValues(database));
         } finally {
             long endTime = SystemClock.elapsedRealtime();
             Timber.i("Preferences load took %d ms", endTime - startTime);

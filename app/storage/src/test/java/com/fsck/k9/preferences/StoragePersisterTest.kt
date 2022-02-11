@@ -46,7 +46,7 @@ class StoragePersisterTest : K9RobolectricTest() {
 
         storagePersister.doInTransaction(operationCallback)
 
-        val values = storagePersister.loadValues()
+        val values = storagePersister.loadValues().all
         assertEquals(1, values.size)
         assertEquals("y", values["x"])
     }

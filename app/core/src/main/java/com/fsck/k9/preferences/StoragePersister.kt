@@ -1,10 +1,11 @@
 package com.fsck.k9.preferences
 
-import androidx.annotation.CheckResult
-
 interface StoragePersister {
-    @CheckResult
-    fun loadValues(): Map<String, String>
+    fun loadValues(): Storage
 
-    fun createStorageEditor(storage: Storage): StorageEditor
+    fun createStorageEditor(storageUpdater: StorageUpdater): StorageEditor
+}
+
+fun interface StorageUpdater {
+    fun updateStorage(updater: (currentStorage: Storage) -> Storage)
 }
