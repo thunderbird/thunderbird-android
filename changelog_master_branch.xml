@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.911" versioncode="29011" date="2022-02-12">
+        <change>Reworked the user interface for the vibration pattern setting</change>
+        <change>Reworked the notification light color setting</change>
+        <change>Improved display of accounts without a name</change>
+        <change>Tapping a "send failure" notification will now open the Outbox folder</change>
+        <change>Fixed bug that led to some messages not being displayed properly</change>
+        <change>Fixed various smaller bugs related to notifications</change>
+        <change>Changed the way settings are stored; this might fix the bug where all accounts are lost</change>
+    </release>
     <release version="5.910" versioncode="29010" date="2022-01-25">
         <change>POP3: Changed the way the list of supported authentication methods is retrieved from the server</change>
         <change>IMAP: Removed setting to enable remote search (it's now enabled by default; still requires an additional button press)</change>
