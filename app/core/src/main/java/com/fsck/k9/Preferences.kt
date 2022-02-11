@@ -205,9 +205,11 @@ class Preferences internal constructor(
         ensureAssignedAccountNumber(account)
         processChangedValues(account)
 
-        val editor = createStorageEditor()
-        accountPreferenceSerializer.save(editor, storage, account)
-        editor.commit()
+        synchronized(accountLock) {
+            val editor = createStorageEditor()
+            accountPreferenceSerializer.save(editor, storage, account)
+            editor.commit()
+        }
 
         notifyAccountsChangeListeners()
     }
