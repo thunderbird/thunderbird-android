@@ -4,6 +4,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
+import com.fsck.k9.NotificationLight
 import com.fsck.k9.NotificationSettings
 import com.fsck.k9.VibratePattern
 import com.google.common.truth.Truth.assertThat
@@ -163,12 +164,12 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `led color`() {
-        account.updateNotificationSettings { it.copy(ledColor = 0x00FF00) }
+        account.updateNotificationSettings { it.copy(light = NotificationLight.Green) }
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
-        assertThat(result.appearance.ledColor).isEqualTo(0x00FF00)
+        assertThat(result.appearance.ledColor).isEqualTo(0xFF00FF00L.toInt())
     }
 
     private fun setLockScreenMode(mode: LockScreenNotificationVisibility) {

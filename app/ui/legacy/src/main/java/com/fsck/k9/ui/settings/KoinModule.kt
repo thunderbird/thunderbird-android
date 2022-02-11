@@ -29,7 +29,8 @@ val settingsUiModule = module {
             preferences = get(),
             jobManager = get(),
             executorService = get(named("SaveSettingsExecutorService")),
-            notificationChannelManager = get()
+            notificationChannelManager = get(),
+            notificationController = get()
         )
     }
 

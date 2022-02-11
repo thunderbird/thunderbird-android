@@ -153,6 +153,19 @@
         <item>@string/account_settings_vibrate_pattern_5</item>
     </string-array>
 
+    <string-array name="notification_light_entries">
+        <item>@string/account_settings_notification_light_disabled</item>
+        <item>@string/account_settings_notification_light_account_color</item>
+        <item>@string/account_settings_notification_light_default_color</item>
+        <item>@string/account_settings_notification_light_white</item>
+        <item>@string/account_settings_notification_light_red</item>
+        <item>@string/account_settings_notification_light_green</item>
+        <item>@string/account_settings_notification_light_blue</item>
+        <item>@string/account_settings_notification_light_yellow</item>
+        <item>@string/account_settings_notification_light_cyan</item>
+        <item>@string/account_settings_notification_light_magenta</item>
+    </string-array>
+
     <string-array name="quote_style_entries">
         <item>@string/account_settings_quote_style_prefix</item>
         <item>@string/account_settings_quote_style_header</item>

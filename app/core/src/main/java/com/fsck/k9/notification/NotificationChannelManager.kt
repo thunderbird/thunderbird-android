@@ -6,7 +6,7 @@ import android.app.NotificationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.fsck.k9.Account
-import com.fsck.k9.NotificationSettings
+import com.fsck.k9.NotificationLight
 import com.fsck.k9.Preferences
 import java.util.concurrent.Executor
 import timber.log.Timber
@@ -15,7 +15,8 @@ class NotificationChannelManager(
     private val preferences: Preferences,
     private val backgroundExecutor: Executor,
     private val notificationManager: NotificationManager,
-    private val resourceProvider: NotificationResourceProvider
+    private val resourceProvider: NotificationResourceProvider,
+    private val notificationLightDecoder: NotificationLightDecoder
 ) {
     val pushChannelId = "push"
 
@@ -165,7 +166,7 @@ class NotificationChannelManager(
         val oldChannelId = getChannelIdFor(account, ChannelType.MESSAGES)
         val oldNotificationChannel = notificationManager.getNotificationChannel(oldChannelId)
 
-        if (oldNotificationChannel.matches(account.notificationSettings)) {
+        if (oldNotificationChannel.matches(account)) {
             Timber.v("Not recreating NotificationChannel. The current one already matches the app's settings.")
             return
         }
@@ -183,7 +184,7 @@ class NotificationChannelManager(
             group = account.uuid
 
             copyPropertiesFrom(oldNotificationChannel)
-            copyPropertiesFrom(account.notificationSettings)
+            copyPropertiesFrom(account)
         }
 
         Timber.v("Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
@@ -191,8 +192,14 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun NotificationChannel.matches(notificationSettings: NotificationSettings): Boolean {
-        return lightColor == notificationSettings.ledColor &&
+    private fun NotificationChannel.matches(account: Account): Boolean {
+        val systemLight = notificationLightDecoder.decode(
+            isBlinkLightsEnabled = shouldShowLights(),
+            lightColor = lightColor,
+            accountColor = account.chipColor
+        )
+        val notificationSettings = account.notificationSettings
+        return systemLight == notificationSettings.light &&
             shouldVibrate() == notificationSettings.isVibrateEnabled &&
             vibrationPattern.contentEquals(notificationSettings.vibrationPattern)
     }
@@ -211,8 +218,15 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun NotificationChannel.copyPropertiesFrom(notificationSettings: NotificationSettings) {
-        lightColor = notificationSettings.ledColor
+    private fun NotificationChannel.copyPropertiesFrom(account: Account) {
+        val notificationSettings = account.notificationSettings
+
+        notificationSettings.light.toColor(account)?.let { lightColor ->
+            this.lightColor = lightColor
+        }
+        val isLightEnabled = notificationSettings.light != NotificationLight.Disabled
+        enableLights(isLightEnabled)
+
         vibrationPattern = notificationSettings.vibrationPattern
         enableVibration(notificationSettings.isVibrateEnabled)
     }

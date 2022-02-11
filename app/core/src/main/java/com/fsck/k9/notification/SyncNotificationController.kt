@@ -41,7 +41,7 @@ internal class SyncNotificationController(
                 builder = notificationBuilder,
                 ringtone = null,
                 vibrationPattern = null,
-                ledColor = account.notificationSettings.ledColor,
+                ledColor = account.notificationSettings.light.toColor(account),
                 ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
                 ringAndVibrate = true
             )
@@ -88,7 +88,7 @@ internal class SyncNotificationController(
                 builder = notificationBuilder,
                 ringtone = null,
                 vibrationPattern = null,
-                ledColor = account.notificationSettings.ledColor,
+                ledColor = account.notificationSettings.light.toColor(account),
                 ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
                 ringAndVibrate = true
             )
@@ -118,7 +118,7 @@ internal class SyncNotificationController(
                 builder = notificationBuilder,
                 ringtone = null,
                 vibrationPattern = null,
-                ledColor = account.notificationSettings.ledColor,
+                ledColor = account.notificationSettings.light.toColor(account),
                 ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
                 ringAndVibrate = true
             )

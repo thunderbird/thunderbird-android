@@ -3,9 +3,11 @@ package com.fsck.k9.ui.settings.account
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
+import com.fsck.k9.NotificationLight
 import com.fsck.k9.Preferences
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
+import com.fsck.k9.notification.NotificationController
 import java.util.concurrent.ExecutorService
 
 class AccountSettingsDataStore(
@@ -13,7 +15,8 @@ class AccountSettingsDataStore(
     private val executorService: ExecutorService,
     private val account: Account,
     private val jobManager: K9JobManager,
-    private val notificationChannelManager: NotificationChannelManager
+    private val notificationChannelManager: NotificationChannelManager,
+    private val notificationController: NotificationController
 ) : PreferenceDataStore() {
     private var notificationSettingsChanged = false
 
@@ -30,7 +33,6 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail
             "account_notify_self" -> account.isNotifySelfNewMail
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly
-            "account_led" -> account.notificationSettings.isLedEnabled
             "account_notify_sync" -> account.isNotifySync
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
@@ -55,7 +57,6 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail = value
             "account_notify_self" -> account.isNotifySelfNewMail = value
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value
-            "account_led" -> account.updateNotificationSettings { it.copy(isLedEnabled = value) }
             "account_notify_sync" -> account.isNotifySync = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
@@ -72,15 +73,13 @@ class AccountSettingsDataStore(
     override fun getInt(key: String?, defValue: Int): Int {
         return when (key) {
             "chip_color" -> account.chipColor
-            "led_color" -> account.notificationSettings.ledColor
             else -> defValue
         }
     }
 
     override fun putInt(key: String?, value: Int) {
         when (key) {
-            "chip_color" -> account.chipColor = value
-            "led_color" -> setNotificationLightColor(value)
+            "chip_color" -> setAccountColor(value)
             else -> return
         }
 
@@ -135,6 +134,7 @@ class AccountSettingsDataStore(
             "account_combined_vibration" -> getCombinedVibrationValue()
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
             "account_ringtone" -> account.notificationSettings.ringtone
+            "notification_light" -> account.notificationSettings.light.name
             else -> defValue
         }
     }
@@ -179,15 +179,27 @@ class AccountSettingsDataStore(
             "account_combined_vibration" -> setCombinedVibrationValue(value)
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
             "account_ringtone" -> account.updateNotificationSettings { it.copy(isRingEnabled = true, ringtone = value) }
+            "notification_light" -> setNotificationLight(value)
             else -> return
         }
 
         saveSettingsInBackground()
     }
 
-    private fun setNotificationLightColor(value: Int) {
-        if (account.notificationSettings.ledColor != value) {
-            account.updateNotificationSettings { it.copy(ledColor = value) }
+    private fun setAccountColor(color: Int) {
+        if (color != account.chipColor) {
+            account.chipColor = color
+
+            if (account.notificationSettings.light == NotificationLight.AccountColor) {
+                notificationSettingsChanged = true
+            }
+        }
+    }
+
+    private fun setNotificationLight(value: String) {
+        val light = NotificationLight.valueOf(value)
+        if (light != account.notificationSettings.light) {
+            account.updateNotificationSettings { it.copy(light = light) }
             notificationSettingsChanged = true
         }
     }
@@ -196,6 +208,7 @@ class AccountSettingsDataStore(
         executorService.execute {
             if (notificationSettingsChanged) {
                 notificationChannelManager.recreateMessagesNotificationChannel(account)
+                notificationController.restoreNewMailNotifications(listOf(account))
             }
 
             notificationSettingsChanged = false

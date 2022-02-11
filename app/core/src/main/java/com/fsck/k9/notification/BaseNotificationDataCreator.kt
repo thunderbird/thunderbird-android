@@ -42,7 +42,7 @@ internal class BaseNotificationDataCreator {
     private fun createNotificationAppearance(account: Account): NotificationAppearance {
         return with(account.notificationSettings) {
             val vibrationPattern = if (isVibrateEnabled) vibrationPattern else null
-            NotificationAppearance(ringtone, vibrationPattern, ledColor)
+            NotificationAppearance(ringtone, vibrationPattern, account.notificationSettings.light.toColor(account))
         }
     }
 }
