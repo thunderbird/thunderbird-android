@@ -2,30 +2,31 @@ package com.fsck.k9.preferences;
 
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import timber.log.Timber;
 
 public class Storage {
-    private volatile Map<String, String> storage = Collections.emptyMap();
+    private final Map<String, String> values;
 
-    public Storage() { }
+    public Storage(Map<String, String> values) {
+        this.values = Collections.unmodifiableMap(values);
+    }
 
     public boolean isEmpty() {
-        return storage.isEmpty();
+        return values.isEmpty();
     }
 
     public boolean contains(String key) {
-        return storage.containsKey(key);
+        return values.containsKey(key);
     }
 
     public Map<String, String> getAll() {
-        return storage;
+        return values;
     }
 
     public boolean getBoolean(String key, boolean defValue) {
-        String val = storage.get(key);
+        String val = values.get(key);
         if (val == null) {
             return defValue;
         }
@@ -33,7 +34,7 @@ public class Storage {
     }
 
     public int getInt(String key, int defValue) {
-        String val = storage.get(key);
+        String val = values.get(key);
         if (val == null) {
             return defValue;
         }
@@ -46,7 +47,7 @@ public class Storage {
     }
 
     public long getLong(String key, long defValue) {
-        String val = storage.get(key);
+        String val = values.get(key);
         if (val == null) {
             return defValue;
         }
@@ -59,14 +60,10 @@ public class Storage {
     }
 
     public String getString(String key, String defValue) {
-        String val = storage.get(key);
+        String val = values.get(key);
         if (val == null) {
             return defValue;
         }
         return val;
-    }
-
-    public void replaceAll(Map<String, String> workingStorage) {
-        storage = new HashMap<>(workingStorage);
     }
 }

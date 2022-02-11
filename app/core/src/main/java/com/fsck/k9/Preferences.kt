@@ -32,6 +32,7 @@ class Preferences internal constructor(
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : AccountManager {
     private val accountLock = Any()
+    private val storageLock = Any()
 
     @GuardedBy("accountLock")
     private var accountsMap: MutableMap<String, Account>? = null
@@ -44,15 +45,22 @@ class Preferences internal constructor(
     private val accountsChangeListeners = CopyOnWriteArraySet<AccountsChangeListener>()
     private val accountRemovedListeners = CopyOnWriteArraySet<AccountRemovedListener>()
 
-    val storage = Storage()
+    @GuardedBy("storageLock")
+    private var currentStorage: Storage? = null
 
-    init {
-        val persistedStorageValues = storagePersister.loadValues()
-        storage.replaceAll(persistedStorageValues)
-    }
+    val storage: Storage
+        get() = synchronized(storageLock) {
+            currentStorage ?: storagePersister.loadValues().also { newStorage ->
+                currentStorage = newStorage
+            }
+        }
 
     fun createStorageEditor(): StorageEditor {
-        return storagePersister.createStorageEditor(storage)
+        return storagePersister.createStorageEditor { updater ->
+            synchronized(storageLock) {
+                currentStorage = updater(storage)
+            }
+        }
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

@@ -15,18 +15,16 @@ import timber.log.Timber;
 
 
 public class K9StorageEditor implements StorageEditor {
-    private Storage storage;
+    private StorageUpdater storageUpdater;
     private K9StoragePersister storagePersister;
 
     private Map<String, String> changes = new HashMap<>();
     private List<String> removals = new ArrayList<>();
-    private Map<String, String> snapshot = new HashMap<>();
 
 
-    public K9StorageEditor(Storage storage, K9StoragePersister storagePersister) {
-        this.storage = storage;
+    public K9StorageEditor(StorageUpdater storageUpdater, K9StoragePersister storagePersister) {
+        this.storageUpdater = storageUpdater;
         this.storagePersister = storagePersister;
-        snapshot.putAll(storage.getAll());
     }
 
     @Override
@@ -47,7 +45,7 @@ public class K9StorageEditor implements StorageEditor {
     @Override
     public boolean commit() {
         try {
-            commitChanges();
+            storageUpdater.updateStorage(this::commitChanges);
             return true;
         } catch (Exception e) {
             Timber.e(e, "Failed to save preferences");
@@ -55,13 +53,16 @@ public class K9StorageEditor implements StorageEditor {
         }
     }
 
-    private void commitChanges() {
+    private Storage commitChanges(Storage storage) {
         long startTime = SystemClock.elapsedRealtime();
         Timber.i("Committing preference changes");
+
+        Map<String, String> newValues = new HashMap<>();
+        Map<String, String> oldValues = storage.getAll();
         StoragePersistOperationCallback committer = new StoragePersistOperationCallback() {
             @Override
             public void beforePersistTransaction(Map<String, String> workingStorage) {
-                workingStorage.putAll(storage.getAll());
+                workingStorage.putAll(oldValues);
             }
 
             @Override
@@ -72,7 +73,7 @@ public class K9StorageEditor implements StorageEditor {
                 for (Entry<String, String> entry : changes.entrySet()) {
                     String key = entry.getKey();
                     String newValue = entry.getValue();
-                    String oldValue = snapshot.get(key);
+                    String oldValue = oldValues.get(key);
                     if (removals.contains(key) || !newValue.equals(oldValue)) {
                         ops.put(key, newValue);
                     }
@@ -81,12 +82,14 @@ public class K9StorageEditor implements StorageEditor {
 
             @Override
             public void onPersistTransactionSuccess(Map<String, String> workingStorage) {
-                storage.replaceAll(workingStorage);
+                newValues.putAll(workingStorage);
             }
         };
         storagePersister.doInTransaction(committer);
         long endTime = SystemClock.elapsedRealtime();
         Timber.i("Preferences commit took %d ms", endTime - startTime);
+
+        return new Storage(newValues);
     }
 
     @Override

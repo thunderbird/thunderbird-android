@@ -5,14 +5,15 @@ import android.content.SharedPreferences
 class InMemoryStoragePersister : StoragePersister {
     private val values = mutableMapOf<String, Any?>()
 
-    override fun loadValues(): Map<String, String> {
-        return values.mapValues { (_, value) -> value?.toString() ?: "" }
+    override fun loadValues(): Storage {
+        return Storage(values.mapValues { (_, value) -> value?.toString() ?: "" })
     }
 
-    override fun createStorageEditor(storage: Storage): StorageEditor = InMemoryStorageEditor(storage)
+    override fun createStorageEditor(storageUpdater: StorageUpdater): StorageEditor {
+        return InMemoryStorageEditor(storageUpdater)
+    }
 
-    private inner class InMemoryStorageEditor(private val storage: Storage) : StorageEditor {
-        private val snapshot = storage.all.toMutableMap()
+    private inner class InMemoryStorageEditor(private val storageUpdater: StorageUpdater) : StorageEditor {
         private val removals = mutableSetOf<String>()
         private val changes = mutableMapOf<String, String>()
         private var alreadyCommitted = false
@@ -52,12 +53,13 @@ class InMemoryStoragePersister : StoragePersister {
             if (alreadyCommitted) throw AssertionError("StorageEditor.commit() called more than once")
             alreadyCommitted = true
 
-            removals.forEach { snapshot.remove(it) }
-            snapshot.putAll(changes)
-
-            storage.replaceAll(snapshot)
+            storageUpdater.updateStorage(::writeValues)
 
             return true
+        }
+
+        private fun writeValues(currentStorage: Storage): Storage {
+            return Storage(currentStorage.all - removals + changes)
         }
     }
 }

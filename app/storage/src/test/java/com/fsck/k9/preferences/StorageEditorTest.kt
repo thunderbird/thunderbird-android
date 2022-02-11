@@ -1,47 +1,39 @@
 package com.fsck.k9.preferences
 
+import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
+import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
 import com.fsck.k9.storage.K9RobolectricTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
-import org.junit.Before
+import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stubbing
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
-import org.mockito.kotlin.whenever
 
 class StorageEditorTest : K9RobolectricTest() {
-    @Mock private lateinit var storage: Storage
-    @Mock private lateinit var storagePersister: K9StoragePersister
-    @Mock private lateinit var storagePersisterOps: K9StoragePersister.StoragePersistOperations
-    private lateinit var editor: K9StorageEditor
+    private val storage: Storage = Storage(mapOf("storage-key" to "storage-value"))
+    private val storageUpdater = TestStorageUpdater(storage)
+    private val storagePersister = mock<K9StoragePersister>()
+    private val storagePersisterOps = mock<StoragePersistOperations>()
+    private val editor = K9StorageEditor(storageUpdater, storagePersister)
 
     private val workingMap = mutableMapOf<String, String>()
-    private val storageMap = mapOf(
-        "storage-key" to "storage-value"
-    )
 
-    @Before
-    fun setUp() {
-        MockitoAnnotations.initMocks(this)
-        whenever(storage.all).thenReturn(storageMap)
-
-        editor = K9StorageEditor(storage, storagePersister)
-        verify(storage).all
-    }
+    private val newValues: Map<String, String>
+        get() = storageUpdater.newStorage!!.all
 
     @Test
     fun commit_exception() {
-        whenever(storagePersister.doInTransaction(any())).thenThrow(RuntimeException())
+        stubbing(storagePersister) {
+            on { doInTransaction(any()) } doThrow RuntimeException()
+        }
 
         val success = editor.commit()
 
-        assertFalse(success)
+        assertThat(success).isFalse()
     }
 
     @Test
@@ -50,7 +42,9 @@ class StorageEditorTest : K9RobolectricTest() {
 
         val success = editor.commit()
 
-        assertTrue(success)
+        assertThat(success).isTrue()
+        assertThat(newValues).isEqualTo(storage.all)
+
         verifyNoMoreInteractions(storagePersisterOps)
     }
 
@@ -61,7 +55,8 @@ class StorageEditorTest : K9RobolectricTest() {
         editor.putBoolean("x", true)
         val success = editor.commit()
 
-        assertTrue(success)
+        assertThat(success).isTrue()
+        assertThat(newValues).isEqualTo(mapOf("storage-key" to "storage-value", "x" to "true"))
         verify(storagePersisterOps).put("x", "true")
         verifyNoMoreInteractions(storagePersisterOps)
     }
@@ -73,7 +68,8 @@ class StorageEditorTest : K9RobolectricTest() {
         editor.putInt("x", 123)
         val success = editor.commit()
 
-        assertTrue(success)
+        assertThat(success).isTrue()
+        assertThat(newValues).isEqualTo(mapOf("storage-key" to "storage-value", "x" to "123"))
         verify(storagePersisterOps).put("x", "123")
         verifyNoMoreInteractions(storagePersisterOps)
     }
@@ -85,7 +81,8 @@ class StorageEditorTest : K9RobolectricTest() {
         editor.putLong("x", 1234)
         val success = editor.commit()
 
-        assertTrue(success)
+        assertThat(success).isTrue()
+        assertThat(newValues).isEqualTo(mapOf("storage-key" to "storage-value", "x" to "1234"))
         verify(storagePersisterOps).put("x", "1234")
         verifyNoMoreInteractions(storagePersisterOps)
     }
@@ -97,7 +94,8 @@ class StorageEditorTest : K9RobolectricTest() {
         editor.putString("x", "y")
         val success = editor.commit()
 
-        assertTrue(success)
+        assertThat(success).isTrue()
+        assertThat(newValues).isEqualTo(mapOf("storage-key" to "storage-value", "x" to "y"))
         verify(storagePersisterOps).put("x", "y")
         verifyNoMoreInteractions(storagePersisterOps)
     }
@@ -109,7 +107,8 @@ class StorageEditorTest : K9RobolectricTest() {
         editor.putString("storage-key", "storage-value")
         val success = editor.commit()
 
-        assertTrue(success)
+        assertThat(success).isTrue()
+        assertThat(newValues).isEqualTo(mapOf("storage-key" to "storage-value"))
         verifyNoMoreInteractions(storagePersisterOps)
     }
 
@@ -120,7 +119,8 @@ class StorageEditorTest : K9RobolectricTest() {
         editor.putString("storage-key", "other-value")
         val success = editor.commit()
 
-        assertTrue(success)
+        assertThat(success).isTrue()
+        assertThat(newValues).isEqualTo(mapOf("storage-key" to "other-value"))
         verify(storagePersisterOps).put("storage-key", "other-value")
         verifyNoMoreInteractions(storagePersisterOps)
     }
@@ -133,9 +133,23 @@ class StorageEditorTest : K9RobolectricTest() {
         editor.putString("storage-key", "storage-value")
         val success = editor.commit()
 
-        assertTrue(success)
+        assertThat(success).isTrue()
+        assertThat(newValues).isEqualTo(mapOf("storage-key" to "storage-value"))
         verify(storagePersisterOps).remove("storage-key")
         verify(storagePersisterOps).put("storage-key", "storage-value")
+        verifyNoMoreInteractions(storagePersisterOps)
+    }
+
+    @Test
+    fun `remove key that doesn't exist`() {
+        prepareStoragePersisterMock()
+
+        editor.remove("x")
+        val success = editor.commit()
+
+        assertThat(success).isTrue()
+        assertThat(newValues).isEqualTo(mapOf("storage-key" to "storage-value"))
+        verify(storagePersisterOps).remove("x")
         verifyNoMoreInteractions(storagePersisterOps)
     }
 
@@ -143,41 +157,47 @@ class StorageEditorTest : K9RobolectricTest() {
     fun remove() {
         prepareStoragePersisterMock()
 
-        editor.remove("x")
+        editor.remove("storage-key")
         val success = editor.commit()
 
-        assertTrue(success)
-        verify(storagePersisterOps).remove("x")
+        assertThat(success).isTrue()
+        assertThat(newValues).isEmpty()
+        verify(storagePersisterOps).remove("storage-key")
         verifyNoMoreInteractions(storagePersisterOps)
     }
 
     private fun prepareStoragePersisterMock() {
-        whenever(storagePersisterOps.put(any(), any())).then {
-            val key = it.getArgument<String>(0)
-            val value = it.getArgument<String>(0)
+        stubbing(storagePersisterOps) {
+            on { put(any(), any()) } doAnswer {
+                val key = it.getArgument<String>(0)
+                val value = it.getArgument<String>(1)
+                workingMap[key] = value
+            }
 
-            workingMap[key] = value
-            Unit
+            on { remove(any()) } doAnswer {
+                val key = it.getArgument<String>(0)
+                workingMap.remove(key)
+
+                Unit
+            }
         }
-        whenever(storagePersisterOps.remove(any())).then {
-            val key = it.getArgument<String>(0)
-            val value = it.getArgument<String>(0)
 
-            workingMap[key] = value
-            Unit
+        stubbing(storagePersister) {
+            on { doInTransaction(any()) } doAnswer {
+                val operationCallback = it.getArgument<StoragePersistOperationCallback>(0)
+
+                operationCallback.beforePersistTransaction(workingMap)
+                operationCallback.persist(storagePersisterOps)
+                operationCallback.onPersistTransactionSuccess(workingMap)
+            }
         }
+    }
+}
 
-        whenever(storagePersister.doInTransaction(any())).then {
-            val operationCallback = it.getArgument<K9StoragePersister.StoragePersistOperationCallback>(0)
-            operationCallback.beforePersistTransaction(workingMap)
-            verify(storage, times(2)).all
-            assertEquals(workingMap, storageMap)
+class TestStorageUpdater(private val currentStorage: Storage) : StorageUpdater {
+    var newStorage: Storage? = null
 
-            operationCallback.persist(storagePersisterOps)
-            verify(storagePersister).doInTransaction(any())
-
-            operationCallback.onPersistTransactionSuccess(workingMap)
-            verify(storage).replaceAll(eq(workingMap))
-        }
+    override fun updateStorage(updater: (currentStorage: Storage) -> Storage) {
+        newStorage = updater(currentStorage)
     }
 }
