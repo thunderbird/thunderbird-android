@@ -5,10 +5,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.SystemClock
 import com.fsck.k9.backend.imap.SystemAlarmManager
 import com.fsck.k9.helper.AlarmManagerCompat
+import com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -32,9 +32,8 @@ class AndroidAlarmManager(
         val intent = Intent(ALARM_ACTION).apply {
             setPackage(context.packageName)
         }
-        val flags = if (Build.VERSION.SDK_INT >= 23) PendingIntent.FLAG_IMMUTABLE else 0
 
-        PendingIntent.getBroadcast(context, REQUEST_CODE, intent, flags)
+        PendingIntent.getBroadcast(context, REQUEST_CODE, intent, FLAG_IMMUTABLE)
     }
 
     private val callback = AtomicReference<Callback?>(null)
