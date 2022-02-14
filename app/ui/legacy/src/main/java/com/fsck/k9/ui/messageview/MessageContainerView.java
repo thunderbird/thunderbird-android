@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ShareCompat;
 import com.fsck.k9.DI;
 import com.fsck.k9.message.html.DisplayHtml;
 import com.fsck.k9.ui.R;
@@ -138,10 +139,10 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                                 break;
                             }
                             case MENU_ITEM_LINK_SHARE: {
-                                Intent intent = new Intent(Intent.ACTION_SEND);
-                                intent.setType("text/plain");
-                                intent.putExtra(Intent.EXTRA_TEXT, url);
-                                startActivityIfAvailable(getContext(), intent);
+                                new ShareCompat.IntentBuilder(getContext())
+                                        .setType("text/plain")
+                                        .setText(url)
+                                        .startChooser();
                                 break;
                             }
                             case MENU_ITEM_LINK_COPY: {
