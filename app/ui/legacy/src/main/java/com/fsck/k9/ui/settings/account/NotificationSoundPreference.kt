@@ -28,8 +28,12 @@ constructor(
     defStyleRes: Int = 0
 ) : Preference(context, attrs, defStyleAttr, defStyleRes), PreferenceActivityResultListener {
 
+    fun setNotificationSound(sound: Uri?) {
+        persistRingtone(sound)
+    }
+
     override fun onPreferenceClick(fragment: PreferenceFragmentCompat, preference: Preference) {
-        launchRingtonePicker(fragment, onRestoreRingtone())
+        launchRingtonePicker(fragment, getPersistedRingtone())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -38,7 +42,7 @@ constructor(
         val uri = data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
 
         if (callChangeListener(uri?.toString().orEmpty())) {
-            onSaveRingtone(uri)
+            persistRingtone(uri)
         }
     }
 
@@ -58,12 +62,12 @@ constructor(
         fragment.startActivityForResult(intent, REQUEST_CODE_RINGTONE)
     }
 
-    private fun onRestoreRingtone(): Uri? {
+    private fun getPersistedRingtone(): Uri? {
         val uriString = getPersistedString(null)?.takeIf { it.isNotEmpty() }
         return uriString?.let { Uri.parse(it) }
     }
 
-    private fun onSaveRingtone(ringtoneUri: Uri?) {
+    private fun persistRingtone(ringtoneUri: Uri?) {
         persistString(ringtoneUri?.toString().orEmpty())
     }
 }
