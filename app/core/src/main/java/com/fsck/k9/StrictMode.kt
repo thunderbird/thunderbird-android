@@ -34,6 +34,10 @@ private fun createVmPolicy(): VmPolicy {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 detectCredentialProtectedWhileLocked()
             }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                detectIncorrectContextUse()
+                detectUnsafeIntentLaunch()
+            }
         }
         .penaltyLog()
         .build()
