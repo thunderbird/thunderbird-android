@@ -77,11 +77,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="authors">Authors</string>
 
-    <string name="read_messages_label">Read Emails</string>
-    <string name="read_messages_desc">Allows this application to read your Emails.</string>
-    <string name="delete_messages_label">Delete Emails</string>
-    <string name="delete_messages_desc">Allows this application to delete your Emails.</string>
-
     <string name="about_title">About K-9 Mail</string>
     <string name="accounts_title">Accounts</string>
     <string name="advanced">Advanced</string>

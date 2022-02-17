@@ -25,23 +25,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
-    <permission
-        android:name="${applicationId}.permission.READ_MESSAGES"
-        android:description="@string/read_messages_desc"
-        android:label="@string/read_messages_label"
-        android:permissionGroup="android.permission-group.MESSAGES"
-        android:protectionLevel="dangerous"/>
-    <uses-permission android:name="${applicationId}.permission.READ_MESSAGES"/>
-
-    <permission
-        android:name="${applicationId}.permission.DELETE_MESSAGES"
-        android:description="@string/delete_messages_desc"
-        android:label="@string/delete_messages_label"
-        android:permissionGroup="android.permission-group.MESSAGES"
-        android:protectionLevel="dangerous"/>
-    <uses-permission android:name="${applicationId}.permission.DELETE_MESSAGES"/>
-
-
     <application
         android:name="com.fsck.k9.App"
         android:allowTaskReparenting="false"
@@ -411,11 +394,7 @@
         <provider
             android:name=".external.MessageProvider"
             android:authorities="${applicationId}.messageprovider"
-            android:exported="true"
-            android:grantUriPermissions="true"
-            android:multiprocess="true"
-            android:readPermission="${applicationId}.permission.READ_MESSAGES"
-            android:writePermission="${applicationId}.permission.DELETE_MESSAGES"/>
+            android:exported="false" />
 
         <provider
             android:name=".provider.EmailProvider"
