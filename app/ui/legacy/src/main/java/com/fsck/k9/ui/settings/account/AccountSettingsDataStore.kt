@@ -178,7 +178,7 @@ class AccountSettingsDataStore(
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode = Account.FolderMode.valueOf(value)
             "account_combined_vibration" -> setCombinedVibrationValue(value)
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
-            "account_ringtone" -> account.updateNotificationSettings { it.copy(isRingEnabled = true, ringtone = value) }
+            "account_ringtone" -> setNotificationSound(value)
             "notification_light" -> setNotificationLight(value)
             else -> return
         }
@@ -191,6 +191,15 @@ class AccountSettingsDataStore(
             account.chipColor = color
 
             if (account.notificationSettings.light == NotificationLight.AccountColor) {
+                notificationSettingsChanged = true
+            }
+        }
+    }
+
+    private fun setNotificationSound(value: String) {
+        account.notificationSettings.let { notificationSettings ->
+            if (!notificationSettings.isRingEnabled || notificationSettings.ringtone != value) {
+                account.updateNotificationSettings { it.copy(isRingEnabled = true, ringtone = value) }
                 notificationSettingsChanged = true
             }
         }

@@ -56,6 +56,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val vibrator by lazy { requireContext().getSystemService<Vibrator>() }
     private lateinit var dataStore: AccountSettingsDataStore
 
+    private var notificationSoundPreference: NotificationSoundPreference? = null
     private var notificationLightPreference: ListPreference? = null
     private var notificationVibrationPreference: VibrationPreference? = null
 
@@ -197,6 +198,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            findPreference<NotificationSoundPreference>(PREFERENCE_NOTIFICATION_SOUND)?.let { preference ->
+                notificationSoundPreference = preference
+                preference.isEnabled = false
+            }
+
             findPreference<ListPreference>(PREFERENCE_NOTIFICATION_LIGHT)?.let { preference ->
                 notificationLightPreference = preference
                 preference.isEnabled = false
@@ -206,8 +212,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 notificationVibrationPreference = preference
                 preference.isEnabled = false
             }
-
-            PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference<Preference>(it).remove() }
 
             findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES)?.let {
                 it.notificationChannelIdProvider = {
@@ -226,7 +230,10 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun maybeUpdateNotificationPreferences(account: Account) {
-        if (notificationLightPreference != null || notificationVibrationPreference != null) {
+        if (notificationSoundPreference != null ||
+            notificationLightPreference != null ||
+            notificationVibrationPreference != null
+        ) {
             updateNotificationPreferences(account)
         }
     }
@@ -234,6 +241,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     @SuppressLint("NewApi")
     private fun updateNotificationPreferences(account: Account) {
         val notificationConfiguration = notificationChannelManager.getNotificationConfiguration(account)
+
+        notificationSoundPreference?.let { preference ->
+            preference.setNotificationSound(notificationConfiguration.sound)
+            preference.isEnabled = true
+        }
 
         notificationLightPreference?.let { preference ->
             val notificationLightSetting = notificationLightDecoder.decode(
@@ -440,16 +452,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_SENT_FOLDER = "sent_folder"
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
+        private const val PREFERENCE_NOTIFICATION_SOUND = "account_ringtone"
         private const val PREFERENCE_NOTIFICATION_LIGHT = "notification_light"
         private const val PREFERENCE_NOTIFICATION_VIBRATION = "account_combined_vibration"
         private const val PREFERENCE_NOTIFICATION_CHANNELS = "notification_channels"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES = "open_notification_settings_messages"
         private const val PREFERENCE_NOTIFICATION_SETTINGS_MISCELLANEOUS = "open_notification_settings_miscellaneous"
         private const val DELETE_POLICY_MARK_AS_READ = "MARK_AS_READ"
-
-        private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf(
-            "account_ringtone"
-        )
 
         private const val DIALOG_DELETE_ACCOUNT = 1
         private const val REQUEST_DELETE_ACCOUNT = 1

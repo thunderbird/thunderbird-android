@@ -1,12 +1,16 @@
 package com.fsck.k9.notification
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import com.fsck.k9.Account
 import com.fsck.k9.NotificationLight
+import com.fsck.k9.NotificationSettings
 import com.fsck.k9.Preferences
 import java.util.concurrent.Executor
 import timber.log.Timber
@@ -153,6 +157,7 @@ class NotificationChannelManager(
         val notificationChannel = notificationManager.getNotificationChannel(channelId)
 
         return NotificationConfiguration(
+            sound = notificationChannel.sound,
             isBlinkLightsEnabled = notificationChannel.shouldShowLights(),
             lightColor = notificationChannel.lightColor,
             isVibrationEnabled = notificationChannel.shouldVibrate(),
@@ -199,7 +204,8 @@ class NotificationChannelManager(
             accountColor = account.chipColor
         )
         val notificationSettings = account.notificationSettings
-        return systemLight == notificationSettings.light &&
+        return sound == notificationSettings.ringtoneUri &&
+            systemLight == notificationSettings.light &&
             shouldVibrate() == notificationSettings.isVibrateEnabled &&
             vibrationPattern.contentEquals(notificationSettings.vibrationPattern)
     }
@@ -221,6 +227,10 @@ class NotificationChannelManager(
     private fun NotificationChannel.copyPropertiesFrom(account: Account) {
         val notificationSettings = account.notificationSettings
 
+        if (notificationSettings.isRingEnabled) {
+            setSound(notificationSettings.ringtone?.toUri(), Notification.AUDIO_ATTRIBUTES_DEFAULT)
+        }
+
         notificationSettings.light.toColor(account)?.let { lightColor ->
             this.lightColor = lightColor
         }
@@ -233,9 +243,13 @@ class NotificationChannelManager(
 
     private val Account.messagesNotificationChannelSuffix: String
         get() = messagesNotificationChannelVersion.let { version -> if (version == 0) "" else "_$version" }
+
+    private val NotificationSettings.ringtoneUri: Uri?
+        get() = if (isRingEnabled) ringtone?.toUri() else null
 }
 
 data class NotificationConfiguration(
+    val sound: Uri?,
     val isBlinkLightsEnabled: Boolean,
     val lightColor: Int,
     val isVibrationEnabled: Boolean,
