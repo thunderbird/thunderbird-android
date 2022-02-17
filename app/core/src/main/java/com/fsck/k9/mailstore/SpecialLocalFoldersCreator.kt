@@ -50,6 +50,18 @@ class SpecialLocalFoldersCreator(
         preferences.saveAccount(account)
     }
 
+    fun createOutbox(account: Account): Long {
+        Timber.d("Creating Outbox folder")
+
+        val localStore = localStoreProvider.getInstance(account)
+        val outboxFolderId = localStore.createLocalFolder(OUTBOX_FOLDER_NAME, FolderType.OUTBOX)
+
+        account.outboxFolderId = outboxFolderId
+        preferences.saveAccount(account)
+
+        return outboxFolderId
+    }
+
     private fun Account.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {

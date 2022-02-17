@@ -78,6 +78,7 @@ import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SaveMessageData;
 import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
+import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.search.LocalSearch;
@@ -118,6 +119,7 @@ public class MessagingController {
     private final Preferences preferences;
     private final MessageStoreManager messageStoreManager;
     private final SaveMessageDataCreator saveMessageDataCreator;
+    private final SpecialLocalFoldersCreator specialLocalFoldersCreator;
 
     private final Thread controllerThread;
 
@@ -143,7 +145,8 @@ public class MessagingController {
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
             MessageCountsProvider messageCountsProvider, BackendManager backendManager,
             Preferences preferences, MessageStoreManager messageStoreManager,
-            SaveMessageDataCreator saveMessageDataCreator, List<ControllerExtension> controllerExtensions) {
+            SaveMessageDataCreator saveMessageDataCreator, SpecialLocalFoldersCreator specialLocalFoldersCreator,
+            List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
@@ -153,6 +156,7 @@ public class MessagingController {
         this.preferences = preferences;
         this.messageStoreManager = messageStoreManager;
         this.saveMessageDataCreator = saveMessageDataCreator;
+        this.specialLocalFoldersCreator = specialLocalFoldersCreator;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -1424,8 +1428,13 @@ public class MessagingController {
         try {
             Long outboxFolderId = account.getOutboxFolderId();
             if (outboxFolderId == null) {
-                Timber.e("Error sending message. No Outbox folder configured.");
-                return;
+                if (BuildConfig.DEBUG) {
+                    throw new AssertionError("Outbox does not exist");
+                }
+
+                Timber.w("Outbox does not exist");
+
+                outboxFolderId = specialLocalFoldersCreator.createOutbox(account);
             }
 
             message.setFlag(Flag.SEEN, true);
@@ -1513,7 +1522,7 @@ public class MessagingController {
             OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
             LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderId());
             if (!localFolder.exists()) {
-                Timber.v("Outbox does not exist");
+                Timber.w("Outbox does not exist");
                 return;
             }
 

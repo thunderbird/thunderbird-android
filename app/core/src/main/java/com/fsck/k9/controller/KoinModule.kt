@@ -6,6 +6,7 @@ import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.mailstore.SaveMessageDataCreator
+import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
 import org.koin.core.qualifier.named
@@ -23,6 +24,7 @@ val controllerModule = module {
             get<Preferences>(),
             get<MessageStoreManager>(),
             get<SaveMessageDataCreator>(),
+            get<SpecialLocalFoldersCreator>(),
             get(named("controllerExtensions"))
         )
     }
