@@ -116,7 +116,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="discard_action">Discard</string>
     <string name="save_draft_action">Save as draft</string>
     <string name="check_mail_action">Check mail</string>
-    <string name="check_all_mail_action">Check mail in all accounts</string>
     <string name="send_messages_action">Send messages</string>
     <string name="refresh_folders_action">Refresh folder list</string>
     <string name="filter_folders_action">Find folder</string>
