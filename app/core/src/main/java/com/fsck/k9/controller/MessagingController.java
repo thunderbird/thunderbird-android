@@ -2401,25 +2401,11 @@ public class MessagingController {
 
                 if (LocalFolder.isModeMismatch(aDisplayMode, fDisplayClass)) {
                     // Never sync a folder that isn't displayed
-                    /*
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
-                              " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
-                    }
-                    */
-
                     continue;
                 }
 
                 if (LocalFolder.isModeMismatch(aSyncMode, fSyncClass)) {
                     // Do not sync folders in the wrong class
-                    /*
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
-                              " which is in sync mode " + fSyncClass + " while account is in sync mode " + aSyncMode);
-                    }
-                    */
-
                     continue;
                 }
                 synchronizeFolder(account, folder, ignoreLastCheckedTime, listener, notificationState);
