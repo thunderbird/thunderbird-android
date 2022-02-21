@@ -193,6 +193,8 @@ class NotificationChannelManager(
         }
 
         Timber.v("Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
+        Timber.v("Old NotificationChannel: %s", oldNotificationChannel)
+        Timber.v("New NotificationChannel: %s", newNotificationChannel)
         notificationManager.createNotificationChannel(newNotificationChannel)
     }
 
