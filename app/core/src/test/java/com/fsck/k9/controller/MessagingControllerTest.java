@@ -31,6 +31,7 @@ import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
+import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.preferences.Protocols;
@@ -83,6 +84,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private MessageStoreManager messageStoreManager;
     @Mock
     private SaveMessageDataCreator saveMessageDataCreator;
+    @Mock
+    private SpecialLocalFoldersCreator specialLocalFoldersCreator;
     @Mock
     private SimpleMessagingListener listener;
     @Mock
@@ -139,7 +142,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
                 localStoreProvider, messageCountsProvider, backendManager, preferences, messageStoreManager,
-                saveMessageDataCreator, Collections.<ControllerExtension>emptyList());
+                saveMessageDataCreator, specialLocalFoldersCreator, Collections.<ControllerExtension>emptyList());
 
         configureAccount();
         configureBackendManager();
