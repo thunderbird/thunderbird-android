@@ -7,6 +7,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import com.fsck.k9.notification.NotificationIds.getNewMailSummaryNotificationId
+import timber.log.Timber
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
 internal class SummaryNotificationCreator(
@@ -73,6 +74,7 @@ internal class SummaryNotificationCreator(
             .setLockScreenNotification(baseNotificationData)
             .build()
 
+        Timber.v("Creating inbox-style summary notification (silent=%b): %s", notificationData.isSilent, notification)
         notificationManager.notify(notificationData.notificationId, notification)
     }
 
