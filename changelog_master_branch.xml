@@ -5,6 +5,16 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.912" versioncode="29012" date="2022-02-22">
+        <change>Fixed bugs where notifications weren't removed when they should have been</change>
+        <change>Added a setting to configure the notification sound on Android 8+ (because some vendor-specific Android versions removed this feature from their user interface)</change>
+        <change>Automatically recover in situations where messages can't be sent because the Outbox folder is missing</change>
+        <change>Added more logging around 'new message' notifications</change>
+        <change>Always prompt which app to use when sharing links</change>
+        <change>Removed the the button bar in the drawer and switched back to the sticky footer</change>
+        <change>Don't expose MessageProvider to third-party apps</change>
+        <change>Updated the app to target the Android 12 API</change>
+    </release>
     <release version="5.911" versioncode="29011" date="2022-02-12">
         <change>Reworked the user interface for the vibration pattern setting</change>
         <change>Reworked the notification light color setting</change>
