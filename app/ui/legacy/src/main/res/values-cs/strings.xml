@@ -60,10 +60,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autoři</string>
-  <string name="read_messages_label">Číst zprávy</string>
-  <string name="read_messages_desc">Povolit této aplikaci číst vaši poštu.</string>
-  <string name="delete_messages_label">Mazat zprávy</string>
-  <string name="delete_messages_desc">Povolit této aplikaci mazat e-maily.</string>
   <string name="about_title">O aplikaci K-9 mail</string>
   <string name="accounts_title">Účty</string>
   <string name="advanced">Pokročilé</string>
@@ -100,7 +96,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="discard_action">Zrušit</string>
   <string name="save_draft_action">Uložit jako koncept</string>
   <string name="check_mail_action">Zkontrolovat poštu</string>
-  <string name="check_all_mail_action">Zkontrolovat e-maily ve všech účtech</string>
   <string name="send_messages_action">Odeslat zprávy</string>
   <string name="refresh_folders_action">Obnovit složky</string>
   <string name="filter_folders_action">Najdi složku</string>
@@ -245,6 +240,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="global_settings_show_contact_name_summary">Použít jména příjemců ze Seznamu kontaktů, je-li to možné</string>
   <string name="global_settings_registered_name_color_label">Obarvit kontakty</string>
   <string name="global_settings_registered_name_color_changed">Obarvit jména v seznamu kontaktů</string>
+  <string name="general_settings_contact_name_color_label">Barva pro název kontaktu</string>
   <string name="global_settings_messageview_fixedwidth_label">Písma s pevnou šířkou</string>
   <string name="global_settings_messageview_fixedwidth_summary">Pro zobrazování neformátovaných textových zpráv použít písmo s pevnou šířkou</string>
   <string name="global_settings_messageview_autofit_width_label">Automatické přizpůsobení zpráv</string>
@@ -462,8 +458,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_mail_check_frequency_label">Frekvence dotazování složky</string>
   <string name="account_settings_color_label">Barva účtu</string>
   <string name="account_settings_color_summary">Vyberte barvu pro tento účet, používanou v seznamech složek a zpráv</string>
-  <string name="account_settings_led_color_label">Barva oznamovací LED</string>
-  <string name="account_settings_led_color_summary">Barva, kterou má telefon blikat pro tento účet</string>
   <string name="account_settings_mail_display_count_label">Velikost místního adresáře</string>
   <string name="account_settings_autodownload_message_size_label">Stahovat zprávy až do</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -549,13 +543,29 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_description_label">Název účtu</string>
   <string name="account_settings_name_label">Vaše jméno</string>
   <string name="notifications_title">Oznámení</string>
+  <string name="account_settings_vibration">Vibrace</string>
   <string name="account_settings_vibrate_enable">Vibrovat</string>
-  <string name="account_settings_vibrate_summary">Vibrovat při příchodu zpráv</string>
+  <string name="account_settings_vibrate_pattern_label">Vzorec vibrování</string>
   <string name="account_settings_vibrate_pattern_default">Standardní</string>
+  <string name="account_settings_vibrate_pattern_1">Vzorec 1</string>
+  <string name="account_settings_vibrate_pattern_2">Vzorec 2</string>
+  <string name="account_settings_vibrate_pattern_3">Vzorec 3</string>
+  <string name="account_settings_vibrate_pattern_4">Vzorec 4</string>
+  <string name="account_settings_vibrate_pattern_5">Vzorec 5</string>
   <string name="account_settings_vibrate_times">Opakovat vibrace</string>
+  <string name="account_settings_vibrate_summary_disabled">Vypnuto</string>
   <string name="account_settings_ringtone">Zvuk při nové poště</string>
-  <string name="account_settings_led_label">Blikání LED</string>
-  <string name="account_settings_led_summary">Blikat LED, když přijde pošta</string>
+  <string name="account_settings_notification_light_label">Kontrolka upozornění</string>
+  <string name="account_settings_notification_light_disabled">Vypnuto</string>
+  <string name="account_settings_notification_light_account_color">Barva účtu</string>
+  <string name="account_settings_notification_light_default_color">Výchozí barva ze systému</string>
+  <string name="account_settings_notification_light_white">Bílá</string>
+  <string name="account_settings_notification_light_red">Červená</string>
+  <string name="account_settings_notification_light_green">Zelená</string>
+  <string name="account_settings_notification_light_blue">Modrá</string>
+  <string name="account_settings_notification_light_yellow">Žlutá</string>
+  <string name="account_settings_notification_light_cyan">Azurová</string>
+  <string name="account_settings_notification_light_magenta">Purpurová</string>
   <string name="account_settings_composition_title">Možnosti tvorby nových zpráv</string>
   <string name="account_settings_composition_label">Výchozí položky nové zprávy</string>
   <string name="account_settings_composition_summary">Nastavit výchozí hodnoty Odesílatele, Skryté a podpisu</string>

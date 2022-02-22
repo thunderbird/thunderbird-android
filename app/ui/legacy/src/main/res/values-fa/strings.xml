@@ -60,10 +60,6 @@
   <string name="account_delete_dlg_instructions_fmt">حساب «<xliff:g id="account">%s</xliff:g>» از K-9 Mail حذف خواهد شد.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">سازندگان</string>
-  <string name="read_messages_label">خواندن رایانامه‌ها</string>
-  <string name="read_messages_desc">به این برنامه اجازه می‌دهد رایانامه‌های شما را بخواند.</string>
-  <string name="delete_messages_label">پاک‌کردن رایانامه‌ها</string>
-  <string name="delete_messages_desc">به این برنامه اجازه می‌دهد رایانامه‌های شما را پاک کند.</string>
   <string name="about_title">دربارهٔ K-9 Mail</string>
   <string name="accounts_title">حساب‌ها</string>
   <string name="advanced">پیشرفته</string>
@@ -100,7 +96,6 @@
   <string name="discard_action">دورانداختن</string>
   <string name="save_draft_action">ذخیره در پیش‌نویس</string>
   <string name="check_mail_action">به‌روزآوری رایانامه‌ها</string>
-  <string name="check_all_mail_action">بررسی رایانامه‌ها در تمامی حساب‌ها</string>
   <string name="send_messages_action">ارسال پیام‌ها</string>
   <string name="refresh_folders_action">بازآوری لیست پوشه‌ها</string>
   <string name="filter_folders_action">یافتن پوشه</string>
@@ -453,8 +448,6 @@
   <string name="account_settings_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
   <string name="account_settings_color_label">رنگ حساب کاربری</string>
   <string name="account_settings_color_summary">رنگ مشخصهٔ این حساب که در لیست پوشه‌ها و حساب‌ها استفاده می‌شود</string>
-  <string name="account_settings_led_color_label">رنگ اعلان LED</string>
-  <string name="account_settings_led_color_summary">برای این حساب کاربری چراغ LED دستگاهتان به چه رنگی چشمک بزند</string>
   <string name="account_settings_mail_display_count_label">گنجایش پوشهٔ محلی</string>
   <string name="account_settings_autodownload_message_size_label">واکشی پیام‌ها تا این حجم</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -541,12 +534,10 @@
   <string name="account_settings_name_label">نام شما</string>
   <string name="notifications_title">اعلان‌ها</string>
   <string name="account_settings_vibrate_enable">لرزش</string>
-  <string name="account_settings_vibrate_summary">لرزش به‌هنگام رسیدن رایانامه</string>
   <string name="account_settings_vibrate_pattern_default">پیش‌فرض</string>
   <string name="account_settings_vibrate_times">تکرار لرزش</string>
   <string name="account_settings_ringtone">زنگ رایانامهٔ جدید</string>
-  <string name="account_settings_led_label">چشمک‌زدن LED</string>
-  <string name="account_settings_led_summary">وقتی رایانامه می‌رسد LED چشمک بزند</string>
+  <string name="account_settings_notification_light_account_color">رنگ حساب کاربری</string>
   <string name="account_settings_composition_title">گزینه‌های نوشتن پیام</string>
   <string name="account_settings_composition_label">پیش‌فرض‌های نوشتن</string>
   <string name="account_settings_composition_summary">پیش‌فرض‌های خودتان را برای «از»، «مخفیانه به» و «امضا» تنظیم کنید</string>

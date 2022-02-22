@@ -14,10 +14,6 @@
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
   <!--=== General strings ==================================================================-->
-  <string name="read_messages_label">이메일 읽기</string>
-  <string name="read_messages_desc">K-9이 이메일을 읽도록 합니다.</string>
-  <string name="delete_messages_label">이메일 삭제</string>
-  <string name="delete_messages_desc">K-9이 이메일을 삭제하도록 합니다</string>
   <string name="accounts_title">계정</string>
   <string name="advanced">고급</string>
   <string name="compose_title_compose">작성</string>
@@ -360,8 +356,6 @@
   <string name="account_settings_mail_check_frequency_label">폴더 수신 빈도</string>
   <string name="account_settings_color_label">계정 색깔</string>
   <string name="account_settings_color_summary">계정 목록과 폴더 내에서 사용될 계정 색깔을 선택하십시오</string>
-  <string name="account_settings_led_color_label">알림 LED 색깔</string>
-  <string name="account_settings_led_color_summary">이 계정의 LED 깜박임 색을 선택하십시오</string>
   <string name="account_settings_mail_display_count_label">로컬 폴더 용량</string>
   <string name="account_settings_autodownload_message_size_label">가져올 메시지 최대 용량</string>
   <string name="account_settings_autodownload_message_size_any">얼마든지 (무제한)</string>
@@ -428,12 +422,10 @@
   <string name="account_settings_name_label">당신의 이름</string>
   <string name="notifications_title">알림</string>
   <string name="account_settings_vibrate_enable">진동</string>
-  <string name="account_settings_vibrate_summary">메일 도착 시 진동합니다</string>
   <string name="account_settings_vibrate_pattern_default">기본</string>
   <string name="account_settings_vibrate_times">진동 반복</string>
   <string name="account_settings_ringtone">새 메일 벨소리</string>
-  <string name="account_settings_led_label">LED 깜박임</string>
-  <string name="account_settings_led_summary">메일 도착 시 LED를 깜박입니다</string>
+  <string name="account_settings_notification_light_account_color">계정 색깔</string>
   <string name="account_settings_composition_title">메시지 작성 옵션</string>
   <string name="account_settings_composition_label">메시지 작성 기본값</string>
   <string name="account_settings_composition_summary">기본 발신자, 숨은 참조, 서명을 설정하십시오</string>

@@ -59,10 +59,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_delete_dlg_instructions_fmt">La konto \"<xliff:g id="account">%s</xliff:g>\" estos forigita el K-9 Retpoŝtilo.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Aŭtoroj</string>
-  <string name="read_messages_label">Legi retleterojn</string>
-  <string name="read_messages_desc">Permesas al tiu ĉi aplikaĵo legi viajn retleterojn.</string>
-  <string name="delete_messages_label">Forigi retleterojn</string>
-  <string name="delete_messages_desc">Permesas al tiu ĉi aplikaĵo forigi viajn retleterojn.</string>
   <string name="about_title">Pri K-9 Retpoŝtilo</string>
   <string name="accounts_title">Kontoj</string>
   <string name="advanced">Spertulaj</string>
@@ -99,7 +95,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="discard_action">Ignori</string>
   <string name="save_draft_action">Konservi kiel malneton</string>
   <string name="check_mail_action">Kontroli retpoŝton</string>
-  <string name="check_all_mail_action">Kontroli retpoŝton (ĉiuj kontoj)</string>
   <string name="send_messages_action">Sendi mesaĝojn</string>
   <string name="refresh_folders_action">Aktualigi liston</string>
   <string name="filter_folders_action">Serĉi mesaĝujon</string>
@@ -451,8 +446,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_mail_check_frequency_label">Ofteco de mesaĝuj-elŝuto</string>
   <string name="account_settings_color_label">Konta koloro</string>
   <string name="account_settings_color_summary">Distinga koloro por tiu ĉi konto uzata en listoj de mesaĝujoj kaj kontoj</string>
-  <string name="account_settings_led_color_label">Sciiga LED-a koloro</string>
-  <string name="account_settings_led_color_summary">Koloro de aparata LED kiu briletos je sciigoj pri tiu ĉi konto</string>
   <string name="account_settings_mail_display_count_label">Grando de loka mesaĝujo</string>
   <string name="account_settings_autodownload_message_size_label">Elŝuti mesaĝojn de maksimuma grando</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -539,12 +532,10 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_name_label">Via nomo</string>
   <string name="notifications_title">Sciigoj</string>
   <string name="account_settings_vibrate_enable">Vibrado</string>
-  <string name="account_settings_vibrate_summary">Vibradas kiam retletero alvenas</string>
   <string name="account_settings_vibrate_pattern_default">Norma</string>
   <string name="account_settings_vibrate_times">Kiom da vibroj</string>
   <string name="account_settings_ringtone">Son-sciigo pri nova mesaĝo</string>
-  <string name="account_settings_led_label">LED-brileto</string>
-  <string name="account_settings_led_summary">Briletas LED-on kiam retletero alvenas</string>
+  <string name="account_settings_notification_light_account_color">Konta koloro</string>
   <string name="account_settings_composition_title">Agordoj de mesaĝ-kreado</string>
   <string name="account_settings_composition_label">Mesaĝ-kreadaj implicitaj</string>
   <string name="account_settings_composition_summary">Agordas implicitajn valoroj: de kiu, kaŝkopio, subskribo</string>

@@ -58,10 +58,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstránený z K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autori</string>
-  <string name="read_messages_label">Čítať správy</string>
-  <string name="read_messages_desc">Umožňuje tejto aplikácii čítať vaše e-maily.</string>
-  <string name="delete_messages_label">Mazať správy</string>
-  <string name="delete_messages_desc">Umožňuje tejto aplikácii mazať vaše e-maily.</string>
   <string name="about_title">O aplikácii K-9 mail </string>
   <string name="accounts_title">Účty</string>
   <string name="advanced">Pokročilé</string>
@@ -438,8 +434,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
   <string name="account_settings_color_label">Farba účtu</string>
   <string name="account_settings_color_summary">Farba účtu v zozname priečinkov a účtov</string>
-  <string name="account_settings_led_color_label">Farba notifikačnej LED</string>
-  <string name="account_settings_led_color_summary">Farba blikania LED pre tento účet</string>
   <string name="account_settings_mail_display_count_label">Veľkosť lokálneho priečinka</string>
   <string name="account_settings_autodownload_message_size_label">Načítať správy do veľkosti</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -525,12 +519,10 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_name_label">Vaše meno</string>
   <string name="notifications_title">Oznámenia</string>
   <string name="account_settings_vibrate_enable">Vibrovanie</string>
-  <string name="account_settings_vibrate_summary">Vibrovať pri doručení nového e-mailu</string>
   <string name="account_settings_vibrate_pattern_default">Predvolené</string>
   <string name="account_settings_vibrate_times">Opakovať vibrovanie</string>
   <string name="account_settings_ringtone">Zvonenie pre novú správu</string>
-  <string name="account_settings_led_label">Blikanie LED</string>
-  <string name="account_settings_led_summary">Blikať diódou LED pri doručení novej správy</string>
+  <string name="account_settings_notification_light_account_color">Farba účtu</string>
   <string name="account_settings_composition_title">Možnosti vytvárania správ</string>
   <string name="account_settings_composition_label">Predvolené vytváranie</string>
   <string name="account_settings_composition_summary">Nastavte predvolené hodnoty pre odosielateľa správy, skrytú kópiu a podpis</string>

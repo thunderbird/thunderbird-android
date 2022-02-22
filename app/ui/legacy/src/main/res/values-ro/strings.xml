@@ -60,10 +60,6 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="account_delete_dlg_instructions_fmt">Contul \"<xliff:g id="account">%s</xliff:g>\" va fi șters din K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autori</string>
-  <string name="read_messages_label">Citire emailuri</string>
-  <string name="read_messages_desc">Permite acestei aplicații să îți citească emailurile.</string>
-  <string name="delete_messages_label">Ștergere emailuri</string>
-  <string name="delete_messages_desc">Permite acestei aplicații să îți șteargă emailurile.</string>
   <string name="about_title">Despre K-9 Mail</string>
   <string name="accounts_title">Conturi</string>
   <string name="advanced">Avansat</string>
@@ -100,7 +96,6 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="discard_action">Renunță</string>
   <string name="save_draft_action">Salvează ca ciornă</string>
   <string name="check_mail_action">Verifică email</string>
-  <string name="check_all_mail_action">Verificarea corespondenței în toate conturile</string>
   <string name="send_messages_action">Trimite mesaje</string>
   <string name="refresh_folders_action">Reîmprospătează lista de dosare</string>
   <string name="filter_folders_action">Găsește dosar</string>
@@ -462,8 +457,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_mail_check_frequency_label">Frecvență interogare dosar</string>
   <string name="account_settings_color_label">Culoarea contului</string>
   <string name="account_settings_color_summary">Culoarea contului folosită în lista de dosare și conturi</string>
-  <string name="account_settings_led_color_label">Culoare LED notificare</string>
-  <string name="account_settings_led_color_summary">Culoarea în care LED-ul dispozitivului trebuie sa clipească pentru acest cont</string>
   <string name="account_settings_mail_display_count_label">Mărimea dosarului local</string>
   <string name="account_settings_autodownload_message_size_label">Aduce mesaje până la</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -550,7 +543,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_name_label">Nume</string>
   <string name="notifications_title">Notificări</string>
   <string name="account_settings_vibrate_enable">Vibrație</string>
-  <string name="account_settings_vibrate_summary">Vibrează când vine mail</string>
   <string name="account_settings_vibrate_pattern_label">Model de vibrații</string>
   <string name="account_settings_vibrate_pattern_default">Implicit</string>
   <string name="account_settings_vibrate_pattern_1">Modelul 1</string>
@@ -560,8 +552,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_vibrate_pattern_5">Modelul 5</string>
   <string name="account_settings_vibrate_times">Repetă vibrație</string>
   <string name="account_settings_ringtone">Ton mesaje noi</string>
-  <string name="account_settings_led_label">Clipire LED</string>
-  <string name="account_settings_led_summary">Clipire LED când vine mail</string>
+  <string name="account_settings_notification_light_account_color">Culoarea contului</string>
   <string name="account_settings_composition_title">Opțiuni compunere mesaj</string>
   <string name="account_settings_composition_label">Setări implicite compunere mesaj</string>
   <string name="account_settings_composition_summary">Setează ”De la”, Bcc și semnătură</string>

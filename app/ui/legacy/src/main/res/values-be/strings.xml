@@ -56,10 +56,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_delete_dlg_instructions_fmt">Акаўнт \"<xliff:g id="account">%s</xliff:g>\" будзе выдалены з K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Аўтары</string>
-  <string name="read_messages_label">Чытанне электроннай пошты</string>
-  <string name="read_messages_desc">Дазваляе праграме чытаць электронную пошту.</string>
-  <string name="delete_messages_label">Чытанне электроннай пошты</string>
-  <string name="delete_messages_desc">Дазваляе праграме выдаляць электронную пошту.</string>
   <string name="about_title">Пра K-9 Mail</string>
   <string name="accounts_title">Акаўнты</string>
   <string name="advanced">Дадаткова</string>
@@ -437,8 +433,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_mail_check_frequency_label">Чашчыня праверкі</string>
   <string name="account_settings_color_label">Колер акаўнта</string>
   <string name="account_settings_color_summary">Колер гэтага акаўнта для каталогаў і спіса акаўнтаў</string>
-  <string name="account_settings_led_color_label">Колер індыкатара</string>
-  <string name="account_settings_led_color_summary">Колер індыкатара для апавяшчэнняў для гэтага акаўнта</string>
   <string name="account_settings_mail_display_count_label">Памер лакальнага каталога</string>
   <string name="account_settings_autodownload_message_size_label">Памер атрымання</string>
   <string name="account_settings_autodownload_message_size_1">1 Кб</string>
@@ -524,12 +518,10 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_name_label">Ваша імя</string>
   <string name="notifications_title">Апавяшчэнні</string>
   <string name="account_settings_vibrate_enable">Вібрацыя</string>
-  <string name="account_settings_vibrate_summary">Вібрацыя пры атрыманні новай пошты</string>
   <string name="account_settings_vibrate_pattern_default">Прадвызначана</string>
   <string name="account_settings_vibrate_times">Паўтор вібрацыі</string>
   <string name="account_settings_ringtone">Мелодыя атрымання новай пошты</string>
-  <string name="account_settings_led_label">Мігцець індыкатарам</string>
-  <string name="account_settings_led_summary">Мігцець індыкатарам пры атрыманні новай пошты</string>
+  <string name="account_settings_notification_light_account_color">Колер акаўнта</string>
   <string name="account_settings_composition_title">Параметры стварэння ліста</string>
   <string name="account_settings_composition_label">Новы ліст</string>
   <string name="account_settings_composition_summary">Прадвызначаныя адпраўнік, копія, схаваная копія</string>

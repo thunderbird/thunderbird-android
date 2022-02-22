@@ -53,10 +53,6 @@
   <string name="account_delete_dlg_instructions_fmt">سيُحذف الحساب \"<xliff:g id="account">%s</xliff:g>\" من الحسابات في K-9.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">الناشرين</string>
-  <string name="read_messages_label">الرسائل المقروءة</string>
-  <string name="read_messages_desc">السماح لهذا التطبيق بقراءة البريد الإلكتروني</string>
-  <string name="delete_messages_label">حذف الرسائل</string>
-  <string name="delete_messages_desc">السماح لهذا التطبيق بحذف رسائل البريد الإلكتروني</string>
   <string name="about_title">عن بريد K-9</string>
   <string name="accounts_title">الحسابات</string>
   <string name="advanced">متقدمة</string>
@@ -403,7 +399,6 @@
   <string name="account_settings_crypto_summary_on">متصل بـ %s</string>
   <string name="account_settings_crypto_summary_config">الضبط جارٍ…</string>
   <string name="account_settings_color_label">لون الحساب</string>
-  <string name="account_settings_led_color_label">لون ضوء التنبيهات</string>
   <string name="account_settings_mail_display_count_label">حجم المجلد المحلي</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
   <string name="account_settings_autodownload_message_size_2">2 KiB</string>
@@ -479,11 +474,10 @@
   <string name="account_settings_name_label">اسمك</string>
   <string name="notifications_title">التنبيهات</string>
   <string name="account_settings_vibrate_enable">الاهتزاز</string>
-  <string name="account_settings_vibrate_summary">الهتزاز عند وصول البريد</string>
   <string name="account_settings_vibrate_pattern_default">الإفتراضي</string>
   <string name="account_settings_vibrate_times">مُعاودة الإهتزاز</string>
   <string name="account_settings_ringtone">نغمة البريد الجديد</string>
-  <string name="account_settings_led_label">وميض ضوء التنبيهات</string>
+  <string name="account_settings_notification_light_account_color">لون الحساب</string>
   <string name="account_settings_composition_title">خيارات تحرير الرسائل</string>
   <string name="account_settings_composition_label">الخيارات الإفتراضية للتحرير</string>
   <string name="account_settings_identities_label">إدارة الهويات</string>

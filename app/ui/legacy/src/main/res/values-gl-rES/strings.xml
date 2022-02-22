@@ -14,10 +14,6 @@
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada do K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
-  <string name="read_messages_label">Ler correos</string>
-  <string name="read_messages_desc">Permitir a este aplicativo ler os teus correos.</string>
-  <string name="delete_messages_label">Eliminar correos</string>
-  <string name="delete_messages_desc">Permitir a este aplicativo eliminar os teus correos.</string>
   <string name="accounts_title">Contas</string>
   <string name="advanced">Avanzado</string>
   <string name="compose_title_compose">Redactar</string>
@@ -333,8 +329,6 @@
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_color_label">Cor da conta</string>
   <string name="account_settings_color_summary">A cor identificativa para esta conta para os cartafoles e lista de contas</string>
-  <string name="account_settings_led_color_label">Cor do aviso LED</string>
-  <string name="account_settings_led_color_summary">Selecciona a cor LED para os avisos desta conta</string>
   <string name="account_settings_mail_display_count_label">Tamaño do cartafol local</string>
   <string name="account_settings_autodownload_message_size_label">Obter mensaxes ata</string>
   <string name="account_settings_autodownload_message_size_any">calquera tamaño (sen límites)</string>
@@ -398,12 +392,10 @@
   <string name="account_settings_name_label">O teu nome</string>
   <string name="notifications_title">Notificacións</string>
   <string name="account_settings_vibrate_enable">Vibrar</string>
-  <string name="account_settings_vibrate_summary">Vibrar cando chegue unha mensaxe</string>
   <string name="account_settings_vibrate_pattern_default">Predefinido</string>
   <string name="account_settings_vibrate_times">Repetir vibración</string>
   <string name="account_settings_ringtone">Son de correo novo</string>
-  <string name="account_settings_led_label">Pestanexo LED</string>
-  <string name="account_settings_led_summary">Pestanexo LED cando chega unha mensaxe</string>
+  <string name="account_settings_notification_light_account_color">Cor da conta</string>
   <string name="account_settings_composition_title">Opcións de edición de mensaxes</string>
   <string name="account_settings_composition_label">Edición predefinida</string>
   <string name="account_settings_composition_summary">Predefinir Desde, Bcc e sinatura</string>

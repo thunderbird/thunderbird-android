@@ -60,10 +60,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird aus K-9 Mail entfernt.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autoren</string>
-  <string name="read_messages_label">E-Mails lesen</string>
-  <string name="read_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu lesen.</string>
-  <string name="delete_messages_label">E-Mails löschen</string>
-  <string name="delete_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu löschen.</string>
   <string name="about_title">Über K-9 Mail</string>
   <string name="accounts_title">Konten</string>
   <string name="advanced">Erweitert</string>
@@ -100,7 +96,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="discard_action">Verwerfen</string>
   <string name="save_draft_action">Als Entwurf speichern</string>
   <string name="check_mail_action">E-Mail abrufen</string>
-  <string name="check_all_mail_action">E-Mails in allen Konten abfragen</string>
   <string name="send_messages_action">Nachrichten senden</string>
   <string name="refresh_folders_action">Ordnerliste aktualisieren</string>
   <string name="filter_folders_action">Ordner suchen</string>
@@ -239,7 +234,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_show_contact_name_label">Namen aus Adressbuch</string>
   <string name="global_settings_show_contact_name_summary">Bekannte Namen aus dem Adressbuch (\'Kontakte\') anzeigen</string>
   <string name="global_settings_registered_name_color_label">Farbe von bekannten Namen</string>
-  <string name="global_settings_registered_name_color_changed">Farbe wählen</string>
+  <string name="global_settings_registered_name_color_changed">Namen in deiner Kontaktliste einfärben</string>
+  <string name="general_settings_contact_name_color_label">Farbe des Kontaktnamens</string>
   <string name="global_settings_messageview_fixedwidth_label">Monotype-Schriftart</string>
   <string name="global_settings_messageview_fixedwidth_summary">Schriftart mit gleicher Zeichenbreite für Nur-Text-Nachrichten verwenden</string>
   <string name="global_settings_messageview_autofit_width_label">Nachrichtendarstellung</string>
@@ -458,8 +454,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
   <string name="account_settings_color_label">Kontofarbe</string>
   <string name="account_settings_color_summary">Farbe, in der das Konto in der Konten- und Ordnerliste dargestellt wird</string>
-  <string name="account_settings_led_color_label">Farbe der Benachrichtigungs-LED</string>
-  <string name="account_settings_led_color_summary">Farbe, die für die Benachrichtigungs-LED bei Benachrichtigungen für dieses Konto verwendet wird</string>
   <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
   <string name="account_settings_autodownload_message_size_label">Nachrichten automatisch laden bis</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -545,8 +539,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_description_label">Kontoname</string>
   <string name="account_settings_name_label">Ihr Name</string>
   <string name="notifications_title">Benachrichtigungen</string>
+  <string name="account_settings_vibration">Vibration</string>
   <string name="account_settings_vibrate_enable">Vibration</string>
-  <string name="account_settings_vibrate_summary">Vibration bei neuer Nachricht</string>
   <string name="account_settings_vibrate_pattern_label">Vibrationsrhythmus</string>
   <string name="account_settings_vibrate_pattern_default">Standard</string>
   <string name="account_settings_vibrate_pattern_1">Rhythmus 1</string>
@@ -555,9 +549,19 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_vibrate_pattern_4">Rhythmus 4</string>
   <string name="account_settings_vibrate_pattern_5">Rhythmus 5</string>
   <string name="account_settings_vibrate_times">Anzahl der Vibrationen</string>
+  <string name="account_settings_vibrate_summary_disabled">Deaktiviert</string>
   <string name="account_settings_ringtone">Klingelton</string>
-  <string name="account_settings_led_label">LED-Blinken</string>
-  <string name="account_settings_led_summary">LED blinkt bei neuer Nachricht</string>
+  <string name="account_settings_notification_light_label">Benachrichtigungslicht</string>
+  <string name="account_settings_notification_light_disabled">Deaktiviert</string>
+  <string name="account_settings_notification_light_account_color">Kontofarbe</string>
+  <string name="account_settings_notification_light_default_color">Systemstandardfarbe</string>
+  <string name="account_settings_notification_light_white">Weiß</string>
+  <string name="account_settings_notification_light_red">Rot</string>
+  <string name="account_settings_notification_light_green">Grün</string>
+  <string name="account_settings_notification_light_blue">Blau</string>
+  <string name="account_settings_notification_light_yellow">Gelb</string>
+  <string name="account_settings_notification_light_cyan">Türkis</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Verfassen von Nachrichten</string>
   <string name="account_settings_composition_label">Verfassen von Nachrichten</string>
   <string name="account_settings_composition_summary">Standard-Absender, BCC-Empfänger und Signatur konfigurieren</string>

@@ -59,10 +59,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_delete_dlg_instructions_fmt">Акаунтът \"<xliff:g id="account">%s</xliff:g>\" ще бъде премахнат от K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Автори</string>
-  <string name="read_messages_label">Прочети писмата</string>
-  <string name="read_messages_desc">Позволи на тази програма да чете вашите Писма.</string>
-  <string name="delete_messages_label">Изтрий Писмата</string>
-  <string name="delete_messages_desc">Позволи на тази програма да изтрива вашите Писма.</string>
   <string name="about_title">Относно K-9 Mail</string>
   <string name="accounts_title">Профили</string>
   <string name="advanced">Разширени</string>
@@ -99,7 +95,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="discard_action">Отхвърли</string>
   <string name="save_draft_action">Запази като чернова</string>
   <string name="check_mail_action">Провери пощата</string>
-  <string name="check_all_mail_action">Провери пощата от всички акаунти</string>
   <string name="send_messages_action">Изпрати съобщения</string>
   <string name="refresh_folders_action">Обнови списъка с папки</string>
   <string name="filter_folders_action">Намери папка</string>
@@ -444,8 +439,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_mail_check_frequency_label">Честота на проверка на папката</string>
   <string name="account_settings_color_label">Цвят на профила</string>
   <string name="account_settings_color_summary">Акцентиращ цвят, който ще се използва в профила за показване на папки и списък</string>
-  <string name="account_settings_led_color_label">Цвят на LED при уведомяване</string>
-  <string name="account_settings_led_color_summary">Цветът в който ще мига LED на вашето у-во за този профил</string>
   <string name="account_settings_mail_display_count_label">Размер на локалната папка</string>
   <string name="account_settings_autodownload_message_size_label">Получавай съобщения до</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -522,12 +515,10 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_name_label">Вашето име</string>
   <string name="notifications_title">Известявания</string>
   <string name="account_settings_vibrate_enable">Вибрирай</string>
-  <string name="account_settings_vibrate_summary">Вибрира, когато пристигне писмо</string>
   <string name="account_settings_vibrate_pattern_default">По подразбиране</string>
   <string name="account_settings_vibrate_times">Повтаряне на вибрацията</string>
   <string name="account_settings_ringtone">Звук за ново писмо</string>
-  <string name="account_settings_led_label">Мигащ диод</string>
-  <string name="account_settings_led_summary">Мигащ диод при ново писмо</string>
+  <string name="account_settings_notification_light_account_color">Цвят на профила</string>
   <string name="account_settings_composition_title">Опции при съставяне на писмо</string>
   <string name="account_settings_composition_label">Настройки по подразбиране на нови имейли</string>
   <string name="account_settings_composition_summary">Задайте От, Всс и подпис по подразбиране</string>

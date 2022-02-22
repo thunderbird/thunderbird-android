@@ -60,10 +60,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà del K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autors</string>
-  <string name="read_messages_label">Llegeix els correus</string>
-  <string name="read_messages_desc">Permet a aquesta aplicació llegir els correus.</string>
-  <string name="delete_messages_label">Elimina correus</string>
-  <string name="delete_messages_desc">Permet que aquesta aplicació elimini correus.</string>
   <string name="about_title">Quant al K-9 Mail</string>
   <string name="accounts_title">Comptes</string>
   <string name="advanced">Avançat</string>
@@ -100,7 +96,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="discard_action">Descarta</string>
   <string name="save_draft_action">Desa com a esborrany</string>
   <string name="check_mail_action">Comprova el correu</string>
-  <string name="check_all_mail_action">Comprova els missatges de tots els comptes</string>
   <string name="send_messages_action">Envia missatges</string>
   <string name="refresh_folders_action">Refresca carpetes</string>
   <string name="filter_folders_action">Cerca carpetes</string>
@@ -241,6 +236,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_show_contact_name_summary">Usa els noms dels destinataris segons els contactes quan estiguin disponibles</string>
   <string name="global_settings_registered_name_color_label">Acoloreix els contactes</string>
   <string name="global_settings_registered_name_color_changed">Acoloreix els noms de la llista de contactes</string>
+  <string name="general_settings_contact_name_color_label">Color del nom del contacte</string>
   <string name="global_settings_messageview_fixedwidth_label">Tipus de lletra d\'amplada fixa</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utilitza un tipus de lletra d\'amplada fixa quan es mostrin missatges de text pla.</string>
   <string name="global_settings_messageview_autofit_width_label">Ajusta l\'amplada dels missatges automàticament</string>
@@ -458,8 +454,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_mail_check_frequency_label">Freqüència de comprovació de les carpetes</string>
   <string name="account_settings_color_label">Color del compte</string>
   <string name="account_settings_color_summary">Tria el color del compte utilitzat a la llista de carpetes i de comptes</string>
-  <string name="account_settings_led_color_label">Color del LED de notificació</string>
-  <string name="account_settings_led_color_summary">El color en què ha de fer pampallugues el LED del telèfon per a aquest compte</string>
   <string name="account_settings_mail_display_count_label">Mida de la carpeta local</string>
   <string name="account_settings_autodownload_message_size_label">Recupera missatges fins a…</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -545,8 +539,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_description_label">Nom del compte</string>
   <string name="account_settings_name_label">El vostre nom</string>
   <string name="notifications_title">Notificacions</string>
+  <string name="account_settings_vibration">Vibració</string>
   <string name="account_settings_vibrate_enable">Vibra</string>
-  <string name="account_settings_vibrate_summary">Vibra quan arribi correu</string>
   <string name="account_settings_vibrate_pattern_label">Patró de vibració</string>
   <string name="account_settings_vibrate_pattern_default">Per defecte</string>
   <string name="account_settings_vibrate_pattern_1">Patró 1</string>
@@ -555,9 +549,19 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_vibrate_pattern_4">Patró 4</string>
   <string name="account_settings_vibrate_pattern_5">Patró 5</string>
   <string name="account_settings_vibrate_times">Repeteix la vibració</string>
+  <string name="account_settings_vibrate_summary_disabled">Desactivat</string>
   <string name="account_settings_ringtone">So de correu nou</string>
-  <string name="account_settings_led_label">LED intermitent</string>
-  <string name="account_settings_led_summary">Que el LED faci pampallugues quan arribi correu</string>
+  <string name="account_settings_notification_light_label">Llum de notificació</string>
+  <string name="account_settings_notification_light_disabled">Desactivat</string>
+  <string name="account_settings_notification_light_account_color">Color del compte</string>
+  <string name="account_settings_notification_light_default_color">Color predeterminat del sistema</string>
+  <string name="account_settings_notification_light_white">Blanc</string>
+  <string name="account_settings_notification_light_red">Vermell</string>
+  <string name="account_settings_notification_light_green">Verd</string>
+  <string name="account_settings_notification_light_blue">Blau</string>
+  <string name="account_settings_notification_light_yellow">Groc</string>
+  <string name="account_settings_notification_light_cyan">Cian</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Opcions de composició del missatge</string>
   <string name="account_settings_composition_label">Composició per defecte</string>
   <string name="account_settings_composition_summary">Configura per defecte De,  A/c i signatura</string>

@@ -59,10 +59,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a K-9 Mail alkalmazásból.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Szerzők</string>
-  <string name="read_messages_label">E-mailek olvasása</string>
-  <string name="read_messages_desc">Az alkalmazás olvashatja az emaileket.</string>
-  <string name="delete_messages_label">E-mailek törlése</string>
-  <string name="delete_messages_desc">Az alkalmazás törölheti ez e-maileket.</string>
   <string name="about_title">A K-9 Mail névjegye</string>
   <string name="accounts_title">Fiókok</string>
   <string name="advanced">Bővített</string>
@@ -99,7 +95,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="discard_action">Elvetés</string>
   <string name="save_draft_action">Mentés piszkozatként</string>
   <string name="check_mail_action">Levél ellenőrzése</string>
-  <string name="check_all_mail_action">Minden postafiók összehangolása</string>
   <string name="send_messages_action">Üzenetek küldése</string>
   <string name="refresh_folders_action">Mappalista frissítése</string>
   <string name="filter_folders_action">Mappa keresése</string>
@@ -451,8 +446,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_settings_mail_check_frequency_label">Mappa lekérdezésének gyakorisága</string>
   <string name="account_settings_color_label">Fiókszín</string>
   <string name="account_settings_color_summary">A fiókban és a fióklistában használt fiók kiemelt színe</string>
-  <string name="account_settings_led_color_label">Értesítési LED színe</string>
-  <string name="account_settings_led_color_summary">Az eszköz villogó LED-ének színe ennél a fióknál</string>
   <string name="account_settings_mail_display_count_label">Helyi mappa mérete</string>
   <string name="account_settings_autodownload_message_size_label">Legfeljebb ennyi üzenet beolvasása</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -539,12 +532,10 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_settings_name_label">Saját név</string>
   <string name="notifications_title">Értesítések</string>
   <string name="account_settings_vibrate_enable">Rezgés</string>
-  <string name="account_settings_vibrate_summary">Rezgés, amikor levél érkezik</string>
   <string name="account_settings_vibrate_pattern_default">Alapértelmezett</string>
   <string name="account_settings_vibrate_times">Rezgés ismétlése</string>
   <string name="account_settings_ringtone">Új levél csengőhangja</string>
-  <string name="account_settings_led_label">LED villogása</string>
-  <string name="account_settings_led_summary">LED villogása, amikor levél érkezik</string>
+  <string name="account_settings_notification_light_account_color">Fiókszín</string>
   <string name="account_settings_composition_title">Üzenet írásának beállításai</string>
   <string name="account_settings_composition_label">Írási alapbeállítások</string>
   <string name="account_settings_composition_summary">Alapértelmezett feladó, titkos másolat és aláírás beállítása</string>

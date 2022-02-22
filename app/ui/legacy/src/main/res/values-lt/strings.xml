@@ -13,10 +13,6 @@
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „K-9 Mail“.</string>
   <!--=== General strings ==================================================================-->
-  <string name="read_messages_label">Skaityti laiškus</string>
-  <string name="read_messages_desc">Leidžia programai skaityti jūsų laiškus.</string>
-  <string name="delete_messages_label">Šalinti laiškus</string>
-  <string name="delete_messages_desc">Leidžia programai šalinti jūsų laiškus.</string>
   <string name="accounts_title">Paskyros</string>
   <string name="advanced">Išplėstinis</string>
   <string name="compose_title_compose">Sukurti</string>
@@ -306,8 +302,6 @@
   <string name="account_settings_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
   <string name="account_settings_color_label">Paskyros spalva</string>
   <string name="account_settings_color_summary">Šios paskyros spalva kuri bus naudojama aplankuose ir paskyrų sąraše</string>
-  <string name="account_settings_led_color_label">Pranešimų LED spalva</string>
-  <string name="account_settings_led_color_summary">Kokia spalva turėtų mirksėti LED šiai paskyrai</string>
   <string name="account_settings_mail_display_count_label">Vietinio aplanko dydis</string>
   <string name="account_settings_autodownload_message_size_label">Gauti laiškus iki</string>
   <string name="account_settings_autodownload_message_size_any">bet kokio dydžio (be limito)</string>
@@ -372,12 +366,10 @@
   <string name="account_settings_name_label">Jūsų vardas</string>
   <string name="notifications_title">Pranešimai</string>
   <string name="account_settings_vibrate_enable">Vibruoti</string>
-  <string name="account_settings_vibrate_summary">Gavus laišką vibruoti</string>
   <string name="account_settings_vibrate_pattern_default">Numatytas</string>
   <string name="account_settings_vibrate_times">Kartoti vibraciją</string>
   <string name="account_settings_ringtone">Naujo laiško skambėjimo tonas</string>
-  <string name="account_settings_led_label">Mirksinti LED</string>
-  <string name="account_settings_led_summary">Gavus laišką mirksinti LED</string>
+  <string name="account_settings_notification_light_account_color">Paskyros spalva</string>
   <string name="account_settings_composition_title">Laiško kūrimo parinktys</string>
   <string name="account_settings_composition_label">Kūrimo numatytieji</string>
   <string name="account_settings_composition_summary">Nustatykite numatytąjį „Nuo“, Bcc ir parašą</string>

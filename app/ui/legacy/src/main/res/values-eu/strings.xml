@@ -60,10 +60,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik kenduko da.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Egileak</string>
-  <string name="read_messages_label">Irakurri posta</string>
-  <string name="read_messages_desc">Aplikazio honi zure posta irakurtzea ahalbidetzen dio.</string>
-  <string name="delete_messages_label">Ezabatu posta</string>
-  <string name="delete_messages_desc">Aplikazio honi zure posta ezabatzea ahalbidetzen dio.</string>
   <string name="about_title">K-9 Mail-i buruz</string>
   <string name="accounts_title">Kontuak</string>
   <string name="advanced">Aurreratua</string>
@@ -440,8 +436,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_mail_check_frequency_label">Karpeta atzitzeko maiztasuna</string>
   <string name="account_settings_color_label">Kontuaren kolorea</string>
   <string name="account_settings_color_summary">Kontu honen azenturako kolorea karpeta eta kontuen zerrendetan erabiltzeko</string>
-  <string name="account_settings_led_color_label">Jakinarazpenetarako LED kolorea</string>
-  <string name="account_settings_led_color_summary">Kontu honetarako zure gailuaren LEDak keinatu beharko lukeen kolorea</string>
   <string name="account_settings_mail_display_count_label">Karpeta lokalaren tamaina</string>
   <string name="account_settings_autodownload_message_size_label">Honenbesterainoko mezuak eskuratu</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -527,12 +521,10 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_name_label">Zure izena</string>
   <string name="notifications_title">Jakinarazpenak</string>
   <string name="account_settings_vibrate_enable">Bibratu</string>
-  <string name="account_settings_vibrate_summary">Bibratu posta iristean</string>
   <string name="account_settings_vibrate_pattern_default">Lehenetsia</string>
   <string name="account_settings_vibrate_times">Errepikatu bibrazioa</string>
   <string name="account_settings_ringtone">Posta berrirako txirrin-tonua</string>
-  <string name="account_settings_led_label">LED keinatzea</string>
-  <string name="account_settings_led_summary">Keinatu LEDa posta iristean</string>
+  <string name="account_settings_notification_light_account_color">Kontuaren kolorea</string>
   <string name="account_settings_composition_title">Mezuak idazteko aukerak</string>
   <string name="account_settings_composition_label">Idazterakoan lehenetsiak</string>
   <string name="account_settings_composition_summary">Ezarri Nork, Bcc eta sinadura lehenetsiak</string>

@@ -61,10 +61,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_delete_dlg_instructions_fmt">帳號「<xliff:g id="account">%s</xliff:g>」將從 K-9 Mail 中刪除。</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">作者</string>
-  <string name="read_messages_label">讀取郵件</string>
-  <string name="read_messages_desc">允許該程式讀取郵件。</string>
-  <string name="delete_messages_label">刪除郵件</string>
-  <string name="delete_messages_desc">允許該程式刪除郵件。</string>
   <string name="about_title">關於 K-9 Mail</string>
   <string name="accounts_title">帳號</string>
   <string name="advanced">進階</string>
@@ -101,7 +97,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="discard_action">捨棄</string>
   <string name="save_draft_action">儲存為草稿</string>
   <string name="check_mail_action">檢查新郵件</string>
-  <string name="check_all_mail_action">為所有帳號檢查新郵件</string>
   <string name="send_messages_action">寄送</string>
   <string name="refresh_folders_action">重整信件匣</string>
   <string name="filter_folders_action">尋找信件匣</string>
@@ -451,8 +446,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_mail_check_frequency_label">上層信件匣檢查頻率</string>
   <string name="account_settings_color_label">帳號顏色</string>
   <string name="account_settings_color_summary">選擇帳號在信件匣和帳戶列表中顯示時所使用的顏色</string>
-  <string name="account_settings_led_color_label">通知LED燈顏色</string>
-  <string name="account_settings_led_color_summary">選擇手機提醒該帳號訊息時LED燈閃爍的顏色</string>
   <string name="account_settings_mail_display_count_label">本地信件匣大小</string>
   <string name="account_settings_autodownload_message_size_label">收取郵件的最大尺寸為</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -539,12 +532,10 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_name_label">你的名字</string>
   <string name="notifications_title">通知</string>
   <string name="account_settings_vibrate_enable">震動</string>
-  <string name="account_settings_vibrate_summary">有新郵件時震動</string>
   <string name="account_settings_vibrate_pattern_default">預設</string>
   <string name="account_settings_vibrate_times">重複震動</string>
   <string name="account_settings_ringtone">新郵件鈴聲</string>
-  <string name="account_settings_led_label">閃爍LED燈</string>
-  <string name="account_settings_led_summary">有新郵件時閃爍LED燈</string>
+  <string name="account_settings_notification_light_account_color">帳號顏色</string>
   <string name="account_settings_composition_title">撰寫新郵件選項</string>
   <string name="account_settings_composition_label">撰寫新郵件預設值</string>
   <string name="account_settings_composition_summary">設定預設的寄件人、密件副本以及簽名</string>

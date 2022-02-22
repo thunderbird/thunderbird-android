@@ -61,10 +61,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">作者</string>
-  <string name="read_messages_label">メールを読む</string>
-  <string name="read_messages_desc">このアプリケーションがメールを読むことを許可する</string>
-  <string name="delete_messages_label">メールを削除</string>
-  <string name="delete_messages_desc">このアプリケーションがメールを削除することを許可する</string>
   <string name="about_title">K-9 Mail について</string>
   <string name="accounts_title">アカウント一覧</string>
   <string name="advanced">拡張機能</string>
@@ -101,7 +97,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="discard_action">破棄</string>
   <string name="save_draft_action">下書きへ保存</string>
   <string name="check_mail_action">メール受信</string>
-  <string name="check_all_mail_action">すべてのアカウントのメールを確認する</string>
   <string name="send_messages_action">メール送信</string>
   <string name="refresh_folders_action">フォルダ一覧を再読込</string>
   <string name="filter_folders_action">フォルダを探す</string>
@@ -110,6 +105,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="search_action">検索</string>
   <string name="search_everywhere_action">あらゆる所を検索</string>
   <string name="search_results">検索結果</string>
+  <string name="new_messages_title">新着メッセージ</string>
   <string name="preferences_action">設定</string>
   <string name="folders_action">フォルダ管理</string>
   <string name="account_settings_action">アカウント設定</string>
@@ -162,6 +158,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="notification_action_archive">アーカイブ</string>
   <string name="notification_action_archive_all">すべてアーカイブする</string>
   <string name="notification_action_spam">迷惑メール</string>
+  <string name="notification_certificate_error_public">証明書エラー</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>の証明書エラー</string>
   <string name="notification_certificate_error_text">サーバの設定を確認してください</string>
   <string name="notification_authentication_error_title">認証に失敗しました</string>
@@ -237,6 +234,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_show_contact_name_summary">連絡先に登録されている名前を表示する</string>
   <string name="global_settings_registered_name_color_label">連絡先の名前に色を付ける</string>
   <string name="global_settings_registered_name_color_changed">連絡先の名前の場合は色を付ける</string>
+  <string name="general_settings_contact_name_color_label">連絡先の名前の色</string>
   <string name="global_settings_messageview_fixedwidth_label">固定幅フォント</string>
   <string name="global_settings_messageview_fixedwidth_summary">プレーンテキストメッセージの表示に固定幅フォントを利用</string>
   <string name="global_settings_messageview_autofit_width_label">メッセージサイズ自動調整</string>
@@ -454,8 +452,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_mail_check_frequency_label">同期フォルダの同期間隔</string>
   <string name="account_settings_color_label">アカウントの色</string>
   <string name="account_settings_color_summary">アカウント一覧とフォルダで使用する色</string>
-  <string name="account_settings_led_color_label">LEDの色</string>
-  <string name="account_settings_led_color_summary">このアカウントへの通知時に点滅するLEDの色</string>
   <string name="account_settings_mail_display_count_label">一度に表示するメール数</string>
   <string name="account_settings_autodownload_message_size_label">ダウンロードするメッセージサイズの上限</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -541,13 +537,29 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_description_label">アカウント名</string>
   <string name="account_settings_name_label">名前</string>
   <string name="notifications_title">通知設定</string>
+  <string name="account_settings_vibration">バイブレーション</string>
   <string name="account_settings_vibrate_enable">バイブレーション</string>
-  <string name="account_settings_vibrate_summary">メール着信時バイブレーションをONにする</string>
+  <string name="account_settings_vibrate_pattern_label">バイブレーションのパターン</string>
   <string name="account_settings_vibrate_pattern_default">デフォルト</string>
+  <string name="account_settings_vibrate_pattern_1">パターン 1</string>
+  <string name="account_settings_vibrate_pattern_2">パターン 2</string>
+  <string name="account_settings_vibrate_pattern_3">パターン 3</string>
+  <string name="account_settings_vibrate_pattern_4">パターン 4</string>
+  <string name="account_settings_vibrate_pattern_5">パターン 5</string>
   <string name="account_settings_vibrate_times">バイブレーションの繰り返し回数</string>
+  <string name="account_settings_vibrate_summary_disabled">無効</string>
   <string name="account_settings_ringtone">通知音</string>
-  <string name="account_settings_led_label">LEDを点滅</string>
-  <string name="account_settings_led_summary">メール着信時にLEDを点滅</string>
+  <string name="account_settings_notification_light_label">通知灯</string>
+  <string name="account_settings_notification_light_disabled">無効</string>
+  <string name="account_settings_notification_light_account_color">アカウントの色</string>
+  <string name="account_settings_notification_light_default_color">システム設定の色</string>
+  <string name="account_settings_notification_light_white">白</string>
+  <string name="account_settings_notification_light_red">赤</string>
+  <string name="account_settings_notification_light_green">緑</string>
+  <string name="account_settings_notification_light_blue">青</string>
+  <string name="account_settings_notification_light_yellow">黃</string>
+  <string name="account_settings_notification_light_cyan">青緑</string>
+  <string name="account_settings_notification_light_magenta">赤紫</string>
   <string name="account_settings_composition_title">メール本文構成管理</string>
   <string name="account_settings_composition_label">本文構成</string>
   <string name="account_settings_composition_summary">送信元、Bcc、署名の標準設定</string>

@@ -29,10 +29,6 @@
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Thèid an cunntas “<xliff:g id="account">%s</xliff:g>” a thoirt air falbh on phost.</string>
   <!--=== General strings ==================================================================-->
-  <string name="read_messages_label">Puist-d a leughadh</string>
-  <string name="read_messages_desc">Leig leis an aplacaid seo na puist-d agad a leughadh.</string>
-  <string name="delete_messages_label">Puist-d a sguabadh às</string>
-  <string name="delete_messages_desc">Leig leis an aplacaid seo na puist-d agad a sguabadh às.</string>
   <string name="accounts_title">Cunntasan</string>
   <string name="advanced">Adhartach</string>
   <string name="compose_title_compose">Sgrìobh</string>
@@ -66,7 +62,6 @@
   <string name="discard_action">Tilg air falbh</string>
   <string name="save_draft_action">Sàbhail mar dhreachd</string>
   <string name="check_mail_action">Thoir sùil airson post</string>
-  <string name="check_all_mail_action">Faigh am post aig gach cunntas</string>
   <string name="send_messages_action">Cuir na teachdaireachdan</string>
   <string name="refresh_folders_action">Ath-nuadhaich liosta nam pasgan</string>
   <string name="filter_folders_action">Lorg sa phasgan</string>
@@ -403,8 +398,6 @@
   <string name="account_settings_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post\?</string>
   <string name="account_settings_color_label">Dath a’ chunntais</string>
   <string name="account_settings_color_summary">Dath soillearachadh a’ chunntais seo a chithear ann am pasganan is liosta nan cunntas</string>
-  <string name="account_settings_led_color_label">Dath LED nam brath</string>
-  <string name="account_settings_led_color_summary">An dath a bhios air LED an uidheim agad dhan chunntas seo</string>
   <string name="account_settings_mail_display_count_label">Meud a’ phasgain ionadail</string>
   <string name="account_settings_autodownload_message_size_label">Faigh teachdaireachdan suas ri</string>
   <string name="account_settings_autodownload_message_size_1">1KB</string>
@@ -490,12 +483,10 @@
   <string name="account_settings_name_label">D’ ainm</string>
   <string name="notifications_title">Brathan</string>
   <string name="account_settings_vibrate_enable">Crith</string>
-  <string name="account_settings_vibrate_summary">Dèan crith nuair a ruigeas post</string>
   <string name="account_settings_vibrate_pattern_default">Bun-roghainn</string>
   <string name="account_settings_vibrate_times">Crith a-rithist</string>
   <string name="account_settings_ringtone">Seirm a’ phuist ùir</string>
-  <string name="account_settings_led_label">Boillsg an LED</string>
-  <string name="account_settings_led_summary">Boillsg an LED nuair a ruigeas post</string>
+  <string name="account_settings_notification_light_account_color">Dath a’ chunntais</string>
   <string name="account_settings_composition_title">Roghainnean sgrìobhadh theachdaireachdan</string>
   <string name="account_settings_composition_label">Bun-roghainnean sgrìobhaidh</string>
   <string name="account_settings_composition_summary">Suidhich bun-roghainnean “O”, “Bcc” agus an eàrr-sgrìobhaidh</string>

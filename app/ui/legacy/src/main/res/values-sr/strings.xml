@@ -57,10 +57,6 @@
   <string name="account_delete_dlg_instructions_fmt">Налог „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњен из К-9 Поште.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Аутори</string>
-  <string name="read_messages_label">читање е-поште</string>
-  <string name="read_messages_desc">Дозвољава овој апликацији читање ваше е-поште.</string>
-  <string name="delete_messages_label">брисање е-поште</string>
-  <string name="delete_messages_desc">Дозвољава овој апликацији брисање ваше е-поште.</string>
   <string name="about_title">О К-9 пошти</string>
   <string name="accounts_title">Налози</string>
   <string name="advanced">Напредно</string>
@@ -436,8 +432,6 @@
   <string name="account_settings_mail_check_frequency_label">Учестаност провере фасцикли</string>
   <string name="account_settings_color_label">Боја налога</string>
   <string name="account_settings_color_summary">Боја за истицање овог налога. Користи се за списак фасцикли и налога</string>
-  <string name="account_settings_led_color_label">Боја ЛЕД обавештења</string>
-  <string name="account_settings_led_color_summary">Боја трепћућег ЛЕД светла за овај налог</string>
   <string name="account_settings_mail_display_count_label">Величина локалне фасцикле</string>
   <string name="account_settings_autodownload_message_size_label">Добављај поруке до</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -523,12 +517,10 @@
   <string name="account_settings_name_label">Ваше име</string>
   <string name="notifications_title">Обавештења</string>
   <string name="account_settings_vibrate_enable">Вибрација</string>
-  <string name="account_settings_vibrate_summary">Вибрирај кад стигне пошта</string>
   <string name="account_settings_vibrate_pattern_default">подразумеван</string>
   <string name="account_settings_vibrate_times">Понови вибрацију</string>
   <string name="account_settings_ringtone">Звук за нову пошту</string>
-  <string name="account_settings_led_label">ЛЕД трептање</string>
-  <string name="account_settings_led_summary">ЛЕД трепће кад стигне нова пошта</string>
+  <string name="account_settings_notification_light_account_color">Боја налога</string>
   <string name="account_settings_composition_title">Опције састављања поруке</string>
   <string name="account_settings_composition_label">Поставке састављача</string>
   <string name="account_settings_composition_summary">Поставите подразумеване вредности за пошиљаоца, копије и потпис</string>
