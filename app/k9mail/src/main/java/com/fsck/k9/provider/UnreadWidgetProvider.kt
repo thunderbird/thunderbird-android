@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.RemoteViews
 import com.fsck.k9.EarlyInit
 import com.fsck.k9.R
+import com.fsck.k9.helper.PendingIntentCompat.FLAG_MUTABLE
 import com.fsck.k9.inject
 import com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity
 import com.fsck.k9.widget.unread.UnreadWidgetData
@@ -85,7 +86,12 @@ class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
         }
         clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        val pendingIntent = PendingIntent.getActivity(context, appWidgetId, clickIntent, FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            appWidgetId,
+            clickIntent,
+            FLAG_UPDATE_CURRENT or FLAG_MUTABLE
+        )
         remoteViews.setOnClickPendingIntent(R.id.unread_widget_layout, pendingIntent)
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)

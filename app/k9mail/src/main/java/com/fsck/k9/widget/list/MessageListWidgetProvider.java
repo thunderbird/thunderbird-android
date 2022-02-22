@@ -15,6 +15,10 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.search.SearchAccount;
 
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+import static com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE;
+import static com.fsck.k9.helper.PendingIntentCompat.FLAG_MUTABLE;
+
 
 public class MessageListWidgetProvider extends AppWidgetProvider {
     private static final String ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST";
@@ -77,7 +81,7 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
         Intent intent = new Intent(context, MessageList.class);
         intent.setAction(Intent.ACTION_VIEW);
 
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT | FLAG_MUTABLE);
     }
 
     private PendingIntent viewUnifiedInboxPendingIntent(Context context) {
@@ -85,13 +89,13 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
         Intent intent = MessageList.intentDisplaySearch(
                 context, unifiedInboxAccount.getRelatedSearch(), true, true, true);
 
-        return PendingIntent.getActivity(context, -1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, -1, intent, FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE);
     }
 
     private PendingIntent composeActionPendingIntent(Context context) {
         Intent intent = new Intent(context, MessageCompose.class);
         intent.setAction(MessageCompose.ACTION_COMPOSE);
 
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE);
     }
 }
