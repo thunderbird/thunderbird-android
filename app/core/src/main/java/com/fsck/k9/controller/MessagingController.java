@@ -1167,6 +1167,10 @@ public class MessagingController {
                 l.folderStatusChanged(account, folderId);
             }
 
+            if (flag == Flag.SEEN && newState) {
+                cancelNotificationsForMessages(account, folderId, uids);
+            }
+
             if (accountSupportsFlags) {
                 LocalFolder localFolder = localStore.getFolder(folderId);
                 try {
@@ -1180,6 +1184,13 @@ public class MessagingController {
                     Timber.e(e, "Couldn't open folder. Account: %s, folder ID: %d", account, folderId);
                 }
             }
+        }
+    }
+
+    private void cancelNotificationsForMessages(Account account, long folderId, List<String> uids) {
+        for (String uid : uids) {
+            MessageReference messageReference = new MessageReference(account.getUuid(), folderId, uid);
+            notificationController.removeNewMailNotification(account, messageReference);
         }
     }
 
