@@ -2061,6 +2061,8 @@ public class MessagingController {
             List<LocalMessage> syncedMessages = new ArrayList<>();
             List<String> syncedMessageUids = new ArrayList<>();
             for (LocalMessage message : messages) {
+                notificationController.removeNewMailNotification(account, message.makeMessageReference());
+
                 String uid = message.getUid();
                 if (uid.startsWith(K9.LOCAL_UID_PREFIX)) {
                     localOnlyMessages.add(message);
