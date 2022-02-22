@@ -7,7 +7,7 @@
   <string name="shortcuts_title">Comptes K-9</string>
   <string name="unread_widget_label">K-9 non lus</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Les auteurs de K-9 (« The K-9 Dog Walkers »)</string>
+  <string name="app_authors">Les auteurs de Courriel K-9 Mail</string>
   <string name="source_code">Code source</string>
   <string name="app_license">Licence Apache, Version 2.0</string>
   <string name="about_project_title">Projet à code source ouvert</string>
@@ -60,10 +60,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%s</xliff:g> » sera supprimé de Courriel K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Auteurs</string>
-  <string name="read_messages_label">Lire les courriels</string>
-  <string name="read_messages_desc">Permet à cette application de lire vos courriels.</string>
-  <string name="delete_messages_label">Supprimer les courriels</string>
-  <string name="delete_messages_desc">Permet à cette application de supprimer vos courriels.</string>
   <string name="about_title">À propos de Courriel K-9 Mail</string>
   <string name="accounts_title">Comptes</string>
   <string name="advanced">Avancé</string>
@@ -100,7 +96,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="discard_action">Abandonner</string>
   <string name="save_draft_action">Enregistrer comme brouillon</string>
   <string name="check_mail_action">Relever les courriels</string>
-  <string name="check_all_mail_action">Relever les courriels dans tous les comptes</string>
   <string name="send_messages_action">Envoyer les courriels</string>
   <string name="refresh_folders_action">Actualiser la liste des dossiers</string>
   <string name="filter_folders_action">Trouver un dossier</string>
@@ -242,6 +237,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="global_settings_show_contact_name_summary">Utiliser les noms de destinataire des Contacts s’il y en a</string>
   <string name="global_settings_registered_name_color_label">Colorer les contacts</string>
   <string name="global_settings_registered_name_color_changed">Colorer les noms dans votre liste de contacts</string>
+  <string name="general_settings_contact_name_color_label">Couleur des noms de contact</string>
   <string name="global_settings_messageview_fixedwidth_label">Police à largeur fixe</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à largeur fixe pour les courriels en texte brut</string>
   <string name="global_settings_messageview_autofit_width_label">Ajustement automatique des courriels</string>
@@ -459,8 +455,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="account_settings_mail_check_frequency_label">Fréquence de scrutation des dossiers</string>
   <string name="account_settings_color_label">Couleur du compte</string>
   <string name="account_settings_color_summary">La note de couleur du compte utilisée dans la liste des dossiers et des comptes</string>
-  <string name="account_settings_led_color_label">Couleur de la DEL de notification</string>
-  <string name="account_settings_led_color_summary">La couleur de clignotement de la DEL de votre appareil</string>
   <string name="account_settings_mail_display_count_label">Taille du fichier local</string>
   <string name="account_settings_autodownload_message_size_label">Récupérer les courriels jusqu’à</string>
   <string name="account_settings_autodownload_message_size_1">1 Kio</string>
@@ -546,8 +540,8 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="account_settings_description_label">Nom du compte</string>
   <string name="account_settings_name_label">Votre nom</string>
   <string name="notifications_title">Notifications</string>
+  <string name="account_settings_vibration">Vibration</string>
   <string name="account_settings_vibrate_enable">Vibration</string>
-  <string name="account_settings_vibrate_summary">Vibrer dès réception d’un courriel</string>
   <string name="account_settings_vibrate_pattern_label">Profil de vibration</string>
   <string name="account_settings_vibrate_pattern_default">Par défaut</string>
   <string name="account_settings_vibrate_pattern_1">Profil 1</string>
@@ -556,9 +550,19 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="account_settings_vibrate_pattern_4">Profil 4</string>
   <string name="account_settings_vibrate_pattern_5">Profil 5</string>
   <string name="account_settings_vibrate_times">Nombre de vibrations</string>
+  <string name="account_settings_vibrate_summary_disabled">Désactivée</string>
   <string name="account_settings_ringtone">Sonnerie de nouveaux courriels</string>
-  <string name="account_settings_led_label">Clignotement DEL</string>
-  <string name="account_settings_led_summary">Clignotement de la DEL quand un courriel arrive</string>
+  <string name="account_settings_notification_light_label">Lumière de notification</string>
+  <string name="account_settings_notification_light_disabled">Désactivée</string>
+  <string name="account_settings_notification_light_account_color">Couleur du compte</string>
+  <string name="account_settings_notification_light_default_color">Couleur par défaut du système</string>
+  <string name="account_settings_notification_light_white">Blanche</string>
+  <string name="account_settings_notification_light_red">Rouge</string>
+  <string name="account_settings_notification_light_green">Verte</string>
+  <string name="account_settings_notification_light_blue">Bleue</string>
+  <string name="account_settings_notification_light_yellow">Jaune</string>
+  <string name="account_settings_notification_light_cyan">Cyan</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Options de rédaction de courriel</string>
   <string name="account_settings_composition_label">Valeurs par défaut pour la rédaction</string>
   <string name="account_settings_composition_summary">Définir les valeurs par défaut pour De, Cci et la signature</string>

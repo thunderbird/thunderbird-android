@@ -61,10 +61,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_delete_dlg_instructions_fmt">Llogaria \"<xliff:g id="account">%s</xliff:g>\" do të hiqet që nga K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autorë</string>
-  <string name="read_messages_label">Lexoni Email-e</string>
-  <string name="read_messages_desc">I lejon këtij aplikacioni të lexojë email-et tuaj.</string>
-  <string name="delete_messages_label">Fshiji Email-et</string>
-  <string name="delete_messages_desc">I lejon këtij aplikacioni të fshijë email-et tuaj.</string>
   <string name="about_title">Mbi K-9 Mail</string>
   <string name="accounts_title">Llogari</string>
   <string name="advanced">Të mëtejshme</string>
@@ -101,7 +97,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="discard_action">Hidhe tej</string>
   <string name="save_draft_action">Ruaje si skicë</string>
   <string name="check_mail_action">Merr email-et</string>
-  <string name="check_all_mail_action">Kontrollo për postë në krejt llogaritë</string>
   <string name="send_messages_action">Dërgo mesazhe</string>
   <string name="refresh_folders_action">Rifresko listë dosjesh</string>
   <string name="filter_folders_action">Gjej në dosje</string>
@@ -242,6 +237,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="global_settings_show_contact_name_summary">Kur është e mundshme, përdor emra marrësish nga Kontaktet</string>
   <string name="global_settings_registered_name_color_label">Ngjyrosi kontaktet</string>
   <string name="global_settings_registered_name_color_changed">Ngjyrosi emrat te lista juaj e kontakteve</string>
+  <string name="general_settings_contact_name_color_label">Ngjyrë emri kontakti</string>
   <string name="global_settings_messageview_fixedwidth_label">Shkronja me gjerësi të fiksuar</string>
   <string name="global_settings_messageview_fixedwidth_summary">Kur shfaqen mesazhe tekst i thjeshtë, përdor shkronja me gjerësi të fiksuar.</string>
   <string name="global_settings_messageview_autofit_width_label">Rregulloje vetvetiu nxënien e mesazhit</string>
@@ -459,8 +455,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_mail_check_frequency_label">Shpeshti vjeljeje dosjeje</string>
   <string name="account_settings_color_label">Ngjyrë llogarie</string>
   <string name="account_settings_color_summary">Ngjyrë theksimi për këtë llogari, e përdorur në listë dosjesh dhe llogarish</string>
-  <string name="account_settings_led_color_label">Ngjyrë LED-i njoftimesh</string>
-  <string name="account_settings_led_color_summary">Ngjyra me të cilën duhet të xixëllojë LED-i i pajisjes tuaj për këtë llogari</string>
   <string name="account_settings_mail_display_count_label">Madhësi dosjeje vendore</string>
   <string name="account_settings_autodownload_message_size_label">Sill mesazhe deri në</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -546,8 +540,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_description_label">Emër llogarie</string>
   <string name="account_settings_name_label">Emri juaj</string>
   <string name="notifications_title">Njoftime</string>
+  <string name="account_settings_vibration">Dridhje</string>
   <string name="account_settings_vibrate_enable">Dridhu</string>
-  <string name="account_settings_vibrate_summary">Dridhu kur mbërrin postë</string>
   <string name="account_settings_vibrate_pattern_label">Rregullsi dridhjeje</string>
   <string name="account_settings_vibrate_pattern_default">Parazgjedhje</string>
   <string name="account_settings_vibrate_pattern_1">Rregullsi 1</string>
@@ -556,9 +550,19 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_vibrate_pattern_4">Rregullsi 4</string>
   <string name="account_settings_vibrate_pattern_5">Rregullsi 5</string>
   <string name="account_settings_vibrate_times">Përsërite dridhjen</string>
+  <string name="account_settings_vibrate_summary_disabled">Çaktivizuar</string>
   <string name="account_settings_ringtone">Zile për postë të re</string>
-  <string name="account_settings_led_label">Xixëllo LED-in</string>
-  <string name="account_settings_led_summary">Xixëllo LED-in kur mbërrin postë</string>
+  <string name="account_settings_notification_light_label">Dritë njoftimesh</string>
+  <string name="account_settings_notification_light_disabled">Çaktivizuar</string>
+  <string name="account_settings_notification_light_account_color">Ngjyrë llogarie</string>
+  <string name="account_settings_notification_light_default_color">Ngjyrë parazgjedhje sistemi</string>
+  <string name="account_settings_notification_light_white">E bardhë</string>
+  <string name="account_settings_notification_light_red">E kuqe</string>
+  <string name="account_settings_notification_light_green">E gjelbër</string>
+  <string name="account_settings_notification_light_blue">Blu</string>
+  <string name="account_settings_notification_light_yellow">E verdhë</string>
+  <string name="account_settings_notification_light_cyan">E kaltër e gjelbër</string>
+  <string name="account_settings_notification_light_magenta">Rozë</string>
   <string name="account_settings_composition_title">Mundësi hartimi mesazhesh</string>
   <string name="account_settings_composition_label">Parazgjedhje hartimi</string>
   <string name="account_settings_composition_summary">Caktoni parazgjedhjet tuaja për Nga, Bcc dhe nënshkrimet</string>

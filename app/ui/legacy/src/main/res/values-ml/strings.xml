@@ -20,6 +20,9 @@
   <string name="changelog_title">ചെയ്ഞ്ച്‍ലോഗ്</string>
   <string name="changelog_loading_error">ചെയ്ഞ്ച്‍ലോഗ് ലോഡു ചെയ്യാനായില്ല.</string>
   <string name="changelog_version_title">പതിപ്പ് %s</string>
+  <string name="changelog_recent_changes_title">എന്താണ് പുതിയത്</string>
+  <string name="changelog_show_recent_changes">ആപ്പ് അപ്‌ഡേറ്റ് ചെയ്യുമ്പോൾ സമീപകാല മാറ്റങ്ങൾ കാണിക്കുക</string>
+  <string name="changelog_snackbar_text">ഈ റിലീസിൽ പുതിയത് എന്താണെന്ന് കണ്ടെത്തുക</string>
   <!--Welcome message-->
   <string name="welcome_message_title">കെ-9 മെയിലിലേക്ക് സ്വാഗതം</string>
   <string name="accounts_welcome"><![CDATA[
@@ -57,10 +60,6 @@
   <string name="account_delete_dlg_instructions_fmt">കെ-9 മെയിലിൽ നിന്ന്  \"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് നീക്കംചെയ്യും. </string>
   <!--=== General strings ==================================================================-->
   <string name="authors">രചയിതാക്കൾ</string>
-  <string name="read_messages_label">ഇ-മെയിലുകൾ വായിക്കുക</string>
-  <string name="read_messages_desc">നിങ്ങളുടെ ഇമെയിലുകൾ വായിക്കാൻ ഈ അപ്ലിക്കേഷനെ അനുവദിക്കുന്നു.</string>
-  <string name="delete_messages_label">ഇമെയിലുകൾ ഇല്ലാതാക്കുക</string>
-  <string name="delete_messages_desc">നിങ്ങളുടെ ഇമെയിലുകൾ ഇല്ലാതാക്കാൻ ഈ അപ്ലിക്കേഷനെ അനുവദിക്കുന്നു.</string>
   <string name="about_title">കെ-9 മെയിലിനെക്കുറിച്ച്</string>
   <string name="accounts_title">അക്കൗണ്ടുകൾ</string>
   <string name="advanced">വിപുലമായത്</string>
@@ -71,6 +70,8 @@
   <string name="compose_title_forward_as_attachment">അറ്റാച്ചുമെന്റായി ഫോർവേഡ് ചെയ്യുക</string>
   <string name="choose_account_title">അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
   <string name="choose_folder_title">ഫോൾഡർ തിരഞ്ഞെടുക്കുക</string>
+  <string name="choose_folder_move_title">ഇതിലേക്ക് നീക്കുക...</string>
+  <string name="choose_folder_copy_title">ഇതിലേക്ക് പകർത്തുക...</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> തിരഞ്ഞെടുത്തു</string>
   <string name="next_action">അടുത്തത്</string>
   <string name="previous_action">മുമ്പത്തെ</string>
@@ -101,7 +102,9 @@
   <string name="add_account_action">അക്കൗണ്ട് ചേർക്കുക</string>
   <string name="compose_action">രചിക്കുക</string>
   <string name="search_action">തിരയുക</string>
+  <string name="search_everywhere_action">എല്ലായിടത്തും തിരയുക</string>
   <string name="search_results">ഫലങ്ങൾ തിരയുക</string>
+  <string name="new_messages_title">പുതിയ സന്ദേശങ്ങൾ</string>
   <string name="preferences_action">സജ്ജീകരണങ്ങൾ</string>
   <string name="folders_action">ഫോൾഡറുകൾ നിയന്ത്രിക്കുക</string>
   <string name="account_settings_action">അക്കൗണ്ട് സജ്ജീകരണങ്ങൾ</string>
@@ -117,6 +120,7 @@
     <item quantity="one">വിലാസം ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</item>
     <item quantity="other">വിലാസങ്ങൾ ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">വിഷയ വാചകം ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</string>
   <string name="message_view_theme_action_dark">ഇരുണ്ട തീമിലേക്ക് മാറുക</string>
   <string name="message_view_theme_action_light">ലൈറ്റ് തീമിലേക്ക് മാറുക</string>
   <string name="mark_as_unread_action">വായിക്കാത്തതായി അടയാളപ്പെടുത്തുക</string>
@@ -155,6 +159,7 @@
   <string name="notification_action_archive">ശേഖരം</string>
   <string name="notification_action_archive_all">എല്ലാം ശേഖരത്തിൽ ചേർക്കുക</string>
   <string name="notification_action_spam">സ്പാം</string>
+  <string name="notification_certificate_error_public">സർട്ടിഫിക്കറ്റ് പിശക്</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>നുള്ള സർട്ടിഫിക്കറ്റ് പിശക്</string>
   <string name="notification_certificate_error_text">നിങ്ങളുടെ സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക</string>
   <string name="notification_authentication_error_title">പ്രാമാണീകരണം പരാജയപ്പെട്ടു</string>
@@ -164,6 +169,8 @@
   <string name="notification_bg_send_ticker">മെയിൽ അയയ്ക്കുന്നു: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">മെയിൽ അയയ്ക്കുന്നു</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">സമന്വയിപ്പിക്കുക (പുഷ്)</string>
+  <string name="notification_channel_push_description">പുതിയ സന്ദേശങ്ങൾക്കായി കാത്തിരിക്കുമ്പോൾ പ്രദർശിപ്പിക്കുന്നു</string>
   <string name="notification_channel_messages_title">സന്ദേശങ്ങൾ</string>
   <string name="notification_channel_messages_description">സന്ദേശങ്ങളുമായി ബന്ധപ്പെട്ട അറിയിപ്പുകൾ</string>
   <string name="notification_channel_miscellaneous_title">പലവക</string>
@@ -179,6 +186,9 @@
   <string name="debug_enable_debug_logging_summary">അധിക ഡയഗ്നോസ്റ്റിക് വിവരങ്ങൾ ലോഗ് ചെയ്യുക </string>
   <string name="debug_enable_sensitive_logging_title">തന്ത്രപ്രധാനമായ വിവരങ്ങൾ ലോഗ് ചെയ്യുക</string>
   <string name="debug_enable_sensitive_logging_summary">പാസ്‌വേഡുകൾ ലോഗുകളിൽ കാണിച്ചേക്കാം.</string>
+  <string name="debug_export_logs_title">ലോഗുകൾ എക്സ്പോർട്ട് ചെയ്യുക</string>
+  <string name="debug_export_logs_success">എക്സ്പോർട്ട് പൂർത്തിയായി. ലോഗുകളിൽ തന്ത്രപ്രധാനമായ വിവരങ്ങൾ അടങ്ങിയിരിക്കാം. നിങ്ങൾ അവ ആർക്കാണ് അയയ്ക്കുന്നത് എന്ന് ശ്രദ്ധിക്കുക.</string>
+  <string name="debug_export_logs_failure">എക്സ്പോർട്ട് പരാജയപ്പെട്ടു.</string>
   <string name="message_list_load_more_messages_action">കൂടുതൽ സന്ദേശങ്ങൾ ലോഡുചെയ്യുക</string>
   <string name="message_to_fmt">സ്വീകർത്താവ്:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">വിഷയം</string>
@@ -225,6 +235,7 @@
   <string name="global_settings_show_contact_name_summary">ലഭ്യമാകുമ്പോൾ കോൺടാക്റ്റുകളിൽ നിന്ന് സ്വീകർത്താവിന്റെ പേരുകൾ ഉപയോഗിക്കുക</string>
   <string name="global_settings_registered_name_color_label">കോൺ‌ടാക്റ്റുകൾ‌ വർണ്ണിക്കുക</string>
   <string name="global_settings_registered_name_color_changed">നിങ്ങളുടെ കോൺ‌ടാക്റ്റ് പട്ടികയിൽ‌ പേരുകൾ‌ വർ‌ണ്ണമാക്കുക</string>
+  <string name="general_settings_contact_name_color_label">കോൺടാക്റ്റ് പേരിന്റെ നിറം</string>
   <string name="global_settings_messageview_fixedwidth_label">നിശ്ചിത-വീതിയുള്ള ഫോണ്ടുകൾ</string>
   <string name="global_settings_messageview_fixedwidth_summary">പ്ലെയിൻ-ടെക്സ്റ്റ് സന്ദേശങ്ങൾ കാണിക്കുമ്പോൾ ഒരു നിശ്ചിത-വീതിയുള്ള ഫോണ്ട് ഉപയോഗിക്കുക</string>
   <string name="global_settings_messageview_autofit_width_label">യാന്ത്രികയോജക സന്ദേശങ്ങൾ</string>
@@ -252,6 +263,7 @@
   <string name="global_settings_lock_screen_notification_visibility_title">ലോക്ക് സ്ക്രീൻ അറിയിപ്പുകൾ</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">ലോക്ക് സ്ക്രീൻ അറിയിപ്പുകളൊന്നുമില്ല</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">അപ്ലിക്കേഷന്റെ പേര്</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">പുതിയ സന്ദേശങ്ങളുടെ എണ്ണം</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">സന്ദേശങ്ങളുടെ എണ്ണവും അയച്ചവരും</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">സ്‌ക്രീൻ അൺലോക്കുചെയ്‌തതിന് സമാനമാണ്</string>
   <string name="quiet_time">ശാന്തമായ സമയം</string>
@@ -264,6 +276,9 @@
   <string name="account_setup_basics_email_hint">ഇമെയിൽ വിലാസം</string>
   <string name="account_setup_basics_password_hint">രഹസ്യവാചകം</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">നിങ്ങളുടെ പാസ്‌വേഡ് ഇവിടെ കാണുന്നതിന്, ഈ ഉപകരണത്തിൽ സ്‌ക്രീൻ ലോക്ക് പ്രവർത്തനക്ഷമമാക്കുക.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">നിങ്ങളുടെ ഐഡന്റിറ്റി പരിശോധിച്ചുറപ്പിക്കുക</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">നിങ്ങളുടെ പാസ്‌വേഡ് കാണുന്നതിന് അൺലോക്ക് ചെയ്യുക</string>
   <string name="account_setup_basics_manual_setup_action">സ്വമേധയാലുള്ള സജ്ജീകരണം</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">അക്കൗണ്ട് വിവരങ്ങൾ വീണ്ടെടുക്കുന്നു\u2026</string>
@@ -388,10 +403,15 @@
   <string name="account_settings_notify_self_summary">ഞാൻ അയച്ച സന്ദേശങ്ങൾക്കായി ഒരു അറിയിപ്പ് കാണിക്കുക</string>
   <string name="account_notify_contacts_mail_only_label">കോൺ‌ടാക്റ്റുകൾ‌ മാത്രം</string>
   <string name="account_notify_contacts_mail_only_summary">അറിയപ്പെടുന്ന കോൺടാക്റ്റുകളിൽ നിന്നുള്ള സന്ദേശങ്ങൾക്കായി മാത്രം അറിയിപ്പുകൾ കാണിക്കുക</string>
+  <string name="account_settings_ignore_chat_messages_label">ചാറ്റ് സന്ദേശങ്ങൾ അവഗണിക്കുക</string>
+  <string name="account_settings_ignore_chat_messages_summary">ഒരു ഇമെയിൽ ചാറ്റിൽ ഉൾപ്പെടുന്ന സന്ദേശങ്ങൾക്കുള്ള അറിയിപ്പുകൾ കാണിക്കരുത്</string>
   <string name="account_settings_mark_message_as_read_on_view_label">തുറക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">ഒരു സന്ദേശം കാണാനായി തുറക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">ഇല്ലാതാക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">ഒരു സന്ദേശം ഇല്ലാതാക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+  <string name="account_settings_notification_channels_label">അറിയിപ്പ് വിഭാഗങ്ങൾ</string>
+  <string name="account_settings_open_notification_settings_messages_summary">പുതിയ സന്ദേശങ്ങൾക്കായി അറിയിപ്പുകൾ ക്രമീകരിക്കുക</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">പിശകക്, സ്റ്റാറ്റസ് അറിയിപ്പുകളും ക്രമീകരിക്കുക</string>
   <string name="account_settings_show_pictures_label">എല്ലായ്പ്പോഴും ചിത്രങ്ങൾ കാണിക്കുക</string>
   <string name="account_settings_show_pictures_never">ഇല്ല</string>
   <string name="account_settings_show_pictures_only_from_contacts">കോൺടാക്റ്റുകളിൽ നിന്ന്</string>
@@ -433,8 +453,6 @@
   <string name="account_settings_mail_check_frequency_label">ഫോൾഡർ വോട്ടെടുപ്പ് ആവൃത്തി</string>
   <string name="account_settings_color_label">അക്കൗണ്ട് നിറം</string>
   <string name="account_settings_color_summary">ഫോൾഡറിലും അക്കൗണ്ട് ലിസ്റ്റിലും ഈ അക്കൗണ്ടിന്റെ ഊന്നിപ്പറഞ്ഞ നിറം ഉപയോഗിക്കുന്നു</string>
-  <string name="account_settings_led_color_label">അറിയിപ്പ് LED നിറം</string>
-  <string name="account_settings_led_color_summary">നിങ്ങളുടെ ഉപകരണത്തിന്റെ LED നിറം ഈ അക്കൗണ്ടിനായി മിന്നിമറയണം</string>
   <string name="account_settings_mail_display_count_label">പ്രാദേശിക ഫോൾഡർ വലുപ്പം</string>
   <string name="account_settings_autodownload_message_size_label">വരെ സന്ദേശങ്ങൾ നേടുക</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -506,6 +524,7 @@
   <string name="folder_settings_folder_push_mode_normal">ക്ലാസ് ഇല്ല</string>
   <string name="folder_settings_folder_push_mode_first_class">1 ആം ക്ലാസ്</string>
   <string name="folder_settings_folder_push_mode_second_class">2 ആം ക്ലാസ്സ്</string>
+  <string name="folder_settings_folder_push_mode_inherited">പോൾ ക്ലാസ് പോലെ തന്നെ</string>
   <string name="folder_settings_folder_notify_mode_label">ഫോൾഡർ അറിയിപ്പ് ക്ലാസ്</string>
   <string name="folder_settings_folder_notify_mode_normal">ക്ലാസ് ഇല്ല</string>
   <string name="folder_settings_folder_notify_mode_first_class">1 ആം ക്ലാസ്</string>
@@ -520,12 +539,12 @@
   <string name="account_settings_name_label">നിങ്ങളുടെ പേര്</string>
   <string name="notifications_title">അറിയിപ്പുകൾ</string>
   <string name="account_settings_vibrate_enable">വിറയ്ക്കുക</string>
-  <string name="account_settings_vibrate_summary">മെയിൽ വരുമ്പോൾ വിറയ്ക്കുക</string>
+  <string name="account_settings_vibrate_pattern_label">വൈബ്രേഷൻ പാറ്റേൺ</string>
   <string name="account_settings_vibrate_pattern_default">സ്ഥിരസ്ഥിതി</string>
+  <string name="account_settings_vibrate_pattern_1">പാറ്റേൺ 1</string>
   <string name="account_settings_vibrate_times">വിറയ്ക്കൽ ആവർത്തിക്കുക</string>
   <string name="account_settings_ringtone">പുതിയ മെയിൽ റിംഗ്‌ടോൺ</string>
-  <string name="account_settings_led_label">LED മിന്നിക്കുക</string>
-  <string name="account_settings_led_summary">ഇമെയിൽ വരുമ്പോൾ LED മിന്നിക്കുക</string>
+  <string name="account_settings_notification_light_account_color">അക്കൗണ്ട് നിറം</string>
   <string name="account_settings_composition_title">സന്ദേശ രചനാ ഓപ്ഷനുകൾ</string>
   <string name="account_settings_composition_label">രചനാ സ്ഥിരസ്ഥിതികൾ</string>
   <string name="account_settings_composition_summary">നിങ്ങളുടെ സ്ഥിരസ്ഥിതി പ്രേഷിതൻ, ബിസിസി, ഒപ്പ് എന്നിവ സജ്ജമാക്കുക</string>

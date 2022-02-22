@@ -59,10 +59,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autores</string>
-  <string name="read_messages_label">Leer correos</string>
-  <string name="read_messages_desc">Permitir a esta aplicación leer los correos.</string>
-  <string name="delete_messages_label">Borrar correos</string>
-  <string name="delete_messages_desc">Permitir a esta aplicación borrar los correos.</string>
   <string name="about_title">Acerca de K-9 Mail</string>
   <string name="accounts_title">Cuentas</string>
   <string name="advanced">Avanzado</string>
@@ -99,7 +95,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Guardar como borrador</string>
   <string name="check_mail_action">Comprobar correo</string>
-  <string name="check_all_mail_action">Comprobar el correo en todas las cuentas</string>
   <string name="send_messages_action">Enviar correo</string>
   <string name="refresh_folders_action">Recargar lista de carpetas</string>
   <string name="filter_folders_action">Buscar carpeta</string>
@@ -239,6 +234,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="global_settings_show_contact_name_summary">Utilizar nombre de destinatario desde Contactos cuando esté disponible</string>
   <string name="global_settings_registered_name_color_label">Colorear contactos</string>
   <string name="global_settings_registered_name_color_changed">Colorear nombres en la lista de contactos</string>
+  <string name="general_settings_contact_name_color_label">Color del contacto</string>
   <string name="global_settings_messageview_fixedwidth_label">Tipos de letra de ancho fijo</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utilizar tipos de letra de ancho fijo al mostrar mensajes en formato texto</string>
   <string name="global_settings_messageview_autofit_width_label">Auto-ajustar los mensajes</string>
@@ -456,8 +452,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_color_label">Color de la cuenta</string>
   <string name="account_settings_color_summary">Selecciona el color a utilizar en la carpeta y en la cuenta</string>
-  <string name="account_settings_led_color_label">Color de aviso</string>
-  <string name="account_settings_led_color_summary">Selecciona el color del LED para los avisos de esta cuenta</string>
   <string name="account_settings_mail_display_count_label">Tamaño carpeta local</string>
   <string name="account_settings_autodownload_message_size_label">Obtener mensajes de hasta</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -543,8 +537,8 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_settings_description_label">Nombre de la cuenta</string>
   <string name="account_settings_name_label">Tu nombre</string>
   <string name="notifications_title">Notificaciones</string>
+  <string name="account_settings_vibration">Vibración</string>
   <string name="account_settings_vibrate_enable">Vibrar</string>
-  <string name="account_settings_vibrate_summary">Vibrar cuando llega un correo</string>
   <string name="account_settings_vibrate_pattern_label">Secuencia de vibración</string>
   <string name="account_settings_vibrate_pattern_default">Predeterminado</string>
   <string name="account_settings_vibrate_pattern_1">Secuencia 1</string>
@@ -553,9 +547,19 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_settings_vibrate_pattern_4">Secuencia 4</string>
   <string name="account_settings_vibrate_pattern_5">Secuencia 5</string>
   <string name="account_settings_vibrate_times">Repetir vibración</string>
+  <string name="account_settings_vibrate_summary_disabled">Desactivada</string>
   <string name="account_settings_ringtone">Sonido de nuevo correo</string>
-  <string name="account_settings_led_label">Parpadeo LED</string>
-  <string name="account_settings_led_summary">Parpadear el LED cuando llega nuevo correo</string>
+  <string name="account_settings_notification_light_label">Luz de notificación</string>
+  <string name="account_settings_notification_light_disabled">Desactivada</string>
+  <string name="account_settings_notification_light_account_color">Color de la cuenta</string>
+  <string name="account_settings_notification_light_default_color">Color asignado por el sistema</string>
+  <string name="account_settings_notification_light_white">Blanco</string>
+  <string name="account_settings_notification_light_red">Rojo</string>
+  <string name="account_settings_notification_light_green">Verde</string>
+  <string name="account_settings_notification_light_blue">Azul</string>
+  <string name="account_settings_notification_light_yellow">Amarillo</string>
+  <string name="account_settings_notification_light_cyan">Cian</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Opciones de edición de mensaje</string>
   <string name="account_settings_composition_label">Campos predeterminados</string>
   <string name="account_settings_composition_summary">Configurar «De», «Cco» y firma predeterminadas</string>

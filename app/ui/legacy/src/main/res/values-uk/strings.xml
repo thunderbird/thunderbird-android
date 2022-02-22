@@ -61,10 +61,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Розробники</string>
-  <string name="read_messages_label">Читати електронні листи</string>
-  <string name="read_messages_desc">Дозволити цій програмі читати ваші електронні листи.</string>
-  <string name="delete_messages_label">Видаляти електронні листи</string>
-  <string name="delete_messages_desc">Дозволити цій програмі видаляти ваші електронні листи.</string>
   <string name="about_title">Про K-9 Mail</string>
   <string name="accounts_title">Облікові записи</string>
   <string name="advanced">Додатково</string>
@@ -449,8 +445,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_mail_check_frequency_label">Частота опитування тек</string>
   <string name="account_settings_color_label">Колір облікового запису</string>
   <string name="account_settings_color_summary">Виберіть колір облікового запису для тек та списку облікових записів</string>
-  <string name="account_settings_led_color_label">Колір LED-індикатору сповіщення</string>
-  <string name="account_settings_led_color_summary">Колір блимання LED-індикатору вашого телефону для цього облікового запису</string>
   <string name="account_settings_mail_display_count_label">Розмір локальної теки</string>
   <string name="account_settings_autodownload_message_size_label">Отримувати повідомлення розміром до</string>
   <string name="account_settings_autodownload_message_size_1">1 КБ</string>
@@ -537,12 +531,10 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_name_label">Ваше ім’я</string>
   <string name="notifications_title">Сповіщення</string>
   <string name="account_settings_vibrate_enable">Вібрація</string>
-  <string name="account_settings_vibrate_summary">Вібрація при отрманні нової пошти</string>
   <string name="account_settings_vibrate_pattern_default">Типовий</string>
   <string name="account_settings_vibrate_times">Повторити вібрацію</string>
   <string name="account_settings_ringtone">Звук сповіщення про новий лист</string>
-  <string name="account_settings_led_label">Блимання LED-індикатором</string>
-  <string name="account_settings_led_summary">Блимання LED-індикатором при отриманні нового листа</string>
+  <string name="account_settings_notification_light_account_color">Колір облікового запису</string>
   <string name="account_settings_composition_title">Параметри створення повідомлень</string>
   <string name="account_settings_composition_label">Типові налаштування написання листів</string>
   <string name="account_settings_composition_summary">Встановити типові значення полів \"Від\", \"Прихована копія\" і підпис</string>

@@ -61,10 +61,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" eemaldatakse K-9 Mailist.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autorid</string>
-  <string name="read_messages_label">Loe e-kirju</string>
-  <string name="read_messages_desc">Lubab sellel rakendusel lugeda sinu e-kirju.</string>
-  <string name="delete_messages_label">Kustuta e-kirjad</string>
-  <string name="delete_messages_desc">Lubab sellel rakendusel kustutada sinu e-kirju.</string>
   <string name="about_title">Programmist K-9 Mail</string>
   <string name="accounts_title">Kontod</string>
   <string name="advanced">Täpsemalt</string>
@@ -101,7 +97,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="discard_action">Loobu</string>
   <string name="save_draft_action">Salvesta mustandina</string>
   <string name="check_mail_action">Kontrolli e-kirju</string>
-  <string name="check_all_mail_action">Kontrolli kirju kõikidel kontodel</string>
   <string name="send_messages_action">Saada kirjad</string>
   <string name="refresh_folders_action">Värskenda kaustade nimekirja</string>
   <string name="filter_folders_action">Leia kaust</string>
@@ -242,6 +237,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="global_settings_show_contact_name_summary">Näita saaja nime kontaktidest, kui see olemas</string>
   <string name="global_settings_registered_name_color_label">Tooni kontaktid</string>
   <string name="global_settings_registered_name_color_changed">Näita kontakte nimekirjas värvilisena</string>
+  <string name="general_settings_contact_name_color_label">Kontakti nime värv</string>
   <string name="global_settings_messageview_fixedwidth_label">Fikseeritud laiusega fondid</string>
   <string name="global_settings_messageview_fixedwidth_summary">Kasuta lihtteksti kirjades fikseeritud laiusega fonti</string>
   <string name="global_settings_messageview_autofit_width_label">Sobita kirjad automaatselt</string>
@@ -461,8 +457,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_settings_mail_check_frequency_label">Kausta pollimise sagedus</string>
   <string name="account_settings_color_label">Konto värv</string>
   <string name="account_settings_color_summary">Konto rõhutamise värvi kasutatakse selle konto kaustades ja nimekirjades</string>
-  <string name="account_settings_led_color_label">Märgutule LED-i värvus</string>
-  <string name="account_settings_led_color_summary">Mis värviga peab Sinu seadme LED tuli selle konto jaoks vilkuma</string>
   <string name="account_settings_mail_display_count_label">Lokaalse kausta suurus</string>
   <string name="account_settings_autodownload_message_size_label">Laadi kirju kuni</string>
   <string name="account_settings_autodownload_message_size_1">1 KB</string>
@@ -548,8 +542,8 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_settings_description_label">Konto nimi</string>
   <string name="account_settings_name_label">Sinu nimi</string>
   <string name="notifications_title">Teated</string>
+  <string name="account_settings_vibration">Värinaalarm</string>
   <string name="account_settings_vibrate_enable">Vibreeri</string>
-  <string name="account_settings_vibrate_summary">Vibreeri sõnumi saabumisel</string>
   <string name="account_settings_vibrate_pattern_label">Värina muster</string>
   <string name="account_settings_vibrate_pattern_default">Vaikimisi</string>
   <string name="account_settings_vibrate_pattern_1">muster 1</string>
@@ -558,9 +552,19 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_settings_vibrate_pattern_4">muster 4</string>
   <string name="account_settings_vibrate_pattern_5">muster 5</string>
   <string name="account_settings_vibrate_times">Korda vibreerimist</string>
+  <string name="account_settings_vibrate_summary_disabled">ei ole kasutusel</string>
   <string name="account_settings_ringtone">Uue meilisõnumi helin</string>
-  <string name="account_settings_led_label">Vilguta LEDi</string>
-  <string name="account_settings_led_summary">Vilguta LEDi uue e-kirja saabumisel</string>
+  <string name="account_settings_notification_light_label">Teavitustule värv</string>
+  <string name="account_settings_notification_light_disabled">ei ole kasutusel</string>
+  <string name="account_settings_notification_light_account_color">Konto värv</string>
+  <string name="account_settings_notification_light_default_color">süsteemi vaikimisi värv</string>
+  <string name="account_settings_notification_light_white">valge</string>
+  <string name="account_settings_notification_light_red">punane</string>
+  <string name="account_settings_notification_light_green">roheline</string>
+  <string name="account_settings_notification_light_blue">sinine</string>
+  <string name="account_settings_notification_light_yellow">kollane</string>
+  <string name="account_settings_notification_light_cyan">rohekassinine</string>
+  <string name="account_settings_notification_light_magenta">fuksia</string>
   <string name="account_settings_composition_title">Kirja koostamise valikud</string>
   <string name="account_settings_composition_label">Sõnumi koostamise vaikeseaded</string>
   <string name="account_settings_composition_summary">Määra oma vaikimisi Kellelt, BCC ja allkiri</string>

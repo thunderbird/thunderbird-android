@@ -60,10 +60,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Forfattere</string>
-  <string name="read_messages_label">Læse e-post</string>
-  <string name="read_messages_desc">Tillad dette program at læse dine mails.</string>
-  <string name="delete_messages_label">Slet mails</string>
-  <string name="delete_messages_desc">Tillad dette program at slette dine mails.</string>
   <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konti</string>
   <string name="advanced">Avanceret</string>
@@ -74,6 +70,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="compose_title_forward_as_attachment">Videresend som vedhæftet</string>
   <string name="choose_account_title">Vælg konto</string>
   <string name="choose_folder_title">Vælg mappe</string>
+  <string name="choose_folder_move_title">Flyt til...</string>
+  <string name="choose_folder_copy_title">Kopier til...</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
   <string name="next_action">Næste</string>
   <string name="previous_action">Forrige</string>
@@ -106,6 +104,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="search_action">Søg</string>
   <string name="search_everywhere_action">Søg overalt</string>
   <string name="search_results">Søgeresultater</string>
+  <string name="new_messages_title">Nye meddelelser</string>
   <string name="preferences_action">Indstillinger</string>
   <string name="folders_action">Håndtér mapper</string>
   <string name="account_settings_action">Kontoindstillinger</string>
@@ -187,6 +186,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="debug_enable_debug_logging_summary">Log ekstra diagnostik information</string>
   <string name="debug_enable_sensitive_logging_title">Log følsom information</string>
   <string name="debug_enable_sensitive_logging_summary">Kan eksponere adgangskoder i log.</string>
+  <string name="debug_export_logs_title">Eksportér log filer</string>
+  <string name="debug_export_logs_failure">Eksportering mislykkedes.</string>
   <string name="message_list_load_more_messages_action">Hent flere beskeder</string>
   <string name="message_to_fmt">Til:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Emne</string>
@@ -441,8 +442,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_mail_check_frequency_label">Frekvens for hentning af mails</string>
   <string name="account_settings_color_label">Kontofarve</string>
   <string name="account_settings_color_summary">Vælg en farve til konto (benyttes ved mappevisning og listning af konti)</string>
-  <string name="account_settings_led_color_label">LED-farve ved besked</string>
-  <string name="account_settings_led_color_summary">Vælg den farve som din telefonens LED skal benytte for denne konto</string>
   <string name="account_settings_mail_display_count_label">Lokal mappestørrelse</string>
   <string name="account_settings_autodownload_message_size_label">Hent automatisk mail hvis indhold fylder op til</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -529,12 +528,10 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_name_label">Dit navn</string>
   <string name="notifications_title">Beskeder</string>
   <string name="account_settings_vibrate_enable">Vibrer</string>
-  <string name="account_settings_vibrate_summary">Vibrer når mail ankommer</string>
   <string name="account_settings_vibrate_pattern_default">Standard</string>
   <string name="account_settings_vibrate_times">Gentag vibration</string>
   <string name="account_settings_ringtone">Ringetone ved ny mail</string>
-  <string name="account_settings_led_label">Blinkende LED</string>
-  <string name="account_settings_led_summary">Blinkende LED når mail ankommer</string>
+  <string name="account_settings_notification_light_account_color">Kontofarve</string>
   <string name="account_settings_composition_title">Indstillinger for skrivning af mail</string>
   <string name="account_settings_composition_label">Standardindstillinger</string>
   <string name="account_settings_composition_summary">Standardindstilling for afsender, Bcc og signatur</string>

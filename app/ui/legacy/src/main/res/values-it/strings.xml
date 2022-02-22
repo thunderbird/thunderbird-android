@@ -61,10 +61,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autori</string>
-  <string name="read_messages_label">Leggi i messaggi</string>
-  <string name="read_messages_desc">Consenti all\'applicazione di leggere i messaggi.</string>
-  <string name="delete_messages_label">Elimina messaggi</string>
-  <string name="delete_messages_desc">Permetti all\'applicazione di eliminare i messaggi.</string>
   <string name="about_title">Informazioni su K-9 Mail</string>
   <string name="accounts_title">Account</string>
   <string name="advanced">Avanzate</string>
@@ -101,7 +97,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="discard_action">Ignora</string>
   <string name="save_draft_action">Salva come bozza</string>
   <string name="check_mail_action">Controlla posta</string>
-  <string name="check_all_mail_action">Controlla la posta in tutti gli account</string>
   <string name="send_messages_action">Invia messaggi</string>
   <string name="refresh_folders_action">Aggiorna elenco cartelle</string>
   <string name="filter_folders_action">Trova cartella</string>
@@ -110,6 +105,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="search_action">Cerca</string>
   <string name="search_everywhere_action">Cerca ovunque</string>
   <string name="search_results">Risultati della ricerca</string>
+  <string name="new_messages_title">Nuovi messaggi</string>
   <string name="preferences_action">Impostazioni</string>
   <string name="folders_action">Gestisci cartelle</string>
   <string name="account_settings_action">Impostazioni account</string>
@@ -165,6 +161,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="notification_action_archive">Archivia</string>
   <string name="notification_action_archive_all">Archivia tutto</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_public">Errore certificato</string>
   <string name="notification_certificate_error_title">Errore di certificato per <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Controlla le impostazioni del server</string>
   <string name="notification_authentication_error_title">Autenticazione non riuscita</string>
@@ -191,6 +188,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="debug_enable_debug_logging_summary">Registra informazioni diagnostiche aggiuntive</string>
   <string name="debug_enable_sensitive_logging_title">Registra informazioni sensibili</string>
   <string name="debug_enable_sensitive_logging_summary">Può mostrare le password nei file di log.</string>
+  <string name="debug_export_logs_title">Esporta log</string>
+  <string name="debug_export_logs_success">Esportazione riuscita. I log potrebbero contenere informazioni sensibili. Fai attenzione a chi li invii.</string>
+  <string name="debug_export_logs_failure">Esportazione non riuscita.</string>
   <string name="message_list_load_more_messages_action">Carica altri messaggi</string>
   <string name="message_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Oggetto</string>
@@ -454,8 +454,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_mail_check_frequency_label">Frequenza di recupero della cartella</string>
   <string name="account_settings_color_label">Colore dell\'account</string>
   <string name="account_settings_color_summary">Scegli il colore dell\'account utilizzato nell\'elenco delle cartelle e degli account</string>
-  <string name="account_settings_led_color_label">Colore del LED di notifica</string>
-  <string name="account_settings_led_color_summary">Scegli con quale colore dovrà lampeggiare il LED del dispositivo per questo account</string>
   <string name="account_settings_mail_display_count_label">Dimensione cartelle locali</string>
   <string name="account_settings_autodownload_message_size_label">Scarica messaggi di dimensione fino a</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -542,12 +540,16 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_name_label">Il tuo nome</string>
   <string name="notifications_title">Notifiche</string>
   <string name="account_settings_vibrate_enable">Vibrazione</string>
-  <string name="account_settings_vibrate_summary">Vibra quando arriva un messaggio</string>
+  <string name="account_settings_vibrate_pattern_label">Tipo di vibrazione</string>
   <string name="account_settings_vibrate_pattern_default">Predefinito</string>
+  <string name="account_settings_vibrate_pattern_1">Tipo 1</string>
+  <string name="account_settings_vibrate_pattern_2">Tipo 2</string>
+  <string name="account_settings_vibrate_pattern_3">Tipo 3</string>
+  <string name="account_settings_vibrate_pattern_4">Tipo 4</string>
+  <string name="account_settings_vibrate_pattern_5">Tipo 5</string>
   <string name="account_settings_vibrate_times">Ripeti vibrazione</string>
   <string name="account_settings_ringtone">Suoneria nuovo messaggio</string>
-  <string name="account_settings_led_label">LED lampeggiante</string>
-  <string name="account_settings_led_summary">LED lampeggiante quando arriva un messaggio</string>
+  <string name="account_settings_notification_light_account_color">Colore dell\'account</string>
   <string name="account_settings_composition_title">Opzioni di composizione messaggi</string>
   <string name="account_settings_composition_label">Opzioni predefinite di composizione</string>
   <string name="account_settings_composition_summary">Imposta Da, Ccn e firma predefiniti</string>

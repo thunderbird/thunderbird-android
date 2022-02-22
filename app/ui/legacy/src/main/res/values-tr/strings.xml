@@ -60,10 +60,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Yapanlar</string>
-  <string name="read_messages_label">E-postaları oku</string>
-  <string name="read_messages_desc">Bu uygulamaya E-postalarınızı okumaya izin ver.</string>
-  <string name="delete_messages_label">E-postaları sil</string>
-  <string name="delete_messages_desc">Bu uygulamaya E-postalarınızı silmeye izin ver.</string>
   <string name="about_title">K-9 Mail Hakkında</string>
   <string name="accounts_title">Hesaplar</string>
   <string name="advanced">Gelişmiş</string>
@@ -98,7 +94,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="discard_action">Çıkart</string>
   <string name="save_draft_action">Taslak olarak Kaydet</string>
   <string name="check_mail_action">Postayı Kontrol et</string>
-  <string name="check_all_mail_action">Tüm hesaplardaki e-postaları kontrol edin</string>
   <string name="send_messages_action">İletileri Gönder</string>
   <string name="refresh_folders_action">Klasörleri yinele</string>
   <string name="filter_folders_action">Klasör bul</string>
@@ -448,8 +443,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_mail_check_frequency_label">Klasör veri toplama sıklığı</string>
   <string name="account_settings_color_label">Hesap rengi</string>
   <string name="account_settings_color_summary">Klasör ve hesap listesinde kullanılan hesap rengini seç</string>
-  <string name="account_settings_led_color_label">Bildirim LED ışığı rengi</string>
-  <string name="account_settings_led_color_summary">Bu hesap için gösterilecek LED ışık rengini seçin</string>
   <string name="account_settings_mail_display_count_label">Yerel klasör boyutu</string>
   <string name="account_settings_autodownload_message_size_label">Şu kadar ileti al</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -536,12 +529,10 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_name_label">Adınız</string>
   <string name="notifications_title">Bildirimler</string>
   <string name="account_settings_vibrate_enable">Titreşim</string>
-  <string name="account_settings_vibrate_summary">Posta geldiğinde titret</string>
   <string name="account_settings_vibrate_pattern_default">Varsayılan</string>
   <string name="account_settings_vibrate_times">Titreşimi tekrarla</string>
   <string name="account_settings_ringtone">Yeni posta zil sesi</string>
-  <string name="account_settings_led_label">Yanıp sönen LED</string>
-  <string name="account_settings_led_summary">Posta geldiğinde LED yanıp sönsün</string>
+  <string name="account_settings_notification_light_account_color">Hesap rengi</string>
   <string name="account_settings_composition_title">Mesaj oluşturma seçenekleri</string>
   <string name="account_settings_composition_label">Bileşen öntanımlıları</string>
   <string name="account_settings_composition_summary">Varsayılan Kimden, Bcc ve imzayı ayarlayın</string>

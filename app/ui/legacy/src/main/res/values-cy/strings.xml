@@ -53,10 +53,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_delete_dlg_instructions_fmt">Caiff y cyfrif \"<xliff:g id="account">%s</xliff:g>\" ei dynnu o K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Awduron</string>
-  <string name="read_messages_label">Darllen E-bost</string>
-  <string name="read_messages_desc">Galluogi\'r ap hwn i ddarllen dy e-bost.</string>
-  <string name="delete_messages_label">Dileu E-bost</string>
-  <string name="delete_messages_desc">Galluogi\'r ap hwn i ddileu dy negeseuon e-bost.</string>
   <string name="about_title">Ynghylch K-9 Mail</string>
   <string name="accounts_title">Cyfrifon</string>
   <string name="advanced">Uwch</string>
@@ -434,8 +430,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_settings_mail_check_frequency_label">Pa mor aml i wirio ffolderi</string>
   <string name="account_settings_color_label">Lliw y cyfrif</string>
   <string name="account_settings_color_summary">Acen y lliw ar gyfer y cyfrif hwn i\'w defnyddio yn rhestrau ffolderi a chyfrifon</string>
-  <string name="account_settings_led_color_label">Lliw LED hysbysiadau</string>
-  <string name="account_settings_led_color_summary">Y lliw i LED dy ddyfais fflachio ar gyfer y cyfrif hwn</string>
   <string name="account_settings_mail_display_count_label">Maint ffolder lleol</string>
   <string name="account_settings_autodownload_message_size_label">Nôl negeseuon hyd at</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -521,12 +515,10 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_settings_name_label">Dy enw</string>
   <string name="notifications_title">Hysbysiadau</string>
   <string name="account_settings_vibrate_enable">Dirgrynu</string>
-  <string name="account_settings_vibrate_summary">Dirgrynu pan mae neges yn cyrraedd</string>
   <string name="account_settings_vibrate_pattern_default">Rhagosodedig</string>
   <string name="account_settings_vibrate_times">Ail-adrodd dirgrynu</string>
   <string name="account_settings_ringtone">Sain neges newydd</string>
-  <string name="account_settings_led_label">Fflachio LED</string>
-  <string name="account_settings_led_summary">Fflachio\'r LED pan mae neges yn cyrraedd</string>
+  <string name="account_settings_notification_light_account_color">Lliw y cyfrif</string>
   <string name="account_settings_composition_title">Dewisiadau cyfansoddi negeseuon</string>
   <string name="account_settings_composition_label">Rhagosodiadau cyfansoddi</string>
   <string name="account_settings_composition_summary">Gosod rhagosodiadau Oddi Wrth, Bcc a llofnod</string>

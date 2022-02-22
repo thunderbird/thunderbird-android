@@ -48,10 +48,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_delete_dlg_instructions_fmt">Dilamet e vo ar gont \"<xliff:g id="account">%s</xliff:g>\" eus K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Aozerien</string>
-  <string name="read_messages_label">Lenn ar posteloù</string>
-  <string name="read_messages_desc">Aotren an arload-mañ da lenn ho posteloù.</string>
-  <string name="delete_messages_label">Dilemel posteloù</string>
-  <string name="delete_messages_desc">Aotren an arload-mañ da lenn ho posteloù.</string>
   <string name="about_title">A-zivout K-9 Mail</string>
   <string name="accounts_title">Kontoù</string>
   <string name="advanced">Kemplezhoc’h</string>
@@ -422,8 +418,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_settings_mail_check_frequency_label">Aliested kerc’hat ar posteloù</string>
   <string name="account_settings_color_label">Liv ar gont</string>
   <string name="account_settings_color_summary">Liv ar gont arveret er roll teuliadoù ha kontoù</string>
-  <string name="account_settings_led_color_label">Liv al LED rebuziñ</string>
-  <string name="account_settings_led_color_summary">Liv diskouezet gant LED ho trevnad evit ar gont-mañ </string>
   <string name="account_settings_mail_display_count_label">Ment an teuliad lec’hel</string>
   <string name="account_settings_autodownload_message_size_label">Kerc’hat ar c’hemennadennoù bihannoc’h eget:</string>
   <string name="account_settings_autodownload_message_size_any">ne vern ar ment (bevenn ebet)</string>
@@ -495,12 +489,10 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_settings_name_label">Anv</string>
   <string name="notifications_title">Rebuzadurioù</string>
   <string name="account_settings_vibrate_enable">Froumal</string>
-  <string name="account_settings_vibrate_summary">Froumal pa zegouezh ur postel</string>
   <string name="account_settings_vibrate_pattern_default">Dre ziouer</string>
   <string name="account_settings_vibrate_times">Adfroumal</string>
   <string name="account_settings_ringtone">Soniri postel nevez</string>
-  <string name="account_settings_led_label">Blinkañ al LED</string>
-  <string name="account_settings_led_summary">Blinkañ al LED pa zegouezh ur postel</string>
+  <string name="account_settings_notification_light_account_color">Liv ar gont</string>
   <string name="account_settings_composition_title">Dibarzhioù skridaozañ ur postel</string>
   <string name="account_settings_composition_label">Skridaozañ dre ziouer</string>
   <string name="account_settings_composition_summary">Arventennañ ar maeziennoù \"A-berzh\", \"Bcc\" ha sinadur dre ziouer</string>

@@ -60,10 +60,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att tas bort från K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Upphovsmän</string>
-  <string name="read_messages_label">Läs e-post</string>
-  <string name="read_messages_desc">Tillåter att denna applikation läser dina e-postmeddelanden.</string>
-  <string name="delete_messages_label">Ta bort e-post</string>
-  <string name="delete_messages_desc">Tillåter att denna applikation tar bort dina e-postmeddelanden.</string>
   <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konton</string>
   <string name="advanced">Avancerat</string>
@@ -100,7 +96,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="discard_action">Kassera</string>
   <string name="save_draft_action">Spara som utkast</string>
   <string name="check_mail_action">Kontrollera e-post</string>
-  <string name="check_all_mail_action">Kontrollera e-post i alla konton</string>
   <string name="send_messages_action">Skicka meddelanden</string>
   <string name="refresh_folders_action">Uppdatera mapplista</string>
   <string name="filter_folders_action">Hitta mapp</string>
@@ -241,6 +236,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="global_settings_show_contact_name_summary">Använd mottagarnas namn från kontakter om tillgängligt</string>
   <string name="global_settings_registered_name_color_label">Färglägg kontakter</string>
   <string name="global_settings_registered_name_color_changed">Färglägg namn i din kontaktlista</string>
+  <string name="general_settings_contact_name_color_label">Färg på kontaktnamn</string>
   <string name="global_settings_messageview_fixedwidth_label">Teckensnitt med fast bredd</string>
   <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd när meddelanden med enbart oformaterad text visas</string>
   <string name="global_settings_messageview_autofit_width_label">Anpassa automatiskt meddelanden</string>
@@ -458,8 +454,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_mail_check_frequency_label">Frekvens för mappkontroll</string>
   <string name="account_settings_color_label">Kontofärg</string>
   <string name="account_settings_color_summary">Färg för detta konto i mapp- och kontolista</string>
-  <string name="account_settings_led_color_label">Färg på LED vid avisering</string>
-  <string name="account_settings_led_color_summary">Den färg som enhetens LED ska visa för detta konto</string>
   <string name="account_settings_mail_display_count_label">Mappstorlek lokalt</string>
   <string name="account_settings_autodownload_message_size_label">Hämta meddelanden upp till</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -545,8 +539,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_description_label">Kontonamn</string>
   <string name="account_settings_name_label">Ditt namn</string>
   <string name="notifications_title">Aviseringar</string>
+  <string name="account_settings_vibration">Vibration</string>
   <string name="account_settings_vibrate_enable">Vibrera</string>
-  <string name="account_settings_vibrate_summary">Vibrera vid ankomst av e-post</string>
   <string name="account_settings_vibrate_pattern_label">Vibrationsmönster</string>
   <string name="account_settings_vibrate_pattern_default">Standard</string>
   <string name="account_settings_vibrate_pattern_1">Mönster 1</string>
@@ -555,9 +549,19 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_vibrate_pattern_4">Mönster 4</string>
   <string name="account_settings_vibrate_pattern_5">Mönster 5</string>
   <string name="account_settings_vibrate_times">Antal vibrationer</string>
+  <string name="account_settings_vibrate_summary_disabled">Inaktiverad</string>
   <string name="account_settings_ringtone">Ljudsignal för ny e-post</string>
-  <string name="account_settings_led_label">Blinkande LED</string>
-  <string name="account_settings_led_summary">Blinkande LED vid ankomst av e-post</string>
+  <string name="account_settings_notification_light_label">Aviseringslampa</string>
+  <string name="account_settings_notification_light_disabled">Inaktiverad</string>
+  <string name="account_settings_notification_light_account_color">Kontofärg</string>
+  <string name="account_settings_notification_light_default_color">Systemets standardfärg</string>
+  <string name="account_settings_notification_light_white">Vit</string>
+  <string name="account_settings_notification_light_red">Röd</string>
+  <string name="account_settings_notification_light_green">Grön</string>
+  <string name="account_settings_notification_light_blue">Blå</string>
+  <string name="account_settings_notification_light_yellow">Gul</string>
+  <string name="account_settings_notification_light_cyan">Cyan</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Inställningar för meddelandekomponering</string>
   <string name="account_settings_composition_label">Standardinställningar</string>
   <string name="account_settings_composition_summary">Standardinställningar för avsändare, blindkopia och signatur</string>

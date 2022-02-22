@@ -60,10 +60,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_delete_dlg_instructions_fmt">Aðgangurinn \"<xliff:g id="account">%s</xliff:g>\" verður fjarlægður úr K-9 póstinum.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Höfundar</string>
-  <string name="read_messages_label">Lesa tölvupósta</string>
-  <string name="read_messages_desc">Leyfa þessu forriti að lesa tölvupóstana mína.</string>
-  <string name="delete_messages_label">Eyða tölvupóstum</string>
-  <string name="delete_messages_desc">Leyfa þessu forriti að eyða tölvupóstum.</string>
   <string name="about_title">Um K-9 póstinn</string>
   <string name="accounts_title">Aðgangar</string>
   <string name="advanced">Ítarlegt</string>
@@ -100,7 +96,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="discard_action">Henda</string>
   <string name="save_draft_action">Vista sem drög</string>
   <string name="check_mail_action">Athuga póst</string>
-  <string name="check_all_mail_action">Athuga póst á öllum aðgöngum</string>
   <string name="send_messages_action">Senda póst</string>
   <string name="refresh_folders_action">Endurnýja möppulista</string>
   <string name="filter_folders_action">Finna möppu</string>
@@ -452,8 +447,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_mail_check_frequency_label">Tíðni athugana á möppu</string>
   <string name="account_settings_color_label">Litur aðgangsins</string>
   <string name="account_settings_color_summary">Liturinn sem notaður er til að auðkenna þennan aðgang í listum</string>
-  <string name="account_settings_led_color_label">Litur LED-merkis fyrir tilkynningar</string>
-  <string name="account_settings_led_color_summary">Litur LED-merkis sem tækið á að blikka við tilkynningar fyrir þennan aðgang</string>
   <string name="account_settings_mail_display_count_label">Stærð staðværrar möppu</string>
   <string name="account_settings_autodownload_message_size_label">Ná í skilaboð upp að</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -540,12 +533,10 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_name_label">Nafnið þitt</string>
   <string name="notifications_title">Tilkynningar</string>
   <string name="account_settings_vibrate_enable">Titra</string>
-  <string name="account_settings_vibrate_summary">Titra þegar nýr póstur berst</string>
   <string name="account_settings_vibrate_pattern_default">Sjálfgefið</string>
   <string name="account_settings_vibrate_times">Endurtaka titring</string>
   <string name="account_settings_ringtone">Nýr hringitónn fyrir póst</string>
-  <string name="account_settings_led_label">Blikka LED-merki</string>
-  <string name="account_settings_led_summary">Blikka LED-ljósi þegar nýr póstur berst</string>
+  <string name="account_settings_notification_light_account_color">Litur aðgangsins</string>
   <string name="account_settings_composition_title">Valkostir við samningu skilaboða</string>
   <string name="account_settings_composition_label">Sjálfgefið við samningu skilaboða</string>
   <string name="account_settings_composition_summary">Settu sjálfgefið Frá, BCC (falið afrit) og undirskrift</string>

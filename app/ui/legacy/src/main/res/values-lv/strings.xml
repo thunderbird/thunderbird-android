@@ -60,10 +60,6 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="account_delete_dlg_instructions_fmt">Konts \"<xliff:g id="account">%s</xliff:g>\" tiks noņemts no K-9 Pasta.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autori</string>
-  <string name="read_messages_label">Izlasīt e-pastus</string>
-  <string name="read_messages_desc">Atļauj šai aplikācijai lasīt Jūsu e-pastus</string>
-  <string name="delete_messages_label">Izdzēst e-pastus</string>
-  <string name="delete_messages_desc">Atļauj šai aplikācijai izdzēst Jūsu e-pastus</string>
   <string name="about_title">Par K-9 Pastu</string>
   <string name="accounts_title">Konti</string>
   <string name="advanced">Detalizētāk</string>
@@ -100,7 +96,6 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="discard_action">Izmest</string>
   <string name="save_draft_action">Saglabāt kā melnrakstu</string>
   <string name="check_mail_action">Pārbaudīt pastu</string>
-  <string name="check_all_mail_action">Pārbaudīt pastu visos kontos</string>
   <string name="send_messages_action">Sūtīt vēstules</string>
   <string name="refresh_folders_action">Atsvaidzināt mapju sarakstu</string>
   <string name="filter_folders_action">Meklēt mapi</string>
@@ -458,8 +453,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_mail_check_frequency_label">Mapes pārbaudes biežums</string>
   <string name="account_settings_color_label">Konta krāsa</string>
   <string name="account_settings_color_summary">Noteicošā šī konta krāsa mapju un konta sarakstā</string>
-  <string name="account_settings_led_color_label">Paziņojuma LED krāsa</string>
-  <string name="account_settings_led_color_summary">Krāsa, kādā jūsu ierīces LED būtu jāmirgo šim kontam</string>
   <string name="account_settings_mail_display_count_label">Vietējās mapes izmērs</string>
   <string name="account_settings_autodownload_message_size_label">Saņemt vēstules līdz</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -546,12 +539,10 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_name_label">Jūsu vārds</string>
   <string name="notifications_title">Paziņojumi</string>
   <string name="account_settings_vibrate_enable">Vibrēt</string>
-  <string name="account_settings_vibrate_summary">Vibrēt, kad saņemts jauns pasts</string>
   <string name="account_settings_vibrate_pattern_default">Noklusējums</string>
   <string name="account_settings_vibrate_times">Atkārtot vibrēšanu</string>
   <string name="account_settings_ringtone">Jauna pasta skaņas signāls</string>
-  <string name="account_settings_led_label">LED mirgošana</string>
-  <string name="account_settings_led_summary">LED mirgošana, kad saņemts jauns pasts</string>
+  <string name="account_settings_notification_light_account_color">Konta krāsa</string>
   <string name="account_settings_composition_title">Vēstules rakstīšanas iespējas</string>
   <string name="account_settings_composition_label">Rakstīšanas noklusējuma iestatījumi</string>
   <string name="account_settings_composition_summary">Norādīt Jūsu noklusējuma \'No\', Bcc un parakstu</string>

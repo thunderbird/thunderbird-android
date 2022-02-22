@@ -61,10 +61,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autores</string>
-  <string name="read_messages_label">Ler correos</string>
-  <string name="read_messages_desc">Permitir a esta aplicación ler tus correos</string>
-  <string name="delete_messages_label">Borrar correos</string>
-  <string name="delete_messages_desc">Permitir a esta aplicación borrar os teus correos.</string>
   <string name="about_title">Sobre correo K-9</string>
   <string name="accounts_title">Contas</string>
   <string name="advanced">Avanzado</string>
@@ -101,7 +97,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Gardar coma borrador</string>
   <string name="check_mail_action">Sincronizar</string>
-  <string name="check_all_mail_action">Comprobar correo en todas as contas</string>
   <string name="send_messages_action">Enviar Correo</string>
   <string name="refresh_folders_action">Refrescar Carpetas</string>
   <string name="filter_folders_action">Buscar cartafol</string>
@@ -457,8 +452,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_color_label">Cor da conta</string>
   <string name="account_settings_color_summary">Elixe a cor a usar na carpeta e na conta</string>
-  <string name="account_settings_led_color_label">Cor de aviso</string>
-  <string name="account_settings_led_color_summary">Elixe a cor do LED cando haxa un aviso para esta conta</string>
   <string name="account_settings_mail_display_count_label">Tamaño carpeta local</string>
   <string name="account_settings_autodownload_message_size_label">Obter mensaxes hata</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -545,12 +538,10 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_settings_name_label">O teu nome</string>
   <string name="notifications_title">Notificacións</string>
   <string name="account_settings_vibrate_enable">Vibrar</string>
-  <string name="account_settings_vibrate_summary">Vibrar cando chega correo</string>
   <string name="account_settings_vibrate_pattern_default">Predefinido</string>
   <string name="account_settings_vibrate_times">Repetir vibración</string>
   <string name="account_settings_ringtone">Son de novo correo</string>
-  <string name="account_settings_led_label">Pestanexo LED</string>
-  <string name="account_settings_led_summary">Pestanexar o LED cando chega novo correo</string>
+  <string name="account_settings_notification_light_account_color">Cor da conta</string>
   <string name="account_settings_composition_title">Opcións de edición de mensaxe</string>
   <string name="account_settings_composition_label">Campos por defecto</string>
   <string name="account_settings_composition_summary">Indicar por defecto Dende, CCo e Sinatura</string>

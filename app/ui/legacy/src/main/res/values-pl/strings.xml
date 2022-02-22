@@ -61,10 +61,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autorzy</string>
-  <string name="read_messages_label">Czytaj pocztę</string>
-  <string name="read_messages_desc">Zezwalaj tej aplikacji na czytanie Twoich wiadomości</string>
-  <string name="delete_messages_label">Usuń wiadomości</string>
-  <string name="delete_messages_desc">Zezwalaj tej aplikacji na usuwanie Twoich wiadomości.</string>
   <string name="about_title">O K-9 Mail</string>
   <string name="accounts_title">Konta</string>
   <string name="advanced">Zaawansowane</string>
@@ -101,7 +97,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="discard_action">Usuń</string>
   <string name="save_draft_action">Zapisz jako szkic</string>
   <string name="check_mail_action">Sprawdź pocztę</string>
-  <string name="check_all_mail_action">Sprawdź pocztę na wszystkich kontach</string>
   <string name="send_messages_action">Wyślij wiadomości</string>
   <string name="refresh_folders_action">Odśwież listę</string>
   <string name="filter_folders_action">Wyszukaj folder</string>
@@ -420,6 +415,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_mark_message_as_read_on_delete_summary">Oznacz wiadomość jako przeczytaną przy usuwaniu</string>
   <string name="account_settings_notification_channels_label">Kategorie powiadomień</string>
   <string name="account_settings_open_notification_settings_messages_summary">Konfiguruj powiadomienia dla nowych wiadomości</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguruj powiadomienia o błędach i statusie</string>
   <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazki</string>
   <string name="account_settings_show_pictures_never">Nie</string>
   <string name="account_settings_show_pictures_only_from_contacts">Od kontaktów</string>
@@ -461,8 +457,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_mail_check_frequency_label">Sprawdzanie konta</string>
   <string name="account_settings_color_label">Kolor konta</string>
   <string name="account_settings_color_summary">Wybierz kolor, który będzie użyty przy wyświetlaniu folderów i listy kont</string>
-  <string name="account_settings_led_color_label">Kolor powiadomienia LED</string>
-  <string name="account_settings_led_color_summary">Wybierz kolor jakim migać ma dioda LED przy powiadomieniach</string>
   <string name="account_settings_mail_display_count_label">Liczba wiadomości</string>
   <string name="account_settings_autodownload_message_size_label">Rozmiar pobieranych wiadomości</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -549,7 +543,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_name_label">Twoje imię i nazwisko</string>
   <string name="notifications_title">Powiadomienia</string>
   <string name="account_settings_vibrate_enable">Wibracja</string>
-  <string name="account_settings_vibrate_summary">Wibruj, gdy są nowe wiadomości</string>
   <string name="account_settings_vibrate_pattern_label">Wzór wibracji.</string>
   <string name="account_settings_vibrate_pattern_default">Standardowa</string>
   <string name="account_settings_vibrate_pattern_1">Wzór 1</string>
@@ -559,8 +552,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_vibrate_pattern_5">Wzór 5</string>
   <string name="account_settings_vibrate_times">Liczba wibracji</string>
   <string name="account_settings_ringtone">Sygnał dzwiękowy</string>
-  <string name="account_settings_led_label">Mrugaj diodą</string>
-  <string name="account_settings_led_summary">Zamrugaj diodą przy nowej wiadomości</string>
+  <string name="account_settings_notification_light_account_color">Kolor konta</string>
   <string name="account_settings_composition_title">Opcje tworzenia wiadomości</string>
   <string name="account_settings_composition_label">Tworzenie wiadomości</string>
   <string name="account_settings_composition_summary">Ustaw podpis oraz domyślne wartości Do, UDW</string>

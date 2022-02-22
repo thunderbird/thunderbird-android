@@ -57,10 +57,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_delete_dlg_instructions_fmt">Akun \"<xliff:g id="account">%s</xliff:g>\" akan dibuang dari K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Penulis</string>
-  <string name="read_messages_label">Baca Email</string>
-  <string name="read_messages_desc">Izinkan aplikasi ini membaca Email Anda.</string>
-  <string name="delete_messages_label">Hapus Email</string>
-  <string name="delete_messages_desc">Izinkan aplikasi ini menghapus Email Anda.</string>
   <string name="about_title">Tentang K-9 Mail</string>
   <string name="accounts_title">Akun</string>
   <string name="advanced">Lanjutan</string>
@@ -432,8 +428,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_mail_check_frequency_label">Frekuensi penarikan folder</string>
   <string name="account_settings_color_label">Warna akun</string>
   <string name="account_settings_color_summary">Warna aksen akun ini digunakan dalam folder dan daftar akun</string>
-  <string name="account_settings_led_color_label">Warna LED notifikasi</string>
-  <string name="account_settings_led_color_summary">Warna LED perangkat Anda harus berkedip untuk akun ini</string>
   <string name="account_settings_mail_display_count_label">Ukuran folder lokal</string>
   <string name="account_settings_autodownload_message_size_label">Ambil pesan hingga</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -519,12 +513,10 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_name_label">Nama anda</string>
   <string name="notifications_title">Notifikasi</string>
   <string name="account_settings_vibrate_enable">Getar</string>
-  <string name="account_settings_vibrate_summary">Getar saat email tiba</string>
   <string name="account_settings_vibrate_pattern_default">Bawaan</string>
   <string name="account_settings_vibrate_times">Ulangi getar</string>
   <string name="account_settings_ringtone">Nada dering surat baru</string>
-  <string name="account_settings_led_label">Kedip LED</string>
-  <string name="account_settings_led_summary">Berkedip LED saat surat masuk</string>
+  <string name="account_settings_notification_light_account_color">Warna akun</string>
   <string name="account_settings_composition_title">Opsi komposisi pesan</string>
   <string name="account_settings_composition_label">Susunan bawaan</string>
   <string name="account_settings_composition_summary">Tetapkan bawaan Anda Dari, Bcc dan tanda tangan</string>
