@@ -5,6 +5,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
+import timber.log.Timber
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
 internal class SingleMessageNotificationCreator(
@@ -44,6 +45,13 @@ internal class SingleMessageNotificationCreator(
             .setLockScreenNotification(baseNotificationData, singleNotificationData.addLockScreenNotification)
             .build()
 
+        if (isGroupSummary) {
+            Timber.v(
+                "Creating single summary notification (silent=%b): %s",
+                singleNotificationData.isSilent,
+                notification
+            )
+        }
         notificationManager.notify(notificationId, notification)
     }
 
