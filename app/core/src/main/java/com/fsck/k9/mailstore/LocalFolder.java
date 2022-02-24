@@ -585,7 +585,7 @@ public class LocalFolder {
             @Override
             public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws MessagingException {
                 open();
-                return LocalFolder.this.localStore.getMessages(null, LocalFolder.this,
+                return LocalFolder.this.localStore.getMessages(LocalFolder.this,
                         "SELECT " + LocalStore.GET_MESSAGES_COLS +
                         "FROM messages " +
                         "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +

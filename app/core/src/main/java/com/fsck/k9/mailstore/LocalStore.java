@@ -43,7 +43,6 @@ import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.FolderType;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
@@ -380,18 +379,15 @@ public class LocalStore {
 
         Timber.d("Query = %s", sqlQuery);
 
-        return getMessages(null, null, sqlQuery, selectionArgs);
+        return getMessages(null, sqlQuery, selectionArgs);
     }
 
     /*
      * Given a query string, actually do the query for the messages and
      * call the MessageRetrievalListener for each one
      */
-    List<LocalMessage> getMessages(
-        final MessageRetrievalListener<LocalMessage> listener,
-        final LocalFolder folder,
-        final String queryString, final String[] placeHolders
-    ) throws MessagingException {
+    List<LocalMessage> getMessages(LocalFolder folder, String queryString, String[] placeHolders)
+            throws MessagingException {
         final List<LocalMessage> messages = new ArrayList<>();
         database.execute(false, new DbCallback<Void>() {
             @Override
@@ -405,9 +401,6 @@ public class LocalStore {
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
-                        if (listener != null) {
-                            listener.messageFinished(message);
-                        }
                     }
                     cursor.close();
                     cursor = db.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
@@ -417,9 +410,6 @@ public class LocalStore {
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
-                        if (listener != null) {
-                            listener.messageFinished(message);
-                        }
                     }
                 } catch (Exception e) {
                     Timber.d(e, "Got an exception");
