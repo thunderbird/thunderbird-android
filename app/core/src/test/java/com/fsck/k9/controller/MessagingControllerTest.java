@@ -419,7 +419,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localStore.getFolder(SENT_FOLDER_ID)).thenReturn(sentFolder);
         when(sentFolder.getDatabaseId()).thenReturn(SENT_FOLDER_ID);
         when(localFolder.exists()).thenReturn(true);
-        when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
+        when(localFolder.getMessages()).thenReturn(Collections.singletonList(localMessageToSend1));
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
         when(localMessageToSend1.getDatabaseId()).thenReturn(42L);
         when(localMessageToSend1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});

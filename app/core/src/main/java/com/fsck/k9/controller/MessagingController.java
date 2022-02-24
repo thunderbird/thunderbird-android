@@ -1070,7 +1070,7 @@ public class MessagingController {
         Timber.i("Marking all messages in %s:%s as read", account, folderServerId);
 
         // TODO: Make this one database UPDATE operation
-        List<LocalMessage> messages = localFolder.getMessages(null, false);
+        List<LocalMessage> messages = localFolder.getMessages(false);
         for (Message message : messages) {
             if (!message.isSet(Flag.SEEN)) {
                 message.setFlag(Flag.SEEN, true);
@@ -1539,7 +1539,7 @@ public class MessagingController {
 
             long outboxFolderId = localFolder.getDatabaseId();
 
-            List<LocalMessage> localMessages = localFolder.getMessages(null);
+            List<LocalMessage> localMessages = localFolder.getMessages();
             int progress = 0;
             int todo = localMessages.size();
             for (MessagingListener l : getListeners()) {
