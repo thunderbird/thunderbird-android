@@ -1184,14 +1184,14 @@ class MessageListFragment :
     private fun checkMail() {
         if (isSingleAccountMode && isSingleFolderMode) {
             val folderId = currentFolder!!.databaseId
-            messagingController.synchronizeMailbox(account, folderId, activityListener)
+            messagingController.synchronizeMailbox(account, folderId, false, activityListener)
             messagingController.sendPendingMessages(account, activityListener)
         } else if (allAccounts) {
-            messagingController.checkMail(null, true, true, activityListener)
+            messagingController.checkMail(null, true, true, false, activityListener)
         } else {
             for (accountUuid in accountUuids) {
                 val account = preferences.getAccount(accountUuid)
-                messagingController.checkMail(account, true, true, activityListener)
+                messagingController.checkMail(account, true, true, false, activityListener)
             }
         }
     }

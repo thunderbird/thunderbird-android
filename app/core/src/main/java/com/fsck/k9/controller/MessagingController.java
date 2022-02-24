@@ -575,7 +575,7 @@ public class MessagingController {
             if (localFolder.getVisibleLimit() > 0) {
                 localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
             }
-            synchronizeMailbox(account, folderId, listener);
+            synchronizeMailbox(account, folderId, false, listener);
         } catch (MessagingException me) {
             throw new RuntimeException("Unable to set visible limit on folder", me);
         }
@@ -584,9 +584,9 @@ public class MessagingController {
     /**
      * Start background synchronization of the specified folder.
      */
-    public void synchronizeMailbox(Account account, long folderId, MessagingListener listener) {
+    public void synchronizeMailbox(Account account, long folderId, boolean notify, MessagingListener listener) {
         putBackground("synchronizeMailbox", listener, () ->
-                synchronizeMailboxSynchronous(account, folderId, listener, new NotificationState())
+                synchronizeMailboxSynchronous(account, folderId, notify, listener, new NotificationState())
         );
     }
 
@@ -596,7 +596,7 @@ public class MessagingController {
         final CountDownLatch latch = new CountDownLatch(1);
         putBackground("synchronizeMailbox", null, () -> {
             try {
-                synchronizeMailboxSynchronous(account, folderId, null, new NotificationState());
+                synchronizeMailboxSynchronous(account, folderId, true, null, new NotificationState());
             } finally {
                 latch.countDown();
             }
@@ -609,19 +609,12 @@ public class MessagingController {
         }
     }
 
-    /**
-     * Start foreground synchronization of the specified folder. This is generally only called
-     * by synchronizeMailbox.
-     * <p>
-     * TODO Break this method up into smaller chunks.
-     */
-    @VisibleForTesting
-    void synchronizeMailboxSynchronous(Account account, long folderId, MessagingListener listener,
-            NotificationState notificationState) {
+    private void synchronizeMailboxSynchronous(Account account, long folderId, boolean notify,
+            MessagingListener listener, NotificationState notificationState) {
         refreshFolderListIfStale(account);
 
         Backend backend = getBackend(account);
-        syncFolder(account, folderId, listener, backend, notificationState);
+        syncFolder(account, folderId, notify, listener, backend, notificationState);
     }
 
     private void refreshFolderListIfStale(Account account) {
@@ -636,7 +629,7 @@ public class MessagingController {
         }
     }
 
-    private void syncFolder(Account account, long folderId, MessagingListener listener, Backend backend,
+    private void syncFolder(Account account, long folderId, boolean notify, MessagingListener listener, Backend backend,
             NotificationState notificationState) {
         ServerSettings serverSettings = account.getIncomingServerSettings();
         if (serverSettings.isMissingCredentials()) {
@@ -667,9 +660,14 @@ public class MessagingController {
             return;
         }
 
-        MessageStore messageStore = messageStoreManager.getMessageStore(account);
-        Long lastChecked = messageStore.getFolder(folderId, FolderDetailsAccessor::getLastChecked);
-        boolean suppressNotifications = lastChecked == null;
+        final boolean suppressNotifications;
+        if (notify) {
+            MessageStore messageStore = messageStoreManager.getMessageStore(account);
+            Long lastChecked = messageStore.getFolder(folderId, FolderDetailsAccessor::getLastChecked);
+            suppressNotifications = lastChecked == null;
+        } else {
+            suppressNotifications = true;
+        }
 
         String folderServerId = localFolder.getServerId();
         SyncConfig syncConfig = createSyncConfig(account);
@@ -2279,7 +2277,7 @@ public class MessagingController {
     public boolean performPeriodicMailSync(Account account) {
         final CountDownLatch latch = new CountDownLatch(1);
         MutableBoolean syncError = new MutableBoolean(false);
-        checkMail(account, false, false, new SimpleMessagingListener() {
+        checkMail(account, false, false, true, new SimpleMessagingListener() {
             @Override
             public void checkMailFinished(Context context, Account account) {
                 latch.countDown();
@@ -2315,10 +2313,8 @@ public class MessagingController {
      * Checks mail for one or multiple accounts. If account is null all accounts
      * are checked.
      */
-    public void checkMail(final Account account,
-            final boolean ignoreLastCheckedTime,
-            final boolean useManualWakeLock,
-            final MessagingListener listener) {
+    public void checkMail(Account account, boolean ignoreLastCheckedTime, boolean useManualWakeLock, boolean notify,
+            MessagingListener listener) {
 
         final WakeLock wakeLock;
         if (useManualWakeLock) {
@@ -2350,7 +2346,7 @@ public class MessagingController {
                     }
 
                     for (final Account account : accounts) {
-                        checkMailForAccount(context, account, ignoreLastCheckedTime, listener);
+                        checkMailForAccount(account, ignoreLastCheckedTime, notify, listener);
                     }
 
                 } catch (Exception e) {
@@ -2377,9 +2373,8 @@ public class MessagingController {
     }
 
 
-    private void checkMailForAccount(final Context context, final Account account,
-            final boolean ignoreLastCheckedTime,
-            final MessagingListener listener) {
+    private void checkMailForAccount(Account account, boolean ignoreLastCheckedTime, boolean notify,
+            MessagingListener listener) {
         Timber.i("Synchronizing account %s", account);
 
         NotificationState notificationState = new NotificationState();
@@ -2401,28 +2396,14 @@ public class MessagingController {
 
                 if (LocalFolder.isModeMismatch(aDisplayMode, fDisplayClass)) {
                     // Never sync a folder that isn't displayed
-                    /*
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
-                              " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
-                    }
-                    */
-
                     continue;
                 }
 
                 if (LocalFolder.isModeMismatch(aSyncMode, fSyncClass)) {
                     // Do not sync folders in the wrong class
-                    /*
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
-                              " which is in sync mode " + fSyncClass + " while account is in sync mode " + aSyncMode);
-                    }
-                    */
-
                     continue;
                 }
-                synchronizeFolder(account, folder, ignoreLastCheckedTime, listener, notificationState);
+                synchronizeFolder(account, folder, ignoreLastCheckedTime, notify, listener, notificationState);
             }
         } catch (MessagingException e) {
             Timber.e(e, "Unable to synchronize account %s", account);
@@ -2446,14 +2427,14 @@ public class MessagingController {
     }
 
     private void synchronizeFolder(Account account, LocalFolder folder, boolean ignoreLastCheckedTime,
-            MessagingListener listener, NotificationState notificationState) {
+            boolean notify, MessagingListener listener, NotificationState notificationState) {
         putBackground("sync" + folder.getServerId(), null, () -> {
-            synchronizeFolderInBackground(account, folder, ignoreLastCheckedTime, listener, notificationState);
+            synchronizeFolderInBackground(account, folder, ignoreLastCheckedTime, notify, listener, notificationState);
         });
     }
 
     private void synchronizeFolderInBackground(Account account, LocalFolder folder, boolean ignoreLastCheckedTime,
-            MessagingListener listener, NotificationState notificationState) {
+            boolean notify, MessagingListener listener, NotificationState notificationState) {
         Timber.v("Folder %s was last synced @ %tc", folder.getServerId(), folder.getLastChecked());
 
         if (!ignoreLastCheckedTime) {
@@ -2476,7 +2457,7 @@ public class MessagingController {
         try {
             showFetchingMailNotificationIfNecessary(account, folder);
             try {
-                synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener, notificationState);
+                synchronizeMailboxSynchronous(account, folder.getDatabaseId(), notify, listener, notificationState);
             } finally {
                 showEmptyFetchingMailNotificationIfNecessary(account);
             }

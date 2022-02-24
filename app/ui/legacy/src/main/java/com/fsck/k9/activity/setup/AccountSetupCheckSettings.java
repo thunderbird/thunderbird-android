@@ -510,7 +510,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             messagingController.refreshFolderListSynchronous(account);
             Long inboxFolderId = account.getInboxFolderId();
             if (inboxFolderId != null) {
-                messagingController.synchronizeMailbox(account, inboxFolderId, null);
+                messagingController.synchronizeMailbox(account, inboxFolderId, false, null);
             }
         }
 
