@@ -97,7 +97,7 @@ class TestImapFolder(override val serverId: String) : ImapFolder {
     ) {
         if (messages.isEmpty()) return
 
-        messages.forEachIndexed { index, imapMessage ->
+        for (imapMessage in messages) {
             val uid = imapMessage.uid.toLong()
 
             val flags = messageFlags[uid].orEmpty().toSet()
@@ -109,7 +109,7 @@ class TestImapFolder(override val serverId: String) : ImapFolder {
             }
             imapMessage.body = storedMessage.body
 
-            listener?.messageFinished(imapMessage, index, messages.size)
+            listener?.messageFinished(imapMessage)
         }
     }
 

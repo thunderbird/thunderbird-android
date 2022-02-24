@@ -120,7 +120,6 @@ public class Pop3Folder {
             throw new MessagingException("getMessages", ioe);
         }
         List<Pop3Message> messages = new ArrayList<>();
-        int i = 0;
         for (int msgNum = start; msgNum <= end; msgNum++) {
             Pop3Message message = msgNumToMsgMap.get(msgNum);
             if (message == null) {
@@ -135,7 +134,7 @@ public class Pop3Folder {
 
             messages.add(message);
             if (listener != null) {
-                listener.messageFinished(message, i++, (end - start) + 1);
+                listener.messageFinished(message);
             }
         }
         return messages;
@@ -314,8 +313,7 @@ public class Pop3Folder {
         } catch (IOException ioe) {
             throw new MessagingException("fetch", ioe);
         }
-        for (int i = 0, count = messages.size(); i < count; i++) {
-            Pop3Message pop3Message = messages.get(i);
+        for (Pop3Message pop3Message : messages) {
             try {
                 if (fp.contains(FetchProfile.Item.BODY)) {
                     fetchBody(pop3Message, -1);
@@ -337,7 +335,7 @@ public class Pop3Folder {
                     pop3Message.setBody(null);
                 }
                 if (listener != null && !(fp.contains(FetchProfile.Item.ENVELOPE) && fp.size() == 1)) {
-                    listener.messageFinished(pop3Message, i, count);
+                    listener.messageFinished(pop3Message);
                 }
             } catch (IOException ioe) {
                 throw new MessagingException("Unable to fetch message", ioe);
@@ -361,8 +359,7 @@ public class Pop3Folder {
              * In extreme cases we'll do a command per message instead of a bulk request
              * to hopefully save some time and bandwidth.
              */
-            for (int i = 0, count = messages.size(); i < count; i++) {
-                Pop3Message message = messages.get(i);
+            for (Pop3Message message : messages) {
                 String response = connection.executeSimpleCommand(
                         String.format(Locale.US, LIST_COMMAND + " %d",
                                 uidToMsgNumMap.get(message.getUid())));
@@ -371,7 +368,7 @@ public class Pop3Folder {
                 int msgSize = Integer.parseInt(listParts[2]);
                 message.setSize(msgSize);
                 if (listener != null) {
-                    listener.messageFinished(message, i, count);
+                    listener.messageFinished(message);
                 }
             }
         } else {
@@ -393,7 +390,7 @@ public class Pop3Folder {
                 if (pop3Message != null && msgUidIndex.contains(pop3Message.getUid())) {
                     pop3Message.setSize(msgSize);
                     if (listener != null) {
-                        listener.messageFinished(pop3Message, i, count);
+                        listener.messageFinished(pop3Message);
                     }
                     i++;
                 }

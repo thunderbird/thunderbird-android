@@ -475,7 +475,7 @@ class RealImapFolderTest {
 
         val messages = folder.getMessages(1, 10, null, listener)
 
-        verify(listener).messageFinished(messages[0], 0, 1)
+        verify(listener).messageFinished(messages[0])
         verifyNoMoreInteractions(listener)
     }
 
@@ -562,7 +562,7 @@ class RealImapFolderTest {
 
         val messages = folder.getMessages(setOf(1L), true, listener)
 
-        verify(listener).messageFinished(messages[0], 0, 1)
+        verify(listener).messageFinished(messages[0])
         verifyNoMoreInteractions(listener)
     }
 

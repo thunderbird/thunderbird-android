@@ -419,7 +419,7 @@ class Pop3Sync {
         remoteFolder.fetch(unsyncedMessages, fp,
                 new MessageRetrievalListener<Pop3Message>() {
                     @Override
-                    public void messageFinished(Pop3Message message, int number, int ofTotal) {
+                    public void messageFinished(Pop3Message message) {
                         try {
                             if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
                                 if (message.isSet(Flag.DELETED)) {
@@ -467,7 +467,7 @@ class Pop3Sync {
         remoteFolder.fetch(smallMessages,
                 fp, new MessageRetrievalListener<Pop3Message>() {
                     @Override
-                    public void messageFinished(final Pop3Message message, int number, int ofTotal) {
+                    public void messageFinished(final Pop3Message message) {
                         try {
 
                             // Store the updated message locally

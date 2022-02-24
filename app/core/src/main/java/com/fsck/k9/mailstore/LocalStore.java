@@ -399,7 +399,6 @@ public class LocalStore {
             @Override
             public Void doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
-                int i = 0;
                 try {
                     cursor = db.rawQuery(queryString + " LIMIT 10", placeHolders);
 
@@ -409,9 +408,8 @@ public class LocalStore {
 
                         messages.add(message);
                         if (listener != null) {
-                            listener.messageFinished(message, i, -1);
+                            listener.messageFinished(message);
                         }
-                        i++;
                     }
                     cursor.close();
                     cursor = db.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
@@ -422,9 +420,8 @@ public class LocalStore {
 
                         messages.add(message);
                         if (listener != null) {
-                            listener.messageFinished(message, i, -1);
+                            listener.messageFinished(message);
                         }
-                        i++;
                     }
                 } catch (Exception e) {
                     Timber.d(e, "Got an exception");

@@ -221,7 +221,7 @@ public class WebDavFolderTest {
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.BODY_SANE);
         folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
-        verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
+        verify(listener, times(25)).messageFinished(any(WebDavMessage.class));
     }
 
     @Test
@@ -251,7 +251,7 @@ public class WebDavFolderTest {
         profile.add(FetchProfile.Item.FLAGS);
         profile.add(FetchProfile.Item.BODY);
         folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
-        verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), anyInt());
+        verify(listener, times(25)).messageFinished(any(WebDavMessage.class));
     }
 
     private void setupStoreForMessageFetching() {
@@ -291,7 +291,7 @@ public class WebDavFolderTest {
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.BODY_SANE);
         folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
-        verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
+        verify(listener, times(25)).messageFinished(any(WebDavMessage.class));
     }
 
     @Test
@@ -321,7 +321,7 @@ public class WebDavFolderTest {
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.BODY_SANE);
         folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
-        verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
+        verify(listener, times(25)).messageFinished(any(WebDavMessage.class));
     }
 
     @Test
@@ -387,7 +387,7 @@ public class WebDavFolderTest {
 
         folder.getMessages(messageStart, messageEnd, listener);
 
-        verify(listener, times(5)).messageFinished(any(WebDavMessage.class), anyInt(), eq(5));
+        verify(listener, times(5)).messageFinished(any(WebDavMessage.class));
     }
 
     @Test

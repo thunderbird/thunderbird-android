@@ -483,7 +483,7 @@ internal class ImapSync(
             unsyncedMessages,
             fetchProfile,
             object : MessageRetrievalListener<ImapMessage> {
-                override fun messageFinished(message: ImapMessage, number: Int, ofTotal: Int) {
+                override fun messageFinished(message: ImapMessage) {
                     try {
                         if (message.isSet(Flag.DELETED)) {
                             Timber.v(
@@ -533,7 +533,7 @@ internal class ImapSync(
             smallMessages,
             fetchProfile,
             object : MessageRetrievalListener<ImapMessage> {
-                override fun messageFinished(message: ImapMessage, number: Int, ofTotal: Int) {
+                override fun messageFinished(message: ImapMessage) {
                     try {
                         // Store the updated message locally
                         backendFolder.saveMessage(message, MessageDownloadState.FULL)

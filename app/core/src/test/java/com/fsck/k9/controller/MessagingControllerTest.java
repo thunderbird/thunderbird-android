@@ -201,7 +201,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         controller.searchLocalMessagesSynchronous(search, listener);
 
         verify(localStore).searchForMessages(messageRetrievalListenerCaptor.capture(), eq(search));
-        messageRetrievalListenerCaptor.getValue().messageFinished(localMessage, 1, 1);
+        messageRetrievalListenerCaptor.getValue().messageFinished(localMessage);
         verify(listener).listLocalMessagesAddMessages(eq(account),
                 eq((String) null), eq(Collections.singletonList(localMessage)));
     }
