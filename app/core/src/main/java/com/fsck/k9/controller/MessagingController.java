@@ -2163,7 +2163,7 @@ public class MessagingController {
         // Remove all messages marked as deleted
         folder.destroyDeletedMessages();
 
-        compact(account, null);
+        compact(account);
     }
 
     public void emptyTrash(final Account account, MessagingListener listener) {
@@ -2447,21 +2447,13 @@ public class MessagingController {
         notificationController.clearFetchingMailNotification(account);
     }
 
-    public void compact(final Account account, final MessagingListener ml) {
-        putBackground("compact:" + account, ml, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    MessageStore messageStore = messageStoreManager.getMessageStore(account);
-                    long oldSize = messageStore.getSize();
-                    messageStore.compact();
-                    long newSize = messageStore.getSize();
-                    for (MessagingListener l : getListeners(ml)) {
-                        l.accountSizeChanged(account, oldSize, newSize);
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "Failed to compact account %s", account);
-                }
+    public void compact(Account account) {
+        putBackground("compact:" + account, null, () -> {
+            try {
+                MessageStore messageStore = messageStoreManager.getMessageStore(account);
+                messageStore.compact();
+            } catch (Exception e) {
+                Timber.e(e, "Failed to compact account %s", account);
             }
         });
     }

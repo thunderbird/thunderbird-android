@@ -9,22 +9,9 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mailstore.LocalMessage;
 
 
 public abstract class SimpleMessagingListener implements MessagingListener {
-    @Override
-    public void accountSizeChanged(Account account, long oldSize, long newSize) {
-    }
-
-    @Override
-    public void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages) {
-    }
-
-    @Override
-    public void listLocalMessagesFinished() {
-    }
-
     @Override
     public void synchronizeMailboxStarted(Account account, long folderId) {
     }

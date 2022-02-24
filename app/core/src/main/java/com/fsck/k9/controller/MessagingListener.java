@@ -13,11 +13,6 @@ import com.fsck.k9.mailstore.LocalMessage;
 
 
 public interface MessagingListener {
-    void accountSizeChanged(Account account, long oldSize, long newSize);
-
-    void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages);
-    void listLocalMessagesFinished();
-
     void synchronizeMailboxStarted(Account account, long folderId);
     void synchronizeMailboxHeadersStarted(Account account, String folderServerId);
     void synchronizeMailboxHeadersProgress(Account account, String folderServerId, int completed, int total);
