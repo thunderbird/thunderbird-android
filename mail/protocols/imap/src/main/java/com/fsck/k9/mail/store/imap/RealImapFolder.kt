@@ -505,7 +505,6 @@ internal class RealImapFolder(
         val count = uids.size
         return uids.mapIndexed { index, uidLong ->
             val uid = uidLong.toString()
-            listener?.messageStarted(uid, index, count)
             val message = ImapMessage(uid)
             listener?.messageFinished(message, index, count)
 
@@ -596,8 +595,6 @@ internal class RealImapFolder(
                             continue
                         }
 
-                        listener?.messageStarted(uid, messageNumber++, messageMap.size)
-
                         val literal = handleFetchResponse(message, fetchList)
                         if (literal != null) {
                             when (literal) {
@@ -667,8 +664,6 @@ internal class RealImapFolder(
                         handleUntaggedResponse(response)
                         continue
                     }
-
-                    listener?.messageStarted(uid, messageNumber++, 1)
 
                     val literal = handleFetchResponse(message, fetchList)
                     if (literal != null) {

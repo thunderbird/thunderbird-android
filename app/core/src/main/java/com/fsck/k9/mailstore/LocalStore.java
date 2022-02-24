@@ -395,9 +395,9 @@ public class LocalStore {
         final String queryString, final String[] placeHolders
     ) throws MessagingException {
         final List<LocalMessage> messages = new ArrayList<>();
-        final int j = database.execute(false, new DbCallback<Integer>() {
+        database.execute(false, new DbCallback<Void>() {
             @Override
-            public Integer doDbWork(final SQLiteDatabase db) {
+            public Void doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
                 int i = 0;
                 try {
@@ -431,12 +431,10 @@ public class LocalStore {
                 } finally {
                     Utility.closeQuietly(cursor);
                 }
-                return i;
+
+                return null;
             }
         });
-        if (listener != null) {
-            listener.messagesFinished(j);
-        }
 
         return Collections.unmodifiableList(messages);
 

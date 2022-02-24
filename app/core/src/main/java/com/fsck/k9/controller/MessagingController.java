@@ -419,14 +419,6 @@ public class MessagingController {
             // Collecting statistics of the search result
             MessageRetrievalListener<LocalMessage> retrievalListener = new MessageRetrievalListener<LocalMessage>() {
                 @Override
-                public void messageStarted(String message, int number, int ofTotal) {
-                }
-
-                @Override
-                public void messagesFinished(int number) {
-                }
-
-                @Override
                 public void messageFinished(LocalMessage message, int number, int ofTotal) {
                     if (!isMessageSuppressed(message)) {
                         List<LocalMessage> messages = new ArrayList<>();

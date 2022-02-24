@@ -133,9 +133,6 @@ public class Pop3Folder {
                 continue;
             }
 
-            if (listener != null) {
-                listener.messageStarted(message.getUid(), i++, (end - start) + 1);
-            }
             messages.add(message);
             if (listener != null) {
                 listener.messageFinished(message, i++, (end - start) + 1);
@@ -320,9 +317,6 @@ public class Pop3Folder {
         for (int i = 0, count = messages.size(); i < count; i++) {
             Pop3Message pop3Message = messages.get(i);
             try {
-                if (listener != null && !fp.contains(FetchProfile.Item.ENVELOPE)) {
-                    listener.messageStarted(pop3Message.getUid(), i, count);
-                }
                 if (fp.contains(FetchProfile.Item.BODY)) {
                     fetchBody(pop3Message, -1);
                 } else if (fp.contains(FetchProfile.Item.BODY_SANE)) {
@@ -369,9 +363,6 @@ public class Pop3Folder {
              */
             for (int i = 0, count = messages.size(); i < count; i++) {
                 Pop3Message message = messages.get(i);
-                if (listener != null) {
-                    listener.messageStarted(message.getUid(), i, count);
-                }
                 String response = connection.executeSimpleCommand(
                         String.format(Locale.US, LIST_COMMAND + " %d",
                                 uidToMsgNumMap.get(message.getUid())));
@@ -400,9 +391,6 @@ public class Pop3Folder {
                 int msgSize = Integer.parseInt(listParts[1]);
                 Pop3Message pop3Message = msgNumToMsgMap.get(msgNum);
                 if (pop3Message != null && msgUidIndex.contains(pop3Message.getUid())) {
-                    if (listener != null) {
-                        listener.messageStarted(pop3Message.getUid(), i, count);
-                    }
                     pop3Message.setSize(msgSize);
                     if (listener != null) {
                         listener.messageFinished(pop3Message, i, count);

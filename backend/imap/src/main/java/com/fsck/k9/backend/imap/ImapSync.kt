@@ -509,9 +509,6 @@ internal class ImapSync(
                         Timber.e(e, "Error while storing downloaded message.")
                     }
                 }
-
-                override fun messageStarted(uid: String, number: Int, ofTotal: Int) = Unit
-                override fun messagesFinished(total: Int) = Unit
             },
             syncConfig.maximumAutoDownloadMessageSize
         )
@@ -562,9 +559,6 @@ internal class ImapSync(
                         Timber.e(e, "SYNC: fetch small messages")
                     }
                 }
-
-                override fun messageStarted(uid: String, number: Int, ofTotal: Int) = Unit
-                override fun messagesFinished(total: Int) = Unit
             },
             -1
         )

@@ -235,9 +235,6 @@ public class WebDavFolder {
         uidsLength = uids.length;
 
         for (int i = 0; i < uidsLength; i++) {
-            if (listener != null) {
-                listener.messageStarted(uids[i], i, uidsLength);
-            }
             WebDavMessage message = new WebDavMessage(uids[i], this);
             message.setUrl(uidToUrl.get(uids[i]));
             messages.add(message);
@@ -312,10 +309,6 @@ public class WebDavFolder {
         for (int i = 0, count = messages.size(); i < count; i++) {
             WebDavMessage wdMessage = messages.get(i);
             int statusCode = 0;
-
-            if (listener != null) {
-                listener.messageStarted(wdMessage.getUid(), i, count);
-            }
 
             /**
              * If fetch is called outside of the initial list (ie, a locally stored message), it may not have a URL
@@ -514,9 +507,6 @@ public class WebDavFolder {
         int count = messages.size();
         for (int i = messages.size() - 1; i >= 0; i--) {
             WebDavMessage message = messages.get(i);
-            if (listener != null) {
-                listener.messageStarted(messages.get(i).getUid(), i, count);
-            }
 
             ParsedMessageEnvelope envelope = envelopes.get(message.getUid());
             if (envelope != null) {
