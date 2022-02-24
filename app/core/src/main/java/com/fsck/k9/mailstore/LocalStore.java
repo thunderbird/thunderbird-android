@@ -359,9 +359,7 @@ public class LocalStore {
         });
     }
 
-    public List<LocalMessage> searchForMessages(MessageRetrievalListener<LocalMessage> retrievalListener,
-                                        LocalSearch search) throws MessagingException {
-
+    public List<LocalMessage> searchForMessages(LocalSearch search) throws MessagingException {
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
         SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
@@ -382,7 +380,7 @@ public class LocalStore {
 
         Timber.d("Query = %s", sqlQuery);
 
-        return getMessages(retrievalListener, null, sqlQuery, selectionArgs);
+        return getMessages(null, null, sqlQuery, selectionArgs);
     }
 
     /*
@@ -443,7 +441,7 @@ public class LocalStore {
         LocalSearch search = new LocalSearch();
         search.and(SearchField.THREAD_ID, rootIdString, Attribute.EQUALS);
 
-        return searchForMessages(null, search);
+        return searchForMessages(search);
     }
 
     public AttachmentInfo getAttachmentInfo(final String attachmentId) throws MessagingException {

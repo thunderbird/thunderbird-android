@@ -52,6 +52,7 @@ import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLog;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.ArgumentMatchers.eq;
@@ -178,32 +179,17 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     @Test
-    public void searchLocalMessagesSynchronous_shouldCallSearchForMessagesOnLocalStore()
-            throws Exception {
-        when(search.searchAllAccounts()).thenReturn(true);
-        when(search.getAccountUuids()).thenReturn(new String[0]);
-
-        controller.searchLocalMessagesSynchronous(search, listener);
-
-        verify(localStore).searchForMessages(nullable(MessageRetrievalListener.class), eq(search));
-    }
-
-    @Test
-    public void searchLocalMessagesSynchronous_shouldNotifyWhenStoreFinishesRetrievingAMessage()
+    public void searchLocalMessages_shouldIgnoreExceptions()
             throws Exception {
         LocalMessage localMessage = mock(LocalMessage.class);
         when(localMessage.getFolder()).thenReturn(localFolder);
         when(search.searchAllAccounts()).thenReturn(true);
         when(search.getAccountUuids()).thenReturn(new String[0]);
-        when(localStore.searchForMessages(nullable(MessageRetrievalListener.class), eq(search)))
-                .thenThrow(new MessagingException("Test"));
+        when(localStore.searchForMessages(search)).thenThrow(new MessagingException("Test"));
 
-        controller.searchLocalMessagesSynchronous(search, listener);
+        List<LocalMessage> messages = controller.searchLocalMessages(search);
 
-        verify(localStore).searchForMessages(messageRetrievalListenerCaptor.capture(), eq(search));
-        messageRetrievalListenerCaptor.getValue().messageFinished(localMessage);
-        verify(listener).listLocalMessagesAddMessages(eq(account),
-                eq((String) null), eq(Collections.singletonList(localMessage)));
+        assertThat(messages).isEmpty();
     }
 
     private void setupRemoteSearch() throws Exception {

@@ -60,7 +60,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageDownloadState;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
@@ -401,48 +400,22 @@ public class MessagingController {
     /**
      * Find all messages in any local account which match the query 'query'
      */
-    public void searchLocalMessages(final LocalSearch search, final MessagingListener listener) {
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                searchLocalMessagesSynchronous(search, listener);
-            }
-        });
-    }
-
-    @VisibleForTesting
-    void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
+    public List<LocalMessage> searchLocalMessages(final LocalSearch search) {
         List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
 
+        List<LocalMessage> messages = new ArrayList<>();
         for (final Account account : searchAccounts) {
-
-            // Collecting statistics of the search result
-            MessageRetrievalListener<LocalMessage> retrievalListener = new MessageRetrievalListener<LocalMessage>() {
-                @Override
-                public void messageFinished(LocalMessage message) {
-                    if (!isMessageSuppressed(message)) {
-                        List<LocalMessage> messages = new ArrayList<>();
-
-                        messages.add(message);
-                        if (listener != null) {
-                            listener.listLocalMessagesAddMessages(account, null, messages);
-                        }
-                    }
-                }
-            };
-
-            // build and do the query in the localstore
             try {
                 LocalStore localStore = localStoreProvider.getInstance(account);
-                localStore.searchForMessages(retrievalListener, search);
+                List<LocalMessage> localMessages = localStore.searchForMessages(search);
+
+                messages.addAll(localMessages);
             } catch (Exception e) {
                 Timber.e(e);
             }
         }
 
-        if (listener != null) {
-            listener.listLocalMessagesFinished();
-        }
+        return messages;
     }
 
     public Future<?> searchRemoteMessages(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
