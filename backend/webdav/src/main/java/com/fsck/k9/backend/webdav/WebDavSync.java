@@ -405,7 +405,7 @@ class WebDavSync {
         remoteFolder.fetch(unsyncedMessages, fp,
                 new MessageRetrievalListener<WebDavMessage>() {
                     @Override
-                    public void messageFinished(WebDavMessage message, int number, int ofTotal) {
+                    public void messageFinished(WebDavMessage message) {
                         try {
                             if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
                                 if (message.isSet(Flag.DELETED)) {
@@ -433,16 +433,6 @@ class WebDavSync {
                             Timber.e(e, "Error while storing downloaded message.");
                         }
                     }
-
-                    @Override
-                    public void messageStarted(String uid, int number, int ofTotal) {
-                    }
-
-                    @Override
-                    public void messagesFinished(int total) {
-                        // FIXME this method is almost never invoked by various Stores! Don't rely on it unless fixed!!
-                    }
-
                 },
                 syncConfig.getMaximumAutoDownloadMessageSize());
     }
@@ -463,7 +453,7 @@ class WebDavSync {
         remoteFolder.fetch(smallMessages,
                 fp, new MessageRetrievalListener<WebDavMessage>() {
                     @Override
-                    public void messageFinished(final WebDavMessage message, int number, int ofTotal) {
+                    public void messageFinished(final WebDavMessage message) {
                         try {
 
                             // Store the updated message locally
@@ -487,14 +477,6 @@ class WebDavSync {
                         } catch (Exception e) {
                             Timber.e(e, "SYNC: fetch small messages");
                         }
-                    }
-
-                    @Override
-                    public void messageStarted(String uid, int number, int ofTotal) {
-                    }
-
-                    @Override
-                    public void messagesFinished(int total) {
                     }
                 },
                 -1);

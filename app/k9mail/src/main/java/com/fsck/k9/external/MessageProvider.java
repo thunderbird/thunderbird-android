@@ -478,16 +478,12 @@ public class MessageProvider extends ContentProvider {
         }
 
         protected MatrixCursor getMessages(String[] projection) throws InterruptedException {
-            BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<>();
-
             // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
             SearchAccount integratedInboxAccount = SearchAccount.createUnifiedInboxAccount();
             MessagingController msgController = MessagingController.getInstance(getContext());
 
-            msgController.searchLocalMessages(integratedInboxAccount.getRelatedSearch(),
-                    new MessageInfoHolderRetrieverListener(queue));
-
-            List<MessageInfoHolder> holders = queue.take();
+            List<LocalMessage> messages = msgController.searchLocalMessages(integratedInboxAccount.getRelatedSearch());
+            List<MessageInfoHolder> holders = convertToMessageInfoHolder(messages);
 
             // TODO add sort order parameter
             Collections.sort(holders, new ReverseDateComparator());
@@ -519,6 +515,20 @@ public class MessageProvider extends ContentProvider {
             }
 
             return cursor;
+        }
+
+        private List<MessageInfoHolder> convertToMessageInfoHolder(List<LocalMessage> messages) {
+            List<MessageInfoHolder> holders = new ArrayList<>();
+
+            Context context = getContext();
+            for (LocalMessage message : messages) {
+                Account messageAccount = message.getAccount();
+                MessageInfoHolder messageInfoHolder = MessageInfoHolder.create(context, message, messageAccount);
+
+                holders.add(messageInfoHolder);
+            }
+
+            return holders;
         }
 
         protected LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> resolveMessageExtractors(
@@ -1031,40 +1041,6 @@ public class MessageProvider extends ContentProvider {
             }, 30, TimeUnit.SECONDS);
 
             return wrapped;
-        }
-    }
-
-    /**
-     * Synchronized listener used to retrieve {@link MessageInfoHolder}s using a given {@link BlockingQueue}.
-     */
-    protected class MessageInfoHolderRetrieverListener extends SimpleMessagingListener {
-        private final BlockingQueue<List<MessageInfoHolder>> queue;
-        private List<MessageInfoHolder> holders = new ArrayList<>();
-
-
-        public MessageInfoHolderRetrieverListener(BlockingQueue<List<MessageInfoHolder>> queue) {
-            this.queue = queue;
-        }
-
-        @Override
-        public void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages) {
-            Context context = getContext();
-
-            for (LocalMessage message : messages) {
-                Account messageAccount = message.getAccount();
-                MessageInfoHolder messageInfoHolder = MessageInfoHolder.create(context, message, messageAccount);
-
-                holders.add(messageInfoHolder);
-            }
-        }
-
-        @Override
-        public void listLocalMessagesFinished() {
-            try {
-                queue.put(holders);
-            } catch (InterruptedException e) {
-                Timber.e(e, "Unable to return message list back to caller");
-            }
         }
     }
 }

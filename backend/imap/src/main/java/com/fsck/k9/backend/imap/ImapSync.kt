@@ -483,7 +483,7 @@ internal class ImapSync(
             unsyncedMessages,
             fetchProfile,
             object : MessageRetrievalListener<ImapMessage> {
-                override fun messageFinished(message: ImapMessage, number: Int, ofTotal: Int) {
+                override fun messageFinished(message: ImapMessage) {
                     try {
                         if (message.isSet(Flag.DELETED)) {
                             Timber.v(
@@ -509,9 +509,6 @@ internal class ImapSync(
                         Timber.e(e, "Error while storing downloaded message.")
                     }
                 }
-
-                override fun messageStarted(uid: String, number: Int, ofTotal: Int) = Unit
-                override fun messagesFinished(total: Int) = Unit
             },
             syncConfig.maximumAutoDownloadMessageSize
         )
@@ -536,7 +533,7 @@ internal class ImapSync(
             smallMessages,
             fetchProfile,
             object : MessageRetrievalListener<ImapMessage> {
-                override fun messageFinished(message: ImapMessage, number: Int, ofTotal: Int) {
+                override fun messageFinished(message: ImapMessage) {
                     try {
                         // Store the updated message locally
                         backendFolder.saveMessage(message, MessageDownloadState.FULL)
@@ -562,9 +559,6 @@ internal class ImapSync(
                         Timber.e(e, "SYNC: fetch small messages")
                     }
                 }
-
-                override fun messageStarted(uid: String, number: Int, ofTotal: Int) = Unit
-                override fun messagesFinished(total: Int) = Unit
             },
             -1
         )

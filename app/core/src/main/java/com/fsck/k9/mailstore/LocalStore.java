@@ -43,7 +43,6 @@ import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.FolderType;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
@@ -359,9 +358,7 @@ public class LocalStore {
         });
     }
 
-    public List<LocalMessage> searchForMessages(MessageRetrievalListener<LocalMessage> retrievalListener,
-                                        LocalSearch search) throws MessagingException {
-
+    public List<LocalMessage> searchForMessages(LocalSearch search) throws MessagingException {
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
         SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
@@ -382,24 +379,20 @@ public class LocalStore {
 
         Timber.d("Query = %s", sqlQuery);
 
-        return getMessages(retrievalListener, null, sqlQuery, selectionArgs);
+        return getMessages(null, sqlQuery, selectionArgs);
     }
 
     /*
      * Given a query string, actually do the query for the messages and
      * call the MessageRetrievalListener for each one
      */
-    List<LocalMessage> getMessages(
-        final MessageRetrievalListener<LocalMessage> listener,
-        final LocalFolder folder,
-        final String queryString, final String[] placeHolders
-    ) throws MessagingException {
+    List<LocalMessage> getMessages(LocalFolder folder, String queryString, String[] placeHolders)
+            throws MessagingException {
         final List<LocalMessage> messages = new ArrayList<>();
-        final int j = database.execute(false, new DbCallback<Integer>() {
+        database.execute(false, new DbCallback<Void>() {
             @Override
-            public Integer doDbWork(final SQLiteDatabase db) {
+            public Void doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
-                int i = 0;
                 try {
                     cursor = db.rawQuery(queryString + " LIMIT 10", placeHolders);
 
@@ -408,10 +401,6 @@ public class LocalStore {
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
-                        if (listener != null) {
-                            listener.messageFinished(message, i, -1);
-                        }
-                        i++;
                     }
                     cursor.close();
                     cursor = db.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
@@ -421,22 +410,16 @@ public class LocalStore {
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
-                        if (listener != null) {
-                            listener.messageFinished(message, i, -1);
-                        }
-                        i++;
                     }
                 } catch (Exception e) {
                     Timber.d(e, "Got an exception");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }
-                return i;
+
+                return null;
             }
         });
-        if (listener != null) {
-            listener.messagesFinished(j);
-        }
 
         return Collections.unmodifiableList(messages);
 
@@ -448,7 +431,7 @@ public class LocalStore {
         LocalSearch search = new LocalSearch();
         search.and(SearchField.THREAD_ID, rootIdString, Attribute.EQUALS);
 
-        return searchForMessages(null, search);
+        return searchForMessages(search);
     }
 
     public AttachmentInfo getAttachmentInfo(final String attachmentId) throws MessagingException {

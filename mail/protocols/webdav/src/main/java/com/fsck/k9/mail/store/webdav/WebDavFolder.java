@@ -207,7 +207,6 @@ public class WebDavFolder {
         List<WebDavMessage> messages = new ArrayList<>();
         String[] uids;
         Map<String, String> headers = new HashMap<>();
-        int uidsLength;
 
         String messageBody;
         int prevStart = start;
@@ -232,18 +231,14 @@ public class WebDavFolder {
         DataSet dataset = store.processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
         uids = dataset.getUids();
         Map<String, String> uidToUrl = dataset.getUidToUrl();
-        uidsLength = uids.length;
 
-        for (int i = 0; i < uidsLength; i++) {
-            if (listener != null) {
-                listener.messageStarted(uids[i], i, uidsLength);
-            }
-            WebDavMessage message = new WebDavMessage(uids[i], this);
-            message.setUrl(uidToUrl.get(uids[i]));
+        for (String uid : uids) {
+            WebDavMessage message = new WebDavMessage(uid, this);
+            message.setUrl(uidToUrl.get(uid));
             messages.add(message);
 
             if (listener != null) {
-                listener.messageFinished(message, i, uidsLength);
+                listener.messageFinished(message);
             }
         }
 
@@ -309,13 +304,8 @@ public class WebDavFolder {
         /**
          * We can't hand off to processRequest() since we need the stream to parse.
          */
-        for (int i = 0, count = messages.size(); i < count; i++) {
-            WebDavMessage wdMessage = messages.get(i);
+        for (WebDavMessage wdMessage : messages) {
             int statusCode = 0;
-
-            if (listener != null) {
-                listener.messageStarted(wdMessage.getUid(), i, count);
-            }
 
             /**
              * If fetch is called outside of the initial list (ie, a locally stored message), it may not have a URL
@@ -405,7 +395,7 @@ public class WebDavFolder {
             }
 
             if (listener != null) {
-                listener.messageFinished(wdMessage, i, count);
+                listener.messageFinished(wdMessage);
             }
         }
     }
@@ -511,13 +501,7 @@ public class WebDavFolder {
 
         Map<String, ParsedMessageEnvelope> envelopes = dataset.getMessageEnvelopes();
 
-        int count = messages.size();
-        for (int i = messages.size() - 1; i >= 0; i--) {
-            WebDavMessage message = messages.get(i);
-            if (listener != null) {
-                listener.messageStarted(messages.get(i).getUid(), i, count);
-            }
-
+        for (WebDavMessage message : messages) {
             ParsedMessageEnvelope envelope = envelopes.get(message.getUid());
             if (envelope != null) {
                 message.setNewHeaders(envelope);
@@ -527,7 +511,7 @@ public class WebDavFolder {
             }
 
             if (listener != null) {
-                listener.messageFinished(messages.get(i), i, count);
+                listener.messageFinished(message);
             }
         }
     }

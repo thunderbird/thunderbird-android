@@ -60,7 +60,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageDownloadState;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
@@ -401,56 +400,22 @@ public class MessagingController {
     /**
      * Find all messages in any local account which match the query 'query'
      */
-    public void searchLocalMessages(final LocalSearch search, final MessagingListener listener) {
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                searchLocalMessagesSynchronous(search, listener);
-            }
-        });
-    }
-
-    @VisibleForTesting
-    void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
+    public List<LocalMessage> searchLocalMessages(final LocalSearch search) {
         List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
 
+        List<LocalMessage> messages = new ArrayList<>();
         for (final Account account : searchAccounts) {
-
-            // Collecting statistics of the search result
-            MessageRetrievalListener<LocalMessage> retrievalListener = new MessageRetrievalListener<LocalMessage>() {
-                @Override
-                public void messageStarted(String message, int number, int ofTotal) {
-                }
-
-                @Override
-                public void messagesFinished(int number) {
-                }
-
-                @Override
-                public void messageFinished(LocalMessage message, int number, int ofTotal) {
-                    if (!isMessageSuppressed(message)) {
-                        List<LocalMessage> messages = new ArrayList<>();
-
-                        messages.add(message);
-                        if (listener != null) {
-                            listener.listLocalMessagesAddMessages(account, null, messages);
-                        }
-                    }
-                }
-            };
-
-            // build and do the query in the localstore
             try {
                 LocalStore localStore = localStoreProvider.getInstance(account);
-                localStore.searchForMessages(retrievalListener, search);
+                List<LocalMessage> localMessages = localStore.searchForMessages(search);
+
+                messages.addAll(localMessages);
             } catch (Exception e) {
                 Timber.e(e);
             }
         }
 
-        if (listener != null) {
-            listener.listLocalMessagesFinished();
-        }
+        return messages;
     }
 
     public Future<?> searchRemoteMessages(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
@@ -1070,7 +1035,7 @@ public class MessagingController {
         Timber.i("Marking all messages in %s:%s as read", account, folderServerId);
 
         // TODO: Make this one database UPDATE operation
-        List<LocalMessage> messages = localFolder.getMessages(null, false);
+        List<LocalMessage> messages = localFolder.getMessages(false);
         for (Message message : messages) {
             if (!message.isSet(Flag.SEEN)) {
                 message.setFlag(Flag.SEEN, true);
@@ -1539,7 +1504,7 @@ public class MessagingController {
 
             long outboxFolderId = localFolder.getDatabaseId();
 
-            List<LocalMessage> localMessages = localFolder.getMessages(null);
+            List<LocalMessage> localMessages = localFolder.getMessages();
             int progress = 0;
             int todo = localMessages.size();
             for (MessagingListener l : getListeners()) {
@@ -2198,7 +2163,7 @@ public class MessagingController {
         // Remove all messages marked as deleted
         folder.destroyDeletedMessages();
 
-        compact(account, null);
+        compact(account);
     }
 
     public void emptyTrash(final Account account, MessagingListener listener) {
@@ -2482,21 +2447,13 @@ public class MessagingController {
         notificationController.clearFetchingMailNotification(account);
     }
 
-    public void compact(final Account account, final MessagingListener ml) {
-        putBackground("compact:" + account, ml, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    MessageStore messageStore = messageStoreManager.getMessageStore(account);
-                    long oldSize = messageStore.getSize();
-                    messageStore.compact();
-                    long newSize = messageStore.getSize();
-                    for (MessagingListener l : getListeners(ml)) {
-                        l.accountSizeChanged(account, oldSize, newSize);
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "Failed to compact account %s", account);
-                }
+    public void compact(Account account) {
+        putBackground("compact:" + account, null, () -> {
+            try {
+                MessageStore messageStore = messageStoreManager.getMessageStore(account);
+                messageStore.compact();
+            } catch (Exception e) {
+                Timber.e(e, "Failed to compact account %s", account);
             }
         });
     }
