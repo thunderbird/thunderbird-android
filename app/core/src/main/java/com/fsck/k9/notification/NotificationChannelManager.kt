@@ -116,16 +116,15 @@ class NotificationChannelManager(
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun getChannelMessages(account: Account): NotificationChannel {
         val channelName = resourceProvider.messagesChannelName
-        val channelDescription = resourceProvider.messagesChannelDescription
         val channelId = getChannelIdFor(account, ChannelType.MESSAGES)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channelGroupId = account.uuid
 
-        val messagesChannel = NotificationChannel(channelId, channelName, importance)
-        messagesChannel.description = channelDescription
-        messagesChannel.group = channelGroupId
+        return NotificationChannel(channelId, channelName, importance).apply {
+            description = resourceProvider.messagesChannelDescription
+            group = account.uuid
 
-        return messagesChannel
+            setPropertiesFrom(account)
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -189,7 +188,7 @@ class NotificationChannelManager(
             group = account.uuid
 
             copyPropertiesFrom(oldNotificationChannel)
-            copyPropertiesFrom(account)
+            setPropertiesFrom(account)
         }
 
         Timber.v("Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
@@ -226,7 +225,7 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun NotificationChannel.copyPropertiesFrom(account: Account) {
+    private fun NotificationChannel.setPropertiesFrom(account: Account) {
         val notificationSettings = account.notificationSettings
 
         if (notificationSettings.isRingEnabled) {
