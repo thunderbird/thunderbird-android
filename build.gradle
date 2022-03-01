@@ -6,7 +6,7 @@ buildscript {
                 'compileSdk': 31,
                 'targetSdk': 31,
                 'minSdk': 21,
-                'buildTools': '30.0.3',
+                'buildTools': '32.0.0',
                 'robolectricSdk': 31
         ]
 
