@@ -37,7 +37,7 @@ buildscript {
                 'koin': '3.1.5',
                 'commonsIo': '2.6',
                 'mime4j': '0.8.6',
-                'okhttp': '4.9.2',
+                'okhttp': '4.9.3',
                 'minidns': '1.0.0',
                 'glide': '4.12.0',
                 'jsoup': '1.13.1',
