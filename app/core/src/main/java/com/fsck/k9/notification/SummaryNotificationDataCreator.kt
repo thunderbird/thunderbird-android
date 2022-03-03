@@ -43,7 +43,6 @@ internal class SummaryNotificationDataCreator(
         )
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     private fun createSummaryNotificationActions(): List<SummaryNotificationAction> {
         return buildList {
             add(SummaryNotificationAction.MarkAsRead)
@@ -54,7 +53,6 @@ internal class SummaryNotificationDataCreator(
         }
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     private fun createSummaryWearNotificationActions(account: Account): List<SummaryWearNotificationAction> {
         return buildList {
             add(SummaryWearNotificationAction.MarkAsRead)

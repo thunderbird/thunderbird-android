@@ -17,7 +17,6 @@ internal data class NotificationData(
     val isSingleMessageNotification: Boolean
         get() = activeNotifications.size == 1
 
-    @OptIn(ExperimentalStdlibApi::class)
     val messageReferences: List<MessageReference>
         get() {
             return buildList(capacity = newMessagesCount) {

@@ -266,7 +266,6 @@ class SummaryNotificationDataCreatorTest {
         return NotificationData(account, activeNotifications, inactiveNotifications = emptyList())
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     private fun createNotificationDataWithMultipleMessages(times: Int = 2): NotificationData {
         val contentList = buildList {
             repeat(times) {
