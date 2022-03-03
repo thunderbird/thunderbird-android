@@ -2,7 +2,7 @@ package app.k9mail.html.cleaner
 
 import org.jsoup.nodes.Document
 import org.jsoup.safety.Cleaner
-import org.jsoup.safety.Whitelist as AllowList
+import org.jsoup.safety.Safelist
 
 internal class BodyCleaner {
     private val cleaner: Cleaner
@@ -12,7 +12,7 @@ internal class BodyCleaner {
     )
 
     init {
-        val allowList = AllowList.relaxed()
+        val allowList = Safelist.relaxed()
             .addTags("font", "hr", "ins", "del", "center", "map", "area", "title")
             .addAttributes("font", "color", "face", "size")
             .addAttributes(
