@@ -26,7 +26,7 @@ buildscript {
                 'androidxLocalBroadcastManager': '1.0.0',
                 'androidxCore': '1.7.0',
                 'androidxCardView': '1.0.0',
-                'androidxPreference': '1.1.1',
+                'androidxPreference': '1.2.0',
                 'androidxTestCore': '1.4.0',
                 'materialComponents': '1.4.0',
                 'fastAdapter': '5.5.1',
