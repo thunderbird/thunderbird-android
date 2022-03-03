@@ -31,7 +31,7 @@ buildscript {
                 'materialComponents': '1.5.0',
                 'fastAdapter': '5.6.0',
                 'preferencesFix': '1.1.0',
-                'okio': '2.10.0',
+                'okio': '3.0.0',
                 'moshi': '1.13.0',
                 'timber': '5.0.1',
                 'koin': '3.1.3',
