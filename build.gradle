@@ -6,13 +6,13 @@ buildscript {
                 'compileSdk': 31,
                 'targetSdk': 31,
                 'minSdk': 21,
-                'buildTools': '30.0.3',
+                'buildTools': '32.0.0',
                 'robolectricSdk': 31
         ]
 
         versions = [
-                'kotlin': '1.5.31',
-                'kotlinCoroutines': '1.5.2',
+                'kotlin': '1.6.10',
+                'kotlinCoroutines': '1.6.0',
                 'androidxAppCompat': '1.3.1',
                 'androidxActivity': '1.4.0',
                 'androidxRecyclerView': '1.2.1',
@@ -32,7 +32,7 @@ buildscript {
                 'fastAdapter': '5.5.1',
                 'preferencesFix': '1.1.0',
                 'okio': '2.10.0',
-                'moshi': '1.12.0',
+                'moshi': '1.13.0',
                 'timber': '5.0.1',
                 'koin': '3.1.3',
                 'commonsIo': '2.6',
@@ -65,7 +65,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath 'com.android.tools.build:gradle:7.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
     }

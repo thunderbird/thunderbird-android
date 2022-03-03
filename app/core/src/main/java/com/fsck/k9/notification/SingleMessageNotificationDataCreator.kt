@@ -41,7 +41,6 @@ internal class SingleMessageNotificationDataCreator {
         )
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     private fun createSingleNotificationActions(): List<NotificationAction> {
         return buildList {
             add(NotificationAction.Reply)
@@ -53,7 +52,6 @@ internal class SingleMessageNotificationDataCreator {
         }
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     private fun createSingleNotificationWearActions(account: Account): List<WearNotificationAction> {
         return buildList {
             add(WearNotificationAction.Reply)
