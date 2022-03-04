@@ -326,10 +326,6 @@ internal class ImapSync(
                 unsyncedMessages = unsyncedMessages.subList(0, visibleLimit)
             }
 
-            val fp = FetchProfile()
-            fp.add(FetchProfile.Item.FLAGS)
-            fp.add(FetchProfile.Item.ENVELOPE)
-
             Timber.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size, folder)
 
             fetchUnsyncedMessages(
@@ -340,7 +336,6 @@ internal class ImapSync(
                 largeMessages,
                 progress,
                 todo,
-                fp,
                 listener
             )
 
@@ -360,11 +355,7 @@ internal class ImapSync(
          * download of 625k.
          */
         val maxDownloadSize = syncConfig.maximumAutoDownloadMessageSize
-        var fp = FetchProfile()
         // TODO: Only fetch small and large messages if we have some
-        fp.add(FetchProfile.Item.BODY)
-        //        fp.add(FetchProfile.Item.FLAGS);
-        //        fp.add(FetchProfile.Item.ENVELOPE);
         downloadSmallMessages(
             remoteFolder,
             backendFolder,
@@ -372,7 +363,6 @@ internal class ImapSync(
             progress,
             downloadedMessageCount,
             todo,
-            fp,
             highestKnownUid,
             listener
         )
@@ -381,8 +371,6 @@ internal class ImapSync(
         /*
          * Now do the large messages that require more round trips.
          */
-        fp = FetchProfile()
-        fp.add(FetchProfile.Item.STRUCTURE)
         downloadLargeMessages(
             remoteFolder,
             backendFolder,
@@ -390,7 +378,6 @@ internal class ImapSync(
             progress,
             downloadedMessageCount,
             todo,
-            fp,
             highestKnownUid,
             listener,
             maxDownloadSize
@@ -465,10 +452,13 @@ internal class ImapSync(
         largeMessages: MutableList<ImapMessage>,
         progress: AtomicInteger,
         todo: Int,
-        fetchProfile: FetchProfile,
         listener: SyncListener
     ) {
         val folder = remoteFolder.serverId
+        val fetchProfile = FetchProfile().apply {
+            add(FetchProfile.Item.FLAGS)
+            add(FetchProfile.Item.ENVELOPE)
+        }
 
         remoteFolder.fetch(
             unsyncedMessages,
@@ -512,11 +502,13 @@ internal class ImapSync(
         progress: AtomicInteger,
         downloadedMessageCount: AtomicInteger,
         todo: Int,
-        fetchProfile: FetchProfile,
         highestKnownUid: Long?,
         listener: SyncListener
     ) {
         val folder = remoteFolder.serverId
+        val fetchProfile = FetchProfile().apply {
+            add(FetchProfile.Item.BODY)
+        }
 
         Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
 
@@ -560,12 +552,15 @@ internal class ImapSync(
         progress: AtomicInteger,
         downloadedMessageCount: AtomicInteger,
         todo: Int,
-        fetchProfile: FetchProfile,
         highestKnownUid: Long?,
         listener: SyncListener,
         maxDownloadSize: Int
     ) {
         val folder = remoteFolder.serverId
+        val fetchProfile = FetchProfile().apply {
+            add(FetchProfile.Item.STRUCTURE)
+        }
+
         Timber.d("SYNC: Fetching large messages for folder %s", folder)
 
         remoteFolder.fetch(largeMessages, fetchProfile, null, maxDownloadSize)
