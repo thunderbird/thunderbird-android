@@ -116,7 +116,6 @@ class TestImapFolder(override val serverId: String) : ImapFolder {
     override fun fetchPart(
         message: ImapMessage,
         part: Part,
-        listener: MessageRetrievalListener<ImapMessage>?,
         bodyFactory: BodyFactory,
         maxDownloadSize: Int
     ) {

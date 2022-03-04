@@ -200,7 +200,6 @@ internal class ImapSync(
                 remoteFolder,
                 backendFolder,
                 remoteMessages,
-                false,
                 highestKnownUid,
                 listener
             )
@@ -260,7 +259,6 @@ internal class ImapSync(
                 remoteFolder,
                 backendFolder,
                 listOf(remoteMessage),
-                false,
                 null,
                 SimpleSyncListener()
             )
@@ -278,15 +276,12 @@ internal class ImapSync(
      * The [BackendFolder] instance corresponding to the remote folder.
      * @param inputMessages
      * A list of messages objects that store the UIDs of which messages to download.
-     * @param flagSyncOnly
-     * Only flags will be fetched from the remote store if this is `true`.
      */
     private fun downloadMessages(
         syncConfig: SyncConfig,
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
         inputMessages: List<ImapMessage>,
-        flagSyncOnly: Boolean,
         highestKnownUid: Long?,
         listener: SyncListener
     ) {
@@ -301,10 +296,8 @@ internal class ImapSync(
             evaluateMessageForDownload(
                 message,
                 backendFolder,
-                remoteFolder,
                 unsyncedMessages,
-                syncFlagMessages,
-                flagSyncOnly
+                syncFlagMessages
             )
         }
 
@@ -396,10 +389,8 @@ internal class ImapSync(
     private fun evaluateMessageForDownload(
         message: ImapMessage,
         backendFolder: BackendFolder,
-        remoteFolder: ImapFolder,
         unsyncedMessages: MutableList<ImapMessage>,
-        syncFlagMessages: MutableList<ImapMessage>,
-        flagSyncOnly: Boolean
+        syncFlagMessages: MutableList<ImapMessage>
     ) {
         val messageServerId = message.uid
         if (message.isSet(Flag.DELETED)) {
@@ -410,10 +401,8 @@ internal class ImapSync(
 
         val messagePresentLocally = backendFolder.isMessagePresent(messageServerId)
         if (!messagePresentLocally) {
-            if (!flagSyncOnly) {
-                Timber.v("Message with uid %s has not yet been downloaded", messageServerId)
-                unsyncedMessages.add(message)
-            }
+            Timber.v("Message with uid %s has not yet been downloaded", messageServerId)
+            unsyncedMessages.add(message)
             return
         }
 
@@ -668,7 +657,7 @@ internal class ImapSync(
          */
         val bodyFactory: BodyFactory = DefaultBodyFactory()
         for (part in viewables) {
-            remoteFolder.fetchPart(message, part, null, bodyFactory, maxDownloadSize)
+            remoteFolder.fetchPart(message, part, bodyFactory, maxDownloadSize)
         }
 
         // Store the updated message locally

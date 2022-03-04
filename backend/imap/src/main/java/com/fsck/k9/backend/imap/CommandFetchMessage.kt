@@ -13,7 +13,7 @@ internal class CommandFetchMessage(private val imapStore: ImapStore) {
             folder.open(OpenMode.READ_WRITE)
 
             val message = folder.getMessage(messageServerId)
-            folder.fetchPart(message, part, null, bodyFactory, -1)
+            folder.fetchPart(message, part, bodyFactory, -1)
         } finally {
             folder.close()
         }

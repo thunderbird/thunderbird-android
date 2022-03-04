@@ -77,7 +77,6 @@ internal open class TestImapFolder(
     override fun fetchPart(
         message: ImapMessage,
         part: Part,
-        listener: MessageRetrievalListener<ImapMessage>?,
         bodyFactory: BodyFactory,
         maxDownloadSize: Int
     ) {

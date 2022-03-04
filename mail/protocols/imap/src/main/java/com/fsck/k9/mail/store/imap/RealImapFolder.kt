@@ -627,7 +627,6 @@ internal class RealImapFolder(
     override fun fetchPart(
         message: ImapMessage,
         part: Part,
-        listener: MessageRetrievalListener<ImapMessage>?,
         bodyFactory: BodyFactory,
         maxDownloadSize: Int
     ) {
@@ -683,8 +682,6 @@ internal class RealImapFolder(
                             }
                         }
                     }
-
-                    listener?.messageFinished(message)
                 } else {
                     handleUntaggedResponse(response)
                 }
