@@ -54,12 +54,12 @@ internal class CleaningVisitor(
         if (source === elementToSkip) {
             elementToSkip = null
         } else if (source is Element && isSafeTag(source)) {
-            destination = destination.parent()
+            destination = destination.parent() ?: error("Missing parent")
         }
     }
 
-    private fun isSafeTag(node: Node): Boolean {
-        if (isMetaRefresh(node)) return false
+    private fun isSafeTag(node: Node?): Boolean {
+        if (node == null || isMetaRefresh(node)) return false
 
         val tag = node.nodeName().lowercase()
         return tag in ALLOWED_TAGS
