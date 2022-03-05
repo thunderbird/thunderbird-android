@@ -13,8 +13,8 @@ import com.fsck.k9.mail.DefaultBodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessageDownloadState
-import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.internet.MessageExtractor
+import com.fsck.k9.mail.store.imap.FetchListener
 import com.fsck.k9.mail.store.imap.ImapFolder
 import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.store.imap.ImapStore
@@ -452,15 +452,18 @@ internal class ImapSync(
         remoteFolder.fetch(
             unsyncedMessages,
             fetchProfile,
-            object : MessageRetrievalListener<ImapMessage> {
-                override fun messageFinished(message: ImapMessage) {
+            object : FetchListener {
+                override fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean) {
                     try {
                         if (message.isSet(Flag.DELETED)) {
                             Timber.v(
                                 "Newly downloaded message %s:%s:%s was marked deleted on server, skipping",
                                 accountName, folder, message.uid
                             )
-                            progress.incrementAndGet()
+
+                            if (isFirstResponse) {
+                                progress.incrementAndGet()
+                            }
 
                             // TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal
                             listener.syncProgress(folder, progress.get(), todo)
@@ -504,13 +507,16 @@ internal class ImapSync(
         remoteFolder.fetch(
             smallMessages,
             fetchProfile,
-            object : MessageRetrievalListener<ImapMessage> {
-                override fun messageFinished(message: ImapMessage) {
+            object : FetchListener {
+                override fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean) {
                     try {
                         // Store the updated message locally
                         backendFolder.saveMessage(message, MessageDownloadState.FULL)
-                        progress.incrementAndGet()
-                        downloadedMessageCount.incrementAndGet()
+
+                        if (isFirstResponse) {
+                            progress.incrementAndGet()
+                            downloadedMessageCount.incrementAndGet()
+                        }
 
                         val messageServerId = message.uid
                         Timber.v(

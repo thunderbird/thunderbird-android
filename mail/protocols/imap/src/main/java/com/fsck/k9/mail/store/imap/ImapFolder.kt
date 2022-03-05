@@ -45,7 +45,7 @@ interface ImapFolder {
     fun fetch(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
-        listener: MessageRetrievalListener<ImapMessage>?,
+        listener: FetchListener?,
         maxDownloadSize: Int
     )
 
@@ -85,4 +85,8 @@ interface ImapFolder {
 
     @Throws(MessagingException::class)
     fun expungeUids(uids: List<String>)
+}
+
+interface FetchListener {
+    fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean)
 }

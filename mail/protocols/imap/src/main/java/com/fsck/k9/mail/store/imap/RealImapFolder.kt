@@ -515,7 +515,7 @@ internal class RealImapFolder(
     override fun fetch(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
-        listener: MessageRetrievalListener<ImapMessage>?,
+        listener: FetchListener?,
         maxDownloadSize: Int
     ) {
         if (messages.isEmpty()) {
@@ -561,6 +561,7 @@ internal class RealImapFolder(
 
         val spaceSeparatedFetchFields = ImapUtility.join(" ", fetchFields)
         var windowStart = 0
+        val processedUids = mutableSetOf<String>()
         while (windowStart < messages.size) {
             val windowEnd = min(windowStart + FETCH_WINDOW_SIZE, messages.size)
             val uidWindow = uids.subList(windowStart, windowEnd)
@@ -610,7 +611,10 @@ internal class RealImapFolder(
                             }
                         }
 
-                        listener?.messageFinished(message)
+                        val isFirstResponse = uid !in processedUids
+                        processedUids.add(uid)
+
+                        listener?.onFetchResponse(message, isFirstResponse)
                     } else {
                         handleUntaggedResponse(response)
                     }
