@@ -49,6 +49,7 @@ class NewMailNotificationManagerTest {
 
         val result = manager.addNewMailNotification(account, message, silent = false)
 
+        assertNotNull(result)
         assertThat(result.singleNotificationData.first().content).isEqualTo(
             NotificationContent(
                 messageReference = createMessageReference("msg-1"),
@@ -85,6 +86,7 @@ class NewMailNotificationManagerTest {
 
         val result = manager.addNewMailNotification(account, messageTwo, silent = false)
 
+        assertNotNull(result)
         assertThat(result.singleNotificationData.first().content).isEqualTo(
             NotificationContent(
                 messageReference = createMessageReference("msg-2"),
@@ -121,6 +123,7 @@ class NewMailNotificationManagerTest {
 
         val result = manager.addNewMailNotification(account, message, silent = false)
 
+        assertNotNull(result)
         val notificationId = NotificationIds.getSingleMessageNotificationId(account, index = 0)
         assertThat(result.cancelNotificationIds).isEqualTo(listOf(notificationId))
         assertThat(result.singleNotificationData.first().notificationId).isEqualTo(notificationId)
@@ -196,6 +199,7 @@ class NewMailNotificationManagerTest {
             messageUid = "msg-2"
         )
         val dataTwo = manager.addNewMailNotification(account, messageTwo, silent = true)
+        assertNotNull(dataTwo)
         val notificationIdTwo = dataTwo.singleNotificationData.first().notificationId
         val messageThree = addMessageToNotificationContentCreator(
             sender = "Alice",

@@ -27,7 +27,9 @@ internal class NewMailNotificationController(
     fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean) {
         val notificationData = newMailNotificationManager.addNewMailNotification(account, message, silent)
 
-        processNewMailNotificationData(notificationData)
+        if (notificationData != null) {
+            processNewMailNotificationData(notificationData)
+        }
     }
 
     fun removeNewMailNotifications(
