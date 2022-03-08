@@ -2,7 +2,6 @@ package com.fsck.k9.notification
 
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
-import com.fsck.k9.core.BuildConfig
 
 internal const val MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = 8
 
@@ -30,15 +29,45 @@ internal class NotificationDataStore {
     }
 
     @Synchronized
-    fun addNotification(account: Account, content: NotificationContent, timestamp: Long): AddNotificationResult {
+    fun addNotification(account: Account, content: NotificationContent, timestamp: Long): AddNotificationResult? {
         val notificationData = getNotificationData(account)
         val messageReference = content.messageReference
 
-        if (BuildConfig.DEBUG && notificationData.contains(messageReference)) {
-            throw AssertionError("Notification for message $messageReference already exists")
+        val activeNotification = notificationData.activeNotifications.firstOrNull { notificationHolder ->
+            notificationHolder.content.messageReference == messageReference
+        }
+        val inactiveNotification = notificationData.inactiveNotifications.firstOrNull { inactiveNotificationHolder ->
+            inactiveNotificationHolder.content.messageReference == messageReference
         }
 
-        return if (notificationData.isMaxNumberOfActiveNotificationsReached) {
+        return if (activeNotification != null) {
+            val newActiveNotification = activeNotification.copy(content = content)
+            val notificationHolder = activeNotification.copy(
+                content = content
+            )
+
+            val operations = emptyList<NotificationStoreOperation>()
+
+            val newActiveNotifications = notificationData.activeNotifications
+                .replace(activeNotification, newActiveNotification)
+            val newNotificationData = notificationData.copy(
+                activeNotifications = newActiveNotifications
+            )
+            notificationDataMap[account.uuid] = newNotificationData
+
+            AddNotificationResult.newNotification(newNotificationData, operations, notificationHolder)
+        } else if (inactiveNotification != null) {
+            val newInactiveNotification = inactiveNotification.copy(content = content)
+            val newInactiveNotifications = notificationData.inactiveNotifications
+                .replace(inactiveNotification, newInactiveNotification)
+
+            val newNotificationData = notificationData.copy(
+                inactiveNotifications = newInactiveNotifications
+            )
+            notificationDataMap[account.uuid] = newNotificationData
+
+            null
+        } else if (notificationData.isMaxNumberOfActiveNotificationsReached) {
             val lastNotificationHolder = notificationData.activeNotifications.last()
             val inactiveNotificationHolder = lastNotificationHolder.toInactiveNotificationHolder()
 
@@ -175,14 +204,15 @@ internal class NotificationDataStore {
         throw AssertionError("getNewNotificationId() called with no free notification ID")
     }
 
-    private fun NotificationData.contains(messageReference: MessageReference): Boolean {
-        return activeNotifications.any { it.content.messageReference == messageReference } ||
-            inactiveNotifications.any { it.content.messageReference == messageReference }
-    }
-
     private fun NotificationHolder.toInactiveNotificationHolder() = InactiveNotificationHolder(timestamp, content)
 
     private fun InactiveNotificationHolder.toNotificationHolder(notificationId: Int): NotificationHolder {
         return NotificationHolder(notificationId, timestamp, content)
+    }
+
+    private fun <T> List<T>.replace(old: T, new: T): List<T> {
+        return map { element ->
+            if (element === old) new else element
+        }
     }
 }

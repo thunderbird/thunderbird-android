@@ -38,10 +38,10 @@ internal class NewMailNotificationManager(
         )
     }
 
-    fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean): NewMailNotificationData {
+    fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean): NewMailNotificationData? {
         val content = contentCreator.createFromMessage(account, message)
 
-        val result = notificationRepository.addNotification(account, content, timestamp = now())
+        val result = notificationRepository.addNotification(account, content, timestamp = now()) ?: return null
 
         val singleNotificationData = createSingleNotificationData(
             account = account,

@@ -3,12 +3,8 @@ package com.fsck.k9.notification
 import com.fsck.k9.Account
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.controller.MessageReference
-import com.fsck.k9.core.BuildConfig
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.assertNotNull
-import org.junit.Assert.fail
-import org.junit.Assume.assumeFalse
-import org.junit.Assume.assumeTrue
 import org.junit.Test
 
 private const val ACCOUNT_UUID = "1-2-3"
@@ -26,6 +22,7 @@ class NotificationDataStoreTest : RobolectricTest() {
 
         val result = notificationDataStore.addNotification(account, content, TIMESTAMP)
 
+        assertNotNull(result)
         assertThat(result.shouldCancelNotification).isFalse()
 
         val holder = result.notificationHolder
@@ -48,6 +45,7 @@ class NotificationDataStoreTest : RobolectricTest() {
 
         val result = notificationDataStore.addNotification(account, createNotificationContent("9"), TIMESTAMP)
 
+        assertNotNull(result)
         assertThat(result.shouldCancelNotification).isTrue()
         assertThat(result.cancelNotificationId).isEqualTo(NotificationIds.getSingleMessageNotificationId(account, 0))
     }
@@ -107,19 +105,23 @@ class NotificationDataStoreTest : RobolectricTest() {
     fun testNewMessagesCount() {
         val contentOne = createNotificationContent("1")
         val resultOne = notificationDataStore.addNotification(account, contentOne, TIMESTAMP)
+        assertNotNull(resultOne)
         assertThat(resultOne.notificationData.newMessagesCount).isEqualTo(1)
 
         val contentTwo = createNotificationContent("2")
         val resultTwo = notificationDataStore.addNotification(account, contentTwo, TIMESTAMP)
+        assertNotNull(resultTwo)
         assertThat(resultTwo.notificationData.newMessagesCount).isEqualTo(2)
     }
 
     @Test
     fun testIsSingleMessageNotification() {
         val resultOne = notificationDataStore.addNotification(account, createNotificationContent("1"), TIMESTAMP)
+        assertNotNull(resultOne)
         assertThat(resultOne.notificationData.isSingleMessageNotification).isTrue()
 
         val resultTwo = notificationDataStore.addNotification(account, createNotificationContent("2"), TIMESTAMP)
+        assertNotNull(resultTwo)
         assertThat(resultTwo.notificationData.isSingleMessageNotification).isFalse()
     }
 
@@ -128,37 +130,58 @@ class NotificationDataStoreTest : RobolectricTest() {
         val content = createNotificationContent("1")
         val addResult = notificationDataStore.addNotification(account, content, TIMESTAMP)
 
+        assertNotNull(addResult)
         assertThat(addResult.notificationData.activeNotifications.first()).isEqualTo(addResult.notificationHolder)
     }
 
     @Test
-    fun `adding notification for same message twice should throw in debug build`() {
-        assumeTrue(BuildConfig.DEBUG)
-
+    fun `adding notification for message with active notification should update notification`() {
         val content1 = createNotificationContent("1")
         val content2 = createNotificationContent("1")
-        notificationDataStore.addNotification(account, content1, TIMESTAMP)
 
-        try {
-            notificationDataStore.addNotification(account, content2, TIMESTAMP)
-            fail("Exception expected")
-        } catch (e: AssertionError) {
-            assertThat(e).hasMessageThat().matches("Notification for message .+ already exists")
+        val resultOne = notificationDataStore.addNotification(account, content1, TIMESTAMP)
+        val resultTwo = notificationDataStore.addNotification(account, content2, TIMESTAMP)
+
+        assertNotNull(resultOne)
+        assertNotNull(resultTwo)
+        assertThat(resultTwo.notificationData.activeNotifications).hasSize(1)
+        assertThat(resultTwo.notificationData.activeNotifications.first().content).isSameInstanceAs(content2)
+        assertThat(resultTwo.notificationStoreOperations).isEmpty()
+        with(resultTwo.notificationHolder) {
+            assertThat(notificationId).isEqualTo(resultOne.notificationHolder.notificationId)
+            assertThat(timestamp).isEqualTo(resultOne.notificationHolder.timestamp)
+            assertThat(content).isSameInstanceAs(content2)
         }
+        assertThat(resultTwo.shouldCancelNotification).isFalse()
     }
 
     @Test
-    fun `adding notification for same message twice should add another notification in release build`() {
-        assumeFalse(BuildConfig.DEBUG)
+    fun `adding notification for message with inactive notification should update notificationData`() {
+        notificationDataStore.addNotification(account, createNotificationContent("1"), TIMESTAMP)
+        notificationDataStore.addNotification(account, createNotificationContent("2"), TIMESTAMP)
+        notificationDataStore.addNotification(account, createNotificationContent("3"), TIMESTAMP)
+        notificationDataStore.addNotification(account, createNotificationContent("4"), TIMESTAMP)
+        notificationDataStore.addNotification(account, createNotificationContent("5"), TIMESTAMP)
+        notificationDataStore.addNotification(account, createNotificationContent("6"), TIMESTAMP)
+        notificationDataStore.addNotification(account, createNotificationContent("7"), TIMESTAMP)
+        notificationDataStore.addNotification(account, createNotificationContent("8"), TIMESTAMP)
+        val latestNotificationContent = createNotificationContent("9")
+        notificationDataStore.addNotification(account, latestNotificationContent, TIMESTAMP)
+        val content = createNotificationContent("1")
 
-        val content1 = createNotificationContent("1")
-        val content2 = createNotificationContent("1")
+        val resultOne = notificationDataStore.addNotification(account, content, TIMESTAMP)
 
-        val addResult1 = notificationDataStore.addNotification(account, content1, TIMESTAMP)
-        val addResult2 = notificationDataStore.addNotification(account, content2, TIMESTAMP)
+        assertThat(resultOne).isNull()
 
-        assertThat(addResult1.notificationHolder.notificationId)
-            .isNotEqualTo(addResult2.notificationHolder.notificationId)
+        val resultTwo = notificationDataStore.removeNotifications(account) {
+            listOf(latestNotificationContent.messageReference)
+        }
+
+        assertNotNull(resultTwo)
+        val notificationHolder = resultTwo.notificationData.activeNotifications.first { notificationHolder ->
+            notificationHolder.content.messageReference == content.messageReference
+        }
+        assertThat(notificationHolder.content).isSameInstanceAs(content)
     }
 
     private fun createAccount(): Account {

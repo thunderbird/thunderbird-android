@@ -37,8 +37,8 @@ internal class NotificationRepository(
     }
 
     @Synchronized
-    fun addNotification(account: Account, content: NotificationContent, timestamp: Long): AddNotificationResult {
-        return notificationDataStore.addNotification(account, content, timestamp).also { result ->
+    fun addNotification(account: Account, content: NotificationContent, timestamp: Long): AddNotificationResult? {
+        return notificationDataStore.addNotification(account, content, timestamp)?.also { result ->
             persistNotificationDataStoreChanges(
                 account = account,
                 operations = result.notificationStoreOperations,
