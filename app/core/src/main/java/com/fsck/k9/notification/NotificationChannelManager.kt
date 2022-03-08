@@ -144,10 +144,14 @@ class NotificationChannelManager(
 
     fun getChannelIdFor(account: Account, channelType: ChannelType): String {
         return if (channelType == ChannelType.MESSAGES) {
-            "messages_channel_${account.uuid}${account.messagesNotificationChannelSuffix}"
+            getMessagesChannelId(account, account.messagesNotificationChannelSuffix)
         } else {
             "miscellaneous_channel_${account.uuid}"
         }
+    }
+
+    private fun getMessagesChannelId(account: Account, suffix: String): String {
+        return "messages_channel_${account.uuid}$suffix"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -175,11 +179,8 @@ class NotificationChannelManager(
             return
         }
 
-        notificationManager.deleteNotificationChannel(oldChannelId)
-
-        account.incrementMessagesNotificationChannelVersion()
-
-        val newChannelId = getChannelIdFor(account, ChannelType.MESSAGES)
+        val newChannelVersion = account.messagesNotificationChannelVersion + 1
+        val newChannelId = getMessagesChannelId(account, "_$newChannelVersion")
         val channelName = resourceProvider.messagesChannelName
         val importance = oldNotificationChannel.importance
 
@@ -195,6 +196,11 @@ class NotificationChannelManager(
         Timber.v("Old NotificationChannel: %s", oldNotificationChannel)
         Timber.v("New NotificationChannel: %s", newNotificationChannel)
         notificationManager.createNotificationChannel(newNotificationChannel)
+
+        // To avoid a race condition we first create the new NotificationChannel, point the Account to it,
+        // then delete the old one.
+        account.messagesNotificationChannelVersion = newChannelVersion
+        notificationManager.deleteNotificationChannel(oldChannelId)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

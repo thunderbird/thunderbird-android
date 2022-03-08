@@ -491,11 +491,6 @@ class Account(override val uuid: String) : BaseAccount {
     }
 
     @Synchronized
-    fun incrementMessagesNotificationChannelVersion() {
-        messagesNotificationChannelVersion++
-    }
-
-    @Synchronized
     fun isSortAscending(sortType: SortType): Boolean {
         return sortAscending.getOrPut(sortType) { sortType.isDefaultAscending }
     }
