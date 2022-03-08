@@ -5,11 +5,14 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.buildMessage
+import com.fsck.k9.mail.store.imap.FetchListener
+import com.fsck.k9.mail.store.imap.ImapMessage
 import com.google.common.truth.Truth.assertThat
 import java.util.Date
 import org.apache.james.mime4j.dom.field.DateTimeField
@@ -17,6 +20,7 @@ import org.apache.james.mime4j.field.DefaultFieldParser
 import org.junit.Test
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
+import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
@@ -208,6 +212,35 @@ class ImapSyncTest {
         verify(syncListener).syncNewMessage(FOLDER_SERVER_ID, messageServerId = "1", isOldMessage = false)
     }
 
+    @Test
+    fun `sync with multiple FETCH responses when downloading small message should report correct progress`() {
+        val folderServerId = "FOLDER_TWO"
+        backendStorage.createBackendFolder(folderServerId)
+        val specialImapFolder = object : TestImapFolder(folderServerId) {
+            override fun fetch(
+                messages: List<ImapMessage>,
+                fetchProfile: FetchProfile,
+                listener: FetchListener?,
+                maxDownloadSize: Int
+            ) {
+                super.fetch(messages, fetchProfile, listener, maxDownloadSize)
+
+                // When fetching the body simulate an additional FETCH response
+                if (FetchProfile.Item.BODY in fetchProfile) {
+                    val message = messages.first()
+                    listener?.onFetchResponse(message, isFirstResponse = false)
+                }
+            }
+        }
+        specialImapFolder.addMessage(42)
+        imapStore.addFolder(specialImapFolder)
+
+        imapSync.sync(folderServerId, defaultSyncConfig, syncListener)
+
+        verify(syncListener, atLeast(1)).syncProgress(folderServerId, completed = 1, total = 1)
+        verify(syncListener, never()).syncProgress(folderServerId, completed = 2, total = 1)
+    }
+
     private fun addMessageToBackendFolder(uid: Long, date: String = DEFAULT_MESSAGE_DATE) {
         val messageServerId = uid.toString()
         val message = createSimpleMessage(messageServerId, date).apply {
@@ -222,13 +255,21 @@ class ImapSyncTest {
     }
 
     private fun addMessageToImapFolder(uid: Long, flags: Set<Flag> = emptySet(), date: String = DEFAULT_MESSAGE_DATE) {
+        imapFolder.addMessage(uid, flags, date)
+    }
+
+    private fun TestImapFolder.addMessage(
+        uid: Long,
+        flags: Set<Flag> = emptySet(),
+        date: String = DEFAULT_MESSAGE_DATE
+    ) {
         val messageServerId = uid.toString()
         val message = createSimpleMessage(messageServerId, date)
-        imapFolder.addMessage(uid, message)
+        addMessage(uid, message)
 
         if (flags.isNotEmpty()) {
-            val imapMessage = imapFolder.getMessage(messageServerId)
-            imapFolder.setFlags(listOf(imapMessage), flags, true)
+            val imapMessage = getMessage(messageServerId)
+            setFlags(listOf(imapMessage), flags, true)
         }
     }
 
@@ -239,14 +280,18 @@ class ImapSyncTest {
 
     private fun createBackendStorage(): InMemoryBackendStorage {
         return InMemoryBackendStorage().apply {
-            createFolderUpdater().use { updater ->
-                val folderInfo = FolderInfo(
-                    serverId = FOLDER_SERVER_ID,
-                    name = "irrelevant",
-                    type = FolderType.REGULAR
-                )
-                updater.createFolders(listOf(folderInfo))
-            }
+            createBackendFolder(FOLDER_SERVER_ID)
+        }
+    }
+
+    private fun InMemoryBackendStorage.createBackendFolder(serverId: String) {
+        createFolderUpdater().use { updater ->
+            val folderInfo = FolderInfo(
+                serverId = serverId,
+                name = "irrelevant",
+                type = FolderType.REGULAR
+            )
+            updater.createFolders(listOf(folderInfo))
         }
     }
 

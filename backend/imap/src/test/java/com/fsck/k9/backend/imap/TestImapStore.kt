@@ -6,14 +6,21 @@ import com.fsck.k9.mail.store.imap.ImapFolder
 import com.fsck.k9.mail.store.imap.ImapStore
 
 class TestImapStore : ImapStore {
-    private val folders = mutableMapOf<String, TestImapFolder>()
+    private val folders = mutableMapOf<String, ImapFolder>()
 
-    fun addFolder(name: String): TestImapFolder {
-        require(!folders.containsKey(name)) { "Folder '$name' already exists" }
+    fun addFolder(serverId: String): TestImapFolder {
+        require(!folders.containsKey(serverId)) { "Folder '$serverId' already exists" }
 
-        return TestImapFolder(name).also { folder ->
-            folders[name] = folder
+        return TestImapFolder(serverId).also { folder ->
+            folders[serverId] = folder
         }
+    }
+
+    fun addFolder(folder: ImapFolder) {
+        val serverId = folder.serverId
+        require(!folders.containsKey(serverId)) { "Folder '$serverId' already exists" }
+
+        folders[serverId] = folder
     }
 
     override fun getFolder(name: String): ImapFolder {

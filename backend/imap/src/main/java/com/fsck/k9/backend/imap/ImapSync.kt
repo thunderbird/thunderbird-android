@@ -13,8 +13,8 @@ import com.fsck.k9.mail.DefaultBodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessageDownloadState
-import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.internet.MessageExtractor
+import com.fsck.k9.mail.store.imap.FetchListener
 import com.fsck.k9.mail.store.imap.ImapFolder
 import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.store.imap.ImapStore
@@ -195,12 +195,11 @@ internal class ImapSync(
             /*
              * Now we download the actual content of messages.
              */
-            val newMessages = downloadMessages(
+            downloadMessages(
                 syncConfig,
                 remoteFolder,
                 backendFolder,
                 remoteMessages,
-                false,
                 highestKnownUid,
                 listener
             )
@@ -212,13 +211,7 @@ internal class ImapSync(
             backendFolder.setLastChecked(System.currentTimeMillis())
             backendFolder.setStatus(null)
 
-            Timber.d(
-                "Done synchronizing folder %s:%s @ %tc with %d new messages",
-                accountName,
-                folder,
-                System.currentTimeMillis(),
-                newMessages
-            )
+            Timber.d("Done synchronizing folder %s:%s @ %tc", accountName, folder, System.currentTimeMillis())
 
             listener.syncFinished(folder)
 
@@ -266,7 +259,6 @@ internal class ImapSync(
                 remoteFolder,
                 backendFolder,
                 listOf(remoteMessage),
-                false,
                 null,
                 SimpleSyncListener()
             )
@@ -284,34 +276,28 @@ internal class ImapSync(
      * The [BackendFolder] instance corresponding to the remote folder.
      * @param inputMessages
      * A list of messages objects that store the UIDs of which messages to download.
-     * @param flagSyncOnly
-     * Only flags will be fetched from the remote store if this is `true`.
-     * @return The number of downloaded messages that are not flagged as [Flag.SEEN].
      */
     private fun downloadMessages(
         syncConfig: SyncConfig,
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
         inputMessages: List<ImapMessage>,
-        flagSyncOnly: Boolean,
         highestKnownUid: Long?,
         listener: SyncListener
-    ): Int {
+    ) {
         val folder = remoteFolder.serverId
 
         val syncFlagMessages = mutableListOf<ImapMessage>()
         var unsyncedMessages = mutableListOf<ImapMessage>()
-        val newMessages = AtomicInteger(0)
+        val downloadedMessageCount = AtomicInteger(0)
 
         val messages = inputMessages.toMutableList()
         for (message in messages) {
             evaluateMessageForDownload(
                 message,
                 backendFolder,
-                remoteFolder,
                 unsyncedMessages,
-                syncFlagMessages,
-                flagSyncOnly
+                syncFlagMessages
             )
         }
 
@@ -333,10 +319,6 @@ internal class ImapSync(
                 unsyncedMessages = unsyncedMessages.subList(0, visibleLimit)
             }
 
-            val fp = FetchProfile()
-            fp.add(FetchProfile.Item.FLAGS)
-            fp.add(FetchProfile.Item.ENVELOPE)
-
             Timber.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size, folder)
 
             fetchUnsyncedMessages(
@@ -347,7 +329,6 @@ internal class ImapSync(
                 largeMessages,
                 progress,
                 todo,
-                fp,
                 listener
             )
 
@@ -367,19 +348,14 @@ internal class ImapSync(
          * download of 625k.
          */
         val maxDownloadSize = syncConfig.maximumAutoDownloadMessageSize
-        var fp = FetchProfile()
         // TODO: Only fetch small and large messages if we have some
-        fp.add(FetchProfile.Item.BODY)
-        //        fp.add(FetchProfile.Item.FLAGS);
-        //        fp.add(FetchProfile.Item.ENVELOPE);
         downloadSmallMessages(
             remoteFolder,
             backendFolder,
             smallMessages,
             progress,
-            newMessages,
+            downloadedMessageCount,
             todo,
-            fp,
             highestKnownUid,
             listener
         )
@@ -388,16 +364,13 @@ internal class ImapSync(
         /*
          * Now do the large messages that require more round trips.
          */
-        fp = FetchProfile()
-        fp.add(FetchProfile.Item.STRUCTURE)
         downloadLargeMessages(
             remoteFolder,
             backendFolder,
             largeMessages,
             progress,
-            newMessages,
+            downloadedMessageCount,
             todo,
-            fp,
             highestKnownUid,
             listener,
             maxDownloadSize
@@ -410,18 +383,14 @@ internal class ImapSync(
          */
         refreshLocalMessageFlags(syncConfig, remoteFolder, backendFolder, syncFlagMessages, progress, todo, listener)
 
-        Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get())
-
-        return newMessages.get()
+        Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, downloadedMessageCount.get())
     }
 
     private fun evaluateMessageForDownload(
         message: ImapMessage,
         backendFolder: BackendFolder,
-        remoteFolder: ImapFolder,
         unsyncedMessages: MutableList<ImapMessage>,
-        syncFlagMessages: MutableList<ImapMessage>,
-        flagSyncOnly: Boolean
+        syncFlagMessages: MutableList<ImapMessage>
     ) {
         val messageServerId = message.uid
         if (message.isSet(Flag.DELETED)) {
@@ -432,10 +401,8 @@ internal class ImapSync(
 
         val messagePresentLocally = backendFolder.isMessagePresent(messageServerId)
         if (!messagePresentLocally) {
-            if (!flagSyncOnly) {
-                Timber.v("Message with uid %s has not yet been downloaded", messageServerId)
-                unsyncedMessages.add(message)
-            }
+            Timber.v("Message with uid %s has not yet been downloaded", messageServerId)
+            unsyncedMessages.add(message)
             return
         }
 
@@ -474,23 +441,29 @@ internal class ImapSync(
         largeMessages: MutableList<ImapMessage>,
         progress: AtomicInteger,
         todo: Int,
-        fetchProfile: FetchProfile,
         listener: SyncListener
     ) {
         val folder = remoteFolder.serverId
+        val fetchProfile = FetchProfile().apply {
+            add(FetchProfile.Item.FLAGS)
+            add(FetchProfile.Item.ENVELOPE)
+        }
 
         remoteFolder.fetch(
             unsyncedMessages,
             fetchProfile,
-            object : MessageRetrievalListener<ImapMessage> {
-                override fun messageFinished(message: ImapMessage) {
+            object : FetchListener {
+                override fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean) {
                     try {
                         if (message.isSet(Flag.DELETED)) {
                             Timber.v(
                                 "Newly downloaded message %s:%s:%s was marked deleted on server, skipping",
                                 accountName, folder, message.uid
                             )
-                            progress.incrementAndGet()
+
+                            if (isFirstResponse) {
+                                progress.incrementAndGet()
+                            }
 
                             // TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal
                             listener.syncProgress(folder, progress.get(), todo)
@@ -519,29 +492,30 @@ internal class ImapSync(
         backendFolder: BackendFolder,
         smallMessages: List<ImapMessage>,
         progress: AtomicInteger,
-        newMessages: AtomicInteger,
+        downloadedMessageCount: AtomicInteger,
         todo: Int,
-        fetchProfile: FetchProfile,
         highestKnownUid: Long?,
         listener: SyncListener
     ) {
         val folder = remoteFolder.serverId
+        val fetchProfile = FetchProfile().apply {
+            add(FetchProfile.Item.BODY)
+        }
 
         Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
 
         remoteFolder.fetch(
             smallMessages,
             fetchProfile,
-            object : MessageRetrievalListener<ImapMessage> {
-                override fun messageFinished(message: ImapMessage) {
+            object : FetchListener {
+                override fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean) {
                     try {
                         // Store the updated message locally
                         backendFolder.saveMessage(message, MessageDownloadState.FULL)
-                        progress.incrementAndGet()
 
-                        // Increment the number of "new messages" if the newly downloaded message is not marked as read.
-                        if (!message.isSet(Flag.SEEN)) {
-                            newMessages.incrementAndGet()
+                        if (isFirstResponse) {
+                            progress.incrementAndGet()
+                            downloadedMessageCount.incrementAndGet()
                         }
 
                         val messageServerId = message.uid
@@ -571,14 +545,17 @@ internal class ImapSync(
         backendFolder: BackendFolder,
         largeMessages: List<ImapMessage>,
         progress: AtomicInteger,
-        newMessages: AtomicInteger,
+        downloadedMessageCount: AtomicInteger,
         todo: Int,
-        fetchProfile: FetchProfile,
         highestKnownUid: Long?,
         listener: SyncListener,
         maxDownloadSize: Int
     ) {
         val folder = remoteFolder.serverId
+        val fetchProfile = FetchProfile().apply {
+            add(FetchProfile.Item.STRUCTURE)
+        }
+
         Timber.d("SYNC: Fetching large messages for folder %s", folder)
 
         remoteFolder.fetch(largeMessages, fetchProfile, null, maxDownloadSize)
@@ -597,14 +574,7 @@ internal class ImapSync(
 
             // Update the listener with what we've found
             progress.incrementAndGet()
-
-            // TODO do we need to re-fetch this here?
-            val flags = backendFolder.getMessageFlags(messageServerId)
-            // Increment the number of "new messages" if the newly downloaded message is
-            // not marked as read.
-            if (!flags.contains(Flag.SEEN)) {
-                newMessages.incrementAndGet()
-            }
+            downloadedMessageCount.incrementAndGet()
 
             listener.syncProgress(folder, progress.get(), todo)
 
@@ -693,7 +663,7 @@ internal class ImapSync(
          */
         val bodyFactory: BodyFactory = DefaultBodyFactory()
         for (part in viewables) {
-            remoteFolder.fetchPart(message, part, null, bodyFactory, maxDownloadSize)
+            remoteFolder.fetchPart(message, part, bodyFactory, maxDownloadSize)
         }
 
         // Store the updated message locally

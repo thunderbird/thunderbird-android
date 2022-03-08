@@ -6,15 +6,16 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.Part
+import com.fsck.k9.mail.store.imap.FetchListener
 import com.fsck.k9.mail.store.imap.ImapFolder
 import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.store.imap.OpenMode
 import com.fsck.k9.mail.store.imap.createImapMessage
 import java.util.Date
 
-class TestImapFolder(override val serverId: String) : ImapFolder {
+open class TestImapFolder(override val serverId: String) : ImapFolder {
     override var mode: OpenMode? = null
-        private set
+        protected set
 
     override var messageCount: Int = 0
 
@@ -92,7 +93,7 @@ class TestImapFolder(override val serverId: String) : ImapFolder {
     override fun fetch(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
-        listener: MessageRetrievalListener<ImapMessage>?,
+        listener: FetchListener?,
         maxDownloadSize: Int
     ) {
         if (messages.isEmpty()) return
@@ -109,14 +110,13 @@ class TestImapFolder(override val serverId: String) : ImapFolder {
             }
             imapMessage.body = storedMessage.body
 
-            listener?.messageFinished(imapMessage)
+            listener?.onFetchResponse(imapMessage, isFirstResponse = true)
         }
     }
 
     override fun fetchPart(
         message: ImapMessage,
         part: Part,
-        listener: MessageRetrievalListener<ImapMessage>?,
         bodyFactory: BodyFactory,
         maxDownloadSize: Int
     ) {

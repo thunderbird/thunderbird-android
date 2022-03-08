@@ -68,7 +68,7 @@ internal open class TestImapFolder(
     override fun fetch(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
-        listener: MessageRetrievalListener<ImapMessage>?,
+        listener: FetchListener?,
         maxDownloadSize: Int
     ) {
         throw UnsupportedOperationException("not implemented")
@@ -77,7 +77,6 @@ internal open class TestImapFolder(
     override fun fetchPart(
         message: ImapMessage,
         part: Part,
-        listener: MessageRetrievalListener<ImapMessage>?,
         bodyFactory: BodyFactory,
         maxDownloadSize: Int
     ) {
