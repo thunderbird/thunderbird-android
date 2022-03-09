@@ -27,6 +27,7 @@ constructor(
     ),
     defStyleRes: Int = 0
 ) : Preference(context, attrs, defStyleAttr, defStyleRes), PreferenceActivityResultListener {
+    var receivedActivityResultJustNow = false
 
     fun setNotificationSound(sound: Uri?) {
         persistRingtone(sound)
@@ -42,6 +43,7 @@ constructor(
         val uri = data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
 
         if (callChangeListener(uri?.toString().orEmpty())) {
+            receivedActivityResultJustNow = true
             persistRingtone(uri)
         }
     }

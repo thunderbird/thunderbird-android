@@ -101,7 +101,16 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         val account = getAccount()
         initializeCryptoSettings(account)
 
-        maybeUpdateNotificationPreferences(account)
+        // Don't update the notification preferences when resuming after the user has selected a new notification sound
+        // via NotificationSoundPreference. Otherwise we race the background thread and might read data from the old
+        // NotificationChannel, overwriting the notification sound with the previous value.
+        notificationSoundPreference?.let { notificationSoundPreference ->
+            if (notificationSoundPreference.receivedActivityResultJustNow) {
+                notificationSoundPreference.receivedActivityResultJustNow = false
+            } else {
+                maybeUpdateNotificationPreferences(account)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
