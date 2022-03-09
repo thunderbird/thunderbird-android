@@ -142,9 +142,11 @@ class AccountPreferenceSerializer(
                     isRingEnabled = storage.getBoolean("$accountUuid.ring", true),
                     ringtone = storage.getString("$accountUuid.ringtone", DEFAULT_RINGTONE_URI),
                     light = getEnumStringPref(storage, "$accountUuid.notificationLight", NotificationLight.Disabled),
-                    isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false),
-                    vibratePattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0)),
-                    vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
+                    vibration = NotificationVibration(
+                        isEnabled = storage.getBoolean("$accountUuid.vibrate", false),
+                        pattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0)),
+                        repeatCount = storage.getInt("$accountUuid.vibrateTimes", 5)
+                    )
                 )
             }
 
@@ -322,9 +324,9 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.markMessageAsReadOnDelete", isMarkMessageAsReadOnDelete)
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
 
-            editor.putBoolean("$accountUuid.vibrate", notificationSettings.isVibrateEnabled)
-            editor.putInt("$accountUuid.vibratePattern", notificationSettings.vibratePattern.serialize())
-            editor.putInt("$accountUuid.vibrateTimes", notificationSettings.vibrateTimes)
+            editor.putBoolean("$accountUuid.vibrate", notificationSettings.vibration.isEnabled)
+            editor.putInt("$accountUuid.vibratePattern", notificationSettings.vibration.pattern.serialize())
+            editor.putInt("$accountUuid.vibrateTimes", notificationSettings.vibration.repeatCount)
             editor.putBoolean("$accountUuid.ring", notificationSettings.isRingEnabled)
             editor.putString("$accountUuid.ringtone", notificationSettings.ringtone)
             editor.putString("$accountUuid.notificationLight", notificationSettings.light.name)
@@ -607,9 +609,7 @@ class AccountPreferenceSerializer(
                     isRingEnabled = true,
                     ringtone = DEFAULT_RINGTONE_URI,
                     light = NotificationLight.Disabled,
-                    isVibrateEnabled = false,
-                    vibratePattern = VibratePattern.Default,
-                    vibrateTimes = 5
+                    vibration = NotificationVibration.DEFAULT
                 )
             }
 

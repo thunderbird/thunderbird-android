@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
-import com.fsck.k9.NotificationSettings
+import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
 import com.takisoft.preferencex.PreferenceFragmentCompat
@@ -75,7 +75,7 @@ constructor(
                 VibratePattern.deserialize(serializedVibratePattern)
             }
             .firstOrNull { vibratePattern ->
-                val testPattern = NotificationSettings.getVibrationPattern(vibratePattern, vibrationTimes)
+                val testPattern = NotificationVibration.getSystemPattern(vibratePattern, vibrationTimes)
 
                 testPattern.contentEquals(combinedPatternArray)
             } ?: DEFAULT_VIBRATE_PATTERN

@@ -16,7 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceDialogFragmentCompat
-import com.fsck.k9.NotificationSettings
+import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.getEnum
@@ -81,7 +81,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
     private fun playVibration() {
         val vibratePattern = adapter.vibratePattern
         val vibrationTimes = adapter.vibrationTimes
-        val vibrationPattern = NotificationSettings.getVibrationPattern(vibratePattern, vibrationTimes)
+        val vibrationPattern = NotificationVibration.getSystemPattern(vibratePattern, vibrationTimes)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val vibrationEffect = VibrationEffect.createWaveform(vibrationPattern, -1)
