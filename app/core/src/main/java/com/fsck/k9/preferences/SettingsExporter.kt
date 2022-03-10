@@ -10,6 +10,7 @@ import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_EMAIL_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_NAME_KEY
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.FolderRepository
+import com.fsck.k9.notification.NotificationSettingsUpdater
 import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import com.fsck.k9.preferences.Settings.SettingsDescription
@@ -24,16 +25,29 @@ class SettingsExporter(
     private val contentResolver: ContentResolver,
     private val preferences: Preferences,
     private val folderSettingsProvider: FolderSettingsProvider,
-    private val folderRepository: FolderRepository
+    private val folderRepository: FolderRepository,
+    private val notificationSettingsUpdater: NotificationSettingsUpdater
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
+        updateNotificationSettings(accountUuids)
+
         try {
             contentResolver.openOutputStream(uri)!!.use { outputStream ->
                 exportPreferences(outputStream, includeGlobals, accountUuids)
             }
         } catch (e: Exception) {
             throw SettingsImportExportException(e)
+        }
+    }
+
+    private fun updateNotificationSettings(accountUuids: Set<String>) {
+        try {
+            notificationSettingsUpdater.updateNotificationSettings(accountUuids)
+        } catch (e: Exception) {
+            // An error here could mean we export notification settings that don't reflect the current configuration
+            // of the notification channels. But we prefer stale data over failing the export.
+            Timber.w(e, "Error while updating accounts with notification configuration from system")
         }
     }
 

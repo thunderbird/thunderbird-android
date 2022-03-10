@@ -29,6 +29,7 @@ import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import com.fsck.k9.notification.NotificationLightDecoder
+import com.fsck.k9.notification.NotificationVibrationDecoder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.settings.onClick
@@ -52,6 +53,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val accountRemover: BackgroundAccountRemover by inject()
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val notificationLightDecoder: NotificationLightDecoder by inject()
+    private val notificationVibrationDecoder: NotificationVibrationDecoder by inject()
 
     private val vibrator by lazy { requireContext().getSystemService<Vibrator>() }
     private lateinit var dataStore: AccountSettingsDataStore
@@ -267,9 +269,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
 
         notificationVibrationPreference?.let { preference ->
-            preference.setVibrationFromSystem(
+            val notificationVibration = notificationVibrationDecoder.decode(
                 isVibrationEnabled = notificationConfiguration.isVibrationEnabled,
-                combinedPattern = notificationConfiguration.vibrationPattern
+                systemPattern = notificationConfiguration.vibrationPattern
+            )
+            preference.setVibration(
+                isVibrationEnabled = notificationVibration.isEnabled,
+                vibratePattern = notificationVibration.pattern,
+                vibrationTimes = notificationVibration.repeatCount
             )
             preference.isEnabled = true
         }
