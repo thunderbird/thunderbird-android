@@ -213,8 +213,8 @@ class NotificationChannelManager(
         val notificationSettings = account.notificationSettings
         return sound == notificationSettings.ringtoneUri &&
             systemLight == notificationSettings.light &&
-            shouldVibrate() == notificationSettings.isVibrateEnabled &&
-            vibrationPattern.contentEquals(notificationSettings.vibrationPattern)
+            shouldVibrate() == notificationSettings.vibration.isEnabled &&
+            vibrationPattern.contentEquals(notificationSettings.vibration.systemPattern)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -244,8 +244,8 @@ class NotificationChannelManager(
         val isLightEnabled = notificationSettings.light != NotificationLight.Disabled
         enableLights(isLightEnabled)
 
-        vibrationPattern = notificationSettings.vibrationPattern
-        enableVibration(notificationSettings.isVibrateEnabled)
+        vibrationPattern = notificationSettings.vibration.systemPattern
+        enableVibration(notificationSettings.vibration.isEnabled)
     }
 
     private val Account.messagesNotificationChannelSuffix: String

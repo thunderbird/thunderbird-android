@@ -5,7 +5,7 @@ import com.fsck.k9.Identity
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
 import com.fsck.k9.NotificationLight
-import com.fsck.k9.NotificationSettings
+import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -151,14 +151,20 @@ class BaseNotificationDataCreatorTest {
     @Test
     fun `vibration pattern`() {
         account.updateNotificationSettings {
-            it.copy(isVibrateEnabled = true, vibratePattern = VibratePattern.Pattern3, vibrateTimes = 2)
+            it.copy(
+                vibration = NotificationVibration(
+                    isEnabled = true,
+                    pattern = VibratePattern.Pattern3,
+                    repeatCount = 2
+                )
+            )
         }
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
         assertThat(result.appearance.vibrationPattern).isEqualTo(
-            NotificationSettings.getVibrationPattern(VibratePattern.Pattern3, 2)
+            NotificationVibration.getSystemPattern(VibratePattern.Pattern3, 2)
         )
     }
 

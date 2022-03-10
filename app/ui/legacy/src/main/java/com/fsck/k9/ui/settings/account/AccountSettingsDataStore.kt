@@ -4,6 +4,7 @@ import androidx.preference.PreferenceDataStore
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.NotificationLight
+import com.fsck.k9.NotificationVibration
 import com.fsck.k9.Preferences
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
@@ -263,20 +264,24 @@ class AccountSettingsDataStore(
     }
 
     private fun getCombinedVibrationValue(): String {
-        return VibrationPreference.encode(
-            isVibrationEnabled = account.notificationSettings.isVibrateEnabled,
-            vibratePattern = account.notificationSettings.vibratePattern,
-            vibrationTimes = account.notificationSettings.vibrateTimes
-        )
+        return with(account.notificationSettings.vibration) {
+            VibrationPreference.encode(
+                isVibrationEnabled = isEnabled,
+                vibratePattern = pattern,
+                vibrationTimes = repeatCount
+            )
+        }
     }
 
     private fun setCombinedVibrationValue(value: String) {
         val (isVibrationEnabled, vibrationPattern, vibrationTimes) = VibrationPreference.decode(value)
         account.updateNotificationSettings { notificationSettings ->
             notificationSettings.copy(
-                isVibrateEnabled = isVibrationEnabled,
-                vibratePattern = vibrationPattern,
-                vibrateTimes = vibrationTimes,
+                vibration = NotificationVibration(
+                    isEnabled = isVibrationEnabled,
+                    pattern = vibrationPattern,
+                    repeatCount = vibrationTimes,
+                )
             )
         }
         notificationSettingsChanged = true
