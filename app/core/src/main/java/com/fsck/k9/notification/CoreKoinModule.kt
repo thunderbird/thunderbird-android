@@ -115,4 +115,12 @@ val coreNotificationModule = module {
     }
     factory { NotificationLightDecoder() }
     factory { NotificationVibrationDecoder() }
+    factory {
+        NotificationConfigurationConverter(notificationLightDecoder = get(), notificationVibrationDecoder = get())
+    }
+    factory {
+        NotificationSettingsUpdater(
+            preferences = get(), notificationChannelManager = get(), notificationConfigurationConverter = get()
+        )
+    }
 }

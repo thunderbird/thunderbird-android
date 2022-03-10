@@ -11,6 +11,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.koin.core.component.inject
+import org.mockito.kotlin.mock
 import org.robolectric.RuntimeEnvironment
 
 class SettingsExporterTest : K9RobolectricTest() {
@@ -22,7 +23,8 @@ class SettingsExporterTest : K9RobolectricTest() {
         contentResolver,
         preferences,
         folderSettingsProvider,
-        folderRepository
+        folderRepository,
+        notificationSettingsUpdater = mock()
     )
 
     @Test
