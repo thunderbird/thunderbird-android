@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
-import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
 import com.takisoft.preferencex.PreferenceFragmentCompat
@@ -59,28 +58,6 @@ constructor(
         persistString(encoded)
 
         updateSummary()
-    }
-
-    fun setVibrationFromSystem(isVibrationEnabled: Boolean, combinedPattern: List<Long>?) {
-        if (combinedPattern == null || combinedPattern.size < 2 || combinedPattern.size % 2 != 0) {
-            setVibration(isVibrationEnabled, DEFAULT_VIBRATE_PATTERN, DEFAULT_VIBRATION_TIMES)
-            return
-        }
-
-        val combinedPatternArray = combinedPattern.toLongArray()
-        val vibrationTimes = combinedPattern.size / 2
-        val vibrationPattern = entryValues.asSequence()
-            .map { entryValue ->
-                val serializedVibratePattern = entryValue.toString().toInt()
-                VibratePattern.deserialize(serializedVibratePattern)
-            }
-            .firstOrNull { vibratePattern ->
-                val testPattern = NotificationVibration.getSystemPattern(vibratePattern, vibrationTimes)
-
-                testPattern.contentEquals(combinedPatternArray)
-            } ?: DEFAULT_VIBRATE_PATTERN
-
-        setVibration(isVibrationEnabled, vibrationPattern, vibrationTimes)
     }
 
     private fun updateSummary() {

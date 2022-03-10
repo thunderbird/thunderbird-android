@@ -114,4 +114,5 @@ val coreNotificationModule = module {
         )
     }
     factory { NotificationLightDecoder() }
+    factory { NotificationVibrationDecoder() }
 }
