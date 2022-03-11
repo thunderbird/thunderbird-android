@@ -54,6 +54,26 @@ object MimeParameterDecoder {
         )
     }
 
+    fun decodeBasic(headerBody: String): MimeValue {
+        val parser = MimeHeaderParser(headerBody)
+
+        val value = parser.readHeaderValue()
+        parser.skipCFWS()
+        if (parser.endReached()) {
+            return MimeValue(value)
+        }
+
+        val (basicParameters, duplicateParameters, parserErrorIndex) = readBasicParameters(parser)
+        val parameters = basicParameters.mapValues { (_, parameterValue) -> parameterValue.value }
+
+        return MimeValue(
+            value = value,
+            parameters = parameters,
+            ignoredParameters = duplicateParameters,
+            parserErrorIndex = parserErrorIndex
+        )
+    }
+
     @JvmStatic
     fun extractHeaderValue(headerBody: String): String {
         val parser = MimeHeaderParser(headerBody)

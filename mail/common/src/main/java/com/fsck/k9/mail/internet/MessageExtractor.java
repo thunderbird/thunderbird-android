@@ -23,7 +23,6 @@ import org.apache.commons.io.input.BoundedInputStream;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
-import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Html;
@@ -77,7 +76,7 @@ public class MessageExtractor {
         /*
          * We've got a text part, so let's see if it needs to be processed further.
          */
-        String charset = getHeaderParameter(part.getContentType(), "charset");
+        String charset = PartExtensions.getCharset(part);
         /*
          * determine the charset from HTML message.
          */
