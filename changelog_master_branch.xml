@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.913" versioncode="29013" date="2022-03-11">
+        <change>Don't create notifications when manually refreshing the message list</change>
+        <change>Fixed import and export of notification settings</change>
+        <change>Fixed bug that could lead to multiple notifications being created for the same message</change>
+        <change>Fixed bug that sometimes crashed the app after changing the notification sound</change>
+        <change>Added support for messages that specified the character set in multiple ways</change>
+        <change>A lot of internal improvements</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.912" versioncode="29012" date="2022-02-22">
         <change>Fixed bugs where notifications weren't removed when they should have been</change>
         <change>Added a setting to configure the notification sound on Android 8+ (because some vendor-specific Android versions removed this feature from their user interface)</change>
