@@ -58,7 +58,7 @@ class NotificationChannelManager(
         accounts: List<Account>
     ) {
         for (account in accounts) {
-            val groupId = account.uuid
+            val groupId = account.notificationChannelGroupId
             val group = NotificationChannelGroup(groupId, account.displayName)
 
             val channelMessages = getChannelMessages(account)
@@ -75,25 +75,13 @@ class NotificationChannelManager(
         notificationManager: NotificationManager,
         accounts: List<Account>
     ) {
-        val existingAccounts = HashMap<String, Account>()
-        for (account in accounts) {
-            existingAccounts[account.uuid] = account
-        }
+        val accountUuids = accounts.map { it.uuid }.toSet()
 
         val groups = notificationManager.notificationChannelGroups
         for (group in groups) {
-            val groupId = group.id
-
-            var shouldDelete = false
-            if (!existingAccounts.containsKey(groupId)) {
-                shouldDelete = true
-            } else if (existingAccounts[groupId]?.displayName != group.name.toString()) {
-                // There is no way to change group names. Deleting group, so it is re-generated.
-                shouldDelete = true
-            }
-
-            if (shouldDelete) {
-                notificationManager.deleteNotificationChannelGroup(groupId)
+            val accountUuid = group.id.toAccountUuid()
+            if (accountUuid !in accountUuids) {
+                notificationManager.deleteNotificationChannelGroup(group.id)
             }
         }
     }
@@ -247,6 +235,11 @@ class NotificationChannelManager(
         vibrationPattern = notificationSettings.vibration.systemPattern
         enableVibration(notificationSettings.vibration.isEnabled)
     }
+
+    private val Account.notificationChannelGroupId: String
+        get() = uuid
+
+    private fun String.toAccountUuid(): String = this
 
     private val Account.messagesNotificationChannelSuffix: String
         get() = messagesNotificationChannelVersion.let { version -> if (version == 0) "" else "_$version" }
