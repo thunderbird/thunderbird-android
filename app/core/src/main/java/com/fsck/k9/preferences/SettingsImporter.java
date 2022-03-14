@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountPreferenceSerializer;
+import com.fsck.k9.Clock;
 import com.fsck.k9.Core;
 import com.fsck.k9.DI;
 import com.fsck.k9.Identity;
@@ -456,7 +457,12 @@ public class SettingsImporter {
             }
         }
 
-        //TODO: sync folder settings with localstore?
+        // When deleting an account and then restoring it using settings import, the same account UUID will be used.
+        // To avoid reusing a previously existing notification channel ID, we need to make sure to use a unique value
+        // for `messagesNotificationChannelVersion`.
+        Clock clock = DI.get(Clock.class);
+        String messageNotificationChannelVersion = Long.toString(clock.getTime() / 1000);
+        putString(editor, accountKeyPrefix + "messagesNotificationChannelVersion", messageNotificationChannelVersion);
 
         AccountDescription imported = new AccountDescription(accountName, uuid);
         return new AccountDescriptionPair(original, imported, mergeImportedAccount,
