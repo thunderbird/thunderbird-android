@@ -6,6 +6,7 @@ import android.content.res.Resources
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.external.MessageProvider
+import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.base.extensions.currentLocale
@@ -13,6 +14,7 @@ import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -25,6 +27,7 @@ class App : Application() {
     private val messagingListenerProvider: MessagingListenerProvider by inject()
     private val themeManager: ThemeManager by inject()
     private val appLanguageManager: AppLanguageManager by inject()
+    private val notificationChannelManager: NotificationChannelManager by inject()
     private val appCoroutineScope: CoroutineScope = GlobalScope + Dispatchers.Main
     private var appLanguageManagerInitialized = false
 
@@ -39,6 +42,7 @@ class App : Application() {
         Core.init(this)
         MessageProvider.init()
         initializeAppLanguage()
+        updateNotificationChannelsOnAppLanguageChanges()
         themeManager.init()
 
         messagingListenerProvider.listeners.forEach { listener ->
@@ -107,6 +111,13 @@ class App : Application() {
         }
 
         return resources
+    }
+
+    private fun updateNotificationChannelsOnAppLanguageChanges() {
+        appLanguageManager.appLocale
+            .distinctUntilChanged()
+            .onEach { notificationChannelManager.updateChannels() }
+            .launchIn(appCoroutineScope)
     }
 
     companion object {

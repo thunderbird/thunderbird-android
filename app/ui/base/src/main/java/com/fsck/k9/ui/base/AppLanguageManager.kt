@@ -3,6 +3,8 @@ package com.fsck.k9.ui.base
 import android.content.res.Resources
 import com.fsck.k9.K9
 import com.fsck.k9.ui.base.extensions.currentLocale
+import com.fsck.k9.ui.base.locale.SystemLocaleChangeListener
+import com.fsck.k9.ui.base.locale.SystemLocaleManager
 import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,11 +21,20 @@ import kotlinx.coroutines.plus
  * - Notifies listeners when the app language has changed.
  */
 class AppLanguageManager(
+    private val systemLocaleManager: SystemLocaleManager,
     private val coroutineScope: CoroutineScope = GlobalScope + Dispatchers.Main
 ) {
     private var currentOverrideLocale: Locale? = null
     private val _overrideLocale = MutableSharedFlow<Locale?>(replay = 1)
+    private val _appLocale = MutableSharedFlow<Locale>(replay = 1)
     val overrideLocale: Flow<Locale?> = _overrideLocale
+    val appLocale: Flow<Locale> = _appLocale
+
+    private val systemLocaleListener = SystemLocaleChangeListener {
+        coroutineScope.launch {
+            _appLocale.emit(systemLocale)
+        }
+    }
 
     fun init() {
         setLocale(K9.k9Language)
@@ -58,8 +69,15 @@ class AppLanguageManager(
         val locale = overrideLocale ?: systemLocale
         Locale.setDefault(locale)
 
+        if (overrideLocale == null) {
+            systemLocaleManager.addListener(systemLocaleListener)
+        } else {
+            systemLocaleManager.removeListener(systemLocaleListener)
+        }
+
         coroutineScope.launch {
             _overrideLocale.emit(overrideLocale)
+            _appLocale.emit(locale)
         }
     }
 
