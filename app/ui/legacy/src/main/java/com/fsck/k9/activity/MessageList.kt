@@ -38,7 +38,6 @@ import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
-import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
@@ -90,7 +89,6 @@ open class MessageList :
 
     protected val searchStatusManager: SearchStatusManager by inject()
     private val preferences: Preferences by inject()
-    private val channelUtils: NotificationChannelManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
@@ -205,7 +203,6 @@ open class MessageList :
         initializeFragments()
         displayViews()
         initializeRecentChangesSnackbar()
-        channelUtils.updateChannels()
 
         if (savedInstanceState == null) {
             checkAndRequestPermissions()

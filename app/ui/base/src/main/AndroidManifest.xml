@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.fsck.k9.ui.base" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fsck.k9.ui.base">
+
+    <application>
+
+        <receiver
+            android:name=".locale.LocaleBroadcastReceiver"
+            android:exported="false"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
