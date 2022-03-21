@@ -147,7 +147,7 @@ class MessageListFragment :
         super.onCreate(savedInstanceState)
 
         restoreInstanceState(savedInstanceState)
-        decodeArguments()
+        decodeArguments() ?: return
 
         viewModel.getMessageListLiveData().observe(this) { messageListInfo: MessageListInfo ->
             setMessageList(messageListInfo)
@@ -177,7 +177,7 @@ class MessageListFragment :
         listView.onRestoreInstanceState(savedListState)
     }
 
-    private fun decodeArguments() {
+    private fun decodeArguments(): MessageListFragment? {
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
@@ -198,10 +198,17 @@ class MessageListFragment :
 
         isSingleFolderMode = false
         if (isSingleAccountMode && localSearch.folderIds.size == 1) {
-            isSingleFolderMode = true
-            val folderId = localSearch.folderIds[0]
-            currentFolder = getFolderInfoHolder(folderId, account!!)
+            try {
+                val folderId = localSearch.folderIds[0]
+                currentFolder = getFolderInfoHolder(folderId, account!!)
+                isSingleFolderMode = true
+            } catch (e: MessagingException) {
+                fragmentListener.onFolderNotFoundError()
+                return null
+            }
         }
+
+        return this
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -458,12 +465,8 @@ class MessageListFragment :
         )
 
     private fun getFolderInfoHolder(folderId: Long, account: Account): FolderInfoHolder {
-        return try {
-            val localFolder = MlfUtils.getOpenFolder(folderId, account)
-            FolderInfoHolder(folderNameFormatter, localFolder, account)
-        } catch (e: MessagingException) {
-            throw RuntimeException(e)
-        }
+        val localFolder = MlfUtils.getOpenFolder(folderId, account)
+        return FolderInfoHolder(folderNameFormatter, localFolder, account)
     }
 
     override fun onResume() {
@@ -1926,6 +1929,7 @@ class MessageListFragment :
         fun remoteSearchStarted()
         fun goBack()
         fun updateMenu()
+        fun onFolderNotFoundError()
 
         companion object {
             const val MAX_PROGRESS = 10000
