@@ -7,7 +7,7 @@ enum StatusCodeClass {
     PERMANENT_FAILURE(5);
 
 
-    private final int codeClass;
+    final int codeClass;
 
 
     static StatusCodeClass parse(String statusCodeClassString) {
