@@ -7,6 +7,9 @@ internal data class SmtpResponse(
 ) {
     val isNegativeResponse = replyCode >= 400
 
+    val joinedText: String
+        get() = texts.joinToString(separator = " ")
+
     fun toLogString(omitText: Boolean, linePrefix: String): String {
         return buildString {
             if (omitText) {

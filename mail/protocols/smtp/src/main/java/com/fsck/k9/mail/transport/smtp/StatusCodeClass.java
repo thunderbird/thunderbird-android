@@ -6,19 +6,7 @@ enum StatusCodeClass {
     PERSISTENT_TRANSIENT_FAILURE(4),
     PERMANENT_FAILURE(5);
 
-
     final int codeClass;
-
-
-    static StatusCodeClass parse(String statusCodeClassString) {
-        int value = Integer.parseInt(statusCodeClassString);
-        for (StatusCodeClass classEnum : StatusCodeClass.values()) {
-            if (classEnum.codeClass == value) {
-                return classEnum;
-            }
-        }
-        return  null;
-    }
 
     StatusCodeClass(int codeClass) {
         this.codeClass = codeClass;
