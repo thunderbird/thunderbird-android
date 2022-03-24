@@ -240,6 +240,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_show_contact_name_summary">Użyj nazw nadawców, jeżeli występują w Twojej książce kontaktowej</string>
   <string name="global_settings_registered_name_color_label">Koloruj kontakty</string>
   <string name="global_settings_registered_name_color_changed">Koloruj nazwiska na liście kontaktów</string>
+  <string name="general_settings_contact_name_color_label">Kolor nazwy kontaktu</string>
   <string name="global_settings_messageview_fixedwidth_label">Czcionka o stałej szer.</string>
   <string name="global_settings_messageview_fixedwidth_summary">Użyj czcionki o stałej szerokości do wyświetlania wiadomości tekstowych</string>
   <string name="global_settings_messageview_autofit_width_label">Dopasuj wiadomość do rozmiaru ekranu</string>
@@ -542,6 +543,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_description_label">Nazwa konta</string>
   <string name="account_settings_name_label">Twoje imię i nazwisko</string>
   <string name="notifications_title">Powiadomienia</string>
+  <string name="account_settings_vibration">Wibracja</string>
   <string name="account_settings_vibrate_enable">Wibracja</string>
   <string name="account_settings_vibrate_pattern_label">Wzór wibracji.</string>
   <string name="account_settings_vibrate_pattern_default">Standardowa</string>
@@ -551,8 +553,19 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_vibrate_pattern_4">Wzór 4</string>
   <string name="account_settings_vibrate_pattern_5">Wzór 5</string>
   <string name="account_settings_vibrate_times">Liczba wibracji</string>
+  <string name="account_settings_vibrate_summary_disabled">Wyłączone</string>
   <string name="account_settings_ringtone">Sygnał dzwiękowy</string>
+  <string name="account_settings_notification_light_label">Światło powiadomienia</string>
+  <string name="account_settings_notification_light_disabled">Wyłączone</string>
   <string name="account_settings_notification_light_account_color">Kolor konta</string>
+  <string name="account_settings_notification_light_default_color">Domyślny kolor systemowy</string>
+  <string name="account_settings_notification_light_white">Biały</string>
+  <string name="account_settings_notification_light_red">Czerwony</string>
+  <string name="account_settings_notification_light_green">Zielony</string>
+  <string name="account_settings_notification_light_blue">Niebieski</string>
+  <string name="account_settings_notification_light_yellow">Żółty</string>
+  <string name="account_settings_notification_light_cyan">Cyjan</string>
+  <string name="account_settings_notification_light_magenta">Różowy</string>
   <string name="account_settings_composition_title">Opcje tworzenia wiadomości</string>
   <string name="account_settings_composition_label">Tworzenie wiadomości</string>
   <string name="account_settings_composition_summary">Ustaw podpis oraz domyślne wartości Do, UDW</string>

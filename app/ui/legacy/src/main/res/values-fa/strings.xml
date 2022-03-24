@@ -104,6 +104,7 @@
   <string name="search_action">جستجو</string>
   <string name="search_everywhere_action">جستجو در همه پوشه‌ها</string>
   <string name="search_results">نتایج جستجو</string>
+  <string name="new_messages_title">پیام‌های جدید</string>
   <string name="preferences_action">تنظیمات</string>
   <string name="folders_action">مدیریت پوشه‌ها</string>
   <string name="account_settings_action">تنظیمات حساب</string>
@@ -159,6 +160,7 @@
   <string name="notification_action_archive">بایگانی</string>
   <string name="notification_action_archive_all">بایگانی همه</string>
   <string name="notification_action_spam">هرزنامه</string>
+  <string name="notification_certificate_error_public">خطای گواهی</string>
   <string name="notification_certificate_error_title">خطای گواهی برای <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">تنظیمات کارساز خود را بررسی کنید</string>
   <string name="notification_authentication_error_title">احراز هویت ناموفق بود</string>
@@ -185,6 +187,9 @@
   <string name="debug_enable_debug_logging_summary">ثبت اطلاعات عیب‌یابی بیشتر</string>
   <string name="debug_enable_sensitive_logging_title">ثبت اطلاعات حساس</string>
   <string name="debug_enable_sensitive_logging_summary">شاید گذرواژه‌ها در گزارش بیاید.</string>
+  <string name="debug_export_logs_title">گزارش‌های برون‌برد</string>
+  <string name="debug_export_logs_success">برون‌برد باموفقیت انجام شد. گزارش‌ها ممکن است حاوی اطلاعات حساس باشند. مراقب باشید آن‌ها را برای چه کسی ارسال می‌کنید.</string>
+  <string name="debug_export_logs_failure">برون‌برد انجام نشد.</string>
   <string name="message_list_load_more_messages_action">بارگیری پیام‌های بیشتر</string>
   <string name="message_to_fmt">به:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">موضوع</string>
@@ -534,11 +539,29 @@
   <string name="account_settings_description_label">نام حساب</string>
   <string name="account_settings_name_label">نام شما</string>
   <string name="notifications_title">اعلان‌ها</string>
+  <string name="account_settings_vibration">لرزش</string>
   <string name="account_settings_vibrate_enable">لرزش</string>
+  <string name="account_settings_vibrate_pattern_label">الگوی لرزش</string>
   <string name="account_settings_vibrate_pattern_default">پیش‌فرض</string>
+  <string name="account_settings_vibrate_pattern_1">الگوی 1</string>
+  <string name="account_settings_vibrate_pattern_2">الگوی 2</string>
+  <string name="account_settings_vibrate_pattern_3">الگوی 3</string>
+  <string name="account_settings_vibrate_pattern_4">الگوی 4</string>
+  <string name="account_settings_vibrate_pattern_5">الگوی 5</string>
   <string name="account_settings_vibrate_times">تکرار لرزش</string>
+  <string name="account_settings_vibrate_summary_disabled">غیرفعال</string>
   <string name="account_settings_ringtone">زنگ رایانامهٔ جدید</string>
+  <string name="account_settings_notification_light_label">چراغ اعلان</string>
+  <string name="account_settings_notification_light_disabled">غیرفعال</string>
   <string name="account_settings_notification_light_account_color">رنگ حساب کاربری</string>
+  <string name="account_settings_notification_light_default_color">رنگ پیش‌فرض سیستم</string>
+  <string name="account_settings_notification_light_white">سفید</string>
+  <string name="account_settings_notification_light_red">قرمز</string>
+  <string name="account_settings_notification_light_green">سبز</string>
+  <string name="account_settings_notification_light_blue">آبی</string>
+  <string name="account_settings_notification_light_yellow">زرد</string>
+  <string name="account_settings_notification_light_cyan">فیروزه‌ای</string>
+  <string name="account_settings_notification_light_magenta">ارغوانی</string>
   <string name="account_settings_composition_title">گزینه‌های نوشتن پیام</string>
   <string name="account_settings_composition_label">پیش‌فرض‌های نوشتن</string>
   <string name="account_settings_composition_summary">پیش‌فرض‌های خودتان را برای «از»، «مخفیانه به» و «امضا» تنظیم کنید</string>
