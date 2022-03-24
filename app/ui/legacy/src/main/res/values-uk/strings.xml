@@ -71,6 +71,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="compose_title_forward_as_attachment">Переслати як вкладення</string>
   <string name="choose_account_title">Вибрати обліковий запис</string>
   <string name="choose_folder_title">Вибрати теку</string>
+  <string name="choose_folder_move_title">Посунути до…</string>
+  <string name="choose_folder_copy_title">Копіювати до…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> вибрано</string>
   <string name="next_action">Наступний</string>
   <string name="previous_action">Попередній</string>
@@ -103,6 +105,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="search_action">Пошук</string>
   <string name="search_everywhere_action">Шукати всюди</string>
   <string name="search_results">Результати пошуку</string>
+  <string name="new_messages_title">Нові повідомлення</string>
   <string name="preferences_action">Налаштування</string>
   <string name="folders_action">Керування теками</string>
   <string name="account_settings_action">Налаштування облікового запису</string>
@@ -162,6 +165,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="notification_action_archive">Архівувати</string>
   <string name="notification_action_archive_all">Архівувати всі</string>
   <string name="notification_action_spam">Спам</string>
+  <string name="notification_certificate_error_public">Помилка сертифікату</string>
   <string name="notification_certificate_error_title">Помилка сертифікату для <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Перевірте налаштування вашого серверу</string>
   <string name="notification_authentication_error_title">Помилка автентифікації</string>
@@ -188,6 +192,9 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="debug_enable_debug_logging_summary">Записувати додаткову діагностичну інформацію</string>
   <string name="debug_enable_sensitive_logging_title">Записувати конфіденційну інформацію</string>
   <string name="debug_enable_sensitive_logging_summary">Може відображати паролі в журналах.</string>
+  <string name="debug_export_logs_title">Експортувати журнали</string>
+  <string name="debug_export_logs_success">Експорт успішний. Журнали можуть містити чутливі дані. Обачно обирайте адресата.</string>
+  <string name="debug_export_logs_failure">Не вдалося експортувати.</string>
   <string name="message_list_load_more_messages_action">Завантажити більше повідомлень</string>
   <string name="message_to_fmt">До:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Тема</string>
@@ -234,6 +241,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="global_settings_show_contact_name_summary">Використовувати імена одержувачів із Контактів, якщо це можливо</string>
   <string name="global_settings_registered_name_color_label">Позначати контакти кольором</string>
   <string name="global_settings_registered_name_color_changed">Позначати кольором імена з вашого списку контактів</string>
+  <string name="general_settings_contact_name_color_label">Колір імені контакту</string>
   <string name="global_settings_messageview_fixedwidth_label">Моноширинні шрифти</string>
   <string name="global_settings_messageview_fixedwidth_summary">Використовувати моноширинний шрифт для відображення звичайних текстових повідомлень</string>
   <string name="global_settings_messageview_autofit_width_label">Припасовувати текст повідомлень до ширини екрану</string>
@@ -261,6 +269,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="global_settings_lock_screen_notification_visibility_title">Сповіщення на заблокованому екрані</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Без сповіщень на заблокованому екрані</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Ім\'я додатку</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Лічильник нових повідомлень</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Кількість повідомлень і відправники</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Так само, як і при розблокованому екрані</string>
   <string name="quiet_time">Тиха Година</string>
@@ -273,6 +282,9 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_basics_email_hint">Адреса електронної пошти</string>
   <string name="account_setup_basics_password_hint">Пароль</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Щоб переглянути пароль, налаштуйте цьому пристрою блокування екрану.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Звірте свою особу</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Розблокуйте, щоб переглянути пароль</string>
   <string name="account_setup_basics_manual_setup_action">Ручне налаштування</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Отримання інформації про обліковий запис\u2026</string>
@@ -397,6 +409,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_notify_self_summary">Показати сповіщення про надіслані мною повідомлення</string>
   <string name="account_notify_contacts_mail_only_label">Лише контактам</string>
   <string name="account_notify_contacts_mail_only_summary">Показувати сповіщення лише для повідомлень від вже відомих контактів</string>
+  <string name="account_settings_ignore_chat_messages_label">Нехтувати повідомленнями розмови</string>
+  <string name="account_settings_ignore_chat_messages_summary">Не показувати сповіщень про повідомлення поштової розмови</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Позначати повідомлення прочитаним після відкриття</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Позначати повідомлення прочитаним після відкриття для перегляду</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Позначити прочитаним після видалення</string>
@@ -530,11 +544,29 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_description_label">Ім’я облікового запису</string>
   <string name="account_settings_name_label">Ваше ім’я</string>
   <string name="notifications_title">Сповіщення</string>
+  <string name="account_settings_vibration">Вібрація</string>
   <string name="account_settings_vibrate_enable">Вібрація</string>
+  <string name="account_settings_vibrate_pattern_label">Ритм вібрації</string>
   <string name="account_settings_vibrate_pattern_default">Типовий</string>
+  <string name="account_settings_vibrate_pattern_1">Ритм 1</string>
+  <string name="account_settings_vibrate_pattern_2">Ритм 2</string>
+  <string name="account_settings_vibrate_pattern_3">Ритм 3</string>
+  <string name="account_settings_vibrate_pattern_4">Ритм 4</string>
+  <string name="account_settings_vibrate_pattern_5">Ритм 5</string>
   <string name="account_settings_vibrate_times">Повторити вібрацію</string>
+  <string name="account_settings_vibrate_summary_disabled">Вимкнено</string>
   <string name="account_settings_ringtone">Звук сповіщення про новий лист</string>
+  <string name="account_settings_notification_light_label">Спалах сповіщення</string>
+  <string name="account_settings_notification_light_disabled">Вимкнено</string>
   <string name="account_settings_notification_light_account_color">Колір облікового запису</string>
+  <string name="account_settings_notification_light_default_color">Типовий колір системи</string>
+  <string name="account_settings_notification_light_white">Білий</string>
+  <string name="account_settings_notification_light_red">Червоний</string>
+  <string name="account_settings_notification_light_green">Зелений</string>
+  <string name="account_settings_notification_light_blue">Синій</string>
+  <string name="account_settings_notification_light_yellow">Жовтий</string>
+  <string name="account_settings_notification_light_cyan">Бірюзовий</string>
+  <string name="account_settings_notification_light_magenta">Рожевий</string>
   <string name="account_settings_composition_title">Параметри створення повідомлень</string>
   <string name="account_settings_composition_label">Типові налаштування написання листів</string>
   <string name="account_settings_composition_summary">Встановити типові значення полів \"Від\", \"Прихована копія\" і підпис</string>
@@ -645,6 +677,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="volume_navigation_message">при перегляді повідомлень</string>
   <string name="volume_navigation_list">у списках</string>
   <string name="show_unified_inbox_title">Показувати Об\'єднані Вхідні</string>
+  <string name="show_starred_count_title">Показати лічильник зірочок</string>
   <string name="integrated_inbox_title">Об\'єднані Вхідні</string>
   <string name="integrated_inbox_detail">Усі повідомлення в об\'єднаних теках</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Об’єднати</string>
@@ -856,6 +889,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="recipient_bcc">Прихована копія</string>
   <string name="recipient_to">До</string>
   <string name="recipient_from">Від</string>
+  <string name="reply_to_label">Відповісти до</string>
   <string name="unknown_recipient">&lt;Невідомий Адресат&gt;</string>
   <string name="unknown_sender">&lt;Невідомий Відправник&gt;</string>
   <string name="address_type_home">Домашній</string>
