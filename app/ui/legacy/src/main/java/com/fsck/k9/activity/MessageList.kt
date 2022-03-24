@@ -675,7 +675,7 @@ open class MessageList :
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         var eventHandled = false
-        if (event.action == KeyEvent.ACTION_DOWN && searchView.isIconified) {
+        if (event.action == KeyEvent.ACTION_DOWN && ::searchView.isInitialized && searchView.isIconified) {
             eventHandled = onCustomKeyDown(event)
         }
 
