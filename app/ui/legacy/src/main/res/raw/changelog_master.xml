@@ -5,6 +5,12 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.914" versioncode="29014" date="2022-03-24">
+        <change>The name and description of notification categories are now updated when the app language is changed</change>
+        <change>Fixed bug where notification settings might not have been properly restored on settings import</change>
+        <change>Fixed a crash when tapping the unread widget tries to open a folder that no longer exists</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.913" versioncode="29013" date="2022-03-11">
         <change>Don't create notifications when manually refreshing the message list</change>
         <change>Fixed import and export of notification settings</change>
