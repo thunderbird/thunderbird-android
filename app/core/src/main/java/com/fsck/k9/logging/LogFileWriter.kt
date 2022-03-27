@@ -26,7 +26,7 @@ class LogcatLogFileWriter(
     private fun writeLogBlocking(contentUri: Uri) {
         Timber.v("Writing logcat output to content URI: %s", contentUri)
 
-        val outputStream = contentResolver.openOutputStream(contentUri)
+        val outputStream = contentResolver.openOutputStream(contentUri, "wt")
             ?: error("Error opening contentUri for writing")
 
         outputStream.use {
