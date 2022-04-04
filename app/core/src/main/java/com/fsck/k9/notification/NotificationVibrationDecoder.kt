@@ -9,7 +9,7 @@ import com.fsck.k9.VibratePattern
 class NotificationVibrationDecoder {
     fun decode(isVibrationEnabled: Boolean, systemPattern: List<Long>?): NotificationVibration {
         if (systemPattern == null || systemPattern.size < 2 || systemPattern.size % 2 != 0) {
-            return NotificationVibration.DEFAULT
+            return NotificationVibration(isVibrationEnabled, VibratePattern.Default, repeatCount = 1)
         }
 
         val systemPatternArray = systemPattern.toLongArray()
