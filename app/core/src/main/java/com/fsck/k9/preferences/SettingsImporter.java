@@ -229,7 +229,7 @@ public class SettingsImporter {
                                         editor = preferences.createStorageEditor();
 
                                         String newUuid = importResult.imported.uuid;
-                                        String oldAccountUuids = storage.getString("accountUuids", "");
+                                        String oldAccountUuids = preferences.getStorage().getString("accountUuids", "");
                                         String newAccountUuids = (oldAccountUuids.length() > 0) ?
                                                 oldAccountUuids + "," + newUuid : newUuid;
 
