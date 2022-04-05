@@ -542,7 +542,7 @@ open class MessageList :
         if (messageListActivityAppearance == null) {
             messageListActivityAppearance = MessageListActivityAppearance.create(generalSettingsManager)
         } else if (messageListActivityAppearance != MessageListActivityAppearance.create(generalSettingsManager)) {
-            recreate()
+            recreateCompat()
         }
 
         if (displayMode != DisplayMode.MESSAGE_VIEW) {
@@ -1512,7 +1512,7 @@ open class MessageList :
 
     private fun onToggleTheme() {
         themeManager.toggleMessageViewTheme()
-        recreate()
+        recreateCompat()
     }
 
     private fun showDefaultTitleView() {

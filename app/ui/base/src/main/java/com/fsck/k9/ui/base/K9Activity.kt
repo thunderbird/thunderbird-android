@@ -41,7 +41,7 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
     private fun listenForAppLanguageChanges() {
         appLanguageManager.overrideLocale.asLiveData().observe(this) { overrideLocale ->
             if (overrideLocale != overrideLocaleOnLaunch) {
-                ActivityCompat.recreate(this)
+                recreateCompat()
             }
         }
     }
@@ -64,6 +64,10 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
             ?: error("K9 layouts must provide a toolbar with id='toolbar'.")
 
         setSupportActionBar(toolbar)
+    }
+
+    protected fun recreateCompat() {
+        ActivityCompat.recreate(this)
     }
 }
 
