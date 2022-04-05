@@ -83,8 +83,8 @@ class MessageListAdapter internal constructor(
     }
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean) = when {
-        toMe -> res.getString(R.string.messagelist_sent_to_me_sigil)
-        ccMe -> res.getString(R.string.messagelist_sent_cc_me_sigil)
+        toMe -> res.getString(R.string.messagelist_sent_to_me_sigil) + " "
+        ccMe -> res.getString(R.string.messagelist_sent_cc_me_sigil) + " "
         else -> ""
     }
 
