@@ -48,9 +48,9 @@ Några av funktionerna som förbättrats är:
   <li>…och mycket annat</li>
 </ul>
 <p>
-Observera att K-9 inte stödjer gratiskonton på Hotmail och har, som så många andra e-postklienter, några svårigheter att prata med Microsoft Exchange.
+Observera att K-9 inte stöder gratiskonton på Hotmail och har, som så många andra e-postklienter, några svårigheter att prata med Microsoft Exchange.
 </p><p>
-Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på 
+Skicka in felrapporter, bidra med nya funktioner och ställ frågor på 
 <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
@@ -885,7 +885,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="compose_error_no_key_configured">Ingen nyckel konfigurerad för detta konto! Kontrollera dina inställningar.</string>
   <string name="error_crypto_provider_incompatible">Kryptoleverantören använder inkompatibel version. Kontrollera dina inställningar!</string>
   <string name="error_crypto_provider_connect">Kan inte ansluta till kryptoleverantör, granska dina inställningar eller klicka på kryptoikonen för nytt försök.</string>
-  <string name="error_crypto_provider_ui_required">Det gick inte att initiera ände-till-ände-kryptering, vänligen kontrollera dina inställningar</string>
+  <string name="error_crypto_provider_ui_required">Det gick inte att initiera ände-till-ände-kryptering, kontrollera dina inställningar</string>
   <string name="error_crypto_inline_attach">PGP/INLINE läge stöder inte bilagor!</string>
   <string name="enable_inline_pgp">Aktivera PGP/INLINE</string>
   <string name="disable_inline_pgp">Inaktivera PGP/INLINE</string>
