@@ -160,6 +160,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="notification_action_archive">Arkivere</string>
   <string name="notification_action_archive_all">Arkivér alle</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_public">Certifikat fejl</string>
   <string name="notification_certificate_error_title">Certifikat fejl for <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Kontroller dine serverindstillinger</string>
   <string name="notification_authentication_error_title">Godkendelse mislykkedes</string>
@@ -273,6 +274,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_basics_email_hint">Mail addresse</string>
   <string name="account_setup_basics_password_hint">Password</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_biometrics_title">Verificer din identitet</string>
   <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Henter konto-information\u2026</string>
@@ -527,11 +529,25 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_description_label">Kontonavn</string>
   <string name="account_settings_name_label">Dit navn</string>
   <string name="notifications_title">Beskeder</string>
+  <string name="account_settings_vibration">Vibration</string>
   <string name="account_settings_vibrate_enable">Vibrer</string>
+  <string name="account_settings_vibrate_pattern_label">Vibrations mønster</string>
   <string name="account_settings_vibrate_pattern_default">Standard</string>
+  <string name="account_settings_vibrate_pattern_1">Mønster 1</string>
+  <string name="account_settings_vibrate_pattern_2">Mønster 2</string>
+  <string name="account_settings_vibrate_pattern_3">Mønster 3</string>
+  <string name="account_settings_vibrate_pattern_4">Mønster 4</string>
+  <string name="account_settings_vibrate_pattern_5">Mønster 5</string>
   <string name="account_settings_vibrate_times">Gentag vibration</string>
   <string name="account_settings_ringtone">Ringetone ved ny mail</string>
   <string name="account_settings_notification_light_account_color">Kontofarve</string>
+  <string name="account_settings_notification_light_white">Hvid</string>
+  <string name="account_settings_notification_light_red">Rød</string>
+  <string name="account_settings_notification_light_green">Grøn</string>
+  <string name="account_settings_notification_light_blue">Blå</string>
+  <string name="account_settings_notification_light_yellow">Gul</string>
+  <string name="account_settings_notification_light_cyan">Cyan</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Indstillinger for skrivning af mail</string>
   <string name="account_settings_composition_label">Standardindstillinger</string>
   <string name="account_settings_composition_summary">Standardindstilling for afsender, Bcc og signatur</string>
