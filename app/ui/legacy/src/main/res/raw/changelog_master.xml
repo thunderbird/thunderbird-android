@@ -5,6 +5,12 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.915" versioncode="29015" date="2022-04-06">
+        <change>Fixed settings import</change>
+        <change>Fixed bug where the configuration of a notification category wasn't properly synced with in-app notification settings</change>
+        <change>Fixed display issues when switching the language inside the app</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.914" versioncode="29014" date="2022-03-24">
         <change>The name and description of notification categories are now updated when the app language is changed</change>
         <change>Fixed bug where notification settings might not have been properly restored on settings import</change>
