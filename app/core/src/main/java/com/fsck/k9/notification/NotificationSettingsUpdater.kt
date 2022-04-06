@@ -18,17 +18,19 @@ class NotificationSettingsUpdater(
 
         accountUuids
             .mapNotNull { accountUuid -> preferences.getAccount(accountUuid) }
-            .forEach { account -> updateNotificationSettings(account) }
+            .forEach { account ->
+                updateNotificationSettings(account)
+                preferences.saveAccount(account)
+            }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateNotificationSettings(account: Account) {
+    fun updateNotificationSettings(account: Account) {
         val notificationConfiguration = notificationChannelManager.getNotificationConfiguration(account)
         val notificationSettings = notificationConfigurationConverter.convert(account, notificationConfiguration)
 
         if (notificationSettings != account.notificationSettings) {
             account.updateNotificationSettings { notificationSettings }
-            preferences.saveAccount(account)
         }
     }
 }
