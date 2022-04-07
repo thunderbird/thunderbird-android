@@ -7,7 +7,6 @@ import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
 import com.fsck.k9.backend.imap.ImapPushConfigProvider
-import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
@@ -66,7 +65,7 @@ class ImapBackendFactory(
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
 
-            override fun useCompression(type: NetworkType) = account.useCompression
+            override fun useCompression() = account.useCompression
         }
     }
 

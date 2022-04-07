@@ -28,7 +28,6 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -36,7 +35,6 @@ import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
@@ -577,30 +575,9 @@ class RealImapConnection implements ImapConnection {
     }
 
     private void enableCompressionIfRequested() throws IOException, MessagingException {
-        if (hasCapability(Capabilities.COMPRESS_DEFLATE) && shouldEnableCompression()) {
+        if (hasCapability(Capabilities.COMPRESS_DEFLATE) && settings.useCompression()) {
             enableCompression();
         }
-    }
-
-    private boolean shouldEnableCompression() {
-        boolean useCompression = true;
-
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null) {
-            int type = networkInfo.getType();
-            if (K9MailLib.isDebug()) {
-                Timber.d("On network type %s", type);
-            }
-
-            NetworkType networkType = NetworkType.fromConnectivityManagerType(type);
-            useCompression = settings.useCompression(networkType);
-        }
-
-        if (K9MailLib.isDebug()) {
-            Timber.d("useCompression: %b", useCompression);
-        }
-
-        return useCompression;
     }
 
     private void enableCompression() throws IOException, MessagingException {
