@@ -27,8 +27,6 @@ import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import android.net.ConnectivityManager;
-
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -75,7 +73,6 @@ class RealImapConnection implements ImapConnection {
     private static final int LENGTH_LIMIT_WITH_CONDSTORE = 8172;
 
 
-    private final ConnectivityManager connectivityManager;
     private final OAuth2TokenProvider oauthTokenProvider;
     private final TrustedSocketFactory socketFactory;
     private final int socketConnectTimeout;
@@ -95,10 +92,9 @@ class RealImapConnection implements ImapConnection {
 
 
     public RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider, int connectionGeneration) {
+            OAuth2TokenProvider oauthTokenProvider, int connectionGeneration) {
         this.settings = settings;
         this.socketFactory = socketFactory;
-        this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
         this.socketConnectTimeout = SOCKET_CONNECT_TIMEOUT;
         this.socketReadTimeout = SOCKET_READ_TIMEOUT;
@@ -106,12 +102,10 @@ class RealImapConnection implements ImapConnection {
     }
 
     public RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
-            int socketConnectTimeout, int socketReadTimeout,
+            OAuth2TokenProvider oauthTokenProvider, int socketConnectTimeout, int socketReadTimeout,
             int connectionGeneration) {
         this.settings = settings;
         this.socketFactory = socketFactory;
-        this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
         this.socketConnectTimeout = socketConnectTimeout;
         this.socketReadTimeout = socketReadTimeout;

@@ -1,7 +1,5 @@
 package com.fsck.k9.backends
 
-import android.content.Context
-import android.net.ConnectivityManager
 import com.fsck.k9.Account
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
@@ -21,7 +19,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class ImapBackendFactory(
-    private val context: Context,
     private val accountManager: AccountManager,
     private val powerManager: PowerManager,
     private val idleRefreshManager: IdleRefreshManager,
@@ -53,7 +50,6 @@ class ImapBackendFactory(
             account.incomingServerSettings,
             config,
             trustedSocketFactory,
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
             oAuth2TokenProvider
         )
     }

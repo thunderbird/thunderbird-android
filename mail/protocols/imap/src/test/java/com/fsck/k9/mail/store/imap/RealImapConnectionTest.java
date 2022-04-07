@@ -6,7 +6,6 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 import android.app.Activity;
-import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -33,7 +32,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
 
 
 @RunWith(K9LibRobolectricTestRunner.class)
@@ -53,14 +51,12 @@ public class RealImapConnectionTest {
 
 
     private TrustedSocketFactory socketFactory;
-    private ConnectivityManager connectivityManager;
     private OAuth2TokenProvider oAuth2TokenProvider;
     private SimpleImapSettings settings;
 
 
     @Before
     public void setUp() throws Exception {
-        connectivityManager = mock(ConnectivityManager.class);
         oAuth2TokenProvider = createOAuth2TokenProvider();
         socketFactory = TestTrustedSocketFactory.newInstance();
 
@@ -619,8 +615,7 @@ public class RealImapConnectionTest {
     public void open_withConnectionError_shouldThrow() throws Exception {
         settings.setHost("127.1.2.3");
         settings.setPort(143);
-        ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+        ImapConnection imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider);
 
         try {
             imapConnection.open();
@@ -635,8 +630,7 @@ public class RealImapConnectionTest {
     public void open_withInvalidHostname_shouldThrow() throws Exception {
         settings.setHost("host name");
         settings.setPort(143);
-        ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+        ImapConnection imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider);
 
         try {
             imapConnection.open();
@@ -826,8 +820,7 @@ public class RealImapConnectionTest {
 
     @Test
     public void isConnected_withoutPreviousOpen_shouldReturnFalse() throws Exception {
-        ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+        ImapConnection imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider);
 
         boolean result = imapConnection.isConnected();
 
@@ -863,8 +856,7 @@ public class RealImapConnectionTest {
 
     @Test
     public void close_withoutOpen_shouldNotThrow() throws Exception {
-        ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+        ImapConnection imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider);
 
         imapConnection.close();
     }
@@ -973,8 +965,8 @@ public class RealImapConnectionTest {
     }
 
     private ImapConnection createImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) {
-        return new RealImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider,
+            OAuth2TokenProvider oAuth2TokenProvider) {
+        return new RealImapConnection(settings, socketFactory, oAuth2TokenProvider,
                 SOCKET_CONNECT_TIMEOUT, SOCKET_READ_TIMEOUT, 1);
     }
 
@@ -982,7 +974,7 @@ public class RealImapConnectionTest {
         server.start();
         settings.setHost(server.getHost());
         settings.setPort(server.getPort());
-        return createImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+        return createImapConnection(settings, socketFactory, oAuth2TokenProvider);
     }
 
     private ImapConnection simpleOpen(MockImapServer server) throws Exception {

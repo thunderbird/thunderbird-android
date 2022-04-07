@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import android.net.ConnectivityManager;
-
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FolderType;
@@ -47,10 +45,9 @@ public class RealImapStoreTest {
     public void setUp() throws Exception {
         ServerSettings serverSettings = createServerSettings();
         TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
-        ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
         OAuth2TokenProvider oauth2TokenProvider = mock(OAuth2TokenProvider.class);
 
-        imapStore = new TestImapStore(serverSettings, config, trustedSocketFactory, connectivityManager,
+        imapStore = new TestImapStore(serverSettings, config, trustedSocketFactory,
                 oauth2TokenProvider);
     }
 
@@ -463,9 +460,8 @@ public class RealImapStoreTest {
         private String testCombinedPrefix;
 
         public TestImapStore(ServerSettings serverSettings, ImapStoreConfig config,
-                TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
-                OAuth2TokenProvider oauth2TokenProvider) {
-            super(serverSettings, config, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
+                TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauth2TokenProvider) {
+            super(serverSettings, config, trustedSocketFactory, oauth2TokenProvider);
         }
 
         @Override
