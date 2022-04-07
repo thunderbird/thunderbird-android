@@ -35,7 +35,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MailServerDirection;
-import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
@@ -295,7 +294,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
             updateViewFromSecurity();
 
-            useCompressionCheckBox.setChecked(mAccount.useCompression(NetworkType.MOBILE));
+            useCompressionCheckBox.setChecked(mAccount.useCompression());
 
             if (settings.host != null) {
                 mServerView.setText(settings.host);
@@ -602,7 +601,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             mAccount.setIncomingServerSettings(settings);
 
-            mAccount.setCompression(NetworkType.MOBILE, useCompressionCheckBox.isChecked());
+            mAccount.setUseCompression(useCompressionCheckBox.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);

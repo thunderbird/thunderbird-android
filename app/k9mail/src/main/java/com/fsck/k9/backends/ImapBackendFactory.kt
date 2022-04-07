@@ -66,7 +66,7 @@ class ImapBackendFactory(
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
 
-            override fun useCompression(type: NetworkType) = account.useCompression(type)
+            override fun useCompression(type: NetworkType) = account.useCompression
         }
     }
 
