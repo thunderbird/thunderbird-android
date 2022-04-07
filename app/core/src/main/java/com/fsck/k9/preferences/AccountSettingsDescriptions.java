@@ -207,13 +207,16 @@ public class AccountSettingsDescriptions {
                 new V(53, new StringSetting(null))
         ));
         s.put("useCompression.MOBILE", Settings.versions(
-                new V(1, new BooleanSetting(true))
+                new V(1, new BooleanSetting(true)),
+                new V(81, null)
         ));
         s.put("useCompression.OTHER", Settings.versions(
-                new V(1, new BooleanSetting(true))
+                new V(1, new BooleanSetting(true)),
+                new V(81, null)
         ));
         s.put("useCompression.WIFI", Settings.versions(
-                new V(1, new BooleanSetting(true))
+                new V(1, new BooleanSetting(true)),
+                new V(81, null)
         ));
         s.put("vibrate", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -270,6 +273,9 @@ public class AccountSettingsDescriptions {
         s.put("notificationLight", Settings.versions(
                 new V(80, new EnumSetting<>(NotificationLight.class, NotificationLight.Disabled))
         ));
+        s.put("useCompression", Settings.versions(
+                new V(81, new BooleanSetting(true))
+        ));
         // note that there is no setting for openPgpProvider, because this will have to be set up together
         // with the actual provider after import anyways.
 
@@ -280,6 +286,7 @@ public class AccountSettingsDescriptions {
         u.put(54, new SettingsUpgraderV54());
         u.put(74, new SettingsUpgraderV74());
         u.put(80, new SettingsUpgraderV80());
+        u.put(81, new SettingsUpgraderV81());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -544,6 +551,24 @@ public class AccountSettingsDescriptions {
             }
 
             return SetsKt.setOf("led", "ledColor");
+        }
+    }
+
+    /**
+     * Rewrite the per-network type IMAP compression settings to a single setting.
+     */
+    private static class SettingsUpgraderV81 implements SettingsUpgrader {
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            Boolean useCompressionWifi = (Boolean) settings.get("useCompression.WIFI");
+            Boolean useCompressionMobile = (Boolean) settings.get("useCompression.MOBILE");
+            Boolean useCompressionOther = (Boolean) settings.get("useCompression.OTHER");
+
+            boolean useCompression = useCompressionWifi != null && useCompressionMobile != null &&
+                    useCompressionOther != null && useCompressionWifi && useCompressionMobile && useCompressionOther;
+            settings.put("useCompression", useCompression);
+
+            return SetsKt.setOf("useCompression.WIFI", "useCompression.MOBILE", "useCompression.OTHER");
         }
     }
 }
