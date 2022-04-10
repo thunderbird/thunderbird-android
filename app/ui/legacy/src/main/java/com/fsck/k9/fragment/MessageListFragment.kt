@@ -159,6 +159,7 @@ class MessageListFragment :
     private fun restoreInstanceState(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) return
 
+        activeMessages = savedInstanceState.getStringArray(STATE_ACTIVE_MESSAGES)?.map { MessageReference.parse(it)!! }
         restoreSelectedMessages(savedInstanceState)
         isRemoteSearch = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED)
         savedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST)
@@ -438,6 +439,10 @@ class MessageListFragment :
         saveListState(outState)
         outState.putLongArray(STATE_SELECTED_MESSAGES, selected.toLongArray())
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
+        outState.putStringArray(
+            STATE_ACTIVE_MESSAGES,
+            activeMessages?.map(MessageReference::toIdentityString)?.toTypedArray()
+        )
         if (activeMessage != null) {
             outState.putString(STATE_ACTIVE_MESSAGE, activeMessage!!.toIdentityString())
         }
@@ -1945,6 +1950,7 @@ class MessageListFragment :
         private const val ARG_IS_THREAD_DISPLAY = "isThreadedDisplay"
 
         private const val STATE_SELECTED_MESSAGES = "selectedMessages"
+        private const val STATE_ACTIVE_MESSAGES = "activeMessages"
         private const val STATE_ACTIVE_MESSAGE = "activeMessage"
         private const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
         private const val STATE_MESSAGE_LIST = "listState"
