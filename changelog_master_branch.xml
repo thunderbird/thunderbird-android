@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.916" versioncode="29016" date="2022-04-12">
+        <change>Fixed bug that crashed the app when setting a notification sound on certain devices</change>
+        <change>Fixed crash when rotating the device while a delete confirmation dialog was showing</change>
+    </release>
     <release version="5.915" versioncode="29015" date="2022-04-06">
         <change>Fixed settings import</change>
         <change>Fixed bug where the configuration of a notification category wasn't properly synced with in-app notification settings</change>
