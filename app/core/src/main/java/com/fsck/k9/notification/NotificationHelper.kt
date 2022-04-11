@@ -2,6 +2,7 @@ package com.fsck.k9.notification
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -90,7 +91,7 @@ internal fun NotificationCompat.Builder.setAppearance(
 ): NotificationCompat.Builder = apply {
     if (silent) {
         setSilent(true)
-    } else {
+    } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
         if (!appearance.ringtone.isNullOrEmpty()) {
             setSound(Uri.parse(appearance.ringtone))
         }
