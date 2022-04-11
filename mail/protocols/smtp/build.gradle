@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
@@ -8,6 +9,7 @@ dependencies {
     api project(":mail:common")
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
+    implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "androidx.annotation:annotation:${versions.androidxAnnotation}"
 

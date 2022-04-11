@@ -151,8 +151,8 @@ public class SmtpTransportTest {
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH CRAM-MD5");
         server.expect("AUTH CRAM-MD5");
-        server.output(Base64.encode("<24609.1047914046@localhost>"));
-        server.expect("dXNlciA3NmYxNWEzZmYwYTNiOGI1NzcxZmNhODZlNTcyMDk2Zg==");
+        server.output("334 " + Base64.encode("<24609.1047914046@localhost>"));
+        server.expect("dXNlciAyZDBlNTcwYzZlYWI0ZjY3ZDUyZmFkN2Q1NGExZDJhYQ==");
         server.output("235 2.7.0 Authentication successful");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.CRAM_MD5, ConnectionSecurity.NONE);
 
@@ -442,8 +442,8 @@ public class SmtpTransportTest {
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH CRAM-MD5");
         server.expect("AUTH CRAM-MD5");
-        server.output(Base64.encode("<24609.1047914046@localhost>"));
-        server.expect("dXNlciA3NmYxNWEzZmYwYTNiOGI1NzcxZmNhODZlNTcyMDk2Zg==");
+        server.output("334 " + Base64.encode("<24609.1047914046@localhost>"));
+        server.expect("dXNlciAyZDBlNTcwYzZlYWI0ZjY3ZDUyZmFkN2Q1NGExZDJhYQ==");
         server.output("235 2.7.0 Authentication successful");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.AUTOMATIC,
                 ConnectionSecurity.NONE);
