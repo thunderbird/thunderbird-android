@@ -2,7 +2,7 @@ package com.fsck.k9.notification
 
 import android.content.Context
 import android.net.Uri
-import android.text.TextUtils
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
@@ -13,47 +13,6 @@ class NotificationHelper(
     private val notificationManager: NotificationManagerCompat,
     private val channelUtils: NotificationChannelManager
 ) {
-    fun configureNotification(
-        builder: NotificationCompat.Builder,
-        ringtone: String?,
-        vibrationPattern: LongArray?,
-        ledColor: Int?,
-        ledSpeed: Int,
-        ringAndVibrate: Boolean
-    ) {
-
-        if (K9.isQuietTime) {
-            builder.setNotificationSilent()
-            return
-        }
-
-        if (ringAndVibrate) {
-            if (ringtone != null && !TextUtils.isEmpty(ringtone)) {
-                builder.setSound(Uri.parse(ringtone))
-            }
-
-            if (vibrationPattern != null) {
-                builder.setVibrate(vibrationPattern)
-            }
-        } else {
-            builder.setNotificationSilent()
-        }
-
-        if (ledColor != null) {
-            val ledOnMS: Int
-            val ledOffMS: Int
-            if (ledSpeed == NOTIFICATION_LED_BLINK_SLOW) {
-                ledOnMS = NOTIFICATION_LED_ON_TIME
-                ledOffMS = NOTIFICATION_LED_OFF_TIME
-            } else {
-                ledOnMS = NOTIFICATION_LED_FAST_ON_TIME
-                ledOffMS = NOTIFICATION_LED_FAST_OFF_TIME
-            }
-
-            builder.setLights(ledColor, ledOnMS, ledOffMS)
-        }
-    }
-
     fun getContext(): Context {
         return context
     }
@@ -75,12 +34,22 @@ class NotificationHelper(
     companion object {
         internal const val NOTIFICATION_LED_ON_TIME = 500
         internal const val NOTIFICATION_LED_OFF_TIME = 2000
-        private const val NOTIFICATION_LED_FAST_ON_TIME = 100
-        private const val NOTIFICATION_LED_FAST_OFF_TIME = 100
+        internal const val NOTIFICATION_LED_FAST_ON_TIME = 100
+        internal const val NOTIFICATION_LED_FAST_OFF_TIME = 100
 
-        internal const val NOTIFICATION_LED_BLINK_SLOW = 0
-        internal const val NOTIFICATION_LED_BLINK_FAST = 1
-        internal const val NOTIFICATION_LED_FAILURE_COLOR = -0x10000
+        internal const val NOTIFICATION_LED_FAILURE_COLOR = 0xFFFF0000L.toInt()
+    }
+}
+
+internal fun NotificationCompat.Builder.setErrorAppearance(): NotificationCompat.Builder = apply {
+    setSilent(true)
+
+    if (!K9.isQuietTime) {
+        setLights(
+            NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR,
+            NotificationHelper.NOTIFICATION_LED_FAST_ON_TIME,
+            NotificationHelper.NOTIFICATION_LED_FAST_OFF_TIME
+        )
     }
 }
 
@@ -90,7 +59,7 @@ internal fun NotificationCompat.Builder.setAppearance(
 ): NotificationCompat.Builder = apply {
     if (silent) {
         setSilent(true)
-    } else {
+    } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
         if (!appearance.ringtone.isNullOrEmpty()) {
             setSound(Uri.parse(appearance.ringtone))
         }
