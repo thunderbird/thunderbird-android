@@ -57,13 +57,13 @@ class LogcatLogFileWriterTest {
 
     private fun createContentResolver(): ContentResolver {
         return mock {
-            on { openOutputStream(contentUri) } doReturn outputStream
+            on { openOutputStream(contentUri, "wt") } doReturn outputStream
         }
     }
 
     private fun createThrowingContentResolver(exception: Exception): ContentResolver {
         return mock {
-            on { openOutputStream(contentUri) } doAnswer { throw exception }
+            on { openOutputStream(contentUri, "wt") } doAnswer { throw exception }
         }
     }
 

@@ -117,7 +117,7 @@ public class AttachmentController {
         ContentResolver contentResolver = context.getContentResolver();
         InputStream in = contentResolver.openInputStream(attachment.internalUri);
         try {
-            OutputStream out = contentResolver.openOutputStream(documentUri);
+            OutputStream out = contentResolver.openOutputStream(documentUri, "wt");
             try {
                 IOUtils.copy(in, out);
                 out.flush();

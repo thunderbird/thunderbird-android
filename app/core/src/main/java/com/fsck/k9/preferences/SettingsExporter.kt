@@ -33,7 +33,7 @@ class SettingsExporter(
         updateNotificationSettings(accountUuids)
 
         try {
-            contentResolver.openOutputStream(uri)!!.use { outputStream ->
+            contentResolver.openOutputStream(uri, "wt")!!.use { outputStream ->
                 exportPreferences(outputStream, includeGlobals, accountUuids)
             }
         } catch (e: Exception) {
