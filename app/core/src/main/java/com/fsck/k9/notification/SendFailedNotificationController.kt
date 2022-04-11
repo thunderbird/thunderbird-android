@@ -42,15 +42,7 @@ internal class SendFailedNotificationController(
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setPublicVersion(createLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_ERROR)
-
-        notificationHelper.configureNotification(
-            builder = notificationBuilder,
-            ringtone = null,
-            vibrationPattern = null,
-            ledColor = NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR,
-            ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
-            ringAndVibrate = true
-        )
+            .setErrorAppearance()
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
