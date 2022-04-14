@@ -483,7 +483,7 @@ class SmtpTransportTest {
             fail("Exception expected")
         } catch (e: MessagingException) {
             assertThat(e).hasMessageThat().isEqualTo(
-                "Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable."
+                "Update your outgoing server authentication setting. AUTOMATIC authentication is unavailable."
             )
         }
 

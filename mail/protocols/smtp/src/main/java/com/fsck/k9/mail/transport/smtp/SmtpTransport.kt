@@ -1,703 +1,625 @@
+package com.fsck.k9.mail.transport.smtp
 
-package com.fsck.k9.mail.transport.smtp;
+import com.fsck.k9.mail.Address
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.Authentication
+import com.fsck.k9.mail.AuthenticationFailedException
+import com.fsck.k9.mail.CertificateValidationException
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.K9MailLib
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.Message.RecipientType
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.Transport
+import com.fsck.k9.mail.filter.Base64
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream
+import com.fsck.k9.mail.filter.LineWrapOutputStream
+import com.fsck.k9.mail.filter.PeekableInputStream
+import com.fsck.k9.mail.filter.SmtpDataStuffing
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider
+import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser
+import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import com.fsck.k9.mail.transport.smtp.SmtpHelloResponse.Hello
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.net.Inet6Address
+import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.Socket
+import java.net.SocketException
+import java.security.GeneralSecurityException
+import java.util.Locale
+import javax.net.ssl.SSLException
+import org.apache.commons.io.IOUtils
+import timber.log.Timber
 
+private const val SMTP_CONTINUE_REQUEST = 334
+private const val SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.security.GeneralSecurityException;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+class SmtpTransport(
+    serverSettings: ServerSettings,
+    private val trustedSocketFactory: TrustedSocketFactory,
+    private val oauthTokenProvider: OAuth2TokenProvider?
+) : Transport() {
+    private val host = serverSettings.host
+    private val port = serverSettings.port
+    private val username = serverSettings.username
+    private val password = serverSettings.password
+    private val clientCertificateAlias = serverSettings.clientCertificateAlias
+    private val authType = serverSettings.authenticationType
+    private val connectionSecurity = serverSettings.connectionSecurity
 
-import android.text.TextUtils;
+    private var socket: Socket? = null
+    private var inputStream: PeekableInputStream? = null
+    private var outputStream: OutputStream? = null
+    private var responseParser: SmtpResponseParser? = null
+    private var is8bitEncodingAllowed = false
+    private var isEnhancedStatusCodesProvided = false
+    private var largestAcceptableMessage = 0
+    private var retryXoauthWithNewToken = false
+    private var isPipeliningSupported = false
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.Authentication;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.K9MailLib;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
-import com.fsck.k9.mail.filter.LineWrapOutputStream;
-import com.fsck.k9.mail.filter.PeekableInputStream;
-import com.fsck.k9.mail.filter.SmtpDataStuffing;
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
-import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import javax.net.ssl.SSLException;
-import org.apache.commons.io.IOUtils;
-import timber.log.Timber;
+    private val logger: SmtpLogger = object : SmtpLogger {
+        override val isRawProtocolLoggingEnabled: Boolean
+            get() = K9MailLib.isDebug()
 
-import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
-import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_SMTP;
-
-public class SmtpTransport extends Transport {
-    private static final int SMTP_CONTINUE_REQUEST = 334;
-    private static final int SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535;
-
-
-    private final TrustedSocketFactory trustedSocketFactory;
-    private final OAuth2TokenProvider oauthTokenProvider;
-
-    private final String host;
-    private final int port;
-    private final String username;
-    private final String password;
-    private final String clientCertificateAlias;
-    private final AuthType authType;
-    private final ConnectionSecurity connectionSecurity;
-
-
-    private Socket socket;
-    private PeekableInputStream inputStream;
-    private OutputStream outputStream;
-    private SmtpResponseParser responseParser;
-
-    private boolean is8bitEncodingAllowed;
-    private boolean isEnhancedStatusCodesProvided;
-    private int largestAcceptableMessage;
-    private boolean retryXoauthWithNewToken;
-    private boolean isPipeliningSupported;
-
-    private final SmtpLogger logger = new SmtpLogger() {
-        @Override
-        public void log(@NonNull String message, @Nullable Object... args) {
-            log(null, message, args);
+        override fun log(throwable: Throwable?, message: String, vararg args: Any?) {
+            Timber.v(throwable, message, *args)
         }
-
-        @Override
-        public boolean isRawProtocolLoggingEnabled() {
-            return K9MailLib.isDebug();
-        }
-
-        @Override
-        public void log(@Nullable Throwable throwable, @NonNull String message, @Nullable Object... args) {
-            Timber.v(throwable, message, args);
-        }
-    };
-
-    public SmtpTransport(ServerSettings serverSettings,
-            TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
-        if (!serverSettings.type.equals("smtp")) {
-            throw new IllegalArgumentException("Expected SMTP StoreConfig!");
-        }
-
-        host = serverSettings.host;
-        port = serverSettings.port;
-
-        connectionSecurity = serverSettings.connectionSecurity;
-
-        authType = serverSettings.authenticationType;
-        username = serverSettings.username;
-        password = serverSettings.password;
-        clientCertificateAlias = serverSettings.clientCertificateAlias;
-
-        this.trustedSocketFactory = trustedSocketFactory;
-        this.oauthTokenProvider = oauthTokenProvider;
     }
 
-    @Override
-    public void open() throws MessagingException {
+    init {
+        require(serverSettings.type == "smtp") { "Expected SMTP ServerSettings!" }
+    }
+
+    @Throws(MessagingException::class)
+    override fun open() {
         try {
-            boolean secureConnection = false;
-            InetAddress[] addresses = InetAddress.getAllByName(host);
-            for (int i = 0; i < addresses.length; i++) {
+            var secureConnection = false
+            val addresses = InetAddress.getAllByName(host)
+            for ((index, address) in addresses.withIndex()) {
                 try {
-                    SocketAddress socketAddress = new InetSocketAddress(addresses[i], port);
+                    val socketAddress = InetSocketAddress(address, port)
                     if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        socket = trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias);
-                        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                        secureConnection = true;
+                        socket = trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias).also {
+                            it.connect(socketAddress, SOCKET_CONNECT_TIMEOUT)
+                        }
+                        secureConnection = true
                     } else {
-                        socket = new Socket();
-                        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                        socket = Socket().also {
+                            it.connect(socketAddress, SOCKET_CONNECT_TIMEOUT)
+                        }
                     }
-                } catch (SocketException e) {
-                    if (i < (addresses.length - 1)) {
+                } catch (e: SocketException) {
+                    if (index < addresses.lastIndex) {
                         // there are still other addresses for that host to try
-                        continue;
+                        continue
                     }
-                    throw new MessagingException("Cannot connect to host", e);
+
+                    throw MessagingException("Cannot connect to host", e)
                 }
-                break; // connection success
+
+                // connection success
+                break
             }
 
+            val socket = this.socket ?: error("socket == null")
+
             // RFC 1047
-            socket.setSoTimeout(SOCKET_READ_TIMEOUT);
+            socket.soTimeout = SOCKET_READ_TIMEOUT
 
-            inputStream = new PeekableInputStream(new BufferedInputStream(socket.getInputStream(), 1024));
-            responseParser = new SmtpResponseParser(logger, inputStream);
-            outputStream = new BufferedOutputStream(socket.getOutputStream(), 1024);
+            inputStream = PeekableInputStream(BufferedInputStream(socket.getInputStream(), 1024))
+            responseParser = SmtpResponseParser(logger, inputStream!!)
+            outputStream = BufferedOutputStream(socket.getOutputStream(), 1024)
 
-            readGreeting();
+            readGreeting()
 
-            String hostnameToReportInHelo = buildHostnameToReport();
+            val helloName = buildHostnameToReport()
+            var extensions = sendHello(helloName)
 
-            Map<String, List<String>> extensions = sendHello(hostnameToReportInHelo);
-
-            is8bitEncodingAllowed = extensions.containsKey("8BITMIME");
-            isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES");
-            isPipeliningSupported = extensions.containsKey("PIPELINING");
+            is8bitEncodingAllowed = extensions.containsKey("8BITMIME")
+            isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES")
+            isPipeliningSupported = extensions.containsKey("PIPELINING")
 
             if (connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                 if (extensions.containsKey("STARTTLS")) {
-                    executeCommand("STARTTLS");
+                    executeCommand("STARTTLS")
 
-                    socket = trustedSocketFactory.createSocket(
-                            socket,
-                            host,
-                            port,
-                            clientCertificateAlias);
+                    this.socket = trustedSocketFactory.createSocket(
+                        socket,
+                        host,
+                        port,
+                        clientCertificateAlias
+                    )
+                    inputStream = PeekableInputStream(BufferedInputStream(socket.getInputStream(), 1024))
+                    responseParser = SmtpResponseParser(logger, inputStream!!)
+                    outputStream = BufferedOutputStream(socket.getOutputStream(), 1024)
 
-                    inputStream = new PeekableInputStream(new BufferedInputStream(socket.getInputStream(),
-                            1024));
-                    responseParser = new SmtpResponseParser(logger, inputStream);
-                    outputStream = new BufferedOutputStream(socket.getOutputStream(), 1024);
-                    /*
-                     * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
-                     * Exim.
-                     */
-                    extensions = sendHello(hostnameToReportInHelo);
-                    secureConnection = true;
+                    // Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically, Exim.
+                    extensions = sendHello(helloName)
+                    secureConnection = true
                 } else {
-                    /*
-                     * This exception triggers a "Certificate error"
-                     * notification that takes the user to the incoming
-                     * server settings for review. This might be needed if
-                     * the account was configured with an obsolete
-                     * "STARTTLS (if available)" setting.
-                     */
-                    throw new CertificateValidationException(
-                            "STARTTLS connection security not available");
+                    // This exception triggers a "Certificate error" notification that takes the user to the incoming
+                    // server settings for review. This might be needed if the account was configured with an obsolete
+                    // "STARTTLS (if available)" setting.
+                    throw CertificateValidationException("STARTTLS connection security not available")
                 }
             }
 
-            boolean authLoginSupported = false;
-            boolean authPlainSupported = false;
-            boolean authCramMD5Supported = false;
-            boolean authExternalSupported = false;
-            boolean authXoauth2Supported = false;
-            List<String> saslMech = extensions.get("AUTH");
-            if (saslMech != null) {
-                authLoginSupported = saslMech.contains("LOGIN");
-                authPlainSupported = saslMech.contains("PLAIN");
-                authCramMD5Supported = saslMech.contains("CRAM-MD5");
-                authExternalSupported = saslMech.contains("EXTERNAL");
-                authXoauth2Supported = saslMech.contains("XOAUTH2");
+            var authLoginSupported = false
+            var authPlainSupported = false
+            var authCramMD5Supported = false
+            var authExternalSupported = false
+            var authXoauth2Supported = false
+            val saslMechanisms = extensions["AUTH"]
+            if (saslMechanisms != null) {
+                authLoginSupported = saslMechanisms.contains("LOGIN")
+                authPlainSupported = saslMechanisms.contains("PLAIN")
+                authCramMD5Supported = saslMechanisms.contains("CRAM-MD5")
+                authExternalSupported = saslMechanisms.contains("EXTERNAL")
+                authXoauth2Supported = saslMechanisms.contains("XOAUTH2")
             }
-            parseOptionalSizeValue(extensions.get("SIZE"));
+            parseOptionalSizeValue(extensions["SIZE"])
 
-            if (!TextUtils.isEmpty(username)
-                    && (!TextUtils.isEmpty(password) ||
-                    AuthType.EXTERNAL == authType ||
-                    AuthType.XOAUTH2 == authType)) {
-
-                switch (authType) {
-
-                /*
-                 * LOGIN is an obsolete option which is unavailable to users,
-                 * but it still may exist in a user's settings from a previous
-                 * version, or it may have been imported.
-                 */
-                    case LOGIN:
-                    case PLAIN:
+            if (
+                username.isNotEmpty() &&
+                (!password.isNullOrEmpty() || AuthType.EXTERNAL == authType || AuthType.XOAUTH2 == authType)
+            ) {
+                when (authType) {
+                    AuthType.LOGIN, AuthType.PLAIN -> {
                         // try saslAuthPlain first, because it supports UTF-8 explicitly
                         if (authPlainSupported) {
-                            saslAuthPlain();
+                            saslAuthPlain()
                         } else if (authLoginSupported) {
-                            saslAuthLogin();
+                            saslAuthLogin()
                         } else {
-                            throw new MessagingException(
-                                    "Authentication methods SASL PLAIN and LOGIN are unavailable.");
+                            throw MessagingException("Authentication methods SASL PLAIN and LOGIN are unavailable.")
                         }
-                        break;
-
-                    case CRAM_MD5:
+                    }
+                    AuthType.CRAM_MD5 -> {
                         if (authCramMD5Supported) {
-                            saslAuthCramMD5();
+                            saslAuthCramMD5()
                         } else {
-                            throw new MessagingException("Authentication method CRAM-MD5 is unavailable.");
+                            throw MessagingException("Authentication method CRAM-MD5 is unavailable.")
                         }
-                        break;
-                    case XOAUTH2:
+                    }
+                    AuthType.XOAUTH2 -> {
                         if (authXoauth2Supported && oauthTokenProvider != null) {
-                            saslXoauth2();
+                            saslXoauth2()
                         } else {
-                            throw new MessagingException("Authentication method XOAUTH2 is unavailable.");
+                            throw MessagingException("Authentication method XOAUTH2 is unavailable.")
                         }
-                        break;
-                    case EXTERNAL:
+                    }
+                    AuthType.EXTERNAL -> {
                         if (authExternalSupported) {
-                            saslAuthExternal();
+                            saslAuthExternal()
                         } else {
-                        /*
-                         * Some SMTP servers are known to provide no error
-                         * indication when a client certificate fails to
-                         * validate, other than to not offer the AUTH EXTERNAL
-                         * capability.
-                         *
-                         * So, we treat it is an error to not offer AUTH
-                         * EXTERNAL when using client certificates. That way, the
-                         * user can be notified of a problem during account setup.
-                         */
-                            throw new CertificateValidationException(MissingCapability);
+                            // Some SMTP servers are known to provide no error indication when a client certificate
+                            // fails to validate, other than to not offer the AUTH EXTERNAL capability.
+                            // So, we treat it is an error to not offer AUTH EXTERNAL when using client certificates.
+                            // That way, the user can be notified of a problem during account setup.
+                            throw CertificateValidationException(
+                                CertificateValidationException.Reason.MissingCapability
+                            )
                         }
-                        break;
-
-                /*
-                 * AUTOMATIC is an obsolete option which is unavailable to users,
-                 * but it still may exist in a user's settings from a previous
-                 * version, or it may have been imported.
-                 */
-                    case AUTOMATIC:
+                    }
+                    AuthType.AUTOMATIC -> {
                         if (secureConnection) {
                             // try saslAuthPlain first, because it supports UTF-8 explicitly
                             if (authPlainSupported) {
-                                saslAuthPlain();
+                                saslAuthPlain()
                             } else if (authLoginSupported) {
-                                saslAuthLogin();
+                                saslAuthLogin()
                             } else if (authCramMD5Supported) {
-                                saslAuthCramMD5();
+                                saslAuthCramMD5()
                             } else {
-                                throw new MessagingException("No supported authentication methods available.");
+                                throw MessagingException("No supported authentication methods available.")
                             }
                         } else {
                             if (authCramMD5Supported) {
-                                saslAuthCramMD5();
+                                saslAuthCramMD5()
                             } else {
-                            /*
-                             * We refuse to insecurely transmit the password
-                             * using the obsolete AUTOMATIC setting because of
-                             * the potential for a MITM attack. Affected users
-                             * must choose a different setting.
-                             */
-                                throw new MessagingException(
-                                        "Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable.");
+                                // We refuse to insecurely transmit the password using the obsolete AUTOMATIC setting
+                                // because of the potential for a MITM attack. Affected users must choose a different
+                                // setting.
+                                throw MessagingException(
+                                    "Update your outgoing server authentication setting. " +
+                                        "AUTOMATIC authentication is unavailable."
+                                )
                             }
                         }
-                        break;
-
-                    default:
-                        throw new MessagingException(
-                                "Unhandled authentication method found in the server settings (bug).");
+                    }
+                    else -> {
+                        throw MessagingException("Unhandled authentication method found in server settings (bug).")
+                    }
                 }
             }
-        } catch (MessagingException e) {
-            close();
-            throw e;
-        } catch (SSLException e) {
-            close();
-            throw new CertificateValidationException(e.getMessage(), e);
-        } catch (GeneralSecurityException gse) {
-            close();
-            throw new MessagingException(
-                "Unable to open connection to SMTP server due to security error.", gse);
-        } catch (IOException ioe) {
-            close();
-            throw new MessagingException("Unable to open connection to SMTP server.", ioe);
+        } catch (e: MessagingException) {
+            close()
+            throw e
+        } catch (e: SSLException) {
+            close()
+            throw CertificateValidationException(e.message, e)
+        } catch (e: GeneralSecurityException) {
+            close()
+            throw MessagingException("Unable to open connection to SMTP server due to security error.", e)
+        } catch (e: IOException) {
+            close()
+            throw MessagingException("Unable to open connection to SMTP server.", e)
         }
     }
 
-    private void readGreeting() {
-        SmtpResponse smtpResponse = responseParser.readGreeting();
-        logResponse(smtpResponse, false);
+    private fun readGreeting() {
+        val smtpResponse = responseParser!!.readGreeting()
+        logResponse(smtpResponse)
     }
 
-    private void logResponse(SmtpResponse smtpResponse, boolean omitText) {
+    private fun logResponse(smtpResponse: SmtpResponse, omitText: Boolean = false) {
         if (K9MailLib.isDebug()) {
-            Timber.v("%s", smtpResponse.toLogString(omitText, "SMTP <<< "));
+            Timber.v("%s", smtpResponse.toLogString(omitText, linePrefix = "SMTP <<< "))
         }
     }
 
-    private String buildHostnameToReport() {
-        InetAddress localAddress = socket.getLocalAddress();
+    private fun buildHostnameToReport(): String {
+        val localAddress = socket!!.localAddress
 
-        // we use local ip statically for privacy reasons, see https://github.com/k9mail/k-9/pull/3798
-        if (localAddress instanceof Inet6Address) {
-            return "[IPv6:::1]";
+        // We use local IP statically for privacy reasons, see https://github.com/k9mail/k-9/pull/3798
+        return if (localAddress is Inet6Address) {
+            "[IPv6:::1]"
         } else {
-            return "[127.0.0.1]";
+            "[127.0.0.1]"
         }
     }
 
-    private void parseOptionalSizeValue(List<String> sizeParameters) {
-        if (sizeParameters != null && sizeParameters.size() >= 1) {
-            String sizeParameter = sizeParameters.get(0);
-            try {
-                largestAcceptableMessage = Integer.parseInt(sizeParameter);
-            } catch (NumberFormatException e) {
-                if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
-                    Timber.d(e, "Tried to parse %s and get an int", sizeParameter);
+    private fun parseOptionalSizeValue(sizeParameters: List<String>?) {
+        if (sizeParameters != null && sizeParameters.isNotEmpty()) {
+            val sizeParameter = sizeParameters.first()
+            val size = sizeParameter.toIntOrNull()
+            if (size != null) {
+                largestAcceptableMessage = size
+            } else {
+                if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_SMTP) {
+                    Timber.d("SIZE parameter is not a valid integer: %s", sizeParameter)
                 }
             }
         }
     }
 
     /**
-     * Send the client "identity" using the EHLO or HELO command.
+     * Send the client "identity" using the `EHLO` or `HELO` command.
      *
-     * <p>
-     * We first try the EHLO command. If the server sends a negative response, it probably doesn't
-     * support the EHLO command. So we try the older HELO command that all servers need to support.
-     * And if that fails, too, we pretend everything is fine and continue unimpressed.
-     * </p>
+     * We first try the EHLO command. If the server sends a negative response, it probably doesn't support the
+     * `EHLO` command. So we try the older `HELO` command that all servers have to support. And if that fails, too,
+     * we pretend everything is fine and continue unimpressed.
      *
-     * @param host
-     *         The EHLO/HELO parameter as defined by the RFC.
+     * @param host The EHLO/HELO parameter as defined by the RFC.
      *
-     * @return A (possibly empty) {@code Map<String, List<String>>} of extensions (upper case) and
-     * their parameters (possibly empty) as returned by the EHLO command.
+     * @return A (possibly empty) `Map<String, List<String>>` of extensions (upper case) and their parameters
+     * (possibly empty) as returned by the EHLO command.
      */
-    private Map<String, List<String>> sendHello(String host) throws IOException, MessagingException {
-        writeLine("EHLO " + host, false);
+    private fun sendHello(host: String): Map<String, List<String>> {
+        writeLine("EHLO $host")
 
-        SmtpHelloResponse helloResponse = responseParser.readHelloResponse();
-        logResponse(helloResponse.getResponse(), false);
+        val helloResponse = responseParser!!.readHelloResponse()
+        logResponse(helloResponse.response)
 
-        if (helloResponse instanceof SmtpHelloResponse.Hello) {
-            SmtpHelloResponse.Hello hello = (SmtpHelloResponse.Hello) helloResponse;
-
-            return hello.getKeywords();
+        return if (helloResponse is Hello) {
+            helloResponse.keywords
         } else {
             if (K9MailLib.isDebug()) {
-                Timber.v("Server doesn't support the EHLO command. Trying HELO...");
+                Timber.v("Server doesn't support the EHLO command. Trying HELO...")
             }
 
             try {
-                executeCommand("HELO %s", host);
-            } catch (NegativeSmtpReplyException e2) {
-                Timber.w("Server doesn't support the HELO command. Continuing anyway.");
+                executeCommand("HELO %s", host)
+            } catch (e: NegativeSmtpReplyException) {
+                Timber.w("Server doesn't support the HELO command. Continuing anyway.")
             }
 
-            return new HashMap<>();
+            emptyMap()
         }
     }
 
-    @Override
-    public void sendMessage(Message message) throws MessagingException {
-        Set<String> addresses = new LinkedHashSet<>();
-        for (Address address : message.getRecipients(RecipientType.TO)) {
-            addresses.add(address.getAddress());
+    @Throws(MessagingException::class)
+    override fun sendMessage(message: Message) {
+        val addresses = buildSet<String> {
+            for (address in message.getRecipients(RecipientType.TO)) {
+                add(address.address)
+            }
+
+            for (address in message.getRecipients(RecipientType.CC)) {
+                add(address.address)
+            }
+
+            for (address in message.getRecipients(RecipientType.BCC)) {
+                add(address.address)
+            }
         }
-        for (Address address : message.getRecipients(RecipientType.CC)) {
-            addresses.add(address.getAddress());
-        }
-        for (Address address : message.getRecipients(RecipientType.BCC)) {
-            addresses.add(address.getAddress());
-        }
-        message.removeHeader("Bcc");
 
         if (addresses.isEmpty()) {
-            return;
+            return
         }
 
-        close();
-        open();
+        message.removeHeader("Bcc")
 
-        // If the message has attachments and our server has told us about a limit on
-        // the size of messages, count the message's size before sending it
+        close()
+        open()
+
+        // If the message has attachments and our server has told us about a limit on the size of messages, count
+        // the message's size before sending it.
         if (largestAcceptableMessage > 0 && message.hasAttachments()) {
             if (message.calculateSize() > largestAcceptableMessage) {
-                throw new MessagingException("Message too large for server", true);
+                throw MessagingException("Message too large for server", true)
             }
         }
 
-        boolean entireMessageSent = false;
-
+        var entireMessageSent = false
         try {
-            String mailFrom = constructSmtpMailFromCommand(message.getFrom(), is8bitEncodingAllowed);
-
+            val mailFrom = constructSmtpMailFromCommand(message.from, is8bitEncodingAllowed)
             if (isPipeliningSupported) {
-                Queue<String> pipelinedCommands = new LinkedList<>();
-                pipelinedCommands.add(mailFrom);
+                val pipelinedCommands = buildList {
+                    add(mailFrom)
 
-                for (String address : addresses) {
-                    pipelinedCommands.add(String.format("RCPT TO:<%s>", address));
+                    for (address in addresses) {
+                        add(String.format("RCPT TO:<%s>", address))
+                    }
                 }
 
-                executePipelinedCommands(pipelinedCommands);
-                readPipelinedResponse(pipelinedCommands);
+                executePipelinedCommands(pipelinedCommands)
+                readPipelinedResponse(pipelinedCommands)
             } else {
-                executeCommand(mailFrom);
+                executeCommand(mailFrom)
 
-                for (String address : addresses) {
-                    executeCommand("RCPT TO:<%s>", address);
+                for (address in addresses) {
+                    executeCommand("RCPT TO:<%s>", address)
                 }
             }
 
-            executeCommand("DATA");
+            executeCommand("DATA")
 
-            EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new LineWrapOutputStream(new SmtpDataStuffing(outputStream), 1000));
+            val msgOut = EOLConvertingOutputStream(
+                LineWrapOutputStream(
+                    SmtpDataStuffing(outputStream), 1000
+                )
+            )
 
-            message.writeTo(msgOut);
-            msgOut.endWithCrLfAndFlush();
+            message.writeTo(msgOut)
+            msgOut.endWithCrLfAndFlush()
 
-            entireMessageSent = true; // After the "\r\n." is attempted, we may have sent the message
-            executeCommand(".");
-        } catch (NegativeSmtpReplyException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new MessagingException("Unable to send message", entireMessageSent, e);
+            // After the "\r\n." is attempted, we may have sent the message
+            entireMessageSent = true
+            executeCommand(".")
+        } catch (e: NegativeSmtpReplyException) {
+            throw e
+        } catch (e: Exception) {
+            throw MessagingException("Unable to send message", entireMessageSent, e)
         } finally {
-            close();
+            close()
         }
-
     }
 
-    private static String constructSmtpMailFromCommand(Address[] from, boolean is8bitEncodingAllowed) {
-        String fromAddress = from[0].getAddress();
-        if (is8bitEncodingAllowed) {
-            return String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
+    private fun constructSmtpMailFromCommand(from: Array<Address>, is8bitEncodingAllowed: Boolean): String {
+        val fromAddress = from.first().address
+        return if (is8bitEncodingAllowed) {
+            String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress)
         } else {
-            Timber.d("Server does not support 8bit transfer encoding");
-            return String.format("MAIL FROM:<%s>", fromAddress);
+            Timber.d("Server does not support 8-bit transfer encoding")
+            String.format("MAIL FROM:<%s>", fromAddress)
         }
     }
 
-    @Override
-    public void close() {
+    override fun close() {
         try {
-            executeCommand("QUIT");
-        } catch (Exception e) {
-            // don't care
+            executeCommand("QUIT")
+        } catch (ignored: Exception) {
         }
-        IOUtils.closeQuietly(inputStream);
-        IOUtils.closeQuietly(outputStream);
-        IOUtils.closeQuietly(socket);
-        inputStream = null;
-        responseParser = null;
-        outputStream = null;
-        socket = null;
+
+        IOUtils.closeQuietly(inputStream)
+        IOUtils.closeQuietly(outputStream)
+        IOUtils.closeQuietly(socket)
+
+        inputStream = null
+        responseParser = null
+        outputStream = null
+        socket = null
     }
 
-    private void writeLine(String s, boolean sensitive) throws IOException {
-        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
-            final String commandToLog;
-            if (sensitive && !K9MailLib.isDebugSensitive()) {
-                commandToLog = "SMTP >>> *sensitive*";
+    private fun writeLine(command: String, sensitive: Boolean = false) {
+        if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_SMTP) {
+            val commandToLog = if (sensitive && !K9MailLib.isDebugSensitive()) {
+                "SMTP >>> *sensitive*"
             } else {
-                commandToLog = "SMTP >>> " + s;
+                "SMTP >>> $command"
             }
-            Timber.d(commandToLog);
+            Timber.d(commandToLog)
         }
 
-        byte[] data = s.concat("\r\n").getBytes();
-
-        /*
-         * Important: Send command + CRLF using just one write() call. Using
-         * multiple calls will likely result in multiple TCP packets and some
-         * SMTP servers misbehave if CR and LF arrive in separate pakets.
-         * See issue 799.
-         */
-        outputStream.write(data);
-        outputStream.flush();
+        // Important: Send command + CRLF using just one write() call. Using multiple calls might result in multiple
+        // TCP packets being sent and some SMTP servers misbehave if CR and LF arrive in separate packets.
+        // See https://code.google.com/archive/p/k9mail/issues/799
+        val data = (command + "\r\n").toByteArray()
+        outputStream!!.apply {
+            write(data)
+            flush()
+        }
     }
 
-    private SmtpResponse executeSensitiveCommand(String format, Object... args)
-            throws IOException, MessagingException {
-        return executeCommand(true, format, args);
+    private fun executeSensitiveCommand(format: String, vararg args: Any): SmtpResponse {
+        return executeCommand(sensitive = true, format, *args)
     }
 
-    private SmtpResponse executeCommand(String format, Object... args) throws IOException, MessagingException {
-        return executeCommand(false, format, args);
+    private fun executeCommand(format: String, vararg args: Any): SmtpResponse {
+        return executeCommand(sensitive = false, format, *args)
     }
 
-    private SmtpResponse executeCommand(boolean sensitive, String format, Object... args)
-            throws IOException, MessagingException {
-        String command = String.format(Locale.ROOT, format, args);
-        writeLine(command, sensitive);
+    private fun executeCommand(sensitive: Boolean, format: String, vararg args: Any): SmtpResponse {
+        val command = String.format(Locale.ROOT, format, *args)
+        writeLine(command, sensitive)
 
-        SmtpResponse response = responseParser.readResponse(isEnhancedStatusCodesProvided);
-        logResponse(response, sensitive);
+        val response = responseParser!!.readResponse(isEnhancedStatusCodesProvided)
+        logResponse(response, sensitive)
 
-        if (response.isNegativeResponse()) {
-            throw buildNegativeSmtpReplyException(response);
+        if (response.isNegativeResponse) {
+            throw buildNegativeSmtpReplyException(response)
         }
 
-        return response;
+        return response
     }
 
-    private NegativeSmtpReplyException buildNegativeSmtpReplyException(SmtpResponse response) {
-        int replyCode = response.getReplyCode();
-        StatusCode statusCode = response.getStatusCode();
-        String replyText = response.getJoinedText();
+    private fun buildNegativeSmtpReplyException(response: SmtpResponse): NegativeSmtpReplyException {
+        val replyCode = response.replyCode
+        val statusCode = response.statusCode
+        val replyText = response.joinedText
 
-        if (statusCode != null) {
-            return new EnhancedNegativeSmtpReplyException(replyCode, replyText, statusCode);
+        return if (statusCode != null) {
+            EnhancedNegativeSmtpReplyException(replyCode, replyText, statusCode)
         } else {
-            return new NegativeSmtpReplyException(replyCode, replyText);
+            NegativeSmtpReplyException(replyCode, replyText)
         }
     }
 
-    private void executePipelinedCommands(Queue<String> pipelinedCommands) throws IOException {
-        for (String command : pipelinedCommands) {
-            writeLine(command, false);
+    private fun executePipelinedCommands(pipelinedCommands: List<String>) {
+        for (command in pipelinedCommands) {
+            writeLine(command, false)
         }
     }
 
-    private void readPipelinedResponse(Queue<String> pipelinedCommands) throws IOException, MessagingException {
-        boolean omitText = false;
-        MessagingException firstException = null;
+    private fun readPipelinedResponse(pipelinedCommands: List<String>) {
+        val responseParser = responseParser!!
+        var firstException: MessagingException? = null
 
-        for (int i = 0, size = pipelinedCommands.size(); i < size; i++) {
-            SmtpResponse response = responseParser.readResponse(isEnhancedStatusCodesProvided);
-            logResponse(response, omitText);
+        repeat(pipelinedCommands.size) {
+            val response = responseParser.readResponse(isEnhancedStatusCodesProvided)
+            logResponse(response, omitText = false)
 
-            if (response.isNegativeResponse() && firstException == null) {
-                firstException = buildNegativeSmtpReplyException(response);
+            if (response.isNegativeResponse && firstException == null) {
+                firstException = buildNegativeSmtpReplyException(response)
             }
         }
 
-        if (firstException != null) {
-            throw firstException;
+        firstException?.let {
+            throw it
         }
     }
 
-    private void saslAuthLogin() throws MessagingException, IOException {
+    private fun saslAuthLogin() {
         try {
-            executeCommand("AUTH LOGIN");
-            executeSensitiveCommand(Base64.encode(username));
-            executeSensitiveCommand(Base64.encode(password));
-        } catch (NegativeSmtpReplyException exception) {
-            if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                throw new AuthenticationFailedException("AUTH LOGIN failed (" + exception.getMessage() + ")");
+            executeCommand("AUTH LOGIN")
+            executeSensitiveCommand(Base64.encode(username))
+            executeSensitiveCommand(Base64.encode(password))
+        } catch (exception: NegativeSmtpReplyException) {
+            if (exception.replyCode == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
+                throw AuthenticationFailedException("AUTH LOGIN failed (${exception.message})")
             } else {
-                throw exception;
+                throw exception
             }
         }
     }
 
-    private void saslAuthPlain() throws MessagingException, IOException {
-        String data = Base64.encode("\000" + username + "\000" + password);
+    private fun saslAuthPlain() {
+        val data = Base64.encode("\u0000" + username + "\u0000" + password)
         try {
-            executeSensitiveCommand("AUTH PLAIN %s", data);
-        } catch (NegativeSmtpReplyException exception) {
-            if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                throw new AuthenticationFailedException("AUTH PLAIN failed ("
-                        + exception.getMessage() + ")");
+            executeSensitiveCommand("AUTH PLAIN %s", data)
+        } catch (exception: NegativeSmtpReplyException) {
+            if (exception.replyCode == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
+                throw AuthenticationFailedException("AUTH PLAIN failed (${exception.message})")
             } else {
-                throw exception;
+                throw exception
             }
         }
     }
 
-    private void saslAuthCramMD5() throws MessagingException, IOException {
-
-        List<String> respList = executeCommand("AUTH CRAM-MD5").getTexts();
-        if (respList.size() != 1) {
-            throw new MessagingException("Unable to negotiate CRAM-MD5");
+    private fun saslAuthCramMD5() {
+        val respList = executeCommand("AUTH CRAM-MD5").texts
+        if (respList.size != 1) {
+            throw MessagingException("Unable to negotiate CRAM-MD5")
         }
 
-        String b64Nonce = respList.get(0);
-        String b64CRAMString = Authentication.computeCramMd5(username, password, b64Nonce);
-
+        val b64Nonce = respList[0]
+        val b64CRAMString = Authentication.computeCramMd5(username, password, b64Nonce)
         try {
-            executeSensitiveCommand(b64CRAMString);
-        } catch (NegativeSmtpReplyException exception) {
-            if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                throw new AuthenticationFailedException(exception.getMessage(), exception);
+            executeSensitiveCommand(b64CRAMString)
+        } catch (exception: NegativeSmtpReplyException) {
+            if (exception.replyCode == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
+                throw AuthenticationFailedException(exception.message!!, exception)
             } else {
-                throw exception;
+                throw exception
             }
         }
     }
 
-    private void saslXoauth2() throws MessagingException, IOException {
-        retryXoauthWithNewToken = true;
+    private fun saslXoauth2() {
+        retryXoauthWithNewToken = true
         try {
-            attemptXoauth2(username);
-        } catch (NegativeSmtpReplyException negativeResponse) {
-            if (negativeResponse.getReplyCode() != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                throw negativeResponse;
+            attemptXoauth2(username)
+        } catch (negativeResponse: NegativeSmtpReplyException) {
+            if (negativeResponse.replyCode != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
+                throw negativeResponse
             }
 
-            oauthTokenProvider.invalidateToken(username);
+            oauthTokenProvider!!.invalidateToken(username)
 
             if (!retryXoauthWithNewToken) {
-                handlePermanentFailure(negativeResponse);
+                handlePermanentFailure(negativeResponse)
             } else {
-                handleTemporaryFailure(username, negativeResponse);
+                handleTemporaryFailure(username, negativeResponse)
             }
         }
     }
 
-    private void handlePermanentFailure(NegativeSmtpReplyException negativeResponse) throws AuthenticationFailedException {
-        throw new AuthenticationFailedException(negativeResponse.getMessage(), negativeResponse);
+    private fun handlePermanentFailure(negativeResponse: NegativeSmtpReplyException): Nothing {
+        throw AuthenticationFailedException(negativeResponse.message!!, negativeResponse)
     }
 
-    private void handleTemporaryFailure(String username, NegativeSmtpReplyException negativeResponseFromOldToken)
-        throws IOException, MessagingException {
-        // Token was invalid
+    private fun handleTemporaryFailure(username: String, negativeResponseFromOldToken: NegativeSmtpReplyException) {
+        // Token was invalid. We could avoid this double check if we had a reasonable chance of knowing if a token was
+        // invalid before use (e.g. due to expiry). But we don't. This is the intended behaviour per AccountManager.
+        Timber.v(negativeResponseFromOldToken, "Authentication exception, re-trying with new token")
 
-        //We could avoid this double check if we had a reasonable chance of knowing
-        //if a token was invalid before use (e.g. due to expiry). But we don't
-        //This is the intended behaviour per AccountManager
-
-        Timber.v(negativeResponseFromOldToken, "Authentication exception, re-trying with new token");
         try {
-            attemptXoauth2(username);
-        } catch (NegativeSmtpReplyException negativeResponseFromNewToken) {
-            if (negativeResponseFromNewToken.getReplyCode() != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                throw negativeResponseFromNewToken;
+            attemptXoauth2(username)
+        } catch (negativeResponseFromNewToken: NegativeSmtpReplyException) {
+            if (negativeResponseFromNewToken.replyCode != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
+                throw negativeResponseFromNewToken
             }
 
-            //Okay, we failed on a new token.
-            //Invalidate the token anyway but assume it's permanent.
-            Timber.v(negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed");
+            // Okay, we failed on a new token. Invalidate the token anyway but assume it's permanent.
+            Timber.v(negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed")
 
-            oauthTokenProvider.invalidateToken(username);
-
-            handlePermanentFailure(negativeResponseFromNewToken);
+            oauthTokenProvider!!.invalidateToken(username)
+            handlePermanentFailure(negativeResponseFromNewToken)
         }
     }
 
-    private void attemptXoauth2(String username) throws MessagingException, IOException {
-        String token = oauthTokenProvider.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT);
-        String authString = Authentication.computeXoauth(username, token);
-        SmtpResponse response = executeSensitiveCommand("AUTH XOAUTH2 %s", authString);
+    private fun attemptXoauth2(username: String) {
+        val token = oauthTokenProvider!!.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
+        val authString = Authentication.computeXoauth(username, token)
 
-        if (response.getReplyCode() == SMTP_CONTINUE_REQUEST) {
-            String replyText = response.getJoinedText();
-            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(replyText, host);
+        val response = executeSensitiveCommand("AUTH XOAUTH2 %s", authString)
+        if (response.replyCode == SMTP_CONTINUE_REQUEST) {
+            val replyText = response.joinedText
+            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(replyText, host)
 
-            //Per Google spec, respond to challenge with empty response
-            executeCommand("");
+            // Per Google spec, respond to challenge with empty response
+            executeCommand("")
         }
     }
 
-    private void saslAuthExternal() throws MessagingException, IOException {
-        executeCommand("AUTH EXTERNAL %s", Base64.encode(username));
+    private fun saslAuthExternal() {
+        executeCommand("AUTH EXTERNAL %s", Base64.encode(username))
     }
 
-    public void checkSettings() throws MessagingException {
-        close();
+    @Throws(MessagingException::class)
+    fun checkSettings() {
+        close()
+
         try {
-            open();
+            open()
         } finally {
-            close();
+            close()
         }
     }
 }
