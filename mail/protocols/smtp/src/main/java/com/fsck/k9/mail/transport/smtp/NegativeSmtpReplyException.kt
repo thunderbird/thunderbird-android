@@ -7,7 +7,8 @@ import com.fsck.k9.mail.MessagingException
  */
 open class NegativeSmtpReplyException(
     val replyCode: Int,
-    val replyText: String
+    val replyText: String,
+    val enhancedStatusCode: EnhancedStatusCode? = null
 ) : MessagingException(
     buildErrorMessage(replyCode, replyText),
     isPermanentSmtpError(replyCode)

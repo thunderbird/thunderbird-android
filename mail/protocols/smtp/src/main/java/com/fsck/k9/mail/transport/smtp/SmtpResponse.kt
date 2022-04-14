@@ -2,7 +2,7 @@ package com.fsck.k9.mail.transport.smtp
 
 internal data class SmtpResponse(
     val replyCode: Int,
-    val statusCode: StatusCode?,
+    val enhancedStatusCode: EnhancedStatusCode?,
     val texts: List<String>
 ) {
     val isNegativeResponse = replyCode >= 400
@@ -15,7 +15,7 @@ internal data class SmtpResponse(
             if (omitText) {
                 append(linePrefix)
                 append(replyCode)
-                appendIfNotNull(statusCode, prefix = ' ')
+                appendIfNotNull(enhancedStatusCode, prefix = ' ')
                 if (texts.isNotEmpty()) {
                     append(" [omitted]")
                 }
@@ -24,10 +24,10 @@ internal data class SmtpResponse(
                     for (i in 0 until texts.lastIndex) {
                         append(linePrefix)
                         append(replyCode)
-                        if (statusCode == null) {
+                        if (enhancedStatusCode == null) {
                             append('-')
                         } else {
-                            appendIfNotNull(statusCode, prefix = '-')
+                            appendIfNotNull(enhancedStatusCode, prefix = '-')
                             append(' ')
                         }
                         append(texts[i])
@@ -37,7 +37,7 @@ internal data class SmtpResponse(
 
                 append(linePrefix)
                 append(replyCode)
-                appendIfNotNull(statusCode, prefix = ' ')
+                appendIfNotNull(enhancedStatusCode, prefix = ' ')
                 if (texts.isNotEmpty()) {
                     append(' ')
                     append(texts.last())
@@ -46,20 +46,14 @@ internal data class SmtpResponse(
         }
     }
 
-    private fun StringBuilder.appendIfNotNull(statusCode: StatusCode?, prefix: Char) {
-        if (statusCode != null) {
+    private fun StringBuilder.appendIfNotNull(enhancedStatusCode: EnhancedStatusCode?, prefix: Char) {
+        if (enhancedStatusCode != null) {
             append(prefix)
-            append(statusCode.statusClass.codeClass)
+            append(enhancedStatusCode.statusClass.codeClass)
             append('.')
-            append(statusCode.subject)
+            append(enhancedStatusCode.subject)
             append('.')
-            append(statusCode.detail)
+            append(enhancedStatusCode.detail)
         }
     }
 }
-
-internal data class StatusCode(
-    val statusClass: StatusCodeClass,
-    val subject: Int,
-    val detail: Int
-)

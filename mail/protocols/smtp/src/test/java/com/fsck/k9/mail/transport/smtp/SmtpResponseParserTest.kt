@@ -17,7 +17,7 @@ class SmtpResponseParserTest {
         val response = parser.readGreeting()
 
         assertThat(response.replyCode).isEqualTo(220)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("smtp.domain.example ESMTP ready")
         assertInputExhausted(input)
     }
@@ -33,7 +33,7 @@ class SmtpResponseParserTest {
         val response = parser.readGreeting()
 
         assertThat(response.replyCode).isEqualTo(220)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("Greetings, stranger", "smtp.domain.example ESMTP ready")
         assertInputExhausted(input)
     }
@@ -244,7 +244,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(response.replyCode).isEqualTo(502)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).isEmpty()
         assertInputExhausted(input)
     }
@@ -257,7 +257,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(response.replyCode).isEqualTo(250)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("OK")
         assertInputExhausted(input)
     }
@@ -270,8 +270,8 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = true)
 
         assertThat(response.replyCode).isEqualTo(250)
-        assertThat(response.statusCode).isEqualTo(
-            StatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0)
+        assertThat(response.enhancedStatusCode).isEqualTo(
+            EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0)
         )
         assertThat(response.texts).containsExactly("Originator <sender@domain.example> ok")
         assertInputExhausted(input)
@@ -285,7 +285,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = true)
 
         assertThat(response.replyCode).isEqualTo(354)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("Ok Send data ending with <CRLF>.<CRLF>")
         assertInputExhausted(input)
     }
@@ -301,7 +301,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(response.replyCode).isEqualTo(500)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("Line one", "Line two")
         assertInputExhausted(input)
     }
@@ -317,7 +317,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(response.replyCode).isEqualTo(500)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("", "Line two")
         assertInputExhausted(input)
     }
@@ -334,7 +334,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(response.replyCode).isEqualTo(500)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("Line one", "Line two")
         assertInputExhausted(input)
     }
@@ -350,8 +350,8 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = true)
 
         assertThat(response.replyCode).isEqualTo(250)
-        assertThat(response.statusCode).isEqualTo(
-            StatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0)
+        assertThat(response.enhancedStatusCode).isEqualTo(
+            EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0)
         )
         assertThat(response.texts).containsExactly("Sender <sender@domain.example>", "OK")
         assertInputExhausted(input)
@@ -368,13 +368,13 @@ class SmtpResponseParserTest {
         val responseOne = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(responseOne.replyCode).isEqualTo(250)
-        assertThat(responseOne.statusCode).isNull()
+        assertThat(responseOne.enhancedStatusCode).isNull()
         assertThat(responseOne.texts).containsExactly("Sender <sender@domain.example> OK")
 
         val responseTwo = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(responseTwo.replyCode).isEqualTo(250)
-        assertThat(responseTwo.statusCode).isNull()
+        assertThat(responseTwo.enhancedStatusCode).isNull()
         assertThat(responseTwo.texts).containsExactly("Recipient <recipient@domain.example> OK")
         assertInputExhausted(input)
     }
@@ -437,7 +437,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(response.replyCode).isEqualTo(280)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("Something")
         assertThat(logger.logEntries).containsExactly(
             LogEntry(throwable = null, message = "2nd digit of reply code outside of specified range (0..5): 8")
@@ -522,7 +522,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(response.replyCode).isEqualTo(200)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).isEmpty()
         assertInputExhausted(input)
         assertThat(logger.logEntries).containsExactly(
@@ -538,7 +538,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = false)
 
         assertThat(response.replyCode).isEqualTo(200)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("über")
         assertInputExhausted(input)
         assertThat(logger.logEntries).containsExactly(
@@ -554,7 +554,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = true)
 
         assertThat(response.replyCode).isEqualTo(250)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("5.0.0 text")
         assertInputExhausted(input)
         assertThat(logger.logEntries).hasSize(1)
@@ -572,7 +572,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = true)
 
         assertThat(response.replyCode).isEqualTo(250)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("2.1000.0 Text")
         assertInputExhausted(input)
         assertThat(logger.logEntries).hasSize(1)
@@ -590,7 +590,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = true)
 
         assertThat(response.replyCode).isEqualTo(250)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("2.0.1000 Text")
         assertInputExhausted(input)
         assertThat(logger.logEntries).hasSize(1)
@@ -609,7 +609,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = true)
 
         assertThat(response.replyCode).isEqualTo(550)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("Request failed; Mailbox unavailable")
         assertInputExhausted(input)
         assertThat(logger.logEntries).hasSize(1)
@@ -629,7 +629,7 @@ class SmtpResponseParserTest {
 
         assertFailsWithMessage(
             "Multi-line response with enhanced status codes not matching: " +
-                "StatusCode(statusClass=PERMANENT_FAILURE, subject=2, detail=1) != null"
+                "EnhancedStatusCode(statusClass=PERMANENT_FAILURE, subject=2, detail=1) != null"
         ) {
             parser.readResponse(enhancedStatusCodes = true)
         }
@@ -646,7 +646,7 @@ class SmtpResponseParserTest {
         val response = parser.readResponse(enhancedStatusCodes = true)
 
         assertThat(response.replyCode).isEqualTo(550)
-        assertThat(response.statusCode).isNull()
+        assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("Request failed", "Mailbox unavailable")
         assertInputExhausted(input)
     }

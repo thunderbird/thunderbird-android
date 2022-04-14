@@ -470,15 +470,11 @@ class SmtpTransport(
     }
 
     private fun buildNegativeSmtpReplyException(response: SmtpResponse): NegativeSmtpReplyException {
-        val replyCode = response.replyCode
-        val statusCode = response.statusCode
-        val replyText = response.joinedText
-
-        return if (statusCode != null) {
-            EnhancedNegativeSmtpReplyException(replyCode, replyText, statusCode)
-        } else {
-            NegativeSmtpReplyException(replyCode, replyText)
-        }
+        return NegativeSmtpReplyException(
+            replyCode = response.replyCode,
+            replyText = response.joinedText,
+            enhancedStatusCode = response.enhancedStatusCode
+        )
     }
 
     private fun executePipelinedCommands(pipelinedCommands: List<String>) {

@@ -53,7 +53,7 @@ internal class SmtpResponseParser(
                 expect(LF)
 
                 return SmtpHelloResponse.Hello(
-                    response = SmtpResponse(replyCode, statusCode = null, texts = listOf(text)),
+                    response = SmtpResponse(replyCode, enhancedStatusCode = null, texts = listOf(text)),
                     keywords = emptyMap()
                 )
             }
@@ -92,7 +92,7 @@ internal class SmtpResponseParser(
                     expect(LF)
 
                     return SmtpHelloResponse.Hello(
-                        response = SmtpResponse(replyCode, statusCode = null, texts),
+                        response = SmtpResponse(replyCode, enhancedStatusCode = null, texts),
                         keywords = keywords
                     )
                 }
@@ -156,15 +156,15 @@ internal class SmtpResponseParser(
 
     private fun readResponseAfterReplyCode(replyCode: Int, enhancedStatusCodes: Boolean): SmtpResponse {
         val texts = mutableListOf<String>()
-        var statusCode: StatusCode? = null
+        var enhancedStatusCode: EnhancedStatusCode? = null
         var isFirstLine = true
 
-        fun BufferedSource.maybeReadAndCompareEnhancedStatusCode(replyCode: Int): StatusCode? {
+        fun BufferedSource.maybeReadAndCompareEnhancedStatusCode(replyCode: Int): EnhancedStatusCode? {
             val currentStatusCode = maybeReadEnhancedStatusCode(replyCode)
-            if (!isFirstLine && statusCode != currentStatusCode) {
+            if (!isFirstLine && enhancedStatusCode != currentStatusCode) {
                 parserError(
                     "Multi-line response with enhanced status codes not matching: " +
-                        "$statusCode != $currentStatusCode"
+                        "$enhancedStatusCode != $currentStatusCode"
                 )
             }
             isFirstLine = false
@@ -178,7 +178,7 @@ internal class SmtpResponseParser(
                     expect(CR)
                     expect(LF)
 
-                    return SmtpResponse(replyCode, statusCode, texts)
+                    return SmtpResponse(replyCode, enhancedStatusCode, texts)
                 }
                 SPACE -> {
                     expect(SPACE)
@@ -186,7 +186,7 @@ internal class SmtpResponseParser(
                     val bufferedSource = readUntilEndOfLine()
 
                     if (enhancedStatusCodes) {
-                        statusCode = bufferedSource.maybeReadAndCompareEnhancedStatusCode(replyCode)
+                        enhancedStatusCode = bufferedSource.maybeReadAndCompareEnhancedStatusCode(replyCode)
                     }
 
                     val textString = bufferedSource.readTextString()
@@ -197,7 +197,7 @@ internal class SmtpResponseParser(
                     expect(CR)
                     expect(LF)
 
-                    return SmtpResponse(replyCode, statusCode, texts)
+                    return SmtpResponse(replyCode, enhancedStatusCode, texts)
                 }
                 DASH -> {
                     expect(DASH)
@@ -205,7 +205,7 @@ internal class SmtpResponseParser(
                     val bufferedSource = readUntilEndOfLine()
 
                     if (enhancedStatusCodes) {
-                        statusCode = bufferedSource.maybeReadAndCompareEnhancedStatusCode(replyCode)
+                        enhancedStatusCode = bufferedSource.maybeReadAndCompareEnhancedStatusCode(replyCode)
                     }
 
                     val textString = bufferedSource.readTextString()
@@ -315,7 +315,7 @@ internal class SmtpResponseParser(
         return text
     }
 
-    private fun BufferedSource.maybeReadEnhancedStatusCode(replyCode: Int): StatusCode? {
+    private fun BufferedSource.maybeReadEnhancedStatusCode(replyCode: Int): EnhancedStatusCode? {
         val replyCode1 = replyCode / 100
         if (replyCode1 != 2 && replyCode1 != 4 && replyCode1 != 5) return null
 
@@ -333,7 +333,7 @@ internal class SmtpResponseParser(
         }
     }
 
-    private fun BufferedSource.readEnhancedStatusCode(replyCode1: Int): StatusCode {
+    private fun BufferedSource.readEnhancedStatusCode(replyCode1: Int): EnhancedStatusCode {
         val statusClass = readStatusCodeClass(replyCode1)
         expect(DOT)
         val subject = readOneToThreeDigitNumber()
@@ -342,7 +342,7 @@ internal class SmtpResponseParser(
 
         expect(SPACE)
 
-        return StatusCode(statusClass, subject, detail)
+        return EnhancedStatusCode(statusClass, subject, detail)
     }
 
     private fun BufferedSource.readStatusCodeClass(replyCode1: Int): StatusCodeClass {
