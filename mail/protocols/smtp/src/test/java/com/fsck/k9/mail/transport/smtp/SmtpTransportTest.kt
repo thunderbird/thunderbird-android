@@ -1,910 +1,930 @@
-package com.fsck.k9.mail.transport.smtp;
+package com.fsck.k9.mail.transport.smtp
 
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.AuthenticationFailedException
+import com.fsck.k9.mail.CertificateValidationException
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.K9LibRobolectricTestRunner
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.XOAuth2ChallengeParserTest
+import com.fsck.k9.mail.filter.Base64
+import com.fsck.k9.mail.helpers.TestMessageBuilder
+import com.fsck.k9.mail.helpers.TestTrustedSocketFactory
+import com.fsck.k9.mail.internet.MimeMessage
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider
+import com.fsck.k9.mail.transport.mockServer.MockSmtpServer
+import com.google.common.truth.Truth.assertThat
+import org.junit.Assert.fail
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stubbing
 
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.XOAuth2ChallengeParserTest;
-import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.helpers.TestMessageBuilder;
-import com.fsck.k9.mail.helpers.TestTrustedSocketFactory;
-import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.transport.mockServer.MockSmtpServer;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
+private const val USERNAME = "user"
+private const val PASSWORD = "password"
+private val CLIENT_CERTIFICATE_ALIAS: String? = null
 
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+@RunWith(K9LibRobolectricTestRunner::class)
+class SmtpTransportTest {
+    private val socketFactory = TestTrustedSocketFactory.newInstance()
+    private val oAuth2TokenProvider = createMockOAuth2TokenProvider()
 
+    @Test
+    fun `open() should provide hostname`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 OK")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, password = null)
 
-@RunWith(K9LibRobolectricTestRunner.class)
-public class SmtpTransportTest {
-    private static final String USERNAME = "user";
-    private static final String PASSWORD = "password";
-    private static final String CLIENT_CERTIFICATE_ALIAS = null;
+        transport.open()
 
-    
-    private TrustedSocketFactory socketFactory;
-    private OAuth2TokenProvider oAuth2TokenProvider;
-
-
-    @Before
-    public void before() throws AuthenticationFailedException {
-        socketFactory = TestTrustedSocketFactory.newInstance();
-        oAuth2TokenProvider = mock(OAuth2TokenProvider.class);
-        when(oAuth2TokenProvider.getToken(eq(USERNAME), anyLong()))
-                .thenReturn("oldToken").thenReturn("newToken");
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open__shouldProvideHostname() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 OK");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE,
-                null);
+    fun `open() without AUTH LOGIN extension should connect without authentication`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 OK")
+        }
+        val transport = startServerAndCreateSmtpTransportWithoutPassword(server)
 
-        transport.open();
+        transport.open()
 
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withoutAuthLoginExtension_shouldConnectWithoutAuthentication() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 OK");
-        SmtpTransport transport = startServerAndCreateSmtpTransportWithoutPassword(server);
+    fun `open() with AUTH PLAIN extension`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH PLAIN LOGIN")
+            expect("AUTH PLAIN AHVzZXIAcGFzc3dvcmQ=")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.PLAIN)
 
-        transport.open();
+        transport.open()
 
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withAuthPlainExtension() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH PLAIN LOGIN");
-        server.expect("AUTH PLAIN AHVzZXIAcGFzc3dvcmQ=");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
+    fun `open() with AUTH LOGIN extension`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH LOGIN")
+            expect("AUTH LOGIN")
+            output("250 OK")
+            expect("dXNlcg==")
+            output("250 OK")
+            expect("cGFzc3dvcmQ=")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.PLAIN)
 
-        transport.open();
+        transport.open()
 
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withAuthLoginExtension() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH LOGIN");
-        server.expect("AUTH LOGIN");
-        server.output("250 OK");
-        server.expect("dXNlcg==");
-        server.output("250 OK");
-        server.expect("cGFzc3dvcmQ=");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
-
-        transport.open();
-
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void open_withoutLoginAndPlainAuthExtensions_shouldThrow() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
+    fun `open() without LOGIN and PLAIN AUTH extensions should throw`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH")
+            expect("QUIT")
+            output("221 BYE")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.PLAIN)
 
         try {
-            transport.open();
-            fail("Exception expected");
-        } catch (MessagingException e) {
-            assertEquals("Authentication methods SASL PLAIN and LOGIN are unavailable.", e.getMessage());
+            transport.open()
+            fail("Exception expected")
+        } catch (e: MessagingException) {
+            assertThat(e).hasMessageThat().isEqualTo("Authentication methods SASL PLAIN and LOGIN are unavailable.")
         }
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withCramMd5AuthExtension() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH CRAM-MD5");
-        server.expect("AUTH CRAM-MD5");
-        server.output("334 " + Base64.encode("<24609.1047914046@localhost>"));
-        server.expect("dXNlciAyZDBlNTcwYzZlYWI0ZjY3ZDUyZmFkN2Q1NGExZDJhYQ==");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.CRAM_MD5, ConnectionSecurity.NONE);
+    fun `open() with CRAM-MD5 AUTH extension`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH CRAM-MD5")
+            expect("AUTH CRAM-MD5")
+            output("334 " + Base64.encode("<24609.1047914046@localhost>"))
+            expect("dXNlciAyZDBlNTcwYzZlYWI0ZjY3ZDUyZmFkN2Q1NGExZDJhYQ==")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.CRAM_MD5)
 
-        transport.open();
+        transport.open()
 
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withoutCramMd5AuthExtension_shouldThrow() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH PLAIN LOGIN");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.CRAM_MD5, ConnectionSecurity.NONE);
+    fun `open() without CRAM-MD5 AUTH extension should throw`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH PLAIN LOGIN")
+            expect("QUIT")
+            output("221 BYE")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.CRAM_MD5)
 
         try {
-            transport.open();
-            fail("Exception expected");
-        } catch (MessagingException e) {
-            assertEquals("Authentication method CRAM-MD5 is unavailable.", e.getMessage());
+            transport.open()
+            fail("Exception expected")
+        } catch (e: MessagingException) {
+            assertThat(e).hasMessageThat().isEqualTo("Authentication method CRAM-MD5 is unavailable.")
         }
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withXoauth2Extension() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH XOAUTH2");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
-
-        transport.open();
-
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void open_withXoauth2Extension_shouldThrowOn401Response() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH XOAUTH2");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
-        server.output("334 "+ XOAuth2ChallengeParserTest.STATUS_401_RESPONSE);
-        server.expect("");
-        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
-        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
-
-        try {
-            transport.open();
-            fail("Exception expected");
-        } catch (AuthenticationFailedException e) {
-            assertEquals(
-                    "5.7.1 Username and Password not accepted. Learn more at " +
-                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
-                    e.getMessage());
+    fun `open() with XOAUTH2 extension`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH XOAUTH2")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+            output("235 2.7.0 Authentication successful")
         }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
-        InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        transport.open()
+
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withXoauth2Extension_shouldInvalidateAndRetryOn400Response() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH XOAUTH2");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
-        server.output("334 "+ XOAuth2ChallengeParserTest.STATUS_400_RESPONSE);
-        server.expect("");
-        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
-        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
-
-        transport.open();
-
-        InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void open_withXoauth2Extension_shouldInvalidateAndRetryOnInvalidJsonResponse() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH XOAUTH2");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
-        server.output("334 "+ XOAuth2ChallengeParserTest.INVALID_RESPONSE);
-        server.expect("");
-        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
-        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
-
-        transport.open();
-
-        InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void open_withXoauth2Extension_shouldInvalidateAndRetryOnMissingStatusJsonResponse() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH XOAUTH2");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
-        server.output("334 "+ XOAuth2ChallengeParserTest.MISSING_STATUS_RESPONSE);
-        server.expect("");
-        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
-        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
-
-        transport.open();
-
-        InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void open_withXoauth2Extension_shouldThrowOnMultipleFailure() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH XOAUTH2");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
-        server.output("334 " + XOAuth2ChallengeParserTest.STATUS_400_RESPONSE);
-        server.expect("");
-        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
-        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=");
-        server.output("334 " + XOAuth2ChallengeParserTest.STATUS_400_RESPONSE);
-        server.expect("");
-        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
-        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
-        server.expect("QUIT");
-        server.output("221 BYE");
-
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+    fun `open() with XOAUTH2 extension should throw on 401 response`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH XOAUTH2")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+            output("334 " + XOAuth2ChallengeParserTest.STATUS_401_RESPONSE)
+            expect("")
+            output("535-5.7.1 Username and Password not accepted. Learn more at")
+            output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68")
+            expect("QUIT")
+            output("221 BYE")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
         try {
-            transport.open();
-            fail("Exception expected");
-        } catch (AuthenticationFailedException e) {
-            assertEquals(
+            transport.open()
+            fail("Exception expected")
+        } catch (e: AuthenticationFailedException) {
+            assertThat(e).hasMessageThat().isEqualTo(
                 "5.7.1 Username and Password not accepted. Learn more at " +
-                "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
-                e.getMessage());
+                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68"
+            )
         }
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        inOrder(oAuth2TokenProvider) {
+            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
+        }
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withXoauth2Extension_shouldThrowOnFailure_fetchingToken() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH XOAUTH2");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        when(oAuth2TokenProvider.getToken(anyString(), anyLong()))
-                .thenThrow(new AuthenticationFailedException("Failed to fetch token"));
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+    fun `open() with XOAUTH2 extension should invalidate and retry on 400 response`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH XOAUTH2")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+            output("334 " + XOAuth2ChallengeParserTest.STATUS_400_RESPONSE)
+            expect("")
+            output("535-5.7.1 Username and Password not accepted. Learn more at")
+            output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
+
+        transport.open()
+
+        inOrder(oAuth2TokenProvider) {
+            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
+            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+        }
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() with XOAUTH2 extension should invalidate and retry on invalid JSON response`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH XOAUTH2")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+            output("334 " + XOAuth2ChallengeParserTest.INVALID_RESPONSE)
+            expect("")
+            output("535-5.7.1 Username and Password not accepted. Learn more at")
+            output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
+
+        transport.open()
+
+        inOrder(oAuth2TokenProvider) {
+            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
+            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+        }
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() with XOAUTH2 extension should invalidate and retry on missing status JSON response`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH XOAUTH2")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+            output("334 " + XOAuth2ChallengeParserTest.MISSING_STATUS_RESPONSE)
+            expect("")
+            output("535-5.7.1 Username and Password not accepted. Learn more at")
+            output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
+
+        transport.open()
+
+        inOrder(oAuth2TokenProvider) {
+            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
+            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+        }
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() with XOAUTH2 extension should throw on multiple failures`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH XOAUTH2")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+            output("334 " + XOAuth2ChallengeParserTest.STATUS_400_RESPONSE)
+            expect("")
+            output("535-5.7.1 Username and Password not accepted. Learn more at")
+            output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=")
+            output("334 " + XOAuth2ChallengeParserTest.STATUS_400_RESPONSE)
+            expect("")
+            output("535-5.7.1 Username and Password not accepted. Learn more at")
+            output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68")
+            expect("QUIT")
+            output("221 BYE")
+        }
+
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
         try {
-            transport.open();
-            fail("Exception expected");
-        } catch (AuthenticationFailedException e) {
-            assertEquals("Failed to fetch token", e.getMessage());
+            transport.open()
+            fail("Exception expected")
+        } catch (e: AuthenticationFailedException) {
+            assertThat(e).hasMessageThat().isEqualTo(
+                "5.7.1 Username and Password not accepted. Learn more at " +
+                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68"
+            )
         }
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withoutXoauth2Extension_shouldThrow() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH PLAIN LOGIN");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+    fun `open() with XOAUTH2 extension should throw on failure to fetch token`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH XOAUTH2")
+            expect("QUIT")
+            output("221 BYE")
+        }
+        stubbing(oAuth2TokenProvider) {
+            on { getToken(anyString(), anyLong()) } doThrow AuthenticationFailedException("Failed to fetch token")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
         try {
-            transport.open();
-            fail("Exception expected");
-        } catch (MessagingException e) {
-            assertEquals("Authentication method XOAUTH2 is unavailable.", e.getMessage());
+            transport.open()
+            fail("Exception expected")
+        } catch (e: AuthenticationFailedException) {
+            assertThat(e).hasMessageThat().isEqualTo("Failed to fetch token")
         }
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withAuthExternalExtension() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH EXTERNAL");
-        server.expect("AUTH EXTERNAL dXNlcg==");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.EXTERNAL, ConnectionSecurity.NONE);
-
-        transport.open();
-
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void open_withoutAuthExternalExtension_shouldThrow() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.EXTERNAL, ConnectionSecurity.NONE);
+    fun `open() without XOAUTH2 extension should throw`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH PLAIN LOGIN")
+            expect("QUIT")
+            output("221 BYE")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
         try {
-            transport.open();
-            fail("Exception expected");
-        } catch (CertificateValidationException e) {
-            assertEquals(CertificateValidationException.Reason.MissingCapability, e.getReason());
+            transport.open()
+            fail("Exception expected")
+        } catch (e: MessagingException) {
+            assertThat(e).hasMessageThat().isEqualTo("Authentication method XOAUTH2 is unavailable.")
         }
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withAutomaticAuthAndNoTransportSecurityAndAuthCramMd5Extension_shouldUseAuthCramMd5()
-            throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH CRAM-MD5");
-        server.expect("AUTH CRAM-MD5");
-        server.output("334 " + Base64.encode("<24609.1047914046@localhost>"));
-        server.expect("dXNlciAyZDBlNTcwYzZlYWI0ZjY3ZDUyZmFkN2Q1NGExZDJhYQ==");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.AUTOMATIC,
-                ConnectionSecurity.NONE);
+    fun `open() with AUTH EXTERNAL extension`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH EXTERNAL")
+            expect("AUTH EXTERNAL dXNlcg==")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.EXTERNAL)
 
-        transport.open();
+        transport.open()
 
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withAutomaticAuthAndNoTransportSecurityAndAuthPlainExtension_shouldThrow() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250 AUTH PLAIN LOGIN");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.AUTOMATIC,
-                ConnectionSecurity.NONE);
+    fun `open() without AUTH EXTERNAL extension should throw`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH")
+            expect("QUIT")
+            output("221 BYE")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.EXTERNAL)
 
         try {
-            transport.open();
-            fail("Exception expected");
-        } catch (MessagingException e) {
-            assertEquals("Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable.",
-                    e.getMessage());
+            transport.open()
+            fail("Exception expected")
+        } catch (e: CertificateValidationException) {
+            assertThat(e.reason).isEqualTo(CertificateValidationException.Reason.MissingCapability)
         }
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withEhloFailing_shouldTryHelo() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("502 5.5.1, Unrecognized command.");
-        server.expect("HELO [127.0.0.1]");
-        server.output("250 localhost");
-        SmtpTransport transport = startServerAndCreateSmtpTransportWithoutPassword(server);
+    fun `open() with automatic auth and no transport security and AUTH CRAM-MD5 extension should use CRAM-MD5`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH CRAM-MD5")
+            expect("AUTH CRAM-MD5")
+            output("334 " + Base64.encode("<24609.1047914046@localhost>"))
+            expect("dXNlciAyZDBlNTcwYzZlYWI0ZjY3ZDUyZmFkN2Q1NGExZDJhYQ==")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(
+            server,
+            authenticationType = AuthType.AUTOMATIC,
+            connectionSecurity = ConnectionSecurity.NONE
+        )
 
-        transport.open();
+        transport.open()
 
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withSupportWithEnhancedStatusCodesOnAuthFailure_shouldThrowEncodedMessage()
-            throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        server.output("250-ENHANCEDSTATUSCODES");
-        server.output("250 AUTH XOAUTH2");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
-        server.output("334 " + XOAuth2ChallengeParserTest.STATUS_401_RESPONSE);
-        server.expect("");
-        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
-        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+    fun `open() with automatic auth and no transport security and AUTH PLAIN extension should throw`() {
+        val server = MockSmtpServer()
+        server.output("220 localhost Simple Mail Transfer Service Ready")
+        server.expect("EHLO [127.0.0.1]")
+        server.output("250-localhost Hello client.localhost")
+        server.output("250 AUTH PLAIN LOGIN")
+        server.expect("QUIT")
+        server.output("221 BYE")
+        val transport = startServerAndCreateSmtpTransport(
+            server,
+            authenticationType = AuthType.AUTOMATIC,
+            connectionSecurity = ConnectionSecurity.NONE
+        )
 
         try {
-            transport.open();
-            fail("Exception expected");
-        } catch (AuthenticationFailedException e) {
-            assertEquals(
-                    "Username and Password not accepted. " +
-                    "Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
-                    e.getMessage());
+            transport.open()
+            fail("Exception expected")
+        } catch (e: MessagingException) {
+            assertThat(e).hasMessageThat().isEqualTo(
+                "Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable."
+            )
         }
 
-        InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void open_withManyExtensions_shouldParseAll() throws Exception {
-        MockSmtpServer server = new MockSmtpServer();
-        server.output("220 smtp.gmail.com ESMTP x25sm19117693wrx.27 - gsmtp");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-smtp.gmail.com at your service, [86.147.34.216]");
-        server.output("250-SIZE 35882577");
-        server.output("250-8BITMIME");
-        server.output("250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH");
-        server.output("250-ENHANCEDSTATUSCODES");
-        server.output("250-PIPELINING");
-        server.output("250-CHUNKING");
-        server.output("250 SMTPUTF8");
-        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
-        server.output("235 2.7.0 Authentication successful");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+    fun `open() with EHLO failing should try HELO`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("502 5.5.1, Unrecognized command.")
+            expect("HELO [127.0.0.1]")
+            output("250 localhost")
+        }
+        val transport = startServerAndCreateSmtpTransportWithoutPassword(server)
 
-        transport.open();
+        transport.open()
 
-        server.verifyConnectionStillOpen();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void sendMessage_withoutAddressToSendTo_shouldNotOpenConnection() throws Exception {
-        MimeMessage message = new MimeMessage();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
-
-        transport.sendMessage(message);
-
-        server.verifyConnectionNeverCreated();
-    }
-
-    @Test
-    public void sendMessage_withSingleRecipient() throws Exception {
-        Message message = getDefaultMessage();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication();
-        server.expect("MAIL FROM:<user@localhost>");
-        server.output("250 OK");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.output("250 OK");
-        server.expect("DATA");
-        server.output("354 End data with <CR><LF>.<CR><LF>");
-        server.expect("[message data]");
-        server.expect(".");
-        server.output("250 OK: queued as 12345");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
-
-        transport.sendMessage(message);
-
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void sendMessage_with8BitEncoding() throws Exception {
-        Message message = getDefaultMessage();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication("8BITMIME");
-        server.expect("MAIL FROM:<user@localhost> BODY=8BITMIME");
-        server.output("250 OK");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.output("250 OK");
-        server.expect("DATA");
-        server.output("354 End data with <CR><LF>.<CR><LF>");
-        server.expect("[message data]");
-        server.expect(".");
-        server.output("250 OK: queued as 12345");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
-
-        transport.sendMessage(message);
-
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void sendMessage_with8BitEncodingExtensionNotCaseSensitive() throws Exception {
-        Message message = getDefaultMessage();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication("8bitmime");
-        server.expect("MAIL FROM:<user@localhost> BODY=8BITMIME");
-        server.output("250 OK");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.output("250 OK");
-        server.expect("DATA");
-        server.output("354 End data with <CR><LF>.<CR><LF>");
-        server.expect("[message data]");
-        server.expect(".");
-        server.output("250 OK: queued as 12345");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
-
-        transport.sendMessage(message);
-
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void sendMessage_withMessageTooLarge_shouldThrow() throws Exception {
-        Message message = getDefaultMessageBuilder()
-                .setHasAttachments(true)
-                .messageSize(1234L)
-                .build();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication("SIZE 1000");
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+    fun `open() with support for ENHANCEDSTATUSCODES should throw strip enhanced status codes from error message`() {
+        val server = MockSmtpServer()
+        server.output("220 localhost Simple Mail Transfer Service Ready")
+        server.expect("EHLO [127.0.0.1]")
+        server.output("250-localhost Hello client.localhost")
+        server.output("250-ENHANCEDSTATUSCODES")
+        server.output("250 AUTH XOAUTH2")
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+        server.output("334 " + XOAuth2ChallengeParserTest.STATUS_401_RESPONSE)
+        server.expect("")
+        server.output("535-5.7.1 Username and Password not accepted. Learn more at")
+        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68")
+        server.expect("QUIT")
+        server.output("221 BYE")
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
         try {
-            transport.sendMessage(message);
-            fail("Expected message too large error");
-        } catch (MessagingException e) {
-            assertTrue(e.isPermanentFailure());
-            assertEquals("Message too large for server", e.getMessage());
+            transport.open()
+            fail("Exception expected")
+        } catch (e: AuthenticationFailedException) {
+            assertThat(e).hasMessageThat().isEqualTo(
+                "Username and Password not accepted. " +
+                    "Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68"
+            )
         }
-        
-        //FIXME: Make sure connection was closed 
-        //server.verifyConnectionClosed();
+
+        inOrder(oAuth2TokenProvider) {
+            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
+        }
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void sendMessage_withNegativeReply_shouldThrow() throws Exception {
-        Message message = getDefaultMessage();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication();
-        server.expect("MAIL FROM:<user@localhost>");
-        server.output("250 OK");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.output("250 OK");
-        server.expect("DATA");
-        server.output("354 End data with <CR><LF>.<CR><LF>");
-        server.expect("[message data]");
-        server.expect(".");
-        server.output("421 4.7.0 Temporary system problem");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+    fun `open() with many extensions should parse all`() {
+        val server = MockSmtpServer().apply {
+            output("220 smtp.gmail.com ESMTP x25sm19117693wrx.27 - gsmtp")
+            expect("EHLO [127.0.0.1]")
+            output("250-smtp.gmail.com at your service, [86.147.34.216]")
+            output("250-SIZE 35882577")
+            output("250-8BITMIME")
+            output("250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH")
+            output("250-ENHANCEDSTATUSCODES")
+            output("250-PIPELINING")
+            output("250-CHUNKING")
+            output("250 SMTPUTF8")
+            expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
+
+        transport.open()
+
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `sendMessage() without address to send to should not open connection`() {
+        val message = MimeMessage()
+        val server = createServerAndSetupForPlainAuthentication()
+        val transport = startServerAndCreateSmtpTransport(server)
+
+        transport.sendMessage(message)
+
+        server.verifyConnectionNeverCreated()
+    }
+
+    @Test
+    fun `sendMessage() with single recipient`() {
+        val message = createDefaultMessage()
+        val server = createServerAndSetupForPlainAuthentication().apply {
+            expect("MAIL FROM:<user@localhost>")
+            output("250 OK")
+            expect("RCPT TO:<user2@localhost>")
+            output("250 OK")
+            expect("DATA")
+            output("354 End data with <CR><LF>.<CR><LF>")
+            expect("[message data]")
+            expect(".")
+            output("250 OK: queued as 12345")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(server)
+
+        transport.sendMessage(message)
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `sendMessage() with 8-bit encoding`() {
+        val message = createDefaultMessage()
+        val server = createServerAndSetupForPlainAuthentication("8BITMIME").apply {
+            expect("MAIL FROM:<user@localhost> BODY=8BITMIME")
+            output("250 OK")
+            expect("RCPT TO:<user2@localhost>")
+            output("250 OK")
+            expect("DATA")
+            output("354 End data with <CR><LF>.<CR><LF>")
+            expect("[message data]")
+            expect(".")
+            output("250 OK: queued as 12345")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(server)
+
+        transport.sendMessage(message)
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `sendMessage() with 8-bit encoding extension not case-sensitive`() {
+        val message = createDefaultMessage()
+        val server = createServerAndSetupForPlainAuthentication("8bitmime").apply {
+            expect("MAIL FROM:<user@localhost> BODY=8BITMIME")
+            output("250 OK")
+            expect("RCPT TO:<user2@localhost>")
+            output("250 OK")
+            expect("DATA")
+            output("354 End data with <CR><LF>.<CR><LF>")
+            expect("[message data]")
+            expect(".")
+            output("250 OK: queued as 12345")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(server)
+
+        transport.sendMessage(message)
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `sendMessage() with message too large should throw`() {
+        val message = createDefaultMessageBuilder()
+            .setHasAttachments(true)
+            .messageSize(1234L)
+            .build()
+        val server = createServerAndSetupForPlainAuthentication("SIZE 1000")
+        val transport = startServerAndCreateSmtpTransport(server)
 
         try {
-            transport.sendMessage(message);
-            fail("Expected exception");
-        } catch (NegativeSmtpReplyException e) {
-            assertEquals(421, e.getReplyCode());
-            assertEquals("4.7.0 Temporary system problem", e.getReplyText());
+            transport.sendMessage(message)
+            fail("Expected message too large error")
+        } catch (e: MessagingException) {
+            assertThat(e.isPermanentFailure).isTrue()
+            assertThat(e).hasMessageThat().isEqualTo("Message too large for server")
         }
-        
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+
+        // FIXME: Make sure connection was closed 
+        // server.verifyConnectionClosed();
     }
 
     @Test
-    public void sendMessage_withPipelining() throws Exception {
-        Message message = getDefaultMessage();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
-        server.expect("MAIL FROM:<user@localhost>");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.output("250 OK");
-        server.output("250 OK");
-        server.expect("DATA");
-        server.output("354 End data with <CR><LF>.<CR><LF>");
-        server.expect("[message data]");
-        server.expect(".");
-        server.output("250 OK: queued as 12345");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
-
-        transport.sendMessage(message);
-
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void sendMessage_withoutPipelining() throws Exception {
-        Message message = getDefaultMessage();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication();
-        server.expect("MAIL FROM:<user@localhost>");
-        server.output("250 OK");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.output("250 OK");
-        server.expect("DATA");
-        server.output("354 End data with <CR><LF>.<CR><LF>");
-        server.expect("[message data]");
-        server.expect(".");
-        server.output("250 OK: queued as 12345");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
-
-        transport.sendMessage(message);
-
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
-    }
-
-    @Test
-    public void sendMessagePipelining_withNegativeReply() throws Exception {
-        Message message = getDefaultMessage();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
-        server.expect("MAIL FROM:<user@localhost>");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.output("250 OK");
-        server.output("550 remote mail to <user2@localhost> not allowed");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+    fun `sendMessage() with negative reply should throw`() {
+        val message = createDefaultMessage()
+        val server = createServerAndSetupForPlainAuthentication().apply {
+            expect("MAIL FROM:<user@localhost>")
+            output("250 OK")
+            expect("RCPT TO:<user2@localhost>")
+            output("250 OK")
+            expect("DATA")
+            output("354 End data with <CR><LF>.<CR><LF>")
+            expect("[message data]")
+            expect(".")
+            output("421 4.7.0 Temporary system problem")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(server)
 
         try {
-            transport.sendMessage(message);
-            fail("Expected exception");
-        } catch (NegativeSmtpReplyException e) {
-            assertEquals(550, e.getReplyCode());
-            assertEquals("remote mail to <user2@localhost> not allowed", e.getReplyText());
+            transport.sendMessage(message)
+            fail("Expected exception")
+        } catch (e: NegativeSmtpReplyException) {
+            assertThat(e.replyCode).isEqualTo(421)
+            assertThat(e.replyText).isEqualTo("4.7.0 Temporary system problem")
         }
 
-
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void sendMessagePipelining_without354ReplyforData_shouldThrow() throws Exception {
-        Message message = getDefaultMessage();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
-        server.expect("MAIL FROM:<user@localhost>");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.output("250 OK");
-        server.output("550 remote mail to <user2@localhost> not allowed");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
-
-        try {
-            transport.sendMessage(message);
-            fail("Expected exception");
-        } catch (NegativeSmtpReplyException e) {
-            assertEquals(550, e.getReplyCode());
-            assertEquals("remote mail to <user2@localhost> not allowed", e.getReplyText());
+    fun `sendMessage() with pipelining`() {
+        val message = createDefaultMessage()
+        val server = createServerAndSetupForPlainAuthentication("PIPELINING").apply {
+            expect("MAIL FROM:<user@localhost>")
+            expect("RCPT TO:<user2@localhost>")
+            output("250 OK")
+            output("250 OK")
+            expect("DATA")
+            output("354 End data with <CR><LF>.<CR><LF>")
+            expect("[message data]")
+            expect(".")
+            output("250 OK: queued as 12345")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
         }
+        val transport = startServerAndCreateSmtpTransport(server)
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        transport.sendMessage(message)
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void sendMessagePipelining_with250and550ReplyforRecipients_shouldThrowFirst() throws Exception {
-        Message message = getMessageWithTwoRecipients();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
-        server.expect("MAIL FROM:<user@localhost>");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.expect("RCPT TO:<user3@localhost>");
-        server.output("250 OK");
-        server.output("550 remote mail to <user2@localhost> not allowed");
-        server.output("550 remote mail to <user3@localhost> not allowed");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
-
-        try {
-            transport.sendMessage(message);
-            fail("Expected exception");
-        } catch (NegativeSmtpReplyException e) {
-            assertEquals(550, e.getReplyCode());
-            assertEquals("remote mail to <user2@localhost> not allowed", e.getReplyText());
+    fun `sendMessage() without pipelining`() {
+        val message = createDefaultMessage()
+        val server = createServerAndSetupForPlainAuthentication().apply {
+            expect("MAIL FROM:<user@localhost>")
+            output("250 OK")
+            expect("RCPT TO:<user2@localhost>")
+            output("250 OK")
+            expect("DATA")
+            output("354 End data with <CR><LF>.<CR><LF>")
+            expect("[message data]")
+            expect(".")
+            output("250 OK: queued as 12345")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
         }
+        val transport = startServerAndCreateSmtpTransport(server)
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        transport.sendMessage(message)
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
     @Test
-    public void sendMessagePipelining_with250and550ReplyforRecipientsAnd250ForMessage_shouldThrow() throws Exception {
-        Message message = getMessageWithTwoRecipients();
-        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
-        server.expect("MAIL FROM:<user@localhost>");
-        server.expect("RCPT TO:<user2@localhost>");
-        server.expect("RCPT TO:<user3@localhost>");
-        server.output("250 OK");
-        server.output("250 OK");
-        server.output("550 remote mail to <user3@localhost> not allowed");
-        server.expect("QUIT");
-        server.output("221 BYE");
-        server.closeConnection();
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+    fun `sendMessage() with pipelining and negative reply`() {
+        val message = createDefaultMessage()
+        val server = createServerAndSetupForPlainAuthentication("PIPELINING").apply {
+            expect("MAIL FROM:<user@localhost>")
+            expect("RCPT TO:<user2@localhost>")
+            output("250 OK")
+            output("550 remote mail to <user2@localhost> not allowed")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(server)
 
         try {
-            transport.sendMessage(message);
-            fail("Expected exception");
-        } catch (NegativeSmtpReplyException e) {
-            assertEquals(550, e.getReplyCode());
-            assertEquals("remote mail to <user3@localhost> not allowed", e.getReplyText());
+            transport.sendMessage(message)
+            fail("Expected exception")
+        } catch (e: NegativeSmtpReplyException) {
+            assertThat(e.replyCode).isEqualTo(550)
+            assertThat(e.replyText).isEqualTo("remote mail to <user2@localhost> not allowed")
         }
 
-        server.verifyConnectionClosed();
-        server.verifyInteractionCompleted();
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
     }
 
+    @Test
+    fun `sendMessage() with pipelining and missing 354 reply for DATA should throw`() {
+        val message = createDefaultMessage()
+        val server = createServerAndSetupForPlainAuthentication("PIPELINING")
+        server.expect("MAIL FROM:<user@localhost>")
+        server.expect("RCPT TO:<user2@localhost>")
+        server.output("250 OK")
+        server.output("550 remote mail to <user2@localhost> not allowed")
+        server.expect("QUIT")
+        server.output("221 BYE")
+        server.closeConnection()
+        val transport = startServerAndCreateSmtpTransport(server)
 
-    private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server) throws Exception {
-        return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
-    }
-
-    private SmtpTransport startServerAndCreateSmtpTransportWithoutPassword(MockSmtpServer server) throws Exception {
-        return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null);
-    }
-
-    private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
-            ConnectionSecurity connectionSecurity) throws Exception {
-        return startServerAndCreateSmtpTransport(server, authenticationType, connectionSecurity, PASSWORD);
-    }
-
-    private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
-            ConnectionSecurity connectionSecurity, String password)
-            throws Exception {
-        server.start();
-
-        String host = server.getHost();
-        int port = server.getPort();
-        ServerSettings serverSettings = new ServerSettings(
-                "smtp",
-                host,
-                port,
-                connectionSecurity,
-                authenticationType,
-                USERNAME,
-                password,
-                CLIENT_CERTIFICATE_ALIAS);
-
-        return new SmtpTransport(serverSettings, socketFactory, oAuth2TokenProvider);
-    }
-
-    private TestMessageBuilder getDefaultMessageBuilder() {
-        return new TestMessageBuilder()
-                .from("user@localhost")
-                .to("user2@localhost");
-    }
-
-    private Message getDefaultMessage() {
-        return getDefaultMessageBuilder().build();
-    }
-
-    private Message getMessageWithTwoRecipients() {
-        return new TestMessageBuilder()
-                .from("user@localhost")
-                .to("user2@localhost", "user3@localhost")
-                .build();
-    }
-
-    private MockSmtpServer createServerAndSetupForPlainAuthentication(String... extensions) {
-        MockSmtpServer server = new MockSmtpServer();
-        
-        server.output("220 localhost Simple Mail Transfer Service Ready");
-        server.expect("EHLO [127.0.0.1]");
-        server.output("250-localhost Hello client.localhost");
-        
-        for (String extension : extensions) {
-            server.output("250-" + extension);
+        try {
+            transport.sendMessage(message)
+            fail("Expected exception")
+        } catch (e: NegativeSmtpReplyException) {
+            assertThat(e.replyCode).isEqualTo(550)
+            assertThat(e.replyText).isEqualTo("remote mail to <user2@localhost> not allowed")
         }
-        
-        server.output("250 AUTH LOGIN PLAIN CRAM-MD5");
-        server.expect("AUTH PLAIN AHVzZXIAcGFzc3dvcmQ=");
-        server.output("235 2.7.0 Authentication successful");
-        
-        return server;
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `sendMessage() with pipelining and two 550 replies for recipients should include first error in exception`() {
+        val message = createMessageWithTwoRecipients()
+        val server = createServerAndSetupForPlainAuthentication("PIPELINING").apply {
+            expect("MAIL FROM:<user@localhost>")
+            expect("RCPT TO:<user2@localhost>")
+            expect("RCPT TO:<user3@localhost>")
+            output("250 OK")
+            output("550 remote mail to <user2@localhost> not allowed")
+            output("550 remote mail to <user3@localhost> not allowed")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(server)
+
+        try {
+            transport.sendMessage(message)
+            fail("Expected exception")
+        } catch (e: NegativeSmtpReplyException) {
+            assertThat(e.replyCode).isEqualTo(550)
+            assertThat(e.replyText).isEqualTo("remote mail to <user2@localhost> not allowed")
+        }
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `sendMessage() with pipelining and both 250 and 550 response for recipients should throw`() {
+        val message = createMessageWithTwoRecipients()
+        val server = createServerAndSetupForPlainAuthentication("PIPELINING").apply {
+            expect("MAIL FROM:<user@localhost>")
+            expect("RCPT TO:<user2@localhost>")
+            expect("RCPT TO:<user3@localhost>")
+            output("250 OK")
+            output("250 OK")
+            output("550 remote mail to <user3@localhost> not allowed")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(server)
+
+        try {
+            transport.sendMessage(message)
+            fail("Expected exception")
+        } catch (e: NegativeSmtpReplyException) {
+            assertThat(e.replyCode).isEqualTo(550)
+            assertThat(e.replyText).isEqualTo("remote mail to <user3@localhost> not allowed")
+        }
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    private fun startServerAndCreateSmtpTransportWithoutPassword(server: MockSmtpServer): SmtpTransport {
+        return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null)
+    }
+
+    private fun startServerAndCreateSmtpTransport(
+        server: MockSmtpServer,
+        authenticationType: AuthType = AuthType.PLAIN,
+        connectionSecurity: ConnectionSecurity = ConnectionSecurity.NONE,
+        password: String? = PASSWORD
+    ): SmtpTransport {
+        server.start()
+        val host = server.host
+        val port = server.port
+        val serverSettings = ServerSettings(
+            "smtp",
+            host,
+            port,
+            connectionSecurity,
+            authenticationType,
+            USERNAME,
+            password,
+            CLIENT_CERTIFICATE_ALIAS
+        )
+
+        return SmtpTransport(serverSettings, socketFactory, oAuth2TokenProvider)
+    }
+
+    private fun createDefaultMessageBuilder(): TestMessageBuilder {
+        return TestMessageBuilder()
+            .from("user@localhost")
+            .to("user2@localhost")
+    }
+
+    private fun createDefaultMessage(): Message {
+        return createDefaultMessageBuilder().build()
+    }
+
+    private fun createMessageWithTwoRecipients(): Message {
+        return TestMessageBuilder()
+            .from("user@localhost")
+            .to("user2@localhost", "user3@localhost")
+            .build()
+    }
+
+    private fun createServerAndSetupForPlainAuthentication(vararg extensions: String): MockSmtpServer {
+        return MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+
+            for (extension in extensions) {
+                output("250-$extension")
+            }
+
+            output("250 AUTH LOGIN PLAIN CRAM-MD5")
+            expect("AUTH PLAIN AHVzZXIAcGFzc3dvcmQ=")
+            output("235 2.7.0 Authentication successful")
+        }
+    }
+
+    private fun createMockOAuth2TokenProvider(): OAuth2TokenProvider {
+        return mock {
+            on { getToken(eq(USERNAME), anyLong()) } doReturn "oldToken" doReturn "newToken"
+        }
     }
 }
