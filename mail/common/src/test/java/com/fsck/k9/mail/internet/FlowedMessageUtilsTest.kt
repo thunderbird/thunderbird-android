@@ -2,7 +2,6 @@ package com.fsck.k9.mail.internet
 
 import com.fsck.k9.mail.crlf
 import com.google.common.truth.Truth.assertThat
-import org.junit.Ignore
 import org.junit.Test
 
 private const val DEL_SP_NO = false
@@ -98,7 +97,6 @@ class FlowedMessageUtilsTest {
         )
     }
 
-    @Ignore("Fails because of a bug in the code. See GH-6029")
     @Test
     fun `deflow() with quoted text ending in space followed by empty line`() {
         val input = "> Quoted \r\n" +

@@ -45,11 +45,11 @@ public final class FlowedMessageUtils {
             String line = i < lines.length ? lines[i] : null;
             int actualQuoteDepth = 0;
 
-            if (line != null && line.length() > 0) {
+            if (line != null) {
                 if (line.equals(RFC2646_SIGNATURE)) {
                     // signature handling (the previous line is not flowed)
                     resultLineFlowed = false;
-                } else if (line.charAt(0) == RFC2646_QUOTE) {
+                } else if (line.length() > 0 && line.charAt(0) == RFC2646_QUOTE) {
                     // Quote
                     actualQuoteDepth = 1;
                     while (actualQuoteDepth < line.length() && line.charAt(actualQuoteDepth) == RFC2646_QUOTE) {
@@ -74,7 +74,7 @@ public final class FlowedMessageUtils {
                 }
 
                 // if the previous was the last then it was not flowed
-            } else if (line == null) {
+            } else {
                 resultLineFlowed = false;
             }
 
