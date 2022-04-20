@@ -46,38 +46,53 @@ public final class FlowedMessageUtils {
             int actualQuoteDepth = 0;
 
             if (line != null && line.length() > 0) {
-                if (line.equals(RFC2646_SIGNATURE))
+                if (line.equals(RFC2646_SIGNATURE)) {
                     // signature handling (the previous line is not flowed)
                     resultLineFlowed = false;
-
-                else if (line.charAt(0) == RFC2646_QUOTE) {
+                } else if (line.charAt(0) == RFC2646_QUOTE) {
                     // Quote
                     actualQuoteDepth = 1;
-                    while (actualQuoteDepth < line.length() && line.charAt(actualQuoteDepth) == RFC2646_QUOTE) actualQuoteDepth ++;
+                    while (actualQuoteDepth < line.length() && line.charAt(actualQuoteDepth) == RFC2646_QUOTE) {
+                        actualQuoteDepth++;
+                    }
                     // if quote-depth changes wrt the previous line then this is not flowed
-                    if (resultLineQuoteDepth != actualQuoteDepth) resultLineFlowed = false;
+                    if (resultLineQuoteDepth != actualQuoteDepth) {
+                        resultLineFlowed = false;
+                    }
                     line = line.substring(actualQuoteDepth);
 
                 } else {
-                    // id quote-depth changes wrt the first line then this is not flowed
-                    if (resultLineQuoteDepth > 0) resultLineFlowed = false;
+                    // if quote-depth changes wrt the first line then this is not flowed
+                    if (resultLineQuoteDepth > 0) {
+                        resultLineFlowed = false;
+                    }
                 }
 
-                if (line.length() > 0 && line.charAt(0) == RFC2646_SPACE)
+                if (line.length() > 0 && line.charAt(0) == RFC2646_SPACE) {
                     // Line space-stuffed
                     line = line.substring(1);
+                }
 
                 // if the previous was the last then it was not flowed
-            } else if (line == null) resultLineFlowed = false;
+            } else if (line == null) {
+                resultLineFlowed = false;
+            }
 
             // Add the PREVIOUS line.
             // This often will find the flow looking for a space as the last char of the line.
-            // With quote changes or signatures it could be the followinf line to void the flow.
+            // With quote changes or signatures it could be the following line to void the flow.
             if (!resultLineFlowed && i > 0) {
-                if (resultLineQuoteDepth > 0) resultLine.insert(0, RFC2646_SPACE);
-                for (int j = 0; j < resultLineQuoteDepth; j++) resultLine.insert(0, RFC2646_QUOTE);
-                if (result == null) result = new StringBuffer();
-                else result.append(RFC2646_CRLF);
+                if (resultLineQuoteDepth > 0) {
+                    resultLine.insert(0, RFC2646_SPACE);
+                }
+                for (int j = 0; j < resultLineQuoteDepth; j++) {
+                    resultLine.insert(0, RFC2646_QUOTE);
+                }
+                if (result == null) {
+                    result = new StringBuffer();
+                } else {
+                    result.append(RFC2646_CRLF);
+                }
                 result.append(resultLine.toString());
                 resultLine = new StringBuffer();
                 resultLineFlowed = false;
@@ -86,12 +101,15 @@ public final class FlowedMessageUtils {
 
             if (line != null) {
                 if (!line.equals(RFC2646_SIGNATURE) && line.endsWith("" + RFC2646_SPACE) && i < lines.length - 1) {
-                    // Line flowed (NOTE: for the split operation the line having i == lines.length is the last that does not end with RFC2646_CRLF)
-                    if (delSp) line = line.substring(0, line.length() - 1);
+                    // Line flowed (NOTE: for the split operation the line having i == lines.length is the last that
+                    // does not end with RFC2646_CRLF)
+                    if (delSp) {
+                        line = line.substring(0, line.length() - 1);
+                    }
                     resultLineFlowed = true;
+                } else {
+                    resultLineFlowed = false;
                 }
-
-                else resultLineFlowed = false;
 
                 resultLine.append(line);
             }
