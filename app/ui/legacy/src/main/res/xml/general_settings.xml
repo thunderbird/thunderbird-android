@@ -366,11 +366,13 @@
             android:title="@string/volume_navigation_title" />
 
         <CheckBoxPreference
+            android:disableDependentsState="true"
             android:key="messageview_return_to_list"
             android:summary="@string/global_settings_messageview_return_to_list_summary"
             android:title="@string/global_settings_messageview_return_to_list_label" />
 
         <CheckBoxPreference
+            android:dependency="messageview_return_to_list"
             android:key="messageview_show_next"
             android:summary="@string/global_settings_messageview_show_next_summary"
             android:title="@string/global_settings_messageview_show_next_label" />
