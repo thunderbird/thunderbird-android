@@ -8,7 +8,7 @@ class SmtpResponseTest {
     fun `log reply code only`() {
         val response = SmtpResponse(
             replyCode = 200,
-            statusCode = null,
+            enhancedStatusCode = null,
             texts = emptyList()
         )
 
@@ -21,7 +21,7 @@ class SmtpResponseTest {
     fun `log reply code only with omitText = true`() {
         val response = SmtpResponse(
             replyCode = 200,
-            statusCode = null,
+            enhancedStatusCode = null,
             texts = emptyList()
         )
 
@@ -34,7 +34,7 @@ class SmtpResponseTest {
     fun `log reply code and text`() {
         val response = SmtpResponse(
             replyCode = 200,
-            statusCode = null,
+            enhancedStatusCode = null,
             texts = listOf("OK")
         )
 
@@ -47,7 +47,7 @@ class SmtpResponseTest {
     fun `log reply code and text with omitText = true`() {
         val response = SmtpResponse(
             replyCode = 250,
-            statusCode = null,
+            enhancedStatusCode = null,
             texts = listOf("Sender <sender@domain.example> OK")
         )
 
@@ -60,7 +60,7 @@ class SmtpResponseTest {
     fun `log reply code and status code`() {
         val response = SmtpResponse(
             replyCode = 200,
-            statusCode = StatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
+            enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
             texts = emptyList()
         )
 
@@ -73,7 +73,7 @@ class SmtpResponseTest {
     fun `log reply code and status code with omitText = true`() {
         val response = SmtpResponse(
             replyCode = 200,
-            statusCode = StatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
+            enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
             texts = emptyList()
         )
 
@@ -86,7 +86,7 @@ class SmtpResponseTest {
     fun `log reply code, status code, and text`() {
         val response = SmtpResponse(
             replyCode = 200,
-            statusCode = StatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
+            enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
             texts = listOf("OK")
         )
 
@@ -99,7 +99,7 @@ class SmtpResponseTest {
     fun `log reply code, status code, and text with omitText = true`() {
         val response = SmtpResponse(
             replyCode = 200,
-            statusCode = StatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
+            enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
             texts = listOf("OK")
         )
 
@@ -112,7 +112,7 @@ class SmtpResponseTest {
     fun `log reply code and multi-line text`() {
         val response = SmtpResponse(
             replyCode = 250,
-            statusCode = null,
+            enhancedStatusCode = null,
             texts = listOf("Sender <sender@domain.example>", "OK")
         )
 
@@ -130,7 +130,7 @@ class SmtpResponseTest {
     fun `log reply code and multi-line text with omitText = true`() {
         val response = SmtpResponse(
             replyCode = 250,
-            statusCode = null,
+            enhancedStatusCode = null,
             texts = listOf("Sender <sender@domain.example>", "OK")
         )
 
@@ -143,7 +143,7 @@ class SmtpResponseTest {
     fun `log reply code, status code, and multi-line text`() {
         val response = SmtpResponse(
             replyCode = 250,
-            statusCode = StatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0),
+            enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0),
             texts = listOf("Sender <sender@domain.example>", "OK")
         )
 
@@ -161,7 +161,7 @@ class SmtpResponseTest {
     fun `log reply code, status code, and multi-line text with omitText = true`() {
         val response = SmtpResponse(
             replyCode = 250,
-            statusCode = StatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0),
+            enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0),
             texts = listOf("Sender <sender@domain.example>", "OK")
         )
 
