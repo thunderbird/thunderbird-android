@@ -31,13 +31,10 @@ import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.setup.ServerNameSuggester;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
-import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.job.K9JobManager;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MailServerDirection;
-import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
@@ -63,8 +60,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
-    private final MessagingController messagingController = DI.get(MessagingController.class);
-    private final K9JobManager jobManager = DI.get(K9JobManager.class);
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
     private final ServerNameSuggester serverNameSuggester = DI.get(ServerNameSuggester.class);
 
@@ -89,9 +84,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
-    private CheckBox mCompressionMobile;
-    private CheckBox mCompressionWifi;
-    private CheckBox mCompressionOther;
+    private CheckBox useCompressionCheckBox;
     private CheckBox mSubscribedFoldersOnly;
     private AuthTypeAdapter mAuthTypeAdapter;
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
@@ -138,9 +131,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mWebdavAuthPathView = findViewById(R.id.webdav_auth_path);
         mWebdavMailboxPathView = findViewById(R.id.webdav_mailbox_path);
         mNextButton = findViewById(R.id.next);
-        mCompressionMobile = findViewById(R.id.compression_mobile);
-        mCompressionWifi = findViewById(R.id.compression_wifi);
-        mCompressionOther = findViewById(R.id.compression_other);
+        useCompressionCheckBox = findViewById(R.id.use_compression);
         mSubscribedFoldersOnly = findViewById(R.id.subscribed_folders_only);
         mAllowClientCertificateView = findViewById(R.id.account_allow_client_certificate);
 
@@ -222,8 +213,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                findViewById(R.id.compression_section).setVisibility(View.GONE);
-                findViewById(R.id.compression_label).setVisibility(View.GONE);
+                useCompressionCheckBox.setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
             } else if (settings.type.equals(Protocols.IMAP)) {
                 serverLayoutView.setHint(getString(R.string.account_setup_incoming_imap_server_label));
@@ -254,8 +244,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
-                findViewById(R.id.compression_section).setVisibility(View.GONE);
-                findViewById(R.id.compression_label).setVisibility(View.GONE);
+                useCompressionCheckBox.setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
 
                 String path = WebDavStoreSettings.getPath(settings);
@@ -305,9 +294,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
             updateViewFromSecurity();
 
-            mCompressionMobile.setChecked(mAccount.useCompression(NetworkType.MOBILE));
-            mCompressionWifi.setChecked(mAccount.useCompression(NetworkType.WIFI));
-            mCompressionOther.setChecked(mAccount.useCompression(NetworkType.OTHER));
+            useCompressionCheckBox.setChecked(mAccount.useCompression());
 
             if (settings.host != null) {
                 mServerView.setText(settings.host);
@@ -614,9 +601,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             mAccount.setIncomingServerSettings(settings);
 
-            mAccount.setCompression(NetworkType.MOBILE, mCompressionMobile.isChecked());
-            mAccount.setCompression(NetworkType.WIFI, mCompressionWifi.isChecked());
-            mAccount.setCompression(NetworkType.OTHER, mCompressionOther.isChecked());
+            mAccount.setUseCompression(useCompressionCheckBox.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);

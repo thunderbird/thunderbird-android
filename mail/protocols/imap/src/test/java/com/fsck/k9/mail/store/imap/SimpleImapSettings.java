@@ -3,7 +3,6 @@ package com.fsck.k9.mail.store.imap;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.NetworkType;
 
 
 class SimpleImapSettings implements ImapSettings {
@@ -55,7 +54,7 @@ class SimpleImapSettings implements ImapSettings {
     }
 
     @Override
-    public boolean useCompression(NetworkType type) {
+    public boolean useCompression() {
         return useCompression;
     }
 

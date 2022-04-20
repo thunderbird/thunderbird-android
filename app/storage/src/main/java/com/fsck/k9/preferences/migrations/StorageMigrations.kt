@@ -23,5 +23,6 @@ internal object StorageMigrations {
         if (oldVersion < 15) StorageMigrationTo15(db, migrationsHelper).rewriteIdleRefreshInterval()
         if (oldVersion < 16) StorageMigrationTo16(db, migrationsHelper).changeDefaultRegisteredNameColor()
         if (oldVersion < 17) StorageMigrationTo17(db, migrationsHelper).rewriteNotificationLightSettings()
+        if (oldVersion < 18) StorageMigrationTo18(db, migrationsHelper).rewriteImapCompressionSettings()
     }
 }

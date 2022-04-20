@@ -1,13 +1,10 @@
 package com.fsck.k9.backends
 
-import android.content.Context
-import android.net.ConnectivityManager
 import com.fsck.k9.Account
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
 import com.fsck.k9.backend.imap.ImapPushConfigProvider
-import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
@@ -22,7 +19,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class ImapBackendFactory(
-    private val context: Context,
     private val accountManager: AccountManager,
     private val powerManager: PowerManager,
     private val idleRefreshManager: IdleRefreshManager,
@@ -54,7 +50,6 @@ class ImapBackendFactory(
             account.incomingServerSettings,
             config,
             trustedSocketFactory,
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
             oAuth2TokenProvider
         )
     }
@@ -66,7 +61,7 @@ class ImapBackendFactory(
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
 
-            override fun useCompression(type: NetworkType) = account.useCompression(type)
+            override fun useCompression() = account.useCompression
         }
     }
 

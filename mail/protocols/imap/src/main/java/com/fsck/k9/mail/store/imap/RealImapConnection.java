@@ -27,16 +27,12 @@ import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
@@ -77,7 +73,6 @@ class RealImapConnection implements ImapConnection {
     private static final int LENGTH_LIMIT_WITH_CONDSTORE = 8172;
 
 
-    private final ConnectivityManager connectivityManager;
     private final OAuth2TokenProvider oauthTokenProvider;
     private final TrustedSocketFactory socketFactory;
     private final int socketConnectTimeout;
@@ -97,10 +92,9 @@ class RealImapConnection implements ImapConnection {
 
 
     public RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider, int connectionGeneration) {
+            OAuth2TokenProvider oauthTokenProvider, int connectionGeneration) {
         this.settings = settings;
         this.socketFactory = socketFactory;
-        this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
         this.socketConnectTimeout = SOCKET_CONNECT_TIMEOUT;
         this.socketReadTimeout = SOCKET_READ_TIMEOUT;
@@ -108,12 +102,10 @@ class RealImapConnection implements ImapConnection {
     }
 
     public RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
-            int socketConnectTimeout, int socketReadTimeout,
+            OAuth2TokenProvider oauthTokenProvider, int socketConnectTimeout, int socketReadTimeout,
             int connectionGeneration) {
         this.settings = settings;
         this.socketFactory = socketFactory;
-        this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
         this.socketConnectTimeout = socketConnectTimeout;
         this.socketReadTimeout = socketReadTimeout;
@@ -577,30 +569,9 @@ class RealImapConnection implements ImapConnection {
     }
 
     private void enableCompressionIfRequested() throws IOException, MessagingException {
-        if (hasCapability(Capabilities.COMPRESS_DEFLATE) && shouldEnableCompression()) {
+        if (hasCapability(Capabilities.COMPRESS_DEFLATE) && settings.useCompression()) {
             enableCompression();
         }
-    }
-
-    private boolean shouldEnableCompression() {
-        boolean useCompression = true;
-
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null) {
-            int type = networkInfo.getType();
-            if (K9MailLib.isDebug()) {
-                Timber.d("On network type %s", type);
-            }
-
-            NetworkType networkType = NetworkType.fromConnectivityManagerType(type);
-            useCompression = settings.useCompression(networkType);
-        }
-
-        if (K9MailLib.isDebug()) {
-            Timber.d("useCompression: %b", useCompression);
-        }
-
-        return useCompression;
     }
 
     private void enableCompression() throws IOException, MessagingException {

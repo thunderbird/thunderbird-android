@@ -15,7 +15,6 @@ import com.fsck.k9.Account.ShowPictures
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.helper.Utility
-import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
@@ -120,10 +119,7 @@ class AccountPreferenceSerializer(
             isDefaultQuotedTextShown = storage.getBoolean("$accountUuid.defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN)
             isReplyAfterQuote = storage.getBoolean("$accountUuid.replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE)
             isStripSignature = storage.getBoolean("$accountUuid.stripSignature", DEFAULT_STRIP_SIGNATURE)
-            for (type in NetworkType.values()) {
-                val useCompression = storage.getBoolean("$accountUuid.useCompression.$type", true)
-                setCompression(type, useCompression)
-            }
+            useCompression = storage.getBoolean("$accountUuid.useCompression", true)
 
             importedAutoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", null)
 
@@ -334,13 +330,7 @@ class AccountPreferenceSerializer(
             editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
             editor.putBoolean("$accountUuid.isFinishedSetup", isFinishedSetup)
 
-            val compressionMap = getCompressionMap()
-            for (type in NetworkType.values()) {
-                val useCompression = compressionMap[type]
-                if (useCompression != null) {
-                    editor.putBoolean("$accountUuid.useCompression.$type", useCompression)
-                }
-            }
+            editor.putBoolean("$accountUuid.useCompression", useCompression)
         }
 
         saveIdentities(account, storage, editor)
@@ -456,10 +446,8 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.lastSyncTime")
         editor.remove("$accountUuid.lastFolderListRefreshTime")
         editor.remove("$accountUuid.isFinishedSetup")
+        editor.remove("$accountUuid.useCompression")
 
-        for (type in NetworkType.values()) {
-            editor.remove("$accountUuid.useCompression." + type.name)
-        }
         deleteIdentities(account, storage, editor)
         // TODO: Remove preference settings that may exist for individual folders in the account.
     }

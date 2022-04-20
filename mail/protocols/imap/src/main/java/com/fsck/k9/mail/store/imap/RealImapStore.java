@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import android.net.ConnectivityManager;
 import androidx.annotation.Nullable;
 
 import com.fsck.k9.mail.AuthType;
@@ -21,7 +20,6 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -38,7 +36,6 @@ class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapSto
     private final ImapStoreConfig config;
     private final TrustedSocketFactory trustedSocketFactory;
     private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
-    private ConnectivityManager connectivityManager;
     private OAuth2TokenProvider oauthTokenProvider;
 
     private String host;
@@ -57,8 +54,7 @@ class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapSto
 
 
     public RealImapStore(ServerSettings serverSettings, ImapStoreConfig config,
-            TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
-            OAuth2TokenProvider oauthTokenProvider) {
+            TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
         this.config = config;
         this.trustedSocketFactory = trustedSocketFactory;
 
@@ -66,7 +62,6 @@ class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapSto
         port = serverSettings.port;
 
         connectionSecurity = serverSettings.connectionSecurity;
-        this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
 
         authType = serverSettings.authenticationType;
@@ -327,7 +322,6 @@ class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapSto
         return new RealImapConnection(
                 new StoreImapSettings(),
                 trustedSocketFactory,
-                connectivityManager,
                 oauthTokenProvider,
                 connectionGeneration);
     }
@@ -382,8 +376,8 @@ class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapSto
         }
 
         @Override
-        public boolean useCompression(final NetworkType type) {
-            return config.useCompression(type);
+        public boolean useCompression() {
+            return config.useCompression();
         }
 
         @Override
