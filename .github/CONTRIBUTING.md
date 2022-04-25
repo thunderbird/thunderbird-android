@@ -3,7 +3,7 @@
 If the app is not behaving like it should, it's not necessarily a bug. Please consult the following resources before
 submitting a new issue.
 
-* [User Manual](https://k9mail.app/documentation/)
+* [User Manual](https://docs.k9mail.app/)
 * [Frequently Asked Questions](https://forum.k9mail.app/c/faq)
 * [Support Forum](https://forum.k9mail.app/)
 
