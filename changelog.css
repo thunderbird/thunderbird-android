@@ -1,0 +1,17 @@
+html {
+  font-family: "Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+}
+
+body {
+  margin: 1em auto;
+  max-width: 800px;
+}
+
+.logo {
+  height: 2em;
+  padding-right: 0.3em;
+}
+
+h1 {
+  margin-bottom: 1.5em;
+}

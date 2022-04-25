@@ -3,11 +3,14 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="/changelog">
     <html>
+      <head>
+        <link rel="stylesheet" href="changelog.css" />
+      </head>
       <body>
-        <h2><img src="https://raw.githubusercontent.com/k9mail/k-9/master/app/ui/src/main/res/mipmap-hdpi/icon.png"/><a href="https://k9mail.github.io/">K-9 Mail</a> Change Log</h2>
+        <h1><a href="https://k9mail.app/"><img class="logo" src="https://k9mail.app/assets/img/k9-logo.svg"/></a> K-9 Mail Change Log</h1>
         <xsl:for-each select="release">
           <h3>
-            <xsl:value-of select="./@version" />
+            Version <xsl:value-of select="./@version" /><xsl:if test="./@date"> (<xsl:value-of select="./@date" />)</xsl:if>
           </h3>
           <ul>
             <xsl:for-each select="change">
