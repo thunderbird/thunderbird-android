@@ -30,7 +30,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.ui.base.ThemeType;
-import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import timber.log.Timber;
@@ -40,11 +39,8 @@ public class OpenPgpAppSelectDialog extends K9Activity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";
-    private static final String PACKAGE_NAME_APG = "org.thialfihar.android.apg";
-    private static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
 
     public static final String FRAG_OPENPGP_SELECT = "openpgp_select";
-    public static final String FRAG_APG_DEPRECATE = "apg_deprecate";
     public static final String FRAG_OPENKEYCHAIN_INFO = "openkeychain_info";
 
     private static final Intent MARKET_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse(
@@ -53,7 +49,6 @@ public class OpenPgpAppSelectDialog extends K9Activity {
             String.format("https://play.google.com/store/apps/details?id=%s", OPENKEYCHAIN_PACKAGE)));
 
 
-    private boolean isStopped;
     private Account account;
 
     public static void startOpenPgpChooserActivity(Context context, Account account) {
@@ -76,7 +71,6 @@ public class OpenPgpAppSelectDialog extends K9Activity {
 
     @Override
     protected void onStart() {
-        isStopped = false;
         super.onStart();
 
         List<String> openPgpProviderPackages = OpenPgpProviderUtil.getOpenPgpProviderPackages(this);
@@ -93,18 +87,12 @@ public class OpenPgpAppSelectDialog extends K9Activity {
 
     @Override
     protected void onStop() {
-        isStopped = true;
         super.onStop();
     }
 
     private void showOpenPgpSelectDialogFragment() {
         OpenPgpAppSelectFragment fragment = new OpenPgpAppSelectFragment();
         fragment.show(getSupportFragmentManager(), FRAG_OPENPGP_SELECT);
-    }
-
-    private void showApgDeprecationDialogFragment() {
-        ApgDeprecationDialogFragment fragment = new ApgDeprecationDialogFragment();
-        fragment.show(getSupportFragmentManager(), FRAG_APG_DEPRECATE);
     }
 
     private void showOpenKeychainInfoFragment() {
@@ -125,12 +113,6 @@ public class OpenPgpAppSelectDialog extends K9Activity {
                     context.getString(R.string.openpgp_list_preference_none),
                     getResources().getDrawable(R.drawable.ic_action_cancel_launchersize_light));
             openPgpProviderList.add(noneEntry);
-
-            if (isApgInstalled(getActivity())) {
-                Drawable icon = getResources().getDrawable(R.drawable.ic_apg_small);
-                openPgpProviderList.add(new OpenPgpProviderEntry(
-                        APG_PROVIDER_PLACEHOLDER, getString(R.string.apg), icon));
-            }
 
             // search for OpenPGP providers...
             Intent intent = new Intent(OpenPgpApi.SERVICE_INTENT_2);
@@ -168,13 +150,6 @@ public class OpenPgpAppSelectDialog extends K9Activity {
                             icon, marketIntent));
                 }
             }
-        }
-
-        private boolean isApgInstalled(Context context) {
-            Intent intent = new Intent("org.openintents.openpgp.IOpenPgpService");
-            intent.setPackage(PACKAGE_NAME_APG);
-            List<ResolveInfo> resInfo = context.getPackageManager().queryIntentServices(intent, 0);
-            return resInfo != null && !resInfo.isEmpty();
         }
 
         @Override
@@ -251,27 +226,6 @@ public class OpenPgpAppSelectDialog extends K9Activity {
         }
     }
 
-    public static class ApgDeprecationDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return new ApgDeprecationWarningDialog(getActivity());
-        }
-
-        @Override
-        public void onStop() {
-            super.onStop();
-
-            dismiss();
-        }
-
-        @Override
-        public void onDismiss(DialogInterface dialog) {
-            super.onDismiss(dialog);
-
-            ((OpenPgpAppSelectDialog) getActivity()).onDismissApgDialog();
-        }
-    }
-
     public static class OpenKeychainInfoFragment extends DialogFragment {
         @NonNull
         @Override
@@ -323,11 +277,6 @@ public class OpenPgpAppSelectDialog extends K9Activity {
     }
 
     public void onSelectProvider(String selectedPackage) {
-        if (APG_PROVIDER_PLACEHOLDER.equals(selectedPackage)) {
-            showApgDeprecationDialogFragment();
-            return;
-        }
-
         persistOpenPgpProviderSetting(selectedPackage);
         finish();
     }
@@ -335,12 +284,6 @@ public class OpenPgpAppSelectDialog extends K9Activity {
     private void persistOpenPgpProviderSetting(String selectedPackage) {
         account.setOpenPgpProvider(selectedPackage);
         Preferences.getPreferences(getApplicationContext()).saveAccount(account);
-    }
-
-    public void onDismissApgDialog() {
-        if (!isStopped) {
-            showOpenPgpSelectDialogFragment();
-        }
     }
 
     private static class OpenPgpProviderEntry {
