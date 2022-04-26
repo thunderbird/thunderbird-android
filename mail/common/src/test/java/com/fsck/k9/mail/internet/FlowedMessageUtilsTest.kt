@@ -4,16 +4,13 @@ import com.fsck.k9.mail.crlf
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-private const val DEL_SP_NO = false
-private const val DEL_SP_YES = true
-
 class FlowedMessageUtilsTest {
     @Test
     fun `deflow() with simple text`() {
         val input = "Text that should be \r\n" +
             "displayed on one line"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo("Text that should be displayed on one line")
     }
@@ -27,7 +24,7 @@ class FlowedMessageUtilsTest {
             "Text that should retain\r\n" +
             "its line break."
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo(
             """
@@ -42,7 +39,7 @@ class FlowedMessageUtilsTest {
     fun `deflow() with nothing to do`() {
         val input = "Line one\r\nLine two\r\n"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo(input)
     }
@@ -56,7 +53,7 @@ class FlowedMessageUtilsTest {
             "Some more text that should be \r\n" +
             "displayed on one line.\r\n"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo(
             """
@@ -74,7 +71,7 @@ class FlowedMessageUtilsTest {
         val input = "> Quoted text \r\n" +
             "Some other text"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo("> Quoted text \r\nSome other text")
     }
@@ -86,7 +83,7 @@ class FlowedMessageUtilsTest {
             "> is here\r\n" +
             "Some other text"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo(
             """
@@ -103,7 +100,7 @@ class FlowedMessageUtilsTest {
             "\r\n" +
             "Text"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo(input)
     }
@@ -112,7 +109,7 @@ class FlowedMessageUtilsTest {
     fun `deflow() with delSp=true`() {
         val input = "Text that is wrapped mid wo \r\nrd"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_YES)
+        val result = FlowedMessageUtils.deflow(input, delSp = true)
 
         assertThat(result).isEqualTo("Text that is wrapped mid word")
     }
@@ -122,7 +119,7 @@ class FlowedMessageUtilsTest {
         val input = "> Quoted te \r\n" +
             "> xt"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_YES)
+        val result = FlowedMessageUtils.deflow(input, delSp = true)
 
         assertThat(result).isEqualTo("> Quoted text")
     }
@@ -132,7 +129,7 @@ class FlowedMessageUtilsTest {
         val input = "Text that should be \r\n" +
             " displayed on one line"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo("Text that should be displayed on one line")
     }
@@ -143,7 +140,7 @@ class FlowedMessageUtilsTest {
             " Line 2\r\n" +
             " Line 3\r\n"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo("Line 1\r\nLine 2\r\nLine 3\r\n")
     }
@@ -153,7 +150,7 @@ class FlowedMessageUtilsTest {
         val input = "> Text that should be \r\n" +
             "> displayed on one line"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo("> Text that should be displayed on one line")
     }
@@ -167,7 +164,7 @@ class FlowedMessageUtilsTest {
             "Signature \r\n" +
             "text"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo(
             """
@@ -188,7 +185,7 @@ class FlowedMessageUtilsTest {
             "> Signature \r\n" +
             "> text"
 
-        val result = FlowedMessageUtils.deflow(input, DEL_SP_NO)
+        val result = FlowedMessageUtils.deflow(input, delSp = false)
 
         assertThat(result).isEqualTo(
             """
@@ -196,6 +193,23 @@ class FlowedMessageUtilsTest {
             >${" "}
             > --${" "}
             > Signature text
+            """.trimIndent().crlf()
+        )
+    }
+
+    @Test
+    fun `deflow() with flowed line followed by signature separator`() {
+        val input = "Fake flowed line \r\n" +
+            "-- \r\n" +
+            "Signature"
+
+        val result = FlowedMessageUtils.deflow(input, delSp = true)
+
+        assertThat(result).isEqualTo(
+            """
+            Fake flowed line
+            --${" "}
+            Signature
             """.trimIndent().crlf()
         )
     }
