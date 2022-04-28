@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.ssl;
+package com.fsck.k9.helper;
 
 
 import java.io.IOException;
@@ -14,6 +14,8 @@ import android.net.SSLCertificateSocketFactory;
 import android.text.TextUtils;
 
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ssl.TrustManagerFactory;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;

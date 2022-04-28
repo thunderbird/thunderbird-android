@@ -73,6 +73,7 @@ public class WebDavStore {
     private String mailboxPath;
 
     private final TrustManagerFactory trustManagerFactory;
+    private final SniHostSetter sniHostSetter;
     private final WebDavHttpClient.WebDavHttpClientFactory httpClientFactory;
     private WebDavHttpClient httpClient = null;
     private HttpContext httpContext = null;
@@ -84,16 +85,19 @@ public class WebDavStore {
     private WebDavFolder sendFolder = null;
     private Map<String, WebDavFolder> folderList = new HashMap<>();
 
-    public WebDavStore(TrustManagerFactory trustManagerFactory, ServerSettings serverSettings,
-            DraftsFolderProvider draftsFolderProvider) {
-        this(trustManagerFactory, serverSettings, draftsFolderProvider, new WebDavHttpClient.WebDavHttpClientFactory());
+    public WebDavStore(TrustManagerFactory trustManagerFactory, SniHostSetter sniHostSetter,
+            ServerSettings serverSettings, DraftsFolderProvider draftsFolderProvider) {
+        this(trustManagerFactory, sniHostSetter, serverSettings, draftsFolderProvider,
+                new WebDavHttpClient.WebDavHttpClientFactory());
     }
 
-    public WebDavStore(TrustManagerFactory trustManagerFactory, ServerSettings serverSettings,
-            DraftsFolderProvider draftsFolderProvider, WebDavHttpClientFactory clientFactory) {
+    public WebDavStore(TrustManagerFactory trustManagerFactory, SniHostSetter sniHostSetter,
+            ServerSettings serverSettings, DraftsFolderProvider draftsFolderProvider,
+            WebDavHttpClientFactory clientFactory) {
         this.draftsFolderProvider = draftsFolderProvider;
         httpClientFactory = clientFactory;
         this.trustManagerFactory = trustManagerFactory;
+        this.sniHostSetter = sniHostSetter;
 
         hostname = serverSettings.host;
         port = serverSettings.port;
@@ -765,7 +769,9 @@ public class WebDavStore {
 
             SchemeRegistry reg = httpClient.getConnectionManager().getSchemeRegistry();
             try {
-                Scheme s = new Scheme("https", new WebDavSocketFactory(trustManagerFactory, hostname, 443), 443);
+                WebDavSocketFactory socketFactory =
+                        new WebDavSocketFactory(trustManagerFactory, sniHostSetter, hostname, 443);
+                Scheme s = new Scheme("https", socketFactory, 443);
                 reg.register(s);
             } catch (NoSuchAlgorithmException nsa) {
                 Timber.e(nsa, "NoSuchAlgorithmException in getHttpClient");

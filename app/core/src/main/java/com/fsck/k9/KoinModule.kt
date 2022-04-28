@@ -2,7 +2,7 @@ package com.fsck.k9
 
 import android.content.Context
 import com.fsck.k9.helper.Contacts
-import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory
+import com.fsck.k9.helper.DefaultTrustedSocketFactory
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory

@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.ssl;
+package com.fsck.k9.helper;
 
 import java.net.Socket;
 import java.security.Principal;
