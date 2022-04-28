@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.internet;
+package com.fsck.k9.helper;
 
 
 import android.net.Uri;
@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 
