@@ -1,10 +1,13 @@
 package com.fsck.k9.mail.oauth;
 
 
+import java.io.IOException;
+
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.Base64;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.JsonDataException;
+import com.squareup.moshi.Moshi;
 import timber.log.Timber;
 
 
@@ -24,13 +27,15 @@ public class XOAuth2ChallengeParser {
         }
 
         try {
-            JSONObject json = new JSONObject(decodedResponse);
-            String status = json.getString("status");
-            if (!BAD_RESPONSE.equals(status)) {
+            Moshi moshi = new Moshi.Builder().build();
+            JsonAdapter<XOAuth2Response> adapter = moshi.adapter(XOAuth2Response.class);
+            XOAuth2Response responseObject = adapter.fromJson(decodedResponse);
+            if (responseObject != null && responseObject.status != null &&
+                    !BAD_RESPONSE.equals(responseObject.status)) {
                 return false;
             }
-        } catch (JSONException jsonException) {
-            Timber.e("Error decoding JSON response from: %s. Response was: %s", host, decodedResponse);
+        } catch (IOException | JsonDataException e) {
+            Timber.e(e, "Error decoding JSON response from: %s. Response was: %s", host, decodedResponse);
         }
 
         return true;
