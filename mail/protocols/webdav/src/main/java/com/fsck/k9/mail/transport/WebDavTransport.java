@@ -10,15 +10,16 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import com.fsck.k9.mail.store.webdav.DraftsFolderProvider;
+import com.fsck.k9.mail.store.webdav.SniHostSetter;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
 import timber.log.Timber;
 
 public class WebDavTransport extends Transport {
     private WebDavStore store;
 
-    public WebDavTransport(TrustManagerFactory trustManagerFactory, ServerSettings serverSettings,
-            DraftsFolderProvider draftsFolderProvider) {
-        store = new WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider);
+    public WebDavTransport(TrustManagerFactory trustManagerFactory, SniHostSetter sniHostSetter,
+            ServerSettings serverSettings, DraftsFolderProvider draftsFolderProvider) {
+        store = new WebDavStore(trustManagerFactory, sniHostSetter, serverSettings, draftsFolderProvider);
 
         if (K9MailLib.isDebug())
             Timber.d(">>> New WebDavTransport creation complete");

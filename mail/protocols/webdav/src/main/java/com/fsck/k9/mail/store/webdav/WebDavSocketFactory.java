@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
-import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
@@ -22,10 +21,13 @@ import org.apache.http.params.HttpParams;
  * Using two socket factories looks suspicious.
  */
 public class WebDavSocketFactory implements LayeredSocketFactory {
+    private final SniHostSetter sniHostSetter;
     private SSLSocketFactory mSocketFactory;
     private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
 
-    public WebDavSocketFactory(TrustManagerFactory trustManagerFactory, String host, int port) throws NoSuchAlgorithmException, KeyManagementException {
+    public WebDavSocketFactory(TrustManagerFactory trustManagerFactory, SniHostSetter sniHostSetter,
+            String host, int port) throws NoSuchAlgorithmException, KeyManagementException {
+        this.sniHostSetter = sniHostSetter;
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, new TrustManager[] {
                 trustManagerFactory.getTrustManagerForDomain(host, port)
@@ -62,7 +64,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
                 port,
                 autoClose
         );
-        DefaultTrustedSocketFactory.setSniHost(mSocketFactory, sslSocket, host);
+        sniHostSetter.setSniHost(mSocketFactory, sslSocket, host);
         //hostnameVerifier.verify(host, sslSocket);
         // verifyHostName() didn't blowup - good!
         return sslSocket;

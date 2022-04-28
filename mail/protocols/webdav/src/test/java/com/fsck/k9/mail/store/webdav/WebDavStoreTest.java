@@ -70,6 +70,8 @@ public class WebDavStoreTest {
     @Mock
     private TrustManagerFactory trustManagerFactory;
     @Mock
+    private SniHostSetter sniHostSetter;
+    @Mock
     private DraftsFolderProvider draftsFolderProvider;
 
     private ArgumentCaptor<HttpGeneric> requestCaptor;
@@ -352,12 +354,14 @@ public class WebDavStoreTest {
     }
 
     private WebDavStore createWebDavStore() {
-        return new WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider, mockHttpClientFactory);
+        return new WebDavStore(trustManagerFactory, sniHostSetter, serverSettings, draftsFolderProvider,
+                mockHttpClientFactory);
     }
 
     private WebDavStore createWebDavStore(ConnectionSecurity connectionSecurity) {
         ServerSettings serverSettings = createServerSettings(connectionSecurity);
-        return new WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider, mockHttpClientFactory);
+        return new WebDavStore(trustManagerFactory, sniHostSetter, serverSettings, draftsFolderProvider,
+                mockHttpClientFactory);
     }
 
     private void configureHttpResponses(HttpResponse... responses) throws IOException {
