@@ -9,9 +9,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
-
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -21,6 +18,8 @@ import com.fsck.k9.mail.Part;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 import timber.log.Timber;
 
 
@@ -1069,7 +1068,7 @@ public class MimeUtility {
         return DEFAULT_ATTACHMENT_MIME_TYPE;
     }
 
-    public static String getExtensionByMimeType(@NonNull String mimeType) {
+    public static String getExtensionByMimeType(@NotNull String mimeType) {
         String lowerCaseMimeType = mimeType.toLowerCase(Locale.US);
         for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP) {
             if (contentTypeMapEntry[1].equals(lowerCaseMimeType)) {

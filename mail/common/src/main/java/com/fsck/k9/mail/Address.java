@@ -1,8 +1,6 @@
 
 package com.fsck.k9.mail;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,6 +13,8 @@ import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.dom.address.Mailbox;
 import org.apache.james.mime4j.dom.address.MailboxList;
 import org.apache.james.mime4j.field.address.DefaultAddressParser;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 import timber.log.Timber;
 
 import android.text.TextUtils;
@@ -29,7 +29,7 @@ public class Address implements Serializable {
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
 
-    @NonNull
+    @NotNull
     private String mAddress;
 
     private String mPersonal;

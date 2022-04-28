@@ -4,13 +4,12 @@ package com.fsck.k9.mail.store.pop3;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import org.jetbrains.annotations.NotNull;
 
 
 public class Pop3Store {
@@ -36,7 +35,7 @@ public class Pop3Store {
         authType = serverSettings.authenticationType;
     }
 
-    @NonNull
+    @NotNull
     public Pop3Folder getFolder(String name) {
         Pop3Folder folder = mFolders.get(name);
         if (folder == null) {
