@@ -7,6 +7,7 @@ if (rootProject.testCoverage) {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+    implementation "org.jetbrains:annotations:${versions.jetbrainsAnnotations}"
 
     api project(":mail:common")
 
@@ -14,7 +15,6 @@ dependencies {
     implementation "com.beetstra.jutf7:jutf7:1.0.0"
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "androidx.annotation:annotation:${versions.androidxAnnotation}"
 
     testImplementation project(":mail:testing")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"

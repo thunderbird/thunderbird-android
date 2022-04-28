@@ -35,6 +35,7 @@ buildscript {
                 'okhttp': '4.9.0',
                 'minidns': '1.0.0',
                 'glide': '4.11.0',
+                'jetbrainsAnnotations': '20.1.0',
 
                 'androidxTestRunner': '1.3.0',
                 'junit': '4.13.1',

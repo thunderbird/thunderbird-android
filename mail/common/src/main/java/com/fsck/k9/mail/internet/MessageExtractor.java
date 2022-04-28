@@ -10,9 +10,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -21,6 +18,8 @@ import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.Viewable.Flowed;
 import org.apache.commons.io.input.BoundedInputStream;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
@@ -400,7 +399,7 @@ public class MessageExtractor {
      *         A list that will receive the parts that are considered attachments.
      */
     private static void findAttachments(Multipart multipart, Set<Part> knownTextParts,
-            @NonNull List<Part> attachments) {
+            @NotNull List<Part> attachments) {
         for (Part part : multipart.getBodyParts()) {
             Body body = part.getBody();
             if (body instanceof Multipart) {

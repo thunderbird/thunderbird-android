@@ -8,7 +8,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -98,7 +98,7 @@ public abstract class Message implements Part, Body {
     @Override
     public abstract void setHeader(String name, String value);
 
-    @NonNull
+    @NotNull
     @Override
     public abstract String[] getHeader(String name);
 

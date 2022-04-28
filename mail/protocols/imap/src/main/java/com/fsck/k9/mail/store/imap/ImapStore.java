@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 import android.net.ConnectivityManager;
-import androidx.annotation.Nullable;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -24,6 +23,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 
