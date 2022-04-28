@@ -21,8 +21,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import android.annotation.SuppressLint;
-
 import com.fsck.k9.mail.helpers.KeyStoreProvider;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
@@ -36,7 +34,6 @@ import okio.Okio;
 import org.apache.commons.io.IOUtils;
 
 
-@SuppressLint("NewApi")
 public class MockImapServer {
     private static final byte[] CRLF = { '\r', '\n' };
 
