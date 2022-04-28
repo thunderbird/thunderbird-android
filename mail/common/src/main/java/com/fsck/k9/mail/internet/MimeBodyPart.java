@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import androidx.annotation.NonNull;
-
 import org.jetbrains.annotations.NotNull;
 
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
@@ -86,7 +84,7 @@ public class MimeBodyPart extends BodyPart {
         mHeader.setHeader(name, value);
     }
 
-    @NonNull
+    @NotNull
     @Override
     public String[] getHeader(String name) {
         return mHeader.getHeader(name);

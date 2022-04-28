@@ -3,7 +3,7 @@ package com.fsck.k9.mail;
 
 import java.util.Random;
 
-import androidx.annotation.VisibleForTesting;
+import org.jetbrains.annotations.VisibleForTesting;
 
 
 public class BoundaryGenerator {

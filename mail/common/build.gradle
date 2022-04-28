@@ -10,7 +10,6 @@ dependencies {
     implementation "org.apache.james:apache-mime4j-dom:${versions.mime4j}"
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "androidx.annotation:annotation:${versions.androidxAnnotation}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     testImplementation project(":mail:testing")

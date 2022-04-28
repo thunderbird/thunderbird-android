@@ -4,7 +4,7 @@ package com.fsck.k9.mail;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import androidx.annotation.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 
 public interface Part {
@@ -27,7 +27,7 @@ public interface Part {
     /**
      * Returns an array of headers of the given name. The array may be empty.
      */
-    @NonNull
+    @NotNull
     String[] getHeader(String name);
 
     boolean isMimeType(String mimeType);

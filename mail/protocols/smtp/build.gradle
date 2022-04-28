@@ -11,7 +11,6 @@ dependencies {
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "androidx.annotation:annotation:${versions.androidxAnnotation}"
 
     testImplementation project(":mail:testing")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
