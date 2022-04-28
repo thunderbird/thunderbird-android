@@ -1,9 +1,10 @@
-package com.fsck.k9.mail.internet;
+package com.fsck.k9.helper;
 
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.internet.MimeMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
