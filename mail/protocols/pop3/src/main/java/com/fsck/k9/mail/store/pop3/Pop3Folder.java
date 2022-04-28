@@ -10,8 +10,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import android.annotation.SuppressLint;
-
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
@@ -32,7 +30,6 @@ public class Pop3Folder {
 
     private Pop3Store pop3Store;
     private Map<String, Pop3Message> uidToMsgMap = new HashMap<>();
-    @SuppressLint("UseSparseArrays")
     private Map<Integer, Pop3Message> msgNumToMsgMap = new HashMap<>();
     private Map<String, Integer> uidToMsgNumMap = new HashMap<>();
     private String name;

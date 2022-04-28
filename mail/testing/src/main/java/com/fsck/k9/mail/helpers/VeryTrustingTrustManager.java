@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.helpers;
 
-import android.annotation.SuppressLint;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -8,7 +7,6 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.X509TrustManager;
 
 
-@SuppressLint("TrustAllX509TrustManager")
 class VeryTrustingTrustManager implements X509TrustManager {
     private final X509Certificate serverCertificate;
 

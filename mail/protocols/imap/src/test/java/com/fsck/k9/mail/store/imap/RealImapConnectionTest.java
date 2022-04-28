@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import android.app.Activity;
-
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -1070,10 +1068,6 @@ public class RealImapConnectionTest {
                 throw new UnsupportedOperationException();
             }
 
-            @Override
-            public void authorizeApi(String username, Activity activity, OAuth2TokenProviderAuthCallback callback) {
-                throw new UnsupportedOperationException();
-            }
         };
     }
 }
