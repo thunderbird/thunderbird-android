@@ -10,6 +10,8 @@ import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT
+import com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.Transport
 import com.fsck.k9.mail.filter.Base64
