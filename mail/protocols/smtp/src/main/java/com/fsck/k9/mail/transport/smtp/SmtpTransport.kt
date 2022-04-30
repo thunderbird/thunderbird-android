@@ -130,15 +130,16 @@ class SmtpTransport(
                 if (extensions.containsKey("STARTTLS")) {
                     executeCommand("STARTTLS")
 
-                    this.socket = trustedSocketFactory.createSocket(
+                    val tlsSocket = trustedSocketFactory.createSocket(
                         socket,
                         host,
                         port,
                         clientCertificateAlias
                     )
-                    inputStream = PeekableInputStream(BufferedInputStream(socket.getInputStream(), 1024))
+                    this.socket = tlsSocket
+                    inputStream = PeekableInputStream(BufferedInputStream(tlsSocket.getInputStream(), 1024))
                     responseParser = SmtpResponseParser(logger, inputStream!!)
-                    outputStream = BufferedOutputStream(socket.getOutputStream(), 1024)
+                    outputStream = BufferedOutputStream(tlsSocket.getOutputStream(), 1024)
 
                     // Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically, Exim.
                     extensions = sendHello(helloName)

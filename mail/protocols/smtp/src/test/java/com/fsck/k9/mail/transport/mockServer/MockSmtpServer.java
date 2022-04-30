@@ -68,6 +68,11 @@ public class MockSmtpServer {
         interactions.add(new ExpectedCommand(command));
     }
 
+    public void startTls() {
+        checkServerNotRunning();
+        interactions.add(new UpgradeToTls());
+    }
+
     public void closeConnection() {
         checkServerNotRunning();
         interactions.add(new CloseConnection());
@@ -212,6 +217,9 @@ public class MockSmtpServer {
         }
     }
 
+    private static class UpgradeToTls implements SmtpInteraction {
+    }
+
     private static class CloseConnection implements SmtpInteraction {
     }
 
@@ -303,6 +311,8 @@ public class MockSmtpServer {
                 readExpectedCommand((ExpectedCommand) interaction);
             } else if (interaction instanceof CannedResponse) {
                 writeCannedResponse((CannedResponse) interaction);
+            } else if (interaction instanceof UpgradeToTls) {
+                upgradeToTls(socket);
             } else if (interaction instanceof CloseConnection) {
                 clientSocket.close();
             }
