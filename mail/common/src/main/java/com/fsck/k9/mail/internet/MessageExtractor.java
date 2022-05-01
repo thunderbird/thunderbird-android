@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -19,7 +20,6 @@ import com.fsck.k9.mail.Part;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import timber.log.Timber;
 
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;

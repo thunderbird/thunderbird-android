@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.Flag;
-import timber.log.Timber;
 
 
 /**

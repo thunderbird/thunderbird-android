@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.store.imap
 
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
@@ -24,7 +25,6 @@ import java.util.LinkedHashSet
 import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
-import timber.log.Timber
 
 internal class RealImapFolder(
     private val internalImapStore: InternalImapStore,

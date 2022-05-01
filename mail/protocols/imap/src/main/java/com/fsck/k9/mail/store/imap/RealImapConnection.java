@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -45,7 +46,6 @@ import javax.net.ssl.SSLException;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import timber.log.Timber;
 
 import static com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;

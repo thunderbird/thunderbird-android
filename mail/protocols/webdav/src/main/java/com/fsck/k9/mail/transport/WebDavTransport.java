@@ -3,6 +3,7 @@ package com.fsck.k9.mail.transport;
 
 import java.util.Collections;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -12,7 +13,6 @@ import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import com.fsck.k9.mail.store.webdav.DraftsFolderProvider;
 import com.fsck.k9.mail.store.webdav.SniHostSetter;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
-import timber.log.Timber;
 
 public class WebDavTransport extends Transport {
     private WebDavStore store;

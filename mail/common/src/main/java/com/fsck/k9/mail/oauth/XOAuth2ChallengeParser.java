@@ -3,12 +3,12 @@ package com.fsck.k9.mail.oauth;
 
 import java.io.IOException;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.Base64;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;
 import com.squareup.moshi.Moshi;
-import timber.log.Timber;
 
 
 /**

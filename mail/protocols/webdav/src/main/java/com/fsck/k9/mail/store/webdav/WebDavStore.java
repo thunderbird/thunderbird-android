@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FolderType;
@@ -46,7 +47,6 @@ import org.apache.http.protocol.HttpContext;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-import timber.log.Timber;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_WEBDAV;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;

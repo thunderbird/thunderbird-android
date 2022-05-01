@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.transport.smtp
 
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.Authentication
@@ -36,7 +37,6 @@ import java.security.GeneralSecurityException
 import java.util.Locale
 import javax.net.ssl.SSLException
 import org.apache.commons.io.IOUtils
-import timber.log.Timber
 
 private const val SMTP_CONTINUE_REQUEST = 334
 private const val SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535
