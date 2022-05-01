@@ -10,6 +10,8 @@ import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT
+import com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.Transport
 import com.fsck.k9.mail.filter.Base64
@@ -128,15 +130,16 @@ class SmtpTransport(
                 if (extensions.containsKey("STARTTLS")) {
                     executeCommand("STARTTLS")
 
-                    this.socket = trustedSocketFactory.createSocket(
+                    val tlsSocket = trustedSocketFactory.createSocket(
                         socket,
                         host,
                         port,
                         clientCertificateAlias
                     )
-                    inputStream = PeekableInputStream(BufferedInputStream(socket.getInputStream(), 1024))
+                    this.socket = tlsSocket
+                    inputStream = PeekableInputStream(BufferedInputStream(tlsSocket.getInputStream(), 1024))
                     responseParser = SmtpResponseParser(logger, inputStream!!)
-                    outputStream = BufferedOutputStream(socket.getOutputStream(), 1024)
+                    outputStream = BufferedOutputStream(tlsSocket.getOutputStream(), 1024)
 
                     // Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically, Exim.
                     extensions = sendHello(helloName)

@@ -568,6 +568,35 @@ class SmtpTransportTest {
     }
 
     @Test
+    fun `open() with STARTTLS`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello 127.0.0.1")
+            output("250-STARTTLS")
+            output("250 HELP")
+            expect("STARTTLS")
+            output("220 Ready to start TLS")
+            startTls()
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello 127.0.0.1")
+            output("250 AUTH PLAIN LOGIN")
+            expect("AUTH PLAIN AHVzZXIAcGFzc3dvcmQ=")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(
+            server,
+            authenticationType = AuthType.PLAIN,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
+        )
+
+        transport.open()
+
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
     fun `sendMessage() without address to send to should not open connection`() {
         val message = MimeMessage()
         val server = createServerAndSetupForPlainAuthentication()
