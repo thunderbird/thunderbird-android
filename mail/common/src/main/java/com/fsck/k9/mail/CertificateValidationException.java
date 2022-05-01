@@ -7,8 +7,6 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLHandshakeException;
 
-import android.security.KeyChainException;
-
 public class CertificateValidationException extends MessagingException {
     public static final long serialVersionUID = -1;
     private final Reason mReason;
@@ -90,7 +88,7 @@ public class CertificateValidationException extends MessagingException {
         while (throwable != null
                 && !(throwable instanceof CertPathValidatorException)
                 && !(throwable instanceof CertificateException)
-                && !(throwable instanceof KeyChainException)
+                && !("android.security.KeyChainException".equals(throwable.getClass().getCanonicalName()))
                 && !(throwable instanceof SSLHandshakeException)) {
             throwable = throwable.getCause();
         }
