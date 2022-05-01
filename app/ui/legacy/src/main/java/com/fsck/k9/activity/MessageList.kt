@@ -999,6 +999,9 @@ open class MessageList :
         } else if (id == R.id.move_to_drafts) {
             messageViewFragment!!.onMoveToDrafts()
             return true
+        } else if (id == R.id.unsubscribe) {
+            messageViewFragment!!.onUnsubscribe()
+            return true
         } else if (id == R.id.show_headers) {
             startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
             return true
@@ -1094,6 +1097,7 @@ open class MessageList :
             menu.findItem(R.id.refile).isVisible = false
             menu.findItem(R.id.toggle_unread).isVisible = false
             menu.findItem(R.id.toggle_message_view_theme).isVisible = false
+            menu.findItem(R.id.unsubscribe).isVisible = false
             menu.findItem(R.id.show_headers).isVisible = false
         } else {
             // hide prev/next buttons in split mode
@@ -1176,6 +1180,8 @@ open class MessageList :
             if (messageViewFragment!!.isOutbox) {
                 menu.findItem(R.id.move_to_drafts).isVisible = true
             }
+
+            menu.findItem(R.id.unsubscribe).isVisible = messageViewFragment!!.canMessageBeUnsubscribed()
         }
 
         // Set visibility of menu items related to the message list

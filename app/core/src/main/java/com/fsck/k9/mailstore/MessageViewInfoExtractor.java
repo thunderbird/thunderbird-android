@@ -12,6 +12,8 @@ import androidx.annotation.WorkerThread;
 
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.crypto.MessageCryptoStructureDetector;
+import com.fsck.k9.helper.ListUnsubscribeHelper;
+import com.fsck.k9.helper.UnsubscribeUri;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -144,8 +146,11 @@ public class MessageViewInfoExtractor {
         boolean isMessageIncomplete =
                 !message.isSet(Flag.X_DOWNLOADED_FULL) || MessageExtractor.hasMissingParts(message);
 
+        UnsubscribeUri preferredUnsubscribeUri = ListUnsubscribeHelper.INSTANCE.getPreferredListUnsubscribeUri(message);
+
         return MessageViewInfo.createWithExtractedContent(
-                message, contentPart, isMessageIncomplete, viewable.html, attachmentInfos, attachmentResolver);
+                message, contentPart, isMessageIncomplete, viewable.html, attachmentInfos, attachmentResolver,
+                preferredUnsubscribeUri);
     }
 
     private ViewableExtractedText extractViewableAndAttachments(List<Part> parts,

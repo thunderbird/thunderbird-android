@@ -147,6 +147,10 @@
         </menu>
     </item>
 
+    <item android:id="@+id/unsubscribe"
+          app:showAsAction="never"
+          android:title="@string/unsubscribe_action"/>
+
     <item android:id="@+id/show_headers"
           app:showAsAction="never"
           android:title="@string/show_headers_action"/>

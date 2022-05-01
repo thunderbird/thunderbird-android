@@ -137,6 +137,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="flag_action">Add star</string>
     <string name="unflag_action">Remove star</string>
     <string name="copy_action">Copy</string>
+    <string name="unsubscribe_action">Unsubscribe</string>
     <string name="show_headers_action">Show headers</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Address copied to clipboard</item>
