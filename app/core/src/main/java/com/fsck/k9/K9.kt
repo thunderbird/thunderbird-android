@@ -285,6 +285,7 @@ object K9 : EarlyInit {
 
             override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
         })
+        com.fsck.k9.logging.Timber.logger = TimberLogger()
 
         checkCachedDatabaseVersion(context)
 

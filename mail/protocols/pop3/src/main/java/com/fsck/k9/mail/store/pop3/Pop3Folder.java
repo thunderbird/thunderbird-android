@@ -10,12 +10,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
-import timber.log.Timber;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;

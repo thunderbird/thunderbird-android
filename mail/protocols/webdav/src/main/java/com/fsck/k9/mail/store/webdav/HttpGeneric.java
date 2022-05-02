@@ -1,9 +1,9 @@
 package com.fsck.k9.mail.store.webdav;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.K9MailLib;
 
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import timber.log.Timber;
 
 import java.net.URI;
 

@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.store.webdav;
 
+import com.fsck.k9.logging.Timber;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
@@ -7,7 +8,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
-import timber.log.Timber;
 
 import java.io.IOException;
 import java.io.InputStream;

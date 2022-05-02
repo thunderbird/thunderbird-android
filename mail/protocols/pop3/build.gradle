@@ -7,8 +7,6 @@ if (rootProject.testCoverage) {
 dependencies {
     api project(":mail:common")
 
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
-
     testImplementation project(":mail:testing")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"

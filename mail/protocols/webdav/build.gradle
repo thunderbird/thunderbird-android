@@ -8,7 +8,6 @@ dependencies {
     api project(":mail:common")
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     testImplementation project(":mail:testing")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"

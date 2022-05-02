@@ -6,11 +6,12 @@ if (rootProject.testCoverage) {
 }
 
 dependencies {
+    api "org.jetbrains:annotations:${versions.jetbrainsAnnotations}"
+
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
     implementation "org.apache.james:apache-mime4j-dom:${versions.mime4j}"
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "com.squareup.moshi:moshi:${versions.moshi}"
 
     testImplementation project(":mail:testing")

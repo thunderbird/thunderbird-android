@@ -10,12 +10,12 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.CertificateChainException;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
-import timber.log.Timber;
 
 public class TrustManagerFactory {
     public static TrustManagerFactory createInstance(LocalKeyStore localKeyStore) {

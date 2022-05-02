@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.helper.Rfc822Token;
 import com.fsck.k9.mail.helper.Rfc822Tokenizer;
 import com.fsck.k9.mail.helper.TextUtils;
@@ -18,7 +19,6 @@ import org.apache.james.mime4j.dom.address.MailboxList;
 import org.apache.james.mime4j.field.address.DefaultAddressParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
-import timber.log.Timber;
 
 public class Address implements Serializable {
     private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");

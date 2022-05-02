@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import timber.log.Timber;
+import com.fsck.k9.logging.Timber;
+
 
 /**
  * Maintains WebDAV data

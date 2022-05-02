@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.ssl
 
+import com.fsck.k9.logging.Timber
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -11,7 +12,6 @@ import java.security.NoSuchAlgorithmException
 import java.security.cert.Certificate
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
-import timber.log.Timber
 
 private const val KEY_STORE_FILE_VERSION = 1
 private val PASSWORD = charArrayOf()

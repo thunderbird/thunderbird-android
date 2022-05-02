@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.store.webdav;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderType;
@@ -14,7 +15,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.StringEntity;
-import timber.log.Timber;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
