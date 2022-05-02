@@ -12,6 +12,7 @@ import android.net.Uri;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import com.fsck.k9.helper.MimeTypeUtil;
 import timber.log.Timber;
 import androidx.annotation.WorkerThread;
 
@@ -120,7 +121,7 @@ public class AttachmentInfoExtractor {
         if (name == null) {
             String extension = null;
             if (mimeType != null) {
-                extension = MimeUtility.getExtensionByMimeType(mimeType);
+                extension = MimeTypeUtil.getExtensionByMimeType(mimeType);
             }
             name = "noname" + ((extension != null) ? "." + extension : "");
         }

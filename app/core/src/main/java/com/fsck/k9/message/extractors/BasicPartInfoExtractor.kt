@@ -1,8 +1,8 @@
 package com.fsck.k9.message.extractors
 
+import com.fsck.k9.helper.MimeTypeUtil
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.MimeParameterDecoder
-import com.fsck.k9.mail.internet.MimeUtility
 import com.fsck.k9.mail.internet.MimeValue
 
 private const val FALLBACK_NAME = "noname"
@@ -31,7 +31,7 @@ class BasicPartInfoExtractor {
     }
 
     private fun String?.toDisplayName(): String {
-        val extension = this?.let { mimeType -> MimeUtility.getExtensionByMimeType(mimeType) }
+        val extension = this?.let { mimeType -> MimeTypeUtil.getExtensionByMimeType(mimeType) }
         return if (extension.isNullOrEmpty()) FALLBACK_NAME else "$FALLBACK_NAME.$extension"
     }
 

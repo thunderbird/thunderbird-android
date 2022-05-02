@@ -2,7 +2,6 @@ package com.fsck.k9.mail
 
 import com.fsck.k9.mail.MimeType.Companion.toMimeType
 import com.fsck.k9.mail.MimeType.Companion.toMimeTypeOrNull
-import com.fsck.k9.mail.internet.getMimeTypes
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.fail
 import org.junit.Test
@@ -22,10 +21,8 @@ class MimeTypeTest {
 
     @Test
     fun checkListOfMimeTypes() {
-        for (mimeTypeString in getMimeTypes()) {
-            // If there's an invalid MIME type this will throw
-            mimeTypeString.toMimeType()
-        }
+        // TODO: Try to parse all IANA-registered media types
+        //  https://www.iana.org/assignments/media-types/media-types.xhtml
     }
 
     @Test

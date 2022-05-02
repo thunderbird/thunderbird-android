@@ -3,8 +3,8 @@ package com.fsck.k9.mailstore;
 
 import android.net.Uri;
 
+import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeUtility;
 
 
 public class AttachmentViewInfo {
@@ -48,8 +48,8 @@ public class AttachmentViewInfo {
             return false;
         }
 
-        return MimeUtility.isSupportedImageType(mimeType) || (
-                MimeUtility.isSameMimeType(MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE, mimeType) &&
-                MimeUtility.isSupportedImageExtension(displayName));
+        return MimeTypeUtil.isSupportedImageType(mimeType) || (
+                MimeTypeUtil.isSameMimeType(MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE, mimeType) &&
+                MimeTypeUtil.isSupportedImageExtension(displayName));
     }
 }

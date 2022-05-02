@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.OpenableColumns;
 import androidx.loader.content.AsyncTaskLoader;
 
+import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.message.Attachment.LoadingState;
 import timber.log.Timber;
 
@@ -81,11 +82,11 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
         }
 
         if (usableContentType == null) {
-            usableContentType = MimeUtility.getMimeTypeByExtension(name);
+            usableContentType = MimeTypeUtil.getMimeTypeByExtension(name);
         }
 
         if (!sourceAttachment.allowMessageType && MimeUtility.isMessageType(usableContentType)) {
-            usableContentType = MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE;
+            usableContentType = MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE;
         }
 
         if (size <= 0) {
