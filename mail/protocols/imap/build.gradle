@@ -1,8 +1,13 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
+}
+
+java {
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
 
 dependencies {
@@ -19,33 +24,4 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "com.squareup.okio:okio:${versions.okio}"
     testImplementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
-}
-
-android {
-    compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
-
-    defaultConfig {
-        minSdkVersion buildConfig.minSdk
-    }
-
-    buildTypes {
-        debug {
-            testCoverageEnabled rootProject.testCoverage
-        }
-    }
-
-    lintOptions {
-        abortOnError false
-        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
-    }
-
-    compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
-    }
-
-    kotlinOptions {
-        jvmTarget = kotlinJvmVersion
-    }
 }

@@ -1,49 +1,23 @@
-apply plugin: 'com.android.library'
+apply plugin: 'java-library'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
+}
+
+java {
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
 
 dependencies {
     api project(":mail:common")
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
+    compileOnly "org.apache.httpcomponents:httpclient:4.5.5"
 
     testImplementation project(":mail:testing")
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
-
-    // The Android Gradle plugin doesn't seem to put the Apache HTTP Client on the runtime classpath anymore when
-    // running JVM tests.
+    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
     testImplementation "org.apache.httpcomponents:httpclient:4.5.5"
-}
-
-android {
-    compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
-
-    defaultConfig {
-        minSdkVersion buildConfig.minSdk
-    }
-
-    // for using Apache HTTP Client
-    useLibrary 'org.apache.http.legacy'
-
-    buildTypes {
-        debug {
-            testCoverageEnabled rootProject.testCoverage
-        }
-    }
-
-    lintOptions {
-        abortOnError false
-        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
-    }
-
-    compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
-    }
 }
