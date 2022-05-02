@@ -21,9 +21,9 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.SimpleMessagingListener;
+import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalPart;
@@ -140,11 +140,11 @@ public class AttachmentController {
         }
 
         String displayName = attachment.displayName;
-        String inferredMimeType = MimeUtility.getMimeTypeByExtension(displayName);
+        String inferredMimeType = MimeTypeUtil.getMimeTypeByExtension(displayName);
 
         IntentAndResolvedActivitiesCount resolvedIntentInfo;
         String mimeType = attachment.mimeType;
-        if (MimeUtility.isDefaultMimeType(mimeType)) {
+        if (MimeTypeUtil.isDefaultMimeType(mimeType)) {
             resolvedIntentInfo = getViewIntentForMimeType(intentDataUri, inferredMimeType);
         } else {
             resolvedIntentInfo = getViewIntentForMimeType(intentDataUri, mimeType);
@@ -154,7 +154,7 @@ public class AttachmentController {
         }
 
         if (!resolvedIntentInfo.hasResolvedActivities()) {
-            resolvedIntentInfo = getViewIntentForMimeType(intentDataUri, MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
+            resolvedIntentInfo = getViewIntentForMimeType(intentDataUri, MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE);
         }
 
         return resolvedIntentInfo.getIntent();

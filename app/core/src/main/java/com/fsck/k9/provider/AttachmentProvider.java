@@ -15,13 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.fsck.k9.DI;
+import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
@@ -156,7 +156,7 @@ public class AttachmentProvider extends ContentProvider {
             }
         } catch (MessagingException e) {
             Timber.e(e, "Unable to retrieve LocalStore for %s", account);
-            type = MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE;
+            type = MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE;
         }
 
         return type;
