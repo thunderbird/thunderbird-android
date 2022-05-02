@@ -8,11 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Application;
+
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FolderType;
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
@@ -44,6 +45,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.OngoingStubbing;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertSame;
 import static org.junit.Assert.assertEquals;
@@ -52,7 +55,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
+@Config(application = Application.class)
 public class WebDavStoreTest {
     private static final HttpResponse OK_200_RESPONSE = createOkResponse();
     private static final HttpResponse UNAUTHORIZED_401_RESPONSE = createResponse(401);

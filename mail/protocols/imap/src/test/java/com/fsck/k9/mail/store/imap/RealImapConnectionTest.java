@@ -10,7 +10,6 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.CertificateValidationException.Reason;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.XOAuth2ChallengeParserTest;
@@ -21,8 +20,6 @@ import com.fsck.k9.mail.store.imap.mockserver.MockImapServer;
 import okio.ByteString;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.shadows.ShadowLog;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
@@ -32,7 +29,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class RealImapConnectionTest {
     private static final boolean DEBUGGING = false;
 
@@ -63,7 +59,6 @@ public class RealImapConnectionTest {
         settings.setPassword(PASSWORD);
 
         if (DEBUGGING) {
-            ShadowLog.stream = System.out;
             K9MailLib.setDebug(true);
             K9MailLib.setDebugSensitive(true);
         }

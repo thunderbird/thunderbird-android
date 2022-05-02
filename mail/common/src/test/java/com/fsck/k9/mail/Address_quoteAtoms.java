@@ -2,12 +2,10 @@ package com.fsck.k9.mail;
 
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class Address_quoteAtoms {
     @Test
     public void testNoQuote() {

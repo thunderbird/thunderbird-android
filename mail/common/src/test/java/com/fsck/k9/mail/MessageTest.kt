@@ -10,24 +10,30 @@ import com.fsck.k9.mail.internet.MimeMultipart
 import com.fsck.k9.mail.internet.TextBody
 import com.google.common.truth.Truth.assertThat
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.nio.file.Files
 import java.util.Date
 import java.util.TimeZone
 import okio.Buffer
 import org.apache.james.mime4j.util.MimeUtil
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RuntimeEnvironment
 
-@RunWith(K9LibRobolectricTestRunner::class)
 class MessageTest {
-    private val context = RuntimeEnvironment.application
+    private lateinit var tempDirectory: File
     private var mimeBoundary: Int = 0
 
     @Before
     fun setUp() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"))
-        BinaryTempFileBody.setTempDirectory(context.cacheDir)
+        tempDirectory = Files.createTempDirectory("MessageTest").toFile()
+        BinaryTempFileBody.setTempDirectory(tempDirectory)
+    }
+
+    @After
+    fun tearDown() {
+        tempDirectory.deleteRecursively()
     }
 
     @Test

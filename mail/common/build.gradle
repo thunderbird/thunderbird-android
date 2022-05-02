@@ -15,7 +15,6 @@ dependencies {
     implementation "com.squareup.moshi:moshi:${versions.moshi}"
 
     testImplementation project(":mail:testing")
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-inline:${versions.mockito}"

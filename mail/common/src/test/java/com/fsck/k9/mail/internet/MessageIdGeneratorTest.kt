@@ -1,12 +1,9 @@
 package com.fsck.k9.mail.internet
 
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mail.K9LibRobolectricTestRunner
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(K9LibRobolectricTestRunner::class)
 class MessageIdGeneratorTest {
     private val messageIdGenerator = MessageIdGenerator(
         object : UuidGenerator {
