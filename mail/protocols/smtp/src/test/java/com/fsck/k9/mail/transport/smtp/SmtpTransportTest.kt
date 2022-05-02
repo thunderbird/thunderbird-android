@@ -4,7 +4,6 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.mail.K9LibRobolectricTestRunner
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ServerSettings
@@ -18,7 +17,6 @@ import com.fsck.k9.mail.transport.mockServer.MockSmtpServer
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.fail
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.kotlin.doReturn
@@ -32,7 +30,6 @@ private const val USERNAME = "user"
 private const val PASSWORD = "password"
 private val CLIENT_CERTIFICATE_ALIAS: String? = null
 
-@RunWith(K9LibRobolectricTestRunner::class)
 class SmtpTransportTest {
     private val socketFactory = TestTrustedSocketFactory.newInstance()
     private val oAuth2TokenProvider = createMockOAuth2TokenProvider()

@@ -5,7 +5,6 @@ dependencies {
     api project(":mail:common")
 
     api "com.squareup.okio:okio:${versions.okio}"
-    api "org.robolectric:robolectric:${versions.robolectric}"
     api "junit:junit:${versions.junit}"
 }
 

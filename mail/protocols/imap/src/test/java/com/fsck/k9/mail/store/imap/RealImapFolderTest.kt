@@ -4,7 +4,6 @@ import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.DefaultBodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.K9LibRobolectricTestRunner
 import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
@@ -12,11 +11,14 @@ import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse
 import com.google.common.truth.Truth.assertThat
+import java.io.File
 import java.io.IOException
+import java.nio.file.Files
 import java.util.Date
 import java.util.TimeZone
 import okio.Buffer
 import org.apache.james.mime4j.util.MimeUtil
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -25,7 +27,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.ArgumentMatchers.eq
@@ -40,9 +41,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.robolectric.RuntimeEnvironment
 
-@RunWith(K9LibRobolectricTestRunner::class)
 class RealImapFolderTest {
     private val internalImapStore = object : InternalImapStore {
         override val logLabel = "Account"
@@ -52,9 +51,17 @@ class RealImapFolderTest {
     private val imapConnection = mock<RealImapConnection>()
     private val testConnectionManager = TestConnectionManager(imapConnection)
 
+    private lateinit var tempDirectory: File
+
     @Before
     fun setUp() {
-        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.cacheDir)
+        tempDirectory = Files.createTempDirectory("RealImapFolderTest").toFile()
+        BinaryTempFileBody.setTempDirectory(tempDirectory)
+    }
+
+    @After
+    fun tearDown() {
+        tempDirectory.deleteRecursively()
     }
 
     @Test

@@ -1,19 +1,17 @@
 package com.fsck.k9.helper;
 
 
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeMessage;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
-public class ListHeadersTest {
+public class ListHeadersTest extends RobolectricTest {
     private static final String[] TEST_EMAIL_ADDRESSES = new String[] {
             "prettyandsimple@example.com",
             "very.common@example.com",

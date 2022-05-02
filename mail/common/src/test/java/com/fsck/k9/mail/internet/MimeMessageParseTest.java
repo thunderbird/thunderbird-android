@@ -9,23 +9,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.Multipart;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.Multipart;
-
-import org.junit.runner.RunWith;
-
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class MimeMessageParseTest {
     @Before
     public void setup() {
