@@ -24,6 +24,9 @@ android {
         minSdkVersion buildConfig.minSdk
     }
 
+    // for using Apache HTTP Client
+    useLibrary 'org.apache.http.legacy'
+
     buildTypes {
         debug {
             testCoverageEnabled rootProject.testCoverage

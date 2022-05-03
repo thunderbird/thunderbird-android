@@ -1,8 +1,13 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
+}
+
+java {
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
 
 dependencies {
@@ -14,41 +19,13 @@ dependencies {
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "com.squareup.moshi:moshi:${versions.moshi}"
 
+    // We're only using this for its DefaultHostnameVerifier
+    implementation "org.apache.httpcomponents.client5:httpclient5:5.1.3"
+
     testImplementation project(":mail:testing")
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-inline:${versions.mockito}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "com.ibm.icu:icu4j-charset:70.1"
-}
-
-android {
-    compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
-
-    defaultConfig {
-        minSdkVersion buildConfig.minSdk
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        debug {
-            testCoverageEnabled rootProject.testCoverage
-        }
-    }
-
-    lintOptions {
-        abortOnError false
-        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
-    }
-
-    compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
-    }
-
-    kotlinOptions {
-        jvmTarget = kotlinJvmVersion
-    }
 }
