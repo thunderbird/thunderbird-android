@@ -334,6 +334,24 @@ class RealImapConnectionTest {
     }
 
     @Test
+    fun `open() AUTH XOAUTH2 with untagged CAPABILITY response after authentication`() {
+        val server = MockImapServer().apply {
+            preAuthenticationDialog(capabilities = "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2")
+            expect("2 AUTHENTICATE XOAUTH2 $XOAUTH_STRING")
+            output("* CAPABILITY IMAP4rev1 X-GM-EXT-1")
+            output("2 OK Success")
+            simplePostAuthenticationDialog(tag = 3)
+        }
+        val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.XOAUTH2)
+
+        imapConnection.open()
+
+        assertThat(imapConnection.hasCapability("X-GM-EXT-1")).isTrue()
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
     fun `open() AUTH XOAUTH2 throws exception on 401 response`() {
         val server = MockImapServer().apply {
             preAuthenticationDialog(capabilities = "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2")

@@ -447,14 +447,16 @@ class RealImapConnection implements ImapConnection {
     }
 
     private void handleXOAuthUntaggedResponse(ImapResponse response) throws IOException {
+        if (!response.isContinuationRequested()) {
+            return;
+        }
+
         if (response.isString(0)) {
             retryXoauth2WithNewToken = XOAuth2ChallengeParser.shouldRetry(response.getString(0), settings.getHost());
         }
 
-        if (response.isContinuationRequested()) {
-            outputStream.write("\r\n".getBytes());
-            outputStream.flush();
-        }
+        outputStream.write("\r\n".getBytes());
+        outputStream.flush();
     }
 
     private List<ImapResponse> authCramMD5() throws MessagingException, IOException {
