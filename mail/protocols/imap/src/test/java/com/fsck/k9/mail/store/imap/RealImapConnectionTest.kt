@@ -1,11 +1,13 @@
 package com.fsck.k9.mail.store.imap
 
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.SystemOutLogger
 import com.fsck.k9.mail.XOAuth2ChallengeParserTest
 import com.fsck.k9.mail.helpers.TestTrustedSocketFactory
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
@@ -43,6 +45,7 @@ class RealImapConnectionTest {
     @Before
     fun setUp() {
         if (DEBUGGING) {
+            Timber.logger = SystemOutLogger()
             K9MailLib.setDebug(true)
             K9MailLib.setDebugSensitive(true)
         }
