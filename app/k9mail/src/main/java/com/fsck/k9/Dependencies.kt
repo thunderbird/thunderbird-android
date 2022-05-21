@@ -1,5 +1,7 @@
 package com.fsck.k9
 
+import com.fsck.k9.activity.setup.OAuthCredentials
+import com.fsck.k9.auth.K9OAuthCredentials
 import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.crypto.EncryptionExtractor
@@ -29,6 +31,7 @@ private val mainAppModule = module {
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
     single<EncryptionExtractor> { OpenPgpEncryptionExtractor.newInstance() }
     single<StoragePersister> { K9StoragePersister(get()) }
+    factory<OAuthCredentials> { K9OAuthCredentials() }
 }
 
 val appModules = listOf(

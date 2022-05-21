@@ -65,6 +65,12 @@ android {
 
     signingConfigs {
         release
+        debug {
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+            storeFile = file("$rootProject.projectDir/debug.keystore")
+            storePassword = "android"
+        }
     }
 
     buildTypes {
@@ -76,16 +82,22 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField "boolean", "DEVELOPER_MODE", "false"
+            buildConfigField "String", "OAUTH_GMAIL_CLIENT_ID", "\"262622259280-hhmh92rhklkg2k1tjil69epo0o9a12jm.apps.googleusercontent.com\""
+
+            manifestPlaceholders = ['appAuthRedirectScheme': 'com.fsck.k9']
         }
 
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled rootProject.testCoverage
 
+            signingConfig signingConfigs.debug
+
             minifyEnabled false
 
-            buildConfigField "boolean", "DEVELOPER_MODE", "true"
+            buildConfigField "String", "OAUTH_GMAIL_CLIENT_ID", "\"262622259280-5qb3vtj68d5dtudmaif4g9vd3cpar8r3.apps.googleusercontent.com\""
+
+            manifestPlaceholders = ['appAuthRedirectScheme': 'com.fsck.k9.debug']
         }
     }
 

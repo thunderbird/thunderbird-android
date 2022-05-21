@@ -18,10 +18,8 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.fail
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stubbing
@@ -218,8 +216,8 @@ class SmtpTransportTest {
         }
 
         inOrder(oAuth2TokenProvider) {
-            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
-            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
+            verify(oAuth2TokenProvider).getToken(anyLong())
+            verify(oAuth2TokenProvider).invalidateToken()
         }
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -245,9 +243,9 @@ class SmtpTransportTest {
         transport.open()
 
         inOrder(oAuth2TokenProvider) {
-            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
-            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
-            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+            verify(oAuth2TokenProvider).getToken(anyLong())
+            verify(oAuth2TokenProvider).invalidateToken()
+            verify(oAuth2TokenProvider).getToken(anyLong())
         }
         server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
@@ -273,9 +271,9 @@ class SmtpTransportTest {
         transport.open()
 
         inOrder(oAuth2TokenProvider) {
-            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
-            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
-            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+            verify(oAuth2TokenProvider).getToken(anyLong())
+            verify(oAuth2TokenProvider).invalidateToken()
+            verify(oAuth2TokenProvider).getToken(anyLong())
         }
         server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
@@ -301,9 +299,9 @@ class SmtpTransportTest {
         transport.open()
 
         inOrder(oAuth2TokenProvider) {
-            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
-            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
-            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
+            verify(oAuth2TokenProvider).getToken(anyLong())
+            verify(oAuth2TokenProvider).invalidateToken()
+            verify(oAuth2TokenProvider).getToken(anyLong())
         }
         server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
@@ -357,7 +355,7 @@ class SmtpTransportTest {
             output("221 BYE")
         }
         stubbing(oAuth2TokenProvider) {
-            on { getToken(anyString(), anyLong()) } doThrow AuthenticationFailedException("Failed to fetch token")
+            on { getToken(anyLong()) } doThrow AuthenticationFailedException("Failed to fetch token")
         }
         val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
@@ -533,8 +531,8 @@ class SmtpTransportTest {
         }
 
         inOrder(oAuth2TokenProvider) {
-            verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong())
-            verify(oAuth2TokenProvider).invalidateToken(USERNAME)
+            verify(oAuth2TokenProvider).getToken(anyLong())
+            verify(oAuth2TokenProvider).invalidateToken()
         }
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -950,7 +948,7 @@ class SmtpTransportTest {
 
     private fun createMockOAuth2TokenProvider(): OAuth2TokenProvider {
         return mock {
-            on { getToken(eq(USERNAME), anyLong()) } doReturn "oldToken" doReturn "newToken"
+            on { getToken(anyLong()) } doReturn "oldToken" doReturn "newToken"
         }
     }
 }

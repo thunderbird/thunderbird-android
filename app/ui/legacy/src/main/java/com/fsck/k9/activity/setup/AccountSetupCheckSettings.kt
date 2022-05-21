@@ -18,6 +18,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
+import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.MailServerDirection
@@ -25,13 +26,16 @@ import com.fsck.k9.mail.filter.Hex
 import com.fsck.k9.preferences.Protocols
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.observe
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.security.cert.CertificateEncodingException
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import java.util.Locale
+import java.util.concurrent.Executors
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 /**
@@ -41,6 +45,8 @@ import timber.log.Timber
  * while its thread is running.
  */
 class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListener {
+    private val authViewModel: AuthViewModel by viewModel()
+
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
     private val localKeyStoreManager: LocalKeyStoreManager by inject()
@@ -63,6 +69,33 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
         super.onCreate(savedInstanceState)
         setLayout(R.layout.account_setup_check_settings)
 
+        authViewModel.init(activityResultRegistry, lifecycle)
+
+        authViewModel.uiState.observe(this) { state ->
+            when (state) {
+                AuthFlowState.Idle -> {
+                    return@observe
+                }
+                AuthFlowState.Success -> {
+                    startCheckServerSettings()
+                }
+                AuthFlowState.Canceled -> {
+                    showErrorDialog(R.string.account_setup_failed_dlg_oauth_flow_canceled)
+                }
+                is AuthFlowState.Failed -> {
+                    showErrorDialog(R.string.account_setup_failed_dlg_oauth_flow_failed, state)
+                }
+                AuthFlowState.NotSupported -> {
+                    showErrorDialog(R.string.account_setup_failed_dlg_oauth_not_supported)
+                }
+                AuthFlowState.BrowserNotFound -> {
+                    showErrorDialog(R.string.account_setup_failed_dlg_browser_not_found)
+                }
+            }
+
+            authViewModel.authResultConsumed()
+        }
+
         messageView = findViewById(R.id.message)
         progressBar = findViewById(R.id.progress)
         findViewById<View>(R.id.cancel).setOnClickListener { onCancel() }
@@ -75,7 +108,26 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
         direction = intent.getSerializableExtra(EXTRA_CHECK_DIRECTION) as CheckDirection?
             ?: error("Missing CheckDirection")
 
-        CheckAccountTask(account).execute(direction)
+        if (savedInstanceState == null) {
+            if (needsAuthorization()) {
+                setMessage(R.string.account_setup_check_settings_authenticate)
+                authViewModel.login(account)
+            } else {
+                startCheckServerSettings()
+            }
+        }
+    }
+
+    private fun needsAuthorization(): Boolean {
+        return (
+            account.incomingServerSettings.authenticationType == AuthType.XOAUTH2 ||
+                account.outgoingServerSettings.authenticationType == AuthType.XOAUTH2
+            ) &&
+            !authViewModel.isAuthorized(account)
+    }
+
+    private fun startCheckServerSettings() {
+        CheckAccountTask(account).executeOnExecutor(Executors.newSingleThreadExecutor(), direction)
     }
 
     private fun handleCertificateValidationException(exception: CertificateValidationException) {

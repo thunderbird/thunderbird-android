@@ -34,6 +34,10 @@ class Account(override val uuid: String) : BaseAccount {
             internalOutgoingServerSettings = value
         }
 
+    @get:Synchronized
+    @set:Synchronized
+    var oAuthState: String? = null
+
     /**
      * Storage provider ID, used to locate and manage the underlying DB/file storage.
      */

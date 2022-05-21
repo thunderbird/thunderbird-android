@@ -104,7 +104,14 @@ class ProvidersXmlDiscovery(
             uri.port
         }
 
-        return DiscoveredServerSettings(Protocols.IMAP, host, port, security, AuthType.PLAIN, username)
+        // TODO: Remove this hack
+        val authType = if (host == "imap.gmail.com" || host == "imap.googlemail.com") {
+            AuthType.XOAUTH2
+        } else {
+            AuthType.PLAIN
+        }
+
+        return DiscoveredServerSettings(Protocols.IMAP, host, port, security, authType, username)
     }
 
     private fun Provider.toOutgoingServerSettings(email: String): DiscoveredServerSettings? {
@@ -127,7 +134,14 @@ class ProvidersXmlDiscovery(
             uri.port
         }
 
-        return DiscoveredServerSettings(Protocols.SMTP, host, port, security, AuthType.PLAIN, username)
+        // TODO: Remove this hack
+        val authType = if (host == "smtp.gmail.com" || host == "smtp.googlemail.com") {
+            AuthType.XOAUTH2
+        } else {
+            AuthType.PLAIN
+        }
+
+        return DiscoveredServerSettings(Protocols.SMTP, host, port, security, authType, username)
     }
 
     private fun String.fillInUsernameTemplate(email: String, user: String, domain: String): String {

@@ -201,7 +201,7 @@ class Preferences internal constructor(
     val defaultAccount: Account?
         get() = accounts.firstOrNull()
 
-    fun saveAccount(account: Account) {
+    override fun saveAccount(account: Account) {
         ensureAssignedAccountNumber(account)
         processChangedValues(account)
 

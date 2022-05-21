@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
@@ -25,6 +26,8 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.ui.ConnectionSettings
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.getEnum
+import com.fsck.k9.ui.putEnum
 import com.fsck.k9.ui.settings.ExtraAccountDiscovery
 import com.fsck.k9.view.ClientCertificateSpinner
 import com.google.android.material.textfield.TextInputEditText
@@ -46,12 +49,15 @@ class AccountSetupBasics : K9Activity() {
 
     private lateinit var emailView: TextInputEditText
     private lateinit var passwordView: TextInputEditText
+    private lateinit var passwordLayout: View
     private lateinit var clientCertificateCheckBox: CheckBox
     private lateinit var clientCertificateSpinner: ClientCertificateSpinner
+    private lateinit var advancedOptionsContainer: View
     private lateinit var nextButton: Button
     private lateinit var manualSetupButton: Button
     private lateinit var allowClientCertificateView: ViewGroup
 
+    private var uiState = UiState.EMAIL_ADDRESS_ONLY
     private var account: Account? = null
     private var checkedIncoming = false
 
@@ -62,14 +68,15 @@ class AccountSetupBasics : K9Activity() {
 
         emailView = findViewById(R.id.account_email)
         passwordView = findViewById(R.id.account_password)
+        passwordLayout = findViewById(R.id.account_password_layout)
         clientCertificateCheckBox = findViewById(R.id.account_client_certificate)
         clientCertificateSpinner = findViewById(R.id.account_client_certificate_spinner)
         allowClientCertificateView = findViewById(R.id.account_allow_client_certificate)
+        advancedOptionsContainer = findViewById(R.id.foldable_advanced_options)
         nextButton = findViewById(R.id.next)
         manualSetupButton = findViewById(R.id.manual_setup)
 
         manualSetupButton.setOnClickListener { onManualSetup() }
-        nextButton.setOnClickListener { onNext() }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -82,12 +89,15 @@ class AccountSetupBasics : K9Activity() {
          */
         initializeViewListeners()
         validateFields()
+
+        updateUi()
     }
 
     private fun initializeViewListeners() {
         val textWatcher = object : SimpleTextWatcher() {
             override fun afterTextChanged(s: Editable) {
-                validateFields()
+                val checkPassword = uiState == UiState.PASSWORD_FLOW
+                validateFields(checkPassword)
             }
         }
 
@@ -109,15 +119,33 @@ class AccountSetupBasics : K9Activity() {
         }
     }
 
+    private fun updateUi() {
+        when (uiState) {
+            UiState.EMAIL_ADDRESS_ONLY -> {
+                passwordLayout.isVisible = false
+                advancedOptionsContainer.isVisible = false
+                nextButton.setOnClickListener { attemptAutoSetupUsingOnlyEmailAddress() }
+            }
+            UiState.PASSWORD_FLOW -> {
+                passwordLayout.isVisible = true
+                advancedOptionsContainer.isVisible = true
+                nextButton.setOnClickListener { attemptAutoSetup() }
+            }
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
+        outState.putEnum(STATE_KEY_UI_STATE, uiState)
         outState.putString(EXTRA_ACCOUNT, account?.uuid)
         outState.putBoolean(STATE_KEY_CHECKED_INCOMING, checkedIncoming)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+
+        uiState = savedInstanceState.getEnum(STATE_KEY_UI_STATE, UiState.EMAIL_ADDRESS_ONLY)
 
         val accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT)
         if (accountUuid != null) {
@@ -132,9 +160,10 @@ class AccountSetupBasics : K9Activity() {
         allowClientCertificateView.isVisible = usingCertificates
     }
 
-    private fun validateFields() {
+    private fun validateFields(checkPassword: Boolean = true) {
         val email = emailView.text?.toString().orEmpty()
-        val valid = requiredFieldValid(emailView) && emailValidator.isValidAddressOnly(email) && isPasswordFieldValid()
+        val valid = requiredFieldValid(emailView) && emailValidator.isValidAddressOnly(email) &&
+            (!checkPassword || isPasswordFieldValid())
 
         nextButton.isEnabled = valid
         nextButton.isFocusable = valid
@@ -149,7 +178,37 @@ class AccountSetupBasics : K9Activity() {
             clientCertificateChecked && clientCertificateAlias != null
     }
 
-    private fun onNext() {
+    private fun attemptAutoSetupUsingOnlyEmailAddress() {
+        val email = emailView.text?.toString() ?: error("Email missing")
+
+        val extraConnectionSettings = ExtraAccountDiscovery.discover(email)
+        if (extraConnectionSettings != null) {
+            finishAutoSetup(extraConnectionSettings)
+            return
+        }
+
+        val connectionSettings = providersXmlDiscoveryDiscover(email)
+
+        if (connectionSettings != null &&
+            connectionSettings.incoming.authenticationType == AuthType.XOAUTH2 &&
+            connectionSettings.outgoing.authenticationType == AuthType.XOAUTH2
+        ) {
+            finishAutoSetup(connectionSettings)
+        } else {
+            startPasswordFlow()
+        }
+    }
+
+    private fun startPasswordFlow() {
+        uiState = UiState.PASSWORD_FLOW
+
+        updateUi()
+        validateFields()
+
+        passwordView.requestFocus()
+    }
+
+    private fun attemptAutoSetup() {
         if (clientCertificateCheckBox.isChecked) {
             // Auto-setup doesn't support client certificates.
             onManualSetup()
@@ -272,8 +331,14 @@ class AccountSetupBasics : K9Activity() {
         }
     }
 
+    private enum class UiState {
+        EMAIL_ADDRESS_ONLY,
+        PASSWORD_FLOW
+    }
+
     companion object {
         private const val EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account"
+        private const val STATE_KEY_UI_STATE = "com.fsck.k9.AccountSetupBasics.uiState"
         private const val STATE_KEY_CHECKED_INCOMING = "com.fsck.k9.AccountSetupBasics.checkedIncoming"
 
         @JvmStatic
