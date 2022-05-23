@@ -256,14 +256,14 @@ class AccountSetupBasics : K9Activity() {
         }
 
         if (resultCode == RESULT_OK) {
+            val account = this.account ?: error("Account instance missing")
+
             if (!checkedIncoming) {
                 // We've successfully checked incoming. Now check outgoing.
                 checkedIncoming = true
                 AccountSetupCheckSettings.actionCheckSettings(this, account, CheckDirection.OUTGOING)
             } else {
                 // We've successfully checked outgoing as well.
-                val account = this.account ?: error("Account instance missing")
-
                 preferences.saveAccount(account)
                 Core.setServicesEnabled(applicationContext)
 
