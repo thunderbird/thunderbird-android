@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -98,6 +99,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         super.onCreate(savedInstanceState);
         setLayout(R.layout.account_setup_outgoing);
         setTitle(R.string.account_setup_outgoing_title);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -346,6 +351,16 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
          */
         initializeViewListeners();
         validateFields();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
