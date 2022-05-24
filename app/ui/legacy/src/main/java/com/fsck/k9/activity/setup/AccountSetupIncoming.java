@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -181,6 +182,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
                     getString(R.string.account_setup_basics_show_password_need_lock)
             );
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
 
         try {
@@ -561,6 +566,16 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 AccountSetupOutgoing.actionOutgoingSettings(this, mAccount);
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     protected void onNext() {
