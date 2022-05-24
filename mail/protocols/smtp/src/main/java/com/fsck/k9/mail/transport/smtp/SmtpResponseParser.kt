@@ -115,20 +115,25 @@ internal class SmtpResponseParser(
 
     private fun parseEhloLine(ehloLine: String, keywords: MutableMap<String, List<String>>) {
         val parts = ehloLine.split(" ")
-        val keyword = checkAndNormalizeEhloKeyword(parts[0])
-        val parameters = checkEhloParameters(parts)
 
-        if (keywords.containsKey(keyword)) {
-            parserError("Same EHLO keyword present in more than one response line")
+        try {
+            val keyword = checkAndNormalizeEhloKeyword(parts[0])
+            val parameters = checkEhloParameters(parts)
+
+            if (keywords.containsKey(keyword)) {
+                parserError("Same EHLO keyword present in more than one response line", logging = false)
+            }
+
+            keywords[keyword] = parameters
+        } catch (e: SmtpResponseParserException) {
+            logger.log(e, "Ignoring EHLO keyword line: $ehloLine")
         }
-
-        keywords[keyword] = parameters
     }
 
     private fun checkAndNormalizeEhloKeyword(text: String): String {
         val keyword = text.uppercase()
         if (!keyword[0].isCapitalAlphaDigit() || keyword.any { !it.isCapitalAlphaDigit() && it != DASH }) {
-            parserError("EHLO keyword contains invalid character")
+            parserError("EHLO keyword contains invalid character", logging = false)
         }
 
         return keyword
@@ -138,9 +143,9 @@ internal class SmtpResponseParser(
         for (i in 1..parts.lastIndex) {
             val parameter = parts[i]
             if (parameter.isEmpty()) {
-                parserError("EHLO parameter must not be empty")
+                parserError("EHLO parameter must not be empty", logging = false)
             } else if (parameter.any { it.code !in 33..126 }) {
-                parserError("EHLO parameter contains invalid character")
+                parserError("EHLO parameter contains invalid character", logging = false)
             }
         }
 

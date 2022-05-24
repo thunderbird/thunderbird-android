@@ -145,26 +145,36 @@ class SmtpResponseParserTest {
     }
 
     @Test
-    fun `read EHLO response with invalid keyword`() {
+    fun `read EHLO response with invalid keywords`() {
         val input = """
             250-smtp.domain.example
-            250 KEY:WORD
+            250-SIZE 52428800
+            250-8BITMIME
+            250-PIPELINING
+            250-PIPE_CONNECT
+            250-AUTH=PLAIN
+            250 HELP
             """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("EHLO keyword contains invalid character") {
-            parser.readHelloResponse()
+        val response = parser.readHelloResponse()
+
+        assertType<SmtpHelloResponse.Hello>(response) { hello ->
+            assertThat(hello.keywords.keys).containsExactly(
+                "SIZE",
+                "8BITMIME",
+                "PIPELINING",
+                "HELP"
+            )
         }
 
-        assertThat(logger.logEntries).containsExactly(
-            LogEntry(
-                throwable = null,
-                message = """
-                    SMTP response data on parser error:
-                    250-smtp.domain.example
-                    250 KEY:WORD
-                """.trimIndent()
-            )
+        assertThat(logger.logEntries.map { it.message }).containsExactly(
+            "Ignoring EHLO keyword line: PIPE_CONNECT",
+            "Ignoring EHLO keyword line: AUTH=PLAIN"
+        )
+        assertThat(logger.logEntries.map { it.throwable?.message }).containsExactly(
+            "EHLO keyword contains invalid character",
+            "EHLO keyword contains invalid character"
         )
     }
 
@@ -176,44 +186,37 @@ class SmtpResponseParserTest {
             """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("EHLO parameter must not be empty") {
-            parser.readHelloResponse()
+        val response = parser.readHelloResponse()
+
+        assertType<SmtpHelloResponse.Hello>(response) { hello ->
+            assertThat(hello.keywords.keys).isEmpty()
         }
 
-        assertThat(logger.logEntries).containsExactly(
-            LogEntry(
-                throwable = null,
-                message = """
-                    SMTP response data on parser error:
-                    250-smtp.domain.example
-                    250 KEYWORD${" "}
-                """.trimIndent()
-            )
-        )
+        assertThat(logger.logEntries).hasSize(1)
+        assertThat(logger.logEntries.first().throwable).hasMessageThat().isEqualTo("EHLO parameter must not be empty")
+        assertThat(logger.logEntries.first().message).isEqualTo("Ignoring EHLO keyword line: KEYWORD ")
     }
 
     @Test
     fun `read EHLO response with invalid parameter`() {
         val input = """
             250-smtp.domain.example
+            250-8BITMIME
             250 KEYWORD para${"\t"}meter
             """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("EHLO parameter contains invalid character") {
-            parser.readHelloResponse()
+        val response = parser.readHelloResponse()
+
+        assertType<SmtpHelloResponse.Hello>(response) { hello ->
+            assertThat(hello.keywords.keys).containsExactly("8BITMIME")
         }
 
-        assertThat(logger.logEntries).containsExactly(
-            LogEntry(
-                throwable = null,
-                message = """
-                    SMTP response data on parser error:
-                    250-smtp.domain.example
-                    250 KEYWORD para${"\t"}meter
-                """.trimIndent()
-            )
-        )
+        assertThat(logger.logEntries).hasSize(1)
+        assertThat(logger.logEntries.first().throwable)
+            .hasMessageThat().isEqualTo("EHLO parameter contains invalid character")
+        assertThat(logger.logEntries.first().message)
+            .isEqualTo("Ignoring EHLO keyword line: KEYWORD para${"\t"}meter")
     }
 
     @Test
