@@ -100,10 +100,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         setLayout(R.layout.account_setup_outgoing);
         setTitle(R.string.account_setup_outgoing_title);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
@@ -162,6 +158,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                     getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
                     getString(R.string.account_setup_basics_show_password_need_lock)
             );
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
 
         try {

@@ -118,10 +118,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         setLayout(R.layout.account_setup_incoming);
         setTitle(R.string.account_setup_incoming_title);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        
         mUsernameView = findViewById(R.id.account_username);
         mPasswordView = findViewById(R.id.account_password);
         mClientCertificateSpinner = findViewById(R.id.account_client_certificate_spinner);
@@ -186,6 +182,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
                     getString(R.string.account_setup_basics_show_password_need_lock)
             );
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
 
         try {
