@@ -1,11 +1,12 @@
 package com.fsck.k9.backends
 
+import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
 import com.fsck.k9.backend.imap.ImapPushConfigProvider
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider
+import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
@@ -23,7 +24,8 @@ class ImapBackendFactory(
     private val powerManager: PowerManager,
     private val idleRefreshManager: IdleRefreshManager,
     private val backendStorageFactory: K9BackendStorageFactory,
-    private val trustedSocketFactory: TrustedSocketFactory
+    private val trustedSocketFactory: TrustedSocketFactory,
+    private val context: Context
 ) : BackendFactory {
     override fun createBackend(account: Account): Backend {
         val accountName = account.displayName
@@ -44,7 +46,12 @@ class ImapBackendFactory(
     }
 
     private fun createImapStore(account: Account): ImapStore {
-        val oAuth2TokenProvider: OAuth2TokenProvider? = null
+        val oAuth2TokenProvider = if (account.incomingServerSettings.authenticationType == AuthType.XOAUTH2) {
+            RealOAuth2TokenProvider(context, accountManager, account)
+        } else {
+            null
+        }
+
         val config = createImapStoreConfig(account)
         return ImapStore.create(
             account.incomingServerSettings,
@@ -67,7 +74,12 @@ class ImapBackendFactory(
 
     private fun createSmtpTransport(account: Account): SmtpTransport {
         val serverSettings = account.outgoingServerSettings
-        val oauth2TokenProvider: OAuth2TokenProvider? = null
+        val oauth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
+            RealOAuth2TokenProvider(context, accountManager, account)
+        } else {
+            null
+        }
+
         return SmtpTransport(serverSettings, trustedSocketFactory, oauth2TokenProvider)
     }
 

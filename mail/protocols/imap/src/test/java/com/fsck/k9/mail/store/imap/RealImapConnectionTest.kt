@@ -1045,8 +1045,7 @@ class RealImapConnectionTest {
 class TestTokenProvider : OAuth2TokenProvider {
     private var invalidationCount = 0
 
-    override fun getToken(username: String, timeoutMillis: Long): String {
-        assertThat(username).isEqualTo(USERNAME)
+    override fun getToken(timeoutMillis: Long): String {
         assertThat(timeoutMillis).isEqualTo(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
 
         return when (invalidationCount) {
@@ -1060,13 +1059,8 @@ class TestTokenProvider : OAuth2TokenProvider {
         }
     }
 
-    override fun invalidateToken(username: String) {
-        assertThat(username).isEqualTo(USERNAME)
+    override fun invalidateToken() {
         invalidationCount++
-    }
-
-    override fun getAccounts(): List<String> {
-        throw UnsupportedOperationException()
     }
 }
 

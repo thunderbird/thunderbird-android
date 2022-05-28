@@ -1,8 +1,6 @@
 package com.fsck.k9.mail.oauth;
 
 
-import java.util.List;
-
 import com.fsck.k9.mail.AuthenticationFailedException;
 
 
@@ -12,16 +10,11 @@ public interface OAuth2TokenProvider {
      */
     int OAUTH2_TIMEOUT = 30000;
 
-    
-    /**
-     * @return Accounts suitable for OAuth 2.0 token provision.
-     */
-    List<String> getAccounts();
 
     /**
      * Fetch a token. No guarantees are provided for validity.
      */
-    String getToken(String username, long timeoutMillis) throws AuthenticationFailedException;
+    String getToken(long timeoutMillis) throws AuthenticationFailedException;
 
     /**
      * Invalidate the token for this username.
@@ -32,5 +25,5 @@ public interface OAuth2TokenProvider {
      * <p>
      * Invalidating a token and then failure with a new token should be treated as a permanent failure.
      */
-    void invalidateToken(String username);
+    void invalidateToken();
 }

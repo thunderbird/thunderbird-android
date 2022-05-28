@@ -13,4 +13,5 @@ interface AccountManager {
     fun moveAccount(account: Account, newPosition: Int)
     fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener)
     fun removeOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener)
+    fun saveAccount(account: Account)
 }

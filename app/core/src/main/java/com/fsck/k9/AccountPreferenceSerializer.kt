@@ -36,6 +36,7 @@ class AccountPreferenceSerializer(
             outgoingServerSettings = serverSettingsSerializer.deserialize(
                 storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", "")
             )
+            oAuthState = storage.getString("$accountUuid.oAuthState", null)
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
             name = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
@@ -240,6 +241,7 @@ class AccountPreferenceSerializer(
         with(account) {
             editor.putString("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(incomingServerSettings))
             editor.putString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(outgoingServerSettings))
+            editor.putString("$accountUuid.oAuthState", oAuthState)
             editor.putString("$accountUuid.localStorageProvider", localStorageProviderId)
             editor.putString("$accountUuid.description", name)
             editor.putString("$accountUuid.alwaysBcc", alwaysBcc)
@@ -359,6 +361,7 @@ class AccountPreferenceSerializer(
 
         editor.remove("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY")
         editor.remove("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY")
+        editor.remove("$accountUuid.oAuthState")
         editor.remove("$accountUuid.description")
         editor.remove("$accountUuid.name")
         editor.remove("$accountUuid.email")

@@ -559,7 +559,7 @@ class SmtpTransport(
                 throw negativeResponse
             }
 
-            oauthTokenProvider!!.invalidateToken(username)
+            oauthTokenProvider!!.invalidateToken()
 
             if (!retryXoauthWithNewToken) {
                 handlePermanentFailure(negativeResponse)
@@ -588,13 +588,13 @@ class SmtpTransport(
             // Okay, we failed on a new token. Invalidate the token anyway but assume it's permanent.
             Timber.v(negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed")
 
-            oauthTokenProvider!!.invalidateToken(username)
+            oauthTokenProvider!!.invalidateToken()
             handlePermanentFailure(negativeResponseFromNewToken)
         }
     }
 
     private fun attemptXoauth2(username: String) {
-        val token = oauthTokenProvider!!.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
+        val token = oauthTokenProvider!!.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
         val authString = Authentication.computeXoauth(username, token)
 
         val response = executeSensitiveCommand("AUTH XOAUTH2 %s", authString)

@@ -399,7 +399,7 @@ class RealImapConnection implements ImapConnection {
             return attemptXOAuth2();
         } catch (NegativeImapResponseException e) {
             //TODO: Check response code so we don't needlessly invalidate the token.
-            oauthTokenProvider.invalidateToken(settings.getUsername());
+            oauthTokenProvider.invalidateToken();
 
             if (!retryXoauth2WithNewToken) {
                 throw handlePermanentXoauth2Failure(e);
@@ -427,13 +427,13 @@ class RealImapConnection implements ImapConnection {
             //Okay, we failed on a new token.
             //Invalidate the token anyway but assume it's permanent.
             Timber.v(e, "Authentication exception for new token, permanent error assumed");
-            oauthTokenProvider.invalidateToken(settings.getUsername());
+            oauthTokenProvider.invalidateToken();
             throw handlePermanentXoauth2Failure(e2);
         }
     }
 
     private List<ImapResponse> attemptXOAuth2() throws MessagingException, IOException {
-        String token = oauthTokenProvider.getToken(settings.getUsername(), OAuth2TokenProvider.OAUTH2_TIMEOUT);
+        String token = oauthTokenProvider.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT);
         String authString = Authentication.computeXoauth(settings.getUsername(), token);
         String tag = sendSaslIrCommand(Commands.AUTHENTICATE_XOAUTH2, authString, true);
 

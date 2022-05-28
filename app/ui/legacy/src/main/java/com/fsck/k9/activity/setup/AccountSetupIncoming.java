@@ -152,9 +152,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
         });
 
-        mAuthTypeAdapter = AuthTypeAdapter.get(this);
-        mAuthTypeView.setAdapter(mAuthTypeAdapter);
-
         /*
          * Only allow digits in the port field.
          */
@@ -172,6 +169,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
+
+        boolean oAuthSupported = mAccount.getIncomingServerSettings().type.equals(Protocols.IMAP);
+        mAuthTypeAdapter = AuthTypeAdapter.get(this, oAuthSupported);
+        mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
         if (editSettings) {
@@ -412,17 +413,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
      * Shows/hides password field and client certificate spinner
      */
     private void updateViewFromAuthType() {
-        AuthType authType = getSelectedAuthType();
-        boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
-
-        if (isAuthTypeExternal) {
-
-            // hide password fields, show client certificate fields
-            mPasswordLayoutView.setVisibility(View.GONE);
-        } else {
-
-            // show password fields, hide client certificate fields
-            mPasswordLayoutView.setVisibility(View.VISIBLE);
+        switch (getSelectedAuthType()) {
+            case EXTERNAL:
+            case XOAUTH2:
+                mPasswordLayoutView.setVisibility(View.GONE);
+                break;
+            default:
+                mPasswordLayoutView.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -433,8 +431,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private void updateViewFromSecurity() {
         ConnectionSecurity security = getSelectedSecurity();
         boolean isUsingTLS = ((ConnectionSecurity.SSL_TLS_REQUIRED  == security) || (ConnectionSecurity.STARTTLS_REQUIRED == security));
+        boolean isUsingOAuth = getSelectedAuthType() == AuthType.XOAUTH2;
 
-        if (isUsingTLS) {
+        if (isUsingTLS && !isUsingOAuth) {
             mAllowClientCertificateView.setVisibility(View.VISIBLE);
         } else {
             mAllowClientCertificateView.setVisibility(View.GONE);
@@ -505,9 +504,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 && hasConnectionSecurity
                 && hasValidCertificateAlias;
 
+        boolean hasValidOAuthSettings = hasValidUserName
+                && hasConnectionSecurity
+                && authType == AuthType.XOAUTH2;
+
         mNextButton.setEnabled(Utility.domainFieldValid(mServerView)
                 && Utility.requiredFieldValid(mPortView)
-                && (hasValidPasswordSettings || hasValidExternalAuthSettings));
+                && (hasValidPasswordSettings || hasValidExternalAuthSettings || hasValidOAuthSettings));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
