@@ -62,7 +62,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         )
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
-            EXTRA_TEXT, ArrayList()
+            EXTRA_TEXT, ArrayList(), null
         )
 
         mockLoaderManager({ attachmentPresenter.attachments.get(0) as Attachment })
@@ -90,7 +90,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         )
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
-            EXTRA_TEXT, ArrayList()
+            EXTRA_TEXT, ArrayList(), null
         )
 
         val result = attachmentPresenter.loadAllAvailableAttachments(messageViewInfo)
@@ -111,7 +111,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         val attachmentViewInfo = AttachmentViewInfo(MIME_TYPE, ATTACHMENT_NAME, size, URI, true, localBodyPart, true)
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
-            EXTRA_TEXT, ArrayList()
+            EXTRA_TEXT, ArrayList(), null
         )
 
         mockLoaderManager({ attachmentPresenter.inlineAttachments.get(contentId) as Attachment })
@@ -139,7 +139,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         val attachmentViewInfo = AttachmentViewInfo(MIME_TYPE, ATTACHMENT_NAME, size, URI, true, localBodyPart, false)
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
-            EXTRA_TEXT, ArrayList()
+            EXTRA_TEXT, ArrayList(), null
         )
 
         val result = attachmentPresenter.loadAllAvailableAttachments(messageViewInfo)
