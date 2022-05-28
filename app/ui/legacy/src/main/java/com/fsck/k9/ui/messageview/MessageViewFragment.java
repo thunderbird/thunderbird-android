@@ -36,6 +36,9 @@ import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.activity.MessageCompose;
+import com.fsck.k9.helper.MailtoUnsubscribeUri;
+import com.fsck.k9.helper.UnsubscribeUri;
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
@@ -96,6 +99,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private MessageLoaderHelper messageLoaderHelper;
     private MessageCryptoPresenter messageCryptoPresenter;
     private Long showProgressThreshold;
+    private UnsubscribeUri preferredUnsubscribeUri;
 
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
@@ -655,6 +659,23 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         return mMessageReference.getFolderId() != spamFolderId;
     }
 
+    public boolean canMessageBeUnsubscribed() {
+        return preferredUnsubscribeUri != null;
+    }
+
+    public void onUnsubscribe() {
+        if (preferredUnsubscribeUri instanceof MailtoUnsubscribeUri) {
+            Intent intent = new Intent(mContext, MessageCompose.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(preferredUnsubscribeUri.getUri());
+            intent.putExtra(MessageCompose.EXTRA_ACCOUNT, mMessageReference.getAccountUuid());
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_VIEW, preferredUnsubscribeUri.getUri());
+            startActivity(intent);
+        }
+    }
+
     public Context getApplicationContext() {
         return mContext;
     }
@@ -779,12 +800,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         @Override
         public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
             showMessage(messageViewInfo);
+            preferredUnsubscribeUri = messageViewInfo.preferredUnsubscribeUri;
             showProgressThreshold = null;
         }
 
         @Override
         public void onMessageViewInfoLoadFailed(MessageViewInfo messageViewInfo) {
             showMessage(messageViewInfo);
+            preferredUnsubscribeUri = null;
             showProgressThreshold = null;
         }
 

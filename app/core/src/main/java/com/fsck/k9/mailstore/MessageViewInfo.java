@@ -4,6 +4,7 @@ package com.fsck.k9.mailstore;
 import java.util.Collections;
 import java.util.List;
 
+import com.fsck.k9.helper.UnsubscribeUri;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -24,6 +25,7 @@ public class MessageViewInfo {
     public final List<AttachmentViewInfo> attachments;
     public final String extraText;
     public final List<AttachmentViewInfo> extraAttachments;
+    public final UnsubscribeUri preferredUnsubscribeUri;
 
 
     public MessageViewInfo(
@@ -32,7 +34,8 @@ public class MessageViewInfo {
             String text, List<AttachmentViewInfo> attachments,
             CryptoResultAnnotation cryptoResultAnnotation,
             AttachmentResolver attachmentResolver,
-            String extraText, List<AttachmentViewInfo> extraAttachments) {
+            String extraText, List<AttachmentViewInfo> extraAttachments,
+            UnsubscribeUri preferredUnsubscribeUri) {
         this.message = message;
         this.isMessageIncomplete = isMessageIncomplete;
         this.rootPart = rootPart;
@@ -44,13 +47,15 @@ public class MessageViewInfo {
         this.attachments = attachments;
         this.extraText = extraText;
         this.extraAttachments = extraAttachments;
+        this.preferredUnsubscribeUri = preferredUnsubscribeUri;
     }
 
     static MessageViewInfo createWithExtractedContent(Message message, Part rootPart, boolean isMessageIncomplete,
-            String text, List<AttachmentViewInfo> attachments, AttachmentResolver attachmentResolver) {
+            String text, List<AttachmentViewInfo> attachments, AttachmentResolver attachmentResolver,
+            UnsubscribeUri preferredUnsubscribeUri) {
         return new MessageViewInfo(
                 message, isMessageIncomplete, rootPart, null, false, text, attachments, null, attachmentResolver, null,
-                Collections.<AttachmentViewInfo>emptyList());
+                Collections.<AttachmentViewInfo>emptyList(), preferredUnsubscribeUri);
     }
 
     public static MessageViewInfo createWithErrorState(Message message, boolean isMessageIncomplete) {
@@ -59,7 +64,7 @@ public class MessageViewInfo {
             Part emptyPart = new MimeBodyPart(emptyBody, "text/plain");
             String subject = message.getSubject();
             return new MessageViewInfo(message, isMessageIncomplete, emptyPart, subject, false, null, null, null, null,
-                    null, null);
+                    null, null, null);
         } catch (MessagingException e) {
             throw new AssertionError(e);
         }
@@ -67,7 +72,7 @@ public class MessageViewInfo {
 
     public static MessageViewInfo createForMetadataOnly(Message message, boolean isMessageIncomplete) {
         String subject = message.getSubject();
-        return new MessageViewInfo(message, isMessageIncomplete, null, subject, false, null, null, null, null, null, null);
+        return new MessageViewInfo(message, isMessageIncomplete, null, subject, false, null, null, null, null, null, null, null);
     }
 
     MessageViewInfo withCryptoData(CryptoResultAnnotation rootPartAnnotation, String extraViewableText,
@@ -76,14 +81,15 @@ public class MessageViewInfo {
                 message, isMessageIncomplete, rootPart, subject, isSubjectEncrypted, text, attachments,
                 rootPartAnnotation,
                 attachmentResolver,
-                extraViewableText, extraAttachmentInfos
+                extraViewableText, extraAttachmentInfos,
+                preferredUnsubscribeUri
         );
     }
 
     MessageViewInfo withSubject(String subject, boolean isSubjectEncrypted) {
         return new MessageViewInfo(
                 message, isMessageIncomplete, rootPart, subject, isSubjectEncrypted, text, attachments,
-                cryptoResultAnnotation, attachmentResolver, extraText, extraAttachments
+                cryptoResultAnnotation, attachmentResolver, extraText, extraAttachments, preferredUnsubscribeUri
         );
     }
 }
