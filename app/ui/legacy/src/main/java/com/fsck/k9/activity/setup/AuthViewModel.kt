@@ -116,14 +116,11 @@ class AuthViewModel(
             config.tokenEndpoint.toUri()
         )
 
-        val applicationId = getApplication<Application>().packageName
-        val redirectUri = Uri.parse("$applicationId:/oauth2redirect")
-
         val authRequestBuilder = AuthorizationRequest.Builder(
             serviceConfig,
             config.clientId,
             ResponseTypeValues.CODE,
-            redirectUri
+            Uri.parse(config.redirectUri)
         )
 
         val scopeString = config.scopes.joinToString(separator = " ")
