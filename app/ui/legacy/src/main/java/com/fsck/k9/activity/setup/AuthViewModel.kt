@@ -120,7 +120,7 @@ class AuthViewModel(
             serviceConfig,
             config.clientId,
             ResponseTypeValues.CODE,
-            Uri.parse(config.redirectUri)
+            config.redirectUri.toUri()
         )
 
         val scopeString = config.scopes.joinToString(separator = " ")

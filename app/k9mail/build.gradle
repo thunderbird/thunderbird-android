@@ -83,6 +83,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "OAUTH_GMAIL_CLIENT_ID", "\"262622259280-hhmh92rhklkg2k1tjil69epo0o9a12jm.apps.googleusercontent.com\""
+            buildConfigField "String", "OAUTH_OUTLOOK_CLIENT_ID", "\"08162f7c-0fd2-4200-a84a-f25a4db0b584\""
 
             manifestPlaceholders = ['appAuthRedirectScheme': 'com.fsck.k9']
         }
@@ -96,6 +97,7 @@ android {
             minifyEnabled false
 
             buildConfigField "String", "OAUTH_GMAIL_CLIENT_ID", "\"262622259280-5qb3vtj68d5dtudmaif4g9vd3cpar8r3.apps.googleusercontent.com\""
+            buildConfigField "String", "OAUTH_OUTLOOK_CLIENT_ID", "\"08162f7c-0fd2-4200-a84a-f25a4db0b584\""
 
             manifestPlaceholders = ['appAuthRedirectScheme': 'com.fsck.k9.debug']
         }
