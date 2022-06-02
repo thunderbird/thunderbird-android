@@ -9,7 +9,8 @@ fun createOAuthConfigurationProvider(): OAuthConfigurationProvider {
         clientId = BuildConfig.OAUTH_GMAIL_CLIENT_ID,
         scopes = listOf("https://mail.google.com/"),
         authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth",
-        tokenEndpoint = "https://oauth2.googleapis.com/token"
+        tokenEndpoint = "https://oauth2.googleapis.com/token",
+        redirectUri = BuildConfig.APPLICATION_ID + ":/oauth2redirect"
     )
 
     return OAuthConfigurationProvider(

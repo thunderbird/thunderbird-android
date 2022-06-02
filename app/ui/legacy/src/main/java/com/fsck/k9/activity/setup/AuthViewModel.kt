@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContract
@@ -116,14 +115,11 @@ class AuthViewModel(
             config.tokenEndpoint.toUri()
         )
 
-        val applicationId = getApplication<Application>().packageName
-        val redirectUri = Uri.parse("$applicationId:/oauth2redirect")
-
         val authRequestBuilder = AuthorizationRequest.Builder(
             serviceConfig,
             config.clientId,
             ResponseTypeValues.CODE,
-            redirectUri
+            config.redirectUri.toUri()
         )
 
         val scopeString = config.scopes.joinToString(separator = " ")
