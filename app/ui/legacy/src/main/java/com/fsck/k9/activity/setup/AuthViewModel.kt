@@ -69,6 +69,11 @@ class AuthViewModel(
         return authState.isAuthorized
     }
 
+    fun isUsingGoogle(account: Account): Boolean {
+        val config = findOAuthConfiguration(account)
+        return config?.authorizationEndpoint == "https://accounts.google.com/o/oauth2/v2/auth"
+    }
+
     private fun getOrCreateAuthState(account: Account): AuthState {
         return try {
             account.oAuthState?.let { AuthState.jsonDeserialize(it) } ?: AuthState()

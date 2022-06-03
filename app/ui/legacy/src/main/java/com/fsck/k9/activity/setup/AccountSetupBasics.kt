@@ -1,5 +1,6 @@
 package com.fsck.k9.activity.setup
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -193,10 +194,17 @@ class AccountSetupBasics : K9Activity() {
             connectionSettings.incoming.authenticationType == AuthType.XOAUTH2 &&
             connectionSettings.outgoing.authenticationType == AuthType.XOAUTH2
         ) {
-            finishAutoSetup(connectionSettings)
+            startOAuthFlow(connectionSettings)
         } else {
             startPasswordFlow()
         }
+    }
+
+    private fun startOAuthFlow(connectionSettings: ConnectionSettings) {
+        val account = createAccount(connectionSettings)
+
+        val intent = OAuthFlowActivity.buildLaunchIntent(this, account.uuid)
+        startActivityForResult(intent, REQUEST_CODE_OAUTH)
     }
 
     private fun startPasswordFlow() {
@@ -233,6 +241,13 @@ class AccountSetupBasics : K9Activity() {
     }
 
     private fun finishAutoSetup(connectionSettings: ConnectionSettings) {
+        val account = createAccount(connectionSettings)
+
+        // Check incoming here. Then check outgoing in onActivityResult()
+        AccountSetupCheckSettings.actionCheckSettings(this, account, CheckDirection.INCOMING)
+    }
+
+    private fun createAccount(connectionSettings: ConnectionSettings): Account {
         val email = emailView.text?.toString() ?: error("Email missing")
         val password = passwordView.text?.toString()
 
@@ -248,8 +263,7 @@ class AccountSetupBasics : K9Activity() {
 
         localFoldersCreator.createSpecialLocalFolders(account)
 
-        // Check incoming here. Then check outgoing in onActivityResult()
-        AccountSetupCheckSettings.actionCheckSettings(this, account, CheckDirection.INCOMING)
+        return account
     }
 
     private fun onManualSetup() {
@@ -309,26 +323,37 @@ class AccountSetupBasics : K9Activity() {
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode != AccountSetupCheckSettings.ACTIVITY_REQUEST_CODE) {
-            super.onActivityResult(requestCode, resultCode, data)
-            return
+        when (requestCode) {
+            REQUEST_CODE_CHECK_SETTINGS -> handleCheckSettingsResult(resultCode)
+            REQUEST_CODE_OAUTH -> handleSignInResult(resultCode)
+            else -> super.onActivityResult(requestCode, resultCode, data)
         }
+    }
 
-        if (resultCode == RESULT_OK) {
-            val account = this.account ?: error("Account instance missing")
+    private fun handleCheckSettingsResult(resultCode: Int) {
+        if (resultCode != RESULT_OK) return
 
-            if (!checkedIncoming) {
-                // We've successfully checked incoming. Now check outgoing.
-                checkedIncoming = true
-                AccountSetupCheckSettings.actionCheckSettings(this, account, CheckDirection.OUTGOING)
-            } else {
-                // We've successfully checked outgoing as well.
-                preferences.saveAccount(account)
-                Core.setServicesEnabled(applicationContext)
+        val account = this.account ?: error("Account instance missing")
 
-                AccountSetupNames.actionSetNames(this, account)
-            }
+        if (!checkedIncoming) {
+            // We've successfully checked incoming. Now check outgoing.
+            checkedIncoming = true
+            AccountSetupCheckSettings.actionCheckSettings(this, account, CheckDirection.OUTGOING)
+        } else {
+            // We've successfully checked outgoing as well.
+            preferences.saveAccount(account)
+            Core.setServicesEnabled(applicationContext)
+
+            AccountSetupNames.actionSetNames(this, account)
         }
+    }
+
+    private fun handleSignInResult(resultCode: Int) {
+        if (resultCode != RESULT_OK) return
+
+        val account = this.account ?: error("Account instance missing")
+
+        AccountSetupCheckSettings.actionCheckSettings(this, account, CheckDirection.INCOMING)
     }
 
     private enum class UiState {
@@ -340,6 +365,8 @@ class AccountSetupBasics : K9Activity() {
         private const val EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account"
         private const val STATE_KEY_UI_STATE = "com.fsck.k9.AccountSetupBasics.uiState"
         private const val STATE_KEY_CHECKED_INCOMING = "com.fsck.k9.AccountSetupBasics.checkedIncoming"
+        private const val REQUEST_CODE_CHECK_SETTINGS = AccountSetupCheckSettings.ACTIVITY_REQUEST_CODE
+        private const val REQUEST_CODE_OAUTH = Activity.RESULT_FIRST_USER + 1
 
         @JvmStatic
         fun actionNewAccount(context: Context) {
