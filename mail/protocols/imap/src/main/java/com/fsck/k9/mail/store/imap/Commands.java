@@ -8,6 +8,7 @@ class Commands {
     public static final String COMPRESS_DEFLATE = "COMPRESS DEFLATE";
     public static final String STARTTLS = "STARTTLS";
     public static final String AUTHENTICATE_XOAUTH2 = "AUTHENTICATE XOAUTH2";
+    public static final String AUTHENTICATE_OAUTHBEARER = "AUTHENTICATE OAUTHBEARER";
     public static final String AUTHENTICATE_CRAM_MD5 = "AUTHENTICATE CRAM-MD5";
     public static final String AUTHENTICATE_PLAIN = "AUTHENTICATE PLAIN";
     public static final String AUTHENTICATE_EXTERNAL = "AUTHENTICATE EXTERNAL";
