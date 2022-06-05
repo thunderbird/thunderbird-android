@@ -4,5 +4,5 @@ import org.koin.dsl.module
 
 val autodiscoveryProvidersXmlModule = module {
     factory { ProvidersXmlProvider(context = get()) }
-    factory { ProvidersXmlDiscovery(xmlProvider = get()) }
+    factory { ProvidersXmlDiscovery(xmlProvider = get(), oAuthConfigurationProvider = get()) }
 }

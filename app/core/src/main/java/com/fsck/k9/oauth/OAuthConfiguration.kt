@@ -1,4 +1,4 @@
-package com.fsck.k9.activity.setup
+package com.fsck.k9.oauth
 
 data class OAuthConfiguration(
     val clientId: String,
