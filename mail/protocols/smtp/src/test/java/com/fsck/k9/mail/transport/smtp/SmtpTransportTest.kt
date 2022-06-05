@@ -171,6 +171,42 @@ class SmtpTransportTest {
     }
 
     @Test
+    fun `open() with OAUTHBEARER method`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH OAUTHBEARER")
+            expect("AUTH OAUTHBEARER bixhPXVzZXIsAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
+
+        transport.open()
+
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() with OAUTHBEARER method when XOAUTH2 method is also available`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250 AUTH XOAUTH2 OAUTHBEARER")
+            expect("AUTH OAUTHBEARER bixhPXVzZXIsAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
+            output("235 2.7.0 Authentication successful")
+        }
+        val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
+
+        transport.open()
+
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
     fun `open() with XOAUTH2 extension`() {
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
@@ -386,7 +422,7 @@ class SmtpTransportTest {
             transport.open()
             fail("Exception expected")
         } catch (e: MessagingException) {
-            assertThat(e).hasMessageThat().isEqualTo("Authentication method XOAUTH2 is unavailable.")
+            assertThat(e).hasMessageThat().isEqualTo("Server doesn't support SASL OAUTHBEARER or XOAUTH2.")
         }
 
         server.verifyConnectionClosed()
@@ -546,7 +582,7 @@ class SmtpTransportTest {
             output("250-smtp.gmail.com at your service, [86.147.34.216]")
             output("250-SIZE 35882577")
             output("250-8BITMIME")
-            output("250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH")
+            output("250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN XOAUTH")
             output("250-ENHANCEDSTATUSCODES")
             output("250-PIPELINING")
             output("250-CHUNKING")

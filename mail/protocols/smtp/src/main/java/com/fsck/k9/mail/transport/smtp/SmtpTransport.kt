@@ -24,6 +24,7 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.transport.smtp.SmtpHelloResponse.Hello
+import com.fsck.k9.sasl.buildOAuthBearerInitialClientResponse
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.IOException
@@ -61,7 +62,7 @@ class SmtpTransport(
     private var is8bitEncodingAllowed = false
     private var isEnhancedStatusCodesProvided = false
     private var largestAcceptableMessage = 0
-    private var retryXoauthWithNewToken = false
+    private var retryOAuthWithNewToken = false
     private var isPipeliningSupported = false
 
     private val logger: SmtpLogger = object : SmtpLogger {
@@ -157,6 +158,7 @@ class SmtpTransport(
             var authCramMD5Supported = false
             var authExternalSupported = false
             var authXoauth2Supported = false
+            var authOAuthBearerSupported = false
             val saslMechanisms = extensions["AUTH"]
             if (saslMechanisms != null) {
                 authLoginSupported = saslMechanisms.contains("LOGIN")
@@ -164,6 +166,7 @@ class SmtpTransport(
                 authCramMD5Supported = saslMechanisms.contains("CRAM-MD5")
                 authExternalSupported = saslMechanisms.contains("EXTERNAL")
                 authXoauth2Supported = saslMechanisms.contains("XOAUTH2")
+                authOAuthBearerSupported = saslMechanisms.contains("OAUTHBEARER")
             }
             parseOptionalSizeValue(extensions["SIZE"])
 
@@ -190,10 +193,14 @@ class SmtpTransport(
                         }
                     }
                     AuthType.XOAUTH2 -> {
-                        if (authXoauth2Supported && oauthTokenProvider != null) {
-                            saslXoauth2()
+                        if (oauthTokenProvider == null) {
+                            throw MessagingException("No OAuth2TokenProvider available.")
+                        } else if (authOAuthBearerSupported) {
+                            saslOAuth(OAuthMethod.OAUTHBEARER)
+                        } else if (authXoauth2Supported) {
+                            saslOAuth(OAuthMethod.XOAUTH2)
                         } else {
-                            throw MessagingException("Authentication method XOAUTH2 is unavailable.")
+                            throw MessagingException("Server doesn't support SASL OAUTHBEARER or XOAUTH2.")
                         }
                     }
                     AuthType.EXTERNAL -> {
@@ -550,10 +557,10 @@ class SmtpTransport(
         }
     }
 
-    private fun saslXoauth2() {
-        retryXoauthWithNewToken = true
+    private fun saslOAuth(method: OAuthMethod) {
+        retryOAuthWithNewToken = true
         try {
-            attemptXoauth2(username)
+            attempOAuth(method, username)
         } catch (negativeResponse: NegativeSmtpReplyException) {
             if (negativeResponse.replyCode != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 throw negativeResponse
@@ -561,10 +568,10 @@ class SmtpTransport(
 
             oauthTokenProvider!!.invalidateToken()
 
-            if (!retryXoauthWithNewToken) {
+            if (!retryOAuthWithNewToken) {
                 handlePermanentFailure(negativeResponse)
             } else {
-                handleTemporaryFailure(username, negativeResponse)
+                handleTemporaryFailure(method, username, negativeResponse)
             }
         }
     }
@@ -573,13 +580,17 @@ class SmtpTransport(
         throw AuthenticationFailedException(negativeResponse.message!!, negativeResponse)
     }
 
-    private fun handleTemporaryFailure(username: String, negativeResponseFromOldToken: NegativeSmtpReplyException) {
+    private fun handleTemporaryFailure(
+        method: OAuthMethod,
+        username: String,
+        negativeResponseFromOldToken: NegativeSmtpReplyException
+    ) {
         // Token was invalid. We could avoid this double check if we had a reasonable chance of knowing if a token was
         // invalid before use (e.g. due to expiry). But we don't. This is the intended behaviour per AccountManager.
         Timber.v(negativeResponseFromOldToken, "Authentication exception, re-trying with new token")
 
         try {
-            attemptXoauth2(username)
+            attempOAuth(method, username)
         } catch (negativeResponseFromNewToken: NegativeSmtpReplyException) {
             if (negativeResponseFromNewToken.replyCode != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 throw negativeResponseFromNewToken
@@ -593,14 +604,14 @@ class SmtpTransport(
         }
     }
 
-    private fun attemptXoauth2(username: String) {
+    private fun attempOAuth(method: OAuthMethod, username: String) {
         val token = oauthTokenProvider!!.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
-        val authString = Authentication.computeXoauth(username, token)
+        val authString = method.buildInitialClientResponse(username, token)
 
-        val response = executeSensitiveCommand("AUTH XOAUTH2 %s", authString)
+        val response = executeSensitiveCommand("%s %s", method.command, authString)
         if (response.replyCode == SMTP_CONTINUE_REQUEST) {
             val replyText = response.joinedText
-            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(replyText, host)
+            retryOAuthWithNewToken = XOAuth2ChallengeParser.shouldRetry(replyText, host)
 
             // Per Google spec, respond to challenge with empty response
             executeCommand("")
@@ -621,4 +632,24 @@ class SmtpTransport(
             close()
         }
     }
+}
+
+private enum class OAuthMethod {
+    XOAUTH2 {
+        override val command = "AUTH XOAUTH2"
+
+        override fun buildInitialClientResponse(username: String, token: String): String {
+            return Authentication.computeXoauth(username, token)
+        }
+    },
+    OAUTHBEARER {
+        override val command = "AUTH OAUTHBEARER"
+
+        override fun buildInitialClientResponse(username: String, token: String): String {
+            return buildOAuthBearerInitialClientResponse(username, token)
+        }
+    };
+
+    abstract val command: String
+    abstract fun buildInitialClientResponse(username: String, token: String): String
 }
