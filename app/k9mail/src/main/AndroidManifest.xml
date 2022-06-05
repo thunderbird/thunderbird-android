@@ -302,6 +302,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.setup.OAuthFlowActivity"
+            android:label="@string/account_setup_basics_title" />
+
         <receiver
             android:name=".provider.UnreadWidgetProvider"
             android:icon="@drawable/ic_launcher"

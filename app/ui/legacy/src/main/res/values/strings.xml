@@ -329,6 +329,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_basics_email_hint">Email address</string>
     <string name="account_setup_basics_password_hint">Password</string>
 
+    <string name="account_setup_oauth_description">To use this email account with K-9 Mail, you need to sign in and grant the app access to your emails.</string>
+    <!-- Displayed below the 'account_setup_oauth_description' text -->
+    <string name="account_setup_oauth_sign_in">Sign in</string>
+    <!-- Displayed below the 'account_setup_oauth_description' text -->
+    <string name="account_setup_oauth_sign_in_with_google">Sign in with Google</string>
+
     <!-- Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app -->
     <string name="account_setup_basics_show_password_need_lock">To view your password here, enable screen lock on this device.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Verify your identity</string>
