@@ -33,6 +33,7 @@ private const val XOAUTH_TOKEN = "token"
 private const val XOAUTH_TOKEN_2 = "token2"
 private val XOAUTH_STRING = "user=$USERNAME\u0001auth=Bearer $XOAUTH_TOKEN\u0001\u0001".base64()
 private val XOAUTH_STRING_RETRY = "user=$USERNAME\u0001auth=Bearer $XOAUTH_TOKEN_2\u0001\u0001".base64()
+private val OAUTHBEARER_STRING = "n,a=$USERNAME,\u0001auth=Bearer $XOAUTH_TOKEN\u0001\u0001".base64()
 
 class RealImapConnectionTest {
     private var socketFactory = TestTrustedSocketFactory.newInstance()
@@ -314,6 +315,38 @@ class RealImapConnectionTest {
         }
 
         server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() AUTH OAUTHBEARER`() {
+        val server = MockImapServer().apply {
+            preAuthenticationDialog(capabilities = "SASL-IR AUTH=OAUTHBEARER")
+            expect("2 AUTHENTICATE OAUTHBEARER $OAUTHBEARER_STRING")
+            output("2 OK Success")
+            postAuthenticationDialogRequestingCapabilities()
+        }
+        val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.XOAUTH2)
+
+        imapConnection.open()
+
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() AUTH OAUTHBEARER when AUTH=XOAUTH2 and AUTH=OAUTHBEARER capabilities are present`() {
+        val server = MockImapServer().apply {
+            preAuthenticationDialog(capabilities = "SASL-IR AUTH=XOAUTH2 AUTH=OAUTHBEARER")
+            expect("2 AUTHENTICATE OAUTHBEARER $OAUTHBEARER_STRING")
+            output("2 OK Success")
+            postAuthenticationDialogRequestingCapabilities()
+        }
+        val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.XOAUTH2)
+
+        imapConnection.open()
+
+        server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
     }
 

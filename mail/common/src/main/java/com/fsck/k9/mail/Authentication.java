@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
+import okio.ByteString;
+
 
 public class Authentication {
     private static final String US_ASCII = "US-ASCII";
@@ -84,11 +86,8 @@ public class Authentication {
         }
     }
 
-    public static String computeXoauth(String username, String authToken) throws UnsupportedEncodingException {
+    public static String computeXoauth(String username, String authToken) {
         String formattedAuthenticationString = String.format(XOAUTH_FORMAT, username, authToken);
-        byte[] base64encodedAuthenticationString =
-                Base64.encodeBase64(formattedAuthenticationString.getBytes());
-
-        return new String(base64encodedAuthenticationString, US_ASCII);
+        return ByteString.encodeUtf8(formattedAuthenticationString).base64();
     }
 }
