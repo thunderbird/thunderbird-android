@@ -9,12 +9,14 @@ import com.fsck.k9.autodiscovery.api.DiscoveryTarget
 import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.oauth.OAuthConfigurationProvider
 import com.fsck.k9.preferences.Protocols
 import org.xmlpull.v1.XmlPullParser
 import timber.log.Timber
 
 class ProvidersXmlDiscovery(
-    private val xmlProvider: ProvidersXmlProvider
+    private val xmlProvider: ProvidersXmlProvider,
+    private val oAuthConfigurationProvider: OAuthConfigurationProvider
 ) : ConnectionSettingsDiscovery {
 
     override fun discover(email: String, target: DiscoveryTarget): DiscoveryResults? {
@@ -104,8 +106,7 @@ class ProvidersXmlDiscovery(
             uri.port
         }
 
-        // TODO: Remove this hack
-        val authType = if (host == "imap.gmail.com" || host == "imap.googlemail.com") {
+        val authType = if (oAuthConfigurationProvider.getConfiguration(host) != null) {
             AuthType.XOAUTH2
         } else {
             AuthType.PLAIN
@@ -134,8 +135,7 @@ class ProvidersXmlDiscovery(
             uri.port
         }
 
-        // TODO: Remove this hack
-        val authType = if (host == "smtp.gmail.com" || host == "smtp.googlemail.com") {
+        val authType = if (oAuthConfigurationProvider.getConfiguration(host) != null) {
             AuthType.XOAUTH2
         } else {
             AuthType.PLAIN

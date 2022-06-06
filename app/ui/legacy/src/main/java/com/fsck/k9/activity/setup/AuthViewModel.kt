@@ -16,6 +16,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.fsck.k9.Account
+import com.fsck.k9.oauth.OAuthConfiguration
+import com.fsck.k9.oauth.OAuthConfigurationProvider
 import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +40,7 @@ private const val KEY_AUTHORIZATION = "app.k9mail_auth"
 class AuthViewModel(
     application: Application,
     private val accountManager: AccountManager,
-    private val oauthCredentials: OAuthCredentials
+    private val oAuthConfigurationProvider: OAuthConfigurationProvider
 ) : AndroidViewModel(application) {
     private var authService: AuthorizationService? = null
     private val authState = AuthState()
@@ -70,8 +72,7 @@ class AuthViewModel(
     }
 
     fun isUsingGoogle(account: Account): Boolean {
-        val config = findOAuthConfiguration(account)
-        return config?.authorizationEndpoint == "https://accounts.google.com/o/oauth2/v2/auth"
+        return oAuthConfigurationProvider.isGoogle(account.incomingServerSettings.host!!)
     }
 
     private fun getOrCreateAuthState(account: Account): AuthState {
@@ -137,17 +138,7 @@ class AuthViewModel(
     }
 
     private fun findOAuthConfiguration(account: Account): OAuthConfiguration? {
-        return when (account.incomingServerSettings.host) {
-            "imap.gmail.com", "imap.googlemail.com" -> {
-                OAuthConfiguration(
-                    clientId = oauthCredentials.gmailClientId,
-                    scopes = listOf("https://mail.google.com/"),
-                    authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth",
-                    tokenEndpoint = "https://oauth2.googleapis.com/token"
-                )
-            }
-            else -> null
-        }
+        return oAuthConfigurationProvider.getConfiguration(account.incomingServerSettings.host!!)
     }
 
     private fun onLoginResult(authorizationResult: AuthorizationResult?) {

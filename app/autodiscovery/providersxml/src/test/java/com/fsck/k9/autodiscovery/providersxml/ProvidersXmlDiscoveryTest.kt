@@ -5,12 +5,15 @@ import com.fsck.k9.RobolectricTest
 import com.fsck.k9.autodiscovery.api.DiscoveryTarget
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.oauth.OAuthConfiguration
+import com.fsck.k9.oauth.OAuthConfigurationProvider
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class ProvidersXmlDiscoveryTest : RobolectricTest() {
     private val xmlProvider = ProvidersXmlProvider(ApplicationProvider.getApplicationContext())
-    private val providersXmlDiscovery = ProvidersXmlDiscovery(xmlProvider)
+    private val oAuthConfigurationProvider = createOAuthConfigurationProvider()
+    private val providersXmlDiscovery = ProvidersXmlDiscovery(xmlProvider, oAuthConfigurationProvider)
 
     @Test
     fun discover_withGmailDomain_shouldReturnCorrectSettings() {
@@ -38,5 +41,21 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
         )
 
         assertThat(connectionSettings).isNull()
+    }
+
+    private fun createOAuthConfigurationProvider(): OAuthConfigurationProvider {
+        val googleConfig = OAuthConfiguration(
+            clientId = "irrelevant",
+            scopes = listOf("irrelevant"),
+            authorizationEndpoint = "irrelevant",
+            tokenEndpoint = "irrelevant"
+        )
+
+        return OAuthConfigurationProvider(
+            configurations = mapOf(
+                listOf("imap.gmail.com", "smtp.gmail.com") to googleConfig,
+            ),
+            googleConfiguration = googleConfig
+        )
     }
 }
