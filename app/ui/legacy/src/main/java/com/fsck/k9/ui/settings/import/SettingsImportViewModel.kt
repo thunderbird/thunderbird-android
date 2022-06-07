@@ -36,6 +36,7 @@ class SettingsImportViewModel(
     private var accountsMap: MutableMap<AccountNumber, AccountUuid> = mutableMapOf()
     private val accountStateMap: MutableMap<AccountNumber, AccountState> = mutableMapOf()
     private var contentUri: Uri? = null
+    private var currentlyAuthorizingAccountUuid: String? = null
 
     private val containsGeneralSettings: Boolean
         get() = uiModel.settingsList.any { it is SettingsListItem.GeneralSettings }
@@ -69,6 +70,7 @@ class SettingsImportViewModel(
 
     fun initializeFromSavedState(savedInstanceState: Bundle) {
         contentUri = savedInstanceState.getParcelable(STATE_CONTENT_URI)
+        currentlyAuthorizingAccountUuid = savedInstanceState.getString(STATE_CURRENTLY_AUTHORIZING_ACCOUNT_UUID)
 
         updateUiModel {
             isSettingsListVisible = savedInstanceState.getBoolean(STATE_SETTINGS_LIST_VISIBLE)
@@ -145,6 +147,7 @@ class SettingsImportViewModel(
             outState.putBoolean(STATE_LOADING_PROGRESS_VISIBLE, isLoadingProgressVisible)
             outState.putBoolean(STATE_IMPORT_PROGRESS_VISIBLE, isImportProgressVisible)
             outState.putEnum(STATE_STATUS_TEXT, statusText)
+            outState.putString(STATE_CURRENTLY_AUTHORIZING_ACCOUNT_UUID, currentlyAuthorizingAccountUuid)
 
             if (hasDocumentBeenRead) {
                 val containsGeneralSettings = this@SettingsImportViewModel.containsGeneralSettings
@@ -200,6 +203,9 @@ class SettingsImportViewModel(
             ImportStatus.NOT_AVAILABLE -> updateUiModel {
                 toggleSettingsListItemSelection(position)
             }
+            ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> {
+                startAuthorization(settingsListItem as SettingsListItem.Account)
+            }
             ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED -> {
                 showPasswordPromptDialog(settingsListItem as SettingsListItem.Account)
             }
@@ -218,6 +224,21 @@ class SettingsImportViewModel(
         GlobalScope.launch(Dispatchers.IO) {
             with(result) {
                 accountActivator.enableAccount(accountUuid, incomingServerPassword, outgoingServerPassword)
+            }
+        }
+    }
+
+    fun onReturnAfterAuthorization() {
+        currentlyAuthorizingAccountUuid?.let { accountUuid ->
+            currentlyAuthorizingAccountUuid = null
+            updateUiModel {
+                val index = getListIndexOfAccount(accountUuid)
+                setSettingsListState(index, ImportStatus.IMPORT_SUCCESS)
+                updateCloseButtonAndImportStatusText()
+            }
+
+            GlobalScope.launch(Dispatchers.IO) {
+                accountActivator.enableAccount(accountUuid)
             }
         }
     }
@@ -333,7 +354,9 @@ class SettingsImportViewModel(
                     accountsMap[accountIndex] = accountPair.imported.uuid
                     listItem.displayName = accountPair.imported.name
 
-                    if (accountPair.incomingPasswordNeeded || accountPair.outgoingPasswordNeeded) {
+                    if (accountPair.authorizationNeeded) {
+                        setSettingsListState(index, ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED)
+                    } else if (accountPair.incomingPasswordNeeded || accountPair.outgoingPasswordNeeded) {
                         accountStateMap[accountIndex] = AccountState(
                             accountPair.incomingServerName,
                             accountPair.outgoingServerName,
@@ -362,6 +385,14 @@ class SettingsImportViewModel(
         return context.contentResolver.openInputStream(contentUri).use { inputStream ->
             SettingsImporter.importSettings(context, inputStream, generalSettings, accounts, false)
         }
+    }
+
+    private fun startAuthorization(settingsListItem: SettingsListItem.Account) {
+        val accountIndex = settingsListItem.accountIndex
+        val accountUuid = accountsMap[accountIndex]!!
+        currentlyAuthorizingAccountUuid = accountUuid
+
+        sendActionEvent(Action.StartAuthorization(accountUuid))
     }
 
     private fun showPasswordPromptDialog(settingsListItem: SettingsListItem.Account) {
@@ -431,12 +462,14 @@ class SettingsImportViewModel(
         private const val STATE_CONTENT_URI = "contentUri"
         private const val STATE_GENERAL_SETTINGS_IMPORT_STATUS = "generalSettingsImportStatus"
         private const val STATE_ACCOUNT_LIST = "accountList"
+        private const val STATE_CURRENTLY_AUTHORIZING_ACCOUNT_UUID = "currentlyAuthorizingAccountUuid"
     }
 }
 
 sealed class Action {
     class Close(val importSuccess: Boolean) : Action()
     object PickDocument : Action()
+    class StartAuthorization(val accountUuid: String) : Action()
     class PasswordPrompt(
         val accountUuid: String,
         val accountName: String,

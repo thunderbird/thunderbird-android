@@ -32,8 +32,9 @@ abstract class ImportListItem<VH : ImportCheckBoxViewHolder>(
             val imageLevel = when (importStatus) {
                 ImportStatus.IMPORT_SUCCESS -> 0
                 ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED -> 1
-                ImportStatus.NOT_SELECTED -> 2
-                ImportStatus.IMPORT_FAILURE -> 3
+                ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> 2
+                ImportStatus.NOT_SELECTED -> 3
+                ImportStatus.IMPORT_FAILURE -> 4
                 else -> error("Unexpected import status: $importStatus")
             }
             holder.statusIcon.setImageLevel(imageLevel)
@@ -41,6 +42,7 @@ abstract class ImportListItem<VH : ImportCheckBoxViewHolder>(
             val contentDescriptionStringResId = when (importStatus) {
                 ImportStatus.IMPORT_SUCCESS -> R.string.settings_import_status_success
                 ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED -> R.string.settings_import_status_password_required
+                ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> R.string.settings_import_status_log_in_required
                 ImportStatus.NOT_SELECTED -> R.string.settings_import_status_not_imported
                 ImportStatus.IMPORT_FAILURE -> R.string.settings_import_status_error
                 else -> error("Unexpected import status: $importStatus")

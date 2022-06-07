@@ -77,17 +77,19 @@ public class SettingsImporter {
         public final AccountDescription original;
         public final AccountDescription imported;
         public final boolean overwritten;
+        public final boolean authorizationNeeded;
         public final boolean incomingPasswordNeeded;
         public final boolean outgoingPasswordNeeded;
         public final String incomingServerName;
         public final String outgoingServerName;
 
         private AccountDescriptionPair(AccountDescription original, AccountDescription imported,
-                boolean overwritten, boolean incomingPasswordNeeded, boolean outgoingPasswordNeeded,
-                String incomingServerName, String outgoingServerName) {
+                boolean overwritten, boolean authorizationNeeded, boolean incomingPasswordNeeded,
+                boolean outgoingPasswordNeeded, String incomingServerName, String outgoingServerName) {
             this.original = original;
             this.imported = imported;
             this.overwritten = overwritten;
+            this.authorizationNeeded = authorizationNeeded;
             this.incomingPasswordNeeded = incomingPasswordNeeded;
             this.outgoingPasswordNeeded = outgoingPasswordNeeded;
             this.incomingServerName = incomingServerName;
@@ -372,7 +374,10 @@ public class SettingsImporter {
 
         String incomingServerName = incoming.host;
         boolean incomingPasswordNeeded = AuthType.EXTERNAL != incoming.authenticationType &&
+                AuthType.XOAUTH2 != incoming.authenticationType &&
                 (incoming.password == null || incoming.password.isEmpty());
+
+        boolean authorizationNeeded = incoming.authenticationType == AuthType.XOAUTH2;
 
         String incomingServerType = ServerTypeConverter.toServerSettingsType(account.incoming.type);
         if (account.outgoing == null && !incomingServerType.equals(Protocols.WEBDAV)) {
@@ -395,15 +400,18 @@ public class SettingsImporter {
              */
             String outgoingServerType = ServerTypeConverter.toServerSettingsType(outgoing.type);
             outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
+                    AuthType.XOAUTH2 != outgoing.authenticationType &&
                     !outgoingServerType.equals(Protocols.WEBDAV) &&
                     outgoing.username != null &&
                     !outgoing.username.isEmpty() &&
                     (outgoing.password == null || outgoing.password.isEmpty());
 
+            authorizationNeeded |= outgoing.authenticationType == AuthType.XOAUTH2;
+
             outgoingServerName = outgoing.host;
         }
 
-        boolean createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded;
+        boolean createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded || authorizationNeeded;
         if (createAccountDisabled) {
             editor.putBoolean(accountKeyPrefix + "enabled", false);
         }
@@ -465,7 +473,7 @@ public class SettingsImporter {
         putString(editor, accountKeyPrefix + "messagesNotificationChannelVersion", messageNotificationChannelVersion);
 
         AccountDescription imported = new AccountDescription(accountName, uuid);
-        return new AccountDescriptionPair(original, imported, mergeImportedAccount,
+        return new AccountDescriptionPair(original, imported, mergeImportedAccount, authorizationNeeded,
                 incomingPasswordNeeded, outgoingPasswordNeeded, incomingServerName, outgoingServerName);
     }
 
@@ -1061,11 +1069,12 @@ public class SettingsImporter {
         String type = ServerTypeConverter.toServerSettingsType(importedServer.type);
         int port = convertPort(importedServer.port);
         ConnectionSecurity connectionSecurity = convertConnectionSecurity(importedServer.connectionSecurity);
+        String password = importedServer.authenticationType == AuthType.XOAUTH2 ? "" : importedServer.password;
         Map<String, String> extra = importedServer.extras != null ?
                 unmodifiableMap(importedServer.extras.settings) : emptyMap();
 
         return new ServerSettings(type, importedServer.host, port, connectionSecurity,
-                importedServer.authenticationType, importedServer.username, importedServer.password,
+                importedServer.authenticationType, importedServer.username, password,
                 importedServer.clientCertificateAlias, extra);
     }
 
