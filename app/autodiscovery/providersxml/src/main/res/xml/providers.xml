@@ -254,10 +254,6 @@
     </provider>
 
    <!-- UK -->
-    <provider id="aol-uk" label="AOL" domain="aol.co.uk">
-        <incoming uri="imap+ssl+://imap.uk.aol.com" label="IMAP" username="$user" />
-        <outgoing uri="smtp+ssl+://smtp.uk.aol.com" username="$user" />
-    </provider>
     <provider id="live-uk" label="Windows Live Hotmail" domain="live.co.uk">
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
@@ -722,5 +718,55 @@
     <provider id="e.foundation" label="/e/" domain="e.email">
         <incoming uri="imap+ssl+://mail.ecloud.global" username="$email" />
         <outgoing uri="smtp+tls+://mail.ecloud.global" username="$email" />
+    </provider>
+
+    <!-- AOL variants -->
+    <provider domain="aol.com">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.de">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.it">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.fr">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.es">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.se">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.co.uk">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.co.nz">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.com.au">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.com.ar">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.com.br">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
+    </provider>
+    <provider domain="aol.com.mx">
+        <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
     </provider>
 </providers>
