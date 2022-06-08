@@ -9,11 +9,15 @@
         android:maxLevel="1"
         android:minLevel="1" />
     <item
-        android:drawable="@drawable/ic_not_imported"
+        android:drawable="@drawable/ic_login"
         android:maxLevel="2"
         android:minLevel="2" />
     <item
-        android:drawable="@drawable/ic_error"
+        android:drawable="@drawable/ic_not_imported"
         android:maxLevel="3"
         android:minLevel="3" />
+    <item
+        android:drawable="@drawable/ic_error"
+        android:maxLevel="4"
+        android:minLevel="4" />
 </level-list>

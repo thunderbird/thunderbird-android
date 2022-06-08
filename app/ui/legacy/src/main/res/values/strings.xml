@@ -932,12 +932,23 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_import_pick_document_button">Select file</string>
     <string name="settings_import_button">Import</string>
     <string name="settings_import_success_generic">Settings successfully imported</string>
+
+    <!-- Displayed after importing accounts when one or multiple accounts require entering a password -->
     <string name="settings_import_password_required">Please enter passwords</string>
+
+    <!-- Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow -->
+    <string name="settings_import_authorization_required">Please sign in</string>
+
+    <!-- Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow -->
+    <string name="settings_import_authorization_and_password_required">Please sign in and enter passwords</string>
+
     <string name="settings_import_failure">Failed to import settings</string>
     <string name="settings_import_read_failure">Failed to read settings file</string>
     <string name="settings_import_partial_failure">Failed to import some settings</string>
     <string name="settings_import_status_success">Imported successfully</string>
     <string name="settings_import_status_password_required">Password required</string>
+    <!-- Content description for the icon that is displayed next to an imported account that requires sign-in -->
+    <string name="settings_import_status_log_in_required">Sign-in required</string>
     <string name="settings_import_status_not_imported">Not imported</string>
     <string name="settings_import_status_error">Import failure</string>
     <string name="settings_import_later_button">Later</string>

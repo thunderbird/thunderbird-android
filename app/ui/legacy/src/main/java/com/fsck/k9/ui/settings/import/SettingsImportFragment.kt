@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.fsck.k9.activity.setup.OAuthFlowActivity
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
@@ -103,6 +104,12 @@ class SettingsImportFragment : Fragment() {
             StatusText.IMPORT_SUCCESS_PASSWORD_REQUIRED -> {
                 statusText.text = getString(R.string.settings_import_password_required)
             }
+            StatusText.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> {
+                statusText.text = getString(R.string.settings_import_authorization_required)
+            }
+            StatusText.IMPORT_SUCCESS_PASSWORD_AND_AUTHORIZATION_REQUIRED -> {
+                statusText.text = getString(R.string.settings_import_authorization_and_password_required)
+            }
             StatusText.IMPORT_READ_FAILURE -> {
                 statusText.text = getString(R.string.settings_import_read_failure)
             }
@@ -142,6 +149,7 @@ class SettingsImportFragment : Fragment() {
             is Action.Close -> closeImportScreen(action)
             is Action.PickDocument -> pickDocument()
             is Action.PasswordPrompt -> showPasswordPrompt(action)
+            is Action.StartAuthorization -> startAuthorization(action)
         }
     }
 
@@ -158,6 +166,15 @@ class SettingsImportFragment : Fragment() {
             addCategory(Intent.CATEGORY_OPENABLE)
         }
         startActivityForResult(createDocumentIntent, REQUEST_PICK_DOCUMENT)
+    }
+
+    private fun startAuthorization(action: Action.StartAuthorization) {
+        val intent = OAuthFlowActivity.buildLaunchIntent(
+            context = requireContext(),
+            accountUuid = action.accountUuid
+        )
+
+        startActivityForResult(intent, REQUEST_AUTHORIZATION)
     }
 
     private fun showPasswordPrompt(action: Action.PasswordPrompt) {
@@ -183,6 +200,7 @@ class SettingsImportFragment : Fragment() {
         when (requestCode) {
             REQUEST_PICK_DOCUMENT -> handlePickDocumentResult(resultCode, data)
             REQUEST_PASSWORD_PROMPT -> handlePasswordPromptResult(resultCode, data)
+            REQUEST_AUTHORIZATION -> handleAuthorizationResult(resultCode)
         }
     }
 
@@ -203,9 +221,16 @@ class SettingsImportFragment : Fragment() {
         }
     }
 
+    private fun handleAuthorizationResult(resultCode: Int) {
+        if (resultCode == Activity.RESULT_OK) {
+            viewModel.onReturnAfterAuthorization()
+        }
+    }
+
     companion object {
         private const val REQUEST_PICK_DOCUMENT = Activity.RESULT_FIRST_USER
         private const val REQUEST_PASSWORD_PROMPT = Activity.RESULT_FIRST_USER + 1
+        private const val REQUEST_AUTHORIZATION = Activity.RESULT_FIRST_USER + 2
     }
 }
 

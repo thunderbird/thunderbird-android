@@ -67,13 +67,13 @@ class SettingsImportUiModel {
         statusText = StatusText.IMPORT_SUCCESS
     }
 
-    private fun showPasswordRequiredText() {
+    private fun showActionRequiredText(actionText: StatusText) {
         importButton = ButtonState.GONE
         closeButton = ButtonState.ENABLED
         closeButtonLabel = CloseButtonLabel.LATER
         isImportProgressVisible = false
         isSettingsListEnabled = true
-        statusText = StatusText.IMPORT_SUCCESS_PASSWORD_REQUIRED
+        statusText = actionText
     }
 
     fun showReadFailureText() {
@@ -120,7 +120,7 @@ class SettingsImportUiModel {
 
     fun setSettingsListState(position: Int, status: ImportStatus) {
         settingsList[position].importStatus = status
-        settingsList[position].enabled = status == ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED
+        settingsList[position].enabled = status.isActionRequired
     }
 
     private fun updateImportButtonFromSelection() {
@@ -141,17 +141,26 @@ class SettingsImportUiModel {
             return
         }
 
-        val passwordsMissing = settingsList.any { it.importStatus == ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED }
-        if (passwordsMissing) {
-            showPasswordRequiredText()
-            return
+        val passwordsMissing = settingsList.any {
+            it.importStatus == ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED
+        }
+        val authorizationRequired = settingsList.any {
+            it.importStatus == ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED
         }
 
-        val partialImportError = settingsList.any { it.importStatus == ImportStatus.IMPORT_FAILURE }
-        if (partialImportError) {
-            showPartialImportErrorText()
+        if (passwordsMissing && authorizationRequired) {
+            showActionRequiredText(StatusText.IMPORT_SUCCESS_PASSWORD_AND_AUTHORIZATION_REQUIRED)
+        } else if (passwordsMissing) {
+            showActionRequiredText(StatusText.IMPORT_SUCCESS_PASSWORD_REQUIRED)
+        } else if (authorizationRequired) {
+            showActionRequiredText(StatusText.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED)
         } else {
-            showSuccessText()
+            val partialImportError = settingsList.any { it.importStatus == ImportStatus.IMPORT_FAILURE }
+            if (partialImportError) {
+                showPartialImportErrorText()
+            } else {
+                showSuccessText()
+            }
         }
     }
 }
@@ -165,15 +174,13 @@ sealed class SettingsListItem {
     class Account(val accountIndex: Int, var displayName: String) : SettingsListItem()
 }
 
-enum class ImportStatus {
-    NOT_AVAILABLE,
-    NOT_SELECTED,
-    IMPORT_SUCCESS,
-    IMPORT_SUCCESS_PASSWORD_REQUIRED,
-    IMPORT_FAILURE;
-
-    val isSuccess: Boolean
-        get() = this == IMPORT_SUCCESS || this == IMPORT_SUCCESS_PASSWORD_REQUIRED
+enum class ImportStatus(val isSuccess: Boolean, val isActionRequired: Boolean) {
+    NOT_AVAILABLE(isSuccess = false, isActionRequired = false),
+    NOT_SELECTED(isSuccess = false, isActionRequired = false),
+    IMPORT_SUCCESS(isSuccess = true, isActionRequired = false),
+    IMPORT_SUCCESS_PASSWORD_REQUIRED(isSuccess = true, isActionRequired = true),
+    IMPORT_SUCCESS_AUTHORIZATION_REQUIRED(isSuccess = true, isActionRequired = true),
+    IMPORT_FAILURE(isSuccess = false, isActionRequired = false)
 }
 
 enum class ButtonState {
@@ -188,6 +195,8 @@ enum class StatusText {
     IMPORTING_PROGRESS,
     IMPORT_SUCCESS,
     IMPORT_SUCCESS_PASSWORD_REQUIRED,
+    IMPORT_SUCCESS_AUTHORIZATION_REQUIRED,
+    IMPORT_SUCCESS_PASSWORD_AND_AUTHORIZATION_REQUIRED,
     IMPORT_READ_FAILURE,
     IMPORT_PARTIAL_FAILURE,
     IMPORT_FAILURE

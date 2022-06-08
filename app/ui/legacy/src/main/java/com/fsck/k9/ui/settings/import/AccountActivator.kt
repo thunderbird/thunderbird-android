@@ -18,7 +18,16 @@ class AccountActivator(
         val account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
 
         setAccountPasswords(account, incomingServerPassword, outgoingServerPassword)
+        enableAccount(account)
+    }
 
+    fun enableAccount(accountUuid: String) {
+        val account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
+
+        enableAccount(account)
+    }
+
+    private fun enableAccount(account: Account) {
         // Start services if necessary
         Core.setServicesEnabled(context)
 
