@@ -83,6 +83,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "OAUTH_GMAIL_CLIENT_ID", "\"262622259280-hhmh92rhklkg2k1tjil69epo0o9a12jm.apps.googleusercontent.com\""
+            buildConfigField "String", "OAUTH_YAHOO_CLIENT_ID", "\"dj0yJmk9aHNUb3d2MW5TQnpRJmQ9WVdrOWVYbHpaRWM0YkdnbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWIz\""
 
             manifestPlaceholders = ['appAuthRedirectScheme': 'com.fsck.k9']
         }
@@ -96,6 +97,7 @@ android {
             minifyEnabled false
 
             buildConfigField "String", "OAUTH_GMAIL_CLIENT_ID", "\"262622259280-5qb3vtj68d5dtudmaif4g9vd3cpar8r3.apps.googleusercontent.com\""
+            buildConfigField "String", "OAUTH_YAHOO_CLIENT_ID", "\"dj0yJmk9ejRCRU1ybmZjQlVBJmQ9WVdrOVVrZEViak4xYmxZbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTZj\""
 
             manifestPlaceholders = ['appAuthRedirectScheme': 'com.fsck.k9.debug']
         }
