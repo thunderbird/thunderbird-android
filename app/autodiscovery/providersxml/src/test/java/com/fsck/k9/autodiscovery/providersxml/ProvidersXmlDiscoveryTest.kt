@@ -48,7 +48,8 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
             clientId = "irrelevant",
             scopes = listOf("irrelevant"),
             authorizationEndpoint = "irrelevant",
-            tokenEndpoint = "irrelevant"
+            tokenEndpoint = "irrelevant",
+            redirectUri = "irrelevant"
         )
 
         return OAuthConfigurationProvider(
