@@ -81,11 +81,22 @@ class NotificationIdsTest {
         assertThat(maxNotificationId1 + 1).isEqualTo(minNotificationId2)
     }
 
-    fun getGeneralNotificationIds(): List<Int> {
+    @Test
+    fun `all message notification IDs`() {
+        val account = createAccount(1)
+
+        val notificationIds = NotificationIds.getAllMessageNotificationIds(account)
+
+        assertThat(notificationIds).containsExactlyElementsIn(
+            getNewMessageNotificationIds(account) + NotificationIds.getNewMailSummaryNotificationId(account)
+        )
+    }
+
+    private fun getGeneralNotificationIds(): List<Int> {
         return listOf(NotificationIds.PUSH_NOTIFICATION_ID)
     }
 
-    fun getAccountNotificationIds(account: Account): List<Int> {
+    private fun getAccountNotificationIds(account: Account): List<Int> {
         return listOf(
             NotificationIds.getSendFailedNotificationId(account),
             NotificationIds.getCertificateErrorNotificationId(account, true),
@@ -94,7 +105,11 @@ class NotificationIdsTest {
             NotificationIds.getAuthenticationErrorNotificationId(account, false),
             NotificationIds.getFetchingMailNotificationId(account),
             NotificationIds.getNewMailSummaryNotificationId(account),
-        ) + (0 until MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS).map { index ->
+        ) + getNewMessageNotificationIds(account)
+    }
+
+    private fun getNewMessageNotificationIds(account: Account): List<Int> {
+        return (0 until MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS).map { index ->
             NotificationIds.getSingleMessageNotificationId(account, index)
         }
     }
