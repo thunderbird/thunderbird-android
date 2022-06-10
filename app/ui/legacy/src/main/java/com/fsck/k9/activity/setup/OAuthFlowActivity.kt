@@ -3,7 +3,8 @@ package com.fsck.k9.activity.setup
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.fsck.k9.Account
@@ -19,6 +20,8 @@ class OAuthFlowActivity : K9Activity() {
     private val accountManager: AccountManager by inject()
 
     private lateinit var errorText: TextView
+    private lateinit var signInButton: Button
+    private lateinit var signInProgress: ProgressBar
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +32,8 @@ class OAuthFlowActivity : K9Activity() {
         val account = accountManager.getAccount(accountUUid) ?: error("Account not found")
 
         errorText = findViewById(R.id.error_text)
-        val signInButton: View = if (authViewModel.isUsingGoogle(account)) {
+        signInProgress = findViewById(R.id.sign_in_progress)
+        signInButton = if (authViewModel.isUsingGoogle(account)) {
             findViewById(R.id.google_sign_in_button)
         } else {
             findViewById(R.id.oauth_sign_in_button)
@@ -37,6 +41,12 @@ class OAuthFlowActivity : K9Activity() {
 
         signInButton.isVisible = true
         signInButton.setOnClickListener { startOAuthFlow(account) }
+
+        savedInstanceState?.let {
+            val signInRunning = it.getBoolean(STATE_PROGRESS)
+            signInButton.isVisible = !signInRunning
+            signInProgress.isVisible = signInRunning
+        }
 
         authViewModel.init(activityResultRegistry, lifecycle)
 
@@ -55,30 +65,45 @@ class OAuthFlowActivity : K9Activity() {
                 finish()
             }
             AuthFlowState.Canceled -> {
-                errorText.text = getString(R.string.account_setup_failed_dlg_oauth_flow_canceled)
+                displayErrorText(R.string.account_setup_failed_dlg_oauth_flow_canceled)
             }
             is AuthFlowState.Failed -> {
-                errorText.text = getString(R.string.account_setup_failed_dlg_oauth_flow_failed, state)
+                displayErrorText(R.string.account_setup_failed_dlg_oauth_flow_failed, state)
             }
             AuthFlowState.NotSupported -> {
-                errorText.text = getString(R.string.account_setup_failed_dlg_oauth_not_supported)
+                displayErrorText(R.string.account_setup_failed_dlg_oauth_not_supported)
             }
             AuthFlowState.BrowserNotFound -> {
-                errorText.text = getString(R.string.account_setup_failed_dlg_browser_not_found)
+                displayErrorText(R.string.account_setup_failed_dlg_browser_not_found)
             }
         }
 
         authViewModel.authResultConsumed()
     }
 
+    private fun displayErrorText(errorTextResId: Int, vararg args: Any?) {
+        signInProgress.isVisible = false
+        signInButton.isVisible = true
+        errorText.text = getString(errorTextResId, *args)
+    }
+
     private fun startOAuthFlow(account: Account) {
+        signInButton.isVisible = false
+        signInProgress.isVisible = true
         errorText.text = ""
 
         authViewModel.login(account)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(STATE_PROGRESS, signInProgress.isVisible)
+    }
+
     companion object {
         private const val EXTRA_ACCOUNT_UUID = "accountUuid"
+
+        private const val STATE_PROGRESS = "signInProgress"
 
         fun buildLaunchIntent(context: Context, accountUuid: String): Intent {
             return Intent(context, OAuthFlowActivity::class.java).apply {
