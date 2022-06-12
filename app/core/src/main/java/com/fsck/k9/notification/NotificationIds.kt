@@ -30,8 +30,9 @@ internal object NotificationIds {
     }
 
     fun getAllMessageNotificationIds(account: Account): List<Int> {
-        val singleMessageNotificationIdRange = (0 until NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) +
-            (getBaseNotificationId(account) + OFFSET_NEW_MAIL_SINGLE)
+        val singleMessageNotificationIdRange = (0 until NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS).map { index ->
+            getBaseNotificationId(account) + OFFSET_NEW_MAIL_SINGLE + index
+        }
 
         return singleMessageNotificationIdRange.toList() + getNewMailSummaryNotificationId(account)
     }
