@@ -49,6 +49,12 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
+            <ProgressBar
+                android:id="@+id/sign_in_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/error_text"
                 android:layout_width="match_parent"
