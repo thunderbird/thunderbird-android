@@ -199,6 +199,8 @@
   <string name="account_setup_basics_title">계정 추가</string>
   <string name="account_setup_basics_email_hint">이메일 주소</string>
   <string name="account_setup_basics_password_hint">비밀번호</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">수동 설정</string>
   <string name="account_setup_check_settings_title"/>
@@ -236,10 +238,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">서버에는 메일을 삭제하지 않음</string>
   <string name="account_setup_incoming_delete_policy_delete_label">서버에도 메일 삭제</string>
   <string name="account_setup_incoming_delete_policy_markread_label">서버에 읽은 메일로 표시</string>
-  <string name="account_setup_incoming_compression_label">네트워크 상에서 압축 사용:</string>
-  <string name="account_setup_incoming_mobile_label">모바일 네트워크</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">기타</string>
   <string name="account_setup_expunge_policy_label">삭제된 메시지를 제거</string>
   <string name="account_setup_expunge_policy_immediately">즉시</string>
   <string name="account_setup_expunge_policy_on_poll">수신 시</string>
@@ -604,6 +602,10 @@
   <string name="settings_export_failure">설정 내보내기 실패</string>
   <string name="settings_import_title">설정 가져오기</string>
   <string name="settings_import_button">가져오기</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import">설정 가져오기</string>
   <string name="settings_importing">설정 가져오는 중…</string>
   <string name="unread_widget_select_account">읽지 않은 메일 수 보이기</string>
@@ -736,8 +738,6 @@
   <string name="account_settings_crypto_hide_sign_only">암호화된지 않은 서명을 숨기기</string>
   <string name="account_settings_crypto_hide_sign_only_off">모든 서명이 보일 것입니다</string>
   <string name="unsigned_text_divider_label">서명되지 않은 글</string>
-  <string name="apg_deprecated_ok">알았습니다!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_button">설정으로 움직이기</string>
   <string name="openpgp_enabled_error_title">암호화가 불가능합니다</string>
   <string name="openpgp_enabled_error_msg">선택된 몇몇 받는 사람들은 이 기능을 지원하지 않습니다!</string>

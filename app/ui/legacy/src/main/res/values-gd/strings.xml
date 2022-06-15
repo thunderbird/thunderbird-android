@@ -234,6 +234,8 @@
   <string name="account_setup_basics_title">Suidhich cunntas ùr</string>
   <string name="account_setup_basics_email_hint">Seòladh puist-d</string>
   <string name="account_setup_basics_password_hint">Facal-faire</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_biometrics_title">Dearbh cò thusa</string>
   <string name="account_setup_basics_manual_setup_action">Suidheachadh a làimh</string>
@@ -273,10 +275,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">Na sguab às an fhrithealaiche e</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Sguab às an fhrithealaiche e</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Comharraich air an fhrithealaiche gun deach a leughadh</string>
-  <string name="account_setup_incoming_compression_label">Cleachd dùmhlachadh air lìonra:</string>
-  <string name="account_setup_incoming_mobile_label">Mobile</string>
-  <string name="account_setup_incoming_wifi_label">WiFi</string>
-  <string name="account_setup_incoming_other_label">Eile</string>
   <string name="account_setup_expunge_policy_label">Ma sguabas mi às teachdaireachd, sguab às an fhrithealaiche e</string>
   <string name="account_setup_expunge_policy_immediately">Sa bhad</string>
   <string name="account_setup_expunge_policy_on_poll">Aig an ath-cheasnachadh</string>
@@ -702,7 +700,11 @@
   <string name="settings_export_failure">Cha b’ urrainn dhuinn na roghainnean às-phortadh</string>
   <string name="settings_import_title">Ion-phortaich na roghainnean</string>
   <string name="settings_import_button">Ion-phortaich</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Cha b’ urrainn dhuinn roghainn sam bith ion-phortadh o: <xliff:g id="filename">%s</xliff:g></string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import">Ion-phortaich na roghainnean</string>
   <string name="settings_importing">Ag ion-phortadh nan roghainnean…</string>
   <string name="unread_widget_select_account">Seall co mheud a tha gun leughadh ann an…</string>
@@ -879,14 +881,6 @@
   <string name="recipient_error_parse_failed">Mearachd a’ parsadh an t-seòlaidh!</string>
   <string name="error_sign_only_no_encryption">Chan eil crioptachadh ri fhaighinn sa mhodh anns nach dèanar ach soidhneadh!</string>
   <string name="unsigned_text_divider_label">Teacsa gun soidhneadh</string>
-  <string name="apg_deprecated_title">Rabhadh mu chleachdadh APG</string>
-  <string name="apg_deprecated_1">Chan eilear a’ leasachadh APG tuilleadh!</string>
-  <string name="apg_deprecated_2">Ri linn sin, chan eil taic ri APG aig post K-9 tuilleadh.</string>
-  <string name="apg_deprecated_bullet_1">Sguir daoine dhen obair-leasachaidh aig toiseach 2014</string>
-  <string name="apg_deprecated_bullet_2">Tha duilgheadasan tèarainteachd ann nach deach an càradh</string>
-  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Briog an-seo</a> airson barrachd fiosrachaidh.</string>
-  <string name="apg_deprecated_ok">Tha mi agaibh!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Tha am post-d seo crioptaichte</string>
   <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP.
 \nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>

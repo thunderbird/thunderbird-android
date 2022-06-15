@@ -269,6 +269,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_basics_title">Setja upp nýjan aðgang</string>
   <string name="account_setup_basics_email_hint">Netfang</string>
   <string name="account_setup_basics_password_hint">Lykilorð</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Til að skoða lykilorðið þitt hér skaltu virkja skjálæsingu á þessu tæki</string>
   <string name="account_setup_basics_show_password_biometrics_title">Sannreyndu auðkennin þín</string>
@@ -310,10 +312,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_incoming_delete_policy_never_label">Ekki eyða af póstþjóni</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Eyða af póstþjóni</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Merkja sem lesið á póstþjóni</string>
-  <string name="account_setup_incoming_compression_label">Nota þjöppun á netkerfi:</string>
-  <string name="account_setup_incoming_mobile_label">Farsímakerfi</string>
-  <string name="account_setup_incoming_wifi_label">Þráðlausu Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Annað</string>
   <string name="account_setup_expunge_policy_label">Þurrka út eyddum skilaboðum á póstþjóni</string>
   <string name="account_setup_expunge_policy_immediately">Strax</string>
   <string name="account_setup_expunge_policy_on_poll">Við athuganir</string>
@@ -737,12 +735,16 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="settings_import_pick_document_button">Velja skrá</string>
   <string name="settings_import_button">Flytja inn</string>
   <string name="settings_import_success_generic">Tókst að flytja inn stillingar</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required"> Settu inn lykilorðin</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Mistókst að flytja inn stillingar</string>
   <string name="settings_import_read_failure">Mistókst að lesa stillingaskrá</string>
   <string name="settings_import_partial_failure">Mistókst að flytja inn sumar stillingar</string>
   <string name="settings_import_status_success">Innflutningur tókst</string>
   <string name="settings_import_status_password_required">Lykilorðs er krafist</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Ekki flutt inn</string>
   <string name="settings_import_status_error">Innflutningur mistókst</string>
   <string name="settings_import_later_button">Síðar</string>
@@ -933,14 +935,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_crypto_hide_sign_only_off">Allar undirritanir verða birtar</string>
   <string name="error_sign_only_no_encryption">Dulritun ekki tiltæk í einungis-undirrita ham!</string>
   <string name="unsigned_text_divider_label">Óundirritaður texti</string>
-  <string name="apg_deprecated_title">Aðvörun vegna úreldingar APG</string>
-  <string name="apg_deprecated_1">APG er ekki lengur viðhaldið!</string>
-  <string name="apg_deprecated_2">Vegna þessa hefur stuðningur við APG verið fjarlægður úr K-9 póstforritinu.</string>
-  <string name="apg_deprecated_bullet_1">Þróun þess hætti snemma á árinu 2014</string>
-  <string name="apg_deprecated_bullet_2">Inniheldur óleyst öryggisvandamál</string>
-  <string name="apg_learn_more">Þú getur <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">smellt hér</a> til að fræðast betur um þetta.</string>
-  <string name="apg_deprecated_ok">Náði því!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Þessi tölvupóstur er dulritaður</string>
   <string name="crypto_no_provider_message">Þessi tölvupóstur var dulritaður með OpenPGP.\nTil að lesa hann verður þú að setja upp og stilla samhæft OpenPGP-forrit.</string>
   <string name="crypto_no_provider_button">Fara í stillingar</string>

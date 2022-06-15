@@ -15,6 +15,8 @@
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="global_settings_registered_name_color_label">Colourise contacts</string>
   <string name="global_settings_registered_name_color_changed">Colourise names in your contact list</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_check_settings_title"/>
   <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronised with the server</string>
@@ -22,6 +24,10 @@
   <string name="account_settings_color_summary">The accent colour of this account used in folder and account list</string>
   <string name="account_settings_notification_light_account_color">Account colour</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognised Certificate</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="global_settings_colorize_missing_contact_pictures_label">Colourise contact pictures</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Colourise missing contact pictures</string>
   <!--=== Client certificates specific ==================================================================-->

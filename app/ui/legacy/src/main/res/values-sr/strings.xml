@@ -262,6 +262,8 @@
   <string name="account_setup_basics_title">Постави нови налог</string>
   <string name="account_setup_basics_email_hint">Адреса е-поште</string>
   <string name="account_setup_basics_password_hint">Лозинка</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ручна постава</string>
   <string name="account_setup_check_settings_title"/>
@@ -300,10 +302,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">не бриши са сервера</string>
   <string name="account_setup_incoming_delete_policy_delete_label">обриши са сервера</string>
   <string name="account_setup_incoming_delete_policy_markread_label">означи као прочитану на серверу</string>
-  <string name="account_setup_incoming_compression_label">Користи компресију на мрежи:</string>
-  <string name="account_setup_incoming_mobile_label">мобилној</string>
-  <string name="account_setup_incoming_wifi_label">бежичној</string>
-  <string name="account_setup_incoming_other_label">осталим</string>
   <string name="account_setup_expunge_policy_label">Уклони обрисане поруке са сервера</string>
   <string name="account_setup_expunge_policy_immediately">одмах</string>
   <string name="account_setup_expunge_policy_on_poll">приликом провере</string>
@@ -721,12 +719,16 @@
   <string name="settings_import_pick_document_button">Изаберите фајл</string>
   <string name="settings_import_button">Увоз</string>
   <string name="settings_import_success_generic">Поставке успешно увезене</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Унесите лозинке</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Не могу да увезем поставке</string>
   <string name="settings_import_read_failure">Не могу да читам фајл поставки</string>
   <string name="settings_import_partial_failure">Не могу да увезем неке поставке</string>
   <string name="settings_import_status_success">Успешно увезено</string>
   <string name="settings_import_status_password_required">Неопходна је лозинка</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Није увезено </string>
   <string name="settings_import_status_error">Увоз неуспешан</string>
   <string name="settings_import_later_button">Касније</string>
@@ -919,14 +921,6 @@
   <string name="account_settings_crypto_hide_sign_only_off">Биће приказани сви потписи</string>
   <string name="error_sign_only_no_encryption">Шифровање није доступно у режиму „само-потпис“!</string>
   <string name="unsigned_text_divider_label">Непотписан текст</string>
-  <string name="apg_deprecated_title">Упозорење о застарењу АПГ-а</string>
-  <string name="apg_deprecated_1">АПГ се више не одржава!</string>
-  <string name="apg_deprecated_2">Због овога, подршка за АПГ је уклоњена из К-9 поште.</string>
-  <string name="apg_deprecated_bullet_1">Развој је заустављен почетком 2014</string>
-  <string name="apg_deprecated_bullet_2">Садржи непоправљене безбедносне пропусте</string>
-  <string name="apg_learn_more">Кликните <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">овде</a> да сазнате више.</string>
-  <string name="apg_deprecated_ok">Важи!</string>
-  <string name="apg">АПГ</string>
   <string name="crypto_no_provider_title">Ова е-порука је шифрована</string>
   <string name="crypto_no_provider_message">Ова е-порука је шифрована помоћу у ОпенПГП-а.\nДа бисте је прочитали, треба да инсталирате и подесите компатибилну ОпенПГП апликацију.</string>
   <string name="crypto_no_provider_button">Иди на Поставке</string>

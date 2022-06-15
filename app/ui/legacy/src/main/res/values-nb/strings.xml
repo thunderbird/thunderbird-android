@@ -259,6 +259,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_setup_basics_title">Sett opp en ny konto</string>
   <string name="account_setup_basics_email_hint">E-postadresse</string>
   <string name="account_setup_basics_password_hint">Passord</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Manuelt oppsett</string>
   <string name="account_setup_check_settings_title"/>
@@ -297,10 +299,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_setup_incoming_delete_policy_never_label">Ikke slett på tjener</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Slett fra tjener</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Merk som lest på tjener</string>
-  <string name="account_setup_incoming_compression_label">Bruk kompresjon på nettverk:</string>
-  <string name="account_setup_incoming_mobile_label">Mobil</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Annet</string>
   <string name="account_setup_expunge_policy_label">Fjern slettede meldinger på tjener</string>
   <string name="account_setup_expunge_policy_immediately">Umiddelbart</string>
   <string name="account_setup_expunge_policy_on_poll">I forbindelse med sjekking av e-post</string>
@@ -714,12 +712,16 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="settings_import_pick_document_button">Velg fil</string>
   <string name="settings_import_button">Importer</string>
   <string name="settings_import_success_generic">Innstillinger importert med hell</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Vennligst skriv inn passord</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Import av innstillinger mislyktes</string>
   <string name="settings_import_read_failure">Klarte ikke avlese innstillingsfil</string>
   <string name="settings_import_partial_failure">Klarte ikke importere noen innstillinger</string>
   <string name="settings_import_status_success">Importert med hell</string>
   <string name="settings_import_status_password_required">Passord er påkrevd</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import">Importer innstillinger</string>
   <string name="settings_importing">Importerer innstillinger …</string>
   <string name="server_name_format">Tjenernavn: <xliff:g id="hostname">%s</xliff:g></string>
@@ -895,14 +897,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_settings_crypto_hide_sign_only_off">Alle signaturer vil bli vist</string>
   <string name="error_sign_only_no_encryption">Kryptering utilgjengelig i Bare-signer -modus!</string>
   <string name="unsigned_text_divider_label">Usignert tekst</string>
-  <string name="apg_deprecated_title">APG-foreldelsesadvarsel</string>
-  <string name="apg_deprecated_1">APG vedlikeholdes ikke lenger</string>
-  <string name="apg_deprecated_2">På grunn av dette, har støtten for APG blitt fjernet fra K-9.</string>
-  <string name="apg_deprecated_bullet_1">Utviklingen stoppet tidlig i 2014</string>
-  <string name="apg_deprecated_bullet_2">Inneholder sikkerhetsfeil som ikke er rettet</string>
-  <string name="apg_learn_more">Du kan <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikke her for å</a> lære mer.</string>
-  <string name="apg_deprecated_ok">Skjønner!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Denne e-posten er kryptert</string>
   <string name="crypto_no_provider_message">Denne e-posten har blitt kryptert med OpenPGP.\nFor å lese den, må du installere og sette opp et kompatibelt OpenPGP-program.</string>
   <string name="crypto_no_provider_button">Gå til \"Innstillinger\"</string>

@@ -255,6 +255,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="global_settings_lock_screen_notification_visibility_title">Kilit Ekranı Bildirimleri</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Kilit ekranı bildirimi yok</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Uygulama adı</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Yeni mesaj sayısı</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Mesaj sayısı ve gönderenler</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Ekran kilidi açıkken olduğu gibi</string>
   <string name="quiet_time">Sessiz Zaman</string>
@@ -266,6 +267,10 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_basics_title">Bir yeni hesap kurun</string>
   <string name="account_setup_basics_email_hint">E-posta adresi</string>
   <string name="account_setup_basics_password_hint">Parola</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Giriş yap</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Google ile giriş yap</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Şifrenizi görmek için ekran kilidini etkinleştirin.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Kimliğinizi doğrulayın</string>
@@ -307,10 +312,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_incoming_delete_policy_never_label">Sunucudan silme</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Sunucudan sil</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Sunucuda okundu olarak işaretle</string>
-  <string name="account_setup_incoming_compression_label">Ağda sıkıştırma kullan:</string>
-  <string name="account_setup_incoming_mobile_label">Cep Telefonu</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Diğer</string>
   <string name="account_setup_expunge_policy_label">Sunucudan silinen mesajları temizle</string>
   <string name="account_setup_expunge_policy_immediately">Hemen</string>
   <string name="account_setup_expunge_policy_on_poll">Oylama  zamanı</string>
@@ -375,6 +376,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_failed_dlg_auth_message_fmt">Kullanıcı adı veya parola doğru değil.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Sunucu geçersiz bir SSL sertifikası sundu. Bu bazen sunucunun düzgün yapılandırılmamasından kaynaklanır. Bazen de birisi size saldırıyor olabilir. Eğer ne olduğunu bilmiyorsanız, Reddet\'e tıklayın ve posta sunucunuzu yöneten kişilerle iletişime geçin.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Sunucuya bağlanılamadı.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Yetkilendirme iptal edildi</string>
   <string name="account_setup_failed_dlg_edit_details_action">Ayrıntıları düzenle</string>
   <string name="account_setup_failed_dlg_continue_action">Devam</string>
   <string name="account_settings_push_advanced_title">Gelişmiş</string>
@@ -533,6 +535,11 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_vibrate_times">Titreşimi tekrarla</string>
   <string name="account_settings_ringtone">Yeni posta zil sesi</string>
   <string name="account_settings_notification_light_account_color">Hesap rengi</string>
+  <string name="account_settings_notification_light_white">Beyaz</string>
+  <string name="account_settings_notification_light_red">Kırmızı</string>
+  <string name="account_settings_notification_light_green">Yeşil</string>
+  <string name="account_settings_notification_light_blue">Mavi</string>
+  <string name="account_settings_notification_light_yellow">Sarı</string>
   <string name="account_settings_composition_title">Mesaj oluşturma seçenekleri</string>
   <string name="account_settings_composition_label">Bileşen öntanımlıları</string>
   <string name="account_settings_composition_summary">Varsayılan Kimden, Bcc ve imzayı ayarlayın</string>
@@ -733,12 +740,17 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="settings_import_pick_document_button">Dosya seç</string>
   <string name="settings_import_button">İçe Aktar</string>
   <string name="settings_import_success_generic">Ayarlar başarıyla içe aktarıldı</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Lütfen parolaları girin</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Lütfen giriş yapın</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Ayarlar içe aktarılamadı</string>
   <string name="settings_import_read_failure">Ayarlar dosyası okunamadı</string>
   <string name="settings_import_partial_failure">Bazı ayarlar içe aktarılamadı</string>
   <string name="settings_import_status_success">Başarıyla içe aktarıldı</string>
   <string name="settings_import_status_password_required">Parola gerekli</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">İçe aktarılmadı</string>
   <string name="settings_import_status_error">İçe aktarma hatası</string>
   <string name="settings_import_later_button">Daha sonra</string>
@@ -928,14 +940,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_crypto_hide_sign_only_off">Tüm imzalar görüntülenecek</string>
   <string name="error_sign_only_no_encryption">Sadece imza kipinde şifreleme kullanılamaz!</string>
   <string name="unsigned_text_divider_label">İmzasız Metin</string>
-  <string name="apg_deprecated_title">APG Reddetme Uyarısı</string>
-  <string name="apg_deprecated_1">APG artık sürdürülmüyor!</string>
-  <string name="apg_deprecated_2">Bu nedenle K-9 Mail\'den APG desteği kaldırıldı.</string>
-  <string name="apg_deprecated_bullet_1">2014\'den önce geliştirilmesi durduruldu</string>
-  <string name="apg_deprecated_bullet_2">Düzeltilmemiş güvenlik sorunları içerir</string>
-  <string name="apg_learn_more">Daha fazlasını öğrenmek için <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">buraya tıkla</a> .</string>
-  <string name="apg_deprecated_ok">Anladım!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Bu eposta şifreli</string>
   <string name="crypto_no_provider_message">Bu eposta OpenPGP ile şifrelendi. On okumak için uyumlu bir OpenPGP uygulaması kurup yapılandırmanız gerekir.</string>
   <string name="crypto_no_provider_button">Ayarlara Git</string>

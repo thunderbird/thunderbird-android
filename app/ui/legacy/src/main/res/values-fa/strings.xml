@@ -276,6 +276,8 @@
   <string name="account_setup_basics_title">راه‌اندازی حساب کاربری جدید</string>
   <string name="account_setup_basics_email_hint">نشانی رایانامه </string>
   <string name="account_setup_basics_password_hint">گذرواژه</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">برای دیدن گذرواژه‌تان در این قسمت، قفل صفحه در این دستگاه را فعال کنید.</string>
   <string name="account_setup_basics_show_password_biometrics_title">هویت‌تان را تایید کنید</string>
@@ -317,10 +319,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">در کارساز پاک نشود</string>
   <string name="account_setup_incoming_delete_policy_delete_label">در کارساز نیز پاک شود</string>
   <string name="account_setup_incoming_delete_policy_markread_label">در کارساز نشان بزن که خواندم</string>
-  <string name="account_setup_incoming_compression_label">روی این شبکه‌ها از فشرده‌سازی استفاده کن:</string>
-  <string name="account_setup_incoming_mobile_label">دادهٔ همراه</string>
-  <string name="account_setup_incoming_wifi_label">وای‌فای</string>
-  <string name="account_setup_incoming_other_label">سایر</string>
   <string name="account_setup_expunge_policy_label">پیام‌های حذف‌شده را در کارساز پاک کن</string>
   <string name="account_setup_expunge_policy_immediately">فوراً</string>
   <string name="account_setup_expunge_policy_on_poll">در زمان سرکشی</string>
@@ -762,12 +760,16 @@
   <string name="settings_import_pick_document_button">انتخاب پرونده</string>
   <string name="settings_import_button">درون‌برد</string>
   <string name="settings_import_success_generic">درون‌برد تنظیمات موفقیت‌آمیز بود</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">لطفاً گذرواژه‌ها را وارد کنید</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">درون‌برد تنظیمات ناموفق بود</string>
   <string name="settings_import_read_failure">خواندن پروندهٔ تنظیمات ناموفق بود</string>
   <string name="settings_import_partial_failure">درون‌برد برخی تنظیمات ناموفق بود</string>
   <string name="settings_import_status_success">درون‌برد موفقیت‌آمیز بود</string>
   <string name="settings_import_status_password_required">گذرواژه لازم است</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">درون‌برد نشده</string>
   <string name="settings_import_status_error">شکست درون‌برد</string>
   <string name="settings_import_later_button">بعداً</string>
@@ -958,14 +960,6 @@
   <string name="account_settings_crypto_hide_sign_only_off">همهٔ امضاها نشان داده می‌شود</string>
   <string name="error_sign_only_no_encryption">در حالت فقط-امضا (sign-only) رمزنگاری امکان‌پذیر نیست!</string>
   <string name="unsigned_text_divider_label">متن امضانشده</string>
-  <string name="apg_deprecated_title">هشدار وَرافتادگی APG</string>
-  <string name="apg_deprecated_1">دیگر کسی APG را توسعه نمی‌دهد!</string>
-  <string name="apg_deprecated_2">بر این اساس، K-9 Mail به پشتیبانی از APG پایان داده است.</string>
-  <string name="apg_deprecated_bullet_1">توسعهٔ آن در اوایل سال ۲۰۱۴ متوقف شد</string>
-  <string name="apg_deprecated_bullet_2">مشکلات امنتی حل‌نشده‌ای دارد</string>
-  <string name="apg_learn_more">برای اطلاعات بیشتر <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">اینجا کلیک کنید</a>.</string>
-  <string name="apg_deprecated_ok">فهمیدم!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">این رایانامه رمزنگاری شده است</string>
   <string name="crypto_no_provider_message">این رایانامه با OpenPGP رمزنگاری شده است.\nبرای خواندن آن، باید برنامه‌ای سازگار با OpenPGP را نصب و پیکربندی کنید.</string>
   <string name="crypto_no_provider_button">برو به تنظیمات</string>

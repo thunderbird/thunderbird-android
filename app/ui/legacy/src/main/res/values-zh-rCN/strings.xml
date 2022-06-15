@@ -116,6 +116,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="flag_action">添加星标</string>
   <string name="unflag_action">移除星标</string>
   <string name="copy_action">复制</string>
+  <string name="unsubscribe_action">取消订阅</string>
   <string name="show_headers_action">显示邮件头</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">地址已复制到剪贴板</item>
@@ -274,6 +275,11 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_basics_title">设置新账户</string>
   <string name="account_setup_basics_email_hint">电子邮件地址</string>
   <string name="account_setup_basics_password_hint">密码</string>
+  <string name="account_setup_oauth_description">要通过 K-9 Mail 使用这个电子邮件帐户，你需要登录并授予应用访问你电子邮件的权限。</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">登录</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Google 登录</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">要查看您的密码，请在此设备上启用屏幕锁定。</string>
   <string name="account_setup_basics_show_password_biometrics_title">验证你的身份</string>
@@ -297,6 +303,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_auth_type_insecure_password">非安全传输的密码</string>
   <string name="account_setup_auth_type_encrypted_password">加密的密码</string>
   <string name="account_setup_auth_type_tls_client_certificate">客户端证书</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">收件服务器设置</string>
   <string name="account_setup_incoming_username_label">用户名</string>
   <string name="account_setup_incoming_password_label">密码</string>
@@ -315,10 +322,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_incoming_delete_policy_never_label">不要从服务器上删除</string>
   <string name="account_setup_incoming_delete_policy_delete_label">立刻从服务器上删除</string>
   <string name="account_setup_incoming_delete_policy_markread_label">在服务器上将邮件标记为已读</string>
-  <string name="account_setup_incoming_compression_label">在以下网络上使用压缩以便节约流量：</string>
-  <string name="account_setup_incoming_mobile_label">手机移动网络</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">其他</string>
+  <string name="account_setup_incoming_use_compression">使用压缩</string>
   <string name="account_setup_expunge_policy_label">抹掉删除的邮件</string>
   <string name="account_setup_expunge_policy_immediately">立刻</string>
   <string name="account_setup_expunge_policy_on_poll">接收邮件时</string>
@@ -383,6 +387,10 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_failed_dlg_auth_message_fmt">用户名或密码不正确。\n（<xliff:g id="error">%s</xliff:g>）</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">服务器提供了一个无效的SSL证书。有时候这是由于不正确的服务器配置导致的；有时候这也可能是由于某人正在试图攻击您或者您的邮件服务器。如果您不能确定到底是什么原因，请单击”拒绝“，并联系您的邮件服务器管理人员。\n\n（<xliff:g id="error">%s</xliff:g>）</string>
   <string name="account_setup_failed_dlg_server_message_fmt">无法连接到服务器。\n（<xliff:g id="error">%s</xliff:g>）</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">授权被取消</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">授权失败，错误信息如下：<xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">此提供商目前不支持 OAuth 2.0.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">应用找不到一个浏览器来授予访问你账户的权限。</string>
   <string name="account_setup_failed_dlg_edit_details_action">编辑详细信息</string>
   <string name="account_setup_failed_dlg_continue_action">继续</string>
   <string name="account_settings_push_advanced_title">高级</string>
@@ -758,12 +766,19 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="settings_import_pick_document_button">选择文件</string>
   <string name="settings_import_button">导入</string>
   <string name="settings_import_success_generic">配置导入成功</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">请输入密码</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">请登录</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">请登录并输入密码</string>
   <string name="settings_import_failure">配置导入失败</string>
   <string name="settings_import_read_failure">读取配置文件失败</string>
   <string name="settings_import_partial_failure">导入部分配置失败</string>
   <string name="settings_import_status_success">导入成功</string>
   <string name="settings_import_status_password_required">需要输入密码</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">需要登录</string>
   <string name="settings_import_status_not_imported">没有导入</string>
   <string name="settings_import_status_error">导入失败</string>
   <string name="settings_import_later_button">之后</string>
@@ -951,14 +966,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_settings_crypto_hide_sign_only_off">显示所有签名</string>
   <string name="error_sign_only_no_encryption">加密不可用在签名模式下</string>
   <string name="unsigned_text_divider_label">未签名文本</string>
-  <string name="apg_deprecated_title">APG 弃用警告</string>
-  <string name="apg_deprecated_1">APG 已停止维护！</string>
-  <string name="apg_deprecated_2">因此，K-9 Mail 移除了对 APG 的支持。</string>
-  <string name="apg_deprecated_bullet_1">开发在 2014 年初停止了</string>
-  <string name="apg_deprecated_bullet_2">包含未修复的安全漏洞</string>
-  <string name="apg_learn_more">你可以 <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">点击这里</a> 查看更多信息。</string>
-  <string name="apg_deprecated_ok">知道了</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">邮件已被加密</string>
   <string name="crypto_no_provider_message">这份邮件使用 OpenPGP 进行了加密。\n请安装并配置一个兼容 OpenPGP 的应用来查看邮件。</string>
   <string name="crypto_no_provider_button">前往设置</string>

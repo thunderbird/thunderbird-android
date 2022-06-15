@@ -256,6 +256,8 @@
   <string name="account_setup_basics_title">إعداد حساب جديد</string>
   <string name="account_setup_basics_email_hint">عنوان البريد الإليكتروني</string>
   <string name="account_setup_basics_password_hint">كلمة السِّر</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">الإعداد يدويا</string>
   <string name="account_setup_check_settings_title"/>
@@ -289,10 +291,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">ﻻ تحذفها على الخادم</string>
   <string name="account_setup_incoming_delete_policy_delete_label">احذفها على الخادم</string>
   <string name="account_setup_incoming_delete_policy_markread_label">إعتبارها كمقروءة على السيرفر</string>
-  <string name="account_setup_incoming_compression_label">إستخدام الضغط على شبكة :</string>
-  <string name="account_setup_incoming_mobile_label">الجوال</string>
-  <string name="account_setup_incoming_wifi_label">الواي فاي</string>
-  <string name="account_setup_incoming_other_label">أخرى</string>
   <string name="account_setup_expunge_policy_label">إزالة الرسائل المحذوفة من الخادوم أيضا</string>
   <string name="account_setup_expunge_policy_immediately">فورًا</string>
   <string name="account_setup_expunge_policy_on_poll">عند الإستجواب</string>
@@ -638,6 +636,10 @@
   <string name="settings_import_title">استيراد الإعدادات</string>
   <string name="settings_import_pick_document_button">اختيار ملف</string>
   <string name="settings_import_button">استيراد</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_later_button">لاحقًا</string>
   <string name="settings_import">استيراد الإعدادات</string>
   <string name="settings_importing">استيراد الإعدادات…</string>
@@ -735,12 +737,6 @@
   <string name="messageview_decrypt_retry">إعادة المحاولة</string>
   <string name="messageview_crypto_error_title">خطأ أنثاء عملية فك تعمية الرسالة الإلكترونية</string>
   <string name="unsigned_text_divider_label">نص غير مُوَقَّع</string>
-  <string name="apg_deprecated_2">لذلك فإن دعم برنامج APG قد حُذف من بريد كيه-٩.</string>
-  <string name="apg_deprecated_bullet_1">توقف تطويره في بداية ٢٠١٤</string>
-  <string name="apg_deprecated_bullet_2">تحتوي على مشكلة أمنية غير محلولة.</string>
-  <string name="apg_learn_more">لمعرفة المزيد يمكنك <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">الضغط هنا</a>.</string>
-  <string name="apg_deprecated_ok">حسنًا !</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">هذه الرسالة مُعماة</string>
   <string name="mail_list_widget_text">قائمة رسائل K-9</string>
   <string name="mail_list_widget_loading">يُحمل الرسائل…</string>

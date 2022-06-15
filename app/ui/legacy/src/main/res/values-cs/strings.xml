@@ -115,6 +115,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="flag_action">Přidat \u2605</string>
   <string name="unflag_action">Odebrat \u2606</string>
   <string name="copy_action">Kopírovat</string>
+  <string name="unsubscribe_action">Zrušit přihlášení se k odběru</string>
   <string name="show_headers_action">Zobraz hlavičku</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa zkopírována do schránky</item>
@@ -280,6 +281,11 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_basics_title">Založit nový účet</string>
   <string name="account_setup_basics_email_hint">Emailová adresa</string>
   <string name="account_setup_basics_password_hint">Heslo</string>
+  <string name="account_setup_oauth_description">Pokud chcete tento e-mailový účet používat v K-9 mail, je třeba se přihlásit a udělit přístup k e-mailům.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Přihlásit se</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Přihlási se prostřednictvím Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Pokud si zde chcete zobrazit své heslo, zapněte zamykání obrazovky tohoto zařízení.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Ověřte svou identitu</string>
@@ -303,6 +309,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_auth_type_insecure_password">Heslo přenášeno bez zabezpečení</string>
   <string name="account_setup_auth_type_encrypted_password">Zašifrované heslo</string>
   <string name="account_setup_auth_type_tls_client_certificate">Klientský certifikát</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Nastavení serveru příchozí pošty</string>
   <string name="account_setup_incoming_username_label">Uživatelské jméno</string>
   <string name="account_setup_incoming_password_label">Heslo</string>
@@ -321,10 +328,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_incoming_delete_policy_never_label">Nemazat ji na serveru</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Smazat na serveru</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Označit jako přečtenou na serveru</string>
-  <string name="account_setup_incoming_compression_label">Používat v síti kompresi:</string>
-  <string name="account_setup_incoming_mobile_label">Mobilní</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Jiná</string>
+  <string name="account_setup_incoming_use_compression">Komprimovat</string>
   <string name="account_setup_expunge_policy_label">Odstranit smazané zprávy</string>
   <string name="account_setup_expunge_policy_immediately">Ihned</string>
   <string name="account_setup_expunge_policy_on_poll">Při dotazování</string>
@@ -389,6 +393,10 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_failed_dlg_auth_message_fmt">Uživatelské jméno nebo heslo není správné.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Server nabízí neplatný SSL certifikát. Někdy může jít o chybu nastavení serveru, někdy o pokus útoku na vás nebo e-mailový server. Pokud nevíte o co jde, ťukněte na odmítnout a obraťte se na správce dotyčného e-mailového serveru.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Nedaří se připojit k serveru. (<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Pověření zrušeno</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Pověření se nezdařilo s následující chybou: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 v tuto chvíli pro tohoto poskytovatele není podporováno.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Aplikaci se nedaří najít webový prohlížeč, který použít pro udělení přístupu k vašemu účtu.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Upravit podrobnosti</string>
   <string name="account_setup_failed_dlg_continue_action">Pokračovat</string>
   <string name="account_settings_push_advanced_title">Rozšířené</string>
@@ -770,12 +778,16 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="settings_import_pick_document_button">Vybrat soubor</string>
   <string name="settings_import_button">Import</string>
   <string name="settings_import_success_generic">Nastavení úspěšně importována</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Zadejte hesla</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Nepodařilo se importovat nastavení</string>
   <string name="settings_import_read_failure">Nepodařilo se číst soubor s nastaveními</string>
   <string name="settings_import_partial_failure">Nepodařilo se naimportovat některá nastavení</string>
   <string name="settings_import_status_success">Úspěšně naimportováno</string>
   <string name="settings_import_status_password_required">Vyžadováno hesl</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Nenaimportováno</string>
   <string name="settings_import_status_error">Nezdar při importu</string>
   <string name="settings_import_later_button">Později</string>
@@ -972,14 +984,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_crypto_hide_sign_only_off">Budou zobrazeny všechny podpisy</string>
   <string name="error_sign_only_no_encryption">Šifrování nedostupné v podpisovém módu!</string>
   <string name="unsigned_text_divider_label">Nepodepsaný text</string>
-  <string name="apg_deprecated_title">Varování o ukončení podpory APG</string>
-  <string name="apg_deprecated_1">APG už není udržováno!</string>
-  <string name="apg_deprecated_2">Kvůli tomuto jsme odstranili podporu pro APG z K-9 Mailu.</string>
-  <string name="apg_deprecated_bullet_1">Vývoj skončil na začátku roku 2014</string>
-  <string name="apg_deprecated_bullet_2">Obsahuje neopravené bezpečnostní chyby</string>
-  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Kliknutím sem</a> se můžete dozvědět více.</string>
-  <string name="apg_deprecated_ok">Rozumím!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Tento e-mail je šifrovaný</string>
   <string name="crypto_no_provider_message">Tento email byl zašifrovaný pomocí OpenPGP.\nAbyste si ho mohl/a přečíst, potřebujete si nainstalovat a nakonfigurovat kompatibilní OpenPGP aplikaci.</string>
   <string name="crypto_no_provider_button">Přejít do nastavení</string>

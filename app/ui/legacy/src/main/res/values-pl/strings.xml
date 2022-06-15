@@ -5,7 +5,7 @@
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">Konta K-9</string>
-  <string name="unread_widget_label">K-9 Mail nieprzeczytane</string>
+  <string name="unread_widget_label">Nieprzeczytane K-9</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Autorzy K-9 Mail</string>
   <string name="source_code">Kod źródłowy</string>
@@ -90,12 +90,12 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="forward_as_attachment_action">Przekaż jako załącznik</string>
   <string name="edit_as_new_message_action">Edytuj jako nową wiadomość</string>
   <string name="move_action">Przenieś</string>
-  <string name="move_to_drafts_action">Przenieś do Wersji roboczych</string>
+  <string name="move_to_drafts_action">Przenieś do wersji roboczych</string>
   <string name="single_message_options_action">Wyślij…</string>
   <string name="refile_action">Operacje…</string>
   <string name="done_action">Gotowe</string>
   <string name="discard_action">Usuń</string>
-  <string name="save_draft_action">Zapisz jako szkic</string>
+  <string name="save_draft_action">Zapisz jako wersję roboczą</string>
   <string name="check_mail_action">Sprawdź pocztę</string>
   <string name="send_messages_action">Wyślij wiadomości</string>
   <string name="refresh_folders_action">Odśwież listę</string>
@@ -116,6 +116,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="flag_action">Dodaj gwiazdkę</string>
   <string name="unflag_action">Usuń gwiazdkę</string>
   <string name="copy_action">Skopiuj</string>
+  <string name="unsubscribe_action">Anuluj subskrypcję</string>
   <string name="show_headers_action">Pokaż nagłówki</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adres skopiowany do schowka</item>
@@ -182,7 +183,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="notification_channel_miscellaneous_description">Dodatkowe powiadomienia jak błędy itp.</string>
   <string name="special_mailbox_name_inbox">Odebrane</string>
   <string name="special_mailbox_name_outbox">Wychodzące</string>
-  <string name="special_mailbox_name_drafts">Szablony</string>
+  <string name="special_mailbox_name_drafts">Wersje robocze</string>
   <string name="special_mailbox_name_trash">Kosz</string>
   <string name="special_mailbox_name_sent">Wysłane</string>
   <string name="send_failure_subject">Niektóre wiadomości nie zostały wysłane</string>
@@ -209,7 +210,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="message_compose_reply_header_fmt_with_date">Dnia <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> napisał/a:</string>
   <string name="message_compose_error_no_recipients">Musisz dodać co najmniej jednego odbiorcę.</string>
   <string name="compose_error_incomplete_recipient">Pole Odbiorca jest niekompletne!</string>
-  <string name="error_contact_address_not_found">Żaden adres email nie został znaleziony.</string>
+  <string name="error_contact_address_not_found">Żaden adres e-mail nie został znaleziony.</string>
   <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą być przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>
   <string name="message_compose_attachments_forward_toast">Wiadomość nie może zostać przesłana, gdyż niektóre załączniki nie zostały ściągnięte.</string>
   <string name="message_compose_show_quoted_text_action">Załącz cytowaną wiadomość</string>
@@ -228,12 +229,12 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="from_same_sender">Więcej od tego nadawcy</string>
   <string name="search_from_format">Od <xliff:g id="sender"> %s </xliff:g></string>
   <string name="message_discarded_toast">Wiadomość usunięta</string>
-  <string name="message_saved_toast">Wiadomość zapisana jako szkic</string>
+  <string name="message_saved_toast">Wiadomość zapisana jako wersja robocza</string>
   <string name="global_settings_flag_label">Oznaczaj gwiazdkami</string>
   <string name="global_settings_flag_summary">Gwiazdki wskazują oznakowane wiadomości</string>
   <string name="global_settings_preview_lines_label">Podglądaj linie</string>
   <string name="global_settings_show_correspondent_names_label">Pokazuj nazwiska korespondentów</string>
-  <string name="global_settings_show_correspondent_names_summary">Pokazuj nazwiska korespondentów zamiast ich adresów email</string>
+  <string name="global_settings_show_correspondent_names_summary">Pokazuj nazwiska korespondentów zamiast ich adresów e-mail</string>
   <string name="global_settings_sender_above_subject_label">Korespondent powyżej tematu</string>
   <string name="global_settings_sender_above_subject_summary">Wyświetlaj nazwę korespondenta powyżej, zamiast poniżej tematu</string>
   <string name="global_settings_show_contact_name_label">Pokazuj nazwę kontaktu</string>
@@ -257,7 +258,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_confirm_menu_discard">Odrzuć wiadomość</string>
   <string name="global_settings_confirm_menu_mark_all_read">Oznacz wszystkie wiadomości jako przeczytane</string>
   <string name="global_settings_confirm_action_delete_notif">Usuń (powiadomienie)</string>
-  <string name="global_settings_privacy_hide_useragent">Usuń nagłówek \"User-Agent\"</string>
+  <string name="global_settings_privacy_hide_useragent">Ukryj klienta poczty</string>
   <string name="global_settings_privacy_hide_useragent_detail">Usuń User-Agent K-9 z nagłówka wiadomości</string>
   <string name="global_settings_privacy_hide_timezone">Ukryj strefę czasową</string>
   <string name="global_settings_privacy_hide_timezone_detail">Używaj czasu UTC zamiast czasu lokalnego w nagłówkach wiadomości i odpowiedzi</string>
@@ -268,18 +269,23 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_lock_screen_notification_visibility_title">Powiadomienia na ekranie blokady</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Bez powiadomień na ekranie blokady</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nazwa aplikacji</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">wiadomość nowych wiadomości.</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Liczba nowych wiadomości</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Nadawcy i liczba wiadomości</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Tak samo, jak przy odblokowanym ekranie</string>
   <string name="quiet_time">Okres ciszy</string>
   <string name="quiet_time_description">Wyłącz dzwonienie, wibracje i mruganie w nocy</string>
   <string name="quiet_time_notification">Wyłącz powiadomienia</string>
-  <string name="quiet_time_notification_description">Całkowicie wyłącz powiadomienia podczas Okresu Ciszy</string>
+  <string name="quiet_time_notification_description">Całkowicie wyłącz powiadomienia podczas okresu ciszy</string>
   <string name="quiet_time_starts">Początek okresu ciszy</string>
   <string name="quiet_time_ends">Koniec okresu ciszy</string>
   <string name="account_setup_basics_title">Dodaj konto</string>
-  <string name="account_setup_basics_email_hint">Adres email</string>
+  <string name="account_setup_basics_email_hint">Adres e-mail</string>
   <string name="account_setup_basics_password_hint">Hasło</string>
+  <string name="account_setup_oauth_description">Aby używać tego konta e-mail z K-9 Mail, musisz się zalogować i przyznać aplikacji dostęp do swoich e-maili.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Zaloguj się</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Zaloguj się przez Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Aby zobaczyć tutaj swoje hasło, ustaw blokadę ekranu na tym urządzeniu.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Zweryfikuj swoją tożsamość</string>
@@ -303,6 +309,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_auth_type_insecure_password">Hasło, przesyłane bez zabezpieczeń</string>
   <string name="account_setup_auth_type_encrypted_password">Zaszyfrowane hasło</string>
   <string name="account_setup_auth_type_tls_client_certificate">Certyfikat klienta</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Serwer poczty przychodzącej</string>
   <string name="account_setup_incoming_username_label">Identyfikator</string>
   <string name="account_setup_incoming_password_label">Hasło</string>
@@ -321,17 +328,14 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_incoming_delete_policy_never_label">Nie usuwaj z serwera</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Usuń ją z serwera</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Oznacz jako przeczytane na serwerze</string>
-  <string name="account_setup_incoming_compression_label">Używaj kompresji przy połączeniu:</string>
-  <string name="account_setup_incoming_mobile_label">2G/3G</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Inne</string>
+  <string name="account_setup_incoming_use_compression">Użyj kompresji</string>
   <string name="account_setup_expunge_policy_label">Kasowanie usuniętych wiadomości na serwerze</string>
   <string name="account_setup_expunge_policy_immediately">Od razu</string>
   <string name="account_setup_expunge_policy_on_poll">Podczas każdego pobrania</string>
   <string name="account_setup_expunge_policy_manual">Tylko ręcznie</string>
   <string name="account_setup_incoming_autodetect_namespace_label">Wykrywaj automatycznie IMAP namespace</string>
   <string name="account_setup_incoming_imap_path_prefix_label">Prefiks ścieżki IMAP</string>
-  <string name="drafts_folder_label">Szkice</string>
+  <string name="drafts_folder_label">Folder wersji roboczych</string>
   <string name="sent_folder_label">Wysłane</string>
   <string name="trash_folder_label">Kosz</string>
   <string name="archive_folder_label">Archiwum</string>
@@ -389,7 +393,11 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_failed_dlg_auth_message_fmt">Nieprawidłowa nazwa użytkownika lub hasło.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Serwer przedstawił nieprawidłowy certyfikat SSL. Czasami przyczyną jest błędna konfiguracja. Czasami dzieje się tak, ponieważ ktoś próbuje wykonać atak na Ciebie lub Twój serwer pocztowy. Jeśli nie masz pewności, co się dzieje, kliknij Odrzuć i skontaktuj się osobami zarządzającymi Twoim serwerem pocztowym.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Nie można uzyskać połączenia z serwerem.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_edit_details_action">Popraw ustawienia</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autoryzacja anulowana</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Autoryzacja nie powiodła się z następującym błędem: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">Ten dostawca nie obsługuje obecnie protokołu OAuth 2.0.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Aplikacja nie może znaleźć przeglądarki, której można użyć do przyznania dostępu do Twojego konta.</string>
+  <string name="account_setup_failed_dlg_edit_details_action">Edytuj szczegóły</string>
   <string name="account_setup_failed_dlg_continue_action">Kontynuuj</string>
   <string name="account_settings_push_advanced_title">Zaawansowane</string>
   <string name="account_settings_title_fmt">Ustawienia ogólne</string>
@@ -452,9 +460,9 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_crypto_summary_off">Brak skonfigurowanej aplikacji OpenPGP</string>
   <string name="account_settings_crypto_summary_on">Połączono z %s</string>
   <string name="account_settings_crypto_summary_config">Konfigurowanie…</string>
-  <string name="account_settings_crypto_encrypt_all_drafts">Szyfruj wszystkie składowane szkice</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_on">Wszystkie szkice będą szyfrowane</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_off">Szyfruj szkice tylko jeśli szyfrowanie jest wspierane</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">Szyfruj wszystkie przechowywane wersje robocze</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">Wszystkie wersje robocze będą szyfrowane</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_off">Szyfruj wersje robocze tylko wtedy, gdy szyfrowanie jest włączone</string>
   <string name="account_settings_mail_check_frequency_label">Sprawdzanie konta</string>
   <string name="account_settings_color_label">Kolor konta</string>
   <string name="account_settings_color_summary">Wybierz kolor, który będzie użyty przy wyświetlaniu folderów i listy kont</string>
@@ -565,7 +573,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_notification_light_blue">Niebieski</string>
   <string name="account_settings_notification_light_yellow">Żółty</string>
   <string name="account_settings_notification_light_cyan">Cyjan</string>
-  <string name="account_settings_notification_light_magenta">Różowy</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Opcje tworzenia wiadomości</string>
   <string name="account_settings_composition_label">Tworzenie wiadomości</string>
   <string name="account_settings_composition_summary">Ustaw podpis oraz domyślne wartości Do, UDW</string>
@@ -573,7 +581,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_identities_summary">Ustaw alternatywne adresy nadawcy oraz podpisy</string>
   <string name="manage_identities_title">Zarządzaj tożsamościami</string>
   <string name="manage_identities_context_menu_title">Zarządzaj tożsamością</string>
-  <string name="edit_identity_title">Edytcja tożsamość</string>
+  <string name="edit_identity_title">Edytuj tożsamość</string>
   <string name="edit_identity_save">Zapisz</string>
   <string name="new_identity_action">Nowa tożsamość</string>
   <string name="account_settings_always_bcc_label">Adres UDW dla wysyłanych wiadomości (opcja)</string>
@@ -586,9 +594,9 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="edit_identity_description_hint">(Opcjonalny)</string>
   <string name="edit_identity_name_label">Imię i nazwisko</string>
   <string name="edit_identity_name_hint">(Opcjonalne)</string>
-  <string name="edit_identity_email_label">Adres email</string>
+  <string name="edit_identity_email_label">Adres e-mail</string>
   <string name="edit_identity_email_hint">(Wymagany)</string>
-  <string name="edit_identity_reply_to_label">Adres Odpowiedz-Do</string>
+  <string name="edit_identity_reply_to_label">Adres zwrotny</string>
   <string name="edit_identity_reply_to_hint">(Opcjonalny)</string>
   <string name="edit_identity_signature_label">Podpis</string>
   <string name="edit_identity_signature_hint">(Opcjonalna)</string>
@@ -598,7 +606,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="choose_identity_title">Wybierz tożsamość</string>
   <string name="send_as">Wyślij jako</string>
   <string name="no_removable_identity">Nie możesz usunąć jedynej tożsamości</string>
-  <string name="identity_has_no_email">Nie możesz użyć tożsamości bez podanego adresu email</string>
+  <string name="identity_has_no_email">Nie możesz użyć tożsamości bez podanego adresu e-mail</string>
   <string name="sort_earliest_first">Najstarsze wiadomości na początku</string>
   <string name="sort_latest_first">Najnowsze wiadomości na początku</string>
   <string name="sort_subject_alpha">Alfabetycznie, po temacie (A-&gt;Z)</string>
@@ -625,7 +633,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
   <string name="message_view_help_key">Del (lub D) - Usuń\nR - Odpowiedz\nA - Odpowiedz wszystkim\nC - Stwórz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Kopiuj\nZ - Zaznacz (Nie)przeczytane\nG - Gwiazdka\nO - Typ sortowania\nl - Kolejność sortowania\nQ - Wróć do folderów\nS - Wybierz/odznacz\nJ lub P - Poprzednia wiadomość\nK lub N - Następna wiadomość</string>
   <string name="message_list_help_key">Del (lub D) - Usuń\nR - Odpowiedz\nA - Odpowiedz wszystkim\nC - Stwórz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Kopiuj\nZ - Zaznacz (Nie)przeczytane\nG - Gwiazdka\nO - Typ sortowania\nl - Kolejność sortowania\nQ - Wróć do folderów\nS - Wybierz/odznacz</string>
-  <string name="folder_list_filter_hint">Nazwa katalogu zawiera</string>
+  <string name="folder_list_filter_hint">Nazwa folderu zawiera</string>
   <string name="folder_list_display_mode_label">Wyświetlanie folderów</string>
   <string name="folder_list_display_mode_all">Wszystkie</string>
   <string name="folder_list_display_mode_first_class">Tylko klasy 1</string>
@@ -721,7 +729,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="font_size_larger">Wielka</string>
   <string name="error_activity_not_found">Nie znaleiono odpowiedniej aplikacji.</string>
   <string name="send_failed_reason">Wysyłanie nieudane: %s</string>
-  <string name="save_or_discard_draft_message_dlg_title">Zapisać szkic?</string>
+  <string name="save_or_discard_draft_message_dlg_title">Zapisać wersję roboczą wiadomości?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Zapisać czy porzucić wiadomość?</string>
   <string name="save_or_discard_draft_message_changes">Zapisać czy odrzucić zmiany?</string>
   <string name="confirm_discard_draft_message_title">Usunąć wiadomość?</string>
@@ -770,12 +778,19 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="settings_import_pick_document_button">Wybierz plik</string>
   <string name="settings_import_button">Importuj</string>
   <string name="settings_import_success_generic">Ustawienia zostały zaimportowane</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Proszę podać hasła</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Zaloguj się</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Zaloguj się i wprowadź hasła</string>
   <string name="settings_import_failure">Import ustawień się nie powiódł</string>
   <string name="settings_import_read_failure">Odczyt pliku ustawień się nie powiódł</string>
   <string name="settings_import_partial_failure">Import niektórych ustawień się nie powiódł</string>
   <string name="settings_import_status_success">Zaimportowano z powodzeniem</string>
   <string name="settings_import_status_password_required">Hasło wymagane</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Wymagane jest zalogowanie się</string>
   <string name="settings_import_status_not_imported">Nie zaimportowane</string>
   <string name="settings_import_status_error">Import zakończony niepowodzeniem</string>
   <string name="settings_import_later_button">Później</string>
@@ -823,7 +838,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="webview_contextmenu_email_send_action">Wyślij wiadomość</string>
   <string name="webview_contextmenu_email_save_action">Zapisz do kontaktów</string>
   <string name="webview_contextmenu_email_copy_action">Kopiuj adres email do schowka</string>
-  <string name="webview_contextmenu_email_clipboard_label">Adres email</string>
+  <string name="webview_contextmenu_email_clipboard_label">Adres e-mail</string>
   <string name="account_settings_remote_search_num_results_entries_all">Wszystkie</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -871,7 +886,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_messageview_visible_refile_actions_summary">Pokaż wybrane operacje w menu widoku wiadomości</string>
   <string name="loading_attachment">Ładowanie załącznika…</string>
   <string name="fetching_attachment_dialog_title_send">Wysyłanie wiadomości</string>
-  <string name="fetching_attachment_dialog_title_save">Zapisywanie szkicu</string>
+  <string name="fetching_attachment_dialog_title_save">Zapisywanie wersji roboczej</string>
   <string name="fetching_attachment_dialog_message">Pobieranie załącznika…</string>
   <string name="auth_external_error">Nie można uwierzytelnić. Serwer nie ogłasza zdolności SASL EXTERNAL. Przyczyną może być problem z certyfikatem klienta (wygasł, nieznane CA) lub jakiś inny problem z konfiguracją.</string>
   <!--=== Client certificates specific ==================================================================-->
@@ -883,7 +898,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="client_certificate_expired">Certyfikat klienta \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" wygasł lub nie jest jeszcze ważny (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*Zaszyfrowane*</string>
-  <string name="add_from_contacts">Dodaj z Kontaktów</string>
+  <string name="add_from_contacts">Dodaj z kontaktów</string>
   <string name="recipient_cc">DW</string>
   <string name="recipient_bcc">UDW</string>
   <string name="recipient_to">Do</string>
@@ -895,7 +910,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="address_type_work">Praca</string>
   <string name="address_type_other">Inne</string>
   <string name="address_type_mobile">Mobilny</string>
-  <string name="compose_error_no_draft_folder">Folder Szkice nie skonfigurowany dla tego konta.</string>
+  <string name="compose_error_no_draft_folder">Folderu wersji roboczych nie skonfigurowano dla tego konta!</string>
   <string name="compose_error_no_key_configured">Nie skonfigurowanego klucza dla tego konta! Sprawdź ustawienia.</string>
   <string name="error_crypto_provider_incompatible">Aplikacja szyfrująca w niezgodnej wersji. Sprawdź ustawienia.</string>
   <string name="error_crypto_provider_connect">Nie można połączyć się z dostawcą kryptografii, sprawdź ustawienia lub kliknij ikonę kryptografii, aby spróbować ponownie!</string>
@@ -906,13 +921,13 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="enable_sign_only">Włącz PGP Sign-Only</string>
   <string name="disable_sign_only">Wyłącz PGP Sign-Only</string>
   <string name="openpgp_inline_title">Tryb PGP/INLINE</string>
-  <string name="openpgp_inline_text">Ten email został wysłany w formacie PGP/INLINE.\nPowinno to być użyte wyłącznie dla kompatybilności:</string>
+  <string name="openpgp_inline_text">Ten e-mail został wysłany w formacie PGP/INLINE.\nPowinno to być użyte wyłącznie dla kompatybilności:</string>
   <string name="openpgp_inline_plus_compat">Niektóre klienty obsługują tylko ten format</string>
   <string name="openpgp_inline_minus_transit">Podpisy mogą ulec uszkodzeniu podczas przesyłania</string>
   <string name="openpgp_inline_minus_attach">Załączniki nie są obsługiwane.</string>
   <string name="openpgp_inline_ok">Mam to!</string>
   <string name="openpgp_inline_disable">Wyłącz</string>
-  <string name="openpgp_inline_keep_enabled">Utrzymuj Włączone</string>
+  <string name="openpgp_inline_keep_enabled">Utrzymuj włączone</string>
   <string name="openpgp_sign_only_ok">Rozumiem!</string>
   <string name="openpgp_sign_only_disable">Wyłącz</string>
   <string name="openpgp_sign_only_keep_enabled">Pozostaw włączone</string>
@@ -972,14 +987,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_crypto_hide_sign_only_off">Wszystkie podpisy będą widoczne.</string>
   <string name="error_sign_only_no_encryption">Szyfrowanie nie jest dostępne w trybie sign-only!</string>
   <string name="unsigned_text_divider_label">Niepodpisany tekst</string>
-  <string name="apg_deprecated_title">Ostrzeżenie o przestarzałości APG</string>
-  <string name="apg_deprecated_1">APG nie jest już rozwijany!</string>
-  <string name="apg_deprecated_2">Z tego powodu wsparcie dla APG zostało usunięte z K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Rozwój zakończył się na początku 2014 roku.</string>
-  <string name="apg_deprecated_bullet_2">Zawiera nienaprawione błędy bezpieczeństwa.</string>
-  <string name="apg_learn_more">Możesz <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">kliknąć tu</a> by dowiedzieć się więcej.</string>
-  <string name="apg_deprecated_ok">Rozumiem!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Ta wiadomość e-mail jest zaszyfrowana</string>
   <string name="crypto_no_provider_message">Ta wiadomość e-mail została zaszyfrowana z użyciem OpenPGP.\n Aby ją odczytać, należy zainstalować i skonfigurować zgodną aplikację OpenPGP.</string>
   <string name="crypto_no_provider_button">Przejdź do ustawień</string>
@@ -1035,7 +1042,7 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <string name="permission_contacts_rationale_message">Aby włączyć sugestie kontaktów i wyświetlać nazwy oraz zdjęcia aplikacja wymaga dostępu do kontaktów.</string>
   <string name="generic_loading_error">Podczas ładowania danych wystąpił błąd</string>
   <string name="push_notification_state_initializing">Inicjowanie…</string>
-  <string name="push_notification_state_listening">Oczekiwanie na nowe emaile</string>
+  <string name="push_notification_state_listening">Oczekiwanie na nowe e-maile</string>
   <string name="push_notification_state_wait_background_sync">Uśpione, dopóki synchronizacja w tle nie będzie dozwolona</string>
   <string name="push_notification_state_wait_network">Uśpione, dopóki sieć nie będzie dostępna</string>
   <string name="push_notification_info">Dotknij, aby dowiedzieć się więcej.</string>

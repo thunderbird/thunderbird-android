@@ -116,6 +116,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="flag_action">Lisa tärn</string>
   <string name="unflag_action">Eemalda tärn</string>
   <string name="copy_action">Kopeeri</string>
+  <string name="unsubscribe_action">Eemalda tellimus</string>
   <string name="show_headers_action">Näita päiseid</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Aadress kopeeritud lõikelauale</item>
@@ -277,6 +278,11 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_basics_title">Seadista uus konto</string>
   <string name="account_setup_basics_email_hint">E-posti aadress</string>
   <string name="account_setup_basics_password_hint">Salasõna</string>
+  <string name="account_setup_oauth_description">Kui soovid seda e-posti teenust kasutada K-9 e-postikliendiga, siis logi teenusesse ja anna rakendusele õigus e-kirju ligeda.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Logi sisse</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Logi sisse kasutades Google\'i teenuseid</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Kui soovid siin näha salasõna, siis lülita sisse lukustuskuva kasutamine.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Tuvasta oma isik</string>
@@ -300,6 +306,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_auth_type_insecure_password">Salasõna, ebaturvaliselt edastatud</string>
   <string name="account_setup_auth_type_encrypted_password">Krüpteeritud salasõna</string>
   <string name="account_setup_auth_type_tls_client_certificate">Kliendi sertifikaat</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Sissetuleva meiliserveri sätted</string>
   <string name="account_setup_incoming_username_label">Kasutajanimi</string>
   <string name="account_setup_incoming_password_label">Salasõna</string>
@@ -318,10 +325,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_incoming_delete_policy_never_label">Ära kustuta seda serveris</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Kustuta serveris</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Märgi serveris loetuks</string>
-  <string name="account_setup_incoming_compression_label">Kasuta tihendamist võrgus:</string>
-  <string name="account_setup_incoming_mobile_label">Mobiilne</string>
-  <string name="account_setup_incoming_wifi_label">WiFi</string>
-  <string name="account_setup_incoming_other_label">Muu</string>
+  <string name="account_setup_incoming_use_compression">Kasuta pakkimist</string>
   <string name="account_setup_expunge_policy_label">Eemalda kustutatud kirjad serverist</string>
   <string name="account_setup_expunge_policy_immediately">Koheselt</string>
   <string name="account_setup_expunge_policy_on_poll">Andmete kontrollimisel</string>
@@ -383,11 +387,15 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_options_mail_display_count_all">kõik kirjad</string>
   <string name="move_copy_cannot_copy_unsynced_message">Serveriga sünkroniseerimata kirja pole võimalik kopeerida ega teisaldada</string>
   <string name="account_setup_failed_dlg_title">Seadistamist polnud võimalik lõpetada</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Vale kasutajanimi või parool.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Vale kasutajanimi või salasõna.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Server esitles vigast SSL sertifikaati. Mõnikord juhtub see serveri vale konfiguratsiooni tõttu. Mõnikord seetõttu, et keegi proovib rünnata Sind või Sinu meiliserverit. Kui Sa ei ole kindel mis toimub, klõpsa Tühista ja võta ühendust tegelastega, kes haldavad su meiliserverit.
 
 (<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Ei saa serveriga ühendust.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autentimine on katkenud</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Autentimine ei õnnestunud ja tekkis järgnev viga: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">See teenusepakkuja ei võimalda OAuth 2.0 kasutamist.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Rakendus ei suutnud tuvastada veebibrauserit, mida saaks sinu kontole ligipääsu lubamiseks kasutada.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Muuda detaile</string>
   <string name="account_setup_failed_dlg_continue_action">Jätka</string>
   <string name="account_settings_push_advanced_title">Täpsemalt</string>
@@ -765,12 +773,19 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="settings_import_pick_document_button">Vali fail</string>
   <string name="settings_import_button">Impordi</string>
   <string name="settings_import_success_generic">Sätted edukalt imporditud</string>
-  <string name="settings_import_password_required">Palun sisesta paroolid</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <string name="settings_import_password_required">Palun sisesta salasõnad</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Palun logi sisse</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Palun logi sisse ja sisesta salasõnad</string>
   <string name="settings_import_failure">Sätete importimine ebaõnnestus</string>
   <string name="settings_import_read_failure">Sätete faili lugemine ebaõnnestus</string>
   <string name="settings_import_partial_failure">Mõnede sätete importimine ebaõnnestus</string>
   <string name="settings_import_status_success">Importimine õnnestus</string>
   <string name="settings_import_status_password_required">Salasõna on vajalik</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Sisselogimine on nõutav</string>
   <string name="settings_import_status_not_imported">Ei imporditud</string>
   <string name="settings_import_status_error">Importimise viga</string>
   <string name="settings_import_later_button">Hiljem</string>
@@ -780,9 +795,9 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
     <item quantity="one">„<xliff:g id="account">%s</xliff:g>“ konto kasutamiseks palun sisesta serveri salasõna.</item>
     <item quantity="other">„<xliff:g id="account">%s</xliff:g>“ konto kasutamiseks palun sisesta serveri salasõnad.</item>
   </plurals>
-  <string name="settings_import_incoming_server_password_hint">Sissetuleva serveri parool</string>
-  <string name="settings_import_outgoing_server_password_hint">Väljuva serveri parool</string>
-  <string name="settings_import_use_same_password_for_outgoing_server">Kasuta sama parooli väljuva serveri tarbeks</string>
+  <string name="settings_import_incoming_server_password_hint">Saabuvaid kirju teenindava serveri salasõna</string>
+  <string name="settings_import_outgoing_server_password_hint">Väljuvaid kirju teenindava serveri salasõna</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Kasuta sama salasõna ka väljuvate kirjade serveri tarbeks</string>
   <string name="server_name_format">Serveri nimi: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Näita lugemata sõnumite arvu…</string>
   <string name="unread_widget_account_title">Konto</string>
@@ -961,14 +976,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_settings_crypto_hide_sign_only_off">Näita kõiki allkirju</string>
   <string name="error_sign_only_no_encryption">Ainult allkirjastamisel ei ole krüptimine kasutusel!</string>
   <string name="unsigned_text_divider_label">Allkirjastamata tekst</string>
-  <string name="apg_deprecated_title">APG pole enam kasutusel</string>
-  <string name="apg_deprecated_1">APG arendust enam ei toimu ja ta pole enam kasutusel!</string>
-  <string name="apg_deprecated_2">Seetõttu on APG tugi K-9 Mail\'ist eemaldatud.</string>
-  <string name="apg_deprecated_bullet_1">Arendus lõppes 2014. aasta alguses</string>
-  <string name="apg_deprecated_bullet_2">Sisaldab parandamata turvavigu</string>
-  <string name="apg_learn_more">Võid lisainfoks <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikkida siia</a></string>
-  <string name="apg_deprecated_ok">Arusaadav!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">See e-kiri on krüpteeritud</string>
   <string name="crypto_no_provider_message">Selle kirja krüptimisel on kasutusel OpenPGP.\nKirjalugemsieks palun paigalda ja seadista sobilik OpenPGP rakendus.</string>
   <string name="crypto_no_provider_button">Ava sätted</string>

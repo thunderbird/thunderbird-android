@@ -250,6 +250,8 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_basics_title">Ouzhpennañ ur gont</string>
   <string name="account_setup_basics_email_hint">Chomlec’h postel</string>
   <string name="account_setup_basics_password_hint">Ger-tremen</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Arventennañ dre zorn</string>
   <string name="account_setup_check_settings_title"/>
@@ -288,10 +290,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_incoming_delete_policy_never_label">Na zilemel war an dafariad</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Dilemel war an dafariad</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Merkañ evel lennet war an dafariad</string>
-  <string name="account_setup_incoming_compression_label">Arverañ ar c’hoazhañ war ar rouedad:</string>
-  <string name="account_setup_incoming_mobile_label">Hezoug</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">All</string>
   <string name="account_setup_expunge_policy_label">Dilemel ar c’hemennadennoù diverket war an dafariad</string>
   <string name="account_setup_expunge_policy_immediately">Diouzhtu</string>
   <string name="account_setup_expunge_policy_on_poll">En ur gerc’hat</string>
@@ -687,6 +685,10 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="settings_export_failure">C’hwitadenn war ezporzhiañ an arventennoù</string>
   <string name="settings_import_title">Enporzhiañ an arventennoù</string>
   <string name="settings_import_button">Enporzhiañ</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import">Enporzhiañ an arventennoù</string>
   <string name="settings_importing">Oc’h enporzhiañ an arventennoù…</string>
   <string name="unread_widget_select_account">Diskouez an niver a bosteloù anlennet evit…</string>
@@ -867,14 +869,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_settings_crypto_hide_sign_only_off">An holl sinadurioù a vo skrammet</string>
   <string name="error_sign_only_no_encryption">N’haller ket enrinegañ er mod Sign-Only!</string>
   <string name="unsigned_text_divider_label">Testenn ansinet</string>
-  <string name="apg_deprecated_title">Gouzav diamzeradur APG</string>
-  <string name="apg_deprecated_1">N’eo ket trezalc’het APG ken!</string>
-  <string name="apg_deprecated_2">Dre se n’eo ket skoret APG gant K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Harzhet eo bet an diorren e deroù 2014</string>
-  <string name="apg_deprecated_bullet_2">Enderc’hel a ra kudennoù diogelroez</string>
-  <string name="apg_learn_more">Gallout a rit <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikañ amañ</a>evit gouzout hiroc’h.</string>
-  <string name="apg_deprecated_ok">Komprenet ’m eus!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">N’eo ket enrineget ar postel-mañ</string>
   <string name="crypto_no_provider_message">Enrineget eo bet ar postel-mañ gant OpenPGP.\nEvit gallout e lenn e rankit staliañ ha kefluniañ un arload OpenPGP keverlec’h.</string>
   <string name="crypto_no_provider_button">Mont d\'an arventennoù</string>

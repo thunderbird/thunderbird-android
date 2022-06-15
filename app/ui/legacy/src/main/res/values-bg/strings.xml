@@ -269,6 +269,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_basics_title">Настрой нов профил</string>
   <string name="account_setup_basics_email_hint">Пощенски адрес</string>
   <string name="account_setup_basics_password_hint">Парола</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ръчни настройки</string>
   <string name="account_setup_check_settings_title"/>
@@ -307,10 +309,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_incoming_delete_policy_never_label">Не изтривай от сървъра</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Изтривай от сървъра</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Маркирай като прочетено на сървъра</string>
-  <string name="account_setup_incoming_compression_label">Използвай компресия по мрежата:</string>
-  <string name="account_setup_incoming_mobile_label">Мобилна</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Друга</string>
   <string name="account_setup_expunge_policy_label">Премахни изтритите от сървъра съобщения</string>
   <string name="account_setup_expunge_policy_immediately">Веднага</string>
   <string name="account_setup_expunge_policy_on_poll">При проверка</string>
@@ -718,12 +716,16 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="settings_import_pick_document_button">Избери файл</string>
   <string name="settings_import_button">Внасяне</string>
   <string name="settings_import_success_generic">Успешно импортирани настройки</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Моля, въведете пароли</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Импортирането на настройките не бе успешно</string>
   <string name="settings_import_read_failure">Файлът за настройки не бе прочетен</string>
   <string name="settings_import_partial_failure">Импортирането на някои настройки не бе успешно</string>
   <string name="settings_import_status_success">Успешно импортиране</string>
   <string name="settings_import_status_password_required">Изисква се парола</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Не се импортира</string>
   <string name="settings_import_status_error">Неуспешно импортиране</string>
   <string name="settings_import_later_button">По късно</string>
@@ -913,14 +915,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_crypto_hide_sign_only_off">Всички подписи ще бъдат показвани</string>
   <string name="error_sign_only_no_encryption">Криптирането не е възможно, когато се използва режима само подпис! </string>
   <string name="unsigned_text_divider_label">Неподписан текст</string>
-  <string name="apg_deprecated_title">APG предупреждение за премахване</string>
-  <string name="apg_deprecated_1">APG вече не се поддържа!</string>
-  <string name="apg_deprecated_2">Поради това, поддръжката на APG е премахната от К-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Разработването бе преустановено в началото на 2014</string>
-  <string name="apg_deprecated_bullet_2">Съдържа неоправени проблеми по сигурността</string>
-  <string name="apg_learn_more">Може да <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">натиснете тук</a>, за да научите повече.</string>
-  <string name="apg_deprecated_ok">Ясно!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Имейлът е криптиран</string>
   <string name="crypto_no_provider_message">Този имейл е криптиран използвайки OpenPGP.\nЗа да го прочетете, трябва да инсталирате и настроите OpenPGP приложението.</string>
   <string name="crypto_no_provider_button">Към настройки</string>

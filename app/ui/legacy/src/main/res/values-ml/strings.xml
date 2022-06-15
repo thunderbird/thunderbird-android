@@ -275,6 +275,8 @@
   <string name="account_setup_basics_title">ഒരു പുതിയ അക്കൗണ്ട് സജ്ജമാക്കുക</string>
   <string name="account_setup_basics_email_hint">ഇമെയിൽ വിലാസം</string>
   <string name="account_setup_basics_password_hint">രഹസ്യവാചകം</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">നിങ്ങളുടെ പാസ്‌വേഡ് ഇവിടെ കാണുന്നതിന്, ഈ ഉപകരണത്തിൽ സ്‌ക്രീൻ ലോക്ക് പ്രവർത്തനക്ഷമമാക്കുക.</string>
   <string name="account_setup_basics_show_password_biometrics_title">നിങ്ങളുടെ ഐഡന്റിറ്റി പരിശോധിച്ചുറപ്പിക്കുക</string>
@@ -316,10 +318,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">സെർവറിൽ ഇല്ലാതാക്കരുത്</string>
   <string name="account_setup_incoming_delete_policy_delete_label">സെർവറിൽ നിന്ന് ഇല്ലാതാക്കൂ</string>
   <string name="account_setup_incoming_delete_policy_markread_label">സെർവറിൽ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="account_setup_incoming_compression_label">നെറ്റ്‌വർക്കിൽ ചുരുക്കൽ ഉപയോഗിക്കുക:</string>
-  <string name="account_setup_incoming_mobile_label">മൊബൈൽ</string>
-  <string name="account_setup_incoming_wifi_label">വൈഫൈ</string>
-  <string name="account_setup_incoming_other_label">മറ്റുള്ളവ</string>
   <string name="account_setup_expunge_policy_label">സെർവറിൽ ഇല്ലാതാക്കിയ സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
   <string name="account_setup_expunge_policy_immediately">ഉടനെ</string>
   <string name="account_setup_expunge_policy_on_poll">പോളിംഗ് നടത്തുമ്പോൾ</string>
@@ -743,12 +741,16 @@
   <string name="settings_import_pick_document_button">ഫയൽ തിരഞ്ഞെടുക്കുക</string>
   <string name="settings_import_button">ഇംപോർട്ട്</string>
   <string name="settings_import_success_generic">ക്രമീകരണങ്ങൾ വിജയകരമായി ഇംപോർട്ട് ചെയ്തു</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">ദയവായി രഹസ്യവാക്കുകൾ നൽകുക</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">ക്രമീകരണങ്ങൾ ഇംപോർട്ടുചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
   <string name="settings_import_read_failure">ക്രമീകരണ ഫയൽ വായിക്കുന്നതിൽ പരാജയപ്പെട്ടു</string>
   <string name="settings_import_partial_failure">ചില ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
   <string name="settings_import_status_success">വിജയകരമായി ഇംപോർട്ട് ചെയ്തു</string>
   <string name="settings_import_status_password_required">രഹസ്യവാചകം ആവശ്യമാണ്</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">ഇംപോർട്ട് ചെയ്തിട്ടില്ല</string>
   <string name="settings_import_status_error">ഇംപോർട്ട് തകരാർ</string>
   <string name="settings_import_later_button">പിന്നീട്</string>
@@ -938,14 +940,6 @@
   <string name="account_settings_crypto_hide_sign_only_off">എല്ലാ ഒപ്പുകളും പ്രദർശിപ്പിക്കും</string>
   <string name="error_sign_only_no_encryption">ചിഹ്നം മാത്രമുള്ള മോഡിൽ എൻക്രിപ്ഷൻ ലഭ്യമല്ല!</string>
   <string name="unsigned_text_divider_label">ഒപ്പിടാത്ത വാചകം</string>
-  <string name="apg_deprecated_title">APG ഒഴിവാക്കൽ മുന്നറിയിപ്പ്</string>
-  <string name="apg_deprecated_1">APG ഇപ്പോൾ പരിപാലിക്കപ്പെടുന്നില്ല!</string>
-  <string name="apg_deprecated_2">ഇക്കാരണത്താൽ, കെ-9 മെയിലിൽ നിന്ന് APGയ്ക്കുള്ള പിന്തുണ നീക്കംചെയ്തു.</string>
-  <string name="apg_deprecated_bullet_1">2014 ന്റെ തുടക്കത്തിൽ വികസനം നിലച്ചു</string>
-  <string name="apg_deprecated_bullet_2">പരിഹരിക്കാത്ത സുരക്ഷാ പ്രശ്നങ്ങൾ അടങ്ങിയിരിക്കുന്നു</string>
-  <string name="apg_learn_more">കൂടുതലറിയാൻ നിങ്ങൾക്ക് <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">ഇവിടെ ക്ലിക്കു</a> ചെയ്യാം.</string>
-  <string name="apg_deprecated_ok">മനസ്സിലായി!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">ഈ ഇമെയിൽ എൻ‌ക്രിപ്റ്റ് ചെയ്തതാണ്</string>
   <string name="crypto_no_provider_message">ഈ ഇമെയിൽ ഓപ്പൺപിജിപി ഉപയോഗിച്ച് എൻക്രിപ്റ്റുചെയ്‌തതാണ്.\nഇത് വായിക്കാൻ, നിങ്ങൾ ഒരു അനുയോജ്യമായ ഓപ്പൺപിജിപി അപ്ലിക്കേഷൻ ഇൻസ്റ്റാളുചെയ്‌ത് ക്രമീകരിക്കേണ്ടതുണ്ട്. </string>
   <string name="crypto_no_provider_button">ക്രമീകരണങ്ങളിലേക്ക് പോകുക</string>

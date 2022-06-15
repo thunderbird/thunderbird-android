@@ -115,6 +115,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="flag_action">Afegeix un estel</string>
   <string name="unflag_action">Elimina l\'estel</string>
   <string name="copy_action">Copia</string>
+  <string name="unsubscribe_action">No t\'hi subscriguis</string>
   <string name="show_headers_action">Mostra les capçaleres</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adreça copiada al porta-retalls</item>
@@ -276,6 +277,11 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_basics_title">Configura un compte nou</string>
   <string name="account_setup_basics_email_hint">Adreça de correu electrònic</string>
   <string name="account_setup_basics_password_hint">Contrasenya</string>
+  <string name="account_setup_oauth_description">Per usar aquest compte de correu electrònic amb el K-9 Mail, heu d\'iniciar-hi la sessió i concedir a l\'aplicació accés als vostres correus electrònics.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Inicia la sessió</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Inicia la sessió amb Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Per veure la contrasenya aquí, activeu el bloqueig de pantalla en aquest dispositiu.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifiqueu la identitat</string>
@@ -299,6 +305,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_auth_type_insecure_password">Contrasenya, transmesa de forma no segura</string>
   <string name="account_setup_auth_type_encrypted_password">Contrasenya encriptada</string>
   <string name="account_setup_auth_type_tls_client_certificate">Certificat del client</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Configuració del servidor d\'entrada</string>
   <string name="account_setup_incoming_username_label">Nom d\'usuari</string>
   <string name="account_setup_incoming_password_label">Contrasenya</string>
@@ -317,10 +324,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_incoming_delete_policy_never_label">No l\'eliminis del servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Elimina\'l del servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marca\'ls com a llegits al servidor</string>
-  <string name="account_setup_incoming_compression_label">Utilitza compressió a la xarxa:</string>
-  <string name="account_setup_incoming_mobile_label">Mòbil</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Altres</string>
+  <string name="account_setup_incoming_use_compression">Usa compressió</string>
   <string name="account_setup_expunge_policy_label">Elimina missatges esborrats al servidor</string>
   <string name="account_setup_expunge_policy_immediately">Immediatament</string>
   <string name="account_setup_expunge_policy_on_poll">Quan es comprova</string>
@@ -385,6 +389,10 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'usuari o contrasenya incorrectes.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">El servidor ha mostrat un certificat SSL no vàlid. A vegades això és degut a una mala configuració del servidor. També pot ser degut que algú estigui intentant atacar-vos o al vostre servidor. Si no n\'esteu segurs feu clic a Rebutja i contacteu amb la gent que us administra el vostre servidor.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">No s\'ha pogut connectar amb el servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorització cancel·lada</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">L\'autorització ha fallat amb l\'error següent: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">Actualment, OAuth 2.0 no és compatible amb aquest proveïdor.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">L\'aplicació no ha trobat cap navegador per utilitzar-lo per concedir accés al compte.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Edita els detalls</string>
   <string name="account_setup_failed_dlg_continue_action">Continua</string>
   <string name="account_settings_push_advanced_title">Avançat</string>
@@ -762,12 +770,16 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_import_pick_document_button">Seleccioneu un fitxer</string>
   <string name="settings_import_button">Importa</string>
   <string name="settings_import_success_generic">La configuració s\'ha importat correctament.</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Si us plau, escriviu les contrasenyes.</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Ha fallat importar la configuració.</string>
   <string name="settings_import_read_failure">Ha fallat llegir els fitxer de configuració.</string>
   <string name="settings_import_partial_failure">Ha fallat importar alguns paràmetres.</string>
   <string name="settings_import_status_success">Importació correcta</string>
   <string name="settings_import_status_password_required">Cal la contrasenya.</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">No importat</string>
   <string name="settings_import_status_error">Fallada d\'importació</string>
   <string name="settings_import_later_button">Més tard</string>
@@ -958,14 +970,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_crypto_hide_sign_only_off">Es mostraran totes les signatures</string>
   <string name="error_sign_only_no_encryption">Encriptació no disponible en mode de només signar!</string>
   <string name="unsigned_text_divider_label">Text no signat</string>
-  <string name="apg_deprecated_title">Avís d\'obsolescència d\'APG</string>
-  <string name="apg_deprecated_1">APG ja no es manté!</string>
-  <string name="apg_deprecated_2">A causa d\'això, el suport d\'APG s\'ha eliminat del K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">El desenvolupament es va aturar a principis de 2014.</string>
-  <string name="apg_deprecated_bullet_2">Conté problemes de seguretat no corregits.</string>
-  <string name="apg_learn_more">Podeu fer clic <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">aquí</a> per saber-ne més.</string>
-  <string name="apg_deprecated_ok">Ja ho tinc!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Aquest missatge està encriptat.</string>
   <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
   <string name="crypto_no_provider_button">Ves a la configuració</string>

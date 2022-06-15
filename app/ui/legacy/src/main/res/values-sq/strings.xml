@@ -116,6 +116,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="flag_action">Shtoji yll</string>
   <string name="unflag_action">Hiqi yll</string>
   <string name="copy_action">Kopjoje</string>
+  <string name="unsubscribe_action">Shpajtomëni</string>
   <string name="show_headers_action">Shfaqi kryet</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa u kopjua në të papastër</item>
@@ -277,6 +278,11 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_basics_title">Rregulloni një llogari të re</string>
   <string name="account_setup_basics_email_hint">Adresë email</string>
   <string name="account_setup_basics_password_hint">Fjalëkalim</string>
+  <string name="account_setup_oauth_description">Që të përdorni këtë llogari email me K-9 Mail, lypset të bëni hyrjen dhe t’i akordoni aplikacionit hyrje te email-et tuaj.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Hyni</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Hyni me Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Që të shihni fjalëkalimin tuaj këtu, aktivizoni kyçje ekrani në këtë pajisje.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifikoni identitetin tuaj</string>
@@ -300,6 +306,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_auth_type_insecure_password">Fjalëkalim, i transmetuar në mënyrë të pasigurt</string>
   <string name="account_setup_auth_type_encrypted_password">Fjalëkalim i fshehtëzuar</string>
   <string name="account_setup_auth_type_tls_client_certificate">Dëshmi klienti</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Rregullime shërbyesi për marrje</string>
   <string name="account_setup_incoming_username_label">Emër përdoruesi</string>
   <string name="account_setup_incoming_password_label">Fjalëkalim</string>
@@ -318,10 +325,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_incoming_delete_policy_never_label">Mos e fshi te shërbyesi</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Fshije te shërbyesi</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Shënoje si të lexuar te shërbyesi</string>
-  <string name="account_setup_incoming_compression_label">Përdor ngjeshje në rrjet:</string>
-  <string name="account_setup_incoming_mobile_label">Celular</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Tjetër</string>
+  <string name="account_setup_incoming_use_compression">Përdor ngjeshje</string>
   <string name="account_setup_expunge_policy_label">Hiqi dhe në shërbyes mesazhet e fshira</string>
   <string name="account_setup_expunge_policy_immediately">Menjëherë</string>
   <string name="account_setup_expunge_policy_on_poll">Kur vilet</string>
@@ -386,6 +390,10 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_failed_dlg_auth_message_fmt">Emër përdoruesi ose fjalëkalim i pasaktë.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Shërbyesi paraqiti një dëshmi SSL të pavlefshme. Ndonjëherë kjo ndodh për shkak të ndonjë keqformësimi të shërbyesit. Ndonjëherë vjen ngaqë dikush po rreket të sulmojë shërbyesin tuaj të postës. Nëse s\’jeni i sigurt se ç\’po ndodh, klikoni mbi Hidhe Tej dhe lidhuni me personat që administrojnë shërbyesin tuaj të postës.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">S\’lidhet dot te shërbyesi.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizimi u anulua</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizimi dështoi me gabimin vijues: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 aktualisht nuk mbulohet me këtë furnizues shërbimi.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Aplikacioni s’gjeti dot një shfletues për ta përdorur për t’i akorduar hyrje te llogaria juaj.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Përpunoni hollësitë</string>
   <string name="account_setup_failed_dlg_continue_action">Vazhdo</string>
   <string name="account_settings_push_advanced_title">Të mëtejshme</string>
@@ -763,12 +771,19 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="settings_import_pick_document_button">Përzgjidhni kartelë</string>
   <string name="settings_import_button">Importoje</string>
   <string name="settings_import_success_generic">Rregullimet u importuan me sukses</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Ju lutemi, jepni fjalëkalime</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Ju lutemi, bëni hyrjen</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Ju lutemi, bëni hyrjen dhe jepni fjalëkalime</string>
   <string name="settings_import_failure">S’u arrit të importohen rregullime</string>
   <string name="settings_import_read_failure">S’u arrit të lexohet kartelë rregullimesh</string>
   <string name="settings_import_partial_failure">S’u arrit të importohen disa rregullime</string>
   <string name="settings_import_status_success">U importuan me sukses</string>
   <string name="settings_import_status_password_required">Lypset fjalëkalim</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Hyrje e domosdoshme</string>
   <string name="settings_import_status_not_imported">I paimportuar</string>
   <string name="settings_import_status_error">Dështim importimi</string>
   <string name="settings_import_later_button">Më vonë</string>
@@ -959,14 +974,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_crypto_hide_sign_only_off">Do të shfaqen krejt nënshkrimet</string>
   <string name="error_sign_only_no_encryption">S\’mund të kihet fshehtëzim nën mënyrën vetëm-nënshkrim!</string>
   <string name="unsigned_text_divider_label">Tekst i Panënshkruar</string>
-  <string name="apg_deprecated_title">Sinjalizim APG-je të Nxjerrë Nga Përdorimi</string>
-  <string name="apg_deprecated_1">Projekti APG nuk mirëmbahet më!</string>
-  <string name="apg_deprecated_2">Për këtë shkak, është hequr mbulimi i APG-së nga K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Zhvillimi ndali në fillimet e 2014-s</string>
-  <string name="apg_deprecated_bullet_2">Përmban probleme sigurie të pandrequra</string>
-  <string name="apg_learn_more">Mund të <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikoni këtu</a> për të mësuar më tepër.</string>
-  <string name="apg_deprecated_ok">E mora vesh!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Ky email është i fshehtëzuar</string>
   <string name="crypto_no_provider_message">Ky email është fshehtëzuar me OpenPGP.\nQë ta lexoni, lypset të instaloni dhe formësoni një aplikacion të përputhshëm me OpenPGP-në.</string>
   <string name="crypto_no_provider_button">Kaloni te Rregullimet</string>

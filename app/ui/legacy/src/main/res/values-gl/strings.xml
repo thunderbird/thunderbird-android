@@ -274,6 +274,8 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_basics_title">Configurar nova conta</string>
   <string name="account_setup_basics_email_hint">Enderezo de correo</string>
   <string name="account_setup_basics_password_hint">Contrasinal</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Para ver o teu contrasinal aquí, activa o bloqueo de pantalla deste dispositivo.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verificar a túa identidade</string>
@@ -315,10 +317,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_incoming_delete_policy_never_label">Non borrar do servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Borrar do servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcar coma lido no servidor</string>
-  <string name="account_setup_incoming_compression_label">Usar compresión na rede:</string>
-  <string name="account_setup_incoming_mobile_label">Móbil</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Outras</string>
   <string name="account_setup_expunge_policy_label">Erradicar borrados</string>
   <string name="account_setup_expunge_policy_immediately">Inmediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante comprobación</string>
@@ -742,12 +740,16 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="settings_import_pick_document_button">Seleccionar ficheiro</string>
   <string name="settings_import_button">Importar</string>
   <string name="settings_import_success_generic">Configuración importada con éxito</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Insira os contrasinais</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Houbo un erro ao importar a configuración</string>
   <string name="settings_import_read_failure">Houbo un erro ao ler o ficheiro de configuracións</string>
   <string name="settings_import_partial_failure">Houbo un erro ao importar algúns axustes</string>
   <string name="settings_import_status_success">Importado con éxito</string>
   <string name="settings_import_status_password_required">Requírese contrasinal</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Non importado</string>
   <string name="settings_import_status_error">Erro da importación</string>
   <string name="settings_import_later_button">Máis tarde</string>
@@ -938,14 +940,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_settings_crypto_hide_sign_only_off">Amosaranse todas as sinaturas</string>
   <string name="error_sign_only_no_encryption">Cifrado non dispoñible no modo só-firma!</string>
   <string name="unsigned_text_divider_label">Texto non firmado</string>
-  <string name="apg_deprecated_title">Aviso de APG obsoleto</string>
-  <string name="apg_deprecated_1">AGP xa non está mantido!</string>
-  <string name="apg_deprecated_2">Debido a esto, eliminouse o soporte para APG de K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">O desenvolvemento detívose a inicios do 2014</string>
-  <string name="apg_deprecated_bullet_2">Contén cuestións de seguridade non resoltas</string>
-  <string name="apg_learn_more">Pode <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">pulsar aquí</a> para saber máis.</string>
-  <string name="apg_deprecated_ok">Vale!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Este correo está cifrado</string>
   <string name="crypto_no_provider_message">Este correo foi cifrado con OpenPGP.\nPara lelo, precisa instalar e configurar un app compatible con OpenPGP</string>
   <string name="crypto_no_provider_button">Ir a Configuración</string>

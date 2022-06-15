@@ -103,6 +103,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="show_headers_action">Mostrar cabeçalhos</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Endereço copiado para a área de transferência</item>
+    <item quantity="many">Endereços copiados para a área de transferência</item>
     <item quantity="other">Endereços copiados para a área de transferência</item>
   </plurals>
   <string name="message_view_theme_action_dark">Mudar para o tema escuro</string>
@@ -131,6 +132,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="notification_new_title">Novo email</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nova mensagem</item>
+    <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string>
@@ -251,6 +253,8 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_basics_title">Configurar uma nova conta</string>
   <string name="account_setup_basics_email_hint">Endereço de email</string>
   <string name="account_setup_basics_password_hint">Palavra-passe</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
   <string name="account_setup_check_settings_title"/>
@@ -289,10 +293,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_incoming_delete_policy_never_label">Não eliminar no servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Eliminar no servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcar como lido no servidor</string>
-  <string name="account_setup_incoming_compression_label">Usar compressão na rede:</string>
-  <string name="account_setup_incoming_mobile_label">Móvel</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Outras</string>
   <string name="account_setup_expunge_policy_label">Apagar mensagens eliminadas no servidor</string>
   <string name="account_setup_expunge_policy_immediately">Imediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Na verificação</string>
@@ -675,6 +675,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="dialog_confirm_delete_message">Pretende eliminar esta mensagem?</string>
   <plurals name="dialog_confirm_delete_messages">
     <item quantity="one">Pretende mesmo eliminar esta mensagem?</item>
+    <item quantity="many">Pretende mesmo eliminar <xliff:g id="message_count">%1$d</xliff:g> mensagens?</item>
     <item quantity="other">Pretende mesmo eliminar <xliff:g id="message_count">%1$d</xliff:g> mensagens?</item>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Sim</string>
@@ -688,6 +689,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="dialog_confirm_spam_title">Confirmar o deslocamento para a pasta de spam</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Pretende mesmo mover esta mensagem para a pasta de spam?</item>
+    <item quantity="many">Pretende mesmo mover <xliff:g id="message_count">%1$d</xliff:g> mensagens para a pasta de spam?</item>
     <item quantity="other">Pretende mesmo mover <xliff:g id="message_count">%1$d</xliff:g> mensagens para a pasta de spam?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Sim</string>
@@ -707,12 +709,16 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_import_pick_document_button">Selecionar ficheiro</string>
   <string name="settings_import_button">Importar</string>
   <string name="settings_import_success_generic">Configurações importadas com sucesso</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Por favor inserir palavras-passe</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Falha na importação de configurações</string>
   <string name="settings_import_read_failure">Falha na leitura do ficheiro de configurações</string>
   <string name="settings_import_partial_failure">Falha na importação de algumas configurações</string>
   <string name="settings_import_status_success">A importação foi bem sucedida</string>
   <string name="settings_import_status_password_required">Necessária palavra-passe</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Não importado</string>
   <string name="settings_import_status_error">Falha na importação</string>
   <string name="settings_import_later_button">Posteriormente</string>
@@ -720,6 +726,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_importing">A importar configurações…</string>
   <plurals name="settings_import_password_prompt">
     <item quantity="one">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
+    <item quantity="many">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
     <item quantity="other">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Palavra-passe do servidor de entrada</string>
@@ -771,10 +778,12 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="remote_search_sending_query">A enviar consulta ao servidor</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">A obter %d resultado</item>
+    <item quantity="many">A obter %d resultados</item>
     <item quantity="other">A obter %d resultados</item>
   </plurals>
   <plurals name="remote_search_downloading_limited">
     <item quantity="one">A obter %1$d de %2$d resultado</item>
+    <item quantity="many">A obter %1$d de %2$d resultados</item>
     <item quantity="other">A obter %1$d de %2$d resultados</item>
   </plurals>
   <string name="remote_search_error">A pesquisa remota falhou</string>
@@ -902,14 +911,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_crypto_hide_sign_only_off">Serão mostradas todas as assinaturas</string>
   <string name="error_sign_only_no_encryption">Encriptação indisponível no modo de apenas assinatura!</string>
   <string name="unsigned_text_divider_label">Texto não assinado</string>
-  <string name="apg_deprecated_title">Aviso de descontinuação do APG</string>
-  <string name="apg_deprecated_1">O APG já não é mantido!</string>
-  <string name="apg_deprecated_2">Devido a isto, o suporte ao APG foi removido do K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">O desenvolvimento terminou em princípios de 2014</string>
-  <string name="apg_deprecated_bullet_2">Contém falhas de segurança não corrigidas</string>
-  <string name="apg_learn_more">Pode <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">clicar aqui</a> para saber mais.</string>
-  <string name="apg_deprecated_ok">Entendido!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Este email está encriptado</string>
   <string name="crypto_no_provider_message">Este email foi encriptado com OpenPGP.\nPara o ler, necessita de instalar e configurar uma aplicação OpenPGP compatível.</string>
   <string name="crypto_no_provider_button">Ir para as configurações</string>
