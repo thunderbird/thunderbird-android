@@ -268,6 +268,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_basics_title">Aldoni novan konton</string>
   <string name="account_setup_basics_email_hint">Retpoŝtadreso</string>
   <string name="account_setup_basics_password_hint">Pasvorto</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Por vidigi vian pasvorton tie ĉi, aktivigu la ŝlos-ekranon ĉe via aparato.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verigi vian identigon</string>
@@ -309,10 +311,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_incoming_delete_policy_never_label">Ne forigi ĝin en servilo</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Forigi ĝin en servilo</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marki ĝin kiel legitan en servilo</string>
-  <string name="account_setup_incoming_compression_label">Uzi kompaktigon je reto:</string>
-  <string name="account_setup_incoming_mobile_label">Movtelefona</string>
-  <string name="account_setup_incoming_wifi_label">Vifio</string>
-  <string name="account_setup_incoming_other_label">Alia</string>
   <string name="account_setup_expunge_policy_label">Forviŝi forigitajn mesaĝojn el servilo</string>
   <string name="account_setup_expunge_policy_immediately">Senprokraste</string>
   <string name="account_setup_expunge_policy_on_poll">Je ĉiu elŝutado</string>
@@ -736,12 +734,16 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="settings_import_pick_document_button">Elekti dosieron</string>
   <string name="settings_import_button">Enporti</string>
   <string name="settings_import_success_generic">Sukcese enportis agordojn</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Bonvolu entajpi pasvortojn</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Fiaskis enporti agordojn</string>
   <string name="settings_import_read_failure">Fiaskis legi dosieron kun agordoj</string>
   <string name="settings_import_partial_failure">Fiaskis enporti iujn agordojn</string>
   <string name="settings_import_status_success">Sukcesis enporti</string>
   <string name="settings_import_status_password_required">Postulas pasvorton</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Ne enportita</string>
   <string name="settings_import_status_error">Fiaskis enporti</string>
   <string name="settings_import_later_button">Poste</string>
@@ -932,14 +934,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_crypto_hide_sign_only_off">Ĉiuj subskriboj montriĝos</string>
   <string name="error_sign_only_no_encryption">Ĉifrado ne eblas en nur-subskriba reĝimo!</string>
   <string name="unsigned_text_divider_label">Nesubskribita teksto</string>
-  <string name="apg_deprecated_title">Averto: APG evitindas</string>
-  <string name="apg_deprecated_1">APG ne estas plu disvolvata!</string>
-  <string name="apg_deprecated_2">Tial subteno por APG estis forigita el K-9 Retpoŝtilo.</string>
-  <string name="apg_deprecated_bullet_1">Disvolvado haltis je komenco de 2014</string>
-  <string name="apg_deprecated_bullet_2">Enhavas neriparitajn sekurec-erarojn</string>
-  <string name="apg_learn_more">Vi povas <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klaki tie ĉi</a> por sciiĝi pli (en la angla).</string>
-  <string name="apg_deprecated_ok">Mi komprenas!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Tiu ĉi retletero estas ĉifrita</string>
   <string name="crypto_no_provider_message">Tiu ĉi retletero estas ĉifrita per OpenPGP.\nPor legi ĝin, vi devas instali kaj agordi kongruan OpenPGP-aplikaĵon.</string>
   <string name="crypto_no_provider_button">Iri al agordoj</string>

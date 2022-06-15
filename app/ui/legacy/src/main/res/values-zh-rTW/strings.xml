@@ -105,6 +105,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="search_action">搜尋</string>
   <string name="search_everywhere_action">在所有地方搜尋</string>
   <string name="search_results">搜尋結果</string>
+  <string name="new_messages_title">新郵件</string>
   <string name="preferences_action">設定</string>
   <string name="folders_action">整理信件匣</string>
   <string name="account_settings_action">帳號設定</string>
@@ -115,6 +116,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="flag_action">加上星號</string>
   <string name="unflag_action">移除星號</string>
   <string name="copy_action">複製</string>
+  <string name="unsubscribe_action">取消訂閱</string>
   <string name="show_headers_action">顯示標頭</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">位址已複製到剪貼簿</item>
@@ -157,6 +159,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="notification_action_archive">封存</string>
   <string name="notification_action_archive_all">全部封存</string>
   <string name="notification_action_spam">垃圾郵件</string>
+  <string name="notification_certificate_error_public">證書錯誤</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>驗證錯誤</string>
   <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
   <string name="notification_authentication_error_title">身份驗證失敗</string>
@@ -183,6 +186,9 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="debug_enable_debug_logging_summary">記錄額外的除錯訊息</string>
   <string name="debug_enable_sensitive_logging_title">記錄敏感訊息</string>
   <string name="debug_enable_sensitive_logging_summary">允許在日誌中顯示密碼。</string>
+  <string name="debug_export_logs_title">匯出日誌</string>
+  <string name="debug_export_logs_success">匯出成功。日誌可能包含敏感訊息。請小心選擇您要傳送的人。</string>
+  <string name="debug_export_logs_failure">匯出失敗</string>
   <string name="message_list_load_more_messages_action">載入更多郵件</string>
   <string name="message_to_fmt">收件人：<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">主題</string>
@@ -229,6 +235,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="global_settings_show_contact_name_summary">用聯絡人姓名取代顯示電子郵件地址</string>
   <string name="global_settings_registered_name_color_label">使用顏色標示特定聯絡人</string>
   <string name="global_settings_registered_name_color_changed">使用顏色標示聯絡人列表</string>
+  <string name="general_settings_contact_name_color_label">聯絡人名稱顏色</string>
   <string name="global_settings_messageview_fixedwidth_label">固定寬度字體</string>
   <string name="global_settings_messageview_fixedwidth_summary">使用固定寬度字體顯示純文字郵件</string>
   <string name="global_settings_messageview_autofit_width_label">自動調整訊息</string>
@@ -268,6 +275,11 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_basics_title">設定新帳號</string>
   <string name="account_setup_basics_email_hint">電子郵件地址</string>
   <string name="account_setup_basics_password_hint">密碼</string>
+  <string name="account_setup_oauth_description">如要透過 K-9 Mail 使用這個電子郵件帳戶，您需要登入並授權應用程式取用您的電子郵件。</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">登入</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">使用 Google 帳戶登入</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">要在這查看你的密碼請為這個裝置啟用螢幕上鎖。</string>
   <string name="account_setup_basics_show_password_biometrics_title">驗證你的身份</string>
@@ -291,6 +303,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_auth_type_insecure_password">非安全傳輸的密碼</string>
   <string name="account_setup_auth_type_encrypted_password">已加密的密碼</string>
   <string name="account_setup_auth_type_tls_client_certificate">使用者客戶端憑證</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">內送伺服器設定</string>
   <string name="account_setup_incoming_username_label">使用者名稱</string>
   <string name="account_setup_incoming_password_label">密碼</string>
@@ -309,10 +322,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_incoming_delete_policy_never_label">不要從伺服器上刪除</string>
   <string name="account_setup_incoming_delete_policy_delete_label">立刻從伺服器上刪除</string>
   <string name="account_setup_incoming_delete_policy_markread_label">在伺服器上將郵件標記為已讀</string>
-  <string name="account_setup_incoming_compression_label">在使用指定網路類型時使用壓縮以便節約流量：</string>
-  <string name="account_setup_incoming_mobile_label">行動網路</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">其他</string>
+  <string name="account_setup_incoming_use_compression">使用壓縮</string>
   <string name="account_setup_expunge_policy_label">抹除刪除的郵件</string>
   <string name="account_setup_expunge_policy_immediately">立刻</string>
   <string name="account_setup_expunge_policy_on_poll">接收郵件時</string>
@@ -377,6 +387,10 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_failed_dlg_auth_message_fmt">使用者名稱或密碼不正確。\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">伺服器提供了一個無效的 SSL 憑證。這是由於不正確的伺服器設定而導致的，也可能是由於有人試圖攻擊你或者你的郵件伺服器。如果你不能確定到底是什麼原因，請點擊「拒絕」，並聯絡你的郵件伺服器管理人員。\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">無法連線到伺服器。\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">授權被取消</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">授權失敗，錯誤訊息為：<xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">此供應商目前不支援 OAuth 2.0。</string>
+  <string name="account_setup_failed_dlg_browser_not_found">應用程式找不到瀏覽器以授予取用您賬戶的權限。</string>
   <string name="account_setup_failed_dlg_edit_details_action">編輯詳細訊息</string>
   <string name="account_setup_failed_dlg_continue_action">繼續</string>
   <string name="account_settings_push_advanced_title">進階</string>
@@ -531,11 +545,29 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_description_label">帳號名稱</string>
   <string name="account_settings_name_label">你的名字</string>
   <string name="notifications_title">通知</string>
+  <string name="account_settings_vibration">震動</string>
   <string name="account_settings_vibrate_enable">震動</string>
+  <string name="account_settings_vibrate_pattern_label">震動模式</string>
   <string name="account_settings_vibrate_pattern_default">預設</string>
+  <string name="account_settings_vibrate_pattern_1">模式一</string>
+  <string name="account_settings_vibrate_pattern_2">模式二</string>
+  <string name="account_settings_vibrate_pattern_3">模式三</string>
+  <string name="account_settings_vibrate_pattern_4">模式四</string>
+  <string name="account_settings_vibrate_pattern_5">模式五</string>
   <string name="account_settings_vibrate_times">重複震動</string>
+  <string name="account_settings_vibrate_summary_disabled">已停用</string>
   <string name="account_settings_ringtone">新郵件鈴聲</string>
+  <string name="account_settings_notification_light_label">通知燈</string>
+  <string name="account_settings_notification_light_disabled">已停用</string>
   <string name="account_settings_notification_light_account_color">帳號顏色</string>
+  <string name="account_settings_notification_light_default_color">系統預設顏色</string>
+  <string name="account_settings_notification_light_white">白</string>
+  <string name="account_settings_notification_light_red">紅</string>
+  <string name="account_settings_notification_light_green">綠</string>
+  <string name="account_settings_notification_light_blue">藍</string>
+  <string name="account_settings_notification_light_yellow">黃</string>
+  <string name="account_settings_notification_light_cyan">青</string>
+  <string name="account_settings_notification_light_magenta">洋紅</string>
   <string name="account_settings_composition_title">撰寫新郵件選項</string>
   <string name="account_settings_composition_label">撰寫新郵件預設值</string>
   <string name="account_settings_composition_summary">設定預設的寄件人、密件副本以及簽名</string>
@@ -734,12 +766,19 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="settings_import_pick_document_button">選擇檔案</string>
   <string name="settings_import_button">匯入</string>
   <string name="settings_import_success_generic">設定匯入成功</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">請輸入密碼</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">請登入</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">請登入並輸入密碼</string>
   <string name="settings_import_failure">設定匯入失敗</string>
   <string name="settings_import_read_failure">讀取設定檔案失敗</string>
   <string name="settings_import_partial_failure">匯入部分設定失敗</string>
   <string name="settings_import_status_success">匯入成功</string>
   <string name="settings_import_status_password_required">需要輸入密碼</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">需要登入</string>
   <string name="settings_import_status_not_imported">沒有匯入</string>
   <string name="settings_import_status_error">匯入失敗</string>
   <string name="settings_import_later_button">之後</string>
@@ -927,14 +966,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_crypto_hide_sign_only_off">顯示所有簽名</string>
   <string name="error_sign_only_no_encryption">在簽名模式下無法使用加密</string>
   <string name="unsigned_text_divider_label">未簽名文字</string>
-  <string name="apg_deprecated_title">APG 棄用警告</string>
-  <string name="apg_deprecated_1">APG 已停止維護！</string>
-  <string name="apg_deprecated_2">因此，K-9 Mail 移除了對 APG 的支援。</string>
-  <string name="apg_deprecated_bullet_1">開發於 2014 年初停止</string>
-  <string name="apg_deprecated_bullet_2">包括未修復的安全漏洞</string>
-  <string name="apg_learn_more">你可以<a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">點擊這裡</a>了解更多。</string>
-  <string name="apg_deprecated_ok">知道了</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">郵件已被加密</string>
   <string name="crypto_no_provider_message">這封郵件使用 OpenPGP 進行了加密。\n請安裝並設定一個相容 OpenPGP 的應用程式來查看郵件。</string>
   <string name="crypto_no_provider_button">前往設定</string>

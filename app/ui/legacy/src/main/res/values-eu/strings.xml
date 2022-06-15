@@ -266,6 +266,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_basics_title">Konfiguratu kontu berria</string>
   <string name="account_setup_basics_email_hint">Posta helbidea</string>
   <string name="account_setup_basics_password_hint">Pasahitza</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Eskuzko konfigurazioa</string>
   <string name="account_setup_check_settings_title"/>
@@ -304,10 +306,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_incoming_delete_policy_never_label">Ez ezabatu zerbitzarian</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Zerbitzarian ezabatu</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Zerbitzarian irakurritako gisa markatu</string>
-  <string name="account_setup_incoming_compression_label">Erabili konpresioa sarean:</string>
-  <string name="account_setup_incoming_mobile_label">Mugikorra</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Bestelakoak</string>
   <string name="account_setup_expunge_policy_label">Ezabatu hemen ere zerbitzaritik ezabatutako mezuak</string>
   <string name="account_setup_expunge_policy_immediately">Berehala</string>
   <string name="account_setup_expunge_policy_on_poll">Atzitzean</string>
@@ -724,12 +722,16 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="settings_import_pick_document_button">Hautatu fitxategia</string>
   <string name="settings_import_button">Inportatu</string>
   <string name="settings_import_success_generic">Ezarpenak ongi inportatu dira</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Sartu pasahitzak</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Ezin izan dira ezarpenak inportatu</string>
   <string name="settings_import_read_failure">Ezin izan da ezarpenen fitxategia irakurri</string>
   <string name="settings_import_partial_failure">Ezin izan dira ezarpen batzuk inportatu</string>
   <string name="settings_import_status_success">Ongi inportatuta</string>
   <string name="settings_import_status_password_required">Pasahitza derrigorrezkoa</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Inportatu gabe</string>
   <string name="settings_import_status_error">Inportazio hutsegitea</string>
   <string name="settings_import_later_button">Geroago</string>
@@ -919,14 +921,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_crypto_hide_sign_only_off">Sinadura guztiak erakutsiko dira</string>
   <string name="error_sign_only_no_encryption">Zifratzea ez dago erabilgarri sinadura bakarrik moduan!</string>
   <string name="unsigned_text_divider_label">Sinatu gabeko testua</string>
-  <string name="apg_deprecated_title">APG Zaharkitze Abisua</string>
-  <string name="apg_deprecated_1">APG mantentzeari utzi zaio!</string>
-  <string name="apg_deprecated_2">Honengatik, APGren onarpena kendua izan da K-9 Mailetik.</string>
-  <string name="apg_deprecated_bullet_1">Garapena 2014ren hasieran gelditu zen</string>
-  <string name="apg_deprecated_bullet_2">Konpondu gabeko segurtasun arazoak dauzka</string>
-  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Klikatu hemen</a> gehiago ikasteko.</string>
-  <string name="apg_deprecated_ok">Ados!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Posta hau zifratuta dago</string>
   <string name="crypto_no_provider_message">Posta hau OpenPGPrekin zifratua izan da.\nIrakurtzeko, OpenPGPrekin bateragarria den aplikazio bat instalatu eta konfiguratu behar duzu.</string>
   <string name="crypto_no_provider_button">Joan ezarpenetara</string>

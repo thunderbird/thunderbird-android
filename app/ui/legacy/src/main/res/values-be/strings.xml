@@ -263,6 +263,8 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_basics_title">Новы акаўнт</string>
   <string name="account_setup_basics_email_hint">Адрас электроннай пошты</string>
   <string name="account_setup_basics_password_hint">Пароль</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Уласнаручна</string>
   <string name="account_setup_check_settings_title"/>
@@ -301,10 +303,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_incoming_delete_policy_never_label">Пакінуць на серверы</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Выдаліць з сервера</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Пазначыць на серверы як прачытанае</string>
-  <string name="account_setup_incoming_compression_label">Выкарыстоўваць сцісканне ў сетцы:</string>
-  <string name="account_setup_incoming_mobile_label">Мабільныя</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Іншыя</string>
   <string name="account_setup_expunge_policy_label">Сціранне выдаленых лістоў з сервера</string>
   <string name="account_setup_expunge_policy_immediately">Неадкладна</string>
   <string name="account_setup_expunge_policy_on_poll">Падчас праверкі</string>
@@ -725,12 +723,16 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="settings_import_pick_document_button">Абраць файл</string>
   <string name="settings_import_button">Імпарт</string>
   <string name="settings_import_success_generic">Налады паспяхова імпартаваныя</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Калі ласка, увядзіце пароль</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Не атрымалася імпартаваць налады</string>
   <string name="settings_import_read_failure">Не атрымалася прачытаць файл налад</string>
   <string name="settings_import_partial_failure">Не атрымалася імпартаваць некаторыя налады</string>
   <string name="settings_import_status_success">Паспяхова імпартавана</string>
   <string name="settings_import_status_password_required">Патрабуецца пароль</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Не імпартавана</string>
   <string name="settings_import_status_error">Не атрымалася імпартаваць</string>
   <string name="settings_import_later_button">Пазней</string>
@@ -926,14 +928,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_crypto_hide_sign_only_off">Паказваюцца ўсе подпісы</string>
   <string name="error_sign_only_no_encryption">Шыфраванне недаступна ў рэжыме \"Толькі подпіс\"!</string>
   <string name="unsigned_text_divider_label">Непадпісаны тэкст</string>
-  <string name="apg_deprecated_title">Спыненне падтрымкі APG</string>
-  <string name="apg_deprecated_1">APG больш не распрацоўваецца!</string>
-  <string name="apg_deprecated_2">Праз гэта K-9 Mail больш не падтрымлівае APG.</string>
-  <string name="apg_deprecated_bullet_1">Распрацоўка скончаная ў пачатку 2014</string>
-  <string name="apg_deprecated_bullet_2">Ёсць нявырашаныя праблемы бяспекі</string>
-  <string name="apg_learn_more">Націсніце <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">сюды</a>, каб даведацца больш.</string>
-  <string name="apg_deprecated_ok">Зразумела!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Ліст зашыфраваны</string>
   <string name="crypto_no_provider_message">Ліст зашыфраваны OpenPGP\nКаб прачытаць, неабходна ўсталяваць і наладзіць праграму OpenPGP.</string>
   <string name="crypto_no_provider_button">Перайсці ў налады</string>

@@ -115,6 +115,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="flag_action">Lisää tähti</string>
   <string name="unflag_action">Poista tähti</string>
   <string name="copy_action">Kopioi</string>
+  <string name="unsubscribe_action">Lopeta tilaus</string>
   <string name="show_headers_action">Näytä otsikot</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Osoite kopioitu leikepöydälle</item>
@@ -123,7 +124,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="copy_subject_to_clipboard">Aiheen teksti kopioitu leikepöydälle</string>
   <string name="message_view_theme_action_dark">Vaihda tummaan teemaan</string>
   <string name="message_view_theme_action_light">Vaihda vaaleaan teemaan</string>
-  <string name="mark_as_unread_action">Merkitse Lukemattomaksi</string>
+  <string name="mark_as_unread_action">Merkitse lukemattomaksi</string>
   <string name="read_receipt">Lukukuittaus</string>
   <string name="read_receipt_enabled">Lukukuittaus pyydetään</string>
   <string name="read_receipt_disabled">Lukukuittausta ei pyydetä</string>
@@ -182,7 +183,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="special_mailbox_name_sent">Lähetetyt</string>
   <string name="send_failure_subject">Joidenkin viestien lähettäminen epäonnistui</string>
   <string name="version">Versio</string>
-  <string name="debug_enable_debug_logging_title">Käytä virheenkorjaustietojen  lokiinkirjausta</string>
+  <string name="debug_enable_debug_logging_title">Käytä virheenkorjaustietojen lokiinkirjausta</string>
   <string name="debug_enable_debug_logging_summary">Kirjoita lokiin laajempi kuvaus ongelmista</string>
   <string name="debug_enable_sensitive_logging_title">Kirjaa lokiin arkaluontoisia tietoja</string>
   <string name="debug_enable_sensitive_logging_summary">Salasanat saattavat näkyä lokeissa.</string>
@@ -235,6 +236,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_show_contact_name_summary">Käytä vastaanottajien nimiä osoitekirjasta, kun käytettävissä</string>
   <string name="global_settings_registered_name_color_label">Väritä yhteystiedot</string>
   <string name="global_settings_registered_name_color_changed">Väritä nimet yhteystiedoissa</string>
+  <string name="general_settings_contact_name_color_label">Yhteystiedon nimen väri</string>
   <string name="global_settings_messageview_fixedwidth_label">Kiinteä kirjasinleveys</string>
   <string name="global_settings_messageview_fixedwidth_summary">Käytä kiinteää kirjasinleveyttä muotoilemattomille viesteille</string>
   <string name="global_settings_messageview_autofit_width_label">Sovita viestit automaattisesti</string>
@@ -274,6 +276,11 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_basics_title">Lisää uusi tili</string>
   <string name="account_setup_basics_email_hint">Sähköpostiosoite</string>
   <string name="account_setup_basics_password_hint">Salasana</string>
+  <string name="account_setup_oauth_description">Jotta voit käyttää tätä tiliä K-9 Mailin kanssa, sinun tulee kirjautua sisään ja antaa sovellukselle oikeus päästä sähköposteihisi.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Kirjaudu sisään</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Kirjaudu sisään Googlella</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Jotta näet salasanasi tässä, ota käyttöön laitteen näytön lukitus.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Vahvista henkilöllisyytesi</string>
@@ -297,6 +304,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_auth_type_insecure_password">Salasana, välitetään turvattomasti</string>
   <string name="account_setup_auth_type_encrypted_password">Salattu salasana</string>
   <string name="account_setup_auth_type_tls_client_certificate">Asiakasvarmenne</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Saapuvan postin palvelimen asetukset</string>
   <string name="account_setup_incoming_username_label">Käyttäjätunnus</string>
   <string name="account_setup_incoming_password_label">Salasana</string>
@@ -315,10 +323,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Poista palvelimelta</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Merkitse luetuksi palvelimella</string>
-  <string name="account_setup_incoming_compression_label">Käytä pakkausta verkossa:</string>
-  <string name="account_setup_incoming_mobile_label">Mobiili</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Muu</string>
+  <string name="account_setup_incoming_use_compression">Käytä pakkausta</string>
   <string name="account_setup_expunge_policy_label">Poista viestit</string>
   <string name="account_setup_expunge_policy_immediately">Heti</string>
   <string name="account_setup_expunge_policy_on_poll">Tarkistettaessa</string>
@@ -374,7 +379,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_options_mail_display_count_250">250 viestiä</string>
   <string name="account_setup_options_mail_display_count_500">500 viestiä</string>
   <string name="account_setup_options_mail_display_count_1000">1000 viestiä</string>
-  <string name="account_setup_options_mail_display_count_2500">2500 messages</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 viestiä</string>
   <string name="account_setup_options_mail_display_count_5000">5000 viestiä</string>
   <string name="account_setup_options_mail_display_count_10000">10000 viestiä</string>
   <string name="account_setup_options_mail_display_count_all">Kaikki viestit</string>
@@ -383,6 +388,10 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana väärin.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Palvelin esitti virheellisen SSL-varmenteen. Joskus tämä johtuu palvelimen vääristä asetuksista. Toisinaan syynä on se, että joku koettaa hyökätä sinua tai sähköpostipalvelinta vastaan. Jos et ole varma mistä on kyse, napsauta Hylkää ja ole yhteydessä sähköpostipalvelinta hallinoivaan tahoon.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Valtuutus peruttu</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Valtuutus epäonnistui, virhe: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 ei ole tällä hetkellä tuettu tämän palvelutarjoajan kohdalla.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Sovellus ei löytänyt selainta käytettäväksi pääsyn antamiseksi tälle tilille.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Muokkaa tietoja</string>
   <string name="account_setup_failed_dlg_continue_action">Jatka</string>
   <string name="account_settings_push_advanced_title">Lisäasetukset</string>
@@ -521,8 +530,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="folder_settings_folder_sync_mode_inherited">Sama kuin näytettävällä kansiolla</string>
   <string name="folder_settings_folder_push_mode_label">Push-luokka</string>
   <string name="folder_settings_folder_push_mode_normal">Ei luokkaa</string>
-  <string name="folder_settings_folder_push_mode_first_class">1. Luokka</string>
-  <string name="folder_settings_folder_push_mode_second_class">2. Luokka</string>
+  <string name="folder_settings_folder_push_mode_first_class">1. luokka</string>
+  <string name="folder_settings_folder_push_mode_second_class">2. luokka</string>
   <string name="folder_settings_folder_push_mode_inherited">Sama kuin poll-luokka</string>
   <string name="folder_settings_folder_notify_mode_label">Kansion ilmoitusluokka</string>
   <string name="folder_settings_folder_notify_mode_normal">Ei luokkaa</string>
@@ -760,12 +769,19 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="settings_import_pick_document_button">Valitse tiedosto</string>
   <string name="settings_import_button">Tuo</string>
   <string name="settings_import_success_generic">Asetusten tuonti onnistui</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Anna salasanat</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Kirjaudu sisään</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Kirjaudu sisään ja anna salasanat</string>
   <string name="settings_import_failure">Asetusten tuonti epäonnistui</string>
   <string name="settings_import_read_failure">Asetustiedoston lukeminen epäonnistui</string>
   <string name="settings_import_partial_failure">Joidenkin asetusten tuonti epäonnistui</string>
   <string name="settings_import_status_success">Tuonti onnistui</string>
   <string name="settings_import_status_password_required">Salasana vaaditaan</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Sisäänkirjautuminen vaaditaan</string>
   <string name="settings_import_status_not_imported">Ei tuotu</string>
   <string name="settings_import_status_error">Tuontivirhe</string>
   <string name="settings_import_later_button">Myöhemmin</string>
@@ -956,14 +972,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_settings_crypto_hide_sign_only_off">Kaikki allekirjoitukset näytetään</string>
   <string name="error_sign_only_no_encryption">Salaus ei ole käytettävissä pelkässä allekirjoitustilassa!</string>
   <string name="unsigned_text_divider_label">Allekirjoittamaton teksti</string>
-  <string name="apg_deprecated_title">Varoitus APG:n vanhentamisesta</string>
-  <string name="apg_deprecated_1">APG:tä ei enää ylläpidetä!</string>
-  <string name="apg_deprecated_2">Tämän vuoksi APG on poistettu K-9 Mailista.</string>
-  <string name="apg_deprecated_bullet_1">Kehitys loppui alkuvuodesta 2014.</string>
-  <string name="apg_deprecated_bullet_2">Sisältää korjaamattomia tietoturvaongelmia</string>
-  <string name="apg_learn_more">Lisätietoja saat <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">napsauttamalla tästä</a>.</string>
-  <string name="apg_deprecated_ok">Selvä!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Tämä sähköpostiviesti on salattu</string>
   <string name="crypto_no_provider_message">Tämä viesti on salattu OpenPGP:llä.\nLukeaksesi viestin sinun tulee asentaa ja määrittää yhteensopiva OpenPGP-sovellus.</string>
   <string name="crypto_no_provider_button">Siirry asetuksiin</string>

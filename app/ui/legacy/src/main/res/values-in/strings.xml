@@ -258,6 +258,8 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_basics_title">Siapkan akun baru</string>
   <string name="account_setup_basics_email_hint">Alamat surel</string>
   <string name="account_setup_basics_password_hint">Sandi</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Manual</string>
   <string name="account_setup_check_settings_title"/>
@@ -296,10 +298,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_incoming_delete_policy_never_label">Jangan hapus dari server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Hapus dari server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Tandai sebagai telah dibaca di server</string>
-  <string name="account_setup_incoming_compression_label">Gunakan kompresi pada jaringan:</string>
-  <string name="account_setup_incoming_mobile_label">Mobile</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Lainnya</string>
   <string name="account_setup_expunge_policy_label">Hapus pesan yang dihapus di server</string>
   <string name="account_setup_expunge_policy_immediately">Segera</string>
   <string name="account_setup_expunge_policy_on_poll">Ketika menarik</string>
@@ -713,12 +711,16 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="settings_import_pick_document_button">Pilih file</string>
   <string name="settings_import_button">Impor</string>
   <string name="settings_import_success_generic">Pengaturan berhasil diimpor</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Silahkan masukkan kata sandi</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Gagal mengimpor pengaturan</string>
   <string name="settings_import_read_failure">Gagal membaca file pengaturan</string>
   <string name="settings_import_partial_failure">Gagal mengimpor beberapa pengaturan</string>
   <string name="settings_import_status_success">Berhasil diimpor</string>
   <string name="settings_import_status_password_required">Diperlukan kata sandi</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Tidak diimpor</string>
   <string name="settings_import_status_error">Kegagalan impor</string>
   <string name="settings_import_later_button">Nanti</string>
@@ -905,14 +907,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_crypto_hide_sign_only_off">Semua tanda tangan akan ditampilkan</string>
   <string name="error_sign_only_no_encryption">Enkripsi tidak tersedia dalam mode tanda tangan saja!</string>
   <string name="unsigned_text_divider_label">Teks yang tidak ditandai</string>
-  <string name="apg_deprecated_title">Peringatan AGP tak berlaku lagi</string>
-  <string name="apg_deprecated_1">APG tidak lagi dipertahankan!</string>
-  <string name="apg_deprecated_2">Karena itu, dukungan untuk APG telah dihapus dari K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Pembangunan dihentikan pada awal 2014</string>
-  <string name="apg_deprecated_bullet_2">Berisi masalah keamanan yang tidak diperbaiki</string>
-  <string name="apg_learn_more">Anda bisa <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klik di sini</a> untuk mempelajari lebih lanjut.</string>
-  <string name="apg_deprecated_ok">Mengerti!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Email ini dienkripsi</string>
   <string name="crypto_no_provider_message">Email ini telah dienkripsi dengan OpenPGP. \nUntuk membacanya, Anda perlu menginstal dan mengkonfigurasi Aplikasi OpenPGP yang kompatibel.</string>
   <string name="crypto_no_provider_button">Pergi ke pengaturan</string>

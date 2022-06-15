@@ -115,6 +115,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="flag_action">Als wichtig markieren</string>
   <string name="unflag_action">Wichtig-Markierung entfernen</string>
   <string name="copy_action">Kopieren</string>
+  <string name="unsubscribe_action">Abmelden</string>
   <string name="show_headers_action">Kopfzeilen anzeigen</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresse in Zwischenablage kopiert</item>
@@ -234,7 +235,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_show_contact_name_label">Namen aus Adressbuch</string>
   <string name="global_settings_show_contact_name_summary">Bekannte Namen aus dem Adressbuch (\'Kontakte\') anzeigen</string>
   <string name="global_settings_registered_name_color_label">Farbe von bekannten Namen</string>
-  <string name="global_settings_registered_name_color_changed">Namen in deiner Kontaktliste einfärben</string>
+  <string name="global_settings_registered_name_color_changed">Namen in Ihrer Kontaktliste einfärben</string>
   <string name="general_settings_contact_name_color_label">Farbe des Kontaktnamens</string>
   <string name="global_settings_messageview_fixedwidth_label">Monotype-Schriftart</string>
   <string name="global_settings_messageview_fixedwidth_summary">Schriftart mit gleicher Zeichenbreite für Nur-Text-Nachrichten verwenden</string>
@@ -275,10 +276,15 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_basics_title">E-Mail-Konto einrichten</string>
   <string name="account_setup_basics_email_hint">E-Mail-Adresse</string>
   <string name="account_setup_basics_password_hint">Passwort</string>
+  <string name="account_setup_oauth_description">Um dieses E-Mail-Konto mit K-9 Mail zu verwenden, müssen Sie sich anmelden und der App Zugriff auf Ihre E-Mails gewähren.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Anmelden</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Mit Google anmelden</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-  <string name="account_setup_basics_show_password_need_lock">Um dein Passwort hier anzuzeigen, aktiviere die Bildschirmsperre auf diesem Gerät.</string>
-  <string name="account_setup_basics_show_password_biometrics_title">Deine Identität bestätigen</string>
-  <string name="account_setup_basics_show_password_biometrics_subtitle">Entsperren, um dein Passwort anzuzeigen</string>
+  <string name="account_setup_basics_show_password_need_lock">Um Ihr Passwort hier anzuzeigen, aktivieren Sie die Bildschirmsperre auf diesem Gerät.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Ihre Identität bestätigen</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Entsperren, um Ihr Passwort anzuzeigen</string>
   <string name="account_setup_basics_manual_setup_action">Manuelle Einrichtung</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Kontoinformationen werden abgerufen\u2026</string>
@@ -298,6 +304,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_auth_type_insecure_password">Passwort, unsicher übermittelt</string>
   <string name="account_setup_auth_type_encrypted_password">Verschlüsseltes Passwort</string>
   <string name="account_setup_auth_type_tls_client_certificate">Client-Zertifikat</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Einstellungen für Posteingangsserver</string>
   <string name="account_setup_incoming_username_label">Benutzername</string>
   <string name="account_setup_incoming_password_label">Passwort</string>
@@ -316,10 +323,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_incoming_delete_policy_never_label">Nie auf Server löschen</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Auf Server als gelesen markieren</string>
-  <string name="account_setup_incoming_compression_label">Komprimierung bei Netzwerk verwenden:</string>
-  <string name="account_setup_incoming_mobile_label">Mobil</string>
-  <string name="account_setup_incoming_wifi_label">WLAN</string>
-  <string name="account_setup_incoming_other_label">Anderes</string>
+  <string name="account_setup_incoming_use_compression">Komprimierung durchführen</string>
   <string name="account_setup_expunge_policy_label">Ordner bereinigen (Expunge)</string>
   <string name="account_setup_expunge_policy_immediately">Sofort nach Verschieben oder Kopieren</string>
   <string name="account_setup_expunge_policy_on_poll">Bei jedem Abrufen</string>
@@ -385,6 +389,10 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen, dass der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen, dass jemand versucht Sie oder ihren E-Mail-Server anzugreifen. Falls Sie sich nicht sicher sind was der Grund ist, klicken Sie auf Abbrechen und kontaktieren Sie die Administratoren Ihres E-Mail-Servers. \n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.
 (<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Berechtigung aufgehoben</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Die Autorisierung ist aufgrund des folgenden Fehlers fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wird von diesem Anbieter derzeit nicht unterstützt.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Die App konnte keinen Browser finden, der für den Zugriff auf Ihr Konto verwendet werden kann.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
   <string name="account_setup_failed_dlg_continue_action">Weiter</string>
   <string name="account_settings_push_advanced_title">Erweitert</string>
@@ -762,12 +770,19 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_import_pick_document_button">Datei auswählen</string>
   <string name="settings_import_button">Importieren</string>
   <string name="settings_import_success_generic">Einstellungen erfolgreich importiert</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Bitte geben Sie die Passwörter ein</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Bitte melden Sie sich an</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Bitte melden Sie sich an und geben Sie Ihre Passwörter ein</string>
   <string name="settings_import_failure">Einstellungen konnten nicht importiert werden</string>
   <string name="settings_import_read_failure">Einstellungsdatei konnte nicht gelesen werden</string>
   <string name="settings_import_partial_failure">Einige Einstellungen konnten nicht importiert werden</string>
   <string name="settings_import_status_success">Erfolgreich importiert</string>
   <string name="settings_import_status_password_required">Passwort erforderlich</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Anmeldung erforderlich</string>
   <string name="settings_import_status_not_imported">Nicht importiert</string>
   <string name="settings_import_status_error">Importfehler</string>
   <string name="settings_import_later_button">Später</string>
@@ -958,14 +973,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_crypto_hide_sign_only_off">Alle Signaturen werden angezeigt</string>
   <string name="error_sign_only_no_encryption">Verschlüsselung ist im Nur-Signieren-Modus nicht verfügbar!</string>
   <string name="unsigned_text_divider_label">Unsignierter Text</string>
-  <string name="apg_deprecated_title">APG Veraltungswarnung</string>
-  <string name="apg_deprecated_1">APG wird nicht mehr gepflegt!</string>
-  <string name="apg_deprecated_2">Aus diesem Grund wurde die Unterstützung für APG aus K-9 Mail entfernt.</string>
-  <string name="apg_deprecated_bullet_1">Entwicklung wurde Anfang 2014 eingestellt</string>
-  <string name="apg_deprecated_bullet_2">Enthält ungelöste Sicherheitsprobleme</string>
-  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Klicken Sie hier</a>, um mehr zu erfahren.</string>
-  <string name="apg_deprecated_ok">Verstanden!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Diese E-Mail ist verschlüsselt</string>
   <string name="crypto_no_provider_message">Diese E-Mail ist mit OpenPGP verschlüsselt.
 Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert werden.</string>
@@ -1031,6 +1038,6 @@ Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schl
   <string name="push_info_configure_notification_text">Allerdings erlaubt Android auch, dass die Benachrichtigung ausgeblendet wird.</string>
   <string name="push_info_learn_more_text">Mehr erfahren</string>
   <string name="push_info_configure_notification_action">Benachrichtigung einstellen</string>
-  <string name="push_info_disable_push_text">Wenn du keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, solltest du Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue Mails und benötigt die Benachrichtigung nicht.</string>
+  <string name="push_info_disable_push_text">Wenn Sie keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, sollten Sie Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue E-Mails und benötigt die Benachrichtigung nicht.</string>
   <string name="push_info_disable_push_action">Push deaktivieren</string>
 </resources>

@@ -278,6 +278,8 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="account_setup_basics_title">Configurarează un cont nou</string>
   <string name="account_setup_basics_email_hint">Adresa e-mail</string>
   <string name="account_setup_basics_password_hint">Parolă</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Pentru a vă vedea parola aici, activați blocarea ecranului pe acest dispozitiv.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifică-ți identitatea</string>
@@ -319,10 +321,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="account_setup_incoming_delete_policy_never_label">Nu şterge de pe server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Şterge de pe server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marchează ca citit pe server</string>
-  <string name="account_setup_incoming_compression_label">Foloseşte compresie pe reţea:</string>
-  <string name="account_setup_incoming_mobile_label">Mobil</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Altceva</string>
   <string name="account_setup_expunge_policy_label">Elimină mesajele şterse de pe server</string>
   <string name="account_setup_expunge_policy_immediately">Imediat</string>
   <string name="account_setup_expunge_policy_on_poll">Când interoghează</string>
@@ -768,12 +766,16 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="settings_import_pick_document_button">Selectează fișier</string>
   <string name="settings_import_button">Importă</string>
   <string name="settings_import_success_generic">Setările au fost importate cu succes</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Te rog introduce parolele</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Importarea setărilor a eșuat</string>
   <string name="settings_import_read_failure">Citirea fișierului cu setări a eșuat</string>
   <string name="settings_import_partial_failure">Importarea unor setări a eșuat</string>
   <string name="settings_import_status_success">Importat cu succes</string>
   <string name="settings_import_status_password_required">Parola necesară</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Nu a fost importat</string>
   <string name="settings_import_status_error">Eșuare la import</string>
   <string name="settings_import_later_button">Mai târziu</string>
@@ -967,14 +969,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_crypto_hide_sign_only_off">Toate semnăturile vor fi afișate</string>
   <string name="error_sign_only_no_encryption">Criptare indisponibilă în modul „Doar semnare”!</string>
   <string name="unsigned_text_divider_label">Text nesemnat</string>
-  <string name="apg_deprecated_title">Avertisment APG</string>
-  <string name="apg_deprecated_1">APG nu mai este întreținut!</string>
-  <string name="apg_deprecated_2">Din această cauză suportul pentru APG a fost eliminat din K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Dezvoltarea s-a oprit la începutul lui 2014</string>
-  <string name="apg_deprecated_bullet_2">Conține probleme de securitate nerezolvate</string>
-  <string name="apg_learn_more">Puteți <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">apăsa aici</a> pentru mai multe informații.</string>
-  <string name="apg_deprecated_ok">Am înțeles!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Acest mesaj este criptat</string>
   <string name="crypto_no_provider_message">Acest mesaj a fost criptat cu OpenPGP.\nPentru a-l citi trebuie să instalați și să configurați o aplicație OpenPGP compatibilă.</string>
   <string name="crypto_no_provider_button">Mergi la Setări</string>

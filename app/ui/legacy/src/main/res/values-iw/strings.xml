@@ -223,6 +223,8 @@
   <string name="account_setup_basics_title">הגדר חשבון חדש</string>
   <string name="account_setup_basics_email_hint">כתובת דוא\"ל</string>
   <string name="account_setup_basics_password_hint">סיסמא</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_biometrics_title">אמת את זהותך</string>
   <string name="account_setup_basics_manual_setup_action">הוראות הגדרה</string>
@@ -256,10 +258,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">אל תמחוק בשרת</string>
   <string name="account_setup_incoming_delete_policy_delete_label">מחק מהשרת</string>
   <string name="account_setup_incoming_delete_policy_markread_label">סמן כנקרא בשרת</string>
-  <string name="account_setup_incoming_compression_label">השתמש בדחיסה ברשת:</string>
-  <string name="account_setup_incoming_mobile_label">סלולרי</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">אחר</string>
   <string name="account_setup_expunge_policy_label">למחוק הודעות שנמחקו</string>
   <string name="account_setup_expunge_policy_immediately">מיד</string>
   <string name="account_setup_expunge_policy_on_poll">When polling</string>
@@ -572,6 +570,10 @@
   <string name="settings_import_title">יבא הגדרות</string>
   <string name="settings_import_pick_document_button">בחר קובץ</string>
   <string name="settings_import_button">יבא</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_later_button">מאוחר יותר</string>
   <string name="settings_import">יבא הגדרות</string>
   <string name="settings_importing">מייבא הגדרות…</string>

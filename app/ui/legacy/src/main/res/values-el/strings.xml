@@ -268,6 +268,8 @@
   <string name="account_setup_basics_title">Ρύθμιση νέου λογαριασμού</string>
   <string name="account_setup_basics_email_hint">Διεύθυνση ηλ. ταχυδρομείου</string>
   <string name="account_setup_basics_password_hint">Συνθηματικό</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Για να δείτε τον κωδικό σας εδώ, ενεργοποιήστε το κλείδωμα οθόνης σε αυτή την συσκευή.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Επαλήθευση ταυτότητας</string>
@@ -309,10 +311,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">Να μη διαγράφεται στον εξυπηρετητή</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Να διαγράφεται άμεσα από τον εξυπηρετητή</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Επισήμανση ως αναγνωσμένο στον εξυπηρετητή</string>
-  <string name="account_setup_incoming_compression_label">Συμπίεση στο δίκτυο</string>
-  <string name="account_setup_incoming_mobile_label">Κινητής</string>
-  <string name="account_setup_incoming_wifi_label">Ασύρματης Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Άλλο</string>
   <string name="account_setup_expunge_policy_label">Εξάλειψη διαγραμμένων μηνυμάτων</string>
   <string name="account_setup_expunge_policy_immediately">Αμέσως</string>
   <string name="account_setup_expunge_policy_on_poll">Κατά την ενημέρωση</string>
@@ -736,12 +734,16 @@
   <string name="settings_import_pick_document_button">Επιλογή αρχείου</string>
   <string name="settings_import_button">Εισαγωγή</string>
   <string name="settings_import_success_generic">Οι ρυθμίσεις έχουν εισαχθεί με επιτυχία</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Παρακαλώ εισάγετε συνθηματικά</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Αποτυχία εισαγωγής ρυθμίσεων</string>
   <string name="settings_import_read_failure">Αποτυχία ανάγνωσης αρχείου ρυθμίσεων</string>
   <string name="settings_import_partial_failure">Αποτυχία εισαγωγής ορισμένων ρυθμίσεων</string>
   <string name="settings_import_status_success">Η εισαγωγή ολοκληρώθηκε με επιτυχία</string>
   <string name="settings_import_status_password_required">Απαιτείται κωδικός πρόσβασης</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Δεν έχει εισαχθεί</string>
   <string name="settings_import_status_error">Αποτυχία εισαγωγής</string>
   <string name="settings_import_later_button">Αργότερα</string>
@@ -931,14 +933,6 @@
   <string name="account_settings_crypto_hide_sign_only_off">Θα εμφανίζονται όλες οι υπογραφές</string>
   <string name="error_sign_only_no_encryption">Η κρυπτογράφηση δεν είναι διαθέσιμη στη λειτουργία υπογραφής μόνο!</string>
   <string name="unsigned_text_divider_label">Ανυπόγραφο κείμενο</string>
-  <string name="apg_deprecated_title">Προειδοποίηση απόρριψης APG</string>
-  <string name="apg_deprecated_1">Το APG δεν διατηρείται πλέον!</string>
-  <string name="apg_deprecated_2">Εξαιτίας αυτού, η υποστήριξη για APG έχει αφαιρεθεί από το K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Η ανάπτυξη σταμάτησε στις αρχές του 2014</string>
-  <string name="apg_deprecated_bullet_2">Περιέχει μη λυμένα θέματα ασφάλειας</string>
-  <string name="apg_learn_more">Μπορείτε να <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">πατήσετε εδώ</a> για να μάθετε περισσότερα.</string>
-  <string name="apg_deprecated_ok">Το \'πιασα!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Αυτό το μήνυμα είναι κρυπτογραφημένο</string>
   <string name="crypto_no_provider_message">Αυτό το μήνυμα έχει κρυπτογραφηθεί με το OpenPGP.\nΓια να το διαβάσετε, πρέπει να εγκαταστήσετε και να ρυθμίσετε τις παραμέτρους μιας συμβατής εφαρμογής OpenPGP.</string>
   <string name="crypto_no_provider_button">Μετάβαση στις Ρυθμίσεις</string>

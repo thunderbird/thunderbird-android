@@ -273,6 +273,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_basics_title">Opsætning af ny konto</string>
   <string name="account_setup_basics_email_hint">Mail addresse</string>
   <string name="account_setup_basics_password_hint">Password</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_biometrics_title">Verificer din identitet</string>
   <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
@@ -312,10 +314,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_incoming_delete_policy_never_label">Undlad at slette på server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Slet på server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marker som læst på server</string>
-  <string name="account_setup_incoming_compression_label">Anvend kompression på netværket:</string>
-  <string name="account_setup_incoming_mobile_label">Mobilt netværk</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Andet</string>
   <string name="account_setup_expunge_policy_label">Ryd slettede mails</string>
   <string name="account_setup_expunge_policy_immediately">Umiddelbart efter sletning</string>
   <string name="account_setup_expunge_policy_on_poll">I forbindelse med hentning af mails</string>
@@ -747,12 +745,16 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_import_pick_document_button">Vælg fil</string>
   <string name="settings_import_button">Importer</string>
   <string name="settings_import_success_generic">Importerede indstillinger</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Indtast venligst kodeord</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Importen af indstillinger fejlede</string>
   <string name="settings_import_read_failure">Indlæsning af fil med indstillinger mislykkedes</string>
   <string name="settings_import_partial_failure">Import af nogle indstillinger fejlede</string>
   <string name="settings_import_status_success">Importeret korrrekt</string>
   <string name="settings_import_status_password_required">Kodeord påkrævet</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Ikke importeret</string>
   <string name="settings_import_status_error">Import fejlede</string>
   <string name="settings_import_later_button">Senere</string>
@@ -942,14 +944,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_crypto_hide_sign_only_off">Alle signaturer vises</string>
   <string name="error_sign_only_no_encryption">Kryptering er ikke tilgængelig i \"Signer-Kun\"-tilstand!</string>
   <string name="unsigned_text_divider_label">Ikke-signeret tekst</string>
-  <string name="apg_deprecated_title">APG udfasningsadvarsel</string>
-  <string name="apg_deprecated_1">APG er ikke længere vedligeholdt!</string>
-  <string name="apg_deprecated_2">Grundet dette, understøttelse af APG er blevet fjernet fra K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Udviklingen stoppede tidlig 2014</string>
-  <string name="apg_deprecated_bullet_2">Indeholder ikke-rettede sikkerhedsfejl</string>
-  <string name="apg_learn_more">Du kan <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikke her</a> for at lære mere.</string>
-  <string name="apg_deprecated_ok">Fint!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Denne email er krypteret</string>
   <string name="crypto_no_provider_message">Denne email er krypteret med OpenPGP.\nFor at læse den skal du installere en kompatibel OpenPGP applikation.</string>
   <string name="crypto_no_provider_button">Gå til opsætning</string>

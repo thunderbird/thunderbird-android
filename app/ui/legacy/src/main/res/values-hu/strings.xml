@@ -268,6 +268,8 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_basics_title">Új fiók beállítása</string>
   <string name="account_setup_basics_email_hint">E-mail-cím</string>
   <string name="account_setup_basics_password_hint">Jelszó</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Ha itt szeretné megtekinteni jelszavát, engedélyezze a képernyőzárat ezen az eszközön.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Személyazonosság ellenőrzése</string>
@@ -309,10 +311,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_incoming_delete_policy_never_label">Nincs törlés a kiszolgálóról</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Törlés a kiszolgálóról</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Olvasottnak jelölés a kiszolgálón</string>
-  <string name="account_setup_incoming_compression_label">Tömörítés használata a hálózaton:</string>
-  <string name="account_setup_incoming_mobile_label">Mobil</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Egyéb</string>
   <string name="account_setup_expunge_policy_label">Törölt üzenetek végleges törlése a kiszolgálóról</string>
   <string name="account_setup_expunge_policy_immediately">Azonnal</string>
   <string name="account_setup_expunge_policy_on_poll">Lekérdezéskor</string>
@@ -736,12 +734,16 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="settings_import_pick_document_button">Fájl kiválasztása</string>
   <string name="settings_import_button">Importálás</string>
   <string name="settings_import_success_generic">A beállítások sikeresen importálva</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Adja meg a jelszavakat</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Nem sikerült importálni a beállításokat</string>
   <string name="settings_import_read_failure">Nem sikerült beolvasni a beállítások fájlt</string>
   <string name="settings_import_partial_failure">Nem sikerült importálni néhány beállítást</string>
   <string name="settings_import_status_success">Sikeresen importálva</string>
   <string name="settings_import_status_password_required">Jelszó szükséges</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Nincs importálva</string>
   <string name="settings_import_status_error">Importálási hiba</string>
   <string name="settings_import_later_button">Később</string>
@@ -932,14 +934,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_settings_crypto_hide_sign_only_off">Az összes aláírás meg lesz jelenítve</string>
   <string name="error_sign_only_no_encryption">A titkosítás nem érhető el csak aláíró módban!</string>
   <string name="unsigned_text_divider_label">Aláíratlan szöveg</string>
-  <string name="apg_deprecated_title">APG elavultsági figyelmeztetés</string>
-  <string name="apg_deprecated_1">Az APG többé nincs karbantartva!</string>
-  <string name="apg_deprecated_2">Emiatt az APG támogatás eltávolításra került a K-9 Mail alkalmazásból.</string>
-  <string name="apg_deprecated_bullet_1">A fejlesztés 2014 elején leállt</string>
-  <string name="apg_deprecated_bullet_2">Javítatlan biztonsági hibákat tartalmaz</string>
-  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Kattintson ide</a>, ha többet szeretne megtudni.</string>
-  <string name="apg_deprecated_ok">Értem!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Ez az e-mail titkosított</string>
   <string name="crypto_no_provider_message">Az e-mail titkosítva lett OpenPGP használatával.\nAz elolvasásához egy megfelelő OpenPGP alkalmazást kell telepítenie és beállítania.</string>
   <string name="crypto_no_provider_button">Ugrás a beállításokhoz</string>

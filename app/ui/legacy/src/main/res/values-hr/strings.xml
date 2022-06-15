@@ -223,6 +223,8 @@
   <string name="account_setup_basics_title">Postavi novi račun</string>
   <string name="account_setup_basics_email_hint">Adresa E-Pošte</string>
   <string name="account_setup_basics_password_hint">Lozinka</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ručno postavljanje</string>
   <string name="account_setup_check_settings_title"/>
@@ -261,10 +263,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">Nemoj brisati na poslužitelju</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Obriši sa poslužitelja</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Označi kao pročitano na poslužitelju</string>
-  <string name="account_setup_incoming_compression_label">Koristi sabijanje na mreži:</string>
-  <string name="account_setup_incoming_mobile_label">Mobilna</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Ostalo</string>
   <string name="account_setup_expunge_policy_label">Obriši izbrisane poruke sa poslužitelja</string>
   <string name="account_setup_expunge_policy_immediately">Odmah</string>
   <string name="account_setup_expunge_policy_on_poll">Prilikom provjere</string>
@@ -680,12 +678,16 @@
   <string name="settings_import_pick_document_button">Odaberi datoteku</string>
   <string name="settings_import_button">Uvoz</string>
   <string name="settings_import_success_generic">Postavke su uspješno uvezene</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Molimo unesite lozinke</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Uvoz postavki nije uspio</string>
   <string name="settings_import_read_failure">Čitanje datoteke postavki nije uspjelo</string>
   <string name="settings_import_partial_failure">Uvoz nekih postavki nije uspio</string>
   <string name="settings_import_status_success">Uspješno uvezeno</string>
   <string name="settings_import_status_password_required">Lozinka obavezna</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Nije uvezeno</string>
   <string name="settings_import_status_error">Uvoz nije uspio</string>
   <string name="settings_import_later_button">Kasnije</string>
@@ -863,14 +865,6 @@
   <string name="account_settings_crypto_hide_sign_only_on">Samo šifrirani potpisi će biti prikazani</string>
   <string name="account_settings_crypto_hide_sign_only_off">Svi potpisi će biti prikazani</string>
   <string name="unsigned_text_divider_label">Nepotpisani tekst</string>
-  <string name="apg_deprecated_title">APG Upozorenje o uklanjanju</string>
-  <string name="apg_deprecated_1">APG više nije održavan!</string>
-  <string name="apg_deprecated_2">Zbog toga, podrška za APG je uklonjena iz K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Razvoj je zaustavljen u ranoj 2014</string>
-  <string name="apg_deprecated_bullet_2">Sadrži neispravljene sigurnosne probleme</string>
-  <string name="apg_learn_more">Možete <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">kliknuti ovdje</a> da saznate više.</string>
-  <string name="apg_deprecated_ok">OK</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Vaš email je šifriran</string>
   <string name="crypto_no_provider_message">Ova e-poruka je šifrirana korištenjem OpenPGP.\nDa bi ste je pročitali, potrebno je da instalirate i postavite odgovarajuću OpenPGP aplikaciju.</string>
   <string name="crypto_no_provider_button">Idi u Postavke</string>

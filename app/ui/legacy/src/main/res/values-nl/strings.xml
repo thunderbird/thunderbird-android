@@ -111,6 +111,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="flag_action">Ster toevoegen</string>
   <string name="unflag_action">Ster verwijderen</string>
   <string name="copy_action">Kopieer</string>
+  <string name="unsubscribe_action">Uitschrijven</string>
   <string name="show_headers_action">Laat koppen zien</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adres naar klembord gekopieerd</item>
@@ -271,6 +272,11 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_basics_title">Een nieuw account instellen</string>
   <string name="account_setup_basics_email_hint">E-mailadres</string>
   <string name="account_setup_basics_password_hint">Wachtwoord</string>
+  <string name="account_setup_oauth_description">Om met K-9 dit e-mailaccount te gebruiken moet je inloggen om K-9 toegang te geven tot je e-mails.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Inloggen</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Inloggen met Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Schakel op dit apparaat een schermvergrendeling in om hier je wachtwoord te kunnen zien</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifieer je identiteit</string>
@@ -294,6 +300,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_auth_type_insecure_password">Wachtwoord, onveilig verzonden</string>
   <string name="account_setup_auth_type_encrypted_password">Versleuteld wachtwoord</string>
   <string name="account_setup_auth_type_tls_client_certificate">Client certificaat</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Inkomende server instellingen</string>
   <string name="account_setup_incoming_username_label">Gebruikersnaam</string>
   <string name="account_setup_incoming_password_label">Wachtwoord</string>
@@ -312,10 +319,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_incoming_delete_policy_never_label">Verwijder niet van server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Verwijder van server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Markeer als gelezen op server</string>
-  <string name="account_setup_incoming_compression_label">Gebruik compressie op het netwerk:</string>
-  <string name="account_setup_incoming_mobile_label">Mobiel</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Anders</string>
+  <string name="account_setup_incoming_use_compression">Compressie gebruiken</string>
   <string name="account_setup_expunge_policy_label">Wissen berichten</string>
   <string name="account_setup_expunge_policy_immediately">Onmiddellijk na verwijderen of verplaatsen</string>
   <string name="account_setup_expunge_policy_on_poll">Tijdens iedere peiling</string>
@@ -380,6 +384,10 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">De server presenteerde een ongeldig SSL certificaat. Dit kan komen door een verkeerd geconfigureerde server. Dit kan ook komen doordat iemand jouw mailserver aan probeert te vallen. Als je niet zeker weet wat er aan de hand is klik dan op Reject en neem contact op met de beheerder van de mailserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding met server maken.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorisatie is geannuleerd</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Autorisatie is mislukt met de volgende foutmelding: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wordt momenteel niet ondersteund door deze dienstverlener.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Deze app kan geen browser vinden. Een browser is nodig om toegang te geven tot je account.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details aanpassen</string>
   <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
   <string name="account_settings_push_advanced_title">Geavanceerd</string>
@@ -757,12 +765,19 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="settings_import_pick_document_button">Bestand selecteren</string>
   <string name="settings_import_button">Importeren</string>
   <string name="settings_import_success_generic">Instellingen succesvol geïmporteerd</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Voer de wachtwoorden in</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Log in</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Log in en voer het wachtwoord in</string>
   <string name="settings_import_failure">Instellingen importeren mislukt</string>
   <string name="settings_import_read_failure">Lezen van instellingenbestand mislukt</string>
   <string name="settings_import_partial_failure">Importeren van sommige instellingen mislukt</string>
   <string name="settings_import_status_success">Succesvol geïmporteerd</string>
   <string name="settings_import_status_password_required">Wachtwoord vereist</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Inloggen vereist</string>
   <string name="settings_import_status_not_imported">Niet geïmporteerd</string>
   <string name="settings_import_status_error">Importeren mislukt</string>
   <string name="settings_import_later_button">Later</string>
@@ -953,14 +968,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_crypto_hide_sign_only_off">Alle handtekeningen worden weergegeven</string>
   <string name="error_sign_only_no_encryption">Versleuteling niet mogelijk in sign-only mode!</string>
   <string name="unsigned_text_divider_label">niet getekende tekst</string>
-  <string name="apg_deprecated_title">APG Deprecation Waarschuwing</string>
-  <string name="apg_deprecated_1">APG is niet langer beheerd!</string>
-  <string name="apg_deprecated_2">Hierdoor is de ondersteuning voor APG verwijderd binnen K-9 mail.</string>
-  <string name="apg_deprecated_bullet_1">De ontwikkeling is gestopt in 2014</string>
-  <string name="apg_deprecated_bullet_2">Bevat onveilige items</string>
-  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Klik hier</a> voor meer informatie.</string>
-  <string name="apg_deprecated_ok">Begrepen!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Deze e-mail is versleuteld</string>
   <string name="crypto_no_provider_message">Deze e-mail is OpenPGP versleuteld.\nInstalleer en stel een OpenPGP App in om de e-mail te lezen.</string>
   <string name="crypto_no_provider_button">Ga naar Instellingen</string>

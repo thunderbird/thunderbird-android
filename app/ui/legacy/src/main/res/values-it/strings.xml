@@ -116,9 +116,11 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="flag_action">Aggiungi stella</string>
   <string name="unflag_action">Rimuovi stella</string>
   <string name="copy_action">Copia</string>
+  <string name="unsubscribe_action">Annulla l\'iscrizione</string>
   <string name="show_headers_action">Mostra intestazioni</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Indirizzo copiato negli appunti </item>
+    <item quantity="many">IndirizzI copiati negli appunti</item>
     <item quantity="other">IndirizzI copiati negli appunti</item>
   </plurals>
   <string name="copy_subject_to_clipboard">Testo dell\'oggetto copiato negli appunti</string>
@@ -149,6 +151,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="notification_new_title">Nuova posta</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nuovo messaggio</item>
+    <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non letti (<xliff:g id="account">%s</xliff:g>)</string>
@@ -190,7 +193,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="debug_enable_sensitive_logging_summary">Può mostrare le password nei file di log.</string>
   <string name="debug_export_logs_title">Esporta log</string>
   <string name="debug_export_logs_success">Esportazione riuscita. I log potrebbero contenere informazioni sensibili. Fai attenzione a chi li invii.</string>
-  <string name="debug_export_logs_failure">Esportazione non riuscita.</string>
+  <string name="debug_export_logs_failure">Esportazione fallita</string>
   <string name="message_list_load_more_messages_action">Carica altri messaggi</string>
   <string name="message_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Oggetto</string>
@@ -237,6 +240,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="global_settings_show_contact_name_summary">Utilizza i nomi dei destinatari dalla rubrica se disponibili</string>
   <string name="global_settings_registered_name_color_label">Colora i contatti</string>
   <string name="global_settings_registered_name_color_changed">Colora i nomi nel tuo elenco dei contatti</string>
+  <string name="general_settings_contact_name_color_label">Colore del nome di contatto</string>
   <string name="global_settings_messageview_fixedwidth_label">Caratteri a larghezza fissa</string>
   <string name="global_settings_messageview_fixedwidth_summary">Usa carattere a larghezza fissa quando mostri i messaggi di testo</string>
   <string name="global_settings_messageview_autofit_width_label">Adattamento automatico messaggi</string>
@@ -276,6 +280,11 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_basics_title">Configura un nuovo account</string>
   <string name="account_setup_basics_email_hint">Indirizzo email</string>
   <string name="account_setup_basics_password_hint">Password</string>
+  <string name="account_setup_oauth_description">Per usare un account email con K-9 Mail, tu devi registrarti e permettere l\'accesso dell\' app alla tua posta.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Registrati</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Registrati con Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Per visualizzare la tua password qui, abilita il blocco dello schermo su questo dispositivo.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifica la tua identità</string>
@@ -299,6 +308,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_auth_type_insecure_password">Password, trasmessa in modo non sicuro</string>
   <string name="account_setup_auth_type_encrypted_password">Password cifrata</string>
   <string name="account_setup_auth_type_tls_client_certificate">Certificato client</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Impostazioni server della posta in arrivo</string>
   <string name="account_setup_incoming_username_label">Nome utente</string>
   <string name="account_setup_incoming_password_label">Password</string>
@@ -317,10 +327,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_incoming_delete_policy_never_label">Non eliminare dal server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Elimina dal server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marca come letto sul server</string>
-  <string name="account_setup_incoming_compression_label">Utilizza la compressione sulla rete:</string>
-  <string name="account_setup_incoming_mobile_label">Cellulare</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Altra</string>
+  <string name="account_setup_incoming_use_compression">Usa la compressione</string>
   <string name="account_setup_expunge_policy_label">Cancella i messaggi eliminati sul server</string>
   <string name="account_setup_expunge_policy_immediately">Immediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante ogni recupero</string>
@@ -385,6 +392,10 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_failed_dlg_auth_message_fmt">Nome utente o password errata.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Il server ha fornito un certificato SSL non valido. A volte ciò è dovuto a problemi di configurazione del server. In altri casi potrebbe dipendere da un tentativo di attacco a te o al tuo server di posta. Se non sei sicuro delle cause, fai clic su Rifiuta e contatta gli amministratori del tuo server di posta.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Impossibile connettersi al server.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizzazione cancellata</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizzazione fallita con il seguente errore <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 non è attualmente supportato da questo provider di posta.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">L\' applicazione non può trovare il browser da usare per richiedere l\' accesso al tuo account.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Modifica i dettagli</string>
   <string name="account_setup_failed_dlg_continue_action">Continua</string>
   <string name="account_settings_push_advanced_title">Avanzate</string>
@@ -539,6 +550,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_description_label">Nome account</string>
   <string name="account_settings_name_label">Il tuo nome</string>
   <string name="notifications_title">Notifiche</string>
+  <string name="account_settings_vibration">Vibrazione</string>
   <string name="account_settings_vibrate_enable">Vibrazione</string>
   <string name="account_settings_vibrate_pattern_label">Tipo di vibrazione</string>
   <string name="account_settings_vibrate_pattern_default">Predefinito</string>
@@ -548,8 +560,19 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_vibrate_pattern_4">Tipo 4</string>
   <string name="account_settings_vibrate_pattern_5">Tipo 5</string>
   <string name="account_settings_vibrate_times">Ripeti vibrazione</string>
+  <string name="account_settings_vibrate_summary_disabled">Disabilitato</string>
   <string name="account_settings_ringtone">Suoneria nuovo messaggio</string>
+  <string name="account_settings_notification_light_label">Luce di notifica</string>
+  <string name="account_settings_notification_light_disabled">Disabilitato</string>
   <string name="account_settings_notification_light_account_color">Colore dell\'account</string>
+  <string name="account_settings_notification_light_default_color">Colori di sistema</string>
+  <string name="account_settings_notification_light_white">Bianco</string>
+  <string name="account_settings_notification_light_red">Rosso</string>
+  <string name="account_settings_notification_light_green">Verde</string>
+  <string name="account_settings_notification_light_blue">Blù</string>
+  <string name="account_settings_notification_light_yellow">Giallo</string>
+  <string name="account_settings_notification_light_cyan">Ciano</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Opzioni di composizione messaggi</string>
   <string name="account_settings_composition_label">Opzioni predefinite di composizione</string>
   <string name="account_settings_composition_summary">Imposta Da, Ccn e firma predefiniti</string>
@@ -718,6 +741,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="dialog_confirm_delete_message">Vuoi eliminare questo messaggio?</string>
   <plurals name="dialog_confirm_delete_messages">
     <item quantity="one">Vuoi davvero eliminare questo messaggio?</item>
+    <item quantity="many">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati?</item>
     <item quantity="other">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati?</item>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Sì</string>
@@ -731,6 +755,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="dialog_confirm_spam_title">Conferma spostamento nella cartella spam</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Vuoi davvero spostare il messaggio nella cartella spam?</item>
+    <item quantity="many">Vuoi davvero spostare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati nella cartella spam?</item>
     <item quantity="other">Vuoi davvero spostare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati nella cartella spam?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Sì</string>
@@ -750,12 +775,16 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="settings_import_pick_document_button">Seleziona file</string>
   <string name="settings_import_button">Importa</string>
   <string name="settings_import_success_generic">Impostazioni importate correttamente</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Digita le password</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Importazione impostazioni non riuscita</string>
   <string name="settings_import_read_failure">Lettura file delle impostazioni non riuscita</string>
   <string name="settings_import_partial_failure">Importazione di alcune impostazioni non riuscita</string>
   <string name="settings_import_status_success">Importate correttamente</string>
   <string name="settings_import_status_password_required">Password richiesta</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Non importate</string>
   <string name="settings_import_status_error">Importazione non riuscita</string>
   <string name="settings_import_later_button">Più tardi</string>
@@ -763,6 +792,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="settings_importing">Importazione impostazioni…</string>
   <plurals name="settings_import_password_prompt">
     <item quantity="one">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server.</item>
+    <item quantity="many">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server.</item>
     <item quantity="other">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Password del server di ingresso</string>
@@ -814,10 +844,12 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="remote_search_sending_query">Invio della richiesta al server</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">Recupero di %d risultato</item>
+    <item quantity="many">Recupero di %d risultati</item>
     <item quantity="other">Recupero di %d risultati</item>
   </plurals>
   <plurals name="remote_search_downloading_limited">
     <item quantity="one">Recupero di %1$d di %2$d risultati</item>
+    <item quantity="many">Recupero di %1$d di %2$d risultati</item>
     <item quantity="other">Recupero di %1$d di %2$d risultati</item>
   </plurals>
   <string name="remote_search_error">Ricerca remota non riuscita</string>
@@ -946,14 +978,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_crypto_hide_sign_only_off">Tutte le firme saranno visualizzate</string>
   <string name="error_sign_only_no_encryption">Cifratura non disponibile in modalità solo firma!</string>
   <string name="unsigned_text_divider_label">Testo non firmato</string>
-  <string name="apg_deprecated_title">Avviso di disapprovazione di APG</string>
-  <string name="apg_deprecated_1">APG non è più mantenuto!</string>
-  <string name="apg_deprecated_2">Per questo motivo, il supporto di APG è stato rimosso da K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Sviluppo interrotto all\'inizio del 2014</string>
-  <string name="apg_deprecated_bullet_2">Contiene problemi di sicurezza non corretti</string>
-  <string name="apg_learn_more">Puoi fare <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">clic qui</a> per ulteriori informazioni.</string>
-  <string name="apg_deprecated_ok">Ricevuto!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Questo messaggio è cifrato</string>
   <string name="crypto_no_provider_message">Questo messaggio è stato cifrato con OpenPGP.\nPer leggerlo, devi installare e configurare un\'applicazione compatibile con OpenPGP.</string>
   <string name="crypto_no_provider_button">Vai alle impostazioni</string>

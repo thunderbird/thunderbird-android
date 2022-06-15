@@ -115,9 +115,11 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="flag_action">Adicionar estrela</string>
   <string name="unflag_action">Remover estrela</string>
   <string name="copy_action">Copiar</string>
+  <string name="unsubscribe_action">Cancelar inscrição</string>
   <string name="show_headers_action">Exibir cabeçalhos</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Endereço copiado para área de transferência</item>
+    <item quantity="many">Endereços copiados para a área de transferência</item>
     <item quantity="other">Endereços copiados para a área de transferência</item>
   </plurals>
   <string name="copy_subject_to_clipboard">Texto do assunto copiado para a área de transferência</string>
@@ -147,6 +149,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="notification_new_title">Nova mensagem</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nova mensagem</item>
+    <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidas (<xliff:g id="account">%s</xliff:g>)</string>
@@ -275,6 +278,11 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_basics_title">Configurar uma nova conta</string>
   <string name="account_setup_basics_email_hint">Endereço de e-mail</string>
   <string name="account_setup_basics_password_hint">Senha</string>
+  <string name="account_setup_oauth_description">Para usar essa conta de e-mail com o K-9 Mail, você precisa autenticar-se e fornecer acesso do app aos seus e-mails.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Autenticar-se</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Autenticar-se com o Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Para ver a sua senha aqui, habilite o bloqueio de tela neste dispositivo.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifique sua identidade</string>
@@ -298,6 +306,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_auth_type_insecure_password">Senha, transmitida de forma insegura</string>
   <string name="account_setup_auth_type_encrypted_password">Senha criptografada</string>
   <string name="account_setup_auth_type_tls_client_certificate">Certificado do cliente</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Configurações do servidor de entrada</string>
   <string name="account_setup_incoming_username_label">Usuário</string>
   <string name="account_setup_incoming_password_label">Senha</string>
@@ -316,10 +325,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_incoming_delete_policy_never_label">Não excluí-la do servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Excluí-la do servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcá-la como lida no servidor</string>
-  <string name="account_setup_incoming_compression_label">Usar compactação em redes:</string>
-  <string name="account_setup_incoming_mobile_label">Rede móvel</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Outras</string>
+  <string name="account_setup_incoming_use_compression">Usar compressão</string>
   <string name="account_setup_expunge_policy_label">Apagar no servidor as mensagens excluídas localmente</string>
   <string name="account_setup_expunge_policy_immediately">Imediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante a verificação</string>
@@ -384,6 +390,10 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_failed_dlg_auth_message_fmt">Usuário ou senha incorretos.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">O servidor apresentou um certificado SSL inválido. Isto pode ocorrer por problemas de configuração do servidor, ou porque alguém está tentando atacar você ou o seu servidor de e-mails. Se você não tem certeza do que está acontecendo clique em Rejeitar e entre em contato com o administrador do seu servidor de e-mails.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Não é possível conectar-se ao servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorização cancelada</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Ocorreu o seguinte erro com a autorização: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">Oauth 2.0 não é atualmente suportado atualmente neste provedor.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">O app não conseguiu encontrar um navegador para usar para garantir acesso à sua conta.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalhes</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avançado</string>
@@ -729,6 +739,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="dialog_confirm_delete_message">Deseja excluir esta mensagem?</string>
   <plurals name="dialog_confirm_delete_messages">
     <item quantity="one">Deseja realmente excluir esta mensagem?</item>
+    <item quantity="many">Deseja realmente excluir <xliff:g id="message_count">%1$d</xliff:g> mensagens?</item>
     <item quantity="other">Deseja realmente excluir <xliff:g id="message_count">%1$d</xliff:g> mensagens?</item>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Sim</string>
@@ -742,6 +753,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="dialog_confirm_spam_title">Mover para a pasta de spam</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Deseja mesmo mover esta mensagem para a pasta de spam?</item>
+    <item quantity="many">Deseja realmente mover <xliff:g id="message_count">%1$d</xliff:g> mensagens para a pasta de spam?</item>
     <item quantity="other">Deseja realmente mover <xliff:g id="message_count">%1$d</xliff:g> mensagens para a pasta de spam?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Sim</string>
@@ -761,12 +773,19 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="settings_import_pick_document_button">Selecionar arquivo</string>
   <string name="settings_import_button">Importar</string>
   <string name="settings_import_success_generic">As configurações foram importadas com sucesso</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Por favor, digite as senhas</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Por favor, faça sua autenticação</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Por favor, faça sua autenticação digite a senha</string>
   <string name="settings_import_failure">Não foi possível importar as configurações</string>
   <string name="settings_import_read_failure">Não foi possível ler o arquivo de configurações</string>
   <string name="settings_import_partial_failure">Não foi possível importar algumas configurações</string>
   <string name="settings_import_status_success">Importado com sucesso</string>
   <string name="settings_import_status_password_required">É necessária a senha</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">É necessário fazer a sua autenticação</string>
   <string name="settings_import_status_not_imported">Não importado</string>
   <string name="settings_import_status_error">Falha na importação</string>
   <string name="settings_import_later_button">Mais tarde</string>
@@ -774,6 +793,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="settings_importing">Importando configurações…</string>
   <plurals name="settings_import_password_prompt">
     <item quantity="one">Para usar a conta \"<xliff:g id="account">%s</xliff:g>\", você precisa fornecer a senha do servidor.</item>
+    <item quantity="many">Para usar a conta \"<xliff:g id="account">%s</xliff:g>\", você precisa fornecer as senhas do servidor.</item>
     <item quantity="other">Para usar a conta \"<xliff:g id="account">%s</xliff:g>\", você precisa fornecer as senhas do servidor.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Senha do servidor de entrada</string>
@@ -825,10 +845,12 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="remote_search_sending_query">Enviando a consulta ao servidor</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">Buscando %d resultado</item>
+    <item quantity="many">Buscando %d resultados</item>
     <item quantity="other">Buscando %d resultados</item>
   </plurals>
   <plurals name="remote_search_downloading_limited">
     <item quantity="one">Buscando %1$d de %2$d resultado</item>
+    <item quantity="many">Buscando %1$d de %2$d resultados</item>
     <item quantity="other">Buscando %1$d de %2$d resultados</item>
   </plurals>
   <string name="remote_search_error">Não foi possível efetuar a pesquisa remota</string>
@@ -957,14 +979,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_crypto_hide_sign_only_off">Todas as assinaturas serão exibidas</string>
   <string name="error_sign_only_no_encryption">A criptografia não está disponível no modo Somente Assinatura!</string>
   <string name="unsigned_text_divider_label">Texto não assinado</string>
-  <string name="apg_deprecated_title">Aviso de obsolescência do APG</string>
-  <string name="apg_deprecated_1">O APG não é mais mantido!</string>
-  <string name="apg_deprecated_2">Devido a isso, o suporte ao APG foi removido do K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">O desenvolvimento parou no início de 2014</string>
-  <string name="apg_deprecated_bullet_2">Contém problemas de segurança não corrigidos</string>
-  <string name="apg_learn_more">Você pode <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">clicar aqui</a> para saber mais.</string>
-  <string name="apg_deprecated_ok">Entendi!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Esta mensagem está criptografada</string>
   <string name="crypto_no_provider_message">Esta mensagem foi criptografada com o OpenPGP.\nPara lê-la, você precisa instalar e configurar um aplicativo OpenPGP compatível.</string>
   <string name="crypto_no_provider_button">Ir para as configurações</string>

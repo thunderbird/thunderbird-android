@@ -115,6 +115,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="flag_action">Lägg till stjärna</string>
   <string name="unflag_action">Ta bort stjärna</string>
   <string name="copy_action">Kopiera</string>
+  <string name="unsubscribe_action">Avregistrera</string>
   <string name="show_headers_action">Visa meddelanderubriker</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adress kopierad till urklipp</item>
@@ -276,6 +277,11 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_basics_title">Konfigurera ett nytt konto</string>
   <string name="account_setup_basics_email_hint">E-postadress</string>
   <string name="account_setup_basics_password_hint">Lösenord</string>
+  <string name="account_setup_oauth_description">För att använda detta e-postkonto med K-9 Mail måste du logga in och ge appen åtkomst till dina e-postmeddelanden.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Logga in</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Logga in med Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">För att se ditt lösenord här, aktivera skärmlåset på denna enhet.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifiera din identitet</string>
@@ -299,6 +305,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_auth_type_insecure_password">Lösenord, skickas oskyddat</string>
   <string name="account_setup_auth_type_encrypted_password">Krypterat lösenord</string>
   <string name="account_setup_auth_type_tls_client_certificate">Klientcertifikat</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Inställningar för inkommande server</string>
   <string name="account_setup_incoming_username_label">Användarnanm</string>
   <string name="account_setup_incoming_password_label">Lösenord</string>
@@ -317,10 +324,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_incoming_delete_policy_never_label">Ta inte bort från servern</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Ta bort från servern</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Markera som läst på servern</string>
-  <string name="account_setup_incoming_compression_label">Använd komprimering på nätverket:</string>
-  <string name="account_setup_incoming_mobile_label">Mobilt nätverk</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Annat</string>
+  <string name="account_setup_incoming_use_compression">Använd kompression</string>
   <string name="account_setup_expunge_policy_label">Ta bort borttagna meddelanden från servern</string>
   <string name="account_setup_expunge_policy_immediately">Direkt</string>
   <string name="account_setup_expunge_policy_on_poll">Vid e-postkontroll</string>
@@ -385,6 +389,10 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_failed_dlg_auth_message_fmt">Felaktigt användarnamn eller lösenord.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Servern presenterade ett ogiltigt SSL-certifikat. Ibland beror det på en serverfelkonfiguration. Ibland beror det på att någon försöker attackera dig eller din e-postserver. Om du inte är säker på vad som händer klickar du på Avvisa och kontaktar de personer som hanterar din e-postserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Kan inte ansluta till server.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Auktoriseringen avbröts</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Auktoriseringen misslyckades med följande fel: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 stöds för närvarande inte av denna leverantör.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Appen kunde inte hitta en webbläsare att använda för att ge åtkomst till ditt konto.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Redigera detaljer</string>
   <string name="account_setup_failed_dlg_continue_action">Fortsätt</string>
   <string name="account_settings_push_advanced_title">Avancerat</string>
@@ -762,12 +770,19 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="settings_import_pick_document_button">Välj fil</string>
   <string name="settings_import_button">Importera</string>
   <string name="settings_import_success_generic">Inställningarna importerade</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Ange lösenord</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Logga in</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Logga in och ange lösenord</string>
   <string name="settings_import_failure">Det gick inte att importera inställningar</string>
   <string name="settings_import_read_failure">Det gick inte att läsa inställningsfilen</string>
   <string name="settings_import_partial_failure">Det gick inte att importera vissa inställningar</string>
   <string name="settings_import_status_success">Importerades</string>
   <string name="settings_import_status_password_required">Lösenord krävs</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Inloggning krävs</string>
   <string name="settings_import_status_not_imported">Inte importerad</string>
   <string name="settings_import_status_error">Importfel</string>
   <string name="settings_import_later_button">Senare</string>
@@ -958,14 +973,6 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_crypto_hide_sign_only_off">Alla signaturer visas</string>
   <string name="error_sign_only_no_encryption">Kryptering otillgänglig i signera-endast läge!</string>
   <string name="unsigned_text_divider_label">Osignerad text</string>
-  <string name="apg_deprecated_title">APG utfasnings varning</string>
-  <string name="apg_deprecated_1">APG upprätthålls inte längre!</string>
-  <string name="apg_deprecated_2">På grund av detta, har stöd för APG tagits bort från K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Utveckling slutade i början av 2014</string>
-  <string name="apg_deprecated_bullet_2">Innehåller orättade säkerhetsproblem</string>
-  <string name="apg_learn_more">Du kan <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klicka här</a> för att lära dig mera.</string>
-  <string name="apg_deprecated_ok">Uppfattat!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Detta e-postmeddelande är krypterat</string>
   <string name="crypto_no_provider_message">Detta e-postmeddelande har krypterats med OpenPGP.\nFör att läsa det, måste du installera och konfigurera en kompatibel OpenPGP-app.</string>
   <string name="crypto_no_provider_button">Gå till inställningar</string>

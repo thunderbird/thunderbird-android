@@ -178,6 +178,8 @@
   <string name="account_setup_basics_title">Configurar unha nova conta</string>
   <string name="account_setup_basics_email_hint">Enderezo electrónico</string>
   <string name="account_setup_basics_password_hint">Contrasinal</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Configuración manual</string>
   <string name="account_setup_check_settings_title"/>
@@ -215,10 +217,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">Non eliminar do servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Eliminar do servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcar como lida no servidor</string>
-  <string name="account_setup_incoming_compression_label">Usar comprensión de rede:</string>
-  <string name="account_setup_incoming_mobile_label">Móbil</string>
-  <string name="account_setup_incoming_wifi_label">Wifi</string>
-  <string name="account_setup_incoming_other_label">Outras</string>
   <string name="account_setup_expunge_policy_label">Eliminar mensaxes borradas no servidor</string>
   <string name="account_setup_expunge_policy_immediately">Inmediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante a comprobación</string>
@@ -573,6 +571,10 @@
   <string name="settings_export_failure">Erro ao exportar os axustes</string>
   <string name="settings_import_title">Importar axustes</string>
   <string name="settings_import_button">Importar</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import">Importar axustes</string>
   <string name="settings_importing">A importar os axustes…</string>
   <string name="unread_widget_select_account">Mostrar contador de mensaxes non lidas para…</string>

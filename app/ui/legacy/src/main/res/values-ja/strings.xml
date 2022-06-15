@@ -11,17 +11,17 @@
   <string name="source_code">ソースコード</string>
   <string name="app_license">Apache License, Version 2.0</string>
   <string name="about_project_title">オープンソースプロジェクト</string>
-  <string name="about_website_title">Webサイト</string>
+  <string name="about_website_title">ウェブサイト</string>
   <string name="user_forum_title">ユーザーフォーラム</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">ライブラリー</string>
   <string name="license">ライセンス</string>
   <string name="changelog_title">変更履歴</string>
-  <string name="changelog_loading_error">変更履歴を読み込みできませんでした。</string>
+  <string name="changelog_loading_error">変更履歴を読み込めませんでした。</string>
   <string name="changelog_version_title">バージョン %s</string>
   <string name="changelog_recent_changes_title">新着</string>
-  <string name="changelog_show_recent_changes">アプリの更新後に更新内容を表示する</string>
+  <string name="changelog_show_recent_changes">アプリの更新後に更新内容を表示</string>
   <string name="changelog_snackbar_text">このリリースは何が新しいのかを知る</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Mailへようこそ</string>
@@ -32,7 +32,7 @@ K-9 Mail は Android 向けの強力なフリーのメールクライアント�
 改良された機能:
 </p>
 <ul>
-  <li>IMAP IDLEを利用したプッシュメール</li>
+  <li>IMAP IDLE を利用したプッシュメール</li>
   <li>パフォーマンス改善</li>
   <li>メッセージ整理</li>
   <li>電子メール署名</li>
@@ -41,7 +41,7 @@ K-9 Mail は Android 向けの強力なフリーのメールクライアント�
   <li>全フォルダ同期</li>
   <li>返信先の設定</li>
   <li>キーボードショートカット</li>
-  <li>IMAPサポート改善</li>
+  <li>IMAP サポート改善</li>
   <li>添付ファイルをSDカードに保存</li>
   <li>ゴミ箱を空にする機能</li>
   <li>メッセージのソート</li>
@@ -52,7 +52,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 また、 Microsoft Exchange との通信において少し癖があることに注意してください。 
 </p><p>
 バグレポートや新機能の貢献、質問は <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a> にお願いします。
-日本語で質問などがある場合は <a href="http://groups.google.co.jp/group/k9mail_ja/">http://groups.google.co.jp/group/k9mail_ja/</a> を参照してください。
+日本語で質問などがある場合は <a href="http://groups.google.co.jp/group/k9mail_ja/">https://groups.google.co.jp/group/k9mail_ja/</a> を参照してください。
 </p>
 ]]></string>
   <!--Default signature-->
@@ -116,6 +116,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="flag_action">スターを付ける</string>
   <string name="unflag_action">スターをはずす</string>
   <string name="copy_action">コピー</string>
+  <string name="unsubscribe_action">購読解除</string>
   <string name="show_headers_action">ヘッダを表示</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">アドレスをクリップボードにコピーしました</item>
@@ -274,6 +275,11 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_basics_title">電子メールセットアップ</string>
   <string name="account_setup_basics_email_hint">メールアドレス</string>
   <string name="account_setup_basics_password_hint">パスワード</string>
+  <string name="account_setup_oauth_description">このメールアカウントを K-9 Mail で使用するには、サインインしてアプリにメールへのアクセスを許可する必要があります。</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">サインイン</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Google でサインイン</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">ここでパスワードを表示するには、このデバイスの画面ロックを有効にしてください。</string>
   <string name="account_setup_basics_show_password_biometrics_title">あなたの本人確認</string>
@@ -297,6 +303,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_auth_type_insecure_password">パスワード (危険な方法で送信される)</string>
   <string name="account_setup_auth_type_encrypted_password">暗号化されたパスワード</string>
   <string name="account_setup_auth_type_tls_client_certificate">クライアント証明書</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">受信メールサーバ設定</string>
   <string name="account_setup_incoming_username_label">アカウント名</string>
   <string name="account_setup_incoming_password_label">パスワード</string>
@@ -315,10 +322,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_incoming_delete_policy_never_label">サーバでは削除しない</string>
   <string name="account_setup_incoming_delete_policy_delete_label">サーバでも削除する</string>
   <string name="account_setup_incoming_delete_policy_markread_label">サーバでは既読にする</string>
-  <string name="account_setup_incoming_compression_label">ネットワーク経由で圧縮:</string>
-  <string name="account_setup_incoming_mobile_label">モバイル</string>
-  <string name="account_setup_incoming_wifi_label">WiFi</string>
-  <string name="account_setup_incoming_other_label">その他</string>
+  <string name="account_setup_incoming_use_compression">圧縮を使用する</string>
   <string name="account_setup_expunge_policy_label">サーバから削除したメッセージを消す</string>
   <string name="account_setup_expunge_policy_immediately">削除または移動後即時</string>
   <string name="account_setup_expunge_policy_on_poll">同期のタイミングで</string>
@@ -382,7 +386,11 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_failed_dlg_title">設定エラー</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">サーバー名またはパスワードが不正です\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">サーバが無効なSSL証明書を発行しました。これはサーバの設定ミスが原因で起こることがあります。あるいは誰かがあなたやあなたのメールサーバに攻撃を試みることによって起こることもあります。何が起こっているのかがよくわからないのであれば、「拒否」をクリックし、メールサーバを管理している人たちに連絡をとってください。\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">サーバーに接続できません\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">サーバに接続できません\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">認証がキャンセルされました</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">エラーが発生したため認証に失敗しました: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">現在、このプロバイダーでは OAuth 2.0 がサポートされていません。</string>
+  <string name="account_setup_failed_dlg_browser_not_found">あなたのアカウントへのアクセスを許可するためのブラウザーが見つかりませんでした。</string>
   <string name="account_setup_failed_dlg_edit_details_action">詳細再編集</string>
   <string name="account_setup_failed_dlg_continue_action">続行</string>
   <string name="account_settings_push_advanced_title">プッシュ接続の拡張設定</string>
@@ -439,10 +447,10 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_sync">メール受信</string>
   <string name="account_settings_folders">フォルダ</string>
   <string name="account_settings_quote_prefix_label">引用記号</string>
-  <string name="account_settings_crypto">エンドトゥエンド暗号化</string>
+  <string name="account_settings_crypto">エンドツーエンド暗号化</string>
   <string name="account_settings_crypto_app">OpenPGPサポートを有効にする</string>
   <string name="account_settings_crypto_app_select_title">OpenPGPアプリを選択</string>
-  <string name="account_settings_crypto_key">エンドトゥエンドの鍵を設定</string>
+  <string name="account_settings_crypto_key">エンドツーエンドの鍵を設定</string>
   <string name="account_settings_crypto_summary_off">OpenPGPアプリが設定されていません</string>
   <string name="account_settings_crypto_summary_on">%s に接続しました</string>
   <string name="account_settings_crypto_summary_config">設定しています…</string>
@@ -514,7 +522,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="folder_settings_folder_display_mode_normal">クラスなし</string>
   <string name="folder_settings_folder_display_mode_first_class">1st クラス</string>
   <string name="folder_settings_folder_display_mode_second_class">2nd クラス</string>
-  <string name="folder_settings_folder_sync_mode_label">フォルダ受信クラス</string>
+  <string name="folder_settings_folder_sync_mode_label">フォルダ同期クラス</string>
   <string name="folder_settings_folder_sync_mode_normal">なし</string>
   <string name="folder_settings_folder_sync_mode_first_class">1st クラス</string>
   <string name="folder_settings_folder_sync_mode_second_class">2nd クラス</string>
@@ -759,12 +767,19 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="settings_import_pick_document_button">ファイルを選択</string>
   <string name="settings_import_button">インポート</string>
   <string name="settings_import_success_generic">設定を正常にインポートしました</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">パスワードを入力してください</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">サインインしてください</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">サインインしてパスワードを入力してください</string>
   <string name="settings_import_failure">設定のインポートに失敗しました</string>
   <string name="settings_import_read_failure">設定ファイルの読み込みに失敗しました</string>
   <string name="settings_import_partial_failure">一部の設定のインポートに失敗しました</string>
   <string name="settings_import_status_success">インポートに成功しました</string>
   <string name="settings_import_status_password_required">パスワードが必要です</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">サインインが必要です</string>
   <string name="settings_import_status_not_imported">インポートされていません</string>
   <string name="settings_import_status_error">インポート失敗</string>
   <string name="settings_import_later_button">後で</string>
@@ -853,14 +868,14 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="fetching_attachment_dialog_title_send">メッセージ送信</string>
   <string name="fetching_attachment_dialog_title_save">下書き保存</string>
   <string name="fetching_attachment_dialog_message">添付ファイル取得中…</string>
-  <string name="auth_external_error">認証できません｡ｻｰﾊﾞｰはSASL EXTERNALが利用できることを示していません｡これはｸﾗｲｱﾝﾄ証明書の問題(期限切れ､未知の認証局)又は何らかの設定の為です｡</string>
+  <string name="auth_external_error">認証できません｡サーバはSASL EXTERNALが利用できることを示していません｡これはクライアント証明書の問題(期限切れ､未知の認証局)又は何らかの設定の為です｡</string>
   <!--=== Client certificates specific ==================================================================-->
-  <string name="account_setup_basics_client_certificate">ｸﾗｲｱﾝﾄ証明書を使う</string>
-  <string name="client_certificate_spinner_empty">ｸﾗｲｱﾝﾄ証明書なし</string>
-  <string name="client_certificate_spinner_delete">ｸﾗｲｱﾝﾄ証明書を削除します</string>
-  <string name="client_certificate_retrieval_failure">別名 \"<xliff:g id="alias">%s</xliff:g>\" の為のｸﾗｲｱﾝﾄ証明書の取得に失敗しました</string>
+  <string name="account_setup_basics_client_certificate">クライアント証明書を使う</string>
+  <string name="client_certificate_spinner_empty">クライアント証明書なし</string>
+  <string name="client_certificate_spinner_delete">クライアント証明書を削除します</string>
+  <string name="client_certificate_retrieval_failure">別名 \"<xliff:g id="alias">%s</xliff:g>\" のためのクライアント証明書の取得に失敗しました</string>
   <string name="client_certificate_advanced_options">拡張設定</string>
-  <string name="client_certificate_expired">ｸﾗｲｱﾝﾄ証明書 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" が、期限切れまたは不正です (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="client_certificate_expired">クライアント証明書 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" が、期限切れまたは不正です (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*暗号化*</string>
   <string name="add_from_contacts">連絡先から追加</string>
@@ -879,7 +894,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="compose_error_no_key_configured">このアカウントの鍵が設定されていません! 設定を確認してください。</string>
   <string name="error_crypto_provider_incompatible">暗号化プロバイダが互換性のないバージョンを使用しています。 設定を確認してください!</string>
   <string name="error_crypto_provider_connect">暗号化プロバイダに接続できません。設定を確認するか、暗号化アイコンをクリックして再実行してください!</string>
-  <string name="error_crypto_provider_ui_required">エンドトゥエンド暗号化の初期化に失敗しました。設定を確認してください</string>
+  <string name="error_crypto_provider_ui_required">エンドツーエンド暗号化の初期化に失敗しました。設定を確認してください</string>
   <string name="error_crypto_inline_attach">PGP/INLINE モードは添付ファイルをサポートしていません!</string>
   <string name="enable_inline_pgp">PGP/INLINE を有効にする</string>
   <string name="disable_inline_pgp">PGP/INLINE を無効にする</string>
@@ -903,34 +918,34 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="openpgp_dialog_sign_only_minus_attach">一部のクライアントで、署名は \'signature.asc\' 添付ファイルとして表示されることがあります。</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">暗号化されたメッセージには常に署名が含まれます。</string>
   <string name="crypto_msg_title_plaintext">平文</string>
-  <string name="crypto_msg_unencrypted_sign_error">エンドトゥエンド署名にエラーが含まれていました</string>
+  <string name="crypto_msg_unencrypted_sign_error">エンドツーエンド署名にエラーが含まれていました</string>
   <string name="crypto_msg_incomplete_signed">署名を処理するために、完全にダウンロードする必要があります</string>
-  <string name="crypto_msg_unsupported_signed">サポートされていないエンドトゥエンド署名が含まれています</string>
+  <string name="crypto_msg_unsupported_signed">サポートされていないエンドツーエンド署名が含まれています</string>
   <string name="crypto_msg_unsupported_encrypted">メッセージは暗号化されていますが、サポートされていない形式です。</string>
   <string name="crypto_msg_cancelled">メッセージは暗号化されていますが、復号化をキャンセルされました。</string>
-  <string name="crypto_msg_title_unencrypted_signed_e2e">エンドトゥエンド署名された平文</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">エンドツーエンド署名された平文</string>
   <string name="crypto_msg_unencrypted_sign_verified">検証済の署名者から</string>
   <string name="crypto_msg_title_unencrypted_signed">署名された平文</string>
-  <string name="crypto_msg_unencrypted_sign_mismatch">エンドトゥエンドの鍵が送信者と一致しません</string>
-  <string name="crypto_msg_unencrypted_sign_expired">エンドトゥエンドの鍵が有効期限切れです</string>
-  <string name="crypto_msg_unencrypted_sign_revoked">エンドトゥエンドの鍵が失効されました</string>
-  <string name="crypto_msg_unencrypted_sign_insecure">エンドトゥエンドの鍵が安全ではないようです</string>
-  <string name="crypto_msg_unencrypted_sign_unknown">不明なエンドトゥエンドの鍵から</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">エンドツーエンドの鍵が送信者と一致しません</string>
+  <string name="crypto_msg_unencrypted_sign_expired">エンドツーエンドの鍵が有効期限切れです</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">エンドツーエンドの鍵が失効しました</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">エンドツーエンドの鍵が安全ではないようです</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">未知のエンドツーエンドの鍵から</string>
   <string name="crypto_msg_title_encrypted_unknown">暗号化</string>
   <string name="crypto_msg_encrypted_error">復号エラーがありました</string>
   <string name="crypto_msg_encrypted_incomplete">復号化するために、完全にダウンロードする必要があります</string>
   <string name="crypto_msg_encrypted_no_provider">暗号化アプリが設定されていません</string>
   <string name="crypto_msg_title_encrypted_unsigned">暗号化</string>
-  <string name="crypto_msg_encrypted_unsigned">エンドトゥエンドではありません</string>
-  <string name="crypto_msg_title_encrypted_signed_e2e">エンドトゥエンドではありません</string>
+  <string name="crypto_msg_encrypted_unsigned">エンドツーエンドではありません</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">エンドツーエンド暗号化</string>
   <string name="crypto_msg_encrypted_sign_verified">検証済の署名者から</string>
   <string name="crypto_msg_title_encrypted_signed">暗号化</string>
-  <string name="crypto_msg_encrypted_sign_unknown">不明なエンドトゥエンドの鍵から</string>
-  <string name="crypto_msg_encrypted_sign_mismatch">エンドトゥエンドの鍵が送信者と一致しません</string>
-  <string name="crypto_msg_encrypted_sign_expired">エンドトゥエンドの鍵が有効期限切れです</string>
-  <string name="crypto_msg_encrypted_sign_revoked">エンドトゥエンドの鍵が失効されました</string>
-  <string name="crypto_msg_encrypted_sign_insecure">エンドトゥエンドの鍵が安全ではないようです</string>
-  <string name="crypto_msg_encrypted_sign_error">エンドトゥエンドのデータがエラーです</string>
+  <string name="crypto_msg_encrypted_sign_unknown">未知のエンドツーエンドの鍵から</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">エンドツーエンドの鍵が送信者と一致しません</string>
+  <string name="crypto_msg_encrypted_sign_expired">エンドツーエンドの鍵が有効期限切れです</string>
+  <string name="crypto_msg_encrypted_sign_revoked">エンドツーエンドの鍵が失効しました</string>
+  <string name="crypto_msg_encrypted_sign_insecure">エンドツーエンドの鍵が安全ではないようです</string>
+  <string name="crypto_msg_encrypted_sign_error">エンドツーエンドのデータにエラーがあります</string>
   <string name="crypto_msg_encrypted_insecure">暗号が安全ではないようです</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_search_key">検索キー</string>
@@ -952,14 +967,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_crypto_hide_sign_only_off">すべての署名が表示されます</string>
   <string name="error_sign_only_no_encryption">署名専用モードでは暗号化を使用できません!</string>
   <string name="unsigned_text_divider_label">未署名のテキスト</string>
-  <string name="apg_deprecated_title">APG廃止の警告</string>
-  <string name="apg_deprecated_1">APGはもはやメンテナンスされていません!</string>
-  <string name="apg_deprecated_2">このため、APG のサポートはK-9 Mail から削除されました。</string>
-  <string name="apg_deprecated_bullet_1">開発は2014年初頭に停止しました</string>
-  <string name="apg_deprecated_bullet_2">未修正のセキュリティ問題が含まれています</string>
-  <string name="apg_learn_more">詳細については <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">ここをクリック</a> してください。</string>
-  <string name="apg_deprecated_ok">了解!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">このメールは暗号化されています</string>
   <string name="crypto_no_provider_message">このメールは OpenPGP で暗号化されました。\n読むためには、OpenPGP と互換のアプリをインストールして設定する必要があります。</string>
   <string name="crypto_no_provider_button">設定に移動</string>
@@ -976,24 +983,24 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="openpgp_enabled_error_back">戻る</string>
   <string name="openpgp_enabled_error_disable">暗号化を無効にする</string>
   <string name="openpgp_encryption">OpenPGP 暗号化</string>
-  <string name="account_settings_crypto_prefer_encrypt">自動暗号化相互モード</string>
-  <string name="dialog_autocrypt_mutual_title">自動暗号化相互モード</string>
+  <string name="account_settings_crypto_prefer_encrypt">Autocrypt Mutual モード</string>
+  <string name="dialog_autocrypt_mutual_title">Autocrypt Mutual モード</string>
   <string name="dialog_autocrypt_mutual_description_1">通常、メッセージは選択して、または暗号化されたメッセージに返信するときに暗号化されます。</string>
   <string name="dialog_autocrypt_mutual_description_2">送信者と受信者の両方が相互モードを有効にすると、デフォルトで暗号化が有効になります。</string>
   <string name="dialog_autocrypt_mutual_learn_more">詳細については <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">ここをクリック</a> してください。</string>
   <string name="general_settings_title">一般設定</string>
   <string name="dialog_openkeychain_info_title">OpenPGPアプリがインストールされていません</string>
   <string name="dialog_openkeychain_info_install">インストール</string>
-  <string name="dialog_openkeychain_info_text">エンドトゥエンド暗号化のために K-9 Mail は OpenKeychain が必要です。</string>
+  <string name="dialog_openkeychain_info_text">K-9 Mail はエンドツーエンド暗号化のための OpenKeychain が必要です。</string>
   <string name="encrypted_subject">暗号化されたメッセージ</string>
   <string name="account_settings_crypto_encrypt_subject">メッセージの件名を暗号化</string>
   <string name="account_settings_crypto_encrypt_subject_subtitle">一部の受信者はサポートされない可能性があります</string>
   <string name="toast_account_not_found">内部エラー: アカウントが無効です!</string>
   <string name="toast_openpgp_provider_error">%s に接続中にエラーが発生しました!</string>
   <string name="ac_transfer_setting_title">Autocryptセットアップメッセージを送信</string>
-  <string name="ac_transfer_setting_summary">他のデバイスとエンドツーエンドに安全な共有をセットアップ</string>
+  <string name="ac_transfer_setting_summary">エンドツーエンドのセットアップを他のデバイスと安全に共有</string>
   <string name="ac_transfer_title">Autocryptセットアップメッセージ</string>
-  <string name="ac_transfer_intro">他のデバイスとエンドツーエンドに安全な共有を行うAutocryptセットアップメッセージ</string>
+  <string name="ac_transfer_intro">エンドツーエンドのセットアップを他のデバイスと安全に共有する Autocrypt セットアップメッセージ</string>
   <string name="ac_transfer_button_send">セットアップメッセージを送信</string>
   <string name="ac_transfer_will_be_sent">メッセージをあなたのアドレスに送信します:</string>
   <string name="ac_transfer_generating">セットアップメッセージの生成中…</string>

@@ -239,6 +239,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="global_settings_show_contact_name_summary">Подбор имён отправителей из контактов</string>
   <string name="global_settings_registered_name_color_label">Цвет</string>
   <string name="global_settings_registered_name_color_changed">Выделять цветом имена из контактов</string>
+  <string name="general_settings_contact_name_color_label">Цвет контакта</string>
   <string name="global_settings_messageview_fixedwidth_label">Моноширинный шрифт</string>
   <string name="global_settings_messageview_fixedwidth_summary">Показать сообщения в формате \"Только текст\" моноширинным шрифтом</string>
   <string name="global_settings_messageview_autofit_width_label">Вписать по ширине</string>
@@ -278,6 +279,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_basics_title">Новый ящик</string>
   <string name="account_setup_basics_email_hint">Адрес email</string>
   <string name="account_setup_basics_password_hint">Пароль</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Чтобы увидеть свой пароль, включите блокировку экрана на этом устройстве.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Проверка вашей роли</string>
@@ -319,10 +322,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_incoming_delete_policy_never_label">Оставить</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Удалить</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Прочитано</string>
-  <string name="account_setup_incoming_compression_label">Сжатие в сетях:</string>
-  <string name="account_setup_incoming_mobile_label">Мобильные</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Прочие</string>
   <string name="account_setup_expunge_policy_label">Стирать удалённые с сервера</string>
   <string name="account_setup_expunge_policy_immediately">Немедленно</string>
   <string name="account_setup_expunge_policy_on_poll">При проверке</string>
@@ -541,11 +540,29 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_description_label">Имя ящика</string>
   <string name="account_settings_name_label">Ваше имя</string>
   <string name="notifications_title">Уведомления</string>
+  <string name="account_settings_vibration">Вибрация</string>
   <string name="account_settings_vibrate_enable">Вибрация</string>
+  <string name="account_settings_vibrate_pattern_label">Cхема вибрации</string>
   <string name="account_settings_vibrate_pattern_default">По умолчанию</string>
+  <string name="account_settings_vibrate_pattern_1">Шаблон 1</string>
+  <string name="account_settings_vibrate_pattern_2">Шаблон 2</string>
+  <string name="account_settings_vibrate_pattern_3">Шаблон 3</string>
+  <string name="account_settings_vibrate_pattern_4">Шаблон 4</string>
+  <string name="account_settings_vibrate_pattern_5">Шаблон 5</string>
   <string name="account_settings_vibrate_times">Повтор</string>
+  <string name="account_settings_vibrate_summary_disabled">Выключено</string>
   <string name="account_settings_ringtone">Мелодия</string>
+  <string name="account_settings_notification_light_label">Свет уведомлений</string>
+  <string name="account_settings_notification_light_disabled">Выключено</string>
   <string name="account_settings_notification_light_account_color">Цвет</string>
+  <string name="account_settings_notification_light_default_color">Системный цвет</string>
+  <string name="account_settings_notification_light_white">Белый</string>
+  <string name="account_settings_notification_light_red">Красный</string>
+  <string name="account_settings_notification_light_green">Зеленый</string>
+  <string name="account_settings_notification_light_blue">Синий</string>
+  <string name="account_settings_notification_light_yellow">Желтый</string>
+  <string name="account_settings_notification_light_cyan">Голубой</string>
+  <string name="account_settings_notification_light_magenta">Пурпурный</string>
   <string name="account_settings_composition_title">Новое сообщение</string>
   <string name="account_settings_composition_label">Новое сообщение</string>
   <string name="account_settings_composition_summary">Отправитель, скрытая копия и подпись по умолчанию</string>
@@ -750,12 +767,16 @@ K-9 Mail — почтовый клиент для Android.
   <string name="settings_import_pick_document_button">Выберите файл</string>
   <string name="settings_import_button">Импорт</string>
   <string name="settings_import_success_generic">Настройки успешно импортированы</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Пожалуйста, введите пароли</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Не удалось импортировать настройки</string>
   <string name="settings_import_read_failure">Не удалось прочесть файл настроек</string>
   <string name="settings_import_partial_failure">Не удалось импортировать некоторые настройки</string>
   <string name="settings_import_status_success">Успешный импорт</string>
   <string name="settings_import_status_password_required">Требуется пароль</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Не импортировано</string>
   <string name="settings_import_status_error">Импорт не удался</string>
   <string name="settings_import_later_button">Позже</string>
@@ -952,14 +973,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_crypto_hide_sign_only_off">Отображаются все подписи</string>
   <string name="error_sign_only_no_encryption">Шифрование недоступно в режиме \"Только подпись\"</string>
   <string name="unsigned_text_divider_label">Неподписанный текст</string>
-  <string name="apg_deprecated_title">Прекращение поддержки APG</string>
-  <string name="apg_deprecated_1">Разработка APG прекращена!</string>
-  <string name="apg_deprecated_2">В связи с этим, поддержка APG удалена из K-9 Mail</string>
-  <string name="apg_deprecated_bullet_1">Разработка прекращена в начале 2014 г.</string>
-  <string name="apg_deprecated_bullet_2">Имеются неисправленные уязвимости</string>
-  <string name="apg_learn_more">Нажмите <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">здесь</a> для подробностей.</string>
-  <string name="apg_deprecated_ok">Понятно!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Сообщение зашифровано</string>
   <string name="crypto_no_provider_message">Сообщение зашифровано OpenPGP.\nЧтобы прочесть его, необходимо установить и настроить подходящее OpenPGP-приложение.</string>
   <string name="crypto_no_provider_button">В Настройки</string>
@@ -1019,7 +1032,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="push_notification_state_wait_background_sync">Спящий режим до тех пор, пока не будет разрешена фоновая синхронизация</string>
   <string name="push_notification_state_wait_network">Спящий режим до появления сети</string>
   <string name="push_notification_info">Нажмите, чтобы узнать больше.</string>
-  <string name="push_info_title">Информация о Push</string>
+  <string name="push_info_title">Всплывающая информация</string>
   <string name="push_info_notification_explanation_text">При использовании Push K-9 Mail поддерживает соединение с почтовым сервером. Android требует отображения постоянного уведомления, пока приложение активно в фоновом режиме. %s</string>
   <string name="push_info_configure_notification_text">Однако Android также позволяет скрыть уведомление.</string>
   <string name="push_info_learn_more_text">Узнать больше</string>

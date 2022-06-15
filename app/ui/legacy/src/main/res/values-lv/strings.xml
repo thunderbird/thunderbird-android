@@ -275,6 +275,8 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_basics_title">Uzlikt jaunu kontu</string>
   <string name="account_setup_basics_email_hint">E-pasta adrese</string>
   <string name="account_setup_basics_password_hint">Parole</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Lai apskatītos savu paroli, ieslēdziet ekrāna bloķēšanu savā ierīcē.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Apstiprināt savu identitāti</string>
@@ -316,10 +318,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_incoming_delete_policy_never_label">Nedzēst to no servera</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Izdzēst to no servera</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Atzīmēt kā izlasītu uz servera</string>
-  <string name="account_setup_incoming_compression_label">Izmantot saspiešanu tīklā:</string>
-  <string name="account_setup_incoming_mobile_label">Mobilais</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Cits</string>
   <string name="account_setup_expunge_policy_label">Izdzēst vēstules arī no servera</string>
   <string name="account_setup_expunge_policy_immediately">Uzreiz</string>
   <string name="account_setup_expunge_policy_on_poll">Pārbaudes laikā</string>
@@ -745,12 +743,16 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="settings_import_pick_document_button">Izvēlēties datni</string>
   <string name="settings_import_button">Importēt</string>
   <string name="settings_import_success_generic">Iestatījumi importēti veiksmīgi </string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Lūdzu, ievadiet paroles</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Neizdevās importēt iestatījumus</string>
   <string name="settings_import_read_failure">Neizdevās nolasīt iestatījumu datni</string>
   <string name="settings_import_partial_failure">Neizdevās importēt dažus iestatījumus</string>
   <string name="settings_import_status_success">Importēts veiksmīgi</string>
   <string name="settings_import_status_password_required">Nepieciešama parole</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Nav importēts</string>
   <string name="settings_import_status_error">Importēšana neizdevās</string>
   <string name="settings_import_later_button">Vēlāk</string>
@@ -944,14 +946,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_crypto_hide_sign_only_off">Tiks parādīti visi paraksti</string>
   <string name="error_sign_only_no_encryption">Nevar iešifrēt \"tikai parakstīt\" režīmā!</string>
   <string name="unsigned_text_divider_label">Neparakstīts teksts</string>
-  <string name="apg_deprecated_title">APG koda brīdinājums</string>
-  <string name="apg_deprecated_1">APG vairs netiek atbalstīts!</string>
-  <string name="apg_deprecated_2">Tāpēc APG atbalsts ir izņemts no K-9 Pasta.</string>
-  <string name="apg_deprecated_bullet_1">Izstrāde pārtraukta 2014. gada sākumā</string>
-  <string name="apg_deprecated_bullet_2">Satur neatrisinātas drošības problēmas</string>
-  <string name="apg_learn_more">Šeit <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">uzspiežot</a>, varat uzzināt vairāk.</string>
-  <string name="apg_deprecated_ok">Sapratu!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Vēstule ir šifrēta</string>
   <string name="crypto_no_provider_message">Šī vēstule ir šifrēta ar OpenPGP. Lai to apskatītos, jāinstalē un jāiestata saderīga OpenPGP lietotne</string>
   <string name="crypto_no_provider_button">Doties uz iestatījumiem</string>

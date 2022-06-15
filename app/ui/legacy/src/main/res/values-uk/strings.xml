@@ -281,6 +281,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_basics_title">Налаштувати новий обліковий запис</string>
   <string name="account_setup_basics_email_hint">Адреса електронної пошти</string>
   <string name="account_setup_basics_password_hint">Пароль</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Щоб переглянути пароль, налаштуйте цьому пристрою блокування екрану.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Звірте свою особу</string>
@@ -322,10 +324,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_incoming_delete_policy_never_label">Не видаляти на сервері</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Видаляти на сервері</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Позначити як прочитане на сервері</string>
-  <string name="account_setup_incoming_compression_label">Використовувати стискання даних у мережі:</string>
-  <string name="account_setup_incoming_mobile_label">Мобільний інтернет</string>
-  <string name="account_setup_incoming_wifi_label">WI-FI</string>
-  <string name="account_setup_incoming_other_label">Інше</string>
+  <string name="account_setup_incoming_use_compression">Стиснення</string>
   <string name="account_setup_expunge_policy_label">Стирати видалені повідомлення на сервері</string>
   <string name="account_setup_expunge_policy_immediately">Негайно</string>
   <string name="account_setup_expunge_policy_on_poll">При опитуванні сервера</string>
@@ -771,12 +770,16 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="settings_import_pick_document_button">Вибрати файл</string>
   <string name="settings_import_button">Імпорт</string>
   <string name="settings_import_success_generic">Налаштування успішно імпортовано</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Введіть паролі</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Не вдалося імпортувати налаштування</string>
   <string name="settings_import_read_failure">Не вдалося прочитати файл з налаштуваннями</string>
   <string name="settings_import_partial_failure">Не вдалося імпортувати деякі налаштування</string>
   <string name="settings_import_status_success">Успішно імпортовано</string>
   <string name="settings_import_status_password_required">Потрібен пароль</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Не імпортовано</string>
   <string name="settings_import_status_error">Збій імпортування</string>
   <string name="settings_import_later_button">Пізніше</string>
@@ -973,14 +976,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_crypto_hide_sign_only_off">Усі підписи будуть відображені</string>
   <string name="error_sign_only_no_encryption">Шифрування недоступне у режимі PGP Sign-Only</string>
   <string name="unsigned_text_divider_label">Непідписаний Текст</string>
-  <string name="apg_deprecated_title">Попередження про застарілість APG</string>
-  <string name="apg_deprecated_1">APG більше не підтримується!</string>
-  <string name="apg_deprecated_2">Через це підтримку APG було видалено з K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Розробка зупинена на початку 2014</string>
-  <string name="apg_deprecated_bullet_2">Містить невиправлені проблеми з безпекою</string>
-  <string name="apg_learn_more">Ви можете <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">перейти сюди</a>, щоб дізнатися більше.</string>
-  <string name="apg_deprecated_ok">Зрозуміло!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Цей електронний лист зашифровано</string>
   <string name="crypto_no_provider_message">Цей електронний лист було зашифровано за допомогою OpenPGP.\nЩоб його прочитати, необхідно встановити та налаштувати сумісний OpenPGP-додаток.</string>
   <string name="crypto_no_provider_button">Перейти до Налаштувань</string>
