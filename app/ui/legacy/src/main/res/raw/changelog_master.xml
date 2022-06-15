@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.100" versioncode="31000" date="2022-06-15">
+        <change>Added support for using OAuth 2.0 with Google accounts</change>
+        <change>Added support for using OAuth 2.0 with Yahoo and AOL accounts</change>
+        <change>Added "Unsubscribe" action that is displayed in the menu when viewing a message that contains an Unsubscribe header</change>
+        <change>Fixed a bug where unrelated notifications where cleared after synchronizing a folder containing no unread messages</change>
+        <change>Fixed rare problem with decoding format=flowed messages</change>
+        <change>Various other small bug fixes and improvements</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.000" versioncode="30000" date="2022-04-18">
         <change>Added support for setting the notification vibration pattern on Android 8+</change>
         <change>Added support for setting a custom notification light color on Android 8+</change>
