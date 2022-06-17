@@ -175,6 +175,9 @@ class AccountPreferenceSerializer(
             isAlwaysShowCcBcc = storage.getBoolean("$accountUuid.alwaysShowCcBcc", false)
             lastSyncTime = storage.getLong("$accountUuid.lastSyncTime", 0L)
             lastFolderListRefreshTime = storage.getLong("$accountUuid.lastFolderListRefreshTime", 0L)
+
+            shouldMigrateToOAuth = storage.getBoolean("$accountUuid.migrateToOAuth", false)
+
             val isFinishedSetup = storage.getBoolean("$accountUuid.isFinishedSetup", true)
             if (isFinishedSetup) markSetupFinished()
 
@@ -331,8 +334,8 @@ class AccountPreferenceSerializer(
             editor.putLong("$accountUuid.lastSyncTime", lastSyncTime)
             editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
             editor.putBoolean("$accountUuid.isFinishedSetup", isFinishedSetup)
-
             editor.putBoolean("$accountUuid.useCompression", useCompression)
+            editor.putBoolean("$accountUuid.migrateToOAuth", shouldMigrateToOAuth)
         }
 
         saveIdentities(account, storage, editor)
@@ -450,6 +453,7 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.lastFolderListRefreshTime")
         editor.remove("$accountUuid.isFinishedSetup")
         editor.remove("$accountUuid.useCompression")
+        editor.remove("$accountUuid.migrateToOAuth")
 
         deleteIdentities(account, storage, editor)
         // TODO: Remove preference settings that may exist for individual folders in the account.
