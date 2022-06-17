@@ -395,6 +395,7 @@ public class MessagingController {
             preferences.saveAccount(account);
         } catch (Exception e) {
             Timber.e(e);
+            handleException(account, e);
         }
     }
 
