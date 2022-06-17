@@ -8,6 +8,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.mail.AuthType
 import timber.log.Timber
 
 class MailSyncWorker(
@@ -41,6 +42,11 @@ class MailSyncWorker(
 
         if (account.incomingServerSettings.isMissingCredentials) {
             Timber.d("Password for this account is missing. Skipping mail sync.")
+            return Result.success()
+        }
+
+        if (account.incomingServerSettings.authenticationType == AuthType.XOAUTH2 && account.oAuthState == null) {
+            Timber.d("Account requires sign-in. Skipping mail sync.")
             return Result.success()
         }
 

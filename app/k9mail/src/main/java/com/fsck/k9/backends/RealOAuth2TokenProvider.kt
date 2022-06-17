@@ -42,7 +42,10 @@ class RealOAuth2TokenProvider(
 
         latch.await(timeoutMillis, TimeUnit.MILLISECONDS)
 
-        if (exception != null || token != oldAccessToken) {
+        if (exception != null) {
+            account.oAuthState = null
+            accountManager.saveAccount(account)
+        } else if (token != oldAccessToken) {
             requestFreshToken = false
             account.oAuthState = authState.jsonSerializeString()
             accountManager.saveAccount(account)

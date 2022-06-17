@@ -53,6 +53,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
 import com.fsck.k9.helper.MutableBoolean;
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
@@ -378,8 +379,8 @@ public class MessagingController {
 
     public void refreshFolderListSynchronous(Account account) {
         try {
-            ServerSettings serverSettings = account.getIncomingServerSettings();
-            if (serverSettings.isMissingCredentials()) {
+            if (isAuthenticationProblem(account, true)) {
+                Timber.d("Authentication will fail. Skip refreshing the folder list.");
                 handleAuthenticationFailure(account, true);
                 return;
             }
@@ -596,8 +597,8 @@ public class MessagingController {
 
     private void syncFolder(Account account, long folderId, boolean notify, MessagingListener listener, Backend backend,
             NotificationState notificationState) {
-        ServerSettings serverSettings = account.getIncomingServerSettings();
-        if (serverSettings.isMissingCredentials()) {
+        if (isAuthenticationProblem(account, true)) {
+            Timber.d("Authentication will fail. Skip synchronizing folder %d.", folderId);
             handleAuthenticationFailure(account, true);
             return;
         }
@@ -1486,8 +1487,8 @@ public class MessagingController {
         Exception lastFailure = null;
         boolean wasPermanentFailure = false;
         try {
-            ServerSettings serverSettings = account.getOutgoingServerSettings();
-            if (serverSettings.isMissingCredentials()) {
+            if (isAuthenticationProblem(account, false)) {
+                Timber.d("Authentication will fail. Skip sending messages.");
                 handleAuthenticationFailure(account, false);
                 return;
             }
@@ -2544,6 +2545,14 @@ public class MessagingController {
         }
 
         notificationController.showCertificateErrorNotification(account, incoming);
+    }
+
+    private boolean isAuthenticationProblem(Account account, boolean incoming) {
+        ServerSettings serverSettings = incoming ?
+                account.getIncomingServerSettings() : account.getOutgoingServerSettings();
+
+        return serverSettings.isMissingCredentials() ||
+                serverSettings.authenticationType == AuthType.XOAUTH2 && account.getOAuthState() == null;
     }
 
     private void actOnMessagesGroupedByAccountAndFolder(List<MessageReference> messages, MessageActor actor) {
