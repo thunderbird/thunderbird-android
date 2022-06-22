@@ -1650,6 +1650,10 @@ open class MessageList :
         openFolderImmediately(defaultFolderId)
     }
 
+    override fun toggleReadActiveMessage() {
+        messageViewFragment?.onToggleRead()
+    }
+
     private enum class DisplayMode {
         MESSAGE_LIST, MESSAGE_VIEW, SPLIT_VIEW
     }

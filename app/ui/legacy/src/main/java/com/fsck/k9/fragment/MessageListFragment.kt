@@ -983,6 +983,9 @@ class MessageListFragment :
         }
 
         computeBatchDirection()
+
+        if (checkedMessages.contains(activeMessage))
+            fragmentListener.toggleReadActiveMessage()
     }
 
     private fun onMove(message: MessageReference) {
@@ -1935,6 +1938,7 @@ class MessageListFragment :
         fun goBack()
         fun updateMenu()
         fun onFolderNotFoundError()
+        fun toggleReadActiveMessage()
 
         companion object {
             const val MAX_PROGRESS = 10000
