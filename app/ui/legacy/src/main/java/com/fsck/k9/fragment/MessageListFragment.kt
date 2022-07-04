@@ -436,6 +436,11 @@ class MessageListFragment :
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
+        if (K9.splitViewMode == K9.SplitViewMode.WHEN_IN_LANDSCAPE)
+            activeMessage?.let {
+                actionMode?.finish()
+            }
+
         saveListState(outState)
         outState.putLongArray(STATE_SELECTED_MESSAGES, selected.toLongArray())
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
