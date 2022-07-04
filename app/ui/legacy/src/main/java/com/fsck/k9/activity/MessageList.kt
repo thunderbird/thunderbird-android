@@ -338,6 +338,7 @@ open class MessageList :
             }
             DisplayMode.SPLIT_VIEW -> {
                 messageListWasDisplayed = true
+                messageListFragment?.onListVisible()
                 if (messageViewFragment == null) {
                     showMessageViewPlaceHolder()
                 } else {
@@ -1469,6 +1470,7 @@ open class MessageList :
         displayMode = DisplayMode.MESSAGE_LIST
         viewSwitcher!!.showFirstView()
 
+        messageListFragment!!.onListVisible()
         messageListFragment!!.setActiveMessage(null)
 
         setDrawerLockState()
@@ -1491,6 +1493,7 @@ open class MessageList :
 
     private fun showMessageView() {
         displayMode = DisplayMode.MESSAGE_VIEW
+        messageListFragment?.onListHidden()
 
         if (!messageListWasDisplayed) {
             viewSwitcher!!.animateFirstView = false

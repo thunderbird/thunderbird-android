@@ -133,6 +133,8 @@ class MessageListFragment :
     var isInitialized = false
         private set
 
+    private var isListVisible = false
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -1508,8 +1510,11 @@ class MessageListFragment :
     }
 
     private fun resetActionMode() {
-        if (selected.isEmpty()) {
+        if (!isResumed) return
+
+        if (!isListVisible || selected.isEmpty()) {
             actionMode?.finish()
+            actionMode = null
             return
         }
 
@@ -1573,6 +1578,16 @@ class MessageListFragment :
         if (isMarkAllAsReadSupported) {
             messagingController.markAllMessagesRead(account, currentFolder!!.databaseId)
         }
+    }
+
+    fun onListVisible() {
+        isListVisible = true
+        resetActionMode()
+    }
+
+    fun onListHidden() {
+        isListVisible = false
+        resetActionMode()
     }
 
     val isCheckMailSupported: Boolean
