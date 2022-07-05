@@ -110,6 +110,7 @@
         <item name="iconAboutLicense">@drawable/ic_description</item>
         <item name="iconAboutWebsite">@drawable/ic_link</item>
         <item name="iconUserForum">@drawable/ic_forum</item>
+        <item name="iconHelp">@drawable/ic_help</item>
         <item name="iconAboutFediverse">@drawable/ic_mastodon</item>
         <item name="iconAboutTwitter">@drawable/ic_twitter</item>
 
@@ -229,6 +230,7 @@
         <item name="iconAboutLicense">@drawable/ic_description</item>
         <item name="iconAboutWebsite">@drawable/ic_link</item>
         <item name="iconUserForum">@drawable/ic_forum</item>
+        <item name="iconHelp">@drawable/ic_help</item>
         <item name="iconAboutFediverse">@drawable/ic_mastodon</item>
         <item name="iconAboutTwitter">@drawable/ic_twitter</item>
 
