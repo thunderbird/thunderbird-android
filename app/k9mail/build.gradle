@@ -65,12 +65,6 @@ android {
 
     signingConfigs {
         release
-        debug {
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
-            storeFile = file("$rootProject.projectDir/debug.keystore")
-            storePassword = "android"
-        }
     }
 
     buildTypes {
@@ -94,8 +88,6 @@ android {
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled rootProject.testCoverage
-
-            signingConfig signingConfigs.debug
 
             minifyEnabled false
 
