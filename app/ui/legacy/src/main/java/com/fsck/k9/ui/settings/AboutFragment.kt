@@ -96,6 +96,7 @@ class AboutFragment : Fragment() {
         private val USED_LIBRARIES = arrayOf(
             Library("Android Jetpack libraries", "https://developer.android.com/jetpack", "Apache License, Version 2.0"),
             Library("AndroidX Preference eXtended", "https://github.com/Gericop/Android-Support-Preference-V7-Fix", "Apache License, Version 2.0"),
+            Library("AppAuth for Android", "https://github.com/openid/AppAuth-Android", "Apache License, Version 2.0"),
             Library("CircleImageView", "https://github.com/hdodenhof/CircleImageView", "Apache License, Version 2.0"),
             Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
             Library("Commons IO", "https://commons.apache.org/io/", "Apache License, Version 2.0"),
