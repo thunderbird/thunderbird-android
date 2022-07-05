@@ -420,6 +420,11 @@ class Account(override val uuid: String) : BaseAccount {
             identities[0] = newIdentity
         }
 
+    @get:JvmName("shouldMigrateToOAuth")
+    @get:Synchronized
+    @set:Synchronized
+    var shouldMigrateToOAuth = false
+
     /**
      * @param automaticCheckIntervalMinutes or -1 for never.
      */

@@ -15,6 +15,7 @@ import java.util.Set;
 
 import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderType;
@@ -115,6 +116,9 @@ class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapSto
 
             List<FolderListItem> subscribedFolders = listFolders(connection, true);
             return limitToSubscribedFolders(folders, subscribedFolders);
+        } catch (AuthenticationFailedException e) {
+            connection.close();
+            throw e;
         } catch (IOException | MessagingException ioe) {
             connection.close();
             throw new MessagingException("Unable to get folder list.", ioe);

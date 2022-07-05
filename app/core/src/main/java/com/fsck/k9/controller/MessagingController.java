@@ -395,6 +395,7 @@ public class MessagingController {
             preferences.saveAccount(account);
         } catch (Exception e) {
             Timber.e(e);
+            handleException(account, e);
         }
     }
 
@@ -671,7 +672,19 @@ public class MessagingController {
     }
 
     public void handleAuthenticationFailure(Account account, boolean incoming) {
+        if (account.shouldMigrateToOAuth()) {
+            migrateAccountToOAuth(account);
+        }
+
         notificationController.showAuthenticationErrorNotification(account, incoming);
+    }
+
+    private void migrateAccountToOAuth(Account account) {
+        account.setIncomingServerSettings(account.getIncomingServerSettings().newAuthenticationType(AuthType.XOAUTH2));
+        account.setOutgoingServerSettings(account.getOutgoingServerSettings().newAuthenticationType(AuthType.XOAUTH2));
+        account.setShouldMigrateToOAuth(false);
+
+        preferences.saveAccount(account);
     }
 
     public void handleException(Account account, Exception exception) {

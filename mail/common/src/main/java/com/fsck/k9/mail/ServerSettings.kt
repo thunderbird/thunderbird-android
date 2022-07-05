@@ -26,4 +26,8 @@ data class ServerSettings @JvmOverloads constructor(
     fun newPassword(newPassword: String?): ServerSettings {
         return this.copy(password = newPassword)
     }
+
+    fun newAuthenticationType(authType: AuthType): ServerSettings {
+        return this.copy(authenticationType = authType)
+    }
 }
