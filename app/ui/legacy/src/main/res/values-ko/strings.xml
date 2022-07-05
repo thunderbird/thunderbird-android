@@ -7,6 +7,18 @@
   <string name="shortcuts_title">K-9 계정</string>
   <string name="unread_widget_label">K-9 읽지 않은 메일</string>
   <!--Used in the about dialog-->
+  <string name="source_code">소소 코드</string>
+  <string name="app_license">아파치 라이선스, 버전 2.0</string>
+  <string name="about_project_title">오픈 소스 프로젝트</string>
+  <string name="about_website_title">웹사이트</string>
+  <string name="user_forum_title">사용자 포럼</string>
+  <string name="license">라이선스</string>
+  <string name="changelog_title">변경 내용</string>
+  <string name="changelog_loading_error">변경 내용을 불러오지 못했습니다.</string>
+  <string name="changelog_version_title">버전 %s</string>
+  <string name="changelog_recent_changes_title">새로운 사항</string>
+  <string name="changelog_show_recent_changes">앱 업데이트 시 최근 변경 내용 표시</string>
+  <string name="changelog_snackbar_text">이 릴리즈의 새로운 기능 알아보기</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 메일을 사용하시게 된 것을 환영합니다</string>
   <!--Default signature-->
@@ -14,6 +26,7 @@
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
   <!--=== General strings ==================================================================-->
+  <string name="about_title">K-9 메일에 대하여</string>
   <string name="accounts_title">계정</string>
   <string name="advanced">고급</string>
   <string name="compose_title_compose">작성</string>

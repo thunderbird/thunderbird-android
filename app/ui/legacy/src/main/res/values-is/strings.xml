@@ -955,7 +955,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="dialog_autocrypt_mutual_title">Autocrypt gagnkvæmni</string>
   <string name="dialog_autocrypt_mutual_description_1">Venjulega eru skilaboð dulrituð þegar það er sérstaklega valið, eða þegar dulrituðum skilaboðum er svarað.</string>
   <string name="dialog_autocrypt_mutual_description_2">Ef bæði sendandi og viðtakandi virkja gagnkvæman ham, er dulritun sjálfgefin.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Þú getur <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">smellt hér</a> til að fræðast betur um þetta.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Þú getur <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">smellt hér</a> til að fræðast betur um þetta.</string>
   <string name="general_settings_title">Almennar stillingar</string>
   <string name="dialog_openkeychain_info_title">Ekkert OpenPGP-forrit er uppsett</string>
   <string name="dialog_openkeychain_info_install">Setja upp</string>

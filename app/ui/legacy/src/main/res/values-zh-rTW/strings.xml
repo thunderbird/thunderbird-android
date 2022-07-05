@@ -986,7 +986,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="dialog_autocrypt_mutual_title">Autocrypt 互相模式</string>
   <string name="dialog_autocrypt_mutual_description_1">訊息通常會按你的選擇而自動加密，或者在回覆加密訊息時進行加密。</string>
   <string name="dialog_autocrypt_mutual_description_2">如果寄件人和收件人都啟用了互相模式，加密預設會被啟用。</string>
-  <string name="dialog_autocrypt_mutual_learn_more">你可以<a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">點擊這裡</a>了解更多。</string>
+  <string name="dialog_autocrypt_mutual_learn_more">你可以<a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">點擊這裡</a>了解更多。</string>
   <string name="general_settings_title">一般設定</string>
   <string name="dialog_openkeychain_info_title">未安裝 OpenPGP 應用程式</string>
   <string name="dialog_openkeychain_info_install">安裝</string>

@@ -964,7 +964,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="dialog_autocrypt_mutual_title">Autokrypter gensidig tilstand</string>
   <string name="dialog_autocrypt_mutual_description_1">Meddelelser bliver normalt krypteret efter eget valg, eller når der besvares en krypteret meddelelse.</string>
   <string name="dialog_autocrypt_mutual_description_2">Hvis både afsender og modtagere aktiverer gensidig tilstand, vil kryptering som standard blive aktiveret.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klikke her</a> for at lære mere.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klikke her</a> for at lære mere.</string>
   <string name="general_settings_title">Generelt</string>
   <string name="dialog_openkeychain_info_title">Intet OpenPGP program installeret</string>
   <string name="dialog_openkeychain_info_install">Installere</string>

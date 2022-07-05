@@ -960,7 +960,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="dialog_autocrypt_mutual_title">Modo autocifrado mutual</string>
   <string name="dialog_autocrypt_mutual_description_1">Normalmente, as mensaxes cifraranse por elección ou ao responder a unha mensaxe cifrada.</string>
   <string name="dialog_autocrypt_mutual_description_2">Se tanto o remitente como os destinatarios activan o modo mutuo, o cifrado estará activado por defecto.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Podes <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">premer aquí</a> para saber máis.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Podes <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">premer aquí</a> para saber máis.</string>
   <string name="general_settings_title">Configuración Xeral</string>
   <string name="dialog_openkeychain_info_title">Non se instalou o aplicativo OpenPGP</string>
   <string name="dialog_openkeychain_info_install">Instalar</string>

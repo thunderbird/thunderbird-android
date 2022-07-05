@@ -21,7 +21,7 @@
   <string name="changelog_loading_error">Не удалось загрузить список изменений.</string>
   <string name="changelog_version_title">Версия %s</string>
   <string name="changelog_recent_changes_title">Что нового</string>
-  <string name="changelog_show_recent_changes">Показывать последние изменения, когда приложение было обновлено</string>
+  <string name="changelog_show_recent_changes">Показывать последние изменения после обновления приложения</string>
   <string name="changelog_snackbar_text">Узнайте, что нового в этом выпуске</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добро пожаловать!</string>
@@ -115,6 +115,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="flag_action">Важное</string>
   <string name="unflag_action">Обычное</string>
   <string name="copy_action">Копировать</string>
+  <string name="unsubscribe_action">Отписаться</string>
   <string name="show_headers_action">Все заголовки</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Адрес скопирован в буфер</item>
@@ -279,8 +280,11 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_basics_title">Новый ящик</string>
   <string name="account_setup_basics_email_hint">Адрес email</string>
   <string name="account_setup_basics_password_hint">Пароль</string>
+  <string name="account_setup_oauth_description">Чтобы использовать эту учётную запись электронной почты с K-9 Mail, вам необходимо войти в систему и предоставить приложению доступ к вашим электронным письмам.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Войти</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Войдите в систему с помощью Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Чтобы увидеть свой пароль, включите блокировку экрана на этом устройстве.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Проверка вашей роли</string>
@@ -304,6 +308,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_auth_type_insecure_password">Небезопасный пароль</string>
   <string name="account_setup_auth_type_encrypted_password">Безопасный пароль</string>
   <string name="account_setup_auth_type_tls_client_certificate">Сертификат клиента</string>
+  <string name="account_setup_auth_type_oauth2">Тип аутентификации OAuth 2.0</string>
   <string name="account_setup_incoming_title">Сервер входящей почты</string>
   <string name="account_setup_incoming_username_label">Логин</string>
   <string name="account_setup_incoming_password_label">Пароль</string>
@@ -322,6 +327,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_incoming_delete_policy_never_label">Оставить</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Удалить</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Прочитано</string>
+  <string name="account_setup_incoming_use_compression">Использовать сжатие</string>
   <string name="account_setup_expunge_policy_label">Стирать удалённые с сервера</string>
   <string name="account_setup_expunge_policy_immediately">Немедленно</string>
   <string name="account_setup_expunge_policy_on_poll">При проверке</string>
@@ -386,6 +392,10 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_failed_dlg_auth_message_fmt">Неверные логин или пароль.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Сервер предоставляет неверный сертификат SSL. Иногда это обусловлено неправильной настройкой. Или кто-то пытается атаковать Ваш почтовый сервер или Ваш компьютер. Если Вы не уверены в причинах, нажмите Отклонить и свяжитесь с персоналом, обслуживающим почтовый сервер.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Не удаётся подключиться к серверу.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Авторизация отменена</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Авторизация завершилась ошибкой со следующей ошибкой: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 в настоящее время не поддерживается этим поставщиком.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Приложению не удалось найти браузер, чтобы дать доступ к вашей учётной записи.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Правка</string>
   <string name="account_setup_failed_dlg_continue_action">Продолжить</string>
   <string name="account_settings_push_advanced_title">Дополнительно</string>
@@ -770,13 +780,16 @@ K-9 Mail — почтовый клиент для Android.
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Пожалуйста, введите пароли</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Пожалуйста, войдите в систему</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Пожалуйста, войдите в систему и введите пароль</string>
   <string name="settings_import_failure">Не удалось импортировать настройки</string>
   <string name="settings_import_read_failure">Не удалось прочесть файл настроек</string>
   <string name="settings_import_partial_failure">Не удалось импортировать некоторые настройки</string>
   <string name="settings_import_status_success">Успешный импорт</string>
   <string name="settings_import_status_password_required">Требуется пароль</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Требуется вход в систему</string>
   <string name="settings_import_status_not_imported">Не импортировано</string>
   <string name="settings_import_status_error">Импорт не удался</string>
   <string name="settings_import_later_button">Позже</string>
@@ -993,7 +1006,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="dialog_autocrypt_mutual_title">Взаимное автошифрование</string>
   <string name="dialog_autocrypt_mutual_description_1">Сообщения шифруются по желанию или при ответе на шифрованное сообщение</string>
   <string name="dialog_autocrypt_mutual_description_2">Если отправитель и получатели включили режим взаимного автошифрования, включать шифрование по умолчанию.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Нажмите <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">здесь</a> для подробностей.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Нажмите <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">здесь</a> для подробностей.</string>
   <string name="general_settings_title">Основные</string>
   <string name="dialog_openkeychain_info_title">OpenPGP не установлен</string>
   <string name="dialog_openkeychain_info_install">Установить</string>

@@ -941,7 +941,7 @@
   <string name="dialog_autocrypt_mutual_title">Режим међусобног аутошифровања</string>
   <string name="dialog_autocrypt_mutual_description_1">Поруке ће бити шифроване када је то изабрано или када се одговара на шифровану поруку.</string>
   <string name="dialog_autocrypt_mutual_description_2">Ако и пошиљалац и прималац укључе „међусобни режим“, шифровање ће подразумевано бити укључено.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Можете <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">кликнути овде</a> да сазнате више.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Можете <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">кликнути овде</a> да сазнате више.</string>
   <string name="general_settings_title">Опште поставке</string>
   <string name="dialog_openkeychain_info_title">ОпенПГП није инсталиран</string>
   <string name="dialog_openkeychain_info_install">Инсталирај</string>

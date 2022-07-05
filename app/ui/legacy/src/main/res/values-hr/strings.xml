@@ -880,7 +880,7 @@
   <string name="openpgp_enabled_error_back">Natrag</string>
   <string name="openpgp_enabled_error_disable">Onemogući šifriranje</string>
   <string name="openpgp_encryption">OpenPGP šifriranje</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Možete <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">kliknuti ovdje</a> da saznate više.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Možete <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">kliknuti ovdje</a> da saznate više.</string>
   <string name="general_settings_title">Opća podešavanja</string>
   <string name="dialog_openkeychain_info_title">Nema intalirane OpenPGP aplikacije</string>
   <string name="dialog_openkeychain_info_install">Instaliraj</string>

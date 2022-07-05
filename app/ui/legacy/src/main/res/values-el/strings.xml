@@ -953,7 +953,7 @@
   <string name="dialog_autocrypt_mutual_title">Κοινή μέθοδος λειτουργίας Autocrypt</string>
   <string name="dialog_autocrypt_mutual_description_1">Τα μηνύματα θα είναι, κανονικά, κρυπτογραφημένα από επιλογή ή όταν δίνονται ως απάντηση σε κρυπτογραφημένο μήνυμα.</string>
   <string name="dialog_autocrypt_mutual_description_2">Εάν ο αποστολέας και οι παραλήπτες, έχουν από κοινού ενεργοποιημένη την κοινή μέθοδο λειτουργίας, θα είναι ενεργοποιημένη η κρυπτογράφηση, από προεπιλογή.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Μπορείτε να πατήσετε <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">εδώ</a> για να μάθετε περισσότερα.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Μπορείτε να πατήσετε <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">εδώ</a> για να μάθετε περισσότερα.</string>
   <string name="general_settings_title">Γενικές ρυθμίσεις</string>
   <string name="dialog_openkeychain_info_title">Δεν υπάρχει εγκατεστημένη εφαρμογή OpenPGP</string>
   <string name="dialog_openkeychain_info_install">Εγκατάσταση</string>

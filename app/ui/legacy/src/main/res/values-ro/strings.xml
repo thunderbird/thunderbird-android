@@ -989,7 +989,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="dialog_autocrypt_mutual_title">Criptare automată în mod mutual</string>
   <string name="dialog_autocrypt_mutual_description_1">Mesajele vor fi criptate la alegere, sau drept răspuns la un mesaj criptat</string>
   <string name="dialog_autocrypt_mutual_description_2">Dacă atât expeditorul cât și destinatarul activează modul mutual, criptarea va fi activată implicit</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Poți <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">apăsa aici</a> pentru mai multe informații.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Poți <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">apăsa aici</a> pentru mai multe informații.</string>
   <string name="general_settings_title">Preferințe generale</string>
   <string name="dialog_openkeychain_info_title">Nicio aplicație OpenPGP instalată</string>
   <string name="dialog_openkeychain_info_install">Instalare</string>

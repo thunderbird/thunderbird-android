@@ -954,7 +954,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="dialog_autocrypt_mutual_title">Autocrypt kölcsönös mód</string>
   <string name="dialog_autocrypt_mutual_description_1">Az üzenetek normál esetben választás alapján lesznek titkosítva, vagy ha egy titkosított üzenetre válaszol.</string>
   <string name="dialog_autocrypt_mutual_description_2">Ha mind a feladó, mind a címzettek támogatják a kölcsönös módot, akkor a titkosítás alapértelmezetten engedélyezve lesz.</string>
-  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Kattintson ide</a>, ha többet szeretne megtudni.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Kattintson ide</a>, ha többet szeretne megtudni.</string>
   <string name="general_settings_title">Általános beállítások</string>
   <string name="dialog_openkeychain_info_title">Nincs OpenPGP alkalmazás telepítve</string>
   <string name="dialog_openkeychain_info_install">Telepítés</string>

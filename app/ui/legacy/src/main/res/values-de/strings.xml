@@ -994,7 +994,7 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="dialog_autocrypt_mutual_title">Autocrypt wechselseitiger Modus</string>
   <string name="dialog_autocrypt_mutual_description_1">Nachrichten werden normalerweise auf Wunsch oder beim Antworten auf eine verschlüsselte Nachricht verschlüsselt.</string>
   <string name="dialog_autocrypt_mutual_description_2">Wenn sowohl Sender als auch Empfänger den wechselseitigen Modus aktiviert haben, wird die Verschlüsselung automatisch aktiviert.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Sie können <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">hier klicken</a> , um mehr zu erfahren.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Sie können <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">hier klicken</a>, um mehr zu erfahren.</string>
   <string name="general_settings_title">Allgemeine Einstellungen</string>
   <string name="dialog_openkeychain_info_title">Keine OpenPGP-App installiert</string>
   <string name="dialog_openkeychain_info_install">Installieren</string>

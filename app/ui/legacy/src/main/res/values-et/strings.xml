@@ -996,7 +996,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="dialog_autocrypt_mutual_title">Autocrypt-standardi kahepoolne režiim</string>
   <string name="dialog_autocrypt_mutual_description_1">Tavapäraselt krüptitakse kiri, kui sa sellise valiku teed või vastad krüptitud kirjale.</string>
   <string name="dialog_autocrypt_mutual_description_2">Kui kirja saatja ning saaja kasutavad Autocrypt-standardi kahepoolset režiimi, siis krüptimine on vaikimisi kasutusel.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Lisateavet <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">leiad siit</a>.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Lisateavet <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">leiad siit</a>.</string>
   <string name="general_settings_title">Üldised sätted</string>
   <string name="dialog_openkeychain_info_title">OpenPGP rakendus paigaldamata</string>
   <string name="dialog_openkeychain_info_install">Paigalda</string>

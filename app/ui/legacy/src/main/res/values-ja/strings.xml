@@ -147,7 +147,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="size_format_bytes">%d B</string>
   <string name="notification_new_title">新着メール</string>
   <plurals name="notification_new_messages_title">
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 件の新着ﾒｯｾｰｼﾞ</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 件の新着メッセージ</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 未読 (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> 続く <xliff:g id="account">%2$s</xliff:g></string>
@@ -221,7 +221,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="message_view_download_remainder">すべてダウンロード</string>
   <string name="message_view_sender_label">%1$s 経由</string>
   <string name="from_same_sender">この送信者からのメールを検索</string>
-  <string name="search_from_format">送信者 <xliff:g id="sender">%s</xliff:g></string>
+  <string name="search_from_format">差出人 <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">メールを破棄しました</string>
   <string name="message_saved_toast">下書きに保存しました</string>
   <string name="global_settings_flag_label">スターを表示</string>
@@ -409,7 +409,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_notify_self_label">自分が送信したメールも通知</string>
   <string name="account_settings_notify_self_summary">このアカウントからのメールも通知する</string>
   <string name="account_notify_contacts_mail_only_label">連絡先のみ</string>
-  <string name="account_notify_contacts_mail_only_summary">既知の連絡先からのメッセージのみ通知を表示します</string>
+  <string name="account_notify_contacts_mail_only_summary">既知の連絡先からのメッセージのみ通知を表示する</string>
   <string name="account_settings_ignore_chat_messages_label">チャットメッセージを無視する</string>
   <string name="account_settings_ignore_chat_messages_summary">メールチャットに属するメッセージの通知を表示しない</string>
   <string name="account_settings_mark_message_as_read_on_view_label">開くと同時に既読にする</string>
@@ -565,9 +565,9 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_notification_light_red">赤</string>
   <string name="account_settings_notification_light_green">緑</string>
   <string name="account_settings_notification_light_blue">青</string>
-  <string name="account_settings_notification_light_yellow">黃</string>
-  <string name="account_settings_notification_light_cyan">青緑</string>
-  <string name="account_settings_notification_light_magenta">赤紫</string>
+  <string name="account_settings_notification_light_yellow">黄</string>
+  <string name="account_settings_notification_light_cyan">シアン</string>
+  <string name="account_settings_notification_light_magenta">マゼンタ</string>
   <string name="account_settings_composition_title">メール本文構成管理</string>
   <string name="account_settings_composition_label">本文構成</string>
   <string name="account_settings_composition_summary">送信元、Bcc、署名の標準設定</string>
@@ -730,7 +730,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="confirm_discard_draft_message">このメッセージを破棄しますか？</string>
   <string name="select_text_now">選択したテキストをコピーします</string>
   <string name="dialog_confirm_clear_local_folder_title">ローカルのメッセージをクリアしますか?</string>
-  <string name="dialog_confirm_clear_local_folder_message">これによりすべてのローカルメッセージがフォルダーから削除されます。 サーバーからメッセージは削除されません。</string>
+  <string name="dialog_confirm_clear_local_folder_message">この操作はすべてのローカルメッセージをフォルダーから削除します。 サーバ上のメッセージは削除されません。</string>
   <string name="dialog_confirm_clear_local_folder_action">メッセージのクリア</string>
   <string name="dialog_confirm_delete_title">削除の確認</string>
   <string name="dialog_confirm_delete_message">このメッセージを削除しますか？</string>
@@ -786,12 +786,12 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="settings_import">設定をインポート</string>
   <string name="settings_importing">設定をインポートしています…</string>
   <plurals name="settings_import_password_prompt">
-    <item quantity="other">アカウント \"<xliff:g id="account">%s</xliff:g>\" を使用するために、サーバーのパスワードを入力する必要があります。</item>
+    <item quantity="other">アカウント \"<xliff:g id="account">%s</xliff:g>\" を使用するために、サーバのパスワードを入力する必要があります。</item>
   </plurals>
-  <string name="settings_import_incoming_server_password_hint">受信サーバーパスワード</string>
-  <string name="settings_import_outgoing_server_password_hint">送信サーバーパスワード</string>
-  <string name="settings_import_use_same_password_for_outgoing_server">送信サーバーのパスワードに同じものを使用する</string>
-  <string name="server_name_format">サーバー名: <xliff:g id="hostname">%s</xliff:g></string>
+  <string name="settings_import_incoming_server_password_hint">受信サーバのパスワード</string>
+  <string name="settings_import_outgoing_server_password_hint">送信サーバのパスワード</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">送信サーバに同じパスワードを使用する</string>
+  <string name="server_name_format">サーバ名: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">アカウントの未読件数を表示</string>
   <string name="unread_widget_account_title">アカウント</string>
   <string name="unread_widget_account_summary">未読数を表示するアカウント</string>
@@ -882,7 +882,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">宛先</string>
-  <string name="recipient_from">送信者</string>
+  <string name="recipient_from">差出人</string>
   <string name="reply_to_label">返信先</string>
   <string name="unknown_recipient">&lt;不明な受信者&gt;</string>
   <string name="unknown_sender">&lt;不明な送信者&gt;</string>
@@ -922,7 +922,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="crypto_msg_incomplete_signed">署名を処理するために、完全にダウンロードする必要があります</string>
   <string name="crypto_msg_unsupported_signed">サポートされていないエンドツーエンド署名が含まれています</string>
   <string name="crypto_msg_unsupported_encrypted">メッセージは暗号化されていますが、サポートされていない形式です。</string>
-  <string name="crypto_msg_cancelled">メッセージは暗号化されていますが、復号化をキャンセルされました。</string>
+  <string name="crypto_msg_cancelled">メッセージは暗号化されていますが、復号がキャンセルされました。</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">エンドツーエンド署名された平文</string>
   <string name="crypto_msg_unencrypted_sign_verified">検証済の署名者から</string>
   <string name="crypto_msg_title_unencrypted_signed">署名された平文</string>
@@ -933,12 +933,12 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="crypto_msg_unencrypted_sign_unknown">未知のエンドツーエンドの鍵から</string>
   <string name="crypto_msg_title_encrypted_unknown">暗号化</string>
   <string name="crypto_msg_encrypted_error">復号エラーがありました</string>
-  <string name="crypto_msg_encrypted_incomplete">復号化するために、完全にダウンロードする必要があります</string>
+  <string name="crypto_msg_encrypted_incomplete">復号するには完全にダウンロードする必要があります</string>
   <string name="crypto_msg_encrypted_no_provider">暗号化アプリが設定されていません</string>
   <string name="crypto_msg_title_encrypted_unsigned">暗号化</string>
   <string name="crypto_msg_encrypted_unsigned">エンドツーエンドではありません</string>
   <string name="crypto_msg_title_encrypted_signed_e2e">エンドツーエンド暗号化</string>
-  <string name="crypto_msg_encrypted_sign_verified">検証済の署名者から</string>
+  <string name="crypto_msg_encrypted_sign_verified">検証済の送信者から</string>
   <string name="crypto_msg_title_encrypted_signed">暗号化</string>
   <string name="crypto_msg_encrypted_sign_unknown">未知のエンドツーエンドの鍵から</string>
   <string name="crypto_msg_encrypted_sign_mismatch">エンドツーエンドの鍵が送信者と一致しません</string>
@@ -956,10 +956,10 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="locked_attach_unencrypted">この部分は暗号化されていません。安全ではない可能性があります。</string>
   <string name="locked_attach_title">保護されていない添付ファイル</string>
   <string name="message_progress_text">読み込み中…</string>
-  <string name="messageview_decrypt_cancelled">復号化をキャンセルしました。</string>
+  <string name="messageview_decrypt_cancelled">復号がキャンセルされました。</string>
   <string name="messageview_decrypt_retry">再実行</string>
-  <string name="messageview_decrypt_incomplete">暗号化されたメールは、復号化するためにダウンロードする必要があります。</string>
-  <string name="messageview_crypto_error_title">メールの復号化時にエラー</string>
+  <string name="messageview_decrypt_incomplete">暗号化されたメッセージは、復号のためにダウンロードする必要があります。</string>
+  <string name="messageview_crypto_error_title">メール復号エラー</string>
   <string name="recipient_error_non_ascii">特殊文字は現在サポートされていません!</string>
   <string name="recipient_error_parse_failed">アドレスの解析時にエラー!</string>
   <string name="account_settings_crypto_hide_sign_only">暗号化されていない署名を非表示</string>
@@ -987,7 +987,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="dialog_autocrypt_mutual_title">Autocrypt Mutual モード</string>
   <string name="dialog_autocrypt_mutual_description_1">通常、メッセージは選択して、または暗号化されたメッセージに返信するときに暗号化されます。</string>
   <string name="dialog_autocrypt_mutual_description_2">送信者と受信者の両方が相互モードを有効にすると、デフォルトで暗号化が有効になります。</string>
-  <string name="dialog_autocrypt_mutual_learn_more">詳細については <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">ここをクリック</a> してください。</string>
+  <string name="dialog_autocrypt_mutual_learn_more">詳細については <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">ここをクリック</a> してください。</string>
   <string name="general_settings_title">一般設定</string>
   <string name="dialog_openkeychain_info_title">OpenPGPアプリがインストールされていません</string>
   <string name="dialog_openkeychain_info_install">インストール</string>
@@ -1014,7 +1014,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
 このメッセージを保存して、秘密鍵のバックアップとして使用できます。 これを行うには、パスワードを書き留めて、安全に保存する必要があります。
 </string>
-  <string name="ac_transfer_error_send">メッセージの送信中にエラーが発生しました。 ネットワーク接続と送信サーバーの設定を確認してください。</string>
+  <string name="ac_transfer_error_send">メッセージの送信中にエラーが発生しました。 ネットワーク接続と送信サーバの設定を確認してください。</string>
   <string name="switch_on">オン</string>
   <string name="switch_off">オフ</string>
   <!--permissions-->
@@ -1027,7 +1027,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="push_notification_state_wait_network">ネットワークが利用可能になるまでスリープ</string>
   <string name="push_notification_info">タップして詳細を表示。</string>
   <string name="push_info_title">プッシュ情報</string>
-  <string name="push_info_notification_explanation_text">プッシュを使用する場合、K-9 Mailはメールサーバーへの接続を維持します。Androidでは、アプリがバックグラウンドで動作している間、継続して通知を表示する必要があります。%s</string>
+  <string name="push_info_notification_explanation_text">プッシュを使用する場合、K-9 Mail はメールサーバへの接続を維持します。Android では、アプリがバックグラウンドで動作している間、継続して通知を表示する必要があります。%s</string>
   <string name="push_info_configure_notification_text">しかし、Androidでは、通知を隠すこともできます。</string>
   <string name="push_info_learn_more_text">詳細を表示</string>
   <string name="push_info_configure_notification_action">通知設定</string>

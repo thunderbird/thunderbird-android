@@ -954,7 +954,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="dialog_autocrypt_mutual_title">Reciproke aŭtomata ĉifrado</string>
   <string name="dialog_autocrypt_mutual_description_1">Mesaĝoj norme estos ĉifritaj laŭ elekto aŭ kiam respondi al ĉifrita mesaĝo</string>
   <string name="dialog_autocrypt_mutual_description_2">Se ambaŭ sendanto kaj ricevanto aktivigas tiun ĉi reĝimon, ĉifrado estos implicite aktivigita.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Vi povas <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klaki tien ĉi</a> por sciiĝi pli (en la angla).</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Vi povas <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klaki tien ĉi</a> por sciiĝi pli (en la angla).</string>
   <string name="general_settings_title">Ĝeneralaj agordoj</string>
   <string name="dialog_openkeychain_info_title">Neniu OpenPGP-aplikaĵo instalita</string>
   <string name="dialog_openkeychain_info_install">Instali</string>

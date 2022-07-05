@@ -80,7 +80,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="okay_action">OK</string>
   <string name="cancel_action">Anuluj</string>
   <string name="send_action">Wyślij</string>
-  <string name="empty_subject">Temat jest pusty, kliknij ponownie by wysłać</string>
+  <string name="empty_subject">Temat jest pusty, kliknij ponownie, aby wysłać</string>
   <string name="reply_action">Odpowiedz</string>
   <string name="reply_all_action">Odpowiedz wszystkim</string>
   <string name="delete_action">Usuń</string>
@@ -245,7 +245,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_messageview_fixedwidth_label">Czcionka o stałej szer.</string>
   <string name="global_settings_messageview_fixedwidth_summary">Użyj czcionki o stałej szerokości do wyświetlania wiadomości tekstowych</string>
   <string name="global_settings_messageview_autofit_width_label">Dopasuj wiadomość do rozmiaru ekranu</string>
-  <string name="global_settings_messageview_autofit_width_summary">Zmniejsza wiadomości aby mieściły się na ekranie</string>
+  <string name="global_settings_messageview_autofit_width_summary">Zmniejsza wiadomości, aby mieściły się na ekranie</string>
   <string name="global_settings_messageview_return_to_list_label">Skasuj i wróć do listy</string>
   <string name="global_settings_messageview_return_to_list_summary">Wraca do listy wiadomości po usunięciu danej wiadomości</string>
   <string name="global_settings_messageview_show_next_label">Pokaż następną wiadomość po usunięciu</string>
@@ -800,7 +800,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
     <item quantity="one">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\" trzeba podać hasło.</item>
     <item quantity="few">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\" trzeba podać hasła.</item>
     <item quantity="many">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\" trzeba podać hasła.</item>
-    <item quantity="other">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\" trzeba podać hasła.</item>
+    <item quantity="other">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasła.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Hasło serwera poczty przychodzącej</string>
   <string name="settings_import_outgoing_server_password_hint">Hasło serwera poczty wychodzącej</string>
@@ -808,12 +808,12 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="server_name_format">Nazwa serwera: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Pokaż licznik nieprzeczytanych dla…</string>
   <string name="unread_widget_account_title">Konto</string>
-  <string name="unread_widget_account_summary">Folder dla którego liczba nie przeczytanych wiadomości powinna być wyświetlana</string>
+  <string name="unread_widget_account_summary">Konto, dla którego liczba nieprzeczytanych wiadomości powinna być wyświetlana</string>
   <string name="unread_widget_unified_inbox_account_summary">Zintegrowana skrzynka odbiorcza</string>
   <string name="unread_widget_folder_enabled_title">Liczba folderów</string>
   <string name="unread_widget_folder_enabled_summary">Wyświetl licznik nieprzeczytanych wiadomości tylko dla pojedynczego folderu</string>
   <string name="unread_widget_folder_title">Folder</string>
-  <string name="unread_widget_folder_summary">Folder dla którego liczba nie przeczytanych wiadomości powinna być wyświetlana</string>
+  <string name="unread_widget_folder_summary">Folder, dla którego liczba nieprzeczytanych wiadomości powinna być wyświetlana</string>
   <string name="unread_widget_action_done">Wykonano</string>
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Nie wybrano konta</string>
@@ -864,7 +864,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="remote_search_error">Wyszukiwanie na serwerze nie powiodło się</string>
   <string name="account_settings_search">Wyszukiwanie</string>
   <string name="action_remote_search">Wyszukuj wiadomości na serwerze</string>
-  <string name="remote_search_unavailable_no_network">Połączenie sieciowe jest wymagane aby korzystać z wyszukiwania na serwerze.</string>
+  <string name="remote_search_unavailable_no_network">Połączenie sieciowe jest wymagane, aby korzystać z wyszukiwania na serwerze.</string>
   <string name="global_settings_background_as_unread_indicator_label">Zmień kolor przeczytanych</string>
   <string name="global_settings_background_as_unread_indicator_summary">Inne tło wskazuje, że wiadomość została przeczytana.</string>
   <string name="global_settings_threaded_view_label">Widok wątków</string>
@@ -939,7 +939,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Zaszyfrowane wiadomości są zawsze opatrzone podpisem.</string>
   <string name="crypto_msg_title_plaintext">Czysty tekst</string>
   <string name="crypto_msg_unencrypted_sign_error">Podpis end-to-end zawiera błąd</string>
-  <string name="crypto_msg_incomplete_signed">musisz w pełni pobrać wiadomość by przetworzyć podpis</string>
+  <string name="crypto_msg_incomplete_signed">musisz w pełni pobrać wiadomość, aby przetworzyć podpis</string>
   <string name="crypto_msg_unsupported_signed">zawiera niewspierany podpis end-to-end</string>
   <string name="crypto_msg_unsupported_encrypted">Wiadomość jest zaszyfrowana, ale w niewspieranym formacie.</string>
   <string name="crypto_msg_cancelled">Wiadomość jest zaszyfrowana, ale deszyfrowanie zostało przerwane.</string>
@@ -953,7 +953,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="crypto_msg_unencrypted_sign_unknown">od nieznanego klucza end-to-end</string>
   <string name="crypto_msg_title_encrypted_unknown">Zaszyfrowana</string>
   <string name="crypto_msg_encrypted_error">ale jest tu błąd deszyfrowania</string>
-  <string name="crypto_msg_encrypted_incomplete">musisz w pełni pobrać wiadomość by odszyfrować</string>
+  <string name="crypto_msg_encrypted_incomplete">musisz w pełni pobrać wiadomość, aby odszyfrować</string>
   <string name="crypto_msg_encrypted_no_provider">ale żadna aplikacja kryptograficzna nie jest skonfigurowana</string>
   <string name="crypto_msg_title_encrypted_unsigned">Zaszyfrowana</string>
   <string name="crypto_msg_encrypted_unsigned">ale nie end-to-end</string>
@@ -1007,7 +1007,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="dialog_autocrypt_mutual_title">Obustronny automatyczny tryb szyfrowania</string>
   <string name="dialog_autocrypt_mutual_description_1">Wiadomości normalnie będą szyfrowane z wyboru lub kiedy odpowiadasz na szyfrowaną wiadomość.</string>
   <string name="dialog_autocrypt_mutual_description_2">Jeśli nadawca i odbiorcy włączą tryb obustronnego automatycznego szyfrowania, szyfrowanie będzie włączone domyślnie.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Możesz <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">kliknąć tutaj</a> by dowiedzieć się więcej.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Możesz <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">kliknąć tutaj</a>, aby dowiedzieć się więcej.</string>
   <string name="general_settings_title">Ustawienia ogólne</string>
   <string name="dialog_openkeychain_info_title">Brak aplikacji dla OpenPGP</string>
   <string name="dialog_openkeychain_info_install">Instaluj</string>
@@ -1025,12 +1025,12 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="ac_transfer_will_be_sent">Wiadomość zostanie wysłana na adres:</string>
   <string name="ac_transfer_generating">Generowanie wiadomości konfiguracyjnej</string>
   <string name="ac_transfer_sending_to">Wysyłanie wiadomości do:</string>
-  <string name="ac_transfer_finish">Aby zakończyć otwórz wiadomość na drugim urządzeniu i wpisz kod konfiguracyjny. </string>
+  <string name="ac_transfer_finish">Aby zakończyć, otwórz wiadomość na drugim urządzeniu i wpisz kod konfiguracyjny. </string>
   <string name="ac_transfer_show_code">Pokaż kod konfiguracyjny</string>
   <string name="ac_transfer_msg_subject">Wiadomość konfiguracyjna Autocrypt</string>
   <string name="ac_transfer_msg_body">Ta wiadomość zawiera wszystkie informacje do bezpiecznego wyeksportowania wszystkich ustawień oraz klucza Autocrypt z oryginalnego urządzenia.
 
-Aby skonfigurować Autocrypt na nowym urządzeniu należy podążać za wyświetlonymi na nim wskazówkami.
+Aby skonfigurować Autocrypt na nowym urządzeniu, należy podążać za wyświetlonymi na nim wskazówkami.
 
 Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucza prywatnego, aby to uczynić należy zachować hasło i przechowywać je w bezpiecznym miejscu.
 </string>
@@ -1039,7 +1039,7 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <string name="switch_off">Wyłącz</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Pozwól na dostęp do kontaktów</string>
-  <string name="permission_contacts_rationale_message">Aby włączyć sugestie kontaktów i wyświetlać nazwy oraz zdjęcia aplikacja wymaga dostępu do kontaktów.</string>
+  <string name="permission_contacts_rationale_message">Aby włączyć sugestie kontaktów i wyświetlać nazwy oraz zdjęcia, aplikacja wymaga dostępu do kontaktów.</string>
   <string name="generic_loading_error">Podczas ładowania danych wystąpił błąd</string>
   <string name="push_notification_state_initializing">Inicjowanie…</string>
   <string name="push_notification_state_listening">Oczekiwanie na nowe e-maile</string>

@@ -996,7 +996,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="dialog_autocrypt_mutual_title">Автоматичне шифрування у режимі взаємності</string>
   <string name="dialog_autocrypt_mutual_description_1">Повідомлення будуть шифруватися за вашим вибором або при відповіді на шифроване повідомлення.</string>
   <string name="dialog_autocrypt_mutual_description_2">Якщо і відправник, і адресат увімкнуть режим взаємності, шифрування типово буде увімкнене.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Ви можете <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">перейти сюди</a>, щоб дізнатися більше.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Ви можете <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">перейти сюди</a>, щоб дізнатися більше.</string>
   <string name="general_settings_title">Загальні налаштування</string>
   <string name="dialog_openkeychain_info_title">Не встановлено додатка OpenPGP</string>
   <string name="dialog_openkeychain_info_install">Встановити</string>

@@ -29,6 +29,7 @@
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Thèid an cunntas “<xliff:g id="account">%s</xliff:g>” a thoirt air falbh on phost.</string>
   <!--=== General strings ==================================================================-->
+  <string name="authors">Ùghdaran</string>
   <string name="accounts_title">Cunntasan</string>
   <string name="advanced">Adhartach</string>
   <string name="compose_title_compose">Sgrìobh</string>
@@ -902,7 +903,7 @@
   <string name="dialog_autocrypt_mutual_title">Modh co-dhàimh Autocrypt</string>
   <string name="dialog_autocrypt_mutual_description_1">Mar as trice, thèid teachdaireachdan a chrioptachadh ma thagh thu sin no ma chuireas tu freagairt gu teachdaireachd chrioptaichte.</string>
   <string name="dialog_autocrypt_mutual_description_2">Ma chuireas an dà chuid an seòladair ’s am faightear modh na co-dhàimh air, thèid an crioptachadh mar bhun-roghainn.</string>
-  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Briog an-seo</a> airson barrachd fiosrachaidh.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Briog an-seo</a> airson barrachd fiosrachaidh.</string>
   <string name="general_settings_title">Roghainnean coitcheann</string>
   <string name="ac_transfer_title">Teachdaireachd suidheachaidh Autocrypt</string>
   <string name="ac_transfer_msg_subject">Teachdaireachd suidheachaidh Autocrypt</string>
