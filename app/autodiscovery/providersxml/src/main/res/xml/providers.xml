@@ -96,22 +96,6 @@
         <incoming uri="imap+ssl+://imap.comcast.net" username="$email" />
         <outgoing uri="smtp+tls+://smtp.comcast.net" username="$email" />
     </provider>
-    <provider id="live" label="Windows Live Hotmail" domain="live.com">
-        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
-    </provider>
-    <provider id="hotmail" label="Hotmail" domain="hotmail.com">
-        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
-    </provider>
-    <provider id="outlook" label="Outlook.com" domain="outlook.com">
-        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
-    </provider>
-    <provider id="msn" label="MSN" domain="msn.com">
-        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
-    </provider>
     <provider id="montclair.edu" label="MSU" domain="montclair.edu">
         <incoming uri="imap+ssl+://mail.montclair.edu" username="$user" />
         <outgoing uri="smtp+tls+://smtp.montclair.edu" username="$user" />
@@ -253,15 +237,6 @@
         <outgoing uri="smtp+ssl+://mail.messagingengine.com" username="$email" />
     </provider>
 
-   <!-- UK -->
-    <provider id="live-uk" label="Windows Live Hotmail" domain="live.co.uk">
-        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
-    </provider>
-    <provider id="hotmail-uk" label="Hotmail" domain="hotmail.co.uk">
-        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
-    </provider>
     <!-- Virgin Media variants -->
     <provider id="virginmedia.com" label="Virgin Media" domain="virginmedia.com">
         <incoming uri="imap+ssl+://imap.virginmedia.com" username="$email" />
@@ -644,11 +619,7 @@
         <incoming uri="imap+ssl+://imap.azet.sk" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.azet.sk" username="$email" />
     </provider>
-    <provider id="outlook.sk" label="Outlook.sk" domain="outlook.sk">
-        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
-    </provider>
-    
+
     <!-- The Netherlands -->
     <!-- Ziggo variants -->
     <provider id="casema.nl" label="Ziggo" domain="casema.nl">
@@ -769,4 +740,35 @@
         <incoming uri="imap+ssl+://imap.aol.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.aol.com" username="$email" />
     </provider>
+
+    <!-- Microsoft variants -->
+    <provider domain="outlook.com">
+        <incoming uri="imap+ssl+://outlook.office365.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.office365.com" username="$email" />
+    </provider>
+    <provider domain="hotmail.com">
+        <incoming uri="imap+ssl+://outlook.office365.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.office365.com" username="$email" />
+    </provider>
+    <provider domain="msn.com">
+        <incoming uri="imap+ssl+://outlook.office365.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.office365.com" username="$email" />
+    </provider>
+    <provider domain="live.com">
+        <incoming uri="imap+ssl+://outlook.office365.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.office365.com" username="$email" />
+    </provider>
+    <provider domain="live.co.uk">
+        <incoming uri="imap+ssl+://outlook.office365.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.office365.com" username="$email" />
+    </provider>
+    <provider domain="hotmail.co.uk">
+        <incoming uri="imap+ssl+://outlook.office365.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.office365.com" username="$email" />
+    </provider>
+    <provider domain="outlook.sk">
+        <incoming uri="imap+ssl+://outlook.office365.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.office365.com" username="$email" />
+    </provider>
+
 </providers>
