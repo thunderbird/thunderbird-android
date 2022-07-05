@@ -99,6 +99,7 @@
         <attr name="iconAboutTwitter" format="reference"/>
         <attr name="iconAboutFediverse" format="reference"/>
         <attr name="iconUserForum" format="reference"/>
+        <attr name="iconUserManual" format="reference"/>
         <attr name="iconHelp" format="reference"/>
 
         <attr name="unencryptedAttachmentUnlock" format="reference|color" />
