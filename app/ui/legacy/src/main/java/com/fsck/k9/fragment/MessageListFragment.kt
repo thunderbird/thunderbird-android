@@ -1482,6 +1482,7 @@ class MessageListFragment :
 
         resetActionMode()
         computeBatchDirection()
+        computeSelectAllVisibility()
 
         isLoadFinished = true
 
