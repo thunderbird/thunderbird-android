@@ -5,6 +5,12 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.101" versioncode="31001" date="2022-07-06">
+        <change>Added support for using OAuth 2.0 with personal Microsoft accounts (Office365 accounts don't work yet)</change>
+        <change>Made the transition of existing Gmail accounts to OAuth 2.0 a bit easier</change>
+        <change>Fixed various small UI bugs</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.100" versioncode="31000" date="2022-06-15">
         <change>Added support for using OAuth 2.0 with Google accounts</change>
         <change>Added support for using OAuth 2.0 with Yahoo and AOL accounts</change>
