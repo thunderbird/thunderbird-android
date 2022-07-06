@@ -941,7 +941,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="dialog_autocrypt_mutual_title">Autocrypt aldebiko modua</string>
   <string name="dialog_autocrypt_mutual_description_1">Mezuak orokorrean zuk aukeratzean zifratzen dira, edo zifratutako mezu bati erantzutean.</string>
   <string name="dialog_autocrypt_mutual_description_2">Igorleak eta hartzaileak, biek gaitzen badute aldebiko modua, zifratzea lehenetsita gaituko da.</string>
-  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Klik hemen</a> gehiago ikasteko.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Klik hemen</a> gehiago ikasteko.</string>
   <string name="general_settings_title">Ezarpen orokorrak</string>
   <string name="dialog_openkeychain_info_title">Ez dago OpenPGP aplikaziorik instalatuta</string>
   <string name="dialog_openkeychain_info_install">Instalatu</string>

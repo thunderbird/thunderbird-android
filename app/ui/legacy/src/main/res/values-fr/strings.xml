@@ -1001,7 +1001,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="dialog_autocrypt_mutual_title">Mode mutuel Autocrypt</string>
   <string name="dialog_autocrypt_mutual_description_1">Les courriels seront habituellement chiffrés par choix ou en répondant à un courriel chiffré.</string>
   <string name="dialog_autocrypt_mutual_description_2">Si l’expéditeur et les destinataires activent le mode mutuel, le chiffrement sera activé par défaut.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Vous pouvez <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">toucher ici</a> (page en anglais) pour en apprendre davantage.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Vous pouvez <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">toucher ici</a> (page en anglais) pour en apprendre davantage.</string>
   <string name="general_settings_title">Paramètres généraux</string>
   <string name="dialog_openkeychain_info_title">Aucune appli OpenPGP n’est installée</string>
   <string name="dialog_openkeychain_info_install">Installer</string>

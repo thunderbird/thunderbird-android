@@ -992,7 +992,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="dialog_autocrypt_mutual_title">Automattisen salauksen kahdenkeskeinen tila</string>
   <string name="dialog_autocrypt_mutual_description_1">Viestit salataan normaalisti valinnan mukaan, tai kun vastataan salattuun viestiin.</string>
   <string name="dialog_autocrypt_mutual_description_2">Jos sekä lähettäjä että vastaanottaja ottavat käyttöön kahdenkeskeisen tilan, salaus otetaan käyttöön oletusarvoisesti.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Voit <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">napauttaa tästä</a> saadaksesi lisätietoja.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Voit <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">napauttaa tästä</a> saadaksesi lisätietoja.</string>
   <string name="general_settings_title">Yleiset asetukset</string>
   <string name="dialog_openkeychain_info_title">OpenPGP-sovellusta ei ole asennettu</string>
   <string name="dialog_openkeychain_info_install">Asenna</string>

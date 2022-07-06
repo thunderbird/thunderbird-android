@@ -960,7 +960,7 @@
   <string name="dialog_autocrypt_mutual_title">പരസ്പര മോഡ് ഓട്ടോക്രിപ്റ്റ് ചെയ്യുക</string>
   <string name="dialog_autocrypt_mutual_description_1">സന്ദേശങ്ങൾ‌ സാധാരണയായി തിരഞ്ഞെടുത്ത സന്ദേശങ്ങൾക്ക് അല്ലെങ്കിൽ‌ എൻ‌ക്രിപ്റ്റ് ചെയ്ത സന്ദേശത്തിന് മറുപടി നൽകുമ്പോൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യും.</string>
   <string name="dialog_autocrypt_mutual_description_2">അയച്ചയാളും സ്വീകർത്താക്കളും പരസ്പര മോഡ് പ്രാപ്തമാക്കിയാൽ, സ്ഥിരസ്ഥിതിയായി എൻക്രിപ്ഷൻ പ്രാപ്തമാക്കും.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">കൂടുതലറിയാൻ നിങ്ങൾക്ക് <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">ഇവിടെ ക്ലിക്കു</a> ചെയ്യാം.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">കൂടുതലറിയാൻ നിങ്ങൾക്ക് <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">ഇവിടെ ക്ലിക്കു</a> ചെയ്യാം.</string>
   <string name="general_settings_title">പൊതുവായ ക്രമീകരണങ്ങൾ</string>
   <string name="dialog_openkeychain_info_title">OpenPGP അപ്ലിക്കേഷനുകളൊന്നും ഇൻസ്റ്റാളുചെയ്‌തിട്ടില്ല</string>
   <string name="dialog_openkeychain_info_install">ഇൻസ്റ്റാൾ ചെയ്യുക</string>

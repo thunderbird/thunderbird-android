@@ -1003,7 +1003,7 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="dialog_autocrypt_mutual_title">Automatinio šifravimo abipusis režimas</string>
   <string name="dialog_autocrypt_mutual_description_1">Paprastai laiškai šifruojami pasirinktinai arba atsakant į užšifruotą laišką.</string>
   <string name="dialog_autocrypt_mutual_description_2">Jei ir siuntėjas, ir gavėjai įjungia abipusį režimą, šifravimas bus įjungtas pagal numatytuosius nustatymus.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Jūs galite <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">spausti čia</a> kad sužinoti daugiau.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Jūs galite <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">spausti čia</a> kad sužinoti daugiau.</string>
   <string name="general_settings_title">Bendri nustatymai</string>
   <string name="dialog_openkeychain_info_title">Neįdiegta OpenPGP programa</string>
   <string name="dialog_openkeychain_info_install">Įdiegti</string>

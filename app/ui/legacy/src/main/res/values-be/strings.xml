@@ -948,7 +948,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="dialog_autocrypt_mutual_title">Узаемнае аўташыфраванне</string>
   <string name="dialog_autocrypt_mutual_description_1">Лісты шыфруюцца па жаданні ці пры адказе на зашыфраваны ліст.</string>
   <string name="dialog_autocrypt_mutual_description_2">Калі адпраўнік і адрасат уключылі ўзаемнае шыфраванне, шыфраванне будзе ўключацца прадвызначана.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Націсніце <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">сюды</a>, каб даведацца больш.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Націсніце <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">сюды</a>, каб даведацца больш.</string>
   <string name="general_settings_title">Асноўныя налады</string>
   <string name="dialog_openkeychain_info_title">Няма ўсталяванай праграмы OpenPGP</string>
   <string name="dialog_openkeychain_info_install">Усталяваць</string>

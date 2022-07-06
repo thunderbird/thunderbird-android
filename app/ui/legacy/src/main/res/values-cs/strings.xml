@@ -781,13 +781,16 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Zadejte hesla</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Prosím přihlaste se</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Prosím přihlaste se a zadejte hesla</string>
   <string name="settings_import_failure">Nepodařilo se importovat nastavení</string>
   <string name="settings_import_read_failure">Nepodařilo se číst soubor s nastaveními</string>
   <string name="settings_import_partial_failure">Nepodařilo se naimportovat některá nastavení</string>
   <string name="settings_import_status_success">Úspěšně naimportováno</string>
   <string name="settings_import_status_password_required">Vyžadováno hesl</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Je vyžadováno přihlášení se</string>
   <string name="settings_import_status_not_imported">Nenaimportováno</string>
   <string name="settings_import_status_error">Nezdar při importu</string>
   <string name="settings_import_later_button">Později</string>
@@ -1004,7 +1007,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="dialog_autocrypt_mutual_title">Vzájemný režim automatického šifrování</string>
   <string name="dialog_autocrypt_mutual_description_1">Normálně budou zprávy šifrovány volitelně, nebo při odpovědi na šifrovanou zprávu.</string>
   <string name="dialog_autocrypt_mutual_description_2">Pokud jak odesilatel, tak příjemce zapnou vzájemný režim, šifrování bude ve výchozím stavu zapnuté.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Více informací je možné zjistit <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">kliknutím sem</a>.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Kliknutím sem</a> se můžete dozvědět více.</string>
   <string name="general_settings_title">Hlavní nastavení</string>
   <string name="dialog_openkeychain_info_title">Není nainstalovaná žádná OpenPGP aplikace</string>
   <string name="dialog_openkeychain_info_install">Nainstalovat</string>

@@ -9,7 +9,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Köpek Gezdiricileri</string>
   <string name="source_code">Kaynak kodu</string>
-  <string name="app_license">Apache Lisansı Uyarlama 2.0</string>
+  <string name="app_license">Apache Lisansı, Versiyon 2.0</string>
   <string name="about_project_title">Açık Kaynak Projesi</string>
   <string name="about_website_title">Web sitesi</string>
   <string name="user_forum_title">Kullanıcı forumu</string>
@@ -19,8 +19,8 @@
   <string name="license">Lisans</string>
   <string name="changelog_title">Değişim günlüğü</string>
   <string name="changelog_loading_error">Değişim günlüğü yüklenemedi. </string>
-  <string name="changelog_version_title">Sürüm %s</string>
-  <string name="changelog_recent_changes_title">Yeni ne var?</string>
+  <string name="changelog_version_title">Versiyon %s</string>
+  <string name="changelog_recent_changes_title">Yenilikler</string>
   <string name="changelog_show_recent_changes">Uygulama güncellendiğinde son değişiklikleri göster </string>
   <string name="changelog_snackbar_text">Bu sürümdeki yenilikleri öğrenin </string>
   <!--Welcome message-->
@@ -102,6 +102,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="search_action">Arama</string>
   <string name="search_everywhere_action">Her yerde ara</string>
   <string name="search_results">Arama Sonuçları</string>
+  <string name="new_messages_title">Yenı mesajlar</string>
   <string name="preferences_action">Ayarlar</string>
   <string name="folders_action">Klasörleri yönet</string>
   <string name="account_settings_action">Hesap Ayarları</string>
@@ -112,6 +113,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="flag_action">Yıldız Ekle</string>
   <string name="unflag_action">Yıldızı Kaldır</string>
   <string name="copy_action">Kopyala</string>
+  <string name="unsubscribe_action">Abonelikten Çık</string>
   <string name="show_headers_action">Başlıkları göster</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresler panoya kopyalandı</item>
@@ -156,6 +158,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="notification_action_archive">Arşiv</string>
   <string name="notification_action_archive_all">Hepsini Arşivle</string>
   <string name="notification_action_spam">Gereksiz posta</string>
+  <string name="notification_certificate_error_public">Sertifika hatası</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> için sertifika hatası</string>
   <string name="notification_certificate_error_text">Sunucu ayarlarınızı kontrol edin</string>
   <string name="notification_authentication_error_title">Kimlik Doğrulama Hatası</string>
@@ -182,6 +185,9 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="debug_enable_debug_logging_summary">Extra tanı bilgisini günlüğe kaydet</string>
   <string name="debug_enable_sensitive_logging_title">Hassas bilgi günlüğü tut</string>
   <string name="debug_enable_sensitive_logging_summary">Günlüklerde şifreler görünebilir.</string>
+  <string name="debug_export_logs_title">Dışa aktarım kayıtları</string>
+  <string name="debug_export_logs_success">Dışa aktarım başarılı. Kayıtlar hassas bilgiler içerebilir. Kiminle paylaştığına dikkat et.</string>
+  <string name="debug_export_logs_failure">Dışa aktarma başarısız</string>
   <string name="message_list_load_more_messages_action">Daha fazla ileti yükle</string>
   <string name="message_to_fmt">Kime:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Konu</string>
@@ -294,6 +300,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_auth_type_insecure_password">Güvenlik olmadan gönderilen şifre</string>
   <string name="account_setup_auth_type_encrypted_password">Şifreli parola</string>
   <string name="account_setup_auth_type_tls_client_certificate">İstemci sertifikası</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Gelen sunucu ayarları</string>
   <string name="account_setup_incoming_username_label">Kullanıcı adı</string>
   <string name="account_setup_incoming_password_label">Parola</string>
@@ -532,14 +539,23 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="notifications_title">Bildirimler</string>
   <string name="account_settings_vibrate_enable">Titreşim</string>
   <string name="account_settings_vibrate_pattern_default">Varsayılan</string>
+  <string name="account_settings_vibrate_pattern_1">Şablon 1</string>
+  <string name="account_settings_vibrate_pattern_2">Şablon 2</string>
+  <string name="account_settings_vibrate_pattern_3">Şablon 3</string>
+  <string name="account_settings_vibrate_pattern_4">Şablon 4</string>
+  <string name="account_settings_vibrate_pattern_5">Şablon 5</string>
   <string name="account_settings_vibrate_times">Titreşimi tekrarla</string>
+  <string name="account_settings_vibrate_summary_disabled">Devre dışı</string>
   <string name="account_settings_ringtone">Yeni posta zil sesi</string>
+  <string name="account_settings_notification_light_disabled">Devre dışı</string>
   <string name="account_settings_notification_light_account_color">Hesap rengi</string>
   <string name="account_settings_notification_light_white">Beyaz</string>
   <string name="account_settings_notification_light_red">Kırmızı</string>
   <string name="account_settings_notification_light_green">Yeşil</string>
   <string name="account_settings_notification_light_blue">Mavi</string>
   <string name="account_settings_notification_light_yellow">Sarı</string>
+  <string name="account_settings_notification_light_cyan">Camgöbeği</string>
+  <string name="account_settings_notification_light_magenta">Macenta</string>
   <string name="account_settings_composition_title">Mesaj oluşturma seçenekleri</string>
   <string name="account_settings_composition_label">Bileşen öntanımlıları</string>
   <string name="account_settings_composition_summary">Varsayılan Kimden, Bcc ve imzayı ayarlayın</string>
@@ -745,6 +761,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
   <string name="settings_import_authorization_required">Lütfen giriş yapın</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Lütfen giriş yapın ve parolaları girin</string>
   <string name="settings_import_failure">Ayarlar içe aktarılamadı</string>
   <string name="settings_import_read_failure">Ayarlar dosyası okunamadı</string>
   <string name="settings_import_partial_failure">Bazı ayarlar içe aktarılamadı</string>
@@ -857,6 +874,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="recipient_bcc">Gizli Kopya</string>
   <string name="recipient_to">Kime</string>
   <string name="recipient_from">Kimden</string>
+  <string name="reply_to_label">Yanıtla</string>
   <string name="unknown_recipient">&lt;Bilinmeyen Alıcı&gt;</string>
   <string name="unknown_sender">&lt;Bilinmeyen Gönderici&gt;</string>
   <string name="address_type_home">Ev</string>
@@ -960,7 +978,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="dialog_autocrypt_mutual_title">Autocrypt karşılıklı kipi</string>
   <string name="dialog_autocrypt_mutual_description_1">İletiler normalde seçilerek veya şifrelenmiş bir iletiyi yanıtlarken şifrelenecektir.</string>
   <string name="dialog_autocrypt_mutual_description_2">Hem gönderen hem de alıcının karşılıklı kipi etkinse, şifreleme öntanımlı olarak etkinleştirilir.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Daha fazlasını öğrenmek için <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">buraya tıkla</a> .</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Daha fazlasını öğrenmek için <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">buraya tıkla</a> .</string>
   <string name="general_settings_title">Genel Ayarlar</string>
   <string name="dialog_openkeychain_info_title">Kurulu OpenPGP uygulaması yok</string>
   <string name="dialog_openkeychain_info_install">Kur</string>

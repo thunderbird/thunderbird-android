@@ -988,7 +988,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="dialog_autocrypt_mutual_title">Autocrypt wederzijdse modus</string>
   <string name="dialog_autocrypt_mutual_description_1">Berichten worden op verzoek versleuteld, of bij beantwoorden van een versleuteld bericht.</string>
   <string name="dialog_autocrypt_mutual_description_2">Als verzender en ontvanger de wederzijdse modus inschakelen dan wordt standaard versleuteling ingesteld.</string>
-  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Klik hier</a> voor meer informatie.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Klik hier</a> voor meer informatie.</string>
   <string name="general_settings_title">Algemene instellingen</string>
   <string name="dialog_openkeychain_info_title">Geen OpenPGP app geïnstalleerd</string>
   <string name="dialog_openkeychain_info_install">Installeren</string>

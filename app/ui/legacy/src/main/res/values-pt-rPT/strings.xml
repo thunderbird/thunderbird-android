@@ -931,7 +931,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="dialog_autocrypt_mutual_title">Modo de auto-encriptação mútua</string>
   <string name="dialog_autocrypt_mutual_description_1">As mensagens serão normalmente encriptadas por opção ou em resposta a uma mensagem encriptada.</string>
   <string name="dialog_autocrypt_mutual_description_2">Se tanto o remetente como o destinatário ativarem o modo mútuo, a encriptação será ativada por padrão.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Pode <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">clicar aqui</a> para saber mais.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Pode <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">clicar aqui</a> para saber mais.</string>
   <string name="general_settings_title">Configurações gerais</string>
   <string name="dialog_openkeychain_info_title">Nenhuma aplicação OpenPGP instalada</string>
   <string name="dialog_openkeychain_info_install">instalar</string>

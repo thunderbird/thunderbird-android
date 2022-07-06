@@ -889,7 +889,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="dialog_autocrypt_mutual_title">Mod Autocrypt kenetre</string>
   <string name="dialog_autocrypt_mutual_description_1">Enrineget e vo ar c\'hemennadennoù dre zibab, pe en ur respont d\'ur gemennadenn enrineget.</string>
   <string name="dialog_autocrypt_mutual_description_2">M\'eo gweredekaet ar mod kenetre gant ar c\'haser hag an degemerer e vo gweredekaet an enrinegañ dre ziouer.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Gallout a rit klikañ <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">amañ</a>evit gouzout hiroc\'h.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Gallout a rit klikañ <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">amañ</a>evit gouzout hiroc\'h.</string>
   <string name="general_settings_title">Arventennoù hollek</string>
   <string name="dialog_openkeychain_info_title">Arload OpenPGP staliet ebet</string>
   <string name="dialog_openkeychain_info_install">Staliañ</string>

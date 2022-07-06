@@ -935,7 +935,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="dialog_autocrypt_mutual_title">Взаимен режим на Autocrypt</string>
   <string name="dialog_autocrypt_mutual_description_1">Обикновено съобщенията ще бъдат криптирано ако това е изрично зададено или ако се отговаря на криптирано съобщение.</string>
   <string name="dialog_autocrypt_mutual_description_2">Ако както изпращача така и получателите активират взаимния режим, криптирането ще бъде активирано по подразбиране.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Може да <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">натиснете тук</a>, за да научете повече.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Може да <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">натиснете тук</a>, за да научете повече.</string>
   <string name="general_settings_title">Общи настройки</string>
   <string name="dialog_openkeychain_info_title">Няма инсталирано OpenPGP приложение</string>
   <string name="dialog_openkeychain_info_install">Инсталирване</string>

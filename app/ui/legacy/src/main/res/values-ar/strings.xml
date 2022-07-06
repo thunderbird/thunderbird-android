@@ -747,7 +747,7 @@
   <string name="openpgp_enabled_error_back">العودة</string>
   <string name="openpgp_enabled_error_disable">تعطيل التعمية</string>
   <string name="openpgp_encryption">تعمية أوبن بي جي بي OpenPGP</string>
-  <string name="dialog_autocrypt_mutual_learn_more">لمعرفة المزيد يمكنك <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">النقر هنا</a>.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">لمعرفة المزيد يمكنك <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">النقر هنا</a>.</string>
   <string name="general_settings_title">الإعدادات العامة</string>
   <string name="dialog_openkeychain_info_title">ليس هناك أي تطبيق أوبن بي جي بي مُثبّت</string>
   <string name="dialog_openkeychain_info_install">تثبيت</string>

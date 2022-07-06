@@ -927,7 +927,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="dialog_autocrypt_mutual_title">Mode gabungan otomatis kripto</string>
   <string name="dialog_autocrypt_mutual_description_1">Pesan biasanya akan dienkripsi berdasarkan pilihan, atau saat membalas pesan terenkripsi.</string>
   <string name="dialog_autocrypt_mutual_description_2">Jika kedua pengirim dan penerima mengaktifkan mode bersama, enkripsi akan diaktifkan secara default.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Anda dapat <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klik di sini</a> untuk mempelajari lebih lanjut.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Anda dapat <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klik di sini</a> untuk mempelajari lebih lanjut.</string>
   <string name="general_settings_title">Pengaturan Umum</string>
   <string name="dialog_openkeychain_info_title">Tidak ada aplikasi OpenPGP yang terinstal</string>
   <string name="dialog_openkeychain_info_install">Memasang</string>

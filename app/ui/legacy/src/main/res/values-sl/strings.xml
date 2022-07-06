@@ -781,13 +781,16 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Prosim, vnesite geslo</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Prosim, prijavi se</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Prosim, prijavi se in vnesi gesla</string>
   <string name="settings_import_failure">Napaka pri uvozu nastavitev</string>
   <string name="settings_import_read_failure">Napaka pri branju datoteke nastavitev</string>
   <string name="settings_import_partial_failure">Napaka pri uvozu nekaterih nastavitev</string>
   <string name="settings_import_status_success">Uspešno uvoženo</string>
   <string name="settings_import_status_password_required">Geslo je potrebno</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Zahtevana je prijava</string>
   <string name="settings_import_status_not_imported">Ni uvoženo</string>
   <string name="settings_import_status_error">Napaka pri uvozu</string>
   <string name="settings_import_later_button">Kasneje</string>
@@ -1004,7 +1007,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="dialog_autocrypt_mutual_title">Vzajemni način šifriranjaVzajemni način šifriranja</string>
   <string name="dialog_autocrypt_mutual_description_1">Sporočila so lahko šifrirana na zahtevo. ali pri odgovarjanju na šifrirano sporočilo.</string>
   <string name="dialog_autocrypt_mutual_description_2">Kadar oba, pošiljatelj in prejemnik, omogočita vzajemni način, je šifriranje omogočeno samodejno.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Več o tem si je mogoče prebrati <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">na straneh pomoči</a>.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Več o tem si je mogoče prebrati <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">na straneh pomoči</a>.</string>
   <string name="general_settings_title">Splošne nastavitve</string>
   <string name="dialog_openkeychain_info_title">Ni nameščenega programa OpenPGP</string>
   <string name="dialog_openkeychain_info_install">Namesti</string>

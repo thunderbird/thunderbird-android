@@ -1004,7 +1004,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="dialog_autocrypt_mutual_title">Modd cydamgryptio</string>
   <string name="dialog_autocrypt_mutual_description_1">Ceir negeseuon fel arfer eu hamgryptio o ddewis neu wrth ateb i neges wedi ei hamgryptio.</string>
   <string name="dialog_autocrypt_mutual_description_2">Os yw\'r anfonwr a\'r derbynnydd ill dau yn galluogi modd cyd-amgryptio, caiff amgryptiad ei alluogi.</string>
-  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Clicia yma</a> i ddysgu mwy.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Clicia yma</a> i ddysgu mwy.</string>
   <string name="general_settings_title">Gosodiadau cyffredinol</string>
   <string name="dialog_openkeychain_info_title">Nid oes ap OpenPGP wedi\'i osod</string>
   <string name="dialog_openkeychain_info_install">Gosod</string>

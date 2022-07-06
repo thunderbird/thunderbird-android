@@ -993,7 +993,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="dialog_autocrypt_mutual_title">Autocrypt ömsesidigt läge</string>
   <string name="dialog_autocrypt_mutual_description_1">Meddelanden kommer normalt att krypteras efter eget val, eller när man svarar på ett krypterat meddelande.</string>
   <string name="dialog_autocrypt_mutual_description_2">Om både avsändare och mottagare aktiverar ömsesidigt läge aktiveras kryptering som standard.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klicka här</a> för att lära dig mer.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">trycka här</a> för att lära dig mer.</string>
   <string name="general_settings_title">Allmänna inställningar</string>
   <string name="dialog_openkeychain_info_title">Ingen OpenPGP-app installerad</string>
   <string name="dialog_openkeychain_info_install">Installera</string>
