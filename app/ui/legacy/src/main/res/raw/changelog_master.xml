@@ -5,6 +5,12 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.200" versioncode="32000" date="2022-07-08">
+        <change>Added support for using OAuth 2.0 with Google, Yahoo, AOL, and personal Microsoft accounts (Office365 accounts are not supported yet)</change>
+        <change>Added "Unsubscribe" action that is displayed in the menu when viewing a message that contains an Unsubscribe header</change>
+        <change>Various bug fixes and improvements</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.101" versioncode="31001" date="2022-07-06">
         <change>Added support for using OAuth 2.0 with personal Microsoft accounts (Office365 accounts don't work yet)</change>
         <change>Made the transition of existing Gmail accounts to OAuth 2.0 a bit easier</change>
