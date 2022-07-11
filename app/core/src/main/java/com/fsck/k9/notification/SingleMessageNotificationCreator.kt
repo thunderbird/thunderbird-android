@@ -3,7 +3,6 @@ package com.fsck.k9.notification
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
-import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import timber.log.Timber
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
@@ -12,8 +11,7 @@ internal class SingleMessageNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
-    private val lockScreenNotificationCreator: LockScreenNotificationCreator,
-    private val notificationManager: NotificationManagerCompat
+    private val lockScreenNotificationCreator: LockScreenNotificationCreator
 ) {
     fun createSingleNotification(
         baseNotificationData: BaseNotificationData,
@@ -52,7 +50,7 @@ internal class SingleMessageNotificationCreator(
                 notification
             )
         }
-        notificationManager.notify(notificationId, notification)
+        notificationHelper.notify(account, notificationId, notification)
     }
 
     private fun NotificationBuilder.setBigText(text: CharSequence) = apply {

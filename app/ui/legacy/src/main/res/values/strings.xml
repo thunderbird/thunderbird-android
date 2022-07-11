@@ -200,6 +200,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_authentication_error_title">Authentication failed</string>
     <string name="notification_authentication_error_text">Authentication failed for <xliff:g id="account">%s</xliff:g>. Update your server settings.</string>
 
+    <!-- Title of an error notification that is displayed when creating a notification for a new message has failed -->
+    <string name="notification_notify_error_title">Notification error</string>
+    <!-- Body of an error notification that is displayed when creating a notification for a new message has failed -->
+    <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound.\n\nTap to open notification settings.</string>
+
     <string name="notification_bg_sync_ticker">Checking mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Checking mail</string>
     <string name="notification_bg_send_ticker">Sending mail: <xliff:g id="account">%s</xliff:g></string>

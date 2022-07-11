@@ -18,7 +18,9 @@ val coreNotificationModule = module {
         )
     }
     single { NotificationManagerCompat.from(get()) }
-    single { NotificationHelper(context = get(), notificationManager = get(), channelUtils = get()) }
+    single {
+        NotificationHelper(context = get(), notificationManager = get(), notificationChannelManager = get(), resourceProvider = get())
+    }
     single {
         NotificationChannelManager(
             preferences = get(),
@@ -82,8 +84,7 @@ val coreNotificationModule = module {
             notificationHelper = get(),
             actionCreator = get(),
             resourceProvider = get(),
-            lockScreenNotificationCreator = get(),
-            notificationManager = get()
+            lockScreenNotificationCreator = get()
         )
     }
     factory {
@@ -92,8 +93,7 @@ val coreNotificationModule = module {
             actionCreator = get(),
             lockScreenNotificationCreator = get(),
             singleMessageNotificationCreator = get(),
-            resourceProvider = get(),
-            notificationManager = get()
+            resourceProvider = get()
         )
     }
     factory { LockScreenNotificationCreator(notificationHelper = get(), resourceProvider = get()) }

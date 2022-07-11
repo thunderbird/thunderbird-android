@@ -26,6 +26,15 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override fun authenticationErrorBody(accountName: String): String =
         "Authentication failed for $accountName. Update your server settings."
 
+    override fun notifyErrorTitle(): String = "Notification error"
+
+    override fun notifyErrorText(): String {
+        return "An error has occurred while trying to create a system notification for a new message. " +
+            "The reason is most likely a missing notification sound.\n" +
+            "\n" +
+            "Tap to open notification settings."
+    }
+
     override fun certificateErrorTitle(): String = "Certificate error"
 
     override fun certificateErrorTitle(accountName: String): String = "Certificate error for $accountName"
