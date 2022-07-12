@@ -1,17 +1,25 @@
 package com.fsck.k9.notification
 
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
 import com.fsck.k9.K9
+import com.fsck.k9.helper.PendingIntentCompat
+import com.fsck.k9.notification.NotificationChannelManager.ChannelType
+import timber.log.Timber
 
 class NotificationHelper(
     private val context: Context,
     private val notificationManager: NotificationManagerCompat,
-    private val channelUtils: NotificationChannelManager
+    private val notificationChannelManager: NotificationChannelManager,
+    private val resourceProvider: NotificationResourceProvider
 ) {
     fun getContext(): Context {
         return context
@@ -21,14 +29,59 @@ class NotificationHelper(
         return notificationManager
     }
 
-    fun createNotificationBuilder(
-        account: Account,
-        channelType: NotificationChannelManager.ChannelType
-    ): NotificationCompat.Builder {
-        return NotificationCompat.Builder(
-            context,
-            channelUtils.getChannelIdFor(account, channelType)
-        )
+    fun createNotificationBuilder(account: Account, channelType: ChannelType): NotificationCompat.Builder {
+        val notificationChannel = notificationChannelManager.getChannelIdFor(account, channelType)
+        return NotificationCompat.Builder(context, notificationChannel)
+    }
+
+    fun notify(account: Account, notificationId: Int, notification: Notification) {
+        try {
+            notificationManager.notify(notificationId, notification)
+        } catch (e: SecurityException) {
+            // When importing settings from another device, we could end up with a NotificationChannel that references a
+            // non-existing notification sound. In that case, we end up with a SecurityException with a message similar
+            // to this:
+            // UID 123 does not have permission to content://media/external_primary/audio/media/42?title=Coins&canonical=1 [user 0]
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                e.message?.contains("does not have permission to") == true
+            ) {
+                Timber.e(e, "Failed to create a notification for a new message")
+                showNotifyErrorNotification(account)
+            } else {
+                throw e
+            }
+        }
+    }
+
+    private fun showNotifyErrorNotification(account: Account) {
+        val title = resourceProvider.notifyErrorTitle()
+        val text = resourceProvider.notifyErrorText()
+
+        val messagesNotificationChannelId = notificationChannelManager.getChannelIdFor(account, ChannelType.MESSAGES)
+        val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+            putExtra(Settings.EXTRA_CHANNEL_ID, messagesNotificationChannelId)
+            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+        }
+
+        val notificationSettingsPendingIntent =
+            PendingIntent.getActivity(context, account.accountNumber, intent, PendingIntentCompat.FLAG_IMMUTABLE)
+
+        val notification = createNotificationBuilder(account, ChannelType.MISCELLANEOUS)
+            .setSmallIcon(resourceProvider.iconWarning)
+            .setColor(account.chipColor)
+            .setWhen(System.currentTimeMillis())
+            .setAutoCancel(true)
+            .setTicker(title)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setContentIntent(notificationSettingsPendingIntent)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            .setCategory(NotificationCompat.CATEGORY_ERROR)
+            .setErrorAppearance()
+            .build()
+
+        val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
+        notificationManager.notify(notificationId, notification)
     }
 
     companion object {

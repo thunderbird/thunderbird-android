@@ -3,7 +3,6 @@ package com.fsck.k9.notification
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
-import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import com.fsck.k9.notification.NotificationIds.getNewMailSummaryNotificationId
@@ -15,8 +14,7 @@ internal class SummaryNotificationCreator(
     private val actionCreator: NotificationActionCreator,
     private val lockScreenNotificationCreator: LockScreenNotificationCreator,
     private val singleMessageNotificationCreator: SingleMessageNotificationCreator,
-    private val resourceProvider: NotificationResourceProvider,
-    private val notificationManager: NotificationManagerCompat
+    private val resourceProvider: NotificationResourceProvider
 ) {
     fun createSummaryNotification(
         baseNotificationData: BaseNotificationData,
@@ -75,7 +73,7 @@ internal class SummaryNotificationCreator(
             .build()
 
         Timber.v("Creating inbox-style summary notification (silent=%b): %s", notificationData.isSilent, notification)
-        notificationManager.notify(notificationData.notificationId, notification)
+        notificationHelper.notify(account, notificationData.notificationId, notification)
     }
 
     private fun buildInboxSummaryText(accountName: String, notificationData: SummaryInboxNotificationData): String {
