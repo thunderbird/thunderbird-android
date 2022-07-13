@@ -1311,13 +1311,11 @@ open class MessageList :
         configureMenu(menu)
     }
 
-    private fun addMessageListFragment(fragment: MessageListFragment, addToBackStack: Boolean) {
+    private fun addMessageListFragment(fragment: MessageListFragment) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
 
         fragmentTransaction.replace(R.id.message_list_container, fragment)
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(null)
-        }
+        fragmentTransaction.addToBackStack(null)
 
         messageListFragment = fragment
 
@@ -1364,7 +1362,7 @@ open class MessageList :
         initializeFromLocalSearch(tmpSearch)
 
         val fragment = MessageListFragment.newInstance(tmpSearch, true, false)
-        addMessageListFragment(fragment, true)
+        addMessageListFragment(fragment)
     }
 
     private fun showMessageViewPlaceHolder() {
