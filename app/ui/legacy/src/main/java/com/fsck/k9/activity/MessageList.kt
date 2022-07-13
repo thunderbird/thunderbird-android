@@ -105,7 +105,6 @@ open class MessageList :
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
     private var messageViewFragment: MessageViewFragment? = null
-    private var firstBackStackId = -1
     private var account: Account? = null
     private var search: LocalSearch? = null
     private var singleFolderMode = false
@@ -224,10 +223,8 @@ open class MessageList :
 
         setIntent(intent)
 
-        if (firstBackStackId >= 0) {
-            supportFragmentManager.popBackStackImmediate(firstBackStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            firstBackStackId = -1
-        }
+        // Start with a fresh fragment back stack
+        supportFragmentManager.popBackStackImmediate(FIRST_FRAGMENT_TRANSACTION, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
         removeMessageListFragment()
         removeMessageViewFragment()
@@ -565,7 +562,6 @@ open class MessageList :
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
         outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
-        outState.putInt(STATE_FIRST_BACK_STACK_ID, firstBackStackId)
     }
 
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -573,7 +569,6 @@ open class MessageList :
 
         messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
-        firstBackStackId = savedInstanceState.getInt(STATE_FIRST_BACK_STACK_ID)
     }
 
     private fun initializeActionBar() {
@@ -1315,7 +1310,12 @@ open class MessageList :
         val fragmentTransaction = supportFragmentManager.beginTransaction()
 
         fragmentTransaction.replace(R.id.message_list_container, fragment)
-        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.setReorderingAllowed(true)
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            fragmentTransaction.addToBackStack(FIRST_FRAGMENT_TRANSACTION)
+        } else {
+            fragmentTransaction.addToBackStack(null)
+        }
 
         messageListFragment = fragment
 
@@ -1323,10 +1323,7 @@ open class MessageList :
             lockDrawer()
         }
 
-        val transactionId = fragmentTransaction.commit()
-        if (transactionId >= 0 && firstBackStackId < 0) {
-            firstBackStackId = transactionId
-        }
+        fragmentTransaction.commit()
     }
 
     override fun startSearch(query: String, account: Account?, folderId: Long?): Boolean {
@@ -1682,6 +1679,7 @@ open class MessageList :
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
         private const val STATE_FIRST_BACK_STACK_ID = "firstBackstackId"
 
+        private const val FIRST_FRAGMENT_TRANSACTION = "first"
         private const val FRAGMENT_TAG_MESSAGE_VIEW = "MessageViewFragment"
         private const val FRAGMENT_TAG_PLACEHOLDER = "MessageViewPlaceholder"
 
