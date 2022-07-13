@@ -595,8 +595,7 @@ open class MessageList :
         return object : DrawerListener {
             override fun onDrawerClosed(drawerView: View) {
                 if (openFolderTransaction != null) {
-                    openFolderTransaction!!.commit()
-                    openFolderTransaction = null
+                    commitOpenFolderTransaction()
                 }
             }
 
@@ -619,14 +618,20 @@ open class MessageList :
         search.addAllowedFolder(folderId)
 
         performSearch(search)
-
-        onMessageListDisplayed()
     }
 
     private fun openFolderImmediately(folderId: Long) {
         openFolder(folderId)
+        commitOpenFolderTransaction()
+    }
+
+    private fun commitOpenFolderTransaction() {
         openFolderTransaction!!.commit()
         openFolderTransaction = null
+
+        messageListFragment!!.onListVisible()
+
+        onMessageListDisplayed()
     }
 
     fun openUnifiedInbox() {
