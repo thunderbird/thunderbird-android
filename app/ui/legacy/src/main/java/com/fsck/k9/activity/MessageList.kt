@@ -23,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SortType
@@ -1307,14 +1308,16 @@ open class MessageList :
     }
 
     private fun addMessageListFragment(fragment: MessageListFragment) {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        supportFragmentManager.commit {
+            replace(R.id.message_list_container, fragment)
 
-        fragmentTransaction.replace(R.id.message_list_container, fragment)
-        fragmentTransaction.setReorderingAllowed(true)
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            fragmentTransaction.addToBackStack(FIRST_FRAGMENT_TRANSACTION)
-        } else {
-            fragmentTransaction.addToBackStack(null)
+            setReorderingAllowed(true)
+
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                addToBackStack(FIRST_FRAGMENT_TRANSACTION)
+            } else {
+                addToBackStack(null)
+            }
         }
 
         messageListFragment = fragment
@@ -1322,8 +1325,6 @@ open class MessageList :
         if (isDrawerEnabled) {
             lockDrawer()
         }
-
-        fragmentTransaction.commit()
     }
 
     override fun startSearch(query: String, account: Account?, folderId: Long?): Boolean {
