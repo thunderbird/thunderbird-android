@@ -161,6 +161,8 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="notification_certificate_error_text">Ellenőrizze a kiszolgálóbeállításokat.</string>
   <string name="notification_authentication_error_title">A hitelesítés sikertelen.</string>
   <string name="notification_authentication_error_text">A hitelesítés sikertelen: <xliff:g id="account">%s</xliff:g>. Frissítse a kiszolgálóbeállításokat.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
   <string name="notification_bg_send_ticker">Levél küldése: <xliff:g id="account">%s</xliff:g></string>

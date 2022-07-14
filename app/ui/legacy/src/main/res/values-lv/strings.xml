@@ -165,6 +165,8 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="notification_certificate_error_text">Pārbaudiet sava servera iestatījumus</string>
   <string name="notification_authentication_error_title">Identitātes pārbaude neizdevās</string>
   <string name="notification_authentication_error_text">Identifikācijas pārbaude kontam <xliff:g id="account">%s</xliff:g> neizdevās. Atjaunojiet servera iestatījumus!</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Pārbauda pastu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Pārbauda pastu</string>
   <string name="notification_bg_send_ticker">Sūta pastu: <xliff:g id="account">%s</xliff:g></string>

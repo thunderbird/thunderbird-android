@@ -158,6 +158,8 @@
   <string name="notification_certificate_error_text">Проверите поставке за сервер</string>
   <string name="notification_authentication_error_title">Аутентификација није успела</string>
   <string name="notification_authentication_error_text">Аутентификација није успела за <xliff:g id="account">%s</xliff:g>. Ажурирајте поставке сервера.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Проверавам пошту: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Проверавам пошту</string>
   <string name="notification_bg_send_ticker">Шаљем пошту: <xliff:g id="account">%s</xliff:g></string>

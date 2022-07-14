@@ -167,6 +167,8 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="notification_certificate_error_text">Kontrolli serveri sätteid</string>
   <string name="notification_authentication_error_title">Autentimine ebaõnnestus</string>
   <string name="notification_authentication_error_text">Autentimine ebaõnnestus konto <xliff:g id="account">%s</xliff:g> puhul. Uuenda serveri seadeid.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Kontrollib e-kirju: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollib e-kirju</string>
   <string name="notification_bg_send_ticker">Saadab e-kirja: <xliff:g id="account">%s</xliff:g></string>

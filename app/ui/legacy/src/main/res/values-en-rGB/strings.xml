@@ -13,6 +13,8 @@
   <!--=== General strings ==================================================================-->
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="global_settings_registered_name_color_label">Colourise contacts</string>
   <string name="global_settings_registered_name_color_changed">Colourise names in your contact list</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->

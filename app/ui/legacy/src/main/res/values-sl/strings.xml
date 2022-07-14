@@ -170,6 +170,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="notification_certificate_error_text">Preverite nastavitve strežnika</string>
   <string name="notification_authentication_error_title">Overjanje je spodletelo</string>
   <string name="notification_authentication_error_text">Overjanje je spodletelo za račun <xliff:g id="account">%s</xliff:g>. Posodobiti je treba nastavitve strežnika.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Preverjanje pošte: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Preverjanje pošte</string>
   <string name="notification_bg_send_ticker">Pošiljanje pošte: <xliff:g id="account">%s</xliff:g></string>

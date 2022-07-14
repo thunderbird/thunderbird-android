@@ -12,6 +12,8 @@
   <string name="app_license">Apache 授權條款， 版本 2.0</string>
   <string name="about_project_title">開放原始碼專案</string>
   <string name="about_website_title">網站</string>
+  <string name="user_manual_title">使用者手冊</string>
+  <string name="get_help_title">取得說明</string>
   <string name="user_forum_title">使用者論壇</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -164,6 +166,8 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
   <string name="notification_authentication_error_title">身份驗證失敗</string>
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> 登入失敗。請更新你的伺服器設定。</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">正在檢查郵件：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在檢查郵件</string>
   <string name="notification_bg_send_ticker">正在寄送郵件：<xliff:g id="account">%s</xliff:g></string>

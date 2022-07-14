@@ -170,6 +170,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="notification_certificate_error_text">Перевірте налаштування вашого серверу</string>
   <string name="notification_authentication_error_title">Помилка автентифікації</string>
   <string name="notification_authentication_error_text">Помилка автентифікації для <xliff:g id="account">%s</xliff:g>. Змініть налаштування сервера.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Перевірка пошти: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Перевірка пошти</string>
   <string name="notification_bg_send_ticker">Надсилання пошти: <xliff:g id="account">%s</xliff:g></string>

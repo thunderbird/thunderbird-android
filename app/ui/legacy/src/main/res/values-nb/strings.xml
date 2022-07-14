@@ -155,6 +155,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="notification_certificate_error_text">Sjekk dine tjenerinnstillinger</string>
   <string name="notification_authentication_error_title">Autentisering feilet</string>
   <string name="notification_authentication_error_text">Autentisering feilet for <xliff:g id="account">%s</xliff:g>. Oppdater serverinnstillingene dine.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Sjekker e-post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Sjekker e-post</string>
   <string name="notification_bg_send_ticker">Sender e-post: <xliff:g id="account">%s</xliff:g></string>

@@ -167,6 +167,8 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="notification_certificate_error_text">Verifică setările serverului</string>
   <string name="notification_authentication_error_title">Autentificarea a eșuat</string>
   <string name="notification_authentication_error_text">Authentificare eșuată pentru <xliff:g id="account">%s</xliff:g>. Actualizează setările serverului.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Se verifică emailul: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Se verifică emailul</string>
   <string name="notification_bg_send_ticker">Se trimite emailul: <xliff:g id="account">%s</xliff:g></string>

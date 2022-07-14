@@ -12,6 +12,8 @@
   <string name="app_license">Apache-Lizenz, Version 2.0</string>
   <string name="about_project_title">Open Source Projekt</string>
   <string name="about_website_title">Webseite</string>
+  <string name="user_manual_title">Benutzerhandbuch</string>
+  <string name="get_help_title">Hilfe erhalten</string>
   <string name="user_forum_title">Anwenderforum</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -165,6 +167,10 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="notification_certificate_error_text">Überprüfen Sie Ihre Servereinstellungen</string>
   <string name="notification_authentication_error_title">Authentifizierung fehlgeschlagen</string>
   <string name="notification_authentication_error_text">Authentifizierung fehlgeschlagen für <xliff:g id="account">%s</xliff:g>. Überprüfen Sie Ihre Servereinstellungen.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Benachrichtigungsfehler</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Beim Versuch, eine Systembenachrichtigung für eine neue Nachricht zu erstellen, ist ein Fehler aufgetreten. Der Grund dafür ist höchstwahrscheinlich ein fehlender Benachrichtigungston.\n\nAntippen, um die Benachrichtigungseinstellungen zu öffnen.</string>
   <string name="notification_bg_sync_ticker">Neue E-Mails in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> werden abgerufen</string>
   <string name="notification_bg_sync_title">E-Mails werden abgerufen</string>
   <string name="notification_bg_send_ticker">E-Mail in <xliff:g id="account">%s</xliff:g> wird gesendet</string>

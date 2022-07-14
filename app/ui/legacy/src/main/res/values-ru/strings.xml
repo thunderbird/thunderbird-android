@@ -169,6 +169,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
   <string name="notification_authentication_error_title">Сбой аутентификации</string>
   <string name="notification_authentication_error_text">Сбой аутентификации для <xliff:g id="account">%s</xliff:g>. Измените настройки сервера</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Проверка <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Проверка почты</string>
   <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>

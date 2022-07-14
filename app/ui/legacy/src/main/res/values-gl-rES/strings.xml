@@ -89,6 +89,8 @@
   <string name="notification_action_spam">Lixo</string>
   <string name="notification_certificate_error_title">Erro de certificado para <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Comproba a configuración do servidor</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Comprobando correo</string>
   <string name="notification_bg_send_ticker">Enviando correo: <xliff:g id="account">%s</xliff:g></string>

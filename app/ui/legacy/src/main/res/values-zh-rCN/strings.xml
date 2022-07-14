@@ -12,6 +12,8 @@
   <string name="app_license">Apache 许可证，2.0 版</string>
   <string name="about_project_title">开源项目</string>
   <string name="about_website_title">网站</string>
+  <string name="user_manual_title">用户手册</string>
+  <string name="get_help_title">获取帮助</string>
   <string name="user_forum_title">用户论坛</string>
   <string name="about_fediverse_title">多样性</string>
   <string name="about_twitter_title">推特</string>
@@ -164,6 +166,10 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="notification_certificate_error_text">请检查您的服务器设置</string>
   <string name="notification_authentication_error_title">身份验证失败</string>
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> 登录失败，请更新设置。</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">通知错误</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">尝试创建新消息的系统通知时出错。最有可能的原因是缺少通知声音。\n\n轻按打开通知设置。</string>
   <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在检查邮件</string>
   <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
