@@ -12,6 +12,8 @@
   <string name="app_license">Apache License, Versão 2.0</string>
   <string name="about_project_title">Projeto de código aberto</string>
   <string name="about_website_title">Website</string>
+  <string name="user_manual_title">Manual do usuário</string>
+  <string name="get_help_title">Obtenha ajuda</string>
   <string name="user_forum_title">Fórum de usuários</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -167,6 +169,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="notification_certificate_error_text">Verifique suas configurações de servidor</string>
   <string name="notification_authentication_error_title">Falha na autenticação</string>
   <string name="notification_authentication_error_text">Falha na autenticação de <xliff:g id="account">%s</xliff:g>. Atualize suas configurações de servidor.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Verificando email: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Verificando email</string>
   <string name="notification_bg_send_ticker">Enviando mensagem: <xliff:g id="account">%s</xliff:g></string>

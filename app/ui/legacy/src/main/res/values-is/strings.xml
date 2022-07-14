@@ -163,6 +163,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="notification_certificate_error_text">Athugaðu stillingar póstþjónsins</string>
   <string name="notification_authentication_error_title">Auðkenning mistókst</string>
   <string name="notification_authentication_error_text">Auðkenning mistókst fyrir <xliff:g id="account">%s</xliff:g>. Uppfærðu stillingar póstþjónsins þíns.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Athuga með póst: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Athuga með póst</string>
   <string name="notification_bg_send_ticker">Sendi póst: <xliff:g id="account">%s</xliff:g></string>

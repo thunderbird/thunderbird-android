@@ -162,6 +162,8 @@
   <string name="notification_certificate_error_text">Ελέγξτε τις ρυθμίσεις του εξυπηρετητή</string>
   <string name="notification_authentication_error_title">Αποτυχία πιστοποίησης</string>
   <string name="notification_authentication_error_text">Αποτυχία πιστοποίησης <xliff:g id="account">%s</xliff:g>. Ενημερώστε τις ρυθμίσεις του εξυπηρετητή σας.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Έλεγχος μηνύματος: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Έλεγχος μηνύματος</string>
   <string name="notification_bg_send_ticker">Αποστολή μηνύματος: <xliff:g id="account">%s</xliff:g></string>

@@ -12,6 +12,8 @@
   <string name="app_license">Licence Apache, Version 2.0</string>
   <string name="about_project_title">Projet à code source ouvert</string>
   <string name="about_website_title">Site Web</string>
+  <string name="user_manual_title">Guide d’utilisation</string>
+  <string name="get_help_title">Obtenir de l’aide</string>
   <string name="user_forum_title">Forum des utilisateurs</string>
   <string name="about_fediverse_title">Fédivers</string>
   <string name="about_twitter_title">Twitter</string>
@@ -169,6 +171,10 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="notification_certificate_error_text">Vérifiez vos paramètres de serveur</string>
   <string name="notification_authentication_error_title">Échec d’authentification</string>
   <string name="notification_authentication_error_text">Échec d’authentification pour <xliff:g id="account">%s</xliff:g>. Mettre à jour les paramètres du serveur.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Erreur de notification</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Impossible de créer une notification système de nouveau message. Un son de notification manquant en est probablement la cause.\n\nToucher pour ouvrir les paramètres de notification.</string>
   <string name="notification_bg_sync_ticker">Relève des courriels : <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Relève des courriels</string>
   <string name="notification_bg_send_ticker">Envoi du courriel : <xliff:g id="account">%s</xliff:g></string>

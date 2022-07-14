@@ -164,6 +164,8 @@
   <string name="notification_certificate_error_text">നിങ്ങളുടെ സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക</string>
   <string name="notification_authentication_error_title">പ്രാമാണീകരണം പരാജയപ്പെട്ടു</string>
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> നായുള്ള പ്രാമാണീകരണം പരാജയപ്പെട്ടു. നിങ്ങളുടെ സെർവർ ക്രമീകരണങ്ങൾ പുതുക്കുക.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">മെയിൽ പരിശോധിക്കുന്നു: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">മെയിൽ പരിശോധിക്കുന്നു</string>
   <string name="notification_bg_send_ticker">മെയിൽ അയയ്ക്കുന്നു: <xliff:g id="account">%s</xliff:g></string>

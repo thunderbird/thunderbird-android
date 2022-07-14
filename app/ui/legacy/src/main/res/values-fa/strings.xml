@@ -165,6 +165,8 @@
   <string name="notification_certificate_error_text">تنظیمات کارساز خود را بررسی کنید</string>
   <string name="notification_authentication_error_title">احراز هویت ناموفق بود</string>
   <string name="notification_authentication_error_text">اعتبارسنجی <xliff:g id="account">%s</xliff:g> ناموفق بود. تنظیمات کارساز خود را به‌روز کنید.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">به‌روزآوری رایانامه‌ها: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">به‌روزآوری رایانامه‌ها</string>
   <string name="notification_bg_send_ticker">ارسال رایانامه: <xliff:g id="account">%s</xliff:g></string>
@@ -276,6 +278,7 @@
   <string name="account_setup_basics_title">راه‌اندازی حساب کاربری جدید</string>
   <string name="account_setup_basics_email_hint">نشانی رایانامه </string>
   <string name="account_setup_basics_password_hint">گذرواژه</string>
+  <string name="account_setup_oauth_description">جهت استفاده‌ این حساب کاربری از K-9 Mail، نیاز است که وارد حساب کاربری خود شوید و اجازه دسترسی اپلیکیشن به ایمیل‌ها را صادر کنید.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->

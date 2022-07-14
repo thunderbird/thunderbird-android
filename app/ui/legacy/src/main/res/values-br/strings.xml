@@ -147,6 +147,8 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="notification_certificate_error_text">Gwiriit an arventennoù dafariad</string>
   <string name="notification_authentication_error_title">C’hwiadenn war an dilesa</string>
   <string name="notification_authentication_error_text">C’hwitadenn war an dilesa evit <xliff:g id="account">%s</xliff:g>. Hizivait an arventennoù dafariad.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">O kerc’hat ar posteloù: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Kerc’hat ar posteloù</string>
   <string name="notification_bg_send_ticker">O kas ar postel: <xliff:g id="account">%s</xliff:g></string>

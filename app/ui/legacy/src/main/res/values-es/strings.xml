@@ -12,6 +12,8 @@
   <string name="app_license">Licencia Apache, versión 2.0</string>
   <string name="about_project_title">Proyecto de código abierto</string>
   <string name="about_website_title">Sitio web</string>
+  <string name="user_manual_title">Manual de uso</string>
+  <string name="get_help_title">Ayuda</string>
   <string name="user_forum_title">Foro de usuarios</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -166,6 +168,10 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="notification_certificate_error_text">Comprueba los ajustes del servidor</string>
   <string name="notification_authentication_error_title">Fallo de autenticación</string>
   <string name="notification_authentication_error_text">Fallo de autenticación en <xliff:g id="account">%s</xliff:g>. Actualiza y revisa los ajustes del servidor.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Notificación fallida</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Ha ocurrido un problema al intentar crear una notificación del sistema alertando de un correo nuevo. Seguramente sea por no tener un sonido de alerta puesto.\n\nToca para ver los ajustes de notificaciones.</string>
   <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Comprobando correo</string>
   <string name="notification_bg_send_ticker">Enviando correo: <xliff:g id="account">%s</xliff:g></string>

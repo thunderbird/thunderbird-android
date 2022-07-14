@@ -115,6 +115,8 @@
   <string name="notification_certificate_error_text">서버 설정을 점검하십시오.</string>
   <string name="notification_authentication_error_title">인증 실패</string>
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> 계정 인증 오류. 서버 설정을 업데이트하세요.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">메일 체크 중: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">메일 체크 중</string>
   <string name="notification_bg_send_ticker">메일 전송 중: <xliff:g id="account">%s</xliff:g></string>

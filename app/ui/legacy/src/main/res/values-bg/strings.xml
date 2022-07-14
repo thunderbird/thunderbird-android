@@ -163,6 +163,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="notification_certificate_error_text">Проверете настройките на сървара</string>
   <string name="notification_authentication_error_title">Неуспешна идентификация</string>
   <string name="notification_authentication_error_text">Идентификацията за <xliff:g id="account">%s</xliff:g> е неуспешна. Обновете сървърните настройки.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Проверка на поща: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Проверка на поща</string>
   <string name="notification_bg_send_ticker">Изпраща писмо: <xliff:g id="account">%s</xliff:g></string>

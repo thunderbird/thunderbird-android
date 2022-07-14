@@ -163,6 +163,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="notification_certificate_error_text">Sunucu ayarlarınızı kontrol edin</string>
   <string name="notification_authentication_error_title">Kimlik Doğrulama Hatası</string>
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> için oturum açılamadı. Sunucu ayarlarınızı güncelleyin.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Posta kontrol ediliyor: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Posta kontrol ediliyor</string>
   <string name="notification_bg_send_ticker">Posta gönderiliyor: <xliff:g id="account">%s</xliff:g></string>

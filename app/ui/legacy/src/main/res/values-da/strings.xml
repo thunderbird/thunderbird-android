@@ -165,6 +165,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="notification_certificate_error_text">Kontroller dine serverindstillinger</string>
   <string name="notification_authentication_error_title">Godkendelse mislykkedes</string>
   <string name="notification_authentication_error_text">Godkendelse mislykkedes for <xliff:g id="account">%s</xliff:g>. Opdater dine serverindstillinger.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollere post</string>
   <string name="notification_bg_send_ticker">Sender mail: <xliff:g id="account">%s</xliff:g></string>

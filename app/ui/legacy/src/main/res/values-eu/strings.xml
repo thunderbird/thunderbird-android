@@ -160,6 +160,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="notification_certificate_error_text">Egiaztatu zerbitzariaren ezarpenak</string>
   <string name="notification_authentication_error_title">Autentifikazioak huts egin du</string>
   <string name="notification_authentication_error_text">Autentifikazioak huts egin du <xliff:g id="account">%s</xliff:g>-(e)rako. Eguneratu zerbitzariaren ezarpenak.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Posta egiaztatzen: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Posta egiaztatzen</string>
   <string name="notification_bg_send_ticker">Posta bidaltzen: <xliff:g id="account">%s</xliff:g></string>

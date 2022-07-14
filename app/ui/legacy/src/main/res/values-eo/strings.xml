@@ -161,6 +161,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="notification_certificate_error_text">Kontrolu agordojn de servilo</string>
   <string name="notification_authentication_error_title">Aŭtentigo malsukcesis</string>
   <string name="notification_authentication_error_text">Aŭtentigo por <xliff:g id="account">%s</xliff:g> malsukcesis. Aktualigu agordojn de servilo.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Kontrolado de retpoŝto: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrolado de retpoŝto</string>
   <string name="notification_bg_send_ticker">Sendado de retletero: <xliff:g id="account">%s</xliff:g></string>

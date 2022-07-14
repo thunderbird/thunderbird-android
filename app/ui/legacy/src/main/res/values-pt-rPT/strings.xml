@@ -149,6 +149,8 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="notification_certificate_error_text">Verifique as configurações do servidor</string>
   <string name="notification_authentication_error_title">A autenticação falhou</string>
   <string name="notification_authentication_error_text">A autenticação falhou para <xliff:g id="account">%s</xliff:g>. Atualize as configurações do servidor.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">A verificar correio: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">A verificar correio</string>
   <string name="notification_bg_send_ticker">A enviar correio: <xliff:g id="account">%s</xliff:g></string>

@@ -63,7 +63,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="compose_title_reply">Адказаць</string>
   <string name="compose_title_reply_all">Адказаць усім</string>
   <string name="compose_title_forward">Пераслаць</string>
-  <string name="compose_title_forward_as_attachment">Пераслаць як укладзены</string>
+  <string name="compose_title_forward_as_attachment">Пераслаць як далучаны файл</string>
   <string name="choose_account_title">Абраць акаўнт</string>
   <string name="choose_folder_title">Абраць каталог</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> абрана</string>
@@ -80,7 +80,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="archive_action">Архіў</string>
   <string name="spam_action">Спам</string>
   <string name="forward_action">Пераслаць</string>
-  <string name="forward_as_attachment_action">Пераслаць як укладзены</string>
+  <string name="forward_as_attachment_action">Пераслаць як далучаны файл</string>
   <string name="edit_as_new_message_action">Рэдагаваць як новы ліст</string>
   <string name="move_action">Перамясціць</string>
   <string name="move_to_drafts_action">Перамясціць у чарнавікі</string>
@@ -120,7 +120,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="read_receipt">Апавяшчэнне</string>
   <string name="read_receipt_enabled">Запытаць апавяшчэнне пра чытанне</string>
   <string name="read_receipt_disabled">Без апавяшчэння пра чытанне</string>
-  <string name="add_attachment_action">Укласці файлы</string>
+  <string name="add_attachment_action">Далучыць файлы</string>
   <string name="empty_trash_action">Ачысціць сметніцу</string>
   <string name="expunge_action">Выдаліць</string>
   <string name="about_action">Пра праграму</string>
@@ -159,6 +159,8 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="notification_certificate_error_text">Праверце налады сервера</string>
   <string name="notification_authentication_error_title">Аўтэнтыфікацыя схібіла</string>
   <string name="notification_authentication_error_text">Няўдалая аўтарызацыя для <xliff:g id="account">%s</xliff:g>. Змяніце налады сервера.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Праверка пошты: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Праверка пошты</string>
   <string name="notification_bg_send_ticker">Адпраўка пошты: <xliff:g id="account">%s</xliff:g></string>
@@ -200,12 +202,12 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="message_compose_show_quoted_text_action">Уключыць цытаваны ліст</string>
   <string name="message_compose_description_delete_quoted_text">Выдаліць цытату</string>
   <string name="message_compose_description_edit_quoted_text">Рэдагаваць цытату</string>
-  <string name="remove_attachment_action">Выдаліць укладзеныя файлы</string>
+  <string name="remove_attachment_action">Выдаліць далучаныя файлы</string>
   <string name="message_view_from_format">Ад: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Каму:</string>
   <string name="message_view_cc_label">Копія:</string>
   <string name="message_view_bcc_label">Схаваная копія:</string>
-  <string name="message_view_status_attachment_not_saved">Немагчыма захаваць укладзеныя файлы.</string>
+  <string name="message_view_status_attachment_not_saved">Немагчыма захаваць далучаныя файлы.</string>
   <string name="message_view_show_pictures_action">Прагляд малюнкаў</string>
   <string name="message_view_no_viewer">Няма праграмы для прагляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Спампаваць ліст цалкам</string>
@@ -563,7 +565,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="sort_flagged_last">Спачатку не адзначаныя лісты</string>
   <string name="sort_unread_first">Спачатку непрачытаныя лісты</string>
   <string name="sort_unread_last">Спачатку прачытаныя лісты</string>
-  <string name="sort_attach_first">Спачатку лісты з укладзенымі файламі</string>
+  <string name="sort_attach_first">Спачатку лісты з далучанымі файламі</string>
   <string name="sort_unattached_first">Спачатку лісты без укладзеных файлаў</string>
   <string name="sort_by">Сартаваць па…</string>
   <string name="sort_by_date">Дата</string>

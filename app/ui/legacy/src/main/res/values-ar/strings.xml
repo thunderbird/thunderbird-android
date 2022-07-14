@@ -160,6 +160,8 @@
   <string name="notification_certificate_error_text">تأكد من إعدادات الخادم</string>
   <string name="notification_authentication_error_title">فشل المصادقة</string>
   <string name="notification_authentication_error_text">فشل مصادقة <xliff:g id="account">%s</xliff:g>. يرجى تحديث إعدادات الخادم.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">تفقد البريد: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">التحقق من البريد</string>
   <string name="notification_bg_send_ticker">إرسال البريد: <xliff:g id="account">%s</xliff:g></string>

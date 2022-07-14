@@ -12,6 +12,8 @@
   <string name="app_license">Apache License, Version 2.0</string>
   <string name="about_project_title">Projekt med öppen källkod</string>
   <string name="about_website_title">Webbplats</string>
+  <string name="user_manual_title">Användarmanual</string>
+  <string name="get_help_title">Få hjälp</string>
   <string name="user_forum_title">Användarforum</string>
   <string name="about_fediverse_title">Fediversum</string>
   <string name="about_twitter_title">Twitter</string>
@@ -166,6 +168,10 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="notification_certificate_error_text">Kontrollera dina serverinställningar</string>
   <string name="notification_authentication_error_title">Autentisering misslyckades</string>
   <string name="notification_authentication_error_text">Autentisering misslyckades för <xliff:g id="account">%s</xliff:g>. Uppdatera dina serverinställningar.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Aviseringsfel</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Ett fel uppstod vid försök att skapa en systemavisering för ett nytt meddelande. Anledningen är troligen att ett aviseringsljud saknas.\n\nTryck för att öppna aviseringsinställningarna.</string>
   <string name="notification_bg_sync_ticker">Kontrollerar e-post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollerar e-post</string>
   <string name="notification_bg_send_ticker">Skickar e-post: <xliff:g id="account">%s</xliff:g></string>

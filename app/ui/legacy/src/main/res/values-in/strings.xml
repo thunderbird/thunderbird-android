@@ -154,6 +154,8 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="notification_certificate_error_text">Periksa pengaturan server Anda</string>
   <string name="notification_authentication_error_title">Otentikasi gagal</string>
   <string name="notification_authentication_error_text">Otentikasi gagal untuk <xliff:g id="account">%s</xliff:g>. Perbarui pengaturan server Anda.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Memeriksa pesan: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Memeriksa pesan</string>
   <string name="notification_bg_send_ticker">Mengirimkan pesan: <xliff:g id="account">%s</xliff:g></string>

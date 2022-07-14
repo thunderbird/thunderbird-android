@@ -160,6 +160,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="notification_certificate_error_text">Skontrolujte nastavenia servera</string>
   <string name="notification_authentication_error_title">Overenie zlyhalo</string>
   <string name="notification_authentication_error_text">Overenie pre <xliff:g id="account">%s</xliff:g> zlyhalo. Aktualizujte nastavenia servera.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Kontrolovanie pošty: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrolovanie pošty</string>
   <string name="notification_bg_send_ticker">Odosielanie pošty: <xliff:g id="account">%s</xliff:g></string>

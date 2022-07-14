@@ -170,6 +170,8 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="notification_certificate_error_text">Gwiria osodiadau\'r gweinydd</string>
   <string name="notification_authentication_error_title">Methwyd a dilysu</string>
   <string name="notification_authentication_error_text">Methodd y dilysiad ar gyfer <xliff:g id="account">%s</xliff:g>. Diweddara dy osodiadau gweinydd.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Yn gwirio am negeseuon: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Yn gwirio am negeseuon</string>
   <string name="notification_bg_send_ticker">Yn anfon negeseuon: <xliff:g id="account">%s</xliff:g></string>

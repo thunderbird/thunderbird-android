@@ -166,6 +166,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="notification_certificate_error_text">Comproveu la configuració del servidor.</string>
   <string name="notification_authentication_error_title">Ha fallat l\'autenticació</string>
   <string name="notification_authentication_error_text">Ha fallat l\'autenticació de <xliff:g id="account">%s</xliff:g>. Actualitzeu la configuració del servidor.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">S\'està comprovant el correu</string>
   <string name="notification_bg_send_ticker">S\'està enviant correu: <xliff:g id="account">%s</xliff:g></string>

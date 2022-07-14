@@ -12,6 +12,8 @@
   <string name="app_license">Apache-lisenssi, versio 2.0</string>
   <string name="about_project_title">Avoimen lähdekoodin projekti</string>
   <string name="about_website_title">Verkkosivusto</string>
+  <string name="user_manual_title">Käyttäjäopas</string>
+  <string name="get_help_title">Tuki</string>
   <string name="user_forum_title">Käyttäjäfoorumi</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -165,6 +167,10 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="notification_certificate_error_text">Tarkista palvelinasetuksesi</string>
   <string name="notification_authentication_error_title">Tunnistautuminen epäonnistui</string>
   <string name="notification_authentication_error_text">Tilin <xliff:g id="account">%s</xliff:g> tunnistautuminen epäonnistui. Päivitä palvelinasetuksesi.</string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Ilmoitusvirhe</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Uuteen viestiin liittyvää järjestelmäilmoitusta luotaessa tapahtui virhe. Syy on mitä luultavimmin puuttuva ilmoitusääni.\n\nNapauta avataksesi ilmoitusasetukset.</string>
   <string name="notification_bg_sync_ticker">Tarkistetaan viestejä: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Tarkistetaan viestejä</string>
   <string name="notification_bg_send_ticker">Lähetetään viestejä: <xliff:g id="account">%s</xliff:g></string>
