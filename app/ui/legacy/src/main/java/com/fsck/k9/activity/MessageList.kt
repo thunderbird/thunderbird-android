@@ -23,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SortType
@@ -105,7 +106,6 @@ open class MessageList :
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
     private var messageViewFragment: MessageViewFragment? = null
-    private var firstBackStackId = -1
     private var account: Account? = null
     private var search: LocalSearch? = null
     private var singleFolderMode = false
@@ -224,10 +224,8 @@ open class MessageList :
 
         setIntent(intent)
 
-        if (firstBackStackId >= 0) {
-            supportFragmentManager.popBackStackImmediate(firstBackStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            firstBackStackId = -1
-        }
+        // Start with a fresh fragment back stack
+        supportFragmentManager.popBackStackImmediate(FIRST_FRAGMENT_TRANSACTION, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
         removeMessageListFragment()
         removeMessageViewFragment()
@@ -565,7 +563,6 @@ open class MessageList :
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
         outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
-        outState.putInt(STATE_FIRST_BACK_STACK_ID, firstBackStackId)
     }
 
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -573,7 +570,6 @@ open class MessageList :
 
         messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
-        firstBackStackId = savedInstanceState.getInt(STATE_FIRST_BACK_STACK_ID)
     }
 
     private fun initializeActionBar() {
@@ -1316,23 +1312,23 @@ open class MessageList :
         configureMenu(menu)
     }
 
-    private fun addMessageListFragment(fragment: MessageListFragment, addToBackStack: Boolean) {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
+    private fun addMessageListFragment(fragment: MessageListFragment) {
+        supportFragmentManager.commit {
+            replace(R.id.message_list_container, fragment)
 
-        fragmentTransaction.replace(R.id.message_list_container, fragment)
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(null)
+            setReorderingAllowed(true)
+
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                addToBackStack(FIRST_FRAGMENT_TRANSACTION)
+            } else {
+                addToBackStack(null)
+            }
         }
 
         messageListFragment = fragment
 
         if (isDrawerEnabled) {
             lockDrawer()
-        }
-
-        val transactionId = fragmentTransaction.commit()
-        if (transactionId >= 0 && firstBackStackId < 0) {
-            firstBackStackId = transactionId
         }
     }
 
@@ -1369,7 +1365,7 @@ open class MessageList :
         initializeFromLocalSearch(tmpSearch)
 
         val fragment = MessageListFragment.newInstance(tmpSearch, true, false)
-        addMessageListFragment(fragment, true)
+        addMessageListFragment(fragment)
     }
 
     private fun showMessageViewPlaceHolder() {
@@ -1689,6 +1685,7 @@ open class MessageList :
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
         private const val STATE_FIRST_BACK_STACK_ID = "firstBackstackId"
 
+        private const val FIRST_FRAGMENT_TRANSACTION = "first"
         private const val FRAGMENT_TAG_MESSAGE_VIEW = "MessageViewFragment"
         private const val FRAGMENT_TAG_PLACEHOLDER = "MessageViewPlaceholder"
 
