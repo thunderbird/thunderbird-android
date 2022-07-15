@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.201" versioncode="32001" date="2022-07-15">
+        <change>Added support for using OAuth 2.0 with Office365 accounts</change>
+        <change>Fixed a bug that could lead to two message lists being displayed on top of each other</change>
+        <change>Avoid a crash when trying to create new message notifications but the notification sound couldn't be accessed</change>
+        <change>Fixed a bug where multi-select mode was exited early in some cases</change>
+        <change>Don't require re-authorization when getting an OAuth token fails due to a temporary error</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.200" versioncode="32000" date="2022-07-08">
         <change>Added support for using OAuth 2.0 with Google, Yahoo, AOL, and personal Microsoft accounts (Office365 accounts are not supported yet)</change>
         <change>Added "Unsubscribe" action that is displayed in the menu when viewing a message that contains an Unsubscribe header</change>
