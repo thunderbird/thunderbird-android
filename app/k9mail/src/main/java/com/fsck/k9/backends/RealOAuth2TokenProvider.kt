@@ -5,10 +5,13 @@ import com.fsck.k9.Account
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.preferences.AccountManager
+import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
+import net.openid.appauth.AuthorizationException.GeneralErrors
 import net.openid.appauth.AuthorizationService
 
 class RealOAuth2TokenProvider(
@@ -42,21 +45,26 @@ class RealOAuth2TokenProvider(
 
         latch.await(timeoutMillis, TimeUnit.MILLISECONDS)
 
-        if (exception != null) {
+        val authException = exception
+        if (authException == GeneralErrors.NETWORK_ERROR ||
+            authException == GeneralErrors.SERVER_ERROR ||
+            authException == AuthorizationRequestErrors.SERVER_ERROR ||
+            authException == AuthorizationRequestErrors.TEMPORARILY_UNAVAILABLE
+        ) {
+            throw IOException("Error while fetching an access token", authException)
+        } else if (authException != null) {
             account.oAuthState = null
             accountManager.saveAccount(account)
-        } else if (token != oldAccessToken) {
-            requestFreshToken = false
-            account.oAuthState = authState.jsonSerializeString()
-            accountManager.saveAccount(account)
-        }
 
-        exception?.let { authException ->
             throw AuthenticationFailedException(
                 message = "Failed to fetch an access token",
                 throwable = authException,
                 messageFromServer = authException.error
             )
+        } else if (token != oldAccessToken) {
+            requestFreshToken = false
+            account.oAuthState = authState.jsonSerializeString()
+            accountManager.saveAccount(account)
         }
 
         return token ?: throw AuthenticationFailedException("Failed to fetch an access token")
