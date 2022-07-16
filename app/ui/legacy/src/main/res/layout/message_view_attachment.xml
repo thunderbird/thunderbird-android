@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="?attr/attachmentCardBackground"
-        app:cardCornerRadius="2dp"
+        app:cardCornerRadius="4dp"
         app:cardElevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,18 +82,25 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="99 KB" />
 
+            <View
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:background="?attr/messageViewBackgroundColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/save_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageButton
                 android:id="@+id/save_button"
                 android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/remove_attachment_action"
                 app:srcCompat="?attr/iconActionSaveAttachment"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/attachment_preview" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
