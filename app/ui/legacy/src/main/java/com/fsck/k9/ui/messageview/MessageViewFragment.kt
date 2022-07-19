@@ -1,893 +1,808 @@
-package com.fsck.k9.ui.messageview;
+package com.fsck.k9.ui.messageview
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.content.IntentSender
+import android.content.IntentSender.SendIntentException
+import android.os.Bundle
+import android.os.Parcelable
+import android.os.SystemClock
+import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import com.fsck.k9.Account
+import com.fsck.k9.K9
+import com.fsck.k9.activity.MessageCompose
+import com.fsck.k9.activity.MessageLoaderHelper
+import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks
+import com.fsck.k9.activity.MessageLoaderHelperFactory
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.fragment.AttachmentDownloadDialogFragment
+import com.fsck.k9.fragment.ConfirmationDialogFragment
+import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
+import com.fsck.k9.helper.HttpsUnsubscribeUri
+import com.fsck.k9.helper.MailtoUnsubscribeUri
+import com.fsck.k9.helper.UnsubscribeUri
+import com.fsck.k9.mail.Flag
+import com.fsck.k9.mailstore.AttachmentViewInfo
+import com.fsck.k9.mailstore.LocalMessage
+import com.fsck.k9.mailstore.MessageViewInfo
+import com.fsck.k9.preferences.AccountManager
+import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.ThemeManager
+import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener
+import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
+import com.fsck.k9.ui.settings.account.AccountSettingsActivity
+import com.fsck.k9.ui.share.ShareIntentBuilder
+import com.fsck.k9.ui.withArguments
+import com.fsck.k9.view.MessageCryptoDisplayStatus
+import java.util.Locale
+import org.koin.android.ext.android.inject
+import timber.log.Timber
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+class MessageViewFragment :
+    Fragment(),
+    ConfirmationDialogFragmentListener,
+    AttachmentViewCallback,
+    OnClickShowCryptoKeyListener {
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender;
-import android.content.IntentSender.SendIntentException;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
-import android.os.SystemClock;
+    private val themeManager: ThemeManager by inject()
+    private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
+    private val accountManager: AccountManager by inject()
+    private val messagingController: MessagingController by inject()
+    private val shareIntentBuilder: ShareIntentBuilder by inject()
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
-import android.text.TextUtils;
-import android.view.ContextThemeWrapper;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
+    private lateinit var messageTopView: MessageTopView
 
-import com.fsck.k9.Account;
-import com.fsck.k9.DI;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.helper.MailtoUnsubscribeUri;
-import com.fsck.k9.helper.UnsubscribeUri;
-import com.fsck.k9.ui.choosefolder.ChooseFolderActivity;
-import com.fsck.k9.activity.MessageLoaderHelper;
-import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
-import com.fsck.k9.activity.MessageLoaderHelperFactory;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
-import com.fsck.k9.fragment.ConfirmationDialogFragment;
-import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.MessageViewInfo;
-import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.base.ThemeManager;
-import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
-import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
-import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
-import com.fsck.k9.ui.share.ShareIntentBuilder;
-import com.fsck.k9.view.MessageCryptoDisplayStatus;
-import timber.log.Timber;
-
-
-public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback, OnClickShowCryptoKeyListener {
-
-    private static final String ARG_REFERENCE = "reference";
-
-    private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
-    private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-    private static final int REQUEST_CODE_CREATE_DOCUMENT = 3;
-
-    public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
-    public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
-
-    public static final int PROGRESS_THRESHOLD_MILLIS = 500 * 1000;
-
-    public static MessageViewFragment newInstance(MessageReference reference) {
-        MessageViewFragment fragment = new MessageViewFragment();
-
-        Bundle args = new Bundle();
-        args.putString(ARG_REFERENCE, reference.toIdentityString());
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
-    private final ThemeManager themeManager = DI.get(ThemeManager.class);
-    private final MessageLoaderHelperFactory messageLoaderHelperFactory = DI.get(MessageLoaderHelperFactory.class);
-
-    private MessageTopView mMessageView;
-
-    private Account mAccount;
-    private MessageReference mMessageReference;
-    private LocalMessage mMessage;
-    private MessagingController mController;
-    private Handler handler = new Handler();
-    private MessageLoaderHelper messageLoaderHelper;
-    private MessageCryptoPresenter messageCryptoPresenter;
-    private Long showProgressThreshold;
-    private UnsubscribeUri preferredUnsubscribeUri;
+    private var message: LocalMessage? = null
+    private lateinit var messageLoaderHelper: MessageLoaderHelper
+    private lateinit var messageCryptoPresenter: MessageCryptoPresenter
+    private var showProgressThreshold: Long? = null
+    private var preferredUnsubscribeUri: UnsubscribeUri? = null
 
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
      * dialog is shown.
      */
-    private Long destinationFolderId;
+    private var destinationFolderId: Long? = null
+    private lateinit var fragmentListener: MessageViewFragmentListener
 
-    private MessageViewFragmentListener mFragmentListener;
+    private lateinit var account: Account
+    lateinit var messageReference: MessageReference
 
     /**
-     * {@code true} after {@link #onCreate(Bundle)} has been executed. This is used by
-     * {@code MessageList.configureMenu()} to make sure the fragment has been initialized before
-     * it is used.
+     * `true` after [.onCreate] has been executed. This is used by `MessageList.configureMenu()` to make sure the
+     * fragment has been initialized before it is used.
      */
-    private boolean mInitialized = false;
+    var isInitialized = false
+        private set
 
-    private Context mContext;
+    private var currentAttachmentViewInfo: AttachmentViewInfo? = null
 
-    private AttachmentViewInfo currentAttachmentViewInfo;
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        mContext = context.getApplicationContext();
-
-        try {
-            mFragmentListener = (MessageViewFragmentListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException("This fragment must be attached to a MessageViewFragmentListener");
+        fragmentListener = try {
+            activity as MessageViewFragmentListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException("This fragment must be attached to a MessageViewFragmentListener")
         }
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        // This fragments adds options to the action bar
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
 
-        Context context = getActivity().getApplicationContext();
-        mController = MessagingController.getInstance(context);
-        messageCryptoPresenter = new MessageCryptoPresenter(messageCryptoMvpView);
+        messageCryptoPresenter = MessageCryptoPresenter(messageCryptoMvpView)
         messageLoaderHelper = messageLoaderHelperFactory.createForMessageView(
-                context, getLoaderManager(), getParentFragmentManager(), messageLoaderCallbacks);
-        mInitialized = true;
+            context = requireContext().applicationContext,
+            loaderManager = loaderManager,
+            fragmentManager = parentFragmentManager,
+            callback = messageLoaderCallbacks
+        )
+
+        isInitialized = true
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val messageViewThemeResourceId = themeManager.messageViewThemeResourceId
+        val themedContext = ContextThemeWrapper(inflater.context, messageViewThemeResourceId)
+        val layoutInflater = LayoutInflater.from(themedContext)
 
-        messageCryptoPresenter.onResume();
+        val view = layoutInflater.inflate(R.layout.message, container, false)
+        messageTopView = view.findViewById(R.id.message_view)
+
+        initializeMessageTopView(messageTopView)
+
+        return view
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    private fun initializeMessageTopView(messageTopView: MessageTopView) {
+        messageTopView.setAttachmentCallback(this)
+        messageTopView.setMessageCryptoPresenter(messageCryptoPresenter)
 
-        Activity activity = getActivity();
-        boolean isChangingConfigurations = activity != null && activity.isChangingConfigurations();
-        if (isChangingConfigurations) {
-            messageLoaderHelper.onDestroyChangingConfigurations();
-            return;
+        messageTopView.setOnToggleFlagClickListener {
+            onToggleFlagged()
         }
 
-        messageLoaderHelper.onDestroy();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int messageViewThemeResourceId = themeManager.getMessageViewThemeResourceId();
-        Context context = new ContextThemeWrapper(inflater.getContext(), messageViewThemeResourceId);
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.message, container, false);
-
-        mMessageView = view.findViewById(R.id.message_view);
-        mMessageView.setAttachmentCallback(this);
-        mMessageView.setMessageCryptoPresenter(messageCryptoPresenter);
-
-        mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onToggleFlagged();
-            }
-        });
-
-        mMessageView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.reply) {
-                    onReply();
-                    return true;
-                } else if (id == R.id.reply_all) {
-                    onReplyAll();
-                    return true;
-                } else if (id == R.id.forward) {
-                    onForward();
-                    return true;
-                } else if (id == R.id.forward_as_attachment) {
-                    onForwardAsAttachment();
-                    return true;
-                } else if (id == R.id.share) {
-                    onSendAlternate();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        mMessageView.setOnDownloadButtonClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMessageView.disableDownloadButton();
-                messageLoaderHelper.downloadCompleteMessage();
-            }
-        });
-
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        Bundle arguments = getArguments();
-        String messageReferenceString = arguments.getString(ARG_REFERENCE);
-        MessageReference messageReference = MessageReference.parse(messageReferenceString);
-
-        displayMessage(messageReference);
-    }
-
-    private void displayMessage(MessageReference messageReference) {
-        mMessageReference = messageReference;
-        Timber.d("MessageView displaying message %s", mMessageReference);
-
-        mAccount = Preferences.getPreferences(getApplicationContext()).getAccount(mMessageReference.getAccountUuid());
-        messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference, null);
-
-        invalidateMenu();
-    }
-
-    private void hideKeyboard() {
-        Activity activity = getActivity();
-        if (activity == null) {
-            return;
+        messageTopView.setOnMenuItemClickListener { item ->
+            onReplyMenuItemClicked(item.itemId)
         }
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        View decorView = activity.getWindow().getDecorView();
-        if (decorView != null) {
-            imm.hideSoftInputFromWindow(decorView.getApplicationWindowToken(), 0);
+
+        messageTopView.setOnDownloadButtonClickListener {
+            onDownloadButtonClicked()
         }
     }
 
-    private void showMessage(MessageViewInfo messageViewInfo) {
-        hideKeyboard();
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        boolean handledByCryptoPresenter = messageCryptoPresenter.maybeHandleShowMessage(
-                mMessageView, mAccount, messageViewInfo);
+        val messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
+            ?: error("Invalid argument '$ARG_REFERENCE'")
+
+        displayMessage(messageReference)
+    }
+
+    private fun displayMessage(messageReference: MessageReference) {
+        Timber.d("MessageViewFragment displaying message %s", messageReference)
+
+        this.messageReference = messageReference
+        account = accountManager.getAccount(messageReference.accountUuid)
+            ?: error("Account ${messageReference.accountUuid} not found")
+
+        messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference, null)
+
+        invalidateMenu()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        messageCryptoPresenter.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (requireActivity().isChangingConfigurations) {
+            messageLoaderHelper.onDestroyChangingConfigurations()
+        } else {
+            messageLoaderHelper.onDestroy()
+        }
+    }
+
+    private fun showMessage(messageViewInfo: MessageViewInfo) {
+        hideKeyboard()
+
+        val handledByCryptoPresenter = messageCryptoPresenter.maybeHandleShowMessage(
+            messageTopView, account, messageViewInfo
+        )
+
         if (!handledByCryptoPresenter) {
-            mMessageView.showMessage(mAccount, messageViewInfo);
-            if (mAccount.isOpenPgpProviderConfigured()) {
-                mMessageView.getMessageHeaderView().setCryptoStatusDisabled();
+            messageTopView.showMessage(account, messageViewInfo)
+
+            if (account.isOpenPgpProviderConfigured) {
+                messageTopView.messageHeaderView.setCryptoStatusDisabled()
             } else {
-                mMessageView.getMessageHeaderView().hideCryptoStatus();
+                messageTopView.messageHeaderView.hideCryptoStatus()
             }
         }
 
         if (messageViewInfo.subject != null) {
-            displaySubject(messageViewInfo.subject);
+            displaySubject(messageViewInfo.subject)
         }
     }
 
-    private void displayHeaderForLoadingMessage(LocalMessage message) {
-        boolean showStar = !isOutbox();
-        mMessageView.setHeaders(message, mAccount, showStar);
-        if (mAccount.isOpenPgpProviderConfigured()) {
-            mMessageView.getMessageHeaderView().setCryptoStatusLoading();
-        }
-        displaySubject(message.getSubject());
-        invalidateMenu();
+    private fun hideKeyboard() {
+        val activity = activity ?: return
+
+        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val decorView = activity.window.decorView
+        inputMethodManager.hideSoftInputFromWindow(decorView.applicationWindowToken, 0)
     }
 
-    private void displaySubject(String subject) {
-        if (TextUtils.isEmpty(subject)) {
-            subject = mContext.getString(R.string.general_no_subject);
+    private fun displayHeaderForLoadingMessage(message: LocalMessage) {
+        val showStar = !isOutbox
+        messageTopView.setHeaders(message, account, showStar)
+
+        if (account.isOpenPgpProviderConfigured) {
+            messageTopView.messageHeaderView.setCryptoStatusLoading()
         }
 
-        mMessageView.setSubject(subject);
+        displaySubject(message.subject)
+        invalidateMenu()
+    }
+
+    private fun displaySubject(subject: String) {
+        val displaySubject = subject.ifEmpty { getString(R.string.general_no_subject) }
+        messageTopView.setSubject(displaySubject)
+    }
+
+    private fun onReplyMenuItemClicked(itemId: Int): Boolean {
+        when (itemId) {
+            R.id.reply -> onReply()
+            R.id.reply_all -> onReplyAll()
+            R.id.forward -> onForward()
+            R.id.forward_as_attachment -> onForwardAsAttachment()
+            R.id.share -> onSendAlternate()
+            else -> error("Missing handler for reply menu item $itemId")
+        }
+
+        return true
+    }
+
+    private fun onDownloadButtonClicked() {
+        messageTopView.disableDownloadButton()
+        messageLoaderHelper.downloadCompleteMessage()
     }
 
     /**
      * Called from UI thread when user select Delete
      */
-    public void onDelete() {
-        if (K9.isConfirmDelete() || (K9.isConfirmDeleteStarred() && mMessage.isSet(Flag.FLAGGED))) {
-            showDialog(R.id.dialog_confirm_delete);
+    fun onDelete() {
+        val message = checkNotNull(message)
+
+        if (K9.isConfirmDelete || K9.isConfirmDeleteStarred && message.isSet(Flag.FLAGGED)) {
+            showDialog(R.id.dialog_confirm_delete)
         } else {
-            delete();
+            delete()
         }
     }
 
-    private void delete() {
-        if (mMessage != null) {
-            // Disable the delete button after it's tapped (to try to prevent
-            // accidental clicks)
-            mFragmentListener.disableDeleteAction();
-            LocalMessage messageToDelete = mMessage;
-            mFragmentListener.showNextMessageOrReturn();
-            mController.deleteMessage(mMessageReference);
-        }
+    private fun delete() {
+        // Disable the delete button after it has been tapped (to try to prevent accidental clicks)
+        fragmentListener.disableDeleteAction()
+
+        fragmentListener.showNextMessageOrReturn()
+
+        messagingController.deleteMessage(messageReference)
     }
 
-    public void onRefile(Long dstFolderId) {
-        if (dstFolderId == null || !mController.isMoveCapable(mAccount)) {
-            return;
-        }
-        if (!mController.isMoveCapable(mMessageReference)) {
-            Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
-            return;
+    private fun onRefile(destinationFolderId: Long?) {
+        if (destinationFolderId == null || !messagingController.isMoveCapable(account)) {
+            return
         }
 
-        if (dstFolderId.equals(mAccount.getSpamFolderId()) && K9.isConfirmSpam()) {
-            destinationFolderId = dstFolderId;
-            showDialog(R.id.dialog_confirm_spam);
+        if (!messagingController.isMoveCapable(messageReference)) {
+            Toast.makeText(activity, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG).show()
+            return
+        }
+
+        if (destinationFolderId == account.spamFolderId && K9.isConfirmSpam) {
+            this.destinationFolderId = destinationFolderId
+            showDialog(R.id.dialog_confirm_spam)
         } else {
-            refileMessage(dstFolderId);
+            refileMessage(destinationFolderId)
         }
     }
 
-    private void refileMessage(long dstFolderId) {
-        long srcFolderId = mMessageReference.getFolderId();
-        MessageReference messageToMove = mMessageReference;
-        mFragmentListener.showNextMessageOrReturn();
-        mController.moveMessage(mAccount, srcFolderId, messageToMove, dstFolderId);
+    private fun refileMessage(destinationFolderId: Long) {
+        fragmentListener.showNextMessageOrReturn()
+
+        val sourceFolderId = messageReference.folderId
+        messagingController.moveMessage(account, sourceFolderId, messageReference, destinationFolderId)
     }
 
-    public void onReply() {
-        if (mMessage != null) {
-            mFragmentListener.onReply(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
-        }
+    fun onReply() {
+        val message = this.message ?: return
+
+        fragmentListener.onReply(
+            messageReference = message.makeMessageReference(),
+            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply
+        )
     }
 
-    public void onReplyAll() {
-        if (mMessage != null) {
-            mFragmentListener.onReplyAll(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
-        }
+    fun onReplyAll() {
+        val message = checkNotNull(this.message)
+
+        fragmentListener.onReplyAll(
+            messageReference = message.makeMessageReference(),
+            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply
+        )
     }
 
-    public void onForward() {
-        if (mMessage != null) {
-            mFragmentListener.onForward(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
-        }
+    fun onForward() {
+        val message = checkNotNull(this.message)
+
+        fragmentListener.onForward(
+            messageReference = message.makeMessageReference(),
+            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply
+        )
     }
 
-    public void onForwardAsAttachment() {
-        if (mMessage != null) {
-            mFragmentListener.onForwardAsAttachment(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
-        }
+    fun onForwardAsAttachment() {
+        val message = checkNotNull(this.message)
+
+        fragmentListener.onForwardAsAttachment(
+            messageReference = message.makeMessageReference(),
+            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply
+        )
     }
 
-    public void onEditAsNewMessage() {
-        if (mMessage != null) {
-            mFragmentListener.onEditAsNewMessage(mMessage.makeMessageReference());
-        }
+    fun onEditAsNewMessage() {
+        val message = checkNotNull(this.message)
+
+        fragmentListener.onEditAsNewMessage(message.makeMessageReference())
     }
 
-    public void onToggleFlagged() {
-        if (mMessage != null && !isOutbox()) {
-            boolean newState = !mMessage.isSet(Flag.FLAGGED);
-            mController.setFlag(mAccount, mMessage.getFolder().getDatabaseId(),
-                    Collections.singletonList(mMessage), Flag.FLAGGED, newState);
-            mMessageView.setHeaders(mMessage, mAccount, true);
-        }
-    }
+    fun onMove() {
+        check(messagingController.isMoveCapable(account))
+        checkNotNull(message)
 
-    public void onMove() {
-        if ((!mController.isMoveCapable(mAccount))
-                || (mMessage == null)) {
-            return;
-        }
-        if (!mController.isMoveCapable(mMessageReference)) {
-            Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
-            return;
-        }
-
-        startRefileActivity(FolderOperation.MOVE, ACTIVITY_CHOOSE_FOLDER_MOVE);
-
-    }
-
-    public void onCopy() {
-        if ((!mController.isCopyCapable(mAccount))
-                || (mMessage == null)) {
-            return;
-        }
-        if (!mController.isCopyCapable(mMessageReference)) {
-            Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
-            return;
+        if (!messagingController.isMoveCapable(messageReference)) {
+            Toast.makeText(activity, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG).show()
+            return
         }
 
-        startRefileActivity(FolderOperation.COPY, ACTIVITY_CHOOSE_FOLDER_COPY);
+        startRefileActivity(FolderOperation.MOVE, ACTIVITY_CHOOSE_FOLDER_MOVE)
     }
 
-    public void onMoveToDrafts() {
-        Account account = mAccount;
-        long folderId = mMessageReference.getFolderId();
-        List<MessageReference> messages = Collections.singletonList(mMessageReference);
+    fun onCopy() {
+        check(messagingController.isCopyCapable(account))
+        checkNotNull(message)
 
-        mFragmentListener.showNextMessageOrReturn();
+        if (!messagingController.isCopyCapable(messageReference)) {
+            Toast.makeText(activity, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG).show()
+            return
+        }
 
-        mController.moveToDraftsFolder(account, folderId, messages);
+        startRefileActivity(FolderOperation.COPY, ACTIVITY_CHOOSE_FOLDER_COPY)
     }
 
-    public void onArchive() {
-        onRefile(mAccount.getArchiveFolderId());
+    fun onMoveToDrafts() {
+        fragmentListener.showNextMessageOrReturn()
+
+        val account = account
+        val folderId = messageReference.folderId
+        val messages = listOf(messageReference)
+        messagingController.moveToDraftsFolder(account, folderId, messages)
     }
 
-    public void onSpam() {
-        onRefile(mAccount.getSpamFolderId());
+    fun onArchive() {
+        onRefile(account.archiveFolderId)
     }
 
-    private void startRefileActivity(FolderOperation operation, int requestCode) {
-        String accountUuid = mAccount.getUuid();
-        long currentFolderId = mMessageReference.getFolderId();
-        Long scrollToFolderId = mAccount.getLastSelectedFolderId();
-        final ChooseFolderActivity.Action action;
-        if (operation == FolderOperation.MOVE) {
-            action = ChooseFolderActivity.Action.MOVE;
+    fun onSpam() {
+        onRefile(account.spamFolderId)
+    }
+
+    private fun startRefileActivity(operation: FolderOperation, requestCode: Int) {
+        val action = if (operation == FolderOperation.MOVE) {
+            ChooseFolderActivity.Action.MOVE
         } else {
-            action = ChooseFolderActivity.Action.COPY;
+            ChooseFolderActivity.Action.COPY
         }
 
-        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireActivity(), action, accountUuid, currentFolderId,
-                scrollToFolderId, false, mMessageReference);
+        val intent = ChooseFolderActivity.buildLaunchIntent(
+            context = requireActivity(),
+            action = action,
+            accountUuid = account.uuid,
+            currentFolderId = messageReference.folderId,
+            scrollToFolderId = account.lastSelectedFolderId,
+            showDisplayableOnly = false,
+            messageReference = messageReference
+        )
 
-        startActivityForResult(intent, requestCode);
+        startActivityForResult(intent, requestCode)
     }
 
-    public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode & REQUEST_MASK_LOADER_HELPER) == REQUEST_MASK_LOADER_HELPER) {
-            requestCode ^= REQUEST_MASK_LOADER_HELPER;
-            messageLoaderHelper.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
-
-        if ((requestCode & REQUEST_MASK_CRYPTO_PRESENTER) == REQUEST_MASK_CRYPTO_PRESENTER) {
-            requestCode ^= REQUEST_MASK_CRYPTO_PRESENTER;
-            messageCryptoPresenter.onActivityResult(requestCode, resultCode, data);
+    fun onPendingIntentResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode and REQUEST_MASK_LOADER_HELPER == REQUEST_MASK_LOADER_HELPER) {
+            val maskedRequestCode = requestCode xor REQUEST_MASK_LOADER_HELPER
+            messageLoaderHelper.onActivityResult(maskedRequestCode, resultCode, data)
+        } else if (requestCode and REQUEST_MASK_CRYPTO_PRESENTER == REQUEST_MASK_CRYPTO_PRESENTER) {
+            val maskedRequestCode = requestCode xor REQUEST_MASK_CRYPTO_PRESENTER
+            messageCryptoPresenter.onActivityResult(maskedRequestCode, resultCode, data)
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode != Activity.RESULT_OK) return
+
+        when (requestCode) {
+            REQUEST_CODE_CREATE_DOCUMENT -> onCreateDocumentResult(data)
+            ACTIVITY_CHOOSE_FOLDER_MOVE -> onChooseFolderMoveResult(data)
+            ACTIVITY_CHOOSE_FOLDER_COPY -> onChooseFolderCopyResult(data)
         }
+    }
 
-        // Note: because fragments do not have a startIntentSenderForResult method, pending intent activities are
-        // launched through the MessageList activity, and delivered back via onPendingIntentResult()
+    private fun onCreateDocumentResult(data: Intent?) {
+        if (data != null && data.data != null) {
+            createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(data.data)
+        }
+    }
 
-        switch (requestCode) {
-            case REQUEST_CODE_CREATE_DOCUMENT: {
-                if (data != null && data.getData() != null) {
-                    getAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(data.getData());
-                }
-                break;
+    private fun onChooseFolderMoveResult(data: Intent?) {
+        if (data == null) return
+
+        val destinationFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L)
+        val messageReferenceString = data.getStringExtra(ChooseFolderActivity.RESULT_MESSAGE_REFERENCE)
+        val messageReference = MessageReference.parse(messageReferenceString)
+        if (this.messageReference != messageReference) return
+
+        account.setLastSelectedFolderId(destinationFolderId)
+
+        fragmentListener.showNextMessageOrReturn()
+
+        moveMessage(messageReference, destinationFolderId)
+    }
+
+    private fun onChooseFolderCopyResult(data: Intent?) {
+        if (data == null) return
+
+        val destinationFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L)
+        val messageReferenceString = data.getStringExtra(ChooseFolderActivity.RESULT_MESSAGE_REFERENCE)
+        val messageReference = MessageReference.parse(messageReferenceString)
+        if (this.messageReference != messageReference) return
+
+        account.setLastSelectedFolderId(destinationFolderId)
+
+        copyMessage(messageReference, destinationFolderId)
+    }
+
+    fun onSendAlternate() {
+        val message = checkNotNull(message)
+
+        val shareIntent = shareIntentBuilder.createShareIntent(message)
+        val shareTitle = getString(R.string.send_alternate_chooser_title)
+        val chooserIntent = Intent.createChooser(shareIntent, shareTitle)
+
+        startActivity(chooserIntent)
+    }
+
+    fun onToggleRead() {
+        toggleFlag(Flag.SEEN)
+    }
+
+    fun onToggleFlagged() {
+        toggleFlag(Flag.FLAGGED)
+    }
+
+    private fun toggleFlag(flag: Flag) {
+        check(!isOutbox)
+        val message = checkNotNull(this.message)
+
+        val newState = !message.isSet(flag)
+        messagingController.setFlag(account, message.folder.databaseId, listOf(message), flag, newState)
+
+        messageTopView.setHeaders(message, account, true)
+
+        invalidateMenu()
+    }
+
+    private fun moveMessage(reference: MessageReference?, folderId: Long) {
+        messagingController.moveMessage(account, messageReference.folderId, reference, folderId)
+    }
+
+    private fun copyMessage(reference: MessageReference?, folderId: Long) {
+        messagingController.copyMessage(account, messageReference.folderId, reference, folderId)
+    }
+
+    private fun showDialog(dialogId: Int) {
+        val fragment = when (dialogId) {
+            R.id.dialog_confirm_delete -> {
+                val title = getString(R.string.dialog_confirm_delete_title)
+                val message = getString(R.string.dialog_confirm_delete_message)
+                val confirmText = getString(R.string.dialog_confirm_delete_confirm_button)
+                val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
+                ConfirmationDialogFragment.newInstance(
+                    dialogId, title, message,
+                    confirmText, cancelText
+                )
             }
-            case ACTIVITY_CHOOSE_FOLDER_MOVE:
-            case ACTIVITY_CHOOSE_FOLDER_COPY: {
-                if (data == null) {
-                    return;
-                }
+            R.id.dialog_confirm_spam -> {
+                val title = getString(R.string.dialog_confirm_spam_title)
+                val message = resources.getQuantityString(R.plurals.dialog_confirm_spam_message, 1)
+                val confirmText = getString(R.string.dialog_confirm_spam_confirm_button)
+                val cancelText = getString(R.string.dialog_confirm_spam_cancel_button)
+                ConfirmationDialogFragment.newInstance(
+                    dialogId, title, message,
+                    confirmText, cancelText
+                )
+            }
+            R.id.dialog_attachment_progress -> {
+                val currentAttachmentViewInfo = checkNotNull(this.currentAttachmentViewInfo)
 
-                long destFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L);
-                String messageReferenceString = data.getStringExtra(ChooseFolderActivity.RESULT_MESSAGE_REFERENCE);
-                MessageReference ref = MessageReference.parse(messageReferenceString);
-                if (mMessageReference.equals(ref)) {
-                    mAccount.setLastSelectedFolderId(destFolderId);
-                    switch (requestCode) {
-                        case ACTIVITY_CHOOSE_FOLDER_MOVE: {
-                            mFragmentListener.showNextMessageOrReturn();
-                            moveMessage(ref, destFolderId);
-                            break;
-                        }
-                        case ACTIVITY_CHOOSE_FOLDER_COPY: {
-                            copyMessage(ref, destFolderId);
-                            break;
-                        }
-                    }
-                }
-                break;
+                val message = getString(R.string.dialog_attachment_progress_title)
+                val size = currentAttachmentViewInfo.size
+                AttachmentDownloadDialogFragment.newInstance(size, message)
+            }
+            else -> {
+                throw RuntimeException("Called showDialog(int) with unknown dialog id.")
             }
         }
+
+        fragment.setTargetFragment(this, dialogId)
+        fragment.show(parentFragmentManager, getDialogTag(dialogId))
     }
 
-    public void onSendAlternate() {
-        if (mMessage != null) {
-            ShareIntentBuilder shareIntentBuilder = DI.get(ShareIntentBuilder.class);
-            Intent shareIntent = shareIntentBuilder.createShareIntent(mMessage);
+    private fun removeDialog(dialogId: Int) {
+        if (!isAdded) return
 
-            String shareTitle = getString(R.string.send_alternate_chooser_title);
-            Intent chooserIntent = Intent.createChooser(shareIntent, shareTitle);
+        val fragmentManager = parentFragmentManager
 
-            startActivity(chooserIntent);
-        }
+        // Make sure the "show dialog" transaction has been processed when we call  findFragmentByTag() below.
+        // Otherwise the fragment won't be found and the dialog will never be dismissed.
+        fragmentManager.executePendingTransactions()
+
+        val fragment = fragmentManager.findFragmentByTag(getDialogTag(dialogId)) as DialogFragment?
+        fragment?.dismissAllowingStateLoss()
     }
 
-    public void onToggleRead() {
-        if (mMessage != null && !isOutbox()) {
-            mController.setFlag(mAccount, mMessage.getFolder().getDatabaseId(),
-                    Collections.singletonList(mMessage), Flag.SEEN, !mMessage.isSet(Flag.SEEN));
-
-            mMessageView.setHeaders(mMessage, mAccount, true);
-            invalidateMenu();
-        }
+    private fun getDialogTag(dialogId: Int): String {
+        return String.format(Locale.US, "dialog-%d", dialogId)
     }
 
-    private void setProgress(boolean enable) {
-        if (mFragmentListener != null) {
-            mFragmentListener.setProgress(enable);
-        }
-    }
-
-    public void moveMessage(MessageReference reference, long folderId) {
-        mController.moveMessage(mAccount, mMessageReference.getFolderId(), reference, folderId);
-    }
-
-    public void copyMessage(MessageReference reference, long folderId) {
-        mController.copyMessage(mAccount, mMessageReference.getFolderId(), reference, folderId);
-    }
-
-    private void showDialog(int dialogId) {
-        DialogFragment fragment;
+    override fun doPositiveClick(dialogId: Int) {
         if (dialogId == R.id.dialog_confirm_delete) {
-            String title = getString(R.string.dialog_confirm_delete_title);
-            String message = getString(R.string.dialog_confirm_delete_message);
-            String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
-            String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
-
-            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                    confirmText, cancelText);
+            delete()
         } else if (dialogId == R.id.dialog_confirm_spam) {
-            String title = getString(R.string.dialog_confirm_spam_title);
-            String message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, 1);
-            String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
-            String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
+            val destinationFolderId = checkNotNull(this.destinationFolderId)
 
-            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                    confirmText, cancelText);
-        } else if (dialogId == R.id.dialog_attachment_progress) {
-            String message = getString(R.string.dialog_attachment_progress_title);
-            long size = currentAttachmentViewInfo.size;
-            fragment = AttachmentDownloadDialogFragment.newInstance(size, message);
-        } else {
-            throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
-        }
-
-        fragment.setTargetFragment(this, dialogId);
-        fragment.show(getParentFragmentManager(), getDialogTag(dialogId));
-    }
-
-    private void removeDialog(int dialogId) {
-        if (!isAdded()) {
-            return;
-        }
-
-        FragmentManager fm = getParentFragmentManager();
-
-        // Make sure the "show dialog" transaction has been processed when we call
-        // findFragmentByTag() below. Otherwise the fragment won't be found and the dialog will
-        // never be dismissed.
-        fm.executePendingTransactions();
-
-        DialogFragment fragment = (DialogFragment) fm.findFragmentByTag(getDialogTag(dialogId));
-
-        if (fragment != null) {
-            fragment.dismissAllowingStateLoss();
+            refileMessage(destinationFolderId)
+            this.destinationFolderId = null
         }
     }
 
-    private String getDialogTag(int dialogId) {
-        return String.format(Locale.US, "dialog-%d", dialogId);
+    override fun doNegativeClick(dialogId: Int) = Unit
+
+    override fun dialogCancelled(dialogId: Int) = Unit
+
+    val isOutbox: Boolean
+        get() = messageReference.folderId == account.outboxFolderId
+
+    val isMessageRead: Boolean
+        get() = message?.isSet(Flag.SEEN) == true
+
+    val isCopyCapable: Boolean
+        get() = !isOutbox && messagingController.isCopyCapable(account)
+
+    val isMoveCapable: Boolean
+        get() = !isOutbox && messagingController.isMoveCapable(account)
+
+    fun canMessageBeArchived(): Boolean {
+        val archiveFolderId = account.archiveFolderId ?: return false
+        return messageReference.folderId != archiveFolderId
     }
 
-    public void zoom(KeyEvent event) {
-        // mMessageView.zoom(event);
+    fun canMessageBeMovedToSpam(): Boolean {
+        val spamFolderId = account.spamFolderId ?: return false
+        return messageReference.folderId != spamFolderId
     }
 
-    @Override
-    public void doPositiveClick(int dialogId) {
-        if (dialogId == R.id.dialog_confirm_delete) {
-            delete();
-        } else if (dialogId == R.id.dialog_confirm_spam) {
-            refileMessage(destinationFolderId);
-            destinationFolderId = null;
-        }
+    fun canMessageBeUnsubscribed(): Boolean {
+        return preferredUnsubscribeUri != null
     }
 
-    @Override
-    public void doNegativeClick(int dialogId) {
-        /* do nothing */
-    }
-
-    @Override
-    public void dialogCancelled(int dialogId) {
-        /* do nothing */
-    }
-
-    /**
-     * Get the {@link MessageReference} of the currently displayed message.
-     */
-    public MessageReference getMessageReference() {
-        return mMessageReference;
-    }
-
-    public boolean isOutbox() {
-        if (mMessage == null || mAccount == null) {
-            return false;
-        }
-
-        long folderId = mMessage.getFolder().getDatabaseId();
-        Long outboxFolderId = mAccount.getOutboxFolderId();
-        return outboxFolderId != null && outboxFolderId == folderId;
-    }
-
-    public boolean isMessageRead() {
-        return (mMessage != null) && mMessage.isSet(Flag.SEEN);
-    }
-
-    public boolean isCopyCapable() {
-        return !isOutbox() && mController.isCopyCapable(mAccount);
-    }
-
-    public boolean isMoveCapable() {
-        return !isOutbox() && mController.isMoveCapable(mAccount);
-    }
-
-    public boolean canMessageBeArchived() {
-        Long archiveFolderId = mAccount.getArchiveFolderId();
-        if (archiveFolderId == null) {
-            return false;
-        }
-
-        return mMessageReference.getFolderId() != archiveFolderId;
-    }
-
-    public boolean canMessageBeMovedToSpam() {
-        Long spamFolderId = mAccount.getSpamFolderId();
-        if (spamFolderId == null) {
-            return false;
-        }
-
-        return mMessageReference.getFolderId() != spamFolderId;
-    }
-
-    public boolean canMessageBeUnsubscribed() {
-        return preferredUnsubscribeUri != null;
-    }
-
-    public void onUnsubscribe() {
-        if (preferredUnsubscribeUri instanceof MailtoUnsubscribeUri) {
-            Intent intent = new Intent(mContext, MessageCompose.class);
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(preferredUnsubscribeUri.getUri());
-            intent.putExtra(MessageCompose.EXTRA_ACCOUNT, mMessageReference.getAccountUuid());
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(Intent.ACTION_VIEW, preferredUnsubscribeUri.getUri());
-            startActivity(intent);
-        }
-    }
-
-    public Context getApplicationContext() {
-        return mContext;
-    }
-
-    public void disableAttachmentButtons(AttachmentViewInfo attachment) {
-        // mMessageView.disableAttachmentButtons(attachment);
-    }
-
-    public void enableAttachmentButtons(AttachmentViewInfo attachment) {
-        // mMessageView.enableAttachmentButtons(attachment);
-    }
-
-    public void runOnMainThread(Runnable runnable) {
-        handler.post(runnable);
-    }
-
-    public void showAttachmentLoadingDialog() {
-        // mMessageView.disableAttachmentButtons();
-        showDialog(R.id.dialog_attachment_progress);
-    }
-
-    public void hideAttachmentLoadingDialogOnMainThread() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                removeDialog(R.id.dialog_attachment_progress);
-                // mMessageView.enableAttachmentButtons();
+    fun onUnsubscribe() {
+        val intent = when (val unsubscribeUri = preferredUnsubscribeUri) {
+            is MailtoUnsubscribeUri -> {
+                Intent(requireContext(), MessageCompose::class.java).apply {
+                    action = Intent.ACTION_VIEW
+                    data = unsubscribeUri.uri
+                    putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
+                }
             }
-        });
-    }
-
-    public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
-        mMessageView.refreshAttachmentThumbnail(attachment);
-    }
-
-    private MessageCryptoMvpView messageCryptoMvpView = new MessageCryptoMvpView() {
-        @Override
-        public void redisplayMessage() {
-            messageLoaderHelper.asyncReloadMessage();
+            is HttpsUnsubscribeUri -> {
+                Intent(Intent.ACTION_VIEW, unsubscribeUri.uri)
+            }
+            else -> error("Unknown UnsubscribeUri - $unsubscribeUri")
         }
 
-        @Override
-        public void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
-                int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
+        startActivity(intent)
+    }
+
+    fun disableAttachmentButtons(attachment: AttachmentViewInfo?) = Unit
+
+    fun enableAttachmentButtons(attachment: AttachmentViewInfo?) = Unit
+
+    fun runOnMainThread(runnable: Runnable) {
+        requireActivity().runOnUiThread(runnable)
+    }
+
+    fun showAttachmentLoadingDialog() {
+        showDialog(R.id.dialog_attachment_progress)
+    }
+
+    fun hideAttachmentLoadingDialogOnMainThread() {
+        runOnMainThread {
+            removeDialog(R.id.dialog_attachment_progress)
+        }
+    }
+
+    fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo?) {
+        messageTopView.refreshAttachmentThumbnail(attachment)
+    }
+
+    private val messageCryptoMvpView: MessageCryptoMvpView = object : MessageCryptoMvpView {
+        override fun redisplayMessage() {
+            messageLoaderHelper.asyncReloadMessage()
+        }
+
+        @Throws(SendIntentException::class)
+        override fun startPendingIntentForCryptoPresenter(
+            intentSender: IntentSender,
+            requestCode: Int?,
+            fillIntent: Intent?,
+            flagsMask: Int,
+            flagValues: Int,
+            extraFlags: Int
+        ) {
             if (requestCode == null) {
-                getActivity().startIntentSender(si, fillIntent, flagsMask, flagValues, extraFlags);
-                return;
+                requireActivity().startIntentSender(intentSender, fillIntent, flagsMask, flagValues, extraFlags)
+                return
             }
 
-            requestCode |= REQUEST_MASK_CRYPTO_PRESENTER;
-            getActivity().startIntentSenderForResult(
-                    si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
+            val maskedRequestCode = requestCode or REQUEST_MASK_CRYPTO_PRESENTER
+            requireActivity().startIntentSenderForResult(
+                intentSender, maskedRequestCode, fillIntent, flagsMask, flagValues, extraFlags
+            )
         }
 
-        @Override
-        public void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus, boolean hasSecurityWarning) {
-            CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus, hasSecurityWarning);
-            dialog.setTargetFragment(MessageViewFragment.this, 0);
-            dialog.show(getParentFragmentManager(), "crypto_info_dialog");
+        override fun showCryptoInfoDialog(displayStatus: MessageCryptoDisplayStatus, hasSecurityWarning: Boolean) {
+            val dialog = CryptoInfoDialog.newInstance(displayStatus, hasSecurityWarning)
+            dialog.setTargetFragment(this@MessageViewFragment, 0)
+            dialog.show(parentFragmentManager, "crypto_info_dialog")
         }
 
-        @Override
-        public void restartMessageCryptoProcessing() {
-            mMessageView.setToLoadingState();
-            messageLoaderHelper.asyncRestartMessageCryptoProcessing();
+        override fun restartMessageCryptoProcessing() {
+            messageTopView.setToLoadingState()
+            messageLoaderHelper.asyncRestartMessageCryptoProcessing()
         }
 
-        @Override
-        public void showCryptoConfigDialog() {
-            AccountSettingsActivity.startCryptoSettings(getActivity(), mAccount.getUuid());
+        override fun showCryptoConfigDialog() {
+            AccountSettingsActivity.startCryptoSettings(requireActivity(), account.uuid)
         }
-    };
-
-    @Override
-    public void onClickShowSecurityWarning() {
-        messageCryptoPresenter.onClickShowCryptoWarningDetails();
     }
 
-    @Override
-    public void onClickSearchKey() {
-        messageCryptoPresenter.onClickSearchKey();
+    override fun onClickShowSecurityWarning() {
+        messageCryptoPresenter.onClickShowCryptoWarningDetails()
     }
 
-    @Override
-    public void onClickShowCryptoKey() {
-        messageCryptoPresenter.onClickShowCryptoKey();
+    override fun onClickSearchKey() {
+        messageCryptoPresenter.onClickSearchKey()
     }
 
-    public interface MessageViewFragmentListener {
-        void onForward(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
-        void onForwardAsAttachment(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
-        void onEditAsNewMessage(MessageReference messageReference);
-        void disableDeleteAction();
-        void onReplyAll(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
-        void onReply(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
-        void setProgress(boolean b);
-        void showNextMessageOrReturn();
+    override fun onClickShowCryptoKey() {
+        messageCryptoPresenter.onClickShowCryptoKey()
     }
 
-    public boolean isInitialized() {
-        return mInitialized ;
+    interface MessageViewFragmentListener {
+        fun onForward(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
+        fun onForwardAsAttachment(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
+        fun onEditAsNewMessage(messageReference: MessageReference)
+        fun disableDeleteAction()
+        fun onReplyAll(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
+        fun onReply(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
+        fun setProgress(enable: Boolean)
+        fun showNextMessageOrReturn()
     }
 
+    private val messageLoaderCallbacks: MessageLoaderCallbacks = object : MessageLoaderCallbacks {
+        override fun onMessageDataLoadFinished(message: LocalMessage) {
+            this@MessageViewFragment.message = message
 
-    private MessageLoaderCallbacks messageLoaderCallbacks = new MessageLoaderCallbacks() {
-        @Override
-        public void onMessageDataLoadFinished(LocalMessage message) {
-            mMessage = message;
-
-            displayHeaderForLoadingMessage(message);
-            mMessageView.setToLoadingState();
-            showProgressThreshold = null;
+            displayHeaderForLoadingMessage(message)
+            messageTopView.setToLoadingState()
+            showProgressThreshold = null
         }
 
-        @Override
-        public void onMessageDataLoadFailed() {
-            Toast.makeText(getActivity(), R.string.status_loading_error, Toast.LENGTH_LONG).show();
-            showProgressThreshold = null;
+        override fun onMessageDataLoadFailed() {
+            Toast.makeText(activity, R.string.status_loading_error, Toast.LENGTH_LONG).show()
+            showProgressThreshold = null
         }
 
-        @Override
-        public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
-            showMessage(messageViewInfo);
-            preferredUnsubscribeUri = messageViewInfo.preferredUnsubscribeUri;
-            showProgressThreshold = null;
+        override fun onMessageViewInfoLoadFinished(messageViewInfo: MessageViewInfo) {
+            showMessage(messageViewInfo)
+            preferredUnsubscribeUri = messageViewInfo.preferredUnsubscribeUri
+            showProgressThreshold = null
         }
 
-        @Override
-        public void onMessageViewInfoLoadFailed(MessageViewInfo messageViewInfo) {
-            showMessage(messageViewInfo);
-            preferredUnsubscribeUri = null;
-            showProgressThreshold = null;
+        override fun onMessageViewInfoLoadFailed(messageViewInfo: MessageViewInfo) {
+            showMessage(messageViewInfo)
+            preferredUnsubscribeUri = null
+            showProgressThreshold = null
         }
 
-        @Override
-        public void setLoadingProgress(int current, int max) {
-            if (showProgressThreshold == null) {
-                showProgressThreshold = SystemClock.elapsedRealtime() + PROGRESS_THRESHOLD_MILLIS;
-            } else if (showProgressThreshold == 0L || SystemClock.elapsedRealtime() > showProgressThreshold) {
-                showProgressThreshold = 0L;
-                mMessageView.setLoadingProgress(current, max);
+        override fun setLoadingProgress(current: Int, max: Int) {
+            val oldShowProgressThreshold = showProgressThreshold
+
+            if (oldShowProgressThreshold == null) {
+                showProgressThreshold = SystemClock.elapsedRealtime() + PROGRESS_THRESHOLD_MILLIS
+            } else if (oldShowProgressThreshold == 0L || SystemClock.elapsedRealtime() > oldShowProgressThreshold) {
+                showProgressThreshold = 0L
+                messageTopView.setLoadingProgress(current, max)
             }
         }
 
-        @Override
-        public void onDownloadErrorMessageNotFound() {
-            mMessageView.enableDownloadButton();
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getActivity(), R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
-                }
-            });
+        override fun onDownloadErrorMessageNotFound() {
+            messageTopView.enableDownloadButton()
+            Toast.makeText(requireContext(), R.string.status_invalid_id_error, Toast.LENGTH_LONG).show()
         }
 
-        @Override
-        public void onDownloadErrorNetworkError() {
-            mMessageView.enableDownloadButton();
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getActivity(), R.string.status_network_error, Toast.LENGTH_LONG).show();
-                }
-            });
+        override fun onDownloadErrorNetworkError() {
+            messageTopView.enableDownloadButton()
+            Toast.makeText(requireContext(), R.string.status_network_error, Toast.LENGTH_LONG).show()
         }
 
-        @Override
-        public void startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
-                int flagsMask, int flagValues, int extraFlags) {
-            showProgressThreshold = null;
+        override fun startIntentSenderForMessageLoaderHelper(
+            intentSender: IntentSender,
+            requestCode: Int,
+            fillIntent: Intent?,
+            flagsMask: Int,
+            flagValues: Int,
+            extraFlags: Int
+        ) {
+            showProgressThreshold = null
             try {
-                requestCode |= REQUEST_MASK_LOADER_HELPER;
-                getActivity().startIntentSenderForResult(
-                        si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
-            } catch (SendIntentException e) {
-                Timber.e(e, "Irrecoverable error calling PendingIntent!");
+                val maskedRequestCode = requestCode or REQUEST_MASK_LOADER_HELPER
+                requireActivity().startIntentSenderForResult(
+                    intentSender, maskedRequestCode, fillIntent, flagsMask, flagValues, extraFlags
+                )
+            } catch (e: SendIntentException) {
+                Timber.e(e, "Irrecoverable error calling PendingIntent!")
             }
         }
-    };
-
-
-    @Override
-    public void onViewAttachment(AttachmentViewInfo attachment) {
-        currentAttachmentViewInfo = attachment;
-        getAttachmentController(attachment).viewAttachment();
     }
 
-    @Override
-    public void onSaveAttachment(final AttachmentViewInfo attachment) {
-        currentAttachmentViewInfo = attachment;
+    override fun onViewAttachment(attachment: AttachmentViewInfo) {
+        currentAttachmentViewInfo = attachment
 
-        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        intent.setType(attachment.mimeType);
-        intent.putExtra(Intent.EXTRA_TITLE, attachment.displayName);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        createAttachmentController(attachment).viewAttachment()
+    }
+
+    override fun onSaveAttachment(attachment: AttachmentViewInfo) {
+        currentAttachmentViewInfo = attachment
+
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            type = attachment.mimeType
+            putExtra(Intent.EXTRA_TITLE, attachment.displayName)
+            addCategory(Intent.CATEGORY_OPENABLE)
+        }
 
         try {
-            startActivityForResult(intent, REQUEST_CODE_CREATE_DOCUMENT);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show();
+            startActivityForResult(intent, REQUEST_CODE_CREATE_DOCUMENT)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
         }
     }
 
-    private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
-        return new AttachmentController(mController, this, attachment);
+    private fun createAttachmentController(attachment: AttachmentViewInfo?): AttachmentController {
+        return AttachmentController(requireContext(), messagingController, this, attachment)
     }
 
-    private void invalidateMenu() {
-        requireActivity().invalidateMenu();
+    private fun invalidateMenu() {
+        requireActivity().invalidateMenu()
     }
 
-    private enum FolderOperation {
+    private enum class FolderOperation {
         COPY, MOVE
+    }
+
+    companion object {
+        const val REQUEST_MASK_LOADER_HELPER = 1 shl 8
+        const val REQUEST_MASK_CRYPTO_PRESENTER = 1 shl 9
+        const val PROGRESS_THRESHOLD_MILLIS = 500 * 1000
+
+        private const val ARG_REFERENCE = "reference"
+
+        private const val ACTIVITY_CHOOSE_FOLDER_MOVE = 1
+        private const val ACTIVITY_CHOOSE_FOLDER_COPY = 2
+        private const val REQUEST_CODE_CREATE_DOCUMENT = 3
+
+        fun newInstance(reference: MessageReference): MessageViewFragment {
+            return MessageViewFragment().withArguments(
+                ARG_REFERENCE to reference.toIdentityString()
+            )
+        }
     }
 }
