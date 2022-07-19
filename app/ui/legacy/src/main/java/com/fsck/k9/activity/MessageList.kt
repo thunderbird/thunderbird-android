@@ -1309,7 +1309,7 @@ open class MessageList :
             showMessageViewPlaceHolder()
         }
 
-        configureMenu(menu)
+        invalidateMenu()
     }
 
     private fun addMessageListFragment(fragment: MessageListFragment) {
@@ -1402,7 +1402,7 @@ open class MessageList :
 
     override fun remoteSearchStarted() {
         // Remove action button for remote search
-        configureMenu(menu)
+        invalidateMenu()
     }
 
     override fun goBack() {
@@ -1477,7 +1477,7 @@ open class MessageList :
         setDrawerLockState()
 
         showDefaultTitleView()
-        configureMenu(menu)
+        invalidateMenu()
 
         onMessageListDisplayed()
     }
@@ -1506,7 +1506,7 @@ open class MessageList :
         }
 
         showMessageTitleView()
-        configureMenu(menu)
+        invalidateMenu()
     }
 
     override fun updateMenu() {
