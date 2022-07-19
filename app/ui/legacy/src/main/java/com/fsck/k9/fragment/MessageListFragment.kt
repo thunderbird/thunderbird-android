@@ -745,50 +745,21 @@ class MessageListFragment :
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.set_sort_date) {
-            changeSort(SortType.SORT_DATE)
-            return true
-        } else if (id == R.id.set_sort_arrival) {
-            changeSort(SortType.SORT_ARRIVAL)
-            return true
-        } else if (id == R.id.set_sort_subject) {
-            changeSort(SortType.SORT_SUBJECT)
-            return true
-        } else if (id == R.id.set_sort_sender) {
-            changeSort(SortType.SORT_SENDER)
-            return true
-        } else if (id == R.id.set_sort_flag) {
-            changeSort(SortType.SORT_FLAGGED)
-            return true
-        } else if (id == R.id.set_sort_unread) {
-            changeSort(SortType.SORT_UNREAD)
-            return true
-        } else if (id == R.id.set_sort_attach) {
-            changeSort(SortType.SORT_ATTACHMENT)
-            return true
-        } else if (id == R.id.select_all) {
-            selectAll()
-            return true
+        when (item.itemId) {
+            R.id.set_sort_date -> changeSort(SortType.SORT_DATE)
+            R.id.set_sort_arrival -> changeSort(SortType.SORT_ARRIVAL)
+            R.id.set_sort_subject -> changeSort(SortType.SORT_SUBJECT)
+            R.id.set_sort_sender -> changeSort(SortType.SORT_SENDER)
+            R.id.set_sort_flag -> changeSort(SortType.SORT_FLAGGED)
+            R.id.set_sort_unread -> changeSort(SortType.SORT_UNREAD)
+            R.id.set_sort_attach -> changeSort(SortType.SORT_ATTACHMENT)
+            R.id.select_all -> selectAll()
+            R.id.send_messages -> onSendPendingMessages()
+            R.id.expunge -> onExpunge()
+            else -> return super.onOptionsItemSelected(item)
         }
 
-        if (!isSingleAccountMode) {
-            // None of the options after this point are "safe" for search results
-            // TODO: This is not true for "unread" and "starred" searches in regular folders
-            return false
-        }
-
-        if (id == R.id.send_messages) {
-            onSendPendingMessages()
-            return true
-        } else if (id == R.id.expunge) {
-            currentFolder?.let { folderInfoHolder ->
-                onExpunge(account, folderInfoHolder.databaseId)
-            }
-            return true
-        } else {
-            return super.onOptionsItemSelected(item)
-        }
+        return true
     }
 
     fun onSendPendingMessages() {
