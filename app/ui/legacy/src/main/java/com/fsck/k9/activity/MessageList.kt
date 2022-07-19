@@ -1326,6 +1326,7 @@ open class MessageList :
         }
 
         messageListFragment = fragment
+        fragment.onListVisible()
 
         if (isDrawerEnabled) {
             lockDrawer()
