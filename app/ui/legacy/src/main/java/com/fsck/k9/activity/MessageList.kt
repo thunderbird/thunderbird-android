@@ -1509,10 +1509,6 @@ open class MessageList :
         invalidateMenu()
     }
 
-    override fun updateMenu() {
-        invalidateOptionsMenu()
-    }
-
     override fun disableDeleteAction() {
         menu!!.findItem(R.id.delete).isEnabled = false
     }

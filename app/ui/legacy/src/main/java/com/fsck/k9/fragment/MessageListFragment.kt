@@ -1493,7 +1493,7 @@ class MessageListFragment :
             savedListState = null
         }
 
-        fragmentListener.updateMenu()
+        invalidateMenu()
 
         currentFolder?.let { currentFolder ->
             currentFolder.moreMessages = messageListInfo.hasMoreMessages
@@ -1589,6 +1589,10 @@ class MessageListFragment :
     fun onListHidden() {
         isListVisible = false
         resetActionMode()
+    }
+
+    private fun invalidateMenu() {
+        requireActivity().invalidateMenu()
     }
 
     val isCheckMailSupported: Boolean
@@ -1949,7 +1953,6 @@ class MessageListFragment :
         fun startSearch(query: String, account: Account?, folderId: Long?): Boolean
         fun remoteSearchStarted()
         fun goBack()
-        fun updateMenu()
         fun onFolderNotFoundError()
 
         companion object {

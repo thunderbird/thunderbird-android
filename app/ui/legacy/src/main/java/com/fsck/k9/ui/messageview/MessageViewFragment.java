@@ -240,7 +240,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         mAccount = Preferences.getPreferences(getApplicationContext()).getAccount(mMessageReference.getAccountUuid());
         messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference, null);
 
-        mFragmentListener.updateMenu();
+        invalidateMenu();
     }
 
     private void hideKeyboard() {
@@ -281,7 +281,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             mMessageView.getMessageHeaderView().setCryptoStatusLoading();
         }
         displaySubject(message.getSubject());
-        mFragmentListener.updateMenu();
+        invalidateMenu();
     }
 
     private void displaySubject(String subject) {
@@ -517,7 +517,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     Collections.singletonList(mMessage), Flag.SEEN, !mMessage.isSet(Flag.SEEN));
 
             mMessageView.setHeaders(mMessage, mAccount, true);
-            mFragmentListener.updateMenu();
+            invalidateMenu();
         }
     }
 
@@ -773,7 +773,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         void onReply(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
         void setProgress(boolean b);
         void showNextMessageOrReturn();
-        void updateMenu();
     }
 
     public boolean isInitialized() {
@@ -882,6 +881,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
         return new AttachmentController(mController, this, attachment);
+    }
+
+    private void invalidateMenu() {
+        requireActivity().invalidateMenu();
     }
 
     private enum FolderOperation {
