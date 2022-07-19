@@ -147,6 +147,7 @@ class MessageListFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         restoreInstanceState(savedInstanceState)
         decodeArguments() ?: return
@@ -644,7 +645,7 @@ class MessageListFragment :
         }
     }
 
-    val isShowingTrashFolder: Boolean
+    private val isShowingTrashFolder: Boolean
         get() {
             if (!isSingleFolderMode) return false
             return currentFolder!!.databaseId == account!!.trashFolderId
@@ -701,6 +702,46 @@ class MessageListFragment :
 
     private fun getDialogTag(dialogId: Int): String {
         return "dialog-$dialogId"
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        if (isListVisible) {
+            prepareMenu(menu)
+        } else {
+            hideMenu(menu)
+        }
+    }
+
+    private fun prepareMenu(menu: Menu) {
+        menu.findItem(R.id.set_sort).isVisible = true
+        menu.findItem(R.id.select_all).isVisible = true
+        menu.findItem(R.id.compose).isVisible = true
+        menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
+        menu.findItem(R.id.empty_trash).isVisible = isShowingTrashFolder
+
+        if (isSingleAccountMode) {
+            menu.findItem(R.id.send_messages).isVisible = isOutbox
+            menu.findItem(R.id.expunge).isVisible = isRemoteFolder && shouldShowExpungeAction()
+        } else {
+            menu.findItem(R.id.send_messages).isVisible = false
+            menu.findItem(R.id.expunge).isVisible = false
+        }
+
+        menu.findItem(R.id.search).isVisible = !isManualSearch
+        menu.findItem(R.id.search_remote).isVisible = !isRemoteSearch && isRemoteSearchAllowed
+        menu.findItem(R.id.search_everywhere).isVisible = isManualSearch && !localSearch.searchAllAccounts()
+    }
+
+    private fun hideMenu(menu: Menu) {
+        menu.findItem(R.id.search).isVisible = false
+        menu.findItem(R.id.search_remote).isVisible = false
+        menu.findItem(R.id.set_sort).isVisible = false
+        menu.findItem(R.id.select_all).isVisible = false
+        menu.findItem(R.id.mark_all_as_read).isVisible = false
+        menu.findItem(R.id.send_messages).isVisible = false
+        menu.findItem(R.id.empty_trash).isVisible = false
+        menu.findItem(R.id.expunge).isVisible = false
+        menu.findItem(R.id.search_everywhere).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -1416,7 +1457,7 @@ class MessageListFragment :
         return currentFolder.databaseId == folderId
     }
 
-    val isRemoteFolder: Boolean
+    private val isRemoteFolder: Boolean
         get() {
             if (localSearch.isManualSearch || isOutbox) return false
 
@@ -1428,10 +1469,10 @@ class MessageListFragment :
             }
         }
 
-    val isManualSearch: Boolean
+    private val isManualSearch: Boolean
         get() = localSearch.isManualSearch
 
-    fun shouldShowExpungeAction(): Boolean {
+    private fun shouldShowExpungeAction(): Boolean {
         val account = this.account ?: return false
         return account.expungePolicy == Expunge.EXPUNGE_MANUALLY && messagingController.supportsExpunge(account)
     }
@@ -1445,7 +1486,7 @@ class MessageListFragment :
         }
     }
 
-    val isRemoteSearchAllowed: Boolean
+    private val isRemoteSearchAllowed: Boolean
         get() = isManualSearch && !isRemoteSearch && isSingleFolderMode && messagingController.isPushCapable(account)
 
     fun onSearchRequested(query: String): Boolean {
@@ -1453,7 +1494,7 @@ class MessageListFragment :
         return fragmentListener.startSearch(query, account, folderId)
     }
 
-    fun setMessageList(messageListInfo: MessageListInfo) {
+    private fun setMessageList(messageListInfo: MessageListInfo) {
         val messageListItems = messageListInfo.messageListItems
         if (isThreadDisplay && messageListItems.isEmpty()) {
             handler.goBack()
@@ -1564,7 +1605,7 @@ class MessageListFragment :
         }
     }
 
-    val isMarkAllAsReadSupported: Boolean
+    private val isMarkAllAsReadSupported: Boolean
         get() = isSingleAccountMode && isSingleFolderMode && !isOutbox
 
     fun confirmMarkAllAsRead() {
@@ -1595,7 +1636,7 @@ class MessageListFragment :
         requireActivity().invalidateMenu()
     }
 
-    val isCheckMailSupported: Boolean
+    private val isCheckMailSupported: Boolean
         get() = allAccounts || !isSingleAccountMode || !isSingleFolderMode || isRemoteFolder
 
     private val isCheckMailAllowed: Boolean

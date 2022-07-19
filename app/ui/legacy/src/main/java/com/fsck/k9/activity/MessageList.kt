@@ -1185,51 +1185,6 @@ open class MessageList :
 
             menu.findItem(R.id.unsubscribe).isVisible = messageViewFragment!!.canMessageBeUnsubscribed()
         }
-
-        // Set visibility of menu items related to the message list
-
-        // Hide search menu items by default and enable one when appropriate
-        menu.findItem(R.id.search).isVisible = false
-        menu.findItem(R.id.search_remote).isVisible = false
-        menu.findItem(R.id.search_everywhere).isVisible = false
-
-        if (displayMode == DisplayMode.MESSAGE_VIEW || messageListFragment == null ||
-            !messageListFragment!!.isInitialized
-        ) {
-            menu.findItem(R.id.set_sort).isVisible = false
-            menu.findItem(R.id.select_all).isVisible = false
-            menu.findItem(R.id.send_messages).isVisible = false
-            menu.findItem(R.id.expunge).isVisible = false
-            menu.findItem(R.id.empty_trash).isVisible = false
-            menu.findItem(R.id.mark_all_as_read).isVisible = false
-        } else {
-            menu.findItem(R.id.set_sort).isVisible = true
-            menu.findItem(R.id.select_all).isVisible = true
-            menu.findItem(R.id.compose).isVisible = true
-            menu.findItem(R.id.mark_all_as_read).isVisible = messageListFragment!!.isMarkAllAsReadSupported
-
-            if (!messageListFragment!!.isSingleAccountMode) {
-                menu.findItem(R.id.expunge).isVisible = false
-                menu.findItem(R.id.send_messages).isVisible = false
-            } else {
-                menu.findItem(R.id.send_messages).isVisible = messageListFragment!!.isOutbox
-                menu.findItem(R.id.expunge).isVisible = messageListFragment!!.isRemoteFolder &&
-                    messageListFragment!!.shouldShowExpungeAction()
-            }
-            menu.findItem(R.id.empty_trash).isVisible = messageListFragment!!.isShowingTrashFolder
-
-            // If this is an explicit local search, show the option to search on the server
-            if (!messageListFragment!!.isRemoteSearch && messageListFragment!!.isRemoteSearchAllowed) {
-                menu.findItem(R.id.search_remote).isVisible = true
-            } else if (!messageListFragment!!.isManualSearch) {
-                menu.findItem(R.id.search).isVisible = true
-            }
-
-            val messageListFragment = messageListFragment!!
-            if (messageListFragment.isManualSearch && !messageListFragment.localSearch.searchAllAccounts()) {
-                menu.findItem(R.id.search_everywhere).isVisible = true
-            }
-        }
     }
 
     fun setActionBarTitle(title: String, subtitle: String? = null) {
