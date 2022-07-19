@@ -26,7 +26,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import com.fsck.k9.Account
-import com.fsck.k9.Account.SortType
 import com.fsck.k9.K9
 import com.fsck.k9.K9.SplitViewMode
 import com.fsck.k9.Preferences
@@ -917,44 +916,11 @@ open class MessageList :
                 goBack()
             }
             return true
-        } else if (id == R.id.compose) {
-            messageListFragment!!.onCompose()
-            return true
         } else if (id == R.id.toggle_message_view_theme) {
             onToggleTheme()
             return true
-        } else if (id == R.id.set_sort_date) { // MessageList
-            messageListFragment!!.changeSort(SortType.SORT_DATE)
-            return true
-        } else if (id == R.id.set_sort_arrival) {
-            messageListFragment!!.changeSort(SortType.SORT_ARRIVAL)
-            return true
-        } else if (id == R.id.set_sort_subject) {
-            messageListFragment!!.changeSort(SortType.SORT_SUBJECT)
-            return true
-        } else if (id == R.id.set_sort_sender) {
-            messageListFragment!!.changeSort(SortType.SORT_SENDER)
-            return true
-        } else if (id == R.id.set_sort_flag) {
-            messageListFragment!!.changeSort(SortType.SORT_FLAGGED)
-            return true
-        } else if (id == R.id.set_sort_unread) {
-            messageListFragment!!.changeSort(SortType.SORT_UNREAD)
-            return true
-        } else if (id == R.id.set_sort_attach) {
-            messageListFragment!!.changeSort(SortType.SORT_ATTACHMENT)
-            return true
-        } else if (id == R.id.select_all) {
-            messageListFragment!!.selectAll()
-            return true
-        } else if (id == R.id.search_remote) {
-            messageListFragment!!.onRemoteSearch()
-            return true
         } else if (id == R.id.search_everywhere) {
             searchEverywhere()
-            return true
-        } else if (id == R.id.mark_all_as_read) {
-            messageListFragment!!.confirmMarkAllAsRead()
             return true
         } else if (id == R.id.next_message) { // MessageView
             showNextMessage()
@@ -1009,29 +975,7 @@ open class MessageList :
             return true
         }
 
-        if (!singleFolderMode) {
-            // None of the options after this point are "safe" for search results
-            // TODO: This is not true for "unread" and "starred" searches in regular folders
-            return false
-        }
-
-        return when (id) {
-            R.id.send_messages -> {
-                messageListFragment!!.onSendPendingMessages()
-                true
-            }
-            R.id.expunge -> {
-                messageListFragment!!.onExpunge()
-                true
-            }
-            R.id.empty_trash -> {
-                messageListFragment!!.onEmptyTrash()
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun searchEverywhere() {
