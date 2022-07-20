@@ -115,10 +115,8 @@ class MessageListFragment :
         private set
     var isSingleAccountMode = false
         private set
-    var isSingleFolderMode = false
-        private set
-    var isRemoteSearch = false
-        private set
+    private var isSingleFolderMode = false
+    private var isRemoteSearch = false
 
     private val isUnifiedInbox: Boolean
         get() = localSearch.id == SearchAccount.UNIFIED_INBOX
@@ -130,8 +128,7 @@ class MessageListFragment :
      * `true` after [.onCreate] was executed. Used in [.updateTitle] to
      * make sure we don't access member variables before initialization is complete.
      */
-    var isInitialized = false
-        private set
+    private var isInitialized = false
 
     private var isListVisible = false
 
@@ -147,6 +144,7 @@ class MessageListFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         restoreInstanceState(savedInstanceState)
         decodeArguments() ?: return
@@ -506,7 +504,7 @@ class MessageListFragment :
         }
     }
 
-    fun changeSort(sortType: SortType) {
+    private fun changeSort(sortType: SortType) {
         val sortAscending = if (this.sortType == sortType) !sortAscending else null
         changeSort(sortType, sortAscending)
     }
@@ -628,23 +626,19 @@ class MessageListFragment :
         }
     }
 
-    fun onExpunge() {
+    private fun onExpunge() {
         currentFolder?.let { folderInfoHolder ->
-            onExpunge(account, folderInfoHolder.databaseId)
+            messagingController.expunge(account, folderInfoHolder.databaseId)
         }
     }
 
-    private fun onExpunge(account: Account?, folderId: Long) {
-        messagingController.expunge(account, folderId)
-    }
-
-    fun onEmptyTrash() {
+    private fun onEmptyTrash() {
         if (isShowingTrashFolder) {
             showDialog(R.id.dialog_confirm_empty_trash)
         }
     }
 
-    val isShowingTrashFolder: Boolean
+    private val isShowingTrashFolder: Boolean
         get() {
             if (!isSingleFolderMode) return false
             return currentFolder!!.databaseId == account!!.trashFolderId
@@ -703,54 +697,69 @@ class MessageListFragment :
         return "dialog-$dialogId"
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.set_sort_date) {
-            changeSort(SortType.SORT_DATE)
-            return true
-        } else if (id == R.id.set_sort_arrival) {
-            changeSort(SortType.SORT_ARRIVAL)
-            return true
-        } else if (id == R.id.set_sort_subject) {
-            changeSort(SortType.SORT_SUBJECT)
-            return true
-        } else if (id == R.id.set_sort_sender) {
-            changeSort(SortType.SORT_SENDER)
-            return true
-        } else if (id == R.id.set_sort_flag) {
-            changeSort(SortType.SORT_FLAGGED)
-            return true
-        } else if (id == R.id.set_sort_unread) {
-            changeSort(SortType.SORT_UNREAD)
-            return true
-        } else if (id == R.id.set_sort_attach) {
-            changeSort(SortType.SORT_ATTACHMENT)
-            return true
-        } else if (id == R.id.select_all) {
-            selectAll()
-            return true
-        }
-
-        if (!isSingleAccountMode) {
-            // None of the options after this point are "safe" for search results
-            // TODO: This is not true for "unread" and "starred" searches in regular folders
-            return false
-        }
-
-        if (id == R.id.send_messages) {
-            onSendPendingMessages()
-            return true
-        } else if (id == R.id.expunge) {
-            currentFolder?.let { folderInfoHolder ->
-                onExpunge(account, folderInfoHolder.databaseId)
-            }
-            return true
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        if (isListVisible) {
+            prepareMenu(menu)
         } else {
-            return super.onOptionsItemSelected(item)
+            hideMenu(menu)
         }
     }
 
-    fun onSendPendingMessages() {
+    private fun prepareMenu(menu: Menu) {
+        menu.findItem(R.id.set_sort).isVisible = true
+        menu.findItem(R.id.select_all).isVisible = true
+        menu.findItem(R.id.compose).isVisible = true
+        menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
+        menu.findItem(R.id.empty_trash).isVisible = isShowingTrashFolder
+
+        if (isSingleAccountMode) {
+            menu.findItem(R.id.send_messages).isVisible = isOutbox
+            menu.findItem(R.id.expunge).isVisible = isRemoteFolder && shouldShowExpungeAction()
+        } else {
+            menu.findItem(R.id.send_messages).isVisible = false
+            menu.findItem(R.id.expunge).isVisible = false
+        }
+
+        menu.findItem(R.id.search).isVisible = !isManualSearch
+        menu.findItem(R.id.search_remote).isVisible = !isRemoteSearch && isRemoteSearchAllowed
+        menu.findItem(R.id.search_everywhere).isVisible = isManualSearch && !localSearch.searchAllAccounts()
+    }
+
+    private fun hideMenu(menu: Menu) {
+        menu.findItem(R.id.search).isVisible = false
+        menu.findItem(R.id.search_remote).isVisible = false
+        menu.findItem(R.id.set_sort).isVisible = false
+        menu.findItem(R.id.select_all).isVisible = false
+        menu.findItem(R.id.mark_all_as_read).isVisible = false
+        menu.findItem(R.id.send_messages).isVisible = false
+        menu.findItem(R.id.empty_trash).isVisible = false
+        menu.findItem(R.id.expunge).isVisible = false
+        menu.findItem(R.id.search_everywhere).isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.search_remote -> onRemoteSearch()
+            R.id.compose -> onCompose()
+            R.id.set_sort_date -> changeSort(SortType.SORT_DATE)
+            R.id.set_sort_arrival -> changeSort(SortType.SORT_ARRIVAL)
+            R.id.set_sort_subject -> changeSort(SortType.SORT_SUBJECT)
+            R.id.set_sort_sender -> changeSort(SortType.SORT_SENDER)
+            R.id.set_sort_flag -> changeSort(SortType.SORT_FLAGGED)
+            R.id.set_sort_unread -> changeSort(SortType.SORT_UNREAD)
+            R.id.set_sort_attach -> changeSort(SortType.SORT_ATTACHMENT)
+            R.id.select_all -> selectAll()
+            R.id.mark_all_as_read -> confirmMarkAllAsRead()
+            R.id.send_messages -> onSendPendingMessages()
+            R.id.empty_trash -> onEmptyTrash()
+            R.id.expunge -> onExpunge()
+            else -> return super.onOptionsItemSelected(item)
+        }
+
+        return true
+    }
+
+    private fun onSendPendingMessages() {
         messagingController.sendPendingMessages(account, null)
     }
 
@@ -1416,7 +1425,7 @@ class MessageListFragment :
         return currentFolder.databaseId == folderId
     }
 
-    val isRemoteFolder: Boolean
+    private val isRemoteFolder: Boolean
         get() {
             if (localSearch.isManualSearch || isOutbox) return false
 
@@ -1428,15 +1437,15 @@ class MessageListFragment :
             }
         }
 
-    val isManualSearch: Boolean
+    private val isManualSearch: Boolean
         get() = localSearch.isManualSearch
 
-    fun shouldShowExpungeAction(): Boolean {
+    private fun shouldShowExpungeAction(): Boolean {
         val account = this.account ?: return false
         return account.expungePolicy == Expunge.EXPUNGE_MANUALLY && messagingController.supportsExpunge(account)
     }
 
-    fun onRemoteSearch() {
+    private fun onRemoteSearch() {
         // Remote search is useless without the network.
         if (hasConnectivity == true) {
             onRemoteSearchRequested()
@@ -1445,7 +1454,7 @@ class MessageListFragment :
         }
     }
 
-    val isRemoteSearchAllowed: Boolean
+    private val isRemoteSearchAllowed: Boolean
         get() = isManualSearch && !isRemoteSearch && isSingleFolderMode && messagingController.isPushCapable(account)
 
     fun onSearchRequested(query: String): Boolean {
@@ -1453,7 +1462,7 @@ class MessageListFragment :
         return fragmentListener.startSearch(query, account, folderId)
     }
 
-    fun setMessageList(messageListInfo: MessageListInfo) {
+    private fun setMessageList(messageListInfo: MessageListInfo) {
         val messageListItems = messageListInfo.messageListItems
         if (isThreadDisplay && messageListItems.isEmpty()) {
             handler.goBack()
@@ -1493,7 +1502,7 @@ class MessageListFragment :
             savedListState = null
         }
 
-        fragmentListener.updateMenu()
+        invalidateMenu()
 
         currentFolder?.let { currentFolder ->
             currentFolder.moreMessages = messageListInfo.hasMoreMessages
@@ -1564,10 +1573,10 @@ class MessageListFragment :
         }
     }
 
-    val isMarkAllAsReadSupported: Boolean
+    private val isMarkAllAsReadSupported: Boolean
         get() = isSingleAccountMode && isSingleFolderMode && !isOutbox
 
-    fun confirmMarkAllAsRead() {
+    private fun confirmMarkAllAsRead() {
         if (K9.isConfirmMarkAllRead) {
             showDialog(R.id.dialog_confirm_mark_all_as_read)
         } else {
@@ -1591,7 +1600,11 @@ class MessageListFragment :
         resetActionMode()
     }
 
-    val isCheckMailSupported: Boolean
+    private fun invalidateMenu() {
+        requireActivity().invalidateMenu()
+    }
+
+    private val isCheckMailSupported: Boolean
         get() = allAccounts || !isSingleAccountMode || !isSingleFolderMode || isRemoteFolder
 
     private val isCheckMailAllowed: Boolean
@@ -1949,7 +1962,6 @@ class MessageListFragment :
         fun startSearch(query: String, account: Account?, folderId: Long?): Boolean
         fun remoteSearchStarted()
         fun goBack()
-        fun updateMenu()
         fun onFolderNotFoundError()
 
         companion object {

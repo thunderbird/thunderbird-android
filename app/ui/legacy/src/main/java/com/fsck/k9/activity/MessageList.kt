@@ -26,7 +26,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import com.fsck.k9.Account
-import com.fsck.k9.Account.SortType
 import com.fsck.k9.K9
 import com.fsck.k9.K9.SplitViewMode
 import com.fsck.k9.Preferences
@@ -917,44 +916,11 @@ open class MessageList :
                 goBack()
             }
             return true
-        } else if (id == R.id.compose) {
-            messageListFragment!!.onCompose()
-            return true
         } else if (id == R.id.toggle_message_view_theme) {
             onToggleTheme()
             return true
-        } else if (id == R.id.set_sort_date) { // MessageList
-            messageListFragment!!.changeSort(SortType.SORT_DATE)
-            return true
-        } else if (id == R.id.set_sort_arrival) {
-            messageListFragment!!.changeSort(SortType.SORT_ARRIVAL)
-            return true
-        } else if (id == R.id.set_sort_subject) {
-            messageListFragment!!.changeSort(SortType.SORT_SUBJECT)
-            return true
-        } else if (id == R.id.set_sort_sender) {
-            messageListFragment!!.changeSort(SortType.SORT_SENDER)
-            return true
-        } else if (id == R.id.set_sort_flag) {
-            messageListFragment!!.changeSort(SortType.SORT_FLAGGED)
-            return true
-        } else if (id == R.id.set_sort_unread) {
-            messageListFragment!!.changeSort(SortType.SORT_UNREAD)
-            return true
-        } else if (id == R.id.set_sort_attach) {
-            messageListFragment!!.changeSort(SortType.SORT_ATTACHMENT)
-            return true
-        } else if (id == R.id.select_all) {
-            messageListFragment!!.selectAll()
-            return true
-        } else if (id == R.id.search_remote) {
-            messageListFragment!!.onRemoteSearch()
-            return true
         } else if (id == R.id.search_everywhere) {
             searchEverywhere()
-            return true
-        } else if (id == R.id.mark_all_as_read) {
-            messageListFragment!!.confirmMarkAllAsRead()
             return true
         } else if (id == R.id.next_message) { // MessageView
             showNextMessage()
@@ -1009,29 +975,7 @@ open class MessageList :
             return true
         }
 
-        if (!singleFolderMode) {
-            // None of the options after this point are "safe" for search results
-            // TODO: This is not true for "unread" and "starred" searches in regular folders
-            return false
-        }
-
-        return when (id) {
-            R.id.send_messages -> {
-                messageListFragment!!.onSendPendingMessages()
-                true
-            }
-            R.id.expunge -> {
-                messageListFragment!!.onExpunge()
-                true
-            }
-            R.id.empty_trash -> {
-                messageListFragment!!.onEmptyTrash()
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun searchEverywhere() {
@@ -1185,51 +1129,6 @@ open class MessageList :
 
             menu.findItem(R.id.unsubscribe).isVisible = messageViewFragment!!.canMessageBeUnsubscribed()
         }
-
-        // Set visibility of menu items related to the message list
-
-        // Hide search menu items by default and enable one when appropriate
-        menu.findItem(R.id.search).isVisible = false
-        menu.findItem(R.id.search_remote).isVisible = false
-        menu.findItem(R.id.search_everywhere).isVisible = false
-
-        if (displayMode == DisplayMode.MESSAGE_VIEW || messageListFragment == null ||
-            !messageListFragment!!.isInitialized
-        ) {
-            menu.findItem(R.id.set_sort).isVisible = false
-            menu.findItem(R.id.select_all).isVisible = false
-            menu.findItem(R.id.send_messages).isVisible = false
-            menu.findItem(R.id.expunge).isVisible = false
-            menu.findItem(R.id.empty_trash).isVisible = false
-            menu.findItem(R.id.mark_all_as_read).isVisible = false
-        } else {
-            menu.findItem(R.id.set_sort).isVisible = true
-            menu.findItem(R.id.select_all).isVisible = true
-            menu.findItem(R.id.compose).isVisible = true
-            menu.findItem(R.id.mark_all_as_read).isVisible = messageListFragment!!.isMarkAllAsReadSupported
-
-            if (!messageListFragment!!.isSingleAccountMode) {
-                menu.findItem(R.id.expunge).isVisible = false
-                menu.findItem(R.id.send_messages).isVisible = false
-            } else {
-                menu.findItem(R.id.send_messages).isVisible = messageListFragment!!.isOutbox
-                menu.findItem(R.id.expunge).isVisible = messageListFragment!!.isRemoteFolder &&
-                    messageListFragment!!.shouldShowExpungeAction()
-            }
-            menu.findItem(R.id.empty_trash).isVisible = messageListFragment!!.isShowingTrashFolder
-
-            // If this is an explicit local search, show the option to search on the server
-            if (!messageListFragment!!.isRemoteSearch && messageListFragment!!.isRemoteSearchAllowed) {
-                menu.findItem(R.id.search_remote).isVisible = true
-            } else if (!messageListFragment!!.isManualSearch) {
-                menu.findItem(R.id.search).isVisible = true
-            }
-
-            val messageListFragment = messageListFragment!!
-            if (messageListFragment.isManualSearch && !messageListFragment.localSearch.searchAllAccounts()) {
-                menu.findItem(R.id.search_everywhere).isVisible = true
-            }
-        }
     }
 
     fun setActionBarTitle(title: String, subtitle: String? = null) {
@@ -1309,7 +1208,7 @@ open class MessageList :
             showMessageViewPlaceHolder()
         }
 
-        configureMenu(menu)
+        invalidateMenu()
     }
 
     private fun addMessageListFragment(fragment: MessageListFragment) {
@@ -1326,6 +1225,7 @@ open class MessageList :
         }
 
         messageListFragment = fragment
+        fragment.onListVisible()
 
         if (isDrawerEnabled) {
             lockDrawer()
@@ -1402,7 +1302,7 @@ open class MessageList :
 
     override fun remoteSearchStarted() {
         // Remove action button for remote search
-        configureMenu(menu)
+        invalidateMenu()
     }
 
     override fun goBack() {
@@ -1477,7 +1377,7 @@ open class MessageList :
         setDrawerLockState()
 
         showDefaultTitleView()
-        configureMenu(menu)
+        invalidateMenu()
 
         onMessageListDisplayed()
     }
@@ -1506,11 +1406,7 @@ open class MessageList :
         }
 
         showMessageTitleView()
-        configureMenu(menu)
-    }
-
-    override fun updateMenu() {
-        invalidateOptionsMenu()
+        invalidateMenu()
     }
 
     override fun disableDeleteAction() {
