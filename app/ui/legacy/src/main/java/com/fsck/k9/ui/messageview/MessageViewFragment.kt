@@ -216,10 +216,6 @@ class MessageViewFragment :
             }
         }
 
-        // FIXME: Remove previous/next actions
-        menu.findItem(R.id.next_message).isVisible = false
-        menu.findItem(R.id.previous_message).isVisible = false
-
         if (isMoveCapable) {
             val canMessageBeArchived = canMessageBeArchived()
             val canMessageBeMovedToSpam = canMessageBeMovedToSpam()

@@ -50,22 +50,6 @@
 
     <!-- MessageView -->
     <item
-        android:id="@+id/previous_message"
-        android:icon="?attr/iconActionPreviousMessage"
-        android:title="@string/previous_action"
-        android:visible="false"
-        app:showAsAction="always" />
-
-    <!-- MessageView -->
-    <item
-        android:id="@+id/next_message"
-        android:icon="?attr/iconActionNextMessage"
-        android:title="@string/next_action"
-        android:visible="false"
-        app:showAsAction="always" />
-
-    <!-- MessageView -->
-    <item
         android:id="@+id/spam"
         android:icon="?attr/iconActionSpam"
         android:title="@string/spam_action"
