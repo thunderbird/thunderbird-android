@@ -12,18 +12,18 @@ import android.os.SystemClock
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.Menu
-import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
-import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.MessageLoaderHelper
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks
 import com.fsck.k9.activity.MessageLoaderHelperFactory
@@ -45,6 +45,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
@@ -86,13 +87,6 @@ class MessageViewFragment :
     private lateinit var account: Account
     lateinit var messageReference: MessageReference
 
-    /**
-     * `true` after [.onCreate] has been executed. This is used by `MessageList.configureMenu()` to make sure the
-     * fragment has been initialized before it is used.
-     */
-    var isInitialized = false
-        private set
-
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
 
     override fun onAttach(context: Context) {
@@ -117,8 +111,6 @@ class MessageViewFragment :
             fragmentManager = parentFragmentManager,
             callback = messageLoaderCallbacks
         )
-
-        isInitialized = true
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -264,6 +256,40 @@ class MessageViewFragment :
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.toggle_message_view_theme -> onToggleTheme()
+            R.id.delete -> onDelete()
+            R.id.reply -> onReply()
+            R.id.reply_all -> onReplyAll()
+            R.id.forward -> onForward()
+            R.id.forward_as_attachment -> onForwardAsAttachment()
+            R.id.edit_as_new_message -> onEditAsNewMessage()
+            R.id.share -> onSendAlternate()
+            R.id.toggle_unread -> onToggleRead()
+            R.id.archive, R.id.refile_archive -> onArchive()
+            R.id.spam, R.id.refile_spam -> onSpam()
+            R.id.move, R.id.refile_move -> onMove()
+            R.id.copy, R.id.refile_copy -> onCopy()
+            R.id.move_to_drafts -> onMoveToDrafts()
+            R.id.unsubscribe -> onUnsubscribe()
+            R.id.show_headers -> onShowHeaders()
+            else -> return false
+        }
+
+        return true
+    }
+
+    private fun onShowHeaders() {
+        val launchIntent = MessageSourceActivity.createLaunchIntent(requireActivity(), messageReference)
+        startActivity(launchIntent)
+    }
+
+    private fun onToggleTheme() {
+        themeManager.toggleMessageViewTheme()
+        ActivityCompat.recreate(requireActivity())
+    }
+
     private fun showMessage(messageViewInfo: MessageViewInfo) {
         hideKeyboard()
 
@@ -403,7 +429,7 @@ class MessageViewFragment :
         )
     }
 
-    fun onForwardAsAttachment() {
+    private fun onForwardAsAttachment() {
         val message = checkNotNull(this.message)
 
         fragmentListener.onForwardAsAttachment(
@@ -412,7 +438,7 @@ class MessageViewFragment :
         )
     }
 
-    fun onEditAsNewMessage() {
+    private fun onEditAsNewMessage() {
         val message = checkNotNull(this.message)
 
         fragmentListener.onEditAsNewMessage(message.makeMessageReference())
@@ -442,7 +468,7 @@ class MessageViewFragment :
         startRefileActivity(FolderOperation.COPY, ACTIVITY_CHOOSE_FOLDER_COPY)
     }
 
-    fun onMoveToDrafts() {
+    private fun onMoveToDrafts() {
         fragmentListener.showNextMessageOrReturn()
 
         val account = account
@@ -455,7 +481,7 @@ class MessageViewFragment :
         onRefile(account.archiveFolderId)
     }
 
-    fun onSpam() {
+    private fun onSpam() {
         onRefile(account.spamFolderId)
     }
 
@@ -533,7 +559,7 @@ class MessageViewFragment :
         copyMessage(messageReference, destinationFolderId)
     }
 
-    fun onSendAlternate() {
+    private fun onSendAlternate() {
         val message = checkNotNull(message)
 
         val shareIntent = shareIntentBuilder.createShareIntent(message)
@@ -641,33 +667,33 @@ class MessageViewFragment :
 
     override fun dialogCancelled(dialogId: Int) = Unit
 
-    val isOutbox: Boolean
+    private val isOutbox: Boolean
         get() = messageReference.folderId == account.outboxFolderId
 
-    val isMessageRead: Boolean
+    private val isMessageRead: Boolean
         get() = message?.isSet(Flag.SEEN) == true
 
-    val isCopyCapable: Boolean
+    private val isCopyCapable: Boolean
         get() = !isOutbox && messagingController.isCopyCapable(account)
 
-    val isMoveCapable: Boolean
+    private val isMoveCapable: Boolean
         get() = !isOutbox && messagingController.isMoveCapable(account)
 
-    fun canMessageBeArchived(): Boolean {
+    private fun canMessageBeArchived(): Boolean {
         val archiveFolderId = account.archiveFolderId ?: return false
         return messageReference.folderId != archiveFolderId
     }
 
-    fun canMessageBeMovedToSpam(): Boolean {
+    private fun canMessageBeMovedToSpam(): Boolean {
         val spamFolderId = account.spamFolderId ?: return false
         return messageReference.folderId != spamFolderId
     }
 
-    fun canMessageBeUnsubscribed(): Boolean {
+    private fun canMessageBeUnsubscribed(): Boolean {
         return preferredUnsubscribeUri != null
     }
 
-    fun onUnsubscribe() {
+    private fun onUnsubscribe() {
         val intent = when (val unsubscribeUri = preferredUnsubscribeUri) {
             is MailtoUnsubscribeUri -> {
                 Intent(requireContext(), MessageCompose::class.java).apply {

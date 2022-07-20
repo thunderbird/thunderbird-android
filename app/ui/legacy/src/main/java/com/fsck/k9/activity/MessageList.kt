@@ -49,12 +49,10 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.K9Drawer
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
-import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageViewFragment
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
@@ -916,62 +914,8 @@ open class MessageList :
                 goBack()
             }
             return true
-        } else if (id == R.id.toggle_message_view_theme) {
-            onToggleTheme()
-            return true
         } else if (id == R.id.search_everywhere) {
             searchEverywhere()
-            return true
-        } else if (id == R.id.next_message) { // MessageView
-            showNextMessage()
-            return true
-        } else if (id == R.id.previous_message) {
-            showPreviousMessage()
-            return true
-        } else if (id == R.id.delete) {
-            messageViewFragment!!.onDelete()
-            return true
-        } else if (id == R.id.reply) {
-            messageViewFragment!!.onReply()
-            return true
-        } else if (id == R.id.reply_all) {
-            messageViewFragment!!.onReplyAll()
-            return true
-        } else if (id == R.id.forward) {
-            messageViewFragment!!.onForward()
-            return true
-        } else if (id == R.id.forward_as_attachment) {
-            messageViewFragment!!.onForwardAsAttachment()
-            return true
-        } else if (id == R.id.edit_as_new_message) {
-            messageViewFragment!!.onEditAsNewMessage()
-            return true
-        } else if (id == R.id.share) {
-            messageViewFragment!!.onSendAlternate()
-            return true
-        } else if (id == R.id.toggle_unread) {
-            messageViewFragment!!.onToggleRead()
-            return true
-        } else if (id == R.id.archive || id == R.id.refile_archive) {
-            messageViewFragment!!.onArchive()
-            return true
-        } else if (id == R.id.spam || id == R.id.refile_spam) {
-            messageViewFragment!!.onSpam()
-            return true
-        } else if (id == R.id.move || id == R.id.refile_move) {
-            messageViewFragment!!.onMove()
-            return true
-        } else if (id == R.id.copy || id == R.id.refile_copy) {
-            messageViewFragment!!.onCopy()
-            return true
-        } else if (id == R.id.move_to_drafts) {
-            messageViewFragment!!.onMoveToDrafts()
-            return true
-        } else if (id == R.id.unsubscribe) {
-            messageViewFragment!!.onUnsubscribe()
-            return true
-        } else if (id == R.id.show_headers) {
-            startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
             return true
         }
 
@@ -1291,11 +1235,6 @@ open class MessageList :
 
     override fun disableDeleteAction() {
         menu!!.findItem(R.id.delete).isEnabled = false
-    }
-
-    private fun onToggleTheme() {
-        themeManager.toggleMessageViewTheme()
-        recreateCompat()
     }
 
     private fun showDefaultTitleView() {
