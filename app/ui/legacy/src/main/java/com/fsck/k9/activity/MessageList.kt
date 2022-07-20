@@ -332,16 +332,21 @@ open class MessageList :
                 showMessageView()
             }
             DisplayMode.SPLIT_VIEW -> {
+                val messageListFragment = checkNotNull(this.messageListFragment)
+
                 messageListWasDisplayed = true
-                messageListFragment?.onListVisible()
-                if (messageViewFragment == null) {
-                    showMessageViewPlaceHolder()
-                } else {
-                    val activeMessage = messageViewFragment!!.messageReference
-                    if (activeMessage != null) {
-                        messageListFragment!!.setActiveMessage(activeMessage)
+                messageListFragment.onListVisible()
+
+                messageViewFragment.let { messageViewFragment ->
+                    if (messageViewFragment == null) {
+                        showMessageViewPlaceHolder()
+                    } else {
+                        messageViewFragment.isActive = true
+                        val activeMessage = messageViewFragment.messageReference
+                        messageListFragment.setActiveMessage(activeMessage)
                     }
                 }
+
                 setDrawerLockState()
                 onMessageListDisplayed()
             }
@@ -987,12 +992,15 @@ open class MessageList :
             }
 
             val fragment = MessageViewFragment.newInstance(messageReference)
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
-            fragmentTransaction.commit()
+            supportFragmentManager.commit {
+                replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
+            }
+
             messageViewFragment = fragment
 
-            if (displayMode != DisplayMode.SPLIT_VIEW) {
+            if (displayMode == DisplayMode.SPLIT_VIEW) {
+                fragment.isActive = true
+            } else {
                 showMessageView()
             }
         }
@@ -1195,6 +1203,7 @@ open class MessageList :
         displayMode = DisplayMode.MESSAGE_LIST
         viewSwitcher!!.showFirstView()
 
+        messageViewFragment?.isActive = false
         messageListFragment!!.onListVisible()
         messageListFragment!!.setActiveMessage(null)
 
@@ -1217,8 +1226,11 @@ open class MessageList :
     }
 
     private fun showMessageView() {
+        val messageViewFragment = checkNotNull(this.messageViewFragment)
+
         displayMode = DisplayMode.MESSAGE_VIEW
         messageListFragment?.onListHidden()
+        messageViewFragment.isActive = true
 
         if (!messageListWasDisplayed) {
             viewSwitcher!!.animateFirstView = false

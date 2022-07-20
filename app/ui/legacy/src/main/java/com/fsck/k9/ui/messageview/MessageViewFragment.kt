@@ -89,6 +89,17 @@ class MessageViewFragment :
 
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
 
+    /**
+     * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
+     * the toolbar. When inactive, the fragment won't add its actions to the toolbar, even it is still visible, e.g. as
+     * part of an animation.
+     */
+    var isActive: Boolean = false
+        set(value) {
+            field = value
+            invalidateMenu()
+        }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -179,6 +190,8 @@ class MessageViewFragment :
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
+        if (!isActive) return
+
         menu.findItem(R.id.delete).isVisible = K9.isMessageViewDeleteActionVisible
 
         val showToggleUnread = !isOutbox
@@ -890,7 +903,7 @@ class MessageViewFragment :
     }
 
     private fun invalidateMenu() {
-        requireActivity().invalidateMenu()
+        activity?.invalidateMenu()
     }
 
     private enum class FolderOperation {
