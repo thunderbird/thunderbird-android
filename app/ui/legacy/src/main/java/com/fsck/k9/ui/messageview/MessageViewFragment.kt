@@ -11,15 +11,19 @@ import android.os.Parcelable
 import android.os.SystemClock
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
+import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.MessageLoaderHelper
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks
 import com.fsck.k9.activity.MessageLoaderHelperFactory
@@ -36,7 +40,9 @@ import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
 import com.fsck.k9.preferences.AccountManager
+import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener
@@ -60,6 +66,7 @@ class MessageViewFragment :
     private val accountManager: AccountManager by inject()
     private val messagingController: MessagingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
+    private val generalSettingsManager: GeneralSettingsManager by inject()
 
     private lateinit var messageTopView: MessageTopView
 
@@ -177,6 +184,83 @@ class MessageViewFragment :
             messageLoaderHelper.onDestroyChangingConfigurations()
         } else {
             messageLoaderHelper.onDestroy()
+        }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.delete).isVisible = K9.isMessageViewDeleteActionVisible
+
+        val showToggleUnread = !isOutbox
+        menu.findItem(R.id.toggle_unread).isVisible = showToggleUnread
+
+        if (showToggleUnread) {
+            // Set title of menu item to toggle the read state of the currently displayed message
+            if (isMessageRead) {
+                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action)
+            } else {
+                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action)
+            }
+
+            val drawableAttr = if (isMessageRead) {
+                intArrayOf(R.attr.iconActionMarkAsUnread)
+            } else {
+                intArrayOf(R.attr.iconActionMarkAsRead)
+            }
+
+            requireContext().withStyledAttributes(attrs = drawableAttr) {
+                menu.findItem(R.id.toggle_unread).icon = getDrawable(0)
+            }
+        }
+
+        // FIXME: Remove previous/next actions
+        menu.findItem(R.id.next_message).isVisible = false
+        menu.findItem(R.id.previous_message).isVisible = false
+
+        if (isMoveCapable) {
+            val canMessageBeArchived = canMessageBeArchived()
+            val canMessageBeMovedToSpam = canMessageBeMovedToSpam()
+
+            menu.findItem(R.id.move).isVisible = K9.isMessageViewMoveActionVisible
+            menu.findItem(R.id.archive).isVisible = canMessageBeArchived && K9.isMessageViewArchiveActionVisible
+            menu.findItem(R.id.spam).isVisible = canMessageBeMovedToSpam && K9.isMessageViewSpamActionVisible
+
+            menu.findItem(R.id.refile_move).isVisible = true
+            menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
+            menu.findItem(R.id.refile_spam).isVisible = canMessageBeMovedToSpam
+
+            menu.findItem(R.id.refile).isVisible = true
+        } else {
+            menu.findItem(R.id.move).isVisible = false
+            menu.findItem(R.id.archive).isVisible = false
+            menu.findItem(R.id.spam).isVisible = false
+
+            menu.findItem(R.id.refile).isVisible = false
+        }
+
+        if (isCopyCapable) {
+            menu.findItem(R.id.copy).isVisible = K9.isMessageViewCopyActionVisible
+            menu.findItem(R.id.refile_copy).isVisible = true
+        } else {
+            menu.findItem(R.id.copy).isVisible = false
+            menu.findItem(R.id.refile_copy).isVisible = false
+        }
+
+        menu.findItem(R.id.move_to_drafts).isVisible = isOutbox
+        menu.findItem(R.id.single_message_options).isVisible = true
+        menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
+        menu.findItem(R.id.show_headers).isVisible = true
+
+        val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
+        if (generalSettingsManager.getSettings().fixedMessageViewTheme) {
+            toggleTheme.isVisible = false
+        } else {
+            // Set title of menu item to switch to dark/light theme
+            if (themeManager.messageViewTheme === Theme.DARK) {
+                toggleTheme.setTitle(R.string.message_view_theme_action_light)
+            } else {
+                toggleTheme.setTitle(R.string.message_view_theme_action_dark)
+            }
+            toggleTheme.isVisible = true
         }
     }
 

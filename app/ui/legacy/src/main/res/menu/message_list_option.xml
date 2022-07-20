@@ -30,6 +30,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/archive"
+        android:visible="false"
         android:icon="?attr/iconActionArchive"
         app:showAsAction="always"
         android:title="@string/archive_action"/>
@@ -37,6 +38,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/delete"
+        android:visible="false"
         android:icon="?attr/iconActionDelete"
         app:showAsAction="always"
         android:title="@string/delete_action"/>
@@ -44,6 +46,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/toggle_unread"
+        android:visible="false"
         android:icon="?attr/iconActionMarkAsUnread"
         app:showAsAction="always"
         android:title="@string/mark_as_unread_action"/>
@@ -51,6 +54,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/previous_message"
+        android:visible="false"
         android:title="@string/previous_action"
         android:icon="?attr/iconActionPreviousMessage"
         app:showAsAction="always" />
@@ -58,6 +62,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/next_message"
+        android:visible="false"
         android:title="@string/next_action"
         android:icon="?attr/iconActionNextMessage"
         app:showAsAction="always"
@@ -66,6 +71,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/spam"
+        android:visible="false"
         android:icon="?attr/iconActionSpam"
         app:showAsAction="ifRoom"
         android:title="@string/spam_action"/>
@@ -73,6 +79,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/move"
+        android:visible="false"
         android:icon="?attr/iconActionMove"
         app:showAsAction="ifRoom"
         android:title="@string/move_action"/>
@@ -80,6 +87,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/copy"
+        android:visible="false"
         android:icon="?attr/iconActionCopy"
         app:showAsAction="ifRoom"
         android:title="@string/copy_action"/>
@@ -94,6 +102,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/single_message_options"
+        android:visible="false"
         android:icon="?attr/iconActionSingleMessageOptions"
         app:showAsAction="ifRoom"
         android:title="@string/single_message_options_action">
@@ -122,6 +131,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/refile"
+        android:visible="false"
         android:icon="?attr/iconActionSingleMessageOptions"
         app:showAsAction="never"
         android:title="@string/refile_action">
@@ -148,10 +158,12 @@
     </item>
 
     <item android:id="@+id/unsubscribe"
+        android:visible="false"
           app:showAsAction="never"
           android:title="@string/unsubscribe_action"/>
 
     <item android:id="@+id/show_headers"
+        android:visible="false"
           app:showAsAction="never"
           android:title="@string/show_headers_action"/>
 
@@ -227,6 +239,7 @@
 
     <!-- MessageView -->
     <item
+        android:visible="false"
         android:id="@+id/toggle_message_view_theme"
         app:showAsAction="never"
         android:title="@string/message_view_theme_action_dark"/>
