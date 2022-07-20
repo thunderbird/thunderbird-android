@@ -39,6 +39,8 @@ import java.util.Locale
 import javax.net.ssl.SSLException
 import org.apache.commons.io.IOUtils
 
+private const val SOCKET_SEND_MESSAGE_READ_TIMEOUT = 5 * 60 * 1000 // 5 minutes
+
 private const val SMTP_CONTINUE_REQUEST = 334
 private const val SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535
 
@@ -111,7 +113,6 @@ class SmtpTransport(
 
             val socket = this.socket ?: error("socket == null")
 
-            // RFC 1047
             socket.soTimeout = SOCKET_READ_TIMEOUT
 
             inputStream = PeekableInputStream(BufferedInputStream(socket.getInputStream(), 1024))
@@ -389,6 +390,11 @@ class SmtpTransport(
             }
 
             executeCommand("DATA")
+
+            // Sending large messages might take a long time. We're using an extended timeout while waiting for the
+            // final response to the DATA command.
+            val socket = this.socket ?: error("socket == null")
+            socket.soTimeout = SOCKET_SEND_MESSAGE_READ_TIMEOUT
 
             val msgOut = EOLConvertingOutputStream(
                 LineWrapOutputStream(
