@@ -1032,6 +1032,8 @@ open class MessageList :
 
     override fun onBackStackChanged() {
         findFragments()
+        messageListFragment?.onListVisible()
+
         if (isDrawerEnabled && !isAdditionalMessageListDisplayed) {
             unlockDrawer()
         }
