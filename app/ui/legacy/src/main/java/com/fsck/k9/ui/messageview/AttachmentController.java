@@ -40,9 +40,9 @@ public class AttachmentController {
     private final AttachmentViewInfo attachment;
 
 
-    AttachmentController(MessagingController controller, MessageViewFragment messageViewFragment,
+    AttachmentController(Context context, MessagingController controller, MessageViewFragment messageViewFragment,
             AttachmentViewInfo attachment) {
-        this.context = messageViewFragment.getApplicationContext();
+        this.context = context;
         this.controller = controller;
         this.messageViewFragment = messageViewFragment;
         this.attachment = attachment;
