@@ -104,6 +104,9 @@ class MessageViewFragment :
 
         setHasOptionsMenu(true)
 
+        messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
+            ?: error("Invalid argument '$ARG_REFERENCE'")
+
         messageCryptoPresenter = MessageCryptoPresenter(messageCryptoMvpView)
         messageLoaderHelper = messageLoaderHelperFactory.createForMessageView(
             context = requireContext().applicationContext,
@@ -146,16 +149,12 @@ class MessageViewFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
-            ?: error("Invalid argument '$ARG_REFERENCE'")
-
-        displayMessage(messageReference)
+        loadMessage(messageReference)
     }
 
-    private fun displayMessage(messageReference: MessageReference) {
+    private fun loadMessage(messageReference: MessageReference) {
         Timber.d("MessageViewFragment displaying message %s", messageReference)
 
-        this.messageReference = messageReference
         account = accountManager.getAccount(messageReference.accountUuid)
             ?: error("Account ${messageReference.accountUuid} not found")
 
