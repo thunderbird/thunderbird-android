@@ -1028,8 +1028,6 @@ open class MessageList :
         if (displayMode == DisplayMode.SPLIT_VIEW) {
             showMessageViewPlaceHolder()
         }
-
-        invalidateMenu()
     }
 
     private fun addMessageListFragment(fragment: MessageListFragment) {
@@ -1121,11 +1119,6 @@ open class MessageList :
         fragmentTransaction.commit()
     }
 
-    override fun remoteSearchStarted() {
-        // Remove action button for remote search
-        invalidateMenu()
-    }
-
     override fun goBack() {
         val fragmentManager = supportFragmentManager
         when {
@@ -1199,7 +1192,6 @@ open class MessageList :
         setDrawerLockState()
 
         showDefaultTitleView()
-        invalidateMenu()
 
         onMessageListDisplayed()
     }
@@ -1231,7 +1223,6 @@ open class MessageList :
         }
 
         showMessageTitleView()
-        invalidateMenu()
     }
 
     private fun showDefaultTitleView() {

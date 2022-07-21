@@ -141,6 +141,7 @@ class MessageListFragment :
         set(value) {
             field = value
             resetActionMode()
+            invalidateMenu()
         }
 
     override fun onAttach(context: Context) {
@@ -537,7 +538,7 @@ class MessageListFragment :
             activityListener
         )
 
-        fragmentListener.remoteSearchStarted()
+        invalidateMenu()
     }
 
     /**
@@ -1619,7 +1620,7 @@ class MessageListFragment :
     }
 
     private fun invalidateMenu() {
-        requireActivity().invalidateMenu()
+        activity?.invalidateMenu()
     }
 
     private val isCheckMailSupported: Boolean
@@ -1978,7 +1979,6 @@ class MessageListFragment :
         fun setMessageListTitle(title: String, subtitle: String?)
         fun onCompose(account: Account?)
         fun startSearch(query: String, account: Account?, folderId: Long?): Boolean
-        fun remoteSearchStarted()
         fun goBack()
         fun onFolderNotFoundError()
 
