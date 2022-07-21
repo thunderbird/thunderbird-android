@@ -919,20 +919,9 @@ open class MessageList :
                 goBack()
             }
             return true
-        } else if (id == R.id.search_everywhere) {
-            searchEverywhere()
-            return true
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun searchEverywhere() {
-        val searchIntent = Intent(this, Search::class.java).apply {
-            action = Intent.ACTION_SEARCH
-            putExtra(SearchManager.QUERY, intent.getStringExtra(SearchManager.QUERY))
-        }
-        onNewIntent(searchIntent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

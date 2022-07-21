@@ -1,6 +1,7 @@
 package com.fsck.k9.fragment
 
 import android.app.Activity
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -28,6 +29,7 @@ import com.fsck.k9.Clock
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.FolderInfoHolder
+import com.fsck.k9.activity.Search
 import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
@@ -764,10 +766,25 @@ class MessageListFragment :
             R.id.send_messages -> onSendPendingMessages()
             R.id.empty_trash -> onEmptyTrash()
             R.id.expunge -> onExpunge()
+            R.id.search_everywhere -> onSearchEverywhere()
             else -> return super.onOptionsItemSelected(item)
         }
 
         return true
+    }
+
+    private fun onSearchEverywhere() {
+        val searchQuery = requireActivity().intent.getStringExtra(SearchManager.QUERY)
+
+        val searchIntent = Intent(requireContext(), Search::class.java).apply {
+            action = Intent.ACTION_SEARCH
+            putExtra(SearchManager.QUERY, searchQuery)
+
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+
+        startActivity(searchIntent)
     }
 
     private fun onSendPendingMessages() {
