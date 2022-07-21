@@ -706,6 +706,7 @@ class MessageListFragment :
     }
 
     private fun prepareMenu(menu: Menu) {
+        menu.findItem(R.id.compose).isVisible = true
         menu.findItem(R.id.set_sort).isVisible = true
         menu.findItem(R.id.select_all).isVisible = true
         menu.findItem(R.id.compose).isVisible = true
@@ -726,6 +727,7 @@ class MessageListFragment :
     }
 
     private fun hideMenu(menu: Menu) {
+        menu.findItem(R.id.compose).isVisible = false
         menu.findItem(R.id.search).isVisible = false
         menu.findItem(R.id.search_remote).isVisible = false
         menu.findItem(R.id.set_sort).isVisible = false

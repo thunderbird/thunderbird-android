@@ -11,10 +11,14 @@ import android.os.Parcelable
 import android.os.SystemClock
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.fsck.k9.Account
@@ -36,9 +40,12 @@ import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
 import com.fsck.k9.preferences.AccountManager
+import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
@@ -60,6 +67,7 @@ class MessageViewFragment :
     private val accountManager: AccountManager by inject()
     private val messagingController: MessagingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
+    private val generalSettingsManager: GeneralSettingsManager by inject()
 
     private lateinit var messageTopView: MessageTopView
 
@@ -79,14 +87,18 @@ class MessageViewFragment :
     private lateinit var account: Account
     lateinit var messageReference: MessageReference
 
-    /**
-     * `true` after [.onCreate] has been executed. This is used by `MessageList.configureMenu()` to make sure the
-     * fragment has been initialized before it is used.
-     */
-    var isInitialized = false
-        private set
-
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
+
+    /**
+     * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
+     * the toolbar. When inactive, the fragment won't add its actions to the toolbar, even it is still visible, e.g. as
+     * part of an animation.
+     */
+    var isActive: Boolean = false
+        set(value) {
+            field = value
+            invalidateMenu()
+        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -103,6 +115,9 @@ class MessageViewFragment :
 
         setHasOptionsMenu(true)
 
+        messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
+            ?: error("Invalid argument '$ARG_REFERENCE'")
+
         messageCryptoPresenter = MessageCryptoPresenter(messageCryptoMvpView)
         messageLoaderHelper = messageLoaderHelperFactory.createForMessageView(
             context = requireContext().applicationContext,
@@ -110,8 +125,6 @@ class MessageViewFragment :
             fragmentManager = parentFragmentManager,
             callback = messageLoaderCallbacks
         )
-
-        isInitialized = true
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -147,16 +160,12 @@ class MessageViewFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
-            ?: error("Invalid argument '$ARG_REFERENCE'")
-
-        displayMessage(messageReference)
+        loadMessage(messageReference)
     }
 
-    private fun displayMessage(messageReference: MessageReference) {
+    private fun loadMessage(messageReference: MessageReference) {
         Timber.d("MessageViewFragment displaying message %s", messageReference)
 
-        this.messageReference = messageReference
         account = accountManager.getAccount(messageReference.accountUuid)
             ?: error("Account ${messageReference.accountUuid} not found")
 
@@ -178,6 +187,116 @@ class MessageViewFragment :
         } else {
             messageLoaderHelper.onDestroy()
         }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        if (!isActive) return
+
+        menu.findItem(R.id.delete).isVisible = K9.isMessageViewDeleteActionVisible
+
+        val showToggleUnread = !isOutbox
+        menu.findItem(R.id.toggle_unread).isVisible = showToggleUnread
+
+        if (showToggleUnread) {
+            // Set title of menu item to toggle the read state of the currently displayed message
+            if (isMessageRead) {
+                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action)
+            } else {
+                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action)
+            }
+
+            val drawableAttr = if (isMessageRead) {
+                intArrayOf(R.attr.iconActionMarkAsUnread)
+            } else {
+                intArrayOf(R.attr.iconActionMarkAsRead)
+            }
+
+            requireContext().withStyledAttributes(attrs = drawableAttr) {
+                menu.findItem(R.id.toggle_unread).icon = getDrawable(0)
+            }
+        }
+
+        if (isMoveCapable) {
+            val canMessageBeArchived = canMessageBeArchived()
+            val canMessageBeMovedToSpam = canMessageBeMovedToSpam()
+
+            menu.findItem(R.id.move).isVisible = K9.isMessageViewMoveActionVisible
+            menu.findItem(R.id.archive).isVisible = canMessageBeArchived && K9.isMessageViewArchiveActionVisible
+            menu.findItem(R.id.spam).isVisible = canMessageBeMovedToSpam && K9.isMessageViewSpamActionVisible
+
+            menu.findItem(R.id.refile_move).isVisible = true
+            menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
+            menu.findItem(R.id.refile_spam).isVisible = canMessageBeMovedToSpam
+
+            menu.findItem(R.id.refile).isVisible = true
+        } else {
+            menu.findItem(R.id.move).isVisible = false
+            menu.findItem(R.id.archive).isVisible = false
+            menu.findItem(R.id.spam).isVisible = false
+
+            menu.findItem(R.id.refile).isVisible = false
+        }
+
+        if (isCopyCapable) {
+            menu.findItem(R.id.copy).isVisible = K9.isMessageViewCopyActionVisible
+            menu.findItem(R.id.refile_copy).isVisible = true
+        } else {
+            menu.findItem(R.id.copy).isVisible = false
+            menu.findItem(R.id.refile_copy).isVisible = false
+        }
+
+        menu.findItem(R.id.move_to_drafts).isVisible = isOutbox
+        menu.findItem(R.id.single_message_options).isVisible = true
+        menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
+        menu.findItem(R.id.show_headers).isVisible = true
+        menu.findItem(R.id.compose).isVisible = true
+
+        val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
+        if (generalSettingsManager.getSettings().fixedMessageViewTheme) {
+            toggleTheme.isVisible = false
+        } else {
+            // Set title of menu item to switch to dark/light theme
+            if (themeManager.messageViewTheme === Theme.DARK) {
+                toggleTheme.setTitle(R.string.message_view_theme_action_light)
+            } else {
+                toggleTheme.setTitle(R.string.message_view_theme_action_dark)
+            }
+            toggleTheme.isVisible = true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.toggle_message_view_theme -> onToggleTheme()
+            R.id.delete -> onDelete()
+            R.id.reply -> onReply()
+            R.id.reply_all -> onReplyAll()
+            R.id.forward -> onForward()
+            R.id.forward_as_attachment -> onForwardAsAttachment()
+            R.id.edit_as_new_message -> onEditAsNewMessage()
+            R.id.share -> onSendAlternate()
+            R.id.toggle_unread -> onToggleRead()
+            R.id.archive, R.id.refile_archive -> onArchive()
+            R.id.spam, R.id.refile_spam -> onSpam()
+            R.id.move, R.id.refile_move -> onMove()
+            R.id.copy, R.id.refile_copy -> onCopy()
+            R.id.move_to_drafts -> onMoveToDrafts()
+            R.id.unsubscribe -> onUnsubscribe()
+            R.id.show_headers -> onShowHeaders()
+            else -> return false
+        }
+
+        return true
+    }
+
+    private fun onShowHeaders() {
+        val launchIntent = MessageSourceActivity.createLaunchIntent(requireActivity(), messageReference)
+        startActivity(launchIntent)
+    }
+
+    private fun onToggleTheme() {
+        themeManager.toggleMessageViewTheme()
+        ActivityCompat.recreate(requireActivity())
     }
 
     private fun showMessage(messageViewInfo: MessageViewInfo) {
@@ -319,7 +438,7 @@ class MessageViewFragment :
         )
     }
 
-    fun onForwardAsAttachment() {
+    private fun onForwardAsAttachment() {
         val message = checkNotNull(this.message)
 
         fragmentListener.onForwardAsAttachment(
@@ -328,7 +447,7 @@ class MessageViewFragment :
         )
     }
 
-    fun onEditAsNewMessage() {
+    private fun onEditAsNewMessage() {
         val message = checkNotNull(this.message)
 
         fragmentListener.onEditAsNewMessage(message.makeMessageReference())
@@ -358,7 +477,7 @@ class MessageViewFragment :
         startRefileActivity(FolderOperation.COPY, ACTIVITY_CHOOSE_FOLDER_COPY)
     }
 
-    fun onMoveToDrafts() {
+    private fun onMoveToDrafts() {
         fragmentListener.showNextMessageOrReturn()
 
         val account = account
@@ -371,7 +490,7 @@ class MessageViewFragment :
         onRefile(account.archiveFolderId)
     }
 
-    fun onSpam() {
+    private fun onSpam() {
         onRefile(account.spamFolderId)
     }
 
@@ -449,7 +568,7 @@ class MessageViewFragment :
         copyMessage(messageReference, destinationFolderId)
     }
 
-    fun onSendAlternate() {
+    private fun onSendAlternate() {
         val message = checkNotNull(message)
 
         val shareIntent = shareIntentBuilder.createShareIntent(message)
@@ -557,33 +676,33 @@ class MessageViewFragment :
 
     override fun dialogCancelled(dialogId: Int) = Unit
 
-    val isOutbox: Boolean
+    private val isOutbox: Boolean
         get() = messageReference.folderId == account.outboxFolderId
 
-    val isMessageRead: Boolean
+    private val isMessageRead: Boolean
         get() = message?.isSet(Flag.SEEN) == true
 
-    val isCopyCapable: Boolean
+    private val isCopyCapable: Boolean
         get() = !isOutbox && messagingController.isCopyCapable(account)
 
-    val isMoveCapable: Boolean
+    private val isMoveCapable: Boolean
         get() = !isOutbox && messagingController.isMoveCapable(account)
 
-    fun canMessageBeArchived(): Boolean {
+    private fun canMessageBeArchived(): Boolean {
         val archiveFolderId = account.archiveFolderId ?: return false
         return messageReference.folderId != archiveFolderId
     }
 
-    fun canMessageBeMovedToSpam(): Boolean {
+    private fun canMessageBeMovedToSpam(): Boolean {
         val spamFolderId = account.spamFolderId ?: return false
         return messageReference.folderId != spamFolderId
     }
 
-    fun canMessageBeUnsubscribed(): Boolean {
+    private fun canMessageBeUnsubscribed(): Boolean {
         return preferredUnsubscribeUri != null
     }
 
-    fun onUnsubscribe() {
+    private fun onUnsubscribe() {
         val intent = when (val unsubscribeUri = preferredUnsubscribeUri) {
             is MailtoUnsubscribeUri -> {
                 Intent(requireContext(), MessageCompose::class.java).apply {
@@ -781,7 +900,7 @@ class MessageViewFragment :
     }
 
     private fun invalidateMenu() {
-        requireActivity().invalidateMenu()
+        activity?.invalidateMenu()
     }
 
     private enum class FolderOperation {

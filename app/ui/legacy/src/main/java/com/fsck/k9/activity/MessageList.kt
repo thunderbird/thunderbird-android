@@ -49,12 +49,10 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.K9Drawer
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
-import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageViewFragment
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
@@ -334,16 +332,21 @@ open class MessageList :
                 showMessageView()
             }
             DisplayMode.SPLIT_VIEW -> {
+                val messageListFragment = checkNotNull(this.messageListFragment)
+
                 messageListWasDisplayed = true
-                messageListFragment?.onListVisible()
-                if (messageViewFragment == null) {
-                    showMessageViewPlaceHolder()
-                } else {
-                    val activeMessage = messageViewFragment!!.messageReference
-                    if (activeMessage != null) {
-                        messageListFragment!!.setActiveMessage(activeMessage)
+                messageListFragment.onListVisible()
+
+                messageViewFragment.let { messageViewFragment ->
+                    if (messageViewFragment == null) {
+                        showMessageViewPlaceHolder()
+                    } else {
+                        messageViewFragment.isActive = true
+                        val activeMessage = messageViewFragment.messageReference
+                        messageListFragment.setActiveMessage(activeMessage)
                     }
                 }
+
                 setDrawerLockState()
                 onMessageListDisplayed()
             }
@@ -916,62 +919,8 @@ open class MessageList :
                 goBack()
             }
             return true
-        } else if (id == R.id.toggle_message_view_theme) {
-            onToggleTheme()
-            return true
         } else if (id == R.id.search_everywhere) {
             searchEverywhere()
-            return true
-        } else if (id == R.id.next_message) { // MessageView
-            showNextMessage()
-            return true
-        } else if (id == R.id.previous_message) {
-            showPreviousMessage()
-            return true
-        } else if (id == R.id.delete) {
-            messageViewFragment!!.onDelete()
-            return true
-        } else if (id == R.id.reply) {
-            messageViewFragment!!.onReply()
-            return true
-        } else if (id == R.id.reply_all) {
-            messageViewFragment!!.onReplyAll()
-            return true
-        } else if (id == R.id.forward) {
-            messageViewFragment!!.onForward()
-            return true
-        } else if (id == R.id.forward_as_attachment) {
-            messageViewFragment!!.onForwardAsAttachment()
-            return true
-        } else if (id == R.id.edit_as_new_message) {
-            messageViewFragment!!.onEditAsNewMessage()
-            return true
-        } else if (id == R.id.share) {
-            messageViewFragment!!.onSendAlternate()
-            return true
-        } else if (id == R.id.toggle_unread) {
-            messageViewFragment!!.onToggleRead()
-            return true
-        } else if (id == R.id.archive || id == R.id.refile_archive) {
-            messageViewFragment!!.onArchive()
-            return true
-        } else if (id == R.id.spam || id == R.id.refile_spam) {
-            messageViewFragment!!.onSpam()
-            return true
-        } else if (id == R.id.move || id == R.id.refile_move) {
-            messageViewFragment!!.onMove()
-            return true
-        } else if (id == R.id.copy || id == R.id.refile_copy) {
-            messageViewFragment!!.onCopy()
-            return true
-        } else if (id == R.id.move_to_drafts) {
-            messageViewFragment!!.onMoveToDrafts()
-            return true
-        } else if (id == R.id.unsubscribe) {
-            messageViewFragment!!.onUnsubscribe()
-            return true
-        } else if (id == R.id.show_headers) {
-            startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
             return true
         }
 
@@ -1011,126 +960,6 @@ open class MessageList :
         return true
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        super.onPrepareOptionsMenu(menu)
-        configureMenu(menu)
-        return true
-    }
-
-    /**
-     * Hide menu items not appropriate for the current context.
-     *
-     * **Note:**
-     * Please adjust the comments in `res/menu/message_list_option.xml` if you change the  visibility of a menu item
-     * in this method.
-     */
-    private fun configureMenu(menu: Menu?) {
-        if (menu == null) return
-
-        // Set visibility of menu items related to the message view
-        if (displayMode == DisplayMode.MESSAGE_LIST || messageViewFragment == null ||
-            !messageViewFragment!!.isInitialized
-        ) {
-            menu.findItem(R.id.next_message).isVisible = false
-            menu.findItem(R.id.previous_message).isVisible = false
-            menu.findItem(R.id.single_message_options).isVisible = false
-            menu.findItem(R.id.delete).isVisible = false
-            menu.findItem(R.id.compose).isVisible = false
-            menu.findItem(R.id.archive).isVisible = false
-            menu.findItem(R.id.move).isVisible = false
-            menu.findItem(R.id.copy).isVisible = false
-            menu.findItem(R.id.spam).isVisible = false
-            menu.findItem(R.id.refile).isVisible = false
-            menu.findItem(R.id.toggle_unread).isVisible = false
-            menu.findItem(R.id.toggle_message_view_theme).isVisible = false
-            menu.findItem(R.id.unsubscribe).isVisible = false
-            menu.findItem(R.id.show_headers).isVisible = false
-        } else {
-            // hide prev/next buttons in split mode
-            if (displayMode != DisplayMode.MESSAGE_VIEW) {
-                menu.findItem(R.id.next_message).isVisible = false
-                menu.findItem(R.id.previous_message).isVisible = false
-            } else {
-                val ref = messageViewFragment!!.messageReference
-                val initialized = messageListFragment != null &&
-                    messageListFragment!!.isLoadFinished
-                val canDoPrev = initialized && !messageListFragment!!.isFirst(ref)
-                val canDoNext = initialized && !messageListFragment!!.isLast(ref)
-                val prev = menu.findItem(R.id.previous_message)
-                prev.isEnabled = canDoPrev
-                prev.icon.alpha = if (canDoPrev) 255 else 127
-                val next = menu.findItem(R.id.next_message)
-                next.isEnabled = canDoNext
-                next.icon.alpha = if (canDoNext) 255 else 127
-            }
-
-            val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
-            if (generalSettingsManager.getSettings().fixedMessageViewTheme) {
-                toggleTheme.isVisible = false
-            } else {
-                // Set title of menu item to switch to dark/light theme
-                if (themeManager.messageViewTheme === Theme.DARK) {
-                    toggleTheme.setTitle(R.string.message_view_theme_action_light)
-                } else {
-                    toggleTheme.setTitle(R.string.message_view_theme_action_dark)
-                }
-                toggleTheme.isVisible = true
-            }
-
-            if (messageViewFragment!!.isOutbox) {
-                menu.findItem(R.id.toggle_unread).isVisible = false
-            } else {
-                // Set title of menu item to toggle the read state of the currently displayed message
-                val drawableAttr = if (messageViewFragment!!.isMessageRead) {
-                    menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action)
-                    intArrayOf(R.attr.iconActionMarkAsUnread)
-                } else {
-                    menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action)
-                    intArrayOf(R.attr.iconActionMarkAsRead)
-                }
-                val typedArray = obtainStyledAttributes(drawableAttr)
-                menu.findItem(R.id.toggle_unread).icon = typedArray.getDrawable(0)
-                typedArray.recycle()
-            }
-
-            menu.findItem(R.id.delete).isVisible = K9.isMessageViewDeleteActionVisible
-
-            // Set visibility of copy, move, archive, spam in action bar and refile submenu
-            if (messageViewFragment!!.isCopyCapable) {
-                menu.findItem(R.id.copy).isVisible = K9.isMessageViewCopyActionVisible
-                menu.findItem(R.id.refile_copy).isVisible = true
-            } else {
-                menu.findItem(R.id.copy).isVisible = false
-                menu.findItem(R.id.refile_copy).isVisible = false
-            }
-
-            if (messageViewFragment!!.isMoveCapable) {
-                val canMessageBeArchived = messageViewFragment!!.canMessageBeArchived()
-                val canMessageBeMovedToSpam = messageViewFragment!!.canMessageBeMovedToSpam()
-
-                menu.findItem(R.id.move).isVisible = K9.isMessageViewMoveActionVisible
-                menu.findItem(R.id.archive).isVisible = canMessageBeArchived && K9.isMessageViewArchiveActionVisible
-                menu.findItem(R.id.spam).isVisible = canMessageBeMovedToSpam && K9.isMessageViewSpamActionVisible
-
-                menu.findItem(R.id.refile_move).isVisible = true
-                menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
-                menu.findItem(R.id.refile_spam).isVisible = canMessageBeMovedToSpam
-            } else {
-                menu.findItem(R.id.move).isVisible = false
-                menu.findItem(R.id.archive).isVisible = false
-                menu.findItem(R.id.spam).isVisible = false
-
-                menu.findItem(R.id.refile).isVisible = false
-            }
-
-            if (messageViewFragment!!.isOutbox) {
-                menu.findItem(R.id.move_to_drafts).isVisible = true
-            }
-
-            menu.findItem(R.id.unsubscribe).isVisible = messageViewFragment!!.canMessageBeUnsubscribed()
-        }
-    }
-
     fun setActionBarTitle(title: String, subtitle: String? = null) {
         actionBar.title = title
         actionBar.subtitle = subtitle
@@ -1163,12 +992,15 @@ open class MessageList :
             }
 
             val fragment = MessageViewFragment.newInstance(messageReference)
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
-            fragmentTransaction.commit()
+            supportFragmentManager.commit {
+                replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
+            }
+
             messageViewFragment = fragment
 
-            if (displayMode != DisplayMode.SPLIT_VIEW) {
+            if (displayMode == DisplayMode.SPLIT_VIEW) {
+                fragment.isActive = true
+            } else {
                 showMessageView()
             }
         }
@@ -1200,6 +1032,8 @@ open class MessageList :
 
     override fun onBackStackChanged() {
         findFragments()
+        messageListFragment?.onListVisible()
+
         if (isDrawerEnabled && !isAdditionalMessageListDisplayed) {
             unlockDrawer()
         }
@@ -1371,6 +1205,7 @@ open class MessageList :
         displayMode = DisplayMode.MESSAGE_LIST
         viewSwitcher!!.showFirstView()
 
+        messageViewFragment?.isActive = false
         messageListFragment!!.onListVisible()
         messageListFragment!!.setActiveMessage(null)
 
@@ -1393,8 +1228,11 @@ open class MessageList :
     }
 
     private fun showMessageView() {
+        val messageViewFragment = checkNotNull(this.messageViewFragment)
+
         displayMode = DisplayMode.MESSAGE_VIEW
         messageListFragment?.onListHidden()
+        messageViewFragment.isActive = true
 
         if (!messageListWasDisplayed) {
             viewSwitcher!!.animateFirstView = false
@@ -1411,11 +1249,6 @@ open class MessageList :
 
     override fun disableDeleteAction() {
         menu!!.findItem(R.id.delete).isEnabled = false
-    }
-
-    private fun onToggleTheme() {
-        themeManager.toggleMessageViewTheme()
-        recreateCompat()
     }
 
     private fun showDefaultTitleView() {

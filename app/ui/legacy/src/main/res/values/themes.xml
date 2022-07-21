@@ -33,8 +33,6 @@
         <item name="iconActionMove">@drawable/ic_folder</item>
         <item name="iconActionCopy">@drawable/ic_content_copy</item>
         <item name="iconActionNextStatus">@drawable/ic_chevron_right</item>
-        <item name="iconActionNextMessage">@drawable/ic_chevron_right</item>
-        <item name="iconActionPreviousMessage">@drawable/ic_chevron_left</item>
         <item name="iconActionRefresh">@drawable/ic_refresh</item>
         <item name="iconActionSearch">@drawable/ic_magnify</item>
         <item name="iconActionSearchFolder">@drawable/ic_folder_magnify</item>
@@ -154,8 +152,6 @@
         <item name="iconActionMove">@drawable/ic_folder</item>
         <item name="iconActionCopy">@drawable/ic_content_copy</item>
         <item name="iconActionNextStatus">@drawable/ic_chevron_right</item>
-        <item name="iconActionNextMessage">@drawable/ic_chevron_right</item>
-        <item name="iconActionPreviousMessage">@drawable/ic_chevron_left</item>
         <item name="iconActionRefresh">@drawable/ic_refresh</item>
         <item name="iconActionSearch">@drawable/ic_magnify</item>
         <item name="iconActionSearchFolder">@drawable/ic_folder_magnify</item>
