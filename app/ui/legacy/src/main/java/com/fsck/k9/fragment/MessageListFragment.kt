@@ -1,6 +1,7 @@
 package com.fsck.k9.fragment
 
 import android.app.Activity
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -28,6 +29,7 @@ import com.fsck.k9.Clock
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.FolderInfoHolder
+import com.fsck.k9.activity.Search
 import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
@@ -109,8 +111,6 @@ class MessageListFragment :
     private var isThreadDisplay = false
     private var activeMessage: MessageReference? = null
 
-    var isLoadFinished = false
-        private set
     lateinit var localSearch: LocalSearch
         private set
     var isSingleAccountMode = false
@@ -130,7 +130,17 @@ class MessageListFragment :
      */
     private var isInitialized = false
 
-    private var isListVisible = false
+    /**
+     * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
+     * the toolbar. When inactive, the fragment won't add its actions to the toolbar, even it is still visible, e.g. as
+     * part of an animation.
+     */
+    var isActive: Boolean = false
+        set(value) {
+            field = value
+            resetActionMode()
+            invalidateMenu()
+        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -526,7 +536,7 @@ class MessageListFragment :
             activityListener
         )
 
-        fragmentListener.remoteSearchStarted()
+        invalidateMenu()
     }
 
     /**
@@ -698,7 +708,7 @@ class MessageListFragment :
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        if (isListVisible) {
+        if (isActive) {
             prepareMenu(menu)
         } else {
             hideMenu(menu)
@@ -755,10 +765,25 @@ class MessageListFragment :
             R.id.send_messages -> onSendPendingMessages()
             R.id.empty_trash -> onEmptyTrash()
             R.id.expunge -> onExpunge()
+            R.id.search_everywhere -> onSearchEverywhere()
             else -> return super.onOptionsItemSelected(item)
         }
 
         return true
+    }
+
+    private fun onSearchEverywhere() {
+        val searchQuery = requireActivity().intent.getStringExtra(SearchManager.QUERY)
+
+        val searchIntent = Intent(requireContext(), Search::class.java).apply {
+            action = Intent.ACTION_SEARCH
+            putExtra(SearchManager.QUERY, searchQuery)
+
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+
+        startActivity(searchIntent)
     }
 
     private fun onSendPendingMessages() {
@@ -1497,8 +1522,6 @@ class MessageListFragment :
         computeBatchDirection()
         computeSelectAllVisibility()
 
-        isLoadFinished = true
-
         if (savedListState != null) {
             handler.restoreListPosition(savedListState)
             savedListState = null
@@ -1524,7 +1547,7 @@ class MessageListFragment :
     private fun resetActionMode() {
         if (!isResumed) return
 
-        if (!isListVisible || selected.isEmpty()) {
+        if (!isActive || selected.isEmpty()) {
             actionMode?.finish()
             actionMode = null
             return
@@ -1592,18 +1615,8 @@ class MessageListFragment :
         }
     }
 
-    fun onListVisible() {
-        isListVisible = true
-        resetActionMode()
-    }
-
-    fun onListHidden() {
-        isListVisible = false
-        resetActionMode()
-    }
-
     private fun invalidateMenu() {
-        requireActivity().invalidateMenu()
+        activity?.invalidateMenu()
     }
 
     private val isCheckMailSupported: Boolean
@@ -1962,7 +1975,6 @@ class MessageListFragment :
         fun setMessageListTitle(title: String, subtitle: String?)
         fun onCompose(account: Account?)
         fun startSearch(query: String, account: Account?, folderId: Long?): Boolean
-        fun remoteSearchStarted()
         fun goBack()
         fun onFolderNotFoundError()
 

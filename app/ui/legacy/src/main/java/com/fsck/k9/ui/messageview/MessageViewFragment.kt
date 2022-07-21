@@ -88,6 +88,7 @@ class MessageViewFragment :
     lateinit var messageReference: MessageReference
 
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
+    private var isDeleteMenuItemDisabled: Boolean = false
 
     /**
      * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
@@ -192,7 +193,10 @@ class MessageViewFragment :
     override fun onPrepareOptionsMenu(menu: Menu) {
         if (!isActive) return
 
-        menu.findItem(R.id.delete).isVisible = K9.isMessageViewDeleteActionVisible
+        menu.findItem(R.id.delete).apply {
+            isVisible = K9.isMessageViewDeleteActionVisible
+            isEnabled = !isDeleteMenuItemDisabled
+        }
 
         val showToggleUnread = !isOutbox
         menu.findItem(R.id.toggle_unread).isVisible = showToggleUnread
@@ -378,12 +382,16 @@ class MessageViewFragment :
     }
 
     private fun delete() {
-        // Disable the delete button after it has been tapped (to try to prevent accidental clicks)
-        fragmentListener.disableDeleteAction()
+        disableDeleteMenuItem()
 
         fragmentListener.showNextMessageOrReturn()
 
         messagingController.deleteMessage(messageReference)
+    }
+
+    private fun disableDeleteMenuItem() {
+        isDeleteMenuItemDisabled = true
+        invalidateMenu()
     }
 
     private fun onRefile(destinationFolderId: Long?) {
@@ -799,7 +807,6 @@ class MessageViewFragment :
         fun onForward(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
         fun onForwardAsAttachment(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
         fun onEditAsNewMessage(messageReference: MessageReference)
-        fun disableDeleteAction()
         fun onReplyAll(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
         fun onReply(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
         fun setProgress(enable: Boolean)

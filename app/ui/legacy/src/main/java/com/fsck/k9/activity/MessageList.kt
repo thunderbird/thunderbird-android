@@ -98,7 +98,6 @@ open class MessageList :
     private lateinit var searchView: SearchView
     private var drawer: K9Drawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
-    private var menu: Menu? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
@@ -335,7 +334,7 @@ open class MessageList :
                 val messageListFragment = checkNotNull(this.messageListFragment)
 
                 messageListWasDisplayed = true
-                messageListFragment.onListVisible()
+                messageListFragment.isActive = true
 
                 messageViewFragment.let { messageViewFragment ->
                     if (messageViewFragment == null) {
@@ -627,7 +626,7 @@ open class MessageList :
         openFolderTransaction!!.commit()
         openFolderTransaction = null
 
-        messageListFragment!!.onListVisible()
+        messageListFragment!!.isActive = true
 
         onMessageListDisplayed()
     }
@@ -919,25 +918,13 @@ open class MessageList :
                 goBack()
             }
             return true
-        } else if (id == R.id.search_everywhere) {
-            searchEverywhere()
-            return true
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-    private fun searchEverywhere() {
-        val searchIntent = Intent(this, Search::class.java).apply {
-            action = Intent.ACTION_SEARCH
-            putExtra(SearchManager.QUERY, intent.getStringExtra(SearchManager.QUERY))
-        }
-        onNewIntent(searchIntent)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.message_list_option, menu)
-        this.menu = menu
 
         // setup search view
         val searchItem = menu.findItem(R.id.search)
@@ -1032,7 +1019,7 @@ open class MessageList :
 
     override fun onBackStackChanged() {
         findFragments()
-        messageListFragment?.onListVisible()
+        messageListFragment?.isActive = true
 
         if (isDrawerEnabled && !isAdditionalMessageListDisplayed) {
             unlockDrawer()
@@ -1041,8 +1028,6 @@ open class MessageList :
         if (displayMode == DisplayMode.SPLIT_VIEW) {
             showMessageViewPlaceHolder()
         }
-
-        invalidateMenu()
     }
 
     private fun addMessageListFragment(fragment: MessageListFragment) {
@@ -1059,7 +1044,7 @@ open class MessageList :
         }
 
         messageListFragment = fragment
-        fragment.onListVisible()
+        fragment.isActive = true
 
         if (isDrawerEnabled) {
             lockDrawer()
@@ -1134,11 +1119,6 @@ open class MessageList :
         fragmentTransaction.commit()
     }
 
-    override fun remoteSearchStarted() {
-        // Remove action button for remote search
-        invalidateMenu()
-    }
-
     override fun goBack() {
         val fragmentManager = supportFragmentManager
         when {
@@ -1206,13 +1186,12 @@ open class MessageList :
         viewSwitcher!!.showFirstView()
 
         messageViewFragment?.isActive = false
-        messageListFragment!!.onListVisible()
+        messageListFragment!!.isActive = true
         messageListFragment!!.setActiveMessage(null)
 
         setDrawerLockState()
 
         showDefaultTitleView()
-        invalidateMenu()
 
         onMessageListDisplayed()
     }
@@ -1231,7 +1210,7 @@ open class MessageList :
         val messageViewFragment = checkNotNull(this.messageViewFragment)
 
         displayMode = DisplayMode.MESSAGE_VIEW
-        messageListFragment?.onListHidden()
+        messageListFragment?.isActive = false
         messageViewFragment.isActive = true
 
         if (!messageListWasDisplayed) {
@@ -1244,11 +1223,6 @@ open class MessageList :
         }
 
         showMessageTitleView()
-        invalidateMenu()
-    }
-
-    override fun disableDeleteAction() {
-        menu!!.findItem(R.id.delete).isEnabled = false
     }
 
     private fun showDefaultTitleView() {
