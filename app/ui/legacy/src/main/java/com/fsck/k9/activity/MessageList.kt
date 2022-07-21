@@ -335,7 +335,7 @@ open class MessageList :
                 val messageListFragment = checkNotNull(this.messageListFragment)
 
                 messageListWasDisplayed = true
-                messageListFragment.onListVisible()
+                messageListFragment.isActive = true
 
                 messageViewFragment.let { messageViewFragment ->
                     if (messageViewFragment == null) {
@@ -627,7 +627,7 @@ open class MessageList :
         openFolderTransaction!!.commit()
         openFolderTransaction = null
 
-        messageListFragment!!.onListVisible()
+        messageListFragment!!.isActive = true
 
         onMessageListDisplayed()
     }
@@ -1032,7 +1032,7 @@ open class MessageList :
 
     override fun onBackStackChanged() {
         findFragments()
-        messageListFragment?.onListVisible()
+        messageListFragment?.isActive = true
 
         if (isDrawerEnabled && !isAdditionalMessageListDisplayed) {
             unlockDrawer()
@@ -1059,7 +1059,7 @@ open class MessageList :
         }
 
         messageListFragment = fragment
-        fragment.onListVisible()
+        fragment.isActive = true
 
         if (isDrawerEnabled) {
             lockDrawer()
@@ -1206,7 +1206,7 @@ open class MessageList :
         viewSwitcher!!.showFirstView()
 
         messageViewFragment?.isActive = false
-        messageListFragment!!.onListVisible()
+        messageListFragment!!.isActive = true
         messageListFragment!!.setActiveMessage(null)
 
         setDrawerLockState()
@@ -1231,7 +1231,7 @@ open class MessageList :
         val messageViewFragment = checkNotNull(this.messageViewFragment)
 
         displayMode = DisplayMode.MESSAGE_VIEW
-        messageListFragment?.onListHidden()
+        messageListFragment?.isActive = false
         messageViewFragment.isActive = true
 
         if (!messageListWasDisplayed) {

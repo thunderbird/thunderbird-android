@@ -130,7 +130,16 @@ class MessageListFragment :
      */
     private var isInitialized = false
 
-    private var isListVisible = false
+    /**
+     * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
+     * the toolbar. When inactive, the fragment won't add its actions to the toolbar, even it is still visible, e.g. as
+     * part of an animation.
+     */
+    var isActive: Boolean = false
+        set(value) {
+            field = value
+            resetActionMode()
+        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -698,7 +707,7 @@ class MessageListFragment :
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        if (isListVisible) {
+        if (isActive) {
             prepareMenu(menu)
         } else {
             hideMenu(menu)
@@ -1524,7 +1533,7 @@ class MessageListFragment :
     private fun resetActionMode() {
         if (!isResumed) return
 
-        if (!isListVisible || selected.isEmpty()) {
+        if (!isActive || selected.isEmpty()) {
             actionMode?.finish()
             actionMode = null
             return
@@ -1590,16 +1599,6 @@ class MessageListFragment :
         if (isMarkAllAsReadSupported) {
             messagingController.markAllMessagesRead(account, currentFolder!!.databaseId)
         }
-    }
-
-    fun onListVisible() {
-        isListVisible = true
-        resetActionMode()
-    }
-
-    fun onListHidden() {
-        isListVisible = false
-        resetActionMode()
     }
 
     private fun invalidateMenu() {
