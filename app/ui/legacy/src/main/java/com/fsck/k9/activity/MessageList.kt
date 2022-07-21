@@ -98,7 +98,6 @@ open class MessageList :
     private lateinit var searchView: SearchView
     private var drawer: K9Drawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
-    private var menu: Menu? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
@@ -926,7 +925,6 @@ open class MessageList :
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.message_list_option, menu)
-        this.menu = menu
 
         // setup search view
         val searchItem = menu.findItem(R.id.search)
@@ -1234,10 +1232,6 @@ open class MessageList :
 
         showMessageTitleView()
         invalidateMenu()
-    }
-
-    override fun disableDeleteAction() {
-        menu!!.findItem(R.id.delete).isEnabled = false
     }
 
     private fun showDefaultTitleView() {
