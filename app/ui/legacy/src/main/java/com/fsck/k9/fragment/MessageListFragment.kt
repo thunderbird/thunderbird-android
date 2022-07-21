@@ -111,8 +111,6 @@ class MessageListFragment :
     private var isThreadDisplay = false
     private var activeMessage: MessageReference? = null
 
-    var isLoadFinished = false
-        private set
     lateinit var localSearch: LocalSearch
         private set
     var isSingleAccountMode = false
@@ -1523,8 +1521,6 @@ class MessageListFragment :
         resetActionMode()
         computeBatchDirection()
         computeSelectAllVisibility()
-
-        isLoadFinished = true
 
         if (savedListState != null) {
             handler.restoreListPosition(savedListState)
