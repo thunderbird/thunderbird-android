@@ -54,7 +54,9 @@ import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.fsck.k9.ui.messageview.MessageViewFragment
+import com.fsck.k9.ui.messageview.Direction
+import com.fsck.k9.ui.messageview.MessageViewContainerFragment
+import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
 import com.fsck.k9.ui.onboarding.OnboardingActivity
@@ -80,6 +82,7 @@ open class MessageList :
     K9Activity(),
     MessageListFragmentListener,
     MessageViewFragmentListener,
+    MessageViewContainerListener,
     FragmentManager.OnBackStackChangedListener,
     OnSwitchCompleteListener,
     PermissionUiHelper {
@@ -102,11 +105,16 @@ open class MessageList :
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
-    private var messageViewFragment: MessageViewFragment? = null
+    private var messageViewContainerFragment: MessageViewContainerFragment? = null
     private var account: Account? = null
     private var search: LocalSearch? = null
     private var singleFolderMode = false
-    private var lastDirection = if (K9.isMessageViewShowNext) NEXT else PREVIOUS
+
+    private val lastDirection: Direction
+        get() {
+            return messageViewContainerFragment?.lastDirection
+                ?: if (K9.isMessageViewShowNext) Direction.NEXT else Direction.PREVIOUS
+        }
 
     private var messageListActivityAppearance: MessageListActivityAppearance? = null
 
@@ -225,7 +233,7 @@ open class MessageList :
         supportFragmentManager.popBackStackImmediate(FIRST_FRAGMENT_TRANSACTION, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
         removeMessageListFragment()
-        removeMessageViewFragment()
+        removeMessageViewContainerFragment()
 
         messageReference = null
         search = null
@@ -253,9 +261,11 @@ open class MessageList :
     private fun findFragments() {
         val fragmentManager = supportFragmentManager
         messageListFragment = fragmentManager.findFragmentById(R.id.message_list_container) as MessageListFragment?
-        messageViewFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW) as MessageViewFragment?
+        messageViewContainerFragment =
+            fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as MessageViewContainerFragment?
 
         messageListFragment?.let { messageListFragment ->
+            messageViewContainerFragment?.setViewModel(messageListFragment.viewModel)
             initializeFromLocalSearch(messageListFragment.localSearch)
         }
     }
@@ -278,7 +288,7 @@ open class MessageList :
 
         // Check if the fragment wasn't restarted and has a MessageReference in the arguments.
         // If so, open the referenced message.
-        if (!hasMessageListFragment && messageViewFragment == null && messageReference != null) {
+        if (!hasMessageListFragment && messageViewContainerFragment == null && messageReference != null) {
             openMessage(messageReference!!)
         }
     }
@@ -304,7 +314,7 @@ open class MessageList :
             }
         }
 
-        displayMode = if (messageViewFragment != null || messageReference != null) {
+        displayMode = if (messageViewContainerFragment != null || messageReference != null) {
             DisplayMode.MESSAGE_VIEW
         } else {
             DisplayMode.MESSAGE_LIST
@@ -337,12 +347,12 @@ open class MessageList :
                 messageListWasDisplayed = true
                 messageListFragment.isActive = true
 
-                messageViewFragment.let { messageViewFragment ->
-                    if (messageViewFragment == null) {
+                messageViewContainerFragment.let { messageViewContainerFragment ->
+                    if (messageViewContainerFragment == null) {
                         showMessageViewPlaceHolder()
                     } else {
-                        messageViewFragment.isActive = true
-                        val activeMessage = messageViewFragment.messageReference
+                        messageViewContainerFragment.isActive = true
+                        val activeMessage = messageViewContainerFragment.messageReference
                         messageListFragment.setActiveMessage(activeMessage)
                     }
                 }
@@ -607,7 +617,7 @@ open class MessageList :
 
     fun openFolder(folderId: Long) {
         if (displayMode == DisplayMode.SPLIT_VIEW) {
-            removeMessageViewFragment()
+            removeMessageViewContainerFragment()
             showMessageViewPlaceHolder()
         }
 
@@ -736,7 +746,7 @@ open class MessageList :
 
         when (event.keyCode) {
             KeyEvent.KEYCODE_VOLUME_UP -> {
-                if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
+                if (messageViewContainerFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
                     K9.isUseVolumeKeysForNavigation
                 ) {
                     showPreviousMessage()
@@ -747,7 +757,7 @@ open class MessageList :
                 }
             }
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
+                if (messageViewContainerFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
                     K9.isUseVolumeKeysForNavigation
                 ) {
                     showNextMessage()
@@ -762,14 +772,14 @@ open class MessageList :
                 return true
             }
             KeyEvent.KEYCODE_DPAD_LEFT -> {
-                return if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
+                return if (messageViewContainerFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
                     showPreviousMessage()
                 } else {
                     false
                 }
             }
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                return if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
+                return if (messageViewContainerFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
                     showNextMessage()
                 } else {
                     false
@@ -801,69 +811,69 @@ open class MessageList :
             'g' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onToggleFlagged()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onToggleFlagged()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onToggleFlagged()
                 }
                 return true
             }
             'm' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onMove()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onMove()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onMove()
                 }
                 return true
             }
             'v' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onArchive()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onArchive()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onArchive()
                 }
                 return true
             }
             'y' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onCopy()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onCopy()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onCopy()
                 }
                 return true
             }
             'z' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onToggleRead()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onToggleRead()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onToggleRead()
                 }
                 return true
             }
             'f' -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onForward()
+                if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onForward()
                 }
                 return true
             }
             'a' -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onReplyAll()
+                if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onReplyAll()
                 }
                 return true
             }
             'r' -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onReply()
+                if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onReply()
                 }
                 return true
             }
             'j', 'p' -> {
-                if (messageViewFragment != null) {
+                if (messageViewContainerFragment != null) {
                     showPreviousMessage()
                 }
                 return true
             }
             'n', 'k' -> {
-                if (messageViewFragment != null) {
+                if (messageViewContainerFragment != null) {
                     showNextMessage()
                 }
                 return true
@@ -885,8 +895,8 @@ open class MessageList :
     private fun onDeleteHotKey() {
         if (displayMode == DisplayMode.MESSAGE_LIST) {
             messageListFragment!!.onDelete()
-        } else if (messageViewFragment != null) {
-            messageViewFragment!!.onDelete()
+        } else if (messageViewContainerFragment != null) {
+            messageViewContainerFragment!!.onDelete()
         }
     }
 
@@ -979,12 +989,16 @@ open class MessageList :
                 messageListFragment!!.setActiveMessage(messageReference)
             }
 
-            val fragment = MessageViewFragment.newInstance(messageReference)
+            val fragment = MessageViewContainerFragment.newInstance(messageReference)
             supportFragmentManager.commitNow {
-                replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
+                replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER)
             }
 
-            messageViewFragment = fragment
+            messageViewContainerFragment = fragment
+
+            messageListFragment?.let { messageListFragment ->
+                fragment.setViewModel(messageListFragment.viewModel)
+            }
 
             if (displayMode == DisplayMode.SPLIT_VIEW) {
                 fragment.isActive = true
@@ -1089,7 +1103,7 @@ open class MessageList :
     }
 
     private fun showMessageViewPlaceHolder() {
-        removeMessageViewFragment()
+        removeMessageViewContainerFragment()
 
         // Add placeholder fragment if necessary
         val fragmentManager = supportFragmentManager
@@ -1102,11 +1116,11 @@ open class MessageList :
         messageListFragment!!.setActiveMessage(null)
     }
 
-    private fun removeMessageViewFragment() {
-        if (messageViewFragment != null) {
+    private fun removeMessageViewContainerFragment() {
+        if (messageViewContainerFragment != null) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.remove(messageViewFragment!!)
-            messageViewFragment = null
+            fragmentTransaction.remove(messageViewContainerFragment!!)
+            messageViewContainerFragment = null
             fragmentTransaction.commit()
 
             showDefaultTitleView()
@@ -1129,29 +1143,35 @@ open class MessageList :
         }
     }
 
+    override fun closeMessageView() {
+        returnToMessageList()
+    }
+
+    override fun setActiveMessage(messageReference: MessageReference) {
+        val messageListFragment = checkNotNull(messageListFragment)
+
+        messageListFragment.setActiveMessage(messageReference)
+    }
+
     override fun showNextMessageOrReturn() {
         if (K9.isMessageViewReturnToList || !showLogicalNextMessage()) {
-            if (displayMode == DisplayMode.SPLIT_VIEW) {
-                showMessageViewPlaceHolder()
-            } else {
-                showMessageList()
-            }
+            returnToMessageList()
+        }
+    }
+
+    private fun returnToMessageList() {
+        if (displayMode == DisplayMode.SPLIT_VIEW) {
+            showMessageViewPlaceHolder()
+        } else {
+            showMessageList()
         }
     }
 
     private fun showLogicalNextMessage(): Boolean {
-        var result = false
-        if (lastDirection == NEXT) {
-            result = showNextMessage()
-        } else if (lastDirection == PREVIOUS) {
-            result = showPreviousMessage()
+        return when (lastDirection) {
+            Direction.NEXT -> showNextMessage()
+            Direction.PREVIOUS -> showPreviousMessage()
         }
-
-        if (!result) {
-            result = showNextMessage() || showPreviousMessage()
-        }
-
-        return result
     }
 
     override fun setProgress(enable: Boolean) {
@@ -1159,25 +1179,15 @@ open class MessageList :
     }
 
     private fun showNextMessage(): Boolean {
-        val ref = messageViewFragment!!.messageReference
-        if (ref != null) {
-            if (messageListFragment!!.openNext(ref)) {
-                lastDirection = NEXT
-                return true
-            }
-        }
-        return false
+        val messageViewContainerFragment = checkNotNull(messageViewContainerFragment)
+
+        return messageViewContainerFragment.showNextMessage()
     }
 
     private fun showPreviousMessage(): Boolean {
-        val ref = messageViewFragment!!.messageReference
-        if (ref != null) {
-            if (messageListFragment!!.openPrevious(ref)) {
-                lastDirection = PREVIOUS
-                return true
-            }
-        }
-        return false
+        val messageViewContainerFragment = checkNotNull(messageViewContainerFragment)
+
+        return messageViewContainerFragment.showPreviousMessage()
     }
 
     private fun showMessageList() {
@@ -1186,7 +1196,7 @@ open class MessageList :
         displayMode = DisplayMode.MESSAGE_LIST
         viewSwitcher!!.showFirstView()
 
-        messageViewFragment?.isActive = false
+        messageViewContainerFragment?.isActive = false
         messageListFragment!!.isActive = true
         messageListFragment!!.setActiveMessage(null)
 
@@ -1208,11 +1218,11 @@ open class MessageList :
     }
 
     private fun showMessageView() {
-        val messageViewFragment = checkNotNull(this.messageViewFragment)
+        val messageViewContainerFragment = checkNotNull(this.messageViewContainerFragment)
 
         displayMode = DisplayMode.MESSAGE_VIEW
         messageListFragment?.isActive = false
-        messageViewFragment.isActive = true
+        messageViewContainerFragment.isActive = true
 
         if (!messageListWasDisplayed) {
             viewSwitcher!!.animateFirstView = false
@@ -1238,7 +1248,7 @@ open class MessageList :
 
     override fun onSwitchComplete(displayedChild: Int) {
         if (displayedChild == 0) {
-            removeMessageViewFragment()
+            removeMessageViewContainerFragment()
         }
     }
 
@@ -1276,8 +1286,8 @@ open class MessageList :
 
         if (requestCode and REQUEST_FLAG_PENDING_INTENT != 0) {
             val originalRequestCode = requestCode xor REQUEST_FLAG_PENDING_INTENT
-            if (messageViewFragment != null) {
-                messageViewFragment!!.onPendingIntentResult(originalRequestCode, resultCode, data)
+            if (messageViewContainerFragment != null) {
+                messageViewContainerFragment!!.onPendingIntentResult(originalRequestCode, resultCode, data)
             }
         }
     }
@@ -1387,15 +1397,10 @@ open class MessageList :
         private const val STATE_DISPLAY_MODE = "displayMode"
         private const val STATE_MESSAGE_VIEW_ONLY = "messageViewOnly"
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
-        private const val STATE_FIRST_BACK_STACK_ID = "firstBackstackId"
 
         private const val FIRST_FRAGMENT_TRANSACTION = "first"
-        private const val FRAGMENT_TAG_MESSAGE_VIEW = "MessageViewFragment"
+        private const val FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER = "MessageViewContainerFragment"
         private const val FRAGMENT_TAG_PLACEHOLDER = "MessageViewPlaceholder"
-
-        // Used for navigating to next/previous message
-        private const val PREVIOUS = 1
-        private const val NEXT = 2
 
         private const val REQUEST_CODE_MASK = 0xFFFF0000.toInt()
         private const val REQUEST_FLAG_PENDING_INTENT = 1 shl 15
