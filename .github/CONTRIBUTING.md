@@ -11,7 +11,7 @@ submitting a new issue.
 
 * The issue tracker is solely for bug reports and feature/enhancement requests. If you have a question of any kind,
 please use the [support forum](https://forum.k9mail.app/c/support) instead.
-* Search the [existing issues](https://github.com/k9mail/k-9/issues?q=) first to make sure your issue hasn't been
+* Search the [existing issues](https://github.com/thundernest/k-9/issues?q=) first to make sure your issue hasn't been
 reported before.
 
 
@@ -22,8 +22,8 @@ We're using [Transifex](https://www.transifex.com/k-9/k9mail/) to manage transla
 
 ## Contributing code
 
-We love [pull requests](https://github.com/k9mail/k-9/pulls) from everyone!
+We love [pull requests](https://github.com/thundernest/k-9/pulls) from everyone!
 
 Any contributions, large or small, major features, bug fixes, unit/integration tests are welcomed and appreciated
 but will be thoroughly reviewed and discussed.
-Please make sure you read the [Code Style Guidelines](https://github.com/k9mail/k-9/wiki/CodeStyle).
+Please make sure you read the [Code Style Guidelines](https://github.com/thundernest/k-9/wiki/CodeStyle).
