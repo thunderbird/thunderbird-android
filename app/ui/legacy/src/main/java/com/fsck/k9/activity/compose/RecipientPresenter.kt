@@ -347,14 +347,14 @@ class RecipientPresenter(
     }
 
     private fun hideEmptyExtendedRecipientFields() {
-        if (recipientMvpView.ccAddresses.isEmpty()) {
+        if (recipientMvpView.ccAddresses.isEmpty() && recipientMvpView.isCcTextEmpty) {
             recipientMvpView.setCcVisibility(false)
             if (lastFocusedType == RecipientType.CC) {
                 lastFocusedType = RecipientType.TO
             }
         }
 
-        if (recipientMvpView.bccAddresses.isEmpty()) {
+        if (recipientMvpView.bccAddresses.isEmpty() && recipientMvpView.isBccTextEmpty) {
             recipientMvpView.setBccVisibility(false)
             if (lastFocusedType == RecipientType.BCC) {
                 lastFocusedType = RecipientType.TO

@@ -72,6 +72,12 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
     val bccRecipients: List<Recipient>
         get() = bccView.objects
 
+    val isCcTextEmpty: Boolean
+        get() = ccView.text.isEmpty()
+
+    val isBccTextEmpty: Boolean
+        get() = bccView.text.isEmpty()
+
     fun setPresenter(presenter: RecipientPresenter) {
         this.presenter = presenter
         toView.setTokenListener(object : RecipientSelectView.TokenListener<Recipient> {
