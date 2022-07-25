@@ -100,6 +100,9 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
                 searchPreferenceMenuItem.expandActionView()
                 searchPreferenceActionView.setQuery(searchQuery, false)
             }
+            // searchEnabled should be set to false because it caused to expand the search view again
+            // when we click on any item after each rotation
+            searchEnabled = false
         }
         return true
     }
