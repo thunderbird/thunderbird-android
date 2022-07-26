@@ -5,6 +5,7 @@ import android.app.PendingIntent.FLAG_CANCEL_CURRENT
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
@@ -25,8 +26,10 @@ import com.fsck.k9.ui.notification.DeleteConfirmationActivity
  * We need to take special care to ensure the `PendingIntent`s are unique as defined in the documentation of
  * [PendingIntent]. Otherwise selecting a notification action might perform the action on the wrong message.
  *
- * We use the notification ID as `requestCode` argument to ensure each notification/action pair gets a unique
- * `PendingIntent`.
+ * We add unique values to `Intent.data` so we end up with unique `PendingIntent`s.
+ *
+ * In the past we've used the notification ID as `requestCode` argument when creating a `PendingIntent`. But since we're
+ * reusing notification IDs, it's safer to make sure the `Intent` itself is unique.
  */
 internal class K9NotificationActionCreator(
     private val context: Context,
@@ -41,12 +44,12 @@ internal class K9NotificationActionCreator(
         val openInUnifiedInbox = K9.isShowUnifiedInbox && isIncludedInUnifiedInbox(messageReference)
         val intent = createMessageViewIntent(messageReference, openInUnifiedInbox)
 
-        return PendingIntent.getActivity(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createViewFolderPendingIntent(account: Account, folderId: Long, notificationId: Int): PendingIntent {
         val intent = createMessageListIntent(account, folderId)
-        return PendingIntent.getActivity(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createViewMessagesPendingIntent(
@@ -64,38 +67,46 @@ internal class K9NotificationActionCreator(
             createNewMessagesIntent(account)
         }
 
-        return PendingIntent.getActivity(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createViewFolderListPendingIntent(account: Account, notificationId: Int): PendingIntent {
         val intent = createMessageListIntent(account)
-        return PendingIntent.getActivity(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createDismissAllMessagesPendingIntent(account: Account, notificationId: Int): PendingIntent {
-        val intent = NotificationActionService.createDismissAllMessagesIntent(context, account)
-        return PendingIntent.getService(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = NotificationActionService.createDismissAllMessagesIntent(context, account).apply {
+            data = Uri.parse("data:,dismissAll/${account.uuid}/${System.currentTimeMillis()}")
+        }
+        return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createDismissMessagePendingIntent(
         messageReference: MessageReference,
         notificationId: Int
     ): PendingIntent {
-        val intent = NotificationActionService.createDismissMessageIntent(context, messageReference)
-        return PendingIntent.getService(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = NotificationActionService.createDismissMessageIntent(context, messageReference).apply {
+            data = Uri.parse("data:,dismiss/${messageReference.toIdentityString()}")
+        }
+        return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createReplyPendingIntent(messageReference: MessageReference, notificationId: Int): PendingIntent {
-        val intent = MessageActions.getActionReplyIntent(context, messageReference)
-        return PendingIntent.getActivity(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = MessageActions.getActionReplyIntent(context, messageReference).apply {
+            data = Uri.parse("data:,reply/${messageReference.toIdentityString()}")
+        }
+        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createMarkMessageAsReadPendingIntent(
         messageReference: MessageReference,
         notificationId: Int
     ): PendingIntent {
-        val intent = NotificationActionService.createMarkMessageAsReadIntent(context, messageReference)
-        return PendingIntent.getService(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = NotificationActionService.createMarkMessageAsReadIntent(context, messageReference).apply {
+            data = Uri.parse("data:,markAsRead/${messageReference.toIdentityString()}")
+        }
+        return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createMarkAllAsReadPendingIntent(
@@ -104,8 +115,10 @@ internal class K9NotificationActionCreator(
         notificationId: Int
     ): PendingIntent {
         val accountUuid = account.uuid
-        val intent = NotificationActionService.createMarkAllAsReadIntent(context, accountUuid, messageReferences)
-        return PendingIntent.getService(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = NotificationActionService.createMarkAllAsReadIntent(context, accountUuid, messageReferences).apply {
+            data = Uri.parse("data:,markAllAsRead/$accountUuid/${System.currentTimeMillis()}")
+        }
+        return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun getEditIncomingServerSettingsIntent(account: Account): PendingIntent {
@@ -123,9 +136,9 @@ internal class K9NotificationActionCreator(
         notificationId: Int
     ): PendingIntent {
         return if (K9.isConfirmDeleteFromNotification) {
-            createDeleteConfirmationPendingIntent(messageReference, notificationId)
+            createDeleteConfirmationPendingIntent(messageReference, 0)
         } else {
-            createDeleteServicePendingIntent(messageReference, notificationId)
+            createDeleteServicePendingIntent(messageReference, 0)
         }
     }
 
@@ -133,16 +146,20 @@ internal class K9NotificationActionCreator(
         messageReference: MessageReference,
         notificationId: Int
     ): PendingIntent {
-        val intent = NotificationActionService.createDeleteMessageIntent(context, messageReference)
-        return PendingIntent.getService(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = NotificationActionService.createDeleteMessageIntent(context, messageReference).apply {
+            data = Uri.parse("data:,delete/${messageReference.toIdentityString()}")
+        }
+        return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     private fun createDeleteConfirmationPendingIntent(
         messageReference: MessageReference,
         notificationId: Int
     ): PendingIntent {
-        val intent = DeleteConfirmationActivity.getIntent(context, messageReference)
-        return PendingIntent.getActivity(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = DeleteConfirmationActivity.getIntent(context, messageReference).apply {
+            data = Uri.parse("data:,deleteConfirmation/${messageReference.toIdentityString()}")
+        }
+        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createDeleteAllPendingIntent(
@@ -151,9 +168,9 @@ internal class K9NotificationActionCreator(
         notificationId: Int
     ): PendingIntent {
         return if (K9.isConfirmDeleteFromNotification) {
-            getDeleteAllConfirmationPendingIntent(messageReferences, notificationId)
+            getDeleteAllConfirmationPendingIntent(messageReferences, 0)
         } else {
-            getDeleteAllServicePendingIntent(account, messageReferences, notificationId)
+            getDeleteAllServicePendingIntent(account, messageReferences, 0)
         }
     }
 
@@ -161,8 +178,10 @@ internal class K9NotificationActionCreator(
         messageReferences: List<MessageReference>,
         notificationId: Int
     ): PendingIntent {
-        val intent = DeleteConfirmationActivity.getIntent(context, messageReferences)
-        return PendingIntent.getActivity(context, notificationId, intent, FLAG_CANCEL_CURRENT or FLAG_IMMUTABLE)
+        val intent = DeleteConfirmationActivity.getIntent(context, messageReferences).apply {
+            data = Uri.parse("data:,deleteAllConfirmation/${System.currentTimeMillis()}")
+        }
+        return PendingIntent.getActivity(context, 0, intent, FLAG_CANCEL_CURRENT or FLAG_IMMUTABLE)
     }
 
     private fun getDeleteAllServicePendingIntent(
@@ -171,16 +190,20 @@ internal class K9NotificationActionCreator(
         notificationId: Int
     ): PendingIntent {
         val accountUuid = account.uuid
-        val intent = NotificationActionService.createDeleteAllMessagesIntent(context, accountUuid, messageReferences)
-        return PendingIntent.getService(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = NotificationActionService.createDeleteAllMessagesIntent(context, accountUuid, messageReferences).apply {
+            data = Uri.parse("data:,deleteAll/$accountUuid/${System.currentTimeMillis()}")
+        }
+        return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createArchiveMessagePendingIntent(
         messageReference: MessageReference,
         notificationId: Int
     ): PendingIntent {
-        val intent = NotificationActionService.createArchiveMessageIntent(context, messageReference)
-        return PendingIntent.getService(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = NotificationActionService.createArchiveMessageIntent(context, messageReference).apply {
+            data = Uri.parse("data:,archive/${messageReference.toIdentityString()}")
+        }
+        return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createArchiveAllPendingIntent(
@@ -188,16 +211,20 @@ internal class K9NotificationActionCreator(
         messageReferences: List<MessageReference>,
         notificationId: Int
     ): PendingIntent {
-        val intent = NotificationActionService.createArchiveAllIntent(context, account, messageReferences)
-        return PendingIntent.getService(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = NotificationActionService.createArchiveAllIntent(context, account, messageReferences).apply {
+            data = Uri.parse("data:,archiveAll/${account.uuid}/${System.currentTimeMillis()}")
+        }
+        return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun createMarkMessageAsSpamPendingIntent(
         messageReference: MessageReference,
         notificationId: Int
     ): PendingIntent {
-        val intent = NotificationActionService.createMarkMessageAsSpamIntent(context, messageReference)
-        return PendingIntent.getService(context, notificationId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val intent = NotificationActionService.createMarkMessageAsSpamIntent(context, messageReference).apply {
+            data = Uri.parse("data:,spam/${messageReference.toIdentityString()}")
+        }
+        return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     private fun createMessageListIntent(account: Account): Intent {
@@ -213,7 +240,9 @@ internal class K9NotificationActionCreator(
             noThreading = false,
             newTask = true,
             clearTop = true
-        )
+        ).apply {
+            data = Uri.parse("data:,messageList/${account.uuid}/$folderId")
+        }
     }
 
     private fun createMessageListIntent(account: Account, folderId: Long): Intent {
@@ -228,19 +257,27 @@ internal class K9NotificationActionCreator(
             noThreading = false,
             newTask = true,
             clearTop = true
-        )
+        ).apply {
+            data = Uri.parse("data:,messageList/${account.uuid}/$folderId")
+        }
     }
 
-    private fun createMessageViewIntent(message: MessageReference, openInUnifiedInbox: Boolean): Intent {
-        return MessageList.actionDisplayMessageIntent(context, message, openInUnifiedInbox)
+    private fun createMessageViewIntent(messageReference: MessageReference, openInUnifiedInbox: Boolean): Intent {
+        return MessageList.actionDisplayMessageIntent(context, messageReference, openInUnifiedInbox).apply {
+            data = Uri.parse("data:,messageView/${messageReference.toIdentityString()}")
+        }
     }
 
     private fun createUnifiedInboxIntent(account: Account): Intent {
-        return MessageList.createUnifiedInboxIntent(context, account)
+        return MessageList.createUnifiedInboxIntent(context, account).apply {
+            data = Uri.parse("data:,unifiedInbox/${account.uuid}")
+        }
     }
 
     private fun createNewMessagesIntent(account: Account): Intent {
-        return MessageList.createNewMessagesIntent(context, account)
+        return MessageList.createNewMessagesIntent(context, account).apply {
+            data = Uri.parse("data:,newMessages/${account.uuid}")
+        }
     }
 
     private fun extractFolderIds(messageReferences: List<MessageReference>): Set<Long> {
