@@ -17,6 +17,7 @@
         <item>eo</item>
         <item>eu</item>
         <item>fr</item>
+        <item>fy</item>
         <item>gd</item>
         <item>gl</item>
         <item>hr</item>
@@ -75,6 +76,7 @@
         <item>ee</item>
         <item>fr</item>
         <item>fr_CA</item>
+        <item>fy</item>
         <item>ff</item>
         <item>ga</item>
         <item>gd</item>
@@ -99,7 +101,6 @@
         <item>pl</item>
         <item>pt_PT</item>
         <item>pt_BR</item>
-        <item>ru</item>
         <item>ro</item>
         <item>sq</item>
         <item>sk</item>
@@ -118,6 +119,7 @@
         <item>ky</item>
         <item>kk</item>
         <item>mk</item>
+        <item>ru</item>
         <item>sr</item>
         <item>uk</item>
         <item>hy</item>
