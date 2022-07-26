@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
@@ -35,8 +34,8 @@ internal class SingleMessageNotificationCreator(
             .setContentText(content.subject)
             .setSubText(baseNotificationData.accountName)
             .setBigText(content.preview)
-            .setContentIntent(createViewIntent(content, notificationId))
-            .setDeleteIntent(createDismissIntent(content, notificationId))
+            .setContentIntent(actionCreator.createViewMessagePendingIntent(content.messageReference))
+            .setDeleteIntent(actionCreator.createDismissMessagePendingIntent(content.messageReference))
             .setDeviceActions(singleNotificationData)
             .setWearActions(singleNotificationData)
             .setAppearance(singleNotificationData.isSilent, baseNotificationData.appearance)
@@ -57,14 +56,6 @@ internal class SingleMessageNotificationCreator(
         setStyle(NotificationCompat.BigTextStyle().bigText(text))
     }
 
-    private fun createViewIntent(content: NotificationContent, notificationId: Int): PendingIntent {
-        return actionCreator.createViewMessagePendingIntent(content.messageReference, notificationId)
-    }
-
-    private fun createDismissIntent(content: NotificationContent, notificationId: Int): PendingIntent {
-        return actionCreator.createDismissMessagePendingIntent(content.messageReference, notificationId)
-    }
-
     private fun NotificationBuilder.setDeviceActions(notificationData: SingleNotificationData) = apply {
         val actions = notificationData.actions
         for (action in actions) {
@@ -81,8 +72,7 @@ internal class SingleMessageNotificationCreator(
         val title = resourceProvider.actionReply()
         val content = notificationData.content
         val messageReference = content.messageReference
-        val replyToMessagePendingIntent =
-            actionCreator.createReplyPendingIntent(messageReference, notificationData.notificationId)
+        val replyToMessagePendingIntent = actionCreator.createReplyPendingIntent(messageReference)
 
         addAction(icon, title, replyToMessagePendingIntent)
     }
@@ -91,9 +81,8 @@ internal class SingleMessageNotificationCreator(
         val icon = resourceProvider.iconMarkAsRead
         val title = resourceProvider.actionMarkAsRead()
         val content = notificationData.content
-        val notificationId = notificationData.notificationId
         val messageReference = content.messageReference
-        val action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId)
+        val action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference)
 
         addAction(icon, title, action)
     }
@@ -102,9 +91,8 @@ internal class SingleMessageNotificationCreator(
         val icon = resourceProvider.iconDelete
         val title = resourceProvider.actionDelete()
         val content = notificationData.content
-        val notificationId = notificationData.notificationId
         val messageReference = content.messageReference
-        val action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId)
+        val action = actionCreator.createDeleteMessagePendingIntent(messageReference)
 
         addAction(icon, title, action)
     }
@@ -129,8 +117,7 @@ internal class SingleMessageNotificationCreator(
         val icon = resourceProvider.wearIconReplyAll
         val title = resourceProvider.actionReply()
         val messageReference = notificationData.content.messageReference
-        val notificationId = notificationData.notificationId
-        val action = actionCreator.createReplyPendingIntent(messageReference, notificationId)
+        val action = actionCreator.createReplyPendingIntent(messageReference)
         val replyAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(replyAction)
@@ -140,8 +127,7 @@ internal class SingleMessageNotificationCreator(
         val icon = resourceProvider.wearIconMarkAsRead
         val title = resourceProvider.actionMarkAsRead()
         val messageReference = notificationData.content.messageReference
-        val notificationId = notificationData.notificationId
-        val action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId)
+        val action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference)
         val markAsReadAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(markAsReadAction)
@@ -151,8 +137,7 @@ internal class SingleMessageNotificationCreator(
         val icon = resourceProvider.wearIconDelete
         val title = resourceProvider.actionDelete()
         val messageReference = notificationData.content.messageReference
-        val notificationId = notificationData.notificationId
-        val action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId)
+        val action = actionCreator.createDeleteMessagePendingIntent(messageReference)
         val deleteAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(deleteAction)
@@ -162,8 +147,7 @@ internal class SingleMessageNotificationCreator(
         val icon = resourceProvider.wearIconArchive
         val title = resourceProvider.actionArchive()
         val messageReference = notificationData.content.messageReference
-        val notificationId = notificationData.notificationId
-        val action = actionCreator.createArchiveMessagePendingIntent(messageReference, notificationId)
+        val action = actionCreator.createArchiveMessagePendingIntent(messageReference)
         val archiveAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(archiveAction)
@@ -173,8 +157,7 @@ internal class SingleMessageNotificationCreator(
         val icon = resourceProvider.wearIconMarkAsSpam
         val title = resourceProvider.actionMarkAsSpam()
         val messageReference = notificationData.content.messageReference
-        val notificationId = notificationData.notificationId
-        val action = actionCreator.createMarkMessageAsSpamPendingIntent(messageReference, notificationId)
+        val action = actionCreator.createMarkMessageAsSpamPendingIntent(messageReference)
         val spamAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(spamAction)

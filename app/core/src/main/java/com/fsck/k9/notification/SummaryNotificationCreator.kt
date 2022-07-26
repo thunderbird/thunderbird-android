@@ -5,7 +5,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
 import com.fsck.k9.Account
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
-import com.fsck.k9.notification.NotificationIds.getNewMailSummaryNotificationId
 import timber.log.Timber
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
@@ -65,7 +64,7 @@ internal class SummaryNotificationCreator(
             .setSubText(accountName)
             .setInboxStyle(title, summary, notificationData.content)
             .setContentIntent(createViewIntent(account, notificationData))
-            .setDeleteIntent(createDismissIntent(account, notificationData.notificationId))
+            .setDeleteIntent(actionCreator.createDismissAllMessagesPendingIntent(account))
             .setDeviceActions(account, notificationData)
             .setWearActions(account, notificationData)
             .setAppearance(notificationData.isSilent, baseNotificationData.appearance)
@@ -101,15 +100,7 @@ internal class SummaryNotificationCreator(
     }
 
     private fun createViewIntent(account: Account, notificationData: SummaryInboxNotificationData): PendingIntent {
-        return actionCreator.createViewMessagesPendingIntent(
-            account = account,
-            messageReferences = notificationData.messageReferences,
-            notificationId = notificationData.notificationId
-        )
-    }
-
-    private fun createDismissIntent(account: Account, notificationId: Int): PendingIntent {
-        return actionCreator.createDismissAllMessagesPendingIntent(account, notificationId)
+        return actionCreator.createViewMessagesPendingIntent(account, notificationData.messageReferences)
     }
 
     private fun NotificationBuilder.setDeviceActions(
@@ -131,9 +122,7 @@ internal class SummaryNotificationCreator(
         val icon = resourceProvider.iconMarkAsRead
         val title = resourceProvider.actionMarkAsRead()
         val messageReferences = notificationData.messageReferences
-        val notificationId = notificationData.notificationId
-        val markAllAsReadPendingIntent =
-            actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId)
+        val markAllAsReadPendingIntent = actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences)
 
         addAction(icon, title, markAllAsReadPendingIntent)
     }
@@ -144,9 +133,8 @@ internal class SummaryNotificationCreator(
     ) {
         val icon = resourceProvider.iconDelete
         val title = resourceProvider.actionDelete()
-        val notificationId = getNewMailSummaryNotificationId(account)
         val messageReferences = notificationData.messageReferences
-        val action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId)
+        val action = actionCreator.createDeleteAllPendingIntent(account, messageReferences)
 
         addAction(icon, title, action)
     }
@@ -175,8 +163,7 @@ internal class SummaryNotificationCreator(
         val icon = resourceProvider.wearIconMarkAsRead
         val title = resourceProvider.actionMarkAllAsRead()
         val messageReferences = notificationData.messageReferences
-        val notificationId = getNewMailSummaryNotificationId(account)
-        val action = actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId)
+        val action = actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences)
         val markAsReadAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(markAsReadAction)
@@ -186,8 +173,7 @@ internal class SummaryNotificationCreator(
         val icon = resourceProvider.wearIconDelete
         val title = resourceProvider.actionDeleteAll()
         val messageReferences = notificationData.messageReferences
-        val notificationId = getNewMailSummaryNotificationId(account)
-        val action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId)
+        val action = actionCreator.createDeleteAllPendingIntent(account, messageReferences)
         val deleteAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(deleteAction)
@@ -197,8 +183,7 @@ internal class SummaryNotificationCreator(
         val icon = resourceProvider.wearIconArchive
         val title = resourceProvider.actionArchiveAll()
         val messageReferences = notificationData.messageReferences
-        val notificationId = getNewMailSummaryNotificationId(account)
-        val action = actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId)
+        val action = actionCreator.createArchiveAllPendingIntent(account, messageReferences)
         val archiveAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(archiveAction)
