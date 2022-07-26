@@ -23,7 +23,6 @@ internal class SingleMessageNotificationCreator(
 
         val notification = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
-            .setAutoCancel(true)
             .setGroup(baseNotificationData.groupKey)
             .setGroupSummary(isGroupSummary)
             .setSmallIcon(resourceProvider.iconNewMail)

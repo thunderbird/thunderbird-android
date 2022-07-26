@@ -52,7 +52,6 @@ internal class SummaryNotificationCreator(
 
         val notification = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
-            .setAutoCancel(true)
             .setGroup(baseNotificationData.groupKey)
             .setGroupSummary(true)
             .setSmallIcon(resourceProvider.iconNewMail)
