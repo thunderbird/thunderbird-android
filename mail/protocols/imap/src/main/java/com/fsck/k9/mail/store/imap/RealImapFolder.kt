@@ -889,7 +889,7 @@ internal class RealImapFolder(
                 for (i in bodyParams.indices step 2) {
                     val paramName = bodyParams.getString(i)
                     val paramValue = bodyParams.getString(i + 1)
-                    contentType.append(String.format(";\r\n %s=\"%s\"", paramName, paramValue))
+                    contentType.append(String.format(";\r\n %s=%s", paramName, paramValue))
                 }
             }
 
@@ -915,7 +915,7 @@ internal class RealImapFolder(
                     for (i in bodyDispositionParams.indices step 2) {
                         val paramName = bodyDispositionParams.getString(i).lowercase()
                         val paramValue = bodyDispositionParams.getString(i + 1)
-                        contentDisposition.append(String.format(";\r\n %s=\"%s\"", paramName, paramValue))
+                        contentDisposition.append(String.format(";\r\n %s=%s", paramName, paramValue))
                     }
                 }
             }
