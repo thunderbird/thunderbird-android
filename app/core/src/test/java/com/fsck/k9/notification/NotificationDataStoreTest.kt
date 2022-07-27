@@ -93,6 +93,38 @@ class NotificationDataStoreTest : RobolectricTest() {
     }
 
     @Test
+    fun `remove multiple notifications`() {
+        repeat(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS + 1) { index ->
+            notificationDataStore.addNotification(account, createNotificationContent(index.toString()), TIMESTAMP)
+        }
+
+        val result = notificationDataStore.removeNotifications(account) { it.dropLast(1) }
+
+        assertNotNull(result) { removeResult ->
+            assertThat(removeResult.notificationData.newMessagesCount).isEqualTo(1)
+            assertThat(removeResult.cancelNotificationIds).hasSize(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
+        }
+    }
+
+    @Test
+    fun `remove all notifications`() {
+        repeat(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS + 1) { index ->
+            notificationDataStore.addNotification(account, createNotificationContent(index.toString()), TIMESTAMP)
+        }
+
+        val result = notificationDataStore.removeNotifications(account) { it }
+
+        assertNotNull(result) { removeResult ->
+            assertThat(removeResult.notificationData.newMessagesCount).isEqualTo(0)
+            assertThat(removeResult.notificationHolders).hasSize(0)
+            assertThat(removeResult.notificationStoreOperations).hasSize(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS + 1)
+            for (notificationStoreOperation in removeResult.notificationStoreOperations) {
+                assertThat(notificationStoreOperation).isInstanceOf(NotificationStoreOperation.Remove::class.java)
+            }
+        }
+    }
+
+    @Test
     fun testRemoveDoesNotLeakNotificationIds() {
         for (i in 1..MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS + 1) {
             val content = createNotificationContent(i.toString())
