@@ -19,13 +19,9 @@ internal class SendFailedNotificationController(
 
         val pendingIntent = account.outboxFolderId.let { outboxFolderId ->
             if (outboxFolderId != null) {
-                actionBuilder.createViewFolderPendingIntent(
-                    account, outboxFolderId, notificationId
-                )
+                actionBuilder.createViewFolderPendingIntent(account, outboxFolderId)
             } else {
-                actionBuilder.createViewFolderListPendingIntent(
-                    account, notificationId
-                )
+                actionBuilder.createViewFolderListPendingIntent(account)
             }
         }
 

@@ -18,9 +18,7 @@ internal class SyncNotificationController(
 
         val notificationId = NotificationIds.getFetchingMailNotificationId(account)
         val outboxFolderId = account.outboxFolderId ?: error("Outbox folder not configured")
-        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-            account, outboxFolderId, notificationId
-        )
+        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(account, outboxFolderId)
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
@@ -53,9 +51,7 @@ internal class SyncNotificationController(
         val text = accountName + resourceProvider.checkingMailSeparator() + folderName
 
         val notificationId = NotificationIds.getFetchingMailNotificationId(account)
-        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-            account, folderId, notificationId
-        )
+        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(account, folderId)
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
