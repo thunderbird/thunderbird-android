@@ -7,14 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import timber.log.Timber;
-import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
-import android.widget.Toast;
 
-import com.fsck.k9.ui.R;
 import com.fsck.k9.mailstore.AttachmentResolver;
 
 
@@ -132,22 +129,6 @@ public class MessageWebView extends WebView {
     private void setHtmlContent(@NonNull String htmlText) {
         loadDataWithBaseURL("about:blank", htmlText, "text/html", "utf-8", null);
         resumeTimers();
-    }
-
-    /*
-     * Emulate the shift key being pressed to trigger the text selection mode
-     * of a WebView.
-     */
-    public void emulateShiftHeld() {
-        try {
-
-            KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
-                                                    KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
-            shiftPressEvent.dispatch(this, null, null);
-            Toast.makeText(getContext() , R.string.select_text_now, Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Timber.e(e, "Exception in emulateShiftHeld()");
-        }
     }
 
     public interface OnPageFinishedListener {
