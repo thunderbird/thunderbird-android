@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -498,18 +497,6 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                 mAttachments.addView(view);
             }
         }
-    }
-
-    public void zoom(KeyEvent event) {
-        if (event.isShiftPressed()) {
-            mMessageContentView.zoomIn();
-        } else {
-            mMessageContentView.zoomOut();
-        }
-    }
-
-    public void beginSelectingText() {
-        mMessageContentView.emulateShiftHeld();
     }
 
     public void resetView() {
