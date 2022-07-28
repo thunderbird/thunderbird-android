@@ -68,16 +68,8 @@
     <!-- Attachments area -->
     <LinearLayout
         android:id="@+id/attachments_container"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/attachments"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
 </com.fsck.k9.ui.messageview.MessageContainerView>

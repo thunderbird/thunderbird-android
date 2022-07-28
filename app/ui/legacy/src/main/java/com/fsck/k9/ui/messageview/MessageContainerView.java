@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.widget.LinearLayout;
@@ -70,7 +71,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     private final ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
 
     private MessageWebView mMessageContentView;
-    private LinearLayout mAttachments;
+    private ViewGroup attachmentsContainer;
     private View unsignedTextContainer;
     private View unsignedTextDivider;
     private TextView unsignedText;
@@ -97,7 +98,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
         mMessageContentView.setOnCreateContextMenuListener(this);
         mMessageContentView.setVisibility(View.VISIBLE);
 
-        mAttachments = findViewById(R.id.attachments);
+        attachmentsContainer = findViewById(R.id.attachments_container);
 
         unsignedTextContainer = findViewById(R.id.message_unsigned_container);
         unsignedTextDivider = findViewById(R.id.message_unsigned_divider);
@@ -458,12 +459,12 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                 }
 
                 AttachmentView view =
-                        (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, mAttachments, false);
+                        (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, attachmentsContainer, false);
                 view.setCallback(attachmentCallback);
                 view.setAttachment(attachment);
 
                 attachmentViewMap.put(attachment, view);
-                mAttachments.addView(view);
+                attachmentsContainer.addView(view);
             }
         }
 
@@ -475,19 +476,19 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                 }
 
                 LockedAttachmentView view = (LockedAttachmentView) mInflater
-                        .inflate(R.layout.message_view_attachment_locked, mAttachments, false);
+                        .inflate(R.layout.message_view_attachment_locked, attachmentsContainer, false);
                 view.setCallback(attachmentCallback);
                 view.setAttachment(attachment);
 
                 // attachments.put(attachment, view);
-                mAttachments.addView(view);
+                attachmentsContainer.addView(view);
             }
         }
     }
 
     public void resetView() {
         setLoadPictures(false);
-        mAttachments.removeAllViews();
+        attachmentsContainer.removeAllViews();
 
         currentHtmlText = null;
         currentAttachmentResolver = null;
