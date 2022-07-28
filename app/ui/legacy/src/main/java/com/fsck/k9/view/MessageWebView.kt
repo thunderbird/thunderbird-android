@@ -1,137 +1,99 @@
-package com.fsck.k9.view;
+package com.fsck.k9.view
 
+import android.content.Context
+import android.content.pm.PackageManager
+import android.util.AttributeSet
+import android.webkit.WebSettings.LayoutAlgorithm
+import android.webkit.WebSettings.RenderPriority
+import android.webkit.WebView
+import com.fsck.k9.mailstore.AttachmentResolver
+import timber.log.Timber
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import android.util.AttributeSet;
-import timber.log.Timber;
-import android.webkit.WebSettings;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebSettings.RenderPriority;
-import android.webkit.WebView;
+class MessageWebView : WebView {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-import com.fsck.k9.mailstore.AttachmentResolver;
-
-
-public class MessageWebView extends WebView {
-
-    public MessageWebView(Context context) {
-        super(context);
-    }
-
-    public MessageWebView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public MessageWebView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-
-    /**
-     * Configure a web view to load or not load network data. A <b>true</b> setting here means that
-     * network data will be blocked.
-     * @param shouldBlockNetworkData True if network data should be blocked, false to allow network data.
-     */
-    public void blockNetworkData(final boolean shouldBlockNetworkData) {
-        /*
-         * Block network loads.
-         *
-         * Images with content: URIs will not be blocked, nor
-         * will network images that are already in the WebView cache.
-         *
-         */
+    fun blockNetworkData(shouldBlockNetworkData: Boolean) {
+        // Images with content: URIs will not be blocked, nor will network images that are already in the WebView cache.
         try {
-            getSettings().setBlockNetworkLoads(shouldBlockNetworkData);
-        } catch (SecurityException e) {
-            Timber.e(e, "Failed to unblock network loads. Missing INTERNET permission?");
+            settings.blockNetworkLoads = shouldBlockNetworkData
+        } catch (e: SecurityException) {
+            Timber.e(e, "Failed to unblock network loads. Missing INTERNET permission?")
         }
     }
 
+    fun configure(config: WebViewConfig) {
+        isVerticalScrollBarEnabled = true
+        setVerticalScrollbarOverlay(true)
+        scrollBarStyle = SCROLLBARS_INSIDE_OVERLAY
+        isLongClickable = true
 
-    /**
-     * Configure a {@link WebView} to display a Message. This method takes into account a user's
-     * preferences when configuring the view. This message is used to view a message and to display a message being
-     * replied to.
-     */
-    public void configure(WebViewConfig config) {
-        this.setVerticalScrollBarEnabled(true);
-        this.setVerticalScrollbarOverlay(true);
-        this.setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
-        this.setLongClickable(true);
-
-        if (config.getUseDarkMode()) {
-            // Black theme should get a black webview background
-            // we'll set the background of the messages on load
-            this.setBackgroundColor(0xff000000);
+        if (config.useDarkMode) {
+            setBackgroundColor(0xff000000L.toInt())
         }
 
-        final WebSettings webSettings = this.getSettings();
+        with(settings) {
+            setSupportZoom(true)
+            builtInZoomControls = true
+            useWideViewPort = true
 
-        /* TODO this might improve rendering smoothness when webview is animated into view
-        if (VERSION.SDK_INT >= VERSION_CODES.M) {
-            webSettings.setOffscreenPreRaster(true);
+            if (config.autoFitWidth) {
+                loadWithOverviewMode = true
+            }
+
+            disableDisplayZoomControls()
+
+            javaScriptEnabled = false
+            loadsImagesAutomatically = true
+            setRenderPriority(RenderPriority.HIGH)
+
+            // TODO: Review alternatives. NARROW_COLUMNS is deprecated on KITKAT
+            layoutAlgorithm = LayoutAlgorithm.NARROW_COLUMNS
+
+            overScrollMode = OVER_SCROLL_NEVER
+
+            textZoom = config.textZoom
         }
-        */
 
-        webSettings.setSupportZoom(true);
-        webSettings.setBuiltInZoomControls(true);
-        webSettings.setUseWideViewPort(true);
-        if (config.getAutoFitWidth()) {
-            webSettings.setLoadWithOverviewMode(true);
-        }
-
-        disableDisplayZoomControls();
-
-        webSettings.setJavaScriptEnabled(false);
-        webSettings.setLoadsImagesAutomatically(true);
-        webSettings.setRenderPriority(RenderPriority.HIGH);
-
-        // TODO:  Review alternatives.  NARROW_COLUMNS is deprecated on KITKAT
-        webSettings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
-
-        setOverScrollMode(OVER_SCROLL_NEVER);
-
-        webSettings.setTextZoom(config.getTextZoom());
-
-        // Disable network images by default.  This is overridden by preferences.
-        blockNetworkData(true);
+        // Disable network images by default. This is overridden by preferences.
+        blockNetworkData(true)
     }
 
-    /**
-     * Disable on-screen zoom controls on devices that support zooming via pinch-to-zoom.
-     */
-    private void disableDisplayZoomControls() {
-        PackageManager pm = getContext().getPackageManager();
-        boolean supportsMultiTouch =
-                pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
-                pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
+    private fun disableDisplayZoomControls() {
+        val packageManager = context.packageManager
+        val supportsMultiTouch = packageManager.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
+            packageManager.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT)
 
-        getSettings().setDisplayZoomControls(!supportsMultiTouch);
+        settings.displayZoomControls = !supportsMultiTouch
     }
 
-    public void displayHtmlContentWithInlineAttachments(@NonNull String htmlText,
-            @Nullable AttachmentResolver attachmentResolver, @Nullable OnPageFinishedListener onPageFinishedListener) {
-        setWebViewClient(attachmentResolver, onPageFinishedListener);
-        setHtmlContent(htmlText);
+    fun displayHtmlContentWithInlineAttachments(
+        htmlText: String,
+        attachmentResolver: AttachmentResolver?,
+        onPageFinishedListener: OnPageFinishedListener?
+    ) {
+        setWebViewClient(attachmentResolver, onPageFinishedListener)
+        setHtmlContent(htmlText)
     }
 
-    private void setWebViewClient(@Nullable AttachmentResolver attachmentResolver,
-            @Nullable OnPageFinishedListener onPageFinishedListener) {
-        K9WebViewClient webViewClient = K9WebViewClient.newInstance(attachmentResolver);
+    private fun setWebViewClient(
+        attachmentResolver: AttachmentResolver?,
+        onPageFinishedListener: OnPageFinishedListener?
+    ) {
+        val webViewClient = K9WebViewClient.newInstance(attachmentResolver)
         if (onPageFinishedListener != null) {
-            webViewClient.setOnPageFinishedListener(onPageFinishedListener);
+            webViewClient.setOnPageFinishedListener(onPageFinishedListener)
         }
-        setWebViewClient(webViewClient);
+        setWebViewClient(webViewClient)
     }
 
-    private void setHtmlContent(@NonNull String htmlText) {
-        loadDataWithBaseURL("about:blank", htmlText, "text/html", "utf-8", null);
-        resumeTimers();
+    private fun setHtmlContent(htmlText: String) {
+        loadDataWithBaseURL("about:blank", htmlText, "text/html", "utf-8", null)
+        resumeTimers()
     }
 
-    public interface OnPageFinishedListener {
-        void onPageFinished();
+    interface OnPageFinishedListener {
+        fun onPageFinished()
     }
 }
