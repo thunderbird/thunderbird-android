@@ -74,7 +74,6 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     private View unsignedTextContainer;
     private View unsignedTextDivider;
     private TextView unsignedText;
-    private View mAttachmentsContainer;
 
     private boolean showingPictures;
     private LayoutInflater mInflater;
@@ -98,7 +97,6 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
         mMessageContentView.setOnCreateContextMenuListener(this);
         mMessageContentView.setVisibility(View.VISIBLE);
 
-        mAttachmentsContainer = findViewById(R.id.attachments_container);
         mAttachments = findViewById(R.id.attachments);
 
         unsignedTextContainer = findViewById(R.id.message_unsigned_container);
@@ -387,18 +385,6 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
         refreshDisplayedContent();
     }
 
-    public void enableAttachmentButtons() {
-        for (AttachmentView attachmentView : attachmentViewMap.values()) {
-            attachmentView.enableButtons();
-        }
-    }
-
-    public void disableAttachmentButtons() {
-        for (AttachmentView attachmentView : attachmentViewMap.values()) {
-            attachmentView.disableButtons();
-        }
-    }
-
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
             final OnRenderingFinishedListener onRenderingFinishedListener, boolean loadPictures,
             boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback) {
@@ -514,14 +500,6 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
          * is now hidden.
          */
         clearDisplayedContent();
-    }
-
-    public void enableAttachmentButtons(AttachmentViewInfo attachment) {
-        getAttachmentView(attachment).enableButtons();
-    }
-
-    public void disableAttachmentButtons(AttachmentViewInfo attachment) {
-        getAttachmentView(attachment).disableButtons();
     }
 
     public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
