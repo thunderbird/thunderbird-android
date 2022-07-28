@@ -1,497 +1,502 @@
-package com.fsck.k9.ui.messageview;
+package com.fsck.k9.ui.messageview
 
+import android.app.DownloadManager
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.util.AttributeSet
+import android.view.ContextMenu
+import android.view.ContextMenu.ContextMenuInfo
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.View.OnCreateContextMenuListener
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebView.HitTestResult
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ShareCompat.IntentBuilder
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import com.fsck.k9.helper.ClipboardManager
+import com.fsck.k9.helper.Contacts
+import com.fsck.k9.helper.Utility
+import com.fsck.k9.mail.Address
+import com.fsck.k9.mailstore.AttachmentResolver
+import com.fsck.k9.mailstore.AttachmentViewInfo
+import com.fsck.k9.mailstore.MessageViewInfo
+import com.fsck.k9.ui.R
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
+import com.fsck.k9.view.MessageWebView
+import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
+import com.fsck.k9.view.WebViewConfigProvider
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
 
-import java.util.HashMap;
-import java.util.Map;
+class MessageContainerView(context: Context, attrs: AttributeSet?) :
+    LinearLayout(context, attrs),
+    OnCreateContextMenuListener,
+    KoinComponent {
 
-import android.app.DownloadManager;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.View;
-import android.view.View.OnCreateContextMenuListener;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebView.HitTestResult;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+    private val displayHtml by lazy(mode = LazyThreadSafetyMode.NONE) {
+        get<DisplayHtmlUiFactory>().createForMessageView()
+    }
+    private val webViewConfigProvider: WebViewConfigProvider by inject()
+    private val clipboardManager: ClipboardManager by inject()
+    private val linkTextHandler: LinkTextHandler by inject()
 
-import androidx.core.app.ShareCompat;
-import com.fsck.k9.DI;
-import com.fsck.k9.message.html.DisplayHtml;
-import com.fsck.k9.ui.R;
-import com.fsck.k9.helper.ClipboardManager;
-import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mailstore.AttachmentResolver;
-import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.MessageViewInfo;
-import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
-import com.fsck.k9.view.MessageWebView;
-import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
-import com.fsck.k9.view.WebViewConfigProvider;
+    private lateinit var layoutInflater: LayoutInflater
 
-import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
+    private lateinit var messageContentView: MessageWebView
+    private lateinit var attachmentsContainer: ViewGroup
+    private lateinit var unsignedTextContainer: View
+    private lateinit var unsignedTextDivider: View
+    private lateinit var unsignedText: TextView
 
+    private var isShowingPictures = false
+    private var currentHtmlText: String? = null
+    private val attachmentViewMap = mutableMapOf<AttachmentViewInfo, AttachmentView>()
+    private val attachments = mutableMapOf<Uri, AttachmentViewInfo>()
+    private var attachmentCallback: AttachmentViewCallback? = null
+    private var currentAttachmentResolver: AttachmentResolver? = null
 
-public class MessageContainerView extends LinearLayout implements OnCreateContextMenuListener {
-    private static final int MENU_ITEM_LINK_VIEW = Menu.FIRST;
-    private static final int MENU_ITEM_LINK_SHARE = Menu.FIRST + 1;
-    private static final int MENU_ITEM_LINK_COPY = Menu.FIRST + 2;
-    private static final int MENU_ITEM_LINK_TEXT_COPY = Menu.FIRST + 3;
+    @get:JvmName("hasHiddenExternalImages")
+    var hasHiddenExternalImages = false
+        private set
 
-    private static final int MENU_ITEM_IMAGE_VIEW = Menu.FIRST;
-    private static final int MENU_ITEM_IMAGE_SAVE = Menu.FIRST + 1;
-    private static final int MENU_ITEM_IMAGE_COPY = Menu.FIRST + 2;
+    public override fun onFinishInflate() {
+        super.onFinishInflate()
 
-    private static final int MENU_ITEM_PHONE_CALL = Menu.FIRST;
-    private static final int MENU_ITEM_PHONE_SAVE = Menu.FIRST + 1;
-    private static final int MENU_ITEM_PHONE_COPY = Menu.FIRST + 2;
+        layoutInflater = LayoutInflater.from(context)
 
-    private static final int MENU_ITEM_EMAIL_SEND = Menu.FIRST;
-    private static final int MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1;
-    private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
+        messageContentView = findViewById<MessageWebView>(R.id.message_content).apply {
+            if (!isInEditMode) {
+                configure(webViewConfigProvider.createForMessageView())
+            }
 
-    private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageView();
-    private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
-    private final ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
-
-    private MessageWebView mMessageContentView;
-    private ViewGroup attachmentsContainer;
-    private View unsignedTextContainer;
-    private View unsignedTextDivider;
-    private TextView unsignedText;
-
-    private boolean showingPictures;
-    private LayoutInflater mInflater;
-    private AttachmentViewCallback attachmentCallback;
-    private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
-    private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
-    private boolean hasHiddenExternalImages;
-
-    private String currentHtmlText;
-    private AttachmentResolver currentAttachmentResolver;
-
-
-    @Override
-    public void onFinishInflate() {
-        super.onFinishInflate();
-
-        mMessageContentView = findViewById(R.id.message_content);
-        if (!isInEditMode()) {
-            mMessageContentView.configure(webViewConfigProvider.createForMessageView());
+            setOnCreateContextMenuListener(this@MessageContainerView)
+            visibility = VISIBLE
         }
-        mMessageContentView.setOnCreateContextMenuListener(this);
-        mMessageContentView.setVisibility(View.VISIBLE);
 
-        attachmentsContainer = findViewById(R.id.attachments_container);
-
-        unsignedTextContainer = findViewById(R.id.message_unsigned_container);
-        unsignedTextDivider = findViewById(R.id.message_unsigned_divider);
-        unsignedText = findViewById(R.id.message_unsigned_text);
-
-        showingPictures = false;
-
-        Context context = getContext();
-        mInflater = LayoutInflater.from(context);
+        attachmentsContainer = findViewById(R.id.attachments_container)
+        unsignedTextContainer = findViewById(R.id.message_unsigned_container)
+        unsignedTextDivider = findViewById(R.id.message_unsigned_divider)
+        unsignedText = findViewById(R.id.message_unsigned_text)
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu);
+    override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenuInfo) {
+        super.onCreateContextMenu(menu)
 
-        WebView webview = (WebView) v;
-        WebView.HitTestResult result = webview.getHitTestResult();
+        val webView = view as WebView
+        val hitTestResult = webView.hitTestResult
 
-        if (result == null) {
-            return;
-        }
-
-        int type = result.getType();
-        Context context = getContext();
-
-        switch (type) {
-            case HitTestResult.SRC_ANCHOR_TYPE: {
-                final String url = result.getExtra();
-                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case MENU_ITEM_LINK_VIEW: {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                startActivityIfAvailable(getContext(), intent);
-                                break;
-                            }
-                            case MENU_ITEM_LINK_SHARE: {
-                                new ShareCompat.IntentBuilder(getContext())
-                                        .setType("text/plain")
-                                        .setText(url)
-                                        .startChooser();
-                                break;
-                            }
-                            case MENU_ITEM_LINK_COPY: {
-                                String label = getContext().getString(
-                                        R.string.webview_contextmenu_link_clipboard_label);
-                                clipboardManager.setText(label, url);
-                                break;
-                            }
-                            case MENU_ITEM_LINK_TEXT_COPY: {
-                                LinkTextHandler linkTextHandler = DI.get(LinkTextHandler.class);
-                                Message message = linkTextHandler.obtainMessage();
-                                webview.requestFocusNodeHref(message);
-                                break;
-                            }
-                        }
-                        return true;
-                    }
-                };
-
-                menu.setHeaderTitle(url);
-
-                menu.add(Menu.NONE, MENU_ITEM_LINK_VIEW, 0,
-                        context.getString(R.string.webview_contextmenu_link_view_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_LINK_SHARE, 1,
-                        context.getString(R.string.webview_contextmenu_link_share_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_LINK_COPY, 2,
-                        context.getString(R.string.webview_contextmenu_link_copy_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_LINK_TEXT_COPY, 3,
-                        context.getString(R.string.webview_contextmenu_link_text_copy_action))
-                        .setOnMenuItemClickListener(listener);
-
-                break;
+        when (hitTestResult.type) {
+            HitTestResult.SRC_ANCHOR_TYPE -> {
+                createLinkMenu(menu, webView, linkUrl = hitTestResult.extra)
             }
-            case HitTestResult.IMAGE_TYPE:
-            case HitTestResult.SRC_IMAGE_ANCHOR_TYPE: {
-                final Uri uri = Uri.parse(result.getExtra());
-                if (uri == null) {
-                    return;
+            HitTestResult.IMAGE_TYPE, HitTestResult.SRC_IMAGE_ANCHOR_TYPE -> {
+                createImageMenu(menu, imageUrl = hitTestResult.extra)
+            }
+            HitTestResult.PHONE_TYPE -> {
+                createPhoneNumberMenu(menu, phoneNumber = hitTestResult.extra)
+            }
+            HitTestResult.EMAIL_TYPE -> {
+                createEmailMenu(menu, email = hitTestResult.extra)
+            }
+        }
+    }
+
+    private fun createLinkMenu(
+        menu: ContextMenu,
+        webView: WebView,
+        linkUrl: String?
+    ) {
+        if (linkUrl == null) return
+
+        val listener = MenuItem.OnMenuItemClickListener { item ->
+            when (item.itemId) {
+                MENU_ITEM_LINK_VIEW -> {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(linkUrl))
+                    startActivityIfAvailable(context, intent)
                 }
-                
-                final AttachmentViewInfo attachmentViewInfo = getAttachmentViewInfoIfCidUri(uri);
-                final boolean inlineImage = attachmentViewInfo != null;
-
-                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case MENU_ITEM_IMAGE_VIEW: {
-                                if (inlineImage) {
-                                    attachmentCallback.onViewAttachment(attachmentViewInfo);
-                                } else {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                    startActivityIfAvailable(getContext(), intent);
-                                }
-                                break;
-                            }
-                            case MENU_ITEM_IMAGE_SAVE: {
-                                if (inlineImage) {
-                                    attachmentCallback.onSaveAttachment(attachmentViewInfo);
-                                } else {
-                                    downloadImage(uri);
-                                }
-                                break;
-                            }
-                            case MENU_ITEM_IMAGE_COPY: {
-                                String label = getContext().getString(
-                                        R.string.webview_contextmenu_image_clipboard_label);
-                                clipboardManager.setText(label, uri.toString());
-                                break;
-                            }
-                        }
-                        return true;
-                    }
-                };
-
-                menu.setHeaderTitle(inlineImage ?
-                        context.getString(R.string.webview_contextmenu_image_title) : uri.toString());
-
-                menu.add(Menu.NONE, MENU_ITEM_IMAGE_VIEW, 0,
-                        context.getString(R.string.webview_contextmenu_image_view_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_IMAGE_SAVE, 1,
-                        inlineImage ?
-                                context.getString(R.string.webview_contextmenu_image_save_action) :
-                                context.getString(R.string.webview_contextmenu_image_download_action))
-                        .setOnMenuItemClickListener(listener);
-
-                if (!inlineImage) {
-                    menu.add(Menu.NONE, MENU_ITEM_IMAGE_COPY, 2,
-                            context.getString(R.string.webview_contextmenu_image_copy_action))
-                            .setOnMenuItemClickListener(listener);
+                MENU_ITEM_LINK_SHARE -> {
+                    IntentBuilder(context)
+                        .setType("text/plain")
+                        .setText(linkUrl)
+                        .startChooser()
                 }
-
-                break;
+                MENU_ITEM_LINK_COPY -> {
+                    val label = context.getString(R.string.webview_contextmenu_link_clipboard_label)
+                    clipboardManager.setText(label, linkUrl)
+                }
+                MENU_ITEM_LINK_TEXT_COPY -> {
+                    val message = linkTextHandler.obtainMessage()
+                    webView.requestFocusNodeHref(message)
+                }
             }
-            case HitTestResult.PHONE_TYPE: {
-                final String phoneNumber = result.getExtra();
-                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case MENU_ITEM_PHONE_CALL: {
-                                Uri uri = Uri.parse(WebView.SCHEME_TEL + phoneNumber);
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                startActivityIfAvailable(getContext(), intent);
-                                break;
-                            }
-                            case MENU_ITEM_PHONE_SAVE: {
-                                Contacts contacts = Contacts.getInstance(getContext());
-                                contacts.addPhoneContact(phoneNumber);
-                                break;
-                            }
-                            case MENU_ITEM_PHONE_COPY: {
-                                String label = getContext().getString(
-                                        R.string.webview_contextmenu_phone_clipboard_label);
-                                clipboardManager.setText(label, phoneNumber);
-                                break;
-                            }
-                        }
+            true
+        }
 
-                        return true;
+        menu.setHeaderTitle(linkUrl)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_LINK_VIEW,
+            0,
+            context.getString(R.string.webview_contextmenu_link_view_action)
+        ).setOnMenuItemClickListener(listener)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_LINK_SHARE,
+            1,
+            context.getString(R.string.webview_contextmenu_link_share_action)
+        ).setOnMenuItemClickListener(listener)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_LINK_COPY,
+            2,
+            context.getString(R.string.webview_contextmenu_link_copy_action)
+        ).setOnMenuItemClickListener(listener)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_LINK_TEXT_COPY,
+            3,
+            context.getString(R.string.webview_contextmenu_link_text_copy_action)
+        ).setOnMenuItemClickListener(listener)
+    }
+
+    private fun createImageMenu(menu: ContextMenu, imageUrl: String?) {
+        if (imageUrl == null) return
+
+        val imageUri = Uri.parse(imageUrl)
+        val attachmentViewInfo = getAttachmentViewInfoIfCidUri(imageUri)
+        val inlineImage = attachmentViewInfo != null
+
+        val listener = MenuItem.OnMenuItemClickListener { item ->
+            val attachmentCallback = checkNotNull(attachmentCallback)
+
+            when (item.itemId) {
+                MENU_ITEM_IMAGE_VIEW -> {
+                    if (inlineImage) {
+                        attachmentCallback.onViewAttachment(attachmentViewInfo)
+                    } else {
+                        val intent = Intent(Intent.ACTION_VIEW, imageUri)
+                        startActivityIfAvailable(context, intent)
                     }
-                };
-
-                menu.setHeaderTitle(phoneNumber);
-
-                menu.add(Menu.NONE, MENU_ITEM_PHONE_CALL, 0,
-                        context.getString(R.string.webview_contextmenu_phone_call_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_PHONE_SAVE, 1,
-                        context.getString(R.string.webview_contextmenu_phone_save_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_PHONE_COPY, 2,
-                        context.getString(R.string.webview_contextmenu_phone_copy_action))
-                        .setOnMenuItemClickListener(listener);
-
-                break;
-            }
-            case WebView.HitTestResult.EMAIL_TYPE: {
-                final String email = result.getExtra();
-                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case MENU_ITEM_EMAIL_SEND: {
-                                Uri uri = Uri.parse(WebView.SCHEME_MAILTO + email);
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                startActivityIfAvailable(getContext(), intent);
-                                break;
-                            }
-                            case MENU_ITEM_EMAIL_SAVE: {
-                                Contacts contacts = Contacts.getInstance(getContext());
-                                contacts.createContact(new Address(email));
-                                break;
-                            }
-                            case MENU_ITEM_EMAIL_COPY: {
-                                String label = getContext().getString(
-                                        R.string.webview_contextmenu_email_clipboard_label);
-                                clipboardManager.setText(label, email);
-                                break;
-                            }
-                        }
-
-                        return true;
+                }
+                MENU_ITEM_IMAGE_SAVE -> {
+                    if (inlineImage) {
+                        attachmentCallback.onSaveAttachment(attachmentViewInfo)
+                    } else {
+                        downloadImage(imageUri)
                     }
-                };
-
-                menu.setHeaderTitle(email);
-
-                menu.add(Menu.NONE, MENU_ITEM_EMAIL_SEND, 0,
-                        context.getString(R.string.webview_contextmenu_email_send_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_EMAIL_SAVE, 1,
-                        context.getString(R.string.webview_contextmenu_email_save_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_EMAIL_COPY, 2,
-                        context.getString(R.string.webview_contextmenu_email_copy_action))
-                        .setOnMenuItemClickListener(listener);
-
-                break;
+                }
+                MENU_ITEM_IMAGE_COPY -> {
+                    val label = context.getString(R.string.webview_contextmenu_image_clipboard_label)
+                    clipboardManager.setText(label, imageUri.toString())
+                }
             }
+            true
+        }
+
+        if (inlineImage) {
+            menu.setHeaderTitle(R.string.webview_contextmenu_image_title)
+        } else {
+            menu.setHeaderTitle(imageUrl)
+        }
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_IMAGE_VIEW,
+            0,
+            context.getString(R.string.webview_contextmenu_image_view_action)
+        ).setOnMenuItemClickListener(listener)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_IMAGE_SAVE,
+            1,
+            if (inlineImage) {
+                context.getString(R.string.webview_contextmenu_image_save_action)
+            } else {
+                context.getString(R.string.webview_contextmenu_image_download_action)
+            }
+        ).setOnMenuItemClickListener(listener)
+
+        if (!inlineImage) {
+            menu.add(
+                Menu.NONE,
+                MENU_ITEM_IMAGE_COPY,
+                2,
+                context.getString(R.string.webview_contextmenu_image_copy_action)
+            ).setOnMenuItemClickListener(listener)
         }
     }
 
-    private void downloadImage(Uri uri) {
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        if (Build.VERSION.SDK_INT >= 29) {
-            String filename = uri.getLastPathSegment();
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-        }
-        request.setNotificationVisibility(VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+    private fun createPhoneNumberMenu(menu: ContextMenu, phoneNumber: String?) {
+        if (phoneNumber == null) return
 
-        DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-        downloadManager.enqueue(request);
+        val listener = MenuItem.OnMenuItemClickListener { item ->
+            when (item.itemId) {
+                MENU_ITEM_PHONE_CALL -> {
+                    val uri = Uri.parse(WebView.SCHEME_TEL + phoneNumber)
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    startActivityIfAvailable(context, intent)
+                }
+                MENU_ITEM_PHONE_SAVE -> {
+                    val contacts = Contacts.getInstance(context)
+                    contacts.addPhoneContact(phoneNumber)
+                }
+                MENU_ITEM_PHONE_COPY -> {
+                    val label = context.getString(R.string.webview_contextmenu_phone_clipboard_label)
+                    clipboardManager.setText(label, phoneNumber)
+                }
+            }
+            true
+        }
+
+        menu.setHeaderTitle(phoneNumber)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_PHONE_CALL,
+            0,
+            context.getString(R.string.webview_contextmenu_phone_call_action)
+        ).setOnMenuItemClickListener(listener)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_PHONE_SAVE,
+            1,
+            context.getString(R.string.webview_contextmenu_phone_save_action)
+        ).setOnMenuItemClickListener(listener)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_PHONE_COPY,
+            2,
+            context.getString(R.string.webview_contextmenu_phone_copy_action)
+        ).setOnMenuItemClickListener(listener)
     }
 
-    private AttachmentViewInfo getAttachmentViewInfoIfCidUri(Uri uri) {
-        if (!"cid".equals(uri.getScheme())) {
-            return null;
+    private fun createEmailMenu(menu: ContextMenu, email: String?) {
+        if (email == null) return
+
+        val listener = MenuItem.OnMenuItemClickListener { item ->
+            when (item.itemId) {
+                MENU_ITEM_EMAIL_SEND -> {
+                    val uri = Uri.parse(WebView.SCHEME_MAILTO + email)
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    startActivityIfAvailable(context, intent)
+                }
+                MENU_ITEM_EMAIL_SAVE -> {
+                    val contacts = Contacts.getInstance(context)
+                    contacts.createContact(Address(email))
+                }
+                MENU_ITEM_EMAIL_COPY -> {
+                    val label = context.getString(R.string.webview_contextmenu_email_clipboard_label)
+                    clipboardManager.setText(label, email)
+                }
+            }
+            true
         }
 
-        String cid = uri.getSchemeSpecificPart();
-        Uri internalUri = currentAttachmentResolver.getAttachmentUriForContentId(cid);
+        menu.setHeaderTitle(email)
 
-        return attachments.get(internalUri);
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_EMAIL_SEND,
+            0,
+            context.getString(R.string.webview_contextmenu_email_send_action)
+        ).setOnMenuItemClickListener(listener)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_EMAIL_SAVE,
+            1,
+            context.getString(R.string.webview_contextmenu_email_save_action)
+        ).setOnMenuItemClickListener(listener)
+
+        menu.add(
+            Menu.NONE,
+            MENU_ITEM_EMAIL_COPY,
+            2,
+            context.getString(R.string.webview_contextmenu_email_copy_action)
+        ).setOnMenuItemClickListener(listener)
     }
 
-    private void startActivityIfAvailable(Context context, Intent intent) {
+    private fun downloadImage(uri: Uri) {
+        val request = DownloadManager.Request(uri).apply {
+            if (Build.VERSION.SDK_INT >= 29) {
+                val filename = uri.lastPathSegment
+                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+            }
+
+            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        }
+
+        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager.enqueue(request)
+    }
+
+    private fun getAttachmentViewInfoIfCidUri(uri: Uri): AttachmentViewInfo? {
+        if (uri.scheme != "cid") return null
+
+        val attachmentResolver = checkNotNull(currentAttachmentResolver)
+
+        val cid = uri.schemeSpecificPart
+        val internalUri = attachmentResolver.getAttachmentUriForContentId(cid)
+
+        return attachments[internalUri]
+    }
+
+    private fun startActivityIfAvailable(context: Context, intent: Intent) {
         try {
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(context, R.string.error_activity_not_found, Toast.LENGTH_LONG).show();
+            context.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
         }
     }
 
-    public MessageContainerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    private fun setLoadPictures(enable: Boolean) {
+        messageContentView.blockNetworkData(!enable)
+        isShowingPictures = enable
     }
 
-
-    private boolean isShowingPictures() {
-        return showingPictures;
+    fun showPictures() {
+        setLoadPictures(true)
+        refreshDisplayedContent()
     }
 
-    private void setLoadPictures(boolean enable) {
-        mMessageContentView.blockNetworkData(!enable);
-        showingPictures = enable;
-    }
+    fun displayMessageViewContainer(
+        messageViewInfo: MessageViewInfo,
+        onRenderingFinishedListener: OnRenderingFinishedListener,
+        loadPictures: Boolean,
+        hideUnsignedTextDivider: Boolean,
+        attachmentCallback: AttachmentViewCallback?
+    ) {
+        this.attachmentCallback = attachmentCallback
 
-    public void showPictures() {
-        setLoadPictures(true);
-        refreshDisplayedContent();
-    }
+        resetView()
+        renderAttachments(messageViewInfo)
 
-    public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
-            final OnRenderingFinishedListener onRenderingFinishedListener, boolean loadPictures,
-            boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback) {
-
-        this.attachmentCallback = attachmentCallback;
-
-        resetView();
-
-        renderAttachments(messageViewInfo);
-
-        String textToDisplay = messageViewInfo.text;
-        if (textToDisplay != null && !isShowingPictures()) {
-            if (Utility.hasExternalImages(textToDisplay)) {
+        val messageText = messageViewInfo.text
+        if (messageText != null && !isShowingPictures) {
+            if (Utility.hasExternalImages(messageText)) {
                 if (loadPictures) {
-                    setLoadPictures(true);
+                    setLoadPictures(true)
                 } else {
-                    hasHiddenExternalImages = true;
+                    hasHiddenExternalImages = true
                 }
             }
         }
 
-        if (textToDisplay == null) {
-            String noTextMessage = getContext().getString(R.string.webview_empty_message);
-            textToDisplay = displayHtml.wrapStatusMessage(noTextMessage);
-        }
-
-        OnPageFinishedListener onPageFinishedListener = new OnPageFinishedListener() {
-            @Override
-            public void onPageFinished() {
-                onRenderingFinishedListener.onLoadFinished();
-            }
-        };
+        val textToDisplay = messageText
+            ?: displayHtml.wrapStatusMessage(context.getString(R.string.webview_empty_message))
 
         displayHtmlContentWithInlineAttachments(
-                textToDisplay, messageViewInfo.attachmentResolver, onPageFinishedListener);
+            htmlText = textToDisplay,
+            attachmentResolver = messageViewInfo.attachmentResolver,
+            onPageFinishedListener = onRenderingFinishedListener::onLoadFinished
+        )
 
-        if (!TextUtils.isEmpty(messageViewInfo.extraText)) {
-            unsignedTextContainer.setVisibility(View.VISIBLE);
-            unsignedTextDivider.setVisibility(hideUnsignedTextDivider ? View.GONE : View.VISIBLE);
-            unsignedText.setText(messageViewInfo.extraText);
+        if (!messageViewInfo.extraText.isNullOrEmpty()) {
+            unsignedTextContainer.isVisible = true
+            unsignedTextDivider.isGone = hideUnsignedTextDivider
+            unsignedText.text = messageViewInfo.extraText
         }
     }
 
-    public boolean hasHiddenExternalImages() {
-        return hasHiddenExternalImages;
+    private fun displayHtmlContentWithInlineAttachments(
+        htmlText: String,
+        attachmentResolver: AttachmentResolver,
+        onPageFinishedListener: OnPageFinishedListener
+    ) {
+        currentHtmlText = htmlText
+        currentAttachmentResolver = attachmentResolver
+        messageContentView.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver, onPageFinishedListener)
     }
 
-    private void displayHtmlContentWithInlineAttachments(String htmlText, AttachmentResolver attachmentResolver,
-            OnPageFinishedListener onPageFinishedListener) {
-        currentHtmlText = htmlText;
-        currentAttachmentResolver = attachmentResolver;
-        mMessageContentView.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver, onPageFinishedListener);
+    private fun refreshDisplayedContent() {
+        val htmlText = checkNotNull(currentHtmlText)
+
+        messageContentView.displayHtmlContentWithInlineAttachments(
+            htmlText = htmlText,
+            attachmentResolver = currentAttachmentResolver,
+            onPageFinishedListener = null
+        )
     }
 
-    private void refreshDisplayedContent() {
-        mMessageContentView.displayHtmlContentWithInlineAttachments(currentHtmlText, currentAttachmentResolver, null);
+    private fun clearDisplayedContent() {
+        messageContentView.displayHtmlContentWithInlineAttachments(
+            htmlText = "",
+            attachmentResolver = null,
+            onPageFinishedListener = null
+        )
+
+        unsignedTextContainer.isVisible = false
+        unsignedText.text = ""
     }
 
-    private void clearDisplayedContent() {
-        mMessageContentView.displayHtmlContentWithInlineAttachments("", null, null);
-        unsignedTextContainer.setVisibility(View.GONE);
-        unsignedText.setText("");
-    }
-
-    public void renderAttachments(MessageViewInfo messageViewInfo) {
+    private fun renderAttachments(messageViewInfo: MessageViewInfo) {
         if (messageViewInfo.attachments != null) {
-            for (AttachmentViewInfo attachment : messageViewInfo.attachments) {
-                attachments.put(attachment.internalUri, attachment);
+            for (attachment in messageViewInfo.attachments) {
+                attachments[attachment.internalUri] = attachment
                 if (attachment.inlineAttachment) {
-                    continue;
+                    continue
                 }
 
-                AttachmentView view =
-                        (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, attachmentsContainer, false);
-                view.setCallback(attachmentCallback);
-                view.setAttachment(attachment);
+                val attachmentView = layoutInflater.inflate(
+                    R.layout.message_view_attachment,
+                    attachmentsContainer,
+                    false
+                ) as AttachmentView
 
-                attachmentViewMap.put(attachment, view);
-                attachmentsContainer.addView(view);
+                attachmentView.setCallback(attachmentCallback)
+                attachmentView.setAttachment(attachment)
+
+                attachmentViewMap[attachment] = attachmentView
+                attachmentsContainer.addView(attachmentView)
             }
         }
 
         if (messageViewInfo.extraAttachments != null) {
-            for (AttachmentViewInfo attachment : messageViewInfo.extraAttachments) {
-                attachments.put(attachment.internalUri, attachment);
+            for (attachment in messageViewInfo.extraAttachments) {
+                attachments[attachment.internalUri] = attachment
                 if (attachment.inlineAttachment) {
-                    continue;
+                    continue
                 }
 
-                LockedAttachmentView view = (LockedAttachmentView) mInflater
-                        .inflate(R.layout.message_view_attachment_locked, attachmentsContainer, false);
-                view.setCallback(attachmentCallback);
-                view.setAttachment(attachment);
+                val lockedAttachmentView = layoutInflater.inflate(
+                    R.layout.message_view_attachment_locked,
+                    attachmentsContainer,
+                    false
+                ) as LockedAttachmentView
 
-                // attachments.put(attachment, view);
-                attachmentsContainer.addView(view);
+                lockedAttachmentView.setCallback(attachmentCallback)
+                lockedAttachmentView.setAttachment(attachment)
+
+                attachmentsContainer.addView(lockedAttachmentView)
             }
         }
     }
 
-    public void resetView() {
-        setLoadPictures(false);
-        attachmentsContainer.removeAllViews();
+    private fun resetView() {
+        setLoadPictures(false)
+        attachmentsContainer.removeAllViews()
 
-        currentHtmlText = null;
-        currentAttachmentResolver = null;
+        currentHtmlText = null
+        currentAttachmentResolver = null
 
         /*
          * Clear the WebView content
@@ -500,18 +505,34 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
          * its size because the button to download the complete message was previously shown and
          * is now hidden.
          */
-        clearDisplayedContent();
+        clearDisplayedContent()
     }
 
-    public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
-        getAttachmentView(attachment).refreshThumbnail();
+    fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
+        getAttachmentView(attachment)?.refreshThumbnail()
     }
 
-    private AttachmentView getAttachmentView(AttachmentViewInfo attachment) {
-        return attachmentViewMap.get(attachment);
+    private fun getAttachmentView(attachment: AttachmentViewInfo): AttachmentView? {
+        return attachmentViewMap[attachment]
     }
 
     interface OnRenderingFinishedListener {
-        void onLoadFinished();
+        fun onLoadFinished()
+    }
+
+    companion object {
+        private const val MENU_ITEM_LINK_VIEW = Menu.FIRST
+        private const val MENU_ITEM_LINK_SHARE = Menu.FIRST + 1
+        private const val MENU_ITEM_LINK_COPY = Menu.FIRST + 2
+        private const val MENU_ITEM_LINK_TEXT_COPY = Menu.FIRST + 3
+        private const val MENU_ITEM_IMAGE_VIEW = Menu.FIRST
+        private const val MENU_ITEM_IMAGE_SAVE = Menu.FIRST + 1
+        private const val MENU_ITEM_IMAGE_COPY = Menu.FIRST + 2
+        private const val MENU_ITEM_PHONE_CALL = Menu.FIRST
+        private const val MENU_ITEM_PHONE_SAVE = Menu.FIRST + 1
+        private const val MENU_ITEM_PHONE_COPY = Menu.FIRST + 2
+        private const val MENU_ITEM_EMAIL_SEND = Menu.FIRST
+        private const val MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1
+        private const val MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2
     }
 }
