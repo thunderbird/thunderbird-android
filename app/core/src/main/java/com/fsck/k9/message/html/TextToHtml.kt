@@ -62,6 +62,7 @@ class TextToHtml private constructor(private val text: CharSequence, private val
 
     internal fun appendHtmlEncoded(ch: Char) {
         when (ch) {
+            ' ' -> html.append("&nbsp;")
             '&' -> html.append("&amp;")
             '<' -> html.append("&lt;")
             '>' -> html.append("&gt;")
