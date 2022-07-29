@@ -93,7 +93,7 @@ class MessageWebView : WebView {
         resumeTimers()
     }
 
-    interface OnPageFinishedListener {
+    fun interface OnPageFinishedListener {
         fun onPageFinished()
     }
 }
