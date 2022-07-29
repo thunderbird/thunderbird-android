@@ -91,7 +91,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         unsignedText = findViewById(R.id.message_unsigned_text)
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenuInfo) {
+    override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenuInfo?) {
         super.onCreateContextMenu(menu)
 
         val webView = view as WebView
