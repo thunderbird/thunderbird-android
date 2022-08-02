@@ -15,6 +15,8 @@ import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.MimeMultipart
+import com.fsck.k9.mail.internet.MimeParameterEncoder.isToken
+import com.fsck.k9.mail.internet.MimeParameterEncoder.quoted
 import com.fsck.k9.mail.internet.MimeUtility
 import java.io.IOException
 import java.io.InputStream
@@ -889,7 +891,8 @@ internal class RealImapFolder(
                 for (i in bodyParams.indices step 2) {
                     val paramName = bodyParams.getString(i)
                     val paramValue = bodyParams.getString(i + 1)
-                    contentType.append(String.format(";\r\n %s=\"%s\"", paramName, paramValue))
+                    val encodedValue = if (paramValue.isToken()) paramValue else paramValue.quoted()
+                    contentType.append(String.format(";\r\n %s=%s", paramName, encodedValue))
                 }
             }
 
@@ -915,7 +918,8 @@ internal class RealImapFolder(
                     for (i in bodyDispositionParams.indices step 2) {
                         val paramName = bodyDispositionParams.getString(i).lowercase()
                         val paramValue = bodyDispositionParams.getString(i + 1)
-                        contentDisposition.append(String.format(";\r\n %s=\"%s\"", paramName, paramValue))
+                        val encodedValue = if (paramValue.isToken()) paramValue else paramValue.quoted()
+                        contentDisposition.append(String.format(";\r\n %s=%s", paramName, encodedValue))
                     }
                 }
             }
