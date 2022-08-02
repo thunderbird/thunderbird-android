@@ -2,7 +2,11 @@ package com.fsck.k9.message.html
 
 import java.util.ArrayDeque
 
-class TextToHtml private constructor(private val text: CharSequence, private val html: StringBuilder) {
+class TextToHtml private constructor(
+    private val text: CharSequence,
+    private val html: StringBuilder,
+    private val retainOriginalWhitespace: Boolean
+) {
     fun appendAsHtmlFragment() {
         val modifications = HTML_MODIFIERS
             .flatMap { it.findModifications(text) }
@@ -51,9 +55,47 @@ class TextToHtml private constructor(private val text: CharSequence, private val
     }
 
     private fun appendHtmlEncoded(startIndex: Int, endIndex: Int) {
+        if (retainOriginalWhitespace) {
+            appendHtmlEncodedWithOriginalWhitespace(startIndex, endIndex)
+        } else {
+            appendHtmlEncodedWithNonBreakingSpaces(startIndex, endIndex)
+        }
+    }
+
+    private fun appendHtmlEncodedWithOriginalWhitespace(startIndex: Int, endIndex: Int) {
         for (i in startIndex until endIndex) {
             appendHtmlEncoded(text[i])
         }
+    }
+
+    private fun appendHtmlEncodedWithNonBreakingSpaces(startIndex: Int, endIndex: Int) {
+        var adjustedStartIndex = startIndex
+        if (startIndex < endIndex && text[startIndex] == SPACE) {
+            html.append(NON_BREAKING_SPACE)
+            adjustedStartIndex++
+        }
+
+        var spaces = 0
+        for (i in adjustedStartIndex until endIndex) {
+            if (text[i] == SPACE) {
+                spaces++
+            } else {
+                appendSpaces(spaces)
+                spaces = 0
+                appendHtmlEncoded(text[i])
+            }
+        }
+
+        appendSpaces(spaces)
+    }
+
+    private fun appendSpaces(count: Int) {
+        if (count <= 0) return
+
+        repeat(count - 1) {
+            html.append(NON_BREAKING_SPACE)
+        }
+        html.append(SPACE)
     }
 
     internal fun appendHtml(text: String) {
@@ -84,18 +126,22 @@ class TextToHtml private constructor(private val text: CharSequence, private val
 
     companion object {
         private val HTML_MODIFIERS = listOf(DividerReplacer, UriLinkifier, SignatureWrapper)
+
+        private const val SPACE = ' '
+        private const val NON_BREAKING_SPACE = '\u00A0'
+
         private const val HTML_NEWLINE = "<br>"
         private const val TEXT_TO_HTML_EXTRA_BUFFER_LENGTH = 512
 
         @JvmStatic
-        fun appendAsHtmlFragment(html: StringBuilder, text: CharSequence) {
-            TextToHtml(text, html).appendAsHtmlFragment()
+        fun appendAsHtmlFragment(html: StringBuilder, text: CharSequence, retainOriginalWhitespace: Boolean) {
+            TextToHtml(text, html, retainOriginalWhitespace).appendAsHtmlFragment()
         }
 
         @JvmStatic
-        fun toHtmlFragment(text: CharSequence): String {
+        fun toHtmlFragment(text: CharSequence, retainOriginalWhitespace: Boolean): String {
             val html = StringBuilder(text.length + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH)
-            TextToHtml(text, html).appendAsHtmlFragment()
+            TextToHtml(text, html, retainOriginalWhitespace).appendAsHtmlFragment()
             return html.toString()
         }
     }
