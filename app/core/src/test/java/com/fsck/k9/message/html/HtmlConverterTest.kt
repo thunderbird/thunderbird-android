@@ -401,6 +401,60 @@ class HtmlConverterTest {
     }
 
     @Test
+    fun `textToHtmlFragment() with single space at the start of a line`() {
+        val text = " foo"
+
+        val result = HtmlConverter.textToHtmlFragment(text)
+
+        assertThat(result).isEqualTo("\u00A0foo")
+    }
+
+    @Test
+    fun `textToHtmlFragment() with two spaces at the start of a line`() {
+        val text = "  foo"
+
+        val result = HtmlConverter.textToHtmlFragment(text)
+
+        assertThat(result).isEqualTo("\u00A0 foo")
+    }
+
+    @Test
+    fun `textToHtmlFragment() with consecutive spaces at the start of a line`() {
+        val text = "    some words here"
+
+        val result = HtmlConverter.textToHtmlFragment(text)
+
+        assertThat(result).isEqualTo("\u00A0\u00A0\u00A0 some words here")
+    }
+
+    @Test
+    fun `textToHtmlFragment() with consecutive spaces between words`() {
+        val text = "foo  bar"
+
+        val result = HtmlConverter.textToHtmlFragment(text)
+
+        assertThat(result).isEqualTo("foo\u00A0 bar")
+    }
+
+    @Test
+    fun `textToHtmlFragment() with single space at the end of a line`() {
+        val text = "foo \n"
+
+        val result = HtmlConverter.textToHtmlFragment(text)
+
+        assertThat(result).isEqualTo("foo <br>")
+    }
+
+    @Test
+    fun `textToHtmlFragment() with consecutive spaces at the end of a line`() {
+        val text = "some words here   \n"
+
+        val result = HtmlConverter.textToHtmlFragment(text)
+
+        assertThat(result).isEqualTo("some words here\u00A0\u00A0 <br>")
+    }
+
+    @Test
     fun `htmlToText() should convert BR tags to line breaks`() {
         val input =
             """
