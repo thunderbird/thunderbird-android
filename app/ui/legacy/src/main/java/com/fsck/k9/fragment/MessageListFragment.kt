@@ -1563,6 +1563,28 @@ class MessageListFragment :
         if (::adapter.isInitialized) {
             adapter.activeMessage = activeMessage
             adapter.notifyDataSetChanged()
+
+            if (messageReference != null) {
+                scrollToMessage(messageReference)
+            }
+        }
+    }
+
+    private fun scrollToMessage(messageReference: MessageReference) {
+        val position = getPosition(messageReference)
+        val viewPosition = adapterToListViewPosition(position)
+        if (viewPosition != AdapterView.INVALID_POSITION &&
+            (viewPosition <= listView.firstVisiblePosition || viewPosition >= listView.lastVisiblePosition)
+        ) {
+            listView.smoothScrollToPosition(viewPosition)
+        }
+    }
+
+    private fun getPosition(messageReference: MessageReference): Int {
+        return adapter.messages.indexOfFirst { messageListItem ->
+            messageListItem.account.uuid == messageReference.accountUuid &&
+                messageListItem.folderId == messageReference.folderId &&
+                messageListItem.messageUid == messageReference.uid
         }
     }
 
