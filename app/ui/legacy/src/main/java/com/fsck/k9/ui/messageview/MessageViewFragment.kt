@@ -85,7 +85,10 @@ class MessageViewFragment :
     private lateinit var fragmentListener: MessageViewFragmentListener
 
     private lateinit var account: Account
-    lateinit var messageReference: MessageReference
+
+    val messageReference: MessageReference by lazy(mode = LazyThreadSafetyMode.NONE) {
+        MessageReference.parse(arguments?.getString(ARG_REFERENCE)) ?: error("Invalid argument '$ARG_REFERENCE'")
+    }
 
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
     private var isDeleteMenuItemDisabled: Boolean = false
@@ -115,9 +118,6 @@ class MessageViewFragment :
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
-
-        messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
-            ?: error("Invalid argument '$ARG_REFERENCE'")
 
         messageCryptoPresenter = MessageCryptoPresenter(messageCryptoMvpView)
         messageLoaderHelper = messageLoaderHelperFactory.createForMessageView(
