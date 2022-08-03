@@ -24,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
+import androidx.fragment.app.commitNow
 import androidx.lifecycle.Observer
 import com.fsck.k9.Account
 import com.fsck.k9.K9
@@ -270,7 +271,7 @@ open class MessageList :
                 search!!, false, K9.isThreadedViewEnabled && !noThreading
             )
             fragmentTransaction.add(R.id.message_list_container, messageListFragment)
-            fragmentTransaction.commit()
+            fragmentTransaction.commitNow()
 
             this.messageListFragment = messageListFragment
         }
@@ -979,7 +980,7 @@ open class MessageList :
             }
 
             val fragment = MessageViewFragment.newInstance(messageReference)
-            supportFragmentManager.commit {
+            supportFragmentManager.commitNow {
                 replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
             }
 
