@@ -731,7 +731,83 @@ class RealImapFolderTest {
 
         folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE)
 
-        verify(messages[0]).setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain;\r\n CHARSET=\"US-ASCII\"")
+        verify(messages[0]).setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain;\r\n CHARSET=US-ASCII")
+    }
+
+    @Test
+    fun `fetch() with simple content type parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name" "token") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name=token"
+        )
+    }
+
+    @Test
+    fun `fetch() with content type parameter that needs to be a quoted string`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name" "one two three") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name=\"one two three\""
+        )
+    }
+
+    @Test
+    fun `fetch() with content type parameter that needs to be a quoted string with escaped characters`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name" "one \"two\" three") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name=\"one \\\"two\\\" three\""
+        )
+    }
+
+    @Test
+    fun `fetch() with RFC 2231 encoded content type parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name*" "utf-8''filen%C3%A4me.ext") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name*=utf-8''filen%C3%A4me.ext"
+        )
+    }
+
+    @Test
+    fun `fetch() with simple content disposition parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename" "token")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename=token;\r\n size=23"
+        )
+    }
+
+    @Test
+    fun `fetch() with content disposition parameter that needs to be a quoted string`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename" "one two three")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename=\"one two three\";\r\n size=23"
+        )
+    }
+
+    @Test
+    fun `fetch() with content disposition parameter that needs to be a quoted string with escaped characters`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename" "one \"two\" three")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename=\"one \\\"two\\\" three\";\r\n size=23"
+        )
+    }
+
+    @Test
+    fun `fetch() with RFC 2231 encoded content disposition parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename*" "utf-8''filen%C3%A4me.ext")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename*=utf-8''filen%C3%A4me.ext;\r\n size=23"
+        )
     }
 
     @Test
@@ -1116,6 +1192,22 @@ class RealImapFolderTest {
         val imapResponses = listOf(createImapResponse(response))
         whenever(imapConnection.executeCommandWithIdSet(eq(Commands.UID_COPY), anyString(), anySet()))
             .thenReturn(imapResponses)
+    }
+
+    private fun testHeaderFromBodyStructure(bodyStructure: String, headerName: String, expectedHeaderValue: String) {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
+        whenever(imapConnection.readResponse(anyOrNull()))
+            .thenReturn(createImapResponse("* 1 FETCH (BODYSTRUCTURE $bodyStructure UID 1)"))
+            .thenReturn(createImapResponse("x OK"))
+        val imapMessage = ImapMessage("1")
+        val messages = listOf(imapMessage)
+        val fetchProfile = createFetchProfile(FetchProfile.Item.STRUCTURE)
+
+        folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE)
+
+        assertThat(imapMessage.getHeader(headerName)).asList().containsExactly(expectedHeaderValue)
     }
 
     companion object {

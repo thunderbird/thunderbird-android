@@ -138,14 +138,14 @@ object MimeParameterEncoder {
         return length
     }
 
-    private fun String.isToken() = when {
+    fun String.isToken() = when {
         isEmpty() -> false
         else -> all { it.isTokenChar() }
     }
 
     private fun String.isQuotable() = all { it.isQuotable() }
 
-    private fun String.quoted(): String {
+    fun String.quoted(): String {
         // quoted-string = [CFWS] DQUOTE *([FWS] qcontent) [FWS] DQUOTE [CFWS]
         // qcontent      = qtext / quoted-pair
         // quoted-pair   = ("\" (VCHAR / WSP))
