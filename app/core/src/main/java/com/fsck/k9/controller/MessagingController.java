@@ -1309,9 +1309,6 @@ public class MessagingController {
         fp.add(FetchProfile.Item.BODY);
         localFolder.fetch(Collections.singletonList(message), fp, null);
 
-        notificationController.removeNewMailNotification(account, message.makeMessageReference());
-        markMessageAsOpened(account, message);
-
         return message;
     }
 
@@ -1333,7 +1330,15 @@ public class MessagingController {
         return message;
     }
 
-    private void markMessageAsOpened(Account account, LocalMessage message) throws MessagingException {
+    public void markMessageAsOpened(Account account, LocalMessage message) {
+        put("markMessageAsOpened", null, () -> {
+            markMessageAsOpenedBlocking(account, message);
+        });
+    }
+
+    private void markMessageAsOpenedBlocking(Account account, LocalMessage message) {
+        notificationController.removeNewMailNotification(account,message.makeMessageReference());
+
         if (!message.isSet(Flag.SEEN)) {
             if (account.isMarkMessageAsReadOnView()) {
                 markMessageAsReadOnView(account, message);
@@ -1345,11 +1350,15 @@ public class MessagingController {
         }
     }
 
-    private void markMessageAsReadOnView(Account account, LocalMessage message) throws MessagingException {
-        List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
-        setFlag(account, messageIds, Flag.SEEN, true);
+    private void markMessageAsReadOnView(Account account, LocalMessage message) {
+        try {
+            List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
+            setFlag(account, messageIds, Flag.SEEN, true);
 
-        message.setFlagInternal(Flag.SEEN, true);
+            message.setFlagInternal(Flag.SEEN, true);
+        } catch (MessagingException e) {
+            Timber.e(e, "Error while marking message as read");
+        }
     }
 
     private void markMessageAsNotNew(Account account, LocalMessage message) {

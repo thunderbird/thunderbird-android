@@ -66,7 +66,7 @@ class MessageListFragment :
     ConfirmationDialogFragmentListener,
     MessageListItemActionListener {
 
-    private val viewModel: MessageListViewModel by viewModel()
+    val viewModel: MessageListViewModel by viewModel()
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatterFactory: FolderNameFormatterFactory by inject()
     private val folderNameFormatter: FolderNameFormatter by lazy { folderNameFormatterFactory.create(requireContext()) }
@@ -1299,30 +1299,6 @@ class MessageListFragment :
         }
     }
 
-    fun openPrevious(messageReference: MessageReference): Boolean {
-        val position = getPosition(messageReference)
-        if (position <= 0) return false
-
-        openMessageAtPosition(position - 1)
-        return true
-    }
-
-    fun openNext(messageReference: MessageReference): Boolean {
-        val position = getPosition(messageReference)
-        if (position < 0 || position == adapter.count - 1) return false
-
-        openMessageAtPosition(position + 1)
-        return true
-    }
-
-    fun isFirst(messageReference: MessageReference): Boolean {
-        return adapter.isEmpty || messageReference == getReferenceForPosition(0)
-    }
-
-    fun isLast(messageReference: MessageReference): Boolean {
-        return adapter.isEmpty || messageReference == getReferenceForPosition(adapter.count - 1)
-    }
-
     private fun getReferenceForPosition(position: Int): MessageReference {
         val item = adapter.getItem(position)
         return MessageReference(item.account.uuid, item.folderId, item.messageUid)
@@ -1347,14 +1323,6 @@ class MessageListFragment :
 
     fun openMessage(messageReference: MessageReference) {
         fragmentListener.openMessage(messageReference)
-    }
-
-    private fun getPosition(messageReference: MessageReference): Int {
-        return adapter.messages.indexOfFirst { messageListItem ->
-            messageListItem.account.uuid == messageReference.accountUuid &&
-                messageListItem.folderId == messageReference.folderId &&
-                messageListItem.messageUid == messageReference.uid
-        }
     }
 
     fun onReverseSort() {
@@ -1595,6 +1563,28 @@ class MessageListFragment :
         if (::adapter.isInitialized) {
             adapter.activeMessage = activeMessage
             adapter.notifyDataSetChanged()
+
+            if (messageReference != null) {
+                scrollToMessage(messageReference)
+            }
+        }
+    }
+
+    private fun scrollToMessage(messageReference: MessageReference) {
+        val position = getPosition(messageReference)
+        val viewPosition = adapterToListViewPosition(position)
+        if (viewPosition != AdapterView.INVALID_POSITION &&
+            (viewPosition <= listView.firstVisiblePosition || viewPosition >= listView.lastVisiblePosition)
+        ) {
+            listView.smoothScrollToPosition(viewPosition)
+        }
+    }
+
+    private fun getPosition(messageReference: MessageReference): Int {
+        return adapter.messages.indexOfFirst { messageListItem ->
+            messageListItem.account.uuid == messageReference.accountUuid &&
+                messageListItem.folderId == messageReference.folderId &&
+                messageListItem.messageUid == messageReference.uid
         }
     }
 

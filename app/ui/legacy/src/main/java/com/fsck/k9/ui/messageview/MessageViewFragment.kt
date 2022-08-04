@@ -89,17 +89,7 @@ class MessageViewFragment :
 
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
     private var isDeleteMenuItemDisabled: Boolean = false
-
-    /**
-     * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
-     * the toolbar. When inactive, the fragment won't add its actions to the toolbar, even it is still visible, e.g. as
-     * part of an animation.
-     */
-    var isActive: Boolean = false
-        set(value) {
-            field = value
-            invalidateMenu()
-        }
+    private var wasMessageMarkedAsOpened: Boolean = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -118,6 +108,10 @@ class MessageViewFragment :
 
         messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
             ?: error("Invalid argument '$ARG_REFERENCE'")
+
+        if (savedInstanceState != null) {
+            wasMessageMarkedAsOpened = savedInstanceState.getBoolean(STATE_WAS_MESSAGE_MARKED_AS_OPENED)
+        }
 
         messageCryptoPresenter = MessageCryptoPresenter(messageCryptoMvpView)
         messageLoaderHelper = messageLoaderHelperFactory.createForMessageView(
@@ -175,8 +169,24 @@ class MessageViewFragment :
         invalidateMenu()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(STATE_WAS_MESSAGE_MARKED_AS_OPENED, wasMessageMarkedAsOpened)
+    }
+
+    override fun setMenuVisibility(menuVisible: Boolean) {
+        super.setMenuVisibility(menuVisible)
+
+        // When the menu is hidden, the message associated with this fragment is no longer active. If the user returns
+        // to it, we want to mark the message as opened again.
+        if (!menuVisible) {
+            wasMessageMarkedAsOpened = false
+        }
+    }
+
     override fun onResume() {
         super.onResume()
+        markMessageAsOpened()
         messageCryptoPresenter.onResume()
     }
 
@@ -191,8 +201,6 @@ class MessageViewFragment :
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        if (!isActive) return
-
         menu.findItem(R.id.delete).apply {
             isVisible = K9.isMessageViewDeleteActionVisible
             isEnabled = !isDeleteMenuItemDisabled
@@ -750,6 +758,15 @@ class MessageViewFragment :
         messageTopView.refreshAttachmentThumbnail(attachment)
     }
 
+    private fun markMessageAsOpened() {
+        val message = message ?: return
+
+        if (!wasMessageMarkedAsOpened) {
+            messagingController.markMessageAsOpened(account, message)
+            wasMessageMarkedAsOpened = true
+        }
+    }
+
     private val messageCryptoMvpView: MessageCryptoMvpView = object : MessageCryptoMvpView {
         override fun redisplayMessage() {
             messageLoaderHelper.asyncReloadMessage()
@@ -820,6 +837,11 @@ class MessageViewFragment :
             displayHeaderForLoadingMessage(message)
             messageTopView.setToLoadingState()
             showProgressThreshold = null
+
+            // Only mark the message as opened when the fragment is resumed, i.e. when this is the active message.
+            if (isResumed) {
+                markMessageAsOpened()
+            }
         }
 
         override fun onMessageDataLoadFailed() {
@@ -920,6 +942,8 @@ class MessageViewFragment :
         const val PROGRESS_THRESHOLD_MILLIS = 500 * 1000
 
         private const val ARG_REFERENCE = "reference"
+
+        private const val STATE_WAS_MESSAGE_MARKED_AS_OPENED = "wasMessageMarkedAsOpened"
 
         private const val ACTIVITY_CHOOSE_FOLDER_MOVE = 1
         private const val ACTIVITY_CHOOSE_FOLDER_COPY = 2
