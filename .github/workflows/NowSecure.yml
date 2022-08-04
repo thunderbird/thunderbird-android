@@ -49,11 +49,12 @@ jobs:
           
       - name: NowSecure-SBOM
         uses: nowsecure/nowsecure-sbom-action@v1
-        timeout-minutes: 60
+        timeout-minutes: 90
         with:
           token: ${{ secrets.NS_TOKEN }}
           app_file: k9mail-debug.apk
           group_id: "602abed9-4c66-453d-8431-da0195b682de"
+          report_id: "259befb4-140b-11ed-a9a4-4bf346810031"
           
           
 
