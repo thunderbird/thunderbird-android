@@ -5,6 +5,18 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.300" versioncode="33000" date="2022-08-04">
+        <change>Added support for swiping between messages</change>
+        <change>Fixed multiple bugs when there are notifications for more than 8 messages</change>
+        <change>Fixed bug that could lead to broken attachment names when large messages were only partially downloaded (IMAP)</change>
+        <change>Added Western Frisian translation</change>
+    </release>
+    <release version="6.202" versioncode="32002" date="2022-07-26">
+        <change>Increased timeout when sending messages because some users have reported problems with sending large attachments</change>
+        <change>Allow all URI schemes in HTML links</change>
+        <change>Fixed display bug with search in general settings</change>
+        <change>When composing messages don't hide Cc and Bcc fields if they contain incomplete email addresses</change>
+    </release>
     <release version="6.201" versioncode="32001" date="2022-07-15">
         <change>Added support for using OAuth 2.0 with Office365 accounts</change>
         <change>Fixed a bug that could lead to two message lists being displayed on top of each other</change>
