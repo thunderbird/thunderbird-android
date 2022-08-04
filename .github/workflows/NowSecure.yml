@@ -32,7 +32,14 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app
-          path: ./app/k9mail/build/app/k9mail/build/outputs/apk/debug/k9mail-debug.apk
+          path: ./app/k9mail/build/outputs/apk/debug/k9mail-debug.apk
+          retention-days: 3
+          
+      - name: Upload application
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: ./app/k9mail/build/
           retention-days: 3
 
      
