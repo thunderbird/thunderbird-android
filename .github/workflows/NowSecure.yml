@@ -35,12 +35,25 @@ jobs:
           path: ./app/k9mail/build/outputs/apk/debug/k9mail-debug.apk
           retention-days: 3
           
-      - name: Upload application
-        uses: actions/upload-artifact@v2
+  scan:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Download application
+        uses: actions/download-artifact@v2
         with:
           name: app
-          path: ./app/k9mail/build/
-          retention-days: 3
+          
+      - name: NowSecure-SBOM
+        uses: nowsecure/nowsecure-sbom-action@v1
+        timeout-minutes: 60
+        with:
+          token: ${{ secrets.NS_TOKEN }}
+          app_file: k9mail-debug.apk
+          group_id: "3ee935d6-c347-4c45-967b-5c8e443392e5"
 
      
           
