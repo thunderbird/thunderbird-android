@@ -925,6 +925,7 @@ public class LocalFolder {
                 db.execSQL("DELETE FROM threads WHERE message_id IN " +
                         "(SELECT id FROM messages WHERE folder_id = ?)", folderIdArg);
                 db.execSQL("DELETE FROM messages WHERE folder_id = ?", folderIdArg);
+                db.execSQL("DELETE FROM folder_extra_values WHERE folder_id = ?", folderIdArg);
 
                 setMoreMessages(MoreMessages.UNKNOWN);
                 resetLastChecked(db);
