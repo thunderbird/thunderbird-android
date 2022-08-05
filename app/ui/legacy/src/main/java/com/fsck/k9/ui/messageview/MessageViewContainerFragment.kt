@@ -44,12 +44,16 @@ class MessageViewContainerFragment : Fragment() {
     private val messageViewFragment: MessageViewFragment
         get() {
             check(isResumed)
-            val itemId = adapter.getItemId(messageReference)
-
-            // ViewPager2/FragmentStateAdapter don't provide an easy way to get hold of the Fragment for the active
-            // page. So we're using an implementation detail (the fragment tag) to find the fragment.
-            return childFragmentManager.findFragmentByTag("f$itemId") as MessageViewFragment
+            return findMessageViewFragment()
         }
+
+    private fun findMessageViewFragment(): MessageViewFragment {
+        val itemId = adapter.getItemId(messageReference)
+
+        // ViewPager2/FragmentStateAdapter don't provide an easy way to get hold of the Fragment for the active
+        // page. So we're using an implementation detail (the fragment tag) to find the fragment.
+        return childFragmentManager.findFragmentByTag("f$itemId") as MessageViewFragment
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -221,7 +225,7 @@ class MessageViewContainerFragment : Fragment() {
     }
 
     fun onPendingIntentResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        messageViewFragment.onPendingIntentResult(requestCode, resultCode, data)
+        findMessageViewFragment().onPendingIntentResult(requestCode, resultCode, data)
     }
 
     private class MessageViewContainerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
