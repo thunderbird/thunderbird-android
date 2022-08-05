@@ -33,6 +33,7 @@ private class LoaderStateObserver<T>(
 
     override fun onChanged(state: LoaderState<T>?) {
         when (state) {
+            null -> Unit
             is LoaderState.Loading -> loadingView.show()
             is LoaderState.Error -> errorView.show()
             is LoaderState.Data -> {
