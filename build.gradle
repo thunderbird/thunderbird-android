@@ -12,7 +12,7 @@ buildscript {
 
         versions = [
                 'kotlin': '1.7.10',
-                'kotlinCoroutines': '1.6.0',
+                'kotlinCoroutines': '1.6.4',
                 'jetbrainsAnnotations': '23.0.0',
                 'androidxAppCompat': '1.4.1',
                 'androidxActivity': '1.4.0',
