@@ -40,7 +40,7 @@ buildscript {
                 'mime4j': '0.8.6',
                 'okhttp': '4.10.0',
                 'minidns': '1.0.3',
-                'glide': '4.13.1',
+                'glide': '4.13.2',
                 'jsoup': '1.14.3',
 
                 'androidxTestRunner': '1.4.0',
