@@ -12,12 +12,11 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -28,7 +27,7 @@ class GeneralSettingsViewModelTest {
     private val logFileWriter = TestLogFileWriter()
     private val contentUri = mock<Uri>()
     private val viewModel = GeneralSettingsViewModel(logFileWriter)
-    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+    private val testCoroutineDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
@@ -41,62 +40,60 @@ class GeneralSettingsViewModelTest {
     }
 
     @Test
-    fun `export logs without errors`() = runBlocking {
+    fun `export logs without errors`() = runTest {
         viewModel.uiState.test {
             viewModel.exportLogs(contentUri)
 
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Idle)
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Exporting)
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Success)
-            testCoroutineDispatcher.advanceTimeBy(GeneralSettingsViewModel.SNACKBAR_DURATION)
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Idle)
+            testCoroutineDispatcher.scheduler.advanceUntilIdle()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
     }
 
     @Test
-    fun `export logs with consumer changing while LogFileWriter_writeLogTo is running`() = runBlocking {
-        withTimeout(timeMillis = 1000L) {
-            logFileWriter.shouldWait()
+    fun `export logs with consumer changing while LogFileWriter_writeLogTo is running`() = runTest {
+        logFileWriter.shouldWait()
 
-            val mutex = Mutex(locked = true)
+        val mutex = Mutex(locked = true)
 
-            // The first consumer
-            val job = launch(CoroutineName("ConsumerOne")) {
-                var first = true
-                val states = viewModel.uiState.onEach {
-                    if (first) {
-                        first = false
-                        mutex.unlock()
-                    }
-                }.take(2).toList()
+        // The first consumer
+        val job = launch(CoroutineName("ConsumerOne")) {
+            var first = true
+            val states = viewModel.uiState.onEach {
+                if (first) {
+                    first = false
+                    mutex.unlock()
+                }
+            }.take(2).toList()
 
-                assertThat(states[0]).isEqualTo(GeneralSettingsUiState.Idle)
-                assertThat(states[1]).isEqualTo(GeneralSettingsUiState.Exporting)
-            }
+            assertThat(states[0]).isEqualTo(GeneralSettingsUiState.Idle)
+            assertThat(states[1]).isEqualTo(GeneralSettingsUiState.Exporting)
+        }
 
-            // Wait until the "ConsumerOne" coroutine has collected the initial UI state
-            mutex.lock()
+        // Wait until the "ConsumerOne" coroutine has collected the initial UI state
+        mutex.lock()
 
-            viewModel.exportLogs(contentUri)
+        viewModel.exportLogs(contentUri)
 
-            // Wait until the "ConsumerOne" coroutine has finished collecting items
-            job.join()
+        // Wait until the "ConsumerOne" coroutine has finished collecting items
+        job.join()
 
-            // The second consumer
-            viewModel.uiState.test {
-                assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Exporting)
-                logFileWriter.resume()
-                assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Success)
-                testCoroutineDispatcher.advanceTimeBy(GeneralSettingsViewModel.SNACKBAR_DURATION)
-                assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Idle)
-                assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
-            }
+        // The second consumer
+        viewModel.uiState.test {
+            assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Exporting)
+            logFileWriter.resume()
+            assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Success)
+            assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Idle)
+            testCoroutineDispatcher.scheduler.advanceUntilIdle()
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
     }
 
     @Test
-    fun `export logs with IOException`() = runBlocking {
+    fun `export logs with IOException`() = runTest {
         logFileWriter.exception = IOException()
 
         viewModel.uiState.test {
@@ -105,14 +102,14 @@ class GeneralSettingsViewModelTest {
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Idle)
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Exporting)
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Failure)
-            testCoroutineDispatcher.advanceTimeBy(GeneralSettingsViewModel.SNACKBAR_DURATION)
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Idle)
+            testCoroutineDispatcher.scheduler.advanceUntilIdle()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
     }
 
     @Test
-    fun `export logs with IllegalStateException`() = runBlocking {
+    fun `export logs with IllegalStateException`() = runTest {
         logFileWriter.exception = IllegalStateException()
 
         viewModel.uiState.test {
@@ -121,8 +118,8 @@ class GeneralSettingsViewModelTest {
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Idle)
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Exporting)
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Failure)
-            testCoroutineDispatcher.advanceTimeBy(GeneralSettingsViewModel.SNACKBAR_DURATION)
             assertThat(awaitItem()).isEqualTo(GeneralSettingsUiState.Idle)
+            testCoroutineDispatcher.scheduler.advanceUntilIdle()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
     }
