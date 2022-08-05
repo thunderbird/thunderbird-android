@@ -29,7 +29,7 @@ buildscript {
                 'androidxCardView': '1.0.0',
                 'androidxPreference': '1.2.0',
                 'androidxTestCore': '1.4.0',
-                'materialComponents': '1.5.0',
+                'materialComponents': '1.6.1',
                 'fastAdapter': '5.6.0',
                 'preferencesFix': '1.1.0',
                 'okio': '3.2.0',
