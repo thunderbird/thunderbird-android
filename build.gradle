@@ -14,7 +14,7 @@ buildscript {
                 'kotlin': '1.7.10',
                 'kotlinCoroutines': '1.6.4',
                 'jetbrainsAnnotations': '23.0.0',
-                'androidxAppCompat': '1.4.1',
+                'androidxAppCompat': '1.4.2',
                 'androidxActivity': '1.4.0',
                 'androidxRecyclerView': '1.2.1',
                 'androidxLifecycle': '2.4.1',
