@@ -124,7 +124,7 @@ open class MessageList :
      * filtered views, e.g. when only displaying the unread messages in a folder.
      */
     private var noThreading = false
-    private var displayMode: DisplayMode? = null
+    private var displayMode: DisplayMode = DisplayMode.MESSAGE_LIST
     private var messageReference: MessageReference? = null
 
     /**
@@ -307,7 +307,7 @@ open class MessageList :
         }
 
         if (savedInstanceState != null) {
-            val savedDisplayMode = savedInstanceState.getSerializable(STATE_DISPLAY_MODE) as DisplayMode?
+            val savedDisplayMode = savedInstanceState.getSerializable(STATE_DISPLAY_MODE) as DisplayMode
             if (savedDisplayMode != DisplayMode.SPLIT_VIEW) {
                 displayMode = savedDisplayMode
                 return
