@@ -41,7 +41,7 @@ buildscript {
                 'okhttp': '4.10.0',
                 'minidns': '1.0.3',
                 'glide': '4.13.2',
-                'jsoup': '1.14.3',
+                'jsoup': '1.15.2',
 
                 'androidxTestRunner': '1.4.0',
                 'junit': '4.13.2',
