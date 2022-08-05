@@ -38,6 +38,7 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:${versions.mockito}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "org.jdom:jdom2:2.0.6"
+    testImplementation "io.insert-koin:koin-test:${versions.koin}"
     testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
 }
 
