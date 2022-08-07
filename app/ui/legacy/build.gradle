@@ -32,8 +32,8 @@ dependencies {
     implementation "de.cketti.library.changelog:ckchangelog-core:2.0.0-beta02"
     implementation "com.splitwise:tokenautocomplete:4.0.0-beta01"
     implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0"
-    implementation 'com.mikepenz:materialdrawer:9.0.1'
-    implementation 'com.mikepenz:materialdrawer-iconics:9.0.1'
+    implementation 'com.mikepenz:materialdrawer:8.4.5'
+    implementation 'com.mikepenz:materialdrawer-iconics:8.4.5'
     implementation 'com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar'
     implementation 'com.github.ByteHamster:SearchPreference:v2.2.1'
     implementation "com.mikepenz:fastadapter:${versions.fastAdapter}"
