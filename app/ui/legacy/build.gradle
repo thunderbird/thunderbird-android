@@ -32,10 +32,10 @@ dependencies {
     implementation "de.cketti.library.changelog:ckchangelog-core:2.0.0-beta02"
     implementation "com.splitwise:tokenautocomplete:4.0.0-beta01"
     implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0"
-    implementation 'com.mikepenz:materialdrawer:8.4.5'
-    implementation 'com.mikepenz:materialdrawer-iconics:8.4.5'
+    implementation 'com.mikepenz:materialdrawer:9.0.1'
+    implementation 'com.mikepenz:materialdrawer-iconics:9.0.1'
     implementation 'com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar'
-    implementation 'com.github.ByteHamster:SearchPreference:v2.1.0'
+    implementation 'com.github.ByteHamster:SearchPreference:v2.2.1'
     implementation "com.mikepenz:fastadapter:${versions.fastAdapter}"
     implementation "com.mikepenz:fastadapter-extensions-drag:${versions.fastAdapter}"
     implementation "com.mikepenz:fastadapter-extensions-utils:${versions.fastAdapter}"
@@ -63,6 +63,7 @@ dependencies {
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-inline:${versions.mockito}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation "io.insert-koin:koin-test:${versions.koin}"
     testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.kotlinCoroutines}"
     testImplementation "app.cash.turbine:turbine:${versions.turbine}"
@@ -81,9 +82,13 @@ android {
         debug {
             def useNewSetupUi = project.hasProperty('k9mail.useNewSetupUi') ? project.property('k9mail.useNewSetupUi') : "false"
             buildConfigField "boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", useNewSetupUi
+
+            manifestPlaceholders = ['appAuthRedirectScheme': 'FIXME: override this in your app project']
         }
         release {
             buildConfigField "boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", "false"
+
+            manifestPlaceholders = ['appAuthRedirectScheme': 'FIXME: override this in your app project']
         }
     }
 

@@ -5,7 +5,6 @@ import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.DI
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
-import com.fsck.k9.helper.sendBlockingSilently
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.CoroutineDispatcher
@@ -13,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
@@ -65,14 +65,14 @@ class FolderRepository(
             val folderStatusChangedListener = object : SimpleMessagingListener() {
                 override fun folderStatusChanged(statusChangedAccount: Account, folderId: Long) {
                     if (statusChangedAccount.uuid == account.uuid) {
-                        sendBlockingSilently(getDisplayFolders(account, displayMode))
+                        trySendBlocking(getDisplayFolders(account, displayMode))
                     }
                 }
             }
             messagingController.addListener(folderStatusChangedListener)
 
             val folderSettingsChangedListener = FolderSettingsChangedListener {
-                sendBlockingSilently(getDisplayFolders(account, displayMode))
+                trySendBlocking(getDisplayFolders(account, displayMode))
             }
             messageStore.addFolderSettingsChangedListener(folderSettingsChangedListener)
 
@@ -173,7 +173,7 @@ class FolderRepository(
             send(getPushFolders(account, folderMode))
 
             val listener = FolderSettingsChangedListener {
-                sendBlockingSilently(getPushFolders(account, folderMode))
+                trySendBlocking(getPushFolders(account, folderMode))
             }
             messageStore.addFolderSettingsChangedListener(listener)
 
