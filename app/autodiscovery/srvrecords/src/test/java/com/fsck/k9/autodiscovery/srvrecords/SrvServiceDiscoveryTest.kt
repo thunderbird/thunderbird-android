@@ -1,6 +1,5 @@
 package com.fsck.k9.autodiscovery.srvrecords
 
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings
 import com.fsck.k9.autodiscovery.api.DiscoveryResults
 import com.fsck.k9.autodiscovery.api.DiscoveryTarget
@@ -12,7 +11,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 
-class SrvServiceDiscoveryTest : RobolectricTest() {
+class SrvServiceDiscoveryTest {
 
     @Test
     fun discover_whenNoMailServices_shouldReturnNoResults() {

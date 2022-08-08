@@ -7,5 +7,5 @@ java {
 }
 
 dependencies {
-    implementation project(":mail:common")
+    api project(":mail:common")
 }
