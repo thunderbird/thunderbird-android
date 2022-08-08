@@ -64,10 +64,10 @@ public class SqlQueryBuilder {
                 case MESSAGE_CONTENTS: {
                     String fulltextQueryString = condition.value;
                     if (condition.attribute != Attribute.CONTAINS) {
-                        Timber.e("message contents can only be matched!");
+                        Timber.e("message contents can only be contains!");
                     }
-                    query.append("m.id IN (SELECT docid FROM messages_fulltext WHERE fulltext MATCH ?)");
-                    selectionArgs.add(fulltextQueryString);
+                    query.append("m.id IN (SELECT docid FROM messages_fulltext WHERE fulltext LIKE ?)");
+                    selectionArgs.add('%' + fulltextQueryString + '%');
                     break;
                 }
                 default: {
