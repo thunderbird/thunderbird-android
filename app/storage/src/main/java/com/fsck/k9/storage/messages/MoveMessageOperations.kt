@@ -29,21 +29,12 @@ internal class MoveMessageOperations(
         }
     }
 
-    private fun moveFulltextEntry(
-        database: SQLiteDatabase,
-        messageId: Long,
-        destinationMessageId: Long
-    ) {
+    private fun moveFulltextEntry(database: SQLiteDatabase, messageId: Long, destinationMessageId: Long) {
         val values = ContentValues().apply {
             put("docid", destinationMessageId)
         }
 
-        database.update(
-            "messages_fulltext",
-            values,
-            "docid = ?",
-            arrayOf(messageId.toString())
-        )
+        database.update("messages_fulltext", values, "docid = ?", arrayOf(messageId.toString()))
     }
 
     private fun createMessageEntry(
