@@ -1,6 +1,5 @@
 package com.fsck.k9.autodiscovery.thunderbird
 
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings
 import com.fsck.k9.autodiscovery.api.DiscoveryResults
 import com.fsck.k9.mail.AuthType
@@ -8,7 +7,7 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-class ThunderbirdAutoconfigTest : RobolectricTest() {
+class ThunderbirdAutoconfigTest {
     private val parser = ThunderbirdAutoconfigParser()
 
     @Test

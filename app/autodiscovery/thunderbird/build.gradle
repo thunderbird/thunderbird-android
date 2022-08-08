@@ -1,52 +1,20 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+java {
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+}
 
 dependencies {
-    implementation project(":app:core")
-    implementation project(":mail:common")
-    implementation project(":app:autodiscovery:api")
+    api project(":app:autodiscovery:api")
 
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    compileOnly 'com.github.cketti:xmlpull-extracted-from-android:1.0'
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
 
-    testImplementation project(':app:testing')
-    testImplementation project(":backend:imap")
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
-    testImplementation "androidx.test:core:${versions.androidxTestCore}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-inline:${versions.mockito}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "io.insert-koin:koin-test:${versions.koin}"
-    testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
-}
-
-android {
-    compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
-
-    defaultConfig {
-        minSdkVersion buildConfig.minSdk
-        targetSdkVersion buildConfig.robolectricSdk
-    }
-
-    lintOptions {
-        abortOnError false
-        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
-    }
-
-    compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
-    }
-
-    kotlinOptions {
-        jvmTarget = kotlinJvmVersion
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
+    testImplementation 'com.github.cketti:kxml2-extracted-from-android:1.0'
 }
