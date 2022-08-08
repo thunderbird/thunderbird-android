@@ -23,9 +23,27 @@ internal class MoveMessageOperations(
             threadMessageOperations.createThreadEntryIfNecessary(database, destinationMessageId, threadInfo)
 
             convertOriginalMessageEntryToPlaceholderEntry(database, messageId)
+            moveFulltextEntry(database, messageId, destinationMessageId)
 
             destinationMessageId
         }
+    }
+
+    private fun moveFulltextEntry(
+        database: SQLiteDatabase,
+        messageId: Long,
+        destinationMessageId: Long
+    ) {
+        val values = ContentValues().apply {
+            put("docid", destinationMessageId)
+        }
+
+        database.update(
+            "messages_fulltext",
+            values,
+            "docid = ?",
+            arrayOf(messageId.toString())
+        )
     }
 
     private fun createMessageEntry(
