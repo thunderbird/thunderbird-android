@@ -736,10 +736,6 @@ class MessageViewFragment :
         startActivity(intent)
     }
 
-    fun disableAttachmentButtons(attachment: AttachmentViewInfo?) = Unit
-
-    fun enableAttachmentButtons(attachment: AttachmentViewInfo?) = Unit
-
     fun runOnMainThread(runnable: Runnable) {
         requireActivity().runOnUiThread(runnable)
     }
