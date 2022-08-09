@@ -11,7 +11,7 @@ class EmailTextToHtml private constructor(private val text: String) {
         sections.forEach { section ->
             appendBlockQuoteElement(section.quoteDepth)
 
-            TextToHtml.appendAsHtmlFragment(html, section)
+            TextToHtml.appendAsHtmlFragment(html, section, retainOriginalWhitespace = true)
         }
 
         appendBlockQuoteElement(quoteDepth = 0)
