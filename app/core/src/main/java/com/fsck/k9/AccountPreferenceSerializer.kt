@@ -521,11 +521,11 @@ class AccountPreferenceSerializer(
             defaultEnum
         } else {
             try {
-                java.lang.Enum.valueOf<T>(defaultEnum.declaringClass, stringPref)
+                java.lang.Enum.valueOf<T>(defaultEnum.declaringJavaClass, stringPref)
             } catch (ex: IllegalArgumentException) {
                 Timber.w(
                     ex, "Unable to convert preference key [%s] value [%s] to enum of type %s",
-                    key, stringPref, defaultEnum.declaringClass
+                    key, stringPref, defaultEnum.declaringJavaClass
                 )
 
                 defaultEnum

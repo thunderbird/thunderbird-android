@@ -1,4 +1,5 @@
 apply plugin: 'java-library'
+apply plugin: 'com.android.lint'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
