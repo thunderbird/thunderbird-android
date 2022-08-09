@@ -973,8 +973,8 @@ open class MessageList :
         progressBar!!.visibility = if (enable) View.VISIBLE else View.INVISIBLE
     }
 
-    override fun setMessageListProgress(progress: Int) {
-        progressBar!!.progress = progress
+    override fun setMessageListProgress(level: Int) {
+        progressBar!!.progress = level
     }
 
     override fun openMessage(messageReference: MessageReference) {

@@ -51,8 +51,8 @@ class ImapBackend(
         commandRefreshFolderList.refreshFolderList()
     }
 
-    override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
-        imapSync.sync(folder, syncConfig, listener)
+    override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
+        imapSync.sync(folderServerId, syncConfig, listener)
     }
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
