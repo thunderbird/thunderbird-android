@@ -39,8 +39,8 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
         getKoin().checkModules {
             withParameter<OpenPgpApiManager> { lifecycleOwner }
             create<AutocryptKeyTransferPresenter> { parametersOf(lifecycleOwner, autocryptTransferView) }
-            withParameter<FolderNameFormatter> { RuntimeEnvironment.application }
-            withParameter<SizeFormatter> { RuntimeEnvironment.application }
+            withParameter<FolderNameFormatter> { RuntimeEnvironment.getApplication() }
+            withParameter<SizeFormatter> { RuntimeEnvironment.getApplication() }
             withParameter<ChangelogViewModel> { ChangeLogMode.CHANGE_LOG }
         }
     }

@@ -21,7 +21,7 @@ import org.mockito.kotlin.mock
 import org.robolectric.RuntimeEnvironment
 
 class UnreadWidgetDataProviderTest : AppRobolectricTest() {
-    val context: Context = RuntimeEnvironment.application
+    val context: Context = RuntimeEnvironment.getApplication()
     val account = createAccount()
     val preferences = createPreferences()
     val messagingController = createMessagingController()

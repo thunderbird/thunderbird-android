@@ -73,7 +73,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
-        context = RuntimeEnvironment.application;
+        context = RuntimeEnvironment.getApplication();
 
         HtmlProcessor htmlProcessor = createFakeHtmlProcessor();
         attachmentInfoExtractor = spy(DI.get(AttachmentInfoExtractor.class));

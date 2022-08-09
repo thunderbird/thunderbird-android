@@ -41,7 +41,7 @@ public class AttachmentInfoExtractorTest extends RobolectricTest {
     @Before
     public void setUp() throws Exception {
         AttachmentProvider.CONTENT_URI = Uri.parse("content://test.attachmentprovider");
-        context = RuntimeEnvironment.application;
+        context = RuntimeEnvironment.getApplication();
         attachmentInfoExtractor = new AttachmentInfoExtractor(context);
     }
 

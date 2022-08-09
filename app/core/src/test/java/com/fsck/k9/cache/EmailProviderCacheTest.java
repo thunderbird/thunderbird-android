@@ -4,6 +4,7 @@ package com.fsck.k9.cache;
 import java.util.Collections;
 import java.util.UUID;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.fsck.k9.RobolectricTest;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.when;
 
 
 public class EmailProviderCacheTest extends RobolectricTest {
+    private final Context context = RuntimeEnvironment.getApplication();
 
     private EmailProviderCache cache;
     @Mock
@@ -40,7 +42,7 @@ public class EmailProviderCacheTest extends RobolectricTest {
         MockitoAnnotations.initMocks(this);
         EmailProvider.CONTENT_URI = Uri.parse("content://test.provider.email");
 
-        cache = EmailProviderCache.getCache(UUID.randomUUID().toString(), RuntimeEnvironment.application);
+        cache = EmailProviderCache.getCache(UUID.randomUUID().toString(), context);
         when(mockLocalMessage.getDatabaseId()).thenReturn(localMessageId);
         when(mockLocalMessage.getFolder()).thenReturn(mockLocalMessageFolder);
         when(mockLocalMessageFolder.getDatabaseId()).thenReturn(localMessageFolderId);
@@ -48,16 +50,16 @@ public class EmailProviderCacheTest extends RobolectricTest {
 
     @Test
     public void getCache_returnsDifferentCacheForEachUUID() {
-        EmailProviderCache cache = EmailProviderCache.getCache("u001", RuntimeEnvironment.application);
-        EmailProviderCache cache2 = EmailProviderCache.getCache("u002", RuntimeEnvironment.application);
+        EmailProviderCache cache = EmailProviderCache.getCache("u001", context);
+        EmailProviderCache cache2 = EmailProviderCache.getCache("u002", context);
 
         assertNotEquals(cache, cache2);
     }
 
     @Test
     public void getCache_returnsSameCacheForAUUID() {
-        EmailProviderCache cache = EmailProviderCache.getCache("u001", RuntimeEnvironment.application);
-        EmailProviderCache cache2 = EmailProviderCache.getCache("u001", RuntimeEnvironment.application);
+        EmailProviderCache cache = EmailProviderCache.getCache("u001", context);
+        EmailProviderCache cache2 = EmailProviderCache.getCache("u001", context);
 
         assertSame(cache, cache2);
     }

@@ -137,7 +137,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void setUp() throws MessagingException {
         ShadowLog.stream = System.out;
         MockitoAnnotations.initMocks(this);
-        appContext = RuntimeEnvironment.application;
+        appContext = RuntimeEnvironment.getApplication();
 
         preferences = Preferences.getPreferences();
 

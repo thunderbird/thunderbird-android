@@ -22,7 +22,7 @@ public class MessageHelperTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
-        Context context = RuntimeEnvironment.application;
+        Context context = RuntimeEnvironment.getApplication();
         contacts = new Contacts(context);
         contactsWithFakeContact = new Contacts(context) {
             @Override public String getNameForAddress(String address) {
