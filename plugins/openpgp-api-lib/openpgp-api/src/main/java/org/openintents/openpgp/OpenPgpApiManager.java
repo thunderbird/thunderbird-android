@@ -2,6 +2,8 @@ package org.openintents.openpgp;
 
 
 import android.app.PendingIntent;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle.Event;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -224,6 +226,7 @@ public class OpenPgpApiManager implements LifecycleObserver {
         return openPgpProviderName != null ? openPgpProviderName : openPgpProvider;
     }
 
+    @NonNull
     public OpenPgpProviderState getOpenPgpProviderState() {
         return openPgpProviderState;
     }
