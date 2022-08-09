@@ -18,6 +18,7 @@ internal inline fun <reified T : MethodResponse> JmapRequest.Call.getMainRespons
     return methodResponses.getMainResponseBlocking()
 }
 
+@Suppress("NOTHING_TO_INLINE")
 internal inline fun <T> ListenableFuture<T>.futureGetOrThrow(): T {
     return try {
         get()
