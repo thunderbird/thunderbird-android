@@ -153,7 +153,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> mensajes nuevos</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> mensajes nuevos</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Sin leer (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Sin leer (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> más en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como leído</string>
@@ -172,7 +172,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="notification_notify_error_title">Notificación fallida</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_text">Ha ocurrido un problema al intentar crear una notificación del sistema alertando de un correo nuevo. Seguramente sea por no tener un sonido de alerta puesto.\n\nToca para ver los ajustes de notificaciones.</string>
-  <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Comprobando correo</string>
   <string name="notification_bg_send_ticker">Enviando correo: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviando correo</string>
@@ -219,7 +219,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="message_compose_description_delete_quoted_text">No incluir el mensaje original</string>
   <string name="message_compose_description_edit_quoted_text">Editar el mensaje original</string>
   <string name="remove_attachment_action">Eliminar adjunto</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Cco:</string>

@@ -156,7 +156,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non letti (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> non letti (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> altri in <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Rispondi</string>
   <string name="notification_action_mark_as_read">Letto</string>
@@ -175,7 +175,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="notification_notify_error_title">Errore su notifica </string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_text">È avvenuto un errore durante la creazione di un avviso di ricezione di un nuovo messaggio. Questo errore è probabilmente dovuto all\'avviso sonoro di ricezione messaggio, che può non essere indicato, oppure non è stato trovato. \n\nClicca qui per esaminare i parametri di notifica.</string>
-  <string name="notification_bg_sync_ticker">Controllo posta: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Controllo posta: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Controllo posta</string>
   <string name="notification_bg_send_ticker">Invio posta: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Invio posta</string>
@@ -222,7 +222,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_compose_description_delete_quoted_text">Rimuovi testo citato</string>
   <string name="message_compose_description_edit_quoted_text">Modifica testo citato</string>
   <string name="remove_attachment_action">Rimuovi allegato</string>
-  <string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Da: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">A:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Ccn:</string>

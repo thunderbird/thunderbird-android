@@ -155,7 +155,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> neges newydd</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> neges newydd</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Heb eu darllen (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Heb eu darllen (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> yn rhagor ar <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Ateb</string>
   <string name="notification_action_mark_as_read">Nodi wedi ei Darllen</string>
@@ -172,7 +172,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="notification_authentication_error_text">Methodd y dilysiad ar gyfer <xliff:g id="account">%s</xliff:g>. Diweddara dy osodiadau gweinydd.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">Yn gwirio am negeseuon: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Yn gwirio am negeseuon: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Yn gwirio am negeseuon</string>
   <string name="notification_bg_send_ticker">Yn anfon negeseuon: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Yn anfon neges</string>
@@ -219,7 +219,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="message_compose_description_delete_quoted_text">Tynnu\'r testun wedi ei ddyfynnu</string>
   <string name="message_compose_description_edit_quoted_text">Golygu\'r testun wedi ei ddyfynnu</string>
   <string name="remove_attachment_action">Tynnu atodiad</string>
-  <string name="message_view_from_format">Oddi wrth: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Oddi wrth: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">At:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>

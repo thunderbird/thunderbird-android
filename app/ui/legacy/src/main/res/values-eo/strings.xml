@@ -147,7 +147,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nova mesaĝo</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novaj mesaĝoj</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> novaj (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> novaj (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> pliaj en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Respondi</string>
   <string name="notification_action_mark_as_read">Marki kiel legitan</string>
@@ -163,7 +163,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="notification_authentication_error_text">Aŭtentigo por <xliff:g id="account">%s</xliff:g> malsukcesis. Aktualigu agordojn de servilo.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">Kontrolado de retpoŝto: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Kontrolado de retpoŝto: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrolado de retpoŝto</string>
   <string name="notification_bg_send_ticker">Sendado de retletero: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sendado de retletero</string>
@@ -207,7 +207,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="message_compose_description_delete_quoted_text">Forigi citatan tekston</string>
   <string name="message_compose_description_edit_quoted_text">Redakti citatan tekston</string>
   <string name="remove_attachment_action">Forigi kunsendaĵon</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Al:</string>
   <string name="message_view_cc_label">Kopio:</string>
   <string name="message_view_bcc_label">Kaŝkopio:</string>

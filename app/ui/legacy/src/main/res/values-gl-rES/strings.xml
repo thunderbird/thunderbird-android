@@ -77,7 +77,7 @@
   <string name="load_more_messages_fmt">Cargar
      <xliff:g id="messages_to_load">%d</xliff:g> máis</string>
   <string name="notification_new_title">Correo novo</string>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> sen ler (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> sen ler (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> máis en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como lida</string>
@@ -91,7 +91,7 @@
   <string name="notification_certificate_error_text">Comproba a configuración do servidor</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Comprobando correo</string>
   <string name="notification_bg_send_ticker">Enviando correo: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviando correo</string>
@@ -126,7 +126,7 @@
   <string name="message_compose_attachments_skipped_toast">Algúns anexos non poden reenviarse porque non foron descargados previamente.</string>
   <string name="message_compose_description_delete_quoted_text">Eliminar texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
-  <string name="message_view_from_format">Desde: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Desde: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_show_pictures_action">Mostrar imaxes</string>

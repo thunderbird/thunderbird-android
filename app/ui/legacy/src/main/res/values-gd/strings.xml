@@ -119,7 +119,7 @@
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> teachdaireachdan ùra</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> teachdaireachd ùr</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> gun leughadh (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> gun leughadh (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">⁊ <xliff:g id="additional_messages">%1$d</xliff:g> a bharrachd air <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Freagair</string>
   <string name="notification_action_mark_as_read">Comharraich gun deach a leughadh</string>
@@ -135,7 +135,7 @@
   <string name="notification_authentication_error_text">Dh’fhàillig dearbhadh a’ chunntais <xliff:g id="account">%s</xliff:g>. Ùraich roghainnean an fhrithealaiche agad.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">A’ toirt sùil airson post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">A’ toirt sùil airson post: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">A’ toirt sùil airson post</string>
   <string name="notification_bg_send_ticker">A’ cur a’ phuist: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">A’ cur a’ phuist</string>
@@ -175,7 +175,7 @@
   <string name="message_compose_description_delete_quoted_text">Thoir an às-earrann air falbh</string>
   <string name="message_compose_description_edit_quoted_text">Deasaich an às-earrann</string>
   <string name="remove_attachment_action">Thoir an ceanglachan air falbh</string>
-  <string name="message_view_from_format">O: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">O: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Gu:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>

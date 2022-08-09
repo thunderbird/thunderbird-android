@@ -133,7 +133,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> a gemennadennoù nevez</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> a gemennadennoù nevez</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Anlennet (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Anlennet (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> ouzhpenn war <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Respont</string>
   <string name="notification_action_mark_as_read">Merkañ evel lennet</string>
@@ -149,7 +149,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="notification_authentication_error_text">C’hwitadenn war an dilesa evit <xliff:g id="account">%s</xliff:g>. Hizivait an arventennoù dafariad.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">O kerc’hat ar posteloù: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">O kerc’hat ar posteloù: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kerc’hat ar posteloù</string>
   <string name="notification_bg_send_ticker">O kas ar postel: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">O kas ar postel</string>
@@ -190,7 +190,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="message_compose_show_quoted_text_action">Enkorfañ ar gemennadenn meneget</string>
   <string name="message_compose_description_delete_quoted_text">Dilemel an destenn meneget</string>
   <string name="message_compose_description_edit_quoted_text">Embann an destenn meneget</string>
-  <string name="message_view_from_format">A-berzh: <xliff:g id="name">%s</xliff:g> &amp;amp;lt;<xliff:g id="email">%s</xliff:g>&amp;amp;gt;</string>
+  <string name="message_view_from_format">A-berzh: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Da:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>

@@ -150,7 +150,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g>nyt brev</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nye meddelelser</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> ulæst(e) (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> mere på <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Svar</string>
   <string name="notification_action_mark_as_read">Markér som læst</string>
@@ -167,7 +167,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="notification_authentication_error_text">Godkendelse mislykkedes for <xliff:g id="account">%s</xliff:g>. Opdater dine serverindstillinger.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollere post</string>
   <string name="notification_bg_send_ticker">Sender mail: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sender post</string>
@@ -213,7 +213,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_compose_description_delete_quoted_text">Fjerne citeret tekst</string>
   <string name="message_compose_description_edit_quoted_text">Redigere citeret tekst</string>
   <string name="remove_attachment_action">Fjern vedhæftning</string>
-  <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Fra: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>

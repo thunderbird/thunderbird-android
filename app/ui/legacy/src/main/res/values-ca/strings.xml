@@ -153,7 +153,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nous missatges</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nous missatges</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> no llegit(s) (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> no llegit(s) (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> més sobre <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Respon</string>
   <string name="notification_action_mark_as_read">Marca com a llegit</string>
@@ -172,7 +172,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="notification_notify_error_title">Error de notificació</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_text">S\'ha produït un error en intentar crear una notificació del sistema per a un missatge nou. El motiu més probable és que falti un so de notificació.\n\nToqueu per obrir la configuració de notificació.</string>
-  <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">S\'està comprovant el correu</string>
   <string name="notification_bg_send_ticker">S\'està enviant correu: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">S\'està enviant correu</string>
@@ -219,7 +219,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_compose_description_delete_quoted_text">Elimina el text citat</string>
   <string name="message_compose_description_edit_quoted_text">Edita el text citat</string>
   <string name="remove_attachment_action">Suprimeix l\'adjunt</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">A:</string>
   <string name="message_view_cc_label">A/c:</string>
   <string name="message_view_bcc_label">Bcc:</string>

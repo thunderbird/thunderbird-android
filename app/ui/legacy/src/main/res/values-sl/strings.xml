@@ -157,7 +157,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nova sporočila</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novih sporočil</item>
   </plurals>
-  <string name="notification_new_one_account_fmt">Neprebrano: <xliff:g id="unread_message_count">%d</xliff:g> (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt">Neprebrano: <xliff:g id="unread_message_count">%1$d</xliff:g> (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">in <xliff:g id="additional_messages">%1$d</xliff:g> na <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odgovori</string>
   <string name="notification_action_mark_as_read">Označi kot prebrano</string>
@@ -176,7 +176,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="notification_notify_error_title">Napaka obveščanja</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_text">Med poskusom ustvarjanja sistemskega obvestila za novo sporočilo je prišlo do napake. Razlog je najverjetneje manjkajoči zvok obvestila.\n\nTapni, za odpreti nastavitve obvestil.</string>
-  <string name="notification_bg_sync_ticker">Preverjanje pošte: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Preverjanje pošte: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Preverjanje pošte</string>
   <string name="notification_bg_send_ticker">Pošiljanje pošte: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Pošiljanje pošte</string>
@@ -223,7 +223,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="message_compose_description_delete_quoted_text">Odstrani izvirno besedilo</string>
   <string name="message_compose_description_edit_quoted_text">Uredi izvirno besedilo</string>
   <string name="remove_attachment_action">Odstrani prilogo</string>
-  <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Od: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Za:</string>
   <string name="message_view_cc_label">Kp:</string>
   <string name="message_view_bcc_label">Skp:</string>
