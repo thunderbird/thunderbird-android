@@ -65,7 +65,7 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         mName.setKeyListener(TextKeyListener.getInstance(false, Capitalize.WORDS));
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = Preferences.getPreferences().getAccount(accountUuid);
 
         String senderName = mAccount.getSenderName();
         if (senderName != null) {
@@ -88,7 +88,7 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         }
         mAccount.setSenderName(mName.getText().toString());
         mAccount.markSetupFinished();
-        Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
+        Preferences.getPreferences().saveAccount(mAccount);
         finishAffinity();
         MessageList.launch(this, mAccount);
     }

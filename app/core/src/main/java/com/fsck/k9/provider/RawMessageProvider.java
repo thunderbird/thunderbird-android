@@ -174,7 +174,7 @@ public class RawMessageProvider extends ContentProvider {
         long folderId = messageReference.getFolderId();
         String uid = messageReference.getUid();
 
-        Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
+        Account account = Preferences.getPreferences().getAccount(accountUuid);
         if (account == null) {
             Timber.w("Account not found: %s", accountUuid);
             return null;

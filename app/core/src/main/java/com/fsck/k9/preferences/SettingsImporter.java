@@ -188,7 +188,7 @@ public class SettingsImporter {
 
             Imported imported = parseSettings(inputStream, globalSettings, accountUuids, false);
 
-            Preferences preferences = Preferences.getPreferences(context);
+            Preferences preferences = Preferences.getPreferences();
             Storage storage = preferences.getStorage();
 
             if (globalSettings) {
@@ -331,7 +331,7 @@ public class SettingsImporter {
 
         AccountDescription original = new AccountDescription(account.name, account.uuid);
 
-        Preferences prefs = Preferences.getPreferences(context);
+        Preferences prefs = Preferences.getPreferences();
         List<Account> accounts = prefs.getAccounts();
 
         String uuid = account.uuid;

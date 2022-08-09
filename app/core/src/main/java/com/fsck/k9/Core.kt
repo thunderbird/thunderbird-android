@@ -45,7 +45,7 @@ object Core : EarlyInit {
     @JvmStatic
     fun setServicesEnabled(context: Context) {
         val appContext = context.applicationContext
-        val acctLength = Preferences.getPreferences(appContext).accounts.size
+        val acctLength = Preferences.getPreferences().accounts.size
         val enable = acctLength > 0
 
         setServicesEnabled(appContext, enable)

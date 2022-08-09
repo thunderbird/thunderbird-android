@@ -27,7 +27,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
     }
 
     private void deletePreExistingAccounts() {
-        Preferences preferences = Preferences.getPreferences(RuntimeEnvironment.application);
+        Preferences preferences = Preferences.getPreferences();
         preferences.clearAccounts();
     }
 

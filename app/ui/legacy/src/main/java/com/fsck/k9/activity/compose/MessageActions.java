@@ -17,7 +17,7 @@ public class MessageActions {
      * activity.
      */
     public static void actionCompose(Context context, Account account) {
-        Account defaultAccount = Preferences.getPreferences(context).getDefaultAccount();
+        Account defaultAccount = Preferences.getPreferences().getDefaultAccount();
         if (account == null && defaultAccount == null) {
             AccountSetupBasics.actionNewAccount(context);
         } else {

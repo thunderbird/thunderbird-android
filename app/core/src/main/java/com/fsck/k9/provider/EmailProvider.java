@@ -505,8 +505,7 @@ public class EmailProvider extends ContentProvider {
 
     private Account getAccount(String accountUuid) {
         if (mPreferences == null) {
-            Context appContext = getContext().getApplicationContext();
-            mPreferences = Preferences.getPreferences(appContext);
+            mPreferences = Preferences.getPreferences();
         }
 
         Account account = mPreferences.getAccount(accountUuid);

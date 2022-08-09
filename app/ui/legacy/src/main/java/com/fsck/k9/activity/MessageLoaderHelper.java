@@ -115,7 +115,7 @@ public class MessageLoaderHelper {
     public void asyncStartOrResumeLoadingMessage(MessageReference messageReference, Parcelable cachedDecryptionResult) {
         onlyLoadMetadata = false;
         this.messageReference = messageReference;
-        this.account = Preferences.getPreferences(context).getAccount(messageReference.getAccountUuid());
+        this.account = Preferences.getPreferences().getAccount(messageReference.getAccountUuid());
 
         if (cachedDecryptionResult != null) {
             if (cachedDecryptionResult instanceof OpenPgpDecryptionResult) {
@@ -132,7 +132,7 @@ public class MessageLoaderHelper {
     public void asyncStartOrResumeLoadingMessageMetadata(MessageReference messageReference) {
         onlyLoadMetadata = true;
         this.messageReference = messageReference;
-        this.account = Preferences.getPreferences(context).getAccount(messageReference.getAccountUuid());
+        this.account = Preferences.getPreferences().getAccount(messageReference.getAccountUuid());
 
         startOrResumeLocalMessageLoader();
     }

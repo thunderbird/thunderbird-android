@@ -86,7 +86,7 @@ public class AttachmentController {
 
     private void downloadAttachment(LocalPart localPart, final Runnable attachmentDownloadedCallback) {
         String accountUuid = localPart.getAccountUuid();
-        Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+        Account account = Preferences.getPreferences().getAccount(accountUuid);
         LocalMessage message = localPart.getMessage();
 
         messageViewFragment.showAttachmentLoadingDialog();

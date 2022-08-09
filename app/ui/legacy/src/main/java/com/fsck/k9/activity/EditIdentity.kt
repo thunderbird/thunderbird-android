@@ -35,7 +35,7 @@ class EditIdentity : K9Activity() {
 
         identityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("Missing account UUID")
-        account = Preferences.getPreferences(this).getAccount(accountUuid) ?: error("Couldn't find account")
+        account = Preferences.getPreferences().getAccount(accountUuid) ?: error("Couldn't find account")
 
         identity = when {
             savedInstanceState != null -> savedInstanceState.getParcelable(EXTRA_IDENTITY) ?: error("Missing state")
@@ -91,7 +91,7 @@ class EditIdentity : K9Activity() {
             identities.add(identityIndex, identity)
         }
 
-        Preferences.getPreferences(applicationContext).saveAccount(account)
+        Preferences.getPreferences().saveAccount(account)
 
         finish()
     }

@@ -46,7 +46,7 @@ public class AccountSetupComposition extends K9Activity {
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = Preferences.getPreferences().getAccount(accountUuid);
 
         setLayout(R.layout.account_setup_composition);
         setTitle(R.string.account_settings_composition_title);
@@ -61,7 +61,7 @@ public class AccountSetupComposition extends K9Activity {
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+            mAccount = Preferences.getPreferences().getAccount(accountUuid);
         }
 
         mAccountName = findViewById(R.id.account_name);
@@ -129,7 +129,7 @@ public class AccountSetupComposition extends K9Activity {
             mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
         }
 
-        Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
+        Preferences.getPreferences().saveAccount(mAccount);
     }
 
     @Override

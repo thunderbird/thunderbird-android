@@ -92,7 +92,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mDisplayCountView.setAdapter(displayCountsAdapter);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = Preferences.getPreferences().getAccount(accountUuid);
 
         mNotifyView.setChecked(mAccount.isNotifyNewMail());
         SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
@@ -111,7 +111,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
         mAccount.setFolderPushMode(Account.FolderMode.NONE);
 
-        Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
+        Preferences.getPreferences().saveAccount(mAccount);
         Core.setServicesEnabled(this);
         AccountSetupNames.actionSetNames(this, mAccount);
     }

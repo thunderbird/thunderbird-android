@@ -139,7 +139,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = RuntimeEnvironment.application;
 
-        preferences = Preferences.getPreferences(appContext);
+        preferences = Preferences.getPreferences();
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
                 localStoreProvider, messageCountsProvider, backendManager, preferences, messageStoreManager,

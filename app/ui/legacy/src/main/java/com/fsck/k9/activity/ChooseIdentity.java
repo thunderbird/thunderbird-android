@@ -37,7 +37,7 @@ public class ChooseIdentity extends K9ListActivity {
         getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = Preferences.getPreferences().getAccount(accountUuid);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
