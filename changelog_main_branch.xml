@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.301" versioncode="33001" date="2022-08-09">
+        <change>Fixed crash when viewing a message and OpenKeychain needed to display its user interface, e.g. to ask for a password</change>
+        <change>When composing a message containing consecutive spaces convert them to non-breaking spaces in the generated HTML part of the message</change>
+        <change>Fixed bug where moving a message to another folder wouldn't update the apps search index</change>
+        <change>Fixed small bug where not all cached values were removed when using "clear local messages"</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.300" versioncode="33000" date="2022-08-04">
         <change>Added support for swiping between messages</change>
         <change>Fixed multiple bugs when there are notifications for more than 8 messages</change>
