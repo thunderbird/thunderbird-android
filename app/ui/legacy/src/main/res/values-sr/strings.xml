@@ -679,7 +679,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">Да сачувам или одбацим ову поруку?</string>
   <string name="confirm_discard_draft_message_title">Одбацити поруку?</string>
   <string name="confirm_discard_draft_message">Желите ли заиста да одбаците ову поруку?</string>
-  <string name="select_text_now">Изаберите текст за копирање.</string>
   <string name="dialog_confirm_clear_local_folder_title">Да очистим локалне поруке? </string>
   <string name="dialog_confirm_clear_local_folder_message">Ово ће обрисати све локалне поруке из фасцикле. Ниједна порука са сервера неће бити обрисана. </string>
   <string name="dialog_confirm_clear_local_folder_action">Очисти поруке</string>

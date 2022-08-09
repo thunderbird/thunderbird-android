@@ -739,7 +739,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="save_or_discard_draft_message_changes">Enregistrer ou abandonner les changements ?</string>
   <string name="confirm_discard_draft_message_title">Abandonner le courriel ?</string>
   <string name="confirm_discard_draft_message">Voulez-vous vraiment abandonner ce courriel ?</string>
-  <string name="select_text_now">Sélectionner le texte à copier.</string>
   <string name="dialog_confirm_clear_local_folder_title">Effacer les courriels locaux ?</string>
   <string name="dialog_confirm_clear_local_folder_message">Tous les courriels locaux seront supprimés du dossier. Aucun courriel ne sera supprimé du serveur.</string>
   <string name="dialog_confirm_clear_local_folder_action">Effacer les courriels</string>

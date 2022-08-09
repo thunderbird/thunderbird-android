@@ -13,6 +13,7 @@
   <string name="about_project_title">オープンソースプロジェクト</string>
   <string name="about_website_title">ウェブサイト</string>
   <string name="user_manual_title">ユーザーマニュアル</string>
+  <string name="get_help_title">助けを得る</string>
   <string name="user_forum_title">ユーザーフォーラム</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -733,7 +734,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="save_or_discard_draft_message_changes">変更を保存しますか？</string>
   <string name="confirm_discard_draft_message_title">メッセージ破棄？</string>
   <string name="confirm_discard_draft_message">このメッセージを破棄しますか？</string>
-  <string name="select_text_now">選択したテキストをコピーします</string>
   <string name="dialog_confirm_clear_local_folder_title">ローカルのメッセージをクリアしますか?</string>
   <string name="dialog_confirm_clear_local_folder_message">この操作はすべてのローカルメッセージをフォルダーから削除します。 サーバ上のメッセージは削除されません。</string>
   <string name="dialog_confirm_clear_local_folder_action">メッセージのクリア</string>

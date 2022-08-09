@@ -723,7 +723,6 @@
   <string name="save_or_discard_draft_message_changes">تغییرات حفظ شود یا دور ریخته شود؟</string>
   <string name="confirm_discard_draft_message_title">پیام از بین برود؟</string>
   <string name="confirm_discard_draft_message">آیا از دورانداختن این پیام مطمئن هستید؟</string>
-  <string name="select_text_now">متن را انتخاب کنید تا کپی شود.</string>
   <string name="dialog_confirm_clear_local_folder_title">پیام‌ها از روی دستگاه پاک شود؟</string>
   <string name="dialog_confirm_clear_local_folder_message">این کار همهٔ پیام‌ها را از پوشهٔ روی دستگاه پاک می‌کند. هیچ پیامی از روی کارساز پاک نمی‌شود.</string>
   <string name="dialog_confirm_clear_local_folder_action">پاک‌کردن پیام‌ها</string>

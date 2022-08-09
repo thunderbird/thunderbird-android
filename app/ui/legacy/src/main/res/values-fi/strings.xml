@@ -735,7 +735,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="save_or_discard_draft_message_changes">Tallennetaanko vai hylätäänkö muutokset?</string>
   <string name="confirm_discard_draft_message_title">Hylkää viesti?</string>
   <string name="confirm_discard_draft_message">Haluatko varmasti hylätä tämän viestin?</string>
-  <string name="select_text_now">Valitse kopioitava teksti.</string>
   <string name="dialog_confirm_clear_local_folder_title">Poistetaanko paikalliset viestit?</string>
   <string name="dialog_confirm_clear_local_folder_message">Tämä poistaa kaikki paikalliset viestit kansiosta. Viestejä ei poisteta palvelimelta.</string>
   <string name="dialog_confirm_clear_local_folder_action">Poista viestit</string>

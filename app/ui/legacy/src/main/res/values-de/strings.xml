@@ -736,7 +736,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="save_or_discard_draft_message_changes">Änderungen speichern oder verwerfen?</string>
   <string name="confirm_discard_draft_message_title">Nachricht verwerfen?</string>
   <string name="confirm_discard_draft_message">Sind Sie sicher, dass Sie die Nachricht verwerfen möchten?</string>
-  <string name="select_text_now">Text auswählen, um ihn zu kopieren.</string>
   <string name="dialog_confirm_clear_local_folder_title">Lokale Nachrichten löschen?</string>
   <string name="dialog_confirm_clear_local_folder_message">Dadurch werden alle lokalen Nachrichten aus dem Ordner entfernt. Es werden keine Nachrichten vom Server gelöscht.</string>
   <string name="dialog_confirm_clear_local_folder_action">Nachrichten löschen</string>

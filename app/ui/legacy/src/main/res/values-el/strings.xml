@@ -696,7 +696,6 @@
   <string name="save_or_discard_draft_message_changes">Αποθήκευση ή Απόρριψη αλλαγών;</string>
   <string name="confirm_discard_draft_message_title">Απόρριψη μηνύματος;</string>
   <string name="confirm_discard_draft_message">Είστε σίγουροι ότι θέλετε να απορρίψετε αυτό το μήνυμα;</string>
-  <string name="select_text_now">Επιλογή κειμένου για αντιγραφή</string>
   <string name="dialog_confirm_clear_local_folder_title">Καθαρισμός τοπικών μηνυμάτων;</string>
   <string name="dialog_confirm_clear_local_folder_message">Αυτό θα καταργήσει όλα τα τοπικά μηνύματα από το φάκελο. Δε θα διαγραφούν μηνύματα από τον εξυπηρετητή.</string>
   <string name="dialog_confirm_clear_local_folder_action">Καθαρισμός μηνυμάτων</string>

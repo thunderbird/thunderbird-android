@@ -697,7 +697,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="save_or_discard_draft_message_changes">Vista eða henda breytingum?</string>
   <string name="confirm_discard_draft_message_title">Henda skilaboðum?</string>
   <string name="confirm_discard_draft_message">Ertu viss um að þú viljir henda þessum skilaboðum?</string>
-  <string name="select_text_now">Veldu texta til að afrita.</string>
   <string name="dialog_confirm_clear_local_folder_title">Hreinsa staðvær skilaboð?</string>
   <string name="dialog_confirm_clear_local_folder_message">Þetta mun fjarlægja öll staðvær skilaboð úr þessari möppu. Engum skilaboðum verður eytt af póstþjóninum.</string>
   <string name="dialog_confirm_clear_local_folder_action">Hreinsa skilaboð</string>

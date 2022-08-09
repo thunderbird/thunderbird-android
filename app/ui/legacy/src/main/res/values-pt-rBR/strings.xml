@@ -170,7 +170,9 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="notification_authentication_error_title">Falha na autenticação</string>
   <string name="notification_authentication_error_text">Falha na autenticação de <xliff:g id="account">%s</xliff:g>. Atualize suas configurações de servidor.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Erro de notificação</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Ocorreu um erro ao tentar criar uma notificação de sistema para uma nova mensagem. O provável motivo é a ausência de um som de notificação.\n\nToque para abrir as configurações de notificação.</string>
   <string name="notification_bg_sync_ticker">Verificando email: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Verificando email</string>
   <string name="notification_bg_send_ticker">Enviando mensagem: <xliff:g id="account">%s</xliff:g></string>
@@ -735,7 +737,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="save_or_discard_draft_message_changes">Salvar ou descartar as alterações?</string>
   <string name="confirm_discard_draft_message_title">Descartar a mensagem?</string>
   <string name="confirm_discard_draft_message">Tem certeza que deseja descartar esta mensagem?</string>
-  <string name="select_text_now">Selecione o texto a ser copiado.</string>
   <string name="dialog_confirm_clear_local_folder_title">Limpar mensagens locais?</string>
   <string name="dialog_confirm_clear_local_folder_message">Isso removerá todas as mensagens locais da pasta. Nenhuma mensagem será excluída no servidor.</string>
   <string name="dialog_confirm_clear_local_folder_action">Limpar mensagens</string>

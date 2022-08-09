@@ -702,7 +702,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="save_or_discard_draft_message_changes">Gardar ou desbotar os cambios?</string>
   <string name="confirm_discard_draft_message_title">Descartar mensaxe?</string>
   <string name="confirm_discard_draft_message">Tes a certeza de querer descartar esta mensaxe?</string>
-  <string name="select_text_now">Seleccionar texto a copiar.</string>
   <string name="dialog_confirm_clear_local_folder_title">Borrar as mensaxes locais?</string>
   <string name="dialog_confirm_clear_local_folder_message">Isto eliminará todas as mensaxes locais do cartafol. Non se eliminarán as mensaxes deste servidor.</string>
   <string name="dialog_confirm_clear_local_folder_action">Borrar mensaxes</string>

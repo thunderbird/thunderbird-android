@@ -703,7 +703,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="save_or_discard_draft_message_changes">Saglabāt vai atcelt izmaiņas?</string>
   <string name="confirm_discard_draft_message_title">Izmest vēstuli?</string>
   <string name="confirm_discard_draft_message">Vai tiešām izmest šo vēstuli?</string>
-  <string name="select_text_now">Iezīmēt tekstu, lai kopētu.</string>
   <string name="dialog_confirm_clear_local_folder_title">Izdzēst ierīcē esošās vēstules?</string>
   <string name="dialog_confirm_clear_local_folder_message">Šādi no mapes tiks izdzēstas visas lejupielādētās vēstules. No servera vēstules netiks izdzēstas.</string>
   <string name="dialog_confirm_clear_local_folder_action">Izdzēst vēstules</string>

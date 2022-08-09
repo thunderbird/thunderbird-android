@@ -545,7 +545,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">לשמור או להשליך הודעה זו?</string>
   <string name="save_or_discard_draft_message_changes">לשמור או לבטל שינויים?</string>
   <string name="confirm_discard_draft_message_title">להשליך את ההודעה?</string>
-  <string name="select_text_now">בחר טקסט כדי להעתיק.</string>
   <string name="dialog_confirm_delete_title">אשר מחיקה</string>
   <string name="dialog_confirm_delete_message">אתה בטוח שאתה רוצה למחוק את ההודעה הזאת?</string>
   <string name="dialog_confirm_delete_confirm_button">מחק</string>

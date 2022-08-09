@@ -648,7 +648,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="save_or_discard_draft_message_instructions_fmt">Enrollañ pe dilezel ar gemennadenn?</string>
   <string name="confirm_discard_draft_message_title">Dilezel ar gemennadenn?</string>
   <string name="confirm_discard_draft_message">Sur oc’h e fell deoc’h dilezel ar gemennadenn?</string>
-  <string name="select_text_now">Diuzit an destenn da eilañ</string>
   <string name="dialog_confirm_delete_title">Kadarnat an dilamadur</string>
   <string name="dialog_confirm_delete_message">Fellout a ra deoc’h dilemel ar gemennadenn-mañ?</string>
   <plurals name="dialog_confirm_delete_messages">

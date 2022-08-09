@@ -731,7 +731,6 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="save_or_discard_draft_message_changes">Wizigingen bewarje of ferwerpe?</string>
   <string name="confirm_discard_draft_message_title">Berjocht ôfbrekke?</string>
   <string name="confirm_discard_draft_message">Binne jo wis dat jo dit berjocht fuortsmite wolle</string>
-  <string name="select_text_now">Selektearje tekst om te kopiearjen.</string>
   <string name="dialog_confirm_clear_local_folder_title">Lokale berjochten wiskje?</string>
   <string name="dialog_confirm_clear_local_folder_message">Dit sil alle lokale berjochten út dizze map wiskje. Der wurde gjin berjochten fan de server wiske.</string>
   <string name="dialog_confirm_clear_local_folder_action">Berjochten wiskje</string>

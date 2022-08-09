@@ -733,7 +733,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="save_or_discard_draft_message_changes">Cadw neu Ddiddymu\'r newidiadau?</string>
   <string name="confirm_discard_draft_message_title">Dileu\'r neges?</string>
   <string name="confirm_discard_draft_message">Wyt ti\'n sicr dy fod am ddileu\'r neges hon?</string>
-  <string name="select_text_now">Dewisa destun i\'w gopïo.</string>
   <string name="dialog_confirm_clear_local_folder_title">Clirio negeseuon lleol?</string>
   <string name="dialog_confirm_clear_local_folder_message">Bydd hyn yn tynnu pob neges leol o\'r ffolder. Ni chaiff negeseuon eu dileu o\'r gweinydd.</string>
   <string name="dialog_confirm_clear_local_folder_action">Clirio negeseuon</string>

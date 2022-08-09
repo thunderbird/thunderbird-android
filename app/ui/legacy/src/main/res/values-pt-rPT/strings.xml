@@ -669,7 +669,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="save_or_discard_draft_message_instructions_fmt">Guardar ou rejeitar esta mensagem?</string>
   <string name="confirm_discard_draft_message_title">Rejeitar mensagem?</string>
   <string name="confirm_discard_draft_message">Tem a certeza que pretende rejeitar esta mensagem?</string>
-  <string name="select_text_now">Selecione o texto para copiar.</string>
   <string name="dialog_confirm_clear_local_folder_title">Limpar mensagens locais?</string>
   <string name="dialog_confirm_clear_local_folder_message">Isto removerá todas as mensagens locais da pasta. Não serão apagadas mensagens do servidor.</string>
   <string name="dialog_confirm_clear_local_folder_action">Limpar mensagens</string>

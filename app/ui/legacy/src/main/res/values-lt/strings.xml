@@ -735,7 +735,6 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="save_or_discard_draft_message_changes">Išsaugoti ar atmesti pakeitimus?</string>
   <string name="confirm_discard_draft_message_title">Nepaisyti laiško?</string>
   <string name="confirm_discard_draft_message">Ar tikrai norite nepaisyti šio pranešimo?</string>
-  <string name="select_text_now">Pasirinkti tesktą kopijavimui.</string>
   <string name="dialog_confirm_clear_local_folder_title">Išvalyti vietinius laiškus?</string>
   <string name="dialog_confirm_clear_local_folder_message">Tai iš aplanko pašalins visus vietinius laiškus. Iš serverio laiškai nebus ištrinti.</string>
   <string name="dialog_confirm_clear_local_folder_action">Išvalyti laiškus</string>

@@ -737,7 +737,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="save_or_discard_draft_message_changes">Të ruhen apo të Hidhen tej ndryshimet?</string>
   <string name="confirm_discard_draft_message_title">Të hidhet tej mesazhi?</string>
   <string name="confirm_discard_draft_message">Jeni i sigurt se doni të hidhet tej ky mesazh?</string>
-  <string name="select_text_now">Përzgjidhni tekst për kopjim.</string>
   <string name="dialog_confirm_clear_local_folder_title">Të spastrohen mesazhe vendore?</string>
   <string name="dialog_confirm_clear_local_folder_message">Kjo do të heqë nga dosja krejt mesazhet vendore. Prej shërbyesit s’do të fshihet ndonjë mesazh.</string>
   <string name="dialog_confirm_clear_local_folder_action">Spastroji mesazhet</string>
