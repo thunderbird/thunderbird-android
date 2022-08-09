@@ -147,7 +147,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Olvasatlan (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Olvasatlan (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> további: <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Válasz</string>
   <string name="notification_action_mark_as_read">Megjelölés olvasottként</string>
@@ -163,7 +163,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="notification_authentication_error_text">A hitelesítés sikertelen: <xliff:g id="account">%s</xliff:g>. Frissítse a kiszolgálóbeállításokat.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
   <string name="notification_bg_send_ticker">Levél küldése: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Levél küldése</string>
@@ -207,7 +207,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="message_compose_description_delete_quoted_text">Idézett szöveg eltávolítása</string>
   <string name="message_compose_description_edit_quoted_text">Idézett szöveg szerkesztése</string>
   <string name="remove_attachment_action">Melléklet eltávolítása</string>
-  <string name="message_view_from_format">Feladó: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Feladó: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Címzett:</string>
   <string name="message_view_cc_label">Másolat:</string>
   <string name="message_view_bcc_label">Titkos másolat:</string>

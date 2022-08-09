@@ -154,7 +154,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> uus kiri</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> uut kirja</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Lugemata (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Lugemata (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> veel kontol <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Vasta</string>
   <string name="notification_action_mark_as_read">Märgi loetuks</string>
@@ -173,7 +173,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="notification_notify_error_title">Viga teavitusel</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_text">Uue saabunud sõnumi kohta süsteemise teavituse loomisel tekkis viga. Üks võimalik põhjus on teavitusele määratud heli puudumine.\n\nAva teavituste seadistused.</string>
-  <string name="notification_bg_sync_ticker">Kontrollib e-kirju: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Kontrollib e-kirju: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollib e-kirju</string>
   <string name="notification_bg_send_ticker">Saadab e-kirja: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Saadab e-kirja</string>
@@ -220,7 +220,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="message_compose_description_delete_quoted_text">Eemalda osundatud tekst</string>
   <string name="message_compose_description_edit_quoted_text">Muuda osundatud teksti</string>
   <string name="remove_attachment_action">Eemalda manus</string>
-  <string name="message_view_from_format">Kellelt: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Kellelt: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Kellele:</string>
   <string name="message_view_cc_label">Koopia:</string>
   <string name="message_view_bcc_label">Pimekoopia:</string>

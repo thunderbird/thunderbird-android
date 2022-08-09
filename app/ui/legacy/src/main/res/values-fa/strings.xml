@@ -150,7 +150,7 @@
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> نامهٔ جدید</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> پیام جدید</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> نخوانده (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> نخوانده (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> تای دیگر در <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">پاسخ</string>
   <string name="notification_action_mark_as_read">خوانده شد</string>
@@ -167,7 +167,7 @@
   <string name="notification_authentication_error_text">اعتبارسنجی <xliff:g id="account">%s</xliff:g> ناموفق بود. تنظیمات کارساز خود را به‌روز کنید.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">به‌روزآوری رایانامه‌ها: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">به‌روزآوری رایانامه‌ها: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">به‌روزآوری رایانامه‌ها</string>
   <string name="notification_bg_send_ticker">ارسال رایانامه: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">ارسال رایانامه</string>
@@ -214,7 +214,7 @@
   <string name="message_compose_description_delete_quoted_text">حذف نقل‌قول</string>
   <string name="message_compose_description_edit_quoted_text">ویرایش نقل‌قول</string>
   <string name="remove_attachment_action">حذف پیوست</string>
-  <string name="message_view_from_format">از: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">از: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">به:</string>
   <string name="message_view_cc_label">رونوشت به:</string>
   <string name="message_view_bcc_label">مخفیانه به:</string>

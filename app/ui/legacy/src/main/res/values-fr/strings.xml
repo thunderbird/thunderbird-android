@@ -156,7 +156,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nouveaux courriels</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nouveaux courriels</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lus (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> non lus (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> de plus sur <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Répondre</string>
   <string name="notification_action_mark_as_read">Marquer comme lu</string>
@@ -175,7 +175,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="notification_notify_error_title">Erreur de notification</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_text">Impossible de créer une notification système de nouveau message. Un son de notification manquant en est probablement la cause.\n\nToucher pour ouvrir les paramètres de notification.</string>
-  <string name="notification_bg_sync_ticker">Relève des courriels : <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Relève des courriels : <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Relève des courriels</string>
   <string name="notification_bg_send_ticker">Envoi du courriel : <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Envoi du courriel</string>
@@ -222,7 +222,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="message_compose_description_delete_quoted_text">Supprimer le texte entre guillemets</string>
   <string name="message_compose_description_edit_quoted_text">Modifier le texte entre guillemets</string>
   <string name="remove_attachment_action">Supprimer le fichier joint</string>
-  <string name="message_view_from_format">De : <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">De : <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">À :</string>
   <string name="message_view_cc_label">Cc :</string>
   <string name="message_view_bcc_label">Cci :</string>

@@ -151,7 +151,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <plurals name="notification_new_messages_title">
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 条新消息</item>
   </plurals>
-  <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string>
+  <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%1$d</xliff:g>封未读邮件（<xliff:g id="account">%2$s</xliff:g>）</string>
   <string name="notification_additional_messages">加载 <xliff:g id="account">%2$s</xliff:g> 上的更多 <xliff:g id="additional_messages">%1$d</xliff:g> 条消息</string>
   <string name="notification_action_reply">回复</string>
   <string name="notification_action_mark_as_read">标记为已读</string>
@@ -170,7 +170,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="notification_notify_error_title">通知错误</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_text">尝试创建新消息的系统通知时出错。最有可能的原因是缺少通知声音。\n\n轻按打开通知设置。</string>
-  <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%1$s</xliff:g>：<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">正在检查邮件</string>
   <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">发送邮件</string>
@@ -217,7 +217,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="message_compose_description_delete_quoted_text">删除引用文本</string>
   <string name="message_compose_description_edit_quoted_text">编辑引用文本</string>
   <string name="remove_attachment_action">移除附件</string>
-  <string name="message_view_from_format">发件人：<xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">发件人：<xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">收件人：</string>
   <string name="message_view_cc_label">抄送：</string>
   <string name="message_view_bcc_label">密送:</string>

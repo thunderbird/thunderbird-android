@@ -153,7 +153,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nytt meddelande</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> olästa (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> olästa (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> fler på <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Svara</string>
   <string name="notification_action_mark_as_read">Markera som läst</string>
@@ -172,7 +172,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="notification_notify_error_title">Aviseringsfel</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_text">Ett fel uppstod vid försök att skapa en systemavisering för ett nytt meddelande. Anledningen är troligen att ett aviseringsljud saknas.\n\nTryck för att öppna aviseringsinställningarna.</string>
-  <string name="notification_bg_sync_ticker">Kontrollerar e-post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Kontrollerar e-post: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollerar e-post</string>
   <string name="notification_bg_send_ticker">Skickar e-post: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Skickar e-post</string>
@@ -219,7 +219,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="message_compose_description_delete_quoted_text">Ta bort citerad text</string>
   <string name="message_compose_description_edit_quoted_text">Redigera citerad text</string>
   <string name="remove_attachment_action">Ta bort bilaga</string>
-  <string name="message_view_from_format">Från: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Från: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Till:</string>
   <string name="message_view_cc_label">Kopia:</string>
   <string name="message_view_bcc_label">Blindkopia:</string>

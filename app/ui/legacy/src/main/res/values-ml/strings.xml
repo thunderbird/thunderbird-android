@@ -149,7 +149,7 @@
     <item quantity="one">പുതിയ <xliff:g id="new_message_count">%d</xliff:g> സന്ദേശം</item>
     <item quantity="other">പുതിയ <xliff:g id="new_message_count">%d</xliff:g> സന്ദേശങ്ങൾ</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> വായിക്കാത്തത് (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> വായിക്കാത്തത് (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+<xliff:g id="additional_messages">%1$d</xliff:g> <xliff:g id="account">%2$s</xliff:g> ൽ കൂടുതൽ</string>
   <string name="notification_action_reply">മറുപടി പറയുക</string>
   <string name="notification_action_mark_as_read">വായന അടയാളപ്പെടുത്തുക</string>
@@ -166,7 +166,7 @@
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> നായുള്ള പ്രാമാണീകരണം പരാജയപ്പെട്ടു. നിങ്ങളുടെ സെർവർ ക്രമീകരണങ്ങൾ പുതുക്കുക.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">മെയിൽ പരിശോധിക്കുന്നു: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">മെയിൽ പരിശോധിക്കുന്നു: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">മെയിൽ പരിശോധിക്കുന്നു</string>
   <string name="notification_bg_send_ticker">മെയിൽ അയയ്ക്കുന്നു: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">മെയിൽ അയയ്ക്കുന്നു</string>
@@ -213,7 +213,7 @@
   <string name="message_compose_description_delete_quoted_text">ഉദ്ധരിച്ച വാചകം നീക്കംചെയ്യുക</string>
   <string name="message_compose_description_edit_quoted_text">ഉദ്ധരിച്ച വാചകം എഡിറ്റുചെയ്യുക</string>
   <string name="remove_attachment_action">അറ്റാച്ചുമെന്റ് നീക്കംചെയ്യുക</string>
-  <string name="message_view_from_format">പ്രേഷിതാവ്: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">പ്രേഷിതാവ്: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">സ്വീകർത്താവ്:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>

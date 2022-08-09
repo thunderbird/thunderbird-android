@@ -135,7 +135,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> não lidos (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> em <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como lido</string>
@@ -151,7 +151,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="notification_authentication_error_text">A autenticação falhou para <xliff:g id="account">%s</xliff:g>. Atualize as configurações do servidor.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">A verificar correio: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">A verificar correio: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">A verificar correio</string>
   <string name="notification_bg_send_ticker">A enviar correio: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">A enviar correio</string>
@@ -193,7 +193,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_compose_description_delete_quoted_text">Remover texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
   <string name="remove_attachment_action">Remover anexo</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>

@@ -151,7 +151,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> jauna vēstule</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> jaunas vēstules</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nelasītas (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Nelasītas (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> vairāk <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Atbildēt</string>
   <string name="notification_action_mark_as_read">Atzīmēt kā izlasītu</string>
@@ -167,7 +167,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="notification_authentication_error_text">Identifikācijas pārbaude kontam <xliff:g id="account">%s</xliff:g> neizdevās. Atjaunojiet servera iestatījumus!</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">Pārbauda pastu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Pārbauda pastu: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Pārbauda pastu</string>
   <string name="notification_bg_send_ticker">Sūta pastu: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sūta pastu</string>
@@ -214,7 +214,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="message_compose_description_delete_quoted_text">Noņemt citēto tekstu</string>
   <string name="message_compose_description_edit_quoted_text">Redigēt citēto tekstu</string>
   <string name="remove_attachment_action">Noņemt pielikumu</string>
-  <string name="message_view_from_format">No: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">No: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Kam:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Neredzamais:</string>
