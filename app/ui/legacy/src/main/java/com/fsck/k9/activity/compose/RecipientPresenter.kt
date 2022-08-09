@@ -622,14 +622,12 @@ class RecipientPresenter(
             SendErrorState.ENABLED_ERROR -> recipientMvpView.showOpenPgpEnabledErrorDialog(false)
             SendErrorState.PROVIDER_ERROR -> recipientMvpView.showErrorOpenPgpConnection()
             SendErrorState.KEY_CONFIG_ERROR -> recipientMvpView.showErrorNoKeyConfigured()
-            else -> throw AssertionError("not all error states handled, this is a bug!")
         }
     }
 
     fun showPgpAttachError(attachErrorState: AttachErrorState) {
         when (attachErrorState) {
             AttachErrorState.IS_INLINE -> recipientMvpView.showErrorInlineAttach()
-            else -> throw AssertionError("not all error states handled, this is a bug!")
         }
     }
 
