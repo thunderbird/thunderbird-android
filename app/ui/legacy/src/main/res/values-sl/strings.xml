@@ -12,6 +12,8 @@
   <string name="app_license">Dovoljenje Apache, različica 2.0</string>
   <string name="about_project_title">Odprtokodni projekt</string>
   <string name="about_website_title">Spletna stran</string>
+  <string name="user_manual_title">Navodila za uporabo</string>
+  <string name="get_help_title">Poišči pomoč</string>
   <string name="user_forum_title">Uporabniški forum</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -171,7 +173,9 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="notification_authentication_error_title">Overjanje je spodletelo</string>
   <string name="notification_authentication_error_text">Overjanje je spodletelo za račun <xliff:g id="account">%s</xliff:g>. Posodobiti je treba nastavitve strežnika.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Napaka obveščanja</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Med poskusom ustvarjanja sistemskega obvestila za novo sporočilo je prišlo do napake. Razlog je najverjetneje manjkajoči zvok obvestila.\n\nTapni, za odpreti nastavitve obvestil.</string>
   <string name="notification_bg_sync_ticker">Preverjanje pošte: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Preverjanje pošte</string>
   <string name="notification_bg_send_ticker">Pošiljanje pošte: <xliff:g id="account">%s</xliff:g></string>
@@ -736,7 +740,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="save_or_discard_draft_message_changes">Ali želite shraniti ali zavreči spremembe?</string>
   <string name="confirm_discard_draft_message_title">Ali želite zavreči sporočilo?</string>
   <string name="confirm_discard_draft_message">Ali ste prepričani, da želite zavreči to sporočilo?</string>
-  <string name="select_text_now">Izberite besedilo za kopiranje.</string>
   <string name="dialog_confirm_clear_local_folder_title">Ali želite počistiti krajevna sporočila?</string>
   <string name="dialog_confirm_clear_local_folder_message">S tem bodo iz mape odstranjena vsa krajevna sporočila. Nobeno sporočilo ne bo izbrisano s strežnika.</string>
   <string name="dialog_confirm_clear_local_folder_action">Počisti sporočila</string>

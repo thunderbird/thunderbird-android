@@ -707,7 +707,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="save_or_discard_draft_message_changes">Gem eller Kassér ændringer?</string>
   <string name="confirm_discard_draft_message_title">Annuller meddelelse?</string>
   <string name="confirm_discard_draft_message">Er du sikker på at du ønsker at annullere denne meddelelse?</string>
-  <string name="select_text_now">Vælg tekst som skal kopieres.</string>
   <string name="dialog_confirm_clear_local_folder_title">Ryd lokale beskeder</string>
   <string name="dialog_confirm_clear_local_folder_message">Dette vil slette alle lokale beskeder fra mappen. Ingen beskeder slettes fra serveren.</string>
   <string name="dialog_confirm_clear_local_folder_action">Rens beskeder</string>

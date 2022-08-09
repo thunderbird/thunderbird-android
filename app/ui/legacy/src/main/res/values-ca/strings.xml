@@ -12,6 +12,8 @@
   <string name="app_license">Llicència d\'Apache, versió 2.0</string>
   <string name="about_project_title">Projecte de codi obert</string>
   <string name="about_website_title">Lloc web</string>
+  <string name="user_manual_title">Manual de l\'usuari</string>
+  <string name="get_help_title">Obtingueu ajuda</string>
   <string name="user_forum_title">Fòrum d\'usuaris</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -167,7 +169,9 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="notification_authentication_error_title">Ha fallat l\'autenticació</string>
   <string name="notification_authentication_error_text">Ha fallat l\'autenticació de <xliff:g id="account">%s</xliff:g>. Actualitzeu la configuració del servidor.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Error de notificació</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">S\'ha produït un error en intentar crear una notificació del sistema per a un missatge nou. El motiu més probable és que falti un so de notificació.\n\nToqueu per obrir la configuració de notificació.</string>
   <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">S\'està comprovant el correu</string>
   <string name="notification_bg_send_ticker">S\'està enviant correu: <xliff:g id="account">%s</xliff:g></string>
@@ -732,7 +736,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="save_or_discard_draft_message_changes">Voleu desar o descartar els canvis?</string>
   <string name="confirm_discard_draft_message_title">Descarto el missatge?</string>
   <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge?</string>
-  <string name="select_text_now">Seleccioneu el text a copiar.</string>
   <string name="dialog_confirm_clear_local_folder_title">Voleu netejar els missatges locals?</string>
   <string name="dialog_confirm_clear_local_folder_message">Això suprimirà tots els missatges locals de la carpeta. No se suprimirà cap missatge del servidor.</string>
   <string name="dialog_confirm_clear_local_folder_action">Neteja els missatges</string>

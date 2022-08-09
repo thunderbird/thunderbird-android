@@ -703,7 +703,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">ഈ സന്ദേശം സംരക്ഷിക്കണോ അതോ നിരസിക്കണോ?</string>
   <string name="confirm_discard_draft_message_title">സന്ദേശം നിരസിക്കണോ?</string>
   <string name="confirm_discard_draft_message">ഈ സന്ദേശം നിരസിക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
-  <string name="select_text_now">പകർത്താൻ വാചകം തിരഞ്ഞെടുക്കുക.</string>
   <string name="dialog_confirm_clear_local_folder_title">പ്രാദേശിക സന്ദേശങ്ങൾ മായ്‌ക്കണോ?</string>
   <string name="dialog_confirm_clear_local_folder_message">ഇത് എല്ലാ പ്രാദേശിക സന്ദേശങ്ങളും ഫോൾഡറിൽ നിന്ന് നീക്കംചെയ്യും. സെർവറിൽ നിന്ന് സന്ദേശങ്ങളൊന്നും ഇല്ലാതാക്കില്ല.</string>
   <string name="dialog_confirm_clear_local_folder_action">സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>

@@ -639,7 +639,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">Spremiti ili Odbaciti ovu poruku?</string>
   <string name="confirm_discard_draft_message_title">Odbaciti poruku?</string>
   <string name="confirm_discard_draft_message">Jeste li sigurni da želite odbaciti ovu poruku?</string>
-  <string name="select_text_now">Odaberi tekst za kopiranje..</string>
   <string name="dialog_confirm_clear_local_folder_title">Očistiti lokalne poruke?</string>
   <string name="dialog_confirm_clear_local_folder_action">Očisti poruke</string>
   <string name="dialog_confirm_delete_title">Potvrda brisanja</string>

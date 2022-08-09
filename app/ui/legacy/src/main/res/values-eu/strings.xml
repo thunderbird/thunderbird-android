@@ -684,7 +684,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="save_or_discard_draft_message_changes">Gorde edo baztertu aldaketak?</string>
   <string name="confirm_discard_draft_message_title">Baztertu mezua?</string>
   <string name="confirm_discard_draft_message">Ziur mezu hau baztertu nahi duzula?</string>
-  <string name="select_text_now">Hautatu kopiatzeko testua.</string>
   <string name="dialog_confirm_clear_local_folder_title">Garbitu mezu lokalak?</string>
   <string name="dialog_confirm_clear_local_folder_message">Honek tokiko mezu guztiak kenduko ditu karpetatik. Ez da mezurik ezabatuko zerbitzarian.</string>
   <string name="dialog_confirm_clear_local_folder_action">Garbitu mezuak</string>

@@ -740,7 +740,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="save_or_discard_draft_message_changes">Zapisać czy odrzucić zmiany?</string>
   <string name="confirm_discard_draft_message_title">Usunąć wiadomość?</string>
   <string name="confirm_discard_draft_message">Czy na pewno chcesz usunąć tą wiadomość?</string>
-  <string name="select_text_now">Wybierz tekst do skopiowania.</string>
   <string name="dialog_confirm_clear_local_folder_title">Usunąć wiadomości lokalne?</string>
   <string name="dialog_confirm_clear_local_folder_message">Wszystkie wiadomości lokalne z folderu zostaną usunięte. Wiadomości nie zostaną usunięte z serwera.</string>
   <string name="dialog_confirm_clear_local_folder_action">Wyczyść wiadomości</string>

@@ -589,7 +589,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">이 메시지를 저장하거나 버리시겠습니까?</string>
   <string name="confirm_discard_draft_message_title">메시지 버림</string>
   <string name="confirm_discard_draft_message">메시지 작성을 취소하고 버리겠습니까?</string>
-  <string name="select_text_now">복사할 텍스트 선택</string>
   <string name="dialog_confirm_delete_title">삭제 확인</string>
   <string name="dialog_confirm_delete_message">이 메시지를 삭제하시겠습니까?</string>
   <plurals name="dialog_confirm_delete_messages">

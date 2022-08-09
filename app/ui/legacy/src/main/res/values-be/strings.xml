@@ -681,7 +681,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="save_or_discard_draft_message_changes">Захаваць альбо адкінуць змены?</string>
   <string name="confirm_discard_draft_message_title">Скасаваць ліст?</string>
   <string name="confirm_discard_draft_message">Сапраўды хочаце скасаваць ліст?</string>
-  <string name="select_text_now">Абраць тэкст для капіявання.</string>
   <string name="dialog_confirm_clear_local_folder_title">Выдаліць лакальныя лісты?</string>
   <string name="dialog_confirm_clear_local_folder_message">Гэта выдаліць усе лакальныя лісты з каталога. Лісты на серверы не крануцца.</string>
   <string name="dialog_confirm_clear_local_folder_action">Выдаліць лісты</string>

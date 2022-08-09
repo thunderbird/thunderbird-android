@@ -681,7 +681,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="save_or_discard_draft_message_instructions_fmt">Uložiť alebo zahodiť túto správu?</string>
   <string name="confirm_discard_draft_message_title">Zahodiť správu?</string>
   <string name="confirm_discard_draft_message">Naozaj chcete zahodiť túto správu?</string>
-  <string name="select_text_now">Vyberte text na kopírovanie.</string>
   <string name="dialog_confirm_clear_local_folder_title">Zmazať lokálne uložené správy?</string>
   <string name="dialog_confirm_clear_local_folder_message">Týmto odstránite všetky správy z priečinka. Na servi nebude žiadna spŕava zmazaná.</string>
   <string name="dialog_confirm_clear_local_folder_action">Vyčistiť zprávy</string>

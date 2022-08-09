@@ -726,7 +726,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="save_or_discard_draft_message_changes">Salvați sau respingeți modificările?</string>
   <string name="confirm_discard_draft_message_title">Renunți la mesaj?</string>
   <string name="confirm_discard_draft_message">Sigur dorești să renunți la mesaj?</string>
-  <string name="select_text_now">Selectează textul de copiat.</string>
   <string name="dialog_confirm_clear_local_folder_title">Eliminare mesaje locale?</string>
   <string name="dialog_confirm_clear_local_folder_message">Această acțiune va elimina toate mesejele locale din dosar. Niciun mesaj nu va fi șters de pe server.</string>
   <string name="dialog_confirm_clear_local_folder_action">Elimină mesajele</string>

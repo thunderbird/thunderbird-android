@@ -736,7 +736,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="save_or_discard_draft_message_changes">¿Guardar o descartar cambios?</string>
   <string name="confirm_discard_draft_message_title">¿Descartar mensaje?</string>
   <string name="confirm_discard_draft_message">¿Seguro que quieres descartar este mensaje?</string>
-  <string name="select_text_now">Selecciona el texto a copiar.</string>
   <string name="dialog_confirm_clear_local_folder_title">¿Limpiar mensajes locales?</string>
   <string name="dialog_confirm_clear_local_folder_message">Esto borrará todos los mensajes locales de la carpeta. No se eliminará ningún mensaje en el servidor.</string>
   <string name="dialog_confirm_clear_local_folder_action">Limpiar mensajes</string>

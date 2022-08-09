@@ -728,7 +728,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="save_or_discard_draft_message_changes">Зберегти чи Скасувати зміни?</string>
   <string name="confirm_discard_draft_message_title">Скасувати повідомлення?</string>
   <string name="confirm_discard_draft_message">Ви дійсно хочете скасувати це повідомлення?</string>
-  <string name="select_text_now">Виберіть текст для копіювання.</string>
   <string name="dialog_confirm_clear_local_folder_title">Очистити локальні повідомлення?</string>
   <string name="dialog_confirm_clear_local_folder_message">Це видалить всі локальні повідомлення з теки. Жодне повідомлення не буде видалене з сервера.</string>
   <string name="dialog_confirm_clear_local_folder_action">Очистити повідомлення</string>

@@ -696,7 +696,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="save_or_discard_draft_message_changes">Ĉu konservi aŭ nuligi ŝanĝojn?</string>
   <string name="confirm_discard_draft_message_title">Ĉu forigi mesaĝon?</string>
   <string name="confirm_discard_draft_message">Ĉu vi certe volas forigi tiun ĉi mesaĝon?</string>
-  <string name="select_text_now">Elektu tekston por kopii.</string>
   <string name="dialog_confirm_clear_local_folder_title">Ĉu forviŝi lokajn mesaĝojn?</string>
   <string name="dialog_confirm_clear_local_folder_message">Tio ĉi forigos ĉiujn lokajn mesaĝojn el la mesaĝujo. Neniuj mesaĝoj estos forigitaj el la servilo.</string>
   <string name="dialog_confirm_clear_local_folder_action">Forviŝi mesaĝojn</string>

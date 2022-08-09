@@ -735,7 +735,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="save_or_discard_draft_message_changes">Сохранить или отменить изменения?</string>
   <string name="confirm_discard_draft_message_title">Удаление</string>
   <string name="confirm_discard_draft_message">Отменить сообщение?</string>
-  <string name="select_text_now">Выберите текст длительным нажатием</string>
   <string name="dialog_confirm_clear_local_folder_title">Стереть локальные сообщения?</string>
   <string name="dialog_confirm_clear_local_folder_message">Это удалит все локальные сообщения из папки.Сообщения не будут удалены с сервера.</string>
   <string name="dialog_confirm_clear_local_folder_action">Стереть сообщения</string>

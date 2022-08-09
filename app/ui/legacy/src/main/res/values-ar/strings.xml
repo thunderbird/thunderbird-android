@@ -611,7 +611,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">احفظ أو إلغ الرسالة؟</string>
   <string name="confirm_discard_draft_message_title">هل تريد إلغاء الرسالة ؟</string>
   <string name="confirm_discard_draft_message">هل أنت متأكد من أنك تود إلغاء هذه الرسالة ؟</string>
-  <string name="select_text_now">حدّد النص للنسخ</string>
   <string name="dialog_confirm_delete_title">تأكيد الحذف</string>
   <string name="dialog_confirm_delete_message">أتريد حذف هذه الرسالة؟</string>
   <string name="dialog_confirm_delete_confirm_button">نعم</string>

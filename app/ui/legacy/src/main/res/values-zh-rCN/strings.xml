@@ -734,7 +734,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="save_or_discard_draft_message_changes">保存或取消更改？</string>
   <string name="confirm_discard_draft_message_title">丢弃该邮件？</string>
   <string name="confirm_discard_draft_message">确定丢弃该邮件？</string>
-  <string name="select_text_now">选择需要拷贝的文本。</string>
   <string name="dialog_confirm_clear_local_folder_title">清除本地消息？</string>
   <string name="dialog_confirm_clear_local_folder_message">这将从文件夹中删除所有本地邮件。 没有消息会从服务器中被删除。</string>
   <string name="dialog_confirm_clear_local_folder_action">清除消息</string>

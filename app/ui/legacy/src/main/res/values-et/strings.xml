@@ -11,7 +11,9 @@
   <string name="source_code">Lähtekood</string>
   <string name="app_license">Apache litsents, versioon 2.0</string>
   <string name="about_project_title">Avatud lähtekoodiga projekt</string>
-  <string name="about_website_title">Veebileht</string>
+  <string name="about_website_title">Veebisait</string>
+  <string name="user_manual_title">Kasutusjuhend</string>
+  <string name="get_help_title">Abiteave</string>
   <string name="user_forum_title">Foorum huvilistele</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -168,7 +170,9 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="notification_authentication_error_title">Autentimine ebaõnnestus</string>
   <string name="notification_authentication_error_text">Autentimine ebaõnnestus konto <xliff:g id="account">%s</xliff:g> puhul. Uuenda serveri seadeid.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Viga teavitusel</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Uue saabunud sõnumi kohta süsteemise teavituse loomisel tekkis viga. Üks võimalik põhjus on teavitusele määratud heli puudumine.\n\nAva teavituste seadistused.</string>
   <string name="notification_bg_sync_ticker">Kontrollib e-kirju: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollib e-kirju</string>
   <string name="notification_bg_send_ticker">Saadab e-kirja: <xliff:g id="account">%s</xliff:g></string>
@@ -735,7 +739,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="save_or_discard_draft_message_changes">Salvestada või loobuda muudatustest?</string>
   <string name="confirm_discard_draft_message_title">Kas loobud kirjast?</string>
   <string name="confirm_discard_draft_message">Kas sa oled kindel, et soovid kirjast loobuda?</string>
-  <string name="select_text_now">Vali kopeerimiseks tekst.</string>
   <string name="dialog_confirm_clear_local_folder_title">Kas kustutame kohalikud kirjad?</string>
   <string name="dialog_confirm_clear_local_folder_message">Sellega kustutame kõik kirjade kohalikud koopiad antud kaustast. Serveris asuvad kirjad jäävad alles.</string>
   <string name="dialog_confirm_clear_local_folder_action">Kustuta kirjad</string>

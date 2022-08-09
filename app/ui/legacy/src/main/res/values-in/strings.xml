@@ -675,7 +675,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="save_or_discard_draft_message_instructions_fmt">Simpan atau Buang pesan ini?</string>
   <string name="confirm_discard_draft_message_title">Buang pesan?</string>
   <string name="confirm_discard_draft_message">Anda yakin ingin membuang pesan ini?</string>
-  <string name="select_text_now">Pilih teks yang akan disalin.</string>
   <string name="dialog_confirm_clear_local_folder_title">Bersihkan pesan lokal?</string>
   <string name="dialog_confirm_clear_local_folder_message">Ini akan menghapus semua pesan lokal dari folder. Tidak ada pesan yang akan dihapus dari server.</string>
   <string name="dialog_confirm_clear_local_folder_action">Bersihkan pesan</string>

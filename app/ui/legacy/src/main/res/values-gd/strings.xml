@@ -668,7 +668,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">A bheil thu airson an teachdaireachd seo a shàbhaladh no a thilgeil air falbh\?</string>
   <string name="confirm_discard_draft_message_title">A bheil thu airson an teachdaireachd seo a thilgeil air falbh\?</string>
   <string name="confirm_discard_draft_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a thilgeil air falbh\?</string>
-  <string name="select_text_now">Tagh teacsa airson lethbhreac a dhèanamh dheth.</string>
   <string name="dialog_confirm_delete_title">Dearbh an sguabadh às</string>
   <string name="dialog_confirm_delete_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a sguabadh às\?</string>
   <plurals name="dialog_confirm_delete_messages">

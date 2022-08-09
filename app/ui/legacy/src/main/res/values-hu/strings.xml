@@ -696,7 +696,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="save_or_discard_draft_message_changes">Menti vagy elveti a változtatásokat?</string>
   <string name="confirm_discard_draft_message_title">Elveti az üzenet?</string>
   <string name="confirm_discard_draft_message">Biztosan el szeretné vetni ezt az üzenetet?</string>
-  <string name="select_text_now">Szöveg kijelölése a másoláshoz.</string>
   <string name="dialog_confirm_clear_local_folder_title">Helyi üzenetek kiürítése</string>
   <string name="dialog_confirm_clear_local_folder_message">Ez eltávolítja az összes helyi üzenetet mappából.  Az üzenetek nem kerülnek törlésre a szerverről.</string>
   <string name="dialog_confirm_clear_local_folder_action">Üzenetek kiürítése</string>
