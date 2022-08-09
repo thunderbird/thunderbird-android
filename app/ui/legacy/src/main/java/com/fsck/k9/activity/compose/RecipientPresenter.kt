@@ -12,7 +12,6 @@ import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
 import com.fsck.k9.Account
-import com.fsck.k9.Identity
 import com.fsck.k9.K9
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState
@@ -323,7 +322,7 @@ class RecipientPresenter(
         openPgpApiManager.setOpenPgpProvider(openPgpProvider, openPgpCallback)
     }
 
-    fun onSwitchIdentity(identity: Identity) {
+    fun onSwitchIdentity() {
         // TODO decide what actually to do on identity switch?
         asyncUpdateCryptoStatus()
     }

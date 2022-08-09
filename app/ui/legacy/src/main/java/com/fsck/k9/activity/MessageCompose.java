@@ -936,7 +936,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateSignature();
         updateMessageFormat();
         replyToPresenter.setIdentity(identity);
-        recipientPresenter.onSwitchIdentity(identity);
+        recipientPresenter.onSwitchIdentity();
     }
 
     private void updateFrom() {
