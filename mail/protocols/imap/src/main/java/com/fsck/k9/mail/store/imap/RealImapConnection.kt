@@ -1,325 +1,279 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ConnectException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.security.GeneralSecurityException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.zip.Inflater;
-import java.util.zip.InflaterInputStream;
-
-import com.fsck.k9.logging.Timber;
-import com.fsck.k9.mail.Authentication;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.K9MailLib;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.filter.PeekableInputStream;
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
-import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.imap.IdGrouper.GroupedIds;
-import com.fsck.k9.sasl.OAuthBearer;
-import com.jcraft.jzlib.JZlib;
-import com.jcraft.jzlib.ZOutputStream;
-import javax.net.ssl.SSLException;
-import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import static com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED;
-import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
-import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT;
-import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT;
-import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
-
+import com.fsck.k9.logging.Timber
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.Authentication
+import com.fsck.k9.mail.AuthenticationFailedException
+import com.fsck.k9.mail.CertificateValidationException
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.K9MailLib
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT
+import com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT
+import com.fsck.k9.mail.filter.Base64
+import com.fsck.k9.mail.filter.PeekableInputStream
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider
+import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser
+import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import com.fsck.k9.sasl.buildOAuthBearerInitialClientResponse
+import com.jcraft.jzlib.JZlib
+import com.jcraft.jzlib.ZOutputStream
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
+import java.net.ConnectException
+import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.Socket
+import java.net.SocketAddress
+import java.security.GeneralSecurityException
+import java.security.Security
+import java.security.cert.CertificateException
+import java.util.regex.Pattern
+import java.util.zip.Inflater
+import java.util.zip.InflaterInputStream
+import javax.net.ssl.SSLException
+import org.apache.commons.io.IOUtils
 
 /**
  * A cacheable class that stores the details for a single IMAP connection.
  */
-class RealImapConnection implements ImapConnection {
-    private static final int BUFFER_SIZE = 1024;
+internal class RealImapConnection(
+    private val settings: ImapSettings,
+    private val socketFactory: TrustedSocketFactory,
+    private val oauthTokenProvider: OAuth2TokenProvider?,
+    override val connectionGeneration: Int,
+    private val socketConnectTimeout: Int = SOCKET_CONNECT_TIMEOUT,
+    private val socketReadTimeout: Int = SOCKET_READ_TIMEOUT
+) : ImapConnection {
+    private var socket: Socket? = null
+    private var inputStream: PeekableInputStream? = null
+    private var imapOutputStream: OutputStream? = null
+    private var responseParser: ImapResponseParser? = null
+    private var nextCommandTag = 0
+    private var capabilities = emptySet<String>()
+    private var stacktraceForClose: Exception? = null
+    private var open = false
+    private var retryOAuthWithNewToken = true
 
-    /* The below limits are 20 octets less than the recommended limits, in order to compensate for
-     * the length of the command tag, the space after the tag and the CRLF at the end of the command
-     * (these are not taken into account when calculating the length of the command). For more
-     * information, refer to section 4 of RFC 7162.
-     *
-     * The length limit for servers supporting the CONDSTORE extension is large in order to support
-     * the QRESYNC parameter to the SELECT/EXAMINE commands, which accept a list of known message
-     * sequence numbers as well as their corresponding UIDs.
-     */
-    private static final int LENGTH_LIMIT_WITHOUT_CONDSTORE = 980;
-    private static final int LENGTH_LIMIT_WITH_CONDSTORE = 8172;
+    @get:Synchronized
+    override val outputStream: OutputStream
+        get() = checkNotNull(imapOutputStream)
 
-
-    private final OAuth2TokenProvider oauthTokenProvider;
-    private final TrustedSocketFactory socketFactory;
-    private final int socketConnectTimeout;
-    private final int socketReadTimeout;
-    private final int connectionGeneration;
-
-    private Socket socket;
-    private PeekableInputStream inputStream;
-    private OutputStream outputStream;
-    private ImapResponseParser responseParser;
-    private int nextCommandTag;
-    private Set<String> capabilities = new HashSet<>();
-    private ImapSettings settings;
-    private Exception stacktraceForClose;
-    private boolean open = false;
-    private boolean retryOAuthWithNewToken = true;
-
-
-    public RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            OAuth2TokenProvider oauthTokenProvider, int connectionGeneration) {
-        this.settings = settings;
-        this.socketFactory = socketFactory;
-        this.oauthTokenProvider = oauthTokenProvider;
-        this.socketConnectTimeout = SOCKET_CONNECT_TIMEOUT;
-        this.socketReadTimeout = SOCKET_READ_TIMEOUT;
-        this.connectionGeneration = connectionGeneration;
-    }
-
-    public RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            OAuth2TokenProvider oauthTokenProvider, int socketConnectTimeout, int socketReadTimeout,
-            int connectionGeneration) {
-        this.settings = settings;
-        this.socketFactory = socketFactory;
-        this.oauthTokenProvider = oauthTokenProvider;
-        this.socketConnectTimeout = socketConnectTimeout;
-        this.socketReadTimeout = socketReadTimeout;
-        this.connectionGeneration = connectionGeneration;
-    }
-
-    @Override
-    public synchronized void open() throws IOException, MessagingException {
+    @Synchronized
+    @Throws(IOException::class, MessagingException::class)
+    override fun open() {
         if (open) {
-            return;
+            return
         } else if (stacktraceForClose != null) {
-            throw new IllegalStateException("open() called after close(). " +
-                    "Check wrapped exception to see where close() was called.", stacktraceForClose);
+            throw IllegalStateException(
+                "open() called after close(). Check wrapped exception to see where close() was called.",
+                stacktraceForClose
+            )
         }
 
-        open = true;
-        boolean authSuccess = false;
-        nextCommandTag = 1;
+        open = true
+        var authSuccess = false
+        nextCommandTag = 1
 
-        adjustDNSCacheTTL();
+        adjustDNSCacheTTL()
 
         try {
-            socket = connect();
-            configureSocket();
-            setUpStreamsAndParserFromSocket();
+            socket = connect()
+            configureSocket()
+            setUpStreamsAndParserFromSocket()
 
-            readInitialResponse();
-            requestCapabilitiesIfNecessary();
+            readInitialResponse()
+            requestCapabilitiesIfNecessary()
 
-            upgradeToTlsIfNecessary();
+            upgradeToTlsIfNecessary()
 
-            List<ImapResponse> responses = authenticate();
-            authSuccess = true;
+            val responses = authenticate()
+            authSuccess = true
 
-            extractOrRequestCapabilities(responses);
+            extractOrRequestCapabilities(responses)
 
-            enableCompressionIfRequested();
+            enableCompressionIfRequested()
 
-            retrievePathPrefixIfNecessary();
-            retrievePathDelimiterIfNecessary();
-
-        } catch (SSLException e) {
-            handleSslException(e);
-        } catch (ConnectException e) {
-            handleConnectException(e);
-        } catch (GeneralSecurityException e) {
-            throw new MessagingException("Unable to open connection to IMAP server due to security error.", e);
+            retrievePathPrefixIfNecessary()
+            retrievePathDelimiterIfNecessary()
+        } catch (e: SSLException) {
+            handleSslException(e)
+        } catch (e: ConnectException) {
+            handleConnectException(e)
+        } catch (e: GeneralSecurityException) {
+            throw MessagingException("Unable to open connection to IMAP server due to security error.", e)
         } finally {
             if (!authSuccess) {
-                Timber.e("Failed to login, closing connection for %s", getLogId());
-                close();
+                Timber.e("Failed to login, closing connection for %s", logId)
+                close()
             }
         }
     }
 
-    private void handleSslException(SSLException e) throws CertificateValidationException, SSLException {
-        if (e.getCause() instanceof CertificateException) {
-            throw new CertificateValidationException(e.getMessage(), e);
+    private fun handleSslException(e: SSLException) {
+        if (e.cause is CertificateException) {
+            throw CertificateValidationException(e.message, e)
         } else {
-            throw e;
+            throw e
         }
     }
 
-    private void handleConnectException(ConnectException e) throws ConnectException {
-        String message = e.getMessage();
-        String[] tokens = message.split("-");
+    // TODO: Remove this. There is no documentation on why this was added, there are no tests, and this is unlikely to
+    //  still work.
+    private fun handleConnectException(e: ConnectException) {
+        val message = e.message ?: throw e
 
-        if (tokens.length > 1 && tokens[1] != null) {
-            Timber.e(e, "Stripping host/port from ConnectionException for %s", getLogId());
-            throw new ConnectException(tokens[1].trim());
+        val tokens = message.split("-")
+        if (tokens.size > 1) {
+            Timber.e(e, "Stripping host/port from ConnectionException for %s", logId)
+            throw ConnectException(tokens[1].trim())
         } else {
-            throw e;
+            throw e
         }
     }
 
-    @Override
-    public synchronized boolean isConnected() {
-        return inputStream != null && outputStream != null && socket != null &&
-                socket.isConnected() && !socket.isClosed();
-    }
+    @get:Synchronized
+    override val isConnected: Boolean
+        get() {
+            return inputStream != null && imapOutputStream != null &&
+                socket.let { socket ->
+                    socket != null && socket.isConnected && !socket.isClosed
+                }
+        }
 
-    private void adjustDNSCacheTTL() {
+    private fun adjustDNSCacheTTL() {
         try {
-            Security.setProperty("networkaddress.cache.ttl", "0");
-        } catch (Exception e) {
-            Timber.w(e, "Could not set DNS ttl to 0 for %s", getLogId());
+            Security.setProperty("networkaddress.cache.ttl", "0")
+        } catch (e: Exception) {
+            Timber.w(e, "Could not set DNS ttl to 0 for %s", logId)
         }
 
         try {
-            Security.setProperty("networkaddress.cache.negative.ttl", "0");
-        } catch (Exception e) {
-            Timber.w(e, "Could not set DNS negative ttl to 0 for %s", getLogId());
+            Security.setProperty("networkaddress.cache.negative.ttl", "0")
+        } catch (e: Exception) {
+            Timber.w(e, "Could not set DNS negative ttl to 0 for %s", logId)
         }
     }
 
-    private Socket connect() throws GeneralSecurityException, MessagingException, IOException {
-        Exception connectException = null;
+    private fun connect(): Socket {
+        val inetAddresses = InetAddress.getAllByName(settings.host)
 
-        InetAddress[] inetAddresses = InetAddress.getAllByName(settings.getHost());
-        for (InetAddress address : inetAddresses) {
-            try {
-                return connectToAddress(address);
-            } catch (IOException e) {
-                Timber.w(e, "Could not connect to %s", address);
-                connectException = e;
+        var connectException: Exception? = null
+        for (address in inetAddresses) {
+            connectException = try {
+                return connectToAddress(address)
+            } catch (e: IOException) {
+                Timber.w(e, "Could not connect to %s", address)
+                e
             }
         }
 
-        throw new MessagingException("Cannot connect to host", connectException);
+        throw MessagingException("Cannot connect to host", connectException)
     }
 
-    private Socket connectToAddress(InetAddress address) throws NoSuchAlgorithmException, KeyManagementException,
-            MessagingException, IOException {
+    private fun connectToAddress(address: InetAddress): Socket {
+        val host = settings.host
+        val port = settings.port
+        val clientCertificateAlias = settings.clientCertificateAlias
 
-        String host = settings.getHost();
-        int port = settings.getPort();
-        String clientCertificateAlias = settings.getClientCertificateAlias();
-
-        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-            Timber.d("Connecting to %s as %s", host, address);
+        if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
+            Timber.d("Connecting to %s as %s", host, address)
         }
 
-        SocketAddress socketAddress = new InetSocketAddress(address, port);
-
-        Socket socket;
-        if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
-            socket = socketFactory.createSocket(null, host, port, clientCertificateAlias);
+        val socketAddress: SocketAddress = InetSocketAddress(address, port)
+        val socket = if (settings.connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            socketFactory.createSocket(null, host, port, clientCertificateAlias)
         } else {
-            socket = new Socket();
+            Socket()
         }
 
-        socket.connect(socketAddress, socketConnectTimeout);
+        socket.connect(socketAddress, socketConnectTimeout)
 
-        return socket;
+        return socket
     }
 
-    private void configureSocket() throws SocketException {
-        setSocketDefaultReadTimeout();
+    private fun configureSocket() {
+        setSocketDefaultReadTimeout()
     }
 
-    @Override
-    public void setSocketDefaultReadTimeout() throws SocketException {
-        setSocketReadTimeout(socketReadTimeout);
+    override fun setSocketDefaultReadTimeout() {
+        setSocketReadTimeout(socketReadTimeout)
     }
 
-    @Override
-    public synchronized void setSocketReadTimeout(int timeout) throws SocketException {
-        if (socket != null) {
-            socket.setSoTimeout(timeout);
-        }
+    @Synchronized
+    override fun setSocketReadTimeout(timeout: Int) {
+        socket?.soTimeout = timeout
     }
 
-    private void setUpStreamsAndParserFromSocket() throws IOException {
-        setUpStreamsAndParser(socket.getInputStream(), socket.getOutputStream());
+    private fun setUpStreamsAndParserFromSocket() {
+        val socket = checkNotNull(socket)
+
+        setUpStreamsAndParser(socket.getInputStream(), socket.getOutputStream())
     }
 
-    private void setUpStreamsAndParser(InputStream input, OutputStream output) {
-        inputStream = new PeekableInputStream(new BufferedInputStream(input, BUFFER_SIZE));
-        responseParser = new ImapResponseParser(inputStream);
-        outputStream = new BufferedOutputStream(output, BUFFER_SIZE);
+    private fun setUpStreamsAndParser(input: InputStream, output: OutputStream) {
+        inputStream = PeekableInputStream(BufferedInputStream(input, BUFFER_SIZE))
+        responseParser = ImapResponseParser(inputStream)
+        imapOutputStream = BufferedOutputStream(output, BUFFER_SIZE)
     }
 
-    private void readInitialResponse() throws IOException {
-        ImapResponse initialResponse = responseParser.readResponse();
-        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-            Timber.v("%s <<< %s", getLogId(), initialResponse);
-        }
-        extractCapabilities(Collections.singletonList(initialResponse));
-    }
+    private fun readInitialResponse() {
+        val responseParser = checkNotNull(responseParser)
 
-    private boolean extractCapabilities(List<ImapResponse> responses) {
-        CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
-        if (capabilityResponse == null) {
-            return false;
+        val initialResponse = responseParser.readResponse()
+
+        if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
+            Timber.v("%s <<< %s", logId, initialResponse)
         }
 
-        Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
-        Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
-        capabilities = receivedCapabilities;
-
-        return true;
+        extractCapabilities(listOf(initialResponse))
     }
 
-    private void extractOrRequestCapabilities(List<ImapResponse> responses) throws IOException, MessagingException {
+    private fun extractCapabilities(responses: List<ImapResponse>): Boolean {
+        val capabilityResponse = CapabilityResponse.parse(responses) ?: return false
+        val receivedCapabilities = capabilityResponse.capabilities
+
+        Timber.d("Saving %s capabilities for %s", receivedCapabilities, logId)
+        capabilities = receivedCapabilities
+
+        return true
+    }
+
+    private fun extractOrRequestCapabilities(responses: List<ImapResponse>) {
         if (!extractCapabilities(responses)) {
-            Timber.i("Did not get capabilities in post-auth banner, requesting CAPABILITY for %s", getLogId());
-            requestCapabilities();
+            Timber.i("Did not get capabilities in post-auth banner, requesting CAPABILITY for %s", logId)
+            requestCapabilities()
         }
     }
 
-    private void requestCapabilitiesIfNecessary() throws IOException, MessagingException {
-        if (!capabilities.isEmpty()) {
-            return;
-        }
+    private fun requestCapabilitiesIfNecessary() {
+        if (capabilities.isNotEmpty()) return
+
         if (K9MailLib.isDebug()) {
-            Timber.i("Did not get capabilities in banner, requesting CAPABILITY for %s", getLogId());
+            Timber.i("Did not get capabilities in banner, requesting CAPABILITY for %s", logId)
         }
-        requestCapabilities();
+
+        requestCapabilities()
     }
 
-    private void requestCapabilities() throws IOException, MessagingException {
-        if (!extractCapabilities(executeSimpleCommand(Commands.CAPABILITY))) {
-            throw new MessagingException("Invalid CAPABILITY response received");
-        }
-    }
+    private fun requestCapabilities() {
+        val responses = executeSimpleCommand(Commands.CAPABILITY)
 
-    private void upgradeToTlsIfNecessary() throws IOException, MessagingException, GeneralSecurityException {
-        if (settings.getConnectionSecurity() == STARTTLS_REQUIRED) {
-            upgradeToTls();
+        if (!extractCapabilities(responses)) {
+            throw MessagingException("Invalid CAPABILITY response received")
         }
     }
 
-    private void upgradeToTls() throws IOException, MessagingException, GeneralSecurityException {
+    private fun upgradeToTlsIfNecessary() {
+        if (settings.connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
+            upgradeToTls()
+        }
+    }
+
+    private fun upgradeToTls() {
         if (!hasCapability(Capabilities.STARTTLS)) {
             /*
              * This exception triggers a "Certificate error"
@@ -328,201 +282,216 @@ class RealImapConnection implements ImapConnection {
              * the account was configured with an obsolete
              * "STARTTLS (if available)" setting.
              */
-            throw new CertificateValidationException("STARTTLS connection security not available");
+            throw CertificateValidationException("STARTTLS connection security not available")
         }
 
-        startTLS();
+        startTls()
     }
 
-    private void startTLS() throws IOException, MessagingException, GeneralSecurityException {
-        executeSimpleCommand(Commands.STARTTLS);
+    private fun startTls() {
+        executeSimpleCommand(Commands.STARTTLS)
 
-        String host = settings.getHost();
-        int port = settings.getPort();
-        String clientCertificateAlias = settings.getClientCertificateAlias();
+        val host = settings.host
+        val port = settings.port
+        val clientCertificateAlias = settings.clientCertificateAlias
+        socket = socketFactory.createSocket(socket, host, port, clientCertificateAlias)
 
-        socket = socketFactory.createSocket(socket, host, port, clientCertificateAlias);
-        configureSocket();
-        setUpStreamsAndParserFromSocket();
+        configureSocket()
+        setUpStreamsAndParserFromSocket()
 
         // Per RFC 2595 (3.1):  Once TLS has been started, reissue CAPABILITY command
         if (K9MailLib.isDebug()) {
-            Timber.i("Updating capabilities after STARTTLS for %s", getLogId());
+            Timber.i("Updating capabilities after STARTTLS for %s", logId)
         }
 
-        requestCapabilities();
+        requestCapabilities()
     }
 
-    private List<ImapResponse> authenticate() throws MessagingException, IOException {
-        switch (settings.getAuthType()) {
-            case XOAUTH2:
+    private fun authenticate(): List<ImapResponse> {
+        return when (settings.authType) {
+            AuthType.XOAUTH2 -> {
                 if (oauthTokenProvider == null) {
-                    throw new MessagingException("No OAuthToken Provider available.");
+                    throw MessagingException("No OAuthToken Provider available.")
                 } else if (!hasCapability(Capabilities.SASL_IR)) {
-                    throw new MessagingException("SASL-IR capability is missing.");
+                    throw MessagingException("SASL-IR capability is missing.")
                 } else if (hasCapability(Capabilities.AUTH_OAUTHBEARER)) {
-                    return authWithOAuthToken(OAuthMethod.OAUTHBEARER);
+                    authWithOAuthToken(OAuthMethod.OAUTHBEARER)
                 } else if (hasCapability(Capabilities.AUTH_XOAUTH2)) {
-                    return authWithOAuthToken(OAuthMethod.XOAUTH2);
+                    authWithOAuthToken(OAuthMethod.XOAUTH2)
                 } else {
-                    throw new MessagingException("Server doesn't support SASL OAUTHBEARER or XOAUTH2.");
+                    throw MessagingException("Server doesn't support SASL OAUTHBEARER or XOAUTH2.")
                 }
-            case CRAM_MD5: {
+            }
+            AuthType.CRAM_MD5 -> {
                 if (hasCapability(Capabilities.AUTH_CRAM_MD5)) {
-                    return authCramMD5();
+                    authCramMD5()
                 } else {
-                    throw new MessagingException("Server doesn't support encrypted passwords using CRAM-MD5.");
+                    throw MessagingException("Server doesn't support encrypted passwords using CRAM-MD5.")
                 }
             }
-            case PLAIN: {
+            AuthType.PLAIN -> {
                 if (hasCapability(Capabilities.AUTH_PLAIN)) {
-                    return saslAuthPlainWithLoginFallback();
+                    saslAuthPlainWithLoginFallback()
                 } else if (!hasCapability(Capabilities.LOGINDISABLED)) {
-                    return login();
+                    login()
                 } else {
-                    throw new MessagingException("Server doesn't support unencrypted passwords using AUTH=PLAIN " +
-                            "and LOGIN is disabled.");
+                    throw MessagingException(
+                        "Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled."
+                    )
                 }
             }
-            case EXTERNAL: {
+            AuthType.EXTERNAL -> {
                 if (hasCapability(Capabilities.AUTH_EXTERNAL)) {
-                    return saslAuthExternal();
+                    saslAuthExternal()
                 } else {
                     // Provide notification to user of a problem authenticating using client certificates
-                    throw new CertificateValidationException(CertificateValidationException.Reason.MissingCapability);
+                    throw CertificateValidationException(CertificateValidationException.Reason.MissingCapability)
                 }
             }
-            default: {
-                throw new MessagingException("Unhandled authentication method found in the server settings (bug).");
+            else -> {
+                throw MessagingException("Unhandled authentication method found in the server settings (bug).")
             }
         }
     }
 
-    private List<ImapResponse> authWithOAuthToken(OAuthMethod method) throws IOException, MessagingException {
-        retryOAuthWithNewToken = true;
-        try {
-            return attemptOAuth(method);
-        } catch (NegativeImapResponseException e) {
-            //TODO: Check response code so we don't needlessly invalidate the token.
-            oauthTokenProvider.invalidateToken();
+    private fun authWithOAuthToken(method: OAuthMethod): List<ImapResponse> {
+        val oauthTokenProvider = checkNotNull(oauthTokenProvider)
+        retryOAuthWithNewToken = true
+
+        return try {
+            attemptOAuth(method)
+        } catch (e: NegativeImapResponseException) {
+            // TODO: Check response code so we don't needlessly invalidate the token.
+            oauthTokenProvider.invalidateToken()
 
             if (!retryOAuthWithNewToken) {
-                throw handlePermanentOAuthFailure(e);
+                throw handlePermanentOAuthFailure(e)
             } else {
-                return handleTemporaryOAuthFailure(method, e);
+                handleTemporaryOAuthFailure(method, e)
             }
         }
     }
 
-    private AuthenticationFailedException handlePermanentOAuthFailure(NegativeImapResponseException e) {
-        Timber.v(e, "Permanent failure during authentication using OAuth token");
-        return new AuthenticationFailedException(e.getMessage(), e, e.getAlertText());
+    private fun handlePermanentOAuthFailure(e: NegativeImapResponseException): AuthenticationFailedException {
+        Timber.v(e, "Permanent failure during authentication using OAuth token")
+
+        return AuthenticationFailedException(message = e.message!!, throwable = e, messageFromServer = e.alertText)
     }
 
-    private List<ImapResponse> handleTemporaryOAuthFailure(OAuthMethod method, NegativeImapResponseException e)
-            throws IOException, MessagingException {
-        //We got a response indicating a retry might succeed after token refresh
-        //We could avoid this if we had a reasonable chance of knowing
-        //if a token was invalid before use (e.g. due to expiry). But we don't
-        //This is the intended behaviour per AccountManager
+    private fun handleTemporaryOAuthFailure(method: OAuthMethod, e: NegativeImapResponseException): List<ImapResponse> {
+        val oauthTokenProvider = checkNotNull(oauthTokenProvider)
 
-        Timber.v(e, "Temporary failure - retrying with new token");
-        try {
-            return attemptOAuth(method);
-        } catch (NegativeImapResponseException e2) {
-            //Okay, we failed on a new token.
-            //Invalidate the token anyway but assume it's permanent.
-            Timber.v(e, "Authentication exception for new token, permanent error assumed");
-            oauthTokenProvider.invalidateToken();
-            throw handlePermanentOAuthFailure(e2);
+        // We got a response indicating a retry might succeed after token refresh
+        // We could avoid this if we had a reasonable chance of knowing
+        // if a token was invalid before use (e.g. due to expiry). But we don't
+        // This is the intended behaviour per AccountManager
+        Timber.v(e, "Temporary failure - retrying with new token")
+
+        return try {
+            attemptOAuth(method)
+        } catch (e2: NegativeImapResponseException) {
+            // Okay, we failed on a new token.
+            // Invalidate the token anyway but assume it's permanent.
+            Timber.v(e, "Authentication exception for new token, permanent error assumed")
+
+            oauthTokenProvider.invalidateToken()
+
+            throw handlePermanentOAuthFailure(e2)
         }
     }
 
-    private List<ImapResponse> attemptOAuth(OAuthMethod method) throws MessagingException, IOException {
-        String token = oauthTokenProvider.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT);
-        String authString = method.buildInitialClientResponse(settings.getUsername(), token);
-        String tag = sendSaslIrCommand(method.getCommand(), authString, true);
+    private fun attemptOAuth(method: OAuthMethod): List<ImapResponse> {
+        val oauthTokenProvider = checkNotNull(oauthTokenProvider)
+        val responseParser = checkNotNull(responseParser)
 
-        return responseParser.readStatusResponse(tag, method.getCommand(), getLogId(),
-                new UntaggedHandler() {
-                    @Override
-                    public void handleAsyncUntaggedResponse(ImapResponse response) throws IOException {
-                        handleOAuthUntaggedResponse(response);
-                    }
-                });
+        val token = oauthTokenProvider.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
+
+        val authString = method.buildInitialClientResponse(settings.username, token)
+        val tag = sendSaslIrCommand(method.command, authString, true)
+
+        return responseParser.readStatusResponse(tag, method.command, logId, ::handleOAuthUntaggedResponse)
     }
 
-    private void handleOAuthUntaggedResponse(ImapResponse response) throws IOException {
-        if (!response.isContinuationRequested()) {
-            return;
-        }
+    private fun handleOAuthUntaggedResponse(response: ImapResponse) {
+        if (!response.isContinuationRequested) return
+
+        val imapOutputStream = checkNotNull(imapOutputStream)
 
         if (response.isString(0)) {
-            retryOAuthWithNewToken = XOAuth2ChallengeParser.shouldRetry(response.getString(0), settings.getHost());
+            retryOAuthWithNewToken = XOAuth2ChallengeParser.shouldRetry(response.getString(0), settings.host)
         }
 
-        outputStream.write("\r\n".getBytes());
-        outputStream.flush();
+        imapOutputStream.write('\r'.code)
+        imapOutputStream.write('\n'.code)
+        imapOutputStream.flush()
     }
 
-    private List<ImapResponse> authCramMD5() throws MessagingException, IOException {
-        String command = Commands.AUTHENTICATE_CRAM_MD5;
-        String tag = sendCommand(command, false);
+    private fun authCramMD5(): List<ImapResponse> {
+        val command = Commands.AUTHENTICATE_CRAM_MD5
+        val tag = sendCommand(command, false)
 
-        ImapResponse response = readContinuationResponse(tag);
-        if (response.size() != 1 || !(response.get(0) instanceof String)) {
-            throw new MessagingException("Invalid Cram-MD5 nonce received");
+        val imapOutputStream = checkNotNull(imapOutputStream)
+        val responseParser = checkNotNull(responseParser)
+
+        val response = readContinuationResponse(tag)
+        if (response.size != 1 || !response.isString(0)) {
+            throw MessagingException("Invalid Cram-MD5 nonce received")
         }
 
-        byte[] b64Nonce = response.getString(0).getBytes();
-        byte[] b64CRAM = Authentication.computeCramMd5Bytes(settings.getUsername(), settings.getPassword(), b64Nonce);
+        val b64Nonce = response.getString(0).toByteArray()
+        val b64CRAM = Authentication.computeCramMd5Bytes(settings.username, settings.password, b64Nonce)
 
-        outputStream.write(b64CRAM);
-        outputStream.write('\r');
-        outputStream.write('\n');
-        outputStream.flush();
+        imapOutputStream.write(b64CRAM)
+        imapOutputStream.write('\r'.code)
+        imapOutputStream.write('\n'.code)
+        imapOutputStream.flush()
 
-        try {
-            return responseParser.readStatusResponse(tag, command, getLogId(), null);
-        } catch (NegativeImapResponseException e) {
-            throw handleAuthenticationFailure(e);
+        return try {
+            responseParser.readStatusResponse(tag, command, logId, null)
+        } catch (e: NegativeImapResponseException) {
+            throw handleAuthenticationFailure(e)
         }
     }
 
-    private List<ImapResponse> saslAuthPlainWithLoginFallback() throws IOException, MessagingException {
-        try {
-            return saslAuthPlain();
-        } catch (AuthenticationFailedException e) {
-            if (!isConnected()) {
-                throw e;
+    private fun saslAuthPlainWithLoginFallback(): List<ImapResponse> {
+        return try {
+            saslAuthPlain()
+        } catch (e: AuthenticationFailedException) {
+            if (!isConnected) {
+                throw e
             }
 
-            return login();
+            login()
         }
     }
 
-    private List<ImapResponse> saslAuthPlain() throws IOException, MessagingException {
-        String command = Commands.AUTHENTICATE_PLAIN;
-        String tag = sendCommand(command, false);
+    private fun saslAuthPlain(): List<ImapResponse> {
+        val command = Commands.AUTHENTICATE_PLAIN
+        val tag = sendCommand(command, false)
 
-        readContinuationResponse(tag);
+        val imapOutputStream = checkNotNull(imapOutputStream)
+        val responseParser = checkNotNull(responseParser)
 
-        String credentials = "\000" + settings.getUsername() + "\000" + settings.getPassword();
-        byte[] encodedCredentials = Base64.encodeBase64(credentials.getBytes());
+        readContinuationResponse(tag)
 
-        outputStream.write(encodedCredentials);
-        outputStream.write('\r');
-        outputStream.write('\n');
-        outputStream.flush();
+        val credentials = "\u0000" + settings.username + "\u0000" + settings.password
+        val encodedCredentials = Base64.encodeBase64(credentials.toByteArray())
 
-        try {
-            return responseParser.readStatusResponse(tag, command, getLogId(), null);
-        } catch (NegativeImapResponseException e) {
-            throw handleAuthenticationFailure(e);
+        imapOutputStream.write(encodedCredentials)
+        imapOutputStream.write('\r'.code)
+        imapOutputStream.write('\n'.code)
+        imapOutputStream.flush()
+
+        return try {
+            responseParser.readStatusResponse(tag, command, logId, null)
+        } catch (e: NegativeImapResponseException) {
+            throw handleAuthenticationFailure(e)
         }
     }
 
-    private List<ImapResponse> login() throws IOException, MessagingException {
+    private fun login(): List<ImapResponse> {
+        val password = checkNotNull(settings.password)
+
         /*
          * Use quoted strings which permit spaces and quotes. (Using IMAP
          * string literals would be better, but some servers are broken
@@ -530,24 +499,24 @@ class RealImapConnection implements ImapConnection {
          */
 
         // escape double-quotes and backslash characters with a backslash
-        Pattern p = Pattern.compile("[\\\\\"]");
-        String replacement = "\\\\$0";
-        String username = p.matcher(settings.getUsername()).replaceAll(replacement);
-        String password = p.matcher(settings.getPassword()).replaceAll(replacement);
+        val pattern = Pattern.compile("[\\\\\"]")
+        val replacement = "\\\\$0"
+        val encodedUsername = pattern.matcher(settings.username).replaceAll(replacement)
+        val encodedPassword = pattern.matcher(password).replaceAll(replacement)
 
-        try {
-            String command = String.format(Commands.LOGIN + " \"%s\" \"%s\"", username, password);
-            return executeSimpleCommand(command, true);
-        } catch (NegativeImapResponseException e) {
-            throw handleAuthenticationFailure(e);
+        return try {
+            val command = String.format(Commands.LOGIN + " \"%s\" \"%s\"", encodedUsername, encodedPassword)
+            executeSimpleCommand(command, true)
+        } catch (e: NegativeImapResponseException) {
+            throw handleAuthenticationFailure(e)
         }
     }
 
-    private List<ImapResponse> saslAuthExternal() throws IOException, MessagingException {
-        try {
-            String command = Commands.AUTHENTICATE_EXTERNAL + " " + Base64.encode(settings.getUsername());
-            return executeSimpleCommand(command, false);
-        } catch (NegativeImapResponseException e) {
+    private fun saslAuthExternal(): List<ImapResponse> {
+        return try {
+            val command = Commands.AUTHENTICATE_EXTERNAL + " " + Base64.encode(settings.username)
+            executeSimpleCommand(command, false)
+        } catch (e: NegativeImapResponseException) {
             /*
              * Provide notification to the user of a problem authenticating
              * using client certificates. We don't use an
@@ -555,375 +524,375 @@ class RealImapConnection implements ImapConnection {
              * "Username or password incorrect" notification in
              * AccountSetupCheckSettings.
              */
-            throw new CertificateValidationException(e.getMessage());
+            throw CertificateValidationException(e.message)
         }
     }
 
-    private MessagingException handleAuthenticationFailure(NegativeImapResponseException e) {
-        ImapResponse lastResponse = e.getLastResponse();
-        String responseCode = ResponseCodeExtractor.getResponseCode(lastResponse);
+    private fun handleAuthenticationFailure(
+        negativeResponseException: NegativeImapResponseException
+    ): MessagingException {
+        val lastResponse = negativeResponseException.lastResponse
+        val responseCode = ResponseCodeExtractor.getResponseCode(lastResponse)
 
         // If there's no response code we simply assume it was an authentication failure.
-        if (responseCode == null || responseCode.equals(ResponseCodeExtractor.AUTHENTICATION_FAILED)) {
-            if (e.wasByeResponseReceived()) {
-                close();
+        return if (responseCode == null || responseCode == ResponseCodeExtractor.AUTHENTICATION_FAILED) {
+            if (negativeResponseException.wasByeResponseReceived()) {
+                close()
             }
 
-            return new AuthenticationFailedException(e.getMessage());
+            AuthenticationFailedException(negativeResponseException.message!!)
         } else {
-            close();
-            return e;
+            close()
+
+            negativeResponseException
         }
     }
 
-    private void enableCompressionIfRequested() throws IOException, MessagingException {
+    private fun enableCompressionIfRequested() {
         if (hasCapability(Capabilities.COMPRESS_DEFLATE) && settings.useCompression()) {
-            enableCompression();
+            enableCompression()
         }
     }
 
-    private void enableCompression() throws IOException, MessagingException {
+    private fun enableCompression() {
         try {
-            executeSimpleCommand(Commands.COMPRESS_DEFLATE);
-        } catch (NegativeImapResponseException e) {
-            Timber.d(e, "Unable to negotiate compression: ");
-            return;
+            executeSimpleCommand(Commands.COMPRESS_DEFLATE)
+        } catch (e: NegativeImapResponseException) {
+            Timber.d(e, "Unable to negotiate compression: ")
+            return
         }
 
         try {
-            InflaterInputStream input = new InflaterInputStream(socket.getInputStream(), new Inflater(true));
-            ZOutputStream output = new ZOutputStream(socket.getOutputStream(), JZlib.Z_BEST_SPEED, true);
-            output.setFlushMode(JZlib.Z_PARTIAL_FLUSH);
+            val socket = checkNotNull(socket)
+            val input = InflaterInputStream(socket.getInputStream(), Inflater(true))
+            val output = ZOutputStream(socket.getOutputStream(), JZlib.Z_BEST_SPEED, true)
+            output.flushMode = JZlib.Z_PARTIAL_FLUSH
 
-            setUpStreamsAndParser(input, output);
+            setUpStreamsAndParser(input, output)
 
             if (K9MailLib.isDebug()) {
-                Timber.i("Compression enabled for %s", getLogId());
+                Timber.i("Compression enabled for %s", logId)
             }
-        } catch (IOException e) {
-            close();
-            Timber.e(e, "Error enabling compression");
+        } catch (e: IOException) {
+            close()
+            Timber.e(e, "Error enabling compression")
         }
     }
 
-    private void retrievePathPrefixIfNecessary() throws IOException, MessagingException {
-        if (settings.getPathPrefix() != null) {
-            return;
-        }
+    private fun retrievePathPrefixIfNecessary() {
+        if (settings.pathPrefix != null) return
 
         if (hasCapability(Capabilities.NAMESPACE)) {
             if (K9MailLib.isDebug()) {
-                Timber.i("pathPrefix is unset and server has NAMESPACE capability");
+                Timber.i("pathPrefix is unset and server has NAMESPACE capability")
             }
-            handleNamespace();
+
+            handleNamespace()
         } else {
             if (K9MailLib.isDebug()) {
-                Timber.i("pathPrefix is unset but server does not have NAMESPACE capability");
+                Timber.i("pathPrefix is unset but server does not have NAMESPACE capability")
             }
-            settings.setPathPrefix("");
+
+            settings.pathPrefix = ""
         }
     }
 
-    private void handleNamespace() throws IOException, MessagingException {
-        List<ImapResponse> responses = executeSimpleCommand(Commands.NAMESPACE);
+    private fun handleNamespace() {
+        val responses = executeSimpleCommand(Commands.NAMESPACE)
 
-        NamespaceResponse namespaceResponse = NamespaceResponse.parse(responses);
-        if (namespaceResponse != null) {
-            String prefix = namespaceResponse.getPrefix();
-            String hierarchyDelimiter = namespaceResponse.getHierarchyDelimiter();
+        val namespaceResponse = NamespaceResponse.parse(responses) ?: return
 
-            settings.setPathPrefix(prefix);
-            settings.setPathDelimiter(hierarchyDelimiter);
-            settings.setCombinedPrefix(null);
+        settings.pathPrefix = namespaceResponse.prefix
+        settings.pathDelimiter = namespaceResponse.hierarchyDelimiter
+        settings.setCombinedPrefix(null)
 
-            if (K9MailLib.isDebug()) {
-                Timber.d("Got path '%s' and separator '%s'", prefix, hierarchyDelimiter);
-            }
+        if (K9MailLib.isDebug()) {
+            Timber.d("Got path '%s' and separator '%s'", namespaceResponse.prefix, namespaceResponse.hierarchyDelimiter)
         }
     }
 
-    private void retrievePathDelimiterIfNecessary() throws IOException, MessagingException {
-        if (settings.getPathDelimiter() == null) {
-            retrievePathDelimiter();
+    private fun retrievePathDelimiterIfNecessary() {
+        if (settings.pathDelimiter == null) {
+            retrievePathDelimiter()
         }
     }
 
-    private void retrievePathDelimiter() throws IOException, MessagingException {
-        List<ImapResponse> listResponses;
-        try {
-            listResponses = executeSimpleCommand(Commands.LIST + " \"\" \"\"");
-        } catch (NegativeImapResponseException e) {
-            Timber.d(e, "Error getting path delimiter using LIST command");
-            return;
+    private fun retrievePathDelimiter() {
+        val listResponses = try {
+            executeSimpleCommand(Commands.LIST + " \"\" \"\"")
+        } catch (e: NegativeImapResponseException) {
+            Timber.d(e, "Error getting path delimiter using LIST command")
+            return
         }
 
-        for (ImapResponse response : listResponses) {
+        for (response in listResponses) {
             if (isListResponse(response)) {
-                String hierarchyDelimiter = response.getString(2);
-                settings.setPathDelimiter(hierarchyDelimiter);
-                settings.setCombinedPrefix(null);
+                val hierarchyDelimiter = response.getString(2)
+
+                settings.pathDelimiter = hierarchyDelimiter
+                settings.setCombinedPrefix(null)
 
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Got path delimiter '%s' for %s", settings.getPathDelimiter(), getLogId());
+                    Timber.d("Got path delimiter '%s' for %s", hierarchyDelimiter, logId)
                 }
 
-                break;
+                break
             }
         }
     }
 
-    private boolean isListResponse(ImapResponse response) {
-        boolean responseTooShort = response.size() < 4;
-        if (responseTooShort) {
-            return false;
-        }
+    private fun isListResponse(response: ImapResponse): Boolean {
+        if (response.size < 4) return false
 
-        boolean isListResponse = equalsIgnoreCase(response.get(0), Responses.LIST);
-        boolean hierarchyDelimiterValid = response.get(2) instanceof String;
+        val isListResponse = ImapResponseParser.equalsIgnoreCase(response[0], Responses.LIST)
+        val hierarchyDelimiterValid = response.isString(2)
 
-        return isListResponse && hierarchyDelimiterValid;
+        return isListResponse && hierarchyDelimiterValid
     }
 
-    @Override
-    public boolean hasCapability(@NotNull String capability) throws IOException, MessagingException {
+    override fun hasCapability(capability: String): Boolean {
         if (!open) {
-            open();
+            open()
         }
 
-        return capabilities.contains(capability.toUpperCase(Locale.US));
+        return capabilities.contains(capability.uppercase())
     }
 
-    public boolean isCondstoreCapable() throws IOException, MessagingException {
-        return hasCapability(Capabilities.CONDSTORE);
-    }
+    private val isCondstoreCapable: Boolean
+        get() = hasCapability(Capabilities.CONDSTORE)
 
-    @Override
-    public boolean isIdleCapable() {
-        if (K9MailLib.isDebug()) {
-            Timber.v("Connection %s has %d capabilities", getLogId(), capabilities.size());
+    override val isIdleCapable: Boolean
+        get() {
+            if (K9MailLib.isDebug()) {
+                Timber.v("Connection %s has %d capabilities", logId, capabilities.size)
+            }
+
+            return capabilities.contains(Capabilities.IDLE)
         }
 
-        return capabilities.contains(Capabilities.IDLE);
+    override val isUidPlusCapable: Boolean
+        get() = capabilities.contains(Capabilities.UID_PLUS)
+
+    @Synchronized
+    override fun close() {
+        if (!open) return
+
+        open = false
+
+        stacktraceForClose = Exception()
+
+        IOUtils.closeQuietly(inputStream)
+        IOUtils.closeQuietly(imapOutputStream)
+        IOUtils.closeQuietly(socket)
+
+        inputStream = null
+        imapOutputStream = null
+        socket = null
     }
 
-    @Override
-    public boolean isUidPlusCapable() {
-        return capabilities.contains(Capabilities.UID_PLUS);
+    override val logId: String
+        get() = "conn" + hashCode()
+
+    @Synchronized
+    @Throws(IOException::class, MessagingException::class)
+    override fun executeSimpleCommand(command: String): List<ImapResponse> {
+        return executeSimpleCommand(command, false)
     }
 
-    @Override
-    public synchronized void close() {
-        if (!open) {
-            return;
-        }
-
-        open = false;
-        stacktraceForClose = new Exception();
-
-        IOUtils.closeQuietly(inputStream);
-        IOUtils.closeQuietly(outputStream);
-        IOUtils.closeQuietly(socket);
-
-        inputStream = null;
-        outputStream = null;
-        socket = null;
-    }
-
-    @Override
-    @NotNull
-    public synchronized OutputStream getOutputStream() {
-        return outputStream;
-    }
-
-    @Override
-    @NotNull
-    public String getLogId() {
-        return "conn" + hashCode();
-    }
-
-    @Override
-    @NotNull
-    public synchronized List<ImapResponse> executeSimpleCommand(@NotNull String command)
-            throws IOException, MessagingException {
-        return executeSimpleCommand(command, false);
-    }
-
-    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
-            MessagingException {
-        String commandToLog = command;
-
+    @Throws(IOException::class, MessagingException::class)
+    fun executeSimpleCommand(command: String, sensitive: Boolean): List<ImapResponse> {
+        var commandToLog = command
         if (sensitive && !K9MailLib.isDebugSensitive()) {
-            commandToLog = "*sensitive*";
+            commandToLog = "*sensitive*"
         }
 
-        String tag = sendCommand(command, sensitive);
+        val tag = sendCommand(command, sensitive)
 
-        try {
-            return responseParser.readStatusResponse(tag, commandToLog, getLogId(), null);
-        } catch (IOException e) {
-            close();
-            throw e;
+        val responseParser = checkNotNull(responseParser)
+        return try {
+            responseParser.readStatusResponse(tag, commandToLog, logId, null)
+        } catch (e: IOException) {
+            close()
+            throw e
         }
     }
 
-    @Override
-    @NotNull
-    public synchronized List<ImapResponse> executeCommandWithIdSet(@NotNull String commandPrefix,
-            @NotNull String commandSuffix, @NotNull Set<Long> ids) throws IOException, MessagingException {
+    @Synchronized
+    @Throws(IOException::class, MessagingException::class)
+    override fun executeCommandWithIdSet(
+        commandPrefix: String,
+        commandSuffix: String,
+        ids: Set<Long>
+    ): List<ImapResponse> {
+        val groupedIds = IdGrouper.groupIds(ids)
+        val splitCommands = ImapCommandSplitter.splitCommand(
+            commandPrefix, commandSuffix, groupedIds, lineLengthLimit
+        )
 
-        GroupedIds groupedIds = IdGrouper.groupIds(ids);
-        List<String> splitCommands = ImapCommandSplitter.splitCommand(
-                commandPrefix, commandSuffix, groupedIds, getLineLengthLimit());
-
-        List<ImapResponse> responses = new ArrayList<>();
-        for (String splitCommand : splitCommands) {
-            responses.addAll(executeSimpleCommand(splitCommand));
+        return splitCommands.flatMap { splitCommand ->
+            executeSimpleCommand(splitCommand)
         }
-
-        return responses;
     }
 
-    public String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
-            throws IOException, MessagingException {
+    @Throws(IOException::class, MessagingException::class)
+    fun sendSaslIrCommand(command: String, initialClientResponse: String, sensitive: Boolean): String {
         try {
-            open();
+            open()
 
-            String tag = Integer.toString(nextCommandTag++);
-            String commandToSend = tag + " " + command + " " + initialClientResponse + "\r\n";
-            outputStream.write(commandToSend.getBytes());
-            outputStream.flush();
+            val outputStream = checkNotNull(imapOutputStream)
 
-            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+            val tag = (nextCommandTag++).toString()
+            val commandToSend = "$tag $command $initialClientResponse\r\n"
+
+            outputStream.write(commandToSend.toByteArray())
+            outputStream.flush()
+
+            if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
                 if (sensitive && !K9MailLib.isDebugSensitive()) {
-                    Timber.v("%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", getLogId());
+                    Timber.v("%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", logId)
                 } else {
-                    Timber.v("%s>>> %s %s %s", getLogId(), tag, command, initialClientResponse);
+                    Timber.v("%s>>> %s %s %s", logId, tag, command, initialClientResponse)
                 }
             }
 
-            return tag;
-        } catch (IOException | MessagingException e) {
-            close();
-            throw e;
+            return tag
+        } catch (e: IOException) {
+            close()
+            throw e
+        } catch (e: MessagingException) {
+            close()
+            throw e
         }
     }
 
-    @Override
-    @NotNull
-    public synchronized String sendCommand(@NotNull String command, boolean sensitive)
-            throws MessagingException, IOException {
+    @Synchronized
+    @Throws(MessagingException::class, IOException::class)
+    override fun sendCommand(command: String, sensitive: Boolean): String {
         try {
-            open();
+            open()
 
-            String tag = Integer.toString(nextCommandTag++);
-            String commandToSend = tag + " " + command + "\r\n";
-            outputStream.write(commandToSend.getBytes());
-            outputStream.flush();
+            val outputStream = checkNotNull(imapOutputStream)
 
-            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+            val tag = (nextCommandTag++).toString()
+            val commandToSend = "$tag $command\r\n"
+
+            outputStream.write(commandToSend.toByteArray())
+            outputStream.flush()
+
+            if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
                 if (sensitive && !K9MailLib.isDebugSensitive()) {
-                    Timber.v("%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", getLogId());
+                    Timber.v("%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", logId)
                 } else {
-                    Timber.v("%s>>> %s %s", getLogId(), tag, command);
+                    Timber.v("%s>>> %s %s", logId, tag, command)
                 }
             }
 
-            return tag;
-        } catch (IOException | MessagingException e) {
-            close();
-            throw e;
+            return tag
+        } catch (e: IOException) {
+            close()
+            throw e
+        } catch (e: MessagingException) {
+            close()
+            throw e
         }
     }
 
-    @Override
-    public synchronized void sendContinuation(@NotNull String continuation) throws IOException {
-        outputStream.write(continuation.getBytes());
-        outputStream.write('\r');
-        outputStream.write('\n');
-        outputStream.flush();
+    @Synchronized
+    @Throws(IOException::class)
+    override fun sendContinuation(continuation: String) {
+        val outputStream = checkNotNull(imapOutputStream)
 
-        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-            Timber.v("%s>>> %s", getLogId(), continuation);
+        outputStream.write(continuation.toByteArray())
+        outputStream.write('\r'.code)
+        outputStream.write('\n'.code)
+        outputStream.flush()
+
+        if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
+            Timber.v("%s>>> %s", logId, continuation)
         }
     }
 
-    @Override
-    @NotNull
-    public ImapResponse readResponse() throws IOException {
-        return readResponse(null);
+    @Throws(IOException::class)
+    override fun readResponse(): ImapResponse {
+        return readResponse(null)
     }
 
-    @Override
-    @NotNull
-    public ImapResponse readResponse(@Nullable ImapResponseCallback callback) throws IOException {
+    @Throws(IOException::class)
+    override fun readResponse(callback: ImapResponseCallback?): ImapResponse {
         try {
-            ImapResponse response = responseParser.readResponse(callback);
+            val responseParser = checkNotNull(responseParser)
 
-            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                Timber.v("%s<<<%s", getLogId(), response);
+            val response = responseParser.readResponse(callback)
+
+            if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
+                Timber.v("%s<<<%s", logId, response)
             }
 
-            return response;
-        } catch (IOException e) {
-            close();
-            throw e;
+            return response
+        } catch (e: IOException) {
+            close()
+            throw e
         }
     }
 
-    private ImapResponse readContinuationResponse(String tag) throws IOException, MessagingException {
-        ImapResponse response;
+    private fun readContinuationResponse(tag: String): ImapResponse {
+        var response: ImapResponse
         do {
-            response = readResponse();
+            response = readResponse()
 
-            String responseTag = response.getTag();
+            val responseTag = response.tag
             if (responseTag != null) {
-                if (responseTag.equalsIgnoreCase(tag)) {
-                    throw new MessagingException("Command continuation aborted: " + response);
+                if (responseTag.equals(tag, ignoreCase = true)) {
+                    throw MessagingException("Command continuation aborted: $response")
                 } else {
-                    Timber.w("After sending tag %s, got tag response from previous command %s for %s",
-                            tag, response, getLogId());
+                    Timber.w(
+                        "After sending tag %s, got tag response from previous command %s for %s",
+                        tag, response, logId
+                    )
                 }
             }
-        } while (!response.isContinuationRequested());
+        } while (!response.isContinuationRequested)
 
-        return response;
+        return response
     }
 
-    int getLineLengthLimit() throws IOException, MessagingException {
-        return isCondstoreCapable() ? LENGTH_LIMIT_WITH_CONDSTORE : LENGTH_LIMIT_WITHOUT_CONDSTORE;
-    }
+    @get:Throws(IOException::class, MessagingException::class)
+    val lineLengthLimit: Int
+        get() = if (isCondstoreCapable) LENGTH_LIMIT_WITH_CONDSTORE else LENGTH_LIMIT_WITHOUT_CONDSTORE
 
-    @Override
-    public int getConnectionGeneration() {
-        return connectionGeneration;
-    }
-
-
-    private enum OAuthMethod {
+    private enum class OAuthMethod {
         XOAUTH2 {
-            @Override
-            String getCommand() {
-                return Commands.AUTHENTICATE_XOAUTH2;
-            }
+            override val command: String = Commands.AUTHENTICATE_XOAUTH2
 
-            @Override
-            String buildInitialClientResponse(String username, String token) {
-                return Authentication.computeXoauth(username, token);
+            override fun buildInitialClientResponse(username: String, token: String): String {
+                return Authentication.computeXoauth(username, token)
             }
         },
         OAUTHBEARER {
-            @Override
-            String getCommand() {
-                return Commands.AUTHENTICATE_OAUTHBEARER;
-            }
+            override val command: String = Commands.AUTHENTICATE_OAUTHBEARER
 
-            @Override
-            String buildInitialClientResponse(String username, String token) {
-                return OAuthBearer.buildOAuthBearerInitialClientResponse(username, token);
+            override fun buildInitialClientResponse(username: String, token: String): String {
+                return buildOAuthBearerInitialClientResponse(username, token)
             }
         };
 
-        abstract String getCommand();
-        abstract String buildInitialClientResponse(String username, String token);
+        abstract val command: String
+        abstract fun buildInitialClientResponse(username: String, token: String): String
+    }
+
+    companion object {
+        private const val BUFFER_SIZE = 1024
+
+        /* The below limits are 20 octets less than the recommended limits, in order to compensate for
+         * the length of the command tag, the space after the tag and the CRLF at the end of the command
+         * (these are not taken into account when calculating the length of the command). For more
+         * information, refer to section 4 of RFC 7162.
+         *
+         * The length limit for servers supporting the CONDSTORE extension is large in order to support
+         * the QRESYNC parameter to the SELECT/EXAMINE commands, which accept a list of known message
+         * sequence numbers as well as their corresponding UIDs.
+         */
+        private const val LENGTH_LIMIT_WITHOUT_CONDSTORE = 980
+        private const val LENGTH_LIMIT_WITH_CONDSTORE = 8172
     }
 }
