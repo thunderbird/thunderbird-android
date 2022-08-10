@@ -1,36 +1,22 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.ConnectionSecurity;
-
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
 
 /**
- * Settings source for IMAP. Implemented in order to remove coupling between {@link ImapStore} and {@link ImapConnection}.
+ * Settings source for IMAP. Implemented in order to remove coupling between [ImapStore] and [ImapConnection].
  */
-interface ImapSettings {
-    String getHost();
+internal interface ImapSettings {
+    val host: String
+    val port: Int
+    val connectionSecurity: ConnectionSecurity
+    val authType: AuthType
+    val username: String
+    val password: String?
+    val clientCertificateAlias: String?
+    fun useCompression(): Boolean
 
-    int getPort();
-
-    ConnectionSecurity getConnectionSecurity();
-
-    AuthType getAuthType();
-
-    String getUsername();
-
-    String getPassword();
-
-    String getClientCertificateAlias();
-
-    boolean useCompression();
-
-    String getPathPrefix();
-
-    void setPathPrefix(String prefix);
-
-    String getPathDelimiter();
-
-    void setPathDelimiter(String delimiter);
-
-    void setCombinedPrefix(String prefix);
+    var pathPrefix: String?
+    var pathDelimiter: String?
+    fun setCombinedPrefix(prefix: String?)
 }
