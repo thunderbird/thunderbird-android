@@ -1,411 +1,322 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+import com.fsck.k9.logging.Timber
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.AuthenticationFailedException
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.FolderType
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider
+import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
+import java.io.IOException
+import java.util.Deque
+import java.util.LinkedList
 
-import java.io.IOException;
-import java.nio.charset.CharacterCodingException;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+internal open class RealImapStore(
+    private val serverSettings: ServerSettings,
+    private val config: ImapStoreConfig,
+    private val trustedSocketFactory: TrustedSocketFactory,
+    private val oauthTokenProvider: OAuth2TokenProvider?
+) : ImapStore, ImapConnectionManager, InternalImapStore {
+    private val folderNameCodec: FolderNameCodec = FolderNameCodec.newInstance()
 
-import com.fsck.k9.logging.Timber;
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.FolderType;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+    private val host: String = checkNotNull(serverSettings.host)
 
+    private var pathPrefix: String?
+    private var combinedPrefix: String? = null
+    private var pathDelimiter: String? = null
 
-/**
- * <pre>
- * TODO Need a default response handler for things like folder updates
- * </pre>
- */
-class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapStore {
-    private final ImapStoreConfig config;
-    private final TrustedSocketFactory trustedSocketFactory;
-    private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
-    private OAuth2TokenProvider oauthTokenProvider;
+    private val permanentFlagsIndex: MutableSet<Flag> = mutableSetOf()
+    private val connections: Deque<ImapConnection> = LinkedList()
 
-    private String host;
-    private int port;
-    private String username;
-    private String password;
-    private String clientCertificateAlias;
-    private ConnectionSecurity connectionSecurity;
-    private AuthType authType;
-    private String pathPrefix;
-    private String combinedPrefix = null;
-    private String pathDelimiter = null;
-    private final Deque<ImapConnection> connections = new LinkedList<>();
-    private FolderNameCodec folderNameCodec;
-    private volatile int connectionGeneration = 1;
+    @Volatile
+    private var connectionGeneration = 1
 
-
-    public RealImapStore(ServerSettings serverSettings, ImapStoreConfig config,
-            TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
-        this.config = config;
-        this.trustedSocketFactory = trustedSocketFactory;
-
-        host = serverSettings.host;
-        port = serverSettings.port;
-
-        connectionSecurity = serverSettings.connectionSecurity;
-        this.oauthTokenProvider = oauthTokenProvider;
-
-        authType = serverSettings.authenticationType;
-        username = serverSettings.username;
-        password = serverSettings.password;
-        clientCertificateAlias = serverSettings.clientCertificateAlias;
-
-        boolean autoDetectNamespace = ImapStoreSettings.getAutoDetectNamespace(serverSettings);
-        String pathPrefixSetting = ImapStoreSettings.getPathPrefix(serverSettings);
+    init {
+        val autoDetectNamespace = serverSettings.autoDetectNamespace
+        val pathPrefixSetting = serverSettings.pathPrefix
 
         // Make extra sure pathPrefix is null if "auto-detect namespace" is configured
-        pathPrefix = autoDetectNamespace ? null : pathPrefixSetting;
-
-        folderNameCodec = FolderNameCodec.newInstance();
+        pathPrefix = if (autoDetectNamespace) null else pathPrefixSetting
     }
 
-    public ImapFolder getFolder(String name) {
-        return new RealImapFolder(this, this, name, folderNameCodec);
+    override fun getFolder(name: String): ImapFolder {
+        return RealImapFolder(
+            internalImapStore = this,
+            connectionManager = this,
+            serverId = name,
+            folderNameCodec = folderNameCodec
+        )
     }
 
-    @Override
-    @NotNull
-    public String getCombinedPrefix() {
-        if (combinedPrefix == null) {
-            if (pathPrefix != null) {
-                String tmpPrefix = pathPrefix.trim();
-                String tmpDelim = (pathDelimiter != null ? pathDelimiter.trim() : "");
-                if (tmpPrefix.endsWith(tmpDelim)) {
-                    combinedPrefix = tmpPrefix;
-                } else if (tmpPrefix.length() > 0) {
-                    combinedPrefix = tmpPrefix + tmpDelim;
-                } else {
-                    combinedPrefix = "";
-                }
-            } else {
-                combinedPrefix = "";
-            }
-        }
-
-        return combinedPrefix;
+    override fun getCombinedPrefix(): String {
+        return combinedPrefix ?: buildCombinedPrefix().also { combinedPrefix = it }
     }
 
-    public List<FolderListItem> getFolders() throws MessagingException {
-        ImapConnection connection = getConnection();
+    private fun buildCombinedPrefix(): String {
+        val pathPrefix = pathPrefix ?: return ""
 
-        try {
-            List<FolderListItem> folders = listFolders(connection, false);
+        val trimmedPathPrefix = pathPrefix.trim { it <= ' ' }
+        val trimmedPathDelimiter = pathDelimiter?.trim { it <= ' ' }.orEmpty()
 
-            if (!config.isSubscribedFoldersOnly()) {
-                return folders;
-            }
-
-            List<FolderListItem> subscribedFolders = listFolders(connection, true);
-            return limitToSubscribedFolders(folders, subscribedFolders);
-        } catch (AuthenticationFailedException e) {
-            connection.close();
-            throw e;
-        } catch (IOException | MessagingException ioe) {
-            connection.close();
-            throw new MessagingException("Unable to get folder list.", ioe);
-        } finally {
-            releaseConnection(connection);
-        }
-    }
-
-    private List<FolderListItem> limitToSubscribedFolders(List<FolderListItem> folders,
-            List<FolderListItem> subscribedFolders) {
-        Set<String> subscribedFolderNames = new HashSet<>(subscribedFolders.size());
-        for (FolderListItem subscribedFolder : subscribedFolders) {
-            subscribedFolderNames.add(subscribedFolder.getServerId());
-        }
-
-        List<FolderListItem> filteredFolders = new ArrayList<>();
-        for (FolderListItem folder : folders) {
-            if (subscribedFolderNames.contains(folder.getServerId())) {
-                filteredFolders.add(folder);
-            }
-        }
-
-        return filteredFolders;
-    }
-
-    private List<FolderListItem> listFolders(ImapConnection connection, boolean subscribedOnly) throws IOException,
-            MessagingException {
-
-        String commandFormat;
-        if (subscribedOnly) {
-            commandFormat = "LSUB \"\" %s";
-        } else if (connection.hasCapability(Capabilities.SPECIAL_USE) &&
-                connection.hasCapability(Capabilities.LIST_EXTENDED)) {
-            commandFormat = "LIST \"\" %s RETURN (SPECIAL-USE)";
+        return if (trimmedPathPrefix.endsWith(trimmedPathDelimiter)) {
+            trimmedPathPrefix
+        } else if (trimmedPathPrefix.isNotEmpty()) {
+            trimmedPathPrefix + trimmedPathDelimiter
         } else {
-            commandFormat = "LIST \"\" %s";
+            ""
+        }
+    }
+
+    @Throws(MessagingException::class)
+    override fun getFolders(): List<FolderListItem> {
+        val connection = getConnection()
+
+        return try {
+            val folders = listFolders(connection, false)
+            if (!config.isSubscribedFoldersOnly()) {
+                return folders
+            }
+
+            val subscribedFolders = listFolders(connection, true)
+            limitToSubscribedFolders(folders, subscribedFolders)
+        } catch (e: AuthenticationFailedException) {
+            connection.close()
+            throw e
+        } catch (e: IOException) {
+            connection.close()
+            throw MessagingException("Unable to get folder list.", e)
+        } catch (e: MessagingException) {
+            connection.close()
+            throw MessagingException("Unable to get folder list.", e)
+        } finally {
+            releaseConnection(connection)
+        }
+    }
+
+    private fun limitToSubscribedFolders(
+        folders: List<FolderListItem>,
+        subscribedFolders: List<FolderListItem>
+    ): List<FolderListItem> {
+        val subscribedFolderServerIds = subscribedFolders.map { it.serverId }.toSet()
+        return folders.filter { it.serverId in subscribedFolderServerIds }
+    }
+
+    @Throws(IOException::class, MessagingException::class)
+    private fun listFolders(connection: ImapConnection, subscribedOnly: Boolean): List<FolderListItem> {
+        val commandFormat = when {
+            subscribedOnly -> {
+                "LSUB \"\" %s"
+            }
+            connection.supportsListExtended -> {
+                "LIST \"\" %s RETURN (SPECIAL-USE)"
+            }
+            else -> {
+                "LIST \"\" %s"
+            }
         }
 
-        String encodedListPrefix = ImapUtility.encodeString(getCombinedPrefix() + "*");
-        List<ImapResponse> responses = connection.executeSimpleCommand(String.format(commandFormat, encodedListPrefix));
+        val encodedListPrefix = ImapUtility.encodeString(getCombinedPrefix() + "*")
+        val responses = connection.executeSimpleCommand(String.format(commandFormat, encodedListPrefix))
 
-        List<ListResponse> listResponses = (subscribedOnly) ?
-                ListResponse.parseLsub(responses) :
-                ListResponse.parseList(responses);
+        val listResponses = if (subscribedOnly) {
+            ListResponse.parseLsub(responses)
+        } else {
+            ListResponse.parseList(responses)
+        }
 
-        Map<String, FolderListItem> folderMap = new HashMap<>(listResponses.size());
-        for (ListResponse listResponse : listResponses) {
-            String serverId = listResponse.getName();
+        val folderMap = mutableMapOf<String, FolderListItem>()
+        for (listResponse in listResponses) {
+            val serverId = listResponse.name
 
             if (pathDelimiter == null) {
-                pathDelimiter = listResponse.getHierarchyDelimiter();
-                combinedPrefix = null;
+                pathDelimiter = listResponse.hierarchyDelimiter
+                combinedPrefix = null
             }
 
-            if (RealImapFolder.INBOX.equalsIgnoreCase(serverId)) {
-                continue;
+            if (RealImapFolder.INBOX.equals(serverId, ignoreCase = true)) {
+                continue
             } else if (listResponse.hasAttribute("\\NoSelect")) {
-                continue;
+                continue
             }
 
-            String name = getFolderDisplayName(serverId);
-            String oldServerId = getOldServerId(serverId);
+            val name = getFolderDisplayName(serverId)
+            val oldServerId = getOldServerId(serverId)
 
-            FolderType type;
-            if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
-                type = FolderType.ARCHIVE;
-            } else if (listResponse.hasAttribute("\\Drafts")) {
-                type = FolderType.DRAFTS;
-            } else if (listResponse.hasAttribute("\\Sent")) {
-                type = FolderType.SENT;
-            } else if (listResponse.hasAttribute("\\Junk")) {
-                type = FolderType.SPAM;
-            } else if (listResponse.hasAttribute("\\Trash")) {
-                type = FolderType.TRASH;
-            } else {
-                type = FolderType.REGULAR;
+            val type = when {
+                listResponse.hasAttribute("\\Archive") -> FolderType.ARCHIVE
+                listResponse.hasAttribute("\\All") -> FolderType.ARCHIVE
+                listResponse.hasAttribute("\\Drafts") -> FolderType.DRAFTS
+                listResponse.hasAttribute("\\Sent") -> FolderType.SENT
+                listResponse.hasAttribute("\\Junk") -> FolderType.SPAM
+                listResponse.hasAttribute("\\Trash") -> FolderType.TRASH
+                else -> FolderType.REGULAR
             }
 
-            FolderListItem existingItem = folderMap.get(serverId);
-            if (existingItem == null || existingItem.getType() == FolderType.REGULAR) {
-                folderMap.put(serverId, new FolderListItem(serverId, name, type, oldServerId));
+            val existingItem = folderMap[serverId]
+            if (existingItem == null || existingItem.type == FolderType.REGULAR) {
+                folderMap[serverId] = FolderListItem(serverId, name, type, oldServerId)
             }
         }
 
-        List<FolderListItem> folders = new ArrayList<>(folderMap.size() + 1);
-        folders.add(new FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX, RealImapFolder.INBOX));
-        folders.addAll(folderMap.values());
-
-        return folders;
+        return buildList {
+            add(FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX, RealImapFolder.INBOX))
+            addAll(folderMap.values)
+        }
     }
 
-    private String getFolderDisplayName(String serverId) {
-        String decodedFolderName;
-        try {
-            decodedFolderName = folderNameCodec.decode(serverId);
-        } catch (CharacterCodingException e) {
-            Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
-                    serverId);
-
-            decodedFolderName = serverId;
+    private fun getFolderDisplayName(serverId: String): String {
+        val decodedFolderName = try {
+            folderNameCodec.decode(serverId)
+        } catch (e: CharacterCodingException) {
+            Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s", serverId)
+            serverId
         }
 
-        String folderNameWithoutPrefix = removePrefixFromFolderName(decodedFolderName);
-        return folderNameWithoutPrefix != null ? folderNameWithoutPrefix : decodedFolderName;
+        val folderNameWithoutPrefix = removePrefixFromFolderName(decodedFolderName)
+        return folderNameWithoutPrefix ?: decodedFolderName
     }
 
-    @Nullable
-    private String getOldServerId(String serverId) {
-        String decodedFolderName;
-        try {
-            decodedFolderName = folderNameCodec.decode(serverId);
-        } catch (CharacterCodingException e) {
+    private fun getOldServerId(serverId: String): String? {
+        val decodedFolderName = try {
+            folderNameCodec.decode(serverId)
+        } catch (e: CharacterCodingException) {
             // Previous versions of K-9 Mail ignored folders with invalid UTF-7 encoding
-            return null;
+            return null
         }
 
-        return removePrefixFromFolderName(decodedFolderName);
+        return removePrefixFromFolderName(decodedFolderName)
     }
 
-    @Nullable
-    private String removePrefixFromFolderName(String folderName) {
-        String prefix = getCombinedPrefix();
-        int prefixLength = prefix.length();
+    private fun removePrefixFromFolderName(folderName: String): String? {
+        val prefix = getCombinedPrefix()
+        val prefixLength = prefix.length
         if (prefixLength == 0) {
-            return folderName;
+            return folderName
         }
 
         if (!folderName.startsWith(prefix)) {
             // Folder name doesn't start with our configured prefix. But right now when building commands we prefix all
             // folders except the INBOX with the prefix. So we won't be able to use this folder.
-            return null;
+            return null
         }
 
-        return folderName.substring(prefixLength);
+        return folderName.substring(prefixLength)
     }
 
-    public void checkSettings() throws MessagingException {
+    @Throws(MessagingException::class)
+    override fun checkSettings() {
         try {
-            ImapConnection connection = createImapConnection();
+            val connection = createImapConnection()
 
-            connection.open();
-            connection.close();
-        } catch (IOException ioe) {
-            throw new MessagingException("Unable to connect", ioe);
+            connection.open()
+            connection.close()
+        } catch (e: IOException) {
+            throw MessagingException("Unable to connect", e)
         }
     }
 
-    @Override
-    @NotNull
-    public ImapConnection getConnection() throws MessagingException {
-        ImapConnection connection;
-        while ((connection = pollConnection()) != null) {
+    @Throws(MessagingException::class)
+    override fun getConnection(): ImapConnection {
+        while (true) {
+            val connection = pollConnection() ?: return createImapConnection()
+
             try {
-                connection.executeSimpleCommand(Commands.NOOP);
-                break;
-            } catch (IOException ioe) {
-                connection.close();
+                connection.executeSimpleCommand(Commands.NOOP)
+
+                // If the command completes without an error this connection is still usable.
+                return connection
+            } catch (ioe: IOException) {
+                connection.close()
             }
         }
-
-        if (connection == null) {
-            connection = createImapConnection();
-        }
-
-        return connection;
     }
 
-    private ImapConnection pollConnection() {
-        synchronized (connections) {
-            return connections.poll();
+    private fun pollConnection(): ImapConnection? {
+        return synchronized(connections) {
+            connections.poll()
         }
     }
 
-    @Override
-    public void releaseConnection(ImapConnection connection) {
-        if (connection != null && connection.isConnected()) {
-            if (connection.getConnectionGeneration() == connectionGeneration) {
-                synchronized (connections) {
-                    connections.offer(connection);
+    override fun releaseConnection(connection: ImapConnection?) {
+        if (connection != null && connection.isConnected) {
+            if (connection.connectionGeneration == connectionGeneration) {
+                synchronized(connections) {
+                    connections.offer(connection)
                 }
             } else {
-                connection.close();
+                connection.close()
             }
         }
     }
 
-    @Override
-    public void closeAllConnections() {
-        Timber.v("ImapStore.closeAllConnections()");
+    override fun closeAllConnections() {
+        Timber.v("ImapStore.closeAllConnections()")
 
-        List<ImapConnection> connectionsToClose;
-        synchronized (connections) {
-            connectionGeneration++;
-            connectionsToClose = new ArrayList<>(connections);
-            connections.clear();
+        val connectionsToClose = synchronized(connections) {
+            val connectionsToClose = connections.toList()
+
+            connectionGeneration++
+            connections.clear()
+
+            connectionsToClose
         }
 
-        for (ImapConnection connection : connectionsToClose) {
-            connection.close();
+        for (connection in connectionsToClose) {
+            connection.close()
         }
     }
 
-    ImapConnection createImapConnection() {
-        return new RealImapConnection(
-                new StoreImapSettings(),
-                trustedSocketFactory,
-                oauthTokenProvider,
-                connectionGeneration);
+    open fun createImapConnection(): ImapConnection {
+        return RealImapConnection(
+            StoreImapSettings(),
+            trustedSocketFactory,
+            oauthTokenProvider,
+            connectionGeneration
+        )
     }
 
-    @Override
-    @NotNull
-    public String getLogLabel() {
-        return config.getLogLabel();
+    override val logLabel: String
+        get() = config.logLabel
+
+    override fun getPermanentFlagsIndex(): MutableSet<Flag> {
+        return permanentFlagsIndex
     }
 
-    @Override
-    @NotNull
-    public Set<Flag> getPermanentFlagsIndex() {
-        return permanentFlagsIndex;
-    }
+    private inner class StoreImapSettings : ImapSettings {
+        override val host: String = this@RealImapStore.host
+        override val port: Int = serverSettings.port
+        override val connectionSecurity: ConnectionSecurity = serverSettings.connectionSecurity
+        override val authType: AuthType = serverSettings.authenticationType
+        override val username: String = serverSettings.username
+        override val password: String? = serverSettings.password
+        override val clientCertificateAlias: String? = serverSettings.clientCertificateAlias
 
-
-    private class StoreImapSettings implements ImapSettings {
-        @Override
-        public String getHost() {
-            return host;
+        override fun useCompression(): Boolean {
+            return this@RealImapStore.config.useCompression()
         }
 
-        @Override
-        public int getPort() {
-            return port;
-        }
+        override var pathPrefix: String?
+            get() = this@RealImapStore.pathPrefix
+            set(value) {
+                this@RealImapStore.pathPrefix = value
+            }
 
-        @Override
-        public ConnectionSecurity getConnectionSecurity() {
-            return connectionSecurity;
-        }
+        override var pathDelimiter: String?
+            get() = this@RealImapStore.pathDelimiter
+            set(value) {
+                this@RealImapStore.pathDelimiter = value
+            }
 
-        @Override
-        public AuthType getAuthType() {
-            return authType;
-        }
-
-        @Override
-        public String getUsername() {
-            return username;
-        }
-
-        @Override
-        public String getPassword() {
-            return password;
-        }
-
-        @Override
-        public String getClientCertificateAlias() {
-            return clientCertificateAlias;
-        }
-
-        @Override
-        public boolean useCompression() {
-            return config.useCompression();
-        }
-
-        @Override
-        public String getPathPrefix() {
-            return pathPrefix;
-        }
-
-        @Override
-        public void setPathPrefix(String prefix) {
-            pathPrefix = prefix;
-        }
-
-        @Override
-        public String getPathDelimiter() {
-            return pathDelimiter;
-        }
-
-        @Override
-        public void setPathDelimiter(String delimiter) {
-            pathDelimiter = delimiter;
-        }
-
-        @Override
-        public void setCombinedPrefix(String prefix) {
-            combinedPrefix = prefix;
+        override fun setCombinedPrefix(prefix: String?) {
+            combinedPrefix = prefix
         }
     }
 }
+
+private val ImapConnection.supportsListExtended: Boolean
+    get() = hasCapability(Capabilities.SPECIAL_USE) && hasCapability(Capabilities.LIST_EXTENDED)

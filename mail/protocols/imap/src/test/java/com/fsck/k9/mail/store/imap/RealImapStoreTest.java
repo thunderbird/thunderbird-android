@@ -465,7 +465,7 @@ public class RealImapStoreTest {
         }
 
         @Override
-        ImapConnection createImapConnection() {
+        public ImapConnection createImapConnection() {
             if (imapConnections.isEmpty()) {
                 throw new AssertionError("Unexpectedly tried to create an ImapConnection instance");
             }
