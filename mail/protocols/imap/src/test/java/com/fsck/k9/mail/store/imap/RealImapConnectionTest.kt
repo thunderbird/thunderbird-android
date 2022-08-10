@@ -38,10 +38,6 @@ private val OAUTHBEARER_STRING = "n,a=$USERNAME,\u0001auth=Bearer $XOAUTH_TOKEN\
 class RealImapConnectionTest {
     private var socketFactory = TestTrustedSocketFactory.newInstance()
     private var oAuth2TokenProvider = TestTokenProvider()
-    private var settings = SimpleImapSettings().apply {
-        username = USERNAME
-        password = PASSWORD
-    }
 
     @Before
     fun setUp() {
@@ -646,8 +642,7 @@ class RealImapConnectionTest {
 
     @Test
     fun `open() with connection error should throw`() {
-        settings.host = "127.1.2.3"
-        settings.port = 143
+        val settings = createImapSettings(host = "127.1.2.3")
         val imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider)
 
         try {
@@ -661,8 +656,7 @@ class RealImapConnectionTest {
 
     @Test
     fun `open() with invalid hostname should throw`() {
-        settings.host = "host name"
-        settings.port = 143
+        val settings = createImapSettings(host = "host name")
         val imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider)
 
         try {
@@ -676,7 +670,6 @@ class RealImapConnectionTest {
 
     @Test
     fun `open() with STARTTLS capability should issue STARTTLS command`() {
-        settings.connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
         val server = MockImapServer().apply {
             preAuthenticationDialog(capabilities = "STARTTLS LOGINDISABLED")
             expect("2 STARTTLS")
@@ -691,7 +684,11 @@ class RealImapConnectionTest {
             output("* NAMESPACE ((\"\" \"/\")) NIL NIL")
             output("5 OK command completed")
         }
-        val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.PLAIN)
+        val imapConnection = startServerAndCreateImapConnection(
+            server,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authType = AuthType.PLAIN
+        )
 
         imapConnection.open()
 
@@ -701,11 +698,13 @@ class RealImapConnectionTest {
 
     @Test
     fun `open() with STARTTLS but without STARTTLS capability should throw`() {
-        settings.connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
         val server = MockImapServer().apply {
             preAuthenticationDialog()
         }
-        val imapConnection = startServerAndCreateImapConnection(server)
+        val imapConnection = startServerAndCreateImapConnection(
+            server,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+        )
 
         try {
             imapConnection.open()
@@ -721,7 +720,6 @@ class RealImapConnectionTest {
 
     @Test
     fun `open() with untagged CAPABILITY after STARTTLS should not throw`() {
-        settings.connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
         val server = MockImapServer().apply {
             preAuthenticationDialog(capabilities = "STARTTLS LOGINDISABLED")
             expect("2 STARTTLS")
@@ -735,7 +733,11 @@ class RealImapConnectionTest {
             output("4 OK [CAPABILITY IMAP4REV1] LOGIN completed")
             simplePostAuthenticationDialog(tag = 5)
         }
-        val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.PLAIN)
+        val imapConnection = startServerAndCreateImapConnection(
+            server,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authType = AuthType.PLAIN
+        )
 
         imapConnection.open()
 
@@ -745,13 +747,16 @@ class RealImapConnectionTest {
 
     @Test
     fun `open() with negative response to STARTTLS command should throw`() {
-        settings.connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
         val server = MockImapServer().apply {
             preAuthenticationDialog(capabilities = "STARTTLS")
             expect("2 STARTTLS")
             output("2 NO")
         }
-        val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.PLAIN)
+        val imapConnection = startServerAndCreateImapConnection(
+            server,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authType = AuthType.PLAIN
+        )
 
         try {
             imapConnection.open()
@@ -766,7 +771,6 @@ class RealImapConnectionTest {
 
     @Test
     fun `open() with COMPRESS=DEFLATE capability should enable compression`() {
-        settings.setUseCompression(true)
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "COMPRESS=DEFLATE")
             expect("3 COMPRESS DEFLATE")
@@ -774,7 +778,7 @@ class RealImapConnectionTest {
             enableCompression()
             simplePostAuthenticationDialog(tag = 4)
         }
-        val imapConnection = startServerAndCreateImapConnection(server)
+        val imapConnection = startServerAndCreateImapConnection(server, useCompression = true)
 
         imapConnection.open()
 
@@ -784,14 +788,13 @@ class RealImapConnectionTest {
 
     @Test
     fun `open() with negative response to COMPRESS command should continue`() {
-        settings.setUseCompression(true)
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "COMPRESS=DEFLATE")
             expect("3 COMPRESS DEFLATE")
             output("3 NO")
             simplePostAuthenticationDialog(tag = 4)
         }
-        val imapConnection = startServerAndCreateImapConnection(server)
+        val imapConnection = startServerAndCreateImapConnection(server, useCompression = true)
 
         imapConnection.open()
 
@@ -801,13 +804,12 @@ class RealImapConnectionTest {
 
     @Test
     fun `open() with IOException during COMPRESS command should throw`() {
-        settings.setUseCompression(true)
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "COMPRESS=DEFLATE")
             expect("3 COMPRESS DEFLATE")
             closeConnection()
         }
-        val imapConnection = startServerAndCreateImapConnection(server)
+        val imapConnection = startServerAndCreateImapConnection(server, useCompression = true)
 
         try {
             imapConnection.open()
@@ -855,6 +857,7 @@ class RealImapConnectionTest {
 
     @Test
     fun `isConnected without previous open() should return false`() {
+        val settings = createImapSettings()
         val imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider)
 
         val result = imapConnection.isConnected
@@ -889,6 +892,7 @@ class RealImapConnectionTest {
 
     @Test
     fun `close() without open() should not throw`() {
+        val settings = createImapSettings()
         val imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider)
 
         imapConnection.close()
@@ -1015,12 +1019,21 @@ class RealImapConnectionTest {
 
     private fun startServerAndCreateImapConnection(
         server: MockImapServer,
-        authType: AuthType = AuthType.PLAIN
+        connectionSecurity: ConnectionSecurity = ConnectionSecurity.NONE,
+        authType: AuthType = AuthType.PLAIN,
+        useCompression: Boolean = false
     ): ImapConnection {
         server.start()
-        settings.host = server.host
-        settings.port = server.port
-        settings.authType = authType
+
+        val settings = SimpleImapSettings(
+            host = server.host,
+            port = server.port,
+            connectionSecurity = connectionSecurity,
+            authType = authType,
+            username = USERNAME,
+            password = PASSWORD,
+            useCompression = useCompression
+        )
 
         return createImapConnection(settings, socketFactory, oAuth2TokenProvider)
     }
@@ -1068,10 +1081,18 @@ class RealImapConnectionTest {
     }
 
     private fun MockImapServer.simplePreAuthAndLoginDialog(postAuthCapabilities: String = "") {
-        settings.authType = AuthType.PLAIN
         preAuthenticationDialog()
         expect("2 LOGIN \"$USERNAME\" \"$PASSWORD\"")
         output("2 OK [CAPABILITY $postAuthCapabilities] LOGIN completed")
+    }
+
+    private fun createImapSettings(host: String = "irrelevant"): ImapSettings {
+        return SimpleImapSettings(
+            host = host,
+            port = 143,
+            authType = AuthType.PLAIN,
+            username = "irrelevant"
+        )
     }
 }
 

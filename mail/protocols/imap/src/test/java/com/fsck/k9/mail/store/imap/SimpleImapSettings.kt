@@ -1,113 +1,50 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
 
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.ConnectionSecurity;
+internal class SimpleImapSettings(
+    private val host: String,
+    private val port: Int = 0,
+    private val connectionSecurity: ConnectionSecurity = ConnectionSecurity.NONE,
+    private val authType: AuthType,
+    private val username: String,
+    private val password: String? = null,
+    private val useCompression: Boolean = false
+) : ImapSettings {
+    private var pathPrefix: String? = null
+    private var pathDelimiter: String? = null
+    private var combinedPrefix: String? = null
 
+    override fun getHost(): String = host
 
-class SimpleImapSettings implements ImapSettings {
-    private String host;
-    private int port;
-    private ConnectionSecurity connectionSecurity = ConnectionSecurity.NONE;
-    private AuthType authType;
-    private String username;
-    private String password;
-    private String pathPrefix;
-    private String pathDelimiter;
-    private String combinedPrefix;
-    private boolean useCompression = false;
+    override fun getPort(): Int = port
 
+    override fun getConnectionSecurity(): ConnectionSecurity = connectionSecurity
 
-    @Override
-    public String getHost() {
-        return host;
+    override fun getAuthType(): AuthType = authType
+
+    override fun getUsername(): String = username
+
+    override fun getPassword(): String? = password
+
+    override fun getClientCertificateAlias(): String? = null
+
+    override fun useCompression(): Boolean = useCompression
+
+    override fun getPathPrefix(): String? = pathPrefix
+
+    override fun setPathPrefix(prefix: String?) {
+        pathPrefix = prefix
     }
 
-    @Override
-    public int getPort() {
-        return port;
+    override fun getPathDelimiter(): String? = pathDelimiter
+
+    override fun setPathDelimiter(delimiter: String?) {
+        pathDelimiter = delimiter
     }
 
-    @Override
-    public ConnectionSecurity getConnectionSecurity() {
-        return connectionSecurity;
-    }
-
-    @Override
-    public AuthType getAuthType() {
-        return authType;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getClientCertificateAlias() {
-        return null;
-    }
-
-    @Override
-    public boolean useCompression() {
-        return useCompression;
-    }
-
-    @Override
-    public String getPathPrefix() {
-        return pathPrefix;
-    }
-
-    @Override
-    public void setPathPrefix(String prefix) {
-        pathPrefix = prefix;
-    }
-
-    @Override
-    public String getPathDelimiter() {
-        return pathDelimiter;
-    }
-
-    @Override
-    public void setPathDelimiter(String delimiter) {
-        pathDelimiter = delimiter;
-    }
-
-    @Override
-    public void setCombinedPrefix(String prefix) {
-        combinedPrefix = prefix;
-    }
-
-    void setHost(String host) {
-        this.host = host;
-    }
-
-    void setPort(int port) {
-        this.port = port;
-    }
-
-    void setConnectionSecurity(ConnectionSecurity connectionSecurity) {
-        this.connectionSecurity = connectionSecurity;
-    }
-
-    void setAuthType(AuthType authType) {
-        this.authType = authType;
-    }
-
-    void setUsername(String username) {
-        this.username = username;
-    }
-
-    void setPassword(String password) {
-        this.password = password;
-    }
-
-    void setUseCompression(boolean useCompression) {
-        this.useCompression = useCompression;
+    override fun setCombinedPrefix(prefix: String?) {
+        combinedPrefix = prefix
     }
 }
