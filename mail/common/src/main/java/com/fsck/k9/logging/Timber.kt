@@ -68,7 +68,7 @@ object Timber {
 
     @JvmStatic
     fun e(message: String?, vararg args: Any?) {
-        logger.e(message)
+        logger.e(message, *args)
     }
 
     @JvmStatic

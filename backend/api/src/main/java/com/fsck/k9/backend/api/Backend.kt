@@ -21,7 +21,7 @@ interface Backend {
     fun refreshFolderList()
 
     // TODO: Add a way to cancel the sync process
-    fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener)
+    fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener)
 
     @Throws(MessagingException::class)
     fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String)

@@ -45,7 +45,7 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     public void setUp() throws MessagingException {
         ShadowLog.stream = System.out;
 
-        Application application = RuntimeEnvironment.application;
+        Application application = RuntimeEnvironment.getApplication();
         StorageManager.getInstance(application);
 
         storeSchemaDefinition = createStoreSchemaDefinition();

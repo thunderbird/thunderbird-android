@@ -42,8 +42,8 @@ class WebDavBackend(
         commandGetFolders.refreshFolderList()
     }
 
-    override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
-        webDavSync.sync(folder, syncConfig, listener)
+    override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
+        webDavSync.sync(folderServerId, syncConfig, listener)
     }
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {

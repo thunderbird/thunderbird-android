@@ -23,7 +23,7 @@ public class AutocryptHeaderParserTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
-        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.getCacheDir());
+        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.getApplication().getCacheDir());
     }
 
     // Test cases taken from: https://github.com/mailencrypt/autocrypt/tree/master/src/tests/data

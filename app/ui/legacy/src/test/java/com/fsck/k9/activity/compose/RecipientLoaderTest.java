@@ -77,7 +77,7 @@ public class RecipientLoaderTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
-        Application application = RuntimeEnvironment.application;
+        Application application = RuntimeEnvironment.getApplication();
         shadowApp = Shadows.shadowOf(application);
         shadowApp.grantPermissions(Manifest.permission.READ_CONTACTS);
         shadowApp.grantPermissions(Manifest.permission.WRITE_CONTACTS);

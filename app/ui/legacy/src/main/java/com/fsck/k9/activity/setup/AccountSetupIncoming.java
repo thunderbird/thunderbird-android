@@ -158,7 +158,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mPortView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = Preferences.getPreferences().getAccount(accountUuid);
         mMakeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
         /*
@@ -167,7 +167,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+            mAccount = Preferences.getPreferences().getAccount(accountUuid);
         }
 
         boolean oAuthSupported = mAccount.getIncomingServerSettings().type.equals(Protocols.IMAP);
@@ -539,7 +539,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
         if (resultCode == RESULT_OK) {
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
+                Preferences.getPreferences().saveAccount(mAccount);
                 finish();
             } else {
                 /*

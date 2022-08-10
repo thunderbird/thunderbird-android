@@ -139,7 +139,7 @@ public class ManageIdentities extends ChooseIdentity {
     private void saveIdentities() {
         if (mIdentitiesChanged) {
             mAccount.setIdentities(identities);
-            Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
+            Preferences.getPreferences().saveAccount(mAccount);
         }
         finish();
     }

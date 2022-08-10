@@ -149,7 +149,7 @@ public class MessageProvider extends ContentProvider {
 
         // get account
         Account myAccount = null;
-        for (Account account : Preferences.getPreferences(getContext()).getAccounts()) {
+        for (Account account : Preferences.getPreferences().getAccounts()) {
             if (account.getAccountNumber() == accountId) {
                 myAccount = account;
             }
@@ -601,7 +601,7 @@ public class MessageProvider extends ContentProvider {
 
             MatrixCursor cursor = new MatrixCursor(projection);
 
-            for (Account account : Preferences.getPreferences(getContext()).getAccounts()) {
+            for (Account account : Preferences.getPreferences().getAccounts()) {
                 Object[] values = new Object[projection.length];
 
                 int fieldIndex = 0;
@@ -667,7 +667,7 @@ public class MessageProvider extends ContentProvider {
 
             Context context = getContext();
             MessagingController controller = MessagingController.getInstance(context);
-            Collection<Account> accounts = Preferences.getPreferences(context).getAccounts();
+            Collection<Account> accounts = Preferences.getPreferences().getAccounts();
 
             for (Account account : accounts) {
                 if (account.getAccountNumber() == accountNumber) {

@@ -8,7 +8,7 @@ import org.robolectric.annotation.Config
 
 @Config(qualifiers = "en")
 class SizeFormatterTest : RobolectricTest() {
-    private val sizeFormatter = SizeFormatter(RuntimeEnvironment.application.resources)
+    private val sizeFormatter = SizeFormatter(RuntimeEnvironment.getApplication().resources)
 
     @Test
     fun bytes_lower_bound() {

@@ -15,7 +15,7 @@ internal class FlagMessageOperations(private val lockableDatabase: LockableDatab
         if (flag in SPECIAL_FLAGS) {
             setSpecialFlags(messageIds, flag, set)
         } else {
-            rebuildFlagsColumnValue(messageIds, flag, set)
+            throw UnsupportedOperationException("not implemented")
         }
     }
 
@@ -52,10 +52,6 @@ internal class FlagMessageOperations(private val lockableDatabase: LockableDatab
                 database.update("messages", contentValues, "id $selectionSet", selectionArguments)
             }
         }
-    }
-
-    private fun rebuildFlagsColumnValue(messageIds: Collection<Long>, flag: Flag, set: Boolean) {
-        throw UnsupportedOperationException("not implemented")
     }
 
     private fun rebuildFlagsColumnValue(folderId: Long, messageServerId: String, flag: Flag, set: Boolean) {

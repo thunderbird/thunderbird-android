@@ -227,7 +227,7 @@ public class LocalStore {
     }
 
     protected Preferences getPreferences() {
-        return Preferences.getPreferences(context);
+        return Preferences.getPreferences();
     }
 
     public OutboxStateRepository getOutboxStateRepository() {

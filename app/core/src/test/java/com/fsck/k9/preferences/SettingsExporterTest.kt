@@ -15,7 +15,7 @@ import org.mockito.kotlin.mock
 import org.robolectric.RuntimeEnvironment
 
 class SettingsExporterTest : K9RobolectricTest() {
-    private val contentResolver = RuntimeEnvironment.application.contentResolver
+    private val contentResolver = RuntimeEnvironment.getApplication().contentResolver
     private val preferences: Preferences by inject()
     private val folderSettingsProvider: FolderSettingsProvider by inject()
     private val folderRepository: FolderRepository by inject()

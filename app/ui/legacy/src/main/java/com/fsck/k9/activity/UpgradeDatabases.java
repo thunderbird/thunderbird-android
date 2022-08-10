@@ -115,7 +115,7 @@ public class UpgradeDatabases extends K9Activity {
             return;
         }
 
-        mPreferences = Preferences.getPreferences(getApplicationContext());
+        mPreferences = Preferences.getPreferences();
 
         initializeLayout();
 

@@ -48,11 +48,11 @@ class LocalKeyStoreManager(
      * certificates for the incoming and outgoing servers.
      */
     fun deleteCertificates(account: Account) {
-        account.incomingServerSettings?.let { serverSettings ->
+        account.incomingServerSettings.let { serverSettings ->
             localKeyStore.deleteCertificate(serverSettings.host!!, serverSettings.port)
         }
 
-        account.outgoingServerSettings?.let { serverSettings ->
+        account.outgoingServerSettings.let { serverSettings ->
             localKeyStore.deleteCertificate(serverSettings.host!!, serverSettings.port)
         }
     }

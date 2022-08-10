@@ -101,7 +101,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         setTitle(R.string.account_setup_outgoing_title);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = Preferences.getPreferences().getAccount(accountUuid);
 
         ServerSettings incomingServerSettings = mAccount.getIncomingServerSettings();
         if (incomingServerSettings.type.equals(Protocols.WEBDAV)) {
@@ -138,7 +138,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         //FIXME: get Account object again?
         accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = Preferences.getPreferences().getAccount(accountUuid);
 
         /*
          * If we're being reloaded we override the original account with the one
@@ -146,7 +146,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+            mAccount = Preferences.getPreferences().getAccount(accountUuid);
         }
 
         boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
@@ -495,7 +495,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         if (resultCode == RESULT_OK) {
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
+                Preferences.getPreferences().saveAccount(mAccount);
                 finish();
             } else {
                 AccountSetupOptions.actionOptions(this, mAccount);

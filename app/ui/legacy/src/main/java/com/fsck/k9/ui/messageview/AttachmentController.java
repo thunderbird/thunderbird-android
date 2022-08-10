@@ -86,7 +86,7 @@ public class AttachmentController {
 
     private void downloadAttachment(LocalPart localPart, final Runnable attachmentDownloadedCallback) {
         String accountUuid = localPart.getAccountUuid();
-        Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+        Account account = Preferences.getPreferences().getAccount(accountUuid);
         LocalMessage message = localPart.getMessage();
 
         messageViewFragment.showAttachmentLoadingDialog();
@@ -221,11 +221,6 @@ public class AttachmentController {
     private class ViewAttachmentAsyncTask extends AsyncTask<Void, Void, Intent> {
 
         @Override
-        protected void onPreExecute() {
-            messageViewFragment.disableAttachmentButtons(attachment);
-        }
-
-        @Override
         protected Intent doInBackground(Void... params) {
             return getBestViewIntent();
         }
@@ -233,7 +228,6 @@ public class AttachmentController {
         @Override
         protected void onPostExecute(Intent intent) {
             viewAttachment(intent);
-            messageViewFragment.enableAttachmentButtons(attachment);
         }
 
         private void viewAttachment(Intent intent) {
@@ -251,11 +245,6 @@ public class AttachmentController {
     private class SaveAttachmentAsyncTask extends AsyncTask<Uri, Void, Boolean> {
 
         @Override
-        protected void onPreExecute() {
-            messageViewFragment.disableAttachmentButtons(attachment);
-        }
-
-        @Override
         protected Boolean doInBackground(Uri... params) {
             try {
                 Uri documentUri = params[0];
@@ -269,7 +258,6 @@ public class AttachmentController {
 
         @Override
         protected void onPostExecute(Boolean success) {
-            messageViewFragment.enableAttachmentButtons(attachment);
             if (!success) {
                 displayAttachmentNotSavedMessage();
             }

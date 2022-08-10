@@ -179,7 +179,7 @@ public class DatabaseUpgradeService extends Service {
      * Upgrade the accounts' databases.
      */
     private void upgradeDatabases() {
-        Preferences preferences = Preferences.getPreferences(this);
+        Preferences preferences = Preferences.getPreferences();
 
         List<Account> accounts = preferences.getAccounts();
         mProgressEnd = accounts.size();

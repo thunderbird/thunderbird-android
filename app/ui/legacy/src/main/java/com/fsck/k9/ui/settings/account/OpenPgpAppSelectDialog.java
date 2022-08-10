@@ -66,7 +66,7 @@ public class OpenPgpAppSelectDialog extends K9Activity {
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        account = Preferences.getPreferences(this).getAccount(accountUuid);
+        account = Preferences.getPreferences().getAccount(accountUuid);
     }
 
     @Override
@@ -283,7 +283,7 @@ public class OpenPgpAppSelectDialog extends K9Activity {
 
     private void persistOpenPgpProviderSetting(String selectedPackage) {
         account.setOpenPgpProvider(selectedPackage);
-        Preferences.getPreferences(getApplicationContext()).saveAccount(account);
+        Preferences.getPreferences().saveAccount(account);
     }
 
     private static class OpenPgpProviderEntry {

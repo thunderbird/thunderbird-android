@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import android.content.Context;
+
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.AuthType;
@@ -20,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 
 public class SettingsImporterTest extends K9RobolectricTest {
+    private final Context context = RuntimeEnvironment.getApplication();
 
     @Before
     public void before() {
@@ -27,7 +30,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
     }
 
     private void deletePreExistingAccounts() {
-        Preferences preferences = Preferences.getPreferences(RuntimeEnvironment.application);
+        Preferences preferences = Preferences.getPreferences();
         preferences.clearAccounts();
     }
 
@@ -36,7 +39,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = inputStreamOf("");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
+        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -44,7 +47,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = inputStreamOf("<k9settings version=\"1\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
+        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -52,7 +55,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = inputStreamOf("<k9settings version=\"1\" format=\"A\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
+        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -60,7 +63,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = inputStreamOf("<k9settings version=\"1\" format=\"0\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
+        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -68,7 +71,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = inputStreamOf("<k9settings format=\"1\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
+        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -76,7 +79,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"A\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
+        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -84,7 +87,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"0\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
+        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
     }
 
     @Test
@@ -162,7 +165,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         accountUuids.add(validUUID);
 
         SettingsImporter.ImportResults results = SettingsImporter.importSettings(
-                RuntimeEnvironment.application, inputStream, true, accountUuids, false);
+                context, inputStream, true, accountUuids, false);
 
         assertEquals(0, results.erroneousAccounts.size());
         assertEquals(1, results.importedAccounts.size());

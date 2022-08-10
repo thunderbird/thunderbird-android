@@ -8,7 +8,7 @@ import org.robolectric.RuntimeEnvironment
 class K9DrawerTest : RobolectricTest() {
     @Test
     fun testAccountColorLengthEqualsDrawerColorLength() {
-        val resources = RuntimeEnvironment.application.resources
+        val resources = RuntimeEnvironment.getApplication().resources
 
         val lightColors = resources.getIntArray(R.array.account_colors)
         val darkColors = resources.getIntArray(R.array.drawer_account_accent_color_dark_theme)

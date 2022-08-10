@@ -1,6 +1,5 @@
 package com.fsck.k9
 
-import android.content.Context
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
 import com.fsck.k9.mail.MessagingException
@@ -291,8 +290,8 @@ class Preferences internal constructor(
 
     companion object {
         @JvmStatic
-        fun getPreferences(context: Context): Preferences {
-            return DI.get(Preferences::class.java)
+        fun getPreferences(): Preferences {
+            return DI.get()
         }
     }
 }

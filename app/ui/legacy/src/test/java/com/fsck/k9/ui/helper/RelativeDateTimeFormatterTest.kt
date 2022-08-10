@@ -16,7 +16,7 @@ import org.robolectric.annotation.Config
 @Config(qualifiers = "en")
 class RelativeDateTimeFormatterTest : RobolectricTest() {
 
-    private val context = RuntimeEnvironment.application.applicationContext
+    private val context = RuntimeEnvironment.getApplication().applicationContext
     private val clock = TestClock()
     private val dateTimeFormatter = RelativeDateTimeFormatter(context, clock)
 

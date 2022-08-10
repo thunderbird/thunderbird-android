@@ -81,7 +81,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     @Before
     @Throws(Exception::class)
     fun setUp() {
-        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.cacheDir)
+        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.getApplication().cacheDir)
         `when`(autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(openPgpApi, TEST_KEY_ID, SENDER_EMAIL))
             .thenReturn(AUTOCRYPT_KEY_MATERIAL)
     }
