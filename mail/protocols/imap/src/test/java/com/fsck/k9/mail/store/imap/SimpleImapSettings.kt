@@ -1,0 +1,22 @@
+package com.fsck.k9.mail.store.imap
+
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
+
+internal class SimpleImapSettings(
+    override val host: String,
+    override val port: Int = 0,
+    override val connectionSecurity: ConnectionSecurity = ConnectionSecurity.NONE,
+    override val authType: AuthType,
+    override val username: String,
+    override val password: String? = null,
+    private val useCompression: Boolean = false
+) : ImapSettings {
+    override val clientCertificateAlias: String? = null
+    override fun useCompression(): Boolean = useCompression
+
+    override var pathPrefix: String? = null
+    override var pathDelimiter: String? = null
+
+    override fun setCombinedPrefix(prefix: String?) = Unit
+}

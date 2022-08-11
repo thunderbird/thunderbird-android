@@ -29,7 +29,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.ArgumentMatchers.startsWith
 import org.mockito.Mockito.atLeastOnce
 import org.mockito.Mockito.times
@@ -39,6 +38,7 @@ import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -48,7 +48,7 @@ class RealImapFolderTest {
         override fun getCombinedPrefix() = ""
         override fun getPermanentFlagsIndex() = mutableSetOf<Flag>()
     }
-    private val imapConnection = mock<RealImapConnection>()
+    private val imapConnection = mock<ImapConnection>()
     private val testConnectionManager = TestConnectionManager(imapConnection)
 
     private lateinit var tempDirectory: File
