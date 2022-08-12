@@ -14,7 +14,7 @@ internal interface ImapSettings {
     val username: String
     val password: String?
     val clientCertificateAlias: String?
-    fun useCompression(): Boolean
+    val useCompression: Boolean
 
     var pathPrefix: String?
     var pathDelimiter: String?

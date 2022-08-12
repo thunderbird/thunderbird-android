@@ -23,7 +23,6 @@ import java.io.BufferedOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.net.ConnectException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -101,8 +100,6 @@ internal class RealImapConnection(
             retrievePathDelimiterIfNecessary()
         } catch (e: SSLException) {
             handleSslException(e)
-        } catch (e: ConnectException) {
-            handleConnectException(e)
         } catch (e: GeneralSecurityException) {
             throw MessagingException("Unable to open connection to IMAP server due to security error.", e)
         } finally {
@@ -116,20 +113,6 @@ internal class RealImapConnection(
     private fun handleSslException(e: SSLException) {
         if (e.cause is CertificateException) {
             throw CertificateValidationException(e.message, e)
-        } else {
-            throw e
-        }
-    }
-
-    // TODO: Remove this. There is no documentation on why this was added, there are no tests, and this is unlikely to
-    //  still work.
-    private fun handleConnectException(e: ConnectException) {
-        val message = e.message ?: throw e
-
-        val tokens = message.split("-")
-        if (tokens.size > 1) {
-            Timber.e(e, "Stripping host/port from ConnectionException for %s", logId)
-            throw ConnectException(tokens[1].trim())
         } else {
             throw e
         }
@@ -549,7 +532,7 @@ internal class RealImapConnection(
     }
 
     private fun enableCompressionIfRequested() {
-        if (hasCapability(Capabilities.COMPRESS_DEFLATE) && settings.useCompression()) {
+        if (hasCapability(Capabilities.COMPRESS_DEFLATE) && settings.useCompression) {
             enableCompression()
         }
     }
