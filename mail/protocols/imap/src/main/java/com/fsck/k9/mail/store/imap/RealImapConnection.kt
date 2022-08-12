@@ -549,7 +549,7 @@ internal class RealImapConnection(
     }
 
     private fun enableCompressionIfRequested() {
-        if (hasCapability(Capabilities.COMPRESS_DEFLATE) && settings.useCompression()) {
+        if (hasCapability(Capabilities.COMPRESS_DEFLATE) && settings.useCompression) {
             enableCompression()
         }
     }

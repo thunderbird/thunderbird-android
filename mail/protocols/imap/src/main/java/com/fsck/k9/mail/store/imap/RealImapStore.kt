@@ -296,9 +296,8 @@ internal open class RealImapStore(
         override val password: String? = serverSettings.password
         override val clientCertificateAlias: String? = serverSettings.clientCertificateAlias
 
-        override fun useCompression(): Boolean {
-            return this@RealImapStore.config.useCompression()
-        }
+        override val useCompression: Boolean
+            get() = this@RealImapStore.config.useCompression()
 
         override var pathPrefix: String?
             get() = this@RealImapStore.pathPrefix
