@@ -261,6 +261,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="message_view_from_format">From: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
     <string name="message_to_label">To:</string>
+    <string name="message_to_me_label">To me</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment.</string>
