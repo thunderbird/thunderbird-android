@@ -409,6 +409,24 @@ class HtmlSanitizerTest {
         )
     }
 
+    @Test
+    fun `should keep 'align' attribute on 'div' element`() {
+        val html = """<div align="center">text</div>"""
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(
+            """
+            <html>
+            <head></head>
+            <body>
+            <div align="center">text</div>
+            </body>
+            </html>
+            """.trimIndent().trimLineBreaks()
+        )
+    }
+
     private fun Document.toCompactString(): String {
         outputSettings()
             .prettyPrint(false)
