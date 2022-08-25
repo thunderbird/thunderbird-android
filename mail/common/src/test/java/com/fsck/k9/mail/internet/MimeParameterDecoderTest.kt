@@ -100,8 +100,8 @@ class MimeParameterDecoderTest {
         val mimeValue = MimeParameterDecoder.decode(
             "application/x-stuff;\r\n" +
                 " name*0=\"[one]\";\r\n" +
-                " name*1=\"[two]\";\r\n" +
-                " name*2=\"[three]\""
+                " NAME*1=\"[two]\";\r\n" +
+                " nAmE*2=\"[three]\""
         )
 
         assertParametersEquals(mimeValue, "name" to "[one][two][three]")
