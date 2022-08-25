@@ -3,7 +3,6 @@ package com.fsck.k9.activity.loader;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import android.content.ContentResolver;
@@ -88,7 +87,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
 
             cachedResultAttachment = sourceAttachment.deriveWithLoadComplete(file.getAbsolutePath());
             return cachedResultAttachment;
-        } catch (IOException e) {
+        } catch (Exception e) {
             Timber.e(e, "Error saving attachment!");
         }
 

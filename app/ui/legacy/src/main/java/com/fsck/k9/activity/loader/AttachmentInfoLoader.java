@@ -46,63 +46,70 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
 
     @Override
     public Attachment loadInBackground() {
-        Uri uri = sourceAttachment.uri;
-        String contentType = sourceAttachment.contentType;
+        try {
+            Uri uri = sourceAttachment.uri;
+            String contentType = sourceAttachment.contentType;
 
-        long size = -1;
-        String name = null;
+            long size = -1;
+            String name = null;
 
-        ContentResolver contentResolver = getContext().getContentResolver();
+            ContentResolver contentResolver = getContext().getContentResolver();
 
-        Cursor metadataCursor = contentResolver.query(
-                uri,
-                new String[] { OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE },
-                null,
-                null,
-                null);
+            Cursor metadataCursor = contentResolver.query(
+                    uri,
+                    new String[] { OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE },
+                    null,
+                    null,
+                    null);
 
-        if (metadataCursor != null) {
-            try {
-                if (metadataCursor.moveToFirst()) {
-                    name = metadataCursor.getString(0);
-                    size = metadataCursor.getInt(1);
+            if (metadataCursor != null) {
+                try {
+                    if (metadataCursor.moveToFirst()) {
+                        name = metadataCursor.getString(0);
+                        size = metadataCursor.getInt(1);
+                    }
+                } finally {
+                    metadataCursor.close();
                 }
-            } finally {
-                metadataCursor.close();
             }
-        }
 
-        if (name == null) {
-            name = uri.getLastPathSegment();
-        }
+            if (name == null) {
+                name = uri.getLastPathSegment();
+            }
 
-        String usableContentType = contentResolver.getType(uri);
-        if (usableContentType == null && contentType != null && contentType.indexOf('*') != -1) {
-            usableContentType = contentType;
-        }
+            String usableContentType = contentResolver.getType(uri);
+            if (usableContentType == null && contentType != null && contentType.indexOf('*') != -1) {
+                usableContentType = contentType;
+            }
 
-        if (usableContentType == null) {
-            usableContentType = MimeTypeUtil.getMimeTypeByExtension(name);
-        }
+            if (usableContentType == null) {
+                usableContentType = MimeTypeUtil.getMimeTypeByExtension(name);
+            }
 
-        if (!sourceAttachment.allowMessageType && MimeUtility.isMessageType(usableContentType)) {
-            usableContentType = MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE;
-        }
+            if (!sourceAttachment.allowMessageType && MimeUtility.isMessageType(usableContentType)) {
+                usableContentType = MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE;
+            }
 
-        if (size <= 0) {
-            String uriString = uri.toString();
-            if (uriString.startsWith("file://")) {
-                File f = new File(uriString.substring("file://".length()));
-                size = f.length();
+            if (size <= 0) {
+                String uriString = uri.toString();
+                if (uriString.startsWith("file://")) {
+                    File f = new File(uriString.substring("file://".length()));
+                    size = f.length();
+                } else {
+                    Timber.v("Not a file: %s", uriString);
+                }
             } else {
-                Timber.v("Not a file: %s", uriString);
+                Timber.v("old attachment.size: %d", size);
             }
-        } else {
-            Timber.v("old attachment.size: %d", size);
-        }
-        Timber.v("new attachment.size: %d", size);
+            Timber.v("new attachment.size: %d", size);
 
-        cachedResultAttachment = sourceAttachment.deriveWithMetadataLoaded(usableContentType, name, size);
-        return cachedResultAttachment;
+            cachedResultAttachment = sourceAttachment.deriveWithMetadataLoaded(usableContentType, name, size);
+            return cachedResultAttachment;
+        } catch (Exception e) {
+            Timber.e(e, "Error getting attachment meta data");
+
+            cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();
+            return cachedResultAttachment;
+        }
     }
 }
