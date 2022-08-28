@@ -68,81 +68,92 @@
             android:layout_marginEnd="16dp"
             tools:src="@drawable/ic_contact_picture" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <!-- From -->
-            <TextView
-                android:id="@+id/from"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@id/icon_single_message_options"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:layout_marginEnd="8dp"
-                android:text="@string/general_no_sender"
-                android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/crypto_status_icon"
-                android:layout_width="16sp"
-                android:layout_height="16sp"
-                android:layout_below="@id/from"
-                android:layout_alignParentStart="true"
-                android:visibility="gone"
-                app:srcCompat="@drawable/status_lock_disabled"
-                app:tint="?attr/openpgp_grey"
-                tools:visibility="visible"/>
+                <TextView
+                    android:id="@+id/from"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/general_no_sender"
+                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
 
-            <TextView
-                android:id="@+id/to"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/icon_single_message_options"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackgroundBorderless"
+                    app:srcCompat="?iconActionSingleMessageOptions" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/from"
-                android:layout_toEndOf="@id/crypto_status_icon"
-                android:text="@string/message_to_me_label"
-                android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/to_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/to"
-                android:textColor="?attr/colorAccent"
-                android:layout_alignBaseline="@id/to"
-                android:layout_marginStart="4dp"
-                android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                tools:text="+2" />
+                <ImageView
+                    android:id="@+id/crypto_status_icon"
+                    android:layout_width="16sp"
+                    android:layout_height="16sp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/status_lock_disabled"
+                    app:tint="?attr/openpgp_grey"
+                    tools:visibility="visible" />
 
-            <!-- Date -->
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/icon_single_message_options"
-                android:layout_alignParentEnd="true"
-                android:ellipsize="none"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.K9.Small"
-                android:textColor="?android:attr/textColorSecondary"
-                tools:text="10:00 am" />
+                <TextView
+                    android:id="@+id/to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/message_to_me_label"
+                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-            <ImageView
-                android:id="@+id/icon_single_message_options"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:background="?selectableItemBackgroundBorderless"
-                app:srcCompat="?iconActionSingleMessageOptions" />
+                <TextView
+                    android:id="@+id/to_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+                    android:textColor="?attr/colorAccent"
+                    tools:text="+2" />
 
-        </RelativeLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <!-- Date -->
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="none"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.K9.Small"
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:text="10:00 am" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

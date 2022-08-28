@@ -1,6 +1,7 @@
 package com.fsck.k9.view;
 
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -43,6 +45,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView mFromView;
     private TextView mDateView;
     private TextView mToCount;
+    private TextView mTo;
     private TextView mSubjectView;
     private ImageView mCryptoStatusIcon;
     private Chip mChip;
@@ -66,6 +69,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         mFromView = findViewById(R.id.from);
         mToCount = findViewById(R.id.to_count);
+        mTo = findViewById(R.id.to);
 
         mContactBadge = findViewById(R.id.contact_badge);
         mContactBadge.setClickable(false);
@@ -155,13 +159,17 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             mContactBadge.setVisibility(View.GONE);
         }
 
-        String dateTime = DateUtils.formatDateTime(mContext,
-                message.getSentDate().getTime(),
-                DateUtils.FORMAT_SHOW_DATE
-                | DateUtils.FORMAT_ABBREV_ALL
-                | DateUtils.FORMAT_SHOW_TIME
-                | DateUtils.FORMAT_SHOW_YEAR);
-        mDateView.setText(dateTime);
+        Calendar sentDate = Calendar.getInstance();
+        sentDate.setTime(message.getSentDate());
+        Calendar today = Calendar.getInstance();
+
+        int flags = DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_TIME;
+        if (today.get(Calendar.YEAR) != sentDate.get(Calendar.YEAR)) {
+            flags |= DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_DATE;
+        } else if (today.get(Calendar.DAY_OF_YEAR) != sentDate.get(Calendar.DAY_OF_YEAR)) {
+            flags |= DateUtils.FORMAT_SHOW_DATE;
+        }
+        mDateView.setText(DateUtils.formatDateTime(mContext, sentDate.getTimeInMillis(), flags));
 
         if (K9.isShowContactPicture()) {
             if (fromAddress != null) {
@@ -181,14 +189,41 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             mFlagged.setVisibility(View.GONE);
         }
 
-        int recipientCount = message.getRecipients(RecipientType.TO).length
-                + message.getRecipients(RecipientType.CC).length
-                + message.getRecipients(RecipientType.BCC).length;
-        mToCount.setText(String.format(Locale.getDefault(), "+%d", recipientCount - 1));
+        Address[] toRecipients = message.getRecipients(RecipientType.TO);
+        Address[] ccRecipients = message.getRecipients(RecipientType.CC);
+        Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
+        int recipientCount = toRecipients.length + ccRecipients.length + bccRecipients.length;
+        mToCount.setText(recipientCount == 1 ? "" : String.format(Locale.getDefault(), "+%d", recipientCount - 1));
+        if (accountIsIn(message.getRecipients(RecipientType.TO), account.getEmail())) {
+            mTo.setText(R.string.message_to_me_label);
+        } else {
+            Address firstRecipient = null;
+            if (toRecipients.length > 0) {
+                firstRecipient = toRecipients[0];
+            } else if (ccRecipients.length > 0) {
+                firstRecipient = ccRecipients[0];
+            } else if (bccRecipients.length > 0) {
+                firstRecipient = bccRecipients[0];
+            }
+            final Contacts contacts = K9.isShowContactName() ? Contacts.getInstance(mContext) : null;
+            CharSequence recipientString = firstRecipient == null ? getResources().getString(R.string.unknown_recipient)
+                    : MessageHelper.toFriendly(firstRecipient, contacts);
+            mTo.setText(getResources().getString(R.string.message_to_email_label, recipientString));
+        }
+
         mChip.setText(account.getDisplayName());
         mChip.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));
 
         setVisibility(View.VISIBLE);
+    }
+
+    private boolean accountIsIn(Address[] addresses, String accountEmail) {
+        for (Address address : addresses) {
+            if (accountEmail.equals(address.getAddress())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setSubject(@NonNull String subject) {
