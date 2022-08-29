@@ -232,6 +232,11 @@ interface MessageStore {
     fun setNotificationClass(folderId: Long, folderClass: FolderClass)
 
     /**
+     * Get the 'more messages' state of a folder.
+     */
+    fun hasMoreMessages(folderId: Long): MoreMessages?
+
+    /**
      * Update the 'more messages' state of a folder.
      */
     fun setMoreMessages(folderId: Long, moreMessages: MoreMessages)

@@ -184,6 +184,10 @@ class K9MessageStore(
         updateFolderOperations.setNotificationClass(folderId, folderClass)
     }
 
+    override fun hasMoreMessages(folderId: Long): MoreMessages {
+        return retrieveFolderOperations.hasMoreMessages(folderId)
+    }
+
     override fun setMoreMessages(folderId: Long, moreMessages: MoreMessages) {
         updateFolderOperations.setMoreMessages(folderId, moreMessages)
     }

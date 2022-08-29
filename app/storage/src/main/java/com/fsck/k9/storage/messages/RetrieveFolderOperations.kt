@@ -8,6 +8,7 @@ import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderDetailsAccessor
 import com.fsck.k9.mailstore.FolderMapper
+import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toFolderType
@@ -156,6 +157,10 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
                 if (cursor.moveToFirst()) cursor.getInt(0) else 0
             }
         }
+    }
+
+    fun hasMoreMessages(folderId: Long): MoreMessages {
+        return getFolder(folderId) { it.moreMessages } ?: throw FolderNotFoundException(folderId)
     }
 }
 
