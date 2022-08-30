@@ -436,6 +436,36 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
         assertThat(result).containsExactly("OK")
     }
 
+    @Test
+    fun `getThread() with empty message as thread root`() {
+        val folderId = sqliteDatabase.createFolder()
+        val messageId1 = sqliteDatabase.createMessage(folderId, empty = true)
+        val threadId1 = sqliteDatabase.createThread(messageId1)
+        val messageId2 = sqliteDatabase.createMessage(folderId, uid = "uid2")
+        sqliteDatabase.createThread(messageId2, root = threadId1)
+        val messageId3 = sqliteDatabase.createMessage(folderId, uid = "uid3")
+        sqliteDatabase.createThread(messageId3, root = threadId1)
+
+        val result = retrieveMessageListOperations.getThread(threadId = threadId1, sortOrder = "date DESC") { it.id }
+
+        assertThat(result).containsExactly(messageId2, messageId3)
+    }
+
+    @Test
+    fun `getThread() should only return messages in thread`() {
+        val folderId = sqliteDatabase.createFolder()
+        val messageId1 = sqliteDatabase.createMessage(folderId, uid = "uid1")
+        sqliteDatabase.createThread(messageId1)
+        val messageId2 = sqliteDatabase.createMessage(folderId, uid = "uid2")
+        val threadId2 = sqliteDatabase.createThread(messageId2)
+        val messageId3 = sqliteDatabase.createMessage(folderId, uid = "uid3")
+        sqliteDatabase.createThread(messageId3, root = threadId2)
+
+        val result = retrieveMessageListOperations.getThread(threadId = threadId2, sortOrder = "date DESC") { it.id }
+
+        assertThat(result).containsExactly(messageId2, messageId3)
+    }
+
     private fun <T> getMessagesFromFolder(folderId: Long, mapper: MessageMapper<T>): List<T> {
         return retrieveMessageListOperations.getMessages(
             selection = "folder_id = ?",

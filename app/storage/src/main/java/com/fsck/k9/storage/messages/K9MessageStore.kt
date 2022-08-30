@@ -120,6 +120,10 @@ class K9MessageStore(
         return retrieveMessageListOperations.getThreadedMessages(selection, selectionArgs, sortOrder, messageMapper)
     }
 
+    override fun <T> getThread(threadId: Long, sortOrder: String, messageMapper: MessageMapper<T>): List<T> {
+        return retrieveMessageListOperations.getThread(threadId, sortOrder, messageMapper)
+    }
+
     override fun getOldestMessageDate(folderId: Long): Date? {
         return retrieveMessageOperations.getOldestMessageDate(folderId)
     }

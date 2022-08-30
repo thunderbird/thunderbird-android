@@ -131,6 +131,46 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
             }
         }
     }
+
+    fun <T> getThread(threadId: Long, sortOrder: String, mapper: MessageMapper<T>): List<T> {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                """
+                SELECT 
+                    messages.id AS id, 
+                    uid, 
+                    folder_id, 
+                    sender_list, 
+                    to_list, 
+                    cc_list, 
+                    date, 
+                    internal_date, 
+                    subject, 
+                    preview_type,
+                    preview, 
+                    read, 
+                    flagged, 
+                    answered, 
+                    forwarded, 
+                    attachment_count, 
+                    root
+                FROM threads 
+                JOIN messages ON (messages.id = threads.message_id)
+                LEFT JOIN FOLDERS ON (folders.id = messages.folder_id)
+                WHERE
+                    root = ?
+                    AND empty = 0 AND deleted = 0
+                ORDER BY $sortOrder
+                """.trimIndent(),
+                arrayOf(threadId.toString()),
+            ).use { cursor ->
+                val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)
+                cursor.map {
+                    mapper.map(cursorMessageAccessor)
+                }
+            }
+        }
+    }
 }
 
 private class CursorMessageAccessor(val cursor: Cursor, val includesThreadCount: Boolean) : MessageDetailsAccessor {

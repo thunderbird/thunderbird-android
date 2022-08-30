@@ -141,6 +141,11 @@ interface MessageStore {
     ): List<T>
 
     /**
+     * Retrieve list of messages in a thread.
+     */
+    fun <T> getThread(threadId: Long, sortOrder: String, messageMapper: MessageMapper<T>): List<T>
+
+    /**
      * Retrieve the date of the oldest message in the given folder.
      */
     fun getOldestMessageDate(folderId: Long): Date?
