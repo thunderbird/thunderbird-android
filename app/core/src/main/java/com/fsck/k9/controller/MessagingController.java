@@ -322,12 +322,12 @@ public class MessagingController {
 
 
     private void suppressMessages(Account account, List<LocalMessage> messages) {
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid());
         cache.hideMessages(messages);
     }
 
     private void unsuppressMessages(Account account, List<LocalMessage> messages) {
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid());
         cache.unhideMessages(messages);
     }
 
@@ -335,14 +335,14 @@ public class MessagingController {
         long messageId = message.getDatabaseId();
         long folderId = message.getFolder().getDatabaseId();
 
-        EmailProviderCache cache = EmailProviderCache.getCache(message.getFolder().getAccountUuid(), context);
+        EmailProviderCache cache = EmailProviderCache.getCache(message.getFolder().getAccountUuid());
         return cache.isMessageHidden(messageId, folderId);
     }
 
     private void setFlagInCache(final Account account, final List<Long> messageIds,
             final Flag flag, final boolean newState) {
 
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid());
         String columnName = LocalStore.getColumnNameForFlag(flag);
         String value = Integer.toString((newState) ? 1 : 0);
         cache.setValueForMessages(messageIds, columnName, value);
@@ -351,7 +351,7 @@ public class MessagingController {
     private void removeFlagFromCache(final Account account, final List<Long> messageIds,
             final Flag flag) {
 
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid());
         String columnName = LocalStore.getColumnNameForFlag(flag);
         cache.removeValueForMessages(messageIds, columnName);
     }
@@ -359,7 +359,7 @@ public class MessagingController {
     private void setFlagForThreadsInCache(final Account account, final List<Long> threadRootIds,
             final Flag flag, final boolean newState) {
 
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid());
         String columnName = LocalStore.getColumnNameForFlag(flag);
         String value = Integer.toString((newState) ? 1 : 0);
         cache.setValueForThreads(threadRootIds, columnName, value);
@@ -368,7 +368,7 @@ public class MessagingController {
     private void removeFlagForThreadsFromCache(final Account account, final List<Long> messageIds,
             final Flag flag) {
 
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid());
         String columnName = LocalStore.getColumnNameForFlag(flag);
         cache.removeValueForThreads(messageIds, columnName);
     }

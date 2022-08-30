@@ -1,145 +1,143 @@
-package com.fsck.k9.cache;
+package com.fsck.k9.cache
 
+import com.fsck.k9.mailstore.LocalFolder
+import com.fsck.k9.mailstore.LocalMessage
+import com.fsck.k9.mailstore.MessageListRepository
+import com.google.common.truth.Truth.assertThat
+import java.util.UUID
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
-import java.util.Collections;
-import java.util.UUID;
+private const val MESSAGE_ID = 1L
+private const val FOLDER_ID = 2L
 
-import android.content.Context;
-import android.net.Uri;
+class EmailProviderCacheTest {
+    private val localFolder = mock<LocalFolder> {
+        on { databaseId } doReturn FOLDER_ID
+    }
 
-import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.provider.EmailProvider;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RuntimeEnvironment;
+    private val localMessage = mock<LocalMessage> {
+        on { databaseId } doReturn MESSAGE_ID
+        on { folder } doReturn localFolder
+    }
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-
-
-public class EmailProviderCacheTest extends RobolectricTest {
-    private final Context context = RuntimeEnvironment.getApplication();
-
-    private EmailProviderCache cache;
-    @Mock
-    private LocalMessage mockLocalMessage;
-    @Mock
-    private LocalFolder mockLocalMessageFolder;
-    private Long localMessageId = 1L;
-    private Long localMessageFolderId = 2L;
+    private val cache = EmailProviderCache.getCache(UUID.randomUUID().toString())
 
     @Before
-    public void before() {
-        MockitoAnnotations.initMocks(this);
-        EmailProvider.CONTENT_URI = Uri.parse("content://test.provider.email");
+    fun setUp() {
+        startKoin {
+            modules(
+                module {
+                    single { mock<MessageListRepository>() }
+                }
+            )
+        }
+    }
 
-        cache = EmailProviderCache.getCache(UUID.randomUUID().toString(), context);
-        when(mockLocalMessage.getDatabaseId()).thenReturn(localMessageId);
-        when(mockLocalMessage.getFolder()).thenReturn(mockLocalMessageFolder);
-        when(mockLocalMessageFolder.getDatabaseId()).thenReturn(localMessageFolderId);
+    @After
+    fun tearDown() {
+        stopKoin()
     }
 
     @Test
-    public void getCache_returnsDifferentCacheForEachUUID() {
-        EmailProviderCache cache = EmailProviderCache.getCache("u001", context);
-        EmailProviderCache cache2 = EmailProviderCache.getCache("u002", context);
+    fun `getCache() returns different cache for each UUID`() {
+        val cache = EmailProviderCache.getCache("u001")
 
-        assertNotEquals(cache, cache2);
+        val cache2 = EmailProviderCache.getCache("u002")
+
+        assertThat(cache2).isNotSameInstanceAs(cache)
     }
 
     @Test
-    public void getCache_returnsSameCacheForAUUID() {
-        EmailProviderCache cache = EmailProviderCache.getCache("u001", context);
-        EmailProviderCache cache2 = EmailProviderCache.getCache("u001", context);
+    fun `getCache() returns same cache for the same UUID`() {
+        val cache = EmailProviderCache.getCache("u001")
 
-        assertSame(cache, cache2);
+        val cache2 = EmailProviderCache.getCache("u001")
+
+        assertThat(cache2).isSameInstanceAs(cache)
     }
 
     @Test
-    public void getValueForMessage_returnsValueSetForMessage() {
-        cache.setValueForMessages(Collections.singletonList(1L), "subject", "Subject");
+    fun `getValueForMessage() returns value set for message`() {
+        cache.setValueForMessages(listOf(1L), "subject", "Subject")
 
-        String result = cache.getValueForMessage(1L, "subject");
+        val result = cache.getValueForMessage(1L, "subject")
 
-        assertEquals("Subject", result);
+        assertThat(result).isEqualTo("Subject")
     }
 
     @Test
-    public void getValueForUnknownMessage_returnsNull() {
-        String result = cache.getValueForMessage(1L, "subject");
+    fun `getValueForUnknownMessage() returns null`() {
+        val result = cache.getValueForMessage(1L, "subject")
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void getValueForUnknownMessage_returnsNullWhenRemoved() {
-        cache.setValueForMessages(Collections.singletonList(1L), "subject", "Subject");
-        cache.removeValueForMessages(Collections.singletonList(1L), "subject");
+    fun `getValueForUnknownMessage() returns null when removed`() {
+        cache.setValueForMessages(listOf(1L), "subject", "Subject")
+        cache.removeValueForMessages(listOf(1L), "subject")
 
-        String result = cache.getValueForMessage(1L, "subject");
+        val result = cache.getValueForMessage(1L, "subject")
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void getValueForThread_returnsValueSetForThread() {
-        cache.setValueForThreads(Collections.singletonList(1L), "subject", "Subject");
+    fun `getValueForThread() returns value set for thread`() {
+        cache.setValueForThreads(listOf(1L), "subject", "Subject")
 
-        String result = cache.getValueForThread(1L, "subject");
+        val result = cache.getValueForThread(1L, "subject")
 
-        assertEquals("Subject", result);
+        assertThat(result).isEqualTo("Subject")
     }
 
     @Test
-    public void getValueForUnknownThread_returnsNull() {
-        String result = cache.getValueForThread(1L, "subject");
+    fun `getValueForUnknownThread() returns null`() {
+        val result = cache.getValueForThread(1L, "subject")
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void getValueForUnknownThread_returnsNullWhenRemoved() {
-        cache.setValueForThreads(Collections.singletonList(1L), "subject", "Subject");
-        cache.removeValueForThreads(Collections.singletonList(1L), "subject");
+    fun `getValueForUnknownThread() returns null when removed`() {
+        cache.setValueForThreads(listOf(1L), "subject", "Subject")
+        cache.removeValueForThreads(listOf(1L), "subject")
 
-        String result = cache.getValueForThread(1L, "subject");
+        val result = cache.getValueForThread(1L, "subject")
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void isMessageHidden_returnsTrueForHiddenMessage() {
-        cache.hideMessages(Collections.singletonList(mockLocalMessage));
+    fun `isMessageHidden() returns true for hidden message`() {
+        cache.hideMessages(listOf(localMessage))
 
-        boolean result = cache.isMessageHidden(localMessageId, localMessageFolderId);
+        val result = cache.isMessageHidden(MESSAGE_ID, FOLDER_ID)
 
-        assertTrue(result);
+        assertThat(result).isTrue()
     }
 
     @Test
-    public void isMessageHidden_returnsFalseForUnknownMessage() {
-        boolean result = cache.isMessageHidden(localMessageId, localMessageFolderId);
+    fun `isMessageHidden() returns false for unknown message`() {
+        val result = cache.isMessageHidden(MESSAGE_ID, FOLDER_ID)
 
-        assertFalse(result);
+        assertThat(result).isFalse()
     }
 
     @Test
-    public void isMessageHidden_returnsFalseForUnhidenMessage() {
-        cache.hideMessages(Collections.singletonList(mockLocalMessage));
-        cache.unhideMessages(Collections.singletonList(mockLocalMessage));
+    fun `isMessageHidden() returns false for unhidden message`() {
+        cache.hideMessages(listOf(localMessage))
+        cache.unhideMessages(listOf(localMessage))
 
-        boolean result = cache.isMessageHidden(localMessageId, localMessageFolderId);
+        val result = cache.isMessageHidden(MESSAGE_ID, FOLDER_ID)
 
-        assertFalse(result);
+        assertThat(result).isFalse()
     }
-
 }

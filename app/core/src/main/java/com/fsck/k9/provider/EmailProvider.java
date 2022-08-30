@@ -9,7 +9,6 @@ import java.util.Map;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.CursorWrapper;
@@ -243,7 +242,7 @@ public class EmailProvider extends ContentProvider {
                 cursor.setNotificationUri(contentResolver, getNotificationUri(accountUuid));
 
                 cursor = new SpecialColumnsCursor(new IdTrickeryCursor(cursor), projection, specialColumns);
-                cursor = new EmailProviderCacheCursor(accountUuid, cursor, getContext());
+                cursor = new EmailProviderCacheCursor(accountUuid, cursor);
                 break;
             }
         }

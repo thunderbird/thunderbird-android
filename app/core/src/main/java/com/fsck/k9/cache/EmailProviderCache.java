@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.content.Context;
-
 import com.fsck.k9.DI;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageListRepository;
@@ -14,15 +12,10 @@ import com.fsck.k9.mailstore.MessageListRepository;
  * Cache to bridge the time needed to write (user-initiated) changes to the database.
  */
 public class EmailProviderCache {
-    private static Context sContext;
     private static Map<String, EmailProviderCache> sInstances =
             new HashMap<>();
 
-    public static synchronized EmailProviderCache getCache(String accountUuid, Context context) {
-
-        if (sContext == null) {
-            sContext = context.getApplicationContext();
-        }
+    public static synchronized EmailProviderCache getCache(String accountUuid) {
 
         EmailProviderCache instance = sInstances.get(accountUuid);
         if (instance == null) {
