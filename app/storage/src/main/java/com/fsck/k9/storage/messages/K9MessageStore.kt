@@ -102,6 +102,15 @@ class K9MessageStore(
         return retrieveMessageOperations.getAllMessagesAndEffectiveDates(folderId)
     }
 
+    override fun <T> getMessages(
+        selection: String,
+        selectionArgs: Array<String>,
+        sortOrder: String,
+        messageMapper: MessageMapper<T>
+    ): List<T> {
+        return retrieveMessageListOperations.getMessages(selection, selectionArgs, sortOrder, messageMapper)
+    }
+
     override fun <T> getThreadedMessages(
         selection: String,
         selectionArgs: Array<String>,

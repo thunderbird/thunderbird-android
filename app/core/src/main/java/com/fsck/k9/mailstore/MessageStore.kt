@@ -121,6 +121,16 @@ interface MessageStore {
     fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?>
 
     /**
+     * Retrieve list of messages.
+     */
+    fun <T> getMessages(
+        selection: String,
+        selectionArgs: Array<String>,
+        sortOrder: String,
+        messageMapper: MessageMapper<T>
+    ): List<T>
+
+    /**
      * Retrieve threaded list of messages.
      */
     fun <T> getThreadedMessages(

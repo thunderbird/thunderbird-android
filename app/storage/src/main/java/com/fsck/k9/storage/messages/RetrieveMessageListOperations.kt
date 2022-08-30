@@ -12,6 +12,51 @@ import com.fsck.k9.search.SqlQueryBuilder
 
 internal class RetrieveMessageListOperations(private val lockableDatabase: LockableDatabase) {
 
+    fun <T> getMessages(
+        selection: String,
+        selectionArgs: Array<String>,
+        sortOrder: String,
+        mapper: MessageMapper<T>
+    ): List<T> {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                """
+                SELECT 
+                    messages.id AS id, 
+                    uid, 
+                    folder_id, 
+                    sender_list, 
+                    to_list, 
+                    cc_list, 
+                    date, 
+                    internal_date, 
+                    subject, 
+                    preview_type,
+                    preview, 
+                    read, 
+                    flagged, 
+                    answered, 
+                    forwarded, 
+                    attachment_count, 
+                    root
+                FROM messages
+                JOIN threads ON (threads.message_id = messages.id)
+                LEFT JOIN FOLDERS ON (folders.id = messages.folder_id)
+                WHERE
+                    ($selection)
+                    AND empty = 0 AND deleted = 0
+                ORDER BY $sortOrder
+                """.trimIndent(),
+                selectionArgs,
+            ).use { cursor ->
+                val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)
+                cursor.map {
+                    mapper.map(cursorMessageAccessor)
+                }
+            }
+        }
+    }
+
     fun <T> getThreadedMessages(
         selection: String,
         selectionArgs: Array<String>,
@@ -79,7 +124,7 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
                 """.trimIndent(),
                 selectionArgs,
             ).use { cursor ->
-                val cursorMessageAccessor = CursorMessageAccessor(cursor)
+                val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = true)
                 cursor.map {
                     mapper.map(cursorMessageAccessor)
                 }
@@ -88,7 +133,7 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
     }
 }
 
-private class CursorMessageAccessor(val cursor: Cursor) : MessageDetailsAccessor {
+private class CursorMessageAccessor(val cursor: Cursor, val includesThreadCount: Boolean) : MessageDetailsAccessor {
     override val id: Long
         get() = cursor.getLong(0)
     override val messageServerId: String
@@ -129,7 +174,7 @@ private class CursorMessageAccessor(val cursor: Cursor) : MessageDetailsAccessor
     override val threadRoot: Long
         get() = cursor.getLong(16)
     override val threadCount: Int
-        get() = cursor.getInt(17)
+        get() = if (includesThreadCount) cursor.getInt(17) else 0
 }
 
 private val AGGREGATED_MESSAGES_COLUMNS = arrayOf(
