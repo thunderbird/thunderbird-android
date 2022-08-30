@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.net.Uri;
 
+import com.fsck.k9.DI;
 import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.provider.EmailProvider;
+import com.fsck.k9.mailstore.MessageListRepository;
 
 /**
  * Cache to bridge the time needed to write (user-initiated) changes to the database.
@@ -149,8 +149,7 @@ public class EmailProviderCache {
     }
 
     private void notifyChange() {
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + mAccountUuid +
-                "/messages");
-        sContext.getContentResolver().notifyChange(uri, null);
+        MessageListRepository messageListRepository = DI.get(MessageListRepository.class);
+        messageListRepository.notifyMessageListChanged(mAccountUuid);
     }
 }

@@ -46,7 +46,7 @@ public class EmailProvider extends ContentProvider {
     public static String AUTHORITY;
     public static Uri CONTENT_URI;
 
-    public static Uri getNotificationUri(String accountUuid) {
+    private static Uri getNotificationUri(String accountUuid) {
         return Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid + "/messages");
     }
 
