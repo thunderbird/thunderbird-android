@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.fsck.k9.ui.R
 
 class MessageViewHolder(view: View) {
-    var position = -1
+    var uniqueId: Long = -1L
 
     val selected: View = view.findViewById(R.id.selected)
     val contactPicture: ImageView = view.findViewById(R.id.contact_picture)

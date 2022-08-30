@@ -469,7 +469,6 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     fun createMessageListItem(
-        position: Int = 0,
         account: Account = Account(SOME_ACCOUNT_UUID),
         subject: String? = "irrelevant",
         threadCount: Int = 0,
@@ -492,7 +491,6 @@ class MessageListAdapterTest : RobolectricTest() {
         threadRoot: Long = 0L
     ): MessageListItem {
         return MessageListItem(
-            position,
             account,
             subject,
             threadCount,

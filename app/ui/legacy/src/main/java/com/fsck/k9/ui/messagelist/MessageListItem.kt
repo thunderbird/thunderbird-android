@@ -4,7 +4,6 @@ import com.fsck.k9.Account
 import com.fsck.k9.mail.Address
 
 data class MessageListItem(
-    val position: Int,
     val account: Account,
     val subject: String?,
     val threadCount: Int,

@@ -22,7 +22,6 @@ class MessageListExtractor(
         uniqueIdColumn: Int,
         threadCountIncluded: Boolean
     ): MessageListItem {
-        val position = cursor.position
         val accountUuid = cursor.getString(MLFProjectionInfo.ACCOUNT_UUID_COLUMN)
         val account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
 
@@ -60,7 +59,6 @@ class MessageListExtractor(
         }
 
         return MessageListItem(
-            position,
             account,
             subject,
             threadCount,
