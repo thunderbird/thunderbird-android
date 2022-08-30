@@ -9,6 +9,7 @@ import com.fsck.k9.mailstore.CreateFolderInfo
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderMapper
 import com.fsck.k9.mailstore.LockableDatabase
+import com.fsck.k9.mailstore.MessageMapper
 import com.fsck.k9.mailstore.MessageStore
 import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.SaveMessageData
@@ -35,6 +36,7 @@ class K9MessageStore(
     private val flagMessageOperations = FlagMessageOperations(database)
     private val updateMessageOperations = UpdateMessageOperations(database)
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
+    private val retrieveMessageListOperations = RetrieveMessageListOperations(database)
     private val deleteMessageOperations = DeleteMessageOperations(database, attachmentFileManager)
     private val createFolderOperations = CreateFolderOperations(database)
     private val retrieveFolderOperations = RetrieveFolderOperations(database)
@@ -98,6 +100,15 @@ class K9MessageStore(
 
     override fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
         return retrieveMessageOperations.getAllMessagesAndEffectiveDates(folderId)
+    }
+
+    override fun <T> getThreadedMessages(
+        selection: String,
+        selectionArgs: Array<String>,
+        sortOrder: String,
+        messageMapper: MessageMapper<T>
+    ): List<T> {
+        return retrieveMessageListOperations.getThreadedMessages(selection, selectionArgs, sortOrder, messageMapper)
     }
 
     override fun getOldestMessageDate(folderId: Long): Date? {

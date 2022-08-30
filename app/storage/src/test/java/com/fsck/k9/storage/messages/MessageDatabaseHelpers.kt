@@ -38,8 +38,8 @@ fun createDatabase(): SQLiteDatabase {
 }
 
 fun SQLiteDatabase.createMessage(
-    deleted: Boolean = false,
     folderId: Long,
+    deleted: Boolean = false,
     uid: String? = null,
     subject: String = "",
     date: Long = 0L,

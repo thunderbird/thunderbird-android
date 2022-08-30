@@ -121,6 +121,16 @@ interface MessageStore {
     fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?>
 
     /**
+     * Retrieve threaded list of messages.
+     */
+    fun <T> getThreadedMessages(
+        selection: String,
+        selectionArgs: Array<String>,
+        sortOrder: String,
+        messageMapper: MessageMapper<T>
+    ): List<T>
+
+    /**
      * Retrieve the date of the oldest message in the given folder.
      */
     fun getOldestMessageDate(folderId: Long): Date?
