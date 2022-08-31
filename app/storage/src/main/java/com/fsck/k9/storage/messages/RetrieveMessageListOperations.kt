@@ -142,7 +142,7 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
         }
     }
 
-    fun <T> getThread(threadId: Long, sortOrder: String, mapper: MessageMapper<T>): List<T> {
+    fun <T> getThread(threadId: Long, sortOrder: String, mapper: MessageMapper<T?>): List<T> {
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
                 """
@@ -175,8 +175,13 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
                 arrayOf(threadId.toString()),
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)
-                cursor.map {
-                    mapper.map(cursorMessageAccessor)
+                buildList {
+                    while (cursor.moveToNext()) {
+                        val value = mapper.map(cursorMessageAccessor)
+                        if (value != null) {
+                            add(value)
+                        }
+                    }
                 }
             }
         }

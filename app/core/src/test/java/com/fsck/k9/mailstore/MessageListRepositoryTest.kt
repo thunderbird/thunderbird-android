@@ -20,6 +20,7 @@ import org.mockito.kotlin.stub
 
 private const val MESSAGE_ID = 1L
 private const val MESSAGE_ID_2 = 2L
+private const val MESSAGE_ID_3 = 3L
 private const val FOLDER_ID = 20L
 private const val FOLDER_ID_2 = 21L
 private const val THREAD_ROOT = 30L
@@ -253,6 +254,102 @@ class MessageListRepositoryTest {
         assertThat(result).containsExactly(MESSAGE_ID, MESSAGE_ID_2)
     }
 
+    @Test
+    fun `getThread() should use flag values from the cache`() {
+        addMessagesToThread(
+            THREAD_ROOT,
+            MessageData(
+                messageId = MESSAGE_ID,
+                folderId = FOLDER_ID,
+                threadRoot = THREAD_ROOT,
+                isRead = false,
+                isStarred = true,
+                isAnswered = false,
+                isForwarded = true
+            ),
+            MessageData(
+                messageId = MESSAGE_ID_2,
+                folderId = FOLDER_ID,
+                threadRoot = THREAD_ROOT,
+                isRead = false,
+                isStarred = true,
+                isAnswered = true,
+                isForwarded = false
+            )
+        )
+        EmailProviderCache.getCache(accountUuid).apply {
+            setValueForMessages(listOf(MESSAGE_ID), "read", "1")
+            setValueForThreads(listOf(THREAD_ROOT), "flagged", "0")
+        }
+
+        val result = messageListRepository.getThread(
+            accountUuid,
+            THREAD_ROOT,
+            SORT_ORDER
+        ) { message ->
+            MessageData(
+                messageId = message.id,
+                folderId = message.folderId,
+                threadRoot = message.threadRoot,
+                isRead = message.isRead,
+                isStarred = message.isStarred,
+                isAnswered = message.isAnswered,
+                isForwarded = message.isForwarded
+            )
+        }
+
+        assertThat(result).containsExactly(
+            MessageData(
+                messageId = MESSAGE_ID,
+                folderId = FOLDER_ID,
+                threadRoot = THREAD_ROOT,
+                isRead = true,
+                isStarred = false,
+                isAnswered = false,
+                isForwarded = true
+            ),
+            MessageData(
+                messageId = MESSAGE_ID_2,
+                folderId = FOLDER_ID,
+                threadRoot = THREAD_ROOT,
+                isRead = false,
+                isStarred = false,
+                isAnswered = true,
+                isForwarded = false
+            )
+        )
+    }
+
+    @Test
+    fun `getThread() should skip messages marked as hidden in the cache`() {
+        addMessagesToThread(
+            THREAD_ROOT,
+            MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
+            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
+            MessageData(messageId = MESSAGE_ID_3, folderId = FOLDER_ID, threadRoot = THREAD_ROOT)
+        )
+        hideMessage(MESSAGE_ID, FOLDER_ID)
+
+        val result = messageListRepository.getThread(accountUuid, THREAD_ROOT, SORT_ORDER) { message -> message.id }
+
+        assertThat(result).containsExactly(MESSAGE_ID_2, MESSAGE_ID_3)
+    }
+
+    @Test
+    fun `getThread() should not skip message when marked as hidden in a different folder`() {
+        addMessagesToThread(
+            THREAD_ROOT,
+            MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
+            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
+            MessageData(messageId = MESSAGE_ID_3, folderId = FOLDER_ID, threadRoot = THREAD_ROOT)
+        )
+        hideMessage(MESSAGE_ID, FOLDER_ID_2)
+
+        val result = messageListRepository.getThread(accountUuid, THREAD_ROOT, SORT_ORDER) { message -> message.id }
+
+        assertThat(result).containsExactly(MESSAGE_ID, MESSAGE_ID_2, MESSAGE_ID_3)
+    }
+
     private fun addMessages(vararg messages: MessageData) {
         messageStore.stub {
             on { getMessages<Any>(eq(SELECTION), eq(SELECTION_ARGS), eq(SORT_ORDER), any()) } doAnswer {
@@ -267,6 +364,17 @@ class MessageListRepositoryTest {
         messageStore.stub {
             on { getThreadedMessages<Any>(eq(SELECTION), eq(SELECTION_ARGS), eq(SORT_ORDER), any()) } doAnswer {
                 val mapper: MessageMapper<Any?> = it.getArgument(3)
+
+                runMessageMapper(messages, mapper)
+            }
+        }
+    }
+
+    @Suppress("SameParameterValue")
+    private fun addMessagesToThread(threadRoot: Long, vararg messages: MessageData) {
+        messageStore.stub {
+            on { getThread<Any>(eq(threadRoot), eq(SORT_ORDER), any()) } doAnswer {
+                val mapper: MessageMapper<Any?> = it.getArgument(2)
 
                 runMessageMapper(messages, mapper)
             }
