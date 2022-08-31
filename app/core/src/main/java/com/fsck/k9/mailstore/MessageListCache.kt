@@ -1,8 +1,6 @@
-package com.fsck.k9.cache
+package com.fsck.k9.mailstore
 
 import com.fsck.k9.DI
-import com.fsck.k9.mailstore.LocalMessage
-import com.fsck.k9.mailstore.MessageListRepository
 import kotlin.collections.set
 
 typealias MessageId = Long
@@ -15,7 +13,7 @@ typealias AccountUuid = String
 /**
  * Cache to bridge the time needed to write (user-initiated) changes to the database.
  */
-class EmailProviderCache private constructor(private val accountUuid: String) {
+class MessageListCache private constructor(private val accountUuid: String) {
     private val messageCache = mutableMapOf<MessageId, MutableMap<ColumnName, ColumnValue>>()
     private val threadCache = mutableMapOf<ThreadId, MutableMap<ColumnName, ColumnValue>>()
     private val hiddenMessageCache = mutableMapOf<MessageId, FolderId>()
@@ -122,12 +120,12 @@ class EmailProviderCache private constructor(private val accountUuid: String) {
     }
 
     companion object {
-        private val instances = mutableMapOf<AccountUuid, EmailProviderCache>()
+        private val instances = mutableMapOf<AccountUuid, MessageListCache>()
 
         @JvmStatic
         @Synchronized
-        fun getCache(accountUuid: String): EmailProviderCache {
-            return instances.getOrPut(accountUuid) { EmailProviderCache(accountUuid) }
+        fun getCache(accountUuid: String): MessageListCache {
+            return instances.getOrPut(accountUuid) { MessageListCache(accountUuid) }
         }
     }
 }

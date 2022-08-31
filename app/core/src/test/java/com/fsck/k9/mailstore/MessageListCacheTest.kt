@@ -1,8 +1,5 @@
-package com.fsck.k9.cache
+package com.fsck.k9.mailstore
 
-import com.fsck.k9.mailstore.LocalFolder
-import com.fsck.k9.mailstore.LocalMessage
-import com.fsck.k9.mailstore.MessageListRepository
 import com.google.common.truth.Truth.assertThat
 import java.util.UUID
 import org.junit.After
@@ -17,7 +14,7 @@ import org.mockito.kotlin.mock
 private const val MESSAGE_ID = 1L
 private const val FOLDER_ID = 2L
 
-class EmailProviderCacheTest {
+class MessageListCacheTest {
     private val localFolder = mock<LocalFolder> {
         on { databaseId } doReturn FOLDER_ID
     }
@@ -27,7 +24,7 @@ class EmailProviderCacheTest {
         on { folder } doReturn localFolder
     }
 
-    private val cache = EmailProviderCache.getCache(UUID.randomUUID().toString())
+    private val cache = MessageListCache.getCache(UUID.randomUUID().toString())
 
     @Before
     fun setUp() {
@@ -47,18 +44,18 @@ class EmailProviderCacheTest {
 
     @Test
     fun `getCache() returns different cache for each UUID`() {
-        val cache = EmailProviderCache.getCache("u001")
+        val cache = MessageListCache.getCache("u001")
 
-        val cache2 = EmailProviderCache.getCache("u002")
+        val cache2 = MessageListCache.getCache("u002")
 
         assertThat(cache2).isNotSameInstanceAs(cache)
     }
 
     @Test
     fun `getCache() returns same cache for the same UUID`() {
-        val cache = EmailProviderCache.getCache("u001")
+        val cache = MessageListCache.getCache("u001")
 
-        val cache2 = EmailProviderCache.getCache("u001")
+        val cache2 = MessageListCache.getCache("u001")
 
         assertThat(cache2).isSameInstanceAs(cache)
     }

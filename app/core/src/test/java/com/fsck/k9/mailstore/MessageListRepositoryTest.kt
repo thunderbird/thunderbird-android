@@ -1,6 +1,5 @@
 package com.fsck.k9.mailstore
 
-import com.fsck.k9.cache.EmailProviderCache
 import com.fsck.k9.mail.Address
 import com.fsck.k9.message.extractors.PreviewResult
 import com.google.common.truth.Truth.assertThat
@@ -106,7 +105,7 @@ class MessageListRepositoryTest {
                 isForwarded = true
             )
         )
-        EmailProviderCache.getCache(accountUuid).apply {
+        MessageListCache.getCache(accountUuid).apply {
             setValueForMessages(listOf(MESSAGE_ID), "read", "1")
             setValueForThreads(listOf(THREAD_ROOT), "flagged", "0")
         }
@@ -179,7 +178,7 @@ class MessageListRepositoryTest {
                 isForwarded = true
             )
         )
-        EmailProviderCache.getCache(accountUuid).apply {
+        MessageListCache.getCache(accountUuid).apply {
             setValueForMessages(listOf(MESSAGE_ID), "read", "1")
             setValueForThreads(listOf(THREAD_ROOT), "flagged", "0")
         }
@@ -277,7 +276,7 @@ class MessageListRepositoryTest {
                 isForwarded = false
             )
         )
-        EmailProviderCache.getCache(accountUuid).apply {
+        MessageListCache.getCache(accountUuid).apply {
             setValueForMessages(listOf(MESSAGE_ID), "read", "1")
             setValueForThreads(listOf(THREAD_ROOT), "flagged", "0")
         }
@@ -407,7 +406,7 @@ class MessageListRepositoryTest {
 
     @Suppress("SameParameterValue")
     private fun hideMessage(messageId: Long, folderId: Long) {
-        val cache = EmailProviderCache.getCache(accountUuid)
+        val cache = MessageListCache.getCache(accountUuid)
 
         val localFolder = mock<LocalFolder> {
             on { databaseId } doReturn folderId

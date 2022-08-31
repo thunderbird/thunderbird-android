@@ -1,9 +1,7 @@
 package com.fsck.k9.mailstore
 
-import com.fsck.k9.cache.EmailProviderCache
-
 internal class CacheAwareMessageMapper<T>(
-    private val cache: EmailProviderCache,
+    private val cache: MessageListCache,
     private val messageMapper: MessageMapper<T>
 ) : MessageMapper<T?> {
     override fun map(message: MessageDetailsAccessor): T? {
@@ -20,7 +18,7 @@ internal class CacheAwareMessageMapper<T>(
 }
 
 private class CacheAwareMessageDetailsAccessor(
-    private val cache: EmailProviderCache,
+    private val cache: MessageListCache,
     private val message: MessageDetailsAccessor
 ) : MessageDetailsAccessor by message {
     override val isRead: Boolean
