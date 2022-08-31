@@ -466,7 +466,7 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
         assertThat(result).containsExactly(messageId2, messageId3)
     }
 
-    private fun <T> getMessagesFromFolder(folderId: Long, mapper: MessageMapper<T>): List<T> {
+    private fun <T> getMessagesFromFolder(folderId: Long, mapper: MessageMapper<T?>): List<T> {
         return retrieveMessageListOperations.getMessages(
             selection = "folder_id = ?",
             selectionArgs = arrayOf(folderId.toString()),

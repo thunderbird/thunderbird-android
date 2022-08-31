@@ -34,5 +34,5 @@ val mailStoreModule = module {
             attachmentCounter = get()
         )
     }
-    single { MessageListRepository() }
+    single { MessageListRepository(messageStoreManager = get()) }
 }

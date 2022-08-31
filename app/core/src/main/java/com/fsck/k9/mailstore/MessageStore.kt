@@ -127,7 +127,7 @@ interface MessageStore {
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        messageMapper: MessageMapper<T>
+        messageMapper: MessageMapper<T?>
     ): List<T>
 
     /**

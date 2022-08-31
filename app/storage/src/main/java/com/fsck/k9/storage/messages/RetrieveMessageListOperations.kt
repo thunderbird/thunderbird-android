@@ -16,7 +16,7 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        mapper: MessageMapper<T>
+        mapper: MessageMapper<T?>
     ): List<T> {
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
@@ -50,8 +50,13 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
                 selectionArgs,
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)
-                cursor.map {
-                    mapper.map(cursorMessageAccessor)
+                buildList {
+                    while (cursor.moveToNext()) {
+                        val value = mapper.map(cursorMessageAccessor)
+                        if (value != null) {
+                            add(value)
+                        }
+                    }
                 }
             }
         }
