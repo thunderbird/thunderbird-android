@@ -1,59 +1,28 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
 
-import java.nio.charset.CharacterCodingException;
+class FolderNameCodecTest {
+    private var folderNameCode = FolderNameCodec()
 
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-
-public class FolderNameCodecTest {
-    private FolderNameCodec folderNameCode;
-
-
-    @Before
-    public void setUp() throws Exception {
-        folderNameCode = FolderNameCodec.newInstance();
+    @Test
+    fun `encode() with ASCII argument should return input`() {
+        assertThat(folderNameCode.encode("ASCII")).isEqualTo("ASCII")
     }
 
     @Test
-    public void encode_withAsciiArgument_shouldReturnInput() throws Exception {
-        String folderName = "ASCII";
-
-        String result = folderNameCode.encode(folderName);
-
-        assertEquals(folderName, result);
+    fun `encode() with non-ASCII argument should return encoded string`() {
+        assertThat(folderNameCode.encode("über")).isEqualTo("&APw-ber")
     }
 
     @Test
-    public void encode_withNonAsciiArgument_shouldReturnEncodedString() throws Exception {
-        String folderName = "über";
-
-        String result = folderNameCode.encode(folderName);
-
-        assertEquals("&APw-ber", result);
+    fun `decode() with encoded argument should return decoded string`() {
+        assertThat(folderNameCode.decode("&ANw-bergr&APYA3w-entr&AOQ-ger")).isEqualTo("Übergrößenträger")
     }
 
-    @Test
-    public void decode_withEncodedArgument_shouldReturnDecodedString() throws Exception {
-        String encodedFolderName = "&ANw-bergr&APYA3w-entr&AOQ-ger";
-
-        String result = folderNameCode.decode(encodedFolderName);
-
-        assertEquals("Übergrößenträger", result);
-    }
-
-    @Test
-    public void decode_withInvalidEncodedArgument_shouldThrow() throws Exception {
-        String encodedFolderName = "&12-foo";
-
-        try {
-            folderNameCode.decode(encodedFolderName);
-            fail("Expected exception");
-        } catch (CharacterCodingException ignored) {
-        }
+    @Test(expected = CharacterCodingException::class)
+    fun `decode() with invalid encoded argument should throw`() {
+        folderNameCode.decode("&12-foo")
     }
 }

@@ -22,7 +22,7 @@ internal open class RealImapStore(
     private val trustedSocketFactory: TrustedSocketFactory,
     private val oauthTokenProvider: OAuth2TokenProvider?
 ) : ImapStore, ImapConnectionManager, InternalImapStore {
-    private val folderNameCodec: FolderNameCodec = FolderNameCodec.newInstance()
+    private val folderNameCodec: FolderNameCodec = FolderNameCodec()
 
     private val host: String = checkNotNull(serverSettings.host)
 
