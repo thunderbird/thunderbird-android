@@ -8,6 +8,7 @@ data class MessageListItem(
     val subject: String?,
     val threadCount: Int,
     val messageDate: Long,
+    val internalDate: Long,
     val displayName: CharSequence,
     val displayAddress: Address?,
     val toMe: Boolean,

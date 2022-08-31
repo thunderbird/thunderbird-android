@@ -1,42 +1,23 @@
 package com.fsck.k9.ui.messagelist
 
-import android.annotation.SuppressLint
-import android.content.ContentResolver
-import android.database.Cursor
-import android.database.MatrixCursor
-import android.database.sqlite.SQLiteException
-import android.net.Uri
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SortType
-import com.fsck.k9.K9
 import com.fsck.k9.Preferences
-import com.fsck.k9.fragment.MLFProjectionInfo
-import com.fsck.k9.fragment.MessageListFragmentComparators.ArrivalComparator
-import com.fsck.k9.fragment.MessageListFragmentComparators.AttachmentComparator
-import com.fsck.k9.fragment.MessageListFragmentComparators.ComparatorChain
-import com.fsck.k9.fragment.MessageListFragmentComparators.DateComparator
-import com.fsck.k9.fragment.MessageListFragmentComparators.FlaggedComparator
-import com.fsck.k9.fragment.MessageListFragmentComparators.ReverseComparator
-import com.fsck.k9.fragment.MessageListFragmentComparators.ReverseIdComparator
-import com.fsck.k9.fragment.MessageListFragmentComparators.SenderComparator
-import com.fsck.k9.fragment.MessageListFragmentComparators.SubjectComparator
-import com.fsck.k9.fragment.MessageListFragmentComparators.UnreadComparator
-import com.fsck.k9.helper.MergeCursorWithUniqueId
+import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.provider.EmailProvider
+import com.fsck.k9.mailstore.MessageColumns
+import com.fsck.k9.mailstore.MessageListRepository
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchSpecification.SearchField
 import com.fsck.k9.search.SqlQueryBuilder
 import com.fsck.k9.search.getAccounts
-import java.util.ArrayList
-import java.util.Comparator
 import timber.log.Timber
 
 class MessageListLoader(
     private val preferences: Preferences,
-    private val contentResolver: ContentResolver,
     private val localStoreProvider: LocalStoreProvider,
-    private val messageListExtractor: MessageListExtractor
+    private val messageListRepository: MessageListRepository,
+    private val messageHelper: MessageHelper
 ) {
 
     fun getMessageList(config: MessageListConfig): MessageListInfo {
@@ -52,113 +33,76 @@ class MessageListLoader(
 
     private fun getMessageListInfo(config: MessageListConfig): MessageListInfo {
         val accounts = config.search.getAccounts(preferences)
-        val cursors = accounts
-            .mapNotNull { loadMessageListForAccount(it, config) }
-            .toTypedArray()
+        val messageListItems = accounts
+            .flatMap { account ->
+                loadMessageListForAccount(account, config)
+            }
+            .sortedWith(config)
 
-        if (cursors.isEmpty()) {
-            Timber.w("Couldn't get message list")
-            return MessageListInfo(messageListItems = emptyList(), hasMoreMessages = false)
-        }
-
-        val cursor: Cursor
-        val uniqueIdColumn: Int
-        if (cursors.size == 1) {
-            cursor = cursors[0]
-            uniqueIdColumn = MLFProjectionInfo.ID_COLUMN
-        } else {
-            cursor = MergeCursorWithUniqueId(cursors, getComparator(config))
-            uniqueIdColumn = cursor.getColumnIndex("_id")
-        }
-
-        val messageListItems = cursor.use {
-            messageListExtractor.extractMessageList(
-                cursor,
-                uniqueIdColumn,
-                threadCountIncluded = config.showingThreadedList
-            )
-        }
         val hasMoreMessages = loadHasMoreMessages(accounts, config.search.folderIds)
 
         return MessageListInfo(messageListItems, hasMoreMessages)
     }
 
-    @SuppressLint("Recycle")
-    private fun loadMessageListForAccount(account: Account, config: MessageListConfig): Cursor? {
+    private fun loadMessageListForAccount(account: Account, config: MessageListConfig): List<MessageListItem> {
         val accountUuid = account.uuid
-        val threadId: String? = getThreadId(config.search)
+        val threadId = getThreadId(config.search)
+        val sortOrder = buildSortOrder(config)
+        val mapper = MessageListItemMapper(messageHelper, account)
 
-        val uri: Uri
-        val projection: Array<String>
-        val needConditions: Boolean
-        when {
+        return when {
             threadId != null -> {
-                uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/$accountUuid/thread/$threadId")
-                projection = MLFProjectionInfo.PROJECTION
-                needConditions = false
+                messageListRepository.getThread(accountUuid, threadId, sortOrder, mapper)
             }
             config.showingThreadedList -> {
-                uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/$accountUuid/messages/threaded")
-                projection = MLFProjectionInfo.THREADED_PROJECTION
-                needConditions = true
+                val (selection, selectionArgs) = buildSelection(account, config)
+                messageListRepository.getThreadedMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
             }
             else -> {
-                uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/$accountUuid/messages")
-                projection = MLFProjectionInfo.PROJECTION
-                needConditions = true
+                val (selection, selectionArgs) = buildSelection(account, config)
+                messageListRepository.getMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
             }
         }
+    }
 
+    private fun buildSelection(account: Account, config: MessageListConfig): Pair<String, Array<String>> {
         val query = StringBuilder()
-        val queryArgs: MutableList<String> = ArrayList()
-        if (needConditions) {
-            val activeMessage = config.activeMessage
-            val selectActive = activeMessage != null && activeMessage.accountUuid == accountUuid
-            if (selectActive && activeMessage != null) {
-                query.append("(${EmailProvider.MessageColumns.UID} = ? AND ${EmailProvider.MessageColumns.FOLDER_ID} = ?) OR (")
-                queryArgs.add(activeMessage.uid)
-                queryArgs.add(activeMessage.folderId.toString())
-            }
+        val queryArgs = mutableListOf<String>()
 
-            SqlQueryBuilder.buildWhereClause(account, config.search.conditions, query, queryArgs)
+        val activeMessage = config.activeMessage
+        val selectActive = activeMessage != null && activeMessage.accountUuid == account.uuid
+        if (selectActive && activeMessage != null) {
+            query.append("(${MessageColumns.UID} = ? AND ${MessageColumns.FOLDER_ID} = ?) OR (")
+            queryArgs.add(activeMessage.uid)
+            queryArgs.add(activeMessage.folderId.toString())
+        }
 
-            if (selectActive) {
-                query.append(')')
-            }
+        SqlQueryBuilder.buildWhereClause(account, config.search.conditions, query, queryArgs)
+
+        if (selectActive) {
+            query.append(')')
         }
 
         val selection = query.toString()
         val selectionArgs = queryArgs.toTypedArray()
 
-        val sortOrder: String = buildSortOrder(config)
-
-        return try {
-            contentResolver.query(uri, projection, selection, selectionArgs, sortOrder)
-        } catch (e: SQLiteException) {
-            Timber.e(e, "Error querying EmailProvider")
-
-            if (K9.DEVELOPER_MODE && e.message?.contains("malformed MATCH expression") == false) {
-                throw e
-            }
-
-            return MatrixCursor(projection)
-        }
+        return selection to selectionArgs
     }
 
-    private fun getThreadId(search: LocalSearch): String? {
-        return search.leafSet.firstOrNull { it.condition.field == SearchField.THREAD_ID }?.condition?.value
+    private fun getThreadId(search: LocalSearch): Long? {
+        return search.leafSet.firstOrNull { it.condition.field == SearchField.THREAD_ID }?.condition?.value?.toLong()
     }
 
     private fun buildSortOrder(config: MessageListConfig): String {
         val sortColumn = when (config.sortType) {
-            SortType.SORT_ARRIVAL -> EmailProvider.MessageColumns.INTERNAL_DATE
-            SortType.SORT_ATTACHMENT -> "(${EmailProvider.MessageColumns.ATTACHMENT_COUNT} < 1)"
-            SortType.SORT_FLAGGED -> "(${EmailProvider.MessageColumns.FLAGGED} != 1)"
-            SortType.SORT_SENDER -> EmailProvider.MessageColumns.SENDER_LIST // FIXME
-            SortType.SORT_SUBJECT -> "${EmailProvider.MessageColumns.SUBJECT} COLLATE NOCASE"
-            SortType.SORT_UNREAD -> EmailProvider.MessageColumns.READ
-            SortType.SORT_DATE -> EmailProvider.MessageColumns.DATE
-            else -> EmailProvider.MessageColumns.DATE
+            SortType.SORT_ARRIVAL -> MessageColumns.INTERNAL_DATE
+            SortType.SORT_ATTACHMENT -> "(${MessageColumns.ATTACHMENT_COUNT} < 1)"
+            SortType.SORT_FLAGGED -> "(${MessageColumns.FLAGGED} != 1)"
+            SortType.SORT_SENDER -> MessageColumns.SENDER_LIST // FIXME
+            SortType.SORT_SUBJECT -> "${MessageColumns.SUBJECT} COLLATE NOCASE"
+            SortType.SORT_UNREAD -> MessageColumns.READ
+            SortType.SORT_DATE -> MessageColumns.DATE
+            else -> MessageColumns.DATE
         }
 
         val sortDirection = if (config.sortAscending) " ASC" else " DESC"
@@ -166,41 +110,46 @@ class MessageListLoader(
             ""
         } else {
             if (config.sortDateAscending) {
-                "${EmailProvider.MessageColumns.DATE} ASC, "
+                "${MessageColumns.DATE} ASC, "
             } else {
-                "${EmailProvider.MessageColumns.DATE} DESC, "
+                "${MessageColumns.DATE} DESC, "
             }
         }
 
-        return "$sortColumn$sortDirection, $secondarySort${EmailProvider.MessageColumns.ID} DESC"
+        return "$sortColumn$sortDirection, $secondarySort${MessageColumns.ID} DESC"
     }
 
-    private fun getComparator(config: MessageListConfig): Comparator<Cursor>? {
-        val chain: MutableList<Comparator<Cursor>> = ArrayList(3 /* we add 3 comparators at most */)
-
-        // Add the specified comparator
-        val comparator = SORT_COMPARATORS.getValue(config.sortType)
-        if (config.sortAscending) {
-            chain.add(comparator)
-        } else {
-            chain.add(ReverseComparator(comparator))
-        }
-
-        // Add the date comparator if not already specified
-        if (config.sortType != SortType.SORT_DATE && config.sortType != SortType.SORT_ARRIVAL) {
-            val dateComparator = SORT_COMPARATORS.getValue(SortType.SORT_DATE)
-            if (config.sortDateAscending) {
-                chain.add(dateComparator)
-            } else {
-                chain.add(ReverseComparator(dateComparator))
+    private fun List<MessageListItem>.sortedWith(config: MessageListConfig): List<MessageListItem> {
+        val comparator = when (config.sortType) {
+            SortType.SORT_DATE -> {
+                compareBy(config.sortAscending) { it.messageDate }
             }
-        }
+            SortType.SORT_ARRIVAL -> {
+                compareBy(config.sortAscending) { it.internalDate }
+            }
+            SortType.SORT_SUBJECT -> {
+                compareStringBy<MessageListItem>(config.sortAscending) { it.subject.orEmpty() }
+                    .thenByDate(config)
+            }
+            SortType.SORT_SENDER -> {
+                compareStringBy<MessageListItem>(config.sortAscending) { it.displayName.toString() }
+                    .thenByDate(config)
+            }
+            SortType.SORT_UNREAD -> {
+                compareBy<MessageListItem>(config.sortAscending) { it.isRead }
+                    .thenByDate(config)
+            }
+            SortType.SORT_FLAGGED -> {
+                compareBy<MessageListItem>(!config.sortAscending) { it.isStarred }
+                    .thenByDate(config)
+            }
+            SortType.SORT_ATTACHMENT -> {
+                compareBy<MessageListItem>(!config.sortAscending) { it.hasAttachments }
+                    .thenByDate(config)
+            }
+        }.thenByDescending { it.databaseId }
 
-        // Add the id comparator
-        chain.add(ReverseIdComparator())
-
-        // Build the comparator chain
-        return ComparatorChain(chain)
+        return this.sortedWith(comparator)
     }
 
     private fun loadHasMoreMessages(accounts: List<Account>, folderIds: List<Long>): Boolean {
@@ -215,17 +164,29 @@ class MessageListLoader(
             false
         }
     }
+}
 
-    companion object {
-        private val SORT_COMPARATORS = mapOf(
-            SortType.SORT_ATTACHMENT to AttachmentComparator(),
-            SortType.SORT_DATE to DateComparator(),
-            SortType.SORT_ARRIVAL to ArrivalComparator(),
-            SortType.SORT_FLAGGED to FlaggedComparator(),
-            SortType.SORT_SUBJECT to SubjectComparator(),
-            SortType.SORT_SENDER to SenderComparator(),
-            SortType.SORT_UNREAD to UnreadComparator()
-        )
+private inline fun <T> compareBy(sortAscending: Boolean, crossinline selector: (T) -> Comparable<*>?): Comparator<T> {
+    return if (sortAscending) {
+        compareBy(selector)
+    } else {
+        compareByDescending(selector)
+    }
+}
+
+private inline fun <T> compareStringBy(sortAscending: Boolean, crossinline selector: (T) -> String): Comparator<T> {
+    return if (sortAscending) {
+        compareBy(String.CASE_INSENSITIVE_ORDER, selector)
+    } else {
+        compareByDescending(String.CASE_INSENSITIVE_ORDER, selector)
+    }
+}
+
+private fun Comparator<MessageListItem>.thenByDate(config: MessageListConfig): Comparator<MessageListItem> {
+    return if (config.sortDateAscending) {
+        thenBy { it.messageDate }
+    } else {
+        thenByDescending { it.messageDate }
     }
 }
 

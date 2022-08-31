@@ -1,6 +1,7 @@
 package com.fsck.k9.helper;
 
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import android.content.Context;
@@ -68,7 +69,7 @@ public class MessageHelper {
         return new SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(recipients);
     }
 
-    public boolean toMe(Account account, Address[] toAddrs) {
+    public boolean toMe(Account account, List<Address> toAddrs) {
         for (Address address : toAddrs) {
             if (account.isAnIdentity(address)) {
                 return true;
