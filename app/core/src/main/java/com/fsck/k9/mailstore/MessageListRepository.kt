@@ -41,6 +41,23 @@ class MessageListRepository(
         val mapper = CacheAwareMessageMapper(cache, messageMapper)
         return messageStore.getMessages(selection, selectionArgs, sortOrder, mapper)
     }
+
+    /**
+     * Retrieve threaded list of messages from [MessageStore] but override values with data from [EmailProviderCache].
+     */
+    fun <T> getThreadedMessages(
+        accountUuid: String,
+        selection: String,
+        selectionArgs: Array<String>,
+        sortOrder: String,
+        messageMapper: MessageMapper<T>
+    ): List<T> {
+        val messageStore = messageStoreManager.getMessageStore(accountUuid)
+        val cache = EmailProviderCache.getCache(accountUuid)
+
+        val mapper = CacheAwareMessageMapper(cache, messageMapper)
+        return messageStore.getThreadedMessages(selection, selectionArgs, sortOrder, mapper)
+    }
 }
 
 fun interface MessageListChangedListener {

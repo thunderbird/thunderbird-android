@@ -23,6 +23,7 @@ private const val MESSAGE_ID_2 = 2L
 private const val FOLDER_ID = 20L
 private const val FOLDER_ID_2 = 21L
 private const val THREAD_ROOT = 30L
+private const val THREAD_ROOT_2 = 31L
 
 private const val SELECTION = "irrelevant"
 private val SELECTION_ARGS = arrayOf("irrelevant")
@@ -164,33 +165,135 @@ class MessageListRepositoryTest {
         assertThat(result).containsExactly(MESSAGE_ID, MESSAGE_ID_2)
     }
 
+    @Test
+    fun `getThreadedMessages() should use flag values from the cache`() {
+        addThreadedMessages(
+            MessageData(
+                messageId = MESSAGE_ID,
+                folderId = FOLDER_ID,
+                threadRoot = THREAD_ROOT,
+                isRead = false,
+                isStarred = true,
+                isAnswered = false,
+                isForwarded = true
+            )
+        )
+        EmailProviderCache.getCache(accountUuid).apply {
+            setValueForMessages(listOf(MESSAGE_ID), "read", "1")
+            setValueForThreads(listOf(THREAD_ROOT), "flagged", "0")
+        }
+
+        val result = messageListRepository.getThreadedMessages(
+            accountUuid,
+            SELECTION,
+            SELECTION_ARGS,
+            SORT_ORDER
+        ) { message ->
+            MessageData(
+                messageId = message.id,
+                folderId = message.folderId,
+                threadRoot = message.threadRoot,
+                isRead = message.isRead,
+                isStarred = message.isStarred,
+                isAnswered = message.isAnswered,
+                isForwarded = message.isForwarded
+            )
+        }
+
+        assertThat(result).containsExactly(
+            MessageData(
+                messageId = MESSAGE_ID,
+                folderId = FOLDER_ID,
+                threadRoot = THREAD_ROOT,
+                isRead = true,
+                isStarred = false,
+                isAnswered = false,
+                isForwarded = true
+            )
+        )
+    }
+
+    @Test
+    fun `getThreadedMessages() should skip messages marked as hidden in the cache`() {
+        addThreadedMessages(
+            MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
+            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT_2)
+        )
+        hideMessage(MESSAGE_ID, FOLDER_ID)
+
+        val result = messageListRepository.getThreadedMessages(
+            accountUuid,
+            SELECTION,
+            SELECTION_ARGS,
+            SORT_ORDER
+        ) { message ->
+            message.id
+        }
+
+        assertThat(result).containsExactly(MESSAGE_ID_2)
+    }
+
+    @Test
+    fun `getThreadedMessages() should not skip message when marked as hidden in a different folder`() {
+        addThreadedMessages(
+            MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
+            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT_2)
+        )
+        hideMessage(MESSAGE_ID, FOLDER_ID_2)
+
+        val result = messageListRepository.getThreadedMessages(
+            accountUuid,
+            SELECTION,
+            SELECTION_ARGS,
+            SORT_ORDER
+        ) { message ->
+            message.id
+        }
+
+        assertThat(result).containsExactly(MESSAGE_ID, MESSAGE_ID_2)
+    }
+
     private fun addMessages(vararg messages: MessageData) {
         messageStore.stub {
             on { getMessages<Any>(eq(SELECTION), eq(SELECTION_ARGS), eq(SORT_ORDER), any()) } doAnswer {
                 val mapper: MessageMapper<Any?> = it.getArgument(3)
 
-                messages.mapNotNull { message ->
-                    mapper.map(object : MessageDetailsAccessor {
-                        override val id = message.messageId
-                        override val messageServerId = "irrelevant"
-                        override val folderId = message.folderId
-                        override val fromAddresses = emptyList<Address>()
-                        override val toAddresses = emptyList<Address>()
-                        override val ccAddresses = emptyList<Address>()
-                        override val messageDate = 0L
-                        override val internalDate = 0L
-                        override val subject = "irrelevant"
-                        override val preview = PreviewResult.error()
-                        override val isRead = message.isRead
-                        override val isStarred = message.isStarred
-                        override val isAnswered = message.isAnswered
-                        override val isForwarded = message.isForwarded
-                        override val hasAttachments = false
-                        override val threadRoot = message.threadRoot
-                        override val threadCount = 0
-                    })
-                }
+                runMessageMapper(messages, mapper)
             }
+        }
+    }
+
+    private fun addThreadedMessages(vararg messages: MessageData) {
+        messageStore.stub {
+            on { getThreadedMessages<Any>(eq(SELECTION), eq(SELECTION_ARGS), eq(SORT_ORDER), any()) } doAnswer {
+                val mapper: MessageMapper<Any?> = it.getArgument(3)
+
+                runMessageMapper(messages, mapper)
+            }
+        }
+    }
+
+    private fun runMessageMapper(messages: Array<out MessageData>, mapper: MessageMapper<Any?>): List<Any> {
+        return messages.mapNotNull { message ->
+            mapper.map(object : MessageDetailsAccessor {
+                override val id = message.messageId
+                override val messageServerId = "irrelevant"
+                override val folderId = message.folderId
+                override val fromAddresses = emptyList<Address>()
+                override val toAddresses = emptyList<Address>()
+                override val ccAddresses = emptyList<Address>()
+                override val messageDate = 0L
+                override val internalDate = 0L
+                override val subject = "irrelevant"
+                override val preview = PreviewResult.error()
+                override val isRead = message.isRead
+                override val isStarred = message.isStarred
+                override val isAnswered = message.isAnswered
+                override val isForwarded = message.isForwarded
+                override val hasAttachments = false
+                override val threadRoot = message.threadRoot
+                override val threadCount = 0
+            })
         }
     }
 

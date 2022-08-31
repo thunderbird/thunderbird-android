@@ -66,7 +66,7 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        mapper: MessageMapper<T>
+        mapper: MessageMapper<T?>
     ): List<T> {
         val orderBy = SqlQueryBuilder.addPrefixToSelection(AGGREGATED_MESSAGES_COLUMNS, "aggregated.", sortOrder)
 
@@ -130,8 +130,13 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
                 selectionArgs,
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = true)
-                cursor.map {
-                    mapper.map(cursorMessageAccessor)
+                buildList {
+                    while (cursor.moveToNext()) {
+                        val value = mapper.map(cursorMessageAccessor)
+                        if (value != null) {
+                            add(value)
+                        }
+                    }
                 }
             }
         }

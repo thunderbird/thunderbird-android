@@ -475,7 +475,7 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
         )
     }
 
-    private fun <T> getThreadedMessagesFromFolder(folderId: Long, mapper: MessageMapper<T>): List<T> {
+    private fun <T> getThreadedMessagesFromFolder(folderId: Long, mapper: MessageMapper<T?>): List<T> {
         return retrieveMessageListOperations.getThreadedMessages(
             selection = "folder_id = ?",
             selectionArgs = arrayOf(folderId.toString()),
