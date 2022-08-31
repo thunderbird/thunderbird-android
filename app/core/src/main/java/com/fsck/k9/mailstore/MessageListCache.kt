@@ -1,65 +1,65 @@
 package com.fsck.k9.mailstore
 
 import com.fsck.k9.DI
+import com.fsck.k9.mail.Flag
 import kotlin.collections.set
 
 typealias MessageId = Long
 typealias ThreadId = Long
 typealias FolderId = Long
-typealias ColumnName = String
-typealias ColumnValue = String
+typealias FlagValue = Boolean
 typealias AccountUuid = String
 
 /**
  * Cache to bridge the time needed to write (user-initiated) changes to the database.
  */
 class MessageListCache private constructor(private val accountUuid: String) {
-    private val messageCache = mutableMapOf<MessageId, MutableMap<ColumnName, ColumnValue>>()
-    private val threadCache = mutableMapOf<ThreadId, MutableMap<ColumnName, ColumnValue>>()
+    private val messageCache = mutableMapOf<MessageId, MutableMap<Flag, FlagValue>>()
+    private val threadCache = mutableMapOf<ThreadId, MutableMap<Flag, FlagValue>>()
     private val hiddenMessageCache = mutableMapOf<MessageId, FolderId>()
 
-    fun getValueForMessage(messageId: Long, columnName: String): String? {
+    fun getFlagForMessage(messageId: Long, flag: Flag): Boolean? {
         synchronized(messageCache) {
             val columnMap = messageCache[messageId]
-            return columnMap?.get(columnName)
+            return columnMap?.get(flag)
         }
     }
 
-    fun getValueForThread(threadRootId: Long, columnName: String): String? {
+    fun getFlagForThread(threadRootId: Long, flag: Flag): Boolean? {
         synchronized(threadCache) {
             val columnMap = threadCache[threadRootId]
-            return columnMap?.get(columnName)
+            return columnMap?.get(flag)
         }
     }
 
-    fun setValueForMessages(messageIds: List<Long>, columnName: String, value: String) {
+    fun setFlagForMessages(messageIds: List<Long>, flag: Flag, value: Boolean) {
         synchronized(messageCache) {
             for (messageId in messageIds) {
                 val columnMap = messageCache.getOrPut(messageId) { mutableMapOf() }
-                columnMap[columnName] = value
+                columnMap[flag] = value
             }
         }
 
         notifyChange()
     }
 
-    fun setValueForThreads(threadRootIds: List<Long>, columnName: String, value: String) {
+    fun setValueForThreads(threadRootIds: List<Long>, flag: Flag, value: Boolean) {
         synchronized(threadCache) {
             for (threadRootId in threadRootIds) {
                 val columnMap = threadCache.getOrPut(threadRootId) { mutableMapOf() }
-                columnMap[columnName] = value
+                columnMap[flag] = value
             }
         }
 
         notifyChange()
     }
 
-    fun removeValueForMessages(messageIds: List<Long>, columnName: String) {
+    fun removeFlagForMessages(messageIds: List<Long>, flag: Flag) {
         synchronized(messageCache) {
             for (messageId in messageIds) {
                 val columnMap = messageCache[messageId]
                 if (columnMap != null) {
-                    columnMap.remove(columnName)
+                    columnMap.remove(flag)
                     if (columnMap.isEmpty()) {
                         messageCache.remove(messageId)
                     }
@@ -68,12 +68,12 @@ class MessageListCache private constructor(private val accountUuid: String) {
         }
     }
 
-    fun removeValueForThreads(threadRootIds: List<Long>, columnName: String) {
+    fun removeFlagForThreads(threadRootIds: List<Long>, flag: Flag) {
         synchronized(threadCache) {
             for (threadRootId in threadRootIds) {
                 val columnMap = threadCache[threadRootId]
                 if (columnMap != null) {
-                    columnMap.remove(columnName)
+                    columnMap.remove(flag)
                     if (columnMap.isEmpty()) {
                         threadCache.remove(threadRootId)
                     }

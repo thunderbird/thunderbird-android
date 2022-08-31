@@ -1,5 +1,7 @@
 package com.fsck.k9.mailstore
 
+import com.fsck.k9.mail.Flag
+
 internal class CacheAwareMessageMapper<T>(
     private val cache: MessageListCache,
     private val messageMapper: MessageMapper<T>
@@ -23,29 +25,29 @@ private class CacheAwareMessageDetailsAccessor(
 ) : MessageDetailsAccessor by message {
     override val isRead: Boolean
         get() {
-            return cache.getValueForMessage(message.id, "read")?.let { it == "1" }
-                ?: cache.getValueForThread(message.threadRoot, "read")?.let { it == "1" }
+            return cache.getFlagForMessage(message.id, Flag.SEEN)
+                ?: cache.getFlagForThread(message.threadRoot, Flag.SEEN)
                 ?: message.isRead
         }
 
     override val isStarred: Boolean
         get() {
-            return cache.getValueForMessage(message.id, "flagged")?.let { it == "1" }
-                ?: cache.getValueForThread(message.threadRoot, "flagged")?.let { it == "1" }
+            return cache.getFlagForMessage(message.id, Flag.FLAGGED)
+                ?: cache.getFlagForThread(message.threadRoot, Flag.FLAGGED)
                 ?: message.isStarred
         }
 
     override val isAnswered: Boolean
         get() {
-            return cache.getValueForMessage(message.id, "answered")?.let { it == "1" }
-                ?: cache.getValueForThread(message.threadRoot, "answered")?.let { it == "1" }
+            return cache.getFlagForMessage(message.id, Flag.ANSWERED)
+                ?: cache.getFlagForThread(message.threadRoot, Flag.ANSWERED)
                 ?: message.isAnswered
         }
 
     override val isForwarded: Boolean
         get() {
-            return cache.getValueForMessage(message.id, "forwarded")?.let { it == "1" }
-                ?: cache.getValueForThread(message.threadRoot, "forwarded")?.let { it == "1" }
+            return cache.getFlagForMessage(message.id, Flag.FORWARDED)
+                ?: cache.getFlagForThread(message.threadRoot, Flag.FORWARDED)
                 ?: message.isForwarded
         }
 }

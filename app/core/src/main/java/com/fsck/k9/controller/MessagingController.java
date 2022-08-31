@@ -343,34 +343,28 @@ public class MessagingController {
             final Flag flag, final boolean newState) {
 
         MessageListCache cache = MessageListCache.getCache(account.getUuid());
-        String columnName = LocalStore.getColumnNameForFlag(flag);
-        String value = Integer.toString((newState) ? 1 : 0);
-        cache.setValueForMessages(messageIds, columnName, value);
+        cache.setFlagForMessages(messageIds, flag, newState);
     }
 
     private void removeFlagFromCache(final Account account, final List<Long> messageIds,
             final Flag flag) {
 
         MessageListCache cache = MessageListCache.getCache(account.getUuid());
-        String columnName = LocalStore.getColumnNameForFlag(flag);
-        cache.removeValueForMessages(messageIds, columnName);
+        cache.removeFlagForMessages(messageIds, flag);
     }
 
     private void setFlagForThreadsInCache(final Account account, final List<Long> threadRootIds,
             final Flag flag, final boolean newState) {
 
         MessageListCache cache = MessageListCache.getCache(account.getUuid());
-        String columnName = LocalStore.getColumnNameForFlag(flag);
-        String value = Integer.toString((newState) ? 1 : 0);
-        cache.setValueForThreads(threadRootIds, columnName, value);
+        cache.setValueForThreads(threadRootIds, flag, newState);
     }
 
     private void removeFlagForThreadsFromCache(final Account account, final List<Long> messageIds,
             final Flag flag) {
 
         MessageListCache cache = MessageListCache.getCache(account.getUuid());
-        String columnName = LocalStore.getColumnNameForFlag(flag);
-        cache.removeValueForThreads(messageIds, columnName);
+        cache.removeFlagForThreads(messageIds, flag);
     }
 
     public void refreshFolderList(final Account account) {

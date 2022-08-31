@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore
 
+import com.fsck.k9.mail.Flag
 import com.google.common.truth.Truth.assertThat
 import java.util.UUID
 import org.junit.After
@@ -61,53 +62,53 @@ class MessageListCacheTest {
     }
 
     @Test
-    fun `getValueForMessage() returns value set for message`() {
-        cache.setValueForMessages(listOf(1L), "subject", "Subject")
+    fun `getFlagForMessage() returns value set for message`() {
+        cache.setFlagForMessages(listOf(1L), Flag.SEEN, true)
 
-        val result = cache.getValueForMessage(1L, "subject")
+        val result = cache.getFlagForMessage(1L, Flag.SEEN)
 
-        assertThat(result).isEqualTo("Subject")
+        assertThat(result).isTrue()
     }
 
     @Test
-    fun `getValueForUnknownMessage() returns null`() {
-        val result = cache.getValueForMessage(1L, "subject")
+    fun `getFlagForMessage() with unknown message ID returns null`() {
+        val result = cache.getFlagForMessage(1L, Flag.SEEN)
 
         assertThat(result).isNull()
     }
 
     @Test
-    fun `getValueForUnknownMessage() returns null when removed`() {
-        cache.setValueForMessages(listOf(1L), "subject", "Subject")
-        cache.removeValueForMessages(listOf(1L), "subject")
+    fun `getFlagForMessage() returns null when removed`() {
+        cache.setFlagForMessages(listOf(1L), Flag.FLAGGED, false)
+        cache.removeFlagForMessages(listOf(1L), Flag.FLAGGED)
 
-        val result = cache.getValueForMessage(1L, "subject")
-
-        assertThat(result).isNull()
-    }
-
-    @Test
-    fun `getValueForThread() returns value set for thread`() {
-        cache.setValueForThreads(listOf(1L), "subject", "Subject")
-
-        val result = cache.getValueForThread(1L, "subject")
-
-        assertThat(result).isEqualTo("Subject")
-    }
-
-    @Test
-    fun `getValueForUnknownThread() returns null`() {
-        val result = cache.getValueForThread(1L, "subject")
+        val result = cache.getFlagForMessage(1L, Flag.FLAGGED)
 
         assertThat(result).isNull()
     }
 
     @Test
-    fun `getValueForUnknownThread() returns null when removed`() {
-        cache.setValueForThreads(listOf(1L), "subject", "Subject")
-        cache.removeValueForThreads(listOf(1L), "subject")
+    fun `getFlagForThread() returns value set for thread`() {
+        cache.setValueForThreads(listOf(1L), Flag.SEEN, false)
 
-        val result = cache.getValueForThread(1L, "subject")
+        val result = cache.getFlagForThread(1L, Flag.SEEN)
+
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `getFlagForThread() with unknown message ID returns null`() {
+        val result = cache.getFlagForThread(1L, Flag.ANSWERED)
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun `getFlagForThread() returns null when removed`() {
+        cache.setValueForThreads(listOf(1L), Flag.SEEN, true)
+        cache.removeFlagForThreads(listOf(1L), Flag.SEEN)
+
+        val result = cache.getFlagForThread(1L, Flag.SEEN)
 
         assertThat(result).isNull()
     }

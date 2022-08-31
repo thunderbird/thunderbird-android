@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore
 
 import com.fsck.k9.mail.Address
+import com.fsck.k9.mail.Flag
 import com.fsck.k9.message.extractors.PreviewResult
 import com.google.common.truth.Truth.assertThat
 import java.util.UUID
@@ -106,8 +107,8 @@ class MessageListRepositoryTest {
             )
         )
         MessageListCache.getCache(accountUuid).apply {
-            setValueForMessages(listOf(MESSAGE_ID), "read", "1")
-            setValueForThreads(listOf(THREAD_ROOT), "flagged", "0")
+            setFlagForMessages(listOf(MESSAGE_ID), Flag.SEEN, true)
+            setValueForThreads(listOf(THREAD_ROOT), Flag.FLAGGED, false)
         }
 
         val result = messageListRepository.getMessages(accountUuid, SELECTION, SELECTION_ARGS, SORT_ORDER) { message ->
@@ -179,8 +180,8 @@ class MessageListRepositoryTest {
             )
         )
         MessageListCache.getCache(accountUuid).apply {
-            setValueForMessages(listOf(MESSAGE_ID), "read", "1")
-            setValueForThreads(listOf(THREAD_ROOT), "flagged", "0")
+            setFlagForMessages(listOf(MESSAGE_ID), Flag.SEEN, true)
+            setValueForThreads(listOf(THREAD_ROOT), Flag.FLAGGED, false)
         }
 
         val result = messageListRepository.getThreadedMessages(
@@ -277,8 +278,8 @@ class MessageListRepositoryTest {
             )
         )
         MessageListCache.getCache(accountUuid).apply {
-            setValueForMessages(listOf(MESSAGE_ID), "read", "1")
-            setValueForThreads(listOf(THREAD_ROOT), "flagged", "0")
+            setFlagForMessages(listOf(MESSAGE_ID), Flag.SEEN, true)
+            setValueForThreads(listOf(THREAD_ROOT), Flag.FLAGGED, false)
         }
 
         val result = messageListRepository.getThread(
