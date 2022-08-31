@@ -1,94 +1,62 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+private const val NO_VALID_ID = -1L
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+internal object IdGrouper {
+    fun groupIds(ids: Set<Long>): GroupedIds {
+        require(ids.isNotEmpty()) { "groupIds() must be called with non-empty set of IDs" }
 
+        if (ids.size < 2) return GroupedIds(ids, emptyList())
 
-class IdGrouper {
-    static GroupedIds groupIds(Set<Long> ids) {
-        if (ids == null || ids.isEmpty()) {
-            throw new IllegalArgumentException("groupId() must be called with non-empty set of ids");
-        }
+        val orderedIds = ids.toSortedSet()
+        val firstId = orderedIds.first()
 
-        if (ids.size() < 2) {
-            return new GroupedIds(ids, Collections.<ContiguousIdGroup>emptyList());
-        }
+        val remainingIds = mutableSetOf(firstId)
+        val idGroups = mutableListOf<ContiguousIdGroup>()
 
-        TreeSet<Long> orderedIds = new TreeSet<>(ids);
-        Iterator<Long> orderedIdIterator = orderedIds.iterator();
-        Long previousId = orderedIdIterator.next();
-
-        TreeSet<Long> remainingIds = new TreeSet<>();
-        remainingIds.add(previousId);
-        List<ContiguousIdGroup> idGroups = new ArrayList<>();
-        long currentIdGroupStart = -1L;
-        long currentIdGroupEnd = -1L;
-        while (orderedIdIterator.hasNext()) {
-            Long currentId = orderedIdIterator.next();
+        var previousId = firstId
+        var currentIdGroupStart = NO_VALID_ID
+        var currentIdGroupEnd = NO_VALID_ID
+        for (currentId in orderedIds.asSequence().drop(1)) {
             if (previousId + 1L == currentId) {
-                if (currentIdGroupStart == -1L) {
-                    remainingIds.remove(previousId);
-                    currentIdGroupStart = previousId;
-                    currentIdGroupEnd = currentId;
+                if (currentIdGroupStart == NO_VALID_ID) {
+                    remainingIds.remove(previousId)
+                    currentIdGroupStart = previousId
+                    currentIdGroupEnd = currentId
                 } else {
-                    currentIdGroupEnd = currentId;
+                    currentIdGroupEnd = currentId
                 }
             } else {
-                if (currentIdGroupStart != -1L) {
-                    idGroups.add(new ContiguousIdGroup(currentIdGroupStart, currentIdGroupEnd));
-                    currentIdGroupStart = -1L;
+                if (currentIdGroupStart != NO_VALID_ID) {
+                    idGroups.add(ContiguousIdGroup(currentIdGroupStart, currentIdGroupEnd))
+                    currentIdGroupStart = NO_VALID_ID
                 }
-                remainingIds.add(currentId);
+                remainingIds.add(currentId)
             }
 
-            previousId = currentId;
+            previousId = currentId
         }
 
-        if (currentIdGroupStart != -1L) {
-            idGroups.add(new ContiguousIdGroup(currentIdGroupStart, currentIdGroupEnd));
+        if (currentIdGroupStart != NO_VALID_ID) {
+            idGroups.add(ContiguousIdGroup(currentIdGroupStart, currentIdGroupEnd))
         }
 
-        return new GroupedIds(remainingIds, idGroups);
+        return GroupedIds(remainingIds, idGroups)
+    }
+}
+
+internal class GroupedIds(@JvmField val ids: Set<Long>, @JvmField val idGroups: List<ContiguousIdGroup>) {
+    init {
+        require(ids.isNotEmpty() || idGroups.isNotEmpty()) { "Must have at least one ID" }
+    }
+}
+
+internal class ContiguousIdGroup(val start: Long, val end: Long) {
+    init {
+        require(start < end) { "start >= end" }
     }
 
-
-    static class GroupedIds {
-        public final Set<Long> ids;
-        public final List<ContiguousIdGroup> idGroups;
-
-
-        GroupedIds(Set<Long> ids, List<ContiguousIdGroup> idGroups) {
-            if (ids.isEmpty() && idGroups.isEmpty()) {
-                throw new IllegalArgumentException("Must have at least one id");
-            }
-
-            this.ids = ids;
-            this.idGroups = idGroups;
-        }
-    }
-
-    static class ContiguousIdGroup {
-        public final long start;
-        public final long end;
-
-
-        ContiguousIdGroup(long start, long end) {
-            if (start >= end) {
-                throw new IllegalArgumentException("start >= end");
-            }
-
-            this.start = start;
-            this.end = end;
-        }
-
-        @Override
-        public String toString() {
-            return start + ":" + end;
-        }
+    override fun toString(): String {
+        return "$start:$end"
     }
 }

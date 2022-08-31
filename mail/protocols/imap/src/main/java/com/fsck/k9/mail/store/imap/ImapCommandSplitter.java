@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.fsck.k9.mail.store.imap.IdGrouper.ContiguousIdGroup;
-import com.fsck.k9.mail.store.imap.IdGrouper.GroupedIds;
-
 
 class ImapCommandSplitter {
     static List<String> splitCommand(String prefix, String suffix, GroupedIds groupedIds, int lengthLimit) {
