@@ -1,148 +1,133 @@
-package com.fsck.k9.cache;
+package com.fsck.k9.cache
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fsck.k9.DI
+import com.fsck.k9.mailstore.LocalMessage
+import com.fsck.k9.mailstore.MessageListRepository
+import kotlin.collections.set
 
-import com.fsck.k9.DI;
-import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.MessageListRepository;
+typealias MessageId = Long
+typealias ThreadId = Long
+typealias FolderId = Long
+typealias ColumnName = String
+typealias ColumnValue = String
+typealias AccountUuid = String
 
 /**
  * Cache to bridge the time needed to write (user-initiated) changes to the database.
  */
-public class EmailProviderCache {
-    private static Map<String, EmailProviderCache> sInstances =
-            new HashMap<>();
+class EmailProviderCache private constructor(private val accountUuid: String) {
+    private val messageCache = mutableMapOf<MessageId, MutableMap<ColumnName, ColumnValue>>()
+    private val threadCache = mutableMapOf<ThreadId, MutableMap<ColumnName, ColumnValue>>()
+    private val hiddenMessageCache = mutableMapOf<MessageId, FolderId>()
 
-    public static synchronized EmailProviderCache getCache(String accountUuid) {
-
-        EmailProviderCache instance = sInstances.get(accountUuid);
-        if (instance == null) {
-            instance = new EmailProviderCache(accountUuid);
-            sInstances.put(accountUuid, instance);
-        }
-
-        return instance;
-    }
-
-
-    private String mAccountUuid;
-    private final Map<Long, Map<String, String>> mMessageCache = new HashMap<>();
-    private final Map<Long, Map<String, String>> mThreadCache = new HashMap<>();
-    private final Map<Long, Long> mHiddenMessageCache = new HashMap<>();
-
-
-    private EmailProviderCache(String accountUuid) {
-        mAccountUuid = accountUuid;
-    }
-
-    public String getValueForMessage(Long messageId, String columnName) {
-        synchronized (mMessageCache) {
-            Map<String, String> map = mMessageCache.get(messageId);
-            return (map == null) ? null : map.get(columnName);
+    fun getValueForMessage(messageId: Long, columnName: String): String? {
+        synchronized(messageCache) {
+            val columnMap = messageCache[messageId]
+            return columnMap?.get(columnName)
         }
     }
 
-    public String getValueForThread(Long threadRootId, String columnName) {
-        synchronized (mThreadCache) {
-            Map<String, String> map = mThreadCache.get(threadRootId);
-            return (map == null) ? null : map.get(columnName);
+    fun getValueForThread(threadRootId: Long, columnName: String): String? {
+        synchronized(threadCache) {
+            val columnMap = threadCache[threadRootId]
+            return columnMap?.get(columnName)
         }
     }
 
-    public void setValueForMessages(List<Long> messageIds, String columnName, String value) {
-        synchronized (mMessageCache) {
-            for (Long messageId : messageIds) {
-                Map<String, String> map = mMessageCache.get(messageId);
-                if (map == null) {
-                    map = new HashMap<>();
-                    mMessageCache.put(messageId, map);
-                }
-                map.put(columnName, value);
+    fun setValueForMessages(messageIds: List<Long>, columnName: String, value: String) {
+        synchronized(messageCache) {
+            for (messageId in messageIds) {
+                val columnMap = messageCache.getOrPut(messageId) { mutableMapOf() }
+                columnMap[columnName] = value
             }
         }
 
-        notifyChange();
+        notifyChange()
     }
 
-    public void setValueForThreads(List<Long> threadRootIds, String columnName, String value) {
-        synchronized (mThreadCache) {
-            for (Long threadRootId : threadRootIds) {
-                Map<String, String> map = mThreadCache.get(threadRootId);
-                if (map == null) {
-                    map = new HashMap<>();
-                    mThreadCache.put(threadRootId, map);
-                }
-                map.put(columnName, value);
+    fun setValueForThreads(threadRootIds: List<Long>, columnName: String, value: String) {
+        synchronized(threadCache) {
+            for (threadRootId in threadRootIds) {
+                val columnMap = threadCache.getOrPut(threadRootId) { mutableMapOf() }
+                columnMap[columnName] = value
             }
         }
 
-        notifyChange();
+        notifyChange()
     }
 
-    public void removeValueForMessages(List<Long> messageIds, String columnName) {
-        synchronized (mMessageCache) {
-            for (Long messageId : messageIds) {
-                Map<String, String> map = mMessageCache.get(messageId);
-                if (map != null) {
-                    map.remove(columnName);
-                    if (map.isEmpty()) {
-                        mMessageCache.remove(messageId);
+    fun removeValueForMessages(messageIds: List<Long>, columnName: String) {
+        synchronized(messageCache) {
+            for (messageId in messageIds) {
+                val columnMap = messageCache[messageId]
+                if (columnMap != null) {
+                    columnMap.remove(columnName)
+                    if (columnMap.isEmpty()) {
+                        messageCache.remove(messageId)
                     }
                 }
             }
         }
     }
 
-    public void removeValueForThreads(List<Long> threadRootIds, String columnName) {
-        synchronized (mThreadCache) {
-            for (Long threadRootId : threadRootIds) {
-                Map<String, String> map = mThreadCache.get(threadRootId);
-                if (map != null) {
-                    map.remove(columnName);
-                    if (map.isEmpty()) {
-                        mThreadCache.remove(threadRootId);
+    fun removeValueForThreads(threadRootIds: List<Long>, columnName: String) {
+        synchronized(threadCache) {
+            for (threadRootId in threadRootIds) {
+                val columnMap = threadCache[threadRootId]
+                if (columnMap != null) {
+                    columnMap.remove(columnName)
+                    if (columnMap.isEmpty()) {
+                        threadCache.remove(threadRootId)
                     }
                 }
             }
         }
     }
 
-    public void hideMessages(List<LocalMessage> messages) {
-        synchronized (mHiddenMessageCache) {
-            for (LocalMessage message : messages) {
-                long messageId = message.getDatabaseId();
-                mHiddenMessageCache.put(messageId, message.getFolder().getDatabaseId());
+    fun hideMessages(messages: List<LocalMessage>) {
+        synchronized(hiddenMessageCache) {
+            for (message in messages) {
+                val messageId = message.databaseId
+                val folderId = message.folder.databaseId
+                hiddenMessageCache[messageId] = folderId
             }
         }
 
-        notifyChange();
+        notifyChange()
     }
 
-    public boolean isMessageHidden(Long messageId, long folderId) {
-        synchronized (mHiddenMessageCache) {
-            Long hiddenInFolder = mHiddenMessageCache.get(messageId);
-            return (hiddenInFolder != null && hiddenInFolder == folderId);
+    fun isMessageHidden(messageId: Long, folderId: Long): Boolean {
+        synchronized(hiddenMessageCache) {
+            val hiddenInFolder = hiddenMessageCache[messageId]
+            return hiddenInFolder == folderId
         }
     }
 
-    public void unhideMessages(List<LocalMessage> messages) {
-        synchronized (mHiddenMessageCache) {
-            for (LocalMessage message : messages) {
-                long messageId = message.getDatabaseId();
-                long folderId = message.getFolder().getDatabaseId();
-                Long hiddenInFolder = mHiddenMessageCache.get(messageId);
-
-                if (hiddenInFolder != null && hiddenInFolder == folderId) {
-                    mHiddenMessageCache.remove(messageId);
+    fun unhideMessages(messages: List<LocalMessage>) {
+        synchronized(hiddenMessageCache) {
+            for (message in messages) {
+                val messageId = message.databaseId
+                val folderId = message.folder.databaseId
+                val hiddenInFolder = hiddenMessageCache[messageId]
+                if (hiddenInFolder == folderId) {
+                    hiddenMessageCache.remove(messageId)
                 }
             }
         }
     }
 
-    private void notifyChange() {
-        MessageListRepository messageListRepository = DI.get(MessageListRepository.class);
-        messageListRepository.notifyMessageListChanged(mAccountUuid);
+    private fun notifyChange() {
+        val messageListRepository = DI.get<MessageListRepository>()
+        messageListRepository.notifyMessageListChanged(accountUuid)
+    }
+
+    companion object {
+        private val instances = mutableMapOf<AccountUuid, EmailProviderCache>()
+
+        @JvmStatic
+        @Synchronized
+        fun getCache(accountUuid: String): EmailProviderCache {
+            return instances.getOrPut(accountUuid) { EmailProviderCache(accountUuid) }
+        }
     }
 }
