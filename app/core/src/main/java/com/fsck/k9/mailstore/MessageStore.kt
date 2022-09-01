@@ -127,7 +127,7 @@ interface MessageStore {
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        messageMapper: MessageMapper<T?>
+        messageMapper: MessageMapper<out T?>
     ): List<T>
 
     /**
@@ -137,13 +137,13 @@ interface MessageStore {
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        messageMapper: MessageMapper<T?>
+        messageMapper: MessageMapper<out T?>
     ): List<T>
 
     /**
      * Retrieve list of messages in a thread.
      */
-    fun <T> getThread(threadId: Long, sortOrder: String, messageMapper: MessageMapper<T?>): List<T>
+    fun <T> getThread(threadId: Long, sortOrder: String, messageMapper: MessageMapper<out T?>): List<T>
 
     /**
      * Retrieve the date of the oldest message in the given folder.
