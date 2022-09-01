@@ -18,12 +18,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -51,8 +49,6 @@ import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
-import com.fsck.k9.provider.EmailProvider;
-import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
@@ -166,7 +162,6 @@ public class LocalStore {
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
     private final Context context;
-    private final ContentResolver contentResolver;
     private final PendingCommandSerializer pendingCommandSerializer;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
 
@@ -184,7 +179,6 @@ public class LocalStore {
      */
     private LocalStore(final Account account, final Context context) throws MessagingException {
         this.context = context;
-        this.contentResolver = context.getContentResolver();
 
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
         attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
@@ -726,8 +720,8 @@ public class LocalStore {
     }
 
     public void notifyChange() {
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + account.getUuid() + "/messages");
-        contentResolver.notifyChange(uri, null);
+        MessageListRepository messageListRepository = DI.get(MessageListRepository.class);
+        messageListRepository.notifyMessageListChanged(account.getUuid());
     }
 
     /**

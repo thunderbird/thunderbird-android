@@ -469,11 +469,11 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     fun createMessageListItem(
-        position: Int = 0,
         account: Account = Account(SOME_ACCOUNT_UUID),
         subject: String? = "irrelevant",
         threadCount: Int = 0,
         messageDate: Long = 0L,
+        internalDate: Long = 0L,
         displayName: CharSequence = "irrelevant",
         displayAddress: Address? = Address.parse("irrelevant@domain.example").first(),
         toMe: Boolean = false,
@@ -492,11 +492,11 @@ class MessageListAdapterTest : RobolectricTest() {
         threadRoot: Long = 0L
     ): MessageListItem {
         return MessageListItem(
-            position,
             account,
             subject,
             threadCount,
             messageDate,
+            internalDate,
             displayName,
             displayAddress,
             toMe,

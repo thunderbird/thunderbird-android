@@ -1,15 +1,12 @@
 package com.fsck.k9.mailstore
 
-import android.net.Uri
 import com.fsck.k9.Account
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.mail.FolderClass
-import com.fsck.k9.provider.EmailProvider
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 import org.koin.core.component.inject
 import org.mockito.kotlin.any
@@ -25,12 +22,6 @@ class K9BackendStorageTest : K9RobolectricTest() {
     val account: Account = createAccount()
     val database: LockableDatabase = localStoreProvider.getInstance(account).database
     val backendStorage = createBackendStorage()
-
-    @Before
-    fun setUp() {
-        // Set EmailProvider.CONTENT_URI so LocalStore.notifyChange() won't crash
-        EmailProvider.CONTENT_URI = Uri.parse("content://dummy")
-    }
 
     @After
     fun tearDown() {

@@ -3,9 +3,12 @@ package com.fsck.k9.storage.messages
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
+import com.fsck.k9.mailstore.FolderNotFoundException
+import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toDatabaseFolderType
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
+import org.junit.Assert.fail
 import org.junit.Test
 
 class RetrieveFolderOperationsTest : RobolectricTest() {
@@ -346,5 +349,42 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         val result = retrieveFolderOperations.getMessageCount(folderId)
 
         assertThat(result).isEqualTo(2)
+    }
+
+    @Test
+    fun `get 'more messages' value from non-existent folder`() {
+        try {
+            retrieveFolderOperations.hasMoreMessages(23)
+            fail("Expected exception")
+        } catch (e: FolderNotFoundException) {
+            assertThat(e.folderId).isEqualTo(23)
+        }
+    }
+
+    @Test
+    fun `get 'more messages' value from folder with value 'unknown'`() {
+        val folderId = sqliteDatabase.createFolder(moreMessages = "unknown")
+
+        val result = retrieveFolderOperations.hasMoreMessages(folderId)
+
+        assertThat(result).isEqualTo(MoreMessages.UNKNOWN)
+    }
+
+    @Test
+    fun `get 'more messages' value from folder with value 'false'`() {
+        val folderId = sqliteDatabase.createFolder(moreMessages = "false")
+
+        val result = retrieveFolderOperations.hasMoreMessages(folderId)
+
+        assertThat(result).isEqualTo(MoreMessages.FALSE)
+    }
+
+    @Test
+    fun `get 'more messages' value from folder with value 'true'`() {
+        val folderId = sqliteDatabase.createFolder(moreMessages = "true")
+
+        val result = retrieveFolderOperations.hasMoreMessages(folderId)
+
+        assertThat(result).isEqualTo(MoreMessages.TRUE)
     }
 }

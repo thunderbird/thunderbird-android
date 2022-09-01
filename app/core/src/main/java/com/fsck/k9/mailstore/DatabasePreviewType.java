@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore;
 
 
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
+import org.jetbrains.annotations.NotNull;
 
 
 public enum DatabasePreviewType {
@@ -20,6 +21,7 @@ public enum DatabasePreviewType {
         this.previewType = previewType;
     }
 
+    @NotNull
     public static DatabasePreviewType fromDatabaseValue(String databaseValue) {
         for (DatabasePreviewType databasePreviewType : values()) {
             if (databasePreviewType.getDatabaseValue().equals(databaseValue)) {

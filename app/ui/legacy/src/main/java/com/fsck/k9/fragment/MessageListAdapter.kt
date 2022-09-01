@@ -55,8 +55,11 @@ class MessageListAdapter internal constructor(
     var messages: List<MessageListItem> = emptyList()
         set(value) {
             field = value
+            messagesMap = value.associateBy { it.uniqueId }
             notifyDataSetChanged()
         }
+
+    private var messagesMap = emptyMap<Long, MessageListItem>()
 
     var activeMessage: MessageReference? = null
 
@@ -71,14 +74,14 @@ class MessageListAdapter internal constructor(
 
     private val flagClickListener = OnClickListener { view: View ->
         val messageViewHolder = view.tag as MessageViewHolder
-        val messageListItem = getItem(messageViewHolder.position)
+        val messageListItem = getItemById(messageViewHolder.uniqueId)
         listItemListener.onToggleMessageFlag(messageListItem)
     }
 
     private val contactPictureClickListener = OnClickListener { view: View ->
         val parentView = view.parent.parent as View
         val messageViewHolder = parentView.tag as MessageViewHolder
-        val messageListItem = getItem(messageViewHolder.position)
+        val messageListItem = getItemById(messageViewHolder.uniqueId)
         listItemListener.onToggleMessageSelection(messageListItem)
     }
 
@@ -95,6 +98,10 @@ class MessageListAdapter internal constructor(
     override fun getItemId(position: Int): Long = messages[position].uniqueId
 
     override fun getItem(position: Int): MessageListItem = messages[position]
+
+    private fun getItemById(uniqueId: Long): MessageListItem {
+        return messagesMap[uniqueId]!!
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val message = getItem(position)
@@ -163,7 +170,7 @@ class MessageListAdapter internal constructor(
             if (appearance.stars) {
                 holder.flagged.isChecked = isStarred
             }
-            holder.position = position
+            holder.uniqueId = uniqueId
             if (appearance.showContactPicture && holder.contactPicture.isVisible) {
                 setContactPicture(holder.contactPicture, displayAddress)
             }

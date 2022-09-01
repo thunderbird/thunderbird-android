@@ -1,12 +1,9 @@
 package com.fsck.k9.ui.messagelist
 
-import android.content.ContentResolver
-import android.database.ContentObserver
-import android.net.Uri
-import android.os.Handler
 import androidx.lifecycle.LiveData
 import com.fsck.k9.Preferences
-import com.fsck.k9.provider.EmailProvider
+import com.fsck.k9.mailstore.MessageListChangedListener
+import com.fsck.k9.mailstore.MessageListRepository
 import com.fsck.k9.search.getAccountUuids
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,53 +13,43 @@ import kotlinx.coroutines.withContext
 class MessageListLiveData(
     private val messageListLoader: MessageListLoader,
     private val preferences: Preferences,
-    private val contentResolver: ContentResolver,
+    private val messageListRepository: MessageListRepository,
     private val coroutineScope: CoroutineScope,
     val config: MessageListConfig
 ) : LiveData<MessageListInfo>() {
 
-    private val contentObserver = object : ContentObserver(Handler()) {
-        override fun onChange(selfChange: Boolean) {
-            loadMessageListAsync()
-        }
+    private val messageListChangedListener = MessageListChangedListener {
+        loadMessageListAsync()
     }
 
     private fun loadMessageListAsync() {
         coroutineScope.launch(Dispatchers.Main) {
-            value = withContext(Dispatchers.IO) {
+            val messageList = withContext(Dispatchers.IO) {
                 messageListLoader.getMessageList(config)
             }
+            value = messageList
         }
     }
 
     override fun onActive() {
         super.onActive()
 
-        registerContentObserverAsync()
+        registerMessageListChangedListenerAsync()
         loadMessageListAsync()
     }
 
     override fun onInactive() {
         super.onInactive()
-        contentResolver.unregisterContentObserver(contentObserver)
+        messageListRepository.removeListener(messageListChangedListener)
     }
 
-    private fun registerContentObserverAsync() {
-        coroutineScope.launch(Dispatchers.Main) {
-            val notificationUris = withContext(Dispatchers.IO) {
-                getNotificationUris()
-            }
+    private fun registerMessageListChangedListenerAsync() {
+        coroutineScope.launch(Dispatchers.IO) {
+            val accountUuids = config.search.getAccountUuids(preferences)
 
-            for (notificationUri in notificationUris) {
-                contentResolver.registerContentObserver(notificationUri, false, contentObserver)
+            for (accountUuid in accountUuids) {
+                messageListRepository.addListener(accountUuid, messageListChangedListener)
             }
-        }
-    }
-
-    private fun getNotificationUris(): List<Uri> {
-        val accountUuids = config.search.getAccountUuids(preferences)
-        return accountUuids.map { accountUuid ->
-            EmailProvider.getNotificationUri(accountUuid)
         }
     }
 }

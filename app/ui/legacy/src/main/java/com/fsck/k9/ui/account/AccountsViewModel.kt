@@ -1,17 +1,14 @@
 package com.fsck.k9.ui.account
 
-import android.content.ContentResolver
-import android.database.ContentObserver
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageCounts
 import com.fsck.k9.controller.MessageCountsProvider
+import com.fsck.k9.mailstore.MessageListChangedListener
+import com.fsck.k9.mailstore.MessageListRepository
 import com.fsck.k9.preferences.AccountManager
-import com.fsck.k9.provider.EmailProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -26,7 +23,7 @@ import kotlinx.coroutines.launch
 class AccountsViewModel(
     accountManager: AccountManager,
     private val messageCountsProvider: MessageCountsProvider,
-    private val contentResolver: ContentResolver
+    private val messageListRepository: MessageListRepository
 ) : ViewModel() {
     private val displayAccountFlow: Flow<List<DisplayAccount>> = accountManager.getAccountsFlow()
         .flatMapLatest { accounts ->
@@ -47,21 +44,17 @@ class AccountsViewModel(
 
     private fun getMessageCountsFlow(account: Account): Flow<MessageCounts> {
         return callbackFlow {
-            val notificationUri = EmailProvider.getNotificationUri(account.uuid)
-
             send(messageCountsProvider.getMessageCounts(account))
 
-            val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
-                override fun onChange(selfChange: Boolean) {
-                    launch {
-                        send(messageCountsProvider.getMessageCounts(account))
-                    }
+            val listener = MessageListChangedListener {
+                launch {
+                    send(messageCountsProvider.getMessageCounts(account))
                 }
             }
-            contentResolver.registerContentObserver(notificationUri, false, contentObserver)
+            messageListRepository.addListener(account.uuid, listener)
 
             awaitClose {
-                contentResolver.unregisterContentObserver(contentObserver)
+                messageListRepository.removeListener(listener)
             }
         }.flowOn(Dispatchers.IO)
     }

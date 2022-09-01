@@ -402,11 +402,6 @@
             android:exported="false" />
 
         <provider
-            android:name=".provider.EmailProvider"
-            android:authorities="${applicationId}.provider.email"
-            android:exported="false"/>
-
-        <provider
             android:name=".provider.DecryptedFileProvider"
             android:authorities="${applicationId}.decryptedfileprovider"
             android:exported="false"

@@ -121,6 +121,31 @@ interface MessageStore {
     fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?>
 
     /**
+     * Retrieve list of messages.
+     */
+    fun <T> getMessages(
+        selection: String,
+        selectionArgs: Array<String>,
+        sortOrder: String,
+        messageMapper: MessageMapper<T?>
+    ): List<T>
+
+    /**
+     * Retrieve threaded list of messages.
+     */
+    fun <T> getThreadedMessages(
+        selection: String,
+        selectionArgs: Array<String>,
+        sortOrder: String,
+        messageMapper: MessageMapper<T?>
+    ): List<T>
+
+    /**
+     * Retrieve list of messages in a thread.
+     */
+    fun <T> getThread(threadId: Long, sortOrder: String, messageMapper: MessageMapper<T?>): List<T>
+
+    /**
      * Retrieve the date of the oldest message in the given folder.
      */
     fun getOldestMessageDate(folderId: Long): Date?
@@ -230,6 +255,11 @@ interface MessageStore {
      * Update the notification class of a folder.
      */
     fun setNotificationClass(folderId: Long, folderClass: FolderClass)
+
+    /**
+     * Get the 'more messages' state of a folder.
+     */
+    fun hasMoreMessages(folderId: Long): MoreMessages?
 
     /**
      * Update the 'more messages' state of a folder.
