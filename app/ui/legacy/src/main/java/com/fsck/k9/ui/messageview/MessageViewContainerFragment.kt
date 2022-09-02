@@ -313,6 +313,3 @@ class MessageViewContainerFragment : Fragment() {
         }
     }
 }
-
-private val MessageListItem.messageReference: MessageReference
-    get() = MessageReference(account.uuid, folderId, messageUid)

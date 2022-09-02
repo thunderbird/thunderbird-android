@@ -52,12 +52,15 @@ import com.fsck.k9.ui.messagelist.MessageListConfig
 import com.fsck.k9.ui.messagelist.MessageListInfo
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.messagelist.MessageListViewModel
+import com.fsck.k9.ui.messagelist.MessageSortOverride
 import java.util.HashSet
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+
+private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
 
 class MessageListFragment :
     Fragment(),
@@ -307,7 +310,8 @@ class MessageListFragment :
             sortType,
             sortAscending,
             sortDateAscending,
-            activeMessage
+            activeMessage,
+            viewModel.messageSortOverrides.toMap()
         )
         viewModel.loadMessageList(config)
     }
@@ -1554,6 +1558,8 @@ class MessageListFragment :
     fun setActiveMessage(messageReference: MessageReference?) {
         activeMessage = messageReference
 
+        rememberSortOverride(messageReference)
+
         // Reload message list with modified query that always includes the active message
         if (isAdded) {
             loadMessageList()
@@ -1566,6 +1572,38 @@ class MessageListFragment :
 
             if (messageReference != null) {
                 scrollToMessage(messageReference)
+            }
+        }
+    }
+
+    // For the last N displayed messages we remember the original 'read' and 'starred' state of the messages. We pass
+    // this information to MessageListLoader so messages can be sorted according to these remembered values and not the
+    // current state. This way messages, that are marked as read/unread or starred/not starred while being displayed,
+    // won't immediately change position in the message list if the list is sorted by these fields.
+    // The main benefit is that the swipe to next/previous message feature will work in a less surprising way.
+    private fun rememberSortOverride(messageReference: MessageReference?) {
+        val messageSortOverrides = viewModel.messageSortOverrides
+
+        if (messageReference == null) {
+            messageSortOverrides.clear()
+            return
+        }
+
+        if (sortType != SortType.SORT_UNREAD && sortType != SortType.SORT_FLAGGED) return
+
+        val position = getPosition(messageReference)
+        val messageListItem = adapter.getItem(position)
+
+        val existingEntry = messageSortOverrides.firstOrNull { it.first == messageReference }
+        if (existingEntry != null) {
+            messageSortOverrides.remove(existingEntry)
+            messageSortOverrides.addLast(existingEntry)
+        } else {
+            messageSortOverrides.addLast(
+                messageReference to MessageSortOverride(messageListItem.isRead, messageListItem.isStarred)
+            )
+            if (messageSortOverrides.size > MAXIMUM_MESSAGE_SORT_OVERRIDES) {
+                messageSortOverrides.removeFirst()
             }
         }
     }
