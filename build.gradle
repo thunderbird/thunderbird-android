@@ -62,7 +62,6 @@ buildscript {
         mavenCentral()
         google()
         maven { url "https://plugins.gradle.org/m2/" }
-        jcenter()
     }
 
     dependencies {
@@ -80,7 +79,6 @@ subprojects {
     repositories {
         mavenCentral()
         google()
-        jcenter()
         maven { url 'https://jitpack.io' }
     }
 
