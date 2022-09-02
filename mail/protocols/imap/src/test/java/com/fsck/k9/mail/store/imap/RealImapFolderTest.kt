@@ -1096,7 +1096,7 @@ class RealImapFolderTest {
     private fun extractMessageUids(messages: List<ImapMessage>) = messages.map { it.uid }.toSet()
 
     private fun createFolder(folderName: String): RealImapFolder {
-        return RealImapFolder(internalImapStore, testConnectionManager, folderName, FolderNameCodec.newInstance())
+        return RealImapFolder(internalImapStore, testConnectionManager, folderName, FolderNameCodec())
     }
 
     private fun createImapMessage(uid: String): ImapMessage {
