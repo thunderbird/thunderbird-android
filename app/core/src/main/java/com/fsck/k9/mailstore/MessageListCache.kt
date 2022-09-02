@@ -114,6 +114,22 @@ class MessageListCache private constructor(private val accountUuid: String) {
         }
     }
 
+    fun isEmpty(): Boolean {
+        return isMessageCacheEmpty() && isThreadCacheEmpty() && isHiddenMessageCacheEmpty()
+    }
+
+    private fun isMessageCacheEmpty(): Boolean {
+        return synchronized(messageCache) { messageCache.isEmpty() }
+    }
+
+    private fun isThreadCacheEmpty(): Boolean {
+        return synchronized(threadCache) { threadCache.isEmpty() }
+    }
+
+    private fun isHiddenMessageCacheEmpty(): Boolean {
+        return synchronized(hiddenMessageCache) { hiddenMessageCache.isEmpty() }
+    }
+
     private fun notifyChange() {
         val messageListRepository = DI.get<MessageListRepository>()
         messageListRepository.notifyMessageListChanged(accountUuid)

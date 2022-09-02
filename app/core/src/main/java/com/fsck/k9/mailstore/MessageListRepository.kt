@@ -37,7 +37,7 @@ class MessageListRepository(
         val messageStore = messageStoreManager.getMessageStore(accountUuid)
         val cache = MessageListCache.getCache(accountUuid)
 
-        val mapper = CacheAwareMessageMapper(cache, messageMapper)
+        val mapper = if (cache.isEmpty()) messageMapper else CacheAwareMessageMapper(cache, messageMapper)
         return messageStore.getMessages(selection, selectionArgs, sortOrder, mapper)
     }
 
@@ -54,7 +54,7 @@ class MessageListRepository(
         val messageStore = messageStoreManager.getMessageStore(accountUuid)
         val cache = MessageListCache.getCache(accountUuid)
 
-        val mapper = CacheAwareMessageMapper(cache, messageMapper)
+        val mapper = if (cache.isEmpty()) messageMapper else CacheAwareMessageMapper(cache, messageMapper)
         return messageStore.getThreadedMessages(selection, selectionArgs, sortOrder, mapper)
     }
 
@@ -70,7 +70,7 @@ class MessageListRepository(
         val messageStore = messageStoreManager.getMessageStore(accountUuid)
         val cache = MessageListCache.getCache(accountUuid)
 
-        val mapper = CacheAwareMessageMapper(cache, messageMapper)
+        val mapper = if (cache.isEmpty()) messageMapper else CacheAwareMessageMapper(cache, messageMapper)
         return messageStore.getThread(threadId, sortOrder, mapper)
     }
 }
