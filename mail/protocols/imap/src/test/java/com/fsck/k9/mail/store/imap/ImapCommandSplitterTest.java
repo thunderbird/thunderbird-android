@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.fsck.k9.mail.store.imap.IdGrouper.GroupedIds;
 import com.google.common.collect.Sets;
 import org.junit.Test;
 
@@ -24,7 +23,7 @@ public class ImapCommandSplitterTest {
     @Test
     public void splitCommand_withManyNonContiguousIds_shouldSplitCommand() throws Exception {
         Set<Long> ids = createNonContiguousIdSet(10000, 10500, 2);
-        GroupedIds groupedIds = new GroupedIds(ids, Collections.<IdGrouper.ContiguousIdGroup>emptyList());
+        GroupedIds groupedIds = new GroupedIds(ids, Collections.emptyList());
 
         List<String> commands = ImapCommandSplitter.splitCommand(COMMAND_PREFIX, COMMAND_SUFFIX, groupedIds, 980);
 
@@ -39,7 +38,7 @@ public class ImapCommandSplitterTest {
         Set<Long> idSet = Sets.union(
                 createNonContiguousIdSet(10000, 10298, 2),
                 createNonContiguousIdSet(10402, 10500, 2));
-        List<IdGrouper.ContiguousIdGroup> idGroups = singletonList(new IdGrouper.ContiguousIdGroup(10300L, 10400L));
+        List<ContiguousIdGroup> idGroups = singletonList(new ContiguousIdGroup(10300L, 10400L));
         GroupedIds groupedIds = new GroupedIds(idSet, idGroups);
 
         List<String> commands = ImapCommandSplitter.splitCommand(COMMAND_PREFIX, COMMAND_SUFFIX, groupedIds, 980);
@@ -55,7 +54,7 @@ public class ImapCommandSplitterTest {
     @Test
     public void splitCommand_withEmptySuffix_shouldCreateCommandWithoutTrailingSpace() throws Exception {
         Set<Long> ids = createNonContiguousIdSet(1, 2, 1);
-        GroupedIds groupedIds = new GroupedIds(ids, Collections.<IdGrouper.ContiguousIdGroup>emptyList());
+        GroupedIds groupedIds = new GroupedIds(ids, Collections.<ContiguousIdGroup>emptyList());
 
         List<String> commands = ImapCommandSplitter.splitCommand("UID SEARCH UID", "", groupedIds, 980);
 
