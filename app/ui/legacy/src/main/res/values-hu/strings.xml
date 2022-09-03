@@ -12,6 +12,8 @@
   <string name="app_license">Apache licenc, 2.0-s verzió</string>
   <string name="about_project_title">Nyílt forráskódú projekt</string>
   <string name="about_website_title">Weboldal</string>
+  <string name="user_manual_title">Felhasználói kézikönyv</string>
+  <string name="get_help_title">Segítségkérés</string>
   <string name="user_forum_title">Felhasználói fórum</string>
   <string name="about_fediverse_title">Födiverzum</string>
   <string name="about_twitter_title">Twitter</string>
@@ -103,6 +105,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="search_action">Keresés</string>
   <string name="search_everywhere_action">Keresés mindenhol</string>
   <string name="search_results">Keresési eredmények</string>
+  <string name="new_messages_title">Új üzenetek</string>
   <string name="preferences_action">Beállítások</string>
   <string name="folders_action">Mappák kezelése</string>
   <string name="account_settings_action">Fiók beállításai</string>
@@ -113,6 +116,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="flag_action">Csillag hozzáadása</string>
   <string name="unflag_action">Csillag eltávolítása</string>
   <string name="copy_action">Másolás</string>
+  <string name="unsubscribe_action">Leiratkozás</string>
   <string name="show_headers_action">Fejlécek megjelenítése</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Cím a vágólapra másolva</item>
@@ -157,12 +161,15 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="notification_action_archive">Archiválás</string>
   <string name="notification_action_archive_all">Összes archiválása</string>
   <string name="notification_action_spam">Levélszemét</string>
+  <string name="notification_certificate_error_public">Tanúsítványhiba</string>
   <string name="notification_certificate_error_title">Tanúsítványhiba: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Ellenőrizze a kiszolgálóbeállításokat.</string>
   <string name="notification_authentication_error_title">A hitelesítés sikertelen.</string>
   <string name="notification_authentication_error_text">A hitelesítés sikertelen: <xliff:g id="account">%s</xliff:g>. Frissítse a kiszolgálóbeállításokat.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Értesítési hiba</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Hiba történt egy új üzenethez tartozó rendszerértesítés létrehozásának kísérletekor. Az ok valószínűleg egy hiányzó értesítési hang.\n\nKoppintson az értesítési beállítások megnyitásához.</string>
   <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
   <string name="notification_bg_send_ticker">Levél küldése: <xliff:g id="account">%s</xliff:g></string>
@@ -185,6 +192,9 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="debug_enable_debug_logging_summary">További diagnosztikai információk naplózása</string>
   <string name="debug_enable_sensitive_logging_title">Érzékeny információk naplózása</string>
   <string name="debug_enable_sensitive_logging_summary">A jelszavak láthatóak lehetnek a naplókban.</string>
+  <string name="debug_export_logs_title">Naplók exportálása</string>
+  <string name="debug_export_logs_success">Az exportálás sikerült. A naplók érzékeny információkat tartalmazhatnak. Legyen óvatos, hogy kinek küldi el azokat.</string>
+  <string name="debug_export_logs_failure">Az exportálás sikertelen.</string>
   <string name="message_list_load_more_messages_action">További üzenetek betöltése</string>
   <string name="message_to_fmt">Címzett:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Tárgy</string>
@@ -231,6 +241,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_show_contact_name_summary">Címzettek neveinek használata a címjegyzékből, ha elérhető</string>
   <string name="global_settings_registered_name_color_label">Partnerek színezése</string>
   <string name="global_settings_registered_name_color_changed">Nevek színezése a partnerlistában</string>
+  <string name="general_settings_contact_name_color_label">Partner nevének színe</string>
   <string name="global_settings_messageview_fixedwidth_label">Rögzített szélességű betűk</string>
   <string name="global_settings_messageview_fixedwidth_summary">Rögzített szélességű betű használata az egyszerű szöveges üzeneteknél</string>
   <string name="global_settings_messageview_autofit_width_label">Üzenetek automatikus méretezése</string>
@@ -270,8 +281,11 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_basics_title">Új fiók beállítása</string>
   <string name="account_setup_basics_email_hint">E-mail-cím</string>
   <string name="account_setup_basics_password_hint">Jelszó</string>
+  <string name="account_setup_oauth_description">Ezen e-mail-fiók K-9 Maillel történő használatához be kell jelentkeznie, és hozzáférést kell adnia az alkalmazásnak az e-mailjeihez.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Bejelentkezés</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Bejelentkezés Google használatával</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Ha itt szeretné megtekinteni jelszavát, engedélyezze a képernyőzárat ezen az eszközön.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Személyazonosság ellenőrzése</string>
@@ -295,6 +309,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_auth_type_insecure_password">Nem biztonságosan átküldött jelszó</string>
   <string name="account_setup_auth_type_encrypted_password">Titkosított jelszó</string>
   <string name="account_setup_auth_type_tls_client_certificate">Ügyféltanúsítvány</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Bejövő kiszolgáló beállításai</string>
   <string name="account_setup_incoming_username_label">Felhasználónév</string>
   <string name="account_setup_incoming_password_label">Jelszó</string>
@@ -313,6 +328,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_incoming_delete_policy_never_label">Nincs törlés a kiszolgálóról</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Törlés a kiszolgálóról</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Olvasottnak jelölés a kiszolgálón</string>
+  <string name="account_setup_incoming_use_compression">Tömörítés használata</string>
   <string name="account_setup_expunge_policy_label">Törölt üzenetek végleges törlése a kiszolgálóról</string>
   <string name="account_setup_expunge_policy_immediately">Azonnal</string>
   <string name="account_setup_expunge_policy_on_poll">Lekérdezéskor</string>
@@ -377,6 +393,10 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_failed_dlg_auth_message_fmt">A felhasználónév vagy a jelszó hibás.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">A kiszolgáló érvénytelen SSL-tanúsítványt mutatott be. Néha ez a kiszolgáló hibás beállításából ered. Néha azért, mert valaki támadást hajtott végre Ön vagy a levelezőkiszolgálója ellen. Ha nem biztos abban, hogy mi történt, akkor kattintson az Elutasítás gombra, és vegye fel a kapcsolatot a levelezőkiszolgáló üzemeltetőivel.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Nem lehet kapcsolódni a kiszolgálóhoz.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">A felhatalmazás megszakítva</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">A felhatalmazás meghiúsult a következő hibával: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">Az OAuth 2.0 jelenleg nem támogatott ezzel a szolgáltatóval.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Az alkalmazás nem talált böngészőt a fiókhoz történő hozzáférés megadásához való használathoz.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Részletek szerkesztése</string>
   <string name="account_setup_failed_dlg_continue_action">Folytatás</string>
   <string name="account_settings_push_advanced_title">Bővített</string>
@@ -531,11 +551,29 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_settings_description_label">Fióknév</string>
   <string name="account_settings_name_label">Saját név</string>
   <string name="notifications_title">Értesítések</string>
+  <string name="account_settings_vibration">Rezgés</string>
   <string name="account_settings_vibrate_enable">Rezgés</string>
+  <string name="account_settings_vibrate_pattern_label">Rezgés mintája</string>
   <string name="account_settings_vibrate_pattern_default">Alapértelmezett</string>
+  <string name="account_settings_vibrate_pattern_1">1. minta</string>
+  <string name="account_settings_vibrate_pattern_2">2. minta</string>
+  <string name="account_settings_vibrate_pattern_3">3. minta</string>
+  <string name="account_settings_vibrate_pattern_4">4. minta</string>
+  <string name="account_settings_vibrate_pattern_5">5. minta</string>
   <string name="account_settings_vibrate_times">Rezgés ismétlése</string>
+  <string name="account_settings_vibrate_summary_disabled">Letiltva</string>
   <string name="account_settings_ringtone">Új levél csengőhangja</string>
+  <string name="account_settings_notification_light_label">Értesítési fény</string>
+  <string name="account_settings_notification_light_disabled">Letiltva</string>
   <string name="account_settings_notification_light_account_color">Fiókszín</string>
+  <string name="account_settings_notification_light_default_color">Rendszer alapértelmezett színe</string>
+  <string name="account_settings_notification_light_white">Fehér</string>
+  <string name="account_settings_notification_light_red">Piros</string>
+  <string name="account_settings_notification_light_green">Zöld</string>
+  <string name="account_settings_notification_light_blue">Kék</string>
+  <string name="account_settings_notification_light_yellow">Sárga</string>
+  <string name="account_settings_notification_light_cyan">Ciánkék</string>
+  <string name="account_settings_notification_light_magenta">Bíbor</string>
   <string name="account_settings_composition_title">Üzenet írásának beállításai</string>
   <string name="account_settings_composition_label">Írási alapbeállítások</string>
   <string name="account_settings_composition_summary">Alapértelmezett feladó, titkos másolat és aláírás beállítása</string>
@@ -738,13 +776,16 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Adja meg a jelszavakat</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Jelentkezzen be</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Jelentkezzen be, és adja meg a jelszavakat</string>
   <string name="settings_import_failure">Nem sikerült importálni a beállításokat</string>
   <string name="settings_import_read_failure">Nem sikerült beolvasni a beállítások fájlt</string>
   <string name="settings_import_partial_failure">Nem sikerült importálni néhány beállítást</string>
   <string name="settings_import_status_success">Sikeresen importálva</string>
   <string name="settings_import_status_password_required">Jelszó szükséges</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Bejelentkezés szükséges</string>
   <string name="settings_import_status_not_imported">Nincs importálva</string>
   <string name="settings_import_status_error">Importálási hiba</string>
   <string name="settings_import_later_button">Később</string>
