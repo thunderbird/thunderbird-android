@@ -8,48 +8,53 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="4dp"
-        android:clickable="false"
-        android:textColor="@android:color/white"
-        tools:chipBackgroundColor="#1976D2"
-        tools:text="Account name" />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="8dp">
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_alignParentStart="true"
+            android:clickable="false"
+            android:textColor="@android:color/white"
+            tools:chipBackgroundColor="#1976D2"
+            tools:text="Account name" />
 
         <TextView
             android:id="@+id/subject"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:layout_marginEnd="16dp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-            tools:text="(no subject)" />
-
-        <CheckBox
-            android:id="@+id/flagged"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/chip"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toStartOf="@id/flagged"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="(no subject)" />
+
+        <ImageView
+            android:id="@+id/flagged"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@id/subject"
+            android:layout_alignParentEnd="true"
             android:layout_gravity="center_vertical"
-            android:focusable="false"
-            android:checked="false"
-            style="@style/MessageStarStyle" />
+            android:layout_marginBottom="-8dp"
+            android:layout_marginEnd="8dp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/btn_select_star" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/participants_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,103 +63,94 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="16dp">
+        android:gravity="center_vertical">
 
         <com.fsck.k9.ui.ContactBadge
             android:id="@+id/contact_badge"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
+            android:layout_margin="16dp"
             tools:src="@drawable/ic_contact_picture" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:ellipsize="end"
+            android:layout_toStartOf="@id/icon_single_message_options"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:layout_alignTop="@id/contact_badge"
+            android:layout_toEndOf="@+id/contact_badge"
+            android:layout_marginEnd="8dp"
+            android:text="@string/general_no_sender"
+            android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+            android:textColor="?android:attr/textColorPrimary" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/icon_single_message_options"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?selectableItemBackgroundBorderless"
+            app:srcCompat="?iconActionSingleMessageOptions" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/from"
+            android:layout_toEndOf="@+id/contact_badge"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/crypto_status_icon"
+                android:layout_width="18sp"
+                android:layout_height="18sp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/status_lock_disabled"
+                app:tint="?attr/openpgp_grey"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/to"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/message_to_me_label"
+                android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+                android:textColor="?android:attr/textColorSecondary" />
 
-                <TextView
-                    android:id="@+id/from"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/general_no_sender"
-                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                    android:textColor="?android:attr/textColorPrimary" />
-
-                <ImageView
-                    android:id="@+id/icon_single_message_options"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?selectableItemBackgroundBorderless"
-                    app:srcCompat="?iconActionSingleMessageOptions" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/to_count"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+                android:textColor="?attr/colorAccent"
+                tools:text="+2" />
 
-                <ImageView
-                    android:id="@+id/crypto_status_icon"
-                    android:layout_width="16sp"
-                    android:layout_height="16sp"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/status_lock_disabled"
-                    app:tint="?attr/openpgp_grey"
-                    tools:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/message_to_me_label"
-                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                    android:textColor="?android:attr/textColorSecondary" />
-
-                <TextView
-                    android:id="@+id/to_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="8dp"
-                    android:singleLine="true"
-                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                    android:textColor="?attr/colorAccent"
-                    tools:text="+2" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <!-- Date -->
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="none"
-                    android:singleLine="true"
-                    android:textAppearance="@style/TextAppearance.K9.Small"
-                    android:textColor="?android:attr/textColorSecondary"
-                    tools:text="10:00 am" />
-
-            </LinearLayout>
+            <!-- Date -->
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="none"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.K9.Small"
+                android:textColor="?android:attr/textColorSecondary"
+                tools:text="10:00 am" />
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </com.fsck.k9.view.MessageHeader>

@@ -23,7 +23,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -45,11 +44,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView mFromView;
     private TextView mDateView;
     private TextView mToCount;
-    private TextView mTo;
     private TextView mSubjectView;
     private ImageView mCryptoStatusIcon;
-    private Chip mChip;
-    private CheckBox mFlagged;
+    private Chip mAccountChip;
+    private ImageView mFlagged;
     private int defaultSubjectColor;
     private final FontSizes mFontSizes = K9.getFontSizes();
     private MessageHelper mMessageHelper;
@@ -69,7 +67,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         mFromView = findViewById(R.id.from);
         mToCount = findViewById(R.id.to_count);
-        mTo = findViewById(R.id.to);
 
         mContactBadge = findViewById(R.id.contact_badge);
         mContactBadge.setClickable(false);
@@ -77,7 +74,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         View singleMessageOptionIcon = findViewById(R.id.icon_single_message_options);
 
         mSubjectView = findViewById(R.id.subject);
-        mChip = findViewById(R.id.chip);
+        mAccountChip = findViewById(R.id.chip);
         mDateView = findViewById(R.id.date);
         mFlagged = findViewById(R.id.flagged);
 
@@ -150,7 +147,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             fromAddress = fromAddresses[0];
         }
 
-        final CharSequence from = mMessageHelper.getSenderDisplayName(fromAddress);
+        mFromView.setText(mMessageHelper.getSenderDisplayName(fromAddress));
 
         if (K9.isShowContactPicture()) {
             mContactBadge.setVisibility(View.VISIBLE);
@@ -180,11 +177,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             }
         }
 
-        mFromView.setText(from);
-
         if (showStar) {
             mFlagged.setVisibility(View.VISIBLE);
-            mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+            mFlagged.setSelected(message.isSet(Flag.FLAGGED));
         } else {
             mFlagged.setVisibility(View.GONE);
         }
@@ -193,37 +188,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         Address[] ccRecipients = message.getRecipients(RecipientType.CC);
         Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
         int recipientCount = toRecipients.length + ccRecipients.length + bccRecipients.length;
-        mToCount.setText(recipientCount == 1 ? "" : String.format(Locale.getDefault(), "+%d", recipientCount - 1));
-        if (accountIsIn(message.getRecipients(RecipientType.TO), account.getEmail())) {
-            mTo.setText(R.string.message_to_me_label);
-        } else {
-            Address firstRecipient = null;
-            if (toRecipients.length > 0) {
-                firstRecipient = toRecipients[0];
-            } else if (ccRecipients.length > 0) {
-                firstRecipient = ccRecipients[0];
-            } else if (bccRecipients.length > 0) {
-                firstRecipient = bccRecipients[0];
-            }
-            final Contacts contacts = K9.isShowContactName() ? Contacts.getInstance(mContext) : null;
-            CharSequence recipientString = firstRecipient == null ? getResources().getString(R.string.unknown_recipient)
-                    : MessageHelper.toFriendly(firstRecipient, contacts);
-            mTo.setText(getResources().getString(R.string.message_to_email_label, recipientString));
-        }
+        mToCount.setText(recipientCount <= 1 ? "" : String.format(Locale.getDefault(), "+%d", recipientCount - 1));
 
-        mChip.setText(account.getDisplayName());
-        mChip.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));
+        mAccountChip.setText(account.getDisplayName());
+        mAccountChip.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));
 
         setVisibility(View.VISIBLE);
-    }
-
-    private boolean accountIsIn(Address[] addresses, String accountEmail) {
-        for (Address address : addresses) {
-            if (accountEmail.equals(address.getAddress())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void setSubject(@NonNull String subject) {
