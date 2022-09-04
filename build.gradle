@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 buildscript {
     ext {
         buildConfig = [
-                'compileSdk': 31,
+                'compileSdk': 33,
                 'targetSdk': 31,
                 'minSdk': 21,
                 'buildTools': '32.0.0',
@@ -16,7 +16,7 @@ buildscript {
                 'kotlin': '1.7.10',
                 'kotlinCoroutines': '1.6.4',
                 'jetbrainsAnnotations': '23.0.0',
-                'androidxAppCompat': '1.4.2',
+                'androidxAppCompat': '1.5.0',
                 'androidxActivity': '1.5.1',
                 'androidxRecyclerView': '1.2.1',
                 'androidxLifecycle': '2.5.1',
@@ -25,7 +25,7 @@ buildscript {
                 'androidxNavigation': '2.5.1',
                 'androidxConstraintLayout': '2.1.4',
                 'androidxWorkManager': '2.7.1',
-                'androidxFragment': '1.5.1',
+                'androidxFragment': '1.5.2',
                 'androidxLocalBroadcastManager': '1.1.0',
                 'androidxCore': '1.8.0',
                 'androidxCardView': '1.0.0',
