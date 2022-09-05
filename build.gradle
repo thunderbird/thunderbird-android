@@ -36,6 +36,9 @@ buildscript {
                 'moshi': '1.13.0',
                 'timber': '5.0.1',
                 'koin': '3.2.0',
+                // We can't upgrade Commons IO beyond this version because starting with 2.7 it is using Java 8 API
+                // that is not available until Android API 26 (even with desugaring enabled).
+                // See https://issuetracker.google.com/issues/160484830
                 'commonsIo': '2.6',
                 'mime4j': '0.8.6',
                 'okhttp': '4.10.0',
