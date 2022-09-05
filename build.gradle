@@ -10,6 +10,8 @@ buildscript {
                 'robolectricSdk': 31
         ]
 
+        // Judging the impact of newer library versions on the app requires being intimately familiar with the code
+        // base. Please don't open pull requests upgrading dependencies if you're a new contributor.
         versions = [
                 'kotlin': '1.7.10',
                 'kotlinCoroutines': '1.6.4',
