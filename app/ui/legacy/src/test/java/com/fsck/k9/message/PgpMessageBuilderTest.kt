@@ -46,11 +46,11 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.ArgumentMatchers.same
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.anyOrNull
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
 import org.openintents.openpgp.OpenPgpError

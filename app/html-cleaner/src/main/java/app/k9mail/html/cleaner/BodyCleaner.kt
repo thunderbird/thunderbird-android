@@ -38,7 +38,6 @@ internal class BodyCleaner {
             .addAttributes("img", "usemap")
             .addAttributes(":all", "class", "style", "id", "dir")
             .addProtocols("img", "src", "http", "https", "cid", "data")
-
             // Allow all URI schemes in links
             .removeProtocols("a", "href", "ftp", "http", "https", "mailto")
 
