@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.302" versioncode="33002" date="2022-09-05">
+        <change>Fixed moving to next/previous message when sorting the message list by read/unread or starred/unstarred</change>
+        <change>Fixed a crash when a third-party app shared a file to K-9 Mail without granting access to it</change>
+        <change>Keep some more attributes when sanitizing HTML</change>
+        <change>A lot of internal changes and improvements</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.301" versioncode="33001" date="2022-08-09">
         <change>Fixed crash when viewing a message and OpenKeychain needed to display its user interface, e.g. to ask for a password</change>
         <change>When composing a message containing consecutive spaces convert them to non-breaking spaces in the generated HTML part of the message</change>
