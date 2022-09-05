@@ -12,6 +12,8 @@
   <string name="app_license">مجوز آپاچی، نسخهٔ ۲٫۰</string>
   <string name="about_project_title">پروژهٔ متن‌باز</string>
   <string name="about_website_title">وبگاه</string>
+  <string name="user_manual_title">راهنمای کاربر</string>
+  <string name="get_help_title">کمک گرفتن</string>
   <string name="user_forum_title">انجمن کاربری</string>
   <string name="about_fediverse_title">فِدیوِرس</string>
   <string name="about_twitter_title">توئیتر</string>
@@ -24,7 +26,7 @@
   <string name="changelog_show_recent_changes">هنگامی که برنامه روزآمد شد تغییرات تازه را نشان بده</string>
   <string name="changelog_snackbar_text">از تازه‌های این نسخه باخبر شوید</string>
   <!--Welcome message-->
-  <string name="welcome_message_title">به «کِی‌ناین میل» خوش آمدید</string>
+  <string name="welcome_message_title">به «K-9 Mail» خوش آمدید</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
 ‏K-9 Mail برنامه‌ای رایگان برای مدیریت رایانامه در اندروید است.
@@ -115,6 +117,7 @@
   <string name="flag_action">افزودن ستاره</string>
   <string name="unflag_action">حذف ستاره</string>
   <string name="copy_action">کپی</string>
+  <string name="unsubscribe_action">لغو اشتراک</string>
   <string name="show_headers_action">نمایش سرایندها</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">نشانی‌ها در بریده‌دان کپی شد</item>
@@ -166,7 +169,9 @@
   <string name="notification_authentication_error_title">احراز هویت ناموفق بود</string>
   <string name="notification_authentication_error_text">اعتبارسنجی <xliff:g id="account">%s</xliff:g> ناموفق بود. تنظیمات کارساز خود را به‌روز کنید.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">خطای اعلانها</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">هنگام ساخت هشدار برای پیام جدید سامانه خطایی رخ داد. اغلب خطا به علت عدم وجود آهنگ هشدارها است.  \n\n برای بازکردن تنظیمات اعلانات، بزنید. </string>
   <string name="notification_bg_sync_ticker">به‌روزآوری رایانامه‌ها: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">به‌روزآوری رایانامه‌ها</string>
   <string name="notification_bg_send_ticker">ارسال رایانامه: <xliff:g id="account">%s</xliff:g></string>
@@ -280,7 +285,9 @@
   <string name="account_setup_basics_password_hint">گذرواژه</string>
   <string name="account_setup_oauth_description">جهت استفاده‌ این حساب کاربری از K-9 Mail، نیاز است که وارد حساب کاربری خود شوید و اجازه دسترسی اپلیکیشن به ایمیل‌ها را صادر کنید.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">ورود</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">ورود با حساب گوگل</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">برای دیدن گذرواژه‌تان در این قسمت، قفل صفحه در این دستگاه را فعال کنید.</string>
   <string name="account_setup_basics_show_password_biometrics_title">هویت‌تان را تایید کنید</string>
@@ -304,6 +311,7 @@
   <string name="account_setup_auth_type_insecure_password">گذرواژه، به‌شکل ناامن ارسال شد</string>
   <string name="account_setup_auth_type_encrypted_password">گذرواژهٔ رمزنگاری‌شده</string>
   <string name="account_setup_auth_type_tls_client_certificate">گواهی کارخواه</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">تنظیمات کارساز ورودی</string>
   <string name="account_setup_incoming_username_label">نام کاربری</string>
   <string name="account_setup_incoming_password_label">گذرواژه</string>
@@ -322,6 +330,7 @@
   <string name="account_setup_incoming_delete_policy_never_label">در کارساز پاک نشود</string>
   <string name="account_setup_incoming_delete_policy_delete_label">در کارساز نیز پاک شود</string>
   <string name="account_setup_incoming_delete_policy_markread_label">در کارساز نشان بزن که خواندم</string>
+  <string name="account_setup_incoming_use_compression">استفاده از فشرده سازی</string>
   <string name="account_setup_expunge_policy_label">پیام‌های حذف‌شده را در کارساز پاک کن</string>
   <string name="account_setup_expunge_policy_immediately">فوراً</string>
   <string name="account_setup_expunge_policy_on_poll">در زمان سرکشی</string>
@@ -386,6 +395,10 @@
   <string name="account_setup_failed_dlg_auth_message_fmt">نام کاربری یا گذرواژه اشتباه است.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">کارساز یک گواهی SSL نامعتبر ارائه داده است. گاهی این مسئله به‌سبب پیکربندی نادرست کارساز است. گاهی اوقات علت آن است که فردی تلاش می‌کند به شما یا کارساز رایانامه حمله کند. اگر اطلاعات کافی ندارید، ردکردن را انتخاب کنید و با پشتیبانی رایانامهٔ خود تماس بگیرید.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">اتصال به کارساز ناموفق بود.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">مجوزدهی لغو شد</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">مجوزدهی به علت این خطا ناتمام ماند: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 فعلا توسط این ارائه دهنده پشتیبانی نمی شود</string>
+  <string name="account_setup_failed_dlg_browser_not_found">برنامه نمی تواند مرورگری را پیدا کند تا دسترسی به حسابتان را بگیرد</string>
   <string name="account_setup_failed_dlg_edit_details_action">ویرایش جزئیات</string>
   <string name="account_setup_failed_dlg_continue_action">ادامه</string>
   <string name="account_settings_push_advanced_title">پیشرفته</string>
@@ -765,13 +778,16 @@
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">لطفاً گذرواژه‌ها را وارد کنید</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">لطفا وارد شوید</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">لطفا وارد شوید و رمز را وارد کنید</string>
   <string name="settings_import_failure">درون‌برد تنظیمات ناموفق بود</string>
   <string name="settings_import_read_failure">خواندن پروندهٔ تنظیمات ناموفق بود</string>
   <string name="settings_import_partial_failure">درون‌برد برخی تنظیمات ناموفق بود</string>
   <string name="settings_import_status_success">درون‌برد موفقیت‌آمیز بود</string>
   <string name="settings_import_status_password_required">گذرواژه لازم است</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">ورود نیاز است</string>
   <string name="settings_import_status_not_imported">درون‌برد نشده</string>
   <string name="settings_import_status_error">شکست درون‌برد</string>
   <string name="settings_import_later_button">بعداً</string>

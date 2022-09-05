@@ -862,7 +862,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_threaded_view_summary">Nachrichten eines Diskussionsstranges zusammenfassen</string>
   <string name="upgrade_databases_title">Datenbankaktualisierung</string>
   <string name="upgrade_databases_unspecified">Datenbanken werden aktualisiert…</string>
-  <string name="upgrade_database_format">Aktualisiere Datenbank für Konto \'<xliff:g id="account">%s</xliff:g>\'</string>
+  <string name="upgrade_database_format">Aktualisiere Datenbank für Konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="global_settings_splitview_mode_label">Geteilte Ansicht</string>
   <string name="global_settings_splitview_always">Immer</string>
   <string name="global_settings_splitview_never">Nie</string>

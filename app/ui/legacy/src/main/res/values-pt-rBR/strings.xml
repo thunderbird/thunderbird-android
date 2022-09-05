@@ -173,8 +173,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="notification_notify_error_title">Erro de notificação</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_text">Ocorreu um erro ao tentar criar uma notificação de sistema para uma nova mensagem. O provável motivo é a ausência de um som de notificação.\n\nToque para abrir as configurações de notificação.</string>
-  <string name="notification_bg_sync_ticker">Verificando email: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
-  <string name="notification_bg_sync_title">Verificando email</string>
+  <string name="notification_bg_sync_ticker">Verificando e-mail: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+  <string name="notification_bg_sync_title">Verificando e-mail</string>
   <string name="notification_bg_send_ticker">Enviando mensagem: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviando mensagem</string>
   <string name="notification_bg_title_separator">:</string>
@@ -261,7 +261,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="global_settings_confirm_menu_discard">Descartar mensagem</string>
   <string name="global_settings_confirm_menu_mark_all_read">Marcar todas as mensagens como lidas</string>
   <string name="global_settings_confirm_action_delete_notif">Excluir (na notificação)</string>
-  <string name="global_settings_privacy_hide_useragent">Ocultar o cliente de email</string>
+  <string name="global_settings_privacy_hide_useragent">Ocultar o cliente de e-mail</string>
   <string name="global_settings_privacy_hide_useragent_detail">Remove o User-Agent do K-9 dos cabeçalhos das mensagens</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar o fuso horário</string>
   <string name="global_settings_privacy_hide_timezone_detail">Usar UTC ao invés do fuso horário local nos cabeçalhos das mensagens e das respostas</string>
@@ -890,9 +890,9 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_basics_client_certificate">Usar certificado do cliente</string>
   <string name="client_certificate_spinner_empty">Nenhum certificado do cliente</string>
   <string name="client_certificate_spinner_delete">Remover seleção do certificado do cliente</string>
-  <string name="client_certificate_retrieval_failure">Não foi possível recuperar o certificado do cliente para o apelido \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_retrieval_failure">Não foi possível obter o certificado do cliente para o apelido \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Opções avançadas</string>
-  <string name="client_certificate_expired">Certificado do cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" expirou ou não é mais válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="client_certificate_expired">O certificado do cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" expirou ou ainda não é válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*Criptografado*</string>
   <string name="add_from_contacts">Adicionar dos contatos</string>
