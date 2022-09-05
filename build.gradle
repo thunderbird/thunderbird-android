@@ -47,6 +47,7 @@ buildscript {
                 'minidns': '1.0.4',
                 'glide': '4.13.2',
                 'jsoup': '1.15.3',
+                'httpClient': '4.5.13',
 
                 'androidxTestRunner': '1.4.0',
                 'junit': '4.13.2',
