@@ -136,12 +136,14 @@ class MessageListLoader(
                     .thenByDate(config)
             }
             SortType.SORT_UNREAD -> {
-                compareBy<MessageListItem>(config.sortAscending) { it.isRead }
-                    .thenByDate(config)
+                compareBy<MessageListItem>(config.sortAscending) {
+                    config.sortOverrides[it.messageReference]?.isRead ?: it.isRead
+                }.thenByDate(config)
             }
             SortType.SORT_FLAGGED -> {
-                compareBy<MessageListItem>(!config.sortAscending) { it.isStarred }
-                    .thenByDate(config)
+                compareBy<MessageListItem>(!config.sortAscending) {
+                    config.sortOverrides[it.messageReference]?.isStarred ?: it.isStarred
+                }.thenByDate(config)
             }
             SortType.SORT_ATTACHMENT -> {
                 compareBy<MessageListItem>(!config.sortAscending) { it.hasAttachments }

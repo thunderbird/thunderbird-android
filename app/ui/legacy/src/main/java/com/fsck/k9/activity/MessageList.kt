@@ -352,8 +352,6 @@ open class MessageList :
                         showMessageViewPlaceHolder()
                     } else {
                         messageViewContainerFragment.isActive = true
-                        val activeMessage = messageViewContainerFragment.messageReference
-                        messageListFragment.setActiveMessage(activeMessage)
                     }
                 }
 
@@ -985,10 +983,6 @@ open class MessageList :
         if (draftsFolderId != null && folderId == draftsFolderId) {
             MessageActions.actionEditDraft(this, messageReference)
         } else {
-            if (messageListFragment != null) {
-                messageListFragment!!.setActiveMessage(messageReference)
-            }
-
             val fragment = MessageViewContainerFragment.newInstance(messageReference)
             supportFragmentManager.commitNow {
                 replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER)

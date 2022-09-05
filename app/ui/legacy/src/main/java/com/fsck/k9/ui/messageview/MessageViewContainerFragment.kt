@@ -32,6 +32,8 @@ class MessageViewContainerFragment : Fragment() {
     lateinit var messageReference: MessageReference
         private set
 
+    private var activeMessageReference: MessageReference? = null
+
     var lastDirection: Direction? = null
         private set
 
@@ -140,22 +142,23 @@ class MessageViewContainerFragment : Fragment() {
     }
 
     private fun setActiveMessage(position: Int) {
-        rememberNavigationDirection(position, messageReference)
-
-        messageReference = adapter.getMessageReference(position)
-
-        fragmentListener.setActiveMessage(messageReference)
-    }
-
-    private fun rememberNavigationDirection(newPosition: Int, currentMessageReference: MessageReference) {
-        // When messages are added or removed from the list, the current position will change even though we're still
-        // displaying the same message. In those cases we don't want to update `lastDirection`.
-        val newMessageReference = adapter.getMessageReference(newPosition)
-        if (newMessageReference == currentMessageReference) {
-            currentPosition = newPosition
+        // If the position of current message changes (e.g. because messages were added or removed from the list), we
+        // keep track of the new position but otherwise ignore the event.
+        val newMessageReference = adapter.getMessageReference(position)
+        if (newMessageReference == activeMessageReference) {
+            currentPosition = position
             return
         }
 
+        rememberNavigationDirection(position)
+
+        messageReference = adapter.getMessageReference(position)
+
+        activeMessageReference = messageReference
+        fragmentListener.setActiveMessage(messageReference)
+    }
+
+    private fun rememberNavigationDirection(newPosition: Int) {
         currentPosition?.let { currentPosition ->
             lastDirection = if (newPosition < currentPosition) Direction.PREVIOUS else Direction.NEXT
         }
@@ -310,6 +313,3 @@ class MessageViewContainerFragment : Fragment() {
         }
     }
 }
-
-private val MessageListItem.messageReference: MessageReference
-    get() = MessageReference(account.uuid, folderId, messageUid)
