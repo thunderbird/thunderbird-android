@@ -27,7 +27,7 @@ class SmtpResponseParserTest {
         val input = """
             220-Greetings, stranger
             220 smtp.domain.example ESMTP ready
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val response = parser.readGreeting()
@@ -125,7 +125,7 @@ class SmtpResponseParserTest {
         val input = """
             250-smtp.domain.example
             220
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         assertFailsWithMessage("Multi-line response with reply codes not matching: 250 != 220") {
@@ -154,7 +154,7 @@ class SmtpResponseParserTest {
             250-PIPE_CONNECT
             250-AUTH=PLAIN
             250 HELP
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val response = parser.readHelloResponse()
@@ -183,7 +183,7 @@ class SmtpResponseParserTest {
         val input = """
             250-smtp.domain.example
             250 KEYWORD${" "}
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val response = parser.readHelloResponse()
@@ -203,7 +203,7 @@ class SmtpResponseParserTest {
             250-smtp.domain.example
             250-8BITMIME
             250 KEYWORD para${"\t"}meter
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val response = parser.readHelloResponse()
@@ -298,7 +298,7 @@ class SmtpResponseParserTest {
         val input = """
             500-Line one
             500 Line two
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val response = parser.readResponse(enhancedStatusCodes = false)
@@ -314,7 +314,7 @@ class SmtpResponseParserTest {
         val input = """
             500-
             500 Line two
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val response = parser.readResponse(enhancedStatusCodes = false)
@@ -331,7 +331,7 @@ class SmtpResponseParserTest {
             500-Line one
             500-Line two
             500
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val response = parser.readResponse(enhancedStatusCodes = false)
@@ -347,7 +347,7 @@ class SmtpResponseParserTest {
         val input = """
             250-2.1.0 Sender <sender@domain.example>
             250 2.1.0 OK
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val response = parser.readResponse(enhancedStatusCodes = true)
@@ -365,7 +365,7 @@ class SmtpResponseParserTest {
         val input = """
             250 Sender <sender@domain.example> OK
             250 Recipient <recipient@domain.example> OK
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val responseOne = parser.readResponse(enhancedStatusCodes = false)
@@ -387,7 +387,7 @@ class SmtpResponseParserTest {
         val input = """
             200-Line one
             500 Line two
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         assertFailsWithMessage("Multi-line response with reply codes not matching: 200 != 500") {
@@ -411,7 +411,7 @@ class SmtpResponseParserTest {
         val input = """
             200-Line one
             500 Line two
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val logger = TestSmtpLogger(isRawProtocolLoggingEnabled = false)
         val parser = SmtpResponseParser(logger, input)
 
@@ -627,7 +627,7 @@ class SmtpResponseParserTest {
         val input = """
             550-5.2.1 Request failed
             550 Mailbox unavailable
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         assertFailsWithMessage(
@@ -643,7 +643,7 @@ class SmtpResponseParserTest {
         val input = """
             550-Request failed
             550 Mailbox unavailable
-            """.toPeekableInputStream()
+        """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
         val response = parser.readResponse(enhancedStatusCodes = true)

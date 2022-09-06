@@ -1,2 +1,2 @@
 [*.{kt,kts}]
-kotlin_imports_layout = *,^*
+ij_kotlin_imports_layout = *,^*

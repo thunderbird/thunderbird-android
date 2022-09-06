@@ -730,7 +730,7 @@ class SmtpTransportTest {
             assertThat(e).hasMessageThat().isEqualTo("Message too large for server")
         }
 
-        // FIXME: Make sure connection was closed 
+        // FIXME: Make sure connection was closed
         // server.verifyConnectionClosed();
     }
 
