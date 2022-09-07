@@ -1551,10 +1551,16 @@ public class MessagingController {
                     long messageId = message.getDatabaseId();
                     OutboxState outboxState = outboxStateRepository.getOutboxState(messageId);
 
-                    if (outboxState.getSendState() != SendState.READY) {
-                        Timber.v("Skipping sending message %s", message.getUid());
-                        notificationController.showSendFailedNotification(account,
-                                new MessagingException(message.getSubject()));
+                    SendState sendState = outboxState.getSendState();
+                    if (sendState != SendState.READY) {
+                        Timber.v("Skipping sending message %s (reason: %s)", message.getUid(),
+                                sendState.getDatabaseName());
+
+                        if (sendState == SendState.RETRIES_EXCEEDED) {
+                            lastFailure = new MessagingException("Retries exceeded", true);
+                        } else {
+                            lastFailure = new MessagingException(outboxState.getSendError(), true);
+                        }
                         continue;
                     }
 
