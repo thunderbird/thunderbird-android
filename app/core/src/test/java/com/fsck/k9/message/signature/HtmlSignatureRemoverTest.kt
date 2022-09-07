@@ -1,141 +1,151 @@
-package com.fsck.k9.message.signature;
+package com.fsck.k9.message.signature
 
+import com.fsck.k9.message.html.HtmlHelper.extractText
+import com.fsck.k9.message.signature.HtmlSignatureRemover.Companion.stripSignature
+import com.fsck.k9.testing.removeNewlines
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
 
-import org.junit.Test;
-
-import static com.fsck.k9.message.html.HtmlHelper.extractText;
-import static org.junit.Assert.assertEquals;
-
-
-public class HtmlSignatureRemoverTest {
+class HtmlSignatureRemoverTest {
     @Test
-    public void shouldStripSignatureFromK9StyleHtml() throws Exception {
-        String html = "This is the body text" +
-                "<br>" +
-                "-- <br>" +
-                "Sent from my Android device with K-9 Mail. Please excuse my brevity.";
+    fun `old K-9 Mail signature format`() {
+        val html =
+            """This is the body text<br>-- <br>Sent from my Android device with K-9 Mail. Please excuse my brevity."""
 
-        String withoutSignature = HtmlSignatureRemover.stripSignature(html);
+        val withoutSignature = stripSignature(html)
 
-        assertEquals("This is the body text", extractText(withoutSignature));
+        assertThat(extractText(withoutSignature)).isEqualTo("This is the body text")
     }
 
     @Test
-    public void shouldStripSignatureFromThunderbirdStyleHtml() throws Exception {
-        String html = "<html>\r\n" +
-                "  <head>\r\n" +
-                "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n" +
-                "  </head>\r\n" +
-                "  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n" +
-                "    <p>This is the body text<br>\r\n" +
-                "    </p>\r\n" +
-                "    -- <br>\r\n" +
-                "    <div class=\"moz-signature\">Sent from my Android device with K-9 Mail." +
-                " Please excuse my brevity.</div>\r\n" +
-                "  </body>\r\n" +
-                "</html>";
+    fun `old Thunderbird signature format`() {
+        val html =
+            """
+            <html>
+              <head>
+                <meta http-equiv="content-type" content="text/html; charset=utf-8">
+              </head>
+              <body bgcolor="#FFFFFF" text="#000000">
+                <p>This is the body text<br>
+                </p>
+                -- <br>
+                <div class="moz-signature">Sent from my Android device with K-9 Mail. Please excuse my brevity.</div>
+              </body>
+            </html>
+            """.trimIndent()
 
-        String withoutSignature = HtmlSignatureRemover.stripSignature(html);
+        val withoutSignature = stripSignature(html)
 
-        assertEquals("This is the body text", extractText(withoutSignature));
+        assertThat(extractText(withoutSignature)).isEqualTo("This is the body text")
     }
 
     @Test
-    public void shouldStripSignatureBeforeBlockquoteTag() throws Exception {
-        String html = "<html><head></head><body>" +
-                "<div>" +
-                "This is the body text" +
-                "<br>" +
-                "-- <br>" +
-                "<blockquote>" +
-                "Sent from my Android device with K-9 Mail. Please excuse my brevity." +
-                "</blockquote>" +
-                "</div>" +
-                "</body></html>";
+    fun `signature before blockquote tag`() {
+        val html =
+            """
+            <html>
+            <head></head>
+            <body>
+            <div>
+            This is the body text<br>
+            -- <br>
+            <blockquote>Sent from my Android device with K-9 Mail. Please excuse my brevity.</blockquote>
+            </div>
+            </body>
+            </html>
+            """.trimIndent().removeNewlines()
 
-        String withoutSignature = HtmlSignatureRemover.stripSignature(html);
+        val withoutSignature = stripSignature(html)
 
-        assertEquals("<html><head></head><body>" +
-                        "<div>This is the body text</div>" +
-                        "</body></html>",
-                withoutSignature);
+        assertThat(withoutSignature).isEqualTo(
+            """<html><head></head><body><div>This is the body text</div></body></html>"""
+        )
     }
 
     @Test
-    public void shouldNotStripSignatureInsideBlockquoteTags() throws Exception {
-        String html = "<html><head></head><body>" +
-                "<blockquote>" +
-                "This is some quoted text" +
-                "<br>" +
-                "-- <br>" +
-                "Inner signature" +
-                "</blockquote>" +
-                "<div>" +
-                "This is the body text" +
-                "</div>" +
-                "</body></html>";
+    fun `should not strip signature inside blockquote tag`() {
+        val html =
+            """
+            <html>
+            <head></head>
+            <body>
+            <blockquote>
+            This is some quoted text<br>
+            -- <br>
+            Inner signature
+            </blockquote>
+            <div>
+            This is the body text
+            </div>
+            </body>
+            </html>
+            """.trimIndent().removeNewlines()
 
-        String withoutSignature = HtmlSignatureRemover.stripSignature(html);
+        val withoutSignature = stripSignature(html)
 
-        assertEquals("<html><head></head><body>" +
-                        "<blockquote>" +
-                        "This is some quoted text" +
-                        "<br>" +
-                        "-- <br>" +
-                        "Inner signature" +
-                        "</blockquote>" +
-                        "<div>This is the body text</div>" +
-                        "</body></html>",
-                withoutSignature);
+        assertThat(withoutSignature).isEqualTo(html)
     }
 
     @Test
-    public void shouldStripSignatureBetweenBlockquoteTags() throws Exception {
-        String html = "<html><head></head><body>" +
-                "<blockquote>" +
-                "Some quote" +
-                "</blockquote>" +
-                "<div>" +
-                "This is the body text" +
-                "<br>" +
-                "-- <br>" +
-                "<blockquote>" +
-                "Sent from my Android device with K-9 Mail. Please excuse my brevity." +
-                "</blockquote>" +
-                "<br>" +
-                "-- <br>" +
-                "Signature inside signature" +
-                "</div>" +
-                "</body></html>";
+    fun `signature between blockquote tags`() {
+        val html =
+            """
+            <html>
+            <head></head>
+            <body>
+            <blockquote>Some quote</blockquote>
+            <div>This is the body text<br>
+            -- <br>
+            <blockquote>Sent from my Android device with K-9 Mail. Please excuse my brevity.</blockquote>
+            <br>-- <br>Signature inside signature
+            </div>
+            </body>
+            </html>
+            """.trimIndent().removeNewlines()
 
-        String withoutSignature = HtmlSignatureRemover.stripSignature(html);
+        val withoutSignature = stripSignature(html)
 
-        assertEquals("<html><head></head><body>" +
-                        "<blockquote>Some quote</blockquote>" +
-                        "<div>This is the body text</div>" +
-                        "</body></html>",
-                withoutSignature);
+        assertThat(withoutSignature).isEqualTo(
+            """
+            <html>
+            <head></head>
+            <body>
+            <blockquote>Some quote</blockquote>
+            <div>This is the body text</div>
+            </body>
+            </html>
+            """.trimIndent().removeNewlines()
+        )
     }
 
     @Test
-    public void shouldStripSignatureAfterLastBlockquoteTags() throws Exception {
-        String html = "<html><head></head><body>" +
-                "This is the body text" +
-                "<br>" +
-                "<blockquote>" +
-                "Some quote" +
-                "</blockquote>" +
-                "<br>" +
-                "-- <br>" +
-                "Sent from my Android device with K-9 Mail. Please excuse my brevity." +
-                "</body></html>";
+    fun `signature after last blockquote tag`() {
+        val html =
+            """
+            <html>
+            <head></head>
+            <body>
+            This is the body text<br>
+            <blockquote>Some quote</blockquote>
+            <br>
+            -- <br>
+            Sent from my Android device with K-9 Mail. Please excuse my brevity.
+            </body>
+            </html>
+            """.trimIndent().removeNewlines()
 
-        String withoutSignature = HtmlSignatureRemover.stripSignature(html);
+        val withoutSignature = stripSignature(html)
 
-        assertEquals("<html><head></head><body>" +
-                        "This is the body text<br>" +
-                        "<blockquote>Some quote</blockquote>" +
-                        "</body></html>",
-                withoutSignature);
+        assertThat(withoutSignature).isEqualTo(
+            """
+            <html>
+            <head></head>
+            <body>
+            This is the body text<br>
+            <blockquote>Some quote</blockquote>
+            </body>
+            </html>
+            """.trimIndent().removeNewlines()
+        )
     }
 }
