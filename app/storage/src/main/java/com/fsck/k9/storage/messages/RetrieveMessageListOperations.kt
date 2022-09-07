@@ -1,7 +1,6 @@
 package com.fsck.k9.storage.messages
 
 import android.database.Cursor
-import com.fsck.k9.helper.map
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.mailstore.LockableDatabase
