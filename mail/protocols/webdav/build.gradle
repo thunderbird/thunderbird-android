@@ -14,11 +14,11 @@ dependencies {
     api project(":mail:common")
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
-    compileOnly "org.apache.httpcomponents:httpclient:4.5.5"
+    compileOnly "org.apache.httpcomponents:httpclient:${versions.httpClient}"
 
     testImplementation project(":mail:testing")
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation "org.apache.httpcomponents:httpclient:4.5.5"
+    testImplementation "org.apache.httpcomponents:httpclient:${versions.httpClient}"
 }
