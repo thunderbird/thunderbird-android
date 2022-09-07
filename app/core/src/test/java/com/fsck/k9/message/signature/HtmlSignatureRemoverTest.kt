@@ -148,4 +148,37 @@ class HtmlSignatureRemoverTest {
             """.trimIndent().removeNewlines()
         )
     }
+
+    @Test
+    fun `K-9 Mail signature format`() {
+        val html =
+            """
+            <!DOCTYPE html>
+            <html>
+            <body>
+            This is the body text.<br>
+            <br>
+            <div class='k9mail-signature'>
+            -- <br>
+            And this is the signature text.
+            </div>
+            </body>
+            </html>
+            """.trimIndent().removeNewlines()
+
+        val withoutSignature = stripSignature(html)
+
+        assertThat(withoutSignature).isEqualTo(
+            """
+            <!doctype html>
+            <html>
+            <head></head>
+            <body>
+            This is the body text.<br>
+            <br>
+            </body>
+            </html>
+            """.trimIndent().removeNewlines()
+        )
+    }
 }

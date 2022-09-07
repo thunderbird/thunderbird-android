@@ -4,6 +4,7 @@ import com.fsck.k9.helper.jsoup.AdvancedNodeTraversor
 import com.fsck.k9.helper.jsoup.NodeFilter
 import com.fsck.k9.helper.jsoup.NodeFilter.HeadFilterDecision
 import com.fsck.k9.helper.jsoup.NodeFilter.TailFilterDecision
+import java.util.Stack
 import java.util.regex.Pattern
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -32,27 +33,21 @@ class HtmlSignatureRemover {
 
     private class StripSignatureFilter : NodeFilter {
         private var signatureFound = false
-        private var lastElementCausedLineBreak = false
-        private var brElementPrecedingDashes: Element? = null
+        private var signatureParentNode: Node? = null
 
         override fun head(node: Node, depth: Int): HeadFilterDecision {
             if (signatureFound) return HeadFilterDecision.REMOVE
 
-            if (node is Element) {
-                lastElementCausedLineBreak = false
-                if (node.tag() == BLOCKQUOTE) {
-                    return HeadFilterDecision.SKIP_ENTIRELY
-                }
-            } else if (node is TextNode) {
-                if (lastElementCausedLineBreak && DASH_SIGNATURE_HTML.matcher(node.wholeText).matches()) {
-                    val nextNode = node.nextSibling()
-                    if (nextNode is Element && nextNode.tag() == BR) {
-                        signatureFound = true
-                        brElementPrecedingDashes?.remove()
-                        brElementPrecedingDashes = null
+            if (node.isBlockquote()) {
+                return HeadFilterDecision.SKIP_ENTIRELY
+            } else if (node.isSignatureDelimiter()) {
+                val precedingLineBreak = node.findPrecedingLineBreak()
+                if (precedingLineBreak != null && node.isFollowedByLineBreak()) {
+                    signatureFound = true
+                    signatureParentNode = node.parent()
+                    precedingLineBreak.takeIf { it.isBR() }?.remove()
 
-                        return HeadFilterDecision.REMOVE
-                    }
+                    return HeadFilterDecision.REMOVE
                 }
             }
 
@@ -60,28 +55,84 @@ class HtmlSignatureRemover {
         }
 
         override fun tail(node: Node, depth: Int): TailFilterDecision {
-            if (signatureFound) return TailFilterDecision.CONTINUE
-
-            if (node is Element) {
-                val elementIsBr = node.tag() == BR
-                if (elementIsBr || node.tag() == P) {
-                    lastElementCausedLineBreak = true
-                    brElementPrecedingDashes = if (elementIsBr) node else null
-
-                    return TailFilterDecision.CONTINUE
+            if (signatureFound) {
+                val signatureParentNode = this.signatureParentNode
+                if (node == signatureParentNode) {
+                    return if (signatureParentNode.isEmpty()) {
+                        this.signatureParentNode = signatureParentNode.parent()
+                        TailFilterDecision.REMOVE
+                    } else {
+                        TailFilterDecision.STOP
+                    }
                 }
             }
 
-            lastElementCausedLineBreak = false
             return TailFilterDecision.CONTINUE
         }
+
+        private fun Node.isBlockquote(): Boolean {
+            return this is Element && tag() == BLOCKQUOTE
+        }
+
+        private fun Node.isSignatureDelimiter(): Boolean {
+            return this is TextNode && DASH_SIGNATURE_HTML.matcher(wholeText).matches()
+        }
+
+        private fun Node.findPrecedingLineBreak(): Node? {
+            val stack = Stack<Node>()
+            stack.push(this)
+
+            while (stack.isNotEmpty()) {
+                val node = stack.pop()
+                val previousSibling = node.previousSibling()
+                if (previousSibling == null) {
+                    val parent = node.parent()
+                    if (parent is Element && parent.isBlock) {
+                        return parent
+                    } else {
+                        stack.push(parent)
+                    }
+                } else if (previousSibling.isLineBreak()) {
+                    return previousSibling
+                }
+            }
+
+            return null
+        }
+
+        private fun Node.isFollowedByLineBreak(): Boolean {
+            val stack = Stack<Node>()
+            stack.push(this)
+
+            while (stack.isNotEmpty()) {
+                val node = stack.pop()
+                val nextSibling = node.nextSibling()
+                if (nextSibling == null) {
+                    val parent = node.parent()
+                    if (parent is Element && parent.isBlock) {
+                        return true
+                    } else {
+                        stack.push(parent)
+                    }
+                } else if (nextSibling.isLineBreak()) {
+                    return true
+                }
+            }
+
+            return false
+        }
+
+        private fun Node?.isBR() = this is Element && tag() == BR
+
+        private fun Node?.isLineBreak() = isBR() || (this is Element && this.isBlock)
+
+        private fun Node.isEmpty(): Boolean = childNodeSize() == 0
     }
 
     companion object {
         private val DASH_SIGNATURE_HTML = Pattern.compile("\\s*-- \\s*", Pattern.CASE_INSENSITIVE)
         private val BLOCKQUOTE = Tag.valueOf("blockquote")
         private val BR = Tag.valueOf("br")
-        private val P = Tag.valueOf("p")
 
         @JvmStatic
         fun stripSignature(content: String): String {
