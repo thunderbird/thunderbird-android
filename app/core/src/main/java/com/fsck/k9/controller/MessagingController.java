@@ -1501,7 +1501,6 @@ public class MessagingController {
     @VisibleForTesting
     protected void sendPendingMessagesSynchronous(final Account account) {
         Exception lastFailure = null;
-        boolean wasPermanentFailure = false;
         try {
             if (isAuthenticationProblem(account, false)) {
                 Timber.d("Authentication will fail. Skip sending messages.");
@@ -1593,22 +1592,19 @@ public class MessagingController {
                     } catch (AuthenticationFailedException e) {
                         outboxStateRepository.decrementSendAttempts(messageId);
                         lastFailure = e;
-                        wasPermanentFailure = false;
 
                         handleAuthenticationFailure(account, false);
                         handleSendFailure(account, localFolder, message, e);
                     } catch (CertificateValidationException e) {
                         outboxStateRepository.decrementSendAttempts(messageId);
                         lastFailure = e;
-                        wasPermanentFailure = false;
 
                         notifyUserIfCertificateProblem(account, e, false);
                         handleSendFailure(account, localFolder, message, e);
                     } catch (MessagingException e) {
                         lastFailure = e;
-                        wasPermanentFailure = e.isPermanentFailure();
 
-                        if (wasPermanentFailure) {
+                        if (e.isPermanentFailure()) {
                             String errorMessage = e.getMessage();
                             outboxStateRepository.setSendAttemptError(messageId, errorMessage);
                         } else if (outboxState.getNumberOfSendAttempts() + 1 >= MAX_SEND_ATTEMPTS) {
@@ -1618,24 +1614,19 @@ public class MessagingController {
                         handleSendFailure(account, localFolder, message, e);
                     } catch (Exception e) {
                         lastFailure = e;
-                        wasPermanentFailure = true;
 
                         handleSendFailure(account, localFolder, message, e);
                     }
                 } catch (Exception e) {
                     lastFailure = e;
-                    wasPermanentFailure = false;
+
                     Timber.e(e, "Failed to fetch message for sending");
                     notifySynchronizeMailboxFailed(account, localFolder, e);
                 }
             }
 
             if (lastFailure != null) {
-                if (wasPermanentFailure) {
-                    notificationController.showSendFailedNotification(account, lastFailure);
-                } else {
-                    notificationController.showSendFailedNotification(account, lastFailure);
-                }
+                notificationController.showSendFailedNotification(account, lastFailure);
             }
         } catch (Exception e) {
             Timber.v(e, "Failed to send pending messages");
