@@ -278,6 +278,8 @@ class MessageViewFragment :
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (message == null) return false
+
         when (item.itemId) {
             R.id.toggle_message_view_theme -> onToggleTheme()
             R.id.delete -> onDelete()
