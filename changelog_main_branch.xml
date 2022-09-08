@@ -5,6 +5,12 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.303" versioncode="33003" date="2022-09-08">
+        <change>Fixed a bug that lead to search being broken</change>
+        <change>Fixed error reporting for (old) send failures</change>
+        <change>Fixed "strip signatures on reply"</change>
+        <change>Fixed a crash when tapping a toolbar action in message view before loading the message has finished</change>
+    </release>
     <release version="6.302" versioncode="33002" date="2022-09-05">
         <change>Fixed moving to next/previous message when sorting the message list by read/unread or starred/unstarred</change>
         <change>Fixed a crash when a third-party app shared a file to K-9 Mail without granting access to it</change>
