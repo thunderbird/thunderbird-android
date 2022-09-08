@@ -125,7 +125,7 @@ public class AdvancedNodeTraversor {
             Node prev = node;
             node = node.nextSibling();
 
-            if (headResult == HeadFilterDecision.REMOVE) {
+            if (headResult == HeadFilterDecision.REMOVE || tailResult == TailFilterDecision.REMOVE) {
                 prev.remove();
             }
 
