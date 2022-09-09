@@ -376,7 +376,8 @@ class MessageListFragment :
         if (view === footerView) {
             handleFooterClick()
         } else {
-            handleListItemClick(position)
+            val messageListItem = adapter.getItem(position)
+            handleListItemClick(messageListItem)
         }
     }
 
@@ -411,17 +412,14 @@ class MessageListFragment :
         }
     }
 
-    private fun handleListItemClick(position: Int) {
+    private fun handleListItemClick(messageListItem: MessageListItem) {
         if (adapter.selectedCount > 0) {
-            toggleMessageSelect(position)
+            toggleMessageSelect(messageListItem)
         } else {
-            val adapterPosition = listViewToAdapterPosition(position)
-            val messageListItem = adapter.getItem(adapterPosition)
-
             if (showingThreadedList && messageListItem.threadCount > 1) {
                 fragmentListener.showThread(messageListItem.account, messageListItem.threadRoot)
             } else {
-                openMessageAtPosition(adapterPosition)
+                openMessage(messageListItem.messageReference)
             }
         }
     }
@@ -429,7 +427,9 @@ class MessageListFragment :
     override fun onItemLongClick(parent: AdapterView<*>?, view: View, position: Int, id: Long): Boolean {
         if (view === footerView) return false
 
-        toggleMessageSelect(position)
+        val messageListItem = adapter.getItem(position)
+        toggleMessageSelect(messageListItem)
+
         return true
     }
 
@@ -789,14 +789,6 @@ class MessageListFragment :
         messagingController.sendPendingMessages(account, null)
     }
 
-    private fun listViewToAdapterPosition(position: Int): Int {
-        return if (position in 0 until adapter.count) position else AdapterView.INVALID_POSITION
-    }
-
-    private fun adapterToListViewPosition(position: Int): Int {
-        return if (position in 0 until adapter.count) position else AdapterView.INVALID_POSITION
-    }
-
     private fun getFooterView(parent: ViewGroup?): View? {
         return footerView ?: createFooterView(parent).also { footerView = it }
     }
@@ -860,14 +852,6 @@ class MessageListFragment :
 
         computeBatchDirection()
         updateActionMode()
-    }
-
-    private fun toggleMessageSelect(listViewPosition: Int) {
-        val adapterPosition = listViewToAdapterPosition(listViewPosition)
-        if (adapterPosition == AdapterView.INVALID_POSITION) return
-
-        val messageListItem = adapter.getItem(adapterPosition)
-        toggleMessageSelect(messageListItem)
     }
 
     private fun toggleMessageSelect(messageListItem: MessageListItem) {
@@ -1230,28 +1214,6 @@ class MessageListFragment :
         }
     }
 
-    private fun getReferenceForPosition(position: Int): MessageReference {
-        val item = adapter.getItem(position)
-        return MessageReference(item.account.uuid, item.folderId, item.messageUid)
-    }
-
-    private fun openMessageAtPosition(position: Int) {
-        // Scroll message into view if necessary
-        val listViewPosition = adapterToListViewPosition(position)
-        if (listViewPosition != AdapterView.INVALID_POSITION &&
-            (listViewPosition < listView.firstVisiblePosition || listViewPosition > listView.lastVisiblePosition)
-        ) {
-            listView.setSelection(listViewPosition)
-        }
-
-        val messageReference = getReferenceForPosition(position)
-
-        // For some reason the listView.setSelection() above won't do anything when we call
-        // onOpenMessage() (and consequently adapter.notifyDataSetChanged()) right away. So we
-        // defer the call using MessageListHandler.
-        handler.openMessage(messageReference)
-    }
-
     fun openMessage(messageReference: MessageReference) {
         fragmentListener.openMessage(messageReference)
     }
@@ -1261,17 +1223,12 @@ class MessageListFragment :
     }
 
     private val selectedMessage: MessageReference?
-        get() {
-            val listViewPosition = listView.selectedItemPosition
-            val adapterPosition = listViewToAdapterPosition(listViewPosition)
-            if (adapterPosition == AdapterView.INVALID_POSITION) return null
-            return getReferenceForPosition(adapterPosition)
-        }
+        get() = selectedMessageListItem?.messageReference
 
-    private val adapterPositionForSelectedMessage: Int
+    private val selectedMessageListItem: MessageListItem?
         get() {
-            val listViewPosition = listView.selectedItemPosition
-            return listViewToAdapterPosition(listViewPosition)
+            val position = listView.selectedItemPosition
+            return if (position !in 0 until adapter.count) null else adapter.getItem(position)
         }
 
     private val selectedMessages: List<MessageReference>
@@ -1284,29 +1241,21 @@ class MessageListFragment :
     }
 
     fun toggleMessageSelect() {
-        toggleMessageSelect(listView.selectedItemPosition)
+        selectedMessageListItem?.let { messageListItem ->
+            toggleMessageSelect(messageListItem)
+        }
     }
 
     fun onToggleFlagged() {
-        toggleFlag(Flag.FLAGGED)
+        selectedMessageListItem?.let { messageListItem ->
+            setFlag(messageListItem, Flag.FLAGGED, !messageListItem.isStarred)
+        }
     }
 
     fun onToggleRead() {
-        toggleFlag(Flag.SEEN)
-    }
-
-    private fun toggleFlag(flag: Flag) {
-        val adapterPosition = adapterPositionForSelectedMessage
-        if (adapterPosition == ListView.INVALID_POSITION) return
-
-        val messageListItem = adapter.getItem(adapterPosition)
-        val flagState = when (flag) {
-            Flag.SEEN -> messageListItem.isRead
-            Flag.FLAGGED -> messageListItem.isStarred
-            else -> false
+        selectedMessageListItem?.let { messageListItem ->
+            setFlag(messageListItem, Flag.SEEN, !messageListItem.isRead)
         }
-
-        setFlag(messageListItem, flag, !flagState)
     }
 
     fun onMove() {
@@ -1490,8 +1439,7 @@ class MessageListFragment :
 
         if (sortType != SortType.SORT_UNREAD && sortType != SortType.SORT_FLAGGED) return
 
-        val position = getPosition(messageReference)
-        val messageListItem = adapter.getItem(position)
+        val messageListItem = adapter.getItem(messageReference) ?: return
 
         val existingEntry = messageSortOverrides.firstOrNull { it.first == messageReference }
         if (existingEntry != null) {
@@ -1508,20 +1456,11 @@ class MessageListFragment :
     }
 
     private fun scrollToMessage(messageReference: MessageReference) {
-        val position = getPosition(messageReference)
-        val viewPosition = adapterToListViewPosition(position)
-        if (viewPosition != AdapterView.INVALID_POSITION &&
-            (viewPosition <= listView.firstVisiblePosition || viewPosition >= listView.lastVisiblePosition)
-        ) {
-            listView.smoothScrollToPosition(viewPosition)
-        }
-    }
+        val messageListItem = adapter.getItem(messageReference) ?: return
+        val position = adapter.getPosition(messageListItem) ?: return
 
-    private fun getPosition(messageReference: MessageReference): Int {
-        return adapter.messages.indexOfFirst { messageListItem ->
-            messageListItem.account.uuid == messageReference.accountUuid &&
-                messageListItem.folderId == messageReference.folderId &&
-                messageListItem.messageUid == messageReference.uid
+        if (position <= listView.firstVisiblePosition || position >= listView.lastVisiblePosition) {
+            listView.smoothScrollToPosition(position)
         }
     }
 

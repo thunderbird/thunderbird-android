@@ -123,6 +123,18 @@ class MessageListAdapter internal constructor(
         return messagesMap[uniqueId]!!
     }
 
+    fun getItem(messageReference: MessageReference): MessageListItem? {
+        return messages.firstOrNull {
+            it.account.uuid == messageReference.accountUuid &&
+                it.folderId == messageReference.folderId &&
+                it.messageUid == messageReference.uid
+        }
+    }
+
+    fun getPosition(messageListItem: MessageListItem): Int? {
+        return messages.indexOf(messageListItem).takeIf { it != -1 }
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val message = getItem(position)
         val view: View = convertView ?: newView(parent)
