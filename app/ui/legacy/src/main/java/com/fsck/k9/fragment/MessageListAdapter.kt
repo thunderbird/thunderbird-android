@@ -56,6 +56,12 @@ class MessageListAdapter internal constructor(
         set(value) {
             field = value
             messagesMap = value.associateBy { it.uniqueId }
+
+            if (selected.isNotEmpty()) {
+                val uniqueIds = messagesMap.keys
+                selected = selected.intersect(uniqueIds)
+            }
+
             notifyDataSetChanged()
         }
 
@@ -64,6 +70,20 @@ class MessageListAdapter internal constructor(
     var activeMessage: MessageReference? = null
 
     var selected: Set<Long> = emptySet()
+        private set(value) {
+            field = value
+            selectedCount = calculateSelectionCount()
+            notifyDataSetChanged()
+        }
+
+    val selectedMessages: List<MessageListItem>
+        get() = selected.map { messagesMap[it]!! }
+
+    val isAllSelected: Boolean
+        get() = selected.isNotEmpty() && selected.size == messages.size
+
+    var selectedCount: Int = 0
+        private set
 
     private inline val subjectViewFontSize: Int
         get() = if (appearance.senderAboveSubject) {
@@ -301,6 +321,60 @@ class MessageListAdapter internal constructor(
         return item.account.uuid == activeMessage.accountUuid &&
             item.folderId == activeMessage.folderId &&
             item.messageUid == activeMessage.uid
+    }
+
+    fun toggleSelection(item: MessageListItem) {
+        if (messagesMap[item.uniqueId] == null) {
+            // MessageListItem is no longer in the list
+            return
+        }
+
+        if (item.uniqueId in selected) {
+            deselectMessage(item)
+        } else {
+            selectMessage(item)
+        }
+    }
+
+    private fun selectMessage(item: MessageListItem) {
+        selected = selected + item.uniqueId
+    }
+
+    private fun deselectMessage(item: MessageListItem) {
+        selected = selected - item.uniqueId
+    }
+
+    fun selectAll() {
+        val uniqueIds = messagesMap.keys.toSet()
+        selected = uniqueIds
+    }
+
+    fun clearSelected() {
+        selected = emptySet()
+    }
+
+    fun restoreSelected(selectedIds: Set<Long>) {
+        if (selectedIds.isEmpty()) {
+            clearSelected()
+        } else {
+            val uniqueIds = messagesMap.keys
+            selected = selectedIds.intersect(uniqueIds)
+        }
+    }
+
+    private fun calculateSelectionCount(): Int {
+        if (selected.isEmpty()) {
+            return 0
+        }
+
+        if (!appearance.showingThreadedList) {
+            return selected.size
+        }
+
+        return messages
+            .asSequence()
+            .filter { it.uniqueId in selected }
+            .sumOf { it.threadCount.coerceAtLeast(1) }
     }
 }
 
