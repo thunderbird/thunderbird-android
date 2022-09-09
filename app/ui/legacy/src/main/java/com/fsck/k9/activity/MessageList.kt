@@ -101,6 +101,9 @@ open class MessageList :
 
     private lateinit var actionBar: ActionBar
     private lateinit var searchView: SearchView
+    private var initialSearchViewQuery: String? = null
+    private var initialSearchViewIconified: Boolean = true
+
     private var drawer: K9Drawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
@@ -574,6 +577,8 @@ open class MessageList :
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
         outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
+        outState.putBoolean(STATE_SEARCH_VIEW_ICONIFIED, searchView.isIconified)
+        outState.putString(STATE_SEARCH_VIEW_QUERY, searchView.query?.toString())
     }
 
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -581,6 +586,8 @@ open class MessageList :
 
         messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
+        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED)
+        initialSearchViewQuery = savedInstanceState.getString(STATE_SEARCH_VIEW_QUERY)
     }
 
     private fun initializeActionBar() {
@@ -966,6 +973,9 @@ open class MessageList :
                 return false
             }
         })
+
+        searchView.isIconified = initialSearchViewIconified
+        searchView.setQuery(initialSearchViewQuery, false)
     }
 
     private fun collapseSearchView() {
@@ -1415,6 +1425,8 @@ open class MessageList :
         private const val STATE_DISPLAY_MODE = "displayMode"
         private const val STATE_MESSAGE_VIEW_ONLY = "messageViewOnly"
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
+        private const val STATE_SEARCH_VIEW_ICONIFIED = "searchViewIconified"
+        private const val STATE_SEARCH_VIEW_QUERY = "searchViewQuery"
 
         private const val FIRST_FRAGMENT_TRANSACTION = "first"
         private const val FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER = "MessageViewContainerFragment"
