@@ -12,6 +12,7 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -69,9 +70,16 @@ fun TextInputLayout.configureAuthenticatedPasswordToggle(
 
     val editText = this.editText ?: error("TextInputLayout.editText == null")
 
+    editText.doOnTextChanged { text, _, before, count ->
+        // Check if the password field is empty or if all of the previous text was replaced
+        if (text != null && before > 0 && (text.isEmpty() || text.length - count == 0)) {
+            viewModel.isNewPassword = true
+        }
+    }
+
     setEndIconOnClickListener {
         if (editText.isPasswordHidden) {
-            if (viewModel.isAuthenticated) {
+            if (viewModel.isShowPasswordAllowed) {
                 activity.setSecure(true)
                 editText.showPassword()
             } else {
@@ -102,6 +110,10 @@ private fun FragmentActivity.setSecure(secure: Boolean) {
 
 @SuppressLint("StaticFieldLeak")
 class AuthenticatedPasswordToggleViewModel : ViewModel() {
+    val isShowPasswordAllowed: Boolean
+        get() = isAuthenticated || isNewPassword
+
+    var isNewPassword = false
     var isAuthenticated = false
     var textInputLayout: TextInputLayout? = null
     var activity: FragmentActivity? = null
