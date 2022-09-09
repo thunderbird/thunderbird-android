@@ -640,7 +640,7 @@ public class MessagingController {
         if (commandException != null && !syncListener.syncFailed) {
             String rootMessage = getRootCauseMessage(commandException);
             Timber.e("Root cause failure in %s:%s was '%s'", account, folderServerId, rootMessage);
-            updateFolderStatus(account, folderServerId, rootMessage);
+            updateFolderStatus(account, folderId, rootMessage);
             listener.synchronizeMailboxFailed(account, folderId, rootMessage);
         }
     }
@@ -655,14 +655,9 @@ public class MessagingController {
                     SYNC_FLAGS);
     }
 
-    private void updateFolderStatus(Account account, String folderServerId, String status) {
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folderServerId);
-            localFolder.setStatus(status);
-        } catch (MessagingException e) {
-            Timber.w(e, "Couldn't update folder status for folder %s", folderServerId);
-        }
+    private void updateFolderStatus(Account account, long folderId, String status) {
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        messageStore.setStatus(folderId, status);
     }
 
     public void handleAuthenticationFailure(Account account, boolean incoming) {
