@@ -13,11 +13,11 @@ import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.google.android.material.textfield.TextInputLayout
 
 /**
@@ -29,7 +29,7 @@ fun TextInputLayout.configureAuthenticatedPasswordToggle(
     subtitle: String,
     needScreenLockMessage: String,
 ) {
-    val viewModel = ViewModelProvider(activity).get(AuthenticatedPasswordToggleViewModel::class.java)
+    val viewModel = ViewModelProvider(activity).get<AuthenticatedPasswordToggleViewModel>()
     viewModel.textInputLayout = this
     viewModel.activity = activity
 
@@ -108,9 +108,8 @@ class AuthenticatedPasswordToggleViewModel : ViewModel() {
         set(value) {
             field = value
 
-            value?.lifecycle?.addObserver(object : LifecycleObserver {
-                @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-                fun removeReferences() {
+            value?.lifecycle?.addObserver(object : DefaultLifecycleObserver {
+                override fun onDestroy(owner: LifecycleOwner) {
                     textInputLayout = null
                     field = null
                 }
