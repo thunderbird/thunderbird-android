@@ -1233,51 +1233,37 @@ public class MessagingController {
         );
     }
 
-    private void loadMessageRemoteSynchronous(Account account, long folderId, String uid,
+    private void loadMessageRemoteSynchronous(Account account, long folderId, String messageServerId,
             MessagingListener listener, boolean loadPartialFromSearch) {
         try {
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folderId);
-            localFolder.open();
-            String folderServerId = localFolder.getServerId();
-
-            LocalMessage message = localFolder.getMessage(uid);
-
-            if (uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                Timber.w("Message has local UID so cannot download fully.");
-                // ASH move toast
-                android.widget.Toast.makeText(context,
-                        "Message has local UID so cannot download fully",
-                        android.widget.Toast.LENGTH_LONG).show();
-                // TODO: Using X_DOWNLOADED_FULL is wrong because it's only a partial message. But
-                // one we can't download completely. Maybe add a new flag; X_PARTIAL_MESSAGE ?
-                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
-            } else {
-                Backend backend = getBackend(account);
-
-                if (loadPartialFromSearch) {
-                    SyncConfig syncConfig = createSyncConfig(account);
-                    backend.downloadMessage(syncConfig, folderServerId, uid);
-                } else {
-                    backend.downloadCompleteMessage(folderServerId, uid);
-                }
-
-                message = localFolder.getMessage(uid);
-
-                if (!loadPartialFromSearch) {
-                    message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                }
+            if (messageServerId.startsWith(K9.LOCAL_UID_PREFIX)) {
+                throw new IllegalArgumentException("Must not be called with a local UID");
             }
 
-            // now that we have the full message, refresh the headers
+            MessageStore messageStore = messageStoreManager.getMessageStore(account);
+
+            String folderServerId = messageStore.getFolderServerId(folderId);
+            if (folderServerId == null) {
+                throw new IllegalStateException("Folder not found (ID: " + folderId + ")");
+            }
+
+            Backend backend = getBackend(account);
+
+            if (loadPartialFromSearch) {
+                SyncConfig syncConfig = createSyncConfig(account);
+                backend.downloadMessage(syncConfig, folderServerId, messageServerId);
+            } else {
+                backend.downloadCompleteMessage(folderServerId, messageServerId);
+            }
+
             for (MessagingListener l : getListeners(listener)) {
-                l.loadMessageRemoteFinished(account, folderId, uid);
+                l.loadMessageRemoteFinished(account, folderId, messageServerId);
             }
         } catch (Exception e) {
             for (MessagingListener l : getListeners(listener)) {
-                l.loadMessageRemoteFailed(account, folderId, uid, e);
+                l.loadMessageRemoteFailed(account, folderId, messageServerId, e);
             }
+
             notifyUserIfCertificateProblem(account, e, true);
             Timber.e(e, "Error while loading remote message");
         }
