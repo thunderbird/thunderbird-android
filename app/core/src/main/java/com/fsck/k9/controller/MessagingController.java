@@ -1914,25 +1914,18 @@ public class MessagingController {
         });
     }
 
-    public void deleteDraft(final Account account, long id) {
-        try {
-            Long folderId = account.getDraftsFolderId();
-            if (folderId == null) {
-                Timber.w("No Drafts folder configured. Can't delete draft.");
-                return;
-            }
-
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folderId);
-            localFolder.open();
-            String uid = localFolder.getMessageUidById(id);
-            if (uid != null) {
-                MessageReference messageReference = new MessageReference(account.getUuid(), folderId, uid);
-                deleteMessage(messageReference);
-            }
-        } catch (MessagingException me) {
-            Timber.e(me, "Error deleting draft");
+    public void deleteDraft(Account account, long messageId) {
+        Long folderId = account.getDraftsFolderId();
+        if (folderId == null) {
+            Timber.w("No Drafts folder configured. Can't delete draft.");
+            return;
         }
+
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        String messageServerId = messageStore.getMessageServerId(messageId);
+        MessageReference messageReference = new MessageReference(account.getUuid(), folderId, messageServerId);
+
+        deleteMessage(messageReference);
     }
 
     public void deleteThreads(final List<MessageReference> messages) {
