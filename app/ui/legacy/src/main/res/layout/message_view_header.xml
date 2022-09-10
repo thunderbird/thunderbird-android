@@ -54,103 +54,128 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/participants_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:foreground="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <com.fsck.k9.ui.ContactBadge
             android:id="@+id/contact_badge"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_margin="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_contact_picture" />
 
         <TextView
             android:id="@+id/from"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:ellipsize="end"
-            android:layout_toStartOf="@id/icon_single_message_options"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:layout_alignTop="@id/contact_badge"
-            android:layout_toEndOf="@+id/contact_badge"
-            android:layout_marginEnd="8dp"
             android:text="@string/general_no_sender"
             android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintEnd_toStartOf="@id/icon_single_message_options"
+            app:layout_constraintStart_toEndOf="@id/contact_badge"
+            app:layout_constraintTop_toTopOf="@id/contact_badge" />
 
         <ImageView
             android:id="@+id/icon_single_message_options"
-            android:layout_width="40dp"
+            android:layout_width="32dp"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:padding="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:background="?selectableItemBackgroundBorderless"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintEnd_toStartOf="@id/icon_message_options_overflow"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="?iconActionSingleMessageOptions" />
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/icon_message_options_overflow"
+            android:layout_width="32dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="8dp"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/dots_vertical" />
+
+        <ImageView
+            android:id="@+id/crypto_status_icon"
+            android:layout_width="18sp"
+            android:layout_height="18sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/contact_badge"
+            app:layout_constraintTop_toBottomOf="@id/from"
+            app:srcCompat="@drawable/status_lock_disabled"
+            app:tint="?attr/openpgp_grey"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/from"
-            android:layout_toEndOf="@+id/contact_badge"
-            android:layout_alignParentEnd="true"
-            android:orientation="horizontal">
+            android:ellipsize="end"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
+            android:text="@string/message_to_me_label"
+            android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_goneMarginStart="16dp"
+            app:layout_constraintEnd_toStartOf="@id/to_count"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/crypto_status_icon"
+            app:layout_constraintTop_toTopOf="@id/crypto_status_icon" />
 
-            <ImageView
-                android:id="@+id/crypto_status_icon"
-                android:layout_width="18sp"
-                android:layout_height="18sp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/status_lock_disabled"
-                app:tint="?attr/openpgp_grey"
-                tools:visibility="visible" />
+        <TextView
+            android:id="@+id/to_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:layout_marginStart="4dp"
+            android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+            android:textColor="?attr/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/date"
+            app:layout_constraintStart_toEndOf="@id/to"
+            app:layout_constraintTop_toTopOf="@id/to"
+            tools:text="+2" />
 
-            <TextView
-                android:id="@+id/to"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/message_to_me_label"
-                android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                android:textColor="?android:attr/textColorSecondary" />
+        <!-- Date -->
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="none"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.K9.Small"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/to"
+            tools:text="10:00 am" />
 
-            <TextView
-                android:id="@+id/to_count"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="8dp"
-                android:singleLine="true"
-                android:layout_weight="1"
-                android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                android:textColor="?attr/colorAccent"
-                tools:text="+2" />
-
-            <!-- Date -->
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:ellipsize="none"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.K9.Small"
-                android:textColor="?android:attr/textColorSecondary"
-                tools:text="10:00 am" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.fsck.k9.view.MessageHeader>
