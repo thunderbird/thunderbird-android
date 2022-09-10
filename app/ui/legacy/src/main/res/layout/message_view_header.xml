@@ -142,24 +142,26 @@
             android:textAppearance="@style/TextAppearance.K9.MediumSmall"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_goneMarginStart="16dp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@id/to_count"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@id/crypto_status_icon"
-            app:layout_constraintTop_toTopOf="@id/crypto_status_icon" />
+            app:layout_constraintTop_toBottomOf="@id/from"
+            app:layout_constraintStart_toEndOf="@id/crypto_status_icon" />
 
         <TextView
             android:id="@+id/to_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="4dp"
             android:singleLine="true"
-            android:layout_marginStart="4dp"
+            android:layout_marginHorizontal="4dp"
             android:textAppearance="@style/TextAppearance.K9.MediumSmall"
             android:textColor="?attr/colorAccent"
+            app:layout_constraintTop_toBottomOf="@id/from"
             app:layout_constraintEnd_toStartOf="@+id/date"
             app:layout_constraintStart_toEndOf="@id/to"
-            app:layout_constraintTop_toTopOf="@id/to"
             tools:text="+2" />
 
         <!-- Date -->
@@ -170,10 +172,11 @@
             android:layout_marginEnd="16dp"
             android:ellipsize="none"
             android:singleLine="true"
+            android:layout_marginTop="4dp"
             android:textAppearance="@style/TextAppearance.K9.Small"
             android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintTop_toBottomOf="@id/from"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/to"
             tools:text="10:00 am" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
