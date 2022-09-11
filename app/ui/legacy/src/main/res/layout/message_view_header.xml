@@ -47,9 +47,10 @@
             android:layout_alignParentEnd="true"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="-8dp"
-            android:layout_marginEnd="8dp"
-            android:padding="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:paddingVertical="8dp"
+            android:background="?attr/controlBackground"
             android:src="@drawable/btn_select_star" />
 
     </RelativeLayout>
@@ -96,7 +97,7 @@
             android:layout_width="32dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
-            android:background="?selectableItemBackgroundBorderless"
+            android:background="?attr/controlBackground"
             android:paddingHorizontal="4dp"
             android:paddingVertical="8dp"
             app:layout_constraintEnd_toStartOf="@id/icon_message_options_overflow"
@@ -105,13 +106,13 @@
 
         <ImageView
             android:id="@+id/icon_message_options_overflow"
-            android:layout_width="32dp"
+            android:layout_width="36dp"
             android:layout_height="40dp"
             android:clickable="true"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:paddingHorizontal="4dp"
+            android:background="?attr/controlBackground"
+            android:paddingStart="4dp"
+            android:paddingEnd="8dp"
             android:paddingVertical="8dp"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
