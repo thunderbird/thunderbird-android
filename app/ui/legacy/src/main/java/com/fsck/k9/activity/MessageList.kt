@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -100,6 +101,9 @@ open class MessageList :
 
     private lateinit var actionBar: ActionBar
     private lateinit var searchView: SearchView
+    private var initialSearchViewQuery: String? = null
+    private var initialSearchViewIconified: Boolean = true
+
     private var drawer: K9Drawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
@@ -573,6 +577,8 @@ open class MessageList :
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
         outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
+        outState.putBoolean(STATE_SEARCH_VIEW_ICONIFIED, searchView.isIconified)
+        outState.putString(STATE_SEARCH_VIEW_QUERY, searchView.query?.toString())
     }
 
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -580,6 +586,8 @@ open class MessageList :
 
         messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
+        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED)
+        initialSearchViewQuery = savedInstanceState.getString(STATE_SEARCH_VIEW_QUERY)
     }
 
     private fun initializeActionBar() {
@@ -708,7 +716,7 @@ open class MessageList :
                 showMessageList()
             }
         } else if (this::searchView.isInitialized && !searchView.isIconified) {
-            searchView.isIconified = true
+            collapseSearchView()
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
                 if (K9.isShowUnifiedInbox) {
@@ -918,6 +926,7 @@ open class MessageList :
                     if (drawer!!.isOpen) {
                         drawer!!.close()
                     } else {
+                        collapseSearchView()
                         drawer!!.open()
                     }
                 } else {
@@ -935,16 +944,28 @@ open class MessageList :
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.message_list_option, menu)
 
-        // setup search view
         val searchItem = menu.findItem(R.id.search)
+        initializeSearchMenuItem(searchItem)
+
+        return true
+    }
+
+    private fun initializeSearchMenuItem(searchItem: MenuItem) {
+        // Reuse existing SearchView if available
+        if (::searchView.isInitialized) {
+            searchItem.actionView = searchView
+            return
+        }
+
         searchView = searchItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
         searchView.queryHint = resources.getString(R.string.search_action)
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 messageListFragment?.onSearchRequested(query)
+                collapseSearchView()
                 return true
             }
 
@@ -953,7 +974,13 @@ open class MessageList :
             }
         })
 
-        return true
+        searchView.isIconified = initialSearchViewIconified
+        searchView.setQuery(initialSearchViewQuery, false)
+    }
+
+    private fun collapseSearchView() {
+        searchView.setQuery(null, false)
+        searchView.isIconified = true
     }
 
     fun setActionBarTitle(title: String, subtitle: String? = null) {
@@ -1000,6 +1027,8 @@ open class MessageList :
                 showMessageView()
             }
         }
+
+        collapseSearchView()
     }
 
     override fun onForward(messageReference: MessageReference, decryptionResultForReply: Parcelable?) {
@@ -1080,6 +1109,11 @@ open class MessageList :
         startActivity(searchIntent)
 
         return true
+    }
+
+    override fun startSupportActionMode(callback: ActionMode.Callback): ActionMode? {
+        collapseSearchView()
+        return super.startSupportActionMode(callback)
     }
 
     override fun showThread(account: Account, threadRootId: Long) {
@@ -1391,6 +1425,8 @@ open class MessageList :
         private const val STATE_DISPLAY_MODE = "displayMode"
         private const val STATE_MESSAGE_VIEW_ONLY = "messageViewOnly"
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
+        private const val STATE_SEARCH_VIEW_ICONIFIED = "searchViewIconified"
+        private const val STATE_SEARCH_VIEW_QUERY = "searchViewQuery"
 
         private const val FIRST_FRAGMENT_TRANSACTION = "first"
         private const val FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER = "MessageViewContainerFragment"
