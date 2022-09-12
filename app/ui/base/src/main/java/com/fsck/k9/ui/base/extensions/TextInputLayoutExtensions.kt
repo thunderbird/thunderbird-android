@@ -12,16 +12,21 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.google.android.material.textfield.TextInputLayout
 
 /**
  * Configures a [TextInputLayout] so the password can only be revealed after authentication.
+ *
+ * **IMPORTANT**: Only call this after the instance state has been restored! Otherwise, restoring the previous state
+ * after the initial state has been set will be detected as replacing the whole text. In that case showing the password
+ * will be allowed without authentication.
  */
 fun TextInputLayout.configureAuthenticatedPasswordToggle(
     activity: FragmentActivity,
@@ -29,7 +34,7 @@ fun TextInputLayout.configureAuthenticatedPasswordToggle(
     subtitle: String,
     needScreenLockMessage: String,
 ) {
-    val viewModel = ViewModelProvider(activity).get(AuthenticatedPasswordToggleViewModel::class.java)
+    val viewModel = ViewModelProvider(activity).get<AuthenticatedPasswordToggleViewModel>()
     viewModel.textInputLayout = this
     viewModel.activity = activity
 
@@ -69,9 +74,16 @@ fun TextInputLayout.configureAuthenticatedPasswordToggle(
 
     val editText = this.editText ?: error("TextInputLayout.editText == null")
 
+    editText.doOnTextChanged { text, _, before, count ->
+        // Check if the password field is empty or if all of the previous text was replaced
+        if (text != null && before > 0 && (text.isEmpty() || text.length - count == 0)) {
+            viewModel.isNewPassword = true
+        }
+    }
+
     setEndIconOnClickListener {
         if (editText.isPasswordHidden) {
-            if (viewModel.isAuthenticated) {
+            if (viewModel.isShowPasswordAllowed) {
                 activity.setSecure(true)
                 editText.showPassword()
             } else {
@@ -102,15 +114,18 @@ private fun FragmentActivity.setSecure(secure: Boolean) {
 
 @SuppressLint("StaticFieldLeak")
 class AuthenticatedPasswordToggleViewModel : ViewModel() {
+    val isShowPasswordAllowed: Boolean
+        get() = isAuthenticated || isNewPassword
+
+    var isNewPassword = false
     var isAuthenticated = false
     var textInputLayout: TextInputLayout? = null
     var activity: FragmentActivity? = null
         set(value) {
             field = value
 
-            value?.lifecycle?.addObserver(object : LifecycleObserver {
-                @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-                fun removeReferences() {
+            value?.lifecycle?.addObserver(object : DefaultLifecycleObserver {
+                override fun onDestroy(owner: LifecycleOwner) {
                     textInputLayout = null
                     field = null
                 }
