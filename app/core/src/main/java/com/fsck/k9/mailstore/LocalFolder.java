@@ -117,10 +117,6 @@ public class LocalFolder {
         return lastChecked;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
     public long getDatabaseId() {
         return databaseId;
     }
@@ -295,11 +291,6 @@ public class LocalFolder {
         if (growVisibleLimit || (shrinkVisibleLimit && !moreMessagesWereAvailable)) {
             setMoreMessages(MoreMessages.UNKNOWN);
         }
-    }
-
-    public void setStatus(final String status) throws MessagingException {
-        this.status = status;
-        updateFolderColumn("status", status);
     }
 
     private void updateFolderColumn(final String column, final Object value) throws MessagingException {

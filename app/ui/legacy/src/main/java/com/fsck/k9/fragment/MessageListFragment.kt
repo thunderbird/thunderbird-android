@@ -17,7 +17,6 @@ import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -1534,8 +1533,7 @@ class MessageListFragment :
     }
 
     private fun startAndPrepareActionMode() {
-        val activity = requireActivity() as AppCompatActivity
-        actionMode = activity.startSupportActionMode(actionModeCallback)
+        actionMode = fragmentListener.startSupportActionMode(actionModeCallback)
         actionMode?.invalidate()
     }
 
@@ -2003,6 +2001,7 @@ class MessageListFragment :
         fun setMessageListTitle(title: String, subtitle: String?)
         fun onCompose(account: Account?)
         fun startSearch(query: String, account: Account?, folderId: Long?): Boolean
+        fun startSupportActionMode(callback: ActionMode.Callback): ActionMode?
         fun goBack()
         fun onFolderNotFoundError()
 
