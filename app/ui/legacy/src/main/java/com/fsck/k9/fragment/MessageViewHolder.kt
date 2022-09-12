@@ -4,9 +4,12 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.fsck.k9.ui.R
 
-class MessageViewHolder(view: View) {
+sealed class MessageListViewHolder(view: View) : ViewHolder(view)
+
+class MessageViewHolder(view: View) : MessageListViewHolder(view) {
     var uniqueId: Long = -1L
 
     val selected: View = view.findViewById(R.id.selected)
@@ -19,4 +22,8 @@ class MessageViewHolder(view: View) {
     val flagged: CheckBox = view.findViewById(R.id.star)
     val attachment: ImageView = view.findViewById(R.id.attachment)
     val status: ImageView = view.findViewById(R.id.status)
+}
+
+class FooterViewHolder(view: View) : MessageListViewHolder(view) {
+    val text: TextView = view.findViewById(R.id.main_text)
 }

@@ -57,7 +57,7 @@ public class MessageListHandler extends Handler {
             public void run() {
                 MessageListFragment fragment = mFragment.get();
                 if (fragment != null) {
-                    fragment.updateFooter(message);
+                    fragment.updateFooterText(message);
                 }
             }
         });

@@ -1,9 +1,8 @@
 package com.fsck.k9.fragment
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.content.res.Resources.Theme
-import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.Spannable
@@ -14,12 +13,15 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.fsck.k9.FontSizes
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
@@ -32,8 +34,12 @@ import com.fsck.k9.ui.resolveColorAttribute
 import com.fsck.k9.ui.resolveDrawableAttribute
 import kotlin.math.max
 
+private const val FOOTER_ID = 1L
+
+private const val TYPE_MESSAGE = 0
+private const val TYPE_FOOTER = 1
+
 class MessageListAdapter internal constructor(
-    private val context: Context,
     theme: Theme,
     private val res: Resources,
     private val layoutInflater: LayoutInflater,
@@ -41,7 +47,7 @@ class MessageListAdapter internal constructor(
     private val listItemListener: MessageListItemActionListener,
     private val appearance: MessageListAppearance,
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter
-) : BaseAdapter() {
+) : RecyclerView.Adapter<MessageListViewHolder>() {
 
     private val forwardedIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListForwarded)
     private val answeredIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListAnswered)
@@ -49,11 +55,15 @@ class MessageListAdapter internal constructor(
     private val previewTextColor: Int = theme.resolveColorAttribute(R.attr.messageListPreviewTextColor)
     private val activeItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListActiveItemBackgroundColor)
     private val selectedItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListSelectedBackgroundColor)
+    private val regularItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)
     private val readItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListReadItemBackgroundColor)
     private val unreadItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)
 
     var messages: List<MessageListItem> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
+            val oldMessageList = field
+
             field = value
             messagesMap = value.associateBy { it.uniqueId }
 
@@ -62,18 +72,57 @@ class MessageListAdapter internal constructor(
                 selected = selected.intersect(uniqueIds)
             }
 
-            notifyDataSetChanged()
+            if (oldMessageList.isEmpty()) {
+                // While loading, only the footer view is showing. If we used DiffUtil, the footer view would be used as
+                // anchor element and the updated list would be scrolled all the way down.
+                notifyDataSetChanged()
+            } else {
+                val diffResult = DiffUtil.calculateDiff(
+                    MessageListDiffCallback(oldMessageList = oldMessageList, newMessageList = value)
+                )
+                diffResult.dispatchUpdatesTo(this)
+            }
         }
 
     private var messagesMap = emptyMap<Long, MessageListItem>()
 
     var activeMessage: MessageReference? = null
+        set(value) {
+            if (value == field) return
+
+            val oldPosition = getPosition(field)
+            val newPosition = getPosition(value)
+
+            field = value
+
+            oldPosition?.let { position -> notifyItemChanged(position) }
+            newPosition?.let { position -> notifyItemChanged(position) }
+        }
 
     var selected: Set<Long> = emptySet()
         private set(value) {
+            if (value == field) return
+
+            // Selection removed
+            field.asSequence()
+                .filter { uniqueId -> uniqueId !in value }
+                .mapNotNull { uniqueId -> messagesMap[uniqueId] }
+                .mapNotNull { messageListItem -> getPosition(messageListItem) }
+                .forEach { position ->
+                    notifyItemChanged(position)
+                }
+
+            // Selection added
+            value.asSequence()
+                .filter { uniqueId -> uniqueId !in field }
+                .mapNotNull { uniqueId -> messagesMap[uniqueId] }
+                .mapNotNull { messageListItem -> getPosition(messageListItem) }
+                .forEach { position ->
+                    notifyItemChanged(position)
+                }
+
             field = value
             selectedCount = calculateSelectionCount()
-            notifyDataSetChanged()
         }
 
     val selectedMessages: List<MessageListItem>
@@ -85,6 +134,29 @@ class MessageListAdapter internal constructor(
     var selectedCount: Int = 0
         private set
 
+    var footerText: String? = null
+        set(value) {
+            if (field == value) return
+
+            val hadFooterText = field != null
+            field = value
+
+            if (hadFooterText) {
+                notifyItemChanged(footerPosition)
+            } else {
+                notifyItemInserted(footerPosition)
+            }
+        }
+
+    private val hasFooter: Boolean
+        get() = footerText != null
+
+    private val lastMessagePosition: Int
+        get() = messages.lastIndex
+
+    private val footerPosition: Int
+        get() = if (hasFooter) lastMessagePosition + 1 else NO_POSITION
+
     private inline val subjectViewFontSize: Int
         get() = if (appearance.senderAboveSubject) {
             appearance.fontSizes.messageListSender
@@ -92,17 +164,34 @@ class MessageListAdapter internal constructor(
             appearance.fontSizes.messageListSubject
         }
 
+    private val messageClickedListener = OnClickListener { view: View ->
+        val messageListItem = getItemFromView(view)
+        listItemListener.onMessageClicked(messageListItem)
+    }
+
+    private val messageLongClickedListener = OnLongClickListener { view: View ->
+        val messageListItem = getItemFromView(view)
+        listItemListener.onToggleMessageSelection(messageListItem)
+        true
+    }
+
+    private val footerClickListener = OnClickListener {
+        listItemListener.onFooterClicked()
+    }
+
     private val flagClickListener = OnClickListener { view: View ->
-        val messageViewHolder = view.tag as MessageViewHolder
-        val messageListItem = getItemById(messageViewHolder.uniqueId)
+        val messageListItem = getItemFromView(view)
         listItemListener.onToggleMessageFlag(messageListItem)
     }
 
     private val contactPictureClickListener = OnClickListener { view: View ->
         val parentView = view.parent.parent as View
-        val messageViewHolder = parentView.tag as MessageViewHolder
-        val messageListItem = getItemById(messageViewHolder.uniqueId)
+        val messageListItem = getItemFromView(parentView)
         listItemListener.onToggleMessageSelection(messageListItem)
+    }
+
+    init {
+        setHasStableIds(true)
     }
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean) = when {
@@ -111,15 +200,23 @@ class MessageListAdapter internal constructor(
         else -> ""
     }
 
-    override fun hasStableIds(): Boolean = true
+    override fun getItemCount(): Int = messages.size + if (hasFooter) 1 else 0
 
-    override fun getCount(): Int = messages.size
+    override fun getItemId(position: Int): Long {
+        return if (position <= lastMessagePosition) {
+            messages[position].uniqueId
+        } else {
+            FOOTER_ID
+        }
+    }
 
-    override fun getItemId(position: Int): Long = messages[position].uniqueId
+    override fun getItemViewType(position: Int): Int {
+        return if (position <= lastMessagePosition) TYPE_MESSAGE else TYPE_FOOTER
+    }
 
-    override fun getItem(position: Int): MessageListItem = messages[position]
+    private fun getItem(position: Int): MessageListItem = messages[position]
 
-    private fun getItemById(uniqueId: Long): MessageListItem {
+    fun getItemById(uniqueId: Long): MessageListItem {
         return messagesMap[uniqueId]!!
     }
 
@@ -135,16 +232,26 @@ class MessageListAdapter internal constructor(
         return messages.indexOf(messageListItem).takeIf { it != -1 }
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val message = getItem(position)
-        val view: View = convertView ?: newView(parent)
-        bindView(view, context, message)
+    private fun getPosition(messageReference: MessageReference?): Int? {
+        if (messageReference == null) return null
 
-        return view
+        return messages.indexOfFirst {
+            messageReference.equals(it.account.uuid, it.folderId, it.messageUid)
+        }.takeIf { it != -1 }
     }
 
-    private fun newView(parent: ViewGroup?): View {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageListViewHolder {
+        return when (viewType) {
+            TYPE_MESSAGE -> createMessageViewHolder(parent)
+            TYPE_FOOTER -> createFooterViewHolder(parent)
+            else -> error("Unsupported type: $viewType")
+        }
+    }
+
+    private fun createMessageViewHolder(parent: ViewGroup?): MessageViewHolder {
         val view = layoutInflater.inflate(R.layout.message_list_item, parent, false)
+        view.setOnClickListener(messageClickedListener)
+        view.setOnLongClickListener(messageLongClickedListener)
 
         val holder = MessageViewHolder(view)
 
@@ -168,14 +275,33 @@ class MessageListAdapter internal constructor(
 
         view.tag = holder
 
-        return view
+        return holder
     }
 
-    private fun bindView(view: View, context: Context, message: MessageListItem) {
-        val isSelected = selected.contains(message.uniqueId)
-        val isActive = isActiveMessage(message)
+    private fun createFooterViewHolder(parent: ViewGroup): MessageListViewHolder {
+        val view = layoutInflater.inflate(R.layout.message_list_item_footer, parent, false)
+        view.setOnClickListener(footerClickListener)
+        return FooterViewHolder(view)
+    }
 
-        val holder = view.tag as MessageViewHolder
+    override fun onBindViewHolder(holder: MessageListViewHolder, position: Int) {
+        when (val viewType = getItemViewType(position)) {
+            TYPE_MESSAGE -> {
+                val messageListItem = getItem(position)
+                bindMessageViewHolder(holder as MessageViewHolder, messageListItem)
+            }
+            TYPE_FOOTER -> {
+                bindFooterViewHolder(holder as FooterViewHolder)
+            }
+            else -> {
+                error("Unsupported type: $viewType")
+            }
+        }
+    }
+
+    private fun bindMessageViewHolder(holder: MessageViewHolder, messageListItem: MessageListItem) {
+        val isSelected = selected.contains(messageListItem.uniqueId)
+        val isActive = isActiveMessage(messageListItem)
 
         if (appearance.showContactPicture) {
             if (isSelected) {
@@ -187,7 +313,7 @@ class MessageListAdapter internal constructor(
             }
         }
 
-        with(message) {
+        with(messageListItem) {
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
             val displayDate = relativeDateTimeFormatter.formatDate(messageDate)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
@@ -206,7 +332,7 @@ class MessageListAdapter internal constructor(
             if (appearance.showContactPicture && holder.contactPicture.isVisible) {
                 setContactPicture(holder.contactPicture, displayAddress)
             }
-            setBackgroundColor(view, isSelected, isRead, isActive)
+            setBackgroundColor(holder.itemView, isSelected, isRead, isActive)
             updateWithThreadCount(holder, displayThreadCount)
             val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
             val sigil = recipientSigil(toMe, ccMe)
@@ -238,6 +364,10 @@ class MessageListAdapter internal constructor(
                 holder.status.isVisible = false
             }
         }
+    }
+
+    private fun bindFooterViewHolder(holder: FooterViewHolder) {
+        holder.text.text = footerText
     }
 
     private fun formatPreviewText(
@@ -304,7 +434,7 @@ class MessageListAdapter internal constructor(
             selected -> selectedItemBackgroundColor
             backGroundAsReadIndicator && read -> readItemBackgroundColor
             backGroundAsReadIndicator && !read -> unreadItemBackgroundColor
-            else -> Color.TRANSPARENT
+            else -> regularItemBackgroundColor
         }
 
         view.setBackgroundColor(backgroundColor)
@@ -388,9 +518,33 @@ class MessageListAdapter internal constructor(
             .filter { it.uniqueId in selected }
             .sumOf { it.threadCount.coerceAtLeast(1) }
     }
+
+    private fun getItemFromView(view: View): MessageListItem {
+        val messageViewHolder = view.tag as MessageViewHolder
+        return getItemById(messageViewHolder.uniqueId)
+    }
+}
+
+private class MessageListDiffCallback(
+    private val oldMessageList: List<MessageListItem>,
+    private val newMessageList: List<MessageListItem>
+) : DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldMessageList.size
+
+    override fun getNewListSize(): Int = newMessageList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldMessageList[oldItemPosition].uniqueId == newMessageList[newItemPosition].uniqueId
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldMessageList[oldItemPosition] == newMessageList[newItemPosition]
+    }
 }
 
 interface MessageListItemActionListener {
+    fun onMessageClicked(messageListItem: MessageListItem)
     fun onToggleMessageSelection(item: MessageListItem)
     fun onToggleMessageFlag(item: MessageListItem)
+    fun onFooterClicked()
 }
