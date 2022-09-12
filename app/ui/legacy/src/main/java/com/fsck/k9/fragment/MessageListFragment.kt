@@ -36,6 +36,7 @@ import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.helper.Utility
+import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.search.LocalSearch
@@ -52,7 +53,6 @@ import com.fsck.k9.ui.messagelist.MessageListInfo
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.messagelist.MessageListViewModel
 import com.fsck.k9.ui.messagelist.MessageSortOverride
-import java.util.HashSet
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
 import org.koin.android.ext.android.inject
@@ -99,8 +99,6 @@ class MessageListFragment :
     private var sortType = SortType.SORT_DATE
     private var sortAscending = true
     private var sortDateAscending = false
-    private var selectedCount = 0
-    private var selected: MutableSet<Long> = HashSet()
     private var actionMode: ActionMode? = null
     private var hasConnectivity: Boolean? = null
 
@@ -112,6 +110,7 @@ class MessageListFragment :
     private var showingThreadedList = false
     private var isThreadDisplay = false
     private var activeMessage: MessageReference? = null
+    private var rememberedSelected: Set<Long>? = null
 
     lateinit var localSearch: LocalSearch
         private set
@@ -180,10 +179,7 @@ class MessageListFragment :
     }
 
     private fun restoreSelectedMessages(savedInstanceState: Bundle) {
-        val selectedIds = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES) ?: return
-        for (id in selectedIds) {
-            selected.add(id)
-        }
+        rememberedSelected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES)?.toSet()
     }
 
     fun restoreListState(savedListState: Parcelable) {
@@ -380,7 +376,8 @@ class MessageListFragment :
         if (view === footerView) {
             handleFooterClick()
         } else {
-            handleListItemClick(position)
+            val messageListItem = adapter.getItem(position)
+            handleListItemClick(messageListItem)
         }
     }
 
@@ -415,17 +412,14 @@ class MessageListFragment :
         }
     }
 
-    private fun handleListItemClick(position: Int) {
-        if (selectedCount > 0) {
-            toggleMessageSelect(position)
+    private fun handleListItemClick(messageListItem: MessageListItem) {
+        if (adapter.selectedCount > 0) {
+            toggleMessageSelect(messageListItem)
         } else {
-            val adapterPosition = listViewToAdapterPosition(position)
-            val messageListItem = adapter.getItem(adapterPosition)
-
             if (showingThreadedList && messageListItem.threadCount > 1) {
                 fragmentListener.showThread(messageListItem.account, messageListItem.threadRoot)
             } else {
-                openMessageAtPosition(adapterPosition)
+                openMessage(messageListItem.messageReference)
             }
         }
     }
@@ -433,7 +427,9 @@ class MessageListFragment :
     override fun onItemLongClick(parent: AdapterView<*>?, view: View, position: Int, id: Long): Boolean {
         if (view === footerView) return false
 
-        toggleMessageSelect(position)
+        val messageListItem = adapter.getItem(position)
+        toggleMessageSelect(messageListItem)
+
         return true
     }
 
@@ -450,7 +446,7 @@ class MessageListFragment :
         super.onSaveInstanceState(outState)
 
         saveListState(outState)
-        outState.putLongArray(STATE_SELECTED_MESSAGES, selected.toLongArray())
+        outState.putLongArray(STATE_SELECTED_MESSAGES, adapter.selected.toLongArray())
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
         outState.putStringArray(
             STATE_ACTIVE_MESSAGES,
@@ -793,14 +789,6 @@ class MessageListFragment :
         messagingController.sendPendingMessages(account, null)
     }
 
-    private fun listViewToAdapterPosition(position: Int): Int {
-        return if (position in 0 until adapter.count) position else AdapterView.INVALID_POSITION
-    }
-
-    private fun adapterToListViewPosition(position: Int): Int {
-        return if (position in 0 until adapter.count) position else AdapterView.INVALID_POSITION
-    }
-
     private fun getFooterView(parent: ViewGroup?): View? {
         return footerView ?: createFooterView(parent).also { footerView = it }
     }
@@ -850,89 +838,37 @@ class MessageListFragment :
         holder.main.text = text
     }
 
-    private fun setSelectionState(selected: Boolean) {
-        if (selected) {
-            if (adapter.count == 0) {
-                // Nothing to do if there are no messages
-                return
-            }
-
-            selectedCount = 0
-            for (i in 0 until adapter.count) {
-                val messageListItem = adapter.getItem(i)
-                this.selected.add(messageListItem.uniqueId)
-
-                if (showingThreadedList) {
-                    selectedCount += messageListItem.threadCount.coerceAtLeast(1)
-                } else {
-                    selectedCount++
-                }
-            }
-
-            if (actionMode == null) {
-                startAndPrepareActionMode()
-            }
-
-            computeBatchDirection()
-            updateActionMode()
-            computeSelectAllVisibility()
-        } else {
-            this.selected.clear()
-            selectedCount = 0
-
-            actionMode?.finish()
-            actionMode = null
+    private fun selectAll() {
+        if (adapter.messages.isEmpty()) {
+            // Nothing to do if there are no messages
+            return
         }
 
-        adapter.notifyDataSetChanged()
-    }
+        adapter.selectAll()
 
-    private fun toggleMessageSelect(listViewPosition: Int) {
-        val adapterPosition = listViewToAdapterPosition(listViewPosition)
-        if (adapterPosition == AdapterView.INVALID_POSITION) return
-
-        val messageListItem = adapter.getItem(adapterPosition)
-        toggleMessageSelect(messageListItem)
-    }
-
-    private fun toggleMessageSelect(messageListItem: MessageListItem) {
-        val uniqueId = messageListItem.uniqueId
-        val selected = selected.contains(uniqueId)
-        if (!selected) {
-            this.selected.add(uniqueId)
-        } else {
-            this.selected.remove(uniqueId)
-        }
-
-        var selectedCountDelta = 1
-        if (showingThreadedList) {
-            val threadCount = messageListItem.threadCount
-            if (threadCount > 1) {
-                selectedCountDelta = threadCount
-            }
-        }
-
-        if (actionMode != null) {
-            if (selected && selectedCount - selectedCountDelta == 0) {
-                actionMode?.finish()
-                actionMode = null
-                return
-            }
-        } else {
+        if (actionMode == null) {
             startAndPrepareActionMode()
-        }
-
-        if (selected) {
-            selectedCount -= selectedCountDelta
-        } else {
-            selectedCount += selectedCountDelta
         }
 
         computeBatchDirection()
         updateActionMode()
-        computeSelectAllVisibility()
+    }
 
-        adapter.notifyDataSetChanged()
+    private fun toggleMessageSelect(messageListItem: MessageListItem) {
+        adapter.toggleSelection(messageListItem)
+
+        if (adapter.selectedCount == 0) {
+            actionMode?.finish()
+            actionMode = null
+            return
+        }
+
+        if (actionMode == null) {
+            startAndPrepareActionMode()
+        }
+
+        computeBatchDirection()
+        updateActionMode()
     }
 
     override fun onToggleMessageSelection(item: MessageListItem) {
@@ -945,36 +881,19 @@ class MessageListFragment :
 
     private fun updateActionMode() {
         val actionMode = actionMode ?: error("actionMode == null")
-        actionMode.title = getString(R.string.actionbar_selected, selectedCount)
+        actionMode.title = getString(R.string.actionbar_selected, adapter.selectedCount)
+        actionModeCallback.showSelectAll(!adapter.isAllSelected)
+
         actionMode.invalidate()
     }
 
-    private fun computeSelectAllVisibility() {
-        actionModeCallback.showSelectAll(selected.size != adapter.count)
-    }
-
     private fun computeBatchDirection() {
-        var isBatchFlag = false
-        var isBatchRead = false
-        for (i in 0 until adapter.count) {
-            val messageListItem = adapter.getItem(i)
-            if (selected.contains(messageListItem.uniqueId)) {
-                if (!messageListItem.isStarred) {
-                    isBatchFlag = true
-                }
+        val selectedMessages = adapter.selectedMessages
+        val notAllRead = !selectedMessages.all { it.isRead }
+        val notAllStarred = !selectedMessages.all { it.isStarred }
 
-                if (!messageListItem.isRead) {
-                    isBatchRead = true
-                }
-
-                if (isBatchFlag && isBatchRead) {
-                    break
-                }
-            }
-        }
-
-        actionModeCallback.showMarkAsRead(isBatchRead)
-        actionModeCallback.showFlag(isBatchFlag)
+        actionModeCallback.showMarkAsRead(notAllRead)
+        actionModeCallback.showFlag(notAllStarred)
     }
 
     private fun setFlag(messageListItem: MessageListItem, flag: Flag, newState: Boolean) {
@@ -991,25 +910,22 @@ class MessageListFragment :
     }
 
     private fun setFlagForSelected(flag: Flag, newState: Boolean) {
-        if (selected.isEmpty()) return
+        if (adapter.selected.isEmpty()) return
 
-        val messageMap: MutableMap<Account, MutableList<Long>> = mutableMapOf()
-        val threadMap: MutableMap<Account, MutableList<Long>> = mutableMapOf()
-        val accounts: MutableSet<Account> = mutableSetOf()
+        val messageMap = mutableMapOf<Account, MutableList<Long>>()
+        val threadMap = mutableMapOf<Account, MutableList<Long>>()
+        val accounts = mutableSetOf<Account>()
 
-        for (position in 0 until adapter.count) {
-            val messageListItem = adapter.getItem(position)
+        for (messageListItem in adapter.selectedMessages) {
             val account = messageListItem.account
-            if (messageListItem.uniqueId in selected) {
-                accounts.add(account)
+            accounts.add(account)
 
-                if (showingThreadedList && messageListItem.threadCount > 1) {
-                    val threadRootIdList = threadMap.getOrPut(account) { mutableListOf() }
-                    threadRootIdList.add(messageListItem.threadRoot)
-                } else {
-                    val messageIdList = messageMap.getOrPut(account) { mutableListOf() }
-                    messageIdList.add(messageListItem.databaseId)
-                }
+            if (showingThreadedList && messageListItem.threadCount > 1) {
+                val threadRootIdList = threadMap.getOrPut(account) { mutableListOf() }
+                threadRootIdList.add(messageListItem.threadRoot)
+            } else {
+                val messageIdList = messageMap.getOrPut(account) { mutableListOf() }
+                messageIdList.add(messageListItem.databaseId)
             }
         }
 
@@ -1276,10 +1192,6 @@ class MessageListFragment :
         super.onStop()
     }
 
-    fun selectAll() {
-        setSelectionState(true)
-    }
-
     fun onMoveUp() {
         var currentPosition = listView.selectedItemPosition
         if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode) {
@@ -1302,28 +1214,6 @@ class MessageListFragment :
         }
     }
 
-    private fun getReferenceForPosition(position: Int): MessageReference {
-        val item = adapter.getItem(position)
-        return MessageReference(item.account.uuid, item.folderId, item.messageUid)
-    }
-
-    private fun openMessageAtPosition(position: Int) {
-        // Scroll message into view if necessary
-        val listViewPosition = adapterToListViewPosition(position)
-        if (listViewPosition != AdapterView.INVALID_POSITION &&
-            (listViewPosition < listView.firstVisiblePosition || listViewPosition > listView.lastVisiblePosition)
-        ) {
-            listView.setSelection(listViewPosition)
-        }
-
-        val messageReference = getReferenceForPosition(position)
-
-        // For some reason the listView.setSelection() above won't do anything when we call
-        // onOpenMessage() (and consequently adapter.notifyDataSetChanged()) right away. So we
-        // defer the call using MessageListHandler.
-        handler.openMessage(messageReference)
-    }
-
     fun openMessage(messageReference: MessageReference) {
         fragmentListener.openMessage(messageReference)
     }
@@ -1333,27 +1223,16 @@ class MessageListFragment :
     }
 
     private val selectedMessage: MessageReference?
+        get() = selectedMessageListItem?.messageReference
+
+    private val selectedMessageListItem: MessageListItem?
         get() {
-            val listViewPosition = listView.selectedItemPosition
-            val adapterPosition = listViewToAdapterPosition(listViewPosition)
-            if (adapterPosition == AdapterView.INVALID_POSITION) return null
-            return getReferenceForPosition(adapterPosition)
+            val position = listView.selectedItemPosition
+            return if (position !in 0 until adapter.count) null else adapter.getItem(position)
         }
 
-    private val adapterPositionForSelectedMessage: Int
-        get() {
-            val listViewPosition = listView.selectedItemPosition
-            return listViewToAdapterPosition(listViewPosition)
-        }
-
-    private val checkedMessages: List<MessageReference>
-        get() {
-            return adapter.messages
-                .asSequence()
-                .filter { it.uniqueId in selected }
-                .map { MessageReference(it.account.uuid, it.folderId, it.messageUid) }
-                .toList()
-        }
+    private val selectedMessages: List<MessageReference>
+        get() = adapter.selectedMessages.map { it.messageReference }
 
     fun onDelete() {
         selectedMessage?.let { message ->
@@ -1362,29 +1241,21 @@ class MessageListFragment :
     }
 
     fun toggleMessageSelect() {
-        toggleMessageSelect(listView.selectedItemPosition)
+        selectedMessageListItem?.let { messageListItem ->
+            toggleMessageSelect(messageListItem)
+        }
     }
 
     fun onToggleFlagged() {
-        toggleFlag(Flag.FLAGGED)
+        selectedMessageListItem?.let { messageListItem ->
+            setFlag(messageListItem, Flag.FLAGGED, !messageListItem.isStarred)
+        }
     }
 
     fun onToggleRead() {
-        toggleFlag(Flag.SEEN)
-    }
-
-    private fun toggleFlag(flag: Flag) {
-        val adapterPosition = adapterPositionForSelectedMessage
-        if (adapterPosition == ListView.INVALID_POSITION) return
-
-        val messageListItem = adapter.getItem(adapterPosition)
-        val flagState = when (flag) {
-            Flag.SEEN -> messageListItem.isRead
-            Flag.FLAGGED -> messageListItem.isStarred
-            else -> false
+        selectedMessageListItem?.let { messageListItem ->
+            setFlag(messageListItem, Flag.SEEN, !messageListItem.isRead)
         }
-
-        setFlag(messageListItem, flag, !flagState)
     }
 
     fun onMove() {
@@ -1484,14 +1355,15 @@ class MessageListFragment :
             }
         }
 
-        cleanupSelected(messageListItems)
-        adapter.selected = selected
-
         adapter.messages = messageListItems
+
+        rememberedSelected?.let {
+            rememberedSelected = null
+            adapter.restoreSelected(it)
+        }
 
         resetActionMode()
         computeBatchDirection()
-        computeSelectAllVisibility()
 
         if (savedListState != null) {
             handler.restoreListPosition(savedListState)
@@ -1506,19 +1378,10 @@ class MessageListFragment :
         }
     }
 
-    private fun cleanupSelected(messageListItems: List<MessageListItem>) {
-        if (selected.isEmpty()) return
-
-        selected = messageListItems.asSequence()
-            .map { it.uniqueId }
-            .filter { it in selected }
-            .toMutableSet()
-    }
-
     private fun resetActionMode() {
         if (!isResumed) return
 
-        if (!isActive || selected.isEmpty()) {
+        if (!isActive || adapter.selected.isEmpty()) {
             actionMode?.finish()
             actionMode = null
             return
@@ -1528,25 +1391,12 @@ class MessageListFragment :
             startAndPrepareActionMode()
         }
 
-        recalculateSelectionCount()
         updateActionMode()
     }
 
     private fun startAndPrepareActionMode() {
         actionMode = fragmentListener.startSupportActionMode(actionModeCallback)
         actionMode?.invalidate()
-    }
-
-    private fun recalculateSelectionCount() {
-        if (!showingThreadedList) {
-            selectedCount = selected.size
-            return
-        }
-
-        selectedCount = adapter.messages
-            .asSequence()
-            .filter { it.uniqueId in selected }
-            .sumOf { it.threadCount.coerceAtLeast(1) }
     }
 
     fun remoteSearchFinished() {
@@ -1589,8 +1439,7 @@ class MessageListFragment :
 
         if (sortType != SortType.SORT_UNREAD && sortType != SortType.SORT_FLAGGED) return
 
-        val position = getPosition(messageReference)
-        val messageListItem = adapter.getItem(position)
+        val messageListItem = adapter.getItem(messageReference) ?: return
 
         val existingEntry = messageSortOverrides.firstOrNull { it.first == messageReference }
         if (existingEntry != null) {
@@ -1607,20 +1456,11 @@ class MessageListFragment :
     }
 
     private fun scrollToMessage(messageReference: MessageReference) {
-        val position = getPosition(messageReference)
-        val viewPosition = adapterToListViewPosition(position)
-        if (viewPosition != AdapterView.INVALID_POSITION &&
-            (viewPosition <= listView.firstVisiblePosition || viewPosition >= listView.lastVisiblePosition)
-        ) {
-            listView.smoothScrollToPosition(viewPosition)
-        }
-    }
+        val messageListItem = adapter.getItem(messageReference) ?: return
+        val position = adapter.getPosition(messageListItem) ?: return
 
-    private fun getPosition(messageReference: MessageReference): Int {
-        return adapter.messages.indexOfFirst { messageListItem ->
-            messageListItem.account.uuid == messageReference.accountUuid &&
-                messageListItem.folderId == messageReference.folderId &&
-                messageListItem.messageUid == messageReference.uid
+        if (position <= listView.firstVisiblePosition || position >= listView.lastVisiblePosition) {
+            listView.smoothScrollToPosition(position)
         }
     }
 
@@ -1846,12 +1686,7 @@ class MessageListFragment :
         }
 
         private val accountUuidsForSelected: Set<String>
-            get() {
-                return adapter.messages.asSequence()
-                    .filter { it.uniqueId in selected }
-                    .map { it.account.uuid }
-                    .toSet()
-            }
+            get() = adapter.selectedMessages.mapToSet { it.account.uuid }
 
         override fun onDestroyActionMode(mode: ActionMode) {
             actionMode = null
@@ -1861,7 +1696,7 @@ class MessageListFragment :
             flag = null
             unflag = null
 
-            setSelectionState(false)
+            adapter.clearSelected()
         }
 
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
@@ -1942,42 +1777,58 @@ class MessageListFragment :
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             // In the following we assume that we can't move or copy mails to the same folder. Also that spam isn't
             // available if we are in the spam folder, same for archive.
-            when (item.itemId) {
+
+            val endSelectionMode = when (item.itemId) {
                 R.id.delete -> {
-                    val messages = checkedMessages
-                    onDelete(messages)
-                    selectedCount = 0
+                    onDelete(selectedMessages)
+                    true
                 }
-                R.id.mark_as_read -> setFlagForSelected(Flag.SEEN, true)
-                R.id.mark_as_unread -> setFlagForSelected(Flag.SEEN, false)
-                R.id.flag -> setFlagForSelected(Flag.FLAGGED, true)
-                R.id.unflag -> setFlagForSelected(Flag.FLAGGED, false)
-                R.id.select_all -> selectAll()
+                R.id.mark_as_read -> {
+                    setFlagForSelected(Flag.SEEN, true)
+                    false
+                }
+                R.id.mark_as_unread -> {
+                    setFlagForSelected(Flag.SEEN, false)
+                    false
+                }
+                R.id.flag -> {
+                    setFlagForSelected(Flag.FLAGGED, true)
+                    false
+                }
+                R.id.unflag -> {
+                    setFlagForSelected(Flag.FLAGGED, false)
+                    false
+                }
+                R.id.select_all -> {
+                    selectAll()
+                    false
+                }
                 R.id.archive -> {
-                    onArchive(checkedMessages)
+                    onArchive(selectedMessages)
                     // TODO: Only finish action mode if all messages have been moved.
-                    selectedCount = 0
+                    true
                 }
                 R.id.spam -> {
-                    onSpam(checkedMessages)
+                    onSpam(selectedMessages)
                     // TODO: Only finish action mode if all messages have been moved.
-                    selectedCount = 0
+                    true
                 }
                 R.id.move -> {
-                    onMove(checkedMessages)
-                    selectedCount = 0
+                    onMove(selectedMessages)
+                    true
                 }
                 R.id.move_to_drafts -> {
-                    onMoveToDraftsFolder(checkedMessages)
-                    selectedCount = 0
+                    onMoveToDraftsFolder(selectedMessages)
+                    true
                 }
                 R.id.copy -> {
-                    onCopy(checkedMessages)
-                    selectedCount = 0
+                    onCopy(selectedMessages)
+                    true
                 }
+                else -> return false
             }
 
-            if (selectedCount == 0) {
+            if (endSelectionMode) {
                 mode.finish()
             }
 

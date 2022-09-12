@@ -7,8 +7,6 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Parcelable;
 
-import com.fsck.k9.controller.MessageReference;
-
 /**
  * This class is used to run operations that modify UI elements in the UI thread.
  *
@@ -25,7 +23,6 @@ public class MessageListHandler extends Handler {
     private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
     private static final int ACTION_GO_BACK = 5;
     private static final int ACTION_RESTORE_LIST_POSITION = 6;
-    private static final int ACTION_OPEN_MESSAGE = 7;
 
     private WeakReference<MessageListFragment> mFragment;
 
@@ -79,12 +76,6 @@ public class MessageListHandler extends Handler {
         }
     }
 
-    public void openMessage(MessageReference messageReference) {
-        android.os.Message msg = android.os.Message.obtain(this, ACTION_OPEN_MESSAGE,
-                messageReference);
-        sendMessage(msg);
-    }
-
     @Override
     public void handleMessage(android.os.Message msg) {
         MessageListFragment fragment = mFragment.get();
@@ -129,11 +120,6 @@ public class MessageListHandler extends Handler {
             case ACTION_RESTORE_LIST_POSITION: {
                 Parcelable savedListState = (Parcelable) msg.obj;
                 fragment.restoreListState(savedListState);
-                break;
-            }
-            case ACTION_OPEN_MESSAGE: {
-                MessageReference messageReference = (MessageReference) msg.obj;
-                fragment.openMessage(messageReference);
                 break;
             }
         }
