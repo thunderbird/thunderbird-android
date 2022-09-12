@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.ui.R
@@ -88,10 +88,13 @@ class MessageViewContainerFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.message_view_container, container, false)
 
+        val resources = inflater.context.resources
+        val pageMargin = resources.getDimension(R.dimen.message_view_pager_page_margin).toInt()
+
         viewPager = view.findViewById(R.id.message_viewpager)
         viewPager.isUserInputEnabled = true
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
-        viewPager.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+        viewPager.setPageTransformer(MarginPageTransformer(pageMargin))
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             // The message list is updated each time the active message is changed. To avoid message list updates
             // during the animation, we only set the active message after the animation has finished.
