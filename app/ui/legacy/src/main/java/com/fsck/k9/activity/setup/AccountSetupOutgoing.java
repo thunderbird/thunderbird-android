@@ -73,6 +73,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private AuthTypeAdapter mAuthTypeAdapter;
     private Button mNextButton;
     private Account mAccount;
+    private boolean editSettings;
 
     public static void actionOutgoingSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupOutgoing.class);
@@ -149,16 +150,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             mAccount = Preferences.getPreferences().getAccount(accountUuid);
         }
 
-        boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
+        editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
         if (editSettings) {
-            TextInputLayoutHelper.configureAuthenticatedPasswordToggle(
-                    mPasswordLayoutView,
-                    this,
-                    getString(R.string.account_setup_basics_show_password_biometrics_title),
-                    getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
-                    getString(R.string.account_setup_basics_show_password_need_lock)
-            );
-
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
@@ -321,6 +314,16 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mPasswordView.addTextChangedListener(validationTextWatcher);
         mServerView.addTextChangedListener(validationTextWatcher);
         mPortView.addTextChangedListener(validationTextWatcher);
+
+        if (editSettings) {
+            TextInputLayoutHelper.configureAuthenticatedPasswordToggle(
+                    mPasswordLayoutView,
+                    this,
+                    getString(R.string.account_setup_basics_show_password_biometrics_title),
+                    getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
+                    getString(R.string.account_setup_basics_show_password_need_lock)
+            );
+        }
     }
 
     @Override
@@ -494,7 +497,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
 
         if (resultCode == RESULT_OK) {
-            if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
+            if (editSettings) {
                 Preferences.getPreferences().saveAccount(mAccount);
                 finish();
             } else {

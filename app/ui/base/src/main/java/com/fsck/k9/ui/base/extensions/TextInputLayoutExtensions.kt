@@ -23,6 +23,10 @@ import com.google.android.material.textfield.TextInputLayout
 
 /**
  * Configures a [TextInputLayout] so the password can only be revealed after authentication.
+ *
+ * **IMPORTANT**: Only call this after the instance state has been restored! Otherwise, restoring the previous state
+ * after the initial state has been set will be detected as replacing the whole text. In that case showing the password
+ * will be allowed without authentication.
  */
 fun TextInputLayout.configureAuthenticatedPasswordToggle(
     activity: FragmentActivity,
