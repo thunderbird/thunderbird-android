@@ -771,6 +771,15 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `fetch() with UTF-8 encoded content type parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name" "filenäme.ext") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name=\"filenäme.ext\""
+        )
+    }
+
+    @Test
     fun `fetch() with simple content disposition parameter`() {
         testHeaderFromBodyStructure(
             bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
@@ -807,6 +816,16 @@ class RealImapFolderTest {
                 """("attachment" ("filename*" "utf-8''filen%C3%A4me.ext")) NIL NIL)""",
             headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
             expectedHeaderValue = "attachment;\r\n filename*=utf-8''filen%C3%A4me.ext;\r\n size=23"
+        )
+    }
+
+    @Test
+    fun `fetch() with UTF-8 encoded content disposition parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename" "filenäme.ext")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename=\"filenäme.ext\";\r\n size=23"
         )
     }
 

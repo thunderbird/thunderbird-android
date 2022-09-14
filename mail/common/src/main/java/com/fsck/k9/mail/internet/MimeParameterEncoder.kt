@@ -145,7 +145,7 @@ object MimeParameterEncoder {
 
     private fun String.isQuotable() = all { it.isQuotable() }
 
-    fun String.quoted(): String {
+    private fun String.quoted(): String {
         // quoted-string = [CFWS] DQUOTE *([FWS] qcontent) [FWS] DQUOTE [CFWS]
         // qcontent      = qtext / quoted-pair
         // quoted-pair   = ("\" (VCHAR / WSP))
@@ -159,6 +159,22 @@ object MimeParameterEncoder {
                     append('\\').append(c)
                 } else {
                     throw IllegalArgumentException("Unsupported character: $c")
+                }
+            }
+            append(DQUOTE)
+        }
+    }
+
+    // RFC 6532-style header values
+    // Right now we only create such values for internal use (see IMAP BODYSTRUCTURE response parsing code)
+    fun String.quotedUtf8(): String {
+        return buildString(capacity = length + 16) {
+            append(DQUOTE)
+            for (c in this@quotedUtf8) {
+                if (c == DQUOTE || c == BACKSLASH) {
+                    append('\\').append(c)
+                } else {
+                    append(c)
                 }
             }
             append(DQUOTE)

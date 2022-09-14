@@ -16,14 +16,12 @@ import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.MimeMultipart
 import com.fsck.k9.mail.internet.MimeParameterEncoder.isToken
-import com.fsck.k9.mail.internet.MimeParameterEncoder.quoted
+import com.fsck.k9.mail.internet.MimeParameterEncoder.quotedUtf8
 import com.fsck.k9.mail.internet.MimeUtility
 import java.io.IOException
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.HashMap
-import java.util.LinkedHashSet
 import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
@@ -891,7 +889,7 @@ internal class RealImapFolder(
                 for (i in bodyParams.indices step 2) {
                     val paramName = bodyParams.getString(i)
                     val paramValue = bodyParams.getString(i + 1)
-                    val encodedValue = if (paramValue.isToken()) paramValue else paramValue.quoted()
+                    val encodedValue = if (paramValue.isToken()) paramValue else paramValue.quotedUtf8()
                     contentType.append(String.format(";\r\n %s=%s", paramName, encodedValue))
                 }
             }
@@ -918,7 +916,7 @@ internal class RealImapFolder(
                     for (i in bodyDispositionParams.indices step 2) {
                         val paramName = bodyDispositionParams.getString(i).lowercase()
                         val paramValue = bodyDispositionParams.getString(i + 1)
-                        val encodedValue = if (paramValue.isToken()) paramValue else paramValue.quoted()
+                        val encodedValue = if (paramValue.isToken()) paramValue else paramValue.quotedUtf8()
                         contentDisposition.append(String.format(";\r\n %s=%s", paramName, encodedValue))
                     }
                 }

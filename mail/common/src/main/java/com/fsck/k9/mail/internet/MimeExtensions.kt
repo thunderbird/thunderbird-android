@@ -26,6 +26,7 @@ internal const val SEMICOLON = ';'
 internal const val EQUALS_SIGN = '='
 internal const val ASTERISK = '*'
 internal const val SINGLE_QUOTE = '\''
+internal const val BACKSLASH = '\\'
 
 internal fun Char.isTSpecial() = this in TSPECIALS
 
