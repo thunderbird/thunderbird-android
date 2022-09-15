@@ -2,11 +2,11 @@ package com.fsck.k9.view;
 
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,16 +24,18 @@ import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.ui.R;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.snackbar.Snackbar;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private static final int DEFAULT_SUBJECT_LINES = 3;
 
+    private Chip accountChip;
     private TextView subjectView;
-    private CheckBox starView;
-    private ContactBadge contactBadge;
+    private ImageView starView;
+    private ImageView contactPictureView;
     private TextView fromView;
     private ImageView cryptoStatusIcon;
 
@@ -44,22 +46,35 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public MessageHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        if (!isInEditMode()) {
+            messageHelper = MessageHelper.getInstance(getContext());
+        }
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        accountChip = findViewById(R.id.chip);
         subjectView = findViewById(R.id.subject);
         starView = findViewById(R.id.flagged);
-        contactBadge = findViewById(R.id.contact_badge);
+        contactPictureView = findViewById(R.id.contact_picture);
         fromView = findViewById(R.id.from);
         cryptoStatusIcon = findViewById(R.id.crypto_status_icon);
 
         subjectView.setOnClickListener(this);
         subjectView.setOnLongClickListener(this);
 
-        messageHelper = MessageHelper.getInstance(getContext());
+        View menuPrimaryActionView = findViewById(R.id.menu_primary_action);
+        menuPrimaryActionView.setOnClickListener(this);
+        menuPrimaryActionView.setOnLongClickListener(this);
+
+        View menuOverflowView = findViewById(R.id.menu_overflow);
+        menuOverflowView.setOnClickListener(this);
+        menuOverflowView.setOnLongClickListener(this);
+
+        findViewById(R.id.participants_container).setOnClickListener(this);
     }
 
     @Override
@@ -67,11 +82,15 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         int id = view.getId();
         if (id == R.id.subject) {
             toggleSubjectViewMaxLines();
-        } else if (id == R.id.icon_single_message_options) {
+        } else if (id == R.id.menu_primary_action) {
+            Snackbar.make(getRootView(), "TODO: Perform primary action", Snackbar.LENGTH_LONG).show();
+        } else if (id == R.id.menu_overflow) {
             PopupMenu popupMenu = new PopupMenu(getContext(), view);
             popupMenu.setOnMenuItemClickListener(onMenuItemClickListener);
             popupMenu.inflate(R.menu.single_message_options);
             popupMenu.show();
+        } else if (id == R.id.participants_container) {
+            Snackbar.make(getRootView(), "TODO: Display details popup", Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -110,6 +129,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     public void populate(final Message message, final Account account, boolean showStar) {
+        accountChip.setText(account.getDisplayName());
+        accountChip.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));
+
         Address fromAddress = null;
         Address[] fromAddresses = message.getFrom();
         if (fromAddresses.length > 0) {
@@ -117,12 +139,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
 
         if (fromAddress != null) {
-            contactBadge.setContact(fromAddress);
-
             ContactPictureLoader contactsPictureLoader = ContactPicture.getContactPictureLoader();
-            contactsPictureLoader.setContactPicture(contactBadge, fromAddress);
+            contactsPictureLoader.setContactPicture(contactPictureView, fromAddress);
         } else {
-            contactBadge.setImageResource(R.drawable.ic_contact_picture);
+            contactPictureView.setImageResource(R.drawable.ic_contact_picture);
         }
 
         CharSequence from = messageHelper.getSenderDisplayName(fromAddress);
@@ -130,7 +150,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         if (showStar) {
             starView.setVisibility(View.VISIBLE);
-            starView.setChecked(message.isSet(Flag.FLAGGED));
+            starView.setSelected(message.isSet(Flag.FLAGGED));
         } else {
             starView.setVisibility(View.GONE);
         }
