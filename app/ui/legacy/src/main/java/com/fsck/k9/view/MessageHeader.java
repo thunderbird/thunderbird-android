@@ -32,40 +32,35 @@ import com.fsck.k9.ui.R;
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private static final int DEFAULT_SUBJECT_LINES = 3;
 
-    private final ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
+    private TextView subjectView;
+    private CheckBox starView;
+    private ContactBadge contactBadge;
+    private TextView fromView;
+    private ImageView cryptoStatusIcon;
 
-    private Context mContext;
-    private TextView mFromView;
-    private TextView mSubjectView;
-    private ImageView mCryptoStatusIcon;
-    private CheckBox mFlagged;
-    private ContactBadge mContactBadge;
-
-    private MessageHelper mMessageHelper;
-    private ContactPictureLoader mContactsPictureLoader;
+    private MessageHelper messageHelper;
 
     private OnMenuItemClickListener onMenuItemClickListener;
 
 
     public MessageHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mFromView = findViewById(R.id.from);
-        mContactBadge = findViewById(R.id.contact_badge);
-        mSubjectView = findViewById(R.id.subject);
-        mFlagged = findViewById(R.id.flagged);
-        mCryptoStatusIcon = findViewById(R.id.crypto_status_icon);
+        subjectView = findViewById(R.id.subject);
+        starView = findViewById(R.id.flagged);
+        contactBadge = findViewById(R.id.contact_badge);
+        fromView = findViewById(R.id.from);
+        cryptoStatusIcon = findViewById(R.id.crypto_status_icon);
 
-        mSubjectView.setOnClickListener(this);
-        mSubjectView.setOnLongClickListener(this);
+        subjectView.setOnClickListener(this);
+        subjectView.setOnLongClickListener(this);
 
-        mMessageHelper = MessageHelper.getInstance(mContext);
+        messageHelper = MessageHelper.getInstance(getContext());
     }
 
     @Override
@@ -86,32 +81,33 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         int id = view.getId();
 
         if (id == R.id.subject) {
-            onAddSubjectToClipboard(mSubjectView.getText().toString());
+            onAddSubjectToClipboard(subjectView.getText().toString());
         }
 
         return true;
     }
 
     private void toggleSubjectViewMaxLines() {
-        if (mSubjectView.getMaxLines() == DEFAULT_SUBJECT_LINES) {
-            mSubjectView.setMaxLines(Integer.MAX_VALUE);
+        if (subjectView.getMaxLines() == DEFAULT_SUBJECT_LINES) {
+            subjectView.setMaxLines(Integer.MAX_VALUE);
         } else {
-            mSubjectView.setMaxLines(DEFAULT_SUBJECT_LINES);
+            subjectView.setMaxLines(DEFAULT_SUBJECT_LINES);
         }
     }
 
     private void onAddSubjectToClipboard(String subject) {
+        ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
         clipboardManager.setText("subject", subject);
 
-        Toast.makeText(mContext, createMessageForSubject(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), createMessageForSubject(), Toast.LENGTH_LONG).show();
     }
 
     public String createMessageForSubject() {
-        return  mContext.getResources().getString(R.string.copy_subject_to_clipboard);
+        return getResources().getString(R.string.copy_subject_to_clipboard);
     }
 
     public void setOnFlagListener(OnClickListener listener) {
-        mFlagged.setOnClickListener(listener);
+        starView.setOnClickListener(listener);
     }
 
     public void populate(final Message message, final Account account, boolean showStar) {
@@ -121,42 +117,40 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             fromAddress = fromAddresses[0];
         }
 
-        final CharSequence from = mMessageHelper.getSenderDisplayName(fromAddress);
-
         if (K9.isShowContactPicture()) {
-            mContactBadge.setVisibility(View.VISIBLE);
-            mContactsPictureLoader = ContactPicture.getContactPictureLoader();
-        }  else {
-            mContactBadge.setVisibility(View.GONE);
-        }
+            contactBadge.setVisibility(View.VISIBLE);
 
-        if (K9.isShowContactPicture()) {
             if (fromAddress != null) {
-                mContactBadge.setContact(fromAddress);
-                mContactsPictureLoader.setContactPicture(mContactBadge, fromAddress);
+                contactBadge.setContact(fromAddress);
+
+                ContactPictureLoader contactsPictureLoader = ContactPicture.getContactPictureLoader();
+                contactsPictureLoader.setContactPicture(contactBadge, fromAddress);
             } else {
-                mContactBadge.setImageResource(R.drawable.ic_contact_picture);
+                contactBadge.setImageResource(R.drawable.ic_contact_picture);
             }
+        }  else {
+            contactBadge.setVisibility(View.GONE);
         }
 
-        mFromView.setText(from);
+        CharSequence from = messageHelper.getSenderDisplayName(fromAddress);
+        fromView.setText(from);
 
         if (showStar) {
-            mFlagged.setVisibility(View.VISIBLE);
-            mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+            starView.setVisibility(View.VISIBLE);
+            starView.setChecked(message.isSet(Flag.FLAGGED));
         } else {
-            mFlagged.setVisibility(View.GONE);
+            starView.setVisibility(View.GONE);
         }
 
         setVisibility(View.VISIBLE);
     }
 
     public void setSubject(@NonNull String subject) {
-        mSubjectView.setText(subject);
+        subjectView.setText(subject);
     }
 
     public void hideCryptoStatus() {
-        mCryptoStatusIcon.setVisibility(View.GONE);
+        cryptoStatusIcon.setVisibility(View.GONE);
     }
 
     public void setCryptoStatusLoading() {
@@ -173,10 +167,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
         int color = ThemeUtils.getStyledColor(getContext(), displayStatus.getColorAttr());
-        mCryptoStatusIcon.setEnabled(displayStatus.isEnabled());
-        mCryptoStatusIcon.setVisibility(View.VISIBLE);
-        mCryptoStatusIcon.setImageResource(displayStatus.getStatusIconRes());
-        mCryptoStatusIcon.setColorFilter(color);
+        cryptoStatusIcon.setEnabled(displayStatus.isEnabled());
+        cryptoStatusIcon.setVisibility(View.VISIBLE);
+        cryptoStatusIcon.setImageResource(displayStatus.getStatusIconRes());
+        cryptoStatusIcon.setColorFilter(color);
     }
 
     public void setOnMenuItemClickListener(OnMenuItemClickListener onMenuItemClickListener) {
