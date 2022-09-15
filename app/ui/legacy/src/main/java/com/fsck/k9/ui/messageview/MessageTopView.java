@@ -238,7 +238,6 @@ public class MessageTopView extends LinearLayout {
 
     public void setMessageCryptoPresenter(MessageCryptoPresenter messageCryptoPresenter) {
         this.messageCryptoPresenter = messageCryptoPresenter;
-        mHeaderContainer.setOnCryptoClickListener(messageCryptoPresenter);
     }
 
     public void enableDownloadButton() {
