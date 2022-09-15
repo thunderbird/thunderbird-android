@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
+import kotlin.text.Charsets;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
@@ -346,6 +347,16 @@ public class ImapResponseParserTest {
         assertEquals("qu\"oted", response.getString(0));
     }
 
+    @Test
+    public void utf8InQuotedString() throws Exception {
+        ImapResponseParser parser = createParser("* \"quöted\"\r\n");
+
+        ImapResponse response = parser.readResponse();
+
+        assertEquals(1, response.size());
+        assertEquals("quöted", response.getString(0));
+    }
+
     @Test(expected = IOException.class)
     public void testParseQuotedToEndOfStream() throws Exception {
         ImapResponseParser parser = createParser("* \"abc");
@@ -484,7 +495,7 @@ public class ImapResponseParserTest {
     }
 
     private ImapResponseParser createParser(String response) {
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getBytes());
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getBytes(Charsets.UTF_8));
         peekableInputStream = new PeekableInputStream(byteArrayInputStream);
         return new ImapResponseParser(peekableInputStream);
     }

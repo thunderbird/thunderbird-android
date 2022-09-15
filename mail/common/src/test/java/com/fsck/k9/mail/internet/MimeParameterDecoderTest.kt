@@ -378,6 +378,14 @@ class MimeParameterDecoderTest {
         assertThat(mimeValue.ignoredParameters).isEmpty()
     }
 
+    @Test
+    fun `UTF-8 data in header value`() {
+        val mimeValue = MimeParameterDecoder.decode("application/x-stuff; name=\"filenäme.ext\"")
+
+        assertThat(mimeValue.parameters).containsExactlyEntries("name" to "filenäme.ext")
+        assertThat(mimeValue.ignoredParameters).isEmpty()
+    }
+
     private fun MapSubject.containsExactlyEntries(vararg values: Pair<String, String>): Ordered {
         return containsExactlyEntriesIn(values.toMap())
     }
