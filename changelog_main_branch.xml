@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.304" versioncode="33004" date="2022-09-16">
+        <change>Allow unmasking the password field without authentication as soon as the original password in incoming/outgoing server settings has been overwritten completely</change>
+        <change>Don't crash when IMAP servers send attachment names that contain non-ASCII characters</change>
+        <change>Fixed a bug where the search input field would collapse back into its toolbar icon while it was being used</change>
+        <change>Removed support for Direct Share because the app can no longer use the number of times a person has been contacted to make useful suggestions</change>
+        <change>More internal changes</change>
+    </release>
     <release version="6.303" versioncode="33003" date="2022-09-08">
         <change>Fixed a bug that lead to search being broken</change>
         <change>Fixed error reporting for (old) send failures</change>
