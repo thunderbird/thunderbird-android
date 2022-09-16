@@ -52,7 +52,7 @@ jobs:
 
       - id: upload
         name: NowSecure upload app
-        uses: nowsecure/nowsecure-action/upload-app@v1
+        uses: nowsecure/nowsecure-action/upload-app@latest
         with:
           token: ${{ secrets.NS_TOKEN }}
           app_file: k9mail-debug.apk
