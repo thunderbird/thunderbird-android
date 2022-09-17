@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.305" versioncode="33005" date="2022-09-17">
+        <change>Fixed a bug that could lead to a crash when opening the message list</change>
+    </release>
     <release version="6.304" versioncode="33004" date="2022-09-16">
         <change>Allow unmasking the password field without authentication as soon as the original password in incoming/outgoing server settings has been overwritten completely</change>
         <change>Don't crash when IMAP servers send attachment names that contain non-ASCII characters</change>
