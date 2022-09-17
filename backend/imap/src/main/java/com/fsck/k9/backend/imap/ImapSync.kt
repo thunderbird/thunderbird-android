@@ -7,6 +7,7 @@ import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.helper.ExceptionHelper
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.DefaultBodyFactory
@@ -23,7 +24,6 @@ import java.util.Collections
 import java.util.Date
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
-import timber.log.Timber
 
 internal class ImapSync(
     private val accountName: String,

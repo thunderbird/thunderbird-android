@@ -1,5 +1,6 @@
 package com.fsck.k9.backend.imap
 
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import com.fsck.k9.mail.store.imap.IdleRefreshTimeoutProvider
@@ -7,7 +8,6 @@ import com.fsck.k9.mail.store.imap.IdleResult
 import com.fsck.k9.mail.store.imap.ImapFolderIdler
 import com.fsck.k9.mail.store.imap.ImapStore
 import kotlin.concurrent.thread
-import timber.log.Timber
 
 /**
  * Listens for changes to an IMAP folder in a dedicated thread.

@@ -2,6 +2,7 @@ package com.fsck.k9.backend.imap
 
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.power.PowerManager
@@ -14,9 +15,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 private const val IO_ERROR_TIMEOUT = 5 * 60 * 1000L
 private const val UNEXPECTED_ERROR_TIMEOUT = 60 * 60 * 1000L

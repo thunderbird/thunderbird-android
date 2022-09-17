@@ -1,5 +1,6 @@
 package com.fsck.k9.backend.jmap
 
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.squareup.moshi.Moshi
@@ -14,7 +15,6 @@ import rs.ltt.jmap.client.http.HttpAuthentication
 import rs.ltt.jmap.common.entity.EmailImport
 import rs.ltt.jmap.common.method.call.email.ImportEmailMethodCall
 import rs.ltt.jmap.common.method.response.email.ImportEmailMethodResponse
-import timber.log.Timber
 
 class CommandUpload(
     private val jmapClient: JmapClient,
