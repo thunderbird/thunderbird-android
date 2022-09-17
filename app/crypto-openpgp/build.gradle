@@ -9,6 +9,8 @@ dependencies {
 }
 
 android {
+    namespace 'com.fsck.k9.crypto.openpgp'
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
