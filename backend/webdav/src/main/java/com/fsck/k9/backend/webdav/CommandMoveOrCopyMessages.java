@@ -6,12 +6,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.webdav.WebDavFolder;
 import com.fsck.k9.mail.store.webdav.WebDavMessage;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
 import org.jetbrains.annotations.NotNull;
-import timber.log.Timber;
 
 
 class CommandMoveOrCopyMessages {

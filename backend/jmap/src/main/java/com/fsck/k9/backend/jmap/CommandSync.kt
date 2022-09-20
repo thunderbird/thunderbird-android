@@ -4,6 +4,7 @@ import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessageDownloadState
@@ -26,7 +27,6 @@ import rs.ltt.jmap.common.method.call.email.QueryEmailMethodCall
 import rs.ltt.jmap.common.method.response.email.GetEmailMethodResponse
 import rs.ltt.jmap.common.method.response.email.QueryChangesEmailMethodResponse
 import rs.ltt.jmap.common.method.response.email.QueryEmailMethodResponse
-import timber.log.Timber
 
 class CommandSync(
     private val backendStorage: BackendStorage,

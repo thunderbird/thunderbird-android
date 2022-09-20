@@ -6,6 +6,7 @@ import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
@@ -13,7 +14,6 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.store.webdav.WebDavStore
 import com.fsck.k9.mail.transport.WebDavTransport
-import timber.log.Timber
 
 class WebDavBackend(
     accountName: String,
