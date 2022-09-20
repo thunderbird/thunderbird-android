@@ -457,7 +457,6 @@ class MessageListAdapterTest : RobolectricTest() {
         )
 
         return MessageListAdapter(
-            context = context,
             theme = context.theme,
             res = context.resources,
             layoutInflater = LayoutInflater.from(context),
@@ -518,7 +517,9 @@ class MessageListAdapterTest : RobolectricTest() {
 
     fun MessageListAdapter.createAndBindView(item: MessageListItem = createMessageListItem()): View {
         messages = listOf(item)
-        return getView(0, null, LinearLayout(context))
+        val holder = onCreateViewHolder(LinearLayout(context), 0)
+        onBindViewHolder(holder, 0)
+        return holder.itemView
     }
 
     fun secondLine(senderOrSubject: String, preview: String) = "$senderOrSubject $preview"
