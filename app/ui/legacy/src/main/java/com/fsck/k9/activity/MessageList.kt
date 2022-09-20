@@ -100,7 +100,7 @@ open class MessageList :
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
     private lateinit var actionBar: ActionBar
-    private lateinit var searchView: SearchView
+    private var searchView: SearchView? = null
     private var initialSearchViewQuery: String? = null
     private var initialSearchViewIconified: Boolean = true
 
@@ -577,8 +577,10 @@ open class MessageList :
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
         outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
-        outState.putBoolean(STATE_SEARCH_VIEW_ICONIFIED, searchView.isIconified)
-        outState.putString(STATE_SEARCH_VIEW_QUERY, searchView.query?.toString())
+        searchView?.let { searchView ->
+            outState.putBoolean(STATE_SEARCH_VIEW_ICONIFIED, searchView.isIconified)
+            outState.putString(STATE_SEARCH_VIEW_QUERY, searchView.query?.toString())
+        }
     }
 
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -695,7 +697,7 @@ open class MessageList :
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         var eventHandled = false
-        if (event.action == KeyEvent.ACTION_DOWN && ::searchView.isInitialized && searchView.isIconified) {
+        if (event.action == KeyEvent.ACTION_DOWN && isSearchViewCollapsed()) {
             eventHandled = onCustomKeyDown(event)
         }
 
@@ -715,7 +717,7 @@ open class MessageList :
             } else {
                 showMessageList()
             }
-        } else if (this::searchView.isInitialized && !searchView.isIconified) {
+        } else if (!isSearchViewCollapsed()) {
             collapseSearchView()
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
@@ -952,12 +954,12 @@ open class MessageList :
 
     private fun initializeSearchMenuItem(searchItem: MenuItem) {
         // Reuse existing SearchView if available
-        if (::searchView.isInitialized) {
+        searchView?.let { searchView ->
             searchItem.actionView = searchView
             return
         }
 
-        searchView = searchItem.actionView as SearchView
+        val searchView = searchItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
         searchView.queryHint = resources.getString(R.string.search_action)
         val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
@@ -976,11 +978,17 @@ open class MessageList :
 
         searchView.isIconified = initialSearchViewIconified
         searchView.setQuery(initialSearchViewQuery, false)
+
+        this.searchView = searchView
     }
 
+    private fun isSearchViewCollapsed(): Boolean = searchView?.isIconified == true
+
     private fun collapseSearchView() {
-        searchView.setQuery(null, false)
-        searchView.isIconified = true
+        searchView?.let { searchView ->
+            searchView.setQuery(null, false)
+            searchView.isIconified = true
+        }
     }
 
     fun setActionBarTitle(title: String, subtitle: String? = null) {

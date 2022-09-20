@@ -1,22 +1,6 @@
 package com.fsck.k9.backend.webdav;
 
 
-import com.fsck.k9.backend.api.BackendFolder;
-import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
-import com.fsck.k9.backend.api.BackendStorage;
-import com.fsck.k9.backend.api.SyncConfig;
-import com.fsck.k9.backend.api.SyncListener;
-import com.fsck.k9.helper.ExceptionHelper;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessageDownloadState;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.webdav.WebDavFolder;
-import com.fsck.k9.mail.store.webdav.WebDavMessage;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -27,7 +11,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import timber.log.Timber;
+import com.fsck.k9.backend.api.BackendFolder;
+import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
+import com.fsck.k9.backend.api.BackendStorage;
+import com.fsck.k9.backend.api.SyncConfig;
+import com.fsck.k9.backend.api.SyncListener;
+import com.fsck.k9.helper.ExceptionHelper;
+import com.fsck.k9.logging.Timber;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.MessageDownloadState;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.webdav.WebDavFolder;
+import com.fsck.k9.mail.store.webdav.WebDavMessage;
+import com.fsck.k9.mail.store.webdav.WebDavStore;
 
 
 class WebDavSync {

@@ -10,6 +10,7 @@ import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
+import okio.Buffer;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
 
@@ -396,7 +397,7 @@ class ImapResponseParser {
     private String parseQuoted() throws IOException {
         expect('"');
 
-        StringBuilder sb = new StringBuilder();
+        Buffer buffer = new Buffer();
         int ch;
         boolean escape = false;
         while ((ch = inputStream.read()) != -1) {
@@ -404,12 +405,13 @@ class ImapResponseParser {
                 // Found the escape character
                 escape = true;
             } else if (!escape && ch == '"') {
-                return sb.toString();
+                return buffer.readUtf8();
             } else {
-                sb.append((char) ch);
+                buffer.writeByte(ch);
                 escape = false;
             }
         }
+
         throw new IOException("parseQuoted(): end of stream reached");
     }
 

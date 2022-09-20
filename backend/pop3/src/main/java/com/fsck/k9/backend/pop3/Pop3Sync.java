@@ -7,6 +7,7 @@ import com.fsck.k9.backend.api.BackendStorage;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.helper.ExceptionHelper;
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
@@ -25,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import timber.log.Timber;
 
 
 class Pop3Sync {

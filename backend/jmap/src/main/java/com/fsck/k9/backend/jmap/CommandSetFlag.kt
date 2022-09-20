@@ -1,5 +1,6 @@
 package com.fsck.k9.backend.jmap
 
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.Flag
 import rs.ltt.jmap.client.JmapClient
 import rs.ltt.jmap.common.entity.filter.EmailFilterCondition
@@ -8,7 +9,6 @@ import rs.ltt.jmap.common.method.call.email.SetEmailMethodCall
 import rs.ltt.jmap.common.method.response.email.QueryEmailMethodResponse
 import rs.ltt.jmap.common.method.response.email.SetEmailMethodResponse
 import rs.ltt.jmap.common.util.Patches
-import timber.log.Timber
 
 class CommandSetFlag(
     private val jmapClient: JmapClient,
