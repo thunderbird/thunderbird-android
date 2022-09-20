@@ -55,6 +55,8 @@ public class MessageTopView extends LinearLayout {
     private boolean isShowingProgress;
     private boolean showPicturesButtonClicked;
 
+    private boolean showAccountChip;
+
     private MessageCryptoPresenter messageCryptoPresenter;
 
 
@@ -82,6 +84,10 @@ public class MessageTopView extends LinearLayout {
         containerView = findViewById(R.id.message_container);
 
         hideHeaderView();
+    }
+
+    public void setShowAccountChip(boolean showAccountChip) {
+        this.showAccountChip = showAccountChip;
     }
 
     private void setShowPicturesButtonListener() {
@@ -208,7 +214,7 @@ public class MessageTopView extends LinearLayout {
     }
 
     public void setHeaders(Message message, Account account, boolean showStar) {
-        mHeaderContainer.populate(message, account, showStar);
+        mHeaderContainer.populate(message, account, showStar, showAccountChip);
         mHeaderContainer.setVisibility(View.VISIBLE);
     }
 

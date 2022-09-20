@@ -86,6 +86,7 @@ class MessageViewFragment :
 
     private lateinit var account: Account
     lateinit var messageReference: MessageReference
+    private var showAccountChip: Boolean = true
 
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
     private var isDeleteMenuItemDisabled: Boolean = false
@@ -108,6 +109,9 @@ class MessageViewFragment :
 
         messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
             ?: error("Invalid argument '$ARG_REFERENCE'")
+
+        showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP)
+            ?: error("Missing argument: '$ARG_SHOW_ACCOUNT_CHIP'")
 
         if (savedInstanceState != null) {
             wasMessageMarkedAsOpened = savedInstanceState.getBoolean(STATE_WAS_MESSAGE_MARKED_AS_OPENED)
@@ -136,6 +140,8 @@ class MessageViewFragment :
     }
 
     private fun initializeMessageTopView(messageTopView: MessageTopView) {
+        messageTopView.setShowAccountChip(showAccountChip)
+
         messageTopView.setAttachmentCallback(this)
         messageTopView.setMessageCryptoPresenter(messageCryptoPresenter)
 
@@ -940,6 +946,7 @@ class MessageViewFragment :
         const val PROGRESS_THRESHOLD_MILLIS = 500 * 1000
 
         private const val ARG_REFERENCE = "reference"
+        private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
 
         private const val STATE_WAS_MESSAGE_MARKED_AS_OPENED = "wasMessageMarkedAsOpened"
 
@@ -947,9 +954,10 @@ class MessageViewFragment :
         private const val ACTIVITY_CHOOSE_FOLDER_COPY = 2
         private const val REQUEST_CODE_CREATE_DOCUMENT = 3
 
-        fun newInstance(reference: MessageReference): MessageViewFragment {
+        fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewFragment {
             return MessageViewFragment().withArguments(
-                ARG_REFERENCE to reference.toIdentityString()
+                ARG_REFERENCE to reference.toIdentityString(),
+                ARG_SHOW_ACCOUNT_CHIP to showAccountChip
             )
         }
     }
