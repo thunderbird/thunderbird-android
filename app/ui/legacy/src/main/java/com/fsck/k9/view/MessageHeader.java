@@ -1,16 +1,12 @@
 package com.fsck.k9.view;
 
 
-import java.util.Arrays;
-
 import android.content.Context;
-import android.text.TextUtils;
-import android.text.format.DateUtils;
+import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,119 +17,64 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
-import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.messageview.OnCryptoClickListener;
-import timber.log.Timber;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.snackbar.Snackbar;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private static final int DEFAULT_SUBJECT_LINES = 3;
 
-    private final ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
+    private Chip accountChip;
+    private TextView subjectView;
+    private ImageView starView;
+    private ImageView contactPictureView;
+    private TextView fromView;
+    private ImageView cryptoStatusIcon;
 
-    private Context mContext;
-    private TextView mFromView;
-    private TextView mSenderView;
-    private TextView mDateView;
-    private TextView mToView;
-    private TextView mToLabel;
-    private TextView mCcView;
-    private TextView mCcLabel;
-    private TextView mBccView;
-    private TextView mBccLabel;
-    private TextView mSubjectView;
-    private ImageView mCryptoStatusIcon;
+    private MessageHelper messageHelper;
 
-    private View mChip;
-    private CheckBox mFlagged;
-    private int defaultSubjectColor;
-    private View singleMessageOptionIcon;
-    private View mAnsweredIcon;
-    private View mForwardedIcon;
-    private Message mMessage;
-    private Account mAccount;
-    private FontSizes mFontSizes = K9.getFontSizes();
-    private Contacts mContacts;
-
-    private MessageHelper mMessageHelper;
-    private ContactPictureLoader mContactsPictureLoader;
-    private ContactBadge mContactBadge;
-
-    private OnCryptoClickListener onCryptoClickListener;
     private OnMenuItemClickListener onMenuItemClickListener;
 
 
     public MessageHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
-        mContacts = Contacts.getInstance(mContext);
+
+        if (!isInEditMode()) {
+            messageHelper = MessageHelper.getInstance(getContext());
+        }
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mAnsweredIcon = findViewById(R.id.answered);
-        mForwardedIcon = findViewById(R.id.forwarded);
-        mFromView = findViewById(R.id.from);
-        mSenderView = findViewById(R.id.sender);
-        mToView = findViewById(R.id.to);
-        mToLabel = findViewById(R.id.to_label);
-        mCcView = findViewById(R.id.cc);
-        mCcLabel = findViewById(R.id.cc_label);
-        mBccView = findViewById(R.id.bcc);
-        mBccLabel = findViewById(R.id.bcc_label);
+        accountChip = findViewById(R.id.chip);
+        subjectView = findViewById(R.id.subject);
+        starView = findViewById(R.id.flagged);
+        contactPictureView = findViewById(R.id.contact_picture);
+        fromView = findViewById(R.id.from);
+        cryptoStatusIcon = findViewById(R.id.crypto_status_icon);
 
-        mContactBadge = findViewById(R.id.contact_badge);
+        subjectView.setOnClickListener(this);
+        subjectView.setOnLongClickListener(this);
 
-        singleMessageOptionIcon = findViewById(R.id.icon_single_message_options);
+        View menuPrimaryActionView = findViewById(R.id.menu_primary_action);
+        menuPrimaryActionView.setOnClickListener(this);
+        menuPrimaryActionView.setOnLongClickListener(this);
 
-        mSubjectView = findViewById(R.id.subject);
-        mChip = findViewById(R.id.chip);
-        mDateView = findViewById(R.id.date);
-        mFlagged = findViewById(R.id.flagged);
+        View menuOverflowView = findViewById(R.id.menu_overflow);
+        menuOverflowView.setOnClickListener(this);
+        menuOverflowView.setOnLongClickListener(this);
 
-        defaultSubjectColor = mSubjectView.getCurrentTextColor();
-        mFontSizes.setViewTextSize(mSubjectView, mFontSizes.getMessageViewSubject());
-        mFontSizes.setViewTextSize(mDateView, mFontSizes.getMessageViewDate());
-
-        mFontSizes.setViewTextSize(mFromView, mFontSizes.getMessageViewSender());
-        mFontSizes.setViewTextSize(mToView, mFontSizes.getMessageViewTo());
-        mFontSizes.setViewTextSize(mToLabel, mFontSizes.getMessageViewTo());
-        mFontSizes.setViewTextSize(mCcView, mFontSizes.getMessageViewCC());
-        mFontSizes.setViewTextSize(mCcLabel, mFontSizes.getMessageViewCC());
-        mFontSizes.setViewTextSize(mBccView, mFontSizes.getMessageViewBCC());
-        mFontSizes.setViewTextSize(mBccLabel, mFontSizes.getMessageViewBCC());
-
-        singleMessageOptionIcon.setOnClickListener(this);
-
-        mSubjectView.setOnClickListener(this);
-        mFromView.setOnClickListener(this);
-        mToView.setOnClickListener(this);
-        mCcView.setOnClickListener(this);
-        mBccView.setOnClickListener(this);
-
-        mSubjectView.setOnLongClickListener(this);
-        mFromView.setOnLongClickListener(this);
-        mToView.setOnLongClickListener(this);
-        mCcView.setOnLongClickListener(this);
-        mBccView.setOnLongClickListener(this);
-
-        mCryptoStatusIcon = findViewById(R.id.crypto_status_icon);
-        mCryptoStatusIcon.setOnClickListener(this);
-
-        mMessageHelper = MessageHelper.getInstance(mContext);
+        findViewById(R.id.participants_container).setOnClickListener(this);
     }
 
     @Override
@@ -141,17 +82,15 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         int id = view.getId();
         if (id == R.id.subject) {
             toggleSubjectViewMaxLines();
-        } else if (id == R.id.from) {
-            onAddSenderToContacts();
-        } else if (id == R.id.to || id == R.id.cc || id == R.id.bcc) {
-            expand((TextView)view, ((TextView)view).getEllipsize() != null);
-        } else if (id == R.id.crypto_status_icon) {
-            onCryptoClickListener.onCryptoClick();
-        } else if (id == R.id.icon_single_message_options) {
+        } else if (id == R.id.menu_primary_action) {
+            Snackbar.make(getRootView(), "TODO: Perform primary action", Snackbar.LENGTH_LONG).show();
+        } else if (id == R.id.menu_overflow) {
             PopupMenu popupMenu = new PopupMenu(getContext(), view);
             popupMenu.setOnMenuItemClickListener(onMenuItemClickListener);
             popupMenu.inflate(R.menu.single_message_options);
             popupMenu.show();
+        } else if (id == R.id.participants_container) {
+            Snackbar.make(getRootView(), "TODO: Display details popup", Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -160,149 +99,71 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         int id = view.getId();
 
         if (id == R.id.subject) {
-            onAddSubjectToClipboard(mSubjectView.getText().toString());
-        } else if (id == R.id.from) {
-            onAddAddressesToClipboard(mMessage.getFrom());
-        } else if (id == R.id.to) {
-            onAddRecipientsToClipboard(Message.RecipientType.TO);
-        } else if (id == R.id.cc) {
-            onAddRecipientsToClipboard(Message.RecipientType.CC);
+            onAddSubjectToClipboard(subjectView.getText().toString());
         }
 
         return true;
     }
 
     private void toggleSubjectViewMaxLines() {
-        if (mSubjectView.getMaxLines() == DEFAULT_SUBJECT_LINES) {
-            mSubjectView.setMaxLines(Integer.MAX_VALUE);
+        if (subjectView.getMaxLines() == DEFAULT_SUBJECT_LINES) {
+            subjectView.setMaxLines(Integer.MAX_VALUE);
         } else {
-            mSubjectView.setMaxLines(DEFAULT_SUBJECT_LINES);
+            subjectView.setMaxLines(DEFAULT_SUBJECT_LINES);
         }
     }
 
     private void onAddSubjectToClipboard(String subject) {
+        ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
         clipboardManager.setText("subject", subject);
 
-        Toast.makeText(mContext, createMessageForSubject(), Toast.LENGTH_LONG).show();
-    }
-
-    private void onAddSenderToContacts() {
-        if (mMessage != null) {
-            try {
-                final Address senderEmail = mMessage.getFrom()[0];
-                mContacts.createContact(senderEmail);
-            } catch (Exception e) {
-                Timber.e(e, "Couldn't create contact");
-            }
-        }
+        Toast.makeText(getContext(), createMessageForSubject(), Toast.LENGTH_LONG).show();
     }
 
     public String createMessageForSubject() {
-        return  mContext.getResources().getString(R.string.copy_subject_to_clipboard);
-    }
-
-    public String createMessage(int addressesCount) {
-        return mContext.getResources().getQuantityString(R.plurals.copy_address_to_clipboard, addressesCount);
-    }
-
-    private void onAddAddressesToClipboard(Address[] addresses) {
-        String addressList = Address.toString(addresses);
-        clipboardManager.setText("addresses", addressList);
-
-        Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();
-    }
-
-    private void onAddRecipientsToClipboard(Message.RecipientType recipientType) {
-        onAddAddressesToClipboard(mMessage.getRecipients(recipientType));
+        return getResources().getString(R.string.copy_subject_to_clipboard);
     }
 
     public void setOnFlagListener(OnClickListener listener) {
-        mFlagged.setOnClickListener(listener);
+        starView.setOnClickListener(listener);
     }
 
     public void populate(final Message message, final Account account, boolean showStar) {
+        accountChip.setText(account.getDisplayName());
+        accountChip.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));
+
         Address fromAddress = null;
         Address[] fromAddresses = message.getFrom();
         if (fromAddresses.length > 0) {
             fromAddress = fromAddresses[0];
         }
 
-        final Contacts contacts = K9.isShowContactName() ? mContacts : null;
-        final CharSequence from = mMessageHelper.getSenderDisplayName(fromAddress);
-        final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
-        final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
-        final CharSequence bcc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.BCC), contacts);
-
-        mMessage = message;
-        mAccount = account;
-
-        if (K9.isShowContactPicture()) {
-            mContactBadge.setVisibility(View.VISIBLE);
-            mContactsPictureLoader = ContactPicture.getContactPictureLoader();
-        }  else {
-            mContactBadge.setVisibility(View.GONE);
-        }
-
-        if (shouldShowSender(message)) {
-            mSenderView.setVisibility(VISIBLE);
-            String sender = getResources().getString(R.string.message_view_sender_label,
-                    MessageHelper.toFriendly(message.getSender(), contacts));
-            mSenderView.setText(sender);
+        if (fromAddress != null) {
+            ContactPictureLoader contactsPictureLoader = ContactPicture.getContactPictureLoader();
+            contactsPictureLoader.setContactPicture(contactPictureView, fromAddress);
         } else {
-            mSenderView.setVisibility(View.GONE);
+            contactPictureView.setImageResource(R.drawable.ic_contact_picture);
         }
 
-        String dateTime = DateUtils.formatDateTime(mContext,
-                message.getSentDate().getTime(),
-                DateUtils.FORMAT_SHOW_DATE
-                | DateUtils.FORMAT_ABBREV_ALL
-                | DateUtils.FORMAT_SHOW_TIME
-                | DateUtils.FORMAT_SHOW_YEAR);
-        mDateView.setText(dateTime);
-
-        if (K9.isShowContactPicture()) {
-            if (fromAddress != null) {
-                mContactBadge.setContact(fromAddress);
-                mContactsPictureLoader.setContactPicture(mContactBadge, fromAddress);
-            } else {
-                mContactBadge.setImageResource(R.drawable.ic_contact_picture);
-            }
-        }
-
-        mFromView.setText(from);
-
-        updateAddressField(mToView, to, mToLabel);
-        updateAddressField(mCcView, cc, mCcLabel);
-        updateAddressField(mBccView, bcc, mBccLabel);
-        mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
-        mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
+        CharSequence from = messageHelper.getSenderDisplayName(fromAddress);
+        fromView.setText(from);
 
         if (showStar) {
-            mFlagged.setVisibility(View.VISIBLE);
-            mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+            starView.setVisibility(View.VISIBLE);
+            starView.setSelected(message.isSet(Flag.FLAGGED));
         } else {
-            mFlagged.setVisibility(View.GONE);
+            starView.setVisibility(View.GONE);
         }
-
-        mChip.setBackgroundColor(mAccount.getChipColor());
 
         setVisibility(View.VISIBLE);
     }
 
     public void setSubject(@NonNull String subject) {
-        mSubjectView.setText(subject);
-        mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
-    }
-
-    public static boolean shouldShowSender(Message message) {
-        Address[] from = message.getFrom();
-        Address[] sender = message.getSender();
-
-        return sender != null && sender.length != 0 && !Arrays.equals(from, sender);
+        subjectView.setText(subject);
     }
 
     public void hideCryptoStatus() {
-        mCryptoStatusIcon.setVisibility(View.GONE);
+        cryptoStatusIcon.setVisibility(View.GONE);
     }
 
     public void setCryptoStatusLoading() {
@@ -319,35 +180,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
         int color = ThemeUtils.getStyledColor(getContext(), displayStatus.getColorAttr());
-        mCryptoStatusIcon.setEnabled(displayStatus.isEnabled());
-        mCryptoStatusIcon.setVisibility(View.VISIBLE);
-        mCryptoStatusIcon.setImageResource(displayStatus.getStatusIconRes());
-        mCryptoStatusIcon.setColorFilter(color);
-    }
-
-    private void updateAddressField(TextView v, CharSequence text, View label) {
-        boolean hasText = !TextUtils.isEmpty(text);
-
-        v.setText(text);
-        v.setVisibility(hasText ? View.VISIBLE : View.GONE);
-        label.setVisibility(hasText ? View.VISIBLE : View.GONE);
-    }
-
-    /**
-     * Expand or collapse a TextView by removing or adding the 2 lines limitation
-     */
-    private void expand(TextView v, boolean expand) {
-       if (expand) {
-           v.setMaxLines(Integer.MAX_VALUE);
-           v.setEllipsize(null);
-       } else {
-           v.setMaxLines(2);
-           v.setEllipsize(android.text.TextUtils.TruncateAt.END);
-       }
-    }
-
-    public void setOnCryptoClickListener(OnCryptoClickListener onCryptoClickListener) {
-        this.onCryptoClickListener = onCryptoClickListener;
+        cryptoStatusIcon.setEnabled(displayStatus.isEnabled());
+        cryptoStatusIcon.setVisibility(View.VISIBLE);
+        cryptoStatusIcon.setImageResource(displayStatus.getStatusIconRes());
+        cryptoStatusIcon.setColorFilter(color);
     }
 
     public void setOnMenuItemClickListener(OnMenuItemClickListener onMenuItemClickListener) {
