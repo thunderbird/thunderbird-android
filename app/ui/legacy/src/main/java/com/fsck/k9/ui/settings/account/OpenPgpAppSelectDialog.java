@@ -110,8 +110,8 @@ public class OpenPgpAppSelectDialog extends K9Activity {
             Context context = getActivity();
 
             OpenPgpProviderEntry noneEntry = new OpenPgpProviderEntry(null,
-                    context.getString(R.string.openpgp_list_preference_none),
-                    getResources().getDrawable(R.drawable.ic_action_cancel_launchersize_light));
+                    context.getString(org.openintents.openpgp.R.string.openpgp_list_preference_none),
+                    getResources().getDrawable(org.openintents.openpgp.R.drawable.ic_action_cancel_launchersize_light));
             openPgpProviderList.add(noneEntry);
 
             // search for OpenPGP providers...
@@ -144,8 +144,9 @@ public class OpenPgpAppSelectDialog extends K9Activity {
                     Drawable icon = resolveInfo.activityInfo.loadIcon(context.getPackageManager());
                     String marketName = String.valueOf(resolveInfo.activityInfo.applicationInfo
                             .loadLabel(context.getPackageManager()));
-                    String simpleName = String.format(context.getString(R.string
-                            .openpgp_install_openkeychain_via), marketName);
+                    String simpleName = String.format(
+                            context.getString(org.openintents.openpgp.R.string.openpgp_install_openkeychain_via),
+                            marketName);
                     openPgpProviderList.add(new OpenPgpProviderEntry(OPENKEYCHAIN_PACKAGE, simpleName,
                             icon, marketIntent));
                 }
