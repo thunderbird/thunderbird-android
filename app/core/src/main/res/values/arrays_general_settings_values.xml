@@ -210,9 +210,4 @@
         <item>spam</item>
     </string-array>
 
-    <string-array name="volume_navigation_values" translatable="false">
-        <item>message</item>
-        <item>list</item>
-    </string-array>
-
 </resources>

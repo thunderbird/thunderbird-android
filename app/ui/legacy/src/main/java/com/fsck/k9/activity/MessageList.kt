@@ -759,9 +759,6 @@ open class MessageList :
                 ) {
                     showPreviousMessage()
                     return true
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
-                    messageListFragment!!.onMoveUp()
-                    return true
                 }
             }
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
@@ -769,9 +766,6 @@ open class MessageList :
                     K9.isUseVolumeKeysForNavigation
                 ) {
                     showNextMessage()
-                    return true
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
-                    messageListFragment!!.onMoveDown()
                     return true
                 }
             }
@@ -910,7 +904,7 @@ open class MessageList :
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.isUseVolumeKeysForListNavigation) {
+        if (K9.isUseVolumeKeysForNavigation) {
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
                 Timber.v("Swallowed key up.")
                 return true

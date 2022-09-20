@@ -1123,14 +1123,6 @@ class MessageListFragment :
         super.onStop()
     }
 
-    fun onMoveUp() {
-        // FIXME
-    }
-
-    fun onMoveDown() {
-        // FIXME
-    }
-
     fun openMessage(messageReference: MessageReference) {
         fragmentListener.openMessage(messageReference)
     }
