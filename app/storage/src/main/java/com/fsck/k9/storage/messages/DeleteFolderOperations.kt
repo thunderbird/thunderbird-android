@@ -19,16 +19,16 @@ internal class DeleteFolderOperations(
     private fun SQLiteDatabase.deleteMessagePartFiles(folderServerId: String) {
         rawQuery(
             """
-            SELECT message_parts.id 
-            FROM folders 
-            JOIN messages ON (messages.folder_id = folders.id) 
-            JOIN message_parts ON (
-                message_parts.root = messages.message_part_id 
-                AND 
-                message_parts.data_location = $DATA_LOCATION_ON_DISK
-            ) 
-            WHERE folders.server_id = ?
-            """.trimIndent(),
+SELECT message_parts.id 
+FROM folders 
+JOIN messages ON (messages.folder_id = folders.id) 
+JOIN message_parts ON (
+  message_parts.root = messages.message_part_id 
+  AND 
+  message_parts.data_location = $DATA_LOCATION_ON_DISK
+) 
+WHERE folders.server_id = ?
+            """,
             arrayOf(folderServerId)
         ).use { cursor ->
             while (cursor.moveToNext()) {

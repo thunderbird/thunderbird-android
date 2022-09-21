@@ -20,11 +20,11 @@ internal class ThreadMessageOperations {
     fun getMessageThreadHeaders(database: SQLiteDatabase, messageId: Long): ThreadHeaders {
         return database.rawQuery(
             """
-            SELECT messages.message_id, message_parts.header 
-            FROM messages 
-            LEFT JOIN message_parts ON (messages.message_part_id = message_parts.id) 
-            WHERE messages.id = ?
-            """.trimIndent(),
+SELECT messages.message_id, message_parts.header 
+FROM messages 
+LEFT JOIN message_parts ON (messages.message_part_id = message_parts.id) 
+WHERE messages.id = ?
+            """,
             arrayOf(messageId.toString()),
         ).use { cursor ->
             if (!cursor.moveToFirst()) error("Message not found: $messageId")
@@ -157,14 +157,14 @@ internal class ThreadMessageOperations {
 
         return db.rawQuery(
             """
-            SELECT t.id, t.message_id, t.root, t.parent 
-            FROM messages m 
-            LEFT JOIN threads t ON (t.message_id = m.id) 
-            WHERE m.folder_id = ? AND m.message_id = ? 
-            ${if (onlyEmpty) "AND m.empty = 1 " else ""}
-            ORDER BY m.id 
-            LIMIT 1
-            """.trimIndent(),
+SELECT t.id, t.message_id, t.root, t.parent 
+FROM messages m 
+LEFT JOIN threads t ON (t.message_id = m.id) 
+WHERE m.folder_id = ? AND m.message_id = ? 
+${if (onlyEmpty) "AND m.empty = 1 " else ""}
+ORDER BY m.id 
+LIMIT 1
+            """,
             arrayOf(folderId.toString(), messageIdHeader)
         ).use { cursor ->
             if (cursor.moveToFirst()) {

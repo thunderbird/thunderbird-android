@@ -70,30 +70,30 @@ internal class CopyMessageOperations(
     private fun copyMessageParts(database: SQLiteDatabase, messageId: Long): Long {
         return database.rawQuery(
             """
-            SELECT                 
-                message_parts.id,
-                message_parts.type,
-                message_parts.root,
-                message_parts.parent,
-                message_parts.seq,
-                message_parts.mime_type,
-                message_parts.decoded_body_size,
-                message_parts.display_name,
-                message_parts.header,
-                message_parts.encoding,
-                message_parts.charset,
-                message_parts.data_location,
-                message_parts.data,
-                message_parts.preamble,
-                message_parts.epilogue,
-                message_parts.boundary,
-                message_parts.content_id,
-                message_parts.server_extra 
-            FROM messages 
-            JOIN message_parts ON (message_parts.root = messages.message_part_id) 
-            WHERE messages.id = ? 
-            ORDER BY message_parts.seq
-            """.trimIndent(),
+SELECT
+  message_parts.id,
+  message_parts.type,
+  message_parts.root,
+  message_parts.parent,
+  message_parts.seq,
+  message_parts.mime_type,
+  message_parts.decoded_body_size,
+  message_parts.display_name,
+  message_parts.header,
+  message_parts.encoding,
+  message_parts.charset,
+  message_parts.data_location,
+  message_parts.data,
+  message_parts.preamble,
+  message_parts.epilogue,
+  message_parts.boundary,
+  message_parts.content_id,
+  message_parts.server_extra 
+FROM messages 
+JOIN message_parts ON (message_parts.root = messages.message_part_id) 
+WHERE messages.id = ? 
+ORDER BY message_parts.seq
+            """,
             arrayOf(messageId.toString())
         ).use { cursor ->
             if (!cursor.moveToNext()) error("No message part found for message with ID $messageId")
@@ -201,10 +201,8 @@ internal class CopyMessageOperations(
 
     private fun copyFulltextEntry(database: SQLiteDatabase, newMessageId: Long, messageId: Long) {
         database.execSQL(
-            """
-            INSERT OR REPLACE INTO messages_fulltext (docid, fulltext)
-              SELECT ?, fulltext FROM messages_fulltext WHERE docid = ?
-            """.trimIndent(),
+            "INSERT OR REPLACE INTO messages_fulltext (docid, fulltext) " +
+                "SELECT ?, fulltext FROM messages_fulltext WHERE docid = ?",
             arrayOf(newMessageId.toString(), messageId.toString())
         )
     }

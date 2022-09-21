@@ -70,22 +70,22 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
 
             val query =
                 """
-                SELECT ${FOLDER_COLUMNS.joinToString()}, (
-                    SELECT COUNT(messages.id) 
-                    FROM messages 
-                    WHERE messages.folder_id = folders.id 
-                      AND messages.empty = 0 AND messages.deleted = 0 
-                      AND (messages.read = 0 OR folders.id = ?)
-                ), (
-                    SELECT COUNT(messages.id) 
-                    FROM messages 
-                    WHERE messages.folder_id = folders.id 
-                      AND messages.empty = 0 AND messages.deleted = 0 
-                      AND messages.flagged = 1
-                )
-                FROM folders
-                $displayModeSelection
-                """.trimIndent()
+SELECT ${FOLDER_COLUMNS.joinToString()}, (
+  SELECT COUNT(messages.id) 
+  FROM messages 
+  WHERE messages.folder_id = folders.id 
+    AND messages.empty = 0 AND messages.deleted = 0 
+    AND (messages.read = 0 OR folders.id = ?)
+), (
+  SELECT COUNT(messages.id) 
+  FROM messages 
+  WHERE messages.folder_id = folders.id 
+    AND messages.empty = 0 AND messages.deleted = 0 
+    AND messages.flagged = 1
+)
+FROM folders
+$displayModeSelection
+                """
 
             db.rawQuery(query, arrayOf(outboxFolderIdOrZero.toString())).use { cursor ->
                 val cursorFolderAccessor = CursorFolderAccessor(cursor)
