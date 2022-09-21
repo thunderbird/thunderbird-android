@@ -27,6 +27,8 @@ dependencies {
 }
 
 android {
+    namespace 'com.fsck.k9.ui.setup'
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 

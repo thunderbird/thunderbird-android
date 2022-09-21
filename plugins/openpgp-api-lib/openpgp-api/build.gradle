@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace 'org.openintents.openpgp'
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 

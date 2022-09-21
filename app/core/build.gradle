@@ -43,6 +43,8 @@ dependencies {
 }
 
 android {
+    namespace 'com.fsck.k9.core'
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
