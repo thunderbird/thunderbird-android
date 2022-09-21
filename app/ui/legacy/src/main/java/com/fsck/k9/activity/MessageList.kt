@@ -1198,9 +1198,15 @@ open class MessageList :
     }
 
     private fun showLogicalNextMessage(): Boolean {
-        return when (lastDirection) {
+        val couldMoveInLastDirection = when (lastDirection) {
             Direction.NEXT -> showNextMessage()
             Direction.PREVIOUS -> showPreviousMessage()
+        }
+
+        return if (couldMoveInLastDirection) {
+            true
+        } else {
+            showNextMessage() || showPreviousMessage()
         }
     }
 
