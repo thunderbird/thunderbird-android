@@ -139,10 +139,15 @@ class MessageListAdapter internal constructor(
             if (field == value) return
 
             val hadFooterText = field != null
+            val previousFooterPosition = footerPosition
             field = value
 
             if (hadFooterText) {
-                notifyItemChanged(footerPosition)
+                if (value == null) {
+                    notifyItemRemoved(previousFooterPosition)
+                } else {
+                    notifyItemChanged(footerPosition)
+                }
             } else {
                 notifyItemInserted(footerPosition)
             }
