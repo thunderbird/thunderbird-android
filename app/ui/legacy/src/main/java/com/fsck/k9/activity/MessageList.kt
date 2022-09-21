@@ -588,7 +588,7 @@ open class MessageList :
 
         messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
-        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED)
+        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED, true)
         initialSearchViewQuery = savedInstanceState.getString(STATE_SEARCH_VIEW_QUERY)
     }
 
@@ -970,8 +970,8 @@ open class MessageList :
             }
         })
 
-        searchView.isIconified = initialSearchViewIconified
         searchView.setQuery(initialSearchViewQuery, false)
+        searchView.isIconified = initialSearchViewIconified
 
         this.searchView = searchView
     }
