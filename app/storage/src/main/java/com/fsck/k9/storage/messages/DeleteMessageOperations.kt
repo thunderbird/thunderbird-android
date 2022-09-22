@@ -38,12 +38,12 @@ internal class DeleteMessageOperations(
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
                 """
-                SELECT messages.id, messages.message_part_id, COUNT(threads2.id) 
-                FROM messages 
-                LEFT JOIN threads threads1 ON (threads1.message_id = messages.id)  
-                LEFT JOIN threads threads2 ON (threads2.parent = threads1.id) 
-                WHERE folder_id = ? AND uid = ?
-                """.trimIndent(),
+SELECT messages.id, messages.message_part_id, COUNT(threads2.id) 
+FROM messages 
+LEFT JOIN threads threads1 ON (threads1.message_id = messages.id)  
+LEFT JOIN threads threads2 ON (threads2.parent = threads1.id) 
+WHERE folder_id = ? AND uid = ?
+                """,
                 arrayOf(folderId.toString(), messageServerId)
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
@@ -128,12 +128,12 @@ internal class DeleteMessageOperations(
     private fun SQLiteDatabase.getEmptyThreadParent(messageId: Long): Long? {
         return rawQuery(
             """
-            SELECT messages.id 
-            FROM threads threads1 
-            JOIN threads threads2 ON (threads1.parent = threads2.id) 
-            JOIN messages ON (threads2.message_id = messages.id AND messages.empty = 1) 
-            WHERE threads1.message_id = ?
-            """.trimIndent(),
+SELECT messages.id 
+FROM threads threads1 
+JOIN threads threads2 ON (threads1.parent = threads2.id) 
+JOIN messages ON (threads2.message_id = messages.id AND messages.empty = 1) 
+WHERE threads1.message_id = ?
+            """,
             arrayOf(messageId.toString())
         ).use { cursor ->
             if (cursor.moveToFirst() && !cursor.isNull(0)) {
@@ -151,11 +151,11 @@ internal class DeleteMessageOperations(
     private fun SQLiteDatabase.hasThreadChildren(messageId: Long): Boolean {
         return rawQuery(
             """
-            SELECT COUNT(threads2.id) 
-            FROM threads threads1 
-            JOIN threads threads2 ON (threads2.parent = threads1.id) 
-            WHERE threads1.message_id = ?
-            """.trimIndent(),
+SELECT COUNT(threads2.id) 
+FROM threads threads1 
+JOIN threads threads2 ON (threads2.parent = threads1.id) 
+WHERE threads1.message_id = ?
+            """,
             arrayOf(messageId.toString())
         ).use { cursor ->
             cursor.moveToFirst() && !cursor.isNull(0) && cursor.getLong(0) > 0L
