@@ -58,6 +58,11 @@ class NotifierMessageStore(
         notifyChange()
     }
 
+    override fun setMoreMessages(folderId: Long, moreMessages: MoreMessages) {
+        messageStore.setMoreMessages(folderId, moreMessages)
+        notifyChange()
+    }
+
     private fun notifyChange() {
         localStore.notifyChange()
     }
