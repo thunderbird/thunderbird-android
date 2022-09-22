@@ -16,18 +16,18 @@ buildscript {
                 'kotlin': '1.7.10',
                 'kotlinCoroutines': '1.6.4',
                 'jetbrainsAnnotations': '23.0.0',
-                'androidxAppCompat': '1.5.0',
+                'androidxAppCompat': '1.5.1',
                 'androidxActivity': '1.5.1',
                 'androidxRecyclerView': '1.2.1',
                 'androidxLifecycle': '2.5.1',
                 'androidxAnnotation': '1.4.0',
                 'androidxBiometric': '1.1.0',
-                'androidxNavigation': '2.5.1',
+                'androidxNavigation': '2.5.2',
                 'androidxConstraintLayout': '2.1.4',
                 'androidxWorkManager': '2.7.1',
                 'androidxFragment': '1.5.2',
                 'androidxLocalBroadcastManager': '1.1.0',
-                'androidxCore': '1.8.0',
+                'androidxCore': '1.9.0',
                 'androidxCardView': '1.0.0',
                 'androidxPreference': '1.2.0',
                 'androidxTestCore': '1.4.0',
@@ -35,9 +35,9 @@ buildscript {
                 'fastAdapter': '5.6.0',
                 'preferencesFix': '1.1.0',
                 'okio': '3.2.0',
-                'moshi': '1.13.0',
+                'moshi': '1.14.0',
                 'timber': '5.0.1',
-                'koin': '3.2.0',
+                'koin': '3.2.1',
                 // We can't upgrade Commons IO beyond this version because starting with 2.7 it is using Java 8 API
                 // that is not available until Android API 26 (even with desugaring enabled).
                 // See https://issuetracker.google.com/issues/160484830
@@ -52,10 +52,10 @@ buildscript {
                 'androidxTestRunner': '1.4.0',
                 'junit': '4.13.2',
                 'robolectric': '4.8.2',
-                'mockito': '4.7.0',
+                'mockito': '4.8.0',
                 'mockitoKotlin': '4.0.0',
                 'truth': '1.1.3',
-                'turbine': '0.9.0',
+                'turbine': '0.10.0',
 
                 'ktlint': '0.44.0'
         ]
