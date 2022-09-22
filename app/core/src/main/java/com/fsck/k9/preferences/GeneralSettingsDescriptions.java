@@ -184,9 +184,6 @@ public class GeneralSettingsDescriptions {
                 new V(16, new LegacyThemeSetting(AppTheme.LIGHT)),
                 new V(24, new SubThemeSetting(SubTheme.USE_GLOBAL))
         ));
-        s.put("useVolumeKeysForListNavigation", Settings.versions(
-                new V(1, new BooleanSetting(false))
-        ));
         s.put("useVolumeKeysForNavigation", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));

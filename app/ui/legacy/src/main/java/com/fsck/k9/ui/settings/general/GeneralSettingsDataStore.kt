@@ -41,6 +41,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.isHideTimeZone
             "debug_logging" -> K9.isDebugLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
+            "volume_navigation" -> K9.isUseVolumeKeysForNavigation
             else -> defValue
         }
     }
@@ -70,6 +71,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.isHideTimeZone = value
             "debug_logging" -> K9.isDebugLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
+            "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
             else -> return
         }
 
@@ -189,12 +191,6 @@ class GeneralSettingsDataStore(
                     if (K9.isMessageViewSpamActionVisible) add("spam")
                 }
             }
-            "volume_navigation" -> {
-                mutableSetOf<String>().apply {
-                    if (K9.isUseVolumeKeysForNavigation) add("message")
-                    if (K9.isUseVolumeKeysForListNavigation) add("list")
-                }
-            }
             else -> defValues
         }
     }
@@ -216,10 +212,6 @@ class GeneralSettingsDataStore(
                 K9.isMessageViewMoveActionVisible = "move" in checkedValues
                 K9.isMessageViewCopyActionVisible = "copy" in checkedValues
                 K9.isMessageViewSpamActionVisible = "spam" in checkedValues
-            }
-            "volume_navigation" -> {
-                K9.isUseVolumeKeysForNavigation = "message" in checkedValues
-                K9.isUseVolumeKeysForListNavigation = "list" in checkedValues
             }
             else -> return
         }

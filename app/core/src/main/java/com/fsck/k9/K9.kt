@@ -189,9 +189,6 @@ object K9 : EarlyInit {
     var isUseVolumeKeysForNavigation = false
 
     @JvmStatic
-    var isUseVolumeKeysForListNavigation = false
-
-    @JvmStatic
     var isShowUnifiedInbox = true
 
     @JvmStatic
@@ -298,7 +295,6 @@ object K9 : EarlyInit {
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
-        isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", true)
         isShowStarredCount = storage.getBoolean("showStarredCount", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
@@ -370,7 +366,6 @@ object K9 : EarlyInit {
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("animations", isShowAnimations)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
-        editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)
         editor.putBoolean("autofitWidth", isAutoFitWidth)
         editor.putBoolean("quietTimeEnabled", isQuietTimeEnabled)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)

@@ -157,9 +157,4 @@
         <item>@string/spam_action</item>
     </string-array>
 
-    <string-array name="volume_navigation_entries">
-        <item>@string/volume_navigation_message</item>
-        <item>@string/volume_navigation_list</item>
-    </string-array>
-
 </resources>
