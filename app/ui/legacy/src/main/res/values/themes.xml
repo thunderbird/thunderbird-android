@@ -200,7 +200,7 @@
         <item name="messageListSelectedBackgroundColor">#ff347489</item>
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
-        <item name="messageListUnreadItemBackgroundColor">#ff505050</item>
+        <item name="messageListUnreadItemBackgroundColor">#ff303030</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_dark</item>
         <item name="messageListActiveItemBackgroundColor">#ff33b5e5</item>
