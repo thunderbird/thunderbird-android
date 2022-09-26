@@ -683,9 +683,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_push_limit_1000">1000 dosje</string>
   <string name="animations_title">Animacion</string>
   <string name="animations_summary">Përdor efekteve pamore Gaudy</string>
-  <string name="volume_navigation_title">Lëvizje me buton volumi</string>
-  <string name="volume_navigation_message">Në skenë mesazhi</string>
-  <string name="volume_navigation_list">Në skenë liste</string>
   <string name="show_unified_inbox_title">Shfaq Kuti Poste të Njësuar</string>
   <string name="show_starred_count_title">Shfaq llogari me yll</string>
   <string name="integrated_inbox_title">Kuti Poste e Njësuar</string>

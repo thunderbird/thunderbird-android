@@ -642,9 +642,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_push_limit_1000">Maksimume 1000 mesaĝujoj</string>
   <string name="animations_title">Movbildoj</string>
   <string name="animations_summary">Uzas afablajn vidajn efektojn</string>
-  <string name="volume_navigation_title">Navigado per sonfortecaj butonoj</string>
-  <string name="volume_navigation_message">En vido de mesaĝoj</string>
-  <string name="volume_navigation_list">En vidoj de listoj</string>
   <string name="show_unified_inbox_title">Montri unuigitan ricevujon</string>
   <string name="show_starred_count_title">Montri nombron da steletoj</string>
   <string name="integrated_inbox_title">Unuigita ricevujo</string>

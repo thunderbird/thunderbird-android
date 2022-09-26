@@ -651,9 +651,6 @@
   <string name="account_setup_push_limit_1000">1000 ഫോൾഡറുകൾ</string>
   <string name="animations_title">ആനിമേഷൻ</string>
   <string name="animations_summary">ഭംഗിയുള്ള വിഷ്വൽ ഇഫക്റ്റുകൾ ഉപയോഗിക്കുക</string>
-  <string name="volume_navigation_title">ശബ്ദ കീ നാവിഗേഷൻ</string>
-  <string name="volume_navigation_message">സന്ദേശ കാഴ്‌ചകളിൽ</string>
-  <string name="volume_navigation_list">ലിസ്റ്റ് കാഴ്‌ചകളിൽ</string>
   <string name="show_unified_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ് കാണിക്കുക</string>
   <string name="integrated_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
   <string name="integrated_inbox_detail">ഏകീകൃത ഫോൾഡറുകളിലെ എല്ലാ സന്ദേശങ്ങളും</string>

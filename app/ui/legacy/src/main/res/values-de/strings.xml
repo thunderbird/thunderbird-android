@@ -682,9 +682,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_push_limit_1000">1000 Ordner</string>
   <string name="animations_title">Animationen</string>
   <string name="animations_summary">Aufwendige visuelle Effekte benutzen</string>
-  <string name="volume_navigation_title">Lauter/Leiser-Navigation</string>
-  <string name="volume_navigation_message">Nachrichtenansicht</string>
-  <string name="volume_navigation_list">Diverse Listenansichten</string>
+  <string name="volume_navigation_title">Navigation per Lautstärketasten in der Nachrichtenansicht</string>
   <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
   <string name="show_starred_count_title">Anzahl der Sterne anzeigen</string>
   <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>

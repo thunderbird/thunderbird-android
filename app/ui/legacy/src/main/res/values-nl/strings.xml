@@ -677,9 +677,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_push_limit_1000">1000 mappen</string>
   <string name="animations_title">Animatie</string>
   <string name="animations_summary">Gebruik opzichtige visuele effecten</string>
-  <string name="volume_navigation_title">Volume op/neer navigatie</string>
-  <string name="volume_navigation_message">Berichtbeeld</string>
-  <string name="volume_navigation_list">Variabele lijstweergave</string>
+  <string name="volume_navigation_title">Volumetoetsnavigatie in berichtbeeld</string>
   <string name="show_unified_inbox_title">Gecombineerde postvak-in weergeven</string>
   <string name="show_starred_count_title">Het aantal berichten met een ster weergeven</string>
   <string name="integrated_inbox_title">Gecombineerde postvak-in</string>

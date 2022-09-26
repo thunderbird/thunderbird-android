@@ -682,9 +682,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_push_limit_1000">1000 carpetas</string>
   <string name="animations_title">Animaciones</string>
   <string name="animations_summary">Utilizar animaciones</string>
-  <string name="volume_navigation_title">Navegación con teclas de volumen</string>
-  <string name="volume_navigation_message">Vista de mensaje</string>
-  <string name="volume_navigation_list">Listas de mensajes</string>
+  <string name="volume_navigation_title">Navegar con las teclas de volumen al leer el correo</string>
   <string name="show_unified_inbox_title">Mostrar bandeja de entrada unificada</string>
   <string name="show_starred_count_title">Mostrar número de mensajes destacados</string>
   <string name="integrated_inbox_title">Entrada unificada</string>

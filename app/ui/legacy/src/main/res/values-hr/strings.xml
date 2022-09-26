@@ -588,9 +588,6 @@
   <string name="account_setup_push_limit_1000">1000 mapa</string>
   <string name="animations_title">Animacija</string>
   <string name="animations_summary">Koristi šarolike vizualne efekte</string>
-  <string name="volume_navigation_title">Navigacija tipkama glasnoće</string>
-  <string name="volume_navigation_message">U pregledu poruka</string>
-  <string name="volume_navigation_list">U pregledu popisa</string>
   <string name="integrated_inbox_title">Objedinjena Dolazna Pošta</string>
   <string name="integrated_inbox_detail">Sve poruke u objedinjenim mapama</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Objedini</string>

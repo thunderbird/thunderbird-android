@@ -681,9 +681,6 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="account_setup_push_limit_1000">1000 aplankų</string>
   <string name="animations_title">Animacija</string>
   <string name="animations_summary">Naudoti įmantrius vizualinius efektus</string>
-  <string name="volume_navigation_title">Navigacija garso klavišais</string>
-  <string name="volume_navigation_message">Pranešimų rodinyje</string>
-  <string name="volume_navigation_list">Sąrašo rodiniuose</string>
   <string name="show_unified_inbox_title">Rodyti suvestinius gautuosius</string>
   <string name="show_starred_count_title">Rodyti žvaigždučių skaičių</string>
   <string name="integrated_inbox_title">Suvestiniai gautieji</string>

@@ -681,9 +681,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_push_limit_1000">1000 karpeta</string>
   <string name="animations_title">Animazioak</string>
   <string name="animations_summary">Erabili bistaratze efektu nabarmenak</string>
-  <string name="volume_navigation_title">Bolumen teklekin nabigatu</string>
-  <string name="volume_navigation_message">Mezu barruko ikuspegiak</string>
-  <string name="volume_navigation_list">Zerrenda barruko ikuspegiak</string>
   <string name="show_unified_inbox_title">Erakutsi Sarrera Ontzi Bateratua</string>
   <string name="show_starred_count_title">Erakutsi kontu izardunak</string>
   <string name="integrated_inbox_title">Sarrerako ontzi bateratua</string>

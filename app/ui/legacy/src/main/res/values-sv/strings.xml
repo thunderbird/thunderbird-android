@@ -682,9 +682,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_push_limit_1000">1000 mappar</string>
   <string name="animations_title">Animering</string>
   <string name="animations_summary">Använd snygga visuella effekter</string>
-  <string name="volume_navigation_title">Navigering med volymknapp</string>
-  <string name="volume_navigation_message">I meddelandelistor</string>
-  <string name="volume_navigation_list">I listvyer</string>
+  <string name="volume_navigation_title">Volymknappnavigering i meddelandevyn</string>
   <string name="show_unified_inbox_title">Visa samlad inkorg</string>
   <string name="show_starred_count_title">Visa antalet stjärnmarkerade</string>
   <string name="integrated_inbox_title">Samlad inkorg</string>

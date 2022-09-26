@@ -682,9 +682,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_push_limit_1000">1000 carpetes</string>
   <string name="animations_title">Animació</string>
   <string name="animations_summary">Utilitza efectes visuals cridaners</string>
-  <string name="volume_navigation_title">Navegació amb botons de volum</string>
-  <string name="volume_navigation_message">Vista del missatge</string>
-  <string name="volume_navigation_list">A la vista de llistes</string>
   <string name="show_unified_inbox_title">Mostra la safata d\'entrada unificada</string>
   <string name="show_starred_count_title">Mostra el recompte de destacats.</string>
   <string name="integrated_inbox_title">Bústia unificada</string>
