@@ -55,7 +55,7 @@ class MessageListAdapter internal constructor(
     private val previewTextColor: Int = theme.resolveColorAttribute(R.attr.messageListPreviewTextColor)
     private val activeItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListActiveItemBackgroundColor)
     private val selectedItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListSelectedBackgroundColor)
-    private val regularItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)
+    private val regularItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListRegularItemBackgroundColor)
     private val readItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListReadItemBackgroundColor)
     private val unreadItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)
 
