@@ -617,9 +617,6 @@
   <string name="account_setup_push_limit_1000">1,000 pasgan</string>
   <string name="animations_title">Beòthachadh</string>
   <string name="animations_summary">Cleachd èifeachdan lèirsinneach leòmach</string>
-  <string name="volume_navigation_title">Seòladaireachd le putanan àirde na fuaime</string>
-  <string name="volume_navigation_message">Ann an seallaidhean theachdaireachdan</string>
-  <string name="volume_navigation_list">Ann an seallaidhean liostaichean</string>
   <string name="show_unified_inbox_title">Seall an t-oll-bhogsa</string>
   <string name="integrated_inbox_title">An t-oll-bhogsa</string>
   <string name="integrated_inbox_detail">Na h-uile teachdaireachd ann am pasganan co-aonaichte</string>

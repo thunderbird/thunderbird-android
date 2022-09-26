@@ -654,9 +654,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_push_limit_1000">1000 mapper</string>
   <string name="animations_title">Animation</string>
   <string name="animations_summary">Anvend visuelle effekter</string>
-  <string name="volume_navigation_title">Volume-knap navigation</string>
-  <string name="volume_navigation_message">Mail-visning</string>
-  <string name="volume_navigation_list">Diverse listevisninger</string>
   <string name="show_unified_inbox_title">Vis Fælles Indbakke</string>
   <string name="integrated_inbox_title">Fælles indbakke</string>
   <string name="integrated_inbox_detail">Alle mails i fælles mapper</string>

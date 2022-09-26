@@ -680,9 +680,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_push_limit_1000">1000 mappa</string>
   <string name="animations_title">Animációk</string>
   <string name="animations_summary">Rikító látható hatások használata</string>
-  <string name="volume_navigation_title">Hangerő gomb navigáció</string>
-  <string name="volume_navigation_message">Üzenetnézetekben</string>
-  <string name="volume_navigation_list">Listanézetekben</string>
   <string name="show_unified_inbox_title">Egységes beérkezett üzenetek megjelenítése</string>
   <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
   <string name="integrated_inbox_title">Egységes beérkezett üzenetek</string>

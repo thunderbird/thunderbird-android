@@ -648,9 +648,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_push_limit_1000">1000 carpetas</string>
   <string name="animations_title">Animacións</string>
   <string name="animations_summary">Usar animacións</string>
-  <string name="volume_navigation_title">Navegación con teclas de volume</string>
-  <string name="volume_navigation_message">Vista de mensaxe</string>
-  <string name="volume_navigation_list">Listas de mensaxes</string>
   <string name="show_unified_inbox_title">Amosar a caixa de entrada unificada</string>
   <string name="show_starred_count_title">Amosar o reconto das estrelas</string>
   <string name="integrated_inbox_title">Entrada unificada</string>

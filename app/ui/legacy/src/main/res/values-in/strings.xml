@@ -623,9 +623,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_push_limit_1000">1000 folder</string>
   <string name="animations_title">Animasi</string>
   <string name="animations_summary">Gunakan efek visual mencolok</string>
-  <string name="volume_navigation_title">Navigasi tombol volume</string>
-  <string name="volume_navigation_message">Dalam tampilan pesan</string>
-  <string name="volume_navigation_list">Dalam tampilan daftar</string>
   <string name="show_unified_inbox_title">Tampilkan Kotak Masuk Terpadu</string>
   <string name="integrated_inbox_title">Inbox terpadu</string>
   <string name="integrated_inbox_detail">Semua pesan dalam folder terpadu</string>

@@ -680,9 +680,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_push_limit_1000">1000 个文件夹</string>
   <string name="animations_title">动画</string>
   <string name="animations_summary">使用绚丽的视觉特效</string>
-  <string name="volume_navigation_title">音量键导航</string>
-  <string name="volume_navigation_message">信息视图</string>
-  <string name="volume_navigation_list">不同的列表视图</string>
+  <string name="volume_navigation_title">消息视图中音量键导航</string>
   <string name="show_unified_inbox_title">显示全局收件箱</string>
   <string name="show_starred_count_title">显示星标邮件数</string>
   <string name="integrated_inbox_title">全局收件箱</string>

@@ -9,15 +9,17 @@
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Dog Walkers</string>
   <string name="source_code">Codul sursă</string>
-  <string name="app_license">Licență Apache, Versiune 2.0</string>
+  <string name="app_license">Licență Apache, Versiunea 2.0</string>
   <string name="about_project_title">Proiect Open Source</string>
   <string name="about_website_title">Website</string>
+  <string name="user_manual_title">Manualul utilizatorului</string>
+  <string name="get_help_title">Obțineți ajutor</string>
   <string name="user_forum_title">Forum utilizatori</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Biblioteci</string>
   <string name="license">Licență</string>
-  <string name="changelog_title">Jurnal de schimbări</string>
+  <string name="changelog_title">Jurnal de modificări</string>
   <string name="changelog_loading_error">Nu s-a putut încărca jurnalul de modificări.</string>
   <string name="changelog_version_title">Versiune %s</string>
   <string name="changelog_recent_changes_title">Ce este nou</string>
@@ -115,6 +117,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="flag_action">Adaugă steluță</string>
   <string name="unflag_action">Șterge steluță</string>
   <string name="copy_action">Copiază</string>
+  <string name="unsubscribe_action">Dezabonare</string>
   <string name="show_headers_action">Arată antete</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa a fost copiată în clipboard</item>
@@ -168,7 +171,9 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="notification_authentication_error_title">Autentificarea a eșuat</string>
   <string name="notification_authentication_error_text">Authentificare eșuată pentru <xliff:g id="account">%s</xliff:g>. Actualizează setările serverului.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Eroare de notificare</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">S-a produs o eroare în timpul încercării de a crea o notificare de sistem pentru un mesaj nou. Motivul este cel mai probabil lipsa unui sunet de notificare.\n\nApăsați pentru a deschide setările de notificare.</string>
   <string name="notification_bg_sync_ticker">Se verifică emailul: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Se verifică emailul</string>
   <string name="notification_bg_send_ticker">Se trimite emailul: <xliff:g id="account">%s</xliff:g></string>
@@ -280,8 +285,11 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="account_setup_basics_title">Configurarează un cont nou</string>
   <string name="account_setup_basics_email_hint">Adresa e-mail</string>
   <string name="account_setup_basics_password_hint">Parolă</string>
+  <string name="account_setup_oauth_description">Pentru a utiliza acest cont de e-mail cu K-9 Mail, trebuie să vă conectați și să acordați aplicației acces la e-mailurile dumneavoastră.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Conectați-vă</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Conectați-vă cu Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Pentru a vă vedea parola aici, activați blocarea ecranului pe acest dispozitiv.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifică-ți identitatea</string>
@@ -305,6 +313,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="account_setup_auth_type_insecure_password">Parolă, transmisă nesecurizat</string>
   <string name="account_setup_auth_type_encrypted_password">Parolă criptată</string>
   <string name="account_setup_auth_type_tls_client_certificate">Certificat client</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Setări server de primire</string>
   <string name="account_setup_incoming_username_label">Utilizator</string>
   <string name="account_setup_incoming_password_label">Parolă</string>
@@ -323,6 +332,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="account_setup_incoming_delete_policy_never_label">Nu şterge de pe server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Şterge de pe server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marchează ca citit pe server</string>
+  <string name="account_setup_incoming_use_compression">Utilizați compresia</string>
   <string name="account_setup_expunge_policy_label">Elimină mesajele şterse de pe server</string>
   <string name="account_setup_expunge_policy_immediately">Imediat</string>
   <string name="account_setup_expunge_policy_on_poll">Când interoghează</string>
@@ -389,6 +399,10 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
 Uneori acest lucru se întâmplă din cauza unei erori de configurare pe sever.
 Uneori datorită faptului că cineva încearcă să te atace pe tine sau serverul tău de mail. Dacă nu ești sigur ce se întâmplă, apasă Respinge și contactează-i pe cei care iți administrează serverul de mail.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Nu se poate conecta cu serverul.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizație anulată</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizarea a eșuat cu următoarea eroare: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 nu este acceptat în prezent cu acest furnizor.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Aplicația nu a putut găsi un browser pe care să îl folosească pentru a vă acorda acces la cont.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Modifică detalii</string>
   <string name="account_setup_failed_dlg_continue_action">Continuă</string>
   <string name="account_settings_push_advanced_title">Avansat</string>
@@ -672,9 +686,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_setup_push_limit_1000">1000 de dosare</string>
   <string name="animations_title">Animații</string>
   <string name="animations_summary">Folosește efecte vizuale gaudi</string>
-  <string name="volume_navigation_title">Navigare prin butonu de volum</string>
-  <string name="volume_navigation_message">Vizualizări în mesaj</string>
-  <string name="volume_navigation_list">Vizualizări în listă</string>
+  <string name="volume_navigation_title">Navigarea prin butoanele de volum in afișarea tip mesaj</string>
   <string name="show_unified_inbox_title">Afișați Cutia poștală de intrare unificată</string>
   <string name="show_starred_count_title">Afișați numărul de stele</string>
   <string name="integrated_inbox_title">Căsuță poștală unificată</string>
@@ -770,13 +782,16 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Te rog introduce parolele</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Vă rugăm să vă înregistrați</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Vă rugăm să vă conectați și să introduceți parolele</string>
   <string name="settings_import_failure">Importarea setărilor a eșuat</string>
   <string name="settings_import_read_failure">Citirea fișierului cu setări a eșuat</string>
   <string name="settings_import_partial_failure">Importarea unor setări a eșuat</string>
   <string name="settings_import_status_success">Importat cu succes</string>
   <string name="settings_import_status_password_required">Parola necesară</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Înregistrare necesară</string>
   <string name="settings_import_status_not_imported">Nu a fost importat</string>
   <string name="settings_import_status_error">Eșuare la import</string>
   <string name="settings_import_later_button">Mai târziu</string>
@@ -1001,7 +1016,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="toast_account_not_found">Eroare internă: Cont invalid!</string>
   <string name="toast_openpgp_provider_error">Eroare la conectarea la %s!</string>
   <string name="ac_transfer_setting_title">Trimite Mesaj Setare Autocriptare</string>
-  <string name="ac_transfer_setting_summary">Împarte în siguranță  setarea punct-la-punct cu alte dispozitive</string>
+  <string name="ac_transfer_setting_summary">Distribuie în siguranță setarea punct-la-punct cu alte dispozitive</string>
   <string name="ac_transfer_title">Mesaj Setare Autocriptare</string>
   <string name="ac_transfer_intro">Un Mesaj Setare Autocriptare împarte în siguranță setările tale punct-la-punct cu alte dispozitive.</string>
   <string name="ac_transfer_button_send">Trimite Mesaj Setare</string>

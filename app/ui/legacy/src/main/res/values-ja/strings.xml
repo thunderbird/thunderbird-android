@@ -680,9 +680,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_push_limit_1000">1000 フォルダ</string>
   <string name="animations_title">アニメーション</string>
   <string name="animations_summary">派手な視覚効果を使用する</string>
-  <string name="volume_navigation_title">ボリュームキー操作</string>
-  <string name="volume_navigation_message">メッセージ表示</string>
-  <string name="volume_navigation_list">一覧表示</string>
+  <string name="volume_navigation_title">メッセージビューでの音量キー操作</string>
   <string name="show_unified_inbox_title">統合フォルダを表示</string>
   <string name="show_starred_count_title">フラグの数を表示する</string>
   <string name="integrated_inbox_title">統合フォルダ</string>

@@ -627,9 +627,6 @@
   <string name="account_setup_push_limit_1000">1000 фасцикли</string>
   <string name="animations_title">Анимација</string>
   <string name="animations_summary">Користи гиздаве визуелне ефекте</string>
-  <string name="volume_navigation_title">Навигација тастерима за јачину звука</string>
-  <string name="volume_navigation_message">у приказу порука</string>
-  <string name="volume_navigation_list">у приказу спискова</string>
   <string name="show_unified_inbox_title">Прикажи обједињено сандуче</string>
   <string name="integrated_inbox_title">Обједињено сандуче</string>
   <string name="integrated_inbox_detail">Све поруке у једном сандучету</string>

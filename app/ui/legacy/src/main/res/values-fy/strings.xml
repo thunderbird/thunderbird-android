@@ -677,9 +677,7 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="account_setup_push_limit_1000">1000 mappen</string>
   <string name="animations_title">Animaasje</string>
   <string name="animations_summary">Opsichtige fisuele effekten brûke</string>
-  <string name="volume_navigation_title">Folumetoetsnavigaasje</string>
-  <string name="volume_navigation_message">Berjochtbyld</string>
-  <string name="volume_navigation_list">Fariabele listwerjefte</string>
+  <string name="volume_navigation_title">Folumetoetsnavigaasje yn berjochtbyld</string>
   <string name="show_unified_inbox_title">Kombinearre Postfek Yn werjaan</string>
   <string name="show_starred_count_title">It oantal berjochten mei in stjer werjaan</string>
   <string name="integrated_inbox_title">Kombinearre Postfek Yn</string>

@@ -625,9 +625,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_push_limit_1000">1000 папки</string>
   <string name="animations_title">Анимация</string>
   <string name="animations_summary">Изплозване на ярки виулани ефекти</string>
-  <string name="volume_navigation_title">Навигация с клавиш за звука</string>
-  <string name="volume_navigation_message">В преглед на съобщението</string>
-  <string name="volume_navigation_list">В списъка със съобщения</string>
   <string name="show_unified_inbox_title">Покажи унифицирана папка Входящи</string>
   <string name="integrated_inbox_title">Обща входяща кутия</string>
   <string name="integrated_inbox_detail">Всички съобщения в общата входяща кутия</string>
