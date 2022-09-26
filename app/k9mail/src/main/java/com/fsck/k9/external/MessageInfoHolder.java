@@ -1,5 +1,6 @@
 package com.fsck.k9.external;
 
+
 import java.util.Date;
 
 import android.content.Context;
@@ -7,13 +8,13 @@ import android.text.SpannableStringBuilder;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.ui.R;
 
 class MessageInfoHolder {
     public Date compareDate;

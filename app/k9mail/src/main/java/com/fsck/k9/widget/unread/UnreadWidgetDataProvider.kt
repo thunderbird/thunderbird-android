@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.R
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.FolderRepository
@@ -13,6 +12,7 @@ import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import timber.log.Timber
+import com.fsck.k9.ui.R as UiR
 
 class UnreadWidgetDataProvider(
     private val context: Context,
@@ -68,7 +68,7 @@ class UnreadWidgetDataProvider(
 
         val accountName = account.displayName
         val folderDisplayName = getFolderDisplayName(account, folderId)
-        val title = context.getString(R.string.unread_widget_title, accountName, folderDisplayName)
+        val title = context.getString(UiR.string.unread_widget_title, accountName, folderDisplayName)
 
         val unreadCount = messagingController.getFolderUnreadMessageCount(account, folderId)
 
