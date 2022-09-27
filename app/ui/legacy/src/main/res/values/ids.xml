@@ -19,4 +19,6 @@
     <item type="id" name="settings_list_url_item"/>
 
     <item type="id" name="drawer_list_folder_item"/>
+
+    <item type="id" name="message_list_swipe_tag"/>
 </resources>

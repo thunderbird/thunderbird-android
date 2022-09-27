@@ -219,8 +219,8 @@ class MessageListAdapter internal constructor(
 
     private fun getItem(position: Int): MessageListItem = messages[position]
 
-    fun getItemById(uniqueId: Long): MessageListItem {
-        return messagesMap[uniqueId]!!
+    fun getItemById(uniqueId: Long): MessageListItem? {
+        return messagesMap[uniqueId]
     }
 
     fun getItem(messageReference: MessageReference): MessageListItem? {
@@ -524,7 +524,7 @@ class MessageListAdapter internal constructor(
 
     private fun getItemFromView(view: View): MessageListItem {
         val messageViewHolder = view.tag as MessageViewHolder
-        return getItemById(messageViewHolder.uniqueId)
+        return getItemById(messageViewHolder.uniqueId) ?: error("Couldn't find MessageListItem by View")
     }
 }
 
