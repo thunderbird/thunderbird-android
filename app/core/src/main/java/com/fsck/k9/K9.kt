@@ -250,6 +250,12 @@ object K9 : EarlyInit {
     @JvmStatic
     var pgpSignOnlyDialogCounter: Int = 0
 
+    @JvmStatic
+    var swipeRightAction: SwipeAction = SwipeAction.ToggleSelection
+
+    @JvmStatic
+    var swipeLeftAction: SwipeAction = SwipeAction.ToggleRead
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -358,6 +364,9 @@ object K9 : EarlyInit {
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
 
         k9Language = storage.getString("language", "")
+
+        swipeRightAction = storage.getEnum("swipeRightAction", SwipeAction.ToggleSelection)
+        swipeLeftAction = storage.getEnum("swipeLeftAction", SwipeAction.ToggleRead)
     }
 
     internal fun save(editor: StorageEditor) {
@@ -416,6 +425,9 @@ object K9 : EarlyInit {
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
+
+        editor.putEnum("swipeRightAction", swipeRightAction)
+        editor.putEnum("swipeLeftAction", swipeLeftAction)
 
         fontSizes.save(editor)
     }

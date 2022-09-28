@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.content.Context;
-import android.graphics.Color;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
@@ -20,6 +19,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
+import com.fsck.k9.SwipeAction;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;
@@ -276,6 +276,12 @@ public class GeneralSettingsDescriptions {
         ));
         s.put("showStarredCount", Settings.versions(
                 new V(75, new BooleanSetting(false))
+        ));
+        s.put("swipeRightAction", Settings.versions(
+                new V(83, new EnumSetting<>(SwipeAction.class, SwipeAction.ToggleSelection))
+        ));
+        s.put("swipeLeftAction", Settings.versions(
+                new V(83, new EnumSetting<>(SwipeAction.class, SwipeAction.ToggleRead))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);

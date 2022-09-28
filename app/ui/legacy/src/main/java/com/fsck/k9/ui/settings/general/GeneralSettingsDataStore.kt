@@ -2,6 +2,7 @@ package com.fsck.k9.ui.settings.general
 
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
+import com.fsck.k9.SwipeAction
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.preferences.AppTheme
 import com.fsck.k9.preferences.GeneralSettingsManager
@@ -125,6 +126,8 @@ class GeneralSettingsDataStore(
             "message_view_date_font" -> K9.fontSizes.messageViewDate.toString()
             "message_view_additional_headers_font" -> K9.fontSizes.messageViewAdditionalHeaders.toString()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput.toString()
+            "swipe_action_right" -> swipeActionToString(K9.swipeRightAction)
+            "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
             else -> defValue
         }
     }
@@ -164,6 +167,8 @@ class GeneralSettingsDataStore(
             "message_view_date_font" -> K9.fontSizes.messageViewDate = value.toInt()
             "message_view_additional_headers_font" -> K9.fontSizes.messageViewAdditionalHeaders = value.toInt()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput = value.toInt()
+            "swipe_action_right" -> K9.swipeRightAction = stringToSwipeAction(value)
+            "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
             else -> return
         }
 
@@ -279,5 +284,28 @@ class GeneralSettingsDataStore(
             K9.backgroundOps = newBackgroundOps
             jobManager.scheduleAllMailJobs()
         }
+    }
+
+    private fun swipeActionToString(action: SwipeAction) = when (action) {
+        SwipeAction.None -> "none"
+        SwipeAction.ToggleSelection -> "toggle_selection"
+        SwipeAction.ToggleRead -> "toggle_read"
+        SwipeAction.ToggleStar -> "toggle_star"
+        SwipeAction.Archive -> "archive"
+        SwipeAction.Delete -> "delete"
+        SwipeAction.Spam -> "spam"
+        SwipeAction.Move -> "move"
+    }
+
+    private fun stringToSwipeAction(action: String) = when (action) {
+        "none" -> SwipeAction.None
+        "toggle_selection" -> SwipeAction.ToggleSelection
+        "toggle_read" -> SwipeAction.ToggleRead
+        "toggle_star" -> SwipeAction.ToggleStar
+        "archive" -> SwipeAction.Archive
+        "delete" -> SwipeAction.Delete
+        "spam" -> SwipeAction.Spam
+        "move" -> SwipeAction.Move
+        else -> throw AssertionError()
     }
 }

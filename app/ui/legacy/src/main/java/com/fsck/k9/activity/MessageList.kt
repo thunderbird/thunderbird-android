@@ -119,7 +119,7 @@ open class MessageList :
                 ?: if (K9.isMessageViewShowNext) Direction.NEXT else Direction.PREVIOUS
         }
 
-    private var messageListActivityAppearance: MessageListActivityAppearance? = null
+    private var messageListActivityConfig: MessageListActivityConfig? = null
 
     /**
      * `true` if the message list should be displayed as flat list (i.e. no threading)
@@ -548,9 +548,9 @@ open class MessageList :
     public override fun onResume() {
         super.onResume()
 
-        if (messageListActivityAppearance == null) {
-            messageListActivityAppearance = MessageListActivityAppearance.create(generalSettingsManager)
-        } else if (messageListActivityAppearance != MessageListActivityAppearance.create(generalSettingsManager)) {
+        if (messageListActivityConfig == null) {
+            messageListActivityConfig = MessageListActivityConfig.create(generalSettingsManager)
+        } else if (messageListActivityConfig != MessageListActivityConfig.create(generalSettingsManager)) {
             recreateCompat()
         }
 

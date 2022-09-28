@@ -273,8 +273,8 @@ class MessageListFragment :
                 resources,
                 resourceProvider = SwipeResourceProvider(theme),
                 swipeActionSupportProvider,
-                swipeRightAction = SwipeAction.Archive,
-                swipeLeftAction = SwipeAction.ToggleRead,
+                swipeRightAction = K9.swipeRightAction,
+                swipeLeftAction = K9.swipeLeftAction,
                 adapter,
                 swipeListener
             )
