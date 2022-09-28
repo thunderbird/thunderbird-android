@@ -30,6 +30,8 @@ buildscript {
                 'androidxCore': '1.9.0',
                 'androidxCardView': '1.0.0',
                 'androidxPreference': '1.2.0',
+                'androidxDrawerLayout': '1.1.1',
+                'androidxTransition': '1.4.1',
                 'androidxTestCore': '1.4.0',
                 'materialComponents': '1.6.1',
                 'fastAdapter': '5.6.0',
@@ -92,8 +94,21 @@ subprojects {
         resolutionStrategy.dependencySubstitution {
             substitute module("androidx.core:core") using module("androidx.core:core:${versions.androidxCore}")
             substitute module("androidx.activity:activity") using module("androidx.activity:activity:${versions.androidxActivity}")
+            substitute module("androidx.activity:activity-ktx") using module("androidx.activity:activity-ktx:${versions.androidxActivity}")
+            substitute module("androidx.fragment:fragment") using module("androidx.fragment:fragment:${versions.androidxFragment}")
+            substitute module("androidx.fragment:fragment-ktx") using module("androidx.fragment:fragment-ktx:${versions.androidxFragment}")
             substitute module("androidx.appcompat:appcompat") using module("androidx.appcompat:appcompat:${versions.androidxAppCompat}")
             substitute module("androidx.preference:preference") using module("androidx.preference:preference:${versions.androidxPreference}")
+            substitute module("androidx.recyclerview:recyclerview") using module("androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}")
+            substitute module("androidx.constraintlayout:constraintlayout") using module("androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}")
+            substitute module("androidx.drawerlayout:drawerlayout") using module("androidx.drawerlayout:drawerlayout:${versions.androidxDrawerLayout}")
+            substitute module("androidx.lifecycle:lifecycle-livedata") using module("androidx.lifecycle:lifecycle-livedata:${versions.androidxLifecycle}")
+            substitute module("androidx.transition:transition") using module("androidx.transition:transition:${versions.androidxTransition}")
+            substitute module("org.jetbrains:annotations") using module("org.jetbrains:annotations:${versions.jetbrainsAnnotations}")
+            substitute module("org.jetbrains.kotlin:kotlin-stdlib") using module("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}")
+            substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}")
+            substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}")
+            substitute module("org.jetbrains.kotlinx:kotlinx-coroutines-android") using module("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}")
         }
     }
 
