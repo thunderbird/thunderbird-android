@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment
+package com.fsck.k9.ui.messagelist
 
 import android.view.View
 import android.widget.CheckBox

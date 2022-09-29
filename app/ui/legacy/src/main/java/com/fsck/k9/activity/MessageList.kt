@@ -34,8 +34,6 @@ import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.fragment.MessageListFragment
-import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
@@ -54,6 +52,8 @@ import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
+import com.fsck.k9.ui.messagelist.MessageListFragment
+import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.ui.messageview.Direction
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener

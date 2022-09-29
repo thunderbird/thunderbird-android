@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment
+package com.fsck.k9.ui.messagelist
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
@@ -28,8 +28,6 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.MessageListAppearance
-import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.resolveColorAttribute
 import com.fsck.k9.ui.resolveDrawableAttribute
 import kotlin.math.max

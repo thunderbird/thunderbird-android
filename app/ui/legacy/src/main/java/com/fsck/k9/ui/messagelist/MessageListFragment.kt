@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment
+package com.fsck.k9.ui.messagelist
 
 import android.app.Activity
 import android.app.SearchManager
@@ -32,8 +32,8 @@ import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
+import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
-import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
@@ -46,13 +46,7 @@ import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.MessageListAppearance
-import com.fsck.k9.ui.messagelist.MessageListConfig
-import com.fsck.k9.ui.messagelist.MessageListInfo
-import com.fsck.k9.ui.messagelist.MessageListItem
-import com.fsck.k9.ui.messagelist.MessageListItemDecoration
-import com.fsck.k9.ui.messagelist.MessageListViewModel
-import com.fsck.k9.ui.messagelist.MessageSortOverride
+import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
 import org.koin.android.ext.android.inject
