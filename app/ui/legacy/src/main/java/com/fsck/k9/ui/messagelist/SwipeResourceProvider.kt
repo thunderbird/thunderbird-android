@@ -32,7 +32,13 @@ class SwipeResourceProvider(val theme: Theme) {
     private val spamColor = theme.resolveColorAttribute(R.attr.messageListSwipeSpamBackgroundColor)
     private val moveColor = theme.resolveColorAttribute(R.attr.messageListSwipeMoveBackgroundColor)
 
-    fun getIconTint(item: MessageListItem, action: SwipeAction): Int = iconTint
+    fun getIconTint(item: MessageListItem, action: SwipeAction, swipeThresholdReached: Boolean): Int {
+        return if (swipeThresholdReached) {
+            iconTint
+        } else {
+            getBackgroundColor(item, action)
+        }
+    }
 
     fun getIcon(item: MessageListItem, action: SwipeAction): Drawable? {
         return when (action) {

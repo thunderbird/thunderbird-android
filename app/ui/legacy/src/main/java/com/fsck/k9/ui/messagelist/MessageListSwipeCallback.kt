@@ -22,6 +22,7 @@ class MessageListSwipeCallback(
     private val listener: MessageListSwipeListener
 ) : ItemTouchHelper.Callback() {
     private val iconPadding = resources.getDimension(R.dimen.messageListSwipeIconPadding).toInt()
+    private val swipeThreshold = resources.getDimension(R.dimen.messageListSwipeThreshold)
     private val backgroundColorPaint = Paint()
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
@@ -68,6 +69,10 @@ class MessageListSwipeCallback(
         viewHolder.markAsSwiped(false)
     }
 
+    override fun getSwipeThreshold(viewHolder: ViewHolder): Float {
+        return swipeThreshold / viewHolder.itemView.width
+    }
+
     override fun onChildDraw(
         canvas: Canvas,
         recyclerView: RecyclerView,
@@ -83,23 +88,30 @@ class MessageListSwipeCallback(
             val holder = viewHolder as MessageViewHolder
             val item = adapter.getItemById(holder.uniqueId) ?: return@withSave
 
-            drawBackground(view, dX, item)
+            val swipeThreshold = recyclerView.width * getSwipeThreshold(holder)
+            val swipeThresholdReached = abs(dX) > swipeThreshold
+            if (swipeThresholdReached) {
+                val action = if (dX > 0) swipeRightAction else swipeLeftAction
+                val backgroundColor = resourceProvider.getBackgroundColor(item, action)
+                drawBackground(view, backgroundColor)
+            } else {
+                val backgroundColor = resourceProvider.getBackgroundColor(item, SwipeAction.None)
+                drawBackground(view, backgroundColor)
+            }
 
             // Stop drawing the icon when the view has been animated all the way off the screen by ItemTouchHelper.
             // We do this so the icon doesn't switch state when RecyclerView's ItemAnimator animates the view back after
             // a toggle action (mark as read/unread, add/remove star) was used.
             if (isCurrentlyActive || abs(dX).toInt() < view.width) {
-                drawIcon(dX, view, item)
+                drawIcon(dX, view, item, swipeThresholdReached)
             }
         }
 
         super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
 
-    private fun Canvas.drawBackground(view: View, dX: Float, item: MessageListItem) {
-        val action = if (dX > 0) swipeRightAction else swipeLeftAction
-
-        backgroundColorPaint.color = resourceProvider.getBackgroundColor(item, action)
+    private fun Canvas.drawBackground(view: View, color: Int) {
+        backgroundColorPaint.color = color
         drawRect(
             view.left.toFloat(),
             view.top.toFloat(),
@@ -109,15 +121,15 @@ class MessageListSwipeCallback(
         )
     }
 
-    private fun Canvas.drawIcon(dX: Float, view: View, item: MessageListItem) {
+    private fun Canvas.drawIcon(dX: Float, view: View, item: MessageListItem, swipeThresholdReached: Boolean) {
         if (dX > 0) {
-            drawSwipeRightIcon(view, item)
+            drawSwipeRightIcon(view, item, swipeThresholdReached)
         } else {
-            drawSwipeLeftIcon(view, item)
+            drawSwipeLeftIcon(view, item, swipeThresholdReached)
         }
     }
 
-    private fun Canvas.drawSwipeRightIcon(view: View, item: MessageListItem) {
+    private fun Canvas.drawSwipeRightIcon(view: View, item: MessageListItem, swipeThresholdReached: Boolean) {
         resourceProvider.getIcon(item, swipeRightAction)?.let { icon ->
             val iconLeft = iconPadding
             val iconTop = view.top + ((view.height - icon.intrinsicHeight) / 2)
@@ -125,12 +137,12 @@ class MessageListSwipeCallback(
             val iconBottom = iconTop + icon.intrinsicHeight
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
-            icon.setTint(resourceProvider.getIconTint(item, swipeRightAction))
+            icon.setTint(resourceProvider.getIconTint(item, swipeRightAction, swipeThresholdReached))
             icon.draw(this)
         }
     }
 
-    private fun Canvas.drawSwipeLeftIcon(view: View, item: MessageListItem) {
+    private fun Canvas.drawSwipeLeftIcon(view: View, item: MessageListItem, swipeThresholdReached: Boolean) {
         resourceProvider.getIcon(item, swipeLeftAction)?.let { icon ->
             val iconRight = view.right - iconPadding
             val iconLeft = iconRight - icon.intrinsicWidth
@@ -138,7 +150,7 @@ class MessageListSwipeCallback(
             val iconBottom = iconTop + icon.intrinsicHeight
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
-            icon.setTint(resourceProvider.getIconTint(item, swipeLeftAction))
+            icon.setTint(resourceProvider.getIconTint(item, swipeLeftAction, swipeThresholdReached))
             icon.draw(this)
         }
     }
