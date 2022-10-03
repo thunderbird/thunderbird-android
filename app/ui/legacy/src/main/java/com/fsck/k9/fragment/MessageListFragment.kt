@@ -388,6 +388,10 @@ class MessageListFragment :
     }
 
     override fun onMessageClicked(messageListItem: MessageListItem) {
+        if(!isActive){
+            return
+        }
+        isActive = false
         if (adapter.selectedCount > 0) {
             toggleMessageSelect(messageListItem)
         } else {
