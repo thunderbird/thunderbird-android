@@ -388,6 +388,12 @@ class MessageListFragment :
     }
 
     override fun onMessageClicked(messageListItem: MessageListItem) {
+        if (!isActive) {
+            // Ignore click events that are delivered after the Fragment is no longer active. This could happen when
+            // the user taps two messages at almost the same time and the first tap opens a new MessageListFragment.
+            return
+        }
+
         if (adapter.selectedCount > 0) {
             toggleMessageSelect(messageListItem)
         } else {
