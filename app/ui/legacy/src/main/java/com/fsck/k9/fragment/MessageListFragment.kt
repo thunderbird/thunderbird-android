@@ -16,7 +16,6 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -50,6 +49,7 @@ import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListConfig
 import com.fsck.k9.ui.messagelist.MessageListInfo
 import com.fsck.k9.ui.messagelist.MessageListItem
+import com.fsck.k9.ui.messagelist.MessageListItemDecoration
 import com.fsck.k9.ui.messagelist.MessageListViewModel
 import com.fsck.k9.ui.messagelist.MessageSortOverride
 import java.util.concurrent.Future
@@ -237,7 +237,7 @@ class MessageListFragment :
     private fun initializeRecyclerView(view: View) {
         recyclerView = view.findViewById(R.id.message_list)
 
-        val itemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        val itemDecoration = MessageListItemDecoration(requireContext())
         recyclerView.addItemDecoration(itemDecoration)
         recyclerView.itemAnimator = DefaultItemAnimator().apply {
             supportsChangeAnimations = false
