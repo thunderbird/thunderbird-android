@@ -123,7 +123,7 @@ object K9 : EarlyInit {
     val fontSizes = FontSizes()
 
     @JvmStatic
-    var backgroundOps = BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
+    var backgroundOps = BACKGROUND_OPS.ALWAYS
 
     @JvmStatic
     var isShowAnimations = true
@@ -344,7 +344,7 @@ object K9 : EarlyInit {
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
         fontSizes.load(storage)
 
-        backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)
+        backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.ALWAYS)
 
         isColorizeMissingContactPictures = storage.getBoolean("colorizeMissingContactPictures", true)
 

@@ -17,6 +17,7 @@ import com.fsck.k9.Account.SortType;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.core.R;
@@ -51,7 +52,8 @@ public class GeneralSettingsDescriptions {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("backgroundOperations", Settings.versions(
-                new V(1, new EnumSetting<>(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC))
+                new V(1, new EnumSetting<>(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)),
+                new V(83, new EnumSetting<>(K9.BACKGROUND_OPS.class, BACKGROUND_OPS.ALWAYS))
         ));
         s.put("changeRegisteredNameColor", Settings.versions(
                 new V(1, new BooleanSetting(false))
