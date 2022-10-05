@@ -1071,6 +1071,8 @@ open class MessageList :
     }
 
     private fun addMessageListFragment(fragment: MessageListFragment) {
+        messageListFragment?.isActive = false
+
         supportFragmentManager.commit {
             replace(R.id.message_list_container, fragment)
 

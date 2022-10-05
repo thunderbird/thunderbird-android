@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -59,6 +60,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
+private const val MINIMUM_CLICK_INTERVAL = 200L
 
 class MessageListFragment :
     Fragment(),
@@ -105,6 +107,7 @@ class MessageListFragment :
     private var isThreadDisplay = false
     private var activeMessage: MessageReference? = null
     private var rememberedSelected: Set<Long>? = null
+    private var lastMessageClick = 0L
 
     lateinit var localSearch: LocalSearch
         private set
@@ -388,9 +391,19 @@ class MessageListFragment :
     }
 
     override fun onMessageClicked(messageListItem: MessageListItem) {
+        if (!isActive) {
+            // Ignore click events that are delivered after the Fragment is no longer active. This could happen when
+            // the user taps two messages at almost the same time and the first tap opens a new MessageListFragment.
+            return
+        }
+
+        val clickTime = SystemClock.elapsedRealtime()
+        if (clickTime - lastMessageClick < MINIMUM_CLICK_INTERVAL) return
+
         if (adapter.selectedCount > 0) {
             toggleMessageSelect(messageListItem)
         } else {
+            lastMessageClick = clickTime
             if (showingThreadedList && messageListItem.threadCount > 1) {
                 fragmentListener.showThread(messageListItem.account, messageListItem.threadRoot)
             } else {
