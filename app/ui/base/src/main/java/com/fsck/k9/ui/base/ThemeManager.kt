@@ -64,7 +64,7 @@ class ThemeManager(
             .onEach {
                 updateAppTheme(it)
             }
-            .launchIn(appCoroutineScope + Dispatchers.Main)
+            .launchIn(appCoroutineScope + Dispatchers.Main.immediate)
     }
 
     private fun updateAppTheme(appTheme: AppTheme) {

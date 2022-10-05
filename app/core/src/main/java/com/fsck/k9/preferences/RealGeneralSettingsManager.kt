@@ -40,6 +40,9 @@ internal class RealGeneralSettingsManager(
     }
 
     override fun getSettingsFlow(): Flow<GeneralSettings> {
+        // Make sure to load settings now if they haven't been loaded already. This will also update settingsFlow.
+        getSettings()
+
         return settingsFlow.distinctUntilChanged()
     }
 
