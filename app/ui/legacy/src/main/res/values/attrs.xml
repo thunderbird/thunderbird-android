@@ -85,6 +85,7 @@
         <attr name="attachmentCardBackground" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
+        <attr name="contactPictureFallbackBackgroundColors" format="reference"/>
         <attr name="contactTokenBackgroundColor" format="reference|color"/>
         <attr name="tintColorBulletPointPositive" format="reference|color"/>
         <attr name="tintColorBulletPointNeutral" format="reference|color"/>
