@@ -3,25 +3,25 @@
 
     <!-- Must be kept in sync with arrays_drawer.xml/drawer_account_accent_color_dark_theme -->
     <integer-array name="account_colors">
-        <item>0xFFFFB300</item> <!-- Amber 600 -->
-        <item>0xFFFB8C00</item> <!-- Orange 600 -->
-        <item>0xFFF4511E</item> <!-- Deep orange 600 -->
-        <item>0xFFE53935</item> <!-- Red 600 -->
+        <item>@color/material_amber_600</item>
+        <item>@color/material_orange_600</item>
+        <item>@color/material_deep_orange_600</item>
+        <item>@color/material_red_600</item>
 
-        <item>0xFFC0CA33</item> <!-- Lime 600 -->
-        <item>0xFF7CB342</item> <!-- Light green 600 -->
-        <item>0xFF388E3C</item> <!-- Green 700 -->
-        <item>0xFF00897B</item> <!-- Teal 600 -->
+        <item>@color/material_lime_600</item>
+        <item>@color/material_light_green_600</item>
+        <item>@color/material_green_700</item>
+        <item>@color/material_teal_600</item>
 
-        <item>0xFF00ACC1</item> <!-- Cyan 600 -->
-        <item>0xFF039BE5</item> <!-- Light blue 600 -->
-        <item>0xFF1976D2</item> <!-- Blue 700 -->
-        <item>0xFF3949AB</item> <!-- Indigo 600 -->
+        <item>@color/material_cyan_600</item>
+        <item>@color/material_light_blue_600</item>
+        <item>@color/material_blue_700</item>
+        <item>@color/material_indigo_600</item>
 
-        <item>0xFFE91E63</item> <!-- Pink 500 -->
-        <item>0xFF8E24AA</item> <!-- Purple 600 -->
-        <item>0xFF5E35B1</item> <!-- Deep purple 600 -->
-        <item>0xFF455A64</item> <!-- Blue gray 700 -->
+        <item>@color/material_pink_500</item>
+        <item>@color/material_purple_600</item>
+        <item>@color/material_deep_purple_600</item>
+        <item>@color/material_blue_gray_700</item>
     </integer-array>
 
     <string-array name="check_frequency_values" translatable="false">
