@@ -72,7 +72,7 @@ jobs:
 
       - name: NowSecure download report
         uses: nowsecure/nowsecure-action/convert-sarif@v2
-        timeout-minutes: 60
+        timeout-minutes: 120
         with:
           report_id: ${{ needs.scan.outputs.report_id }}
           token: ${{ secrets.NS_TOKEN }}
