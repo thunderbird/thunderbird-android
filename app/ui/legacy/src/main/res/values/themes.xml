@@ -12,9 +12,9 @@
     <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-        <item name="colorPrimary">@color/md_grey_100</item>
-        <item name="colorPrimaryDark">@color/md_grey_100</item>
-        <item name="bottomBarBackground">@color/md_grey_50</item>
+        <item name="colorPrimary">@color/material_gray_100</item>
+        <item name="colorPrimaryDark">@color/material_gray_100</item>
+        <item name="bottomBarBackground">@color/material_gray_50</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
@@ -97,6 +97,7 @@
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus</item>
         <item name="attachmentCardBackground">#e8e8e8</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
+        <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_light</item>
         <item name="contactTokenBackgroundColor">#ccc</item>
         <item name="composerBackgroundColor">@android:color/background_light</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
@@ -132,9 +133,9 @@
         <item name="android:navigationBarColor">#000000</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
-        <item name="colorPrimary">@color/md_grey_900</item>
-        <item name="colorPrimaryDark">@color/md_grey_900</item>
-        <item name="bottomBarBackground">@color/md_grey_900</item>
+        <item name="colorPrimary">@color/material_gray_900</item>
+        <item name="colorPrimaryDark">@color/material_gray_900</item>
+        <item name="bottomBarBackground">@color/material_gray_900</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
@@ -218,6 +219,7 @@
         <item name="attachmentCardBackground">#313131</item>
         <item name="contactTokenBackgroundColor">#313131</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
+        <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_dark</item>
         <item name="composerBackgroundColor">@android:color/background_dark</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
