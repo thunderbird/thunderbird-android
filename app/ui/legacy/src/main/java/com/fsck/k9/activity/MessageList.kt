@@ -616,7 +616,10 @@ open class MessageList :
 
             override fun onDrawerStateChanged(newState: Int) = Unit
 
-            override fun onDrawerOpened(drawerView: View) = Unit
+            override fun onDrawerOpened(drawerView: View) {
+                collapseSearchView()
+                messageListFragment?.finishActionMode()
+            }
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
         }
@@ -912,7 +915,6 @@ open class MessageList :
                     if (drawer!!.isOpen) {
                         drawer!!.close()
                     } else {
-                        collapseSearchView()
                         drawer!!.open()
                     }
                 } else {
