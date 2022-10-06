@@ -1319,6 +1319,10 @@ class MessageListFragment :
         actionMode?.invalidate()
     }
 
+    fun finishActionMode() {
+        actionMode?.finish()
+    }
+
     fun remoteSearchFinished() {
         remoteSearchFuture = null
     }
