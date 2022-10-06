@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.308" versioncode="33008" date="2022-10-06">
+        <change>Added swipe actions to the message list screen</change>
+        <change>Changed the minimum size of the message list widget to 2x2 cells</change>
+        <change>Fixed a bug where the app would start using the light theme before switching to the dark theme resulting in a brief flash of white</change>
+        <change>More minor bug fixes and improvements</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.307" versioncode="33007" date="2022-09-26">
         <change>Fixed the message list background color in the dark theme</change>
         <change>Fixed a small display issue where "Load up to X more" could have been displayed when it shouldn't have been</change>
