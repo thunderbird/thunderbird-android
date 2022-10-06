@@ -574,8 +574,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_failed_dlg_invalid_certificate_title">Sertifikat tidak dikenal</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Terima kunci</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Tolak kunci</string>
-  <string name="message_view_help_key">Del (atau D) - Hapus\nR - Balas\nA - Balas Semua\nC - Tulis\nF - Teruskan\nM - Pindah\nV - Arsipkan\nY - Copy\nZ - Tandai (belum) baca\nG - Star\nO - Urutkan jenis\nI - Urutan sortir\nQ - Kembali ke Folder\nS - Pilih/batalkan pilihan\nJ atau P - Pesan Sebelumnya\nK atau N - Pesan Berikutnya</string>
-  <string name="message_list_help_key">Del (atau D) - Hapus\nC - Tulis\nM - Pindah\nV - Arsipkan\nY - Copy\nZ - Tandai (belum) baca\nG - Star\nO - Urutkan jenis\nI - Urutan sortir\nQ - Kembali ke Folder\nS - Pilih/batalkan pilihan</string>
   <string name="folder_list_filter_hint">Nama folder mengandung</string>
   <string name="folder_list_display_mode_label">Perlihatkan folder…</string>
   <string name="folder_list_display_mode_all">Semua folder</string>

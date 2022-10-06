@@ -632,8 +632,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton varmenne</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
-  <string name="message_view_help_key">Del (tai D) - Poista\nR - Vastaa\nA - Vastaa Kaikille\nC - Uusi viesti\nF - Välitä\nM - Siirrä\nV - Arkistoi\nY - Kopioi\nZ - Merkitse Lukemattomaksi(luetuksi)\nG - Merkitse tähdellä\nO - Lajittelun tyyppi\nI - Lajittelun järjestys\nQ - Palaa kansioihin\nS - Valitse/Poista valinta\nJ tai P - Edellinen viesti\nK or N - Seuraava viesti</string>
-  <string name="message_list_help_key">Del (tai D) - Poista\nC - Uusi viesti\nM - Siirrä\nV - Arkistoi\nY - Kopioi\nZ - Merkitse (Lukemattomaksi)luetuksi\nG - Merkitse tähdellä\nO - Lajittelun tyyppi\nI - Lajittelun järjestys\nQ - Palaa kansioihin\nS - Valitse / poista valinta</string>
   <string name="folder_list_filter_hint">Kansion nimi sisältää</string>
   <string name="folder_list_display_mode_label">Kansiot</string>
   <string name="folder_list_display_mode_all">Näytä kaikki</string>

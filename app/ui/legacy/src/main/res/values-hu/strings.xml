@@ -631,8 +631,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_failed_dlg_invalid_certificate_title">Felismerhetetlen tanúsítvány</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kulcs elfogadása</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs visszautasítása</string>
-  <string name="message_view_help_key">Del (vagy D) – Törlés\nR – Válasz\nA – Válasz mindenkinek\nC – Írás\nF – Továbbítás\nM – Áthelyezés\nV – Archiválás\nY – Másolás\nZ – Megjelölés olvasottként/olvasatlanként\nG – Csillagozás\nO – Rendezés típusa\nI – Rendezési sorrend\nQ – Visszatérés a mappákhoz\nS – Kijelölés/Kijelölés megszüntetése\nJ vagy P – Előző üzenet\nK vagy N – Következő üzenet</string>
-  <string name="message_list_help_key">Del (vagy D) – Törlés\nC – Írás\nM – Áthelyezés\nV – Archiválás\nY – Másolás\nZ – Megjelölés olvasottként/olvasatlanként\nG – Csillagozás\nO – Rendezés típusa\nI – Rendezési sorrend\nQ – Visszatérés a mappákhoz\nS – Kijelölés/Kijelölés megszüntetése</string>
   <string name="folder_list_filter_hint">Mappa neve tartalmazza</string>
   <string name="folder_list_display_mode_label">Mappák megjelenítése…</string>
   <string name="folder_list_display_mode_all">Összes mappa</string>

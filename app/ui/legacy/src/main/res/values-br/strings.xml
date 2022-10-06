@@ -550,8 +550,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_failed_dlg_invalid_certificate_title">Testeni dianav</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Asantiñ an alc’hwez</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Nac’h an alc’hwez</string>
-  <string name="message_view_help_key">Del (pe D) - Dilemel\nR - Respont\nA - Respont d’an holl\nC - Skridaozañ\nF - Treuzkas\nM - Dilec’hiañ\nV - Diellaouiñ\nY - Eilañ\nZ - Merkañ evel (An)lennet\nG - Steredenniñ\nO - Doare urzhiañ\nI - Tu an urzh\nQ - Distreiñ d’an teuliadoù\nS - (Di)ziuzañ\nJ or P - Kemennadenn gent\nK pe N - Kemennadenn da heul</string>
-  <string name="message_list_help_key">Del (pe D) - Dilemel\nC - Skridaozañ\nM - Dilec’hiañ\nV - Diellaouiñ\nY - Eilañ\nZ - Merkañ evel (An)Lennet\nG - Steredenniñ\nO - Doare urzhiañ\nI - Tu an urzhiañ\nQ - Distreiñ d’an teuliadoù\nS - (Di)ziuzañ</string>
   <string name="folder_list_filter_hint">Anv an teuliad a endalc’h</string>
   <string name="folder_list_display_mode_label">Diskouez an teuliadoù</string>
   <string name="folder_list_display_mode_all">An holl deuliadoù</string>

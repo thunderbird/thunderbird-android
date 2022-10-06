@@ -8,9 +8,23 @@
   <string name="unread_widget_label">K-9 Não lido</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
+  <string name="source_code">Código-fonte</string>
   <string name="app_license">Licença Apache, versão 2.0.</string>
+  <string name="about_project_title">Projeto de Código Aberto</string>
+  <string name="about_website_title">Website</string>
+  <string name="user_manual_title">Manual de utilizador</string>
+  <string name="get_help_title">Obter ajuda</string>
+  <string name="user_forum_title">Fórum de utilizadores</string>
+  <string name="about_fediverse_title">Fediverso</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Bibliotecas</string>
   <string name="license">Licença</string>
+  <string name="changelog_title">Registo de alterações</string>
+  <string name="changelog_loading_error">Não foi possível carregar o registo de alterações.</string>
+  <string name="changelog_version_title">Versão %s</string>
+  <string name="changelog_recent_changes_title">O que há de novo?</string>
+  <string name="changelog_show_recent_changes">Mostrar alterações recentes quando a aplicação for atualizada</string>
+  <string name="changelog_snackbar_text">Descubra o que há de novo nesta versão</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bem-vindo ao K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -59,6 +73,8 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="compose_title_forward_as_attachment">Encaminhar como anexo</string>
   <string name="choose_account_title">Escolher Conta</string>
   <string name="choose_folder_title">Selecionar pasta</string>
+  <string name="choose_folder_move_title">Mover para…</string>
+  <string name="choose_folder_copy_title">Copiar para…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionado</string>
   <string name="next_action">Seguinte</string>
   <string name="previous_action">Anterior</string>
@@ -90,6 +106,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="compose_action">Compor</string>
   <string name="search_action">Pesquisar</string>
   <string name="search_results">Resultados da pesquisa</string>
+  <string name="new_messages_title">Novas mensagens</string>
   <string name="preferences_action">Configurações</string>
   <string name="folders_action">Gerir pastas</string>
   <string name="account_settings_action">Configurações da conta</string>
@@ -100,12 +117,14 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="flag_action">Adicionar estrela</string>
   <string name="unflag_action">Remover estrela</string>
   <string name="copy_action">Copiar</string>
+  <string name="unsubscribe_action">Dessubscrever</string>
   <string name="show_headers_action">Mostrar cabeçalhos</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Endereço copiado para a área de transferência</item>
     <item quantity="many">Endereços copiados para a área de transferência</item>
     <item quantity="other">Endereços copiados para a área de transferência</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Assunto copiado para a área de transferência</string>
   <string name="message_view_theme_action_dark">Mudar para o tema escuro</string>
   <string name="message_view_theme_action_light">Mudar para o tema claro</string>
   <string name="mark_as_unread_action">Marcar como não lido</string>
@@ -145,11 +164,13 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="notification_action_archive">Arquivar</string>
   <string name="notification_action_archive_all">Arquivar tudo</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_public">Erro de certificado</string>
   <string name="notification_certificate_error_title">Erro de certificado para <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Verifique as configurações do servidor</string>
   <string name="notification_authentication_error_title">A autenticação falhou</string>
   <string name="notification_authentication_error_text">A autenticação falhou para <xliff:g id="account">%s</xliff:g>. Atualize as configurações do servidor.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Erro de notificação</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">A verificar correio: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">A verificar correio</string>
@@ -171,6 +192,9 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="debug_enable_debug_logging_summary">Registar informação de diagnóstico extra</string>
   <string name="debug_enable_sensitive_logging_title">Registar informação sensível</string>
   <string name="debug_enable_sensitive_logging_summary">Podem aparecer palavras-passe nos registos.</string>
+  <string name="debug_export_logs_title">Exportar registos</string>
+  <string name="debug_export_logs_success">Exportação bem sucedida. Registos podem conter informação sensível. Tenha cuidado com quem os partilha.</string>
+  <string name="debug_export_logs_failure">A exportação falhou.</string>
   <string name="message_list_load_more_messages_action">Carregar mais mensagens</string>
   <string name="message_to_fmt">Para: <xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Assunto</string>
@@ -217,6 +241,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_show_contact_name_summary">Usar nome dos destinatários a partir dos Contactos quando disponível</string>
   <string name="global_settings_registered_name_color_label">Colorir contactos</string>
   <string name="global_settings_registered_name_color_changed">Colorir nomes na sua lista de contactos</string>
+  <string name="general_settings_contact_name_color_label">Cor do nome de contacto</string>
   <string name="global_settings_messageview_fixedwidth_label">Fontes de largura fixa</string>
   <string name="global_settings_messageview_fixedwidth_summary">Usar uma fonte de largura fixa quando forem visualizadas mensagens em texto simples</string>
   <string name="global_settings_messageview_autofit_width_label">Ajustar automaticamente as mensagens</string>
@@ -255,9 +280,15 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_basics_title">Configurar uma nova conta</string>
   <string name="account_setup_basics_email_hint">Endereço de email</string>
   <string name="account_setup_basics_password_hint">Palavra-passe</string>
+  <string name="account_setup_oauth_description">Para usar esta conta com o K-9 Mail, é necessário iniciar sessão e conceder permissão para aceder o seus emails.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Iniciar sessão</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Iniciar sessão com o Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Para ver a sua palavra-passe aqui, ative o bloqueio de ecrã neste dispositivo.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Verificar a sua identidade</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloqueie para ver a sua palavra-passe</string>
   <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">A obter informações da conta\u2026</string>
@@ -277,6 +308,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_auth_type_insecure_password">Palavra-passe, transmitida de forma insegura</string>
   <string name="account_setup_auth_type_encrypted_password">Palavra-passe encriptada</string>
   <string name="account_setup_auth_type_tls_client_certificate">Certificado de cliente</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Configurações de entrada do servidor</string>
   <string name="account_setup_incoming_username_label">Nome de utilizador</string>
   <string name="account_setup_incoming_password_label">Palavra-passe</string>
@@ -295,6 +327,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_incoming_delete_policy_never_label">Não eliminar no servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Eliminar no servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcar como lido no servidor</string>
+  <string name="account_setup_incoming_use_compression">Usar compressão</string>
   <string name="account_setup_expunge_policy_label">Apagar mensagens eliminadas no servidor</string>
   <string name="account_setup_expunge_policy_immediately">Imediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Na verificação</string>
@@ -359,6 +392,10 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_failed_dlg_auth_message_fmt">Nome de utilizador ou palavra-passe incorretos.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">O servidor apresenta um certificado SSL inválido. Por vezes, isto é devido a um erro de configuração no servidor. Outras vezes é alguém numa tentativa de ataque a si ou ao seu servidor de email. Se não tem a certeza do que está a acontecer, clique em Rejeitar e entre em contacto com quem gere o seu servidor de email.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Não foi possível ligar ao servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorização cancelada</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">A autorização falhou com o seguinte erro: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 não é, de momento, suportado com este provedor.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">A aplicação não conseguiu encontrar um navegador para usar na concessão do acesso à sua conta.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalhes</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avançado</string>
@@ -378,10 +415,15 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_notify_self_summary">Mostrar uma notificação para as mensagens que envio</string>
   <string name="account_notify_contacts_mail_only_label">Apenas contactos</string>
   <string name="account_notify_contacts_mail_only_summary">Mostrar notificações apenas para mensagens de contactos conhecidos</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignorar mensagens de conversa</string>
+  <string name="account_settings_ignore_chat_messages_summary">Não mostrar notificações de mensagens pertencentes a conversas de email</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar como lido ao abrir</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar uma mensagem como lida ao abrir para visualização</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como lida quando apagada</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marcar a mensagem como lida quando é apagada</string>
+  <string name="account_settings_notification_channels_label">Categorias de notificação</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Configurar notificações para novas mensagens</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Configurar notificações de erro e estado</string>
   <string name="account_settings_show_pictures_label">Mostrar sempre as imagens</string>
   <string name="account_settings_show_pictures_never">Não</string>
   <string name="account_settings_show_pictures_only_from_contacts">Apenas dos contactos</string>
@@ -507,11 +549,29 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_description_label">Nome da conta</string>
   <string name="account_settings_name_label">O seu nome</string>
   <string name="notifications_title">Notificações</string>
+  <string name="account_settings_vibration">Vibração</string>
   <string name="account_settings_vibrate_enable">Vibrar</string>
+  <string name="account_settings_vibrate_pattern_label">Padrão de vibração</string>
   <string name="account_settings_vibrate_pattern_default">Predefinição</string>
+  <string name="account_settings_vibrate_pattern_1">Padrão 1</string>
+  <string name="account_settings_vibrate_pattern_2">Padrão 2</string>
+  <string name="account_settings_vibrate_pattern_3">Padrão 3</string>
+  <string name="account_settings_vibrate_pattern_4">Padrão 4</string>
+  <string name="account_settings_vibrate_pattern_5">Padrão 5</string>
   <string name="account_settings_vibrate_times">Repetir vibração</string>
+  <string name="account_settings_vibrate_summary_disabled">Desativado</string>
   <string name="account_settings_ringtone">Tom de toque para novos emails</string>
+  <string name="account_settings_notification_light_label">Luz de notificação</string>
+  <string name="account_settings_notification_light_disabled">Desativada</string>
   <string name="account_settings_notification_light_account_color">Cor da conta</string>
+  <string name="account_settings_notification_light_default_color">Cor pré-definida do sistema</string>
+  <string name="account_settings_notification_light_white">Branca</string>
+  <string name="account_settings_notification_light_red">Vermelha</string>
+  <string name="account_settings_notification_light_green">Verde</string>
+  <string name="account_settings_notification_light_blue">Azul</string>
+  <string name="account_settings_notification_light_yellow">Amarela</string>
+  <string name="account_settings_notification_light_cyan">Ciana</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Opções da composição de mensagens</string>
   <string name="account_settings_composition_label">Opções de composição predefinidas</string>
   <string name="account_settings_composition_summary">Defina os valores predefinidos para o De, Bcc e assinatura</string>
@@ -569,8 +629,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado não reconhecido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeitar chave</string>
-  <string name="message_view_help_key">Del (ou D) - Eliminar\nR - Responder\nA - Responder a todos\nC - Compor\nF - Reencaminhar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar como (não) lida\nG - Estrela\nO - Tipo de ordenação\nI - OrdenaçãonQ - Voltar às pastas\nS - Selecionar/desselecionar\nJ ou P - Mensagem anterior\nK ou N - Mensagem seguinte</string>
-  <string name="message_list_help_key">Del (ou D) - Eliminar\nC - Compor\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar como (não)lida\nG - Estrela\nO - Tipo de ordenação\nI - Ordem\nQ - Voltar às pastas\nS - Selecionar/desselecionar</string>
   <string name="folder_list_filter_hint">Nome da pasta contém</string>
   <string name="folder_list_display_mode_label">Mostrar pastas…</string>
   <string name="folder_list_display_mode_all">Todas as pastas</string>
@@ -618,6 +676,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_push_limit_1000">1000 pastas</string>
   <string name="animations_title">Animação</string>
   <string name="animations_summary">Usar efeitos visuais exuberantes</string>
+  <string name="show_unified_inbox_title">Mostrar caixa de entrada unificada</string>
   <string name="integrated_inbox_title">Caixa de entrada unificada</string>
   <string name="integrated_inbox_detail">Todas as mensagens em pastas unificadas</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
@@ -664,6 +723,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="send_failed_reason">O envio falhou: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Guardar mensagem de rascunho?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Guardar ou rejeitar esta mensagem?</string>
+  <string name="save_or_discard_draft_message_changes">Guardar ou descartar alterações?</string>
   <string name="confirm_discard_draft_message_title">Rejeitar mensagem?</string>
   <string name="confirm_discard_draft_message">Tem a certeza que pretende rejeitar esta mensagem?</string>
   <string name="dialog_confirm_clear_local_folder_title">Limpar mensagens locais?</string>
@@ -710,13 +770,16 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Por favor inserir palavras-passe</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Por favor, inicie sessão</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Por favor, inicie sessão e insira palavras-passe</string>
   <string name="settings_import_failure">Falha na importação de configurações</string>
   <string name="settings_import_read_failure">Falha na leitura do ficheiro de configurações</string>
   <string name="settings_import_partial_failure">Falha na importação de algumas configurações</string>
   <string name="settings_import_status_success">A importação foi bem sucedida</string>
   <string name="settings_import_status_password_required">Necessária palavra-passe</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Sessão iniciada necessária</string>
   <string name="settings_import_status_not_imported">Não importado</string>
   <string name="settings_import_status_error">Falha na importação</string>
   <string name="settings_import_later_button">Posteriormente</string>
@@ -826,6 +889,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Para</string>
   <string name="recipient_from">De</string>
+  <string name="reply_to_label">Responder a</string>
   <string name="unknown_recipient">&lt;Recipiente desconhecido&gt;</string>
   <string name="unknown_sender">&lt;Remetente Desconhecido&gt;</string>
   <string name="address_type_home">Casa</string>

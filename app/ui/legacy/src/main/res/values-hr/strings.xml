@@ -539,8 +539,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nepoznat Certifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Prihvati Ključ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odbij ključ</string>
-  <string name="message_view_help_key">Del (ili D) - Obriši\nR - Odgovori\nA - Odgovori svima\nC - Sastavi\nF - Proslijedi\nM - Pomakni\nV - Arhiviraj\nY - Kopiraj\nZ - Označi (Ne)pročitano\nG - Dodaj zvijezdicu\nO - Način sortiranja\nI - Poredak sortiranja\nQ - Nazad na mape\nS - Označi/odznači\nJ ili P - Prethodna poruka\nK ili N - Sljedeća poruka</string>
-  <string name="message_list_help_key">Del (ili D) - Obriši\nC - Sastavi\nM - Pomakni\nV - Arhiviraj\nY - Kopiraj\nZ - Označi (Ne)pročitano\nG - Dodaj zvijezdicu\nO - Način sortiranja\nI - Poredak sortiranja\nQ - Nazad na mape\nS - Označi/odznači</string>
   <string name="folder_list_filter_hint">Naziv mape sadrži</string>
   <string name="folder_list_display_mode_label">Prikaži mape…</string>
   <string name="folder_list_display_mode_all">Sve mape</string>

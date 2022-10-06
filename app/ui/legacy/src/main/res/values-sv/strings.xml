@@ -633,8 +633,6 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt certifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Neka nyckel</string>
-  <string name="message_view_help_key">Del (eller D) - Ta bort\nR - Svara\nA - Svara alla\nC - Skriva\nF - Vidarebefordra\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Markera (o)lästa\nG - Stjärna\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Återgå till mappar\nS - Välj/välj bort\nJ eller P - Föregående meddelande\nK eller N - Nästa meddelande</string>
-  <string name="message_list_help_key">Del (or D) - Ta bort\nC - Skriva\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Markera (o)lästa\nG - Stjärna\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Återgå till mappar\nS - Välj/välj bort</string>
   <string name="folder_list_filter_hint">Mappnamn innehåller</string>
   <string name="folder_list_display_mode_label">Visa mappar…</string>
   <string name="folder_list_display_mode_all">Alla mappar</string>

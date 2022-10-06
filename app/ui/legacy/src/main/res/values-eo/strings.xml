@@ -593,8 +593,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nekonata atestilo</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Akcepti ŝlosilon</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifuzi ŝlosilon</string>
-  <string name="message_view_help_key">Del (aŭ D) - forigi\nR - respondi\nA - respondi al ĉiuj\nC - krei\nF - plusendi\nM - movi\nV - arĥivigi\nY - kopii\nZ - marki kiel (ne)legitan\nG - steletigi\nO - ordiga tipo\nI - ordigo\nQ - reveni al mesaĝujoj\nS - (mal)elekti\nJ aŭ P -antaŭa mesaĝo\nK aŭ N - sekva mesaĝo</string>
-  <string name="message_list_help_key">Del (aŭ D) - forigi\nC - krei\nM - movi\nV - arĥivigi\nY - kopii\nZ - marki kiel (ne)legitan\nG - steletigi\nO - ordiga tipo\nI - ordigo\nQ - reveni al mesaĝujoj\nS - (mal)elekti</string>
   <string name="folder_list_filter_hint">Nomo de mesaĝujo enhavas</string>
   <string name="folder_list_display_mode_label">Montri mesaĝujojn…</string>
   <string name="folder_list_display_mode_all">Ĉiuj mesaĝujoj</string>

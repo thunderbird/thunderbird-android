@@ -12,7 +12,10 @@
   <string name="app_license">Trwydded Apache, Fersiwn 2.0</string>
   <string name="about_project_title">Prosiect Cod Agored</string>
   <string name="about_website_title">Gwefan</string>
+  <string name="user_manual_title">Llawlyfr defnyddiwr</string>
+  <string name="get_help_title">Cael cymorth</string>
   <string name="user_forum_title">Fforwm defnyddiwyr</string>
+  <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Llyfrgelloedd</string>
   <string name="license">Trwydded</string>
@@ -71,7 +74,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="choose_account_title">Dewis cyfrif</string>
   <string name="choose_folder_title">Dewis ffolder</string>
   <string name="choose_folder_move_title">Symud i...</string>
-  <string name="choose_folder_copy_title">Copïo i...</string>
+  <string name="choose_folder_copy_title">Copïo i…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> wedi\'i dewis</string>
   <string name="next_action">Nesaf</string>
   <string name="previous_action">Blaenorol</string>
@@ -171,7 +174,9 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="notification_authentication_error_title">Methwyd a dilysu</string>
   <string name="notification_authentication_error_text">Methodd y dilysiad ar gyfer <xliff:g id="account">%s</xliff:g>. Diweddara dy osodiadau gweinydd.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Gwall hysbysiad</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Bu gwall wrth geisio creu hysbysiad system am neges newydd. Mae\'n debyg mai\'r rheswm yw bod sain hysbysiad ar goll.\n\nTapia i agor gosodiadau hysbysiadau.</string>
   <string name="notification_bg_sync_ticker">Yn gwirio am negeseuon: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Yn gwirio am negeseuon</string>
   <string name="notification_bg_send_ticker">Yn anfon negeseuon: <xliff:g id="account">%s</xliff:g></string>
@@ -196,7 +201,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="debug_enable_sensitive_logging_summary">Gall dangos cyfrineiriau mewn logiau.</string>
   <string name="debug_export_logs_title">Allforio logiau</string>
   <string name="debug_export_logs_success">Allforiwyd yn llwyddiannus. Gall logiau gynnwys gwybodaeth sensitif. Byddwch yn ofalus gyda phwy rydych yn eu rhannu.</string>
-  <string name="debug_export_logs_failure">Methwyd yr allforio.</string>
+  <string name="debug_export_logs_failure">Methodd yr allforio.</string>
   <string name="message_list_load_more_messages_action">Llwytho rhagor o negeseuon</string>
   <string name="message_to_fmt">At:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Pwnc</string>
@@ -397,6 +402,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_failed_dlg_server_message_fmt">Methwyd cysylltu gyda\'r gweinydd.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_oauth_flow_canceled">Diddymwyd awdurdodi</string>
   <string name="account_setup_failed_dlg_oauth_flow_failed">Methodd awdurdodi gyda\'r gwall hwn: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">Ni chefnogir OAuth 2.0 ar hyn o bryd gyda\'r darparydd hwn.</string>
   <string name="account_setup_failed_dlg_browser_not_found">Methodd yr ap hwn ddod o hyd i borwr i\'w ddefnyddio i roi mynediad at dy gyfrif.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Golygu manylion</string>
   <string name="account_setup_failed_dlg_continue_action">Parhau</string>
@@ -538,6 +544,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="folder_settings_folder_push_mode_normal">Dim Rhenc</string>
   <string name="folder_settings_folder_push_mode_first_class">Rhenc 1af</string>
   <string name="folder_settings_folder_push_mode_second_class">2ail renc</string>
+  <string name="folder_settings_folder_push_mode_inherited">Fel rhenc gwirio</string>
   <string name="folder_settings_folder_notify_mode_label">Rhenc hysbysiadau\'r ffolder</string>
   <string name="folder_settings_folder_notify_mode_normal">Dim rhenc</string>
   <string name="folder_settings_folder_notify_mode_first_class">Rhenc 1af</string>
@@ -631,8 +638,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tystysgrif Ddiarth</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Derbyn Allwedd</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Gwrthod Allwedd</string>
-  <string name="message_view_help_key">Del (neu D) - Dileu\nR - Ateb\nA - Ateb i bawb\nC - Cyfansoddi\nF - Anfon ymlaen\nM - Symud\nV - Archifo\nY - Copïo\nZ - Nodi heb/wedi ei darllen\nG - Serennu\nO - Math o drefn\nI - Trefn sortio\nQ - Nôl i\'r ffolderi\nS - Dewis/dad-ddewis\nJ neu P - Neges flaenorol\nK neu N - Neges nesaf</string>
-  <string name="message_list_help_key">Del (neu D) - Dileu\nC - Cyfansoddi\nM - Symud\nV - Archive\nY - Copy\nZ -Nodi wedi/heb ei darllen\nG - Serennu\nO - Math o drefn\nI - Trefn\nQ - Nôl i\'r ffolderi\nS - Dewis/dad-ddewis</string>
   <string name="folder_list_filter_hint">Enw ffolder yn cynnwys</string>
   <string name="folder_list_display_mode_label">Dangos ffolderi…</string>
   <string name="folder_list_display_mode_all">Pob ffolder</string>
@@ -680,7 +685,9 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_push_limit_1000">1000 o ffolderi</string>
   <string name="animations_title">Animeiddiad</string>
   <string name="animations_summary">Defnyddio effeithiau gweledol dros ben llestri</string>
+  <string name="volume_navigation_title">Llywio gyda botymau sain ym modd golwg neges</string>
   <string name="show_unified_inbox_title">Dangos mewnflwch unedig</string>
+  <string name="show_starred_count_title">Dangos cyfrif serennog</string>
   <string name="integrated_inbox_title">Mewnflwch Unedig</string>
   <string name="integrated_inbox_detail">Holl negeseuon pob cyfrif mewn un ffolder unedig</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Uno</string>
@@ -763,7 +770,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Copi wrth gefn</string>
   <string name="settings_list_miscellaneous_category">Amrywiol</string>
-  <string name="settings_export_title">Archwilio gosodiadau</string>
+  <string name="settings_export_title">Allforio gosodiadau</string>
   <string name="settings_export_button">Allforio</string>
   <string name="settings_export_share_button">Rhannu</string>
   <string name="settings_export_progress_text">Yn allforio gosodiadau…</string>
@@ -1036,10 +1043,16 @@ Mae\'n bosib i ti gadw\'r neges hon a\'i ddefnyddio wrth gefn fel dy allwedd gyf
   <string name="permission_contacts_rationale_title">Caniatáu mynediad at gysylltiadau</string>
   <string name="permission_contacts_rationale_message">Er mwyn medru awgrymu cysylltiadau a dangos lluniau ac enwau cysylltiadau, mae ar yr ap angen mynediad at dy gysylltiadau.</string>
   <string name="generic_loading_error">Bu gwall wrth lwytho\'r data</string>
+  <string name="push_notification_state_initializing">Yn ymgychwyn…</string>
   <string name="push_notification_state_listening">Yn aros am negeseuon e-bost newydd</string>
+  <string name="push_notification_state_wait_background_sync">Yn cysgu nes bod cysoni yn y cefndir wedi\'i ganiatáu</string>
   <string name="push_notification_state_wait_network">Yn cysgu nes bod rhwydwaith ar gael</string>
   <string name="push_notification_info">Tapiwch i ddysgu rhagor.</string>
+  <string name="push_info_title">Gwybodaeth gwthio</string>
+  <string name="push_info_notification_explanation_text">Pan yn defnyddio Gwthio, mae K-9 Mail yn cadw cysylltiad â\'r gweinydd ebost. Mae ar Android angen dangos hysbysiad parhaus tra bod yr ap yn weithredol yn y cefndir. %s</string>
   <string name="push_info_configure_notification_text">Fodd bynnag, mae Android hefyd yn eich galluogi i guddio\'r hysbysiad.</string>
   <string name="push_info_learn_more_text">Dysgu rhagor</string>
   <string name="push_info_configure_notification_action">Ffurfweddu hysbysiad</string>
+  <string name="push_info_disable_push_text">Os nad wyt angen hysbysiadau ar unwaith am negeseuon newydd, analluoga Gwthio a defnyddio Gwirio. Mae Gwirio yn edrych am negeseuon newydd ar gyfnodau rheolaidd heb fod angen yr hysbysiad parhaus.</string>
+  <string name="push_info_disable_push_action">Analluogi Gwthio</string>
 </resources>

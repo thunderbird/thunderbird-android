@@ -633,8 +633,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat no reconegut</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepta la clau</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rebutja la clau</string>
-  <string name="message_view_help_key">Del (o D) - Elimina\nR - Respon\nA - Respon a tothom\nC - Escriu\nF - Reenvia\nM - Mou\nV - Arxiva\nY - Copia\nZ - Marca com a (no) llegit\nG - Estel\nO - Per tipus\nI - Per ordre\nQ - Torna a les carpetes\nS - Selecciona  / desmarca\nJ o P - Missatge anterior n\K o N - Missatge següent</string>
-  <string name="message_list_help_key">Del (o D) - Elimina\nC - Escriu\nM - Mou\nV - Arxiva\nY - Copia\nZ - Marca com a (no) llegit\nG - Estel\nO - Tipus de classificació\nI - Ordre de classificació\nQ - Torna a les carpetes\nS - Selecciona  / desmarca</string>
   <string name="folder_list_filter_hint">El nom de carpeta conté</string>
   <string name="folder_list_display_mode_label">Carpetes…</string>
   <string name="folder_list_display_mode_all">Mostra totes les carpetes</string>
@@ -682,6 +680,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_push_limit_1000">1000 carpetes</string>
   <string name="animations_title">Animació</string>
   <string name="animations_summary">Utilitza efectes visuals cridaners</string>
+  <string name="volume_navigation_title">Navegació amb la tecla de volum a la vista de missatges</string>
   <string name="show_unified_inbox_title">Mostra la safata d\'entrada unificada</string>
   <string name="show_starred_count_title">Mostra el recompte de destacats.</string>
   <string name="integrated_inbox_title">Bústia unificada</string>

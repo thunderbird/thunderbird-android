@@ -636,8 +636,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnustamata sertifikaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aktsepteeri võti</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Keeldu võtmest</string>
-  <string name="message_view_help_key">Del (või D) - Kustuta\nR - Vasta\nA - Vasta kõigile\nC - Koosta\nF - Saada edasi\nM - Teisalda\nV - Arhiveeri\nY - Kopeeri\nZ - Märgi (mitte)loetuks\nG - Tärn\nO - Sortimise tüüp\nI - Sorteerimise järjekord\nQ - Tagasi kaustadesse\nS - Vali/Tühista valik\nJ or P - Eelmine kiri\nK or N - Järgmine kiri</string>
-  <string name="message_list_help_key">Del (või D) - Kustuta\nC - Koosta kiri\nM - Teisalda\nV - Arhiveri\nY - Kopeeri\nZ - Märgi (mitte)loetuks\nG - Märgi tärniga\nO - Sortimise tüüp\nI - Sortimise järjekord\nQ - Tagasi kasutade loendisse\nS - Vali/eemalda valik</string>
   <string name="folder_list_filter_hint">Kausta nimi sisaldab</string>
   <string name="folder_list_display_mode_label">Näita kaustu…</string>
   <string name="folder_list_display_mode_all">Kõik kaustad</string>
