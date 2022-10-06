@@ -15,7 +15,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
@@ -878,15 +877,6 @@ open class MessageList :
                 if (messageViewContainerFragment != null) {
                     showNextMessage()
                 }
-                return true
-            }
-            'h' -> {
-                val toast = if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG)
-                } else {
-                    Toast.makeText(this, R.string.message_view_help_key, Toast.LENGTH_LONG)
-                }
-                toast.show()
                 return true
             }
         }

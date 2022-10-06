@@ -757,9 +757,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
 
-    <string name="message_view_help_key">Del (or D) - Delete\nR - Reply\nA - Reply All\nC - Compose\nF - Forward\nM - Move\nV - Archive\nY - Copy\nZ - Mark (Un)read\nG - Star\nO - Sort type\nI - Sort order\nQ - Return to Folders\nS - Select/deselect\nJ or P - Previous Message\nK or N - Next Message</string>
-    <string name="message_list_help_key">Del (or D) - Delete\nC - Compose\nM - Move\nV - Archive\nY - Copy\nZ - Mark (Un)read\nG - Star\nO - Sort type\nI - Sort order\nQ - Return to Folders\nS - Select/deselect</string>
-
     <string name="folder_list_filter_hint">Folder name contains</string>
 
     <string name="folder_list_display_mode_label">Show folders…</string>
