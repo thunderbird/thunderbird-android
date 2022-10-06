@@ -34,8 +34,6 @@ import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.fragment.MessageListFragment
-import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
@@ -54,6 +52,8 @@ import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
+import com.fsck.k9.ui.messagelist.MessageListFragment
+import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.ui.messageview.Direction
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
@@ -119,7 +119,7 @@ open class MessageList :
                 ?: if (K9.isMessageViewShowNext) Direction.NEXT else Direction.PREVIOUS
         }
 
-    private var messageListActivityAppearance: MessageListActivityAppearance? = null
+    private var messageListActivityConfig: MessageListActivityConfig? = null
 
     /**
      * `true` if the message list should be displayed as flat list (i.e. no threading)
@@ -548,9 +548,9 @@ open class MessageList :
     public override fun onResume() {
         super.onResume()
 
-        if (messageListActivityAppearance == null) {
-            messageListActivityAppearance = MessageListActivityAppearance.create(generalSettingsManager)
-        } else if (messageListActivityAppearance != MessageListActivityAppearance.create(generalSettingsManager)) {
+        if (messageListActivityConfig == null) {
+            messageListActivityConfig = MessageListActivityConfig.create(generalSettingsManager)
+        } else if (messageListActivityConfig != MessageListActivityConfig.create(generalSettingsManager)) {
             recreateCompat()
         }
 

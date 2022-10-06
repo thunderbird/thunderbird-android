@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment
+package com.fsck.k9.ui.messagelist
 
 import android.app.Activity
 import android.app.SearchManager
@@ -16,7 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -26,14 +26,15 @@ import com.fsck.k9.Account.SortType
 import com.fsck.k9.Clock
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
+import com.fsck.k9.SwipeAction
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.Search
 import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
+import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
-import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
@@ -46,13 +47,7 @@ import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.MessageListAppearance
-import com.fsck.k9.ui.messagelist.MessageListConfig
-import com.fsck.k9.ui.messagelist.MessageListInfo
-import com.fsck.k9.ui.messagelist.MessageListItem
-import com.fsck.k9.ui.messagelist.MessageListItemDecoration
-import com.fsck.k9.ui.messagelist.MessageListViewModel
-import com.fsck.k9.ui.messagelist.MessageSortOverride
+import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
 import org.koin.android.ext.android.inject
@@ -242,9 +237,8 @@ class MessageListFragment :
 
         val itemDecoration = MessageListItemDecoration(requireContext())
         recyclerView.addItemDecoration(itemDecoration)
-        recyclerView.itemAnimator = DefaultItemAnimator().apply {
-            supportsChangeAnimations = false
-        }
+
+        recyclerView.itemAnimator = MessageListItemAnimator()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -258,8 +252,10 @@ class MessageListFragment :
     }
 
     private fun initializeMessageList() {
+        val theme = requireActivity().theme
+
         adapter = MessageListAdapter(
-            theme = requireActivity().theme,
+            theme = theme,
             res = resources,
             layoutInflater = layoutInflater,
             contactsPictureLoader = ContactPicture.getContactPictureLoader(),
@@ -271,6 +267,19 @@ class MessageListFragment :
         adapter.activeMessage = activeMessage
 
         recyclerView.adapter = adapter
+
+        val itemTouchHelper = ItemTouchHelper(
+            MessageListSwipeCallback(
+                resources,
+                resourceProvider = SwipeResourceProvider(theme),
+                swipeActionSupportProvider,
+                swipeRightAction = K9.swipeRightAction,
+                swipeLeftAction = K9.swipeLeftAction,
+                adapter,
+                swipeListener
+            )
+        )
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     private fun initializeSortSettings() {
@@ -1419,6 +1428,58 @@ class MessageListFragment :
 
     private val isPullToRefreshAllowed: Boolean
         get() = isRemoteSearchAllowed || isCheckMailAllowed
+
+    private val swipeListener = MessageListSwipeListener { item, action ->
+        when (action) {
+            SwipeAction.None -> Unit
+            SwipeAction.ToggleSelection -> {
+                toggleMessageSelect(item)
+            }
+            SwipeAction.ToggleRead -> {
+                setFlag(item, Flag.SEEN, !item.isRead)
+            }
+            SwipeAction.ToggleStar -> {
+                setFlag(item, Flag.FLAGGED, !item.isStarred)
+            }
+            SwipeAction.Archive -> {
+                onArchive(item.messageReference)
+            }
+            SwipeAction.Delete -> {
+                if (K9.isConfirmDelete) {
+                    notifyItemChanged(item)
+                }
+                onDelete(listOf(item.messageReference))
+            }
+            SwipeAction.Spam -> {
+                if (K9.isConfirmSpam) {
+                    notifyItemChanged(item)
+                }
+                onSpam(listOf(item.messageReference))
+            }
+            SwipeAction.Move -> {
+                notifyItemChanged(item)
+                onMove(item.messageReference)
+            }
+        }
+    }
+
+    private fun notifyItemChanged(item: MessageListItem) {
+        val position = adapter.getPosition(item) ?: return
+        adapter.notifyItemChanged(position)
+    }
+
+    private val swipeActionSupportProvider = SwipeActionSupportProvider { item, action ->
+        when (action) {
+            SwipeAction.None -> false
+            SwipeAction.ToggleSelection -> true
+            SwipeAction.ToggleRead -> !isOutbox
+            SwipeAction.ToggleStar -> !isOutbox
+            SwipeAction.Archive -> !isOutbox && item.account.hasArchiveFolder()
+            SwipeAction.Delete -> true
+            SwipeAction.Move -> !isOutbox && messagingController.isMoveCapable(item.account)
+            SwipeAction.Spam -> !isOutbox && item.account.hasSpamFolder() && item.folderId != item.account.spamFolderId
+        }
+    }
 
     internal inner class MessageListActivityListener : SimpleMessagingListener() {
         private val lock = Any()

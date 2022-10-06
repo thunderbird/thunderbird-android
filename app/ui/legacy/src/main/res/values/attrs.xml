@@ -78,6 +78,26 @@
         <attr name="messageListAnswered" format="reference"/>
         <attr name="messageListForwarded" format="reference"/>
         <attr name="messageListAnsweredForwarded" format="reference"/>
+        <attr name="messageListSwipeIconTint" format="reference|color"/>
+        <attr name="messageListSwipeDisabledBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeSelectIcon" format="reference"/>
+        <attr name="messageListSwipeSelectBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeMarkAsReadIcon" format="reference"/>
+        <attr name="messageListSwipeMarkAsReadBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeMarkAsUnreadIcon" format="reference"/>
+        <attr name="messageListSwipeMarkAsUnreadBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeAddStarIcon" format="reference"/>
+        <attr name="messageListSwipeAddStarBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeRemoveStarIcon" format="reference"/>
+        <attr name="messageListSwipeRemoveStarBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeArchiveIcon" format="reference"/>
+        <attr name="messageListSwipeArchiveBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeDeleteIcon" format="reference"/>
+        <attr name="messageListSwipeDeleteBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeSpamIcon" format="reference"/>
+        <attr name="messageListSwipeSpamBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeMoveIcon" format="reference"/>
+        <attr name="messageListSwipeMoveBackgroundColor" format="reference|color"/>
         <attr name="messageStar" format="reference"/>
         <attr name="messageStarColor" format="color"/>
         <attr name="messageViewBackgroundColor" format="reference|color"/>

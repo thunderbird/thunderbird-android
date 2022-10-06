@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment
+package com.fsck.k9.ui.messagelist
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
@@ -28,8 +28,6 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.MessageListAppearance
-import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.resolveColorAttribute
 import com.fsck.k9.ui.resolveDrawableAttribute
 import kotlin.math.max
@@ -221,8 +219,8 @@ class MessageListAdapter internal constructor(
 
     private fun getItem(position: Int): MessageListItem = messages[position]
 
-    fun getItemById(uniqueId: Long): MessageListItem {
-        return messagesMap[uniqueId]!!
+    fun getItemById(uniqueId: Long): MessageListItem? {
+        return messagesMap[uniqueId]
     }
 
     fun getItem(messageReference: MessageReference): MessageListItem? {
@@ -526,7 +524,7 @@ class MessageListAdapter internal constructor(
 
     private fun getItemFromView(view: View): MessageListItem {
         val messageViewHolder = view.tag as MessageViewHolder
-        return getItemById(messageViewHolder.uniqueId)
+        return getItemById(messageViewHolder.uniqueId) ?: error("Couldn't find MessageListItem by View")
     }
 }
 

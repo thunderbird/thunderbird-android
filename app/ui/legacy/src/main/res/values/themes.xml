@@ -30,7 +30,7 @@
         <item name="iconActionArchive">@drawable/ic_archive</item>
         <item name="iconActionCompose">@drawable/ic_pencil</item>
         <item name="iconActionDelete">@drawable/ic_trash_can</item>
-        <item name="iconActionMove">@drawable/ic_folder</item>
+        <item name="iconActionMove">@drawable/ic_move_to_folder</item>
         <item name="iconActionCopy">@drawable/ic_content_copy</item>
         <item name="iconActionNextStatus">@drawable/ic_chevron_right</item>
         <item name="iconActionRefresh">@drawable/ic_refresh</item>
@@ -91,6 +91,28 @@
         <item name="messageListAnswered">@drawable/ic_messagelist_answered</item>
         <item name="messageListForwarded">@drawable/ic_messagelist_forwarded</item>
         <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded</item>
+
+        <item name="messageListSwipeIconTint">#ffffff</item>
+        <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_200</item>
+        <item name="messageListSwipeSelectIcon">@drawable/ic_import_status</item>
+        <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_600</item>
+        <item name="messageListSwipeMarkAsReadIcon">?attr/iconActionMarkAsRead</item>
+        <item name="messageListSwipeMarkAsReadBackgroundColor">@color/material_blue_600</item>
+        <item name="messageListSwipeMarkAsUnreadIcon">?attr/iconActionMarkAsUnread</item>
+        <item name="messageListSwipeMarkAsUnreadBackgroundColor">@color/material_blue_600</item>
+        <item name="messageListSwipeAddStarIcon">?attr/iconActionFlag</item>
+        <item name="messageListSwipeAddStarBackgroundColor">@color/material_orange_600</item>
+        <item name="messageListSwipeRemoveStarIcon">?attr/iconActionUnflag</item>
+        <item name="messageListSwipeRemoveStarBackgroundColor">@color/material_orange_600</item>
+        <item name="messageListSwipeArchiveIcon">?attr/iconActionArchive</item>
+        <item name="messageListSwipeArchiveBackgroundColor">@color/material_green_600</item>
+        <item name="messageListSwipeDeleteIcon">?attr/iconActionDelete</item>
+        <item name="messageListSwipeDeleteBackgroundColor">@color/material_red_600</item>
+        <item name="messageListSwipeSpamIcon">?attr/iconActionSpam</item>
+        <item name="messageListSwipeSpamBackgroundColor">@color/material_red_700</item>
+        <item name="messageListSwipeMoveIcon">?attr/iconActionMove</item>
+        <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_500</item>
+
         <item name="messageStar">@drawable/btn_check_star</item>
         <item name="messageStarColor">#fbbc04</item>
         <item name="messageViewBackgroundColor">#ffffffff</item>
@@ -129,6 +151,9 @@
         <item name="behindRecyclerView">#F0F0F0</item>
     </style>
 
+    <style name="Theme.K9.Light" parent="Theme.K9.Light.Common" />
+
+    <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Common" />
     <style name="Theme.K9.Dark.Common" parent="Theme.K9.Dark.Base">
         <item name="android:navigationBarColor">#000000</item>
         <item name="windowActionModeOverlay">true</item>
@@ -212,6 +237,28 @@
         <item name="messageListAnswered">@drawable/ic_messagelist_answered</item>
         <item name="messageListForwarded">@drawable/ic_messagelist_forwarded</item>
         <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded</item>
+
+        <item name="messageListSwipeIconTint">#ffffff</item>
+        <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_900</item>
+        <item name="messageListSwipeSelectIcon">@drawable/ic_import_status</item>
+        <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_700</item>
+        <item name="messageListSwipeMarkAsReadIcon">?attr/iconActionMarkAsRead</item>
+        <item name="messageListSwipeMarkAsReadBackgroundColor">@color/material_blue_700</item>
+        <item name="messageListSwipeMarkAsUnreadIcon">?attr/iconActionMarkAsUnread</item>
+        <item name="messageListSwipeMarkAsUnreadBackgroundColor">@color/material_blue_700</item>
+        <item name="messageListSwipeAddStarIcon">?attr/iconActionFlag</item>
+        <item name="messageListSwipeAddStarBackgroundColor">@color/material_orange_700</item>
+        <item name="messageListSwipeRemoveStarIcon">?attr/iconActionUnflag</item>
+        <item name="messageListSwipeRemoveStarBackgroundColor">@color/material_orange_700</item>
+        <item name="messageListSwipeArchiveIcon">?attr/iconActionArchive</item>
+        <item name="messageListSwipeArchiveBackgroundColor">@color/material_green_700</item>
+        <item name="messageListSwipeDeleteIcon">?attr/iconActionDelete</item>
+        <item name="messageListSwipeDeleteBackgroundColor">@color/material_red_700</item>
+        <item name="messageListSwipeSpamIcon">?attr/iconActionSpam</item>
+        <item name="messageListSwipeSpamBackgroundColor">@color/material_red_800</item>
+        <item name="messageListSwipeMoveIcon">?attr/iconActionMove</item>
+        <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_600</item>
+
         <item name="messageStar">@drawable/btn_check_star</item>
         <item name="messageStarColor">#fdd663</item>
         <item name="messageViewBackgroundColor">#000000</item>
@@ -250,9 +297,6 @@
 
         <item name="behindRecyclerView">#202020</item>
     </style>
-
-    <style name="Theme.K9.Light" parent="Theme.K9.Light.Common" />
-    <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Common" />
 
     <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">
         <item name="backgroundColorChooseAccountHeader">#cccccc</item>

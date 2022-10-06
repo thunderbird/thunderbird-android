@@ -6,7 +6,7 @@
     android:id="@+id/swiperefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fsck.k9.fragment.MessageListFragment">
+    tools:context=".messagelist.MessageListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/message_list"

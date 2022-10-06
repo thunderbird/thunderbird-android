@@ -1,11 +1,12 @@
 package com.fsck.k9.activity
 
 import com.fsck.k9.K9
+import com.fsck.k9.SwipeAction
 import com.fsck.k9.preferences.AppTheme
 import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.preferences.SubTheme
 
-data class MessageListActivityAppearance(
+data class MessageListActivityConfig(
     val appTheme: AppTheme,
     val isShowUnifiedInbox: Boolean,
     val isShowMessageListStars: Boolean,
@@ -31,13 +32,15 @@ data class MessageListActivityAppearance(
     val fontSizeMessageViewAdditionalHeaders: Int,
     val fontSizeMessageViewSubject: Int,
     val fontSizeMessageViewDate: Int,
-    val fontSizeMessageViewContentAsPercent: Int
+    val fontSizeMessageViewContentAsPercent: Int,
+    val swipeRightAction: SwipeAction,
+    val swipeLeftAction: SwipeAction,
 ) {
 
     companion object {
-        fun create(generalSettingsManager: GeneralSettingsManager): MessageListActivityAppearance {
+        fun create(generalSettingsManager: GeneralSettingsManager): MessageListActivityConfig {
             val settings = generalSettingsManager.getSettings()
-            return MessageListActivityAppearance(
+            return MessageListActivityConfig(
                 appTheme = settings.appTheme,
                 isShowUnifiedInbox = K9.isShowUnifiedInbox,
                 isShowMessageListStars = K9.isShowMessageListStars,
@@ -63,7 +66,9 @@ data class MessageListActivityAppearance(
                 fontSizeMessageViewAdditionalHeaders = K9.fontSizes.messageViewAdditionalHeaders,
                 fontSizeMessageViewSubject = K9.fontSizes.messageViewSubject,
                 fontSizeMessageViewDate = K9.fontSizes.messageViewDate,
-                fontSizeMessageViewContentAsPercent = K9.fontSizes.messageViewContentAsPercent
+                fontSizeMessageViewContentAsPercent = K9.fontSizes.messageViewContentAsPercent,
+                swipeRightAction = K9.swipeRightAction,
+                swipeLeftAction = K9.swipeLeftAction,
             )
         }
     }

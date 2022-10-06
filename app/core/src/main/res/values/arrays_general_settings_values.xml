@@ -210,4 +210,15 @@
         <item>spam</item>
     </string-array>
 
+    <string-array name="swipe_action_values" translatable="false">
+        <item>none</item>
+        <item>toggle_selection</item>
+        <item>toggle_read</item>
+        <item>toggle_star</item>
+        <item>archive</item>
+        <item>delete</item>
+        <item>spam</item>
+        <item>move</item>
+    </string-array>
+
 </resources>
