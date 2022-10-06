@@ -633,8 +633,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">گواهی ناشناس</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">پذیرش کلید</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">ردکردن کلید</string>
-  <string name="message_view_help_key">Del (یا D) - حذف\nR - پاسخ\nA - پاسخ به همه\nC - نوشتن\nF - هدایت\nM - انتقال\nV - بایگانی\nY - کپی\nZ - نشان بزن که (نـ)خواندم\nG - ستاره\nO - نوع ترتیب\nI - ترتیب\nQ - بازگشت به پوشه‌ها\nS - انتخاب (نـ)کردن\nJ یا P - پیام قبلی\nK یا N - پیام بعدی</string>
-  <string name="message_list_help_key">Del (یا D) - حذف\nC - نوشتن\nM - انتقال\nV - بایگانی\nY - کپی\nZ - نشان بزن که (نـ)خواندم\nG - ستاره\nO - نوع ترتیب\nI - ترتیب\nQ - بازگشت به پوشه‌ها\nS - انتخاب (نـ)کردن</string>
   <string name="folder_list_filter_hint">بخشی از نام پوشه</string>
   <string name="folder_list_display_mode_label">نمایش کدام پوشه‌ها…</string>
   <string name="folder_list_display_mode_all">همهٔ پوشه‌ها</string>

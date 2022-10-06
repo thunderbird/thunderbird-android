@@ -637,8 +637,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat nerecunoscut</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Tastă Accept</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Tastă Refuz</string>
-  <string name="message_view_help_key">Del (sau D) - Șterge\nR - Răspunde\nA - Răspunde tuturor\nC - Compune\nF - Redirecționează\nM - Mută\nV - Arhivează\nY - Copiază\nZ - Marchează (Ne)citit\nG - Stea\nO - Tip sortare\nI - Ordine sortare\nQ - Întoarcere la dosare\nS - Selectează/deselectează\nJ sau P - Mesaj anterior\nK sau N - Mesaj următor</string>
-  <string name="message_list_help_key">Del (sau D) - Șterge\nR - Răspunde\nA - Răspunde tuturor\nC - Compune\nF - Forward\nM - Mută\nV - Arhivează\nY - Copiază\nZ - Marchează (Ne)citit\nG - Stea\nO - Tip sortare\nI - Ordine sortare\nQ - Întoarcere la dosare\nS - Selectează/deselectează\nJ sau P - Mesaj anterior\nK sau N - Mesaj următor</string>
   <string name="folder_list_filter_hint">Numele dosarului conține</string>
   <string name="folder_list_display_mode_label">Afișează dosare…</string>
   <string name="folder_list_display_mode_all">Toate dosarele</string>

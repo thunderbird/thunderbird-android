@@ -632,8 +632,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ziurtagiri ezezaguna</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Onartu gakoa</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Baztertu gakoa</string>
-  <string name="message_view_help_key">Del (edo D) - Ezabatu\nR - Erantzun\nA - Erantzun denei\nC - Idatzi\nF - Birbidali\nM - Mugitu\nV - Artxibatu\nY - Kopiatu\nZ - Markatu irakurri (gabe) gisa\nG - Izarra\nO - Ordenatze mota\nI - Ordenatzeko irizpidea\nQ - Itzuli Karpetetara\nS - Hautatu/desautatu\nJ or P - Aurreko Mezua\nK or N - Hurrengo Mezua</string>
-  <string name="message_list_help_key">Del (edo D) - Ezabatu\nC - Idatzi\nM - Mugitu\nV - Artxibatu\nY - Kopiatu\nZ - Markatu irakurri (gabe) gisa\nG - Izarra\nO - Ordenatze mota\nI - Ordenatzeko irizpidea\nQ - Itzuli Karpetetara\nS - Hautatu/desautatu</string>
   <string name="folder_list_filter_hint">Karpetaren izenak dauka</string>
   <string name="folder_list_display_mode_label">Erakutsi karpetak…</string>
   <string name="folder_list_display_mode_all">Karpeta guztiak</string>

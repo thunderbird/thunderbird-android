@@ -633,8 +633,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ungültiges Zertifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Zertifikat ablehnen</string>
-  <string name="message_view_help_key">Entf (oder D) - Löschen\nR - Antworten\nA - Allen Antworten\nC - Verfassen\nF - Weiterleiten\nM - Verschieben\nV - Archivieren\nY - Kopieren\nZ - Als (un)gelesen markieren\nG - Wichtig\nO - Sortiertyp\nI - Sortierreihenfolge\nQ - Zurück zu den Ordnern\nS - Auswählen/Abwählen\nJ oder P - Vorherige Nachricht\nK oder N - Nächste Nachricht</string>
-  <string name="message_list_help_key">Entf (oder D) - Löschen\nC - Verfassen\nM - Verschieben\nV - Archivieren\nY - Kopieren\nZ - Als (un)gelesen markieren\nG - Wichtig\nO - Sortiertyp\nI - Sortierreihenfolge\nQ - Zurück zu den Ordnern\nS - Auswählen/Abwählen</string>
   <string name="folder_list_filter_hint">Ordnername enthält</string>
   <string name="folder_list_display_mode_label">Ordner</string>
   <string name="folder_list_display_mode_all">Alle Ordner anzeigen</string>

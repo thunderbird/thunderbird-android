@@ -631,8 +631,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_failed_dlg_invalid_certificate_title">无法识别的证书信息</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
-  <string name="message_view_help_key">Del (D) - 删除\nR - 回复\nA - 回复所有\nC - 群发\nF - 转发\nM - 移动\nV - 存档\nY - 复制\nZ - 标记 (未)阅读\nG - 加星\nO - 排序类型\nI - 排序名称\nQ - 返回文件夹\nS - 选择/删除已选\nJ or P - 上一消息\nK or N - 下一消息</string>
-  <string name="message_list_help_key">Del(D) - 删除\nC - 群组\nM - 移动\nV - 归档\nY - 复制\nZ - 标记 (未)已阅\nG - 加星\nO - 排序类型\nI - 排序名称\nQ - 返回文件夹\nS - 选择/删除已选</string>
   <string name="folder_list_filter_hint">文件夹名称中包含</string>
   <string name="folder_list_display_mode_label">文件夹</string>
   <string name="folder_list_display_mode_all">显示全部文件夹</string>

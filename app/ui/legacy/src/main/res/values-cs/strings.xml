@@ -637,8 +637,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nerozpoznaný certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
-  <string name="message_view_help_key">Delete (nebo D) – Smazat\nR – Odpovědět\nA – Odpovědět všem\nC – Vytvořit\nF – Přeposlat\nM – Přesunout\nV - Archivovat\nY – Kopírovat\nZ – Označit (Ne)přečtené\nG – Hvězdička\nO – Uspořádat podle typu\nI – Uspořádat podle pořadí\nQ – Zpět ke složkám\nS – Označit/odznačit\nJ nebo P – Předešlá zpráva\nK nebo N – Další zpráva</string>
-  <string name="message_list_help_key">Delete (nebo D) – Smazat\nC – Vytvořit\nM – Přesunout\nV – Archivovat\nY – Zkopírovat\nZ – Označit jako (ne)přečtené\nG – Označit hvězdičkou\nO – Typ řazení\nI – Pořadí řazení\nQ – Návrat na složky\nS – Označit / zrušit označení</string>
   <string name="folder_list_filter_hint">Název složky obsahuje</string>
   <string name="folder_list_display_mode_label">Zobrazit složky…</string>
   <string name="folder_list_display_mode_all">Všechny složky</string>

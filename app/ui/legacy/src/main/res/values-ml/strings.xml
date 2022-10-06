@@ -602,8 +602,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">തിരിച്ചറിയാത്ത സർട്ടിഫിക്കറ്റ്</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">കീ സ്വീകരിക്കുക</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">കീ നിരസിക്കുക</string>
-  <string name="message_view_help_key">Del (അല്ലെങ്കിൽ D) - ഇല്ലാതാക്കുക\nR - മറുപടി\nA - എല്ലാത്തിനുമായി മറുപടി നൽകുക\nC - രചിക്കുക\nF - ഫോർവേഡ്\nM - നീക്കുക\nV - ആർക്കൈവ്\nY - പകർത്തുക\nZ - (ഇല്ല) വായിച്ചതായി അടയാളപ്പെടുത്തുക\nG - നക്ഷത്രമിടുക\nO - അടുക്കുക തരം\nI - ക്രമം\nQ - ഫോൾഡറുകളിലേക്ക് മടങ്ങുക\nS - തിരഞ്ഞെടുക്കുക / തിരഞ്ഞെടുത്തത് മാറ്റുക\nJ or P - മുമ്പത്തെ സന്ദേശം\nK or N - അടുത്ത സന്ദേശം</string>
-  <string name="message_list_help_key">Del (അല്ലെങ്കിൽ D) - ഇല്ലാതാക്കുക\nC - രചിക്കുക\nM - നീക്കുക\nV - ആർക്കൈവ്\nY - പകർത്തുക\nZ - (ഇല്ല) വായിച്ചതായി അടയാളപ്പെടുത്തുക\nG - നക്ഷത്രമിടുക\nO - അടുക്കൽ തരം\nI - അടുക്കൽ ക്രമം\nQ - ഫോൾഡറുകളിലേക്ക് മടങ്ങുക\nS - തിരഞ്ഞെടുക്കുക / തിരഞ്ഞെടുത്തത് മാറ്റുക</string>
   <string name="folder_list_filter_hint">ഫോൾഡറിന്റെ പേരിൽ അടങ്ങിയിരിക്കുന്നു</string>
   <string name="folder_list_display_mode_label">ഫോൾഡറുകൾ കാണിക്കൂ…</string>
   <string name="folder_list_display_mode_all">എല്ലാ ഫോൾഡറുകളും</string>

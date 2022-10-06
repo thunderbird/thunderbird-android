@@ -636,8 +636,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat non reconnu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter la clé</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeter la clé</string>
-  <string name="message_view_help_key">Suppr (ou D) - Supprimer\nR - Répondre\nA - Répondre à tous\nC - Rédiger\nF - Transférer\nM - Déplacer\nV - Archiver\nY - Copier\nZ - Marquer comme lu ou non\nG - Étoile\nO - Type de tri\nI - Ordre de tri\nQ - Retourner aux dossiers\nS - Sélectionner/dessélectionner\nJ ou P - Courriel précédent\nK ou N - Courriel suivant</string>
-  <string name="message_list_help_key">Suppr (ou D) - Supprimer\nC - Rédiger\nM - Déplacer\nV - Archiver\nY - Copier\nZ - Marquer comme lu ou non\nG - Étoile\nO - Type de tri\nI - Ordre de tri\nQ - Retourner aux dossiers\nS - Sélectionner/dessélectionner</string>
   <string name="folder_list_filter_hint">Le nom de dossier comprend</string>
   <string name="folder_list_display_mode_label">Afficher les dossiers…</string>
   <string name="folder_list_display_mode_all">Tous les dossiers</string>

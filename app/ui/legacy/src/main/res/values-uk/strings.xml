@@ -638,8 +638,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Нерозпізнаний сертифікат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Прийняти ключ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Відхилити ключ</string>
-  <string name="message_view_help_key">Del (або D) - Видалити\nR - Відповісти\nA - Відповісти всім\nC - Написати лист\nF - Переслати\nM - Перемістити\nV - Архівувати\nY - Копіювати\nZ - Позначити (не)прочитаним\nG - Позначити зірочкою\nO - Тип сортування\nI - Порядок сортування\nQ - Повернутися до тек\nS - Вибрати / Зняти вибір\nJ або P - Попереднє повідомлення\nK або N - Наступне повідомлення</string>
-  <string name="message_list_help_key">Del (або D) - Видалити\nC - Написати лист\nM - Перемістити\nV - Архівувати\nY - Копіювати\nZ - Позначити (не)прочитаним\nG - Позначити зірочкою\nO - Тип сортування\nI - Порядок сортування\nQ - Поввернутися до тек\nS - Вибрати / Зняти вибір</string>
   <string name="folder_list_filter_hint">Назва теки містить</string>
   <string name="folder_list_display_mode_label">Показати теки…</string>
   <string name="folder_list_display_mode_all">Відображати усі теки</string>

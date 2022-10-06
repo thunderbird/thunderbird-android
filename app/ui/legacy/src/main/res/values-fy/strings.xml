@@ -628,8 +628,6 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="account_setup_failed_dlg_invalid_certificate_title">Unbekend sertifikaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kaai akseptearje</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Kaai wegerje</string>
-  <string name="message_view_help_key">Del (of D) - Fuortsmite\nR - Beäntwurdzje\nA - Elkenien beäntwurdzje\nC - Opstelle\nF - Trochstjoere\nM - Ferpleatse\nV - Argivearje\nY - Kopiearje\nZ - (net)lêzen markearje\nG - Stjer\nO - Sorteartype\nI - Sortearfolchoarder\nQ - Tebek nei Mappen\nS - Selektearje/deselektearje\nJ of P - Foarich berjocht\nK of N - Folgjende berjocht</string>
-  <string name="message_list_help_key">Del (of D) - Fuortsmite\nC - Opstelle\nM - Ferpleatse\nV - Argivearje\nY - Kopiearje\nZ - (net)lêzen markearje\nG - Stjer\nO - Sorteartype\nI - Sortearfolchoarder\nQ - Tebek nei Mappen\nS - Selektearje/deselektearje</string>
   <string name="folder_list_filter_hint">Mapnamme befettet</string>
   <string name="folder_list_display_mode_label">Mappen</string>
   <string name="folder_list_display_mode_all">Alle mappen</string>

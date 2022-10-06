@@ -628,8 +628,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_failed_dlg_invalid_certificate_title">Onbekend certificaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Sleutel accepteren</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Sleutel verwerpen</string>
-  <string name="message_view_help_key">Del (of D) - Verwijderen\nR - Beantwoorden\nA - Iedereen beantwoorden\nC - Opstellen\nF - Doorsturen\nM - Verplaatsen\nV - Archiveren\nY - Kopiëren\nZ - Markeer (on)gelezen\nG - Ster\nO - Sorteer type\nI - Sorteervolgorde\nQ - Terug naar Mappen\nS - Selecteren/deselecteren\nJ of P - Vorige bericht\nK of N - Volgende bericht</string>
-  <string name="message_list_help_key">Del (of D) - Verwijderen\nC - Opstellen\nM - Verplaatsen\nV - Archiveren\nY - Kopiëren\nZ - Markeer (on)gelezen\nG - Ster\nO - Sorteer type\nI - Sorteervolgorde\nQ - Terug naar Mappen\nS - Selecteren/deselecteren</string>
   <string name="folder_list_filter_hint">Mapnaam bevat</string>
   <string name="folder_list_display_mode_label">Mappen</string>
   <string name="folder_list_display_mode_all">Alle mappen tonen</string>

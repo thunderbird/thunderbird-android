@@ -73,8 +73,8 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="compose_title_forward_as_attachment">Przekaż jako załącznik</string>
   <string name="choose_account_title">Wybierz konto</string>
   <string name="choose_folder_title">Wybierz folder</string>
-  <string name="choose_folder_move_title">Przenieś do...</string>
-  <string name="choose_folder_copy_title">Kopiuj do...</string>
+  <string name="choose_folder_move_title">Przenieś do…</string>
+  <string name="choose_folder_copy_title">Kopiuj do…</string>
   <string name="actionbar_selected">Wybrano <xliff:g id="selection_count">%d</xliff:g></string>
   <string name="next_action">Dalej</string>
   <string name="previous_action">Cofnij</string>
@@ -637,8 +637,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
-  <string name="message_view_help_key">Del (lub D) - Usuń\nR - Odpowiedz\nA - Odpowiedz wszystkim\nC - Stwórz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Kopiuj\nZ - Zaznacz (Nie)przeczytane\nG - Gwiazdka\nO - Typ sortowania\nl - Kolejność sortowania\nQ - Wróć do folderów\nS - Wybierz/odznacz\nJ lub P - Poprzednia wiadomość\nK lub N - Następna wiadomość</string>
-  <string name="message_list_help_key">Del (lub D) - Usuń\nR - Odpowiedz\nA - Odpowiedz wszystkim\nC - Stwórz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Kopiuj\nZ - Zaznacz (Nie)przeczytane\nG - Gwiazdka\nO - Typ sortowania\nl - Kolejność sortowania\nQ - Wróć do folderów\nS - Wybierz/odznacz</string>
   <string name="folder_list_filter_hint">Nazwa folderu zawiera</string>
   <string name="folder_list_display_mode_label">Wyświetlanie folderów</string>
   <string name="folder_list_display_mode_all">Wszystkie</string>

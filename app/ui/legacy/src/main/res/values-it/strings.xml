@@ -636,8 +636,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificato non riconosciuto</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta chiave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifiuta chiave</string>
-  <string name="message_view_help_key">Canc (o D) - Elimina\nR - Rispondi\nA - Rispondi a tutti\nC - Componi\nF - Inoltra\nM - Sposta\nV - Archivia\nY - Copia\nZ - Marca come (non) letto\nG - Stella\nO - Tipo di ordinamento\nI - Ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona\nJ o P - Messaggio precedente\nK o N - Messaggio successivo</string>
-  <string name="message_list_help_key">Canc (o D) - Elimina\nC - Componi\nM - Sposta\nV - Archivia\nY - Copia\nZ - Marca come (non) letto\nG - Stella\nO - Tipo di ordinamento\nI - Ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona</string>
   <string name="folder_list_filter_hint">Il nome della cartella contiene</string>
   <string name="folder_list_display_mode_label">Mostra cartelle…</string>
   <string name="folder_list_display_mode_all">Tutte le cartelle</string>

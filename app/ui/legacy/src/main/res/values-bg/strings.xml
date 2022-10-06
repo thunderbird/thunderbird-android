@@ -576,8 +576,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_failed_dlg_invalid_certificate_title">Неразпознат сертификат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Приеми ключа</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отхвърли ключа</string>
-  <string name="message_view_help_key">Del (or D) - Изтриване\nR - Отговор\nA - Отговор на всички\nC - Създаване\nF - Препращане\nM - Премесване\nV - Архивиране\nY - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване\nJ или P - Предно съобщение\nK или N - Следващо съобщение</string>
-  <string name="message_list_help_key">Del (or D) - Изтриване\nC - Създаване\nM - Премесване\nV - Архивиране\nC - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване</string>
   <string name="folder_list_filter_hint">Името на папката съдържа</string>
   <string name="folder_list_display_mode_label">Покажи папките…</string>
   <string name="folder_list_display_mode_all">Всички папки</string>

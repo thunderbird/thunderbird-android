@@ -579,8 +579,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_failed_dlg_invalid_certificate_title">Нераспазнаны сертыфікат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Ухваліць</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Адхіліць</string>
-  <string name="message_view_help_key">Del (ці D) - Выдаліць\nR - Адказаць\nA - Адказаць усім\nC - Стварыць\nF - Пераслаць\nM - Перамясціць\nV - Адправіць у архіў\nY - Скапіяваць\nZ - Пазначыць (не)прачытаным\nG - Адзначыць\nO - Тып сартавання\nI - Парадак сартавання\nQ - Вярнуцца да каталогаў\nS - Абраць / Адкінуць выбар\nJ альбо P - Папярэдні ліст\nK альбо N - Наступны ліст</string>
-  <string name="message_list_help_key">Del (ці D) - Выдаліць\nC - Стварыць\nF - Пераслаць\nM - Перамясціць\nV - Адправіць у архіў\nY - Скапіяваць\nZ - Пазначыць (не)прачытаным\nG - Адзначыць\nO - Тып сартавання\nI - Парадак сартавання\nQ - Вярнуцца да каталогаў\nS - Абраць / Адкінуць выбар</string>
   <string name="folder_list_filter_hint">Пошук каталога</string>
   <string name="folder_list_display_mode_label">Паказваць каталогі…</string>
   <string name="folder_list_display_mode_all">Усе каталогі</string>
