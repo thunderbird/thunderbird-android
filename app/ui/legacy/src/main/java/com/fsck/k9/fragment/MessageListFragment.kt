@@ -143,6 +143,9 @@ class MessageListFragment :
             invalidateMenu()
         }
 
+    val isShowAccountChip: Boolean
+        get() = !isSingleAccountMode
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -475,7 +478,7 @@ class MessageListFragment :
             showContactPicture = K9.isShowContactPicture,
             showingThreadedList = showingThreadedList,
             backGroundAsReadIndicator = K9.isUseBackgroundAsUnreadIndicator,
-            showAccountChip = !isSingleAccountMode
+            showAccountChip = isShowAccountChip
         )
 
     private fun getFolderInfoHolder(folderId: Long, account: Account): FolderInfoHolder {

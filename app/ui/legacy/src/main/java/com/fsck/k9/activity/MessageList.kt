@@ -139,6 +139,9 @@ open class MessageList :
     private var viewSwitcher: ViewSwitcher? = null
     private lateinit var recentChangesSnackbar: Snackbar
 
+    private val isShowAccountChip: Boolean
+        get() = messageListFragment?.isShowAccountChip ?: true
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -1018,7 +1021,7 @@ open class MessageList :
         if (draftsFolderId != null && folderId == draftsFolderId) {
             MessageActions.actionEditDraft(this, messageReference)
         } else {
-            val fragment = MessageViewContainerFragment.newInstance(messageReference)
+            val fragment = MessageViewContainerFragment.newInstance(messageReference, isShowAccountChip)
             supportFragmentManager.commitNow {
                 replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER)
             }

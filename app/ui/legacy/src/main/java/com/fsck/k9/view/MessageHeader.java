@@ -128,9 +128,14 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         starView.setOnClickListener(listener);
     }
 
-    public void populate(final Message message, final Account account, boolean showStar) {
-        accountChip.setText(account.getDisplayName());
-        accountChip.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));
+    public void populate(final Message message, final Account account, boolean showStar, boolean showAccountChip) {
+        if (showAccountChip) {
+            accountChip.setVisibility(View.VISIBLE);
+            accountChip.setText(account.getDisplayName());
+            accountChip.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));
+        } else {
+            accountChip.setVisibility(View.GONE);
+        }
 
         Address fromAddress = null;
         Address[] fromAddresses = message.getFrom();
