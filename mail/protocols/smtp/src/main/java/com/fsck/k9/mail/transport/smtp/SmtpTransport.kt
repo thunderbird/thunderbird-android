@@ -363,7 +363,7 @@ class SmtpTransport(
 
         message.removeHeader("Bcc")
 
-        close()
+        ensureClosed()
         open()
 
         // If the message has attachments and our server has told us about a limit on the size of messages, count
@@ -434,11 +434,15 @@ class SmtpTransport(
         }
     }
 
-    override fun close() {
-        try {
-            executeCommand("QUIT")
-        } catch (ignored: Exception) {
+    private fun ensureClosed() {
+        if (inputStream != null || outputStream != null || socket != null || responseParser != null) {
+            Timber.w(RuntimeException(), "SmtpTransport was open when it was expected to be closed")
+            close()
         }
+    }
+
+    override fun close() {
+        writeQuitCommand()
 
         IOUtils.closeQuietly(inputStream)
         IOUtils.closeQuietly(outputStream)
@@ -448,6 +452,14 @@ class SmtpTransport(
         responseParser = null
         outputStream = null
         socket = null
+    }
+
+    private fun writeQuitCommand() {
+        try {
+            // We don't care about the server's response to the QUIT command
+            writeLine("QUIT")
+        } catch (ignored: Exception) {
+        }
     }
 
     private fun writeLine(command: String, sensitive: Boolean = false) {
@@ -637,7 +649,7 @@ class SmtpTransport(
 
     @Throws(MessagingException::class)
     fun checkSettings() {
-        close()
+        ensureClosed()
 
         try {
             open()
