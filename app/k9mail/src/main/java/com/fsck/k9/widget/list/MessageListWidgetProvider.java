@@ -46,7 +46,7 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.message_list_widget_layout);
 
-        views.setTextViewText(R.id.folder, context.getString(R.string.integrated_inbox_title));
+        views.setTextViewText(R.id.folder, context.getString(com.fsck.k9.ui.R.string.integrated_inbox_title));
 
         Intent intent = new Intent(context, MessageListWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);

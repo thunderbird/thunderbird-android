@@ -12,6 +12,8 @@
   <string name="app_license">Apache notkunarleyfi, útgáfa 2.0</string>
   <string name="about_project_title">Verkefni með opnum grunnkóða</string>
   <string name="about_website_title">Vefsvæði</string>
+  <string name="user_manual_title">Notandahandbók</string>
+  <string name="get_help_title">Fá aðstoð</string>
   <string name="user_forum_title">Spjallsvæði notenda</string>
   <string name="about_fediverse_title">Samfélagsmiðlun</string>
   <string name="about_twitter_title">Twitter</string>
@@ -104,6 +106,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="search_action">Leita</string>
   <string name="search_everywhere_action">Leita allsstaðar</string>
   <string name="search_results">Leitarniðurstöður</string>
+  <string name="new_messages_title">Ný skilaboð</string>
   <string name="preferences_action">Stillingar</string>
   <string name="folders_action">Sýsla með möppur</string>
   <string name="account_settings_action">Aðgangsstillingar</string>
@@ -114,6 +117,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="flag_action">Bæta við stjörnu</string>
   <string name="unflag_action">Fjarlægja stjörnu</string>
   <string name="copy_action">Afrita</string>
+  <string name="unsubscribe_action">Hætta áskrift</string>
   <string name="show_headers_action">Birta hausa</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Netfang afritað á klippispjald</item>
@@ -159,12 +163,15 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="notification_action_archive">Geymsla</string>
   <string name="notification_action_archive_all">Setja allt í geymslu</string>
   <string name="notification_action_spam">Ruslpóstur</string>
+  <string name="notification_certificate_error_public">Villa í skilríki</string>
   <string name="notification_certificate_error_title">Villa í skilríki fyrir <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Athugaðu stillingar póstþjónsins</string>
   <string name="notification_authentication_error_title">Auðkenning mistókst</string>
   <string name="notification_authentication_error_text">Auðkenning mistókst fyrir <xliff:g id="account">%s</xliff:g>. Uppfærðu stillingar póstþjónsins þíns.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Villa í tilkynningu</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Villa kom upp þegar reynt var að útbúa kerfistilkynningu vegna nýrra skilaboða. Ástæðan er líklegast sú að það vanti hljóð fyrir tilkynningar.\n\nPikkaðu til að opna stillingar á tilkynningum.</string>
   <string name="notification_bg_sync_ticker">Athuga með póst: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Athuga með póst</string>
   <string name="notification_bg_send_ticker">Sendi póst: <xliff:g id="account">%s</xliff:g></string>
@@ -187,6 +194,9 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="debug_enable_debug_logging_summary">Skrá viðbótarupplýsingar fyrir villuleit</string>
   <string name="debug_enable_sensitive_logging_title">Skrá viðkvæmar upplýsingar</string>
   <string name="debug_enable_sensitive_logging_summary">Má birta lykilorð í ánnálum.</string>
+  <string name="debug_export_logs_title">Flytja út atvikaskrár</string>
+  <string name="debug_export_logs_success">Útflutningur tókst. Atvikaskrár geta innihaldið viðkvæmar upplýsingar. Farðu varlega með hverjum þú sendir þær.</string>
+  <string name="debug_export_logs_failure">Útflutningur mistókst.</string>
   <string name="message_list_load_more_messages_action">Hlaða inn fleiri skilaboðum</string>
   <string name="message_to_fmt">Til:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Viðfangsefni</string>
@@ -233,6 +243,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_show_contact_name_summary">Nota nöfn viðtakenda úr tengiliðaskrá þegar það er mögulegt</string>
   <string name="global_settings_registered_name_color_label">Lita tengiliði</string>
   <string name="global_settings_registered_name_color_changed">Lita nöfn í tengiliðalistanum þínum</string>
+  <string name="general_settings_contact_name_color_label">Litur á nafni tengiliðar</string>
   <string name="global_settings_messageview_fixedwidth_label">Jafnbreitt letur</string>
   <string name="global_settings_messageview_fixedwidth_summary">Nota jafnbreitt letur til að birta skilaboð með hreinum texta</string>
   <string name="global_settings_messageview_autofit_width_label">Skilaboð passi sjálfvirkt</string>
@@ -260,6 +271,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_lock_screen_notification_visibility_title">Tilkynningar á skjálæsingu</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Engar tilkynningar á skjálæsingu</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nafn forritsins</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Fjöldi nýrra skilaboða</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Fjöldi skilaboða og sendenda</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Sama og þegar skjárinn er ólæstur</string>
   <string name="quiet_time">Kyrrðarstund</string>
@@ -271,8 +283,11 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_basics_title">Setja upp nýjan aðgang</string>
   <string name="account_setup_basics_email_hint">Netfang</string>
   <string name="account_setup_basics_password_hint">Lykilorð</string>
+  <string name="account_setup_oauth_description">Til að nota þennan tölvupóstaðgang með K-9 póstinum, þarftu að skrá þig inn og veita forritinu heimild inn á tölvupóstinn þinn.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Skrá inn</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Skrá inn með Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Til að skoða lykilorðið þitt hér skaltu virkja skjálæsingu á þessu tæki</string>
   <string name="account_setup_basics_show_password_biometrics_title">Sannreyndu auðkennin þín</string>
@@ -296,6 +311,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_auth_type_insecure_password">Lykilorð, sent á óöruggan máta</string>
   <string name="account_setup_auth_type_encrypted_password">Dulritað lykilorð</string>
   <string name="account_setup_auth_type_tls_client_certificate">Skilríki forritsins</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Stillingar inn-póstþjóns</string>
   <string name="account_setup_incoming_username_label">Aðgangsnafn</string>
   <string name="account_setup_incoming_password_label">Lykilorð</string>
@@ -314,6 +330,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_incoming_delete_policy_never_label">Ekki eyða af póstþjóni</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Eyða af póstþjóni</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Merkja sem lesið á póstþjóni</string>
+  <string name="account_setup_incoming_use_compression">Nota þjöppun</string>
   <string name="account_setup_expunge_policy_label">Þurrka út eyddum skilaboðum á póstþjóni</string>
   <string name="account_setup_expunge_policy_immediately">Strax</string>
   <string name="account_setup_expunge_policy_on_poll">Við athuganir</string>
@@ -378,6 +395,10 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_failed_dlg_auth_message_fmt">Rangt notandanafn eða lykilorð.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Þjónninn gaf upp ógilt SSL-skilríki. Stundum getur þetta gerst vegna vanstillingar á þjóninum. En stundum gerist þetta vegna þess að einhver er að gera árás á þig eða póstþjóninn. Ef þú ert ekki alveg viss, smelltu þá á \'Hafna\' og hafðu samband við þá sem sjá um póstþjóninn þinn.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Gat ekki tengst við póstþjón.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Hætt við auðkenningu</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Auðkenning mistókst með eftirfarandi villuboðum: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 er ekki stutt í augnablikinu hjá þessari þjónustuveitu.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Forritið fann engan vafra til að nota til að fá aðgang að notandaaðgangnum þinum.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Breyta upplýsingum</string>
   <string name="account_setup_failed_dlg_continue_action">Áfram</string>
   <string name="account_settings_push_advanced_title">Ítarlegt</string>
@@ -532,11 +553,29 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_description_label">Nafn aðgangsins</string>
   <string name="account_settings_name_label">Nafnið þitt</string>
   <string name="notifications_title">Tilkynningar</string>
+  <string name="account_settings_vibration">Titringur</string>
   <string name="account_settings_vibrate_enable">Titra</string>
+  <string name="account_settings_vibrate_pattern_label">Titringsmynstur</string>
   <string name="account_settings_vibrate_pattern_default">Sjálfgefið</string>
+  <string name="account_settings_vibrate_pattern_1">Mynstur 1</string>
+  <string name="account_settings_vibrate_pattern_2">Mynstur 2</string>
+  <string name="account_settings_vibrate_pattern_3">Mynstur 3</string>
+  <string name="account_settings_vibrate_pattern_4">Mynstur 4</string>
+  <string name="account_settings_vibrate_pattern_5">Mynstur 5</string>
   <string name="account_settings_vibrate_times">Endurtaka titring</string>
+  <string name="account_settings_vibrate_summary_disabled">Óvirkt</string>
   <string name="account_settings_ringtone">Nýr hringitónn fyrir póst</string>
+  <string name="account_settings_notification_light_label">Ljós við tilkynningu</string>
+  <string name="account_settings_notification_light_disabled">Óvirkt</string>
   <string name="account_settings_notification_light_account_color">Litur aðgangsins</string>
+  <string name="account_settings_notification_light_default_color">Sjálfgefinn litur í kerfinu</string>
+  <string name="account_settings_notification_light_white">Hvítt</string>
+  <string name="account_settings_notification_light_red">Rautt</string>
+  <string name="account_settings_notification_light_green">Grænt</string>
+  <string name="account_settings_notification_light_blue">Blátt</string>
+  <string name="account_settings_notification_light_yellow">Gult</string>
+  <string name="account_settings_notification_light_cyan">Grænblátt</string>
+  <string name="account_settings_notification_light_magenta">Blárautt</string>
   <string name="account_settings_composition_title">Valkostir við samningu skilaboða</string>
   <string name="account_settings_composition_label">Sjálfgefið við samningu skilaboða</string>
   <string name="account_settings_composition_summary">Settu sjálfgefið Frá, BCC (falið afrit) og undirskrift</string>
@@ -594,8 +633,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_failed_dlg_invalid_certificate_title">Óþekkjanlegt skilríki</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Samþykkja lykil</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hafna lykli</string>
-  <string name="message_view_help_key">Del (eða D) - Eyða\nR - Svara\nA - Svara öllum\nC - Skrifa\nF - Forward\nM - Færa\nV - Geymsla\nY - Afrita\nZ - Merkja (ó)lesið\nG - Stjörnumerkja\nO - Gerð röðunar\nI - Röðun\nQ - Fara í möppur\nS - Velja/afvelja\nJ eða P - Fyrri skilaboð\nK eða N - Næstu skilaboð</string>
-  <string name="message_list_help_key">Del (eða D) - Eyða\nC - Skrifa\nM - Færa\nV - Geymsla\nY - Afrita\nZ - Merkja (ó)lesið\nG - Stjörnumerkja\nO - Gerð röðunar\nQ - Fara í möppur\nS - Velja/afvelja</string>
   <string name="folder_list_filter_hint">Nafn möppu inniheldur</string>
   <string name="folder_list_display_mode_label">Birta möppur…</string>
   <string name="folder_list_display_mode_all">Allar möppur</string>
@@ -643,9 +680,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_push_limit_1000">1000 möppur</string>
   <string name="animations_title">Hreyfingar</string>
   <string name="animations_summary">Nota skrautlegar sjónbrellur</string>
-  <string name="volume_navigation_title">Flakk með hljóðstyrkshnöppum</string>
-  <string name="volume_navigation_message">Í skilaboðasýnum</string>
-  <string name="volume_navigation_list">Í listasýnum</string>
+  <string name="volume_navigation_title">Flakk með hljóðstyrkshnöppum í skilaboðasýn</string>
   <string name="show_unified_inbox_title">Birta sameinað innhólf</string>
   <string name="show_starred_count_title">Birta fjölda stjarna</string>
   <string name="integrated_inbox_title">Sameinað innhólf</string>
@@ -739,13 +774,16 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required"> Settu inn lykilorðin</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Skráðu þig inn</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required"> Skráðu þig inn og settu inn lykilorð</string>
   <string name="settings_import_failure">Mistókst að flytja inn stillingar</string>
   <string name="settings_import_read_failure">Mistókst að lesa stillingaskrá</string>
   <string name="settings_import_partial_failure">Mistókst að flytja inn sumar stillingar</string>
   <string name="settings_import_status_success">Innflutningur tókst</string>
   <string name="settings_import_status_password_required">Lykilorðs er krafist</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Innskráningar krafist</string>
   <string name="settings_import_status_not_imported">Ekki flutt inn</string>
   <string name="settings_import_status_error">Innflutningur mistókst</string>
   <string name="settings_import_later_button">Síðar</string>

@@ -25,3 +25,14 @@ fun Theme.resolveDrawableAttribute(attrId: Int): Drawable {
 
     return getDrawable(typedValue.resourceId)
 }
+
+fun Theme.getIntArray(attrId: Int): IntArray {
+    val typedValue = TypedValue()
+
+    val found = resolveAttribute(attrId, typedValue, true)
+    if (!found) {
+        throw IllegalStateException("Couldn't resolve attribute ($attrId)")
+    }
+
+    return resources.getIntArray(typedValue.resourceId)
+}

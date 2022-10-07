@@ -20,32 +20,32 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
                 """
-                SELECT 
-                    messages.id AS id, 
-                    uid, 
-                    folder_id, 
-                    sender_list, 
-                    to_list, 
-                    cc_list, 
-                    date, 
-                    internal_date, 
-                    subject, 
-                    preview_type,
-                    preview, 
-                    read, 
-                    flagged, 
-                    answered, 
-                    forwarded, 
-                    attachment_count, 
-                    root
-                FROM messages
-                JOIN threads ON (threads.message_id = messages.id)
-                LEFT JOIN FOLDERS ON (folders.id = messages.folder_id)
-                WHERE
-                    ($selection)
-                    AND empty = 0 AND deleted = 0
-                ORDER BY $sortOrder
-                """.trimIndent(),
+SELECT 
+  messages.id AS id, 
+  uid, 
+  folder_id, 
+  sender_list, 
+  to_list, 
+  cc_list, 
+  date, 
+  internal_date, 
+  subject, 
+  preview_type,
+  preview, 
+  read, 
+  flagged, 
+  answered, 
+  forwarded, 
+  attachment_count, 
+  root
+FROM messages
+JOIN threads ON (threads.message_id = messages.id)
+LEFT JOIN FOLDERS ON (folders.id = messages.folder_id)
+WHERE
+  ($selection)
+  AND empty = 0 AND deleted = 0
+ORDER BY $sortOrder
+                """,
                 selectionArgs,
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)
@@ -72,60 +72,60 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
                 """
-                SELECT 
-                    messages.id AS id, 
-                    uid, 
-                    folder_id, 
-                    sender_list, 
-                    to_list, 
-                    cc_list, 
-                    aggregated.date AS date, 
-                    aggregated.internal_date AS internal_date, 
-                    subject, 
-                    preview_type,
-                    preview, 
-                    aggregated.read AS read, 
-                    aggregated.flagged AS flagged, 
-                    aggregated.answered AS answered, 
-                    aggregated.forwarded AS forwarded, 
-                    aggregated.attachment_count AS attachment_count, 
-                    root, 
-                    aggregated.thread_count AS thread_count
-                FROM (
-                    SELECT 
-                        threads.root AS thread_root,
-                        MAX(date) AS date,
-                        MAX(internal_date) AS internal_date,
-                        MIN(read) AS read,
-                        MAX(flagged) AS flagged,
-                        MIN(answered) AS answered,
-                        MIN(forwarded) AS forwarded,
-                        SUM(attachment_count) AS attachment_count,
-                        COUNT(threads.root) AS thread_count                        
-                    FROM messages
-                    JOIN threads ON (threads.message_id = messages.id)
-                    JOIN folders ON (folders.id = messages.folder_id)
-                    WHERE
-                        threads.root IN (
-                            SELECT threads.root 
-                            FROM messages
-                            JOIN threads ON (threads.message_id = messages.id)
-                            WHERE messages.empty = 0 AND messages.deleted = 0
-                        )
-                        AND ($selection)
-                        AND messages.empty = 0 AND messages.deleted = 0
-                    GROUP BY threads.root
-                ) aggregated
-                JOIN threads ON (threads.root = aggregated.thread_root)
-                JOIN messages ON (
-                    messages.id = threads.message_id
-                    AND messages.empty = 0 AND messages.deleted = 0
-                    AND messages.date = aggregated.date
-                )
-                JOIN folders ON (folders.id = messages.folder_id)
-                GROUP BY threads.root
-                ORDER BY $orderBy
-                """.trimIndent(),
+SELECT 
+  messages.id AS id, 
+  uid, 
+  folder_id, 
+  sender_list, 
+  to_list, 
+  cc_list, 
+  aggregated.date AS date, 
+  aggregated.internal_date AS internal_date, 
+  subject, 
+  preview_type,
+  preview, 
+  aggregated.read AS read, 
+  aggregated.flagged AS flagged, 
+  aggregated.answered AS answered, 
+  aggregated.forwarded AS forwarded, 
+  aggregated.attachment_count AS attachment_count, 
+  root, 
+  aggregated.thread_count AS thread_count
+FROM (
+  SELECT 
+    threads.root AS thread_root,
+    MAX(date) AS date,
+    MAX(internal_date) AS internal_date,
+    MIN(read) AS read,
+    MAX(flagged) AS flagged,
+    MIN(answered) AS answered,
+    MIN(forwarded) AS forwarded,
+    SUM(attachment_count) AS attachment_count,
+    COUNT(threads.root) AS thread_count                        
+  FROM messages
+  JOIN threads ON (threads.message_id = messages.id)
+  JOIN folders ON (folders.id = messages.folder_id)
+  WHERE
+    threads.root IN (
+      SELECT threads.root 
+      FROM messages
+      JOIN threads ON (threads.message_id = messages.id)
+      WHERE messages.empty = 0 AND messages.deleted = 0
+    )
+    AND ($selection)
+    AND messages.empty = 0 AND messages.deleted = 0
+  GROUP BY threads.root
+) aggregated
+JOIN threads ON (threads.root = aggregated.thread_root)
+JOIN messages ON (
+  messages.id = threads.message_id
+  AND messages.empty = 0 AND messages.deleted = 0
+  AND messages.date = aggregated.date
+)
+JOIN folders ON (folders.id = messages.folder_id)
+GROUP BY threads.root
+ORDER BY $orderBy
+                """,
                 selectionArgs,
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = true)
@@ -145,32 +145,32 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
                 """
-                SELECT 
-                    messages.id AS id, 
-                    uid, 
-                    folder_id, 
-                    sender_list, 
-                    to_list, 
-                    cc_list, 
-                    date, 
-                    internal_date, 
-                    subject, 
-                    preview_type,
-                    preview, 
-                    read, 
-                    flagged, 
-                    answered, 
-                    forwarded, 
-                    attachment_count, 
-                    root
-                FROM threads 
-                JOIN messages ON (messages.id = threads.message_id)
-                LEFT JOIN FOLDERS ON (folders.id = messages.folder_id)
-                WHERE
-                    root = ?
-                    AND empty = 0 AND deleted = 0
-                ORDER BY $sortOrder
-                """.trimIndent(),
+SELECT 
+  messages.id AS id, 
+  uid, 
+  folder_id, 
+  sender_list, 
+  to_list, 
+  cc_list, 
+  date, 
+  internal_date, 
+  subject, 
+  preview_type,
+  preview, 
+  read, 
+  flagged, 
+  answered, 
+  forwarded, 
+  attachment_count, 
+  root
+FROM threads 
+JOIN messages ON (messages.id = threads.message_id)
+LEFT JOIN FOLDERS ON (folders.id = messages.folder_id)
+WHERE
+  root = ?
+  AND empty = 0 AND deleted = 0
+ORDER BY $sortOrder
+                """,
                 arrayOf(threadId.toString()),
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)

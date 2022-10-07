@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.fsck.k9.core.R as CoreR
 
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: GeneralSettingsViewModel by viewModel()
@@ -74,7 +75,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         (findPreference(PREFERENCE_THEME) as? ListPreference)?.apply {
             if (Build.VERSION.SDK_INT < 28) {
                 setEntries(R.array.theme_entries_legacy)
-                setEntryValues(R.array.theme_values_legacy)
+                setEntryValues(CoreR.array.theme_values_legacy)
             }
         }
     }

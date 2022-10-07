@@ -567,7 +567,6 @@
   <string name="account_setup_push_limit_500">500 مجلد</string>
   <string name="account_setup_push_limit_1000">1000 مجلد</string>
   <string name="animations_title">الحركة</string>
-  <string name="volume_navigation_title">التصفح عبر أزرار التحكم في الصوت</string>
   <string name="integrated_inbox_title">البريد الوارد الموحَّد</string>
   <string name="integrated_inbox_detail">كل الرسائل في مجلدات موحَّدة</string>
   <string name="folder_settings_include_in_integrated_inbox_label">التوحيد</string>

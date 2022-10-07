@@ -33,9 +33,7 @@ dependencies {
     implementation "com.splitwise:tokenautocomplete:4.0.0-beta01"
     implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0"
     implementation 'com.mikepenz:materialdrawer:8.4.5'
-    implementation 'com.mikepenz:materialdrawer-iconics:8.4.5'
-    implementation 'com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar'
-    implementation 'com.github.ByteHamster:SearchPreference:v2.2.1'
+    implementation 'com.github.ByteHamster:SearchPreference:v2.3.0'
     implementation "com.mikepenz:fastadapter:${versions.fastAdapter}"
     implementation "com.mikepenz:fastadapter-extensions-drag:${versions.fastAdapter}"
     implementation "com.mikepenz:fastadapter-extensions-utils:${versions.fastAdapter}"
@@ -70,6 +68,8 @@ dependencies {
 }
 
 android {
+    namespace 'com.fsck.k9.ui'
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 

@@ -4,15 +4,9 @@
 
     <color name="light_black">#444444</color>
 
-    <color name="message_list_item_footer_background">#eeeeee</color>
-
     <color name="status_todo_chevron">#888</color>
     <color name="status_error_cross">#f44336</color>
     <color name="status_ok_checkmark">#7bad45</color>
-
-    <color name="md_grey_50">#FAFAFA</color>
-    <color name="md_grey_100">#F5F5F5</color>
-    <color name="md_grey_900">#212121</color>
 
     <color name="material_drawer_profile_icon">#F9F9F9</color>
 </resources>

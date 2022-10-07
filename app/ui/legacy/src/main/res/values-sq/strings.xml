@@ -634,8 +634,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_failed_dlg_invalid_certificate_title">Dëshmi Jo e Njohur</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Pranoje Kyçin</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hidhe tej Kyçin</string>
-  <string name="message_view_help_key">Del (ose D) - Fshije\nR - Përgjigju\nA - Përgjigju të Tërëve\nC - Hartoni\nF - Përcille\nM - Lëvize\nV - Arkivoje\nY - Kopjoje\nZ - Vëri shenjë/hiqi shenjë si i (Pa)Lexuar\nG - Vëri Yll\nO - Lloj renditjeje\nI - Rend renditjeje\nQ - Rikthehu te Dosjet\nS - Përzgjidhe/shpërzgjidhe\nJ ose P - Mesai i Mëparshëm\nK ose N - Mesazhi Pasues</string>
-  <string name="message_list_help_key">Del (ose D) - Fshije\nC - Hartoni\nM - Lëvize\nV - Arkivoje\nY - Kopjoje\nZ - Vëri shenjë/hiqi shenjë si i (Pa)Lexuar\nG - Vëri Yll\nO - Lloj renditjeje\nI - Rend renditjeje\nQ - Rikthehu te Dosjet\nS - Përzgjidhe/shpërzgjidhe</string>
   <string name="folder_list_filter_hint">Emri i dosjes përmban</string>
   <string name="folder_list_display_mode_label">Shfaq dosje…</string>
   <string name="folder_list_display_mode_all">Krejt dosjet</string>
@@ -683,9 +681,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_push_limit_1000">1000 dosje</string>
   <string name="animations_title">Animacion</string>
   <string name="animations_summary">Përdor efekteve pamore Gaudy</string>
-  <string name="volume_navigation_title">Lëvizje me buton volumi</string>
-  <string name="volume_navigation_message">Në skenë mesazhi</string>
-  <string name="volume_navigation_list">Në skenë liste</string>
   <string name="show_unified_inbox_title">Shfaq Kuti Poste të Njësuar</string>
   <string name="show_starred_count_title">Shfaq llogari me yll</string>
   <string name="integrated_inbox_title">Kuti Poste e Njësuar</string>

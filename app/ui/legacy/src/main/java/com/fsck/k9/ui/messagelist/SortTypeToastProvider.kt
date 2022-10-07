@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment
+package com.fsck.k9.ui.messagelist
 
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.Account.SortType.SORT_ARRIVAL

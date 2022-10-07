@@ -638,8 +638,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Нерозпізнаний сертифікат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Прийняти ключ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Відхилити ключ</string>
-  <string name="message_view_help_key">Del (або D) - Видалити\nR - Відповісти\nA - Відповісти всім\nC - Написати лист\nF - Переслати\nM - Перемістити\nV - Архівувати\nY - Копіювати\nZ - Позначити (не)прочитаним\nG - Позначити зірочкою\nO - Тип сортування\nI - Порядок сортування\nQ - Повернутися до тек\nS - Вибрати / Зняти вибір\nJ або P - Попереднє повідомлення\nK або N - Наступне повідомлення</string>
-  <string name="message_list_help_key">Del (або D) - Видалити\nC - Написати лист\nM - Перемістити\nV - Архівувати\nY - Копіювати\nZ - Позначити (не)прочитаним\nG - Позначити зірочкою\nO - Тип сортування\nI - Порядок сортування\nQ - Поввернутися до тек\nS - Вибрати / Зняти вибір</string>
   <string name="folder_list_filter_hint">Назва теки містить</string>
   <string name="folder_list_display_mode_label">Показати теки…</string>
   <string name="folder_list_display_mode_all">Відображати усі теки</string>
@@ -687,9 +685,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_push_limit_1000">1000 тек</string>
   <string name="animations_title">Анімація</string>
   <string name="animations_summary">Використовувати яскраві візуальні ефекти</string>
-  <string name="volume_navigation_title">Навігація кнопками зміни гучності</string>
-  <string name="volume_navigation_message">при перегляді повідомлень</string>
-  <string name="volume_navigation_list">у списках</string>
   <string name="show_unified_inbox_title">Показувати Об\'єднані Вхідні</string>
   <string name="show_starred_count_title">Показати лічильник зірочок</string>
   <string name="integrated_inbox_title">Об\'єднані Вхідні</string>

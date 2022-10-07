@@ -1,6 +1,7 @@
 package com.fsck.k9.ui
 
 import com.fsck.k9.RobolectricTest
+import com.fsck.k9.core.R
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment

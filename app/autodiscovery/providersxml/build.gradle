@@ -21,6 +21,8 @@ dependencies {
 }
 
 android {
+    namespace 'com.fsck.k9.autodiscovery.providersxml'
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 

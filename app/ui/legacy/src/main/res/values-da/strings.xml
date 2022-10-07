@@ -605,8 +605,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ukendt certificat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptér nøgle</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Afvis nøgle</string>
-  <string name="message_view_help_key">Del (or D) - Slet\nR - Svar\nA - Svar alle\nC - Skriv besked\nF - Videresend\nM - Flyt\nV - Arkiver\nY - Kopier\nZ - Marker (U)læst\nG - Stjernemarker\nO - Sorteringstype\nI - Sortering\nQ - Tilbage til Mapper\nS - Marker/afmarker\nJ or P - Forrige meddelelse\nK or N - Næste Meddelelse</string>
-  <string name="message_list_help_key">Del (or D) - Slet\nC - Skriv besked\nM - Flyt\nV - Arkiver\nY - Kopier\nZ - Marker (U)læst\nG - Stjernemarker\nO - Sorteringstype\nI - Sorteringsorden\nQ - Tilbage til mapper\nS - Marker/afmaker</string>
   <string name="folder_list_filter_hint">Mappenavn indeholder</string>
   <string name="folder_list_display_mode_label">Mapper</string>
   <string name="folder_list_display_mode_all">Vis alle mapper</string>
@@ -654,9 +652,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_push_limit_1000">1000 mapper</string>
   <string name="animations_title">Animation</string>
   <string name="animations_summary">Anvend visuelle effekter</string>
-  <string name="volume_navigation_title">Volume-knap navigation</string>
-  <string name="volume_navigation_message">Mail-visning</string>
-  <string name="volume_navigation_list">Diverse listevisninger</string>
   <string name="show_unified_inbox_title">Vis Fælles Indbakke</string>
   <string name="integrated_inbox_title">Fælles indbakke</string>
   <string name="integrated_inbox_detail">Alle mails i fælles mapper</string>

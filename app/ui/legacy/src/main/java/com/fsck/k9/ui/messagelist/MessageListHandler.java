@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment;
+package com.fsck.k9.ui.messagelist;
 
 
 import java.lang.ref.WeakReference;
@@ -57,7 +57,7 @@ public class MessageListHandler extends Handler {
             public void run() {
                 MessageListFragment fragment = mFragment.get();
                 if (fragment != null) {
-                    fragment.updateFooter(message);
+                    fragment.updateFooterText(message);
                 }
             }
         });

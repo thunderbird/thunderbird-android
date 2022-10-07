@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
-import com.fsck.k9.ui.R
+import com.fsck.k9.core.R
 
 class LanguagePreference
 @JvmOverloads

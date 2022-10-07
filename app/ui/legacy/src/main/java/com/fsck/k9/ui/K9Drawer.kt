@@ -56,6 +56,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import com.fsck.k9.core.R as CoreR
+import com.mikepenz.materialdrawer.R as MaterialDrawerR
 
 private const val UNREAD_SYMBOL = "\u2B24"
 private const val STARRED_SYMBOL = "\u2605"
@@ -466,8 +468,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun getDarkThemeAccentColor(color: Int): Int {
-        val lightColors = resources.getIntArray(R.array.account_colors)
-        val darkColors = resources.getIntArray(R.array.drawer_account_accent_color_dark_theme)
+        val lightColors = resources.getIntArray(CoreR.array.account_colors)
+        val darkColors = resources.getIntArray(CoreR.array.drawer_account_accent_color_dark_theme)
         val index = lightColors.indexOf(color)
         return if (index == -1) color else darkColors[index]
     }
@@ -537,11 +539,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 private fun Context.obtainDrawerTextColor(): Int {
     val styledAttributes = obtainStyledAttributes(
         null,
-        R.styleable.MaterialDrawerSliderView,
-        R.attr.materialDrawerStyle,
-        R.style.Widget_MaterialDrawerStyle
+        MaterialDrawerR.styleable.MaterialDrawerSliderView,
+        MaterialDrawerR.attr.materialDrawerStyle,
+        MaterialDrawerR.style.Widget_MaterialDrawerStyle
     )
-    val textColor = styledAttributes.getColor(R.styleable.MaterialDrawerSliderView_materialDrawerPrimaryText, 0)
+    val textColor = styledAttributes.getColor(MaterialDrawerR.styleable.MaterialDrawerSliderView_materialDrawerPrimaryText, 0)
     styledAttributes.recycle()
 
     return textColor

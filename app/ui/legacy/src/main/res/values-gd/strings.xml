@@ -545,33 +545,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Teisteanas nach aithne dhuinn</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Gabh ris an iuchair</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Diùlt an iuchair</string>
-  <string name="message_view_help_key">Del (no D) – Sguab às
-\nR – Freagair
-\nA – Freagair a h-uile
-\nC – Sgrìobh
-\nF – Sìn air adhart
-\nM – Gluais
-\nV – Cuir san tasg-lann
-\nY – Dèan lethbhreac
-\nZ – Cuir comharra gun deach/nach deach a leughadh
-\nG – Cuir rionnag ris
-\nO – Seòrsa an t-seòrsachaidh
-\nI – Òrdugh an t-seòrsachaidh
-\nQ – Till dha na pasganan
-\nS – Tagh/Dì-thagh
-\nJ no P – An teachdaireachd roimhpe
-\nK no N – An ath-theachdaireachd</string>
-  <string name="message_list_help_key">Del (no D) – Sguab às
-\nC – Sgrìobh
-\nM – Gluais
-\nV – Cuir san tasg-lann
-\nY – Dèan lethbhreac
-\nZ – Cuir comharra gun deach/nach deach a leughadh
-\nG – Cuir rionnag ris
-\nO – Seòrsa an t-seòrsachaidh
-\nI – Òrdugh an t-seòrsachaidh
-\nQ – Till dha na pasganan
-\nS – Tagh/Dì-thagh</string>
   <string name="folder_list_filter_hint">Ainm a’ phasgain anns a bheil</string>
   <string name="folder_list_display_mode_label">Seall pasganan…</string>
   <string name="folder_list_display_mode_all">Na h-uile pasgan</string>
@@ -617,9 +590,6 @@
   <string name="account_setup_push_limit_1000">1,000 pasgan</string>
   <string name="animations_title">Beòthachadh</string>
   <string name="animations_summary">Cleachd èifeachdan lèirsinneach leòmach</string>
-  <string name="volume_navigation_title">Seòladaireachd le putanan àirde na fuaime</string>
-  <string name="volume_navigation_message">Ann an seallaidhean theachdaireachdan</string>
-  <string name="volume_navigation_list">Ann an seallaidhean liostaichean</string>
   <string name="show_unified_inbox_title">Seall an t-oll-bhogsa</string>
   <string name="integrated_inbox_title">An t-oll-bhogsa</string>
   <string name="integrated_inbox_detail">Na h-uile teachdaireachd ann am pasganan co-aonaichte</string>

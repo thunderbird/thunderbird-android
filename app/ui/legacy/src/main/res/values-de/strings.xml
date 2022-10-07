@@ -633,8 +633,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ungültiges Zertifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Zertifikat ablehnen</string>
-  <string name="message_view_help_key">Entf (oder D) - Löschen\nR - Antworten\nA - Allen Antworten\nC - Verfassen\nF - Weiterleiten\nM - Verschieben\nV - Archivieren\nY - Kopieren\nZ - Als (un)gelesen markieren\nG - Wichtig\nO - Sortiertyp\nI - Sortierreihenfolge\nQ - Zurück zu den Ordnern\nS - Auswählen/Abwählen\nJ oder P - Vorherige Nachricht\nK oder N - Nächste Nachricht</string>
-  <string name="message_list_help_key">Entf (oder D) - Löschen\nC - Verfassen\nM - Verschieben\nV - Archivieren\nY - Kopieren\nZ - Als (un)gelesen markieren\nG - Wichtig\nO - Sortiertyp\nI - Sortierreihenfolge\nQ - Zurück zu den Ordnern\nS - Auswählen/Abwählen</string>
   <string name="folder_list_filter_hint">Ordnername enthält</string>
   <string name="folder_list_display_mode_label">Ordner</string>
   <string name="folder_list_display_mode_all">Alle Ordner anzeigen</string>
@@ -682,9 +680,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_push_limit_1000">1000 Ordner</string>
   <string name="animations_title">Animationen</string>
   <string name="animations_summary">Aufwendige visuelle Effekte benutzen</string>
-  <string name="volume_navigation_title">Lauter/Leiser-Navigation</string>
-  <string name="volume_navigation_message">Nachrichtenansicht</string>
-  <string name="volume_navigation_list">Diverse Listenansichten</string>
+  <string name="volume_navigation_title">Navigation per Lautstärketasten in der Nachrichtenansicht</string>
   <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
   <string name="show_starred_count_title">Anzahl der Sterne anzeigen</string>
   <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>

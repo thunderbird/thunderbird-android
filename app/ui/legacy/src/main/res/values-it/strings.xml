@@ -636,8 +636,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificato non riconosciuto</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta chiave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifiuta chiave</string>
-  <string name="message_view_help_key">Canc (o D) - Elimina\nR - Rispondi\nA - Rispondi a tutti\nC - Componi\nF - Inoltra\nM - Sposta\nV - Archivia\nY - Copia\nZ - Marca come (non) letto\nG - Stella\nO - Tipo di ordinamento\nI - Ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona\nJ o P - Messaggio precedente\nK o N - Messaggio successivo</string>
-  <string name="message_list_help_key">Canc (o D) - Elimina\nC - Componi\nM - Sposta\nV - Archivia\nY - Copia\nZ - Marca come (non) letto\nG - Stella\nO - Tipo di ordinamento\nI - Ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona</string>
   <string name="folder_list_filter_hint">Il nome della cartella contiene</string>
   <string name="folder_list_display_mode_label">Mostra cartelle…</string>
   <string name="folder_list_display_mode_all">Tutte le cartelle</string>
@@ -685,9 +683,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_push_limit_1000">1000 cartelle</string>
   <string name="animations_title">Animazione</string>
   <string name="animations_summary">Utilizza effetti visivi vistosi</string>
-  <string name="volume_navigation_title">Navigazione con tasti volume</string>
-  <string name="volume_navigation_message">In visualizzazione messaggi</string>
-  <string name="volume_navigation_list">In visualizzazione elenco</string>
   <string name="show_unified_inbox_title">Mosta posta in arrivo combinata</string>
   <string name="show_starred_count_title">Mostra il numero dei messaggi con stella</string>
   <string name="integrated_inbox_title">Posta in arrivo combinata</string>

@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment
+package com.fsck.k9.ui.messagelist
 
 import android.app.Activity
 import android.app.SearchManager
@@ -6,20 +6,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemClickListener
-import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fsck.k9.Account
 import com.fsck.k9.Account.Expunge
@@ -27,14 +26,15 @@ import com.fsck.k9.Account.SortType
 import com.fsck.k9.Clock
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
+import com.fsck.k9.SwipeAction
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.Search
 import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
+import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
-import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
@@ -47,12 +47,7 @@ import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.MessageListAppearance
-import com.fsck.k9.ui.messagelist.MessageListConfig
-import com.fsck.k9.ui.messagelist.MessageListInfo
-import com.fsck.k9.ui.messagelist.MessageListItem
-import com.fsck.k9.ui.messagelist.MessageListViewModel
-import com.fsck.k9.ui.messagelist.MessageSortOverride
+import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
 import org.koin.android.ext.android.inject
@@ -60,11 +55,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
+private const val MINIMUM_CLICK_INTERVAL = 200L
 
 class MessageListFragment :
     Fragment(),
-    OnItemClickListener,
-    OnItemLongClickListener,
     ConfirmationDialogFragmentListener,
     MessageListItemActionListener {
 
@@ -82,12 +76,9 @@ class MessageListFragment :
 
     private lateinit var fragmentListener: MessageListFragmentListener
 
-    private lateinit var listView: ListView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var adapter: MessageListAdapter
-    private var footerView: View? = null
-
-    private var savedListState: Parcelable? = null
 
     private lateinit var accountUuids: Array<String>
     private var account: Account? = null
@@ -111,6 +102,7 @@ class MessageListFragment :
     private var isThreadDisplay = false
     private var activeMessage: MessageReference? = null
     private var rememberedSelected: Set<Long>? = null
+    private var lastMessageClick = 0L
 
     lateinit var localSearch: LocalSearch
         private set
@@ -118,6 +110,7 @@ class MessageListFragment :
         private set
     private var isSingleFolderMode = false
     private var isRemoteSearch = false
+    private var initialMessageListLoad = true
 
     private val isUnifiedInbox: Boolean
         get() = localSearch.id == SearchAccount.UNIFIED_INBOX
@@ -176,7 +169,6 @@ class MessageListFragment :
         activeMessages = savedInstanceState.getStringArray(STATE_ACTIVE_MESSAGES)?.map { MessageReference.parse(it)!! }
         restoreSelectedMessages(savedInstanceState)
         isRemoteSearch = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED)
-        savedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST)
         val messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE)
         activeMessage = MessageReference.parse(messageReferenceString)
     }
@@ -186,7 +178,7 @@ class MessageListFragment :
     }
 
     fun restoreListState(savedListState: Parcelable) {
-        listView.onRestoreInstanceState(savedListState)
+        recyclerView.layoutManager?.onRestoreInstanceState(savedListState)
     }
 
     private fun decodeArguments(): MessageListFragment? {
@@ -226,7 +218,7 @@ class MessageListFragment :
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.message_list_fragment, container, false).apply {
             initializeSwipeRefreshLayout(this)
-            initializeListView(this)
+            initializeRecyclerView(this)
         }
     }
 
@@ -243,17 +235,13 @@ class MessageListFragment :
         swipeRefreshLayout.isEnabled = false
     }
 
-    private fun initializeListView(view: View) {
-        listView = view.findViewById(R.id.message_list)
-        with(listView) {
-            scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-            isLongClickable = true
-            isFastScrollEnabled = true
-            isVerticalFadingEdgeEnabled = false
-            isScrollingCacheEnabled = false
-            onItemClickListener = this@MessageListFragment
-            onItemLongClickListener = this@MessageListFragment
-        }
+    private fun initializeRecyclerView(view: View) {
+        recyclerView = view.findViewById(R.id.message_list)
+
+        val itemDecoration = MessageListItemDecoration(requireContext())
+        recyclerView.addItemDecoration(itemDecoration)
+
+        recyclerView.itemAnimator = MessageListItemAnimator()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -267,9 +255,10 @@ class MessageListFragment :
     }
 
     private fun initializeMessageList() {
+        val theme = requireActivity().theme
+
         adapter = MessageListAdapter(
-            context = requireContext(),
-            theme = requireActivity().theme,
+            theme = theme,
             res = resources,
             layoutInflater = layoutInflater,
             contactsPictureLoader = ContactPicture.getContactPictureLoader(),
@@ -280,12 +269,20 @@ class MessageListFragment :
 
         adapter.activeMessage = activeMessage
 
-        if (isSingleFolderMode) {
-            listView.addFooterView(getFooterView(listView))
-            updateFooter(null)
-        }
+        recyclerView.adapter = adapter
 
-        listView.adapter = adapter
+        val itemTouchHelper = ItemTouchHelper(
+            MessageListSwipeCallback(
+                resources,
+                resourceProvider = SwipeResourceProvider(theme),
+                swipeActionSupportProvider,
+                swipeRightAction = K9.swipeRightAction,
+                swipeLeftAction = K9.swipeLeftAction,
+                adapter,
+                swipeListener
+            )
+        )
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     private fun initializeSortSettings() {
@@ -318,10 +315,9 @@ class MessageListFragment :
         currentFolder?.let {
             if (it.databaseId == folderId) {
                 it.loading = loading
+                updateFooterText()
             }
         }
-
-        updateFooterView()
     }
 
     fun updateTitle() {
@@ -375,16 +371,7 @@ class MessageListFragment :
         fragmentListener.setMessageListProgressEnabled(progress)
     }
 
-    override fun onItemClick(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-        if (view === footerView) {
-            handleFooterClick()
-        } else {
-            val messageListItem = adapter.getItem(position)
-            handleListItemClick(messageListItem)
-        }
-    }
-
-    private fun handleFooterClick() {
+    override fun onFooterClicked() {
         val currentFolder = this.currentFolder ?: return
 
         if (currentFolder.moreMessages && !localSearch.isManualSearch) {
@@ -403,7 +390,7 @@ class MessageListFragment :
             } else {
                 extraSearchResults = null
                 loadSearchResults = additionalSearchResults
-                updateFooter(null)
+                updateFooterText(null)
             }
 
             messagingController.loadSearchResults(
@@ -415,10 +402,20 @@ class MessageListFragment :
         }
     }
 
-    private fun handleListItemClick(messageListItem: MessageListItem) {
+    override fun onMessageClicked(messageListItem: MessageListItem) {
+        if (!isActive) {
+            // Ignore click events that are delivered after the Fragment is no longer active. This could happen when
+            // the user taps two messages at almost the same time and the first tap opens a new MessageListFragment.
+            return
+        }
+
+        val clickTime = SystemClock.elapsedRealtime()
+        if (clickTime - lastMessageClick < MINIMUM_CLICK_INTERVAL) return
+
         if (adapter.selectedCount > 0) {
             toggleMessageSelect(messageListItem)
         } else {
+            lastMessageClick = clickTime
             if (showingThreadedList && messageListItem.threadCount > 1) {
                 fragmentListener.showThread(messageListItem.account, messageListItem.threadRoot)
             } else {
@@ -427,28 +424,17 @@ class MessageListFragment :
         }
     }
 
-    override fun onItemLongClick(parent: AdapterView<*>?, view: View, position: Int, id: Long): Boolean {
-        if (view === footerView) return false
-
-        val messageListItem = adapter.getItem(position)
-        toggleMessageSelect(messageListItem)
-
-        return true
-    }
-
     override fun onDestroyView() {
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
             messagingController.clearNewMessages(account)
         }
 
-        savedListState = listView.onSaveInstanceState()
         super.onDestroyView()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        saveListState(outState)
         outState.putLongArray(STATE_SELECTED_MESSAGES, adapter.selected.toLongArray())
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
         outState.putStringArray(
@@ -457,15 +443,6 @@ class MessageListFragment :
         )
         if (activeMessage != null) {
             outState.putString(STATE_ACTIVE_MESSAGE, activeMessage!!.toIdentityString())
-        }
-    }
-
-    private fun saveListState(outState: Bundle) {
-        if (savedListState != null) {
-            // The previously saved state was never restored, so just use that.
-            outState.putParcelable(STATE_MESSAGE_LIST, savedListState)
-        } else {
-            outState.putParcelable(STATE_MESSAGE_LIST, listView.onSaveInstanceState())
         }
     }
 
@@ -792,26 +769,15 @@ class MessageListFragment :
         messagingController.sendPendingMessages(account, null)
     }
 
-    private fun getFooterView(parent: ViewGroup?): View? {
-        return footerView ?: createFooterView(parent).also { footerView = it }
-    }
-
-    private fun createFooterView(parent: ViewGroup?): View {
-        return layoutInflater.inflate(R.layout.message_list_item_footer, parent, false).apply {
-            tag = FooterViewHolder(this)
-        }
-    }
-
-    private fun updateFooterView() {
+    private fun updateFooterText() {
         val currentFolder = this.currentFolder
         val account = this.account
 
-        if (localSearch.isManualSearch || currentFolder == null || account == null) {
-            updateFooter(null)
-            return
-        }
-
-        val footerText = if (currentFolder.loading) {
+        val footerText = if (initialMessageListLoad) {
+            null
+        } else if (localSearch.isManualSearch || currentFolder == null || account == null) {
+            null
+        } else if (currentFolder.loading) {
             getString(R.string.status_loading_more)
         } else if (!currentFolder.moreMessages) {
             null
@@ -821,24 +787,11 @@ class MessageListFragment :
             getString(R.string.load_more_messages_fmt, account.displayCount)
         }
 
-        updateFooter(footerText)
+        updateFooterText(footerText)
     }
 
-    fun updateFooter(text: String?) {
-        val footerView = this.footerView ?: return
-
-        val shouldHideFooter = text == null
-        if (shouldHideFooter) {
-            listView.removeFooterView(footerView)
-        } else {
-            val isFooterViewAddedToListView = listView.footerViewsCount > 0
-            if (!isFooterViewAddedToListView) {
-                listView.addFooterView(footerView)
-            }
-        }
-
-        val holder = footerView.tag as FooterViewHolder
-        holder.main.text = text
+    fun updateFooterText(text: String?) {
+        adapter.footerText = text
     }
 
     private fun selectAll() {
@@ -1195,28 +1148,6 @@ class MessageListFragment :
         super.onStop()
     }
 
-    fun onMoveUp() {
-        var currentPosition = listView.selectedItemPosition
-        if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode) {
-            currentPosition = listView.firstVisiblePosition
-        }
-
-        if (currentPosition > 0) {
-            listView.setSelection(currentPosition - 1)
-        }
-    }
-
-    fun onMoveDown() {
-        var currentPosition = listView.selectedItemPosition
-        if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode) {
-            currentPosition = listView.firstVisiblePosition
-        }
-
-        if (currentPosition < listView.count) {
-            listView.setSelection(currentPosition + 1)
-        }
-    }
-
     fun openMessage(messageReference: MessageReference) {
         fragmentListener.openMessage(messageReference)
     }
@@ -1230,8 +1161,9 @@ class MessageListFragment :
 
     private val selectedMessageListItem: MessageListItem?
         get() {
-            val position = listView.selectedItemPosition
-            return if (position !in 0 until adapter.count) null else adapter.getItem(position)
+            val focusedView = recyclerView.focusedChild ?: return null
+            val viewHolder = recyclerView.findContainingViewHolder(focusedView) as? MessageViewHolder ?: return null
+            return adapter.getItemById(viewHolder.uniqueId)
         }
 
     private val selectedMessages: List<MessageReference>
@@ -1368,16 +1300,13 @@ class MessageListFragment :
         resetActionMode()
         computeBatchDirection()
 
-        if (savedListState != null) {
-            handler.restoreListPosition(savedListState)
-            savedListState = null
-        }
-
         invalidateMenu()
+
+        initialMessageListLoad = false
 
         currentFolder?.let { currentFolder ->
             currentFolder.moreMessages = messageListInfo.hasMoreMessages
-            updateFooterView()
+            updateFooterText()
         }
     }
 
@@ -1402,6 +1331,10 @@ class MessageListFragment :
         actionMode?.invalidate()
     }
 
+    fun finishActionMode() {
+        actionMode?.finish()
+    }
+
     fun remoteSearchFinished() {
         remoteSearchFuture = null
     }
@@ -1419,7 +1352,6 @@ class MessageListFragment :
         // Redraw list immediately
         if (::adapter.isInitialized) {
             adapter.activeMessage = activeMessage
-            adapter.notifyDataSetChanged()
 
             if (messageReference != null) {
                 scrollToMessage(messageReference)
@@ -1462,8 +1394,11 @@ class MessageListFragment :
         val messageListItem = adapter.getItem(messageReference) ?: return
         val position = adapter.getPosition(messageListItem) ?: return
 
-        if (position <= listView.firstVisiblePosition || position >= listView.lastVisiblePosition) {
-            listView.smoothScrollToPosition(position)
+        val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+        val firstVisiblePosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition()
+        val lastVisiblePosition = linearLayoutManager.findLastCompletelyVisibleItemPosition()
+        if (position !in firstVisiblePosition..lastVisiblePosition) {
+            recyclerView.smoothScrollToPosition(position)
         }
     }
 
@@ -1496,6 +1431,58 @@ class MessageListFragment :
 
     private val isPullToRefreshAllowed: Boolean
         get() = isRemoteSearchAllowed || isCheckMailAllowed
+
+    private val swipeListener = MessageListSwipeListener { item, action ->
+        when (action) {
+            SwipeAction.None -> Unit
+            SwipeAction.ToggleSelection -> {
+                toggleMessageSelect(item)
+            }
+            SwipeAction.ToggleRead -> {
+                setFlag(item, Flag.SEEN, !item.isRead)
+            }
+            SwipeAction.ToggleStar -> {
+                setFlag(item, Flag.FLAGGED, !item.isStarred)
+            }
+            SwipeAction.Archive -> {
+                onArchive(item.messageReference)
+            }
+            SwipeAction.Delete -> {
+                if (K9.isConfirmDelete) {
+                    notifyItemChanged(item)
+                }
+                onDelete(listOf(item.messageReference))
+            }
+            SwipeAction.Spam -> {
+                if (K9.isConfirmSpam) {
+                    notifyItemChanged(item)
+                }
+                onSpam(listOf(item.messageReference))
+            }
+            SwipeAction.Move -> {
+                notifyItemChanged(item)
+                onMove(item.messageReference)
+            }
+        }
+    }
+
+    private fun notifyItemChanged(item: MessageListItem) {
+        val position = adapter.getPosition(item) ?: return
+        adapter.notifyItemChanged(position)
+    }
+
+    private val swipeActionSupportProvider = SwipeActionSupportProvider { item, action ->
+        when (action) {
+            SwipeAction.None -> false
+            SwipeAction.ToggleSelection -> true
+            SwipeAction.ToggleRead -> !isOutbox
+            SwipeAction.ToggleStar -> !isOutbox
+            SwipeAction.Archive -> !isOutbox && item.account.hasArchiveFolder()
+            SwipeAction.Delete -> true
+            SwipeAction.Move -> !isOutbox && messagingController.isMoveCapable(item.account)
+            SwipeAction.Spam -> !isOutbox && item.account.hasSpamFolder() && item.folderId != item.account.spamFolderId
+        }
+    }
 
     internal inner class MessageListActivityListener : SimpleMessagingListener() {
         private val lock = Any()
@@ -1839,10 +1826,6 @@ class MessageListFragment :
         }
     }
 
-    internal class FooterViewHolder(view: View) {
-        val main: TextView = view.findViewById(R.id.main_text)
-    }
-
     private enum class FolderOperation {
         COPY, MOVE
     }
@@ -1876,7 +1859,6 @@ class MessageListFragment :
         private const val STATE_ACTIVE_MESSAGES = "activeMessages"
         private const val STATE_ACTIVE_MESSAGE = "activeMessage"
         private const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
-        private const val STATE_MESSAGE_LIST = "listState"
 
         fun newInstance(search: LocalSearch, isThreadDisplay: Boolean, threadedList: Boolean): MessageListFragment {
             return MessageListFragment().apply {

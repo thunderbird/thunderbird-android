@@ -95,7 +95,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="single_message_options_action">Odeslat…</string>
   <string name="refile_action">Přesměrovat…</string>
   <string name="done_action">Hotovo</string>
-  <string name="discard_action">Zrušit</string>
+  <string name="discard_action">Zahodit</string>
   <string name="save_draft_action">Uložit jako koncept</string>
   <string name="check_mail_action">Zkontrolovat poštu</string>
   <string name="send_messages_action">Odeslat zprávy</string>
@@ -637,8 +637,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nerozpoznaný certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
-  <string name="message_view_help_key">Delete (nebo D) – Smazat\nR – Odpovědět\nA – Odpovědět všem\nC – Vytvořit\nF – Přeposlat\nM – Přesunout\nV - Archivovat\nY – Kopírovat\nZ – Označit (Ne)přečtené\nG – Hvězdička\nO – Uspořádat podle typu\nI – Uspořádat podle pořadí\nQ – Zpět ke složkám\nS – Označit/odznačit\nJ nebo P – Předešlá zpráva\nK nebo N – Další zpráva</string>
-  <string name="message_list_help_key">Delete (nebo D) – Smazat\nC – Vytvořit\nM – Přesunout\nV – Archivovat\nY – Zkopírovat\nZ – Označit jako (ne)přečtené\nG – Označit hvězdičkou\nO – Typ řazení\nI – Pořadí řazení\nQ – Návrat na složky\nS – Označit / zrušit označení</string>
   <string name="folder_list_filter_hint">Název složky obsahuje</string>
   <string name="folder_list_display_mode_label">Zobrazit složky…</string>
   <string name="folder_list_display_mode_all">Všechny složky</string>
@@ -686,9 +684,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_push_limit_1000">1000 složek</string>
   <string name="animations_title">Animace</string>
   <string name="animations_summary">Používat okázalé vizuální efekty</string>
-  <string name="volume_navigation_title">Navigace tlačítky hlasitosti</string>
-  <string name="volume_navigation_message">Zobrazení zpráv</string>
-  <string name="volume_navigation_list">Různá zobrazení seznamů</string>
   <string name="show_unified_inbox_title">Ukázat sjednocený pohled na doručenou poštu</string>
   <string name="show_starred_count_title">Zobrazit počet označených hvězdičkou</string>
   <string name="integrated_inbox_title">Integrovaná doručená pošta</string>

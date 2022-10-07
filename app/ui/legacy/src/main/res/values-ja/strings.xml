@@ -631,8 +631,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_failed_dlg_invalid_certificate_title">証明書が無効です</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">許可</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒否</string>
-  <string name="message_view_help_key">Del (または D) - 削除\nR - 返信\nA - 全員に返信\nC - 作成\nF - 転送\nM - 移動\nV - アーカイブ\nY - コピー\nZ - 既(未)読のマーク\nG - スター\nO - ソート種別\nI - ソート順\nQ - フォルダ一覧に戻る\nS - 選択/選択解除\nJ または P - 前のメッセージへ\nK または N - 次のメッセージへ</string>
-  <string name="message_list_help_key">Del (または D) - 削除\nC - 作成\nM - 移動\nV - アーカイブ\nY - コピー\nZ - 既(未)読のマーク\nG - スター\nO - ソート種別\nI - ソート順\nQ - フォルダ一覧に戻る\nS - 選択/選択解除</string>
   <string name="folder_list_filter_hint">フォルダ名が含む</string>
   <string name="folder_list_display_mode_label">フォルダ表示…</string>
   <string name="folder_list_display_mode_all">全フォルダ</string>
@@ -680,9 +678,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_push_limit_1000">1000 フォルダ</string>
   <string name="animations_title">アニメーション</string>
   <string name="animations_summary">派手な視覚効果を使用する</string>
-  <string name="volume_navigation_title">ボリュームキー操作</string>
-  <string name="volume_navigation_message">メッセージ表示</string>
-  <string name="volume_navigation_list">一覧表示</string>
+  <string name="volume_navigation_title">メッセージビューでの音量キー操作</string>
   <string name="show_unified_inbox_title">統合フォルダを表示</string>
   <string name="show_starred_count_title">フラグの数を表示する</string>
   <string name="integrated_inbox_title">統合フォルダ</string>

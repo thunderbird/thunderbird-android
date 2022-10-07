@@ -3,10 +3,9 @@ package com.fsck.k9.account
 import android.content.res.Resources
 import com.fsck.k9.Account.DeletePolicy
 import com.fsck.k9.Preferences
+import com.fsck.k9.core.R
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.preferences.Protocols
-import com.fsck.k9.ui.R
-import com.fsck.k9.ui.helper.MaterialColors
 
 /**
  * Deals with logic surrounding account creation.
@@ -53,7 +52,7 @@ class AccountCreator(private val preferences: Preferences, private val resources
 
     fun pickColor(): Int {
         val accounts = preferences.accounts
-        val usedAccountColors = accounts.map { it.chipColor }
+        val usedAccountColors = accounts.map { it.chipColor }.toSet()
         val accountColors = resources.getIntArray(R.array.account_colors).toList()
 
         val availableColors = accountColors - usedAccountColors
@@ -61,17 +60,10 @@ class AccountCreator(private val preferences: Preferences, private val resources
             return accountColors.random()
         }
 
+        val defaultAccountColors = resources.getIntArray(R.array.default_account_colors)
         return availableColors.shuffled().minByOrNull { color ->
-            val index = DEFAULT_COLORS.indexOf(color)
-            if (index != -1) index else DEFAULT_COLORS.size
+            val index = defaultAccountColors.indexOf(color)
+            if (index != -1) index else defaultAccountColors.size
         } ?: error("availableColors must not be empty")
-    }
-
-    companion object {
-        private val DEFAULT_COLORS = intArrayOf(
-            MaterialColors.BLUE_700,
-            MaterialColors.PINK_500,
-            MaterialColors.AMBER_600
-        )
     }
 }

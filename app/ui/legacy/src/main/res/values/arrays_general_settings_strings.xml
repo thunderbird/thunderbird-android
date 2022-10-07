@@ -157,9 +157,15 @@
         <item>@string/spam_action</item>
     </string-array>
 
-    <string-array name="volume_navigation_entries">
-        <item>@string/volume_navigation_message</item>
-        <item>@string/volume_navigation_list</item>
+    <string-array name="swipe_action_names">
+        <item>@string/general_settings_swipe_action_none</item>
+        <item>@string/general_settings_swipe_action_toggle_selection</item>
+        <item>@string/general_settings_swipe_action_toggle_read</item>
+        <item>@string/general_settings_swipe_action_toggle_star</item>
+        <item>@string/general_settings_swipe_action_archive</item>
+        <item>@string/general_settings_swipe_action_delete</item>
+        <item>@string/general_settings_swipe_action_spam</item>
+        <item>@string/general_settings_swipe_action_move</item>
     </string-array>
 
 </resources>

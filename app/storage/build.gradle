@@ -24,6 +24,8 @@ dependencies {
 }
 
 android {
+    namespace 'com.fsck.k9.storage'
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 

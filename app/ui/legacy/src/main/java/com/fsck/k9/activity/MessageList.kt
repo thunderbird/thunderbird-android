@@ -15,7 +15,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
@@ -35,8 +34,6 @@ import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.fragment.MessageListFragment
-import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
@@ -55,6 +52,8 @@ import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
+import com.fsck.k9.ui.messagelist.MessageListFragment
+import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.ui.messageview.Direction
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
@@ -120,7 +119,7 @@ open class MessageList :
                 ?: if (K9.isMessageViewShowNext) Direction.NEXT else Direction.PREVIOUS
         }
 
-    private var messageListActivityAppearance: MessageListActivityAppearance? = null
+    private var messageListActivityConfig: MessageListActivityConfig? = null
 
     /**
      * `true` if the message list should be displayed as flat list (i.e. no threading)
@@ -552,9 +551,9 @@ open class MessageList :
     public override fun onResume() {
         super.onResume()
 
-        if (messageListActivityAppearance == null) {
-            messageListActivityAppearance = MessageListActivityAppearance.create(generalSettingsManager)
-        } else if (messageListActivityAppearance != MessageListActivityAppearance.create(generalSettingsManager)) {
+        if (messageListActivityConfig == null) {
+            messageListActivityConfig = MessageListActivityConfig.create(generalSettingsManager)
+        } else if (messageListActivityConfig != MessageListActivityConfig.create(generalSettingsManager)) {
             recreateCompat()
         }
 
@@ -591,7 +590,7 @@ open class MessageList :
 
         messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
-        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED)
+        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED, true)
         initialSearchViewQuery = savedInstanceState.getString(STATE_SEARCH_VIEW_QUERY)
     }
 
@@ -620,7 +619,10 @@ open class MessageList :
 
             override fun onDrawerStateChanged(newState: Int) = Unit
 
-            override fun onDrawerOpened(drawerView: View) = Unit
+            override fun onDrawerOpened(drawerView: View) {
+                collapseSearchView()
+                messageListFragment?.finishActionMode()
+            }
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
         }
@@ -762,9 +764,6 @@ open class MessageList :
                 ) {
                     showPreviousMessage()
                     return true
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
-                    messageListFragment!!.onMoveUp()
-                    return true
                 }
             }
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
@@ -772,9 +771,6 @@ open class MessageList :
                     K9.isUseVolumeKeysForNavigation
                 ) {
                     showNextMessage()
-                    return true
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
-                    messageListFragment!!.onMoveDown()
                     return true
                 }
             }
@@ -889,15 +885,6 @@ open class MessageList :
                 }
                 return true
             }
-            'h' -> {
-                val toast = if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG)
-                } else {
-                    Toast.makeText(this, R.string.message_view_help_key, Toast.LENGTH_LONG)
-                }
-                toast.show()
-                return true
-            }
         }
 
         return false
@@ -913,7 +900,7 @@ open class MessageList :
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.isUseVolumeKeysForListNavigation) {
+        if (K9.isUseVolumeKeysForNavigation) {
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
                 Timber.v("Swallowed key up.")
                 return true
@@ -931,7 +918,6 @@ open class MessageList :
                     if (drawer!!.isOpen) {
                         drawer!!.close()
                     } else {
-                        collapseSearchView()
                         drawer!!.open()
                     }
                 } else {
@@ -979,8 +965,8 @@ open class MessageList :
             }
         })
 
-        searchView.isIconified = initialSearchViewIconified
         searchView.setQuery(initialSearchViewQuery, false)
+        searchView.isIconified = initialSearchViewIconified
 
         this.searchView = searchView
     }
@@ -1080,6 +1066,8 @@ open class MessageList :
     }
 
     private fun addMessageListFragment(fragment: MessageListFragment) {
+        messageListFragment?.isActive = false
+
         supportFragmentManager.commit {
             replace(R.id.message_list_container, fragment)
 
@@ -1207,9 +1195,15 @@ open class MessageList :
     }
 
     private fun showLogicalNextMessage(): Boolean {
-        return when (lastDirection) {
+        val couldMoveInLastDirection = when (lastDirection) {
             Direction.NEXT -> showNextMessage()
             Direction.PREVIOUS -> showPreviousMessage()
+        }
+
+        return if (couldMoveInLastDirection) {
+            true
+        } else {
+            showNextMessage() || showPreviousMessage()
         }
     }
 

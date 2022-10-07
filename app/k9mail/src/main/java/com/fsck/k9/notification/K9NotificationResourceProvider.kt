@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
 import android.content.Context
-import com.fsck.k9.R
+import com.fsck.k9.ui.R
 
 class K9NotificationResourceProvider(private val context: Context) : NotificationResourceProvider {
     override val iconWarning: Int = R.drawable.notification_icon_warning

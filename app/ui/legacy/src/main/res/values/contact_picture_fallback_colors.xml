@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="contact_picture_fallback_background_colors_light">
+        <item>@color/material_red_300</item>
+        <item>@color/material_deep_purple_300</item>
+        <item>@color/material_light_blue_300</item>
+        <item>@color/material_green_300</item>
+        <item>@color/material_deep_orange_300</item>
+        <item>@color/material_blue_gray_300</item>
+        <item>@color/material_pink_300</item>
+        <item>@color/material_indigo_300</item>
+        <item>@color/material_cyan_300</item>
+        <item>@color/material_amber_400</item>
+        <item>@color/material_brown_300</item>
+        <item>@color/material_purple_300</item>
+        <item>@color/material_blue_300</item>
+        <item>@color/material_teal_300</item>
+        <item>@color/material_orange_400</item>
+    </integer-array>
+
+    <integer-array name="contact_picture_fallback_background_colors_dark">
+        <item>@color/material_red_600</item>
+        <item>@color/material_deep_purple_600</item>
+        <item>@color/material_light_blue_600</item>
+        <item>@color/material_green_600</item>
+        <item>@color/material_deep_orange_600</item>
+        <item>@color/material_blue_gray_600</item>
+        <item>@color/material_pink_600</item>
+        <item>@color/material_indigo_600</item>
+        <item>@color/material_cyan_600</item>
+        <item>@color/material_amber_600</item>
+        <item>@color/material_brown_600</item>
+        <item>@color/material_purple_600</item>
+        <item>@color/material_blue_600</item>
+        <item>@color/material_teal_600</item>
+        <item>@color/material_orange_600</item>
+    </integer-array>
+</resources>

@@ -615,8 +615,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tanınmayan Sertifika</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kabul Tuşu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
-  <string name="message_view_help_key">Del (veya D) - Sil\nR - Yanıtla\nA - Hepsini yanıtla\nC - Oluştur\nF - İlet\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)mış olarak İşaretle\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/Seçimi kaldır\nK veya P - Önceki İleti\nK veya N - Sonraki İleti</string>
-  <string name="message_list_help_key">Del (veya D) - Sil\nC - Oluştur\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)dı\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/seçimi kaldır</string>
   <string name="folder_list_filter_hint">Klasör adı içeriği</string>
   <string name="folder_list_display_mode_label">Klasörleri göster…</string>
   <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>
@@ -664,9 +662,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_push_limit_1000">1000 klasör</string>
   <string name="animations_title">Animasyon</string>
   <string name="animations_summary">Gösterişli görsel efektleri kullan</string>
-  <string name="volume_navigation_title">Ses Düğmesi ile dolaşma</string>
-  <string name="volume_navigation_message">İleti görünümlerinde</string>
-  <string name="volume_navigation_list">liste görünümlerinde</string>
   <string name="show_unified_inbox_title">Birleşik Gelen Kutusunu Göster</string>
   <string name="show_starred_count_title">Yıldızlanan sayısını göster</string>
   <string name="integrated_inbox_title">Birleşik Gelen Kutusu</string>

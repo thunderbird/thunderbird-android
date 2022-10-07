@@ -632,8 +632,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_failed_dlg_invalid_certificate_title">Неверный сертификат сервера</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Принять</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отклонить</string>
-  <string name="message_view_help_key">Del (или D) – удалить\nR – ответить\nA – ответить всем\nC – создать\nF – переслать\nM – переместить\nV – в архив\nY – копировать\nZ – (не) прочитано\nG – важное\nO – сортировка\nI – порядок\nQ – папки\nS – выбрать\nJ или P – назад\nK или N – далее</string>
-  <string name="message_list_help_key">Del (или D) – удалить\nC – создать\nM – переместить\nV – в архив\nY – копировать\nZ – (не) прочитано\nG – важное\nO – сортировка\nI – порядок\nQ – папки\nS – выбрать</string>
   <string name="folder_list_filter_hint">Поиск папки</string>
   <string name="folder_list_display_mode_label">Видимость папок</string>
   <string name="folder_list_display_mode_all">Все папки</string>
@@ -681,9 +679,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_push_limit_1000">1000 папок</string>
   <string name="animations_title">Анимация</string>
   <string name="animations_summary">Анимация интерфейса</string>
-  <string name="volume_navigation_title">Прокрутка кнопками Vol+/-</string>
-  <string name="volume_navigation_message">В сообщении</string>
-  <string name="volume_navigation_list">В списке</string>
   <string name="show_unified_inbox_title">Показывать общий ящик для входящих</string>
   <string name="show_starred_count_title">Cчетчик важных</string>
   <string name="integrated_inbox_title">Входящие</string>

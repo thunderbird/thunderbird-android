@@ -17,4 +17,5 @@ val messageListUiModule = module {
     factory {
         MessageListLiveDataFactory(messageListLoader = get(), preferences = get(), messageListRepository = get())
     }
+    single { SortTypeToastProvider() }
 }

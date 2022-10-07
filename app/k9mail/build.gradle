@@ -41,6 +41,8 @@ dependencies {
 }
 
 android {
+    namespace 'com.fsck.k9'
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
@@ -48,8 +50,8 @@ android {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 33005
-        versionName '6.306-SNAPSHOT'
+        versionCode 33008
+        versionName '6.309-SNAPSHOT'
 
         // Keep in sync with the resource string array 'supported_languages'
         resConfigs "in", "br", "ca", "cs", "cy", "da", "de", "et", "en", "en_GB", "es", "eo", "eu", "fr", "gd", "gl",

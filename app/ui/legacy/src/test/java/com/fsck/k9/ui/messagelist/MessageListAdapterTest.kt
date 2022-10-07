@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment
+package com.fsck.k9.ui.messagelist
 
 import android.content.Context
 import android.text.Spannable
@@ -23,8 +23,6 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.textString
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.MessageListAppearance
-import com.fsck.k9.ui.messagelist.MessageListItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -457,7 +455,6 @@ class MessageListAdapterTest : RobolectricTest() {
         )
 
         return MessageListAdapter(
-            context = context,
             theme = context.theme,
             res = context.resources,
             layoutInflater = LayoutInflater.from(context),
@@ -518,7 +515,9 @@ class MessageListAdapterTest : RobolectricTest() {
 
     fun MessageListAdapter.createAndBindView(item: MessageListItem = createMessageListItem()): View {
         messages = listOf(item)
-        return getView(0, null, LinearLayout(context))
+        val holder = onCreateViewHolder(LinearLayout(context), 0)
+        onBindViewHolder(holder, 0)
+        return holder.itemView
     }
 
     fun secondLine(senderOrSubject: String, preview: String) = "$senderOrSubject $preview"

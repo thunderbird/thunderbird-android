@@ -358,10 +358,7 @@
         android:title="@string/interaction_preferences"
         search:ignore="true">
 
-        <MultiSelectListPreference
-            android:dialogTitle="@string/volume_navigation_title"
-            android:entries="@array/volume_navigation_entries"
-            android:entryValues="@array/volume_navigation_values"
+        <CheckBoxPreference
             android:key="volume_navigation"
             android:title="@string/volume_navigation_title" />
 
@@ -384,6 +381,29 @@
             android:key="confirm_actions"
             android:summary="@string/global_settings_confirm_actions_summary"
             android:title="@string/global_settings_confirm_actions_title" />
+
+        <PreferenceScreen
+            android:key="swipe_actions"
+            android:title="@string/general_settings_swipe_actions_title"
+            search:ignore="true">
+
+            <ListPreference
+                android:dialogTitle="@string/general_settings_right_swipe_title"
+                android:entries="@array/swipe_action_names"
+                android:entryValues="@array/swipe_action_values"
+                android:key="swipe_action_right"
+                app:useSimpleSummaryProvider="true"
+                android:title="@string/general_settings_right_swipe_title" />
+
+            <ListPreference
+                android:dialogTitle="@string/general_settings_left_swipe_title"
+                android:entries="@array/swipe_action_names"
+                android:entryValues="@array/swipe_action_values"
+                android:key="swipe_action_left"
+                app:useSimpleSummaryProvider="true"
+                android:title="@string/general_settings_left_swipe_title" />
+
+        </PreferenceScreen>
 
     </PreferenceScreen>
 

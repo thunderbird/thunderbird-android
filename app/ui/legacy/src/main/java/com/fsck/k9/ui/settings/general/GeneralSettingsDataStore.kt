@@ -2,6 +2,7 @@ package com.fsck.k9.ui.settings.general
 
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
+import com.fsck.k9.SwipeAction
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.preferences.AppTheme
 import com.fsck.k9.preferences.GeneralSettingsManager
@@ -41,6 +42,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.isHideTimeZone
             "debug_logging" -> K9.isDebugLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
+            "volume_navigation" -> K9.isUseVolumeKeysForNavigation
             else -> defValue
         }
     }
@@ -70,6 +72,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.isHideTimeZone = value
             "debug_logging" -> K9.isDebugLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
+            "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
             else -> return
         }
 
@@ -123,6 +126,8 @@ class GeneralSettingsDataStore(
             "message_view_date_font" -> K9.fontSizes.messageViewDate.toString()
             "message_view_additional_headers_font" -> K9.fontSizes.messageViewAdditionalHeaders.toString()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput.toString()
+            "swipe_action_right" -> swipeActionToString(K9.swipeRightAction)
+            "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
             else -> defValue
         }
     }
@@ -162,6 +167,8 @@ class GeneralSettingsDataStore(
             "message_view_date_font" -> K9.fontSizes.messageViewDate = value.toInt()
             "message_view_additional_headers_font" -> K9.fontSizes.messageViewAdditionalHeaders = value.toInt()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput = value.toInt()
+            "swipe_action_right" -> K9.swipeRightAction = stringToSwipeAction(value)
+            "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
             else -> return
         }
 
@@ -189,12 +196,6 @@ class GeneralSettingsDataStore(
                     if (K9.isMessageViewSpamActionVisible) add("spam")
                 }
             }
-            "volume_navigation" -> {
-                mutableSetOf<String>().apply {
-                    if (K9.isUseVolumeKeysForNavigation) add("message")
-                    if (K9.isUseVolumeKeysForListNavigation) add("list")
-                }
-            }
             else -> defValues
         }
     }
@@ -216,10 +217,6 @@ class GeneralSettingsDataStore(
                 K9.isMessageViewMoveActionVisible = "move" in checkedValues
                 K9.isMessageViewCopyActionVisible = "copy" in checkedValues
                 K9.isMessageViewSpamActionVisible = "spam" in checkedValues
-            }
-            "volume_navigation" -> {
-                K9.isUseVolumeKeysForNavigation = "message" in checkedValues
-                K9.isUseVolumeKeysForListNavigation = "list" in checkedValues
             }
             else -> return
         }
@@ -287,5 +284,28 @@ class GeneralSettingsDataStore(
             K9.backgroundOps = newBackgroundOps
             jobManager.scheduleAllMailJobs()
         }
+    }
+
+    private fun swipeActionToString(action: SwipeAction) = when (action) {
+        SwipeAction.None -> "none"
+        SwipeAction.ToggleSelection -> "toggle_selection"
+        SwipeAction.ToggleRead -> "toggle_read"
+        SwipeAction.ToggleStar -> "toggle_star"
+        SwipeAction.Archive -> "archive"
+        SwipeAction.Delete -> "delete"
+        SwipeAction.Spam -> "spam"
+        SwipeAction.Move -> "move"
+    }
+
+    private fun stringToSwipeAction(action: String) = when (action) {
+        "none" -> SwipeAction.None
+        "toggle_selection" -> SwipeAction.ToggleSelection
+        "toggle_read" -> SwipeAction.ToggleRead
+        "toggle_star" -> SwipeAction.ToggleStar
+        "archive" -> SwipeAction.Archive
+        "delete" -> SwipeAction.Delete
+        "spam" -> SwipeAction.Spam
+        "move" -> SwipeAction.Move
+        else -> throw AssertionError()
     }
 }

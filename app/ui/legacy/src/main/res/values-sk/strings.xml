@@ -580,8 +580,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámy certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Prijať kľúč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmietnuť kľúč</string>
-  <string name="message_view_help_key">Delete (Alebo D) – Zmazať\nR – Odpovedať\nA – Odpovedať všetkým\nC – Vytvoriť\nF – Preposlať\nM – Presunúť\nV - Archivovať\nY – Kopírovať\nZ – Označiť (Ne)pprečítané\nG – Hviezdička\nO – Usporiadať podľa typu\nI – Usporiadať podľa poradia\nQ – Späť k priečinkom\nS – Označiť/odznačiť\nJ alebo P – Predošlá správa\nK alebo N – Ďalšia správa</string>
-  <string name="message_list_help_key">Delete (alebo D) – Zmazať\nC – Vytvoriť\nM – presunúť\nV – Archivovať\nY – Skopírovať\nZ – Označiť ako (ne)prečítané\nG – Označit hviezdičkou\nO – Typ zoradenia\nI – Poradie zoradenia\nQ – Návrat na priečinky\nS – Označiť / zrušiť označenie</string>
   <string name="folder_list_filter_hint">Názov priečinku obsahuje</string>
   <string name="folder_list_display_mode_label">Zobraziť priečinky…</string>
   <string name="folder_list_display_mode_all">Všetky priečinky</string>
@@ -629,9 +627,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_push_limit_1000">1000 priečinkov</string>
   <string name="animations_title">Animácie</string>
   <string name="animations_summary">Používať krikľavý vizuálny efekt</string>
-  <string name="volume_navigation_title">Navigácia tlačidlami hlasitosti</string>
-  <string name="volume_navigation_message">V zobrazení správ</string>
-  <string name="volume_navigation_list">V zobrazení zoznamu</string>
   <string name="show_unified_inbox_title">Ukázať jednotnú schránku</string>
   <string name="integrated_inbox_title">Jednotná schránka</string>
   <string name="integrated_inbox_detail">Všetky správy v zjednotených priečinkoch</string>

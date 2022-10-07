@@ -123,7 +123,7 @@ object K9 : EarlyInit {
     val fontSizes = FontSizes()
 
     @JvmStatic
-    var backgroundOps = BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
+    var backgroundOps = BACKGROUND_OPS.ALWAYS
 
     @JvmStatic
     var isShowAnimations = true
@@ -189,9 +189,6 @@ object K9 : EarlyInit {
     var isUseVolumeKeysForNavigation = false
 
     @JvmStatic
-    var isUseVolumeKeysForListNavigation = false
-
-    @JvmStatic
     var isShowUnifiedInbox = true
 
     @JvmStatic
@@ -253,6 +250,12 @@ object K9 : EarlyInit {
     @JvmStatic
     var pgpSignOnlyDialogCounter: Int = 0
 
+    @JvmStatic
+    var swipeRightAction: SwipeAction = SwipeAction.ToggleSelection
+
+    @JvmStatic
+    var swipeLeftAction: SwipeAction = SwipeAction.ToggleRead
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -298,7 +301,6 @@ object K9 : EarlyInit {
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
-        isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", true)
         isShowStarredCount = storage.getBoolean("showStarredCount", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
@@ -348,7 +350,7 @@ object K9 : EarlyInit {
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
         fontSizes.load(storage)
 
-        backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)
+        backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.ALWAYS)
 
         isColorizeMissingContactPictures = storage.getBoolean("colorizeMissingContactPictures", true)
 
@@ -362,6 +364,9 @@ object K9 : EarlyInit {
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
 
         k9Language = storage.getString("language", "")
+
+        swipeRightAction = storage.getEnum("swipeRightAction", SwipeAction.ToggleSelection)
+        swipeLeftAction = storage.getEnum("swipeLeftAction", SwipeAction.ToggleRead)
     }
 
     internal fun save(editor: StorageEditor) {
@@ -370,7 +375,6 @@ object K9 : EarlyInit {
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("animations", isShowAnimations)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
-        editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)
         editor.putBoolean("autofitWidth", isAutoFitWidth)
         editor.putBoolean("quietTimeEnabled", isQuietTimeEnabled)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
@@ -421,6 +425,9 @@ object K9 : EarlyInit {
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
+
+        editor.putEnum("swipeRightAction", swipeRightAction)
+        editor.putEnum("swipeLeftAction", swipeLeftAction)
 
         fontSizes.save(editor)
     }

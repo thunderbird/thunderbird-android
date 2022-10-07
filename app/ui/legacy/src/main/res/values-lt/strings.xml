@@ -632,8 +632,6 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neatpažintas sertifikatas</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Priimti raktą</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Atmesti raktą</string>
-  <string name="message_view_help_key">Del (arba D) - Ištrinti\nR - Atsakyti\nA - Atsakyti visiems\nC - Sudaryti\nF - Persiųsti\nM - Perkelti\nV - Archyvuoti\nY - Kopijuoti\nZ - Pažymėti (Ne)perskaitytą\nG - Žvaigždutė\nO - Rūšiavimo tipas\nI - Rūšiavimo tvarka\nQ - Grįžti į aplankus\nS - Pasirinkti/atšaukti pasirinkimą\nJ arba P - Ankstesnis laiškas\nK arba N - Kitas laiškas</string>
-  <string name="message_list_help_key">Del (arba D) - Ištrinti\nC - Sudaryti\nM - Perkelti\nV - Archyvuoti\nY - Kopijuoti\nZ - Pažymėti (Ne)perskaitytą\nG - Žvaigždutė\nO - Rūšiavimo tipas\nI - Rušiavimo tvarka\nQ - Grįžti į aplankus\nS - Pasirinkti/atšaukti pasirinkimą</string>
   <string name="folder_list_filter_hint">Aplanko pavadinime yra</string>
   <string name="folder_list_display_mode_label">Rodyti aplankus…</string>
   <string name="folder_list_display_mode_all">Visus aplankus</string>
@@ -681,9 +679,6 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="account_setup_push_limit_1000">1000 aplankų</string>
   <string name="animations_title">Animacija</string>
   <string name="animations_summary">Naudoti įmantrius vizualinius efektus</string>
-  <string name="volume_navigation_title">Navigacija garso klavišais</string>
-  <string name="volume_navigation_message">Pranešimų rodinyje</string>
-  <string name="volume_navigation_list">Sąrašo rodiniuose</string>
   <string name="show_unified_inbox_title">Rodyti suvestinius gautuosius</string>
   <string name="show_starred_count_title">Rodyti žvaigždučių skaičių</string>
   <string name="integrated_inbox_title">Suvestiniai gautieji</string>
