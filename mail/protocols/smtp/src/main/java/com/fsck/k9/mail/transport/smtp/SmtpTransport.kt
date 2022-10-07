@@ -33,7 +33,6 @@ import java.net.Inet6Address
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
-import java.net.SocketException
 import java.security.GeneralSecurityException
 import java.util.Locale
 import javax.net.ssl.SSLException
@@ -83,35 +82,10 @@ class SmtpTransport(
     @Throws(MessagingException::class)
     override fun open() {
         try {
-            var secureConnection = false
-            val addresses = InetAddress.getAllByName(host)
-            for ((index, address) in addresses.withIndex()) {
-                try {
-                    val socketAddress = InetSocketAddress(address, port)
-                    if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        socket = trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias).also {
-                            it.connect(socketAddress, SOCKET_CONNECT_TIMEOUT)
-                        }
-                        secureConnection = true
-                    } else {
-                        socket = Socket().also {
-                            it.connect(socketAddress, SOCKET_CONNECT_TIMEOUT)
-                        }
-                    }
-                } catch (e: SocketException) {
-                    if (index < addresses.lastIndex) {
-                        // there are still other addresses for that host to try
-                        continue
-                    }
+            var secureConnection = connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED
 
-                    throw MessagingException("Cannot connect to host", e)
-                }
-
-                // connection success
-                break
-            }
-
-            val socket = this.socket ?: error("socket == null")
+            val socket = connect()
+            this.socket = socket
 
             socket.soTimeout = SOCKET_READ_TIMEOUT
 
@@ -261,6 +235,39 @@ class SmtpTransport(
             close()
             throw MessagingException("Unable to open connection to SMTP server.", e)
         }
+    }
+
+    private fun connect(): Socket {
+        val inetAddresses = InetAddress.getAllByName(host)
+
+        var connectException: Exception? = null
+        for (address in inetAddresses) {
+            connectException = try {
+                return connectToAddress(address)
+            } catch (e: IOException) {
+                Timber.w(e, "Could not connect to %s", address)
+                e
+            }
+        }
+
+        throw MessagingException("Cannot connect to host", connectException)
+    }
+
+    private fun connectToAddress(address: InetAddress): Socket {
+        if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_SMTP) {
+            Timber.d("Connecting to %s as %s", host, address)
+        }
+
+        val socketAddress = InetSocketAddress(address, port)
+        val socket = if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias)
+        } else {
+            Socket()
+        }
+
+        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT)
+
+        return socket
     }
 
     private fun readGreeting() {
