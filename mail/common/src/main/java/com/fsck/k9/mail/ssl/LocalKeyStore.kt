@@ -112,8 +112,24 @@ class LocalKeyStore(private val directoryProvider: KeyStoreDirectoryProvider) {
 
         return try {
             val storedCert = keyStore.getCertificate(getCertKey(host, port))
-            storedCert == certificate
+            if (storedCert == null) {
+                Timber.v("Couldn't find a stored certificate for %s:%d", host, port)
+                false
+            } else if (storedCert != certificate) {
+                Timber.v(
+                    "Stored certificate for %s:%d doesn't match.\nExpected:\n%s\nActual:\n%s",
+                    host,
+                    port,
+                    storedCert,
+                    certificate
+                )
+                false
+            } else {
+                Timber.v("Stored certificate for %s:%d matches the server certificate", host, port)
+                true
+            }
         } catch (e: KeyStoreException) {
+            Timber.w(e, "Error reading from KeyStore")
             false
         }
     }
