@@ -8,7 +8,6 @@ import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.store.webdav.DraftsFolderProvider
 import com.fsck.k9.mail.store.webdav.SniHostSetter
 import com.fsck.k9.mail.store.webdav.WebDavStore
-import com.fsck.k9.mail.transport.WebDavTransport
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 
@@ -24,8 +23,7 @@ class WebDavBackendFactory(
         val serverSettings = account.incomingServerSettings
         val draftsFolderProvider = createDraftsFolderProvider(account)
         val webDavStore = WebDavStore(trustManagerFactory, sniHostSetter, serverSettings, draftsFolderProvider)
-        val webDavTransport = WebDavTransport(trustManagerFactory, sniHostSetter, serverSettings, draftsFolderProvider)
-        return WebDavBackend(accountName, backendStorage, webDavStore, webDavTransport)
+        return WebDavBackend(accountName, backendStorage, webDavStore)
     }
 
     private fun createDraftsFolderProvider(account: Account): DraftsFolderProvider {

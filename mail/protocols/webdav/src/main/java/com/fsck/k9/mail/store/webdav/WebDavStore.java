@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -937,7 +938,8 @@ public class WebDavStore {
         return dataset;
     }
 
-    public void sendMessages(List<Message> messages) throws MessagingException {
+    public void sendMessage(Message message) throws MessagingException {
+        List<Message> messages = Collections.singletonList(message);
         WebDavFolder tmpFolder = getFolder(draftsFolderProvider.getDraftsFolder());
         try {
             tmpFolder.open();
