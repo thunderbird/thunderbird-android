@@ -20,7 +20,7 @@ buildscript {
                 'androidxActivity': '1.6.0',
                 'androidxRecyclerView': '1.2.1',
                 'androidxLifecycle': '2.5.1',
-                'androidxAnnotation': '1.4.0',
+                'androidxAnnotation': '1.5.0',
                 'androidxBiometric': '1.1.0',
                 'androidxNavigation': '2.5.2',
                 'androidxConstraintLayout': '2.1.4',
