@@ -13,19 +13,19 @@ buildscript {
         // Judging the impact of newer library versions on the app requires being intimately familiar with the code
         // base. Please don't open pull requests upgrading dependencies if you're a new contributor.
         versions = [
-                'kotlin': '1.7.10',
+                'kotlin': '1.7.20',
                 'kotlinCoroutines': '1.6.4',
                 'jetbrainsAnnotations': '23.0.0',
                 'androidxAppCompat': '1.5.1',
-                'androidxActivity': '1.5.1',
+                'androidxActivity': '1.6.0',
                 'androidxRecyclerView': '1.2.1',
                 'androidxLifecycle': '2.5.1',
-                'androidxAnnotation': '1.4.0',
+                'androidxAnnotation': '1.5.0',
                 'androidxBiometric': '1.1.0',
                 'androidxNavigation': '2.5.2',
                 'androidxConstraintLayout': '2.1.4',
                 'androidxWorkManager': '2.7.1',
-                'androidxFragment': '1.5.2',
+                'androidxFragment': '1.5.3',
                 'androidxLocalBroadcastManager': '1.1.0',
                 'androidxCore': '1.9.0',
                 'androidxCardView': '1.0.0',
@@ -34,12 +34,12 @@ buildscript {
                 'androidxTransition': '1.4.1',
                 'androidxTestCore': '1.4.0',
                 'materialComponents': '1.6.1',
-                'fastAdapter': '5.6.0',
+                'fastAdapter': '5.7.0',
                 'preferencesFix': '1.1.0',
                 'okio': '3.2.0',
                 'moshi': '1.14.0',
                 'timber': '5.0.1',
-                'koin': '3.2.1',
+                'koin': '3.2.2',
                 // We can't upgrade Commons IO beyond this version because starting with 2.7 it is using Java 8 API
                 // that is not available until Android API 26 (even with desugaring enabled).
                 // See https://issuetracker.google.com/issues/160484830
@@ -47,17 +47,17 @@ buildscript {
                 'mime4j': '0.8.6',
                 'okhttp': '4.10.0',
                 'minidns': '1.0.4',
-                'glide': '4.13.2',
+                'glide': '4.14.2',
                 'jsoup': '1.15.3',
                 'httpClient': '4.5.13',
 
                 'androidxTestRunner': '1.4.0',
                 'junit': '4.13.2',
-                'robolectric': '4.8.2',
+                'robolectric': '4.9',
                 'mockito': '4.8.0',
                 'mockitoKotlin': '4.0.0',
                 'truth': '1.1.3',
-                'turbine': '0.10.0',
+                'turbine': '0.11.0',
 
                 'ktlint': '0.44.0'
         ]
