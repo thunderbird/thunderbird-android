@@ -14,7 +14,6 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.mail.Transport
 import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream
 import com.fsck.k9.mail.filter.LineWrapOutputStream
@@ -37,6 +36,7 @@ import java.security.GeneralSecurityException
 import java.util.Locale
 import javax.net.ssl.SSLException
 import org.apache.commons.io.IOUtils
+import org.jetbrains.annotations.VisibleForTesting
 
 private const val SOCKET_SEND_MESSAGE_READ_TIMEOUT = 5 * 60 * 1000 // 5 minutes
 
@@ -47,7 +47,7 @@ class SmtpTransport(
     serverSettings: ServerSettings,
     private val trustedSocketFactory: TrustedSocketFactory,
     private val oauthTokenProvider: OAuth2TokenProvider?
-) : Transport() {
+) {
     private val host = serverSettings.host
     private val port = serverSettings.port
     private val username = serverSettings.username
@@ -79,8 +79,10 @@ class SmtpTransport(
         require(serverSettings.type == "smtp") { "Expected SMTP ServerSettings!" }
     }
 
+    // TODO: Fix tests to not use open() directly
+    @VisibleForTesting
     @Throws(MessagingException::class)
-    override fun open() {
+    internal fun open() {
         try {
             var secureConnection = connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED
 
@@ -342,7 +344,7 @@ class SmtpTransport(
     }
 
     @Throws(MessagingException::class)
-    override fun sendMessage(message: Message) {
+    fun sendMessage(message: Message) {
         val addresses = buildSet<String> {
             for (address in message.getRecipients(RecipientType.TO)) {
                 add(address.address)
@@ -441,7 +443,7 @@ class SmtpTransport(
         }
     }
 
-    override fun close() {
+    private fun close() {
         writeQuitCommand()
 
         IOUtils.closeQuietly(inputStream)

@@ -13,13 +13,11 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.store.webdav.WebDavStore
-import com.fsck.k9.mail.transport.WebDavTransport
 
 class WebDavBackend(
     accountName: String,
     backendStorage: BackendStorage,
-    private val webDavStore: WebDavStore,
-    private val webDavTransport: WebDavTransport
+    private val webDavStore: WebDavStore
 ) : Backend {
     private val webDavSync: WebDavSync = WebDavSync(accountName, backendStorage, webDavStore)
     private val commandGetFolders = CommandRefreshFolderList(backendStorage, webDavStore)
@@ -139,11 +137,11 @@ class WebDavBackend(
     }
 
     override fun sendMessage(message: Message) {
-        webDavTransport.sendMessage(message)
+        webDavStore.sendMessage(message)
     }
 
     override fun checkOutgoingServerSettings() {
-        webDavTransport.checkSettings()
+        webDavStore.checkSettings()
     }
 
     override fun createPusher(callback: BackendPusherCallback): BackendPusher {
