@@ -47,7 +47,7 @@ buildscript {
                 'mime4j': '0.8.6',
                 'okhttp': '4.10.0',
                 'minidns': '1.0.4',
-                'glide': '4.13.2',
+                'glide': '4.14.2',
                 'jsoup': '1.15.3',
                 'httpClient': '4.5.13',
 
