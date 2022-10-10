@@ -220,6 +220,30 @@ class SmtpResponseParserTest {
     }
 
     @Test
+    fun `error in EHLO response after successfully reading greeting`() {
+        val input = """
+            220 Greeting
+            INVALID
+        """.toPeekableInputStream()
+        val parser = SmtpResponseParser(logger, input)
+        parser.readGreeting()
+
+        assertFailsWithMessage("Unexpected character: I (73)") {
+            parser.readHelloResponse()
+        }
+
+        assertThat(logger.logEntries).containsExactly(
+            LogEntry(
+                throwable = null,
+                message = """
+                    SMTP response data on parser error:
+                    I
+                """.trimIndent()
+            )
+        )
+    }
+
+    @Test
     fun `positive response`() {
         val input = "200 OK".toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
