@@ -241,6 +241,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean navigateUp;
 
+    private boolean sendMessageHasBeenTriggered = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -797,6 +799,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void performSendAfterChecks() {
+        if (sendMessageHasBeenTriggered) {
+            return;
+        }
+
+        sendMessageHasBeenTriggered = true;
+
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;
@@ -1607,6 +1615,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public void onMessageBuildCancel() {
+        sendMessageHasBeenTriggered = false;
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
     }
@@ -1616,6 +1625,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         Timber.e(me, "Error sending message");
         Toast.makeText(MessageCompose.this,
                 getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
+        sendMessageHasBeenTriggered = false;
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
     }
