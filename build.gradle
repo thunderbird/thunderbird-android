@@ -13,7 +13,7 @@ buildscript {
         // Judging the impact of newer library versions on the app requires being intimately familiar with the code
         // base. Please don't open pull requests upgrading dependencies if you're a new contributor.
         versions = [
-                'kotlin': '1.7.10',
+                'kotlin': '1.7.20',
                 'kotlinCoroutines': '1.6.4',
                 'jetbrainsAnnotations': '23.0.0',
                 'androidxAppCompat': '1.5.1',
