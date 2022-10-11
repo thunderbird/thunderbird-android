@@ -11,26 +11,23 @@ import java.util.List;
 
 import android.content.Context;
 import android.net.SSLCertificateSocketFactory;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import javax.net.ssl.KeyManager;
+import javax.net.ssl.SNIHostName;
+import javax.net.ssl.SNIServerName;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import timber.log.Timber;
 
 
-/**
- * Prior to API 21 (and notably from API 10 - 2.3.4) Android weakened it's cipher list
- * by ordering them badly such that RC4-MD5 was preferred. To work around this we 
- * remove the insecure ciphers and reorder them so the latest more secure ciphers are at the top.
- *
- * On more modern versions of Android we keep the system configuration.
- */
 public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     private static final String[] ENABLED_CIPHERS;
     private static final String[] ENABLED_PROTOCOLS;
@@ -150,6 +147,11 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         if (factory instanceof android.net.SSLCertificateSocketFactory) {
             SSLCertificateSocketFactory sslCertificateSocketFactory = (SSLCertificateSocketFactory) factory;
             sslCertificateSocketFactory.setHostname(socket, hostname);
+        } else if (Build.VERSION.SDK_INT >= 24) {
+            SSLParameters sslParameters = socket.getSSLParameters();
+            List<SNIServerName> sniServerNames = Collections.singletonList(new SNIHostName(hostname));
+            sslParameters.setServerNames(sniServerNames);
+            socket.setSSLParameters(sslParameters);
         } else {
             setHostnameViaReflection(socket, hostname);
         }
