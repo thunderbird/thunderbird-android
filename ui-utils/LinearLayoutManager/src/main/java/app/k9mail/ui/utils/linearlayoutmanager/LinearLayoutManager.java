@@ -152,6 +152,8 @@ public class LinearLayoutManager extends LayoutManager implements
     // time.
     private int[] mReusableIntPair = new int[2];
 
+    private boolean mScrolledToTop = false;
+
     /**
      * Creates a vertical LinearLayoutManager
      *
@@ -732,6 +734,39 @@ public class LinearLayoutManager extends LayoutManager implements
         mPendingScrollPosition = RecyclerView.NO_POSITION;
         mPendingScrollPositionOffset = INVALID_OFFSET;
         mAnchorInfo.reset();
+
+        updateScrolledToTop();
+    }
+
+    private void updateScrolledToTop() {
+        boolean oldScrolledToTop = mScrolledToTop;
+        mScrolledToTop = isScrolledToTop();
+
+        if (DEBUG && mScrolledToTop != oldScrolledToTop) {
+            Log.d(TAG, "Scrolled to top: " + mScrolledToTop);
+        }
+    }
+
+    private boolean isScrolledToTop() {
+        if (getChildCount() == 0) {
+            return true;
+        }
+
+        View firstChild = getChildAt(0);
+        if (firstChild == null) {
+            // This probably doesn't happen when getChildCount() != 0. But we really don't want to crash here.
+            return false;
+        }
+
+        int position = getPosition(firstChild);
+        if (position != 0) {
+            return false;
+        }
+
+        int recyclerViewStart = mOrientationHelper.getStartAfterPadding();
+        int firstVisibleChildStart = mOrientationHelper.getDecoratedStart(firstChild);
+
+        return recyclerViewStart == firstVisibleChildStart;
     }
 
     /**
@@ -848,6 +883,11 @@ public class LinearLayoutManager extends LayoutManager implements
         if (mLastStackFromEnd != mStackFromEnd) {
             return false;
         }
+
+        if (updateAnchorFromScrollPosition(state, anchorInfo)) {
+            return true;
+        }
+
         View referenceChild =
                 findReferenceChild(
                         recycler,
@@ -875,6 +915,18 @@ public class LinearLayoutManager extends LayoutManager implements
             return true;
         }
         return false;
+    }
+
+    private boolean updateAnchorFromScrollPosition(RecyclerView.State state, AnchorInfo anchorInfo) {
+        if (state.isPreLayout() || !mScrolledToTop) {
+            return false;
+        }
+
+        anchorInfo.mLayoutFromEnd = false;
+        anchorInfo.mPosition = 0;
+        anchorInfo.mValid = true;
+        anchorInfo.assignCoordinateFromPadding();
+        return true;
     }
 
     /**
@@ -1399,6 +1451,7 @@ public class LinearLayoutManager extends LayoutManager implements
             if (DEBUG) {
                 Log.d(TAG, "Don't have any more elements to scroll");
             }
+            updateScrolledToTop();
             return 0;
         }
         final int scrolled = absDelta > consumed ? layoutDirection * consumed : delta;
@@ -1407,6 +1460,8 @@ public class LinearLayoutManager extends LayoutManager implements
             Log.d(TAG, "scroll req: " + delta + " scrolled: " + scrolled);
         }
         mLayoutState.mLastScrollDelta = scrolled;
+
+        updateScrolledToTop();
         return scrolled;
     }
 
