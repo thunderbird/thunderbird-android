@@ -17,9 +17,9 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
 import com.fsck.k9.Account
 import com.fsck.k9.Account.Expunge
 import com.fsck.k9.Account.SortType
@@ -238,6 +238,7 @@ class MessageListFragment :
         val itemDecoration = MessageListItemDecoration(requireContext())
         recyclerView.addItemDecoration(itemDecoration)
 
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.itemAnimator = MessageListItemAnimator()
     }
 
