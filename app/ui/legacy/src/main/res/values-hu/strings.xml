@@ -258,6 +258,22 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_confirm_menu_discard">Üzenet elvetése</string>
   <string name="global_settings_confirm_menu_mark_all_read">Összes üzenet megjelölése olvasottként</string>
   <string name="global_settings_confirm_action_delete_notif">Törlés (az értesítésekből)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Nincs</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archívum</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Törlés</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Levélszemét</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Áthelyezés</string>
   <string name="global_settings_privacy_hide_useragent">Levelező alkalmazás elrejtése</string>
   <string name="global_settings_privacy_hide_useragent_detail">A K-9 azonosító eltávolítása a levél fejlécéből</string>
   <string name="global_settings_privacy_hide_timezone">Időzóna elrejtése</string>

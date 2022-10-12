@@ -258,6 +258,28 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="global_settings_confirm_menu_discard">丢弃邮件</string>
   <string name="global_settings_confirm_menu_mark_all_read">全部标为已读</string>
   <string name="global_settings_confirm_action_delete_notif">删除（来自通知）</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">滑动操作</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">右滑</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">左滑</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">无</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">切换选择</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">标为已读/未读</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">添加/删除星标</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">归档</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">删除</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">标记为垃圾邮件</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">移动</string>
   <string name="global_settings_privacy_hide_useragent">隐藏邮件客户端</string>
   <string name="global_settings_privacy_hide_useragent_detail">从邮件头中移除 K-9 的 User-Agent</string>
   <string name="global_settings_privacy_hide_timezone">隐藏时区</string>

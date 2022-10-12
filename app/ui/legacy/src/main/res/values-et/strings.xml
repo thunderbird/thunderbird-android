@@ -261,6 +261,22 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="global_settings_confirm_menu_discard">Loobu kirjast</string>
   <string name="global_settings_confirm_menu_mark_all_read">Märgi kõik kirjad loetuks</string>
   <string name="global_settings_confirm_action_delete_notif">Kustuta (teadetest)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Mitte ükski</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arhiveeri</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Kustuta</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Rämps</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Teisalda</string>
   <string name="global_settings_privacy_hide_useragent">Peida meiliklient</string>
   <string name="global_settings_privacy_hide_useragent_detail">Eemalda K-9 User-Agent meili päistest</string>
   <string name="global_settings_privacy_hide_timezone">Peida ajavöönd</string>

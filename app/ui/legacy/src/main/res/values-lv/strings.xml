@@ -254,6 +254,22 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="global_settings_confirm_menu_discard">Izmest vēstuli</string>
   <string name="global_settings_confirm_menu_mark_all_read">Atzīmēt visas vēstules kā izlasītas</string>
   <string name="global_settings_confirm_action_delete_notif">Dzēst (no paziņojuma)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Neviens</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arhīvs</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Dzēst</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Surogātpasts</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Pārvietot</string>
   <string name="global_settings_privacy_hide_useragent">Paslēpt pasta programmu</string>
   <string name="global_settings_privacy_hide_useragent_detail">Noņemt K-9 lietotāju-aģentu no vēstules papildinformācijas</string>
   <string name="global_settings_privacy_hide_timezone">Paslēpt laika zonu</string>

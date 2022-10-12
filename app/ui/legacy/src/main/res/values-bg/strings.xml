@@ -249,6 +249,22 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_confirm_menu_discard">Изтрийте съобщението</string>
   <string name="global_settings_confirm_menu_mark_all_read">Отбелязване на всички съобщения като прочетени</string>
   <string name="global_settings_confirm_action_delete_notif">Изтрийте (от лентата с известия)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Никой</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Архивирайте</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Изтрий</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Спам</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Премести</string>
   <string name="global_settings_privacy_hide_useragent">Скриване на имейл програмата</string>
   <string name="global_settings_privacy_hide_useragent_detail">Премахване на K-9 хедъра за потребителски агент</string>
   <string name="global_settings_privacy_hide_timezone">Скриване на времевата зона</string>

@@ -260,6 +260,22 @@
   <string name="global_settings_confirm_menu_discard">دورانداختن پیام</string>
   <string name="global_settings_confirm_menu_mark_all_read">همهٔ پیام‌ها خوانده شد</string>
   <string name="global_settings_confirm_action_delete_notif">حذف (از اعلان)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">هیچ‌کدام</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">بایگانی</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">حذف</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">هرزنامه</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">انتقال</string>
   <string name="global_settings_privacy_hide_useragent">کارخواه رایانامه را مخفی کن</string>
   <string name="global_settings_privacy_hide_useragent_detail">شناسهٔ K-9 User-Agent را از سرایند رایانامه‌ها بردار</string>
   <string name="global_settings_privacy_hide_timezone">منطقهٔ زمانی را مخفی کن</string>

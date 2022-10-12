@@ -238,6 +238,22 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="global_settings_confirm_menu_discard">Buang pesan</string>
   <string name="global_settings_confirm_menu_mark_all_read">Tandai semua pesan sebagai telah dibaca</string>
   <string name="global_settings_confirm_action_delete_notif">Hapus (dari notifikasi)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Nihil</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arsipkan</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Hapus</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Pindah</string>
   <string name="global_settings_privacy_hide_useragent">Sembunyikan mail client</string>
   <string name="global_settings_privacy_hide_useragent_detail">Buang User-Agent K-9 dari tajuk surel</string>
   <string name="global_settings_privacy_hide_timezone">Sembunyikan zona waktu</string>

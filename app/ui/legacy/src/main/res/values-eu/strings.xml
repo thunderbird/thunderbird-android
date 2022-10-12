@@ -259,6 +259,22 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_confirm_menu_discard">Baztertu mezua</string>
   <string name="global_settings_confirm_menu_mark_all_read">Markatu mezu guztiak irakurritako gisa</string>
   <string name="global_settings_confirm_action_delete_notif">Ezabatu (jakinarazpenetatik)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Bat ere ez</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Artxibatu</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Ezabatu</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Zabor-posta</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Mugitu</string>
   <string name="global_settings_privacy_hide_useragent">Ezkutatu posta bezeroa</string>
   <string name="global_settings_privacy_hide_useragent_detail">Kendu K-9 erabiltzaile-agentea posta goiburuetatik</string>
   <string name="global_settings_privacy_hide_timezone">Ezkutatu ordu-zona</string>

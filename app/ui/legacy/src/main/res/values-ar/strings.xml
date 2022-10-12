@@ -238,6 +238,22 @@
   <string name="global_settings_confirm_menu_discard">إلغاء الرسالة</string>
   <string name="global_settings_confirm_menu_mark_all_read">جعل كل الرسائل مقروءة</string>
   <string name="global_settings_confirm_action_delete_notif">احذف (من الإشعارات)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">بدون</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">أرشيف</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">احذف</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">بريد مُزعج</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">حَرِّكْ</string>
   <string name="global_settings_privacy_hide_useragent">إخفاء عميل البريد</string>
   <string name="global_settings_privacy_hide_useragent_detail">احذف مُعرف بريد كية-9 من ترويسات الرسالة</string>
   <string name="global_settings_privacy_hide_timezone">احذف التوقيت</string>

@@ -255,6 +255,28 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="global_settings_confirm_menu_discard">Berjocht ôfbrekke</string>
   <string name="global_settings_confirm_menu_mark_all_read">Alles as lêzen markearje</string>
   <string name="global_settings_confirm_action_delete_notif">Fuortsmite (fan meldingen)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Fei-aksjes</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Nei rjochts feie</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Nei links feie</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Gjin</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Seleksje wikselje</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">As lêzen/net-lêzen markearje</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Stjer tafoegje/fuortsmite</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Argivearje</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Fuortsmite</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Net-winske</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Ferpleatse</string>
   <string name="global_settings_privacy_hide_useragent">E-mailclient ferstopje</string>
   <string name="global_settings_privacy_hide_useragent_detail">K-9-brûkersagent fan e-mailkopteksten fuortsmite</string>
   <string name="global_settings_privacy_hide_timezone">Tiidsône ferstopje</string>

@@ -212,6 +212,22 @@
   <string name="global_settings_confirm_action_spam">דואר זבל</string>
   <string name="global_settings_confirm_menu_discard">מחק הודעה</string>
   <string name="global_settings_confirm_menu_mark_all_read">סמן את כל ההודעות כ\"נקראו\"</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">כלום</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">העבר לארכיון</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">מחק</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">דואר זבל</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">העבר</string>
   <string name="global_settings_privacy_hide_timezone">הסתר איזור זמן</string>
   <string name="global_settings_notification_quick_delete_title">הצג את הכפתור \'מחק\'</string>
   <string name="global_settings_notification_quick_delete_never">אף פעם</string>

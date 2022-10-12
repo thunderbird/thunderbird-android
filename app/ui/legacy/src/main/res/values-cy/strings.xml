@@ -265,6 +265,22 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="global_settings_confirm_menu_discard">Dileu neges</string>
   <string name="global_settings_confirm_menu_mark_all_read">Nodi pob neges fel ei wedi ei darllen</string>
   <string name="global_settings_confirm_action_delete_notif">Dileu (o hysbysiad)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Dim</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archif</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Dileu</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Sbam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Symud</string>
   <string name="global_settings_privacy_hide_useragent">Cuddio cleient e-bost</string>
   <string name="global_settings_privacy_hide_useragent_detail">Cuddio\'r Cleient K-9 o benynnau negeseuon</string>
   <string name="global_settings_privacy_hide_timezone">Cuddio cylchfa amser</string>

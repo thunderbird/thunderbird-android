@@ -115,7 +115,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="send_alternate_action">Teilen</string>
   <string name="send_alternate_chooser_title">Absender auswählen</string>
   <string name="flag_action">Als wichtig markieren</string>
-  <string name="unflag_action">Wichtig-Markierung entfernen</string>
+  <string name="unflag_action">Als unwichtig markieren</string>
   <string name="copy_action">Kopieren</string>
   <string name="unsubscribe_action">Abmelden</string>
   <string name="show_headers_action">Kopfzeilen anzeigen</string>
@@ -254,11 +254,33 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_confirm_actions_title">Bestätigungsdialog</string>
   <string name="global_settings_confirm_actions_summary">Bei Ausführung der ausgewählten Aktionen einen Bestätigungsdialog anzeigen</string>
   <string name="global_settings_confirm_action_delete">Löschen</string>
-  <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
+  <string name="global_settings_confirm_action_delete_starred">Als wichtig markiert löschen (nur in Nachrichtenansicht)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Nachricht verwerfen</string>
   <string name="global_settings_confirm_menu_mark_all_read">Alle Nachrichten als gelesen markieren</string>
   <string name="global_settings_confirm_action_delete_notif">Löschen (aus Benachrichtigung)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Wischaktionen</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Nach rechts wischen</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Nach links wischen</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Keine</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Auswahl wechseln</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Als gelesen/ungelesen markieren</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Wichtig/unwichtig markieren</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archiv</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Löschen</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Verschieben</string>
   <string name="global_settings_privacy_hide_useragent">E-Mail-Client ausblenden</string>
   <string name="global_settings_privacy_hide_useragent_detail">K-9 Benutzer-Agent aus E-Mail-Kopfzeilen entfernen</string>
   <string name="global_settings_privacy_hide_timezone">Zeitzone ausblenden</string>
@@ -682,7 +704,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="animations_summary">Aufwendige visuelle Effekte benutzen</string>
   <string name="volume_navigation_title">Navigation per Lautstärketasten in der Nachrichtenansicht</string>
   <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
-  <string name="show_starred_count_title">Anzahl der Sterne anzeigen</string>
+  <string name="show_starred_count_title">Anzahl der wichtigen Nachrichten anzeigen</string>
   <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>
   <string name="integrated_inbox_detail">Alle Nachrichten aus integrierten Ordnern</string>
   <string name="folder_settings_include_in_integrated_inbox_label">In gem. Posteingang integrieren</string>

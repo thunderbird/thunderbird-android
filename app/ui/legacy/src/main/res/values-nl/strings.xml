@@ -255,6 +255,28 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_confirm_menu_discard">Bericht afbreken</string>
   <string name="global_settings_confirm_menu_mark_all_read">Alles als gelezen markeren</string>
   <string name="global_settings_confirm_action_delete_notif">Verwijderen (van notificaties)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Veegacties</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Naar rechts vegen</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Naar links vegen</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Geen</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Selectie wisselen</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Als gelezen/ongelezen markeren </string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Ster toevoegen/verwijderen</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archiveren</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Verwijderen</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Verplaats</string>
   <string name="global_settings_privacy_hide_useragent">Mailclient verbergen</string>
   <string name="global_settings_privacy_hide_useragent_detail">K-9-gebruikersagent van e-mailkoppen verwijderen</string>
   <string name="global_settings_privacy_hide_timezone">Tijdzone verbergen</string>

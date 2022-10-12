@@ -243,6 +243,22 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="global_settings_confirm_menu_discard">Скасаваць ліст</string>
   <string name="global_settings_confirm_menu_mark_all_read">Пазначыць усе лісты прачытанымі</string>
   <string name="global_settings_confirm_action_delete_notif">Выдаліць (у апавяшчэнні)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Няма</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Архіў</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Выдаліць</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Спам</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Перамясціць</string>
   <string name="global_settings_privacy_hide_useragent">Схаваць паштовы кліент</string>
   <string name="global_settings_privacy_hide_useragent_detail">Прыбраць \"K-9 User-Agent\" з загалоўкаў лістоў</string>
   <string name="global_settings_privacy_hide_timezone">Схаваць часавы пояс</string>

@@ -256,14 +256,36 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_messageview_return_to_list_summary">Wraca do listy wiadomości po usunięciu danej wiadomości</string>
   <string name="global_settings_messageview_show_next_label">Pokaż następną wiadomość po usunięciu</string>
   <string name="global_settings_messageview_show_next_summary">Pokaż domyślnie następną wiadomość po usunięciu</string>
-  <string name="global_settings_confirm_actions_title">Potwierdź akcje</string>
-  <string name="global_settings_confirm_actions_summary">Pokaż potwierdzające okno dialogowe, gdy wykonujesz wybrane akcje</string>
+  <string name="global_settings_confirm_actions_title">Potwierdź czynności</string>
+  <string name="global_settings_confirm_actions_summary">Pokaż potwierdzające okno dialogowe, gdy wykonujesz wybrane czynności</string>
   <string name="global_settings_confirm_action_delete">Usuń</string>
   <string name="global_settings_confirm_action_delete_starred">Usuń oznacz. gwiazkdą (tylko widok wiadomości)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Odrzuć wiadomość</string>
   <string name="global_settings_confirm_menu_mark_all_read">Oznacz wszystkie wiadomości jako przeczytane</string>
   <string name="global_settings_confirm_action_delete_notif">Usuń (powiadomienie)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Czynności przesunięcia</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Przesuń w prawo</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Przesuń w lewo</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Żadne</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Przełącz wybór</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Oznacz jako nie/przeczytane</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Dodaj/usuń gwiazdkę</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archiwizuj</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Usuń</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Przenieś</string>
   <string name="global_settings_privacy_hide_useragent">Ukryj klienta poczty</string>
   <string name="global_settings_privacy_hide_useragent_detail">Usuń User-Agent K-9 z nagłówka wiadomości</string>
   <string name="global_settings_privacy_hide_timezone">Ukryj strefę czasową</string>
@@ -883,8 +905,8 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Pokoloruj zdjęcia kontaktów</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Używa kolorów gdy brakuje zdjęć kontaktów</string>
-  <string name="global_settings_messageview_visible_refile_actions_title">Widoczne operacje wiadomości</string>
-  <string name="global_settings_messageview_visible_refile_actions_summary">Pokaż wybrane operacje w menu widoku wiadomości</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">Widoczne czynności wiadomości</string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">Pokaż wybrane czynności w menu widoku wiadomości</string>
   <string name="loading_attachment">Ładowanie załącznika…</string>
   <string name="fetching_attachment_dialog_title_send">Wysyłanie wiadomości</string>
   <string name="fetching_attachment_dialog_title_save">Zapisywanie wersji roboczej</string>

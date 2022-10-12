@@ -17,6 +17,17 @@
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="global_settings_registered_name_color_label">Colourise contacts</string>
   <string name="global_settings_registered_name_color_changed">Colourise names in your contact list</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <!--Name of the swipe action to delete a message-->
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <!--Name of the swipe action to move a message to another folder-->
   <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->

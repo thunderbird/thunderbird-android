@@ -194,6 +194,22 @@
   <string name="global_settings_confirm_menu_discard">메시지 버림</string>
   <string name="global_settings_confirm_menu_mark_all_read">모든 메시지를 읽은 상태로 표시</string>
   <string name="global_settings_confirm_action_delete_notif">삭제 (알림에서)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">없음</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">보관</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">삭제</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">스팸</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">이동</string>
   <string name="global_settings_privacy_hide_useragent">메일 클라이언트를 숨김</string>
   <string name="global_settings_privacy_hide_useragent_detail">메일 헤더에서 K-9 User Agent 제거</string>
   <string name="global_settings_privacy_hide_timezone">시간 구역을 숨기기</string>
