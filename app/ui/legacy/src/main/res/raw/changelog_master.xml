@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.309" versioncode="33009" date="2022-10-12">
+        <change>Automatically scroll to the top after using pull to refresh, so new messages are visible</change>
+        <change>Fixed a bug that prevented the app from establishing a connection to the outgoing server under certain circumstances</change>
+        <change>Fixed a bug that could lead to messages being sent twice when the send button was double clicked</change>
+        <change>Changed the structure of HTML signatures in outgoing messages to increase compatibility</change>
+        <change>More bug fixes and internal changes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.308" versioncode="33008" date="2022-10-06">
         <change>Added swipe actions to the message list screen</change>
         <change>Changed the minimum size of the message list widget to 2x2 cells</change>
