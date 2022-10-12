@@ -18,8 +18,8 @@ class TextBodyBuilderTest(val testData: TestData) {
         private const val QUOTED_HTML_TAGS_END = "</body>\n</html>"
         private const val QUOTED_HTML_TAGS_START = "<!DOCTYPE html><html><head></head><body>"
         private const val SIGNATURE_TEXT = "-- \r\n\r\nsignature\r\n  indented second line"
-        private const val SIGNATURE_TEXT_HTML = "<div style='white-space: pre-wrap'>" +
-            "<div class='k9mail-signature'>-- <br><br>signature<br>  indented second line</div></div>"
+        private const val SIGNATURE_TEXT_HTML =
+            "<div class='k9mail-signature'>-- <br><br>signature<br>\u00A0 indented second line</div>"
 
         @JvmStatic
         @Parameterized.Parameters(name = "{index}: {0}")

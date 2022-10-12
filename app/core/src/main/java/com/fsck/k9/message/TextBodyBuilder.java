@@ -188,8 +188,7 @@ class TextBodyBuilder {
     private String getSignatureHtml() {
         String signature = "";
         if (!isEmpty(mSignature)) {
-            signature = "<div style='white-space: pre-wrap'>" +
-                    HtmlConverter.textToHtmlFragmentWithOriginalWhitespace(mSignature) + "</div>";
+            signature = HtmlConverter.textToHtmlFragment(mSignature);
         }
         return signature;
     }
