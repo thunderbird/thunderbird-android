@@ -5,7 +5,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.Menu
@@ -76,8 +75,9 @@ class MessageListFragment :
 
     private lateinit var fragmentListener: MessageListFragmentListener
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private var recyclerView: RecyclerView? = null
+    private var swipeRefreshLayout: SwipeRefreshLayout? = null
+
     private lateinit var adapter: MessageListAdapter
 
     private lateinit var accountUuids: Array<String>
@@ -157,6 +157,8 @@ class MessageListFragment :
             setMessageList(messageListInfo)
         }
 
+        adapter = createMessageListAdapter()
+
         isInitialized = true
     }
 
@@ -172,10 +174,6 @@ class MessageListFragment :
 
     private fun restoreSelectedMessages(savedInstanceState: Bundle) {
         rememberedSelected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES)?.toSet()
-    }
-
-    fun restoreListState(savedListState: Parcelable) {
-        recyclerView.layoutManager?.onRestoreInstanceState(savedListState)
     }
 
     private fun decodeArguments(): MessageListFragment? {
@@ -212,15 +210,36 @@ class MessageListFragment :
         return this
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.message_list_fragment, container, false).apply {
-            initializeSwipeRefreshLayout(this)
-            initializeRecyclerView(this)
+    private fun createMessageListAdapter(): MessageListAdapter {
+        return MessageListAdapter(
+            theme = requireActivity().theme,
+            res = resources,
+            layoutInflater = layoutInflater,
+            contactsPictureLoader = ContactPicture.getContactPictureLoader(),
+            listItemListener = this,
+            appearance = messageListAppearance,
+            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock)
+        ).apply {
+            activeMessage = this@MessageListFragment.activeMessage
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.message_list_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initializeSwipeRefreshLayout(view)
+        initializeRecyclerView(view)
+
+        // This needs to be done before loading the message list below
+        initializeSortSettings()
+
+        loadMessageList()
+    }
+
     private fun initializeSwipeRefreshLayout(view: View) {
-        swipeRefreshLayout = view.findViewById(R.id.swiperefresh)
+        val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh)
 
         if (isRemoteSearchAllowed) {
             swipeRefreshLayout.setOnRefreshListener { onRemoteSearchRequested() }
@@ -230,49 +249,23 @@ class MessageListFragment :
 
         // Disable pull-to-refresh until the message list has been loaded
         swipeRefreshLayout.isEnabled = false
+
+        this.swipeRefreshLayout = swipeRefreshLayout
     }
 
     private fun initializeRecyclerView(view: View) {
-        recyclerView = view.findViewById(R.id.message_list)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
 
         val itemDecoration = MessageListItemDecoration(requireContext())
         recyclerView.addItemDecoration(itemDecoration)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.itemAnimator = MessageListItemAnimator()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        initializeMessageList()
-
-        // This needs to be done before loading the message list below
-        initializeSortSettings()
-        loadMessageList()
-    }
-
-    private fun initializeMessageList() {
-        val theme = requireActivity().theme
-
-        adapter = MessageListAdapter(
-            theme = theme,
-            res = resources,
-            layoutInflater = layoutInflater,
-            contactsPictureLoader = ContactPicture.getContactPictureLoader(),
-            listItemListener = this,
-            appearance = messageListAppearance,
-            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock)
-        )
-
-        adapter.activeMessage = activeMessage
-
-        recyclerView.adapter = adapter
 
         val itemTouchHelper = ItemTouchHelper(
             MessageListSwipeCallback(
                 resources,
-                resourceProvider = SwipeResourceProvider(theme),
+                resourceProvider = SwipeResourceProvider(requireActivity().theme),
                 swipeActionSupportProvider,
                 swipeRightAction = K9.swipeRightAction,
                 swipeLeftAction = K9.swipeLeftAction,
@@ -281,6 +274,10 @@ class MessageListFragment :
             )
         )
         itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        recyclerView.adapter = adapter
+
+        this.recyclerView = recyclerView
     }
 
     private fun initializeSortSettings() {
@@ -363,7 +360,7 @@ class MessageListFragment :
 
     fun progress(progress: Boolean) {
         if (!progress) {
-            swipeRefreshLayout.isRefreshing = false
+            swipeRefreshLayout?.isRefreshing = false
         }
 
         fragmentListener.setMessageListProgressEnabled(progress)
@@ -423,6 +420,9 @@ class MessageListFragment :
     }
 
     override fun onDestroyView() {
+        recyclerView = null
+        swipeRefreshLayout = null
+
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
             messagingController.clearNewMessages(account)
         }
@@ -502,7 +502,7 @@ class MessageListFragment :
         val queryString = localSearch.remoteSearchArguments
 
         isRemoteSearch = true
-        swipeRefreshLayout.isEnabled = false
+        swipeRefreshLayout?.isEnabled = false
 
         remoteSearchFuture = messagingController.searchRemoteMessages(
             searchAccount,
@@ -1159,6 +1159,7 @@ class MessageListFragment :
 
     private val selectedMessageListItem: MessageListItem?
         get() {
+            val recyclerView = recyclerView ?: return null
             val focusedView = recyclerView.focusedChild ?: return null
             val viewHolder = recyclerView.findContainingViewHolder(focusedView) as? MessageViewHolder ?: return null
             return adapter.getItemById(viewHolder.uniqueId)
@@ -1271,8 +1272,10 @@ class MessageListFragment :
             return
         }
 
-        swipeRefreshLayout.isRefreshing = false
-        swipeRefreshLayout.isEnabled = isPullToRefreshAllowed
+        swipeRefreshLayout?.let { swipeRefreshLayout ->
+            swipeRefreshLayout.isRefreshing = false
+            swipeRefreshLayout.isEnabled = isPullToRefreshAllowed
+        }
 
         if (isThreadDisplay) {
             if (messageListItems.isNotEmpty()) {
@@ -1389,6 +1392,7 @@ class MessageListFragment :
     }
 
     private fun scrollToMessage(messageReference: MessageReference) {
+        val recyclerView = recyclerView ?: return
         val messageListItem = adapter.getItem(messageReference) ?: return
         val position = adapter.getPosition(messageListItem) ?: return
 
