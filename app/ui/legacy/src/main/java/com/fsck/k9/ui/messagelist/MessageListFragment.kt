@@ -5,7 +5,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.Menu
@@ -175,10 +174,6 @@ class MessageListFragment :
 
     private fun restoreSelectedMessages(savedInstanceState: Bundle) {
         rememberedSelected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES)?.toSet()
-    }
-
-    fun restoreListState(savedListState: Parcelable) {
-        recyclerView?.layoutManager?.onRestoreInstanceState(savedListState)
     }
 
     private fun decodeArguments(): MessageListFragment? {
