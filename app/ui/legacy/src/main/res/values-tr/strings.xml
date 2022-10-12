@@ -252,6 +252,22 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="global_settings_confirm_menu_discard">Mesajı yoksay</string>
   <string name="global_settings_confirm_menu_mark_all_read">Tüm iletileri okundu olarak işaretle</string>
   <string name="global_settings_confirm_action_delete_notif">Sil (bildirimden)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Hiçbiri</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arşiv</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Sil</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Gereksiz posta</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Taşı</string>
   <string name="global_settings_privacy_hide_useragent">Posta istemcisini gizle</string>
   <string name="global_settings_privacy_hide_useragent_detail">Posta başlığından K-9 Kullanıcı Aracısını kaldır</string>
   <string name="global_settings_privacy_hide_timezone">Zaman dilimini gizle</string>

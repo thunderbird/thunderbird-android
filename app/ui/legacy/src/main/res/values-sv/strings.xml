@@ -260,6 +260,28 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="global_settings_confirm_menu_discard">Kassera meddelandet</string>
   <string name="global_settings_confirm_menu_mark_all_read">Markera alla meddelanden som lästa</string>
   <string name="global_settings_confirm_action_delete_notif">Ta bort (från avisering)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Svepåtgärder</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Svep åt höger</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Svep åt vänster</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Inga</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Växla markering</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Markera som läst/oläst</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Lägg till/ta bort stjärna</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arkivera</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Ta bort</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Skräppost</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Flytta</string>
   <string name="global_settings_privacy_hide_useragent">Dölj e-postklient</string>
   <string name="global_settings_privacy_hide_useragent_detail">Ta bort K-9-användaragent från meddelanderubriker</string>
   <string name="global_settings_privacy_hide_timezone">Dölj tidszon</string>

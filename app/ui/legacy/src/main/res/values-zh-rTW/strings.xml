@@ -258,6 +258,22 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="global_settings_confirm_menu_discard">捨棄郵件</string>
   <string name="global_settings_confirm_menu_mark_all_read">全部標記為已讀</string>
   <string name="global_settings_confirm_action_delete_notif">刪除 (從通知欄)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">無</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">封存</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">刪除</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">標記為垃圾郵件</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">移動</string>
   <string name="global_settings_privacy_hide_useragent">隱藏郵件客戶端</string>
   <string name="global_settings_privacy_hide_useragent_detail">從郵件標頭中移除 K-9 的 User-Agent</string>
   <string name="global_settings_privacy_hide_timezone">隱藏時區</string>

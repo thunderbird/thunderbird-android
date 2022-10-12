@@ -260,6 +260,28 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="global_settings_confirm_menu_discard">Descartar mensaje</string>
   <string name="global_settings_confirm_menu_mark_all_read">Marcar todos los mensajes como leídos</string>
   <string name="global_settings_confirm_action_delete_notif">Borrar (de notificaciones)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Acciones al deslizar el dedo</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Al deslizar a la derecha</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Al deslizar a la izquierda</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Ninguno</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">De/seleccionar</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Marcar como leído/sin leer</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Marcar como destacado o no</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archivo</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Borrar</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Mover</string>
   <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
   <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de K-9 de las cabeceras del mensaje, el destinatario no verá qué programa de correo usas</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
