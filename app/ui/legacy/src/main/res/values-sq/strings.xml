@@ -261,6 +261,27 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="global_settings_confirm_menu_discard">Hidhe tej mesazhin</string>
   <string name="global_settings_confirm_menu_mark_all_read">Shënoji krejt mesazhet si të lexuar</string>
   <string name="global_settings_confirm_action_delete_notif">Fshije (që prej njoftimit)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Veprime fërkimi</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Fërkim djathtas</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Fërkim majtas</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Asnjë</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Vëri/hiqi shenjë si i lexuar</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Shtoni/hiqni yll</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arkivoji</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Fshije</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Shënoje si të padëshiruar</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Lëvizeni</string>
   <string name="global_settings_privacy_hide_useragent">Fshihe klientin e postës</string>
   <string name="global_settings_privacy_hide_useragent_detail">Hiqeni K-9 User-Agent nga kryet e email-it</string>
   <string name="global_settings_privacy_hide_timezone">Fshihe zonën kohore</string>

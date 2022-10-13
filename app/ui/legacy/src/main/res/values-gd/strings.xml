@@ -215,6 +215,22 @@
   <string name="global_settings_confirm_menu_discard">Tilg an teachdaireachd air falbh</string>
   <string name="global_settings_confirm_menu_mark_all_read">Comharraich gun deach gach teachdaireachd a leughadh</string>
   <string name="global_settings_confirm_action_delete_notif">Sguab às (on bhrath)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Chan eil gin</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Tasg-lann</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Sguab às</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spama</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Gluais</string>
   <string name="global_settings_privacy_hide_useragent">Falaich cliant a’ phuist</string>
   <string name="global_settings_privacy_hide_useragent_detail">Thoir air falbh an raon Mail User-Agent o bhannan-cinn phost</string>
   <string name="global_settings_privacy_hide_timezone">Falaich an roinn-tìde</string>

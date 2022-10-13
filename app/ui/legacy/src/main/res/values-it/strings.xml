@@ -263,6 +263,22 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="global_settings_confirm_menu_discard">Scarta messaggio</string>
   <string name="global_settings_confirm_menu_mark_all_read">Marca tutti i messaggi come letti</string>
   <string name="global_settings_confirm_action_delete_notif">Elimina (da notifica)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Nessuna</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archivia</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Elimina</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Sposta</string>
   <string name="global_settings_privacy_hide_useragent">Nascondi User-Agent</string>
   <string name="global_settings_privacy_hide_useragent_detail">Rimuove lo User-Agent di K-9 dalle intestazioni dei messaggi</string>
   <string name="global_settings_privacy_hide_timezone">Nascondi fuso orario</string>

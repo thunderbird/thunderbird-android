@@ -14,7 +14,6 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.mail.Transport
 import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream
 import com.fsck.k9.mail.filter.LineWrapOutputStream
@@ -33,11 +32,11 @@ import java.net.Inet6Address
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
-import java.net.SocketException
 import java.security.GeneralSecurityException
 import java.util.Locale
 import javax.net.ssl.SSLException
 import org.apache.commons.io.IOUtils
+import org.jetbrains.annotations.VisibleForTesting
 
 private const val SOCKET_SEND_MESSAGE_READ_TIMEOUT = 5 * 60 * 1000 // 5 minutes
 
@@ -48,7 +47,7 @@ class SmtpTransport(
     serverSettings: ServerSettings,
     private val trustedSocketFactory: TrustedSocketFactory,
     private val oauthTokenProvider: OAuth2TokenProvider?
-) : Transport() {
+) {
     private val host = serverSettings.host
     private val port = serverSettings.port
     private val username = serverSettings.username
@@ -80,38 +79,15 @@ class SmtpTransport(
         require(serverSettings.type == "smtp") { "Expected SMTP ServerSettings!" }
     }
 
+    // TODO: Fix tests to not use open() directly
+    @VisibleForTesting
     @Throws(MessagingException::class)
-    override fun open() {
+    internal fun open() {
         try {
-            var secureConnection = false
-            val addresses = InetAddress.getAllByName(host)
-            for ((index, address) in addresses.withIndex()) {
-                try {
-                    val socketAddress = InetSocketAddress(address, port)
-                    if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        socket = trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias).also {
-                            it.connect(socketAddress, SOCKET_CONNECT_TIMEOUT)
-                        }
-                        secureConnection = true
-                    } else {
-                        socket = Socket().also {
-                            it.connect(socketAddress, SOCKET_CONNECT_TIMEOUT)
-                        }
-                    }
-                } catch (e: SocketException) {
-                    if (index < addresses.lastIndex) {
-                        // there are still other addresses for that host to try
-                        continue
-                    }
+            var secureConnection = connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED
 
-                    throw MessagingException("Cannot connect to host", e)
-                }
-
-                // connection success
-                break
-            }
-
-            val socket = this.socket ?: error("socket == null")
+            val socket = connect()
+            this.socket = socket
 
             socket.soTimeout = SOCKET_READ_TIMEOUT
 
@@ -263,6 +239,39 @@ class SmtpTransport(
         }
     }
 
+    private fun connect(): Socket {
+        val inetAddresses = InetAddress.getAllByName(host)
+
+        var connectException: Exception? = null
+        for (address in inetAddresses) {
+            connectException = try {
+                return connectToAddress(address)
+            } catch (e: IOException) {
+                Timber.w(e, "Could not connect to %s", address)
+                e
+            }
+        }
+
+        throw MessagingException("Cannot connect to host", connectException)
+    }
+
+    private fun connectToAddress(address: InetAddress): Socket {
+        if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_SMTP) {
+            Timber.d("Connecting to %s as %s", host, address)
+        }
+
+        val socketAddress = InetSocketAddress(address, port)
+        val socket = if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias)
+        } else {
+            Socket()
+        }
+
+        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT)
+
+        return socket
+    }
+
     private fun readGreeting() {
         val smtpResponse = responseParser!!.readGreeting()
         logResponse(smtpResponse)
@@ -335,7 +344,7 @@ class SmtpTransport(
     }
 
     @Throws(MessagingException::class)
-    override fun sendMessage(message: Message) {
+    fun sendMessage(message: Message) {
         val addresses = buildSet<String> {
             for (address in message.getRecipients(RecipientType.TO)) {
                 add(address.address)
@@ -356,7 +365,7 @@ class SmtpTransport(
 
         message.removeHeader("Bcc")
 
-        close()
+        ensureClosed()
         open()
 
         // If the message has attachments and our server has told us about a limit on the size of messages, count
@@ -427,11 +436,15 @@ class SmtpTransport(
         }
     }
 
-    override fun close() {
-        try {
-            executeCommand("QUIT")
-        } catch (ignored: Exception) {
+    private fun ensureClosed() {
+        if (inputStream != null || outputStream != null || socket != null || responseParser != null) {
+            Timber.w(RuntimeException(), "SmtpTransport was open when it was expected to be closed")
+            close()
         }
+    }
+
+    private fun close() {
+        writeQuitCommand()
 
         IOUtils.closeQuietly(inputStream)
         IOUtils.closeQuietly(outputStream)
@@ -441,6 +454,14 @@ class SmtpTransport(
         responseParser = null
         outputStream = null
         socket = null
+    }
+
+    private fun writeQuitCommand() {
+        try {
+            // We don't care about the server's response to the QUIT command
+            writeLine("QUIT")
+        } catch (ignored: Exception) {
+        }
     }
 
     private fun writeLine(command: String, sensitive: Boolean = false) {
@@ -630,7 +651,7 @@ class SmtpTransport(
 
     @Throws(MessagingException::class)
     fun checkSettings() {
-        close()
+        ensureClosed()
 
         try {
             open()

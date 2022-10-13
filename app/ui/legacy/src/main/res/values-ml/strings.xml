@@ -254,6 +254,22 @@
   <string name="global_settings_confirm_menu_discard">സന്ദേശം നിരസിക്കുക</string>
   <string name="global_settings_confirm_menu_mark_all_read">എല്ലാ സന്ദേശങ്ങളും വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
   <string name="global_settings_confirm_action_delete_notif">ഇല്ലാതാക്കുക (അറിയിപ്പിൽ നിന്ന്)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">ഒന്നുമില്ല</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">ശേഖരം</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">ഇല്ലാതാക്കുക</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">സ്പാം</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">നീക്കുക</string>
   <string name="global_settings_privacy_hide_useragent">മെയിൽ ക്ലയന്റ് മറയ്‌ക്കുക</string>
   <string name="global_settings_privacy_hide_useragent_detail">മെയിൽ തലക്കെട്ടുകളിൽ നിന്ന് കെ-9 യൂസർ-ഏജന്റിനെ നീക്കം ചെയ്യുക</string>
   <string name="global_settings_privacy_hide_timezone">സമയ മേഖല മറയ്ക്കൂ</string>

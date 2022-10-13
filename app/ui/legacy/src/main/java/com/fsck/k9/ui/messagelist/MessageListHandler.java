@@ -5,7 +5,6 @@ import java.lang.ref.WeakReference;
 
 import android.app.Activity;
 import android.os.Handler;
-import android.os.Parcelable;
 
 /**
  * This class is used to run operations that modify UI elements in the UI thread.
@@ -22,7 +21,6 @@ public class MessageListHandler extends Handler {
     private static final int ACTION_PROGRESS = 3;
     private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
     private static final int ACTION_GO_BACK = 5;
-    private static final int ACTION_RESTORE_LIST_POSITION = 6;
 
     private WeakReference<MessageListFragment> mFragment;
 
@@ -68,14 +66,6 @@ public class MessageListHandler extends Handler {
         sendMessage(msg);
     }
 
-    public void restoreListPosition(Parcelable savedListState) {
-        MessageListFragment fragment = mFragment.get();
-        if (fragment != null) {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION, savedListState);
-            sendMessage(msg);
-        }
-    }
-
     @Override
     public void handleMessage(android.os.Message msg) {
         MessageListFragment fragment = mFragment.get();
@@ -115,11 +105,6 @@ public class MessageListHandler extends Handler {
             }
             case ACTION_GO_BACK: {
                 fragment.goBack();
-                break;
-            }
-            case ACTION_RESTORE_LIST_POSITION: {
-                Parcelable savedListState = (Parcelable) msg.obj;
-                fragment.restoreListState(savedListState);
                 break;
             }
         }

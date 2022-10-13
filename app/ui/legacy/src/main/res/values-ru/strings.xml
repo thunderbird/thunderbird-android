@@ -12,6 +12,8 @@
   <string name="app_license">Лицензия Apache версии 2.0</string>
   <string name="about_project_title">Проект с открытым исходным кодом</string>
   <string name="about_website_title">Сайт</string>
+  <string name="user_manual_title">Руководство пользователя</string>
+  <string name="get_help_title">Получить помощь</string>
   <string name="user_forum_title">Форум</string>
   <string name="about_fediverse_title">Федеративная сеть</string>
   <string name="about_twitter_title">Твиттер</string>
@@ -170,7 +172,9 @@ K-9 Mail — почтовый клиент для Android.
   <string name="notification_authentication_error_title">Сбой аутентификации</string>
   <string name="notification_authentication_error_text">Сбой аутентификации для <xliff:g id="account">%s</xliff:g>. Измените настройки сервера</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Ошибка уведомления</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звука уведомления.\n\nНажмите , чтобы открыть настройки уведомлений.</string>
   <string name="notification_bg_sync_ticker">Проверка <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Проверка почты</string>
   <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
@@ -221,7 +225,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="message_view_from_format">От: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Кому:</string>
   <string name="message_view_cc_label">Копия:</string>
-  <string name="message_view_bcc_label">Скрытая:</string>
+  <string name="message_view_bcc_label">Скрытая копия:</string>
   <string name="message_view_status_attachment_not_saved">Не получается сохранить вложение.</string>
   <string name="message_view_show_pictures_action">Изображения</string>
   <string name="message_view_no_viewer">Отсутствует просмотрщик <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -259,6 +263,28 @@ K-9 Mail — почтовый клиент для Android.
   <string name="global_settings_confirm_menu_discard">Отменить сообщение</string>
   <string name="global_settings_confirm_menu_mark_all_read">Прочитаны все</string>
   <string name="global_settings_confirm_action_delete_notif">Удалить (в уведомлении)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Действия смахиванием</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Смахивание вправо</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Смахивание влево</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Нет</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Отметить письмо</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Отметить как прочитанное/непрочитанное</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Добавить/удалить звездочку</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Архив</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Удалить</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Переместить в спам</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Перенести</string>
   <string name="global_settings_privacy_hide_useragent">Скрыть почтовый клиент</string>
   <string name="global_settings_privacy_hide_useragent_detail">Убрать K-9 User-Agent из заголовков сообщений</string>
   <string name="global_settings_privacy_hide_timezone">Скрыть временную зону</string>
@@ -378,17 +404,17 @@ K-9 Mail — почтовый клиент для Android.
   <string name="idle_refresh_period_60min">1 час</string>
   <string name="account_setup_options_notify_label">Уведомлять о новой почте</string>
   <string name="account_setup_options_mail_display_count_label">Загружать сообщений</string>
-  <string name="account_setup_options_mail_display_count_10">10</string>
-  <string name="account_setup_options_mail_display_count_25">25</string>
-  <string name="account_setup_options_mail_display_count_50">50</string>
-  <string name="account_setup_options_mail_display_count_100">100</string>
-  <string name="account_setup_options_mail_display_count_250">250</string>
-  <string name="account_setup_options_mail_display_count_500">500</string>
-  <string name="account_setup_options_mail_display_count_1000">1000</string>
+  <string name="account_setup_options_mail_display_count_10">10 сообщений</string>
+  <string name="account_setup_options_mail_display_count_25">25 сообщений</string>
+  <string name="account_setup_options_mail_display_count_50">50 сообщений</string>
+  <string name="account_setup_options_mail_display_count_100">100 сообщений</string>
+  <string name="account_setup_options_mail_display_count_250">250 сообщений</string>
+  <string name="account_setup_options_mail_display_count_500">500 сообщений</string>
+  <string name="account_setup_options_mail_display_count_1000">1000 сообщений</string>
   <string name="account_setup_options_mail_display_count_2500">2500 сообщений</string>
   <string name="account_setup_options_mail_display_count_5000">5000 сообщений</string>
   <string name="account_setup_options_mail_display_count_10000">10000 сообщений</string>
-  <string name="account_setup_options_mail_display_count_all">Все</string>
+  <string name="account_setup_options_mail_display_count_all">Все сообщения</string>
   <string name="move_copy_cannot_copy_unsynced_message">Нельзя скопировать или переместить сообщение, не синхронизированное с сервером</string>
   <string name="account_setup_failed_dlg_title">Настройка не завершена</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Неверные логин или пароль.\n(<xliff:g id="error">%s</xliff:g>)</string>
@@ -405,12 +431,12 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_notify_label">Уведомить о почте</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Уведомления папок</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Все</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_class">1 класс</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1 и 2 классы </string>
-  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Кроме 2 класса</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Папки только 1-го класса</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Все, кроме папок 2-го класса</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">Нет</string>
   <string name="account_settings_notify_sync_label">Уведомить о проверке</string>
-  <string name="account_settings_email_label">Ваш адрес email</string>
+  <string name="account_settings_email_label">Ваш адрес эл. почты</string>
   <string name="account_settings_notify_summary">Показать уведомление о новой почте</string>
   <string name="account_settings_notify_sync_summary">Показать уведомление о проверке почты</string>
   <string name="account_settings_notify_self_label">Также об исходящей</string>
@@ -439,7 +465,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_strip_signature_summary">Удалять подписи из цитируемого текста</string>
   <string name="account_settings_message_format_label">Формат сообщений</string>
   <string name="account_settings_message_format_text">Только текст</string>
-  <string name="account_settings_message_format_html">HTML</string>
+  <string name="account_settings_message_format_html">HTML (сохранять изображения и форматирование)</string>
   <string name="account_settings_message_format_auto">Автоматически</string>
   <string name="account_settings_always_show_cc_bcc_label">Включать Копия/Скрытая</string>
   <string name="account_settings_message_read_receipt_label">Уведомление о прочтении</string>
@@ -461,8 +487,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_crypto_summary_off">OpenPGP не настроен</string>
   <string name="account_settings_crypto_summary_on">Соединено с %s</string>
   <string name="account_settings_crypto_summary_config">Конфигурируется…</string>
-  <string name="account_settings_crypto_encrypt_all_drafts">Хранить черновики зашифрованными</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_on">Все черновики будут зашифрованы</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">Хранить все черновики в зашифрованном виде</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">Все черновики будут храниться в зашифрованном виде</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Зашифровать черновики, если включено шифрование</string>
   <string name="account_settings_mail_check_frequency_label">Интервал проверки</string>
   <string name="account_settings_color_label">Цвет</string>
@@ -563,7 +589,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_vibrate_pattern_5">Шаблон 5</string>
   <string name="account_settings_vibrate_times">Повтор</string>
   <string name="account_settings_vibrate_summary_disabled">Выключено</string>
-  <string name="account_settings_ringtone">Мелодия</string>
+  <string name="account_settings_ringtone">Мелодия для оповещения</string>
   <string name="account_settings_notification_light_label">Свет уведомлений</string>
   <string name="account_settings_notification_light_disabled">Выключено</string>
   <string name="account_settings_notification_light_account_color">Цвет</string>
@@ -594,13 +620,13 @@ K-9 Mail — почтовый клиент для Android.
   <string name="edit_identity_description_label">Название роли</string>
   <string name="edit_identity_description_hint">опция</string>
   <string name="edit_identity_name_label">Ваше имя</string>
-  <string name="edit_identity_name_hint">опция</string>
+  <string name="edit_identity_name_hint">(Необязательно)</string>
   <string name="edit_identity_email_label">Адрес email</string>
-  <string name="edit_identity_email_hint">обязательно</string>
+  <string name="edit_identity_email_hint">(Обязательно)</string>
   <string name="edit_identity_reply_to_label">Адрес для ответа</string>
-  <string name="edit_identity_reply_to_hint">опция</string>
+  <string name="edit_identity_reply_to_hint">(Необязательно)</string>
   <string name="edit_identity_signature_label">Подпись</string>
-  <string name="edit_identity_signature_hint">опция</string>
+  <string name="edit_identity_signature_hint">(Необязательно)</string>
   <string name="account_settings_signature_use_label">Использовать подпись</string>
   <string name="account_settings_signature_label">Подпись</string>
   <string name="default_identity_description">Основная роль</string>
@@ -679,6 +705,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_push_limit_1000">1000 папок</string>
   <string name="animations_title">Анимация</string>
   <string name="animations_summary">Анимация интерфейса</string>
+  <string name="volume_navigation_title">Управление клавишами громкости для перехода между письмами</string>
   <string name="show_unified_inbox_title">Показывать общий ящик для входящих</string>
   <string name="show_starred_count_title">Cчетчик важных</string>
   <string name="integrated_inbox_title">Входящие</string>
@@ -895,7 +922,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="preview_encrypted">*Зашифровано*</string>
   <string name="add_from_contacts">Добавить из Контактов</string>
   <string name="recipient_cc">Копия</string>
-  <string name="recipient_bcc">Скрытая</string>
+  <string name="recipient_bcc">Скрытая копия</string>
   <string name="recipient_to">Кому</string>
   <string name="recipient_from">От</string>
   <string name="reply_to_label">Ответить на</string>

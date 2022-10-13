@@ -258,6 +258,22 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_confirm_menu_discard">Rejeitar mensagem</string>
   <string name="global_settings_confirm_menu_mark_all_read">Marcar todas as mensagens como lidas</string>
   <string name="global_settings_confirm_action_delete_notif">Eliminar (a partir da notificação)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Nenhuma</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arquivo</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Eliminar</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Mover</string>
   <string name="global_settings_privacy_hide_useragent">Ocultar cliente de email</string>
   <string name="global_settings_privacy_hide_useragent_detail">Remover o \"User-Agent\" do K-9 dos cabeçalhos dos emails</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar fuso horário</string>

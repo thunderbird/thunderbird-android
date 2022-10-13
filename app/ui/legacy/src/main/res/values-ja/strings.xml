@@ -258,6 +258,28 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_confirm_menu_discard">メッセージ破棄</string>
   <string name="global_settings_confirm_menu_mark_all_read">すべてのメールを既読にする</string>
   <string name="global_settings_confirm_action_delete_notif">削除(通知領域)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">スワイプ操作</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">右へスワイプ</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">左へスワイプ</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">なし</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">選択の切り替え</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">既読/未読にする</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">スターを付ける/外す</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">アーカイブ</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">削除</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">迷惑メール</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">移動</string>
   <string name="global_settings_privacy_hide_useragent">メールクライアントを隠す</string>
   <string name="global_settings_privacy_hide_useragent_detail">メールヘッダからK-9のUser-Agentヘッダを削除する</string>
   <string name="global_settings_privacy_hide_timezone">タイムゾーンを隠す</string>

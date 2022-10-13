@@ -70,16 +70,10 @@ class MessageListAdapter internal constructor(
                 selected = selected.intersect(uniqueIds)
             }
 
-            if (oldMessageList.isEmpty()) {
-                // While loading, only the footer view is showing. If we used DiffUtil, the footer view would be used as
-                // anchor element and the updated list would be scrolled all the way down.
-                notifyDataSetChanged()
-            } else {
-                val diffResult = DiffUtil.calculateDiff(
-                    MessageListDiffCallback(oldMessageList = oldMessageList, newMessageList = value)
-                )
-                diffResult.dispatchUpdatesTo(this)
-            }
+            val diffResult = DiffUtil.calculateDiff(
+                MessageListDiffCallback(oldMessageList = oldMessageList, newMessageList = value)
+            )
+            diffResult.dispatchUpdatesTo(this)
         }
 
     private var messagesMap = emptyMap<Long, MessageListItem>()

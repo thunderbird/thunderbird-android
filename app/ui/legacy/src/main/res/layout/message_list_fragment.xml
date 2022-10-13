@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swiperefresh"
     android:layout_width="match_parent"
@@ -15,7 +14,6 @@
         android:scrollbars="vertical"
         android:scrollbarStyle="insideOverlay"
         android:fadingEdge="none"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/message_list_item"/>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

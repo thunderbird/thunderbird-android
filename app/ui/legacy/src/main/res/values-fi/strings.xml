@@ -259,6 +259,28 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_confirm_menu_discard">Hylkää viesti</string>
   <string name="global_settings_confirm_menu_mark_all_read">Merkitse kaikki viestit luetuiksi</string>
   <string name="global_settings_confirm_action_delete_notif">Poista (ilmoituksessa)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Vetotoiminnot</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Veto oikealle</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Veto vasemmalle</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Ei mitään</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Valitse viesti tai poista valinta viestin kohdalta</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Merkitse luetuksi/lukemattomaksi</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Lisää tai poista tähti</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arkistoi</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Poista</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Roskaposti</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Siirrä</string>
   <string name="global_settings_privacy_hide_useragent">Piilota sähköpostisovellus</string>
   <string name="global_settings_privacy_hide_useragent_detail">Poista K-9-tunnistetiedot viestin otsaketiedoista</string>
   <string name="global_settings_privacy_hide_timezone">Piilota aikavyöhyke</string>

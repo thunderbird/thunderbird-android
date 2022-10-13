@@ -33,6 +33,8 @@ internal class SmtpResponseParser(
     }
 
     fun readHelloResponse(): SmtpHelloResponse {
+        logBuffer.clear()
+
         val replyCode = readReplyCode()
 
         if (replyCode != 250) {
