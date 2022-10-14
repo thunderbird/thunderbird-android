@@ -1,13 +1,10 @@
-package com.fsck.k9.widget.list;
+package com.fsck.k9.widget.list
 
+import android.content.Intent
+import android.widget.RemoteViewsService
 
-import android.content.Intent;
-import android.widget.RemoteViewsService;
-
-
-public class MessageListWidgetService extends RemoteViewsService {
-    @Override
-    public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new MessageListRemoteViewFactory(getApplicationContext());
+class MessageListWidgetService : RemoteViewsService() {
+    override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
+        return MessageListRemoteViewFactory(applicationContext)
     }
 }
