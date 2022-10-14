@@ -382,11 +382,6 @@
         </provider>
 
         <provider
-            android:name=".external.MessageProvider"
-            android:authorities="${applicationId}.messageprovider"
-            android:exported="false" />
-
-        <provider
             android:name=".provider.DecryptedFileProvider"
             android:authorities="${applicationId}.decryptedfileprovider"
             android:exported="false"

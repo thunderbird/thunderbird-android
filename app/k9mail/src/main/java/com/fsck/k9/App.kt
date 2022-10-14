@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.external.MessageProvider
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.ThemeManager
@@ -40,7 +39,6 @@ class App : Application() {
 
         K9.init(this)
         Core.init(this)
-        MessageProvider.init()
         initializeAppLanguage()
         updateNotificationChannelsOnAppLanguageChanges()
         themeManager.init()
