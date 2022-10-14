@@ -35,3 +35,7 @@ fun Cursor.getIntOrThrow(columnName: String): Int {
 fun Cursor.getLongOrThrow(columnName: String): Long {
     return getLongOrNull(columnName) ?: error("Column $columnName must not be null")
 }
+
+fun Cursor.getBoolean(columnIndex: Int): Boolean {
+    return getString(columnIndex).toBoolean()
+}

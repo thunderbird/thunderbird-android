@@ -1,30 +1,148 @@
-package com.fsck.k9.widget.list;
+package com.fsck.k9.widget.list
 
+import android.content.Context
+import android.content.Intent
+import android.graphics.Typeface
+import android.net.Uri
+import android.os.Binder
+import android.text.SpannableString
+import android.text.style.StyleSpan
+import android.view.View
+import android.widget.RemoteViews
+import android.widget.RemoteViewsService.RemoteViewsFactory
+import androidx.core.content.ContextCompat
+import androidx.core.database.getLongOrNull
+import com.fsck.k9.K9
+import com.fsck.k9.R
+import com.fsck.k9.external.MessageProvider
+import com.fsck.k9.helper.getBoolean
+import com.fsck.k9.helper.map
+import java.util.Calendar
+import java.util.Locale
+import com.fsck.k9.ui.R as UiR
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
+class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFactory {
+    private val calendar: Calendar = Calendar.getInstance()
 
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Binder;
-import androidx.core.content.ContextCompat;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
-import android.view.View;
-import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
+    private var mailItems = emptyList<MailItem>()
+    private var senderAboveSubject = false
+    private var readTextColor = 0
+    private var unreadTextColor = 0
 
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
-import com.fsck.k9.external.MessageProvider;
+    override fun onCreate() {
+        senderAboveSubject = K9.isMessageListSenderAboveSubject
+        readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read)
+        unreadTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_unread)
+    }
 
+    override fun onDataSetChanged() {
+        val identityToken = Binder.clearCallingIdentity()
+        try {
+            loadMessageList()
+        } finally {
+            Binder.restoreCallingIdentity(identityToken)
+        }
+    }
 
-public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
-    private static final String[] MAIL_LIST_PROJECTIONS = {
+    private fun loadMessageList() {
+        val contentResolver = context.contentResolver
+        val unifiedInboxUri = MessageProvider.CONTENT_URI.buildUpon().appendPath("inbox_messages").build()
+
+        mailItems = contentResolver.query(unifiedInboxUri, MAIL_LIST_PROJECTIONS, null, null, null)?.use { cursor ->
+            cursor.map {
+                MailItem(
+                    sender = cursor.getString(0),
+                    date = cursor.getLongOrNull(1) ?: 0L,
+                    subject = cursor.getString(2),
+                    preview = cursor.getString(3),
+                    unread = cursor.getBoolean(4),
+                    hasAttachment = cursor.getBoolean(5),
+                    uri = Uri.parse(cursor.getString(6)),
+                    color = cursor.getInt(7)
+                )
+            }
+        } ?: emptyList()
+    }
+
+    override fun onDestroy() = Unit
+
+    override fun getCount(): Int = mailItems.size
+
+    override fun getViewAt(position: Int): RemoteViews {
+        val remoteView = RemoteViews(context.packageName, R.layout.message_list_widget_list_item)
+
+        val item = mailItems[position]
+
+        val sender = if (item.unread) bold(item.sender) else item.sender
+        val subject = if (item.unread) bold(item.subject) else item.subject
+
+        if (senderAboveSubject) {
+            remoteView.setTextViewText(R.id.sender, sender)
+            remoteView.setTextViewText(R.id.mail_subject, subject)
+        } else {
+            remoteView.setTextViewText(R.id.sender, subject)
+            remoteView.setTextViewText(R.id.mail_subject, sender)
+        }
+
+        remoteView.setTextViewText(R.id.mail_date, formatDate(item.date))
+        remoteView.setTextViewText(R.id.mail_preview, item.preview)
+
+        val textColor = getTextColor(item)
+        remoteView.setTextColor(R.id.sender, textColor)
+        remoteView.setTextColor(R.id.mail_subject, textColor)
+        remoteView.setTextColor(R.id.mail_date, textColor)
+        remoteView.setTextColor(R.id.mail_preview, textColor)
+
+        if (item.hasAttachment) {
+            remoteView.setInt(R.id.attachment, "setVisibility", View.VISIBLE)
+        } else {
+            remoteView.setInt(R.id.attachment, "setVisibility", View.GONE)
+        }
+
+        val intent = Intent().apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            data = item.uri
+        }
+        remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent)
+
+        remoteView.setInt(R.id.chip, "setBackgroundColor", item.color)
+
+        return remoteView
+    }
+
+    override fun getLoadingView(): RemoteViews {
+        return RemoteViews(context.packageName, R.layout.message_list_widget_loading).apply {
+            setTextViewText(R.id.loadingText, context.getString(UiR.string.mail_list_widget_loading))
+            setViewVisibility(R.id.loadingText, View.VISIBLE)
+        }
+    }
+
+    override fun getViewTypeCount(): Int = 2
+
+    override fun getItemId(position: Int): Long = position.toLong()
+
+    override fun hasStableIds(): Boolean = true
+
+    private fun bold(text: String): CharSequence {
+        return SpannableString(text).apply {
+            setSpan(StyleSpan(Typeface.BOLD), 0, text.length, 0)
+        }
+    }
+
+    private fun formatDate(date: Long): String {
+        calendar.timeInMillis = date
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault())
+
+        return String.format("%d %s", dayOfMonth, month)
+    }
+
+    private fun getTextColor(mailItem: MailItem): Int {
+        return if (mailItem.unread) unreadTextColor else readTextColor
+    }
+
+    companion object {
+        private val MAIL_LIST_PROJECTIONS = arrayOf(
             MessageProvider.MessageColumns.SENDER,
             MessageProvider.MessageColumns.SEND_DATE,
             MessageProvider.MessageColumns.SUBJECT,
@@ -32,186 +150,18 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
             MessageProvider.MessageColumns.UNREAD,
             MessageProvider.MessageColumns.HAS_ATTACHMENTS,
             MessageProvider.MessageColumns.URI,
-            MessageProvider.MessageColumns.ACCOUNT_COLOR,
-    };
-
-
-    private final Context context;
-    private final Calendar calendar;
-    private final ArrayList<MailItem> mailItems = new ArrayList<>(25);
-    private boolean senderAboveSubject;
-    private int readTextColor;
-    private int unreadTextColor;
-
-
-    public MessageListRemoteViewFactory(Context context) {
-        this.context = context;
-        calendar = Calendar.getInstance();
-    }
-
-    @Override
-    public void onCreate() {
-        senderAboveSubject = K9.isMessageListSenderAboveSubject();
-        readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read);
-        unreadTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_unread);
-    }
-
-    @Override
-    public void onDataSetChanged() {
-        long identityToken = Binder.clearCallingIdentity();
-        try {
-            loadMessageList();
-        } finally {
-            Binder.restoreCallingIdentity(identityToken);
-        }
-    }
-
-    private void loadMessageList() {
-        mailItems.clear();
-
-        Uri unifiedInboxUri = MessageProvider.CONTENT_URI.buildUpon().appendPath("inbox_messages").build();
-        Cursor cursor = context.getContentResolver().query(unifiedInboxUri, MAIL_LIST_PROJECTIONS, null, null, null);
-
-        if (cursor == null) {
-            return;
-        }
-
-        try {
-            while (cursor.moveToNext()) {
-                String sender = cursor.getString(0);
-                long date = cursor.isNull(1) ? 0L : cursor.getLong(1);
-                String subject = cursor.getString(2);
-                String preview = cursor.getString(3);
-                boolean unread = toBoolean(cursor.getString(4));
-                boolean hasAttachment = toBoolean(cursor.getString(5));
-                Uri viewUri = Uri.parse(cursor.getString(6));
-                int color = cursor.getInt(7);
-
-                mailItems.add(new MailItem(sender, date, subject, preview, unread, hasAttachment, viewUri, color));
-            }
-        } finally {
-            cursor.close();
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        // Implement interface
-    }
-
-    @Override
-    public int getCount() {
-        return mailItems.size();
-    }
-
-    @Override
-    public RemoteViews getViewAt(int position) {
-        RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.message_list_widget_list_item);
-        MailItem item = mailItems.get(position);
-
-        CharSequence sender = item.unread ? bold(item.sender) : item.sender;
-        CharSequence subject = item.unread ? bold(item.subject) : item.subject;
-
-        if (senderAboveSubject) {
-            remoteView.setTextViewText(R.id.sender, sender);
-            remoteView.setTextViewText(R.id.mail_subject, subject);
-        } else {
-            remoteView.setTextViewText(R.id.sender, subject);
-            remoteView.setTextViewText(R.id.mail_subject, sender);
-        }
-        remoteView.setTextViewText(R.id.mail_date, item.getDateFormatted("%d %s"));
-        remoteView.setTextViewText(R.id.mail_preview, item.preview);
-
-        int textColor = item.getTextColor();
-        remoteView.setTextColor(R.id.sender, textColor);
-        remoteView.setTextColor(R.id.mail_subject, textColor);
-        remoteView.setTextColor(R.id.mail_date, textColor);
-        remoteView.setTextColor(R.id.mail_preview, textColor);
-
-        if (item.hasAttachment) {
-            remoteView.setInt(R.id.attachment, "setVisibility", View.VISIBLE);
-        } else {
-            remoteView.setInt(R.id.attachment, "setVisibility", View.GONE);
-        }
-
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setData(item.uri);
-        remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent);
-
-        remoteView.setInt(R.id.chip, "setBackgroundColor", item.color);
-
-        return remoteView;
-    }
-
-    @Override
-    public RemoteViews getLoadingView() {
-        RemoteViews loadingView = new RemoteViews(context.getPackageName(), R.layout.message_list_widget_loading);
-        loadingView.setTextViewText(R.id.loadingText, context.getString(com.fsck.k9.ui.R.string.mail_list_widget_loading));
-        loadingView.setViewVisibility(R.id.loadingText, View.VISIBLE);
-        return loadingView;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return true;
-    }
-
-    private CharSequence bold(String text) {
-        SpannableString spannableString = new SpannableString(text);
-        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length(), 0);
-        return spannableString;
-    }
-
-    private boolean toBoolean(String value) {
-        return Boolean.valueOf(value);
-    }
-
-
-    private class MailItem {
-        final long date;
-        final String sender;
-        final String preview;
-        final String subject;
-        final boolean unread;
-        final boolean hasAttachment;
-        final Uri uri;
-        final int color;
-
-
-        MailItem(String sender, long date, String subject, String preview, boolean unread, boolean hasAttachment,
-                Uri viewUri, int color) {
-            this.sender = sender;
-            this.date = date;
-            this.preview = preview;
-            this.subject = subject;
-            this.unread = unread;
-            this.uri = viewUri;
-            this.hasAttachment = hasAttachment;
-            this.color = color;
-        }
-
-        int getTextColor() {
-            return unread ? unreadTextColor : readTextColor;
-        }
-
-        String getDateFormatted(String format) {
-            calendar.setTimeInMillis(date);
-
-            return String.format(format,
-                    calendar.get(Calendar.DAY_OF_MONTH),
-                    calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
-        }
+            MessageProvider.MessageColumns.ACCOUNT_COLOR
+        )
     }
 }
 
+private class MailItem(
+    val sender: String,
+    val date: Long,
+    val subject: String,
+    val preview: String,
+    val unread: Boolean,
+    val hasAttachment: Boolean,
+    val uri: Uri,
+    val color: Int
+)
