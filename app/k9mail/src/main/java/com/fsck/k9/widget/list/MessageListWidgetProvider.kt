@@ -1,101 +1,104 @@
-package com.fsck.k9.widget.list;
+package com.fsck.k9.widget.list
 
+import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.RemoteViews
+import com.fsck.k9.R
+import com.fsck.k9.activity.MessageCompose
+import com.fsck.k9.activity.MessageList
+import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
+import com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE
+import com.fsck.k9.helper.PendingIntentCompat.FLAG_MUTABLE
+import com.fsck.k9.search.SearchAccount.Companion.createUnifiedInboxAccount
 
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.widget.RemoteViews;
-
-import com.fsck.k9.R;
-import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.activity.MessageList;
-import com.fsck.k9.search.SearchAccount;
-
-import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
-import static com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE;
-import static com.fsck.k9.helper.PendingIntentCompat.FLAG_MUTABLE;
-
-
-public class MessageListWidgetProvider extends AppWidgetProvider {
-    private static final String ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST";
-
-
-    public static void triggerMessageListWidgetUpdate(Context context) {
-        Context appContext = context.getApplicationContext();
-        AppWidgetManager widgetManager = AppWidgetManager.getInstance(appContext);
-        ComponentName widget = new ComponentName(appContext, MessageListWidgetProvider.class);
-        int[] widgetIds = widgetManager.getAppWidgetIds(widget);
-
-        Intent intent = new Intent(context, MessageListWidgetProvider.class);
-        intent.setAction(ACTION_UPDATE_MESSAGE_LIST);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds);
-        context.sendBroadcast(intent);
-    }
-
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+class MessageListWidgetProvider : AppWidgetProvider() {
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        for (appWidgetId in appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
 
-    private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.message_list_widget_layout);
+    private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+        val views = RemoteViews(context.packageName, R.layout.message_list_widget_layout)
 
-        views.setTextViewText(R.id.folder, context.getString(com.fsck.k9.ui.R.string.integrated_inbox_title));
+        views.setTextViewText(R.id.folder, context.getString(com.fsck.k9.ui.R.string.integrated_inbox_title))
 
-        Intent intent = new Intent(context, MessageListWidgetService.class);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-        views.setRemoteAdapter(R.id.listView, intent);
+        val intent = Intent(context, MessageListWidgetService::class.java).apply {
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+        }
+        views.setRemoteAdapter(R.id.listView, intent)
 
-        PendingIntent viewAction = viewActionTemplatePendingIntent(context);
-        views.setPendingIntentTemplate(R.id.listView, viewAction);
+        val viewAction = viewActionTemplatePendingIntent(context)
+        views.setPendingIntentTemplate(R.id.listView, viewAction)
 
-        PendingIntent composeAction = composeActionPendingIntent(context);
-        views.setOnClickPendingIntent(R.id.new_message, composeAction);
+        val composeAction = composeActionPendingIntent(context)
+        views.setOnClickPendingIntent(R.id.new_message, composeAction)
 
-        PendingIntent headerClickAction = viewUnifiedInboxPendingIntent(context);
-        views.setOnClickPendingIntent(R.id.top_controls, headerClickAction);
+        val headerClickAction = viewUnifiedInboxPendingIntent(context)
+        views.setOnClickPendingIntent(R.id.top_controls, headerClickAction)
 
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
 
-        String action = intent.getAction();
-        if (action.equals(ACTION_UPDATE_MESSAGE_LIST)) {
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+        if (intent.action == ACTION_UPDATE_MESSAGE_LIST) {
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            val appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
+
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
         }
     }
 
-    private PendingIntent viewActionTemplatePendingIntent(Context context) {
-        Intent intent = new Intent(context, MessageList.class);
-        intent.setAction(Intent.ACTION_VIEW);
-
-        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT | FLAG_MUTABLE);
+    private fun viewActionTemplatePendingIntent(context: Context): PendingIntent {
+        val intent = Intent(context, MessageList::class.java).apply {
+            action = Intent.ACTION_VIEW
+        }
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_MUTABLE)
     }
 
-    private PendingIntent viewUnifiedInboxPendingIntent(Context context) {
-        SearchAccount unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount();
-        Intent intent = MessageList.intentDisplaySearch(
-                context, unifiedInboxAccount.getRelatedSearch(), true, true, true);
+    private fun viewUnifiedInboxPendingIntent(context: Context): PendingIntent {
+        val unifiedInboxAccount = createUnifiedInboxAccount()
+        val intent = intentDisplaySearch(
+            context = context,
+            search = unifiedInboxAccount.relatedSearch,
+            noThreading = true,
+            newTask = true,
+            clearTop = true
+        )
 
-        return PendingIntent.getActivity(context, -1, intent, FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE);
+        return PendingIntent.getActivity(context, -1, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
-    private PendingIntent composeActionPendingIntent(Context context) {
-        Intent intent = new Intent(context, MessageCompose.class);
-        intent.setAction(MessageCompose.ACTION_COMPOSE);
+    private fun composeActionPendingIntent(context: Context): PendingIntent {
+        val intent = Intent(context, MessageCompose::class.java).apply {
+            action = MessageCompose.ACTION_COMPOSE
+        }
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+    }
 
-        return PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE);
+    companion object {
+        private const val ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST"
+
+        fun triggerMessageListWidgetUpdate(context: Context) {
+            val appContext = context.applicationContext
+            val widgetManager = AppWidgetManager.getInstance(appContext)
+
+            val widget = ComponentName(appContext, MessageListWidgetProvider::class.java)
+            val widgetIds = widgetManager.getAppWidgetIds(widget)
+            val intent = Intent(context, MessageListWidgetProvider::class.java).apply {
+                action = ACTION_UPDATE_MESSAGE_LIST
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
+            }
+
+            context.sendBroadcast(intent)
+        }
     }
 }
