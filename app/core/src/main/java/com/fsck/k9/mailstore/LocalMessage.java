@@ -194,10 +194,6 @@ public class LocalMessage extends MimeMessage {
         return (attachmentCount > 0);
     }
 
-    public int getAttachmentCount() {
-        return attachmentCount;
-    }
-
     @Override
     public void setFrom(Address from) {
         this.mFrom = new Address[] { from };

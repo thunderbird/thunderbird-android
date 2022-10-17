@@ -3,88 +3,77 @@ package com.fsck.k9.widget.list
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.net.Uri
-import android.os.Binder
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService.RemoteViewsFactory
 import androidx.core.content.ContextCompat
-import androidx.core.database.getLongOrNull
+import com.fsck.k9.Account.SortType
 import com.fsck.k9.K9
 import com.fsck.k9.R
-import com.fsck.k9.external.MessageProvider
-import com.fsck.k9.helper.getBoolean
-import com.fsck.k9.helper.map
-import java.util.Calendar
-import java.util.Locale
+import com.fsck.k9.search.LocalSearch
+import com.fsck.k9.search.SearchAccount
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import com.fsck.k9.ui.R as UiR
 
-class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFactory {
-    private val calendar: Calendar = Calendar.getInstance()
+internal class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFactory, KoinComponent {
+    private val messageListLoader: MessageListLoader by inject()
 
-    private var mailItems = emptyList<MailItem>()
+    private lateinit var unifiedInboxSearch: LocalSearch
+
+    private var messageListItems = emptyList<MessageListItem>()
     private var senderAboveSubject = false
     private var readTextColor = 0
     private var unreadTextColor = 0
 
     override fun onCreate() {
+        unifiedInboxSearch = SearchAccount.createUnifiedInboxAccount().relatedSearch
+
         senderAboveSubject = K9.isMessageListSenderAboveSubject
         readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read)
         unreadTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_unread)
     }
 
     override fun onDataSetChanged() {
-        val identityToken = Binder.clearCallingIdentity()
-        try {
-            loadMessageList()
-        } finally {
-            Binder.restoreCallingIdentity(identityToken)
-        }
+        loadMessageList()
     }
 
     private fun loadMessageList() {
-        val contentResolver = context.contentResolver
-        val unifiedInboxUri = MessageProvider.CONTENT_URI.buildUpon().appendPath("inbox_messages").build()
+        // TODO: Use same sort order that is used for the Unified Inbox inside the app
+        val messageListConfig = MessageListConfig(
+            search = unifiedInboxSearch,
+            showingThreadedList = K9.isThreadedViewEnabled,
+            sortType = SortType.SORT_DATE,
+            sortAscending = false,
+            sortDateAscending = false
+        )
 
-        mailItems = contentResolver.query(unifiedInboxUri, MAIL_LIST_PROJECTIONS, null, null, null)?.use { cursor ->
-            cursor.map {
-                MailItem(
-                    sender = cursor.getString(0),
-                    date = cursor.getLongOrNull(1) ?: 0L,
-                    subject = cursor.getString(2),
-                    preview = cursor.getString(3),
-                    unread = cursor.getBoolean(4),
-                    hasAttachment = cursor.getBoolean(5),
-                    uri = Uri.parse(cursor.getString(6)),
-                    color = cursor.getInt(7)
-                )
-            }
-        } ?: emptyList()
+        messageListItems = messageListLoader.getMessageList(messageListConfig)
     }
 
     override fun onDestroy() = Unit
 
-    override fun getCount(): Int = mailItems.size
+    override fun getCount(): Int = messageListItems.size
 
     override fun getViewAt(position: Int): RemoteViews {
         val remoteView = RemoteViews(context.packageName, R.layout.message_list_widget_list_item)
 
-        val item = mailItems[position]
+        val item = messageListItems[position]
 
-        val sender = if (item.unread) bold(item.sender) else item.sender
-        val subject = if (item.unread) bold(item.subject) else item.subject
+        val displayName = if (item.isRead) item.displayName else bold(item.displayName)
+        val subject = if (item.isRead) item.subject else bold(item.subject)
 
         if (senderAboveSubject) {
-            remoteView.setTextViewText(R.id.sender, sender)
+            remoteView.setTextViewText(R.id.sender, displayName)
             remoteView.setTextViewText(R.id.mail_subject, subject)
         } else {
             remoteView.setTextViewText(R.id.sender, subject)
-            remoteView.setTextViewText(R.id.mail_subject, sender)
+            remoteView.setTextViewText(R.id.mail_subject, displayName)
         }
 
-        remoteView.setTextViewText(R.id.mail_date, formatDate(item.date))
+        remoteView.setTextViewText(R.id.mail_date, item.displayDate)
         remoteView.setTextViewText(R.id.mail_preview, item.preview)
 
         val textColor = getTextColor(item)
@@ -93,7 +82,7 @@ class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFa
         remoteView.setTextColor(R.id.mail_date, textColor)
         remoteView.setTextColor(R.id.mail_preview, textColor)
 
-        if (item.hasAttachment) {
+        if (item.hasAttachments) {
             remoteView.setInt(R.id.attachment, "setVisibility", View.VISIBLE)
         } else {
             remoteView.setInt(R.id.attachment, "setVisibility", View.GONE)
@@ -105,7 +94,7 @@ class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFa
         }
         remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent)
 
-        remoteView.setInt(R.id.chip, "setBackgroundColor", item.color)
+        remoteView.setInt(R.id.chip, "setBackgroundColor", item.accountColor)
 
         return remoteView
     }
@@ -119,7 +108,7 @@ class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFa
 
     override fun getViewTypeCount(): Int = 2
 
-    override fun getItemId(position: Int): Long = position.toLong()
+    override fun getItemId(position: Int): Long = messageListItems[position].uniqueId
 
     override fun hasStableIds(): Boolean = true
 
@@ -129,39 +118,7 @@ class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFa
         }
     }
 
-    private fun formatDate(date: Long): String {
-        calendar.timeInMillis = date
-        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-        val month = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault())
-
-        return String.format("%d %s", dayOfMonth, month)
-    }
-
-    private fun getTextColor(mailItem: MailItem): Int {
-        return if (mailItem.unread) unreadTextColor else readTextColor
-    }
-
-    companion object {
-        private val MAIL_LIST_PROJECTIONS = arrayOf(
-            MessageProvider.MessageColumns.SENDER,
-            MessageProvider.MessageColumns.SEND_DATE,
-            MessageProvider.MessageColumns.SUBJECT,
-            MessageProvider.MessageColumns.PREVIEW,
-            MessageProvider.MessageColumns.UNREAD,
-            MessageProvider.MessageColumns.HAS_ATTACHMENTS,
-            MessageProvider.MessageColumns.URI,
-            MessageProvider.MessageColumns.ACCOUNT_COLOR
-        )
+    private fun getTextColor(messageListItem: MessageListItem): Int {
+        return if (messageListItem.isRead) readTextColor else unreadTextColor
     }
 }
-
-private class MailItem(
-    val sender: String,
-    val date: Long,
-    val subject: String,
-    val preview: String,
-    val unread: Boolean,
-    val hasAttachment: Boolean,
-    val uri: Uri,
-    val color: Int
-)

@@ -91,7 +91,6 @@ import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 import static com.fsck.k9.helper.Preconditions.checkNotNull;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
-import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
 
 
 /**
@@ -391,27 +390,6 @@ public class MessagingController {
             Timber.e(e);
             handleException(account, e);
         }
-    }
-
-    /**
-     * Find all messages in any local account which match the query 'query'
-     */
-    public List<LocalMessage> searchLocalMessages(final LocalSearch search) {
-        List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
-
-        List<LocalMessage> messages = new ArrayList<>();
-        for (final Account account : searchAccounts) {
-            try {
-                LocalStore localStore = localStoreProvider.getInstance(account);
-                List<LocalMessage> localMessages = localStore.searchForMessages(search);
-
-                messages.addAll(localMessages);
-            } catch (Exception e) {
-                Timber.e(e);
-            }
-        }
-
-        return messages;
     }
 
     public Future<?> searchRemoteMessages(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
