@@ -75,6 +75,13 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
         remoteView.setTextViewText(R.id.mail_date, item.displayDate)
         remoteView.setTextViewText(R.id.mail_preview, item.preview)
 
+        if (item.threadCount > 1) {
+            remoteView.setTextViewText(R.id.thread_count, item.threadCount.toString())
+            remoteView.setInt(R.id.thread_count, "setVisibility", View.VISIBLE)
+        } else {
+            remoteView.setInt(R.id.thread_count, "setVisibility", View.GONE)
+        }
+
         val textColor = getTextColor(item)
         remoteView.setTextColor(R.id.sender, textColor)
         remoteView.setTextColor(R.id.mail_subject, textColor)

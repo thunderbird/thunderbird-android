@@ -37,6 +37,7 @@ internal class MessageListItemMapper(
             preview = previewText,
             isRead = message.isRead,
             hasAttachments = message.hasAttachments,
+            threadCount = message.threadCount,
             uri = uri,
             accountColor = account.chipColor,
             uniqueId = uniqueId,

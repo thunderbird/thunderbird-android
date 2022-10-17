@@ -9,6 +9,7 @@ internal data class MessageListItem(
     val preview: String,
     val isRead: Boolean,
     val hasAttachments: Boolean,
+    val threadCount: Int,
     val uri: Uri,
     val accountColor: Int,
     val uniqueId: Long,
