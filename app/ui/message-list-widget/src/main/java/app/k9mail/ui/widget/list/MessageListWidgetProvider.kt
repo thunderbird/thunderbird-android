@@ -1,4 +1,4 @@
-package com.fsck.k9.widget.list
+package app.k9mail.ui.widget.list
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -8,15 +8,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
-import com.fsck.k9.R
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
 import com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE
 import com.fsck.k9.helper.PendingIntentCompat.FLAG_MUTABLE
 import com.fsck.k9.search.SearchAccount.Companion.createUnifiedInboxAccount
+import com.fsck.k9.ui.R as UiR
 
-class MessageListWidgetProvider : AppWidgetProvider() {
+open class MessageListWidgetProvider : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
@@ -26,7 +26,7 @@ class MessageListWidgetProvider : AppWidgetProvider() {
     private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
         val views = RemoteViews(context.packageName, R.layout.message_list_widget_layout)
 
-        views.setTextViewText(R.id.folder, context.getString(com.fsck.k9.ui.R.string.integrated_inbox_title))
+        views.setTextViewText(R.id.folder, context.getString(UiR.string.integrated_inbox_title))
 
         val intent = Intent(context, MessageListWidgetService::class.java).apply {
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)

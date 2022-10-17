@@ -1,4 +1,4 @@
-package com.fsck.k9.widget.list
+package app.k9mail.ui.widget.list
 
 import android.content.Context
 import android.content.Intent
@@ -11,7 +11,6 @@ import android.widget.RemoteViewsService.RemoteViewsFactory
 import androidx.core.content.ContextCompat
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.K9
-import com.fsck.k9.R
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import org.koin.core.component.KoinComponent
