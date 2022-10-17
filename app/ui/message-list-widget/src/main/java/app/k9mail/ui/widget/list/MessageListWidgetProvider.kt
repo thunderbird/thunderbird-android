@@ -14,6 +14,8 @@ import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
 import com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE
 import com.fsck.k9.helper.PendingIntentCompat.FLAG_MUTABLE
 import com.fsck.k9.search.SearchAccount.Companion.createUnifiedInboxAccount
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import com.fsck.k9.ui.R as UiR
 
 open class MessageListWidgetProvider : AppWidgetProvider() {
@@ -84,16 +86,19 @@ open class MessageListWidgetProvider : AppWidgetProvider() {
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
-    companion object {
+    companion object : KoinComponent {
         private const val ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST"
+
+        private val messageListWidgetConfig: MessageListWidgetConfig by inject()
 
         fun triggerMessageListWidgetUpdate(context: Context) {
             val appContext = context.applicationContext
             val widgetManager = AppWidgetManager.getInstance(appContext)
 
-            val widget = ComponentName(appContext, MessageListWidgetProvider::class.java)
+            val providerClass = messageListWidgetConfig.providerClass
+            val widget = ComponentName(appContext, providerClass)
             val widgetIds = widgetManager.getAppWidgetIds(widget)
-            val intent = Intent(context, MessageListWidgetProvider::class.java).apply {
+            val intent = Intent(context, providerClass).apply {
                 action = ACTION_UPDATE_MESSAGE_LIST
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
             }

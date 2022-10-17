@@ -12,6 +12,7 @@ import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.resources.resourcesModule
 import com.fsck.k9.storage.storageModule
+import com.fsck.k9.widget.list.messageListWidgetConfigModule
 import com.fsck.k9.widget.unread.UnreadWidgetUpdateListener
 import com.fsck.k9.widget.unread.unreadWidgetModule
 import org.koin.core.qualifier.named
@@ -35,6 +36,7 @@ private val mainAppModule = module {
 
 val appModules = listOf(
     mainAppModule,
+    messageListWidgetConfigModule,
     messageListWidgetModule,
     unreadWidgetModule,
     notificationModule,

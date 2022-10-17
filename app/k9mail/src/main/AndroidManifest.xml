@@ -315,7 +315,7 @@
         </receiver>
 
         <receiver
-            android:name="app.k9mail.ui.widget.list.MessageListWidgetProvider"
+            android:name=".widget.list.MessageListWidgetProvider"
             android:icon="@drawable/message_list_widget_preview"
             android:label="@string/mail_list_widget_text"
             android:exported="false">
