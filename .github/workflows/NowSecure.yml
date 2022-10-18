@@ -57,8 +57,14 @@ jobs:
          group_id: "602abed9-4c66-453d-8431-da0195b682de"				# REPLACE: NowSecure Group ID
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         with:
-         path: NowSecure.sarif
+          sarif_file: NowSecure.sarif
+
+      - name: Upload SARIF to artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: NowSecure.sarif
+          path: ./NowSecure.sarif
         
     
