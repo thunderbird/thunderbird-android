@@ -384,10 +384,6 @@ public class LocalMessage extends MimeMessage {
         return mFolder;
     }
 
-    public String getUri() {
-        return "k9mail://messages/" +  getAccount().getAccountNumber() + "/" + getFolder().getDatabaseId() + "/" + getUid();
-    }
-
     @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         if (headerNeedsUpdating) {

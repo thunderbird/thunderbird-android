@@ -1,6 +1,6 @@
 package app.k9mail.ui.widget.list
 
-import android.net.Uri
+import com.fsck.k9.controller.MessageReference
 
 internal data class MessageListItem(
     val displayName: String,
@@ -10,8 +10,8 @@ internal data class MessageListItem(
     val isRead: Boolean,
     val hasAttachments: Boolean,
     val threadCount: Int,
-    val uri: Uri,
     val accountColor: Int,
+    val messageReference: MessageReference,
     val uniqueId: Long,
 
     val sortSubject: String?,
