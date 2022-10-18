@@ -3,6 +3,7 @@ package com.fsck.k9
 import android.app.Application
 import android.content.res.Configuration
 import android.content.res.Resources
+import app.k9mail.ui.widget.list.MessageListWidgetProvider
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.notification.NotificationChannelManager
@@ -42,6 +43,7 @@ class App : Application() {
         initializeAppLanguage()
         updateNotificationChannelsOnAppLanguageChanges()
         themeManager.init()
+        MessageListWidgetProvider.init(this)
 
         messagingListenerProvider.listeners.forEach { listener ->
             messagingController.addListener(listener)

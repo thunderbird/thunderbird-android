@@ -91,6 +91,24 @@ open class MessageListWidgetProvider : AppWidgetProvider() {
 
         private val messageListWidgetConfig: MessageListWidgetConfig by inject()
 
+        fun init(context: Context) {
+            resetMessageListWidget(context)
+        }
+
+        private fun resetMessageListWidget(context: Context) {
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+
+            val providerClass = messageListWidgetConfig.providerClass
+            val componentName = ComponentName(context, providerClass)
+            val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
+
+            val intent = Intent(context, providerClass).apply {
+                action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
+            }
+            context.sendBroadcast(intent)
+        }
+
         fun triggerMessageListWidgetUpdate(context: Context) {
             val appContext = context.applicationContext
             val widgetManager = AppWidgetManager.getInstance(appContext)
