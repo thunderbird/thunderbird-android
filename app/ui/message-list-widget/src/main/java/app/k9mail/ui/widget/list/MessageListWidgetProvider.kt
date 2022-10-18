@@ -48,17 +48,6 @@ open class MessageListWidgetProvider : AppWidgetProvider() {
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
-    override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
-
-        if (intent.action == ACTION_UPDATE_MESSAGE_LIST) {
-            val appWidgetManager = AppWidgetManager.getInstance(context)
-            val appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
-
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
-        }
-    }
-
     private fun viewActionTemplatePendingIntent(context: Context): PendingIntent {
         val intent = Intent(context, MessageList::class.java).apply {
             action = Intent.ACTION_VIEW
@@ -87,8 +76,6 @@ open class MessageListWidgetProvider : AppWidgetProvider() {
     }
 
     companion object : KoinComponent {
-        private const val ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST"
-
         private val messageListWidgetConfig: MessageListWidgetConfig by inject()
 
         fun init(context: Context) {
@@ -110,18 +97,13 @@ open class MessageListWidgetProvider : AppWidgetProvider() {
         }
 
         fun triggerMessageListWidgetUpdate(context: Context) {
-            val appContext = context.applicationContext
-            val widgetManager = AppWidgetManager.getInstance(appContext)
+            val appWidgetManager = AppWidgetManager.getInstance(context)
 
             val providerClass = messageListWidgetConfig.providerClass
-            val widget = ComponentName(appContext, providerClass)
-            val widgetIds = widgetManager.getAppWidgetIds(widget)
-            val intent = Intent(context, providerClass).apply {
-                action = ACTION_UPDATE_MESSAGE_LIST
-                putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
-            }
+            val componentName = ComponentName(context, providerClass)
+            val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
 
-            context.sendBroadcast(intent)
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
         }
     }
 }
