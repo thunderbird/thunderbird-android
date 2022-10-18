@@ -30,64 +30,34 @@ jobs:
           name: app
           path: ./app/k9mail/build/outputs/apk/debug/k9mail-debug.apk
           retention-days: 3
-          
-  # Scan the Android application with NowSecure.
+  
+  
   scan:
     runs-on: ubuntu-latest
-    outputs:
-      report_id: ${{ steps.upload.outputs.report_id }}
     needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      # NOTE: ripgrep is required for line-of-code identification.
-      - name: Install ripgrep
-        run: sudo apt-get install -y ripgrep
-
+        
       - name: Download application
         uses: actions/download-artifact@v2
         with:
           name: app
-
-      - id: upload
-        name: NowSecure upload app
-        uses: nowsecure/nowsecure-action/upload-app@v2
-        with:
-          token: ${{ secrets.NS_TOKEN }}
-          app_file: k9mail-debug.apk
-          # TODO: Replace the Group ID.
-          group_id: "602abed9-4c66-453d-8431-da0195b682de"
-
-  # Pulls the NowSecure report, converts it to SARIF and uploads it.
-  process:
-    if: ${{ needs.scan.outputs.report_id }}
-    runs-on: ubuntu-latest
-    environment:
-      name: nowsecure-env
-    needs: scan
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: NowSecure download report
-        uses: nowsecure/nowsecure-action/convert-sarif@v2
+          
+       # NOTE: ripgrep is required for line-of-code identification.
+      - name: Install ripgrep
+        run: sudo apt-get install -y ripgrep
+        
+      - name: NowSecure Scan
+        uses: nowsecure/nowsecure-action/convert-sarif@v3
         timeout-minutes: 120
         with:
-          report_id: ${{ needs.scan.outputs.report_id }}
-          token: ${{ secrets.NS_TOKEN }}
-          # TODO: Replace the Group ID.
-          group_id: "602abed9-4c66-453d-8431-da0195b682de"
+         platform_token: ${{ secrets.NS_TOKEN }}
+         app_file: k9mail-debug.apk # REPLACE: The path to an .ipa or .apk
+         group_id: "602abed9-4c66-453d-8431-da0195b682de" # REPLACE: NowSecure Group ID
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: NowSecure.sarif
-
-      - name: Upload SARIF to artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: NowSecure.sarif
-          path: ./NowSecure.sarif
-     
+          path: NowSecure.sarif
           
