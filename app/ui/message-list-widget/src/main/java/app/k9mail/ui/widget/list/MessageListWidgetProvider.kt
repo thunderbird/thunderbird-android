@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.widget.RemoteViews
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageList
@@ -30,10 +29,7 @@ open class MessageListWidgetProvider : AppWidgetProvider() {
 
         views.setTextViewText(R.id.folder, context.getString(UiR.string.integrated_inbox_title))
 
-        val intent = Intent(context, MessageListWidgetService::class.java).apply {
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-        }
+        val intent = Intent(context, MessageListWidgetService::class.java)
         views.setRemoteAdapter(R.id.listView, intent)
 
         val viewAction = viewActionTemplatePendingIntent(context)
