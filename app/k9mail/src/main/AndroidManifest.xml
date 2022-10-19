@@ -337,11 +337,6 @@
         </receiver>
 
         <service
-            android:name=".widget.list.MessageListWidgetService"
-            android:enabled="true"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-
-        <service
             android:name=".notification.NotificationActionService"
             android:enabled="true"/>
 

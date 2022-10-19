@@ -1,4 +1,4 @@
-package com.fsck.k9.widget.list
+package app.k9mail.ui.widget.list
 
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.search.LocalSearch
