@@ -5,19 +5,32 @@ import java.util.concurrent.CopyOnWriteArraySet
 class MessageListRepository(
     private val messageStoreManager: MessageStoreManager
 ) {
-    private val listeners = CopyOnWriteArraySet<Pair<String, MessageListChangedListener>>()
+    private val globalListeners = CopyOnWriteArraySet<MessageListChangedListener>()
+    private val accountListeners = CopyOnWriteArraySet<Pair<String, MessageListChangedListener>>()
+
+    fun addListener(listener: MessageListChangedListener) {
+        globalListeners.add(listener)
+    }
 
     fun addListener(accountUuid: String, listener: MessageListChangedListener) {
-        listeners.add(accountUuid to listener)
+        accountListeners.add(accountUuid to listener)
     }
 
     fun removeListener(listener: MessageListChangedListener) {
-        val entries = listeners.filter { it.second == listener }.toSet()
-        listeners.removeAll(entries)
+        globalListeners.remove(listener)
+
+        val accountEntries = accountListeners.filter { it.second == listener }.toSet()
+        if (accountEntries.isNotEmpty()) {
+            accountListeners.removeAll(accountEntries)
+        }
     }
 
     fun notifyMessageListChanged(accountUuid: String) {
-        for (listener in listeners) {
+        for (listener in globalListeners) {
+            listener.onMessageListChanged()
+        }
+
+        for (listener in accountListeners) {
             if (listener.first == accountUuid) {
                 listener.second.onMessageListChanged()
             }
