@@ -1,7 +1,6 @@
 package app.k9mail.ui.widget.list
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.style.StyleSpan
@@ -11,6 +10,7 @@ import android.widget.RemoteViewsService.RemoteViewsFactory
 import androidx.core.content.ContextCompat
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.K9
+import com.fsck.k9.activity.MessageList
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import org.koin.core.component.KoinComponent
@@ -75,6 +75,13 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
         remoteView.setTextViewText(R.id.mail_date, item.displayDate)
         remoteView.setTextViewText(R.id.mail_preview, item.preview)
 
+        if (item.threadCount > 1) {
+            remoteView.setTextViewText(R.id.thread_count, item.threadCount.toString())
+            remoteView.setInt(R.id.thread_count, "setVisibility", View.VISIBLE)
+        } else {
+            remoteView.setInt(R.id.thread_count, "setVisibility", View.GONE)
+        }
+
         val textColor = getTextColor(item)
         remoteView.setTextColor(R.id.sender, textColor)
         remoteView.setTextColor(R.id.mail_subject, textColor)
@@ -87,10 +94,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
             remoteView.setInt(R.id.attachment, "setVisibility", View.GONE)
         }
 
-        val intent = Intent().apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            data = item.uri
-        }
+        val intent = MessageList.actionDisplayMessageTemplateFillIntent(item.messageReference)
         remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent)
 
         remoteView.setInt(R.id.chip, "setBackgroundColor", item.accountColor)

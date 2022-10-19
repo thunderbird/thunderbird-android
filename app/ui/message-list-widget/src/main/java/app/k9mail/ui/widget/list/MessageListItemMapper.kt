@@ -1,7 +1,7 @@
 package app.k9mail.ui.widget.list
 
-import android.net.Uri
 import com.fsck.k9.Account
+import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.MessageDetailsAccessor
 import com.fsck.k9.mailstore.MessageMapper
@@ -28,7 +28,6 @@ internal class MessageListItemMapper(
         } else {
             messageHelper.getSenderDisplayName(displayAddress).toString()
         }
-        val uri = Uri.parse("k9mail://messages/${account.accountNumber}/${message.folderId}/${message.messageServerId}")
 
         return MessageListItem(
             displayName = displayName,
@@ -37,8 +36,9 @@ internal class MessageListItemMapper(
             preview = previewText,
             isRead = message.isRead,
             hasAttachments = message.hasAttachments,
-            uri = uri,
+            threadCount = message.threadCount,
             accountColor = account.chipColor,
+            messageReference = MessageReference(account.uuid, message.folderId, message.messageServerId),
             uniqueId = uniqueId,
             sortSubject = message.subject,
             sortMessageDate = message.messageDate,

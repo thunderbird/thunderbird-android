@@ -45,10 +45,13 @@ open class MessageListWidgetProvider : AppWidgetProvider() {
     }
 
     private fun viewActionTemplatePendingIntent(context: Context): PendingIntent {
-        val intent = Intent(context, MessageList::class.java).apply {
-            action = Intent.ACTION_VIEW
-        }
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_MUTABLE)
+        val intent = MessageList.actionDisplayMessageTemplateIntent(
+            context,
+            openInUnifiedInbox = true,
+            messageViewOnly = true
+        )
+
+        return PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_MUTABLE)
     }
 
     private fun viewUnifiedInboxPendingIntent(context: Context): PendingIntent {

@@ -421,26 +421,9 @@ open class MessageList :
 
     private fun decodeExtrasToLaunchData(intent: Intent): LaunchData {
         val action = intent.action
-        val data = intent.data
         val queryString = intent.getStringExtra(SearchManager.QUERY)
 
-        if (action == Intent.ACTION_VIEW && data != null && data.pathSegments.size >= 3) {
-            val segmentList = data.pathSegments
-            val accountId = segmentList[0]
-            for (account in preferences.accounts) {
-                if (account.accountNumber.toString() == accountId) {
-                    val folderId = segmentList[1].toLong()
-                    val messageUid = segmentList[2]
-                    val messageReference = MessageReference(account.uuid, folderId, messageUid)
-
-                    return LaunchData(
-                        search = messageReference.toLocalSearch(),
-                        messageReference = messageReference,
-                        messageViewOnly = true
-                    )
-                }
-            }
-        } else if (action == ACTION_SHORTCUT) {
+        if (action == ACTION_SHORTCUT) {
             // Handle shortcut intents
             val specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER)
             if (SearchAccount.UNIFIED_INBOX == specialFolder) {
@@ -489,7 +472,8 @@ open class MessageList :
 
                 return LaunchData(
                     search = search,
-                    messageReference = messageReference
+                    messageReference = messageReference,
+                    messageViewOnly = intent.getBooleanExtra(EXTRA_MESSAGE_VIEW_ONLY, false)
                 )
             }
         } else if (intent.hasExtra(EXTRA_SEARCH)) {
@@ -1419,6 +1403,7 @@ open class MessageList :
 
         private const val EXTRA_ACCOUNT = "account_uuid"
         private const val EXTRA_MESSAGE_REFERENCE = "message_reference"
+        private const val EXTRA_MESSAGE_VIEW_ONLY = "message_view_only"
 
         // used for remote search
         const val EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account"
@@ -1521,18 +1506,35 @@ open class MessageList :
         fun actionDisplayMessageIntent(
             context: Context,
             messageReference: MessageReference,
-            openInUnifiedInbox: Boolean = false
+            openInUnifiedInbox: Boolean = false,
+            messageViewOnly: Boolean = false
+        ): Intent {
+            return actionDisplayMessageTemplateIntent(context, openInUnifiedInbox, messageViewOnly).apply {
+                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
+            }
+        }
+
+        fun actionDisplayMessageTemplateIntent(
+            context: Context,
+            openInUnifiedInbox: Boolean,
+            messageViewOnly: Boolean
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
-                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
-
                 if (openInUnifiedInbox) {
                     val search = SearchAccount.createUnifiedInboxAccount().relatedSearch
                     putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
                 }
 
+                putExtra(EXTRA_MESSAGE_VIEW_ONLY, messageViewOnly)
+
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+        }
+
+        fun actionDisplayMessageTemplateFillIntent(messageReference: MessageReference): Intent {
+            return Intent().apply {
+                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
             }
         }
 
