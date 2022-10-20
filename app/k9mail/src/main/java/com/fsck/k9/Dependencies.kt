@@ -1,6 +1,5 @@
 package com.fsck.k9
 
-import app.k9mail.ui.widget.list.MessageListWidgetUpdateListener
 import app.k9mail.ui.widget.list.messageListWidgetModule
 import com.fsck.k9.auth.createOAuthConfigurationProvider
 import com.fsck.k9.backends.backendsModule
@@ -24,7 +23,6 @@ private val mainAppModule = module {
         MessagingListenerProvider(
             listOf(
                 get<UnreadWidgetUpdateListener>(),
-                get<MessageListWidgetUpdateListener>()
             )
         )
     }

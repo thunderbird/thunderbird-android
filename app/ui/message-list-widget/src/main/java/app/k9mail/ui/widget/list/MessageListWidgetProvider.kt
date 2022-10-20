@@ -3,7 +3,6 @@ package app.k9mail.ui.widget.list
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
@@ -17,7 +16,17 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import com.fsck.k9.ui.R as UiR
 
-open class MessageListWidgetProvider : AppWidgetProvider() {
+open class MessageListWidgetProvider : AppWidgetProvider(), KoinComponent {
+    private val messageListWidgetManager: MessageListWidgetManager by inject()
+
+    override fun onEnabled(context: Context) {
+        messageListWidgetManager.onWidgetAdded()
+    }
+
+    override fun onDisabled(context: Context) {
+        messageListWidgetManager.onWidgetRemoved()
+    }
+
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
@@ -72,37 +81,5 @@ open class MessageListWidgetProvider : AppWidgetProvider() {
             action = MessageCompose.ACTION_COMPOSE
         }
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
-    }
-
-    companion object : KoinComponent {
-        private val messageListWidgetConfig: MessageListWidgetConfig by inject()
-
-        fun init(context: Context) {
-            resetMessageListWidget(context)
-        }
-
-        private fun resetMessageListWidget(context: Context) {
-            val appWidgetManager = AppWidgetManager.getInstance(context)
-
-            val providerClass = messageListWidgetConfig.providerClass
-            val componentName = ComponentName(context, providerClass)
-            val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
-
-            val intent = Intent(context, providerClass).apply {
-                action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-                putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
-            }
-            context.sendBroadcast(intent)
-        }
-
-        fun triggerMessageListWidgetUpdate(context: Context) {
-            val appWidgetManager = AppWidgetManager.getInstance(context)
-
-            val providerClass = messageListWidgetConfig.providerClass
-            val componentName = ComponentName(context, providerClass)
-            val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
-
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
-        }
     }
 }
