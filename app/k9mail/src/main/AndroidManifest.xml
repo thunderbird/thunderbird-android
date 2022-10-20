@@ -59,13 +59,6 @@
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
             android:value="true" />
 
-        <!-- activity-alias so old launcher shortcuts work -->
-        <!-- TODO: Remove after 2020-12-31 -->
-        <activity-alias
-            android:name=".activity.Accounts"
-            android:targetActivity=".activity.MessageList"
-            android:exported="true" />
-
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:label="@string/welcome_message_title" />
@@ -157,13 +150,6 @@
             android:configChanges="locale"
             android:label="@string/ac_transfer_title"
             />
-
-        <!-- activity-alias so old launcher shortcuts work -->
-        <!-- TODO: Remove after 2020-12-31 -->
-        <activity-alias
-            android:name=".activity.FolderList"
-            android:targetActivity=".activity.MessageList"
-            android:exported="true" />
 
         <activity
             android:name=".activity.MessageList"

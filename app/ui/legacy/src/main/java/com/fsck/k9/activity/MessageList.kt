@@ -502,24 +502,6 @@ open class MessageList :
             }
 
             return LaunchData(search = search, account = account, noThreading = noThreading)
-        } else if (intent.hasExtra("account")) {
-            val accountUuid = intent.getStringExtra("account")
-            if (accountUuid != null) {
-                // We've most likely been started by an old unread widget or accounts shortcut
-                val account = preferences.getAccount(accountUuid)
-                if (account == null) {
-                    Timber.d("Account %s not found.", accountUuid)
-                    return LaunchData(createDefaultLocalSearch())
-                }
-
-                val folderId = defaultFolderProvider.getDefaultFolder(account)
-                val search = LocalSearch().apply {
-                    addAccountUuid(accountUuid)
-                    addAllowedFolder(folderId)
-                }
-
-                return LaunchData(search = search)
-            }
         }
 
         // Default action
