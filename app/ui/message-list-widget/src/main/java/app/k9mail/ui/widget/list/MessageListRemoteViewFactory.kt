@@ -103,9 +103,9 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
     }
 
     override fun getLoadingView(): RemoteViews {
-        return RemoteViews(context.packageName, R.layout.message_list_widget_loading).apply {
-            setTextViewText(R.id.loadingText, context.getString(UiR.string.mail_list_widget_loading))
-            setViewVisibility(R.id.loadingText, View.VISIBLE)
+        return RemoteViews(context.packageName, R.layout.message_list_widget_list_item_loading).apply {
+            // Set the text here instead of in the layout so the app language override is used
+            setTextViewText(R.id.loadingText, context.getString(UiR.string.message_list_widget_list_item_loading))
         }
     }
 
