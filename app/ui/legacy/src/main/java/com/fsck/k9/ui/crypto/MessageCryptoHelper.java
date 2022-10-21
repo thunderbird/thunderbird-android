@@ -120,6 +120,12 @@ public class MessageCryptoHelper {
         nextStep();
     }
 
+    public void resumeCryptoOperationIfNecessary() {
+        if (queuedPendingIntent != null) {
+            deliverResult();
+        }
+    }
+
     private void findPartsForMultipartEncryptionPass() {
         List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(currentMessage);
         for (Part part : encryptedParts) {
@@ -765,9 +771,11 @@ public class MessageCryptoHelper {
         if (queuedResult != null) {
             callback.onCryptoOperationsFinished(queuedResult);
         } else if (queuedPendingIntent != null) {
-            callback.startPendingIntentForCryptoHelper(
+            boolean pendingIntentHandled = callback.startPendingIntentForCryptoHelper(
                     queuedPendingIntent.getIntentSender(), REQUEST_CODE_USER_INTERACTION, null, 0, 0, 0);
-            queuedPendingIntent = null;
+            if (pendingIntentHandled) {
+                queuedPendingIntent = null;
+            }
         } else {
             throw new IllegalStateException("deliverResult() called with no result!");
         }
