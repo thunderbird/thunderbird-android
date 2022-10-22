@@ -426,8 +426,25 @@ open class MessageList :
         if (action == ACTION_SHORTCUT) {
             // Handle shortcut intents
             val specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER)
-            if (SearchAccount.UNIFIED_INBOX == specialFolder) {
+            if (specialFolder == SearchAccount.UNIFIED_INBOX) {
                 return LaunchData(search = SearchAccount.createUnifiedInboxAccount().relatedSearch)
+            }
+
+            val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
+            if (accountUuid != null) {
+                val account = preferences.getAccount(accountUuid)
+                if (account == null) {
+                    Timber.d("Account %s not found.", accountUuid)
+                    return LaunchData(createDefaultLocalSearch())
+                }
+
+                val folderId = defaultFolderProvider.getDefaultFolder(account)
+                val search = LocalSearch().apply {
+                    addAccountUuid(accountUuid)
+                    addAllowedFolder(folderId)
+                }
+
+                return LaunchData(search = search)
             }
         } else if (action == Intent.ACTION_SEARCH && queryString != null) {
             // Query was received from Search Dialog
@@ -485,24 +502,6 @@ open class MessageList :
             }
 
             return LaunchData(search = search, account = account, noThreading = noThreading)
-        } else if (intent.hasExtra("account")) {
-            val accountUuid = intent.getStringExtra("account")
-            if (accountUuid != null) {
-                // We've most likely been started by an old unread widget or accounts shortcut
-                val account = preferences.getAccount(accountUuid)
-                if (account == null) {
-                    Timber.d("Account %s not found.", accountUuid)
-                    return LaunchData(createDefaultLocalSearch())
-                }
-
-                val folderId = defaultFolderProvider.getDefaultFolder(account)
-                val search = LocalSearch().apply {
-                    addAccountUuid(accountUuid)
-                    addAllowedFolder(folderId)
-                }
-
-                return LaunchData(search = search)
-            }
         }
 
         // Default action
@@ -1493,14 +1492,14 @@ open class MessageList :
 
         @JvmStatic
         fun shortcutIntentForAccount(context: Context?, account: Account): Intent {
-            val folderId = defaultFolderProvider.getDefaultFolder(account)
+            return Intent(context, MessageList::class.java).apply {
+                action = ACTION_SHORTCUT
+                putExtra(EXTRA_ACCOUNT, account.uuid)
 
-            val search = LocalSearch().apply {
-                addAccountUuid(account.uuid)
-                addAllowedFolder(folderId)
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-
-            return intentDisplaySearch(context, search, noThreading = false, newTask = true, clearTop = true)
         }
 
         fun actionDisplayMessageIntent(
