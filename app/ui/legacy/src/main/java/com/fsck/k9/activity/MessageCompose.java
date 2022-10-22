@@ -696,6 +696,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
         if (cryptoStatus == null) {
+            Timber.w("Couldn't retrieve crypto status; not creating MessageBuilder!");
             return null;
         }
 
@@ -803,10 +804,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
-        sendMessageHasBeenTriggered = true;
-
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
+            sendMessageHasBeenTriggered = true;
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
