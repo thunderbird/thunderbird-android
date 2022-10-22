@@ -91,6 +91,9 @@ class MessageViewFragment :
     private var isDeleteMenuItemDisabled: Boolean = false
     private var wasMessageMarkedAsOpened: Boolean = false
 
+    private var isActive: Boolean = false
+        private set
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -176,10 +179,13 @@ class MessageViewFragment :
 
     override fun setMenuVisibility(menuVisible: Boolean) {
         super.setMenuVisibility(menuVisible)
+        isActive = menuVisible
 
-        // When the menu is hidden, the message associated with this fragment is no longer active. If the user returns
-        // to it, we want to mark the message as opened again.
-        if (!menuVisible) {
+        if (menuVisible) {
+            messageLoaderHelper.resumeCryptoOperationIfNecessary()
+        } else {
+            // When the menu is hidden, the message associated with this fragment is no longer active. If the user returns
+            // to it, we want to mark the message as opened again.
             wasMessageMarkedAsOpened = false
         }
     }
@@ -887,7 +893,9 @@ class MessageViewFragment :
             flagsMask: Int,
             flagValues: Int,
             extraFlags: Int
-        ) {
+        ): Boolean {
+            if (!isActive) return false
+
             showProgressThreshold = null
             try {
                 val maskedRequestCode = requestCode or REQUEST_MASK_LOADER_HELPER
@@ -897,6 +905,8 @@ class MessageViewFragment :
             } catch (e: SendIntentException) {
                 Timber.e(e, "Irrecoverable error calling PendingIntent!")
             }
+
+            return true
         }
     }
 
