@@ -696,6 +696,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
         if (cryptoStatus == null) {
+            Timber.w("Couldn't retrieve crypto status; not creating MessageBuilder!");
             return null;
         }
 
