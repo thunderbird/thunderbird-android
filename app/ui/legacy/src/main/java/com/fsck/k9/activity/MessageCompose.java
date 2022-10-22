@@ -803,10 +803,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
-        sendMessageHasBeenTriggered = true;
-
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
+            sendMessageHasBeenTriggered = true;
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
