@@ -445,6 +445,24 @@ class HtmlSanitizerTest {
         )
     }
 
+    @Test
+    fun `should keep 'tt' element`() {
+        val html = """<tt>some text</tt>"""
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(
+            """
+            <html>
+            <head></head>
+            <body>
+            <tt>some text</tt>
+            </body>
+            </html>
+            """.trimIndent().trimLineBreaks()
+        )
+    }
+
     private fun Document.toCompactString(): String {
         outputSettings()
             .prettyPrint(false)
