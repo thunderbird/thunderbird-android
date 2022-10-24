@@ -162,13 +162,14 @@ class MessageListAdapter internal constructor(
         }
 
     private val messageClickedListener = OnClickListener { view: View ->
-        val messageListItem = getItemFromView(view)
+        val messageListItem = getItemFromView(view) ?: return@OnClickListener
         listItemListener.onMessageClicked(messageListItem)
     }
 
     private val messageLongClickedListener = OnLongClickListener { view: View ->
-        val messageListItem = getItemFromView(view)
-        listItemListener.onToggleMessageSelection(messageListItem)
+        getItemFromView(view)?.let { messageListItem ->
+            listItemListener.onToggleMessageSelection(messageListItem)
+        }
         true
     }
 
@@ -177,13 +178,13 @@ class MessageListAdapter internal constructor(
     }
 
     private val flagClickListener = OnClickListener { view: View ->
-        val messageListItem = getItemFromView(view)
+        val messageListItem = getItemFromView(view) ?: return@OnClickListener
         listItemListener.onToggleMessageFlag(messageListItem)
     }
 
     private val contactPictureClickListener = OnClickListener { view: View ->
         val parentView = view.parent.parent as View
-        val messageListItem = getItemFromView(parentView)
+        val messageListItem = getItemFromView(parentView) ?: return@OnClickListener
         listItemListener.onToggleMessageSelection(messageListItem)
     }
 
@@ -516,9 +517,9 @@ class MessageListAdapter internal constructor(
             .sumOf { it.threadCount.coerceAtLeast(1) }
     }
 
-    private fun getItemFromView(view: View): MessageListItem {
+    private fun getItemFromView(view: View): MessageListItem? {
         val messageViewHolder = view.tag as MessageViewHolder
-        return getItemById(messageViewHolder.uniqueId) ?: error("Couldn't find MessageListItem by View")
+        return getItemById(messageViewHolder.uniqueId)
     }
 }
 
