@@ -2654,7 +2654,6 @@ public class MessagingController {
             LocalFolder localFolder = message.getFolder();
             if (!suppressNotifications &&
                     notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
-                Timber.v("Creating notification for message %s:%s", localFolder.getName(), message.getUid());
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 boolean silent = notificationState.wasNotified();
                 notificationController.addNewMailNotification(account, message, silent);
