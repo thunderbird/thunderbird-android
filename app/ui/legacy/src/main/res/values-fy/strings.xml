@@ -995,7 +995,10 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="crypto_no_provider_message">Dit e-mailberjocht is OpenPGP-fersifere.\nYnstallearje en stel in OpenPGP-app yn om it e-mailberjocht te lêzen.</string>
   <string name="crypto_no_provider_button">Gean nei Ynstellingen</string>
   <string name="mail_list_widget_text">K-9-berjochtelist</string>
-  <string name="mail_list_widget_loading">Berjochten oan it laden…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Lade…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Lade…</string>
   <string name="openpgp_enabled_error_title">Fersifering net mooglik</string>
   <string name="openpgp_enabled_error_msg">Guon fan de ûntfangers stypje dizze funksje net!</string>
   <string name="enable_encryption">Fersifering ynskeakelje</string>

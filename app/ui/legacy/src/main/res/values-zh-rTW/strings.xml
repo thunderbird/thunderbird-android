@@ -986,7 +986,10 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="crypto_no_provider_message">這封郵件使用 OpenPGP 進行了加密。\n請安裝並設定一個相容 OpenPGP 的應用程式來查看郵件。</string>
   <string name="crypto_no_provider_button">前往設定</string>
   <string name="mail_list_widget_text">K-9 訊息列表</string>
-  <string name="mail_list_widget_loading">正在載入郵件…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">載入中…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">載入中…</string>
   <string name="openpgp_enabled_error_title">無法加密</string>
   <string name="openpgp_enabled_error_msg">有些已選定的收件人不支援此功能！</string>
   <string name="enable_encryption">啟用加密</string>

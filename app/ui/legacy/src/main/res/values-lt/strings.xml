@@ -999,7 +999,10 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="crypto_no_provider_message">Šis el. laiškas užšifruotas naudojant OpenPGP.\nKad jį perskaitytumėte, turite įdiegti ir sukonfigūruoti suderinamą OpenPGP programėlę.</string>
   <string name="crypto_no_provider_button">Eiti į Nustatymus</string>
   <string name="mail_list_widget_text">K-9 laiškų sąrašas</string>
-  <string name="mail_list_widget_loading">Įkeliami laiškai...</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Įkeliama…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Įkeliama…</string>
   <string name="openpgp_enabled_error_title">Šifravimas neįmanomas</string>
   <string name="openpgp_enabled_error_msg">Kai kurie iš pasirinktų gavėjų nepalaiko šios funkcijos!</string>
   <string name="enable_encryption">Įjungti šifravimą</string>

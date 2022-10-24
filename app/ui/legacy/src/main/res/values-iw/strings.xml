@@ -614,6 +614,8 @@
   <string name="address_type_other">אחר</string>
   <string name="address_type_mobile">סלולרי</string>
   <string name="crypto_info_ok">אישור</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
   <string name="general_settings_title">הגדרות כלליות</string>
   <!--permissions-->
 </resources>
