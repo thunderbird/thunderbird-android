@@ -447,7 +447,26 @@ class HtmlSanitizerTest {
 
     @Test
     fun `should keep 'tt' element`() {
-        val html = """<tt>some text</tt>"""
+        assertTagsNotStripped("tt")
+    }
+
+    @Test
+    fun `should keep 'kbd' element`() {
+        assertTagsNotStripped("kbd")
+    }
+
+    @Test
+    fun `should keep 'samp' element`() {
+        assertTagsNotStripped("samp")
+    }
+
+    @Test
+    fun `should keep 'var' element`() {
+        assertTagsNotStripped("var")
+    }
+
+    private fun assertTagsNotStripped(element: String) {
+        val html = """<$element>some text</$element>"""
 
         val result = htmlSanitizer.sanitize(html)
 
@@ -456,7 +475,7 @@ class HtmlSanitizerTest {
             <html>
             <head></head>
             <body>
-            <tt>some text</tt>
+            <$element>some text</$element>
             </body>
             </html>
             """.trimIndent().trimLineBreaks()
