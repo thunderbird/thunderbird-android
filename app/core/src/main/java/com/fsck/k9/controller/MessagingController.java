@@ -1615,9 +1615,11 @@ public class MessagingController {
 
             if (!sentFolder.isLocalOnly()) {
                 String destinationUid = messageStore.getMessageServerId(destinationMessageId);
-                PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
-                queuePendingCommand(account, command);
-                processPendingCommands(account);
+                if (destinationUid != null) {
+                    PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
+                    queuePendingCommand(account, command);
+                    processPendingCommands(account);
+                }
             }
         }
 
@@ -1901,9 +1903,10 @@ public class MessagingController {
 
         MessageStore messageStore = messageStoreManager.getMessageStore(account);
         String messageServerId = messageStore.getMessageServerId(messageId);
-        MessageReference messageReference = new MessageReference(account.getUuid(), folderId, messageServerId);
-
-        deleteMessage(messageReference);
+        if (messageServerId != null) {
+            MessageReference messageReference = new MessageReference(account.getUuid(), folderId, messageServerId);
+            deleteMessage(messageReference);
+        }
     }
 
     public void deleteThreads(final List<MessageReference> messages) {

@@ -75,8 +75,10 @@ internal class DraftOperations(
             messagingController.queuePendingCommand(account, command)
         } else {
             val fakeMessageServerId = messageStore.getMessageServerId(messageId)
-            val command = PendingAppend.create(folderId, fakeMessageServerId)
-            messagingController.queuePendingCommand(account, command)
+            if (fakeMessageServerId != null) {
+                val command = PendingAppend.create(folderId, fakeMessageServerId)
+                messagingController.queuePendingCommand(account, command)
+            }
         }
 
         messagingController.processPendingCommands(account)
