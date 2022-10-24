@@ -264,14 +264,19 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="global_settings_confirm_menu_mark_all_read">Marquer tous les courriels comme lus</string>
   <string name="global_settings_confirm_action_delete_notif">Supprimer (d’une notification)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Actions de balayage</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Balayer vers la droite</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Balayer vers la gauche</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Aucune</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Sélectionner ou dessélectionner</string>
   <!--Name of the swipe action to mark as message as read/unread-->
-  <string name="general_settings_swipe_action_toggle_read">Marquer comme lu/non lu</string>
+  <string name="general_settings_swipe_action_toggle_read">Marquer comme lu ou non lu</string>
   <!--Name of the swipe action to add/remove a star-->
-  <string name="general_settings_swipe_action_toggle_star">Ajouter/supprimer l\'étoile</string>
+  <string name="general_settings_swipe_action_toggle_star">Ajouter ou supprimer l’étoile</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Archiver</string>
   <!--Name of the swipe action to delete a message-->
@@ -700,6 +705,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="account_setup_push_limit_1000">1 000 dossiers</string>
   <string name="animations_title">Animation</string>
   <string name="animations_summary">Utiliser des effets visuels voyants</string>
+  <string name="volume_navigation_title">Navigation avec la touche de volume dans la vue des courriels</string>
   <string name="show_unified_inbox_title">Afficher la boîte de réception unifiée</string>
   <string name="show_starred_count_title">Afficher le compte d’étoilés</string>
   <string name="integrated_inbox_title">Boîte de réception unifiée</string>
@@ -1002,7 +1008,10 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="crypto_no_provider_message">Ce courriel a été chiffré avec OpenPGP.\nPour le lire, vous devez installer et configurer une appli compatible avec OpenPGP.</string>
   <string name="crypto_no_provider_button">Aller dans Paramètres</string>
   <string name="mail_list_widget_text">Liste des courriels de K-9</string>
-  <string name="mail_list_widget_loading">Chargement des courriels…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Chargement…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Chargement…</string>
   <string name="openpgp_enabled_error_title">Le chiffrement est impossible</string>
   <string name="openpgp_enabled_error_msg">Certains des destinataires sélectionnés ne prennent pas cette fonction en charge !</string>
   <string name="enable_encryption">Activer le chiffrement</string>

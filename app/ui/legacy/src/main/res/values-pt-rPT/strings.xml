@@ -993,7 +993,10 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="crypto_no_provider_message">Este email foi encriptado com OpenPGP.\nPara o ler, necessita de instalar e configurar uma aplicação OpenPGP compatível.</string>
   <string name="crypto_no_provider_button">Ir para as configurações</string>
   <string name="mail_list_widget_text">K-9 Lista de mensagens</string>
-  <string name="mail_list_widget_loading">A carregar mensagens…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">A carregar…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">A carregar…</string>
   <string name="openpgp_enabled_error_title">Não é possível encriptar</string>
   <string name="openpgp_enabled_error_msg">Alguns dos destinatários selecionados não suportam esta funcionalidade!</string>
   <string name="enable_encryption">Ativar encriptação</string>

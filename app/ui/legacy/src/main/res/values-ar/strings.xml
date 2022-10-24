@@ -755,7 +755,10 @@
   <string name="unsigned_text_divider_label">نص غير مُوَقَّع</string>
   <string name="crypto_no_provider_title">هذه الرسالة مُعماة</string>
   <string name="mail_list_widget_text">قائمة رسائل K-9</string>
-  <string name="mail_list_widget_loading">يُحمل الرسائل…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">يُحمل…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">يُحمل…</string>
   <string name="openpgp_enabled_error_title">التعمية غير ممكنة</string>
   <string name="enable_encryption">تنشيط التعمية</string>
   <string name="disable_encryption">تعطيل التعمية</string>

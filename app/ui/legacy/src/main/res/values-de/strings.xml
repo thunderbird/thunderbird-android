@@ -254,7 +254,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_confirm_actions_title">Bestätigungsdialog</string>
   <string name="global_settings_confirm_actions_summary">Bei Ausführung der ausgewählten Aktionen einen Bestätigungsdialog anzeigen</string>
   <string name="global_settings_confirm_action_delete">Löschen</string>
-  <string name="global_settings_confirm_action_delete_starred">Als wichtig markiert löschen (nur in Nachrichtenansicht)</string>
+  <string name="global_settings_confirm_action_delete_starred">Als wichtig markierte (aus Nachrichtenansicht) löschen</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Nachricht verwerfen</string>
   <string name="global_settings_confirm_menu_mark_all_read">Alle Nachrichten als gelesen markieren</string>
@@ -702,7 +702,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_push_limit_1000">1000 Ordner</string>
   <string name="animations_title">Animationen</string>
   <string name="animations_summary">Aufwendige visuelle Effekte benutzen</string>
-  <string name="volume_navigation_title">Navigation per Lautstärketasten in der Nachrichtenansicht</string>
+  <string name="volume_navigation_title">Per Lautstärketasten durch Nachrichtenansicht navigieren</string>
   <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
   <string name="show_starred_count_title">Anzahl der wichtigen Nachrichten anzeigen</string>
   <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>
@@ -1001,7 +1001,10 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
 Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert werden.</string>
   <string name="crypto_no_provider_button">Zu den Einstellungen</string>
   <string name="mail_list_widget_text">K-9 Nachrichtenliste</string>
-  <string name="mail_list_widget_loading">Nachrichten werden geladen…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Ladevorgang…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Ladevorgang…</string>
   <string name="openpgp_enabled_error_title">Verschlüsselung nicht möglich</string>
   <string name="openpgp_enabled_error_msg">Einige der ausgewählten Empfänger unterstützen diese Funktion nicht!</string>
   <string name="enable_encryption">Verschlüsselung aktivieren</string>

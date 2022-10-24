@@ -1014,7 +1014,10 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="crypto_no_provider_message">Ta wiadomość e-mail została zaszyfrowana z użyciem OpenPGP.\n Aby ją odczytać, należy zainstalować i skonfigurować zgodną aplikację OpenPGP.</string>
   <string name="crypto_no_provider_button">Przejdź do ustawień</string>
   <string name="mail_list_widget_text">Lista wiadomości K-9</string>
-  <string name="mail_list_widget_loading">Ładowanie wiadomości…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Ładowanie…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Ładowanie…</string>
   <string name="openpgp_enabled_error_title">Szyfrowanie nie możliwe</string>
   <string name="openpgp_enabled_error_msg">Część z wybranych odbiorców nie obsługuje tej funkcjonalności.</string>
   <string name="enable_encryption">Włącz szyfrowanie</string>

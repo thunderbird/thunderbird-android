@@ -996,7 +996,10 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="crypto_no_provider_message">Selle kirja krüptimisel on kasutusel OpenPGP.\nKirjalugemsieks palun paigalda ja seadista sobilik OpenPGP rakendus.</string>
   <string name="crypto_no_provider_button">Ava sätted</string>
   <string name="mail_list_widget_text">K-9 kirjade loend</string>
-  <string name="mail_list_widget_loading">Kirjade laadimine…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Laadib…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Laadib…</string>
   <string name="openpgp_enabled_error_title">Krüpteerimine poe võimalik</string>
   <string name="openpgp_enabled_error_msg">Mõned kirja saajad ei saa seda funktsionaalsust kasutada!</string>
   <string name="enable_encryption">Võimalda krüpteerimine</string>
