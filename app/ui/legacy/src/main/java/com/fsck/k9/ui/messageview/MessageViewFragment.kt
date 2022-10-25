@@ -107,6 +107,12 @@ class MessageViewFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Hide the toolbar menu when first creating this fragment. The menu will be set to visible once this fragment
+        // becomes the active page of the view pager in MessageViewContainerFragment.
+        if (savedInstanceState == null) {
+            setMenuVisibility(false)
+        }
+
         setHasOptionsMenu(true)
 
         messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
@@ -178,8 +184,9 @@ class MessageViewFragment :
     }
 
     override fun setMenuVisibility(menuVisible: Boolean) {
-        super.setMenuVisibility(menuVisible)
         isActive = menuVisible
+
+        super.setMenuVisibility(menuVisible)
 
         if (menuVisible) {
             messageLoaderHelper.resumeCryptoOperationIfNecessary()
@@ -207,6 +214,8 @@ class MessageViewFragment :
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
+        if (!isActive) return
+
         menu.findItem(R.id.delete).apply {
             isVisible = K9.isMessageViewDeleteActionVisible
             isEnabled = !isDeleteMenuItemDisabled
