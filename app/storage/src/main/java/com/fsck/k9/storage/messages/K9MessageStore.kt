@@ -78,7 +78,7 @@ class K9MessageStore(
         updateMessageOperations.clearNewMessageState()
     }
 
-    override fun getMessageServerId(messageId: Long): String {
+    override fun getMessageServerId(messageId: Long): String? {
         return retrieveMessageOperations.getMessageServerId(messageId)
     }
 

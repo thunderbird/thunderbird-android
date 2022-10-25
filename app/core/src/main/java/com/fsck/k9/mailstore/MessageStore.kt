@@ -91,7 +91,7 @@ interface MessageStore {
     /**
      * Retrieve the server ID for a given message.
      */
-    fun getMessageServerId(messageId: Long): String
+    fun getMessageServerId(messageId: Long): String?
 
     /**
      * Retrieve the server IDs for the given messages.

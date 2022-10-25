@@ -2,7 +2,6 @@ package com.fsck.k9.storage.messages
 
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.crlf
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
@@ -14,9 +13,11 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
     private val retrieveMessageOperations = RetrieveMessageOperations(lockableDatabase)
 
-    @Test(expected = MessagingException::class)
+    @Test
     fun `get message server id of non-existent message`() {
-        retrieveMessageOperations.getMessageServerId(42)
+        val messageServerId = retrieveMessageOperations.getMessageServerId(42)
+
+        assertThat(messageServerId).isNull()
     }
 
     @Test

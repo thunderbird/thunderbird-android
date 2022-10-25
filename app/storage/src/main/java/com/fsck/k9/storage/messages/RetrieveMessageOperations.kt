@@ -4,7 +4,6 @@ import androidx.core.database.getLongOrNull
 import com.fsck.k9.K9
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.message.MessageHeaderParser
 import com.fsck.k9.mailstore.LockableDatabase
@@ -13,7 +12,7 @@ import java.util.Date
 
 internal class RetrieveMessageOperations(private val lockableDatabase: LockableDatabase) {
 
-    fun getMessageServerId(messageId: Long): String {
+    fun getMessageServerId(messageId: Long): String? {
         return lockableDatabase.execute(false) { database ->
             database.query(
                 "messages",
@@ -25,7 +24,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 if (cursor.moveToFirst()) {
                     cursor.getString(0)
                 } else {
-                    throw MessagingException("Message [ID: $messageId] not found in database")
+                    null
                 }
             }
         }
