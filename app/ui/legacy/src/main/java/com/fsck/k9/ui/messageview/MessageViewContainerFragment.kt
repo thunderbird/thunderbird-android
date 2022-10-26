@@ -145,20 +145,19 @@ class MessageViewContainerFragment : Fragment() {
     }
 
     private fun setActiveMessage(position: Int) {
-        // If the position of current message changes (e.g. because messages were added or removed from the list), we
-        // keep track of the new position but otherwise ignore the event.
-        val newMessageReference = adapter.getMessageReference(position)
+        val newMessageReference = adapter.getMessageReference(position) ?: return
         if (newMessageReference == activeMessageReference) {
+            // If the position of current message changes (e.g. because messages were added or removed from the list),
+            // we keep track of the new position but otherwise ignore the event.
             currentPosition = position
             return
         }
 
         rememberNavigationDirection(position)
 
-        messageReference = adapter.getMessageReference(position)
-
-        activeMessageReference = messageReference
-        fragmentListener.setActiveMessage(messageReference)
+        messageReference = newMessageReference
+        activeMessageReference = newMessageReference
+        fragmentListener.setActiveMessage(newMessageReference)
     }
 
     private fun rememberNavigationDirection(newPosition: Int) {
@@ -261,10 +260,8 @@ class MessageViewContainerFragment : Fragment() {
             return MessageViewFragment.newInstance(messageReference)
         }
 
-        fun getMessageReference(position: Int): MessageReference {
-            check(position in messageList.indices)
-
-            return messageList[position].messageReference
+        fun getMessageReference(position: Int): MessageReference? {
+            return messageList.getOrNull(position)?.messageReference
         }
 
         fun getPosition(messageReference: MessageReference): Int {
