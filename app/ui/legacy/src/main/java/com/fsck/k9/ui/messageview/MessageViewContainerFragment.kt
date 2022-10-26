@@ -172,9 +172,7 @@ class MessageViewContainerFragment : Fragment() {
         val newPosition = viewPager.currentItem - 1
         return if (newPosition >= 0) {
             setActiveMessage(newPosition)
-
-            val smoothScroll = true
-            viewPager.setCurrentItem(newPosition, smoothScroll)
+            viewPager.setCurrentItem(newPosition, /* smoothScroll = */ false)
             true
         } else {
             false
@@ -185,9 +183,7 @@ class MessageViewContainerFragment : Fragment() {
         val newPosition = viewPager.currentItem + 1
         return if (newPosition < adapter.itemCount) {
             setActiveMessage(newPosition)
-
-            val smoothScroll = true
-            viewPager.setCurrentItem(newPosition, smoothScroll)
+            viewPager.setCurrentItem(newPosition, /* smoothScroll = */ false)
             true
         } else {
             false
