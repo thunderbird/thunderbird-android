@@ -1,15 +1,11 @@
 package com.fsck.k9.autodiscovery.srvrecords
 
-import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings
 import com.fsck.k9.autodiscovery.api.DiscoveryResults
-import com.fsck.k9.autodiscovery.api.DiscoveryTarget
 import com.fsck.k9.mail.ConnectionSecurity
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyNoMoreInteractions
 
 class SrvServiceDiscoveryTest {
 
@@ -18,7 +14,7 @@ class SrvServiceDiscoveryTest {
         val srvResolver = newMockSrvResolver()
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
+        val result = srvServiceDiscovery.discover("test@example.com")
 
         assertEquals(DiscoveryResults(listOf(), listOf()), result)
     }
@@ -33,7 +29,7 @@ class SrvServiceDiscoveryTest {
         )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
+        val result = srvServiceDiscovery.discover("test@example.com")
 
         assertEquals(2, result!!.incoming.size)
         assertEquals(0, result.outgoing.size)
@@ -57,7 +53,7 @@ class SrvServiceDiscoveryTest {
         )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
+        val result = srvServiceDiscovery.discover("test@example.com")
 
         assertEquals(0, result!!.incoming.size)
         assertEquals(2, result.outgoing.size)
@@ -133,7 +129,7 @@ class SrvServiceDiscoveryTest {
         )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
+        val result = srvServiceDiscovery.discover("test@example.com")
 
         assertEquals(
             listOf(
@@ -153,54 +149,6 @@ class SrvServiceDiscoveryTest {
             ),
             result?.incoming?.map { it.host }
         )
-    }
-
-    @Test
-    fun discover_whenOnlyOutgoingTrue_shouldOnlyFetchOutgoing() {
-        val srvResolver = newMockSrvResolver(
-            submissionServices = listOf(
-                newMailService(
-                    host = "smtp.example.com",
-                    port = 465,
-                    srvType = SrvType.SUBMISSIONS,
-                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    priority = 0
-                )
-            )
-        )
-
-        val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.OUTGOING)
-
-        verify(srvResolver).lookup("example.com", SrvType.SUBMISSIONS)
-        verify(srvResolver).lookup("example.com", SrvType.SUBMISSION)
-        verifyNoMoreInteractions(srvResolver)
-        assertEquals(1, result!!.outgoing.size)
-        assertEquals(listOf<DiscoveredServerSettings>(), result.incoming)
-    }
-
-    @Test
-    fun discover_whenOnlyIncomingTrue_shouldOnlyFetchIncoming() {
-        val srvResolver = newMockSrvResolver(
-            imapsServices = listOf(
-                newMailService(
-                    host = "imaps.example.com",
-                    port = 993,
-                    srvType = SrvType.IMAPS,
-                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    priority = 0
-                )
-            )
-        )
-
-        val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING)
-
-        verify(srvResolver).lookup("example.com", SrvType.IMAPS)
-        verify(srvResolver).lookup("example.com", SrvType.IMAP)
-        verifyNoMoreInteractions(srvResolver)
-        assertEquals(1, result!!.incoming.size)
-        assertEquals(listOf<DiscoveredServerSettings>(), result.outgoing)
     }
 
     private fun newMailService(

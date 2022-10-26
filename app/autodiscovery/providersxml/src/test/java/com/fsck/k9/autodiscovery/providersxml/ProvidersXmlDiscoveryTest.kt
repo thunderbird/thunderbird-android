@@ -2,7 +2,6 @@ package com.fsck.k9.autodiscovery.providersxml
 
 import androidx.test.core.app.ApplicationProvider
 import com.fsck.k9.RobolectricTest
-import com.fsck.k9.autodiscovery.api.DiscoveryTarget
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.oauth.OAuthConfiguration
@@ -17,7 +16,7 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
 
     @Test
     fun discover_withGmailDomain_shouldReturnCorrectSettings() {
-        val connectionSettings = providersXmlDiscovery.discover("user@gmail.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
+        val connectionSettings = providersXmlDiscovery.discover("user@gmail.com")
 
         assertThat(connectionSettings).isNotNull()
         with(connectionSettings!!.incoming.first()) {
@@ -37,7 +36,7 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
     @Test
     fun discover_withUnknownDomain_shouldReturnNull() {
         val connectionSettings = providersXmlDiscovery.discover(
-            "user@not.present.in.providers.xml.example", DiscoveryTarget.INCOMING_AND_OUTGOING
+            "user@not.present.in.providers.xml.example"
         )
 
         assertThat(connectionSettings).isNull()

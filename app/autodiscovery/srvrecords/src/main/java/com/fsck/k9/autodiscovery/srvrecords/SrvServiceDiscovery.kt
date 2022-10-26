@@ -3,7 +3,6 @@ package com.fsck.k9.autodiscovery.srvrecords
 import com.fsck.k9.autodiscovery.api.ConnectionSettingsDiscovery
 import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings
 import com.fsck.k9.autodiscovery.api.DiscoveryResults
-import com.fsck.k9.autodiscovery.api.DiscoveryTarget
 import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
@@ -12,19 +11,19 @@ class SrvServiceDiscovery(
     private val srvResolver: MiniDnsSrvResolver
 ) : ConnectionSettingsDiscovery {
 
-    override fun discover(email: String, target: DiscoveryTarget): DiscoveryResults? {
+    override fun discover(email: String): DiscoveryResults? {
         val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
         val mailServicePriority = compareBy<MailService> { it.priority }.thenByDescending { it.security }
 
-        val outgoingSettings = if (target.outgoing)
-            listOf(SrvType.SUBMISSIONS, SrvType.SUBMISSION).flatMap { srvResolver.lookup(domain, it) }
-                .sortedWith(mailServicePriority).map { newServerSettings(it, email) }
-        else listOf()
+        val outgoingSettings = listOf(SrvType.SUBMISSIONS, SrvType.SUBMISSION)
+            .flatMap { srvResolver.lookup(domain, it) }
+            .sortedWith(mailServicePriority)
+            .map { newServerSettings(it, email) }
 
-        val incomingSettings = if (target.incoming)
-            listOf(SrvType.IMAPS, SrvType.IMAP).flatMap { srvResolver.lookup(domain, it) }
-                .sortedWith(mailServicePriority).map { newServerSettings(it, email) }
-        else listOf()
+        val incomingSettings = listOf(SrvType.IMAPS, SrvType.IMAP)
+            .flatMap { srvResolver.lookup(domain, it) }
+            .sortedWith(mailServicePriority)
+            .map { newServerSettings(it, email) }
 
         return DiscoveryResults(incoming = incomingSettings, outgoing = outgoingSettings)
     }
