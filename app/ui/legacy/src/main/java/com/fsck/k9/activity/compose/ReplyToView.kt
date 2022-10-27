@@ -29,7 +29,7 @@ class ReplyToView(activity: MessageCompose) : View.OnClickListener {
     }
 
     var isVisible: Boolean
-        get() = replyToView.isVisible
+        get() = replyToWrapper.isVisible
         set(visible) {
             replyToDivider.isVisible = visible
             replyToView.isVisible = visible
