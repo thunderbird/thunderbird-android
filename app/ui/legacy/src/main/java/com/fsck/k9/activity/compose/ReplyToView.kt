@@ -48,6 +48,12 @@ class ReplyToView(activity: MessageCompose) {
             }
         }
 
+    fun hideIfBlank() {
+        if (isVisible && replyToView.text.isBlank()) {
+            isVisible = false
+        }
+    }
+
     fun hasUncompletedText(): Boolean {
         replyToView.tryPerformCompletion()
         return replyToView.hasUncompletedText()

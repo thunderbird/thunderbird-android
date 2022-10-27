@@ -8,7 +8,6 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
 import org.mockito.kotlin.stubbing
 import org.mockito.kotlin.verify
 
@@ -114,40 +113,5 @@ class ReplyToPresenterTest : RobolectricTest() {
         verify(view).silentlyAddAddresses(Address.parse(replyToOne))
         verify(view).silentlyRemoveAddresses(Address.parse(replyToOne))
         verify(view).silentlyAddAddresses(Address.parse(replyToTwo))
-    }
-
-    @Test
-    fun testOnNonRecipientFieldFocused_notVisible_expectNoChange() {
-        stubbing(view) {
-            on { isVisible } doReturn false
-        }
-
-        replyToPresenter.onNonRecipientFieldFocused()
-
-        verify(view, never()).isVisible = false
-    }
-
-    @Test
-    fun testOnNonRecipientFieldFocused_noContentFieldVisible_expectHide() {
-        stubbing(view) {
-            on { isVisible } doReturn true
-            on { getAddresses() } doReturn emptyArray()
-        }
-
-        replyToPresenter.onNonRecipientFieldFocused()
-
-        verify(view).isVisible = false
-    }
-
-    @Test
-    fun testOnNonRecipientFieldFocused_withContentFieldVisible_expectNoChange() {
-        stubbing(view) {
-            on { isVisible } doReturn true
-            on { getAddresses() } doReturn Address.parse(REPLY_TO_ADDRESS)
-        }
-
-        replyToPresenter.onNonRecipientFieldFocused()
-
-        verify(view, never()).isVisible = false
     }
 }
