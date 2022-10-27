@@ -9,7 +9,7 @@ import com.fsck.k9.ui.resolveColorAttribute
 import com.fsck.k9.ui.resolveDrawableAttribute
 
 class SwipeResourceProvider(val theme: Theme) {
-    private val iconTint = theme.resolveColorAttribute(R.attr.messageListSwipeIconTint)
+    val iconTint = theme.resolveColorAttribute(R.attr.messageListSwipeIconTint)
 
     private val selectIcon = theme.loadDrawable(R.attr.messageListSwipeSelectIcon)
     private val markAsReadIcon = theme.loadDrawable(R.attr.messageListSwipeMarkAsReadIcon)
@@ -29,14 +29,6 @@ class SwipeResourceProvider(val theme: Theme) {
     private val deleteColor = theme.resolveColorAttribute(R.attr.messageListSwipeDeleteBackgroundColor)
     private val spamColor = theme.resolveColorAttribute(R.attr.messageListSwipeSpamBackgroundColor)
     private val moveColor = theme.resolveColorAttribute(R.attr.messageListSwipeMoveBackgroundColor)
-
-    fun getIconTint(action: SwipeAction, swipeThresholdReached: Boolean): Int {
-        return if (swipeThresholdReached) {
-            iconTint
-        } else {
-            getBackgroundColor(action)
-        }
-    }
 
     fun getIcon(item: MessageListItem, action: SwipeAction): Drawable? {
         return when (action) {
