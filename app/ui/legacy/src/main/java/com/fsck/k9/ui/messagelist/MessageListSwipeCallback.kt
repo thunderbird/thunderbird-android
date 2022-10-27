@@ -92,10 +92,10 @@ class MessageListSwipeCallback(
             val swipeThresholdReached = abs(dX) > swipeThreshold
             if (swipeThresholdReached) {
                 val action = if (dX > 0) swipeRightAction else swipeLeftAction
-                val backgroundColor = resourceProvider.getBackgroundColor(item, action)
+                val backgroundColor = resourceProvider.getBackgroundColor(action)
                 drawBackground(view, backgroundColor)
             } else {
-                val backgroundColor = resourceProvider.getBackgroundColor(item, SwipeAction.None)
+                val backgroundColor = resourceProvider.getBackgroundColor(SwipeAction.None)
                 drawBackground(view, backgroundColor)
             }
 
@@ -137,7 +137,7 @@ class MessageListSwipeCallback(
             val iconBottom = iconTop + icon.intrinsicHeight
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
-            icon.setTint(resourceProvider.getIconTint(item, swipeRightAction, swipeThresholdReached))
+            icon.setTint(resourceProvider.getIconTint(swipeRightAction, swipeThresholdReached))
             icon.draw(this)
         }
     }
@@ -150,7 +150,7 @@ class MessageListSwipeCallback(
             val iconBottom = iconTop + icon.intrinsicHeight
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
-            icon.setTint(resourceProvider.getIconTint(item, swipeLeftAction, swipeThresholdReached))
+            icon.setTint(resourceProvider.getIconTint(swipeLeftAction, swipeThresholdReached))
             icon.draw(this)
         }
     }

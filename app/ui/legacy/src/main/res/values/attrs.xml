@@ -83,13 +83,11 @@
         <attr name="messageListSwipeSelectIcon" format="reference"/>
         <attr name="messageListSwipeSelectBackgroundColor" format="reference|color"/>
         <attr name="messageListSwipeMarkAsReadIcon" format="reference"/>
-        <attr name="messageListSwipeMarkAsReadBackgroundColor" format="reference|color"/>
         <attr name="messageListSwipeMarkAsUnreadIcon" format="reference"/>
-        <attr name="messageListSwipeMarkAsUnreadBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeToggleReadBackgroundColor" format="reference|color"/>
         <attr name="messageListSwipeAddStarIcon" format="reference"/>
-        <attr name="messageListSwipeAddStarBackgroundColor" format="reference|color"/>
         <attr name="messageListSwipeRemoveStarIcon" format="reference"/>
-        <attr name="messageListSwipeRemoveStarBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeToggleStarBackgroundColor" format="reference|color"/>
         <attr name="messageListSwipeArchiveIcon" format="reference"/>
         <attr name="messageListSwipeArchiveBackgroundColor" format="reference|color"/>
         <attr name="messageListSwipeDeleteIcon" format="reference"/>
