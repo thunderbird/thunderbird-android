@@ -94,7 +94,7 @@
 
         <item name="messageListSwipeIconTint">#ffffff</item>
         <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_200</item>
-        <item name="messageListSwipeSelectIcon">@drawable/ic_import_status</item>
+        <item name="messageListSwipeSelectIcon">@drawable/ic_check_circle</item>
         <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_600</item>
         <item name="messageListSwipeMarkAsReadIcon">?attr/iconActionMarkAsRead</item>
         <item name="messageListSwipeMarkAsUnreadIcon">?attr/iconActionMarkAsUnread</item>
@@ -238,7 +238,7 @@
 
         <item name="messageListSwipeIconTint">#ffffff</item>
         <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_900</item>
-        <item name="messageListSwipeSelectIcon">@drawable/ic_import_status</item>
+        <item name="messageListSwipeSelectIcon">@drawable/ic_check_circle</item>
         <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_700</item>
         <item name="messageListSwipeMarkAsReadIcon">?attr/iconActionMarkAsRead</item>
         <item name="messageListSwipeMarkAsUnreadIcon">?attr/iconActionMarkAsUnread</item>

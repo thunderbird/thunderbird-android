@@ -11,4 +11,5 @@
     <dimen name="message_view_pager_page_margin">16dp</dimen>
     <dimen name="messageListSwipeThreshold">72dp</dimen>
     <dimen name="messageListSwipeIconPadding">24dp</dimen>
+    <dimen name="messageListSwipeTextPadding">12dp</dimen>
 </resources>
