@@ -2,7 +2,7 @@ package com.fsck.k9.activity.compose
 
 import android.os.Bundle
 import com.fsck.k9.Identity
-import com.fsck.k9.K9RobolectricTest
+import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.Address
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -16,7 +16,7 @@ private const val REPLY_TO_ADDRESS = "reply-to@example.com"
 private const val REPLY_TO_ADDRESS_2 = "reply-to2@example.com"
 private const val REPLY_TO_ADDRESS_3 = "reply-to3@example.com"
 
-class ReplyToPresenterTest : K9RobolectricTest() {
+class ReplyToPresenterTest : RobolectricTest() {
     private val view = mock<ReplyToView>()
     private val replyToPresenter = ReplyToPresenter(view)
 
