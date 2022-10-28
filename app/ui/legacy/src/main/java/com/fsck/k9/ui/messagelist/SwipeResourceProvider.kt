@@ -9,7 +9,7 @@ import com.fsck.k9.ui.resolveColorAttribute
 import com.fsck.k9.ui.resolveDrawableAttribute
 
 class SwipeResourceProvider(val theme: Theme) {
-    private val iconTint = theme.resolveColorAttribute(R.attr.messageListSwipeIconTint)
+    val iconTint = theme.resolveColorAttribute(R.attr.messageListSwipeIconTint)
 
     private val selectIcon = theme.loadDrawable(R.attr.messageListSwipeSelectIcon)
     private val markAsReadIcon = theme.loadDrawable(R.attr.messageListSwipeMarkAsReadIcon)
@@ -23,22 +23,12 @@ class SwipeResourceProvider(val theme: Theme) {
 
     private val noActionColor = theme.resolveColorAttribute(R.attr.messageListSwipeDisabledBackgroundColor)
     private val selectColor = theme.resolveColorAttribute(R.attr.messageListSwipeSelectBackgroundColor)
-    private val markAsReadColor = theme.resolveColorAttribute(R.attr.messageListSwipeMarkAsReadBackgroundColor)
-    private val markAsUnreadColor = theme.resolveColorAttribute(R.attr.messageListSwipeMarkAsUnreadBackgroundColor)
-    private val addStarColor = theme.resolveColorAttribute(R.attr.messageListSwipeAddStarBackgroundColor)
-    private val removeStarColor = theme.resolveColorAttribute(R.attr.messageListSwipeRemoveStarBackgroundColor)
+    private val toggleReadColor = theme.resolveColorAttribute(R.attr.messageListSwipeToggleReadBackgroundColor)
+    private val toggleStarColor = theme.resolveColorAttribute(R.attr.messageListSwipeToggleStarBackgroundColor)
     private val archiveColor = theme.resolveColorAttribute(R.attr.messageListSwipeArchiveBackgroundColor)
     private val deleteColor = theme.resolveColorAttribute(R.attr.messageListSwipeDeleteBackgroundColor)
     private val spamColor = theme.resolveColorAttribute(R.attr.messageListSwipeSpamBackgroundColor)
     private val moveColor = theme.resolveColorAttribute(R.attr.messageListSwipeMoveBackgroundColor)
-
-    fun getIconTint(item: MessageListItem, action: SwipeAction, swipeThresholdReached: Boolean): Int {
-        return if (swipeThresholdReached) {
-            iconTint
-        } else {
-            getBackgroundColor(item, action)
-        }
-    }
 
     fun getIcon(item: MessageListItem, action: SwipeAction): Drawable? {
         return when (action) {
@@ -53,12 +43,12 @@ class SwipeResourceProvider(val theme: Theme) {
         }
     }
 
-    fun getBackgroundColor(item: MessageListItem, action: SwipeAction): Int {
+    fun getBackgroundColor(action: SwipeAction): Int {
         return when (action) {
             SwipeAction.None -> noActionColor
             SwipeAction.ToggleSelection -> selectColor
-            SwipeAction.ToggleRead -> if (item.isRead) markAsUnreadColor else markAsReadColor
-            SwipeAction.ToggleStar -> if (item.isStarred) removeStarColor else addStarColor
+            SwipeAction.ToggleRead -> toggleReadColor
+            SwipeAction.ToggleStar -> toggleStarColor
             SwipeAction.Archive -> archiveColor
             SwipeAction.Delete -> deleteColor
             SwipeAction.Spam -> spamColor
