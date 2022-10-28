@@ -34,6 +34,7 @@ import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.UnknownHostException
 import java.security.GeneralSecurityException
+import java.security.cert.CertificateException
 import java.util.Locale
 import javax.net.ssl.SSLException
 import org.apache.commons.io.IOUtils
@@ -230,7 +231,11 @@ class SmtpTransport(
             throw e
         } catch (e: SSLException) {
             close()
-            throw CertificateValidationException(e.message, e)
+            if (e.cause is CertificateException) {
+                throw CertificateValidationException(e.message, e)
+            } else {
+                throw e
+            }
         } catch (e: GeneralSecurityException) {
             close()
             throw MessagingException("Unable to open connection to SMTP server due to security error.", e)
