@@ -1,9 +1,16 @@
 package com.fsck.k9.mail.store.pop3
 
 import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.AuthType.CRAM_MD5
+import com.fsck.k9.mail.AuthType.EXTERNAL
+import com.fsck.k9.mail.AuthType.LOGIN
+import com.fsck.k9.mail.AuthType.PLAIN
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.ConnectionSecurity.NONE
+import com.fsck.k9.mail.ConnectionSecurity.SSL_TLS_REQUIRED
+import com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.helpers.TestTrustedSocketFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
@@ -14,7 +21,6 @@ import java.security.cert.CertificateException
 import javax.net.ssl.SSLException
 import okio.ByteString.Companion.encodeUtf8
 import org.junit.Assert.fail
-import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doThrow
@@ -23,75 +29,82 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verifyNoInteractions
 
 class Pop3ConnectionTest {
-    private val settings = SimplePop3Settings()
     private val socketFactory = TestTrustedSocketFactory.newInstance()
-
-    @Before
-    fun before() {
-        createCommonSettings()
-    }
 
     @Test(expected = CertificateValidationException::class)
     fun `when TrustedSocketFactory throws SSLCertificateException, open() should throw CertificateValidationException`() {
-        createTlsServer()
+        val server = startTlsServer()
+        val settings = server.createSettings(connectionSecurity = SSL_TLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory> {
             on { createSocket(null, settings.host, settings.port, null) } doThrow SSLException(CertificateException())
         }
-        val connection = Pop3Connection(settings, mockSocketFactory)
 
-        connection.open()
+        createAndOpenPop3Connection(settings, mockSocketFactory)
     }
 
     @Test(expected = MessagingException::class)
     fun `when TrustedSocketFactory throws CertificateException, open() should throw MessagingException`() {
-        createTlsServer()
+        val server = startTlsServer()
+        val settings = server.createSettings(connectionSecurity = SSL_TLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory> {
             on { createSocket(null, settings.host, settings.port, null) } doThrow SSLException("")
         }
-        val connection = Pop3Connection(settings, mockSocketFactory)
 
-        connection.open()
+        createAndOpenPop3Connection(settings, mockSocketFactory)
     }
 
     @Test(expected = MessagingException::class)
     fun `when TrustedSocketFactory throws NoSuchAlgorithmException, open() should throw MessagingException`() {
-        createTlsServer()
+        val server = startTlsServer()
+        val settings = server.createSettings(connectionSecurity = SSL_TLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory> {
             on { createSocket(null, settings.host, settings.port, null) } doThrow NoSuchAlgorithmException()
         }
-        val connection = Pop3Connection(settings, mockSocketFactory)
 
-        connection.open()
+        createAndOpenPop3Connection(settings, mockSocketFactory)
     }
 
     @Test(expected = MessagingException::class)
     fun `when TrustedSocketFactory throws IOException, open() should throw MessagingException`() {
-        createTlsServer()
+        val server = startTlsServer()
+        val settings = server.createSettings(connectionSecurity = SSL_TLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory> {
             on { createSocket(null, settings.host, settings.port, null) } doThrow IOException()
         }
-        val connection = Pop3Connection(settings, mockSocketFactory)
 
-        connection.open()
+        createAndOpenPop3Connection(settings, mockSocketFactory)
     }
 
     @Test(expected = CertificateValidationException::class)
     fun `open() with STLS capability unavailable should throw CertificateValidationException`() {
-        setupUnavailableStartTlsConnection()
+        val server = startServer {
+            setupServerWithAuthenticationMethods("PLAIN")
+        }
+        val settings = server.createSettings(connectionSecurity = STARTTLS_REQUIRED)
 
-        createAndOpenPop3Connection(settings, socketFactory)
+        createAndOpenPop3Connection(settings)
     }
 
     @Test(expected = Pop3ErrorResponse::class)
     fun `open() with error response to STLS command should throw`() {
-        setupFailedStartTlsConnection()
+        val server = startServer {
+            setupServerWithStartTlsAvailable()
+            expect("STLS")
+            output("-ERR Unavailable")
+        }
+        val settings = server.createSettings(connectionSecurity = STARTTLS_REQUIRED)
 
-        createAndOpenPop3Connection(settings, socketFactory)
+        createAndOpenPop3Connection(settings)
     }
 
     @Test
     fun `open() with STLS error response should not call createSocket() to upgrade to TLS`() {
-        setupFailedStartTlsConnection()
+        val server = startServer {
+            setupServerWithStartTlsAvailable()
+            expect("STLS")
+            output("-ERR Unavailable")
+        }
+        val settings = server.createSettings(connectionSecurity = STARTTLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory>()
 
         try {
@@ -104,9 +117,14 @@ class Pop3ConnectionTest {
 
     @Test(expected = MessagingException::class)
     fun `open() with StartTLS and TrustedSocketFactory throwing should throw`() {
-        val server = setupStartTlsConnection()
+        val server = startServer {
+            setupServerWithStartTlsAvailable()
+            expect("STLS")
+            output("+OK Begin TLS negotiation")
+        }
+        val settings = server.createSettings(connectionSecurity = STARTTLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory> {
-            on { createSocket(any(), eq(server.host), eq(server.port), eq(null)) } doThrow IOException()
+            on { createSocket(any(), eq(settings.host), eq(settings.port), eq(null)) } doThrow IOException()
         }
 
         createAndOpenPop3Connection(settings, mockSocketFactory)
@@ -114,19 +132,16 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with AUTH PLAIN`() {
-        settings.authType = AuthType.PLAIN
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN CRAM-MD5 EXTERNAL")
-        server.output(".")
-        server.expect("AUTH PLAIN")
-        server.output("+OK")
-        server.expect(AUTH_PLAIN_ARGUMENT)
-        server.output("+OK")
+        val server = startServer {
+            setupServerWithAuthenticationMethods("PLAIN CRAM-MD5 EXTERNAL")
+            expect("AUTH PLAIN")
+            output("+OK")
+            expect(AUTH_PLAIN_ARGUMENT)
+            output("+OK")
+        }
+        val settings = server.createSettings(authType = PLAIN)
 
-        startServerAndCreateOpenConnection(server)
+        createAndOpenPop3Connection(settings)
 
         server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
@@ -134,20 +149,17 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with authentication error should throw`() {
-        settings.authType = AuthType.PLAIN
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN CRAM-MD5 EXTERNAL")
-        server.output(".")
-        server.expect("AUTH PLAIN")
-        server.output("+OK")
-        server.expect(AUTH_PLAIN_ARGUMENT)
-        server.output("-ERR")
+        val server = startServer {
+            setupServerWithAuthenticationMethods("PLAIN CRAM-MD5 EXTERNAL")
+            expect("AUTH PLAIN")
+            output("+OK")
+            expect(AUTH_PLAIN_ARGUMENT)
+            output("-ERR")
+        }
+        val settings = server.createSettings(authType = PLAIN)
 
         try {
-            startServerAndCreateOpenConnection(server)
+            createAndOpenPop3Connection(settings)
             fail("Expected auth failure")
         } catch (ignored: AuthenticationFailedException) {
         }
@@ -157,39 +169,33 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with AuthType_PLAIN and no SASL PLAIN capability should use USER and PASS commands`() {
-        settings.authType = AuthType.PLAIN
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL CRAM-MD5 EXTERNAL")
-        server.output(".")
-        server.expect("USER user")
-        server.output("+OK")
-        server.expect("PASS password")
-        server.output("+OK")
+        val server = startServer {
+            setupServerWithAuthenticationMethods("CRAM-MD5 EXTERNAL")
+            expect("USER user")
+            output("+OK")
+            expect("PASS password")
+            output("+OK")
+        }
+        val settings = server.createSettings(authType = PLAIN)
 
-        startServerAndCreateOpenConnection(server)
+        createAndOpenPop3Connection(settings)
 
         server.verifyInteractionCompleted()
     }
 
     @Test
     fun `open() with authentication failure during fallback to USER and PASS commands should throw`() {
-        settings.authType = AuthType.PLAIN
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL CRAM-MD5 EXTERNAL")
-        server.output(".")
-        server.expect("USER user")
-        server.output("+OK")
-        server.expect("PASS password")
-        server.output("-ERR")
+        val server = startServer {
+            setupServerWithAuthenticationMethods("CRAM-MD5 EXTERNAL")
+            expect("USER user")
+            output("+OK")
+            expect("PASS password")
+            output("-ERR")
+        }
+        val settings = server.createSettings(authType = PLAIN)
 
         try {
-            startServerAndCreateOpenConnection(server)
+            createAndOpenPop3Connection(settings)
             fail("Expected auth failure")
         } catch (ignored: AuthenticationFailedException) {
         }
@@ -199,19 +205,16 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with CRAM-MD5 authentication`() {
-        settings.authType = AuthType.CRAM_MD5
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN CRAM-MD5 EXTERNAL")
-        server.output(".")
-        server.expect("AUTH CRAM-MD5")
-        server.output("+ abcd")
-        server.expect("dXNlciBhZGFhZTU2Zjk1NzAxZjQwNDQwZjhhMWU2YzY1ZjZmZg==")
-        server.output("+OK")
+        val server = startServer {
+            setupServerWithAuthenticationMethods("PLAIN CRAM-MD5 EXTERNAL")
+            expect("AUTH CRAM-MD5")
+            output("+ abcd")
+            expect("dXNlciBhZGFhZTU2Zjk1NzAxZjQwNDQwZjhhMWU2YzY1ZjZmZg==")
+            output("+OK")
+        }
+        val settings = server.createSettings(authType = CRAM_MD5)
 
-        startServerAndCreateOpenConnection(server)
+        createAndOpenPop3Connection(settings)
 
         server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
@@ -219,20 +222,17 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with authentication failure when using CRAM-MD5 should throw`() {
-        settings.authType = AuthType.CRAM_MD5
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN CRAM-MD5 EXTERNAL")
-        server.output(".")
-        server.expect("AUTH CRAM-MD5")
-        server.output("+ abcd")
-        server.expect("dXNlciBhZGFhZTU2Zjk1NzAxZjQwNDQwZjhhMWU2YzY1ZjZmZg==")
-        server.output("-ERR")
+        val server = startServer {
+            setupServerWithAuthenticationMethods("PLAIN CRAM-MD5 EXTERNAL")
+            expect("AUTH CRAM-MD5")
+            output("+ abcd")
+            expect("dXNlciBhZGFhZTU2Zjk1NzAxZjQwNDQwZjhhMWU2YzY1ZjZmZg==")
+            output("-ERR")
+        }
+        val settings = server.createSettings(authType = CRAM_MD5)
 
         try {
-            startServerAndCreateOpenConnection(server)
+            createAndOpenPop3Connection(settings)
             fail("Expected auth failure")
         } catch (ignored: AuthenticationFailedException) {
         }
@@ -242,17 +242,18 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with CRAM-MD5 configured but missing capability should use APOP`() {
-        settings.authType = AuthType.CRAM_MD5
-        val server = MockPop3Server()
-        server.output("+OK abc<a>abcd")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN EXTERNAL")
-        server.output(".")
-        server.expect("APOP user c8e8c560e385faaa6367d4145572b8ea")
-        server.output("+OK")
+        val server = startServer {
+            output("+OK abc<a>abcd")
+            expect("CAPA")
+            output("+OK Listing of supported mechanisms follows")
+            output("SASL PLAIN EXTERNAL")
+            output(".")
+            expect("APOP user c8e8c560e385faaa6367d4145572b8ea")
+            output("+OK")
+        }
+        val settings = server.createSettings(authType = CRAM_MD5)
 
-        startServerAndCreateOpenConnection(server)
+        createAndOpenPop3Connection(settings)
 
         server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
@@ -260,18 +261,19 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with authentication failure when using APOP should throw`() {
-        settings.authType = AuthType.CRAM_MD5
-        val server = MockPop3Server()
-        server.output("+OK abc<a>abcd")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN EXTERNAL")
-        server.output(".")
-        server.expect("APOP user c8e8c560e385faaa6367d4145572b8ea")
-        server.output("-ERR")
+        val server = startServer {
+            output("+OK abc<a>abcd")
+            expect("CAPA")
+            output("+OK Listing of supported mechanisms follows")
+            output("SASL PLAIN EXTERNAL")
+            output(".")
+            expect("APOP user c8e8c560e385faaa6367d4145572b8ea")
+            output("-ERR")
+        }
+        val settings = server.createSettings(authType = CRAM_MD5)
 
         try {
-            startServerAndCreateOpenConnection(server)
+            createAndOpenPop3Connection(settings)
             fail("Expected auth failure")
         } catch (ignored: AuthenticationFailedException) {
         }
@@ -281,17 +283,14 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with AUTH EXTERNAL`() {
-        settings.authType = AuthType.EXTERNAL
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL CRAM-MD5 EXTERNAL")
-        server.output(".")
-        server.expect("AUTH EXTERNAL dXNlcg==")
-        server.output("+OK")
+        val server = startServer {
+            setupServerWithAuthenticationMethods("CRAM-MD5 EXTERNAL")
+            expect("AUTH EXTERNAL dXNlcg==")
+            output("+OK")
+        }
+        val settings = server.createSettings(authType = EXTERNAL)
 
-        startServerAndCreateOpenConnection(server)
+        createAndOpenPop3Connection(settings)
 
         server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
@@ -299,16 +298,13 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with AuthType_EXTERNAL configured but missing capability should throw`() {
-        settings.authType = AuthType.EXTERNAL
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN CRAM-MD5")
-        server.output(".")
+        val server = startServer {
+            setupServerWithAuthenticationMethods("PLAIN CRAM-MD5")
+        }
+        val settings = server.createSettings(authType = EXTERNAL)
 
         try {
-            startServerAndCreateOpenConnection(server)
+            createAndOpenPop3Connection(settings)
             fail("CVE expected")
         } catch (e: CertificateValidationException) {
             assertThat(e.reason).isEqualTo(CertificateValidationException.Reason.MissingCapability)
@@ -320,18 +316,15 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with authentication failure when using AUTH EXTERNAL should throw`() {
-        settings.authType = AuthType.EXTERNAL
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN CRAM-MD5 EXTERNAL")
-        server.output(".")
-        server.expect("AUTH EXTERNAL dXNlcg==")
-        server.output("-ERR Invalid certificate")
+        val server = startServer {
+            setupServerWithAuthenticationMethods("PLAIN CRAM-MD5 EXTERNAL")
+            expect("AUTH EXTERNAL dXNlcg==")
+            output("-ERR Invalid certificate")
+        }
+        val settings = server.createSettings(authType = EXTERNAL)
 
         try {
-            startServerAndCreateOpenConnection(server)
+            createAndOpenPop3Connection(settings)
             fail("CVE expected")
         } catch (e: CertificateValidationException) {
             assertThat(e).hasMessageThat()
@@ -343,107 +336,75 @@ class Pop3ConnectionTest {
 
     @Test
     fun `open() with StartTLS and AUTH PLAIN`() {
-        settings.authType = AuthType.PLAIN
-        settings.connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
-        val server = MockPop3Server()
-        setupServerWithStartTlsAvailable(server)
-        server.expect("STLS")
-        server.output("+OK Begin TLS negotiation")
-        server.startTls()
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN")
-        server.output(".")
-        server.expect("AUTH PLAIN")
-        server.output("+OK")
-        server.expect(AUTH_PLAIN_ARGUMENT)
-        server.output("+OK")
+        val server = startServer {
+            setupServerWithStartTlsAvailable()
+            expect("STLS")
+            output("+OK Begin TLS negotiation")
+            startTls()
+            expect("CAPA")
+            output("+OK Listing of supported mechanisms follows")
+            output("SASL PLAIN")
+            output(".")
+            expect("AUTH PLAIN")
+            output("+OK")
+            expect(AUTH_PLAIN_ARGUMENT)
+            output("+OK")
+        }
+        val settings = server.createSettings(authType = PLAIN, connectionSecurity = STARTTLS_REQUIRED)
 
-        startServerAndCreateOpenConnection(server)
+        createAndOpenPop3Connection(settings)
 
         server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
     }
 
-    private fun createCommonSettings() {
-        settings.username = USERNAME
-        settings.password = PASSWORD
-    }
-
-    private fun startServerAndCreateOpenConnection(server: MockPop3Server) {
-        server.start()
-        settings.host = server.host
-        settings.port = server.port
-        createAndOpenPop3Connection(settings, socketFactory!!)
-    }
-
-    private fun createAndOpenPop3Connection(settings: Pop3Settings, socketFactory: TrustedSocketFactory) {
-        val connection = Pop3Connection(settings, socketFactory)
+    private fun createAndOpenPop3Connection(
+        settings: Pop3Settings,
+        trustedSocketFactory: TrustedSocketFactory = socketFactory
+    ) {
+        val connection = Pop3Connection(settings, trustedSocketFactory)
         connection.open()
     }
 
-    private fun setupStartTlsConnection(): MockPop3Server {
-        val server = MockPop3Server()
-        setupServerWithStartTlsAvailable(server)
-        server.expect("STLS")
-        server.output("+OK Begin TLS negotiation")
-        server.start()
-
-        settings.host = server.host
-        settings.port = server.port
-        settings.connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
-
-        return server
+    private fun MockPop3Server.setupServerWithAuthenticationMethods(authenticationMethods: String) {
+        output("+OK POP3 server greeting")
+        expect("CAPA")
+        output("+OK Listing of supported mechanisms follows")
+        output("SASL $authenticationMethods")
+        output(".")
     }
 
-    private fun setupFailedStartTlsConnection(): MockPop3Server {
-        val server = MockPop3Server()
-        setupServerWithStartTlsAvailable(server)
-        server.expect("STLS")
-        server.output("-ERR Unavailable")
-        server.start()
-
-        settings.host = server.host
-        settings.port = server.port
-        settings.connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
-
-        return server
+    private fun MockPop3Server.setupServerWithStartTlsAvailable() {
+        output("+OK POP3 server greeting")
+        expect("CAPA")
+        output("+OK Listing of supported mechanisms follows")
+        output("STLS")
+        output("SASL PLAIN")
+        output(".")
     }
 
-    private fun setupUnavailableStartTlsConnection(): MockPop3Server {
-        val server = MockPop3Server()
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("SASL PLAIN")
-        server.output(".")
-        server.start()
-
-        settings.host = server.host
-        settings.port = server.port
-        settings.connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
-
-        return server
-    }
-
-    private fun setupServerWithStartTlsAvailable(server: MockPop3Server) {
-        server.output("+OK POP3 server greeting")
-        server.expect("CAPA")
-        server.output("+OK Listing of supported mechanisms follows")
-        server.output("STLS")
-        server.output("SASL PLAIN")
-        server.output(".")
-    }
-
-    private fun createTlsServer() {
+    private fun startTlsServer(): MockPop3Server {
         // MockPop3Server doesn't actually support implicit TLS. However, all tests using this method will encounter
         // an exception before sending the first command to the server.
-        val server = MockPop3Server()
-        server.start()
+        return startServer { }
+    }
 
-        settings.host = server.host
-        settings.port = server.port
-        settings.connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED
+    private fun MockPop3Server.createSettings(
+        authType: AuthType = LOGIN,
+        connectionSecurity: ConnectionSecurity = NONE
+    ): Pop3Settings {
+        return SimplePop3Settings().apply {
+            username = USERNAME
+            password = PASSWORD
+            this.authType = authType
+            host = this@createSettings.host
+            port = this@createSettings.port
+            this.connectionSecurity = connectionSecurity
+        }
+    }
+
+    private fun startServer(block: MockPop3Server.() -> Unit): MockPop3Server {
+        return MockPop3Server().apply(block).also { it.start() }
     }
 
     companion object {
