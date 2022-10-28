@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.store.pop3
 
+import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.MessageRetrievalListener
@@ -60,6 +61,15 @@ class Pop3FolderTest {
     fun `open() with exception when creating a connection should throw`() {
         stubbing(store) {
             on { createConnection() } doThrow MessagingException("Test")
+        }
+
+        folder.open()
+    }
+
+    @Test(expected = AuthenticationFailedException::class)
+    fun `open() with failed authentication should throw`() {
+        stubbing(connection) {
+            on { open() } doThrow AuthenticationFailedException("Test")
         }
 
         folder.open()

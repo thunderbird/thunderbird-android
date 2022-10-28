@@ -1,7 +1,6 @@
 package com.fsck.k9.mail.store.pop3
 
 import com.fsck.k9.mail.AuthType
-import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ServerSettings
@@ -10,7 +9,6 @@ import com.google.common.truth.Truth.assertThat
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.net.Socket
-import okio.ByteString.Companion.encodeUtf8
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
@@ -71,36 +69,6 @@ class Pop3StoreTest {
         store.checkSettings()
     }
 
-    @Test
-    // TODO: Move to Pop3FolderTest
-    fun `Pop3Folder_open() with auth response using AUTH PLAIN should retrieve message count`() {
-        val outputStream = setupSocketWithResponse(
-            INITIAL_RESPONSE +
-                CAPA_RESPONSE +
-                AUTH_PLAIN_AUTHENTICATED_RESPONSE +
-                STAT_RESPONSE
-        )
-        val folder = store.getFolder(Pop3Folder.INBOX)
-
-        folder.open()
-        store.createConnection()
-
-        assertThat(folder.messageCount).isEqualTo(20)
-        assertThat(outputStream.toByteArray().decodeToString()).isEqualTo(CAPA + AUTH_PLAIN_WITH_LOGIN + STAT)
-    }
-
-    @Test(expected = AuthenticationFailedException::class)
-    // TODO: Move to Pop3FolderTest
-    fun `Pop3Folder_open() with failed authentication should throw`() {
-        val response = INITIAL_RESPONSE +
-            CAPA_RESPONSE +
-            AUTH_PLAIN_FAILED_RESPONSE
-        setupSocketWithResponse(response)
-        val folder = store.getFolder(Pop3Folder.INBOX)
-
-        folder.open()
-    }
-
     private fun createServerSettings(): ServerSettings {
         return ServerSettings(
             type = "pop3",
@@ -134,17 +102,12 @@ class Pop3StoreTest {
     companion object {
         private const val INITIAL_RESPONSE = "+OK POP3 server greeting\r\n"
 
-        private const val CAPA = "CAPA\r\n"
         private const val CAPA_RESPONSE = "+OK Listing of supported mechanisms follows\r\n" +
             "SASL PLAIN CRAM-MD5 EXTERNAL\r\n" +
             ".\r\n"
 
-        private val AUTH_PLAIN_ARGUMENT = "\u0000user\u0000password".encodeUtf8().base64()
-        private val AUTH_PLAIN_WITH_LOGIN = "AUTH PLAIN\r\n$AUTH_PLAIN_ARGUMENT\r\n"
         private const val AUTH_PLAIN_AUTHENTICATED_RESPONSE = "+OK\r\n" + "+OK\r\n"
-        private const val AUTH_PLAIN_FAILED_RESPONSE = "+OK\r\n" + "Plain authentication failure"
 
-        private const val STAT = "STAT\r\n"
         private const val STAT_RESPONSE = "+OK 20 0\r\n"
 
         private const val UIDL_UNSUPPORTED_RESPONSE = "-ERR UIDL unsupported\r\n"
