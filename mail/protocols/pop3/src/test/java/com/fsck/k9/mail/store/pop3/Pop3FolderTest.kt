@@ -1,260 +1,250 @@
-package com.fsck.k9.mail.store.pop3;
+package com.fsck.k9.mail.store.pop3
 
+import com.fsck.k9.mail.Body
+import com.fsck.k9.mail.FetchProfile
+import com.fsck.k9.mail.MessageRetrievalListener
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.crlf
+import com.fsck.k9.mail.internet.BinaryTempFileBody
+import com.fsck.k9.mail.store.pop3.Pop3Commands.STAT_COMMAND
+import com.google.common.truth.Truth.assertThat
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import org.junit.Before
+import org.junit.Test
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stubbing
 
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.FetchProfile.Item;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.internet.BinaryTempFileBody;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-
-public class Pop3FolderTest {
-    private static final int MAX_DOWNLOAD_SIZE = -1;
-
-    private Pop3Store mockStore;
-    private Pop3Connection mockConnection;
-    private MessageRetrievalListener<Pop3Message> mockListener;
-    private Pop3Folder folder;
+class Pop3FolderTest {
+    private val connection = mock<Pop3Connection> {
+        on { executeSimpleCommand(STAT_COMMAND) } doReturn "+OK $MESSAGE_COUNT 0"
+        on { isOpen } doReturn true
+    }
+    private val store = mock<Pop3Store> {
+        on { createConnection() } doReturn connection
+    }
+    private val messageRetrievalListener = mock<MessageRetrievalListener<Pop3Message>>()
+    private val folder = Pop3Folder(store, Pop3Folder.INBOX)
 
     @Before
-    public void before() throws MessagingException {
-        mockStore = mock(Pop3Store.class);
-        mockConnection = mock(Pop3Connection.class);
-        mockListener = mock(MessageRetrievalListener.class);
-        when(mockStore.createConnection()).thenReturn(mockConnection);
-        when(mockConnection.executeSimpleCommand(Pop3Commands.STAT_COMMAND)).thenReturn("+OK 10 0");
-        folder = new Pop3Folder(mockStore, Pop3Folder.INBOX);
-        BinaryTempFileBody.setTempDirectory(new File(System.getProperty("java.io.tmpdir")));
+    fun setUp() {
+        BinaryTempFileBody.setTempDirectory(File(System.getProperty("java.io.tmpdir")))
     }
 
-    @Test(expected = MessagingException.class)
-    public void open_withoutInboxFolder_shouldThrow() throws Exception {
-        Pop3Folder folder = new Pop3Folder(mockStore, "TestFolder");
+    @Test(expected = MessagingException::class)
+    fun `open() without Inbox folder should throw`() {
+        val folder = Pop3Folder(store, "TestFolder")
 
-        folder.open();
+        folder.open()
     }
 
     @Test
-    public void open_withoutInboxFolder_shouldNotTryAndCreateConnection() throws Exception {
-        Pop3Folder folder = new Pop3Folder(mockStore, "TestFolder");
+    fun `open() without Inbox folder should not call Pop3Store_createConnection()`() {
+        val folder = Pop3Folder(store, "TestFolder")
+
         try {
-            folder.open();
-        } catch (Exception ignored) {}
-        verify(mockStore, never()).createConnection();
+            folder.open()
+        } catch (ignored: Exception) {
+        }
+
+        verify(store, never()).createConnection()
     }
 
-    @Test(expected = MessagingException.class)
-    public void open_withInboxFolderWithExceptionCreatingConnection_shouldThrow()
-            throws MessagingException {
+    @Test(expected = MessagingException::class)
+    fun `open() with exception when creating a connection should throw`() {
+        stubbing(store) {
+            on { createConnection() } doThrow MessagingException("Test")
+        }
 
-        when(mockStore.createConnection()).thenThrow(new MessagingException("Test"));
-        folder.open();
-    }
-
-    @Test
-    public void open_withInboxFolder_shouldSetMessageCountFromStatResponse()
-            throws MessagingException {
-        folder.open();
-
-        int messageCount = folder.getMessageCount();
-
-        assertEquals(10, messageCount);
-    }
-
-    @Test(expected = MessagingException.class)
-    public void open_withInboxFolder_whenStatCommandFails_shouldThrow()
-            throws MessagingException {
-        when(mockConnection.executeSimpleCommand(Pop3Commands.STAT_COMMAND))
-                .thenThrow(new MessagingException("Test"));
-
-        folder.open();
+        folder.open()
     }
 
     @Test
-    public void open_createsAndOpensConnection()
-            throws MessagingException {
-        folder.open();
+    fun `open() should set message count from STAT response`() {
+        folder.open()
 
-        verify(mockStore, times(1)).createConnection();
-        verify(mockConnection).open();
+        assertThat(folder.messageCount).isEqualTo(MESSAGE_COUNT)
+    }
+
+    @Test(expected = MessagingException::class)
+    fun `open() with STAT command failing should throw`() {
+        stubbing(connection) {
+            on { executeSimpleCommand(STAT_COMMAND) } doThrow MessagingException("Test")
+        }
+
+        folder.open()
     }
 
     @Test
-    public void open_whenAlreadyOpenWithValidConnection_doesNotCreateAnotherConnection()
-            throws MessagingException {
-        folder.open();
-        when(mockConnection.isOpen()).thenReturn(true);
+    fun `open() should open connection`() {
+        folder.open()
 
-        folder.open();
-
-        verify(mockStore, times(1)).createConnection();
+        verify(store, times(1)).createConnection()
+        verify(connection).open()
     }
 
     @Test
-    public void close_onNonOpenedFolder_succeeds()
-            throws MessagingException {
+    fun `open() with connection already open should not create another connection`() {
+        folder.open()
 
+        folder.open()
 
-        folder.close();
+        verify(store, times(1)).createConnection()
     }
 
     @Test
-    public void close_onOpenedFolder_succeeds()
-            throws MessagingException {
-
-        folder.open();
-
-        folder.close();
+    fun `close() with closed folder should not throw`() {
+        folder.close()
     }
 
     @Test
-    public void close_onOpenedFolder_sendsQUIT()
-            throws MessagingException {
+    fun `close() with open folder should not throw`() {
+        folder.open()
 
-        folder.open();
-        when(mockConnection.isOpen()).thenReturn(true);
-
-        folder.close();
-
-        verify(mockConnection).executeSimpleCommand(Pop3Commands.QUIT_COMMAND);
+        folder.close()
     }
 
     @Test
-    public void close_withExceptionQuiting_ignoresException()
-            throws MessagingException {
+    fun `close() with open folder should send QUIT command`() {
+        folder.open()
 
-        folder.open();
-        when(mockConnection.isOpen()).thenReturn(true);
-        doThrow(new MessagingException("Test"))
-                .when(mockConnection)
-                .executeSimpleCommand(Pop3Commands.QUIT_COMMAND);
+        folder.close()
 
-        folder.close();
+        verify(connection).executeSimpleCommand(Pop3Commands.QUIT_COMMAND)
     }
 
     @Test
-    public void close_onOpenedFolder_closesConnection()
-            throws MessagingException {
+    fun `close() with exception when sending QUIT command should not throw`() {
+        stubbing(connection) {
+            on { executeSimpleCommand(Pop3Commands.QUIT_COMMAND) } doThrow MessagingException("Test")
+        }
+        folder.open()
 
-        folder.open();
-        when(mockConnection.isOpen()).thenReturn(true);
-
-        folder.close();
-
-        verify(mockConnection).close();
+        folder.close()
     }
 
     @Test
-    public void getMessages_returnsListOfMessagesOnServer() throws IOException, MessagingException {
-        folder.open();
+    fun `close() with open folder should close connection`() {
+        folder.open()
 
-        when(mockConnection.readLine()).thenReturn("1 abcd").thenReturn(".");
+        folder.close()
 
-        List<Pop3Message> result = folder.getMessages(1, 1, mockListener);
-
-        assertEquals(1, result.size());
-    }
-
-    @Test(expected = MessagingException.class)
-    public void getMessages_withInvalidSet_throwsException() throws IOException, MessagingException {
-        folder.open();
-
-        folder.getMessages(2, 1, mockListener);
-    }
-
-    @Test(expected = MessagingException.class)
-    public void getMessages_withIOExceptionReadingLine_throwsException() throws IOException, MessagingException {
-        folder.open();
-
-        when(mockConnection.readLine()).thenThrow(new IOException("Test"));
-
-        folder.getMessages(1, 1, mockListener);
+        verify(connection).close()
     }
 
     @Test
-    public void getMessage_withPreviouslyFetchedMessage_returnsMessage()
-            throws IOException, MessagingException {
-        folder.open();
+    fun `getMessages() should return list of messages on server`() {
+        stubbing(connection) {
+            on { readLine() } doReturn "1 $MESSAGE_SERVER_ID" doReturn "."
+        }
+        folder.open()
 
-        List<Pop3Message> messageList = setupMessageFromServer();
+        val result = folder.getMessages(1, 1, messageRetrievalListener)
 
-        Pop3Message message = folder.getMessage("abcd");
+        assertThat(result).hasSize(1)
+    }
 
-        assertSame(messageList.get(0), message);
+    @Test(expected = MessagingException::class)
+    fun `getMessages() with invalid set should throw`() {
+        folder.open()
+
+        folder.getMessages(2, 1, messageRetrievalListener)
+    }
+
+    @Test(expected = MessagingException::class)
+    fun `getMessages() with IOException when reading line should throw`() {
+        stubbing(connection) {
+            on { readLine() } doThrow IOException("Test")
+        }
+        folder.open()
+
+        folder.getMessages(1, 1, messageRetrievalListener)
     }
 
     @Test
-    public void getMessage_withNoPreviouslyFetchedMessage_returnsNewMessage()
-            throws IOException, MessagingException {
-        folder.open();
+    fun `getMessage() with previously fetched message should return message`() {
+        folder.open()
+        val messageList = setupMessageFromServer()
 
-        Pop3Message message = folder.getMessage("abcd");
+        val message = folder.getMessage(MESSAGE_SERVER_ID)
 
-        assertNotNull(message);
-    }
-
-
-    @Test
-    public void fetch_withEnvelopeProfile_setsSizeOfMessage() throws MessagingException, IOException {
-        folder.open();
-        List<Pop3Message> messageList = setupMessageFromServer();
-        FetchProfile fetchProfile = new FetchProfile();
-        fetchProfile.add(Item.ENVELOPE);
-        when(mockConnection.readLine()).thenReturn("1 100").thenReturn(".");
-
-        folder.fetch(messageList, fetchProfile, mockListener, MAX_DOWNLOAD_SIZE);
-
-        assertEquals(100, messageList.get(0).getSize());
+        assertThat(message).isSameInstanceAs(messageList.first())
     }
 
     @Test
-    public void fetch_withBodyProfile_setsContentOfMessage() throws MessagingException, IOException {
-        InputStream messageInputStream = new ByteArrayInputStream((
-                "From: <adam@example.org>\r\n" +
-                "To: <eva@example.org>\r\n" +
-                "Subject: Testmail\r\n" +
-                "MIME-Version: 1.0\r\n" +
-                "Content-type: text/plain\r\n" +
-                "Content-Transfer-Encoding: 7bit\r\n" +
-                "\r\n" +
-                "this is some test text.").getBytes());
-        folder.open();
-        List<Pop3Message> messageList = setupMessageFromServer();
-        FetchProfile fetchProfile = new FetchProfile();
-        fetchProfile.add(Item.BODY);
-        when(mockConnection.readLine()).thenReturn("1 100").thenReturn(".");
-        when(mockConnection.getInputStream()).thenReturn(messageInputStream);
+    fun `getMessage() without previously fetched message should return new message`() {
+        folder.open()
 
-        folder.fetch(messageList, fetchProfile, mockListener, MAX_DOWNLOAD_SIZE);
+        val message = folder.getMessage(MESSAGE_SERVER_ID)
 
-        ByteArrayOutputStream bodyData = new ByteArrayOutputStream();
-        messageList.get(0).getBody().writeTo(bodyData);
-
-        assertEquals("this is some test text.", new String(bodyData.toByteArray(), "UTF-8"));
+        assertThat(message).isNotNull()
     }
 
-    private List<Pop3Message> setupMessageFromServer() throws IOException, MessagingException {
-        when(mockConnection.readLine()).thenReturn("1 abcd").thenReturn(".");
-        return folder.getMessages(1, 1, mockListener);
+    @Test
+    fun `fetch() with ENVELOPE profile should set size of message`() {
+        folder.open()
+        val messageList = setupMessageFromServer()
+        val fetchProfile = FetchProfile()
+        fetchProfile.add(FetchProfile.Item.ENVELOPE)
+        stubbing(connection) {
+            on { readLine() } doReturn "1 100" doReturn "."
+        }
+
+        folder.fetch(messageList, fetchProfile, messageRetrievalListener, MAX_DOWNLOAD_SIZE)
+
+        assertThat(messageList.first().size).isEqualTo(100)
+    }
+
+    @Test
+    fun `fetch() with BODY profile should set content of message`() {
+        val messageInputStream =
+            """
+            From: <adam@example.org>
+            To: <eva@example.org>
+            Subject: Testmail
+            MIME-Version: 1.0
+            Content-type: text/plain
+            Content-Transfer-Encoding: 7bit
+            
+            this is some test text.
+            """.trimIndent().crlf().byteInputStream()
+        folder.open()
+        val messageList = setupMessageFromServer()
+        val fetchProfile = FetchProfile()
+        fetchProfile.add(FetchProfile.Item.BODY)
+        stubbing(connection) {
+            on { readLine() } doReturn("1 100") doReturn(".")
+            on { inputStream } doReturn messageInputStream
+        }
+
+        folder.fetch(messageList, fetchProfile, messageRetrievalListener, MAX_DOWNLOAD_SIZE)
+
+        assertThat(messageList.first().body.writeToString()).isEqualTo("this is some test text.")
+    }
+
+    private fun setupMessageFromServer(): List<Pop3Message> {
+        stubbing(connection) {
+            on { readLine() } doReturn "1 $MESSAGE_SERVER_ID" doReturn "."
+        }
+
+        return folder.getMessages(1, 1, messageRetrievalListener)
+    }
+
+    private fun Body.writeToString(): String {
+        return ByteArrayOutputStream().also { outputStream ->
+            writeTo(outputStream)
+        }.toByteArray().decodeToString()
+    }
+
+    companion object {
+        private const val MESSAGE_COUNT = 10
+        private const val MESSAGE_SERVER_ID = "abcd"
+        private const val MAX_DOWNLOAD_SIZE = -1
     }
 }
