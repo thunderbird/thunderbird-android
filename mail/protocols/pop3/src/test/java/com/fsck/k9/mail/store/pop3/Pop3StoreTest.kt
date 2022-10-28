@@ -1,154 +1,153 @@
-package com.fsck.k9.mail.store.pop3;
+package com.fsck.k9.mail.store.pop3
 
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.AuthenticationFailedException
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import com.google.common.truth.Truth.assertThat
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.net.Socket
+import okio.ByteString.Companion.encodeUtf8
+import org.junit.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stubbing
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
+class Pop3StoreTest {
+    private val trustedSocketFactory = mock<TrustedSocketFactory>()
+    private val store: Pop3Store = Pop3Store(createServerSettings(), trustedSocketFactory)
 
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import org.junit.Before;
-import org.junit.Test;
+    @Test
+    fun `getFolder() should return same instance every time`() {
+        val folderOne = store.getFolder("TestFolder")
+        val folderTwo = store.getFolder("TestFolder")
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+        assertThat(folderTwo).isSameInstanceAs(folderOne)
+    }
 
+    @Test
+    fun `getFolder() should return folder with correct server ID`() {
+        val folder = store.getFolder("TestFolder")
 
-public class Pop3StoreTest {
-    private static final String INITIAL_RESPONSE = "+OK POP3 server greeting\r\n";
-    private static final String CAPA = "CAPA\r\n";
-    private static final String CAPA_RESPONSE = "+OK Listing of supported mechanisms follows\r\n" +
+        assertThat(folder.serverId).isEqualTo("TestFolder")
+    }
+
+    @Test(expected = MessagingException::class)
+    fun `checkSettings() with TrustedSocketFactory throwing should throw MessagingException`() {
+        stubbing(trustedSocketFactory) {
+            on { createSocket(null, "server", 12345, null) } doThrow IOException()
+        }
+
+        store.checkSettings()
+    }
+
+    @Test(expected = MessagingException::class)
+    fun `checkSettings() with UIDL command not supported should throw MessagingException`() {
+        setupSocketWithResponse(
+            INITIAL_RESPONSE +
+                CAPA_RESPONSE +
+                AUTH_PLAIN_AUTHENTICATED_RESPONSE +
+                STAT_RESPONSE +
+                UIDL_UNSUPPORTED_RESPONSE
+        )
+
+        store.checkSettings()
+    }
+
+    @Test
+    fun `checkSettings() with UIDL supported`() {
+        setupSocketWithResponse(
+            INITIAL_RESPONSE +
+                CAPA_RESPONSE +
+                AUTH_PLAIN_AUTHENTICATED_RESPONSE +
+                STAT_RESPONSE +
+                UIDL_SUPPORTED_RESPONSE
+        )
+
+        store.checkSettings()
+    }
+
+    @Test
+    // TODO: Move to Pop3FolderTest
+    fun `Pop3Folder_open() with auth response using AUTH PLAIN should retrieve message count`() {
+        val outputStream = setupSocketWithResponse(
+            INITIAL_RESPONSE +
+                CAPA_RESPONSE +
+                AUTH_PLAIN_AUTHENTICATED_RESPONSE +
+                STAT_RESPONSE
+        )
+        val folder = store.getFolder(Pop3Folder.INBOX)
+
+        folder.open()
+        store.createConnection()
+
+        assertThat(folder.messageCount).isEqualTo(20)
+        assertThat(outputStream.toByteArray().decodeToString()).isEqualTo(CAPA + AUTH_PLAIN_WITH_LOGIN + STAT)
+    }
+
+    @Test(expected = AuthenticationFailedException::class)
+    // TODO: Move to Pop3FolderTest
+    fun `Pop3Folder_open() with failed authentication should throw`() {
+        val response = INITIAL_RESPONSE +
+            CAPA_RESPONSE +
+            AUTH_PLAIN_FAILED_RESPONSE
+        setupSocketWithResponse(response)
+        val folder = store.getFolder(Pop3Folder.INBOX)
+
+        folder.open()
+    }
+
+    private fun createServerSettings(): ServerSettings {
+        return ServerSettings(
+            type = "pop3",
+            host = "server",
+            port = 12345,
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "user",
+            password = "password",
+            clientCertificateAlias = null
+        )
+    }
+
+    private fun setupSocketWithResponse(response: String): ByteArrayOutputStream {
+        val outputStream = ByteArrayOutputStream()
+
+        val socket = mock<Socket> {
+            on { isConnected } doReturn true
+            on { isClosed } doReturn false
+            on { getOutputStream() } doReturn outputStream
+            on { getInputStream() } doReturn response.byteInputStream()
+        }
+
+        stubbing(trustedSocketFactory) {
+            on { createSocket(null, "server", 12345, null) } doReturn socket
+        }
+
+        return outputStream
+    }
+
+    companion object {
+        private const val INITIAL_RESPONSE = "+OK POP3 server greeting\r\n"
+
+        private const val CAPA = "CAPA\r\n"
+        private const val CAPA_RESPONSE = "+OK Listing of supported mechanisms follows\r\n" +
             "SASL PLAIN CRAM-MD5 EXTERNAL\r\n" +
-            ".\r\n";
-    private static final String AUTH_PLAIN_WITH_LOGIN = "AUTH PLAIN\r\n" +
-            new String(Base64.encodeBase64(("\000user\000password").getBytes())) + "\r\n";
-    private static final String AUTH_PLAIN_AUTHENTICATED_RESPONSE = "+OK\r\n" + "+OK\r\n";
-    private static final String AUTH_PLAIN_FAILED_RESPONSE = "+OK\r\n" + "Plain authentication failure";
-    private static final String STAT = "STAT\r\n";
-    private static final String STAT_RESPONSE = "+OK 20 0\r\n";
-    private static final String UIDL_UNSUPPORTED_RESPONSE = "-ERR UIDL unsupported\r\n";
-    private static final String UIDL_SUPPORTED_RESPONSE = "+OK UIDL supported\r\n";
+            ".\r\n"
 
+        private val AUTH_PLAIN_ARGUMENT = "\u0000user\u0000password".encodeUtf8().base64()
+        private val AUTH_PLAIN_WITH_LOGIN = "AUTH PLAIN\r\n$AUTH_PLAIN_ARGUMENT\r\n"
+        private const val AUTH_PLAIN_AUTHENTICATED_RESPONSE = "+OK\r\n" + "+OK\r\n"
+        private const val AUTH_PLAIN_FAILED_RESPONSE = "+OK\r\n" + "Plain authentication failure"
 
-    private Pop3Store store;
-    private TrustedSocketFactory mockTrustedSocketFactory = mock(TrustedSocketFactory.class);
-    private Socket mockSocket = mock(Socket.class);
-    private OutputStream mockOutputStream = mock(OutputStream.class);
+        private const val STAT = "STAT\r\n"
+        private const val STAT_RESPONSE = "+OK 20 0\r\n"
 
-
-    @Before
-    public void setUp() throws Exception {
-        ServerSettings serverSettings = createServerSettings();
-        when(mockTrustedSocketFactory.createSocket(null, "server", 12345, null)).thenReturn(mockSocket);
-        when(mockSocket.isConnected()).thenReturn(true);
-        when(mockSocket.isClosed()).thenReturn(false);
-
-        when(mockSocket.getOutputStream()).thenReturn(mockOutputStream);
-        store = new Pop3Store(serverSettings, mockTrustedSocketFactory);
-    }
-
-    @Test
-    public void getFolder_shouldReturnSameFolderEachTime() {
-        Pop3Folder folderOne = store.getFolder("TestFolder");
-        Pop3Folder folderTwo = store.getFolder("TestFolder");
-
-        assertSame(folderOne, folderTwo);
-    }
-
-    @Test
-    public void getFolder_shouldReturnFolderWithCorrectName() throws Exception {
-        Pop3Folder folder = store.getFolder("TestFolder");
-
-        assertEquals("TestFolder", folder.getServerId());
-    }
-
-    @Test(expected = MessagingException.class)
-    public void checkSetting_whenConnectionThrowsException_shouldThrowMessagingException()
-            throws Exception {
-        when(mockTrustedSocketFactory.createSocket(any(Socket.class),
-                anyString(), anyInt(), anyString())).thenThrow(new IOException("Test"));
-        store.checkSettings();
-    }
-
-    @Test(expected = MessagingException.class)
-    public void checkSetting_whenUidlUnsupported_shouldThrowMessagingException()
-            throws Exception {
-        String response = INITIAL_RESPONSE +
-                CAPA_RESPONSE +
-                AUTH_PLAIN_AUTHENTICATED_RESPONSE +
-                STAT_RESPONSE +
-                UIDL_UNSUPPORTED_RESPONSE;
-        when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        when(mockSocket.getOutputStream()).thenReturn(byteArrayOutputStream);
-        store.checkSettings();
-    }
-
-    @Test
-    public void checkSetting_whenUidlSupported_shouldReturn()
-            throws Exception {
-        String response = INITIAL_RESPONSE +
-                CAPA_RESPONSE +
-                AUTH_PLAIN_AUTHENTICATED_RESPONSE +
-                STAT_RESPONSE +
-                UIDL_SUPPORTED_RESPONSE;
-        when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        when(mockSocket.getOutputStream()).thenReturn(byteArrayOutputStream);
-        store.checkSettings();
-    }
-
-    // Component Level Tests
-
-    @Test
-    public void open_withAuthResponseUsingAuthPlain_shouldRetrieveMessageCountOnAuthenticatedSocket() throws Exception {
-        String response = INITIAL_RESPONSE +
-                CAPA_RESPONSE +
-                AUTH_PLAIN_AUTHENTICATED_RESPONSE +
-                STAT_RESPONSE;
-        when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        when(mockSocket.getOutputStream()).thenReturn(byteArrayOutputStream);
-        Pop3Folder folder = store.getFolder(Pop3Folder.INBOX);
-
-        folder.open();
-
-        assertEquals(20, folder.getMessageCount());
-        assertEquals(CAPA + AUTH_PLAIN_WITH_LOGIN + STAT, byteArrayOutputStream.toString("UTF-8"));
-    }
-
-    @Test(expected = AuthenticationFailedException.class)
-    public void open_withFailedAuth_shouldThrow() throws Exception {
-        String response = INITIAL_RESPONSE +
-                CAPA_RESPONSE +
-                AUTH_PLAIN_FAILED_RESPONSE;
-        when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
-        Pop3Folder folder = store.getFolder(Pop3Folder.INBOX);
-
-        folder.open();
-    }
-
-    private ServerSettings createServerSettings() {
-        return new ServerSettings(
-                "pop3",
-                "server",
-                12345,
-                ConnectionSecurity.SSL_TLS_REQUIRED,
-                AuthType.PLAIN,
-                "user",
-                "password",
-                null);
+        private const val UIDL_UNSUPPORTED_RESPONSE = "-ERR UIDL unsupported\r\n"
+        private const val UIDL_SUPPORTED_RESPONSE = "+OK UIDL supported\r\n"
     }
 }
