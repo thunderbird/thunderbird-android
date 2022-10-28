@@ -640,18 +640,12 @@ class RealImapConnectionTest {
         server.verifyInteractionCompleted()
     }
 
-    @Test
+    @Test(expected = IOException::class)
     fun `open() with connection error should throw`() {
         val settings = createImapSettings(host = "127.1.2.3")
         val imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider)
 
-        try {
-            imapConnection.open()
-            fail("Expected exception")
-        } catch (e: MessagingException) {
-            assertThat(e).hasMessageThat().isEqualTo("Cannot connect to host")
-            assertThat(e).hasCauseThat().isInstanceOf(IOException::class.java)
-        }
+        imapConnection.open()
     }
 
     @Test

@@ -32,6 +32,7 @@ import java.net.Inet6Address
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
+import java.net.UnknownHostException
 import java.security.GeneralSecurityException
 import java.util.Locale
 import javax.net.ssl.SSLException
@@ -252,7 +253,7 @@ class SmtpTransport(
             }
         }
 
-        throw MessagingException("Cannot connect to host", connectException)
+        throw connectException ?: UnknownHostException()
     }
 
     private fun connectToAddress(address: InetAddress): Socket {

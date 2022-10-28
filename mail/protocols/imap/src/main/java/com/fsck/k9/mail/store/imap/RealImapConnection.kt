@@ -27,6 +27,7 @@ import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.SocketAddress
+import java.net.UnknownHostException
 import java.security.GeneralSecurityException
 import java.security.Security
 import java.security.cert.CertificateException
@@ -154,7 +155,7 @@ internal class RealImapConnection(
             }
         }
 
-        throw MessagingException("Cannot connect to host", connectException)
+        throw connectException ?: UnknownHostException()
     }
 
     private fun connectToAddress(address: InetAddress): Socket {
