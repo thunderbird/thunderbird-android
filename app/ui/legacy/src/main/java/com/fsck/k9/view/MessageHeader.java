@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import com.fsck.k9.Account;
+import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
@@ -25,6 +26,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -38,8 +40,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private ImageView contactPictureView;
     private TextView fromView;
     private ImageView cryptoStatusIcon;
+    private TextView dateView;
 
     private MessageHelper messageHelper;
+    private final RelativeDateTimeFormatter relativeDateTimeFormatter;
 
     private OnMenuItemClickListener onMenuItemClickListener;
 
@@ -50,6 +54,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         if (!isInEditMode()) {
             messageHelper = MessageHelper.getInstance(getContext());
         }
+        relativeDateTimeFormatter = new RelativeDateTimeFormatter(getContext(), DI.get(Clock.class));
     }
 
     @Override
@@ -62,6 +67,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         contactPictureView = findViewById(R.id.contact_picture);
         fromView = findViewById(R.id.from);
         cryptoStatusIcon = findViewById(R.id.crypto_status_icon);
+        dateView = findViewById(R.id.date);
 
         subjectView.setOnClickListener(this);
         subjectView.setOnLongClickListener(this);
@@ -158,6 +164,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             starView.setSelected(message.isSet(Flag.FLAGGED));
         } else {
             starView.setVisibility(View.GONE);
+        }
+
+        if (message.getSentDate() != null) {
+            dateView.setText(relativeDateTimeFormatter.formatDate(message.getSentDate().getTime()));
+        } else {
+            dateView.setText("");
         }
 
         setVisibility(View.VISIBLE);

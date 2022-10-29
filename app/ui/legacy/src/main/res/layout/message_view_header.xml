@@ -120,12 +120,12 @@
             android:layout_marginEnd="16dp"
             android:ellipsize="none"
             android:singleLine="true"
-            android:text="Sep 19"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintBaseline_toBaselineOf="@+id/from"
             app:layout_constraintEnd_toStartOf="@+id/menu_primary_action"
-            app:layout_constraintStart_toEndOf="@id/from" />
+            app:layout_constraintStart_toEndOf="@id/from"
+            tools:text="Sep 19" />
 
         <ImageView
             android:id="@+id/crypto_status_icon"
