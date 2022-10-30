@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import com.fsck.k9.Account;
-import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
@@ -43,7 +42,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView dateView;
 
     private MessageHelper messageHelper;
-    private final RelativeDateTimeFormatter relativeDateTimeFormatter;
+    private RelativeDateTimeFormatter relativeDateTimeFormatter;
 
     private OnMenuItemClickListener onMenuItemClickListener;
 
@@ -53,8 +52,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         if (!isInEditMode()) {
             messageHelper = MessageHelper.getInstance(getContext());
+            relativeDateTimeFormatter = DI.get(RelativeDateTimeFormatter.class);
         }
-        relativeDateTimeFormatter = new RelativeDateTimeFormatter(getContext(), DI.get(Clock.class));
     }
 
     @Override
