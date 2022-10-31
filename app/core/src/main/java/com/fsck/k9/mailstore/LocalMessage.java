@@ -194,10 +194,6 @@ public class LocalMessage extends MimeMessage {
         return (attachmentCount > 0);
     }
 
-    public int getAttachmentCount() {
-        return attachmentCount;
-    }
-
     @Override
     public void setFrom(Address from) {
         this.mFrom = new Address[] { from };
@@ -386,10 +382,6 @@ public class LocalMessage extends MimeMessage {
 
     public LocalFolder getFolder() {
         return mFolder;
-    }
-
-    public String getUri() {
-        return "k9mail://messages/" +  getAccount().getAccountNumber() + "/" + getFolder().getDatabaseId() + "/" + getUid();
     }
 
     @Override

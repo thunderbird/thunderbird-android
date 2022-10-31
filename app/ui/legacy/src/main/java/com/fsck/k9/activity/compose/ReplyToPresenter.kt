@@ -53,9 +53,7 @@ class ReplyToPresenter(private val view: ReplyToView) {
     }
 
     fun onNonRecipientFieldFocused() {
-        if (view.isVisible && view.getAddresses().isEmpty()) {
-            view.isVisible = false
-        }
+        view.hideIfBlank()
     }
 
     fun onSaveInstanceState(outState: Bundle) {

@@ -696,6 +696,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
         if (cryptoStatus == null) {
+            Timber.w("Couldn't retrieve crypto status; not creating MessageBuilder!");
             return null;
         }
 
@@ -803,10 +804,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
-        sendMessageHasBeenTriggered = true;
-
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
+            sendMessageHasBeenTriggered = true;
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
@@ -1701,7 +1701,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         @Override
-        public void startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
+        public boolean startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
                 int flagsMask, int flagValues, int extraFlags) {
             try {
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
@@ -1709,6 +1709,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             } catch (SendIntentException e) {
                 Timber.e(e, "Irrecoverable error calling PendingIntent!");
             }
+
+            return true;
         }
 
         @Override

@@ -2,13 +2,12 @@ package com.fsck.k9.activity.compose
 
 import android.os.Bundle
 import com.fsck.k9.Identity
-import com.fsck.k9.K9RobolectricTest
+import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.Address
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
 import org.mockito.kotlin.stubbing
 import org.mockito.kotlin.verify
 
@@ -16,7 +15,7 @@ private const val REPLY_TO_ADDRESS = "reply-to@example.com"
 private const val REPLY_TO_ADDRESS_2 = "reply-to2@example.com"
 private const val REPLY_TO_ADDRESS_3 = "reply-to3@example.com"
 
-class ReplyToPresenterTest : K9RobolectricTest() {
+class ReplyToPresenterTest : RobolectricTest() {
     private val view = mock<ReplyToView>()
     private val replyToPresenter = ReplyToPresenter(view)
 
@@ -114,40 +113,5 @@ class ReplyToPresenterTest : K9RobolectricTest() {
         verify(view).silentlyAddAddresses(Address.parse(replyToOne))
         verify(view).silentlyRemoveAddresses(Address.parse(replyToOne))
         verify(view).silentlyAddAddresses(Address.parse(replyToTwo))
-    }
-
-    @Test
-    fun testOnNonRecipientFieldFocused_notVisible_expectNoChange() {
-        stubbing(view) {
-            on { isVisible } doReturn false
-        }
-
-        replyToPresenter.onNonRecipientFieldFocused()
-
-        verify(view, never()).isVisible = false
-    }
-
-    @Test
-    fun testOnNonRecipientFieldFocused_noContentFieldVisible_expectHide() {
-        stubbing(view) {
-            on { isVisible } doReturn true
-            on { getAddresses() } doReturn emptyArray()
-        }
-
-        replyToPresenter.onNonRecipientFieldFocused()
-
-        verify(view).isVisible = false
-    }
-
-    @Test
-    fun testOnNonRecipientFieldFocused_withContentFieldVisible_expectNoChange() {
-        stubbing(view) {
-            on { isVisible } doReturn true
-            on { getAddresses() } doReturn Address.parse(REPLY_TO_ADDRESS)
-        }
-
-        replyToPresenter.onNonRecipientFieldFocused()
-
-        verify(view, never()).isVisible = false
     }
 }

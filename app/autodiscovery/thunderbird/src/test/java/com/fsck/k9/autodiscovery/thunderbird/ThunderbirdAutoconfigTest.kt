@@ -169,13 +169,4 @@ class ThunderbirdAutoconfigTest {
             )
         )
     }
-
-    @Test
-    fun generatedUrls() {
-        val autoDiscoveryAddress = ThunderbirdAutoconfigFetcher.getAutodiscoveryAddress("test@metacode.biz")
-
-        assertThat(autoDiscoveryAddress.toString()).isEqualTo(
-            "https://metacode.biz/.well-known/autoconfig/mail/config-v1.1.xml?emailaddress=test%40metacode.biz"
-        )
-    }
 }

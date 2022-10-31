@@ -445,6 +445,43 @@ class HtmlSanitizerTest {
         )
     }
 
+    @Test
+    fun `should keep 'tt' element`() {
+        assertTagsNotStripped("tt")
+    }
+
+    @Test
+    fun `should keep 'kbd' element`() {
+        assertTagsNotStripped("kbd")
+    }
+
+    @Test
+    fun `should keep 'samp' element`() {
+        assertTagsNotStripped("samp")
+    }
+
+    @Test
+    fun `should keep 'var' element`() {
+        assertTagsNotStripped("var")
+    }
+
+    private fun assertTagsNotStripped(element: String) {
+        val html = """<$element>some text</$element>"""
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(
+            """
+            <html>
+            <head></head>
+            <body>
+            <$element>some text</$element>
+            </body>
+            </html>
+            """.trimIndent().trimLineBreaks()
+        )
+    }
+
     private fun Document.toCompactString(): String {
         outputSettings()
             .prettyPrint(false)

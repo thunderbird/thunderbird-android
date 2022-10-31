@@ -1005,7 +1005,10 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="crypto_no_provider_message">Este correo ha sido cifrado con OpenPGP.\nPara leerlo es necesario instalar y configurar una aplicación compatible con OpenPGP.</string>
   <string name="crypto_no_provider_button">Ir a los ajustes</string>
   <string name="mail_list_widget_text">Lista de mensajes de K-9</string>
-  <string name="mail_list_widget_loading">Cargando mensajes…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Cargando…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Cargando…</string>
   <string name="openpgp_enabled_error_title">No es posible cifrar</string>
   <string name="openpgp_enabled_error_msg">Algunos de los remitentes marcados no entienden esta característica</string>
   <string name="enable_encryption">Activar cifrado</string>

@@ -14,7 +14,7 @@ import com.fsck.k9.view.RecipientSelectView.Recipient
 private const val VIEW_INDEX_REPLY_TO_EXPANDER_VISIBLE = 0
 private const val VIEW_INDEX_REPLY_TO_EXPANDER_HIDDEN = 1
 
-class ReplyToView(activity: MessageCompose) : View.OnClickListener {
+class ReplyToView(activity: MessageCompose) {
     private val replyToView: RecipientSelectView = activity.findViewById(R.id.reply_to)
     private val replyToWrapper: View = activity.findViewById(R.id.reply_to_wrapper)
     private val replyToDivider: View = activity.findViewById(R.id.reply_to_divider)
@@ -24,29 +24,33 @@ class ReplyToView(activity: MessageCompose) : View.OnClickListener {
     private val textWatchers = mutableSetOf<TextWatcher>()
 
     init {
-        replyToExpander.setOnClickListener(this)
-        activity.findViewById<View>(R.id.reply_to_label).setOnClickListener(this)
+        replyToExpander.setOnClickListener {
+            isVisible = true
+            replyToView.requestFocus()
+        }
+
+        activity.findViewById<View>(R.id.reply_to_label).setOnClickListener {
+            replyToView.requestFocus()
+        }
     }
 
     var isVisible: Boolean
-        get() = replyToView.isVisible
+        get() = replyToWrapper.isVisible
         set(visible) {
             replyToDivider.isVisible = visible
             replyToView.isVisible = visible
             replyToWrapper.isVisible = visible
 
             if (visible && replyToExpanderContainer.displayedChild == VIEW_INDEX_REPLY_TO_EXPANDER_VISIBLE) {
-                replyToView.requestFocus()
                 replyToExpanderContainer.displayedChild = VIEW_INDEX_REPLY_TO_EXPANDER_HIDDEN
             } else if (replyToExpanderContainer.displayedChild == VIEW_INDEX_REPLY_TO_EXPANDER_HIDDEN) {
                 replyToExpanderContainer.displayedChild = VIEW_INDEX_REPLY_TO_EXPANDER_VISIBLE
             }
         }
 
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.reply_to_expander -> isVisible = true
-            R.id.reply_to_label -> replyToView.requestFocus()
+    fun hideIfBlank() {
+        if (isVisible && replyToView.text.isBlank()) {
+            isVisible = false
         }
     }
 

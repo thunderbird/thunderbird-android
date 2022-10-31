@@ -7,6 +7,7 @@ if (rootProject.testCoverage) {
 
 dependencies {
     implementation project(":app:ui:legacy")
+    implementation project(":app:ui:message-list-widget")
     implementation project(":app:core")
     implementation project(":app:storage")
     implementation project(":app:crypto-openpgp")
@@ -50,8 +51,8 @@ android {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 33009
-        versionName '6.310-SNAPSHOT'
+        versionCode 33010
+        versionName '6.311-SNAPSHOT'
 
         // Keep in sync with the resource string array 'supported_languages'
         resConfigs "in", "br", "ca", "cs", "cy", "da", "de", "et", "en", "en_GB", "es", "eo", "eu", "fr", "gd", "gl",

@@ -91,7 +91,6 @@ import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 import static com.fsck.k9.helper.Preconditions.checkNotNull;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
-import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
 
 
 /**
@@ -391,27 +390,6 @@ public class MessagingController {
             Timber.e(e);
             handleException(account, e);
         }
-    }
-
-    /**
-     * Find all messages in any local account which match the query 'query'
-     */
-    public List<LocalMessage> searchLocalMessages(final LocalSearch search) {
-        List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
-
-        List<LocalMessage> messages = new ArrayList<>();
-        for (final Account account : searchAccounts) {
-            try {
-                LocalStore localStore = localStoreProvider.getInstance(account);
-                List<LocalMessage> localMessages = localStore.searchForMessages(search);
-
-                messages.addAll(localMessages);
-            } catch (Exception e) {
-                Timber.e(e);
-            }
-        }
-
-        return messages;
     }
 
     public Future<?> searchRemoteMessages(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
@@ -1637,9 +1615,11 @@ public class MessagingController {
 
             if (!sentFolder.isLocalOnly()) {
                 String destinationUid = messageStore.getMessageServerId(destinationMessageId);
-                PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
-                queuePendingCommand(account, command);
-                processPendingCommands(account);
+                if (destinationUid != null) {
+                    PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
+                    queuePendingCommand(account, command);
+                    processPendingCommands(account);
+                }
             }
         }
 
@@ -1923,9 +1903,10 @@ public class MessagingController {
 
         MessageStore messageStore = messageStoreManager.getMessageStore(account);
         String messageServerId = messageStore.getMessageServerId(messageId);
-        MessageReference messageReference = new MessageReference(account.getUuid(), folderId, messageServerId);
-
-        deleteMessage(messageReference);
+        if (messageServerId != null) {
+            MessageReference messageReference = new MessageReference(account.getUuid(), folderId, messageServerId);
+            deleteMessage(messageReference);
+        }
     }
 
     public void deleteThreads(final List<MessageReference> messages) {
@@ -2673,7 +2654,6 @@ public class MessagingController {
             LocalFolder localFolder = message.getFolder();
             if (!suppressNotifications &&
                     notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
-                Timber.v("Creating notification for message %s:%s", localFolder.getName(), message.getUid());
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 boolean silent = notificationState.wasNotified();
                 notificationController.addNewMailNotification(account, message, silent);

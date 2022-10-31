@@ -218,7 +218,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_compose_show_quoted_text_action">Inclou el missatge citat</string>
   <string name="message_compose_description_delete_quoted_text">Elimina el text citat</string>
   <string name="message_compose_description_edit_quoted_text">Edita el text citat</string>
-  <string name="remove_attachment_action">Suprimeix l\'adjunt</string>
+  <string name="remove_attachment_action">Elimina l\'adjunt</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">A:</string>
   <string name="message_view_cc_label">A/c:</string>
@@ -261,13 +261,19 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_confirm_menu_mark_all_read">Marca tots els missatges com a llegits</string>
   <string name="global_settings_confirm_action_delete_notif">Elimina (des de notificacions)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Accions lliscants</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Llisca a la dreta</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Llisca a l\'esquerra</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Cap</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Commuta la selecció</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Marca-ho com a llegit / no llegit</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Elimina / afegeix un estel</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Arxiva</string>
   <!--Name of the swipe action to delete a message-->
@@ -277,7 +283,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Mou</string>
   <string name="global_settings_privacy_hide_useragent">Amaga el client de correu</string>
-  <string name="global_settings_privacy_hide_useragent_detail">Suprimeix el nom K-9 User-Agent de les capçaleres del missatge</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Elimina el nom K-9 User-Agent de les capçaleres del missatge</string>
   <string name="global_settings_privacy_hide_timezone">Amaga el fus horari</string>
   <string name="global_settings_privacy_hide_timezone_detail">Fes servir UTC en comptes de l\'hora local a les capçaleres dels missatges i a la capçalera de resposta</string>
   <string name="global_settings_notification_quick_delete_title">Mostra el botó \"Elimina\"</string>
@@ -438,8 +444,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_ignore_chat_messages_summary">No mostris notificacions de missatges pertanyents a una conversa de correu electrònic.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca el missatge obert com a llegit</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca el missatge com a llegit després d\'haver-lo obert.</string>
-  <string name="account_settings_mark_message_as_read_on_delete_label">Marca com a llegit quan se suprimeixi</string>
-  <string name="account_settings_mark_message_as_read_on_delete_summary">Marca un missatge com a llegit quan se suprimeix.</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Marca com a llegit quan s\'elimini.</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Marca un missatge com a llegit quan s\'elimini.</string>
   <string name="account_settings_notification_channels_label">Categories de notificacions</string>
   <string name="account_settings_open_notification_settings_messages_summary">Configureu les notificacions per als missatges nous</string>
   <string name="account_settings_open_notification_settings_miscellaneous_summary">Configureu les notificacions per als errors i l\'estat</string>
@@ -749,7 +755,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="confirm_discard_draft_message_title">Descarto el missatge?</string>
   <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge?</string>
   <string name="dialog_confirm_clear_local_folder_title">Voleu netejar els missatges locals?</string>
-  <string name="dialog_confirm_clear_local_folder_message">Això suprimirà tots els missatges locals de la carpeta. No se suprimirà cap missatge del servidor.</string>
+  <string name="dialog_confirm_clear_local_folder_message">Això eliminarà tots els missatges locals de la carpeta. No s\'eliminarà cap missatge del servidor.</string>
   <string name="dialog_confirm_clear_local_folder_action">Neteja els missatges</string>
   <string name="dialog_confirm_delete_title">Confirmeu l\'eliminació</string>
   <string name="dialog_confirm_delete_message">Voleu eliminar aquest missatge?</string>
@@ -994,7 +1000,10 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
   <string name="crypto_no_provider_button">Ves a la configuració</string>
   <string name="mail_list_widget_text">Llista de missatges del K-9</string>
-  <string name="mail_list_widget_loading">S\'està carregant missatges…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">S\'està carregant…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">S\'està carregant…</string>
   <string name="openpgp_enabled_error_title">Encriptació no possible</string>
   <string name="openpgp_enabled_error_msg">Alguns dels destinataris seleccionats no admeten aquesta característica!</string>
   <string name="enable_encryption">Habilita l\'encriptació</string>

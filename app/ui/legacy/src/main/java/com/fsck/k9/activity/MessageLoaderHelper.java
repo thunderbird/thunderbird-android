@@ -142,6 +142,12 @@ public class MessageLoaderHelper {
         startOrResumeLocalMessageLoader();
     }
 
+    public void resumeCryptoOperationIfNecessary() {
+        if (messageCryptoHelper != null) {
+            messageCryptoHelper.resumeCryptoOperationIfNecessary();
+        }
+    }
+
     @UiThread
     public void asyncRestartMessageCryptoProcessing() {
         cancelAndClearCryptoOperation();
@@ -351,13 +357,13 @@ public class MessageLoaderHelper {
         }
 
         @Override
-        public void startPendingIntentForCryptoHelper(IntentSender si, int requestCode, Intent fillIntent,
+        public boolean startPendingIntentForCryptoHelper(IntentSender si, int requestCode, Intent fillIntent,
                 int flagsMask, int flagValues, int extraFlags) {
             if (callback == null) {
                 throw new IllegalStateException("unexpected call when callback is already detached");
             }
 
-            callback.startIntentSenderForMessageLoaderHelper(si, requestCode, fillIntent,
+            return callback.startIntentSenderForMessageLoaderHelper(si, requestCode, fillIntent,
                     flagsMask, flagValues, extraFlags);
         }
     };
@@ -518,8 +524,8 @@ public class MessageLoaderHelper {
 
         void setLoadingProgress(int current, int max);
 
-        void startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent, int flagsMask,
-                int flagValues, int extraFlags);
+        boolean startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
+                int flagsMask, int flagValues, int extraFlags);
 
         void onDownloadErrorMessageNotFound();
         void onDownloadErrorNetworkError();

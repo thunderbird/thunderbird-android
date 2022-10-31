@@ -260,13 +260,19 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_confirm_menu_mark_all_read">Markatu mezu guztiak irakurritako gisa</string>
   <string name="global_settings_confirm_action_delete_notif">Ezabatu (jakinarazpenetatik)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Hatza pasatzearen ekintzak </string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Pasatu hatza eskubirantz</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Pasatu hatza ezkerrerantz</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Bat ere ez</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Alderantzizkatu hautaketa</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Markatu irakurrita/irakurri gabe</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Jarri/kendu izarra</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Artxibatu</string>
   <!--Name of the swipe action to delete a message-->
@@ -695,6 +701,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_push_limit_1000">1000 karpeta</string>
   <string name="animations_title">Animazioak</string>
   <string name="animations_summary">Erabili bistaratze efektu nabarmenak</string>
+  <string name="volume_navigation_title">Nabigatu bolumenaren botoiekin mezuak ikusterakoan</string>
   <string name="show_unified_inbox_title">Erakutsi Sarrera Ontzi Bateratua</string>
   <string name="show_starred_count_title">Erakutsi kontu izardunak</string>
   <string name="integrated_inbox_title">Sarrerako ontzi bateratua</string>
@@ -992,7 +999,10 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="crypto_no_provider_message">Posta hau OpenPGPrekin zifratua izan da.\nIrakurtzeko, OpenPGPrekin bateragarria den aplikazio bat instalatu eta konfiguratu behar duzu.</string>
   <string name="crypto_no_provider_button">Joan ezarpenetara</string>
   <string name="mail_list_widget_text">K-9 Mezuen Zerrenda</string>
-  <string name="mail_list_widget_loading">Mezuak kargatzen…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Kargatzen…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Kargatzen…</string>
   <string name="openpgp_enabled_error_title">Zifratzea ez da posible</string>
   <string name="openpgp_enabled_error_msg">Hautatutako hartzaile batzuek ez dute eginbide hau onartzen!</string>
   <string name="enable_encryption">Gaitu zifratzea</string>

@@ -1,5 +1,6 @@
 package com.fsck.k9
 
+import app.k9mail.ui.widget.list.messageListWidgetModule
 import com.fsck.k9.auth.createOAuthConfigurationProvider
 import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
@@ -10,8 +11,7 @@ import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.resources.resourcesModule
 import com.fsck.k9.storage.storageModule
-import com.fsck.k9.widget.list.MessageListWidgetUpdateListener
-import com.fsck.k9.widget.list.messageListWidgetModule
+import com.fsck.k9.widget.list.messageListWidgetConfigModule
 import com.fsck.k9.widget.unread.UnreadWidgetUpdateListener
 import com.fsck.k9.widget.unread.unreadWidgetModule
 import org.koin.core.qualifier.named
@@ -23,7 +23,6 @@ private val mainAppModule = module {
         MessagingListenerProvider(
             listOf(
                 get<UnreadWidgetUpdateListener>(),
-                get<MessageListWidgetUpdateListener>()
             )
         )
     }
@@ -35,6 +34,7 @@ private val mainAppModule = module {
 
 val appModules = listOf(
     mainAppModule,
+    messageListWidgetConfigModule,
     messageListWidgetModule,
     unreadWidgetModule,
     notificationModule,

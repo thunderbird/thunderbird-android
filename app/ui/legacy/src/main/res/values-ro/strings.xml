@@ -1003,7 +1003,10 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="crypto_no_provider_message">Acest mesaj a fost criptat cu OpenPGP.\nPentru a-l citi trebuie să instalați și să configurați o aplicație OpenPGP compatibilă.</string>
   <string name="crypto_no_provider_button">Mergi la Setări</string>
   <string name="mail_list_widget_text">Listă mesaje K-9</string>
-  <string name="mail_list_widget_loading">Se încarcă mesajele…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Se încarcă…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Se încarcă…</string>
   <string name="openpgp_enabled_error_title">Criptarea nu este posibilă</string>
   <string name="openpgp_enabled_error_msg">Unii dintre destinatarii selectați nu suportă această facilitate!</string>
   <string name="enable_encryption">Activează criptarea</string>

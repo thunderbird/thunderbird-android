@@ -17,7 +17,6 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.account.AccountCreator
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection
 import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings
-import com.fsck.k9.autodiscovery.api.DiscoveryTarget
 import com.fsck.k9.autodiscovery.providersxml.ProvidersXmlDiscovery
 import com.fsck.k9.helper.SimpleTextWatcher
 import com.fsck.k9.helper.Utility.requiredFieldValid
@@ -311,7 +310,7 @@ class AccountSetupBasics : K9Activity() {
     }
 
     private fun providersXmlDiscoveryDiscover(email: String): ConnectionSettings? {
-        val discoveryResults = providersXmlDiscovery.discover(email, DiscoveryTarget.INCOMING_AND_OUTGOING)
+        val discoveryResults = providersXmlDiscovery.discover(email)
         if (discoveryResults == null || discoveryResults.incoming.isEmpty() || discoveryResults.outgoing.isEmpty()) {
             return null
         }

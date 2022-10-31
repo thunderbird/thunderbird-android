@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+dependencies {
+    implementation project(":app:ui:legacy")
+    implementation project(":app:core")
+
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+}
+
+android {
+    namespace 'app.k9mail.ui.widget.list'
+
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.robolectricSdk
+    }
+
+    buildTypes {
+        debug {
+            manifestPlaceholders = ['appAuthRedirectScheme': 'FIXME: override this in your app project']
+        }
+        release {
+            manifestPlaceholders = ['appAuthRedirectScheme': 'FIXME: override this in your app project']
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
+    }
+}

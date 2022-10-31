@@ -650,6 +650,10 @@
   <string name="address_type_mobile">Móbil</string>
   <string name="crypto_info_ok">Aceptar</string>
   <string name="message_progress_text">A cargar…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">A cargar…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">A cargar…</string>
   <string name="openpgp_enabled_error_back">Volver</string>
   <string name="general_settings_title">Axustes xerais</string>
   <!--permissions-->

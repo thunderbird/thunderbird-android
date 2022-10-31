@@ -3,9 +3,9 @@ package com.fsck.k9
 import android.app.Application
 import android.content.res.Configuration
 import android.content.res.Resources
+import app.k9mail.ui.widget.list.MessageListWidgetManager
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.external.MessageProvider
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.ThemeManager
@@ -28,6 +28,7 @@ class App : Application() {
     private val themeManager: ThemeManager by inject()
     private val appLanguageManager: AppLanguageManager by inject()
     private val notificationChannelManager: NotificationChannelManager by inject()
+    private val messageListWidgetManager: MessageListWidgetManager by inject()
     private val appCoroutineScope: CoroutineScope = GlobalScope + Dispatchers.Main
     private var appLanguageManagerInitialized = false
 
@@ -40,10 +41,10 @@ class App : Application() {
 
         K9.init(this)
         Core.init(this)
-        MessageProvider.init()
         initializeAppLanguage()
         updateNotificationChannelsOnAppLanguageChanges()
         themeManager.init()
+        messageListWidgetManager.init()
 
         messagingListenerProvider.listeners.forEach { listener ->
             messagingController.addListener(listener)

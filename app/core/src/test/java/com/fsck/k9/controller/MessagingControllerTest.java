@@ -19,7 +19,6 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -35,15 +34,12 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.preferences.Protocols;
-import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -52,7 +48,6 @@ import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLog;
 
-import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.ArgumentMatchers.eq;
@@ -90,8 +85,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Mock
     private SimpleMessagingListener listener;
     @Mock
-    private LocalSearch search;
-    @Mock
     private LocalFolder localFolder;
     @Mock
     private LocalFolder sentFolder;
@@ -101,8 +94,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private NotificationController notificationController;
     @Mock
     private NotificationStrategy notificationStrategy;
-    @Captor
-    private ArgumentCaptor<MessageRetrievalListener<LocalMessage>> messageRetrievalListenerCaptor;
 
     private Context appContext;
     private Set<Flag> reqFlags;
@@ -176,20 +167,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
         controller.refreshFolderListSynchronous(account);
 
         verify(backend).refreshFolderList();
-    }
-
-    @Test
-    public void searchLocalMessages_shouldIgnoreExceptions()
-            throws Exception {
-        LocalMessage localMessage = mock(LocalMessage.class);
-        when(localMessage.getFolder()).thenReturn(localFolder);
-        when(search.searchAllAccounts()).thenReturn(true);
-        when(search.getAccountUuids()).thenReturn(new String[0]);
-        when(localStore.searchForMessages(search)).thenThrow(new MessagingException("Test"));
-
-        List<LocalMessage> messages = controller.searchLocalMessages(search);
-
-        assertThat(messages).isEmpty();
     }
 
     private void setupRemoteSearch() throws Exception {

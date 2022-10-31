@@ -46,5 +46,7 @@
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
   <string name="error_crypto_provider_ui_required">Failed to initialise end-to-end encryption, please check your settings</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
   <!--permissions-->
 </resources>

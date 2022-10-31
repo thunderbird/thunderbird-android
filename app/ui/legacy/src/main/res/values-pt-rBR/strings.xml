@@ -262,15 +262,21 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="global_settings_confirm_menu_mark_all_read">Marcar todas as mensagens como lidas</string>
   <string name="global_settings_confirm_action_delete_notif">Excluir (na notificação)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Ações de deslizamento</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Deslizar para a direita</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Deslizar para a esquerda</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Nenhuma</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Alternar a seleção</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Marcar como lida/não lida</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Adicionar/remover estrela</string>
   <!--Name of the swipe action to archive a message-->
-  <string name="general_settings_swipe_action_archive">Arquivadas</string>
+  <string name="general_settings_swipe_action_archive">Arquivar</string>
   <!--Name of the swipe action to delete a message-->
   <string name="general_settings_swipe_action_delete">Excluir</string>
   <!--Name of the swipe action to move a message to the spam folder-->
@@ -1000,7 +1006,10 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="crypto_no_provider_message">Esta mensagem foi criptografada com OpenPGP.\nPara ler, precisa instalar e configurar um aplicativo OpenPGP compatível.</string>
   <string name="crypto_no_provider_button">Ir para as configurações</string>
   <string name="mail_list_widget_text">Lista de mensagens do K-9</string>
-  <string name="mail_list_widget_loading">Carregando mensagens…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Carregando…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Carregando…</string>
   <string name="openpgp_enabled_error_title">Não foi possível criptografar</string>
   <string name="openpgp_enabled_error_msg">Alguns dos destinatários selecionados não têm suporte a este recurso!</string>
   <string name="enable_encryption">Habilitar a criptografia</string>
