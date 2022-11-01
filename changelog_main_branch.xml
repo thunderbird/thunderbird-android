@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.311" versioncode="33011" date="2022-11-01">
+        <change>Don't unexpectedly show and focus the "reply to" field when composing a message</change>
+        <change>Fixed a bug where sometimes toolbar buttons in the message view would affect another message than the one currently being displayed</change>
+        <change>Changed the way the app switches to the next/previous message to avoid a bug that could lead to the toolbar disappearing</change>
+        <change>Fall back to using IPv4 if connecting to a POP3 server using IPv6 fails</change>
+        <change>SMTP: Stop treating all TLS errors as certificate error</change>
+        <change>Added more (local) logging when creating and removing notifications</change>
+        <change>Fixed a couple of rare crashes</change>
+    </release>
     <release version="6.310" versioncode="33010" date="2022-10-24">
         <change>Fixed "K-9 Accounts" shortcuts (you probably have to remove existing shortcuts and add them again)</change>
         <change>Fixed a couple of bugs and display issues in the message list widget</change>
