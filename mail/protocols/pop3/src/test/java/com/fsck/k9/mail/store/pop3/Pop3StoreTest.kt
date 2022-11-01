@@ -37,7 +37,7 @@ class Pop3StoreTest {
     @Test(expected = MessagingException::class)
     fun `checkSettings() with TrustedSocketFactory throwing should throw MessagingException`() {
         stubbing(trustedSocketFactory) {
-            on { createSocket(null, "server", 12345, null) } doThrow IOException()
+            on { createSocket(null, HOST, 12345, null) } doThrow IOException()
         }
 
         store.checkSettings()
@@ -72,7 +72,7 @@ class Pop3StoreTest {
     private fun createServerSettings(): ServerSettings {
         return ServerSettings(
             type = "pop3",
-            host = "server",
+            host = HOST,
             port = 12345,
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
             authenticationType = AuthType.PLAIN,
@@ -93,13 +93,14 @@ class Pop3StoreTest {
         }
 
         stubbing(trustedSocketFactory) {
-            on { createSocket(null, "server", 12345, null) } doReturn socket
+            on { createSocket(null, HOST, 12345, null) } doReturn socket
         }
 
         return outputStream
     }
 
     companion object {
+        private const val HOST = "127.0.0.1"
         private const val INITIAL_RESPONSE = "+OK POP3 server greeting\r\n"
 
         private const val CAPA_RESPONSE = "+OK Listing of supported mechanisms follows\r\n" +
