@@ -264,7 +264,7 @@ class MessageListFragment :
 
         val itemTouchHelper = ItemTouchHelper(
             MessageListSwipeCallback(
-                resources,
+                requireContext(),
                 resourceProvider = SwipeResourceProvider(requireActivity().theme),
                 swipeActionSupportProvider,
                 swipeRightAction = K9.swipeRightAction,

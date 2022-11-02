@@ -1,10 +1,15 @@
 package com.fsck.k9.ui.messagelist
 
-import android.content.res.Resources
+import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.view.LayoutInflater
 import android.view.View
-import androidx.core.graphics.withSave
+import android.view.View.MeasureSpec
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.graphics.withTranslation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -12,8 +17,9 @@ import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import kotlin.math.abs
 
+@SuppressLint("InflateParams")
 class MessageListSwipeCallback(
-    resources: Resources,
+    context: Context,
     private val resourceProvider: SwipeResourceProvider,
     private val swipeActionSupportProvider: SwipeActionSupportProvider,
     private val swipeRightAction: SwipeAction,
@@ -21,9 +27,18 @@ class MessageListSwipeCallback(
     private val adapter: MessageListAdapter,
     private val listener: MessageListSwipeListener
 ) : ItemTouchHelper.Callback() {
-    private val iconPadding = resources.getDimension(R.dimen.messageListSwipeIconPadding).toInt()
-    private val swipeThreshold = resources.getDimension(R.dimen.messageListSwipeThreshold)
+    private val swipeThreshold = context.resources.getDimension(R.dimen.messageListSwipeThreshold)
     private val backgroundColorPaint = Paint()
+
+    private val swipeRightLayout: View
+    private val swipeLeftLayout: View
+
+    init {
+        val layoutInflater = LayoutInflater.from(context)
+
+        swipeRightLayout = layoutInflater.inflate(R.layout.swipe_right_action, null, false)
+        swipeLeftLayout = layoutInflater.inflate(R.layout.swipe_left_action, null, false)
+    }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
         if (viewHolder !is MessageViewHolder) return 0
@@ -82,89 +97,78 @@ class MessageListSwipeCallback(
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        canvas.withSave {
-            val view = viewHolder.itemView
+        val view = viewHolder.itemView
+        val viewWidth = view.width
+        val viewHeight = view.height
 
-            val holder = viewHolder as MessageViewHolder
-            val item = adapter.getItemById(holder.uniqueId) ?: return@withSave
+        val isViewAnimatingBack = !isCurrentlyActive && abs(dX).toInt() >= viewWidth
 
-            val swipeThreshold = recyclerView.width * getSwipeThreshold(holder)
-            val swipeThresholdReached = abs(dX) > swipeThreshold
-            if (swipeThresholdReached) {
-                val action = if (dX > 0) swipeRightAction else swipeLeftAction
-                val backgroundColor = resourceProvider.getBackgroundColor(action)
-                drawBackground(view, backgroundColor)
+        canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
+            if (isViewAnimatingBack) {
+                drawBackground(dX, viewWidth, viewHeight)
             } else {
-                val backgroundColor = resourceProvider.getBackgroundColor(SwipeAction.None)
-                drawBackground(view, backgroundColor)
-            }
-
-            // Stop drawing the icon when the view has been animated all the way off the screen by ItemTouchHelper.
-            // We do this so the icon doesn't switch state when RecyclerView's ItemAnimator animates the view back after
-            // a toggle action (mark as read/unread, add/remove star) was used.
-            if (isCurrentlyActive || abs(dX).toInt() < view.width) {
-                drawIcon(dX, view, item, swipeThresholdReached)
+                val holder = viewHolder as MessageViewHolder
+                drawLayout(dX, viewWidth, viewHeight, holder)
             }
         }
 
         super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
 
-    private fun Canvas.drawBackground(view: View, color: Int) {
-        backgroundColorPaint.color = color
+    private fun Canvas.drawBackground(dX: Float, width: Int, height: Int) {
+        val swipeAction = if (dX > 0) swipeRightAction else swipeLeftAction
+        val backgroundColor = resourceProvider.getBackgroundColor(swipeAction)
+
+        backgroundColorPaint.color = backgroundColor
         drawRect(
-            view.left.toFloat(),
-            view.top.toFloat(),
-            view.right.toFloat(),
-            view.bottom.toFloat(),
+            0F,
+            0F,
+            width.toFloat(),
+            height.toFloat(),
             backgroundColorPaint
         )
     }
 
-    private fun Canvas.drawIcon(dX: Float, view: View, item: MessageListItem, swipeThresholdReached: Boolean) {
-        if (dX > 0) {
-            drawSwipeRightIcon(view, item, swipeThresholdReached)
+    private fun Canvas.drawLayout(dX: Float, width: Int, height: Int, viewHolder: MessageViewHolder) {
+        val item = adapter.getItemById(viewHolder.uniqueId) ?: return
+        val isSelected = adapter.isSelected(item)
+
+        val swipeRight = dX > 0
+        val swipeThresholdReached = abs(dX) > swipeThreshold
+
+        val swipeLayout = if (swipeRight) swipeRightLayout else swipeLeftLayout
+        val swipeAction = if (swipeRight) swipeRightAction else swipeLeftAction
+
+        val foregroundColor: Int
+        val backgroundColor: Int
+        if (swipeThresholdReached) {
+            foregroundColor = resourceProvider.iconTint
+            backgroundColor = resourceProvider.getBackgroundColor(swipeAction)
         } else {
-            drawSwipeLeftIcon(view, item, swipeThresholdReached)
+            foregroundColor = resourceProvider.getBackgroundColor(swipeAction)
+            backgroundColor = resourceProvider.getBackgroundColor(SwipeAction.None)
         }
-    }
 
-    private fun Canvas.drawSwipeRightIcon(view: View, item: MessageListItem, swipeThresholdReached: Boolean) {
-        resourceProvider.getIcon(item, swipeRightAction)?.let { icon ->
-            val iconLeft = iconPadding
-            val iconTop = view.top + ((view.height - icon.intrinsicHeight) / 2)
-            val iconRight = iconLeft + icon.intrinsicWidth
-            val iconBottom = iconTop + icon.intrinsicHeight
-            icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+        swipeLayout.setBackgroundColor(backgroundColor)
 
-            val iconTint = if (swipeThresholdReached) {
-                resourceProvider.iconTint
-            } else {
-                resourceProvider.getBackgroundColor(swipeRightAction)
-            }
-            icon.setTint(iconTint)
+        val icon = resourceProvider.getIcon(item, swipeAction)
+        icon.setTint(foregroundColor)
 
-            icon.draw(this)
+        val iconView = swipeLayout.findViewById<ImageView>(R.id.swipe_action_icon)
+        iconView.setImageDrawable(icon)
+
+        val textView = swipeLayout.findViewById<TextView>(R.id.swipe_action_text)
+        textView.setTextColor(foregroundColor)
+        textView.text = resourceProvider.getActionName(item, swipeAction, isSelected)
+
+        if (swipeLayout.isDirty) {
+            val widthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
+            val heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
+            swipeLayout.measure(widthMeasureSpec, heightMeasureSpec)
+            swipeLayout.layout(0, 0, width, height)
         }
-    }
 
-    private fun Canvas.drawSwipeLeftIcon(view: View, item: MessageListItem, swipeThresholdReached: Boolean) {
-        resourceProvider.getIcon(item, swipeLeftAction)?.let { icon ->
-            val iconRight = view.right - iconPadding
-            val iconLeft = iconRight - icon.intrinsicWidth
-            val iconTop = view.top + ((view.height - icon.intrinsicHeight) / 2)
-            val iconBottom = iconTop + icon.intrinsicHeight
-            icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-
-            val iconTint = if (swipeThresholdReached) {
-                resourceProvider.iconTint
-            } else {
-                resourceProvider.getBackgroundColor(swipeLeftAction)
-            }
-            icon.setTint(iconTint)
-
-            icon.draw(this)
-        }
+        swipeLayout.draw(this)
     }
 }
 
