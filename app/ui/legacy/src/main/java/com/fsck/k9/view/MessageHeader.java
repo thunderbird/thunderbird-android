@@ -17,6 +17,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
+import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
@@ -148,11 +149,16 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             fromAddress = fromAddresses[0];
         }
 
-        if (fromAddress != null) {
-            ContactPictureLoader contactsPictureLoader = ContactPicture.getContactPictureLoader();
-            contactsPictureLoader.setContactPicture(contactPictureView, fromAddress);
+        if (K9.isShowContactPicture()) {
+            contactPictureView.setVisibility(View.VISIBLE);
+            if (fromAddress != null) {
+                ContactPictureLoader contactsPictureLoader = ContactPicture.getContactPictureLoader();
+                contactsPictureLoader.setContactPicture(contactPictureView, fromAddress);
+            } else {
+                contactPictureView.setImageResource(R.drawable.ic_contact_picture);
+            }
         } else {
-            contactPictureView.setImageResource(R.drawable.ic_contact_picture);
+            contactPictureView.setVisibility(View.GONE);
         }
 
         CharSequence from = messageHelper.getSenderDisplayName(fromAddress);
