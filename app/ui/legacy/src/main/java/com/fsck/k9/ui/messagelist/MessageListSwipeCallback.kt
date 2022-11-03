@@ -10,9 +10,9 @@ import android.view.View.MeasureSpec
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.withTranslation
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import kotlin.math.abs
