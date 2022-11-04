@@ -27,11 +27,15 @@ class MessageListSwipeCallback(
     private val adapter: MessageListAdapter,
     private val listener: MessageListSwipeListener
 ) : ItemTouchHelper.Callback() {
+    private val swipePadding = context.resources.getDimension(R.dimen.messageListSwipeIconPadding).toInt()
     private val swipeThreshold = context.resources.getDimension(R.dimen.messageListSwipeThreshold)
     private val backgroundColorPaint = Paint()
 
     private val swipeRightLayout: View
     private val swipeLeftLayout: View
+
+    private var maxSwipeRightDistance: Int = -1
+    private var maxSwipeLeftDistance: Int = -1
 
     init {
         val layoutInflater = LayoutInflater.from(context)
@@ -166,13 +170,23 @@ class MessageListSwipeCallback(
             val heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
             swipeLayout.measure(widthMeasureSpec, heightMeasureSpec)
             swipeLayout.layout(0, 0, width, height)
+
+            if (swipeRight) {
+                maxSwipeRightDistance = textView.right + swipePadding
+            } else {
+                maxSwipeLeftDistance = swipeLayout.width - textView.left + swipePadding
+            }
         }
 
         swipeLayout.draw(this)
     }
 
     override fun getMaxSwipeDistance(recyclerView: RecyclerView, direction: Int): Int {
-        return recyclerView.width / 2
+        return when (direction) {
+            ItemTouchHelper.RIGHT -> if (maxSwipeRightDistance > 0) maxSwipeRightDistance else recyclerView.width
+            ItemTouchHelper.LEFT -> if (maxSwipeLeftDistance > 0) maxSwipeLeftDistance else recyclerView.width
+            else -> recyclerView.width
+        }
     }
 
     override fun shouldAnimateOut(direction: Int): Boolean {

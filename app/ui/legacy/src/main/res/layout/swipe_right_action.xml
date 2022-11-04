@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/swipe_action_text"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/messageListSwipeTextPadding"
         android:layout_marginTop="16dp"
@@ -37,6 +37,7 @@
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="?attr/messageListSwipeIconTint"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/swipe_action_icon"
