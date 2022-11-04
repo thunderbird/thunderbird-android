@@ -47,27 +47,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is a utility class to add swipe to dismiss and drag & drop support to RecyclerView.
- * <p>
- * It works with a RecyclerView and a Callback class, which configures what type of interactions
- * are enabled and also receives events when user performs these actions.
- * <p>
- * Depending on which functionality you support, you should override
- * {@link Callback#onMove(RecyclerView, ViewHolder, ViewHolder)} and / or
- * {@link Callback#onSwiped(ViewHolder, int)}.
- * <p>
- * This class is designed to work with any LayoutManager but for certain situations, it can be
- * optimized for your custom LayoutManager by extending methods in the
- * {@link ItemTouchHelper.Callback} class or implementing {@link ItemTouchHelper.ViewDropHandler}
- * interface in your LayoutManager.
- * <p>
- * By default, ItemTouchHelper moves the items' translateX/Y properties to reposition them. You can
- * customize these behaviors by overriding {@link Callback#onChildDraw(Canvas, RecyclerView,
- * ViewHolder, float, float, int, boolean)}
- * or {@link Callback#onChildDrawOver(Canvas, RecyclerView, ViewHolder, float, float, int,
- * boolean)}.
- * <p/>
- * Most of the time you only need to override <code>onChildDraw</code>.
+ * Fork of {@link androidx.recyclerview.widget.ItemTouchHelper} that supports horizontal swipe actions that don't
+ * remove the list item. In that case item views are not animated all the way off the screen.
+ * <br>
+ * See {@link Callback#shouldAnimateOut(int)} and {@link Callback#getMaxSwipeDistance(RecyclerView, int)}.
  */
 public class ItemTouchHelper extends RecyclerView.ItemDecoration
         implements RecyclerView.OnChildAttachStateChangeListener {
@@ -105,6 +88,11 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
      * direction. Used for swipe & drag control.
      */
     public static final int END = RIGHT << 2;
+
+    /**
+     * Flag that indicates a swipe was performed using a fling.
+     */
+    private static final int FLING = 1 << 20;
 
     /**
      * ItemTouchHelper is in idle state. At this state, either there is no related motion event by
@@ -562,9 +550,24 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
             getSelectedDxDy(mTmpPosition);
             dx = mTmpPosition[0];
             dy = mTmpPosition[1];
+
+            if ((mSelectedFlags & (LEFT | RIGHT)) != 0 && dx != 0) {
+                dx = limitDeltaX(parent, dx);
+            }
         }
+
         mCallback.onDraw(c, parent, mSelected,
                 mRecoverAnimations, mActionState, dx, dy);
+    }
+
+    private float limitDeltaX(RecyclerView recyclerView, float deltaX) {
+        int swipeDirection = deltaX > 0 ? RIGHT : LEFT;
+        if (!mCallback.shouldAnimateOut(swipeDirection)) {
+            int maxWidth = mCallback.getMaxSwipeDistance(recyclerView, swipeDirection);
+            deltaX = Math.abs(deltaX) > maxWidth ? Math.signum(deltaX) * maxWidth : deltaX;
+        }
+
+        return deltaX;
     }
 
     /**
@@ -602,9 +605,16 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         if (mSelected != null) {
             final ViewHolder prevSelected = mSelected;
             if (prevSelected.itemView.getParent() != null) {
-                final int swipeDir = prevActionState == ACTION_STATE_DRAG ? 0
+                final int swipeFlags = prevActionState == ACTION_STATE_DRAG ? 0
                         : swipeIfNecessary(prevSelected);
+                final boolean wasFling = (swipeFlags & FLING) != 0;
+                final int swipeDir = swipeFlags & ~FLING;
                 releaseVelocityTracker();
+
+                getSelectedDxDy(mTmpPosition);
+                final float currentTranslateX = limitDeltaX(mRecyclerView, mTmpPosition[0]);
+                final float currentTranslateY = mTmpPosition[1];
+
                 // find where we should animate to
                 final float targetTranslateX, targetTranslateY;
                 int animationType;
@@ -613,8 +623,15 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                     case RIGHT:
                     case START:
                     case END:
+                        if (mCallback.shouldAnimateOut(swipeDir)) {
+                            targetTranslateX = Math.signum(mDx) * mRecyclerView.getWidth();
+                        } else if (wasFling) {
+                            int maxSwipeDistance = mCallback.getMaxSwipeDistance(mRecyclerView, swipeDir);
+                            targetTranslateX = Math.signum(mDx) * maxSwipeDistance;
+                        } else {
+                            targetTranslateX = currentTranslateX;
+                        }
                         targetTranslateY = 0;
-                        targetTranslateX = Math.signum(mDx) * mRecyclerView.getWidth();
                         break;
                     case UP:
                     case DOWN:
@@ -632,9 +649,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                 } else {
                     animationType = ANIMATION_TYPE_SWIPE_CANCEL;
                 }
-                getSelectedDxDy(mTmpPosition);
-                final float currentTranslateX = mTmpPosition[0];
-                final float currentTranslateY = mTmpPosition[1];
+
                 final RecoverAnimation rv = new RecoverAnimation(prevSelected, animationType,
                         prevActionState, currentTranslateX, currentTranslateY,
                         targetTranslateX, targetTranslateY) {
@@ -1208,32 +1223,36 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         }
         final int originalFlags = (originalMovementFlags
                 & ACTION_MODE_SWIPE_MASK) >> (ACTION_STATE_SWIPE * DIRECTION_FLAG_COUNT);
-        int swipeDir;
+        int swipeFlags;
         if (Math.abs(mDx) > Math.abs(mDy)) {
-            if ((swipeDir = checkHorizontalSwipe(viewHolder, flags)) > 0) {
+            if ((swipeFlags = checkHorizontalSwipe(viewHolder, flags)) > 0) {
+                int fling = swipeFlags & FLING;
+                int swipeDir = swipeFlags & ~FLING;
                 // if swipe dir is not in original flags, it should be the relative direction
                 if ((originalFlags & swipeDir) == 0) {
                     // convert to relative
                     return Callback.convertToRelativeDirection(swipeDir,
-                            ViewCompat.getLayoutDirection(mRecyclerView));
+                            ViewCompat.getLayoutDirection(mRecyclerView)) | fling;
                 }
-                return swipeDir;
+                return swipeFlags;
             }
-            if ((swipeDir = checkVerticalSwipe(viewHolder, flags)) > 0) {
-                return swipeDir;
+            if ((swipeFlags = checkVerticalSwipe(viewHolder, flags)) > 0) {
+                return swipeFlags;
             }
         } else {
-            if ((swipeDir = checkVerticalSwipe(viewHolder, flags)) > 0) {
-                return swipeDir;
+            if ((swipeFlags = checkVerticalSwipe(viewHolder, flags)) > 0) {
+                return swipeFlags;
             }
-            if ((swipeDir = checkHorizontalSwipe(viewHolder, flags)) > 0) {
+            if ((swipeFlags = checkHorizontalSwipe(viewHolder, flags)) > 0) {
+                int fling = swipeFlags & FLING;
+                int swipeDir = swipeFlags & ~FLING;
                 // if swipe dir is not in original flags, it should be the relative direction
                 if ((originalFlags & swipeDir) == 0) {
                     // convert to relative
                     return Callback.convertToRelativeDirection(swipeDir,
-                            ViewCompat.getLayoutDirection(mRecyclerView));
+                            ViewCompat.getLayoutDirection(mRecyclerView)) | fling;
                 }
-                return swipeDir;
+                return swipeFlags;
             }
         }
         return 0;
@@ -1252,7 +1271,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                 if ((velDirFlag & flags) != 0 && dirFlag == velDirFlag
                         && absXVelocity >= mCallback.getSwipeEscapeVelocity(mSwipeEscapeVelocity)
                         && absXVelocity > Math.abs(yVelocity)) {
-                    return velDirFlag;
+                    return velDirFlag | FLING;
                 }
             }
 
@@ -1987,7 +2006,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                 anim.update();
                 final int count = c.save();
                 onChildDraw(c, parent, anim.mViewHolder, anim.mX, anim.mY, anim.mActionState,
-                        false);
+                        anim.mAnimationType == ANIMATION_TYPE_SWIPE_SUCCESS && !anim.mIsPendingCleanup);
                 c.restoreToCount(count);
             }
             if (selected != null) {
@@ -2188,6 +2207,29 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                 return viewSizeOutOfBounds > 0 ? 1 : -1;
             }
             return value;
+        }
+
+        /**
+         * Called to find out whether or not views should be animated out when the swipe action was successfully
+         * triggered.
+         *
+         * @param direction The swipe direction.
+         * @return {@code true} if the swipe action removes the item from the list. {@code false} otherwise.
+         */
+        public boolean shouldAnimateOut(int direction) {
+            return true;
+        }
+
+        /**
+         * Called to find out how far a view can be moved during a swipe when the swipe action doesn't remove the item
+         * from the list. See {@link #shouldAnimateOut(int)}.
+         *
+         * @param recyclerView The RecyclerView instance to which ItemTouchHelper is attached to.
+         * @param direction The swipe direction.
+         * @return The maximum distance in pixels that a view can be moved during a swipe.
+         */
+        public int getMaxSwipeDistance(RecyclerView recyclerView, int direction) {
+            return recyclerView.getWidth();
         }
     }
 

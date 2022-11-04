@@ -101,7 +101,7 @@ class MessageListSwipeCallback(
         val viewWidth = view.width
         val viewHeight = view.height
 
-        val isViewAnimatingBack = !isCurrentlyActive && abs(dX).toInt() >= viewWidth
+        val isViewAnimatingBack = !isCurrentlyActive
 
         canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
             if (isViewAnimatingBack) {
@@ -169,6 +169,28 @@ class MessageListSwipeCallback(
         }
 
         swipeLayout.draw(this)
+    }
+
+    override fun getMaxSwipeDistance(recyclerView: RecyclerView, direction: Int): Int {
+        return recyclerView.width / 2
+    }
+
+    override fun shouldAnimateOut(direction: Int): Boolean {
+        return when (direction) {
+            ItemTouchHelper.RIGHT -> swipeRightAction.removesItem
+            ItemTouchHelper.LEFT -> swipeLeftAction.removesItem
+            else -> error("Unsupported direction")
+        }
+    }
+
+    override fun getAnimationDuration(
+        recyclerView: RecyclerView,
+        animationType: Int,
+        animateDx: Float,
+        animateDy: Float
+    ): Long {
+        val percentage = abs(animateDx) / recyclerView.width
+        return (super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy) * percentage).toLong()
     }
 }
 
