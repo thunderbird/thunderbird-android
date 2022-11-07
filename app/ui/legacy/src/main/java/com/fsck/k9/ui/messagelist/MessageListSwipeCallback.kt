@@ -107,12 +107,14 @@ class MessageListSwipeCallback(
 
         val isViewAnimatingBack = !isCurrentlyActive
 
-        canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
-            if (isViewAnimatingBack) {
-                drawBackground(dX, viewWidth, viewHeight)
-            } else {
-                val holder = viewHolder as MessageViewHolder
-                drawLayout(dX, viewWidth, viewHeight, holder)
+        if (dX != 0F) {
+            canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
+                if (isViewAnimatingBack) {
+                    drawBackground(dX, viewWidth, viewHeight)
+                } else {
+                    val holder = viewHolder as MessageViewHolder
+                    drawLayout(dX, viewWidth, viewHeight, holder)
+                }
             }
         }
 
