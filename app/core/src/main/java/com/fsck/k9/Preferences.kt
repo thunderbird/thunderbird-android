@@ -110,6 +110,9 @@ class Preferences internal constructor(
             }
         }
 
+    private val completeAccounts: List<Account>
+        get() = accounts.filter { it.isFinishedSetup }
+
     override fun getAccount(accountUuid: String): Account? {
         synchronized(accountLock) {
             if (accountsMap == null) {
@@ -151,10 +154,10 @@ class Preferences internal constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getAccountsFlow(): Flow<List<Account>> {
         return callbackFlow {
-            send(accounts)
+            send(completeAccounts)
 
             val listener = AccountsChangeListener {
-                trySendBlocking(accounts)
+                trySendBlocking(completeAccounts)
             }
             addOnAccountsChangeListener(listener)
 
