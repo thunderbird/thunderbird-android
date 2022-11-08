@@ -238,7 +238,8 @@ class MessageViewFragment :
                 intArrayOf(R.attr.iconActionMarkAsRead)
             }
 
-            requireContext().withStyledAttributes(attrs = drawableAttr) {
+            val toolbarContext = requireActivity().findViewById<View>(R.id.toolbar).context
+            toolbarContext.withStyledAttributes(attrs = drawableAttr) {
                 menu.findItem(R.id.toggle_unread).icon = getDrawable(0)
             }
         }

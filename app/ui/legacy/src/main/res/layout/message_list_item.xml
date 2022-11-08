@@ -148,6 +148,7 @@
                 android:textColor="?android:attr/textColorSecondary"
                 tools:text="Oct 27"/>
 
+        <!-- TODO: Replace with an ImageView. MaterialCheckBox comes with a lot of styling that we don't want. -->
         <CheckBox
                 android:id="@+id/star"
                 style="@style/MessageStarStyle"
