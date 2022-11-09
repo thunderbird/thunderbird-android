@@ -10,9 +10,9 @@ import android.view.View.MeasureSpec
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.withTranslation
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import kotlin.math.abs
@@ -27,11 +27,15 @@ class MessageListSwipeCallback(
     private val adapter: MessageListAdapter,
     private val listener: MessageListSwipeListener
 ) : ItemTouchHelper.Callback() {
+    private val swipePadding = context.resources.getDimension(R.dimen.messageListSwipeIconPadding).toInt()
     private val swipeThreshold = context.resources.getDimension(R.dimen.messageListSwipeThreshold)
     private val backgroundColorPaint = Paint()
 
     private val swipeRightLayout: View
     private val swipeLeftLayout: View
+
+    private var maxSwipeRightDistance: Int = -1
+    private var maxSwipeLeftDistance: Int = -1
 
     init {
         val layoutInflater = LayoutInflater.from(context)
@@ -101,14 +105,16 @@ class MessageListSwipeCallback(
         val viewWidth = view.width
         val viewHeight = view.height
 
-        val isViewAnimatingBack = !isCurrentlyActive && abs(dX).toInt() >= viewWidth
+        val isViewAnimatingBack = !isCurrentlyActive
 
-        canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
-            if (isViewAnimatingBack) {
-                drawBackground(dX, viewWidth, viewHeight)
-            } else {
-                val holder = viewHolder as MessageViewHolder
-                drawLayout(dX, viewWidth, viewHeight, holder)
+        if (dX != 0F) {
+            canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
+                if (isViewAnimatingBack) {
+                    drawBackground(dX, viewWidth, viewHeight)
+                } else {
+                    val holder = viewHolder as MessageViewHolder
+                    drawLayout(dX, viewWidth, viewHeight, holder)
+                }
             }
         }
 
@@ -166,9 +172,41 @@ class MessageListSwipeCallback(
             val heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
             swipeLayout.measure(widthMeasureSpec, heightMeasureSpec)
             swipeLayout.layout(0, 0, width, height)
+
+            if (swipeRight) {
+                maxSwipeRightDistance = textView.right + swipePadding
+            } else {
+                maxSwipeLeftDistance = swipeLayout.width - textView.left + swipePadding
+            }
         }
 
         swipeLayout.draw(this)
+    }
+
+    override fun getMaxSwipeDistance(recyclerView: RecyclerView, direction: Int): Int {
+        return when (direction) {
+            ItemTouchHelper.RIGHT -> if (maxSwipeRightDistance > 0) maxSwipeRightDistance else recyclerView.width
+            ItemTouchHelper.LEFT -> if (maxSwipeLeftDistance > 0) maxSwipeLeftDistance else recyclerView.width
+            else -> recyclerView.width
+        }
+    }
+
+    override fun shouldAnimateOut(direction: Int): Boolean {
+        return when (direction) {
+            ItemTouchHelper.RIGHT -> swipeRightAction.removesItem
+            ItemTouchHelper.LEFT -> swipeLeftAction.removesItem
+            else -> error("Unsupported direction")
+        }
+    }
+
+    override fun getAnimationDuration(
+        recyclerView: RecyclerView,
+        animationType: Int,
+        animateDx: Float,
+        animateDy: Float
+    ): Long {
+        val percentage = abs(animateDx) / recyclerView.width
+        return (super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy) * percentage).toLong()
     }
 }
 
