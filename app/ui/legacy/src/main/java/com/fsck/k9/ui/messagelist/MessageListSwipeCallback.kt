@@ -72,8 +72,7 @@ class MessageListSwipeCallback(
         val holder = viewHolder as MessageViewHolder
         val item = adapter.getItemById(holder.uniqueId) ?: error("Couldn't find MessageListItem")
 
-        // ItemTouchHelper expects swiped views to be removed from the view hierarchy. We mark this ViewHolder so that
-        // MessageListItemAnimator knows not to reuse it during an animation.
+        // Mark view to prevent MessageListItemAnimator from interfering with swipe animations
         viewHolder.markAsSwiped(true)
 
         when (direction) {
@@ -99,26 +98,25 @@ class MessageListSwipeCallback(
         dX: Float,
         dY: Float,
         actionState: Int,
-        isCurrentlyActive: Boolean
+        isCurrentlyActive: Boolean,
+        success: Boolean
     ) {
         val view = viewHolder.itemView
         val viewWidth = view.width
         val viewHeight = view.height
 
-        val isViewAnimatingBack = !isCurrentlyActive
-
         if (dX != 0F) {
             canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
-                if (isViewAnimatingBack) {
-                    drawBackground(dX, viewWidth, viewHeight)
-                } else {
+                if (isCurrentlyActive || !success) {
                     val holder = viewHolder as MessageViewHolder
                     drawLayout(dX, viewWidth, viewHeight, holder)
+                } else {
+                    drawBackground(dX, viewWidth, viewHeight)
                 }
             }
         }
 
-        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive, success)
     }
 
     private fun Canvas.drawBackground(dX: Float, width: Int, height: Int) {
