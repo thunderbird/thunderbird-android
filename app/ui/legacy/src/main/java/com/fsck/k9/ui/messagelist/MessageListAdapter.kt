@@ -480,11 +480,11 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    private fun selectMessage(item: MessageListItem) {
+    fun selectMessage(item: MessageListItem) {
         selected = selected + item.uniqueId
     }
 
-    private fun deselectMessage(item: MessageListItem) {
+    fun deselectMessage(item: MessageListItem) {
         selected = selected - item.uniqueId
     }
 

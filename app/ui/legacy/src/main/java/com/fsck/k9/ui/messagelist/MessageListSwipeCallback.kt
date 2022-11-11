@@ -68,9 +68,28 @@ class MessageListSwipeCallback(
         throw UnsupportedOperationException("not implemented")
     }
 
+    override fun onSwipeStarted(viewHolder: ViewHolder, direction: Int) {
+        val swipeAction = when (direction) {
+            ItemTouchHelper.RIGHT -> swipeRightAction
+            ItemTouchHelper.LEFT -> swipeLeftAction
+            else -> error("Unsupported direction: $direction")
+        }
+
+        listener.onSwipeStarted(viewHolder.messageListItem, swipeAction)
+    }
+
+    override fun onSwipeDirectionChanged(viewHolder: ViewHolder, direction: Int) {
+        val swipeAction = when (direction) {
+            ItemTouchHelper.RIGHT -> swipeRightAction
+            ItemTouchHelper.LEFT -> swipeLeftAction
+            else -> error("Unsupported direction: $direction")
+        }
+
+        listener.onSwipeActionChanged(viewHolder.messageListItem, swipeAction)
+    }
+
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-        val holder = viewHolder as MessageViewHolder
-        val item = adapter.getItemById(holder.uniqueId) ?: error("Couldn't find MessageListItem")
+        val item = viewHolder.messageListItem
 
         // Mark view to prevent MessageListItemAnimator from interfering with swipe animations
         viewHolder.markAsSwiped(true)
@@ -80,6 +99,10 @@ class MessageListSwipeCallback(
             ItemTouchHelper.LEFT -> listener.onSwipeAction(item, swipeLeftAction)
             else -> error("Unsupported direction: $direction")
         }
+    }
+
+    override fun onSwipeEnded(viewHolder: ViewHolder) {
+        listener.onSwipeEnded(viewHolder.messageListItem)
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: ViewHolder) {
@@ -206,14 +229,21 @@ class MessageListSwipeCallback(
         val percentage = abs(animateDx) / recyclerView.width
         return (super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy) * percentage).toLong()
     }
+
+    private val ViewHolder.messageListItem: MessageListItem
+        get() = (this as? MessageViewHolder)?.uniqueId?.let { adapter.getItemById(it) }
+            ?: error("Couldn't find MessageListItem")
 }
 
 fun interface SwipeActionSupportProvider {
     fun isActionSupported(item: MessageListItem, action: SwipeAction): Boolean
 }
 
-fun interface MessageListSwipeListener {
+interface MessageListSwipeListener {
+    fun onSwipeStarted(item: MessageListItem, action: SwipeAction)
+    fun onSwipeActionChanged(item: MessageListItem, action: SwipeAction)
     fun onSwipeAction(item: MessageListItem, action: SwipeAction)
+    fun onSwipeEnded(item: MessageListItem)
 }
 
 private fun ViewHolder.markAsSwiped(value: Boolean) {

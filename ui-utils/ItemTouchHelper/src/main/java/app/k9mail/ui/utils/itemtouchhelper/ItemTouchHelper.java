@@ -194,6 +194,11 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
     float mDy;
 
     /**
+     * Current swipe direction. Used for {@link Callback#onSwipeDirectionChanged(ViewHolder, int)}
+     */
+    private int mSwipeDirection = 0;
+
+    /**
      * The coordinates of the selected view at the time it is selected. We record these values
      * when action starts so that we can consistently position it even if LayoutManager moves the
      * View.
@@ -554,6 +559,14 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
             if ((mSelectedFlags & (LEFT | RIGHT)) != 0 && dx != 0) {
                 dx = limitDeltaX(parent, dx);
             }
+
+            if (dx != 0) {
+                int direction = dx > 0 ? RIGHT : LEFT;
+                if (direction != mSwipeDirection) {
+                    mSwipeDirection = direction;
+                    mCallback.onSwipeDirectionChanged(mSelected, direction);
+                }
+            }
         }
 
         mCallback.onDraw(c, parent, mSelected,
@@ -582,6 +595,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         if (selected == mSelected && actionState == mActionState) {
             return;
         }
+
         mDragScrollStartTimeInMs = Long.MIN_VALUE;
         final int prevActionState = mActionState;
         // prevent duplicate animations
@@ -726,6 +740,8 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                         mCallback.onSwiped(anim.mViewHolder, swipeDir);
                         if (moveBackAfterwards) {
                             startMoveBackAnimation(anim);
+                        } else {
+                            mCallback.onSwipeEnded(anim.mViewHolder);
                         }
                     } else {
                         mRecyclerView.post(this);
@@ -1061,6 +1077,10 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         }
         mDx = mDy = 0f;
         mActivePointerId = motionEvent.getPointerId(0);
+
+        mSwipeDirection = dx > 0 ? RIGHT : LEFT;
+        mCallback.onSwipeStarted(vh, mSwipeDirection);
+
         select(vh, ACTION_STATE_SWIPE);
     }
 
@@ -2240,8 +2260,17 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
          * @param direction The swipe direction.
          * @return The maximum distance in pixels that a view can be moved during a swipe.
          */
-        public int getMaxSwipeDistance(RecyclerView recyclerView, int direction) {
+        public int getMaxSwipeDistance(@NonNull RecyclerView recyclerView, int direction) {
             return recyclerView.getWidth();
+        }
+
+        public void onSwipeStarted(@NonNull ViewHolder viewHolder, int direction) {
+        }
+
+        public void onSwipeDirectionChanged(@NonNull ViewHolder viewHolder, int direction) {
+        }
+
+        public void onSwipeEnded(@NonNull ViewHolder viewHolder) {
         }
     }
 
@@ -2550,6 +2579,8 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
             if (this.mOverridden) {
                 return;
             }
+
+            mCallback.onSwipeEnded(mViewHolder);
 
             mCallback.clearView(mRecyclerView, mViewHolder);
             // full cleanup will happen on onDrawOver
