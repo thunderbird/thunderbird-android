@@ -538,10 +538,6 @@
   <string name="font_size_message_list_preview">תצוגה מקדימה</string>
   <string name="font_size_message_view">הודעות</string>
   <string name="font_size_message_view_sender">שולח</string>
-  <string name="font_size_message_view_to">ל</string>
-  <string name="font_size_message_view_cc">עותק</string>
-  <string name="font_size_message_view_bcc">עותק מוסתר</string>
-  <string name="font_size_message_view_additional_headers">כותרות נוספות</string>
   <string name="font_size_message_view_subject">כותרת</string>
   <string name="font_size_message_view_date">שעה ותאריך</string>
   <string name="font_size_message_view_content">גוף ההודעה</string>

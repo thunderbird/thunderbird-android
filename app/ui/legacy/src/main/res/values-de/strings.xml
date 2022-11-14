@@ -730,10 +730,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="font_size_message_list_preview">Vorschau</string>
   <string name="font_size_message_view">Nachrichtenanzeige</string>
   <string name="font_size_message_view_sender">Absender</string>
-  <string name="font_size_message_view_to">Empfänger (To)</string>
-  <string name="font_size_message_view_cc">Empfänger (CC)</string>
-  <string name="font_size_message_view_bcc">Blindkopie (BCC)</string>
-  <string name="font_size_message_view_additional_headers">Zusätzliche Header</string>
   <string name="font_size_message_view_subject">Betreff</string>
   <string name="font_size_message_view_date">Uhrzeit und Datum</string>
   <string name="font_size_message_view_content">Nachrichtentext</string>

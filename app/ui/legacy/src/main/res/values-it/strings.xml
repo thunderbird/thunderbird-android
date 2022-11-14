@@ -726,10 +726,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="font_size_message_list_preview">Anteprima</string>
   <string name="font_size_message_view">Messaggi</string>
   <string name="font_size_message_view_sender">Mittente</string>
-  <string name="font_size_message_view_to">A</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Ccn</string>
-  <string name="font_size_message_view_additional_headers">Intestazioni aggiuntive</string>
   <string name="font_size_message_view_subject">Oggetto</string>
   <string name="font_size_message_view_date">Ora e data</string>
   <string name="font_size_message_view_content">Corpo del messaggio</string>

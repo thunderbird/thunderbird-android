@@ -669,10 +669,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="font_size_message_list_preview">Náhľad</string>
   <string name="font_size_message_view">Správy</string>
   <string name="font_size_message_view_sender">Odosielateľ</string>
-  <string name="font_size_message_view_to">Komu</string>
-  <string name="font_size_message_view_cc">Kópia</string>
-  <string name="font_size_message_view_bcc">Skrytá kópia</string>
-  <string name="font_size_message_view_additional_headers">Prídavné hlavičky</string>
   <string name="font_size_message_view_subject">Skrytá kópia</string>
   <string name="font_size_message_view_date">Čas a dátum</string>
   <string name="font_size_message_view_content">Telo správy</string>

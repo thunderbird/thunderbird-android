@@ -730,10 +730,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="font_size_message_list_preview">Previsualizar</string>
   <string name="font_size_message_view">Mensajes</string>
   <string name="font_size_message_view_sender">Remitente</string>
-  <string name="font_size_message_view_to">Para</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Cco</string>
-  <string name="font_size_message_view_additional_headers">Encabezados adicionales</string>
   <string name="font_size_message_view_subject">Asunto</string>
   <string name="font_size_message_view_date">Hora y fecha</string>
   <string name="font_size_message_view_content">Cuerpo de mensaje</string>

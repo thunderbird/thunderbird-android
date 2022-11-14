@@ -665,10 +665,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="font_size_message_list_preview">Преглед</string>
   <string name="font_size_message_view">Съобщения</string>
   <string name="font_size_message_view_sender">Изпращач</string>
-  <string name="font_size_message_view_to">До</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Допълнителни header-и</string>
   <string name="font_size_message_view_subject">Тема</string>
   <string name="font_size_message_view_date">Дата и час</string>
   <string name="font_size_message_view_content">Тяло на съобщението</string>

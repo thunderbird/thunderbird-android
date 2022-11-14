@@ -631,10 +631,6 @@
   <string name="font_size_message_list_preview">Ro-shealladh</string>
   <string name="font_size_message_view">Teachdaireachdan</string>
   <string name="font_size_message_view_sender">Seòladair</string>
-  <string name="font_size_message_view_to">Gu</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Bannan-cinn a bharrachd</string>
   <string name="font_size_message_view_subject">Cuspair</string>
   <string name="font_size_message_view_date">Ceann-là ’s àm</string>
   <string name="font_size_message_view_content">Bodhaig na teachdaireachd</string>

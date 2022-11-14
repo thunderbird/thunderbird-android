@@ -536,10 +536,6 @@
   <string name="font_size_message_list_preview">Previsualización</string>
   <string name="font_size_message_view">Mensaxes</string>
   <string name="font_size_message_view_sender">Remitente</string>
-  <string name="font_size_message_view_to">Para</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Cabeceiras adicionais</string>
   <string name="font_size_message_view_subject">Asunto</string>
   <string name="font_size_message_view_date">Hora e data</string>
   <string name="font_size_message_view_content">Corpo da mensaxe</string>

@@ -668,10 +668,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="font_size_message_list_preview">Папярэдні прагляд</string>
   <string name="font_size_message_view">Паведамленне</string>
   <string name="font_size_message_view_sender">Адпраўнік</string>
-  <string name="font_size_message_view_to">Каму</string>
-  <string name="font_size_message_view_cc">Копія</string>
-  <string name="font_size_message_view_bcc">Схаваная копія</string>
-  <string name="font_size_message_view_additional_headers">Дадатковыя загалоўкі</string>
   <string name="font_size_message_view_subject">Тэма</string>
   <string name="font_size_message_view_date">Час і дата</string>
   <string name="font_size_message_view_content">Цела ліста</string>

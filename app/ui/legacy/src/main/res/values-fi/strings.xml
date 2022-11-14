@@ -729,10 +729,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="font_size_message_list_preview">Esikatselu</string>
   <string name="font_size_message_view">Viestinäkymä</string>
   <string name="font_size_message_view_sender">Lähettäjä</string>
-  <string name="font_size_message_view_to">Vastaanottaja</string>
-  <string name="font_size_message_view_cc">Kopio</string>
-  <string name="font_size_message_view_bcc">Piilokopio</string>
-  <string name="font_size_message_view_additional_headers">Tarkemmat otsikkotiedot</string>
   <string name="font_size_message_view_subject">Viestin aihe</string>
   <string name="font_size_message_view_date">Aika ja päivämäärä</string>
   <string name="font_size_message_view_content">Viestin sisältö</string>

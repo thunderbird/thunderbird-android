@@ -725,10 +725,6 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="font_size_message_list_preview">Foarbyld</string>
   <string name="font_size_message_view">Berjochten</string>
   <string name="font_size_message_view_sender">Ofstjoerder</string>
-  <string name="font_size_message_view_to">Oan</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Ekstra koppen</string>
   <string name="font_size_message_view_subject">Underwerp</string>
   <string name="font_size_message_view_date">Tiid en datum</string>
   <string name="font_size_message_view_content">Berichtynhâld</string>

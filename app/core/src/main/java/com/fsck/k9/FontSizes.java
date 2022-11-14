@@ -21,10 +21,7 @@ public class FontSizes {
     private static final String MESSAGE_LIST_DATE = "fontSizeMessageListDate";
     private static final String MESSAGE_LIST_PREVIEW = "fontSizeMessageListPreview";
     private static final String MESSAGE_VIEW_SENDER = "fontSizeMessageViewSender";
-    private static final String MESSAGE_VIEW_TO = "fontSizeMessageViewTo";
-    private static final String MESSAGE_VIEW_CC = "fontSizeMessageViewCC";
-    private static final String MESSAGE_VIEW_BCC = "fontSizeMessageViewBCC";
-    private static final String MESSAGE_VIEW_ADDITIONAL_HEADERS = "fontSizeMessageViewAdditionalHeaders";
+    private static final String MESSAGE_VIEW_RECIPIENTS = "fontSizeMessageViewTo";
     private static final String MESSAGE_VIEW_SUBJECT = "fontSizeMessageViewSubject";
     private static final String MESSAGE_VIEW_DATE = "fontSizeMessageViewDate";
     private static final String MESSAGE_VIEW_CONTENT_PERCENT = "fontSizeMessageViewContentPercent";
@@ -50,10 +47,7 @@ public class FontSizes {
     private int messageListDate;
     private int messageListPreview;
     private int messageViewSender;
-    private int messageViewTo;
-    private int messageViewCC;
-    private int messageViewBCC;
-    private int messageViewAdditionalHeaders;
+    private int messageViewRecipients;
     private int messageViewSubject;
     private int messageViewDate;
     private int messageViewContentPercent;
@@ -73,10 +67,7 @@ public class FontSizes {
         messageListPreview = FONT_DEFAULT;
 
         messageViewSender = FONT_DEFAULT;
-        messageViewTo = FONT_DEFAULT;
-        messageViewCC = FONT_DEFAULT;
-        messageViewBCC = FONT_DEFAULT;
-        messageViewAdditionalHeaders = FONT_DEFAULT;
+        messageViewRecipients = FONT_DEFAULT;
         messageViewSubject = FONT_DEFAULT;
         messageViewDate = FONT_DEFAULT;
         messageViewContentPercent = 100;
@@ -97,10 +88,7 @@ public class FontSizes {
         editor.putInt(MESSAGE_LIST_PREVIEW, messageListPreview);
 
         editor.putInt(MESSAGE_VIEW_SENDER, messageViewSender);
-        editor.putInt(MESSAGE_VIEW_TO, messageViewTo);
-        editor.putInt(MESSAGE_VIEW_CC, messageViewCC);
-        editor.putInt(MESSAGE_VIEW_BCC, messageViewBCC);
-        editor.putInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
+        editor.putInt(MESSAGE_VIEW_RECIPIENTS, messageViewRecipients);
         editor.putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         editor.putInt(MESSAGE_VIEW_DATE, messageViewDate);
         editor.putInt(MESSAGE_VIEW_CONTENT_PERCENT, getMessageViewContentAsPercent());
@@ -121,10 +109,7 @@ public class FontSizes {
         messageListPreview = storage.getInt(MESSAGE_LIST_PREVIEW, messageListPreview);
 
         messageViewSender = storage.getInt(MESSAGE_VIEW_SENDER, messageViewSender);
-        messageViewTo = storage.getInt(MESSAGE_VIEW_TO, messageViewTo);
-        messageViewCC = storage.getInt(MESSAGE_VIEW_CC, messageViewCC);
-        messageViewBCC = storage.getInt(MESSAGE_VIEW_BCC, messageViewBCC);
-        messageViewAdditionalHeaders = storage.getInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
+        messageViewRecipients = storage.getInt(MESSAGE_VIEW_RECIPIENTS, messageViewRecipients);
         messageViewSubject = storage.getInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         messageViewDate = storage.getInt(MESSAGE_VIEW_DATE, messageViewDate);
 
@@ -209,36 +194,12 @@ public class FontSizes {
         this.messageViewSender = messageViewSender;
     }
 
-    public int getMessageViewTo() {
-        return messageViewTo;
+    public int getMessageViewRecipients() {
+        return messageViewRecipients;
     }
 
-    public void setMessageViewTo(int messageViewTo) {
-        this.messageViewTo = messageViewTo;
-    }
-
-    public int getMessageViewCC() {
-        return messageViewCC;
-    }
-
-    public void setMessageViewCC(int messageViewCC) {
-        this.messageViewCC = messageViewCC;
-    }
-
-    public int getMessageViewBCC() {
-        return messageViewBCC;
-    }
-
-    public void setMessageViewBCC(int messageViewBCC) {
-        this.messageViewBCC = messageViewBCC;
-    }
-
-    public int getMessageViewAdditionalHeaders() {
-        return messageViewAdditionalHeaders;
-    }
-
-    public void setMessageViewAdditionalHeaders(int messageViewAdditionalHeaders) {
-        this.messageViewAdditionalHeaders = messageViewAdditionalHeaders;
+    public void setMessageViewRecipients(int messageViewRecipients) {
+        this.messageViewRecipients = messageViewRecipients;
     }
 
     public int getMessageViewSubject() {

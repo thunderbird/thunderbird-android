@@ -705,10 +705,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="font_size_message_list_preview">Önizleme</string>
   <string name="font_size_message_view">Mesajlar</string>
   <string name="font_size_message_view_sender">Gönderen</string>
-  <string name="font_size_message_view_to">Kime</string>
-  <string name="font_size_message_view_cc">Bilgi</string>
-  <string name="font_size_message_view_bcc">Gizli Kopya</string>
-  <string name="font_size_message_view_additional_headers">Ek başlıklar</string>
   <string name="font_size_message_view_subject">Konu</string>
   <string name="font_size_message_view_date">Saat ve Tarih</string>
   <string name="font_size_message_view_content">Mesaj gövdesi</string>
