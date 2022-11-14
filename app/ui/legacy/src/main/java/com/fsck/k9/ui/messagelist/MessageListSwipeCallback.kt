@@ -69,6 +69,9 @@ class MessageListSwipeCallback(
     }
 
     override fun onSwipeStarted(viewHolder: ViewHolder, direction: Int) {
+        // Mark view to prevent MessageListItemAnimator from interfering with swipe animations
+        viewHolder.markAsSwiped(true)
+
         val swipeAction = when (direction) {
             ItemTouchHelper.RIGHT -> swipeRightAction
             ItemTouchHelper.LEFT -> swipeLeftAction
@@ -90,9 +93,6 @@ class MessageListSwipeCallback(
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         val item = viewHolder.messageListItem
-
-        // Mark view to prevent MessageListItemAnimator from interfering with swipe animations
-        viewHolder.markAsSwiped(true)
 
         when (direction) {
             ItemTouchHelper.RIGHT -> listener.onSwipeAction(item, swipeRightAction)
