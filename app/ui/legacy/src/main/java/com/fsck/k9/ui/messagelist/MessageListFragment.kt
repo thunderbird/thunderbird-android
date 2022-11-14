@@ -1542,7 +1542,9 @@ class MessageListFragment :
             SwipeAction.ToggleSelection -> true
             SwipeAction.ToggleRead -> !isOutbox
             SwipeAction.ToggleStar -> !isOutbox
-            SwipeAction.Archive -> !isOutbox && item.account.hasArchiveFolder()
+            SwipeAction.Archive -> {
+                !isOutbox && item.account.hasArchiveFolder() && item.folderId != item.account.archiveFolderId
+            }
             SwipeAction.Delete -> true
             SwipeAction.Move -> !isOutbox && messagingController.isMoveCapable(item.account)
             SwipeAction.Spam -> !isOutbox && item.account.hasSpamFolder() && item.folderId != item.account.spamFolderId
