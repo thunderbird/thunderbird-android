@@ -938,6 +938,10 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
 
     @Override
     public void onChildViewDetachedFromWindow(@NonNull View view) {
+        resetSwipeView(view);
+    }
+
+    private void resetSwipeView(@NonNull View view) {
         removeChildDrawingOrderCallbackIfNecessary(view);
         final ViewHolder holder = mRecyclerView.getChildViewHolder(view);
         if (holder == null) {
@@ -951,6 +955,10 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                 mCallback.clearView(mRecyclerView, holder);
             }
         }
+    }
+
+    public void stopSwipe(@NonNull ViewHolder viewHolder) {
+        resetSwipeView(viewHolder.itemView);
     }
 
     /**
