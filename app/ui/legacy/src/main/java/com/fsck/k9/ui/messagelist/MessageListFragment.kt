@@ -810,7 +810,24 @@ class MessageListFragment :
 
     private fun toggleMessageSelect(messageListItem: MessageListItem) {
         adapter.toggleSelection(messageListItem)
+        updateAfterSelectionChange()
+    }
 
+    private fun selectMessage(messageListItem: MessageListItem) {
+        adapter.selectMessage(messageListItem)
+        updateAfterSelectionChange()
+    }
+
+    private fun deselectMessage(messageListItem: MessageListItem) {
+        adapter.deselectMessage(messageListItem)
+        updateAfterSelectionChange()
+    }
+
+    private fun isMessageSelected(messageListItem: MessageListItem): Boolean {
+        return adapter.isSelected(messageListItem)
+    }
+
+    private fun updateAfterSelectionChange() {
         if (adapter.selectedCount == 0) {
             actionMode?.finish()
             actionMode = null
@@ -1434,36 +1451,67 @@ class MessageListFragment :
     private val isPullToRefreshAllowed: Boolean
         get() = isRemoteSearchAllowed || isCheckMailAllowed
 
-    private val swipeListener = MessageListSwipeListener { item, action ->
-        when (action) {
-            SwipeAction.None -> Unit
-            SwipeAction.ToggleSelection -> {
-                toggleMessageSelect(item)
+    private var itemSelectedOnSwipeStart = false
+
+    private val swipeListener = object : MessageListSwipeListener {
+        override fun onSwipeStarted(item: MessageListItem, action: SwipeAction) {
+            itemSelectedOnSwipeStart = isMessageSelected(item)
+            if (itemSelectedOnSwipeStart && action != SwipeAction.ToggleSelection) {
+                deselectMessage(item)
             }
-            SwipeAction.ToggleRead -> {
-                setFlag(item, Flag.SEEN, !item.isRead)
-            }
-            SwipeAction.ToggleStar -> {
-                setFlag(item, Flag.FLAGGED, !item.isStarred)
-            }
-            SwipeAction.Archive -> {
-                onArchive(item.messageReference)
-            }
-            SwipeAction.Delete -> {
-                if (K9.isConfirmDelete) {
-                    notifyItemChanged(item)
+        }
+
+        override fun onSwipeActionChanged(item: MessageListItem, action: SwipeAction) {
+            if (action == SwipeAction.ToggleSelection) {
+                if (itemSelectedOnSwipeStart && !isMessageSelected(item)) {
+                    selectMessage(item)
                 }
-                onDelete(listOf(item.messageReference))
+            } else if (isMessageSelected(item)) {
+                deselectMessage(item)
             }
-            SwipeAction.Spam -> {
-                if (K9.isConfirmSpam) {
-                    notifyItemChanged(item)
+        }
+
+        override fun onSwipeAction(item: MessageListItem, action: SwipeAction) {
+            if (action.removesItem || action == SwipeAction.ToggleSelection) {
+                itemSelectedOnSwipeStart = false
+            }
+
+            when (action) {
+                SwipeAction.None -> Unit
+                SwipeAction.ToggleSelection -> {
+                    toggleMessageSelect(item)
                 }
-                onSpam(listOf(item.messageReference))
+                SwipeAction.ToggleRead -> {
+                    setFlag(item, Flag.SEEN, !item.isRead)
+                }
+                SwipeAction.ToggleStar -> {
+                    setFlag(item, Flag.FLAGGED, !item.isStarred)
+                }
+                SwipeAction.Archive -> {
+                    onArchive(item.messageReference)
+                }
+                SwipeAction.Delete -> {
+                    if (K9.isConfirmDelete) {
+                        notifyItemChanged(item)
+                    }
+                    onDelete(listOf(item.messageReference))
+                }
+                SwipeAction.Spam -> {
+                    if (K9.isConfirmSpam) {
+                        notifyItemChanged(item)
+                    }
+                    onSpam(listOf(item.messageReference))
+                }
+                SwipeAction.Move -> {
+                    notifyItemChanged(item)
+                    onMove(item.messageReference)
+                }
             }
-            SwipeAction.Move -> {
-                notifyItemChanged(item)
-                onMove(item.messageReference)
+        }
+
+        override fun onSwipeEnded(item: MessageListItem) {
+            if (itemSelectedOnSwipeStart && !isMessageSelected(item)) {
+                selectMessage(item)
             }
         }
     }

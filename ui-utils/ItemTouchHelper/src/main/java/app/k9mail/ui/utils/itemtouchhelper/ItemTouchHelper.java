@@ -194,6 +194,11 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
     float mDy;
 
     /**
+     * Current swipe direction. Used for {@link Callback#onSwipeDirectionChanged(ViewHolder, int)}
+     */
+    private int mSwipeDirection = 0;
+
+    /**
      * The coordinates of the selected view at the time it is selected. We record these values
      * when action starts so that we can consistently position it even if LayoutManager moves the
      * View.
@@ -554,6 +559,14 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
             if ((mSelectedFlags & (LEFT | RIGHT)) != 0 && dx != 0) {
                 dx = limitDeltaX(parent, dx);
             }
+
+            if (dx != 0) {
+                int direction = dx > 0 ? RIGHT : LEFT;
+                if (direction != mSwipeDirection) {
+                    mSwipeDirection = direction;
+                    mCallback.onSwipeDirectionChanged(mSelected, direction);
+                }
+            }
         }
 
         mCallback.onDraw(c, parent, mSelected,
@@ -582,6 +595,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         if (selected == mSelected && actionState == mActionState) {
             return;
         }
+
         mDragScrollStartTimeInMs = Long.MIN_VALUE;
         final int prevActionState = mActionState;
         // prevent duplicate animations
@@ -615,33 +629,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                 final float currentTranslateX = limitDeltaX(mRecyclerView, mTmpPosition[0]);
                 final float currentTranslateY = mTmpPosition[1];
 
-                // find where we should animate to
-                final float targetTranslateX, targetTranslateY;
-                int animationType;
-                switch (swipeDir) {
-                    case LEFT:
-                    case RIGHT:
-                    case START:
-                    case END:
-                        if (mCallback.shouldAnimateOut(swipeDir)) {
-                            targetTranslateX = Math.signum(mDx) * mRecyclerView.getWidth();
-                        } else if (wasFling) {
-                            int maxSwipeDistance = mCallback.getMaxSwipeDistance(mRecyclerView, swipeDir);
-                            targetTranslateX = Math.signum(mDx) * maxSwipeDistance;
-                        } else {
-                            targetTranslateX = currentTranslateX;
-                        }
-                        targetTranslateY = 0;
-                        break;
-                    case UP:
-                    case DOWN:
-                        targetTranslateX = 0;
-                        targetTranslateY = Math.signum(mDy) * mRecyclerView.getHeight();
-                        break;
-                    default:
-                        targetTranslateX = 0;
-                        targetTranslateY = 0;
-                }
+                final int animationType;
                 if (prevActionState == ACTION_STATE_DRAG) {
                     animationType = ANIMATION_TYPE_DRAG;
                 } else if (swipeDir > 0) {
@@ -650,40 +638,59 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                     animationType = ANIMATION_TYPE_SWIPE_CANCEL;
                 }
 
-                final RecoverAnimation rv = new RecoverAnimation(prevSelected, animationType,
-                        prevActionState, currentTranslateX, currentTranslateY,
-                        targetTranslateX, targetTranslateY) {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        if (this.mOverridden) {
-                            return;
-                        }
-                        if (swipeDir <= 0) {
-                            // this is a drag or failed swipe. recover immediately
-                            mCallback.clearView(mRecyclerView, prevSelected);
-                            // full cleanup will happen on onDrawOver
+                final RecoverAnimation animation;
+                final boolean useDefaultDuration;
+                switch (swipeDir) {
+                    case LEFT:
+                    case RIGHT:
+                    case START:
+                    case END:
+                        if (mCallback.shouldAnimateOut(swipeDir)) {
+                            float targetTranslateX = Math.signum(mDx) * mRecyclerView.getWidth();
+
+                            animation = new MoveOutAnimation(prevSelected, animationType, prevActionState,
+                                    currentTranslateX, currentTranslateY, targetTranslateX, currentTranslateY, swipeDir,
+                                    /* moveBackAfterwards */ false);
+
+                            useDefaultDuration = true;
+                        } else if (wasFling) {
+                            int maxSwipeDistance = mCallback.getMaxSwipeDistance(mRecyclerView, swipeDir);
+                            float targetTranslateX = Math.signum(mDx) * maxSwipeDistance;
+
+                            animation = new MoveOutAnimation(prevSelected, animationType, prevActionState,
+                                    currentTranslateX, currentTranslateY, targetTranslateX, currentTranslateY, swipeDir,
+                                    /* moveBackAfterwards */ true);
+
+                            useDefaultDuration = true;
                         } else {
-                            // wait until remove animation is complete.
-                            mPendingCleanup.add(prevSelected.itemView);
-                            mIsPendingCleanup = true;
-                            if (swipeDir > 0) {
-                                // Animation might be ended by other animators during a layout.
-                                // We defer callback to avoid editing adapter during a layout.
-                                postDispatchSwipe(this, swipeDir);
-                            }
+                            // This is a dummy animation to ensure mCallback.onChildDraw() calls will be made even if
+                            // the animating back part is delayed.
+                            animation = new MoveOutAnimation(prevSelected, animationType, prevActionState,
+                                    currentTranslateX, currentTranslateY, currentTranslateX, currentTranslateY,
+                                    swipeDir, /* moveBackAfterwards */ true);
+
+                            animation.setDuration(0);
+                            useDefaultDuration = false;
                         }
-                        // removed from the list after it is drawn for the last time
-                        if (mOverdrawChild == prevSelected.itemView) {
-                            removeChildDrawingOrderCallbackIfNecessary(prevSelected.itemView);
-                        }
-                    }
-                };
-                final long duration = mCallback.getAnimationDuration(mRecyclerView, animationType,
-                        targetTranslateX - currentTranslateX, targetTranslateY - currentTranslateY);
-                rv.setDuration(duration);
-                mRecoverAnimations.add(rv);
-                rv.start();
+                        break;
+                    case UP:
+                    case DOWN:
+                        throw new UnsupportedOperationException();
+                    default:
+                        animation = new MoveBackAnimation(prevSelected, animationType, prevActionState,
+                                currentTranslateX, currentTranslateY);
+                        useDefaultDuration = true;
+                }
+
+                if (useDefaultDuration) {
+                    long duration = mCallback.getAnimationDuration(mRecyclerView, animationType,
+                            animation.mTargetX - animation.mStartDx, animation.mTargetY - animation.mStartDy);
+                    animation.setDuration(duration);
+                }
+
+                mRecoverAnimations.add(animation);
+                animation.start();
+
                 preventLayout = true;
             } else {
                 removeChildDrawingOrderCallbackIfNecessary(prevSelected.itemView);
@@ -715,7 +722,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
     }
 
     @SuppressWarnings("WeakerAccess") /* synthetic access */
-    void postDispatchSwipe(final RecoverAnimation anim, final int swipeDir) {
+    void postDispatchSwipe(final RecoverAnimation anim, final int swipeDir, final boolean moveBackAfterwards) {
         // wait until animations are complete.
         mRecyclerView.post(new Runnable() {
             @Override
@@ -731,12 +738,31 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                     if ((animator == null || !animator.isRunning(null))
                             && !hasRunningRecoverAnim()) {
                         mCallback.onSwiped(anim.mViewHolder, swipeDir);
+                        if (moveBackAfterwards) {
+                            startMoveBackAnimation(anim);
+                        } else {
+                            mCallback.onSwipeEnded(anim.mViewHolder);
+                        }
                     } else {
                         mRecyclerView.post(this);
                     }
                 }
             }
         });
+    }
+
+    private void startMoveBackAnimation(RecoverAnimation animation) {
+        MoveBackAnimation moveBackAnimation = new MoveBackAnimation(animation.mViewHolder, animation.mAnimationType,
+                animation.mActionState, animation.mTargetX, animation.mTargetY);
+
+        long duration = mCallback.getAnimationDuration(mRecyclerView, animation.mAnimationType,
+                -animation.mTargetX, -animation.mTargetY);
+        moveBackAnimation.setDuration(duration);
+
+        mRecoverAnimations.remove(animation);
+        mRecoverAnimations.add(moveBackAnimation);
+
+        moveBackAnimation.start();
     }
 
     @SuppressWarnings("WeakerAccess") /* synthetic access */
@@ -1051,6 +1077,10 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         }
         mDx = mDy = 0f;
         mActivePointerId = motionEvent.getPointerId(0);
+
+        mSwipeDirection = dx > 0 ? RIGHT : LEFT;
+        mCallback.onSwipeStarted(vh, mSwipeDirection);
+
         select(vh, ACTION_STATE_SWIPE);
     }
 
@@ -2005,13 +2035,15 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                 final ItemTouchHelper.RecoverAnimation anim = recoverAnimationList.get(i);
                 anim.update();
                 final int count = c.save();
+                boolean isCurrentlyActive = anim instanceof MoveOutAnimation;
+                boolean success = anim.mAnimationType == ANIMATION_TYPE_SWIPE_SUCCESS;
                 onChildDraw(c, parent, anim.mViewHolder, anim.mX, anim.mY, anim.mActionState,
-                        anim.mAnimationType == ANIMATION_TYPE_SWIPE_SUCCESS && !anim.mIsPendingCleanup);
+                        isCurrentlyActive, success);
                 c.restoreToCount(count);
             }
             if (selected != null) {
                 final int count = c.save();
-                onChildDraw(c, parent, selected, dX, dY, actionState, true);
+                onChildDraw(c, parent, selected, dX, dY, actionState, true, false);
                 c.restoreToCount(count);
             }
         }
@@ -2053,7 +2085,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
          * This is a good place to clear all changes on the View that was done in
          * {@link #onSelectedChanged(RecyclerView.ViewHolder, int)},
          * {@link #onChildDraw(Canvas, RecyclerView, ViewHolder, float, float, int,
-         * boolean)} or
+         * boolean, boolean)} or
          * {@link #onChildDrawOver(Canvas, RecyclerView, ViewHolder, float, float, int, boolean)}.
          *
          * @param recyclerView The RecyclerView which is controlled by the ItemTouchHelper.
@@ -2092,7 +2124,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
          */
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
                 @NonNull ViewHolder viewHolder,
-                float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                float dX, float dY, int actionState, boolean isCurrentlyActive, boolean success) {
             ItemTouchUIUtilImpl.INSTANCE.onDraw(c, recyclerView, viewHolder.itemView, dX, dY,
                     actionState, isCurrentlyActive);
         }
@@ -2228,8 +2260,17 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
          * @param direction The swipe direction.
          * @return The maximum distance in pixels that a view can be moved during a swipe.
          */
-        public int getMaxSwipeDistance(RecyclerView recyclerView, int direction) {
+        public int getMaxSwipeDistance(@NonNull RecyclerView recyclerView, int direction) {
             return recyclerView.getWidth();
+        }
+
+        public void onSwipeStarted(@NonNull ViewHolder viewHolder, int direction) {
+        }
+
+        public void onSwipeDirectionChanged(@NonNull ViewHolder viewHolder, int direction) {
+        }
+
+        public void onSwipeEnded(@NonNull ViewHolder viewHolder) {
         }
     }
 
@@ -2524,6 +2565,66 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         @Override
         public void onAnimationRepeat(Animator animation) {
 
+        }
+    }
+
+    private class MoveBackAnimation extends RecoverAnimation {
+        MoveBackAnimation(ViewHolder viewHolder, int animationType, int actionState, float startDx, float startDy) {
+            super(viewHolder, animationType, actionState, startDx, startDy, /* targetX */ 0, /* targetY */ 0);
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            if (this.mOverridden) {
+                return;
+            }
+
+            mCallback.onSwipeEnded(mViewHolder);
+
+            mCallback.clearView(mRecyclerView, mViewHolder);
+            // full cleanup will happen on onDrawOver
+
+            // removed from the list after it is drawn for the last time
+            if (mOverdrawChild == mViewHolder.itemView) {
+                removeChildDrawingOrderCallbackIfNecessary(mViewHolder.itemView);
+            }
+        }
+    }
+
+    private class MoveOutAnimation extends RecoverAnimation {
+        private final int mSwipeDirection;
+        private final boolean mMoveBackAfterwards;
+
+        MoveOutAnimation(ViewHolder viewHolder, int animationType, int actionState, float startDx, float startDy,
+                float targetX, float targetY, int swipeDirection, boolean moveBackAfterwards) {
+            super(viewHolder, animationType, actionState, startDx, startDy, targetX, targetY);
+            this.mSwipeDirection = swipeDirection;
+            this.mMoveBackAfterwards = moveBackAfterwards;
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            if (this.mOverridden) {
+                return;
+            }
+
+            if (!mMoveBackAfterwards) {
+                mPendingCleanup.add(mViewHolder.itemView);
+            }
+            mIsPendingCleanup = true;
+
+            // Animation might be ended by other animators during a layout.
+            // We defer callback to avoid editing adapter during a layout.
+            postDispatchSwipe(this, mSwipeDirection, mMoveBackAfterwards);
+
+            if (!mMoveBackAfterwards) {
+                // removed from the list after it is drawn for the last time
+                if (mOverdrawChild == mViewHolder.itemView) {
+                    removeChildDrawingOrderCallbackIfNecessary(mViewHolder.itemView);
+                }
+            }
         }
     }
 }
