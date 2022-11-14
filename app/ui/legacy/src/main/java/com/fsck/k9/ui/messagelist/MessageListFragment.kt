@@ -1517,8 +1517,9 @@ class MessageListFragment :
                     onSpam(listOf(item.messageReference))
                 }
                 SwipeAction.Move -> {
-                    notifyItemChanged(item)
-                    onMove(item.messageReference)
+                    val messageReference = item.messageReference
+                    resetSwipedView(messageReference)
+                    onMove(messageReference)
                 }
             }
         }
