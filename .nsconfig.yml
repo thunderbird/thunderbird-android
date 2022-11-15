@@ -1,2 +1,2 @@
 minimum-severity: info # Can be one of [critical, high, medium, low, info]
-summary: true
+summary: long
