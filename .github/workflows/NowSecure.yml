@@ -57,7 +57,7 @@ jobs:
           app_file:  k9mail-debug.apk	
           # TODO: Replace the Group ID.
           group_id: "602abed9-4c66-453d-8431-da0195b682de"
-		
+	  
   process:
     if: ${{ needs.scan.outputs.report_id }}
     runs-on: ubuntu-latest
