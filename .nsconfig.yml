@@ -1,3 +1,2 @@
 minimum-severity: info # Can be one of [critical, high, medium, low, info]
-exclude-checks:
-   - android_janus_warn
+summary: true
