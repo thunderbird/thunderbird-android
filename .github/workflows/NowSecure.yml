@@ -30,41 +30,54 @@ jobs:
           name: app
           path: ./app/k9mail/build/outputs/apk/debug/k9mail-debug.apk
           retention-days: 3
-  
-  
+
   scan:
     runs-on: ubuntu-latest
+    outputs:
+      report_id: ${{ steps.upload.outputs.report_id }}
+    # The stage that builds the application.
     needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        
+
+      # Replace with whatever pulls the application file before we upload.
       - name: Download application
         uses: actions/download-artifact@v2
         with:
+          # Generated in the "build" stage.
           name: app
-          
-       # NOTE: ripgrep is required for line-of-code identification.
-      - name: Install ripgrep
-        run: sudo apt-get install -y ripgrep
-        
-      - name: NowSecure
-        uses: nowsecure/nowsecure-action@v1
+
+      - id: upload
+        name: NowSecure upload app
+        uses: nowsecure/nowsecure-action/upload-app@v3
+        with:
+          platform_token: ${{ secrets.NS_TOKEN }}
+          # TODO: Replace application path.
+          app_file:  k9mail-debug.apk	
+          # TODO: Replace the Group ID.
+          group_id: "602abed9-4c66-453d-8431-da0195b682de"
+		
+  process:
+    if: ${{ needs.scan.outputs.report_id }}
+    runs-on: ubuntu-latest
+    # The above stage we introduced.
+    needs: scan
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: NowSecure download report
+        uses: nowsecure/nowsecure-action/convert-sarif@v3
         timeout-minutes: 120
         with:
-         token: ${{ secrets.NS_TOKEN }}
-         app_file: k9mail-debug.apk		# REPLACE: The path to an .ipa or .apk
-         group_id: "602abed9-4c66-453d-8431-da0195b682de"				# REPLACE: NowSecure Group ID
+          report_id: ${{ needs.scan.outputs.report_id }}
+          platform_token: ${{ secrets.NS_TOKEN }}
+          # TODO: Replace the Group ID.
+          group_id: "602abed9-4c66-453d-8431-da0195b682de"
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: NowSecure.sarif
-
-      - name: Upload SARIF to artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: NowSecure.sarif
-          path: ./NowSecure.sarif
-        
     
