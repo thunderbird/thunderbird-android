@@ -1068,4 +1068,24 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="push_info_configure_notification_action">Configurer la notification</string>
   <string name="push_info_disable_push_text">Si vous n’avez pas besoin de notifications instantanées pour les nouveaux courriels, vous devriez désactiver le pousser et utiliser la scrutation. La scrutation vérifie la présence de nouveaux courriels à intervalles réguliers et n’a pas besoin de notification.</string>
   <string name="push_info_disable_push_action">Désactiver le pousser</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Sélectionner</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Dessélectionner</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Marquer comme lu</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Marquer comme non lu</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Ajouter une étoile</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Supprimer l’étoile</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archiver</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Supprimer</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Pourriel</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Déplacer…</string>
 </resources>

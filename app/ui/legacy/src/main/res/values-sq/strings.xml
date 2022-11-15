@@ -112,7 +112,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="folders_action">Administroni dosje</string>
   <string name="account_settings_action">Rregullime llogarie</string>
   <string name="remove_account_action">Hiqe llogarinë</string>
-  <string name="mark_as_read_action">Shënoje si të lexuar</string>
+  <string name="mark_as_read_action">Vëri shenjë si të lexuar</string>
   <string name="send_alternate_action">Ndajeni me të tjerë</string>
   <string name="send_alternate_chooser_title">Zgjidhni dërgues</string>
   <string name="flag_action">Shtoji yll</string>
@@ -259,7 +259,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="global_settings_confirm_action_delete_starred">Fshi Ata Me Shenjë (nën pamjen mesazhe)</string>
   <string name="global_settings_confirm_action_spam">Shënoje si të padëshiruar</string>
   <string name="global_settings_confirm_menu_discard">Hidhe tej mesazhin</string>
-  <string name="global_settings_confirm_menu_mark_all_read">Shënoji krejt mesazhet si të lexuar</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Vëru shenjë krejt mesazheve si të lexuar</string>
   <string name="global_settings_confirm_action_delete_notif">Fshije (që prej njoftimit)</string>
   <!--Title of the screen to configure swipe actions-->
   <string name="general_settings_swipe_actions_title">Veprime fërkimi</string>
@@ -270,6 +270,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Asnjë</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Përzgjidheni/shpërzgjidheni</string>
   <!--Name of the swipe action to mark as message as read/unread-->
   <string name="general_settings_swipe_action_toggle_read">Vëri/hiqi shenjë si i lexuar</string>
   <!--Name of the swipe action to add/remove a star-->
@@ -351,7 +352,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_incoming_delete_policy_label">Kur fshij një mesazh</string>
   <string name="account_setup_incoming_delete_policy_never_label">Mos e fshi te shërbyesi</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Fshije te shërbyesi</string>
-  <string name="account_setup_incoming_delete_policy_markread_label">Shënoje si të lexuar te shërbyesi</string>
+  <string name="account_setup_incoming_delete_policy_markread_label">Vëri shenjë si të lexuar te shërbyesi</string>
   <string name="account_setup_incoming_use_compression">Përdor ngjeshje</string>
   <string name="account_setup_expunge_policy_label">Hiqi dhe në shërbyes mesazhet e fshira</string>
   <string name="account_setup_expunge_policy_immediately">Menjëherë</string>
@@ -442,10 +443,10 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_notify_contacts_mail_only_summary">Shfaq njoftime vetëm për mesazhe nga kontakte të njohur</string>
   <string name="account_settings_ignore_chat_messages_label">Shpërfill mesazhe fjalosjesh</string>
   <string name="account_settings_ignore_chat_messages_summary">Mos shfaq njoftime për mesazhe që u përkasin një fjalosjeje me email</string>
-  <string name="account_settings_mark_message_as_read_on_view_label">Shënoje si të lexuar kur hapet</string>
-  <string name="account_settings_mark_message_as_read_on_view_summary">Shënoje një mesazh të lexuar, kur hapet për parje</string>
+  <string name="account_settings_mark_message_as_read_on_view_label">Vëri shenjë si të lexuar, kur hapet</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">Vëri shenjë një mesazhi të lexuar, kur hapet për parje</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Vëri shenjë si i lexuar, kur fshihet</string>
-  <string name="account_settings_mark_message_as_read_on_delete_summary">Vërini shenjë si i lexuar një mesazhi, kur fshihet</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Vëri shenjë si i lexuar një mesazhi, kur fshihet</string>
   <string name="account_settings_notification_channels_label">Kategori njoftimesh</string>
   <string name="account_settings_open_notification_settings_messages_summary">Formësoni njoftime për mesazhe të rinj</string>
   <string name="account_settings_open_notification_settings_miscellaneous_summary">Formësoni njoftime gabimesh dhe gjendjesh</string>
@@ -765,7 +766,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="dialog_confirm_delete_confirm_button">Po</string>
   <string name="dialog_confirm_delete_cancel_button">Jo</string>
   <string name="dialog_confirm_mark_all_as_read_title">Ripohoni vënien shenjë krejt mesazheve si të lexuar</string>
-  <string name="dialog_confirm_mark_all_as_read_message">Doni të shënohen krejt mesazhet si të lexuar?</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Doni t’u vihet shenjë krejt mesazheve si të lexuar?</string>
   <string name="dialog_confirm_empty_trash_title">Ripohoni zbrazje hedhurinash</string>
   <string name="dialog_confirm_empty_trash_message">Doni të zbrazet dosja e hedhurinave?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Po</string>
@@ -887,7 +888,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="message_view_empty">Ju lutemi, përzgjidhni një mesazh majtas</string>
   <string name="global_settings_show_contact_picture_label">Shfaq foto kontakti</string>
   <string name="global_settings_show_contact_picture_summary">Shfaq foto kontakti te lista e mesazheve</string>
-  <string name="mark_all_as_read">Shënoji të tërë si të lexuar</string>
+  <string name="mark_all_as_read">Vëru shenjë të tërëve si të lexuar</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Ngjyros foto kontakti</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Ngjyros foto për kontakt që mungon</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Veprime të dukshme mbi mesazhet</string>
@@ -1064,4 +1065,24 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
   <string name="push_info_configure_notification_action">Formësoni njoftim</string>
   <string name="push_info_disable_push_text">Nëse nuk ju duhen njoftime të atypëratyshme rreth mesazhesh të reja, duhet ta çaktivizoni Push-in dhe të përdorni Vjelje. Vjelja kontrollon për postë të re sipas intervalesh të rregullta dhe nuk ka nevojë për njoftimin.</string>
   <string name="push_info_disable_push_action">Çaktivizoje Push-in</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Përzgjidhni</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Shpërzgjidhe</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Vëri shenjë si të lexuar</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Shënoje si të palexuar</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Shtoji yll</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Hiqi yll</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arkivoji</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Fshije</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Shënoje si të padëshiruar</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Lëvizeni…</string>
 </resources>

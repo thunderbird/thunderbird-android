@@ -637,8 +637,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="sort_subject_re_alpha">Alphabetisch nach Betreff (Z-A)</string>
   <string name="sort_sender_alpha">Alphabetisch nach Absender (A-Z)</string>
   <string name="sort_sender_re_alpha">Alphabetisch nach Absender (Z-A)</string>
-  <string name="sort_flagged_first">Markierte Nachrichten zuerst</string>
-  <string name="sort_flagged_last">Nicht markierte Nachrichten zuerst</string>
+  <string name="sort_flagged_first">Wichtige Nachrichten zuerst</string>
+  <string name="sort_flagged_last">Unwichtige Nachrichten zuerst</string>
   <string name="sort_unread_first">Ungelesene Nachrichten zuerst</string>
   <string name="sort_unread_last">Gelesene Nachrichten zuerst</string>
   <string name="sort_attach_first">Nachrichten mit Anhängen zuerst</string>
@@ -1066,4 +1066,24 @@ Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schl
   <string name="push_info_configure_notification_action">Benachrichtigung einstellen</string>
   <string name="push_info_disable_push_text">Wenn Sie keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, sollten Sie Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue E-Mails und benötigt die Benachrichtigung nicht.</string>
   <string name="push_info_disable_push_action">Push deaktivieren</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Auswählen</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Abwählen</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Als gelesen markieren</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Als ungelesen markieren</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Als wichtig markieren</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Als unwichtig markieren</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archiv</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Löschen</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Verschieben…</string>
 </resources>

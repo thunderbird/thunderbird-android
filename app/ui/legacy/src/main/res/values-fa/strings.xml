@@ -1058,4 +1058,21 @@
   <string name="push_info_configure_notification_action">پیکربندی اعلان</string>
   <string name="push_info_disable_push_text">اگر برای پیام‌های جدید نیاز به اعلان آنی ندارید، بهتر است پیشرانی را غیرفعال کنید و سرکشی را به کار ببرید. روش سرکشی در فواصل زمانی منظم آمدن نامه‌های جدید را بررسی می‌کند و به آن اعلان نیاز ندارد.</string>
   <string name="push_info_disable_push_action">غیرفعال‌سازی پیشرانی</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">بی‌انتخاب</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">خوانده نشد</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">افزودن ستاره</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">حذف ستاره</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">بایگانی</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">حذف</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">هرزنامه</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

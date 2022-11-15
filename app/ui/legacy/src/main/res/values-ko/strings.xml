@@ -7,10 +7,13 @@
   <string name="shortcuts_title">K-9 계정</string>
   <string name="unread_widget_label">K-9 읽지 않은 메일</string>
   <!--Used in the about dialog-->
+  <string name="app_authors">K-9 개발자들</string>
   <string name="source_code">소소 코드</string>
   <string name="app_license">아파치 라이선스, 버전 2.0</string>
   <string name="about_project_title">오픈 소스 프로젝트</string>
   <string name="about_website_title">웹사이트</string>
+  <string name="user_manual_title">도움말</string>
+  <string name="get_help_title">지원</string>
   <string name="user_forum_title">사용자 포럼</string>
   <string name="license">라이선스</string>
   <string name="changelog_title">변경 내용</string>
@@ -792,4 +795,22 @@
   <string name="switch_on">커져 있음</string>
   <string name="switch_off">꺼 있음</string>
   <!--permissions-->
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">선택</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">선택 해제</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">읽지 않은 메일로 표시</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">별표하기</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">별표 해제하기</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">보관</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">삭제</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">스팸</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>
