@@ -49,4 +49,14 @@
   <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
   <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
   <!--permissions-->
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

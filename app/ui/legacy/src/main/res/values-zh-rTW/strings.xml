@@ -259,13 +259,19 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="global_settings_confirm_menu_mark_all_read">全部標記為已讀</string>
   <string name="global_settings_confirm_action_delete_notif">刪除 (從通知欄)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">滑動操作</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">右滑</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">左滑</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">無</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">切換選擇</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">標記為已讀/未讀</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">新增/移除星號</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">封存</string>
   <!--Name of the swipe action to delete a message-->
@@ -694,6 +700,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_push_limit_1000">1000個信件匣</string>
   <string name="animations_title">動畫</string>
   <string name="animations_summary">使用絢麗的視覺特效</string>
+  <string name="volume_navigation_title">訊息檢視中音量鍵導航</string>
   <string name="show_unified_inbox_title">顯示全域收件匣</string>
   <string name="show_starred_count_title">顯示有標記星號的數量</string>
   <string name="integrated_inbox_title">全域收件匣</string>
@@ -1051,4 +1058,24 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="push_info_configure_notification_action">設定通知</string>
   <string name="push_info_disable_push_text">如果你不需要新郵件的即時通知，則應停用推送並使用輪詢。輪詢會定期檢查新郵件，不需要通知權限。</string>
   <string name="push_info_disable_push_action">停用推送</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">選擇</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">取消選擇</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">標記為已讀</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">標記為未讀</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">加上星號</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">移除星號</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">封存</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">刪除</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">標記為垃圾郵件</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">移動…</string>
 </resources>

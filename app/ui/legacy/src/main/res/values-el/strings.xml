@@ -1060,4 +1060,22 @@
   <string name="push_info_configure_notification_action">Προσαρμογή ειδοποίησης</string>
   <string name="push_info_disable_push_text">Αν δεν χρειάζεστε άμεση ειδοποίηση για νέα μηνύματα, απενεργοποιήστε το σπρώξιμο και χρησιμοποιήστε ενημέρωση (Polling). Η ενημέρωση ελέγχει για νέα μηνύματα ανά τακτά χρονικά διαστήματα και δεν χρειάζεται την ειδοποίηση.</string>
   <string name="push_info_disable_push_action">Απενεργοποίηση σπρωξίματος</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Επιλογή</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Απο-επιλογή</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Σήμανση ως μη αναγνωσμένο</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Προσθήκη αστεριού</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Αφαίρεση αστεριού</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Αρχειοθέτηση</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Διαγραφή</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Ανεπιθύμητα</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

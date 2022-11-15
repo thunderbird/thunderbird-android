@@ -1060,4 +1060,24 @@ Je kunt dit bericht bewaren als back-up voor de geheime sleutel. Als je dit wilt
   <string name="push_info_configure_notification_action">Melding instellen</string>
   <string name="push_info_disable_push_text">Als je het niet nodig vindt om per direct meldingen van nieuwe berichten te ontvangen, dan kun je beter push uitschakelen en in plaats daarvan kiezen voor peilen. Met peilen wordt er om de zoveel tijd gekeken of er nieuwe e-mailberichten zijn binnengekomen. Daarvoor is het weergeven van een melding niet continu nodig.</string>
   <string name="push_info_disable_push_action">Push uitschakelen</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Selecteren</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Deselecteren</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Als gelezen markeren</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Als ongelezen markeren</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Ster toevoegen</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Ster verwijderen</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archiveren</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Verwijderen</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Verplaatsen…</string>
 </resources>
