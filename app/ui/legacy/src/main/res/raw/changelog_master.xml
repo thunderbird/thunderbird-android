@@ -5,6 +5,11 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.312" versioncode="33012" date="2022-11-15">
+        <change>Tweaked swipe actions in the message list screen</change>
+        <change>Fixed a bug where canceling account setup was showing a new account in the side drawer</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.311" versioncode="33011" date="2022-11-01">
         <change>Don't unexpectedly show and focus the "reply to" field when composing a message</change>
         <change>Fixed a bug where sometimes toolbar buttons in the message view would affect another message than the one currently being displayed</change>
