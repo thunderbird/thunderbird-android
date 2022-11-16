@@ -579,10 +579,6 @@
   <string name="font_size_message_list_preview">미리 보기</string>
   <string name="font_size_message_view">메시지</string>
   <string name="font_size_message_view_sender">보낸이</string>
-  <string name="font_size_message_view_to">받는이</string>
-  <string name="font_size_message_view_cc">참조</string>
-  <string name="font_size_message_view_bcc">숨은 참조</string>
-  <string name="font_size_message_view_additional_headers">추가 헤더 정보</string>
   <string name="font_size_message_view_subject">제목</string>
   <string name="font_size_message_view_date">시간 및 날짜</string>
   <string name="font_size_message_view_content">내용</string>

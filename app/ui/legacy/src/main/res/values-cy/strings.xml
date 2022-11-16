@@ -729,10 +729,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="font_size_message_list_preview">Rhagolwg</string>
   <string name="font_size_message_view">Negeseuon</string>
   <string name="font_size_message_view_sender">Anfonwr</string>
-  <string name="font_size_message_view_to">At</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Penynnau ychwanegol</string>
   <string name="font_size_message_view_subject">Pwnc</string>
   <string name="font_size_message_view_date">Amser a dyddiad</string>
   <string name="font_size_message_view_content">Corff neges</string>

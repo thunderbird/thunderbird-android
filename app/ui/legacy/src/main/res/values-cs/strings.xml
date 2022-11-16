@@ -727,10 +727,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="font_size_message_list_preview">Náhled</string>
   <string name="font_size_message_view">Zpráva</string>
   <string name="font_size_message_view_sender">Odesílatel</string>
-  <string name="font_size_message_view_to">Příjemce (Komu)</string>
-  <string name="font_size_message_view_cc">Příjemce (Kopie)</string>
-  <string name="font_size_message_view_bcc">Skrytá kopie</string>
-  <string name="font_size_message_view_additional_headers">Další záhlaví</string>
   <string name="font_size_message_view_subject">Předmět</string>
   <string name="font_size_message_view_date">Datum a čas</string>
   <string name="font_size_message_view_content">Tělo</string>

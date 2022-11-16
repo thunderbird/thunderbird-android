@@ -723,10 +723,6 @@
   <string name="font_size_message_list_preview">پیش‌نمایش</string>
   <string name="font_size_message_view">پیام‌ها</string>
   <string name="font_size_message_view_sender">فرستنده</string>
-  <string name="font_size_message_view_to">به</string>
-  <string name="font_size_message_view_cc">رونوشت به</string>
-  <string name="font_size_message_view_bcc">مخفیانه به</string>
-  <string name="font_size_message_view_additional_headers">سرایندهای اضافی</string>
   <string name="font_size_message_view_subject">موضوع</string>
   <string name="font_size_message_view_date">ساعت و تاریخ</string>
   <string name="font_size_message_view_content">متن پیام</string>

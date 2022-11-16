@@ -17,6 +17,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
+import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
@@ -34,12 +35,16 @@ import com.google.android.material.snackbar.Snackbar;
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private static final int DEFAULT_SUBJECT_LINES = 3;
 
+    private final FontSizes fontSizes = K9.getFontSizes();
+
     private Chip accountChip;
     private TextView subjectView;
     private ImageView starView;
     private ImageView contactPictureView;
     private TextView fromView;
     private ImageView cryptoStatusIcon;
+    private TextView toView;
+    private TextView toCountView;
     private TextView dateView;
 
     private MessageHelper messageHelper;
@@ -67,7 +72,15 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         contactPictureView = findViewById(R.id.contact_picture);
         fromView = findViewById(R.id.from);
         cryptoStatusIcon = findViewById(R.id.crypto_status_icon);
+        toView = findViewById(R.id.to);
+        toCountView = findViewById(R.id.to_count);
         dateView = findViewById(R.id.date);
+
+        fontSizes.setViewTextSize(subjectView, fontSizes.getMessageViewSubject());
+        fontSizes.setViewTextSize(dateView, fontSizes.getMessageViewDate());
+        fontSizes.setViewTextSize(fromView, fontSizes.getMessageViewSender());
+        fontSizes.setViewTextSize(toView, fontSizes.getMessageViewRecipients());
+        fontSizes.setViewTextSize(toCountView, fontSizes.getMessageViewRecipients());
 
         subjectView.setOnClickListener(this);
         subjectView.setOnLongClickListener(this);

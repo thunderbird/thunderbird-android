@@ -694,10 +694,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="font_size_message_list_preview">Forhåndsvisning</string>
   <string name="font_size_message_view">Meddelelse</string>
   <string name="font_size_message_view_sender">Afsender</string>
-  <string name="font_size_message_view_to">Modtagere (Til)</string>
-  <string name="font_size_message_view_cc">Modtagere (Cc)</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Yderligere headere</string>
   <string name="font_size_message_view_subject">Emne</string>
   <string name="font_size_message_view_date">Tid og dato</string>
   <string name="font_size_message_view_content">Indhold</string>

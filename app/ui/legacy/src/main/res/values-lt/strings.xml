@@ -722,10 +722,6 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="font_size_message_list_preview">Peržiūra</string>
   <string name="font_size_message_view">Laiškai</string>
   <string name="font_size_message_view_sender">Siuntėjas</string>
-  <string name="font_size_message_view_to">Kam</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Slapta kopija</string>
-  <string name="font_size_message_view_additional_headers">Papildomos antraštės</string>
   <string name="font_size_message_view_subject">Tema</string>
   <string name="font_size_message_view_date">Laikas ir data</string>
   <string name="font_size_message_view_content">Pagrindinė laiško dalis</string>

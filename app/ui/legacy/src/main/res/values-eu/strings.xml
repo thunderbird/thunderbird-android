@@ -729,10 +729,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="font_size_message_list_preview">Aurreikusi</string>
   <string name="font_size_message_view">Mezuak</string>
   <string name="font_size_message_view_sender">Bidaltzailea</string>
-  <string name="font_size_message_view_to">Nori</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Goiburu osagarriak</string>
   <string name="font_size_message_view_subject">Gaia</string>
   <string name="font_size_message_view_date">Ordua eta data</string>
   <string name="font_size_message_view_content">Mezuaren gorputza</string>

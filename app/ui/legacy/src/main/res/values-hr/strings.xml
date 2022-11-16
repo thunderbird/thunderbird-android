@@ -627,10 +627,6 @@
   <string name="font_size_message_list_preview">Pedpregled</string>
   <string name="font_size_message_view">Poruke</string>
   <string name="font_size_message_view_sender">Pošiljatelj</string>
-  <string name="font_size_message_view_to">Za</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Dodatna zaglavlja</string>
   <string name="font_size_message_view_subject">Subjekt</string>
   <string name="font_size_message_view_date">Vrijeme i datum</string>
   <string name="font_size_message_view_content">Tijelo poruke</string>

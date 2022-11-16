@@ -663,10 +663,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="font_size_message_list_preview">Pratinjau</string>
   <string name="font_size_message_view">Pesan</string>
   <string name="font_size_message_view_sender">Pengirim</string>
-  <string name="font_size_message_view_to">Kepada</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Header tambahan</string>
   <string name="font_size_message_view_subject">Subyek</string>
   <string name="font_size_message_view_date">Tanggal dan waktu</string>
   <string name="font_size_message_view_content">Isi pesan</string>

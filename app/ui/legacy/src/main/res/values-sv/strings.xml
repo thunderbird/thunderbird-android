@@ -730,10 +730,6 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="font_size_message_list_preview">Förhandsgranskning</string>
   <string name="font_size_message_view">Meddelanden</string>
   <string name="font_size_message_view_sender">Avsändare</string>
-  <string name="font_size_message_view_to">Till</string>
-  <string name="font_size_message_view_cc">Kopia</string>
-  <string name="font_size_message_view_bcc">Blindkopia</string>
-  <string name="font_size_message_view_additional_headers">Ytterligare meddelanderubriker</string>
   <string name="font_size_message_view_subject">Ämne</string>
   <string name="font_size_message_view_date">Tid och datum</string>
   <string name="font_size_message_view_content">Innehåll</string>

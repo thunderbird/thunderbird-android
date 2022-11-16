@@ -725,10 +725,6 @@
   <string name="font_size_message_list_preview">Προεπισκόπηση</string>
   <string name="font_size_message_view">Μηνύματα</string>
   <string name="font_size_message_view_sender">Αποστολέας</string>
-  <string name="font_size_message_view_to">Προς</string>
-  <string name="font_size_message_view_cc">Κοινοποίηση</string>
-  <string name="font_size_message_view_bcc">Κρυφή Κοιν:</string>
-  <string name="font_size_message_view_additional_headers">Επιπλέον επικεφαλίδες</string>
   <string name="font_size_message_view_subject">Θέμα</string>
   <string name="font_size_message_view_date">Ώρα και Ημερομηνία</string>
   <string name="font_size_message_view_content">Σώμα μηνύματος</string>

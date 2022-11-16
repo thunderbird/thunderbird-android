@@ -728,10 +728,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="font_size_message_list_preview">プレビュー</string>
   <string name="font_size_message_view">メッセージ表示</string>
   <string name="font_size_message_view_sender">送信者</string>
-  <string name="font_size_message_view_to">To</string>
-  <string name="font_size_message_view_cc">CC</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">追加ヘッダ</string>
   <string name="font_size_message_view_subject">件名</string>
   <string name="font_size_message_view_date">日時</string>
   <string name="font_size_message_view_content">本文</string>

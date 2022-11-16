@@ -729,10 +729,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="font_size_message_list_preview">Paraparje</string>
   <string name="font_size_message_view">Mesazhe</string>
   <string name="font_size_message_view_sender">Dërgues</string>
-  <string name="font_size_message_view_to">Për</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Krye shtesë</string>
   <string name="font_size_message_view_subject">Subjekt</string>
   <string name="font_size_message_view_date">Kohë dhe datë</string>
   <string name="font_size_message_view_content">Trup i mesazhit</string>

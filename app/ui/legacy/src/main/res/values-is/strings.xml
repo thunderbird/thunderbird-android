@@ -724,10 +724,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="font_size_message_list_preview">Forskoðun</string>
   <string name="font_size_message_view">Skilaboð</string>
   <string name="font_size_message_view_sender">Sendandi</string>
-  <string name="font_size_message_view_to">Til</string>
-  <string name="font_size_message_view_cc">Afrit</string>
-  <string name="font_size_message_view_bcc">Falið afrit</string>
-  <string name="font_size_message_view_additional_headers">Viðbótarhausar</string>
   <string name="font_size_message_view_subject">Viðfangsefni</string>
   <string name="font_size_message_view_date">Tími og dagsetning</string>
   <string name="font_size_message_view_content">Efni skilaboða</string>

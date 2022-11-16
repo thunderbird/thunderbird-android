@@ -721,10 +721,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="font_size_message_list_preview">Előnézet</string>
   <string name="font_size_message_view">Üzenetek</string>
   <string name="font_size_message_view_sender">Feladó</string>
-  <string name="font_size_message_view_to">Címzett</string>
-  <string name="font_size_message_view_cc">Másolat</string>
-  <string name="font_size_message_view_bcc">Titkos másolat</string>
-  <string name="font_size_message_view_additional_headers">További fejlécek</string>
   <string name="font_size_message_view_subject">Tárgy</string>
   <string name="font_size_message_view_date">Idő és dátum</string>
   <string name="font_size_message_view_content">Üzenet törzse</string>
