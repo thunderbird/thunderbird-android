@@ -57,21 +57,21 @@ jobs:
           app_file:  "k9mail-debug.apk"	
           # TODO: Replace the Group ID.
           group_id: "602abed9-4c66-453d-8431-da0195b682de"	  
-process:
-  if: ${{ needs.scan.outputs.report_id }}
-  runs-on: ubuntu-latest
-  # The above stage we introduced.
-  needs: scan
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+  process:
+    if: ${{ needs.scan.outputs.report_id }}
+    runs-on: ubuntu-latest
+    # The above stage we introduced.
+    needs: scan
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - id: createIssues
-      name: Create NowSecure issues
-      uses: nowsecure/nowsecure-action/create-issues@v3
-      timeout-minutes: 60
-      with:
-        report_id: ${{ needs.scan.outputs.report_id }}
-        platform_token: ${{ secrets.NS_TOKEN }}
-        config: "issues"
+      - id: createIssues
+        name: Create NowSecure issues
+        uses: nowsecure/nowsecure-action/create-issues@v3
+        timeout-minutes: 60
+        with:
+          report_id: ${{ needs.scan.outputs.report_id }}
+          platform_token: ${{ secrets.NS_TOKEN }}
+          config: "issues"
     
