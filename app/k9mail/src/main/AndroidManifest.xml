@@ -28,6 +28,7 @@
     <application
         android:name="com.fsck.k9.App"
         android:allowTaskReparenting="false"
+        android:enableOnBackInvokedCallback="true"
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:icon="@drawable/ic_launcher"
