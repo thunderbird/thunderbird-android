@@ -1,0 +1,24 @@
+name: "NowSecure Issues Test"
+
+on:
+  workflow_dispatch:
+    branches: [ main ]
+
+jobs: 
+  process:
+    runs-on: ubuntu-latest
+    # The above stage we introduced.
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - id: createIssues
+        name: Create NowSecure issues
+        uses: nowsecure/nowsecure-action/create-issues@v3
+        timeout-minutes: 60
+        with:
+          config: issues-labels
+          report_id: "01386b84-65af-11ed-ac54-53815bb8bffa"
+          platform_token: ${{ secrets.NS_TOKEN }}
+
+    
