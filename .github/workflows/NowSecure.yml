@@ -1,4 +1,4 @@
-name: "NowSecure"
+name: "NowSecure GHAS"
 
 on:
   workflow_dispatch:
