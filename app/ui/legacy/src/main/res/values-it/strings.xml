@@ -1062,4 +1062,22 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <string name="push_info_configure_notification_action">Configura notifica</string>
   <string name="push_info_disable_push_text">Se non hai bisogno di notifiche istantanee sui nuovi messaggi, dovresti disabilitare Push e usare Polling. Il polling verifica la presenza di nuova posta a intervalli regolari e non necessita di notifica.</string>
   <string name="push_info_disable_push_action">Disabilita Push</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Seleziona</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Deseleziona</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Marca come da leggere</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Aggiungi stella</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Rimuovi stella</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archivia</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Elimina</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

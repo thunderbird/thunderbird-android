@@ -1055,4 +1055,24 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="push_info_configure_notification_action">通知設定</string>
   <string name="push_info_disable_push_text">新しいメッセージの即時通知が不要な場合は、プッシュを無効にして同期を使用してください。同期は、一定の間隔で新着メールを確認するので、通知は必要ありません。</string>
   <string name="push_info_disable_push_action">プッシュを無効にする</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">選択</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">選択解除</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">既読にする</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">未読にする</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">スターを付ける</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">スターをはずす</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">アーカイブ</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">削除</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">迷惑メール</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">移動…</string>
 </resources>

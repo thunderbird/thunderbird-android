@@ -9,9 +9,21 @@ class MessageListItemAnimator : DefaultItemAnimator() {
         changeDuration = 120
     }
 
-    override fun canReuseUpdatedViewHolder(viewHolder: ViewHolder, payloads: MutableList<Any>): Boolean {
-        // ItemTouchHelper expects swiped views to be removed from the view hierarchy. So we don't reuse views that are
-        // marked as having been swiped.
-        return !viewHolder.wasSwiped && super.canReuseUpdatedViewHolder(viewHolder, payloads)
+    override fun animateChange(
+        oldHolder: ViewHolder,
+        newHolder: ViewHolder,
+        fromX: Int,
+        fromY: Int,
+        toX: Int,
+        toY: Int
+    ): Boolean {
+        if (oldHolder == newHolder && newHolder.wasSwiped) {
+            // Don't touch views currently being swiped
+            dispatchChangeFinished(oldHolder, true)
+            dispatchChangeFinished(newHolder, false)
+            return false
+        }
+
+        return super.animateChange(oldHolder, newHolder, fromX, fromY, toX, toY)
     }
 }

@@ -77,11 +77,10 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
 
     private fun populateSettingsList() {
         viewModel.accounts.observeNotNull(this) { accounts ->
-            val accountsFinishedSetup = accounts.filter { it.isFinishedSetup }
-            if (accountsFinishedSetup.isEmpty()) {
+            if (accounts.isEmpty()) {
                 launchOnboarding()
             } else {
-                populateSettingsList(accountsFinishedSetup)
+                populateSettingsList(accounts)
             }
         }
     }

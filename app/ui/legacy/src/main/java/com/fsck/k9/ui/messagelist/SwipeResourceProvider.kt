@@ -30,9 +30,20 @@ class SwipeResourceProvider(val theme: Theme) {
     private val spamColor = theme.resolveColorAttribute(R.attr.messageListSwipeSpamBackgroundColor)
     private val moveColor = theme.resolveColorAttribute(R.attr.messageListSwipeMoveBackgroundColor)
 
-    fun getIcon(item: MessageListItem, action: SwipeAction): Drawable? {
+    private val selectText = theme.resources.getString(R.string.swipe_action_select)
+    private val deselectText = theme.resources.getString(R.string.swipe_action_deselect)
+    private val markAsReadText = theme.resources.getString(R.string.swipe_action_mark_as_read)
+    private val markAsUnreadText = theme.resources.getString(R.string.swipe_action_mark_as_unread)
+    private val addStarText = theme.resources.getString(R.string.swipe_action_add_star)
+    private val removeStarText = theme.resources.getString(R.string.swipe_action_remove_star)
+    private val archiveText = theme.resources.getString(R.string.swipe_action_archive)
+    private val deleteText = theme.resources.getString(R.string.swipe_action_delete)
+    private val spamText = theme.resources.getString(R.string.swipe_action_spam)
+    private val moveText = theme.resources.getString(R.string.swipe_action_move)
+
+    fun getIcon(item: MessageListItem, action: SwipeAction): Drawable {
         return when (action) {
-            SwipeAction.None -> null
+            SwipeAction.None -> error("action == SwipeAction.None")
             SwipeAction.ToggleSelection -> selectIcon
             SwipeAction.ToggleRead -> if (item.isRead) markAsUnreadIcon else markAsReadIcon
             SwipeAction.ToggleStar -> if (item.isStarred) removeStarIcon else addStarIcon
@@ -53,6 +64,19 @@ class SwipeResourceProvider(val theme: Theme) {
             SwipeAction.Delete -> deleteColor
             SwipeAction.Spam -> spamColor
             SwipeAction.Move -> moveColor
+        }
+    }
+
+    fun getActionName(item: MessageListItem, action: SwipeAction, isSelected: Boolean): String {
+        return when (action) {
+            SwipeAction.None -> error("action == SwipeAction.None")
+            SwipeAction.ToggleSelection -> if (isSelected) deselectText else selectText
+            SwipeAction.ToggleRead -> if (item.isRead) markAsUnreadText else markAsReadText
+            SwipeAction.ToggleStar -> if (item.isStarred) removeStarText else addStarText
+            SwipeAction.Archive -> archiveText
+            SwipeAction.Delete -> deleteText
+            SwipeAction.Spam -> spamText
+            SwipeAction.Move -> moveText
         }
     }
 }

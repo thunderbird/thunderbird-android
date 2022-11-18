@@ -1061,4 +1061,24 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
   <string name="push_info_configure_notification_action">Anpassa avisering</string>
   <string name="push_info_disable_push_text">Om du inte behöver omedelbara meddelanden om nya meddelanden bör du inaktivera Push och använda Polling. Polling kontrollerar regelbundet efter ny post och behöver inte meddelandet.</string>
   <string name="push_info_disable_push_action">Inaktivera Push</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Välj</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Välj bort</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Markera som läst</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Markera som oläst</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Lägg till stjärna</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Ta bort stjärna</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arkivera</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Ta bort</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Skräppost</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Flytta…</string>
 </resources>

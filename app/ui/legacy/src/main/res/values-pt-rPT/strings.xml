@@ -105,6 +105,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="add_account_action">Adicionar conta</string>
   <string name="compose_action">Compor</string>
   <string name="search_action">Pesquisar</string>
+  <string name="search_everywhere_action">Procurar em todo o lado</string>
   <string name="search_results">Resultados da pesquisa</string>
   <string name="new_messages_title">Novas mensagens</string>
   <string name="preferences_action">Configurações</string>
@@ -172,11 +173,15 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_title">Erro de notificação</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação
+.</string>
   <string name="notification_bg_sync_ticker">A verificar correio: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">A verificar correio</string>
   <string name="notification_bg_send_ticker">A enviar correio: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">A enviar correio</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Sincronizar (Push)</string>
+  <string name="notification_channel_push_description">Mostrado enquanto à espera de novas mensagens</string>
   <string name="notification_channel_messages_title">Mensagens</string>
   <string name="notification_channel_messages_description">Notificações relacionadas com mensagens</string>
   <string name="notification_channel_miscellaneous_title">Diversos</string>
@@ -260,11 +265,14 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_confirm_action_delete_notif">Eliminar (a partir da notificação)</string>
   <!--Title of the screen to configure swipe actions-->
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Deslizo para a direita</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Deslizo para a esquerda</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Nenhuma</string>
   <!--Name of the swipe action to select/deselect a message-->
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Marcar como lida/não-lida</string>
   <!--Name of the swipe action to add/remove a star-->
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Arquivo</string>
@@ -285,6 +293,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_lock_screen_notification_visibility_title">Notificações no ecrã de bloqueio</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Sem notificações no ecrã de bloqueio</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nome da aplicação</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Número de novas mensagens</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Número de mensagens e remetentes</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">O mesmo quando o ecrã está desbloqueado</string>
   <string name="quiet_time">Período de sossego</string>
@@ -692,6 +701,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_push_limit_1000">1000 pastas</string>
   <string name="animations_title">Animação</string>
   <string name="animations_summary">Usar efeitos visuais exuberantes</string>
+  <string name="volume_navigation_title">Navegação com os botões de volume na visualização de mensagens</string>
   <string name="show_unified_inbox_title">Mostrar caixa de entrada unificada</string>
   <string name="integrated_inbox_title">Caixa de entrada unificada</string>
   <string name="integrated_inbox_detail">Todas as mensagens em pastas unificadas</string>
@@ -1041,4 +1051,37 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Permitir acesso aos contactos</string>
   <string name="permission_contacts_rationale_message">Por forma a fornecer sugestões de contactos e para mostrar nomes de contactos e fotografias, a aplicação necessita do acesso aos seus contactos.</string>
+  <string name="generic_loading_error">Occoreu um erro ao carregar os dados</string>
+  <string name="push_notification_state_initializing">Inicializando…</string>
+  <string name="push_notification_state_listening">À espera de novos e-mails</string>
+  <string name="push_notification_state_wait_background_sync">Suspenso até que a sincronização em segundo plano seja permitida.</string>
+  <string name="push_notification_state_wait_network">Suspenso até que a rede esteja disponível</string>
+  <string name="push_notification_info">Toque para saber mais</string>
+  <string name="push_info_title">Informação sobre o Push</string>
+  <string name="push_info_notification_explanation_text">Ao usar o Push, o K-9 Mail mantêm uma conneção com o servidor de mail. O Android requer que seja mostrada uma notificação constante enquanto a aplicação está ativa em segundo plano. %s</string>
+  <string name="push_info_configure_notification_text">Ainda assim, o Android também permite esconder a notificação.</string>
+  <string name="push_info_learn_more_text">Saber mais</string>
+  <string name="push_info_configure_notification_action">Configurar a notificação</string>
+  <string name="push_info_disable_push_text">Se não necessita de notificações instantáneas, deve desligar o Push e utilizar o Polling. O Polling procura novos e-mails num intervalo regular e não requer a notificação</string>
+  <string name="push_info_disable_push_action">Desativar o Push</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Selecionar</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Desselecionar</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Marcar como lido</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Marcar como não lido</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Adicionar estrela</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Remover estrela</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arquivo</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Eliminar</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Mover…</string>
 </resources>

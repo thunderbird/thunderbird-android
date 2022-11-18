@@ -23,6 +23,7 @@ dependencies {
     implementation "com.takisoft.preferencex:preferencex-colorpicker:${versions.preferencesFix}"
     implementation "androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}"
     implementation project(':ui-utils:LinearLayoutManager')
+    implementation project(':ui-utils:ItemTouchHelper')
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"

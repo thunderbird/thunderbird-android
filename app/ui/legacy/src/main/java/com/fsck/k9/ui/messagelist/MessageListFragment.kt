@@ -15,9 +15,9 @@ import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
 import com.fsck.k9.Account
 import com.fsck.k9.Account.Expunge
@@ -76,6 +76,7 @@ class MessageListFragment :
     private lateinit var fragmentListener: MessageListFragmentListener
 
     private var recyclerView: RecyclerView? = null
+    private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
 
     private lateinit var adapter: MessageListAdapter
@@ -267,7 +268,7 @@ class MessageListFragment :
 
         val itemTouchHelper = ItemTouchHelper(
             MessageListSwipeCallback(
-                resources,
+                requireContext(),
                 resourceProvider = SwipeResourceProvider(requireActivity().theme),
                 swipeActionSupportProvider,
                 swipeRightAction = K9.swipeRightAction,
@@ -281,6 +282,7 @@ class MessageListFragment :
         recyclerView.adapter = adapter
 
         this.recyclerView = recyclerView
+        this.itemTouchHelper = itemTouchHelper
     }
 
     private fun initializeSortSettings() {
@@ -424,6 +426,7 @@ class MessageListFragment :
 
     override fun onDestroyView() {
         recyclerView = null
+        itemTouchHelper = null
         swipeRefreshLayout = null
 
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
@@ -813,7 +816,24 @@ class MessageListFragment :
 
     private fun toggleMessageSelect(messageListItem: MessageListItem) {
         adapter.toggleSelection(messageListItem)
+        updateAfterSelectionChange()
+    }
 
+    private fun selectMessage(messageListItem: MessageListItem) {
+        adapter.selectMessage(messageListItem)
+        updateAfterSelectionChange()
+    }
+
+    private fun deselectMessage(messageListItem: MessageListItem) {
+        adapter.deselectMessage(messageListItem)
+        updateAfterSelectionChange()
+    }
+
+    private fun isMessageSelected(messageListItem: MessageListItem): Boolean {
+        return adapter.isSelected(messageListItem)
+    }
+
+    private fun updateAfterSelectionChange() {
         if (adapter.selectedCount == 0) {
             actionMode?.finish()
             actionMode = null
@@ -1094,8 +1114,25 @@ class MessageListFragment :
 
     override fun doNegativeClick(dialogId: Int) {
         if (dialogId == R.id.dialog_confirm_spam || dialogId == R.id.dialog_confirm_delete) {
-            // No further need for this reference
-            activeMessages = null
+            val activeMessages = this.activeMessages ?: return
+            if (activeMessages.size == 1) {
+                // List item might have been swiped and is still showing the "swipe action background"
+                resetSwipedView(activeMessages.first())
+            }
+
+            this.activeMessages = null
+        }
+    }
+
+    private fun resetSwipedView(messageReference: MessageReference) {
+        val recyclerView = this.recyclerView ?: return
+        val itemTouchHelper = this.itemTouchHelper ?: return
+
+        adapter.getItem(messageReference)?.let { messageListItem ->
+            recyclerView.findViewHolderForItemId(messageListItem.uniqueId)?.let { viewHolder ->
+                itemTouchHelper.stopSwipe(viewHolder)
+                notifyItemChanged(messageListItem)
+            }
         }
     }
 
@@ -1437,36 +1474,62 @@ class MessageListFragment :
     private val isPullToRefreshAllowed: Boolean
         get() = isRemoteSearchAllowed || isCheckMailAllowed
 
-    private val swipeListener = MessageListSwipeListener { item, action ->
-        when (action) {
-            SwipeAction.None -> Unit
-            SwipeAction.ToggleSelection -> {
-                toggleMessageSelect(item)
+    private var itemSelectedOnSwipeStart = false
+
+    private val swipeListener = object : MessageListSwipeListener {
+        override fun onSwipeStarted(item: MessageListItem, action: SwipeAction) {
+            itemSelectedOnSwipeStart = isMessageSelected(item)
+            if (itemSelectedOnSwipeStart && action != SwipeAction.ToggleSelection) {
+                deselectMessage(item)
             }
-            SwipeAction.ToggleRead -> {
-                setFlag(item, Flag.SEEN, !item.isRead)
-            }
-            SwipeAction.ToggleStar -> {
-                setFlag(item, Flag.FLAGGED, !item.isStarred)
-            }
-            SwipeAction.Archive -> {
-                onArchive(item.messageReference)
-            }
-            SwipeAction.Delete -> {
-                if (K9.isConfirmDelete) {
-                    notifyItemChanged(item)
+        }
+
+        override fun onSwipeActionChanged(item: MessageListItem, action: SwipeAction) {
+            if (action == SwipeAction.ToggleSelection) {
+                if (itemSelectedOnSwipeStart && !isMessageSelected(item)) {
+                    selectMessage(item)
                 }
-                onDelete(listOf(item.messageReference))
+            } else if (isMessageSelected(item)) {
+                deselectMessage(item)
             }
-            SwipeAction.Spam -> {
-                if (K9.isConfirmSpam) {
-                    notifyItemChanged(item)
+        }
+
+        override fun onSwipeAction(item: MessageListItem, action: SwipeAction) {
+            if (action.removesItem || action == SwipeAction.ToggleSelection) {
+                itemSelectedOnSwipeStart = false
+            }
+
+            when (action) {
+                SwipeAction.None -> Unit
+                SwipeAction.ToggleSelection -> {
+                    toggleMessageSelect(item)
                 }
-                onSpam(listOf(item.messageReference))
+                SwipeAction.ToggleRead -> {
+                    setFlag(item, Flag.SEEN, !item.isRead)
+                }
+                SwipeAction.ToggleStar -> {
+                    setFlag(item, Flag.FLAGGED, !item.isStarred)
+                }
+                SwipeAction.Archive -> {
+                    onArchive(item.messageReference)
+                }
+                SwipeAction.Delete -> {
+                    onDelete(listOf(item.messageReference))
+                }
+                SwipeAction.Spam -> {
+                    onSpam(listOf(item.messageReference))
+                }
+                SwipeAction.Move -> {
+                    val messageReference = item.messageReference
+                    resetSwipedView(messageReference)
+                    onMove(messageReference)
+                }
             }
-            SwipeAction.Move -> {
-                notifyItemChanged(item)
-                onMove(item.messageReference)
+        }
+
+        override fun onSwipeEnded(item: MessageListItem) {
+            if (itemSelectedOnSwipeStart && !isMessageSelected(item)) {
+                selectMessage(item)
             }
         }
     }
@@ -1482,7 +1545,9 @@ class MessageListFragment :
             SwipeAction.ToggleSelection -> true
             SwipeAction.ToggleRead -> !isOutbox
             SwipeAction.ToggleStar -> !isOutbox
-            SwipeAction.Archive -> !isOutbox && item.account.hasArchiveFolder()
+            SwipeAction.Archive -> {
+                !isOutbox && item.account.hasArchiveFolder() && item.folderId != item.account.archiveFolderId
+            }
             SwipeAction.Delete -> true
             SwipeAction.Move -> !isOutbox && messagingController.isMoveCapable(item.account)
             SwipeAction.Spam -> !isOutbox && item.account.hasSpamFolder() && item.folderId != item.account.spamFolderId

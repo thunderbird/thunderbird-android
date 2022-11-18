@@ -463,6 +463,10 @@ class MessageListAdapter internal constructor(
             item.messageUid == activeMessage.uid
     }
 
+    fun isSelected(item: MessageListItem): Boolean {
+        return item.uniqueId in selected
+    }
+
     fun toggleSelection(item: MessageListItem) {
         if (messagesMap[item.uniqueId] == null) {
             // MessageListItem is no longer in the list
@@ -476,11 +480,11 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    private fun selectMessage(item: MessageListItem) {
+    fun selectMessage(item: MessageListItem) {
         selected = selected + item.uniqueId
     }
 
-    private fun deselectMessage(item: MessageListItem) {
+    fun deselectMessage(item: MessageListItem) {
         selected = selected - item.uniqueId
     }
 

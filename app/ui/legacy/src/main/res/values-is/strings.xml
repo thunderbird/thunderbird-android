@@ -261,13 +261,19 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_confirm_menu_mark_all_read">Merkja öll skilaboð sem lesin</string>
   <string name="global_settings_confirm_action_delete_notif">Eyða (úr tilkynningu)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Aðgerðir við stroku</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Strjúka til hægri</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Strjúka til vinstri</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Engin</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Víxla völdu</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Merkja sem lesið/ólesið</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Bæta við/fjarlægja stjörnu</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Geymsla</string>
   <!--Name of the swipe action to delete a message-->
@@ -1055,4 +1061,24 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
   <string name="push_info_configure_notification_action">Stilla tilkynningu</string>
   <string name="push_info_disable_push_text">Ef þú þarft ekki tilkynningar jafnharðan um ný skilaboð, ættirðu að gera ýtitilkynningar óvirkar og nota frekar vöktun (polling). Vöktun þýðir að athugað er með nýjan póst með reglulegu millibili og þarfnast ekki tilkynningarinnar.</string>
   <string name="push_info_disable_push_action">Gera ýtitilkynningar óvirkar</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Velja</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Afvelja</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Merkja sem lesið</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Merkja sem ólesið</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Bæta við stjörnu</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Fjarlægja stjörnu</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Geymsla</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Fjarlægja</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Ruslpóstur</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Færa…</string>
 </resources>

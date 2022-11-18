@@ -972,4 +972,22 @@ Anda dapat menyimpan pesan ini dan menggunakannya sebagai cadangan untuk kunci r
   <string name="permission_contacts_rationale_title">Izinkan akses ke kontak</string>
   <string name="permission_contacts_rationale_message">Untuk dapat memberikan saran kontak dan untuk menampilkan nama kontak dan foto, aplikasi perlu akses ke kontak Anda.</string>
   <string name="generic_loading_error">Terjadi kesalahan saat memuat data</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Pilih</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Hapus pilihan</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Tandai belum dibaca</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Tambah bintang</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Buang bintang</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arsipkan</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Hapus</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

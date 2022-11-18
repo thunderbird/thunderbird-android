@@ -1075,4 +1075,24 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <string name="push_info_configure_notification_action">Skonfiguruj powiadomienie</string>
   <string name="push_info_disable_push_text">Jeśli nie potrzebujesz natychmiastowych powiadomień o nowych wiadomościach, wyłącz notyfikacje push i użyj regularnego odpytywania. Odpytywanie w regularnych odstępach czasu sprawdza nową pocztę i nie wymaga powiadomienia.</string>
   <string name="push_info_disable_push_action">Wyłącz powiadomienia push</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Zaznacz</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Odznacz</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Oznacz jako przeczytane</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Oznacz jako nieprzeczytane</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Dodaj gwiazdkę</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Usuń gwiazdkę</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archiwizuj</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Usuń</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Przenieś…</string>
 </resources>

@@ -12,6 +12,8 @@
   <string name="app_license">Apache licence, Versija 2.0</string>
   <string name="about_project_title">Atvērtā koda projekts</string>
   <string name="about_website_title">Tīmekļvietne</string>
+  <string name="user_manual_title">Lietotāja rokasgrāmata</string>
+  <string name="get_help_title">Saņemt palīdzību</string>
   <string name="user_forum_title">Lietotāju forums</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -104,6 +106,7 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="search_action">Meklēt</string>
   <string name="search_everywhere_action">Meklēt visur</string>
   <string name="search_results">Meklēšanas rezultāti</string>
+  <string name="new_messages_title">Jaunas vēstules</string>
   <string name="preferences_action">Iestatījumi</string>
   <string name="folders_action">Pārvaldīt mapes</string>
   <string name="account_settings_action">Konta iestatījumi</string>
@@ -114,6 +117,7 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="flag_action">Pievienot zvaigznīti</string>
   <string name="unflag_action">Noņemt zvaigznīti</string>
   <string name="copy_action">Kopēt</string>
+  <string name="unsubscribe_action">Atrakstīties</string>
   <string name="show_headers_action">Rādīt vēstules papildinformāciju</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="zero">Adrese nokopēta starpliktuvē</item>
@@ -161,12 +165,15 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="notification_action_archive">Arhīvs</string>
   <string name="notification_action_archive_all">Arhivēt visu</string>
   <string name="notification_action_spam">Surogātpasts</string>
+  <string name="notification_certificate_error_public">Sertifikāta kļūda</string>
   <string name="notification_certificate_error_title">Sertifikāta kļūda kontam <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Pārbaudiet sava servera iestatījumus</string>
   <string name="notification_authentication_error_title">Identitātes pārbaude neizdevās</string>
   <string name="notification_authentication_error_text">Identifikācijas pārbaude kontam <xliff:g id="account">%s</xliff:g> neizdevās. Atjaunojiet servera iestatījumus!</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Paziņojuma kļūda</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Neizdevās izveidot sistēmas paziņojumu par jaunu vēstuli. Iespējams, ka trūkst paziņojuma skaņas. \n\nPieskarieties, lai atvērtu paziņojumu iestatījumus.</string>
   <string name="notification_bg_sync_ticker">Pārbauda pastu: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Pārbauda pastu</string>
   <string name="notification_bg_send_ticker">Sūta pastu: <xliff:g id="account">%s</xliff:g></string>
@@ -238,6 +245,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="global_settings_show_contact_name_summary">Izmantot vārdus no kontaktu saraksta, kad vien iespējams</string>
   <string name="global_settings_registered_name_color_label">Iekrāsot kontaktus</string>
   <string name="global_settings_registered_name_color_changed">Iekrāsot vārdus kontaktu sarakstā</string>
+  <string name="general_settings_contact_name_color_label">Kontakta vārda krāsa</string>
   <string name="global_settings_messageview_fixedwidth_label">Fiksēta platuma šrifti</string>
   <string name="global_settings_messageview_fixedwidth_summary">Izmantot fiksēta platuma šriftu, lai parādīt vienkārša teksta vēstules</string>
   <string name="global_settings_messageview_autofit_width_label">Automātiski ietilpināt vēstules</string>
@@ -255,13 +263,19 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="global_settings_confirm_menu_mark_all_read">Atzīmēt visas vēstules kā izlasītas</string>
   <string name="global_settings_confirm_action_delete_notif">Dzēst (no paziņojuma)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Pavilkšanas darbības</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Pavilkt pa labi</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Pavilkt pa kreisi</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Neviens</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Pārslēgt izvēli</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Atzīmēt kā izlasītu/nelasītu</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Pielikt/noņemt zvaigznīti</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Arhīvs</string>
   <!--Name of the swipe action to delete a message-->
@@ -293,8 +307,11 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_basics_title">Uzlikt jaunu kontu</string>
   <string name="account_setup_basics_email_hint">E-pasta adrese</string>
   <string name="account_setup_basics_password_hint">Parole</string>
+  <string name="account_setup_oauth_description">Lai K-9 Pastā lietotu šo e-pasta kontu, jāpierakstās kontā un jādod atļauja piekļūt saviem e-pastiem.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Pierakstīties</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Pierakstīties ar Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Lai apskatītos savu paroli, ieslēdziet ekrāna bloķēšanu savā ierīcē.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Apstiprināt savu identitāti</string>
@@ -318,6 +335,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_auth_type_insecure_password">Parole bez drošās pārraides</string>
   <string name="account_setup_auth_type_encrypted_password">Šifrēta parole</string>
   <string name="account_setup_auth_type_tls_client_certificate">Klienta sertifikāts</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Ienākošā servera iestatījumi</string>
   <string name="account_setup_incoming_username_label">Lietotāja vārds</string>
   <string name="account_setup_incoming_password_label">Parole</string>
@@ -336,6 +354,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_incoming_delete_policy_never_label">Nedzēst to no servera</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Izdzēst to no servera</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Atzīmēt kā izlasītu uz servera</string>
+  <string name="account_setup_incoming_use_compression">Izmantot saspiešanu</string>
   <string name="account_setup_expunge_policy_label">Izdzēst vēstules arī no servera</string>
   <string name="account_setup_expunge_policy_immediately">Uzreiz</string>
   <string name="account_setup_expunge_policy_on_poll">Pārbaudes laikā</string>
@@ -400,6 +419,10 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Nepareizs lietotāja vārds vai parole.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Serveris norādīja nederīgu SSL sertifikātu. Dažreiz tas ir servera nepareizas konfigurācijas dēļ. Citreiz to izraisījis mēģinājums uzlaust Jūsu e-pasta serveri. Ja nav pārliecības, kas par vainu, nospiediet "Noraidīt" un sazinieties ar sava e-pasta severa uzturētājiem.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Nevar savienoties ar serveri.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizācija atcelta</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizācija atcelta šādas kļūdas dēļ: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 šobrīd netiek nodrošināta.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Lietotnei neizdevās atrast pārlūku, lai saņemtu piekļuvi Jūsu kontam.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Rediģēt informāciju</string>
   <string name="account_setup_failed_dlg_continue_action">Turpināt</string>
   <string name="account_settings_push_advanced_title">Papildus</string>
@@ -554,11 +577,29 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_description_label">Konta nosaukums</string>
   <string name="account_settings_name_label">Jūsu vārds</string>
   <string name="notifications_title">Paziņojumi</string>
+  <string name="account_settings_vibration">Vibrācija</string>
   <string name="account_settings_vibrate_enable">Vibrēt</string>
+  <string name="account_settings_vibrate_pattern_label">Vibrācijas veids</string>
   <string name="account_settings_vibrate_pattern_default">Noklusējums</string>
+  <string name="account_settings_vibrate_pattern_1">1. veids</string>
+  <string name="account_settings_vibrate_pattern_2">2. veids</string>
+  <string name="account_settings_vibrate_pattern_3">3. veids</string>
+  <string name="account_settings_vibrate_pattern_4">4. veids</string>
+  <string name="account_settings_vibrate_pattern_5">5. veids</string>
   <string name="account_settings_vibrate_times">Atkārtot vibrēšanu</string>
+  <string name="account_settings_vibrate_summary_disabled">Atslēgts</string>
   <string name="account_settings_ringtone">Jauna pasta skaņas signāls</string>
+  <string name="account_settings_notification_light_label">Paziņojuma gaisma</string>
+  <string name="account_settings_notification_light_disabled">Atslēgts</string>
   <string name="account_settings_notification_light_account_color">Konta krāsa</string>
+  <string name="account_settings_notification_light_default_color">Sistēmas noklusējuma krāsa</string>
+  <string name="account_settings_notification_light_white">Balta</string>
+  <string name="account_settings_notification_light_red">Sarkana</string>
+  <string name="account_settings_notification_light_green">Zaļa</string>
+  <string name="account_settings_notification_light_blue">Zila</string>
+  <string name="account_settings_notification_light_yellow">Dzeltena</string>
+  <string name="account_settings_notification_light_cyan">Ciānkrāsa</string>
+  <string name="account_settings_notification_light_magenta">Sarkana anilīnkrāsa</string>
   <string name="account_settings_composition_title">Vēstules rakstīšanas iespējas</string>
   <string name="account_settings_composition_label">Rakstīšanas noklusējuma iestatījumi</string>
   <string name="account_settings_composition_summary">Norādīt Jūsu noklusējuma \'No\', Bcc un parakstu</string>
@@ -663,6 +704,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_push_limit_1000">1000 mapes</string>
   <string name="animations_title">Animācija</string>
   <string name="animations_summary">Izmantot spilgtus vizuālos efektus</string>
+  <string name="volume_navigation_title">Navigācija ar skaļuma taustiņu vēstules skatā</string>
   <string name="show_unified_inbox_title">Rādīt apvienoto pastkasti</string>
   <string name="show_starred_count_title">Parādīt atzīmēto vēstuļu skaitu</string>
   <string name="integrated_inbox_title">Apvienotā pastkaste</string>
@@ -754,13 +796,16 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Lūdzu, ievadiet paroles</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Lūdzu, pierakstieties!</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Lūdzu, pierakstieties un ievadiet paroles!</string>
   <string name="settings_import_failure">Neizdevās importēt iestatījumus</string>
   <string name="settings_import_read_failure">Neizdevās nolasīt iestatījumu datni</string>
   <string name="settings_import_partial_failure">Neizdevās importēt dažus iestatījumus</string>
   <string name="settings_import_status_success">Importēts veiksmīgi</string>
   <string name="settings_import_status_password_required">Nepieciešama parole</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Nepieciešama pierakstīšanās</string>
   <string name="settings_import_status_not_imported">Nav importēts</string>
   <string name="settings_import_status_error">Importēšana neizdevās</string>
   <string name="settings_import_later_button">Vēlāk</string>
@@ -1023,4 +1068,22 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <string name="push_info_configure_notification_action">Iestatīt paziņojumu</string>
   <string name="push_info_disable_push_text">Ja nevēlaties saņemt paziņojumus par jaunām vēstulēm, atslēdziet lejupielādēšanu un izmantojiet pārbaudīšanu. Pārbaudē ik pēc noteikta laikā tiek noskaidrots, vai nav saņemts jauns pasts, un tai nav vajadzīgs paziņojums.</string>
   <string name="push_info_disable_push_action">Atslēgt lejupielādēšanu</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Atzīmēt</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Noņemt atzīmi</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Atzīmēt kā nelasītu</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Pievienot zvaigznīti</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Noņemt zvaigznīti</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arhīvs</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Dzēst</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Surogātpasts</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

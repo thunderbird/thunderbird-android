@@ -36,7 +36,7 @@ class AccountRemover(
 
         preferences.deleteAccount(account)
 
-        localKeyStoreManager.deleteCertificates(account)
+        removeCertificates(account)
         Core.setServicesEnabled()
 
         Timber.v("Finished removing account '%s'.", accountName)
@@ -60,6 +60,14 @@ class AccountRemover(
             backendManager.removeBackend(account)
         } catch (e: Exception) {
             Timber.e(e, "Failed to reset remote store for account %s", account)
+        }
+    }
+
+    private fun removeCertificates(account: Account) {
+        try {
+            localKeyStoreManager.deleteCertificates(account)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to remove certificates for account %s", account)
         }
     }
 }

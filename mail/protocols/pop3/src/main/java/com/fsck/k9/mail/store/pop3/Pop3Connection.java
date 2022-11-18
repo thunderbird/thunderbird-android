@@ -5,9 +5,10 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.MessageDigest;
@@ -61,15 +62,7 @@ class Pop3Connection {
 
     void open() throws MessagingException {
         try {
-            SocketAddress socketAddress = new InetSocketAddress(settings.getHost(), settings.getPort());
-            if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                socket = trustedSocketFactory.createSocket(null, settings.getHost(),
-                        settings.getPort(), settings.getClientCertificateAlias());
-            } else {
-                socket = new Socket();
-            }
-
-            socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+            socket = connect();
             in = new BufferedInputStream(socket.getInputStream(), 1024);
             out = new BufferedOutputStream(socket.getOutputStream(), 512);
 
@@ -100,6 +93,44 @@ class Pop3Connection {
         } catch (IOException ioe) {
             throw new MessagingException("Unable to open connection to POP server.", ioe);
         }
+    }
+
+    private Socket connect()
+            throws IOException, MessagingException, NoSuchAlgorithmException, KeyManagementException {
+        InetAddress[] inetAddresses = InetAddress.getAllByName(settings.getHost());
+
+        IOException connectException = null;
+        for (InetAddress address : inetAddresses) {
+            try {
+                return connectToAddress(address);
+            } catch (IOException e) {
+                Timber.w(e, "Could not connect to %s", address);
+                connectException = e;
+            }
+        }
+
+        throw connectException != null ? connectException : new UnknownHostException();
+    }
+
+    private Socket connectToAddress(InetAddress address)
+            throws IOException, MessagingException, NoSuchAlgorithmException, KeyManagementException {
+        if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_POP3) {
+            Timber.d("Connecting to %s as %s", settings.getHost(), address);
+        }
+
+        InetSocketAddress socketAddress = new InetSocketAddress(address, settings.getPort());
+
+        final Socket socket;
+        if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            socket = trustedSocketFactory.createSocket(null, settings.getHost(), settings.getPort(),
+                    settings.getClientCertificateAlias());
+        } else {
+            socket = new Socket();
+        }
+
+        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+
+        return socket;
     }
 
     /*

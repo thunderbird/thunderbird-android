@@ -1070,4 +1070,22 @@ Mae\'n bosib i ti gadw\'r neges hon a\'i ddefnyddio wrth gefn fel dy allwedd gyf
   <string name="push_info_configure_notification_action">Ffurfweddu hysbysiad</string>
   <string name="push_info_disable_push_text">Os nad wyt angen hysbysiadau ar unwaith am negeseuon newydd, analluoga Gwthio a defnyddio Gwirio. Mae Gwirio yn edrych am negeseuon newydd ar gyfnodau rheolaidd heb fod angen yr hysbysiad parhaus.</string>
   <string name="push_info_disable_push_action">Analluogi Gwthio</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Dewis</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Dad-ddewis</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Nodi heb ei darllen</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Ychwanegu seren</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Tynnu seren</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archif</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Dileu</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Sbam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>
