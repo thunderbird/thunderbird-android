@@ -12,7 +12,6 @@
     android:paddingRight="16dp"
     android:paddingTop="4dp"
     android:singleLine="true"
-    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
     android:textColor="?attr/colorAccent"
-    android:textStyle="bold"
     tools:text="Divider" />
