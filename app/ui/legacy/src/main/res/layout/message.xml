@@ -39,6 +39,11 @@
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
+            <Space
+                android:id="@+id/line_of_death"
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
             <com.fsck.k9.view.ToolableViewAnimator
                 android:id="@+id/message_layout_animator"
                 android:layout_width="match_parent"
