@@ -158,9 +158,7 @@ class MessageViewFragment :
             onToggleFlagged()
         }
 
-        messageTopView.setOnMenuItemClickListener { item ->
-            onReplyMenuItemClicked(item.itemId)
-        }
+        messageTopView.setOnMenuItemClickListener(::onReplyMenuItemClicked)
 
         messageTopView.setOnDownloadButtonClickListener {
             onDownloadButtonClicked()
@@ -381,7 +379,7 @@ class MessageViewFragment :
         messageTopView.setSubject(displaySubject)
     }
 
-    private fun onReplyMenuItemClicked(itemId: Int): Boolean {
+    private fun onReplyMenuItemClicked(itemId: Int) {
         when (itemId) {
             R.id.reply -> onReply()
             R.id.reply_all -> onReplyAll()
@@ -390,8 +388,6 @@ class MessageViewFragment :
             R.id.share -> onSendAlternate()
             else -> error("Missing handler for reply menu item $itemId")
         }
-
-        return true
     }
 
     private fun onDownloadButtonClicked() {

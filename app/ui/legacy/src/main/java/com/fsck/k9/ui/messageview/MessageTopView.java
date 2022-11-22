@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
+
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -226,7 +226,7 @@ public class MessageTopView extends LinearLayout {
         mHeaderContainer.setOnFlagListener(listener);
     }
 
-    public void setOnMenuItemClickListener(OnMenuItemClickListener listener) {
+    public void setOnMenuItemClickListener(MessageHeaderOnMenuItemClickListener listener) {
         mHeaderContainer.setOnMenuItemClickListener(listener);
     }
 

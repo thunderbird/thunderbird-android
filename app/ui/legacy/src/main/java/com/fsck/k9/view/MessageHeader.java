@@ -1,6 +1,8 @@
 package com.fsck.k9.view;
 
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.util.AttributeSet;
@@ -12,9 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
@@ -26,8 +28,12 @@ import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.message.ReplyAction;
+import com.fsck.k9.message.ReplyActionStrategy;
+import com.fsck.k9.message.ReplyActions;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter;
+import com.fsck.k9.ui.messageview.MessageHeaderOnMenuItemClickListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -35,6 +41,7 @@ import com.google.android.material.snackbar.Snackbar;
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private static final int DEFAULT_SUBJECT_LINES = 3;
 
+    private final ReplyActionStrategy replyActionStrategy = DI.get(ReplyActionStrategy.class);
     private final FontSizes fontSizes = K9.getFontSizes();
 
     private Chip accountChip;
@@ -46,11 +53,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView toView;
     private TextView toCountView;
     private TextView dateView;
+    private ImageView menuPrimaryActionView;
 
     private MessageHelper messageHelper;
     private RelativeDateTimeFormatter relativeDateTimeFormatter;
 
-    private OnMenuItemClickListener onMenuItemClickListener;
+    private MessageHeaderOnMenuItemClickListener onMenuItemClickListener;
+    private ReplyActions replyActions;
 
 
     public MessageHeader(Context context, AttributeSet attrs) {
@@ -85,7 +94,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         subjectView.setOnClickListener(this);
         subjectView.setOnLongClickListener(this);
 
-        View menuPrimaryActionView = findViewById(R.id.menu_primary_action);
+        menuPrimaryActionView = findViewById(R.id.menu_primary_action);
         menuPrimaryActionView.setOnClickListener(this);
         menuPrimaryActionView.setOnLongClickListener(this);
 
@@ -102,15 +111,44 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         if (id == R.id.subject) {
             toggleSubjectViewMaxLines();
         } else if (id == R.id.menu_primary_action) {
-            Snackbar.make(getRootView(), "TODO: Perform primary action", Snackbar.LENGTH_LONG).show();
+            performPrimaryReplyAction();
         } else if (id == R.id.menu_overflow) {
-            PopupMenu popupMenu = new PopupMenu(getContext(), view);
-            popupMenu.setOnMenuItemClickListener(onMenuItemClickListener);
-            popupMenu.inflate(R.menu.single_message_options);
-            popupMenu.show();
+            showOverflowMenu(view);
         } else if (id == R.id.participants_container) {
             Snackbar.make(getRootView(), "TODO: Display details popup", Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    private void performPrimaryReplyAction() {
+        ReplyAction defaultAction = replyActions.getDefaultAction();
+        if (defaultAction == null) {
+            return;
+        }
+
+        switch (defaultAction) {
+            case REPLY: {
+                onMenuItemClickListener.onMenuItemClick(R.id.reply);
+                break;
+            }
+            case REPLY_ALL: {
+                onMenuItemClickListener.onMenuItemClick(R.id.reply_all);
+                break;
+            }
+            default: {
+                throw new IllegalStateException("Unknown reply action: " + defaultAction);
+            }
+        }
+    }
+
+    private void showOverflowMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.setOnMenuItemClickListener(item -> {
+            onMenuItemClickListener.onMenuItemClick(item.getItemId());
+            return true;
+        });
+        popupMenu.inflate(R.menu.single_message_options);
+        setAdditionalReplyActions(popupMenu);
+        popupMenu.show();
     }
 
     @Override
@@ -190,7 +228,51 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             dateView.setText("");
         }
 
+        setReplyActions(message, account);
+
         setVisibility(View.VISIBLE);
+    }
+
+    private void setReplyActions(Message message, Account account) {
+        ReplyActions replyActions = replyActionStrategy.getReplyActions(account, message);
+        this.replyActions = replyActions;
+
+        setDefaultReplyAction(replyActions.getDefaultAction());
+    }
+
+    private void setDefaultReplyAction(ReplyAction defaultAction) {
+        if (defaultAction == null) {
+            menuPrimaryActionView.setVisibility(View.GONE);
+        } else {
+            int replyIconResource = getReplyImageResource(defaultAction);
+            menuPrimaryActionView.setImageResource(replyIconResource);
+            menuPrimaryActionView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @DrawableRes
+    private int getReplyImageResource(@NonNull ReplyAction replyAction) {
+        switch (replyAction) {
+            case REPLY: {
+                return R.drawable.ic_reply;
+            }
+            case REPLY_ALL: {
+                return R.drawable.ic_reply_all;
+            }
+            default: {
+                throw new IllegalStateException("Unknown reply action: " + replyAction);
+            }
+        }
+    }
+
+    private void setAdditionalReplyActions(PopupMenu popupMenu) {
+        List<ReplyAction> additionalActions = replyActions.getAdditionalActions();
+        if (!additionalActions.contains(ReplyAction.REPLY)) {
+            popupMenu.getMenu().removeItem(R.id.reply);
+        }
+        if (!additionalActions.contains(ReplyAction.REPLY_ALL)) {
+            popupMenu.getMenu().removeItem(R.id.reply_all);
+        }
     }
 
     public void setSubject(@NonNull String subject) {
@@ -221,7 +303,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         cryptoStatusIcon.setColorFilter(color);
     }
 
-    public void setOnMenuItemClickListener(OnMenuItemClickListener onMenuItemClickListener) {
+    public void setOnMenuItemClickListener(MessageHeaderOnMenuItemClickListener onMenuItemClickListener) {
         this.onMenuItemClickListener = onMenuItemClickListener;
     }
 }
