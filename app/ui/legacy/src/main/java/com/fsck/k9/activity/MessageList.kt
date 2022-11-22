@@ -453,6 +453,9 @@ open class MessageList :
             val search = LocalSearch().apply {
                 isManualSearch = true
                 or(SearchCondition(SearchField.SENDER, SearchSpecification.Attribute.CONTAINS, query))
+                or(SearchCondition(SearchField.TO, SearchSpecification.Attribute.CONTAINS, query))
+                or(SearchCondition(SearchField.CC, SearchSpecification.Attribute.CONTAINS, query))
+                or(SearchCondition(SearchField.BCC, SearchSpecification.Attribute.CONTAINS, query))
                 or(SearchCondition(SearchField.SUBJECT, SearchSpecification.Attribute.CONTAINS, query))
                 or(SearchCondition(SearchField.MESSAGE_CONTENTS, SearchSpecification.Attribute.CONTAINS, query))
             }
