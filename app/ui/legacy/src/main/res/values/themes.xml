@@ -20,7 +20,8 @@
         <item name="colorPrimaryVariant">@color/material_blue_800</item>
         <item name="colorSecondary">@color/material_pink_400</item>
         <item name="colorSecondaryVariant">@color/material_pink_200</item>
-        <item name="messageHeaderBackground">@color/material_gray_100</item>
+        <item name="messageHeaderBackground">@color/material_gray_200</item>
+        <item name="extraMessageHeaderBackground">@color/material_gray_100</item>
         <item name="bottomBarBackground">@color/material_gray_50</item>
 
         <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>
@@ -175,6 +176,7 @@
         <item name="colorSecondary">@color/material_pink_300</item>
         <item name="colorSecondaryVariant">@color/material_pink_500</item>
         <item name="messageHeaderBackground">@color/material_gray_900</item>
+        <item name="extraMessageHeaderBackground">@color/material_gray_900</item>
         <item name="bottomBarBackground">@color/material_gray_900</item>
 
         <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>

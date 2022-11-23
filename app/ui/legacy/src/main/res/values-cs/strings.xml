@@ -228,7 +228,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="message_view_cc_label">Kopie:</string>
   <string name="message_view_bcc_label">Skrytá kopie (Bcc):</string>
   <string name="message_view_status_attachment_not_saved">Přílohu se nedaří uložit.</string>
-  <string name="message_view_show_pictures_action">Zobrazovat obrázky</string>
   <string name="message_view_no_viewer">Nelze nalézt prohlížeč pro <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Stáhnout úplnou zprávu</string>
   <string name="message_view_sender_label">přes %1$s</string>

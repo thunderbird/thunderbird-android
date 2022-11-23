@@ -224,7 +224,6 @@
   <string name="message_view_cc_label">رونوشت به:</string>
   <string name="message_view_bcc_label">مخفیانه به:</string>
   <string name="message_view_status_attachment_not_saved">نمی‌توان پیوست را ذخیره کرد.</string>
-  <string name="message_view_show_pictures_action">نمایش تصاویر</string>
   <string name="message_view_no_viewer">نمایش‌دهنده‌ای برای <xliff:g id="mimetype">%s</xliff:g> پیدا نشد.</string>
   <string name="message_view_download_remainder">دانلود پیام کامل</string>
   <string name="message_view_sender_label">از طریق %1$s</string>

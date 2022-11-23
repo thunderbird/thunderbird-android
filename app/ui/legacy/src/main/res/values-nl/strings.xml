@@ -219,7 +219,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="message_view_cc_label">CC:</string>
   <string name="message_view_bcc_label">BCC:</string>
   <string name="message_view_status_attachment_not_saved">Kan bijlage niet opslaan.</string>
-  <string name="message_view_show_pictures_action">Afbeeldingen tonen</string>
   <string name="message_view_no_viewer">Niet in staat viewer te vinden voor <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Compleet bericht downloaden</string>
   <string name="message_view_sender_label">via %1$s</string>

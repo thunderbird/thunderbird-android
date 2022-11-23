@@ -222,7 +222,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="message_view_cc_label">抄送：</string>
   <string name="message_view_bcc_label">密送:</string>
   <string name="message_view_status_attachment_not_saved">无法保存附件。</string>
-  <string name="message_view_show_pictures_action">显示图片</string>
   <string name="message_view_no_viewer">无法打开<xliff:g id="mimetype">%s</xliff:g>。找不到可以阅读该文件的程序。</string>
   <string name="message_view_download_remainder">下载完整邮件</string>
   <string name="message_view_sender_label">通过  %1$s</string>

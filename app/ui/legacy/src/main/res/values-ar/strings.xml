@@ -208,7 +208,6 @@
   <string name="message_view_cc_label">نسخة كربونية :</string>
   <string name="message_view_bcc_label">نسخة مخفية:</string>
   <string name="message_view_status_attachment_not_saved">غير قادر على حفظ المُرفَق.</string>
-  <string name="message_view_show_pictures_action">اظهر الصور</string>
   <string name="message_view_no_viewer">يتعذر إيجاب تطبيق لعرض <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">تنزيل الرسالة كاملةً</string>
   <string name="message_view_sender_label">عبر %1$s</string>

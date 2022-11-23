@@ -229,7 +229,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Methu â chadw\'r atodiad.</string>
-  <string name="message_view_show_pictures_action">Dangos delweddau</string>
   <string name="message_view_no_viewer">Methwyd cael hyd i ap er mwyn darllen <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Lawrlwytho\'r neges gyfan</string>
   <string name="message_view_sender_label">trwy %1$s</string>

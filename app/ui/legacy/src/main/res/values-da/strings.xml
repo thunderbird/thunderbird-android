@@ -218,7 +218,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Kunne ikke gemme vedhæftning.</string>
-  <string name="message_view_show_pictures_action">Vis billeder</string>
   <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hent hele meddelelsen</string>
   <string name="message_view_sender_label">via %1$s</string>

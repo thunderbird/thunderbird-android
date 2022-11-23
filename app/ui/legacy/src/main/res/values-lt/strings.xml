@@ -226,7 +226,6 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Nepavyko išsaugoti priedo.</string>
-  <string name="message_view_show_pictures_action">Rodyti paveikslėlius</string>
   <string name="message_view_no_viewer">Nepavyko rasto <xliff:g id="mimetype">%s</xliff:g> peržiūros programos.</string>
   <string name="message_view_download_remainder">Parsiųsti visą laišką</string>
   <string name="message_view_sender_label">per %1$s</string>

@@ -219,7 +219,6 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Kin bylage net bewarje.</string>
-  <string name="message_view_show_pictures_action">Ofbyldingen toane</string>
   <string name="message_view_no_viewer">Gjin viewer te finen foar <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Folslein berjocht downloade</string>
   <string name="message_view_sender_label">fia %1$s</string>

@@ -2,7 +2,7 @@
 <com.fsck.k9.ui.messageview.MessageTopView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/message_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,19 +25,25 @@
             <!-- Header area -->
             <include layout="@layout/message_view_header"/>
 
-            <Button
-                android:id="@+id/show_pictures"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:id="@+id/extra_header_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginBottom="4dip"
-                android:layout_marginLeft="6dip"
-                android:layout_marginRight="6dip"
-                android:layout_marginTop="4dip"
-                android:text="@string/message_view_show_pictures_action"
+                android:background="?attr/extraMessageHeaderBackground"
+                android:paddingVertical="4dp"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible">
+
+                <Button
+                    android:id="@+id/show_pictures"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/message_view_show_remote_images_action"
+                    app:icon="@drawable/ic_attachment_image" />
+
+            </FrameLayout>
 
             <Space
                 android:id="@+id/line_of_death"
@@ -50,7 +56,7 @@
                 android:layout_height="match_parent"
                 android:inAnimation="@anim/fade_in"
                 android:outAnimation="@anim/fade_out"
-                custom:previewInitialChild="1">
+                app:previewInitialChild="1">
 
                 <View
                     android:layout_width="wrap_content"

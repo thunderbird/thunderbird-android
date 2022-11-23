@@ -264,7 +264,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment.</string>
-    <string name="message_view_show_pictures_action">Show pictures</string>
+
+    <!-- Text of the button that is displayed below the message header when the message body references one or more remote images -->
+    <string name="message_view_show_remote_images_action">Show remote images</string>
+
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>
     <string name="message_view_sender_label">via %1$s</string>
