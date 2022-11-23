@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.TooltipCompat;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
@@ -96,11 +97,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         menuPrimaryActionView = findViewById(R.id.menu_primary_action);
         menuPrimaryActionView.setOnClickListener(this);
-        menuPrimaryActionView.setOnLongClickListener(this);
 
         View menuOverflowView = findViewById(R.id.menu_overflow);
         menuOverflowView.setOnClickListener(this);
-        menuOverflowView.setOnLongClickListener(this);
+        String menuOverflowDescription =
+                getContext().getString(androidx.appcompat.R.string.abc_action_menu_overflow_description);
+        TooltipCompat.setTooltipText(menuOverflowView, menuOverflowDescription);
 
         findViewById(R.id.participants_container).setOnClickListener(this);
     }
@@ -246,6 +248,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         } else {
             int replyIconResource = getReplyImageResource(defaultAction);
             menuPrimaryActionView.setImageResource(replyIconResource);
+
+            String replyActionName = getReplyActionName(defaultAction);
+            TooltipCompat.setTooltipText(menuPrimaryActionView, replyActionName);
+
             menuPrimaryActionView.setVisibility(View.VISIBLE);
         }
     }
@@ -258,6 +264,22 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             }
             case REPLY_ALL: {
                 return R.drawable.ic_reply_all;
+            }
+            default: {
+                throw new IllegalStateException("Unknown reply action: " + replyAction);
+            }
+        }
+    }
+
+    @NonNull
+    private String getReplyActionName(@NonNull ReplyAction replyAction) {
+        Context context = getContext();
+        switch (replyAction) {
+            case REPLY: {
+                return context.getString(R.string.reply_action);
+            }
+            case REPLY_ALL: {
+                return context.getString(R.string.reply_all_action);
             }
             default: {
                 throw new IllegalStateException("Unknown reply action: " + replyAction);
