@@ -2,6 +2,7 @@
 <resources>
 
     <declare-styleable name="K9Styles">
+        <attr name="toolbarColor" format="reference|color" />
         <attr name="bottomBarBackground" format="reference|color" />
         <attr name="iconUnifiedInbox" format="reference" />
         <attr name="iconFolder" format="reference" />

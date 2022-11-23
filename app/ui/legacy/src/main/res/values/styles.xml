@@ -107,5 +107,17 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="Widget.K9.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">?attr/toolbarColor</item>
+        <item name="titleTextColor">?android:attr/textColorPrimary</item>
+        <item name="subtitleTextColor">?android:attr/textColorSecondary</item>
+        <item name="android:theme">@style/ThemeOverlay.K9.Toolbar</item>
+    </style>
+
+    <style name="ThemeOverlay.K9.Toolbar" parent="">
+        <item name="colorControlNormal">?android:attr/textColorSecondary</item>
+        <item name="actionMenuTextColor">?android:attr/textColorSecondary</item>
+    </style>
+
 </resources>
 
