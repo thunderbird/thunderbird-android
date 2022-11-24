@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.400" versioncode="34000" date="2022-11-28">
+        <change>Added swipe actions to the message list screen</change>
+        <change>Added support for swiping between messages</change>
+        <change>Added a monochromatic app icon for Android 13</change>
+        <change>Fixed "K-9 Accounts" shortcuts (please remove existing shortcuts and add them again)</change>
+        <change>Fixed error reporting for (old) send failures</change>
+        <change>A lot of other bug fixes; see changes for versions 6.3xx</change>
+        <change>Added Western Frisian translation and updated others</change>
+    </release>
     <release version="6.312" versioncode="33012" date="2022-11-15">
         <change>Tweaked swipe actions in the message list screen</change>
         <change>Fixed a bug where canceling account setup was showing a new account in the side drawer</change>
