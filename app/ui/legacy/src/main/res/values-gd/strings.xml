@@ -180,7 +180,6 @@
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Cha b’ urrainn dhuinn an ceanglachan a shàbhaladh.</string>
-  <string name="message_view_show_pictures_action">Seall na dealbhan</string>
   <string name="message_view_no_viewer">Chan urrainn dhuinn aplacaid a lorg a sheallas <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Luchdaich a-nuas an teachdaireachd shlàn</string>
   <string name="message_view_sender_label">slighe %1$s</string>

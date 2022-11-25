@@ -129,7 +129,6 @@
   <string name="message_view_from_format">Desde: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
-  <string name="message_view_show_pictures_action">Mostrar imaxes</string>
   <string name="message_view_no_viewer">Non é posible atopar un visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
   <string name="from_same_sender">Máis deste remitente</string>

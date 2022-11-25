@@ -224,7 +224,6 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="message_view_cc_label">Kopia:</string>
   <string name="message_view_bcc_label">Blindkopia:</string>
   <string name="message_view_status_attachment_not_saved">Det går inte att spara bilaga.</string>
-  <string name="message_view_show_pictures_action">Visa bilder</string>
   <string name="message_view_no_viewer">Kan inte hitta visare för <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hämta hela meddelandet</string>
   <string name="message_view_sender_label">via %1$s</string>

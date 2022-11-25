@@ -223,7 +223,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="message_view_cc_label">CC:</string>
   <string name="message_view_bcc_label">BCC:</string>
   <string name="message_view_status_attachment_not_saved">Anhang konnte nicht gespeichert werden</string>
-  <string name="message_view_show_pictures_action">Bilder herunterladen</string>
   <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
   <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
   <string name="message_view_sender_label">über %1$s</string>
