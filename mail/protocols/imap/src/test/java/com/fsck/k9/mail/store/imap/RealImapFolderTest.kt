@@ -1066,7 +1066,7 @@ class RealImapFolderTest {
 
         folder.search("query", emptySet(), emptySet(), false)
 
-        assertCommandIssued("UID SEARCH OR SUBJECT \"query\" FROM \"query\"")
+        assertCommandIssued("""UID SEARCH OR OR OR OR SUBJECT "query" FROM "query" TO "query" CC "query" BCC "query"""")
     }
 
     @Test
