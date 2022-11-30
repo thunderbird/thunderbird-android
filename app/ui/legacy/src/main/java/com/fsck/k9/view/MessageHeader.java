@@ -1,10 +1,17 @@
 package com.fsck.k9.view;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Iterator;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,14 +28,17 @@ import androidx.appcompat.widget.TooltipCompat;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
+import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.message.ReplyAction;
 import com.fsck.k9.message.ReplyActionStrategy;
 import com.fsck.k9.message.ReplyActions;
@@ -52,12 +62,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView fromView;
     private ImageView cryptoStatusIcon;
     private TextView toView;
-    private TextView toCountView;
     private TextView dateView;
     private ImageView menuPrimaryActionView;
 
     private MessageHelper messageHelper;
     private RelativeDateTimeFormatter relativeDateTimeFormatter;
+    private Contacts contacts;
 
     private MessageHeaderOnMenuItemClickListener onMenuItemClickListener;
     private ReplyActions replyActions;
@@ -69,6 +79,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         if (!isInEditMode()) {
             messageHelper = MessageHelper.getInstance(getContext());
             relativeDateTimeFormatter = DI.get(RelativeDateTimeFormatter.class);
+            contacts = Contacts.getInstance(context);
         }
     }
 
@@ -83,14 +94,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         fromView = findViewById(R.id.from);
         cryptoStatusIcon = findViewById(R.id.crypto_status_icon);
         toView = findViewById(R.id.to);
-        toCountView = findViewById(R.id.to_count);
         dateView = findViewById(R.id.date);
 
         fontSizes.setViewTextSize(subjectView, fontSizes.getMessageViewSubject());
         fontSizes.setViewTextSize(dateView, fontSizes.getMessageViewDate());
         fontSizes.setViewTextSize(fromView, fontSizes.getMessageViewSender());
         fontSizes.setViewTextSize(toView, fontSizes.getMessageViewRecipients());
-        fontSizes.setViewTextSize(toCountView, fontSizes.getMessageViewRecipients());
 
         subjectView.setOnClickListener(this);
         subjectView.setOnLongClickListener(this);
@@ -230,9 +239,83 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             dateView.setText("");
         }
 
+        toView.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
+                int leftWas, int topWas, int rightWas, int bottomWas) -> showRecipients(message, account));
         setReplyActions(message, account);
 
         setVisibility(View.VISIBLE);
+    }
+
+    private void showRecipients(Message message, Account account) {
+        ArrayList<Address> recipients = new ArrayList<>();
+        recipients.addAll(Arrays.asList(message.getRecipients(RecipientType.TO)));
+        recipients.addAll(Arrays.asList(message.getRecipients(RecipientType.CC)));
+        recipients.addAll(Arrays.asList(message.getRecipients(RecipientType.BCC)));
+
+        boolean sentToMe = false;
+        for (Identity identity : account.getIdentities()) {
+            if (removeAddress(recipients, identity.getEmail())) {
+                sentToMe = true;
+            }
+        }
+
+        if (recipients.size() <= 1) {
+            // If there is exactly one recipient, always show it (truncated by Android).
+            toView.setText(concatRecipients(recipients, recipients.size(), sentToMe, contacts));
+            return;
+        }
+
+        final Contacts contacts = K9.isShowContactName() ? this.contacts : null;
+        int recipientsToShow = 0;
+        for (; recipientsToShow <= recipients.size(); recipientsToShow++) {
+            CharSequence text = concatRecipients(recipients, recipientsToShow, sentToMe, contacts);
+            float length = toView.getPaint().measureText(text, 0, text.length());
+            if (length >= toView.getWidth()) {
+                break;
+            }
+        }
+        recipientsToShow--; // Either it is one too much (too wide) or one too much (out of bounds in for loop)
+        if (recipientsToShow < 0) {
+            recipientsToShow = 0;
+        }
+        toView.setText(concatRecipients(recipients, recipientsToShow, sentToMe, contacts));
+    }
+
+    private CharSequence concatRecipients(ArrayList<Address> recipients,
+            int numOfRecipients, boolean sentToMe, Contacts contacts) {
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+        stringBuilder.append(getContext().getString(R.string.message_to_label));
+        stringBuilder.append(" ");
+        if (sentToMe) {
+            stringBuilder.append(getContext().getString(R.string.message_to_me_label));
+            if (numOfRecipients > 0) {
+                stringBuilder.append(", ");
+            }
+        }
+        stringBuilder.append(MessageHelper.toFriendly(
+                recipients.subList(0, numOfRecipients).toArray(new Address[0]), contacts));
+        if (numOfRecipients < recipients.size()) {
+            if (numOfRecipients > 0) {
+                stringBuilder.append(",");
+            }
+            int plusOneLengthBefore = stringBuilder.length();
+            stringBuilder.append(String.format(Locale.getDefault(), " +%d", recipients.size() - numOfRecipients));
+            stringBuilder.setSpan(new ForegroundColorSpan(
+                    ThemeUtils.getStyledColor(getContext(), android.R.attr.colorPrimary)),
+                    plusOneLengthBefore, stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return stringBuilder;
+    }
+
+    private boolean removeAddress(ArrayList<Address> list, String searchedAddress) {
+        for (Iterator<Address> iterator = list.iterator(); iterator.hasNext(); ) {
+            Address a = iterator.next();
+            if (a.getAddress().equals(searchedAddress)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
 
     private void setReplyActions(Message message, Account account) {
