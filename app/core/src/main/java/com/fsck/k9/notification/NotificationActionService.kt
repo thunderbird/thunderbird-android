@@ -11,22 +11,43 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessageReferenceHelper
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.Flag
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import timber.log.Timber
 
 class NotificationActionService : Service() {
     private val preferences: Preferences by inject()
     private val messagingController: MessagingController by inject()
+    private val coroutineScope: CoroutineScope by inject(named("AppCoroutineScope"))
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Timber.i("NotificationActionService started with startId = %d", startId)
 
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID) ?: error("Missing account UUID")
+        startHandleCommand(intent)
+
+        return START_NOT_STICKY
+    }
+
+    private fun startHandleCommand(intent: Intent) {
+        coroutineScope.launch(Dispatchers.IO) {
+            handleCommand(intent)
+        }
+    }
+
+    private fun handleCommand(intent: Intent) {
+        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID)
+        if (accountUuid == null) {
+            Timber.w("Missing account UUID.")
+            return
+        }
 
         val account = preferences.getAccount(accountUuid)
         if (account == null) {
             Timber.w("Could not find account for notification action.")
-            return START_NOT_STICKY
+            return
         }
 
         when (intent.action) {
@@ -38,8 +59,6 @@ class NotificationActionService : Service() {
         }
 
         cancelNotifications(intent, account)
-
-        return START_NOT_STICKY
     }
 
     override fun onBind(intent: Intent): IBinder? {
