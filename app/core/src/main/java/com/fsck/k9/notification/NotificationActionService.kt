@@ -26,14 +26,15 @@ class NotificationActionService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Timber.i("NotificationActionService started with startId = %d", startId)
 
-        startHandleCommand(intent)
+        startHandleCommand(intent, startId)
 
         return START_NOT_STICKY
     }
 
-    private fun startHandleCommand(intent: Intent) {
+    private fun startHandleCommand(intent: Intent, startId: Int) {
         coroutineScope.launch(Dispatchers.IO) {
             handleCommand(intent)
+            stopSelf(startId)
         }
     }
 
