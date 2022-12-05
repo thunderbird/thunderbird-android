@@ -29,6 +29,10 @@
 -dontnote com.fsck.k9.ui.messageview.**
 -dontnote com.fsck.k9.view.**
 
+-assumevalues class * extends android.view.View {
+    boolean isInEditMode() return false;
+}
+
 -keep public class org.openintents.openpgp.**
 
 -keepclassmembers class * extends androidx.appcompat.widget.SearchView {
