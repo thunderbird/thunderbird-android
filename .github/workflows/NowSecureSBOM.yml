@@ -50,7 +50,7 @@ jobs:
         uses: nowsecure/nowsecure-sbom-action@v2
         timeout-minutes: 120
         with:
-          token: ${{ secrets.NS_TOKEN }}
+          platform_token: ${{ secrets.NS_TOKEN }}
           app_file: "k9mail-debug.apk"	 # REPLACE: The path to an .ipa or .apk
           group_id: "602abed9-4c66-453d-8431-da0195b682de"         # REPLACE: NowSecure Group ID
   
