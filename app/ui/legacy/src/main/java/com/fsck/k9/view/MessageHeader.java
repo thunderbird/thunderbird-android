@@ -25,7 +25,10 @@ import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
+import com.fsck.k9.helper.RealAddressFormatter;
+import com.fsck.k9.helper.RealContactNameProvider;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -34,7 +37,10 @@ import com.fsck.k9.message.ReplyActionStrategy;
 import com.fsck.k9.message.ReplyActions;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter;
+import com.fsck.k9.ui.messageview.DisplayRecipients;
+import com.fsck.k9.ui.messageview.DisplayRecipientsExtractor;
 import com.fsck.k9.ui.messageview.MessageHeaderOnMenuItemClickListener;
+import com.fsck.k9.ui.messageview.RecipientNamesView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -51,8 +57,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private ImageView contactPictureView;
     private TextView fromView;
     private ImageView cryptoStatusIcon;
-    private TextView toView;
-    private TextView toCountView;
+    private RecipientNamesView recipientNamesView;
     private TextView dateView;
     private ImageView menuPrimaryActionView;
 
@@ -82,15 +87,17 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         contactPictureView = findViewById(R.id.contact_picture);
         fromView = findViewById(R.id.from);
         cryptoStatusIcon = findViewById(R.id.crypto_status_icon);
-        toView = findViewById(R.id.to);
-        toCountView = findViewById(R.id.to_count);
+        recipientNamesView = findViewById(R.id.recipients);
         dateView = findViewById(R.id.date);
 
         fontSizes.setViewTextSize(subjectView, fontSizes.getMessageViewSubject());
         fontSizes.setViewTextSize(dateView, fontSizes.getMessageViewDate());
         fontSizes.setViewTextSize(fromView, fontSizes.getMessageViewSender());
-        fontSizes.setViewTextSize(toView, fontSizes.getMessageViewRecipients());
-        fontSizes.setViewTextSize(toCountView, fontSizes.getMessageViewRecipients());
+
+        int recipientTextSize = fontSizes.getMessageViewRecipients();
+        if (recipientTextSize != FontSizes.FONT_DEFAULT) {
+            recipientNamesView.setTextSize(recipientTextSize);
+        }
 
         subjectView.setOnClickListener(this);
         subjectView.setOnLongClickListener(this);
@@ -230,9 +237,29 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             dateView.setText("");
         }
 
+        setRecipientNames(message, account);
+
         setReplyActions(message, account);
 
         setVisibility(View.VISIBLE);
+    }
+
+    private void setRecipientNames(Message message, Account account) {
+        Integer contactNameColor = K9.isChangeContactNameColor() ? K9.getContactNameColor() : null;
+
+        RealContactNameProvider contactNameProvider = new RealContactNameProvider(Contacts.getInstance(getContext()));
+
+        RealAddressFormatter addressFormatter = new RealAddressFormatter(contactNameProvider, account,
+                K9.isShowCorrespondentNames(), K9.isShowContactName(), contactNameColor,
+                getContext().getString(R.string.message_view_me_text));
+
+        DisplayRecipientsExtractor displayRecipientsExtractor = new DisplayRecipientsExtractor(addressFormatter,
+                recipientNamesView.getMaxNumberOfRecipientNames());
+
+        DisplayRecipients displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account);
+
+        recipientNamesView.setRecipients(displayRecipients.getRecipientNames(),
+                displayRecipients.getNumberOfRecipients());
     }
 
     private void setReplyActions(Message message, Account account) {

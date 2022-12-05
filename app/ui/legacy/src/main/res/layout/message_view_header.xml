@@ -118,7 +118,7 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="4dp"
             android:ellipsize="none"
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
@@ -134,48 +134,25 @@
             android:layout_height="18sp"
             android:layout_marginStart="16dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/to"
+            app:layout_constraintBottom_toBottomOf="@+id/recipients"
             app:layout_constraintStart_toEndOf="@id/contact_picture"
             app:srcCompat="@drawable/status_lock_disabled"
             app:tint="?attr/openpgp_grey"
             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/to"
-            android:layout_width="wrap_content"
+        <com.fsck.k9.ui.messageview.RecipientNamesView
+            android:id="@+id/recipients"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="16dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="to me"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="?android:attr/textColorSecondary"
-            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/to_count"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintEnd_toStartOf="@+id/menu_primary_action"
             app:layout_constraintStart_toEndOf="@id/crypto_status_icon"
             app:layout_constraintTop_toBottomOf="@+id/from"
             app:layout_constraintVertical_bias="0.0"
             app:layout_goneMarginStart="16dp" />
-
-        <TextView
-            android:id="@+id/to_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:text="+2"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="?attr/colorAccent"
-            app:layout_constraintBottom_toBottomOf="@+id/to"
-            app:layout_constraintEnd_toStartOf="@+id/menu_primary_action"
-            app:layout_constraintStart_toEndOf="@id/to" />
 
         <ImageView
             android:id="@+id/menu_primary_action"
