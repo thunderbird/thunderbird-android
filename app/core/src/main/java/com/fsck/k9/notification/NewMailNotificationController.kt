@@ -14,6 +14,7 @@ internal class NewMailNotificationController(
     private val summaryNotificationCreator: SummaryNotificationCreator,
     private val singleMessageNotificationCreator: SingleMessageNotificationCreator
 ) {
+    @Synchronized
     fun restoreNewMailNotifications(accounts: List<Account>) {
         for (account in accounts) {
             val notificationData = newMailNotificationManager.restoreNewMailNotifications(account)
@@ -24,6 +25,7 @@ internal class NewMailNotificationController(
         }
     }
 
+    @Synchronized
     fun addNewMailNotification(account: Account, message: LocalMessage, silent: Boolean) {
         val notificationData = newMailNotificationManager.addNewMailNotification(account, message, silent)
 
@@ -32,6 +34,7 @@ internal class NewMailNotificationController(
         }
     }
 
+    @Synchronized
     fun removeNewMailNotifications(
         account: Account,
         clearNewMessageState: Boolean,
@@ -48,6 +51,7 @@ internal class NewMailNotificationController(
         }
     }
 
+    @Synchronized
     fun clearNewMailNotifications(account: Account, clearNewMessageState: Boolean) {
         val cancelNotificationIds = newMailNotificationManager.clearNewMailNotifications(account, clearNewMessageState)
 
