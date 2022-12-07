@@ -7,10 +7,6 @@ application {
     mainClass = "app.k9mail.cli.html.cleaner.MainKt"
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation project(':app:html-cleaner')
 

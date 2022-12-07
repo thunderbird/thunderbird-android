@@ -82,12 +82,6 @@ project.ext {
 }
 
 subprojects {
-    repositories {
-        mavenCentral()
-        google()
-        maven { url 'https://jitpack.io' }
-    }
-
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute module("androidx.core:core") using module("androidx.core:core:${versions.androidxCore}")
