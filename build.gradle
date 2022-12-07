@@ -1,4 +1,5 @@
 import com.android.build.gradle.BasePlugin
+import org.gradle.api.plugins.JavaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 buildscript {
@@ -136,6 +137,13 @@ subprojects {
                     includeAndroidResources = true
                 }
             }
+        }
+    }
+
+    plugins.withType(JavaPlugin).configureEach {
+        project.java {
+            sourceCompatibility = javaVersion
+            targetCompatibility = javaVersion
         }
     }
 
