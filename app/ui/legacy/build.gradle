@@ -72,6 +72,10 @@ dependencies {
 android {
     namespace 'com.fsck.k9.ui'
 
+    buildFeatures {
+        buildConfig true
+    }
+
     buildTypes {
         debug {
             def useNewSetupUi = project.hasProperty('k9mail.useNewSetupUi') ? project.property('k9mail.useNewSetupUi') : "false"

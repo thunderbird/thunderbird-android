@@ -44,4 +44,8 @@ dependencies {
 
 android {
     namespace 'com.fsck.k9.core'
+
+    buildFeatures {
+        buildConfig true
+    }
 }

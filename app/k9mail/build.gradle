@@ -58,6 +58,10 @@ android {
                 "fy"
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
     signingConfigs {
         release
     }

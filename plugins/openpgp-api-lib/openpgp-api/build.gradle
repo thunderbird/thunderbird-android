@@ -2,6 +2,10 @@ apply plugin: 'com.android.library'
 
 android {
     namespace 'org.openintents.openpgp'
+
+    buildFeatures {
+        aidl true
+    }
 }
 
 dependencies {
