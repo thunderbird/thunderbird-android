@@ -1,12 +1,7 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.android.lint'
-
-java {
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-}
 
 dependencies {
     api project(":backend:api")
@@ -14,7 +9,7 @@ dependencies {
     api "com.squareup.okhttp3:okhttp:${versions.okhttp}"
     implementation "rs.ltt.jmap:jmap-client:0.3.1"
     implementation "com.squareup.moshi:moshi:${versions.moshi}"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
+    ksp "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
 
     testImplementation project(":mail:testing")
     testImplementation project(':backend:testing')
