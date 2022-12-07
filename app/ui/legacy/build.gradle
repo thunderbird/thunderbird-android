@@ -72,14 +72,6 @@ dependencies {
 android {
     namespace 'com.fsck.k9.ui'
 
-    compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
-
-    defaultConfig {
-        minSdkVersion buildConfig.minSdk
-        targetSdkVersion buildConfig.robolectricSdk
-    }
-
     buildTypes {
         debug {
             def useNewSetupUi = project.hasProperty('k9mail.useNewSetupUi') ? project.property('k9mail.useNewSetupUi') : "false"
@@ -91,26 +83,6 @@ android {
             buildConfigField "boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", "false"
 
             manifestPlaceholders = ['appAuthRedirectScheme': 'FIXME: override this in your app project']
-        }
-    }
-
-    lintOptions {
-        abortOnError false
-        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
-    }
-
-    compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
-    }
-
-    kotlinOptions {
-        jvmTarget = kotlinJvmVersion
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
         }
     }
 }

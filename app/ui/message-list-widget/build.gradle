@@ -11,14 +11,6 @@ dependencies {
 android {
     namespace 'app.k9mail.ui.widget.list'
 
-    compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
-
-    defaultConfig {
-        minSdkVersion buildConfig.minSdk
-        targetSdkVersion buildConfig.robolectricSdk
-    }
-
     buildTypes {
         debug {
             manifestPlaceholders = ['appAuthRedirectScheme': 'FIXME: override this in your app project']
@@ -26,19 +18,5 @@ android {
         release {
             manifestPlaceholders = ['appAuthRedirectScheme': 'FIXME: override this in your app project']
         }
-    }
-
-    lintOptions {
-        abortOnError false
-        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
-    }
-
-    compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
-    }
-
-    kotlinOptions {
-        jvmTarget = kotlinJvmVersion
     }
 }

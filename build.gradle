@@ -1,12 +1,9 @@
+import com.android.build.gradle.BasePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 buildscript {
     ext {
         buildConfig = [
-                'compileSdk': 33,
-                'targetSdk': 31,
-                'minSdk': 21,
-                'buildTools': '32.0.0',
                 'robolectricSdk': 31
         ]
 
@@ -109,6 +106,36 @@ subprojects {
             substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}")
             substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}")
             substitute module("org.jetbrains.kotlinx:kotlinx-coroutines-android") using module("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}")
+        }
+    }
+
+    plugins.withType(BasePlugin).configureEach {
+        project.android {
+            compileSdk 33
+
+            defaultConfig {
+                minSdk 21
+                targetSdk 31
+
+                vectorDrawables.useSupportLibrary = true
+                testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+            }
+
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+
+            lintOptions {
+                abortOnError false
+                lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+            }
+
+            testOptions {
+                unitTests {
+                    includeAndroidResources = true
+                }
+            }
         }
     }
 
