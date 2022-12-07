@@ -73,6 +73,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.7.22-1.0.8"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:11.0.0"
     }
 }
