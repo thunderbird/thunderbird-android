@@ -4,10 +4,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 buildscript {
     ext {
-        buildConfig = [
-                'robolectricSdk': 31
-        ]
-
         // Judging the impact of newer library versions on the app requires being intimately familiar with the code
         // base. Please don't open pull requests upgrading dependencies if you're a new contributor.
         versions = [
@@ -61,13 +57,12 @@ buildscript {
         ]
 
         javaVersion = JavaVersion.VERSION_1_8
-        kotlinJvmVersion = "1.8"
     }
 
     repositories {
         mavenCentral()
         google()
-        maven { url "https://plugins.gradle.org/m2/" }
+        gradlePluginPortal()
     }
 
     dependencies {
@@ -82,7 +77,7 @@ project.ext {
     testCoverage = project.hasProperty('testCoverage')
 }
 
-subprojects {
+allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute module("androidx.core:core") using module("androidx.core:core:${versions.androidxCore}")
@@ -118,8 +113,8 @@ subprojects {
             }
 
             compileOptions {
-                sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
+                sourceCompatibility javaVersion
+                targetCompatibility javaVersion
             }
 
             lintOptions {
@@ -153,7 +148,7 @@ subprojects {
 
     tasks.withType(KotlinCompile) {
         kotlinOptions {
-            freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+            jvmTarget = javaVersion
         }
     }
 
