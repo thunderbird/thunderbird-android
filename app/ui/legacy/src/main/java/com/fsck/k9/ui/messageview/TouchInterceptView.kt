@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.messageview
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ViewConfiguration
@@ -26,6 +27,11 @@ class TouchInterceptView(context: Context, attrs: AttributeSet?) : FrameLayout(c
 
     private var initialX: Float = 0f
     private var initialY: Float = 0f
+    private var initialRawX = 0
+    private var initialRawY = 0
+
+    private val webViewScreenLocation = IntArray(2)
+    private val webViewRect = Rect()
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         handleOnInterceptTouchEvent(event)
@@ -41,6 +47,8 @@ class TouchInterceptView(context: Context, attrs: AttributeSet?) : FrameLayout(c
             MotionEvent.ACTION_DOWN -> {
                 initialX = event.x
                 initialY = event.y
+                initialRawX = event.rawX.toInt()
+                initialRawY = event.rawY.toInt()
                 scrollViewParent.requestDisallowInterceptTouchEvent(false)
             }
             MotionEvent.ACTION_POINTER_DOWN -> {
@@ -61,7 +69,13 @@ class TouchInterceptView(context: Context, attrs: AttributeSet?) : FrameLayout(c
                 } else if (absoluteDeltaX > touchSlop && absoluteDeltaX > absoluteDeltaY &&
                     webView.canScrollHorizontally(deltaX.toInt())
                 ) {
-                    scrollViewParent.requestDisallowInterceptTouchEvent(true)
+                    webView.getHitRect(webViewRect)
+                    webView.getLocationOnScreen(webViewScreenLocation)
+                    webViewRect.offset(webViewScreenLocation[0], webViewScreenLocation[1])
+
+                    if (webViewRect.contains(initialRawX, initialRawY)) {
+                        scrollViewParent.requestDisallowInterceptTouchEvent(true)
+                    }
                 }
             }
         }
