@@ -1,6 +1,5 @@
 package com.fsck.k9.activity
 
-import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -25,7 +24,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
-import androidx.lifecycle.Observer
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.K9.SplitViewMode
@@ -48,8 +46,6 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.K9Drawer
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
-import com.fsck.k9.ui.changelog.RecentChangesActivity
-import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messagelist.MessageListFragment
@@ -65,10 +61,8 @@ import com.fsck.k9.ui.permissions.Permission
 import com.fsck.k9.ui.permissions.PermissionUiHelper
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
-import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.materialdrawer.util.getOptimalDrawerWidth
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -86,8 +80,6 @@ open class MessageList :
     FragmentManager.OnBackStackChangedListener,
     OnSwitchCompleteListener,
     PermissionUiHelper {
-
-    private val recentChangesViewModel: RecentChangesViewModel by viewModel()
 
     protected val searchStatusManager: SearchStatusManager by inject()
     private val preferences: Preferences by inject()
@@ -136,7 +128,6 @@ open class MessageList :
     private var messageViewOnly = false
     private var messageListWasDisplayed = false
     private var viewSwitcher: ViewSwitcher? = null
-    private lateinit var recentChangesSnackbar: Snackbar
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -210,7 +201,6 @@ open class MessageList :
         initializeLayout()
         initializeFragments()
         displayViews()
-        initializeRecentChangesSnackbar()
 
         if (savedInstanceState == null) {
             checkAndRequestPermissions()
@@ -362,31 +352,6 @@ open class MessageList :
                 onMessageListDisplayed()
             }
         }
-    }
-
-    private val shouldShowRecentChangesHintObserver = Observer<Boolean> { showRecentChangesHint ->
-        val recentChangesSnackbarVisible = recentChangesSnackbar.isShown
-        if (showRecentChangesHint && !recentChangesSnackbarVisible) {
-            recentChangesSnackbar.show()
-        } else if (!showRecentChangesHint && recentChangesSnackbarVisible) {
-            recentChangesSnackbar.dismiss()
-        }
-    }
-
-    @SuppressLint("ShowToast")
-    private fun initializeRecentChangesSnackbar() {
-        recentChangesSnackbar = Snackbar
-            .make(findViewById(R.id.container), R.string.changelog_snackbar_text, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.okay_action) { launchRecentChangesActivity() }
-
-        recentChangesViewModel.shouldShowRecentChangesHint.observe(this, shouldShowRecentChangesHintObserver)
-    }
-
-    private fun launchRecentChangesActivity() {
-        recentChangesViewModel.shouldShowRecentChangesHint.removeObserver(shouldShowRecentChangesHintObserver)
-
-        val intent = Intent(this, RecentChangesActivity::class.java)
-        startActivity(intent)
     }
 
     private fun decodeExtras(intent: Intent): Boolean {
