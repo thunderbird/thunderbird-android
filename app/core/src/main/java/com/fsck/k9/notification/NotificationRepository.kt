@@ -15,13 +15,13 @@ internal class NotificationRepository(
 
     @Synchronized
     fun restoreNotifications(account: Account): NotificationData? {
+        if (notificationDataStore.isAccountInitialized(account)) return null
+
         val localStore = localStoreProvider.getInstance(account)
 
         val (activeNotificationMessages, inactiveNotificationMessages) = localStore.notificationMessages.partition {
             it.notificationId != null
         }
-
-        if (activeNotificationMessages.isEmpty()) return null
 
         val activeNotifications = activeNotificationMessages.map { notificationMessage ->
             val content = notificationContentCreator.createFromMessage(account, notificationMessage.message)
@@ -33,11 +33,19 @@ internal class NotificationRepository(
             InactiveNotificationHolder(notificationMessage.timestamp, content)
         }
 
-        return notificationDataStore.initializeAccount(account, activeNotifications, inactiveNotifications)
+        val notificationData = notificationDataStore.initializeAccount(
+            account,
+            activeNotifications,
+            inactiveNotifications
+        )
+
+        return if (notificationData.activeNotifications.isNotEmpty()) notificationData else null
     }
 
     @Synchronized
     fun addNotification(account: Account, content: NotificationContent, timestamp: Long): AddNotificationResult? {
+        restoreNotifications(account)
+
         return notificationDataStore.addNotification(account, content, timestamp)?.also { result ->
             persistNotificationDataStoreChanges(
                 account = account,
@@ -53,6 +61,8 @@ internal class NotificationRepository(
         clearNewMessageState: Boolean = true,
         selector: (List<MessageReference>) -> List<MessageReference>
     ): RemoveNotificationsResult? {
+        restoreNotifications(account)
+
         return notificationDataStore.removeNotifications(account, selector)?.also { result ->
             persistNotificationDataStoreChanges(
                 account = account,
