@@ -1,14 +1,2 @@
 minimum-severity: info # Can be one of [critical, high, medium, low, info]
-summary: long
-
-configs:
-  issues-labels:
-    labels:
-      always: always
-      info: info
-      warning: warning
-      low: low
-      medium: medium
-      high: high
-      critical: critical
-      category-labels: true
+summary: short  #Can be long or short
