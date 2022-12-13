@@ -1,4 +1,5 @@
-minimum-severity: info # Can be one of [critical, high, medium, low, info]
+# Can be one of [critical, high, medium, low, info]
+minimum-severity: info 
 include-warnings: true
 summary: short  #Can be long or short
 include-checks:
