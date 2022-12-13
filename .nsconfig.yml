@@ -1,2 +1,8 @@
 minimum-severity: info # Can be one of [critical, high, medium, low, info]
+include-warnings: true
 summary: short  #Can be long or short
+include-checks:
+  - apk_hardcoded_keys
+  - apk_weak_crypto_methods
+exclude-checks:
+  - android_janus_warn
