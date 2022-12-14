@@ -158,7 +158,7 @@ class MessageViewFragment :
             onToggleFlagged()
         }
 
-        messageTopView.setOnMenuItemClickListener(::onReplyMenuItemClicked)
+        messageTopView.setMessageHeaderClickListener(messageHeaderClickListener)
 
         messageTopView.setOnDownloadButtonClickListener {
             onDownloadButtonClicked()
@@ -380,14 +380,21 @@ class MessageViewFragment :
         messageTopView.setSubject(displaySubject)
     }
 
-    private fun onReplyMenuItemClicked(itemId: Int) {
-        when (itemId) {
-            R.id.reply -> onReply()
-            R.id.reply_all -> onReplyAll()
-            R.id.forward -> onForward()
-            R.id.forward_as_attachment -> onForwardAsAttachment()
-            R.id.share -> onSendAlternate()
-            else -> error("Missing handler for reply menu item $itemId")
+    private val messageHeaderClickListener = object : MessageHeaderClickListener {
+        override fun onParticipantsContainerClick() {
+            val messageBottomSheet = MessageBottomSheet()
+            messageBottomSheet.show(childFragmentManager, "message_details")
+        }
+
+        override fun onMenuItemClick(itemId: Int) {
+            when (itemId) {
+                R.id.reply -> onReply()
+                R.id.reply_all -> onReplyAll()
+                R.id.forward -> onForward()
+                R.id.forward_as_attachment -> onForwardAsAttachment()
+                R.id.share -> onSendAlternate()
+                else -> error("Missing handler for reply menu item $itemId")
+            }
         }
     }
 

@@ -9,6 +9,7 @@ dependencies {
     implementation project(":app:autodiscovery:api")
     implementation project(":app:autodiscovery:providersxml")
     implementation project(":mail:common")
+    implementation project(":ui-utils:ToolbarBottomSheet")
 
     //TODO: Remove AccountSetupIncoming's dependency on these
     compileOnly project(":mail:protocols:imap")

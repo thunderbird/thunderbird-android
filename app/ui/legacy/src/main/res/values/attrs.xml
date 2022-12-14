@@ -102,7 +102,7 @@
         <attr name="messageStar" format="reference"/>
         <attr name="messageStarColor" format="color"/>
         <attr name="messageViewBackgroundColor" format="reference|color"/>
-        <attr name="messageComposeAddContactImage" format="reference"/>
+        <attr name="messageDetailsAddContactIcon" format="reference"/>
         <attr name="attachmentCardBackground" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>

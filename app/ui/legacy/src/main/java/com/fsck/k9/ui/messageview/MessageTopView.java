@@ -228,8 +228,8 @@ public class MessageTopView extends LinearLayout {
         mHeaderContainer.setOnFlagListener(listener);
     }
 
-    public void setOnMenuItemClickListener(MessageHeaderOnMenuItemClickListener listener) {
-        mHeaderContainer.setOnMenuItemClickListener(listener);
+    public void setMessageHeaderClickListener(MessageHeaderClickListener listener) {
+        mHeaderContainer.setMessageHeaderClickListener(listener);
     }
 
     private void hideHeaderView() {
