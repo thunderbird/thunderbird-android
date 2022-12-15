@@ -50,7 +50,11 @@ class UidSearchCommandBuilder {
         if (performFullTextSearch) {
             builder.append(" TEXT ").append(encodedQuery);
         } else {
-            builder.append(" OR SUBJECT ").append(encodedQuery).append(" FROM ").append(encodedQuery);
+            builder.append(" OR OR OR OR SUBJECT ").append(encodedQuery)
+                    .append(" FROM ").append(encodedQuery)
+                    .append(" TO ").append(encodedQuery)
+                    .append(" CC ").append(encodedQuery)
+                    .append(" BCC ").append(encodedQuery);
         }
     }
 

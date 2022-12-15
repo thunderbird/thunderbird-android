@@ -32,6 +32,7 @@ public class UidSearchCommandBuilderTest {
                 .queryString("query")
                 .build();
 
-        assertEquals("UID SEARCH OR SUBJECT \"query\" FROM \"query\" NOT DELETED", command);
+        assertEquals("UID SEARCH OR OR OR OR SUBJECT \"query\" FROM \"query\" TO \"query\" CC \"query\"" +
+                " BCC \"query\" NOT DELETED", command);
     }
 }

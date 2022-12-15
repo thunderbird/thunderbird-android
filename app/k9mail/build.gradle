@@ -44,28 +44,22 @@ dependencies {
 android {
     namespace 'com.fsck.k9'
 
-    compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
-
     defaultConfig {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 33012
-        versionName '6.313-SNAPSHOT'
+        versionCode 35000
+        versionName '6.500-SNAPSHOT'
 
         // Keep in sync with the resource string array 'supported_languages'
         resConfigs "in", "br", "ca", "cs", "cy", "da", "de", "et", "en", "en_GB", "es", "eo", "eu", "fr", "gd", "gl",
                 "hr", "is", "it", "lv", "lt", "hu", "nl", "nb", "pl", "pt_PT", "pt_BR", "ru", "ro", "sq", "sk", "sl",
                 "fi", "sv", "tr", "el", "be", "bg", "sr", "uk", "iw", "ar", "fa", "ml", "ko", "zh_CN", "zh_TW", "ja",
                 "fy"
+    }
 
-        minSdkVersion buildConfig.minSdk
-        targetSdkVersion buildConfig.targetSdk
-
-        vectorDrawables.useSupportLibrary = true
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    buildFeatures {
+        buildConfig true
     }
 
     signingConfigs {
@@ -108,11 +102,6 @@ android {
 
     lintOptions {
         checkDependencies true
-
-        // Do not abort build if lint finds errors
-        abortOnError false
-
-        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
     }
 
     packagingOptions {
@@ -134,21 +123,6 @@ android {
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
-    }
-
-    compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
-    }
-
-    kotlinOptions {
-        jvmTarget = kotlinJvmVersion
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
     }
 }
 

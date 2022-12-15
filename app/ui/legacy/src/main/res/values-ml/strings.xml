@@ -677,12 +677,6 @@
   <string name="account_settings_automatic_special_folder">യാന്ത്രിക (%s)</string>
   <string name="font_size_settings_title">അക്ഷര വലിപ്പം</string>
   <string name="font_size_settings_description">അക്ഷര വലിപ്പം ക്രമീകരിക്കുക</string>
-  <string name="font_size_account_list">അക്കൗണ്ട് പട്ടിക</string>
-  <string name="font_size_account_name">അക്കൗണ്ടിന്റെ പേര്</string>
-  <string name="font_size_account_description">അക്കൗണ്ട് വിവരണം</string>
-  <string name="font_size_folder_list">ഫോൾഡർ ലിസ്റ്റുകൾ</string>
-  <string name="font_size_folder_name">ഫോൾഡറിന്റെ പേര്</string>
-  <string name="font_size_folder_status">ഫോൾഡർ നില</string>
   <string name="font_size_message_list">സന്ദേശ ലിസ്റ്റുകൾ</string>
   <string name="font_size_message_list_subject">വിഷയം</string>
   <string name="font_size_message_list_sender">അയച്ചയാൾ</string>

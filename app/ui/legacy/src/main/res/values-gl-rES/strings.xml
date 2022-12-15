@@ -522,12 +522,6 @@
   <string name="account_settings_no_folder_selected">Ningún</string>
   <string name="font_size_settings_title">Tamaño da fonte</string>
   <string name="font_size_settings_description">Configurar o tamaño da fonte</string>
-  <string name="font_size_account_list">Listaxe de contas</string>
-  <string name="font_size_account_name">Nome da conta</string>
-  <string name="font_size_account_description">Descrición da conta</string>
-  <string name="font_size_folder_list">Listaxes de cartafoles</string>
-  <string name="font_size_folder_name">Nome do cartafol</string>
-  <string name="font_size_folder_status">Estado do cartafol</string>
   <string name="font_size_message_list">Listaxes de mensaxes</string>
   <string name="font_size_message_list_subject">Asunto</string>
   <string name="font_size_message_list_sender">Remitente</string>

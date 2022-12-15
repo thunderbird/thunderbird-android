@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
@@ -42,11 +43,14 @@ import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.getAccounts
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.changelog.RecentChangesActivity
+import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
 import org.koin.android.ext.android.inject
@@ -62,6 +66,8 @@ class MessageListFragment :
     MessageListItemActionListener {
 
     val viewModel: MessageListViewModel by viewModel()
+    private val recentChangesViewModel: RecentChangesViewModel by viewModel()
+
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatterFactory: FolderNameFormatterFactory by inject()
     private val folderNameFormatter: FolderNameFormatter by lazy { folderNameFormatterFactory.create(requireContext()) }
@@ -75,6 +81,7 @@ class MessageListFragment :
 
     private lateinit var fragmentListener: MessageListFragmentListener
 
+    private lateinit var recentChangesSnackbar: Snackbar
     private var recyclerView: RecyclerView? = null
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
@@ -235,6 +242,7 @@ class MessageListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeSwipeRefreshLayout(view)
         initializeRecyclerView(view)
+        initializeRecentChangesSnackbar()
 
         // This needs to be done before loading the message list below
         initializeSortSettings()
@@ -283,6 +291,33 @@ class MessageListFragment :
 
         this.recyclerView = recyclerView
         this.itemTouchHelper = itemTouchHelper
+    }
+
+    private val shouldShowRecentChangesHintObserver = Observer<Boolean> { showRecentChangesHint ->
+        val recentChangesSnackbarVisible = recentChangesSnackbar.isShown
+        if (showRecentChangesHint && !recentChangesSnackbarVisible) {
+            recentChangesSnackbar.show()
+        } else if (!showRecentChangesHint && recentChangesSnackbarVisible) {
+            recentChangesSnackbar.dismiss()
+        }
+    }
+
+    private fun initializeRecentChangesSnackbar() {
+        val coordinatorLayout = requireView().findViewById<View>(R.id.message_list_coordinator)
+
+        recentChangesSnackbar = Snackbar
+            .make(coordinatorLayout, R.string.changelog_snackbar_text, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.okay_action) { launchRecentChangesActivity() }
+
+        recentChangesViewModel.shouldShowRecentChangesHint
+            .observe(viewLifecycleOwner, shouldShowRecentChangesHintObserver)
+    }
+
+    private fun launchRecentChangesActivity() {
+        recentChangesViewModel.shouldShowRecentChangesHint.removeObserver(shouldShowRecentChangesHintObserver)
+
+        val intent = Intent(requireActivity(), RecentChangesActivity::class.java)
+        startActivity(intent)
     }
 
     private fun initializeSortSettings() {

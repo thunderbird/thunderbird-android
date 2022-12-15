@@ -715,12 +715,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_settings_automatic_special_folder">Awtomatig (%s)</string>
   <string name="font_size_settings_title">Maint ffont</string>
   <string name="font_size_settings_description">Dewisiadau maint ffont</string>
-  <string name="font_size_account_list">Rhestr cyfrifon</string>
-  <string name="font_size_account_name">Enw\'r cyfrif</string>
-  <string name="font_size_account_description">Disgrifad y cyfrif</string>
-  <string name="font_size_folder_list">Rhestrau ffolderi</string>
-  <string name="font_size_folder_name">Enw\'r ffolder</string>
-  <string name="font_size_folder_status">Statws y ffolder</string>
   <string name="font_size_message_list">Rhestrau negeseuon</string>
   <string name="font_size_message_list_subject">Pwnc</string>
   <string name="font_size_message_list_sender">Anfonwr</string>

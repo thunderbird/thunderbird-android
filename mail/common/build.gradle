@@ -6,11 +6,6 @@ if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
 }
 
-java {
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-}
-
 dependencies {
     api "org.jetbrains:annotations:${versions.jetbrainsAnnotations}"
 

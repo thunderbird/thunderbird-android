@@ -719,12 +719,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="account_settings_automatic_special_folder">Automatique (%s)</string>
   <string name="font_size_settings_title">Taille des polices</string>
   <string name="font_size_settings_description">Configurer la taille des polices</string>
-  <string name="font_size_account_list">Liste de comptes</string>
-  <string name="font_size_account_name">Nom des comptes</string>
-  <string name="font_size_account_description">Description des comptes</string>
-  <string name="font_size_folder_list">Listes des dossiers</string>
-  <string name="font_size_folder_name">Nom des dossiers</string>
-  <string name="font_size_folder_status">État des dossiers</string>
   <string name="font_size_message_list">Listes de courriels</string>
   <string name="font_size_message_list_subject">Objet</string>
   <string name="font_size_message_list_sender">Expéditeur</string>

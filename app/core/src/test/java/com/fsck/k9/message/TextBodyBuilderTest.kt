@@ -12,14 +12,14 @@ class TextBodyBuilderTest(val testData: TestData) {
     companion object {
 
         private const val MESSAGE_TEXT = "my message\r\nwith two lines"
-        private const val MESSAGE_TEXT_HTML = "my message<br>with two lines"
+        private const val MESSAGE_TEXT_HTML = "<div dir=\"auto\">my message<br>with two lines</div>"
         private const val QUOTED_TEXT = ">quoted text\r\n>-- \r\n>Other signature"
         private const val QUOTED_HTML_BODY = "<blockquote>quoted text</blockquote>"
         private const val QUOTED_HTML_TAGS_END = "</body>\n</html>"
         private const val QUOTED_HTML_TAGS_START = "<!DOCTYPE html><html><head></head><body>"
         private const val SIGNATURE_TEXT = "-- \r\n\r\nsignature\r\n  indented second line"
-        private const val SIGNATURE_TEXT_HTML =
-            "<div class='k9mail-signature'>-- <br><br>signature<br>\u00A0 indented second line</div>"
+        private const val SIGNATURE_TEXT_HTML = "<div dir=\"auto\"><div class='k9mail-signature'>-- <br>" +
+            "<br>signature<br>\u00A0 indented second line</div></div>"
 
         @JvmStatic
         @Parameterized.Parameters(name = "{index}: {0}")

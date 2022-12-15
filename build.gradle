@@ -1,19 +1,13 @@
+import com.android.build.gradle.BasePlugin
+import org.gradle.api.plugins.JavaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 buildscript {
     ext {
-        buildConfig = [
-                'compileSdk': 33,
-                'targetSdk': 31,
-                'minSdk': 21,
-                'buildTools': '32.0.0',
-                'robolectricSdk': 31
-        ]
-
         // Judging the impact of newer library versions on the app requires being intimately familiar with the code
         // base. Please don't open pull requests upgrading dependencies if you're a new contributor.
         versions = [
-                'kotlin': '1.7.20',
+                'kotlin': '1.7.22',
                 'kotlinCoroutines': '1.6.4',
                 'jetbrainsAnnotations': '23.0.0',
                 'androidxAppCompat': '1.5.1',
@@ -63,18 +57,18 @@ buildscript {
         ]
 
         javaVersion = JavaVersion.VERSION_1_8
-        kotlinJvmVersion = "1.8"
     }
 
     repositories {
         mavenCentral()
         google()
-        maven { url "https://plugins.gradle.org/m2/" }
+        gradlePluginPortal()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.7.22-1.0.8"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:11.0.0"
     }
 }
@@ -83,13 +77,7 @@ project.ext {
     testCoverage = project.hasProperty('testCoverage')
 }
 
-subprojects {
-    repositories {
-        mavenCentral()
-        google()
-        maven { url 'https://jitpack.io' }
-    }
-
+allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute module("androidx.core:core") using module("androidx.core:core:${versions.androidxCore}")
@@ -112,6 +100,43 @@ subprojects {
         }
     }
 
+    plugins.withType(BasePlugin).configureEach {
+        project.android {
+            compileSdk 33
+
+            defaultConfig {
+                minSdk 21
+                targetSdk 31
+
+                vectorDrawables.useSupportLibrary = true
+                testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+            }
+
+            compileOptions {
+                sourceCompatibility javaVersion
+                targetCompatibility javaVersion
+            }
+
+            lintOptions {
+                abortOnError false
+                lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+            }
+
+            testOptions {
+                unitTests {
+                    includeAndroidResources = true
+                }
+            }
+        }
+    }
+
+    plugins.withType(JavaPlugin).configureEach {
+        project.java {
+            sourceCompatibility = javaVersion
+            targetCompatibility = javaVersion
+        }
+    }
+
     tasks.withType(Test) {
         testLogging {
             exceptionFormat "full"
@@ -123,7 +148,7 @@ subprojects {
 
     tasks.withType(KotlinCompile) {
         kotlinOptions {
-            freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+            jvmTarget = javaVersion
         }
     }
 

@@ -27,24 +27,36 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            |<pre dir="auto" class="k9mail">
+            |<pre class="k9mail">
+            |<div dir="auto">
             |Panama!<br>
             |<br>
             |Bob Barker &lt;bob@aol.com&gt; wrote:<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
+            |<div dir="auto">
             | a canal<br>
             |<br>
             | Dorothy Jo Gideon &lt;dorothy@aol.com&gt; espoused:<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;">
+            |<div dir="auto">
             |A man, a plan...<br>
+            |</div>
             |</blockquote>
+            |<div dir="auto">
             |Too easy!<br>
+            |</div>
             |</blockquote>
+            |<div dir="auto">
             |<br>
             |Nice job :)<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;">
+            |<div dir="auto">
             |Guess!
+            |</div>
             |</blockquote>
             |</blockquote>
             |</pre>
@@ -70,16 +82,20 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            |<pre dir="auto" class="k9mail">
+            |<pre class="k9mail">
+            |<div dir="auto">
             |*facepalm*<br>
             |<br>
             |Bob Barker &lt;bob@aol.com&gt; wrote:<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
+            |<div dir="auto">
             | A wise man once said...<br>
             |<br>
             |     LOL F1RST!!!!!<br>
             |<br>
             | :)
+            |</div>
             |</blockquote>
             |</pre>
             """.trimMargin().removeLineBreaks()
@@ -103,20 +119,34 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            |<pre dir="auto" class="k9mail">
+            |<pre class="k9mail">
+            |<div dir="auto">
             |zero<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
+            |<div dir="auto">
             |one<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;">
+            |<div dir="auto">
             |two<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #8ae234; padding-left: 1ex;">
+            |<div dir="auto">
             |three<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #fcaf3e; padding-left: 1ex;">
+            |<div dir="auto">
             |four<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #e9b96e; padding-left: 1ex;">
+            |<div dir="auto">
             |five<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ccc; padding-left: 1ex;">
+            |<div dir="auto">
             |six
+            |</div>
             |</blockquote>
             |</blockquote>
             |</blockquote>
@@ -142,10 +172,12 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            |<pre dir="auto" class="k9mail">
+            |<pre class="k9mail">
+            |<div dir="auto">
             |foo<br>
             | bar<br>
             |  baz<br>
+            |</div>
             |</pre>
             """.trimMargin().removeLineBreaks()
         )
@@ -167,13 +199,17 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            |<pre dir="auto" class="k9mail">
+            |<pre class="k9mail">
+            |<div dir="auto">
             | <br>
             |  &amp;<br>
             |    <br>
             |   &lt;<br>
+            |</div>
             |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
+            |<div dir="auto">
             |<br>
+            |</div>
             |</blockquote>
             |</pre>
             """.trimMargin().removeLineBreaks()
@@ -201,7 +237,8 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            <pre dir="auto" class="k9mail">
+            <pre class="k9mail">
+            <div dir="auto">
             text
             <hr>
             some other text
@@ -213,6 +250,7 @@ class HtmlConverterTest {
             other direction
             <hr>
             end
+            </div>
             </pre>
             """.trimIndent().removeLineBreaks()
         )
@@ -231,10 +269,12 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            <pre dir="auto" class="k9mail">
+            <pre class="k9mail">
+            <div dir="auto">
             hello<br>
             --- --- --- --- ---<br>
             foo bar
+            </div>
             </pre>
             """.trimIndent().removeLineBreaks()
         )
@@ -254,10 +294,12 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            <pre dir="auto" class="k9mail">
+            <pre class="k9mail">
+            <div dir="auto">
             hello
             <hr>
             foo bar
+            </div>
             </pre>
             """.trimIndent().removeLineBreaks()
         )
@@ -271,9 +313,11 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            <pre dir="auto" class="k9mail">
+            <pre class="k9mail">
+            <div dir="auto">
             hello----<br>
             <br>
+            </div>
             </pre>
             """.trimIndent().removeLineBreaks()
         )
@@ -285,7 +329,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo("""<pre dir="auto" class="k9mail">--<br></pre>""")
+        assertThat(result).isEqualTo("""<pre class="k9mail"><div dir="auto">--<br></div></pre>""")
     }
 
     @Test
@@ -294,7 +338,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo("""<pre dir="auto" class="k9mail">==<br></pre>""")
+        assertThat(result).isEqualTo("""<pre class="k9mail"><div dir="auto">==<br></div></pre>""")
     }
 
     @Test
@@ -303,7 +347,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo("""<pre dir="auto" class="k9mail">__<br></pre>""")
+        assertThat(result).isEqualTo("""<pre class="k9mail"><div dir="auto">__<br></div></pre>""")
     }
 
     @Test
@@ -319,7 +363,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo("""<pre dir="auto" class="k9mail"><hr></pre>""")
+        assertThat(result).isEqualTo("""<pre class="k9mail"><div dir="auto"><hr></div></pre>""")
     }
 
     @Test
@@ -330,9 +374,11 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            <pre dir="auto" class="k9mail">
+            <pre class="k9mail">
+            <div dir="auto">
             <hr>
             foo bar
+            </div>
             </pre>
             """.trimIndent().removeLineBreaks()
         )
@@ -346,9 +392,11 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            <pre dir="auto" class="k9mail">
+            <pre class="k9mail">
+            <div dir="auto">
             hello
             <hr>
+            </div>
             </pre>
             """.trimIndent().removeLineBreaks()
         )
@@ -367,10 +415,12 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            <pre dir="auto" class="k9mail">
+            <pre class="k9mail">
+            <div dir="auto">
             hello
             <hr>
             world
+            </div>
             </pre>
             """.trimIndent().removeLineBreaks()
         )
@@ -389,11 +439,13 @@ class HtmlConverterTest {
 
         assertThat(result).isEqualTo(
             """
-            <pre dir="auto" class="k9mail">
+            <pre class="k9mail">
+            <div dir="auto">
             text<br>
             <div class='k9mail-signature'>
             -- <br>
             signature with url: <a href="https://domain.example/">https://domain.example/</a>
+            </div>
             </div>
             </pre>
             """.trimIndent().removeLineBreaks()
@@ -406,7 +458,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtmlFragment(text)
 
-        assertThat(result).isEqualTo("\u00A0foo")
+        assertThat(result).isEqualTo("<div dir=\"auto\">\u00A0foo</div>")
     }
 
     @Test
@@ -415,7 +467,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtmlFragment(text)
 
-        assertThat(result).isEqualTo("\u00A0 foo")
+        assertThat(result).isEqualTo("<div dir=\"auto\">\u00A0 foo</div>")
     }
 
     @Test
@@ -424,7 +476,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtmlFragment(text)
 
-        assertThat(result).isEqualTo("\u00A0\u00A0\u00A0 some words here")
+        assertThat(result).isEqualTo("<div dir=\"auto\">\u00A0\u00A0\u00A0 some words here</div>")
     }
 
     @Test
@@ -433,7 +485,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtmlFragment(text)
 
-        assertThat(result).isEqualTo("foo\u00A0 bar")
+        assertThat(result).isEqualTo("<div dir=\"auto\">foo\u00A0 bar</div>")
     }
 
     @Test
@@ -442,7 +494,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtmlFragment(text)
 
-        assertThat(result).isEqualTo("foo <br>")
+        assertThat(result).isEqualTo("<div dir=\"auto\">foo <br></div>")
     }
 
     @Test
@@ -451,7 +503,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtmlFragment(text)
 
-        assertThat(result).isEqualTo("some words here\u00A0\u00A0 <br>")
+        assertThat(result).isEqualTo("<div dir=\"auto\">some words here\u00A0\u00A0 <br></div>")
     }
 
     @Test

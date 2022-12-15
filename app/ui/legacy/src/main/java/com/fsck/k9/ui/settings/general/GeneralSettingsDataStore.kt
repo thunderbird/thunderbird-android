@@ -110,10 +110,6 @@ class GeneralSettingsDataStore(
             "background_ops" -> K9.backgroundOps.name
             "quiet_time_starts" -> K9.quietTimeStarts
             "quiet_time_ends" -> K9.quietTimeEnds
-            "account_name_font" -> K9.fontSizes.accountName.toString()
-            "account_description_font" -> K9.fontSizes.accountDescription.toString()
-            "folder_name_font" -> K9.fontSizes.folderName.toString()
-            "folder_status_font" -> K9.fontSizes.folderStatus.toString()
             "message_list_subject_font" -> K9.fontSizes.messageListSubject.toString()
             "message_list_sender_font" -> K9.fontSizes.messageListSender.toString()
             "message_list_date_font" -> K9.fontSizes.messageListDate.toString()
@@ -148,10 +144,6 @@ class GeneralSettingsDataStore(
             "background_ops" -> setBackgroundOps(value)
             "quiet_time_starts" -> K9.quietTimeStarts = value
             "quiet_time_ends" -> K9.quietTimeEnds = value
-            "account_name_font" -> K9.fontSizes.accountName = value.toInt()
-            "account_description_font" -> K9.fontSizes.accountDescription = value.toInt()
-            "folder_name_font" -> K9.fontSizes.folderName = value.toInt()
-            "folder_status_font" -> K9.fontSizes.folderStatus = value.toInt()
             "message_list_subject_font" -> K9.fontSizes.messageListSubject = value.toInt()
             "message_list_sender_font" -> K9.fontSizes.messageListSender = value.toInt()
             "message_list_date_font" -> K9.fontSizes.messageListDate = value.toInt()

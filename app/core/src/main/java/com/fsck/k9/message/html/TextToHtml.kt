@@ -8,6 +8,8 @@ class TextToHtml private constructor(
     private val retainOriginalWhitespace: Boolean
 ) {
     fun appendAsHtmlFragment() {
+        appendHtmlPrefix()
+
         val modifications = HTML_MODIFIERS
             .flatMap { it.findModifications(text) }
             .sortedBy { it.startIndex }
@@ -52,6 +54,16 @@ class TextToHtml private constructor(
         }
 
         appendHtmlEncoded(currentIndex, text.length)
+
+        appendHtmlSuffix()
+    }
+
+    private fun appendHtmlPrefix() {
+        html.append("""<div dir="auto">""")
+    }
+
+    private fun appendHtmlSuffix() {
+        html.append("</div>")
     }
 
     private fun appendHtmlEncoded(startIndex: Int, endIndex: Int) {

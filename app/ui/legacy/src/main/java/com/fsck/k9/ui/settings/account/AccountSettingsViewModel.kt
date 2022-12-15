@@ -70,6 +70,11 @@ class AccountSettingsViewModel(
         viewModelScope.launch {
             val remoteFolderInfo = withContext(backgroundDispatcher) {
                 val folders = folderRepository.getRemoteFolders(account)
+                    .sortedWith(
+                        compareByDescending<RemoteFolder> { it.type == FolderType.INBOX }
+                            .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name }
+                    )
+
                 val automaticSpecialFolders = getAutomaticSpecialFolders(folders)
                 RemoteFolderInfo(folders, automaticSpecialFolders)
             }

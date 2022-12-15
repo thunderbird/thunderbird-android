@@ -8,14 +8,9 @@ import com.fsck.k9.preferences.StorageEditor;
 
 
 /**
- * Manage font size of the information displayed in the account list, folder
- * list, message list and in the message view.
+ * Manage font size of the information displayed in the message list and in the message view.
  */
 public class FontSizes {
-    private static final String ACCOUNT_NAME = "fontSizeAccountName";
-    private static final String ACCOUNT_DESCRIPTION = "fontSizeAccountDescription";
-    private static final String FOLDER_NAME = "fontSizeFolderName";
-    private static final String FOLDER_STATUS = "fontSizeFolderStatus";
     private static final String MESSAGE_LIST_SUBJECT = "fontSizeMessageListSubject";
     private static final String MESSAGE_LIST_SENDER = "fontSizeMessageListSender";
     private static final String MESSAGE_LIST_DATE = "fontSizeMessageListDate";
@@ -37,11 +32,6 @@ public class FontSizes {
     public static final int LARGE = 22;         // ?android:attr/textAppearanceLarge
 
 
-    private int accountName;
-    private int accountDescription;
-    private int folderName;
-    private int folderStatus;
-
     private int messageListSubject;
     private int messageListSender;
     private int messageListDate;
@@ -55,12 +45,6 @@ public class FontSizes {
 
 
     public FontSizes() {
-        accountName = FONT_DEFAULT;
-        accountDescription = FONT_DEFAULT;
-
-        folderName = FONT_DEFAULT;
-        folderStatus = FONT_DEFAULT;
-
         messageListSubject = FONT_DEFAULT;
         messageListSender = FONT_DEFAULT;
         messageListDate = FONT_DEFAULT;
@@ -76,12 +60,6 @@ public class FontSizes {
     }
 
     public void save(StorageEditor editor) {
-        editor.putInt(ACCOUNT_NAME, accountName);
-        editor.putInt(ACCOUNT_DESCRIPTION, accountDescription);
-
-        editor.putInt(FOLDER_NAME, folderName);
-        editor.putInt(FOLDER_STATUS, folderStatus);
-
         editor.putInt(MESSAGE_LIST_SUBJECT, messageListSubject);
         editor.putInt(MESSAGE_LIST_SENDER, messageListSender);
         editor.putInt(MESSAGE_LIST_DATE, messageListDate);
@@ -97,12 +75,6 @@ public class FontSizes {
     }
 
     public void load(Storage storage) {
-        accountName = storage.getInt(ACCOUNT_NAME, accountName);
-        accountDescription = storage.getInt(ACCOUNT_DESCRIPTION, accountDescription);
-
-        folderName = storage.getInt(FOLDER_NAME, folderName);
-        folderStatus = storage.getInt(FOLDER_STATUS, folderStatus);
-
         messageListSubject = storage.getInt(MESSAGE_LIST_SUBJECT, messageListSubject);
         messageListSender = storage.getInt(MESSAGE_LIST_SENDER, messageListSender);
         messageListDate = storage.getInt(MESSAGE_LIST_DATE, messageListDate);
@@ -120,38 +92,6 @@ public class FontSizes {
 
     private void loadMessageViewContentPercent(Storage storage) {
         setMessageViewContentAsPercent(storage.getInt(MESSAGE_VIEW_CONTENT_PERCENT, 100));
-    }
-
-    public int getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(int accountName) {
-        this.accountName = accountName;
-    }
-
-    public int getAccountDescription() {
-        return accountDescription;
-    }
-
-    public void setAccountDescription(int accountDescription) {
-        this.accountDescription = accountDescription;
-    }
-
-    public int getFolderName() {
-        return folderName;
-    }
-
-    public void setFolderName(int folderName) {
-        this.folderName = folderName;
-    }
-
-    public int getFolderStatus() {
-        return folderStatus;
-    }
-
-    public void setFolderStatus(int folderStatus) {
-        this.folderStatus = folderStatus;
     }
 
     public int getMessageListSubject() {

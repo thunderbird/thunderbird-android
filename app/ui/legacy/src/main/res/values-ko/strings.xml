@@ -568,12 +568,6 @@
   <string name="account_settings_no_folder_selected">없음</string>
   <string name="font_size_settings_title">글꼴 크기</string>
   <string name="font_size_settings_description">글꼴 크기 수정</string>
-  <string name="font_size_account_list">계정 목록</string>
-  <string name="font_size_account_name">계정 이름</string>
-  <string name="font_size_account_description">계정 정보</string>
-  <string name="font_size_folder_list">폴더 목록</string>
-  <string name="font_size_folder_name">폴더 이름</string>
-  <string name="font_size_folder_status">폴더 순위</string>
   <string name="font_size_message_list">메시지 목록</string>
   <string name="font_size_message_list_subject">제목</string>
   <string name="font_size_message_list_sender">보낸이</string>

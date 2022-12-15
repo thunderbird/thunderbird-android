@@ -591,12 +591,6 @@
   <string name="account_settings_no_folder_selected">بدون</string>
   <string name="font_size_settings_title">حجم الخط</string>
   <string name="font_size_settings_description">إختيار حجم الخط</string>
-  <string name="font_size_account_list">قائمة الحساب</string>
-  <string name="font_size_account_name">اسم الحساب</string>
-  <string name="font_size_account_description">وصف الحساب</string>
-  <string name="font_size_folder_list">مجلد القوائم</string>
-  <string name="font_size_folder_name">اسم المجلد</string>
-  <string name="font_size_folder_status">حالة المجلد</string>
   <string name="font_size_message_list">قوائم الرسالة</string>
   <string name="font_size_message_list_subject">العنوان</string>
   <string name="font_size_message_list_sender">مُرسِل</string>

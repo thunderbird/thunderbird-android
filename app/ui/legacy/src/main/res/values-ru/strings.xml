@@ -719,12 +719,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_automatic_special_folder">Автоматически (%s)</string>
   <string name="font_size_settings_title">Шрифт</string>
   <string name="font_size_settings_description">Настройка размера шрифтов</string>
-  <string name="font_size_account_list">Список учётных записей</string>
-  <string name="font_size_account_name">Название учётной записи</string>
-  <string name="font_size_account_description">Описание учётной записи</string>
-  <string name="font_size_folder_list">Список папок</string>
-  <string name="font_size_folder_name">Имя папки</string>
-  <string name="font_size_folder_status">Состояние папки</string>
   <string name="font_size_message_list">Список сообщений</string>
   <string name="font_size_message_list_subject">Тема</string>
   <string name="font_size_message_list_sender">Отправитель</string>
