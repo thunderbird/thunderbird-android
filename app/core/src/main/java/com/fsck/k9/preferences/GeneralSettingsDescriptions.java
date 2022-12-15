@@ -76,18 +76,6 @@ public class GeneralSettingsDescriptions {
         s.put("enableSensitiveLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));
-        s.put("fontSizeAccountDescription", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-        ));
-        s.put("fontSizeAccountName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-        ));
-        s.put("fontSizeFolderName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-        ));
-        s.put("fontSizeFolderStatus", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-        ));
         s.put("fontSizeMessageComposeInput", Settings.versions(
                 new V(5, new FontSizeSetting(FontSizes.FONT_DEFAULT))
         ));
