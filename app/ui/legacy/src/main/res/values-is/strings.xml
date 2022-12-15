@@ -717,12 +717,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_automatic_special_folder">Sjálfvirkt  (%s)</string>
   <string name="font_size_settings_title">Leturstærð</string>
   <string name="font_size_settings_description">Stilla stærð á letri</string>
-  <string name="font_size_account_list">Aðgangalisti</string>
-  <string name="font_size_account_name">Nafn aðgangsins</string>
-  <string name="font_size_account_description">Lýsing á aðgangi</string>
-  <string name="font_size_folder_list">Möppulistar</string>
-  <string name="font_size_folder_name">Nafn möppu</string>
-  <string name="font_size_folder_status">Staða möppu</string>
   <string name="font_size_message_list">Skilaboðalistar</string>
   <string name="font_size_message_list_subject">Viðfangsefni</string>
   <string name="font_size_message_list_sender">Sendandi</string>

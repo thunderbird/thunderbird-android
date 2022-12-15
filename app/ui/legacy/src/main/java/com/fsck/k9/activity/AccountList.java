@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BaseAccount;
-import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
@@ -31,7 +30,6 @@ import com.fsck.k9.search.SearchAccount;
  * </p>
  */
 public abstract class AccountList extends K9ListActivity implements OnItemClickListener {
-    private FontSizes mFontSizes = K9.getFontSizes();
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -134,9 +132,6 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
             }
 
             holder.chip.getBackground().setAlpha(255);
-
-            mFontSizes.setViewTextSize(holder.description, mFontSizes.getAccountName());
-            mFontSizes.setViewTextSize(holder.email, mFontSizes.getAccountDescription());
 
 
             return view;
