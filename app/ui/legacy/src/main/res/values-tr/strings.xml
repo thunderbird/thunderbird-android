@@ -692,12 +692,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="account_settings_automatic_special_folder">Otomatik (%s)</string>
   <string name="font_size_settings_title">Yazı tipi Boyutu</string>
   <string name="font_size_settings_description">Yazı tipi boyutunu yapılandır</string>
-  <string name="font_size_account_list">Hesap listesi</string>
-  <string name="font_size_account_name">Hesap adı</string>
-  <string name="font_size_account_description">Hesap tanımı</string>
-  <string name="font_size_folder_list">Klasör listeleri</string>
-  <string name="font_size_folder_name">Klasör adı</string>
-  <string name="font_size_folder_status">Klasör durumu</string>
   <string name="font_size_message_list">Mesaj listeleri</string>
   <string name="font_size_message_list_subject">Konu</string>
   <string name="font_size_message_list_sender">Gönderen</string>

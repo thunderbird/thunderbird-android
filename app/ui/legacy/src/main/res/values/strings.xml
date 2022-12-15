@@ -860,14 +860,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_settings_title">Font size</string>
     <string name="font_size_settings_description">Configure font size</string>
 
-    <string name="font_size_account_list">Account list</string>
-    <string name="font_size_account_name">Account name</string>
-    <string name="font_size_account_description">Account description</string>
-
-    <string name="font_size_folder_list">Folder lists</string>
-    <string name="font_size_folder_name">Folder name</string>
-    <string name="font_size_folder_status">Folder status</string>
-
     <string name="font_size_message_list">Message lists</string>
     <string name="font_size_message_list_subject">Subject</string>
     <string name="font_size_message_list_sender">Sender</string>

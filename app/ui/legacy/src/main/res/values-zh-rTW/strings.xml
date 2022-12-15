@@ -715,12 +715,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_automatic_special_folder">自動 (%s)</string>
   <string name="font_size_settings_title">字體大小</string>
   <string name="font_size_settings_description">設定字體大小</string>
-  <string name="font_size_account_list">帳號列表</string>
-  <string name="font_size_account_name">帳號名稱</string>
-  <string name="font_size_account_description">帳號描述</string>
-  <string name="font_size_folder_list">信件匣列表</string>
-  <string name="font_size_folder_name">信件匣名稱</string>
-  <string name="font_size_folder_status">信件匣狀態</string>
   <string name="font_size_message_list">管理列表</string>
   <string name="font_size_message_list_subject">主題</string>
   <string name="font_size_message_list_sender">寄件人</string>

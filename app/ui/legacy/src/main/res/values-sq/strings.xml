@@ -717,12 +717,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_automatic_special_folder">Automatik (%s)</string>
   <string name="font_size_settings_title">Madhësi shkronjash</string>
   <string name="font_size_settings_description">Formësoni madhësi shkronjash</string>
-  <string name="font_size_account_list">Listë logarish</string>
-  <string name="font_size_account_name">Emër llogarie</string>
-  <string name="font_size_account_description">Përshkrim llogarie</string>
-  <string name="font_size_folder_list">Lista dosjesh</string>
-  <string name="font_size_folder_name">Emër dosjeje</string>
-  <string name="font_size_folder_status">Gjendje dosjeje</string>
   <string name="font_size_message_list">Lista mesazhesh</string>
   <string name="font_size_message_list_subject">Subjekt</string>
   <string name="font_size_message_list_sender">Dërgues</string>
