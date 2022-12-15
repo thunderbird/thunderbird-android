@@ -525,12 +525,6 @@
   <string name="account_settings_no_folder_selected">כלום</string>
   <string name="font_size_settings_title">גודל גופן</string>
   <string name="font_size_settings_description">הגדר גודל גופן</string>
-  <string name="font_size_account_list">רשימת חשבונות</string>
-  <string name="font_size_account_name">שם חשבון</string>
-  <string name="font_size_account_description">תיאור חשבון</string>
-  <string name="font_size_folder_list">רשימת תיקיות</string>
-  <string name="font_size_folder_name">שם תיקיה</string>
-  <string name="font_size_folder_status">מצב תיקייה</string>
   <string name="font_size_message_list">רשימת הודעות</string>
   <string name="font_size_message_list_subject">נושא</string>
   <string name="font_size_message_list_sender">שולח</string>

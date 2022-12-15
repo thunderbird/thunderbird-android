@@ -713,12 +713,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_automatic_special_folder">Automatica (%s)</string>
   <string name="font_size_settings_title">Dimensione carattere</string>
   <string name="font_size_settings_description">Configura la dimensione dei caratteri</string>
-  <string name="font_size_account_list">Elenco account</string>
-  <string name="font_size_account_name">Nome account</string>
-  <string name="font_size_account_description">Descrizione account</string>
-  <string name="font_size_folder_list">Elenchi delle cartelle</string>
-  <string name="font_size_folder_name">Nome cartella</string>
-  <string name="font_size_folder_status">Stato cartella</string>
   <string name="font_size_message_list">Elenchi dei messaggi</string>
   <string name="font_size_message_list_subject">Oggetto</string>
   <string name="font_size_message_list_sender">Mittente</string>

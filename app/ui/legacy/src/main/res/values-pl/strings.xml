@@ -721,12 +721,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_automatic_special_folder">Automatyczne (%s)</string>
   <string name="font_size_settings_title">Rozmiar czcionki</string>
   <string name="font_size_settings_description"> Ustawienia rozmiaru czcionki</string>
-  <string name="font_size_account_list">Lista kont</string>
-  <string name="font_size_account_name">Nazwa konta</string>
-  <string name="font_size_account_description">Opis konta</string>
-  <string name="font_size_folder_list">Lista folderów</string>
-  <string name="font_size_folder_name">Nazwa folderu</string>
-  <string name="font_size_folder_status">Status folderu</string>
   <string name="font_size_message_list">Lista wiadomości</string>
   <string name="font_size_message_list_subject">Temat</string>
   <string name="font_size_message_list_sender">Nadawca</string>
