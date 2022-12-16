@@ -46,10 +46,12 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.fab.ShrinkFabOnScrollListener
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
@@ -238,6 +240,7 @@ class MessageListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeSwipeRefreshLayout(view)
+        initializeFloatingActionButton(view)
         initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
 
@@ -260,6 +263,17 @@ class MessageListFragment :
         swipeRefreshLayout.isEnabled = false
 
         this.swipeRefreshLayout = swipeRefreshLayout
+    }
+
+    private fun initializeFloatingActionButton(view: View) {
+        val floatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.floating_action_button)
+
+        floatingActionButton.setOnClickListener {
+            onCompose()
+        }
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
+        recyclerView.addOnScrollListener(ShrinkFabOnScrollListener(floatingActionButton))
     }
 
     private fun initializeRecyclerView(view: View) {
