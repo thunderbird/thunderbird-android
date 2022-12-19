@@ -1,6 +1,10 @@
 name: "NowSecure GHAS"
 
 on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
     branches: [ main ]
 
@@ -60,6 +64,8 @@ jobs:
   process:
     if: ${{ needs.scan.outputs.report_id }}
     runs-on: ubuntu-latest
+    environment:
+      name: nowsecure-env
     # The above stage we introduced.
     needs: scan
     steps:
@@ -68,7 +74,7 @@ jobs:
 
       - name: NowSecure download report
         uses: nowsecure/nowsecure-action/convert-sarif@v3
-        timeout-minutes: 120
+        timeout-minutes: 30
         with:
           report_id: ${{ needs.scan.outputs.report_id }}
           platform_token: ${{ secrets.NS_TOKEN }}
