@@ -212,6 +212,7 @@ class ChooseFolderActivity : K9Activity() {
         val locale = Locale.getDefault()
         val displayName = item.displayName.lowercase(locale)
         return constraint.splitToSequence(" ")
+            .filter { it.isNotEmpty() }
             .map { it.lowercase(locale) }
             .any { it in displayName }
     }
