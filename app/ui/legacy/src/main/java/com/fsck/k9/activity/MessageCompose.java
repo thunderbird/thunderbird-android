@@ -1500,7 +1500,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             messagingController.sendMessage(account, message, plaintextSubject, null);
             if (draftId != null) {
                 // TODO set draft id to invalid in MessageCompose!
-                messagingController.deleteDraft(account, draftId);
+                messagingController.deleteDraftSkippingTrashFolder(account, draftId);
             }
 
             return null;
