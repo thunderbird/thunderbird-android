@@ -271,6 +271,9 @@ public class GeneralSettingsDescriptions {
         s.put("swipeLeftAction", Settings.versions(
                 new V(83, new EnumSetting<>(SwipeAction.class, SwipeAction.ToggleRead))
         ));
+        s.put("showComposeButtonOnMessageList", Settings.versions(
+            new V(85, new BooleanSetting(true))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

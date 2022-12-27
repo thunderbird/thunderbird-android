@@ -1292,4 +1292,7 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="swipe_action_spam">Spam</string>
     <!-- Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short. -->
     <string name="swipe_action_move">Move…</string>
+
+    <!-- Name of setting to configure whether to show a "compose" floating action button on top of the message list -->
+    <string name="general_settings_show_compose_button_title">Show compose button</string>
 </resources>

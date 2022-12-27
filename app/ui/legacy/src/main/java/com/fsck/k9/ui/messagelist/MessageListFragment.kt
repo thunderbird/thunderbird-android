@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -102,6 +103,7 @@ class MessageListFragment :
     private var sortDateAscending = false
     private var actionMode: ActionMode? = null
     private var hasConnectivity: Boolean? = null
+    private var isShowFloatingActionButton: Boolean = true
 
     /**
      * Relevant messages for the current context when we have to remember the chosen messages
@@ -266,6 +268,15 @@ class MessageListFragment :
     }
 
     private fun initializeFloatingActionButton(view: View) {
+        isShowFloatingActionButton = K9.isShowComposeButtonOnMessageList
+        if (isShowFloatingActionButton) {
+            enableFloatingActionButton(view)
+        } else {
+            disableFloatingActionButton(view)
+        }
+    }
+
+    private fun enableFloatingActionButton(view: View) {
         val floatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.floating_action_button)
 
         floatingActionButton.setOnClickListener {
@@ -274,6 +285,11 @@ class MessageListFragment :
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
         recyclerView.addOnScrollListener(ShrinkFabOnScrollListener(floatingActionButton))
+    }
+
+    private fun disableFloatingActionButton(view: View) {
+        val floatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.floating_action_button)
+        floatingActionButton.isGone = true
     }
 
     private fun initializeRecyclerView(view: View) {
@@ -745,10 +761,9 @@ class MessageListFragment :
     }
 
     private fun prepareMenu(menu: Menu) {
-        menu.findItem(R.id.compose).isVisible = true
+        menu.findItem(R.id.compose).isVisible = !isShowFloatingActionButton
         menu.findItem(R.id.set_sort).isVisible = true
         menu.findItem(R.id.select_all).isVisible = true
-        menu.findItem(R.id.compose).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
         menu.findItem(R.id.empty_trash).isVisible = isShowingTrashFolder
 
