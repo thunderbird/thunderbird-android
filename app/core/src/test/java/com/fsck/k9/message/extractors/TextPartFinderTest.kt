@@ -233,4 +233,22 @@ class TextPartFinderTest {
 
         assertThat(result).isEqualTo(expected)
     }
+
+    @Test
+    fun `multipart_mixed containing multipart_alternative and text_plain`() {
+        val expected = createEmptyPart("text/plain")
+        val part = createMultipart(
+            "multipart/mixed",
+            createMultipart(
+                "multipart/alternative",
+                createPart("image/jpeg"),
+                createPart("image/png")
+            ),
+            expected
+        )
+
+        val result = textPartFinder.findFirstTextPart(part)
+
+        assertThat(result).isEqualTo(expected)
+    }
 }

@@ -1,21 +1,26 @@
 package com.fsck.k9.message.extractors
 
+import com.fsck.k9.mail.MimeType.Companion.toMimeType
+import com.fsck.k9.mail.MimeType.Companion.toMimeTypeOrNull
 import com.fsck.k9.mail.Multipart
 import com.fsck.k9.mail.Part
-import com.fsck.k9.mail.internet.MimeUtility.isSameMimeType
+
+private val TEXT_PLAIN = "text/plain".toMimeType()
+private val TEXT_HTML = "text/html".toMimeType()
+private val MULTIPART_ALTERNATIVE = "multipart/alternative".toMimeType()
 
 class TextPartFinder {
     fun findFirstTextPart(part: Part): Part? {
-        val mimeType = part.mimeType
+        val mimeType = part.mimeType.toMimeTypeOrNull()
         val body = part.body
 
         return if (body is Multipart) {
-            if (isSameMimeType(mimeType, "multipart/alternative")) {
+            if (mimeType == MULTIPART_ALTERNATIVE) {
                 findTextPartInMultipartAlternative(body)
             } else {
                 findTextPartInMultipart(body)
             }
-        } else if (isSameMimeType(mimeType, "text/plain") || isSameMimeType(mimeType, "text/html")) {
+        } else if (mimeType == TEXT_PLAIN || mimeType == TEXT_HTML) {
             part
         } else {
             null
@@ -26,21 +31,19 @@ class TextPartFinder {
         var htmlPart: Part? = null
 
         for (bodyPart in multipart.bodyParts) {
-            val mimeType = bodyPart.mimeType
+            val mimeType = bodyPart.mimeType.toMimeTypeOrNull()
             val body = bodyPart.body
 
             if (body is Multipart) {
-                val candidatePart = findFirstTextPart(bodyPart)
-                if (candidatePart != null) {
-                    htmlPart = if (isSameMimeType(candidatePart.mimeType, "text/html")) {
-                        candidatePart
-                    } else {
-                        return candidatePart
-                    }
+                val candidatePart = findFirstTextPart(bodyPart) ?: continue
+                if (mimeType == TEXT_PLAIN) {
+                    return candidatePart
                 }
-            } else if (isSameMimeType(mimeType, "text/plain")) {
+
+                htmlPart = candidatePart
+            } else if (mimeType == TEXT_PLAIN) {
                 return bodyPart
-            } else if (isSameMimeType(mimeType, "text/html") && htmlPart == null) {
+            } else if (mimeType == TEXT_HTML && htmlPart == null) {
                 htmlPart = bodyPart
             }
         }
@@ -50,15 +53,12 @@ class TextPartFinder {
 
     private fun findTextPartInMultipart(multipart: Multipart): Part? {
         for (bodyPart in multipart.bodyParts) {
-            val mimeType = bodyPart.mimeType
+            val mimeType = bodyPart.mimeType.toMimeTypeOrNull()
             val body = bodyPart.body
 
             if (body is Multipart) {
-                val candidatePart = findFirstTextPart(bodyPart)
-                if (candidatePart != null) {
-                    return candidatePart
-                }
-            } else if (isSameMimeType(mimeType, "text/plain") || isSameMimeType(mimeType, "text/html")) {
+                return findFirstTextPart(bodyPart) ?: continue
+            } else if (mimeType == TEXT_PLAIN || mimeType == TEXT_HTML) {
                 return bodyPart
             }
         }
