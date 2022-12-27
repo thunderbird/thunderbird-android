@@ -1,82 +1,68 @@
-package com.fsck.k9.message.extractors;
+package com.fsck.k9.message.extractors
 
+import com.fsck.k9.mail.Multipart
+import com.fsck.k9.mail.Part
+import com.fsck.k9.mail.internet.MimeUtility.isSameMimeType
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+class TextPartFinder {
+    fun findFirstTextPart(part: Part): Part? {
+        val mimeType = part.mimeType
+        val body = part.body
 
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.Multipart;
-import com.fsck.k9.mail.Part;
-
-import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
-
-
-public class TextPartFinder {
-    @Nullable
-    public Part findFirstTextPart(@NonNull Part part) {
-        String mimeType = part.getMimeType();
-        Body body = part.getBody();
-
-        if (body instanceof Multipart) {
-            Multipart multipart = (Multipart) body;
+        return if (body is Multipart) {
             if (isSameMimeType(mimeType, "multipart/alternative")) {
-                return findTextPartInMultipartAlternative(multipart);
+                findTextPartInMultipartAlternative(body)
             } else {
-                return findTextPartInMultipart(multipart);
+                findTextPartInMultipart(body)
             }
         } else if (isSameMimeType(mimeType, "text/plain") || isSameMimeType(mimeType, "text/html")) {
-            return part;
+            part
+        } else {
+            null
         }
-
-        return null;
     }
 
-    private Part findTextPartInMultipartAlternative(Multipart multipart) {
-        Part htmlPart = null;
+    private fun findTextPartInMultipartAlternative(multipart: Multipart): Part? {
+        var htmlPart: Part? = null
 
-        for (BodyPart bodyPart : multipart.getBodyParts()) {
-            String mimeType = bodyPart.getMimeType();
-            Body body = bodyPart.getBody();
+        for (bodyPart in multipart.bodyParts) {
+            val mimeType = bodyPart.mimeType
+            val body = bodyPart.body
 
-            if (body instanceof Multipart) {
-                Part candidatePart = findFirstTextPart(bodyPart);
+            if (body is Multipart) {
+                val candidatePart = findFirstTextPart(bodyPart)
                 if (candidatePart != null) {
-                    if (isSameMimeType(candidatePart.getMimeType(), "text/html")) {
-                        htmlPart = candidatePart;
+                    htmlPart = if (isSameMimeType(candidatePart.mimeType, "text/html")) {
+                        candidatePart
                     } else {
-                        return candidatePart;
+                        return candidatePart
                     }
                 }
             } else if (isSameMimeType(mimeType, "text/plain")) {
-                return bodyPart;
+                return bodyPart
             } else if (isSameMimeType(mimeType, "text/html") && htmlPart == null) {
-                htmlPart = bodyPart;
+                htmlPart = bodyPart
             }
         }
 
-        if (htmlPart != null) {
-            return htmlPart;
-        }
-
-        return null;
+        return htmlPart
     }
 
-    private Part findTextPartInMultipart(Multipart multipart) {
-        for (BodyPart bodyPart : multipart.getBodyParts()) {
-            String mimeType = bodyPart.getMimeType();
-            Body body = bodyPart.getBody();
+    private fun findTextPartInMultipart(multipart: Multipart): Part? {
+        for (bodyPart in multipart.bodyParts) {
+            val mimeType = bodyPart.mimeType
+            val body = bodyPart.body
 
-            if (body instanceof Multipart) {
-                Part candidatePart = findFirstTextPart(bodyPart);
+            if (body is Multipart) {
+                val candidatePart = findFirstTextPart(bodyPart)
                 if (candidatePart != null) {
-                    return candidatePart;
+                    return candidatePart
                 }
             } else if (isSameMimeType(mimeType, "text/plain") || isSameMimeType(mimeType, "text/html")) {
-                return bodyPart;
+                return bodyPart
             }
         }
 
-        return null;
+        return null
     }
 }
