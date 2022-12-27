@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -50,6 +51,7 @@ import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
@@ -125,6 +127,8 @@ class MessageListFragment :
 
     private val isNewMessagesView: Boolean
         get() = localSearch.id == SearchAccount.NEW_MESSAGES
+
+    private lateinit var composeFabButton: FloatingActionButton
 
     /**
      * `true` after [.onCreate] was executed. Used in [.updateTitle] to
@@ -240,6 +244,7 @@ class MessageListFragment :
         initializeSwipeRefreshLayout(view)
         initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
+        initializeFloatingActionButton(view)
 
         // This needs to be done before loading the message list below
         initializeSortSettings()
@@ -315,6 +320,11 @@ class MessageListFragment :
 
         val intent = Intent(requireActivity(), RecentChangesActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun initializeFloatingActionButton(view: View) {
+        composeFabButton = view.findViewById(R.id.compose_fab)
+        composeFabButton.setOnClickListener{ onCompose() }
     }
 
     private fun initializeSortSettings() {
@@ -1788,6 +1798,8 @@ class MessageListFragment :
             flag = null
             unflag = null
 
+            composeFabButton.isVisible = true
+
             adapter.clearSelected()
         }
 
@@ -1799,6 +1811,8 @@ class MessageListFragment :
         }
 
         private fun setContextCapabilities(account: Account?, menu: Menu) {
+            composeFabButton.isVisible = false
+
             if (!isSingleAccountMode || account == null) {
                 // We don't support cross-account copy/move operations right now
                 menu.findItem(R.id.move).isVisible = false
