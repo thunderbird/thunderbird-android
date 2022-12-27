@@ -324,7 +324,7 @@ class MessageListFragment :
 
     private fun initializeFloatingActionButton(view: View) {
         composeFabButton = view.findViewById(R.id.compose_fab)
-        composeFabButton.setOnClickListener{ onCompose() }
+        composeFabButton.setOnClickListener { onCompose() }
     }
 
     private fun initializeSortSettings() {
