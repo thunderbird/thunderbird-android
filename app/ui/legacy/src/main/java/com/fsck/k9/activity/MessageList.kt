@@ -338,7 +338,7 @@ open class MessageList :
                 val messageListFragment = checkNotNull(this.messageListFragment)
 
                 messageListWasDisplayed = true
-                messageListFragment.isActive = true
+                messageListFragment.setFullyActive()
 
                 messageViewContainerFragment.let { messageViewContainerFragment ->
                     if (messageViewContainerFragment == null) {
@@ -598,7 +598,7 @@ open class MessageList :
         openFolderTransaction!!.commit()
         openFolderTransaction = null
 
-        messageListFragment!!.isActive = true
+        messageListFragment!!.setFullyActive()
 
         onMessageListDisplayed()
     }
@@ -1002,7 +1002,7 @@ open class MessageList :
 
     override fun onBackStackChanged() {
         findFragments()
-        messageListFragment?.isActive = true
+        messageListFragment?.setFullyActive()
 
         if (isDrawerEnabled && !isAdditionalMessageListDisplayed) {
             unlockDrawer()
@@ -1029,7 +1029,7 @@ open class MessageList :
         }
 
         messageListFragment = fragment
-        fragment.isActive = true
+        fragment.setFullyActive()
 
         if (isDrawerEnabled) {
             lockDrawer()
@@ -1175,11 +1175,12 @@ open class MessageList :
         messageViewOnly = false
         messageListWasDisplayed = true
         displayMode = DisplayMode.MESSAGE_LIST
-        viewSwitcher!!.showFirstView()
 
         messageViewContainerFragment?.isActive = false
         messageListFragment!!.isActive = true
         messageListFragment!!.setActiveMessage(null)
+
+        viewSwitcher!!.showFirstView()
 
         setDrawerLockState()
 
@@ -1230,6 +1231,7 @@ open class MessageList :
     override fun onSwitchComplete(displayedChild: Int) {
         if (displayedChild == 0) {
             removeMessageViewContainerFragment()
+            messageListFragment?.onFullyActive()
         }
     }
 
@@ -1318,6 +1320,11 @@ open class MessageList :
             addAccountUuid(accountUuid)
             addAllowedFolder(folderId)
         }
+    }
+
+    private fun MessageListFragment.setFullyActive() {
+        isActive = true
+        onFullyActive()
     }
 
     private fun configureDrawer() {

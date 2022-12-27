@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -88,6 +89,7 @@ class MessageListFragment :
     private var recyclerView: RecyclerView? = null
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
+    private var floatingActionButton: ExtendedFloatingActionButton? = null
 
     private lateinit var adapter: MessageListAdapter
 
@@ -146,6 +148,7 @@ class MessageListFragment :
             field = value
             resetActionMode()
             invalidateMenu()
+            maybeHideFloatingActionButton()
         }
 
     override fun onAttach(context: Context) {
@@ -285,6 +288,8 @@ class MessageListFragment :
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
         recyclerView.addOnScrollListener(ShrinkFabOnScrollListener(floatingActionButton))
+
+        this.floatingActionButton = floatingActionButton
     }
 
     private fun disableFloatingActionButton(view: View) {
@@ -490,6 +495,7 @@ class MessageListFragment :
         recyclerView = null
         itemTouchHelper = null
         swipeRefreshLayout = null
+        floatingActionButton = null
 
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
             messagingController.clearNewMessages(account)
@@ -1459,6 +1465,18 @@ class MessageListFragment :
                 scrollToMessage(messageReference)
             }
         }
+    }
+
+    fun onFullyActive() {
+        maybeShowFloatingActionButton()
+    }
+
+    private fun maybeShowFloatingActionButton() {
+        floatingActionButton?.isVisible = true
+    }
+
+    private fun maybeHideFloatingActionButton() {
+        floatingActionButton?.isGone = true
     }
 
     // For the last N displayed messages we remember the original 'read' and 'starred' state of the messages. We pass
