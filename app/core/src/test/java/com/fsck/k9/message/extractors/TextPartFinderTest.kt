@@ -1,198 +1,236 @@
-package com.fsck.k9.message.extractors;
+package com.fsck.k9.message.extractors
 
+import com.fsck.k9.message.MessageCreationHelper.createEmptyPart
+import com.fsck.k9.message.MessageCreationHelper.createMultipart
+import com.fsck.k9.message.MessageCreationHelper.createPart
+import com.fsck.k9.message.MessageCreationHelper.createTextPart
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
 
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.Part;
-import org.junit.Before;
-import org.junit.Test;
+class TextPartFinderTest {
+    private val textPartFinder = TextPartFinder()
 
-import static com.fsck.k9.message.MessageCreationHelper.createEmptyPart;
-import static com.fsck.k9.message.MessageCreationHelper.createMultipart;
-import static com.fsck.k9.message.MessageCreationHelper.createPart;
-import static com.fsck.k9.message.MessageCreationHelper.createTextPart;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+    @Test
+    fun `text_plain part`() {
+        val part = createTextPart("text/plain")
 
+        val result = textPartFinder.findFirstTextPart(part)
 
-public class TextPartFinderTest {
-    private TextPartFinder textPartFinder;
-
-
-    @Before
-    public void setUp() throws Exception {
-        textPartFinder = new TextPartFinder();
+        assertThat(result).isEqualTo(part)
     }
 
     @Test
-    public void findFirstTextPart_withTextPlainPart() throws Exception {
-        Part part = createTextPart("text/plain");
+    fun `text_html part`() {
+        val part = createTextPart("text/html")
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(part, result);
+        assertThat(result).isEqualTo(part)
     }
 
     @Test
-    public void findFirstTextPart_withTextHtmlPart() throws Exception {
-        Part part = createTextPart("text/html");
+    fun `without text part`() {
+        val part = createPart("image/jpeg")
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(part, result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void findFirstTextPart_withoutTextPart() throws Exception {
-        Part part = createPart("image/jpeg");
+    fun `multipart_alternative text_plain and text_html`() {
+        val expected = createTextPart("text/plain")
+        val part = createMultipart(
+            "multipart/alternative",
+            expected,
+            createTextPart("text/html")
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertNull(result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartAlternative() throws Exception {
-        BodyPart expected = createTextPart("text/plain");
-        Part part = createMultipart("multipart/alternative", expected, createTextPart("text/html"));
+    fun `multipart_alternative containing text_html and text_plain`() {
+        val expected = createTextPart("text/plain")
+        val part = createMultipart(
+            "multipart/alternative",
+            createTextPart("text/html"),
+            expected
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartAlternativeHtmlPartFirst() throws Exception {
-        BodyPart expected = createTextPart("text/plain");
-        Part part = createMultipart("multipart/alternative", createTextPart("text/html"), expected);
+    fun `multipart_alternative containing multiple text_html parts`() {
+        val expected = createTextPart("text/html")
+        val part = createMultipart(
+            "multipart/alternative",
+            createPart("image/gif"),
+            expected,
+            createTextPart("text/html")
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartAlternativeContainingOnlyTextHtmlPart() throws Exception {
-        BodyPart expected = createTextPart("text/html");
-        Part part = createMultipart("multipart/alternative",
-                createPart("image/gif"),
+    fun `multipart_alternative not containing any text parts`() {
+        val part = createMultipart(
+            "multipart/alternative",
+            createPart("image/gif"),
+            createPart("application/pdf")
+        )
+
+        val result = textPartFinder.findFirstTextPart(part)
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun `multipart_alternative containing multipart_related containing text_plain`() {
+        val expected = createTextPart("text/plain")
+        val part = createMultipart(
+            "multipart/alternative",
+            createMultipart(
+                "multipart/related",
                 expected,
-                createTextPart("text/html"));
+                createPart("image/jpeg")
+            ),
+            createTextPart("text/html")
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartAlternativeNotContainingTextPart() throws Exception {
-        Part part = createMultipart("multipart/alternative",
-                createPart("image/gif"),
-                createPart("application/pdf"));
+    fun `multipart_alternative containing multipart_related and text_plain`() {
+        val expected = createTextPart("text/plain")
+        val part = createMultipart(
+            "multipart/alternative",
+            createMultipart(
+                "multipart/related",
+                createTextPart("text/html"),
+                createPart("image/jpeg")
+            ),
+            expected
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertNull(result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartAlternativeContainingMultipartRelatedContainingTextPlain()
-            throws Exception {
-        BodyPart expected = createTextPart("text/plain");
-        Part part = createMultipart("multipart/alternative",
-                createMultipart("multipart/related", expected, createPart("image/jpeg")),
-                createTextPart("text/html"));
+    fun `multipart_mixed containing text_plain`() {
+        val expected = createTextPart("text/plain")
+        val part = createMultipart(
+            "multipart/mixed",
+            createPart("image/jpeg"),
+            expected
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartAlternativeContainingMultipartRelatedContainingTextHtmlFirst()
-            throws Exception {
-        BodyPart expected = createTextPart("text/plain");
-        Part part = createMultipart("multipart/alternative",
-                createMultipart("multipart/related", createTextPart("text/html"), createPart("image/jpeg")),
-                expected);
+    fun `multipart_mixed containing text_html and text_plain`() {
+        val expected = createTextPart("text/html")
+        val part = createMultipart(
+            "multipart/mixed",
+            expected,
+            createTextPart("text/plain")
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartMixedContainingTextPlain() throws Exception {
-        BodyPart expected = createTextPart("text/plain");
-        Part part = createMultipart("multipart/mixed", createPart("image/jpeg"), expected);
+    fun `multipart_mixed not containing any text parts`() {
+        val part = createMultipart(
+            "multipart/mixed",
+            createPart("image/jpeg"),
+            createPart("image/gif")
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(expected, result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void findFirstTextPart_withMultipartMixedContainingTextHtmlFirst() throws Exception {
-        BodyPart expected = createTextPart("text/html");
-        Part part = createMultipart("multipart/mixed", expected, createTextPart("text/plain"));
+    fun `multipart_mixed containing multipart_alternative containing text_plain and text_html`() {
+        val expected = createTextPart("text/plain")
+        val part = createMultipart(
+            "multipart/mixed",
+            createPart("image/jpeg"),
+            createMultipart(
+                "multipart/alternative",
+                expected,
+                createTextPart("text/html")
+            ),
+            createTextPart("text/plain")
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartMixedNotContainingTextPart() throws Exception {
-        Part part = createMultipart("multipart/mixed", createPart("image/jpeg"), createPart("image/gif"));
+    fun `multipart_mixed containing multipart_alternative containing text_html and text_plain`() {
+        val expected = createTextPart("text/plain")
+        val part = createMultipart(
+            "multipart/mixed",
+            createMultipart(
+                "multipart/alternative",
+                createTextPart("text/html"),
+                expected
+            )
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertNull(result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartMixedContainingMultipartAlternative() throws Exception {
-        BodyPart expected = createTextPart("text/plain");
-        Part part = createMultipart("multipart/mixed",
-                createPart("image/jpeg"),
-                createMultipart("multipart/alternative", expected, createTextPart("text/html")),
-                createTextPart("text/plain"));
+    fun `multipart_alternative containing empty text_plain and text_html`() {
+        val expected = createEmptyPart("text/plain")
+        val part = createMultipart(
+            "multipart/alternative",
+            expected,
+            createTextPart("text/html")
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
-    public void findFirstTextPart_withMultipartMixedContainingMultipartAlternativeWithTextPlainPartLast()
-            throws Exception {
-        BodyPart expected = createTextPart("text/plain");
-        Part part = createMultipart("multipart/mixed",
-                createMultipart("multipart/alternative", createTextPart("text/html"), expected));
+    fun `multipart_mixed containing empty text_html and text_plain`() {
+        val expected = createEmptyPart("text/html")
+        val part = createMultipart(
+            "multipart/mixed",
+            expected,
+            createTextPart("text/plain")
+        )
 
-        Part result = textPartFinder.findFirstTextPart(part);
+        val result = textPartFinder.findFirstTextPart(part)
 
-        assertEquals(expected, result);
-    }
-
-    @Test
-    public void findFirstTextPart_withMultipartAlternativeContainingEmptyTextPlainPart()
-            throws Exception {
-        BodyPart expected = createEmptyPart("text/plain");
-        Part part = createMultipart("multipart/alternative", expected, createTextPart("text/html"));
-
-        Part result = textPartFinder.findFirstTextPart(part);
-
-        assertEquals(expected, result);
-    }
-
-    @Test
-    public void findFirstTextPart_withMultipartMixedContainingEmptyTextHtmlPart()
-            throws Exception {
-        BodyPart expected = createEmptyPart("text/html");
-        Part part = createMultipart("multipart/mixed", expected, createTextPart("text/plain"));
-
-        Part result = textPartFinder.findFirstTextPart(part);
-
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected)
     }
 }
