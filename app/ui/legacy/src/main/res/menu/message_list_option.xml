@@ -153,7 +153,7 @@
         android:id="@+id/compose"
         android:icon="?attr/iconActionCompose"
         android:title="@string/compose_action"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <!-- MessageList -->
     <item
