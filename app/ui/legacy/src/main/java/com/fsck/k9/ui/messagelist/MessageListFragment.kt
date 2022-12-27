@@ -744,7 +744,6 @@ class MessageListFragment :
         menu.findItem(R.id.compose).isVisible = true
         menu.findItem(R.id.set_sort).isVisible = true
         menu.findItem(R.id.select_all).isVisible = true
-        menu.findItem(R.id.compose).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
         menu.findItem(R.id.empty_trash).isVisible = isShowingTrashFolder
 
