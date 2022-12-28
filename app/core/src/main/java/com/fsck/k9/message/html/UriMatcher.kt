@@ -4,8 +4,6 @@ object UriMatcher {
     private val SUPPORTED_URIS = run {
         val httpUriParser = HttpUriParser()
         mapOf(
-            "ethereum:" to EthereumUriParser(),
-            "bitcoin:" to BitcoinUriParser(),
             "http:" to httpUriParser,
             "https:" to httpUriParser,
             "rtsp:" to httpUriParser
