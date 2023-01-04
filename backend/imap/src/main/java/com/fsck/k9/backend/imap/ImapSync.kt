@@ -627,7 +627,7 @@ internal class ImapSync(
     ) {
         /*
          * The provider was unable to get the structure of the message, so
-         * we'll download a reasonable portion of the messge and mark it as
+         * we'll download a reasonable portion of the message and mark it as
          * incomplete so the entire thing can be downloaded later if the user
          * wishes to download it.
          */

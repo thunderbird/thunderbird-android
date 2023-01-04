@@ -121,7 +121,7 @@ public class Utility {
     /**
      * Extract the 'original' subject value, by ignoring leading
      * response/forward marker and '[XX]' formatted tags (as many mailing-list
-     * softwares do).
+     * software do).
      *
      * <p>
      * Result is also trimmed.
