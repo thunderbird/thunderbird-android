@@ -175,6 +175,9 @@
             </intent-filter>
         </activity>
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically after an account has been set up.
+        -->
         <activity
             android:name=".activity.MessageCompose"
             android:configChanges="locale"
@@ -224,6 +227,9 @@
                 android:resource="@xml/searchable"/>
         </activity>
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically after an account has been set up.
+        -->
         <activity
             android:name=".activity.LauncherShortcuts"
             android:configChanges="locale"
@@ -288,6 +294,9 @@
             android:name=".activity.setup.OAuthFlowActivity"
             android:label="@string/account_setup_basics_title" />
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically after an account has been set up.
+        -->
         <receiver
             android:name=".provider.UnreadWidgetProvider"
             android:icon="@drawable/ic_launcher"
@@ -302,6 +311,9 @@
                 android:resource="@xml/unread_widget_info"/>
         </receiver>
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically after an account has been set up.
+        -->
         <receiver
             android:name=".widget.list.MessageListWidgetProvider"
             android:icon="@drawable/message_list_widget_preview"
@@ -316,6 +328,9 @@
                 android:resource="@xml/message_list_widget_info" />
         </receiver>
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically if necessary.
+        -->
         <receiver
             android:name=".controller.push.BootCompleteReceiver"
             android:exported="false"
