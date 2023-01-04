@@ -228,6 +228,7 @@
             android:name=".activity.LauncherShortcuts"
             android:configChanges="locale"
             android:label="@string/shortcuts_title"
+            android:enabled="false"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT"/>
@@ -291,6 +292,7 @@
             android:name=".provider.UnreadWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/unread_widget_label"
+            android:enabled="false"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -304,6 +306,7 @@
             android:name=".widget.list.MessageListWidgetProvider"
             android:icon="@drawable/message_list_widget_preview"
             android:label="@string/mail_list_widget_text"
+            android:enabled="false"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

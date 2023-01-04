@@ -4,12 +4,15 @@ import android.app.Application
 import android.content.res.Configuration
 import android.content.res.Resources
 import app.k9mail.ui.widget.list.MessageListWidgetManager
+import com.fsck.k9.activity.LauncherShortcuts
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.notification.NotificationChannelManager
+import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.base.extensions.currentLocale
+import com.fsck.k9.widget.list.MessageListWidgetProvider
 import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -123,7 +126,12 @@ class App : Application() {
 
     companion object {
         val appConfig = AppConfig(
-            componentsToDisable = listOf(MessageCompose::class.java)
+            componentsToDisable = listOf(
+                MessageCompose::class.java,
+                LauncherShortcuts::class.java,
+                UnreadWidgetProvider::class.java,
+                MessageListWidgetProvider::class.java,
+            )
         )
     }
 }
