@@ -323,8 +323,7 @@
         </receiver>
 
         <service
-            android:name=".notification.NotificationActionService"
-            android:enabled="true"/>
+            android:name=".notification.NotificationActionService"/>
 
         <service
             android:name=".service.DatabaseUpgradeService"
