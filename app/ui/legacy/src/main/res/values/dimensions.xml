@@ -12,4 +12,8 @@
     <dimen name="messageListSwipeThreshold">72dp</dimen>
     <dimen name="messageListSwipeIconPadding">24dp</dimen>
     <dimen name="messageListSwipeTextPadding">12dp</dimen>
+
+    <dimen name="floatingActionButtonMargin">16dp</dimen>
+    <!-- Height of ExtendedFloatingActionButton (48dp) plus two times floatingActionButtonMargin -->
+    <dimen name="floatingActionButtonSpacing">80dp</dimen>
 </resources>

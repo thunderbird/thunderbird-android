@@ -20,6 +20,7 @@
         <item name="colorPrimaryVariant">@color/material_blue_800</item>
         <item name="colorSecondary">@color/material_pink_400</item>
         <item name="colorSecondaryVariant">@color/material_pink_200</item>
+        <item name="colorOnSecondary">#ffffff</item>
         <item name="bottomBarBackground">@color/material_gray_50</item>
 
         <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>

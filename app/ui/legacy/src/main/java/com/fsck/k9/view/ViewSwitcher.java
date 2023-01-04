@@ -30,6 +30,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
 
     public void showFirstView() {
         if (getDisplayedChild() == 0) {
+            onAnimationEnd(null);
             return;
         }
 
@@ -40,6 +41,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
 
     public void showSecondView() {
         if (getDisplayedChild() == 1) {
+            onAnimationEnd(null);
             return;
         }
 

@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -46,10 +48,12 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.fab.ShrinkFabOnScrollListener
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
@@ -85,6 +89,7 @@ class MessageListFragment :
     private var recyclerView: RecyclerView? = null
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
+    private var floatingActionButton: ExtendedFloatingActionButton? = null
 
     private lateinit var adapter: MessageListAdapter
 
@@ -100,6 +105,7 @@ class MessageListFragment :
     private var sortDateAscending = false
     private var actionMode: ActionMode? = null
     private var hasConnectivity: Boolean? = null
+    private var isShowFloatingActionButton: Boolean = true
 
     /**
      * Relevant messages for the current context when we have to remember the chosen messages
@@ -142,6 +148,7 @@ class MessageListFragment :
             field = value
             resetActionMode()
             invalidateMenu()
+            maybeHideFloatingActionButton()
         }
 
     override fun onAttach(context: Context) {
@@ -238,6 +245,7 @@ class MessageListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeSwipeRefreshLayout(view)
+        initializeFloatingActionButton(view)
         initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
 
@@ -260,6 +268,33 @@ class MessageListFragment :
         swipeRefreshLayout.isEnabled = false
 
         this.swipeRefreshLayout = swipeRefreshLayout
+    }
+
+    private fun initializeFloatingActionButton(view: View) {
+        isShowFloatingActionButton = K9.isShowComposeButtonOnMessageList
+        if (isShowFloatingActionButton) {
+            enableFloatingActionButton(view)
+        } else {
+            disableFloatingActionButton(view)
+        }
+    }
+
+    private fun enableFloatingActionButton(view: View) {
+        val floatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.floating_action_button)
+
+        floatingActionButton.setOnClickListener {
+            onCompose()
+        }
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
+        recyclerView.addOnScrollListener(ShrinkFabOnScrollListener(floatingActionButton))
+
+        this.floatingActionButton = floatingActionButton
+    }
+
+    private fun disableFloatingActionButton(view: View) {
+        val floatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.floating_action_button)
+        floatingActionButton.isGone = true
     }
 
     private fun initializeRecyclerView(view: View) {
@@ -460,6 +495,7 @@ class MessageListFragment :
         recyclerView = null
         itemTouchHelper = null
         swipeRefreshLayout = null
+        floatingActionButton = null
 
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
             messagingController.clearNewMessages(account)
@@ -731,10 +767,9 @@ class MessageListFragment :
     }
 
     private fun prepareMenu(menu: Menu) {
-        menu.findItem(R.id.compose).isVisible = true
+        menu.findItem(R.id.compose).isVisible = !isShowFloatingActionButton
         menu.findItem(R.id.set_sort).isVisible = true
         menu.findItem(R.id.select_all).isVisible = true
-        menu.findItem(R.id.compose).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
         menu.findItem(R.id.empty_trash).isVisible = isShowingTrashFolder
 
@@ -1430,6 +1465,18 @@ class MessageListFragment :
                 scrollToMessage(messageReference)
             }
         }
+    }
+
+    fun onFullyActive() {
+        maybeShowFloatingActionButton()
+    }
+
+    private fun maybeShowFloatingActionButton() {
+        floatingActionButton?.isVisible = true
+    }
+
+    private fun maybeHideFloatingActionButton() {
+        floatingActionButton?.isGone = true
     }
 
     // For the last N displayed messages we remember the original 'read' and 'starred' state of the messages. We pass
