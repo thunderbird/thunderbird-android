@@ -16,6 +16,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -299,6 +300,10 @@ class MessageListFragment :
 
     private fun initializeRecyclerView(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
+
+        if (!isShowFloatingActionButton) {
+            recyclerView.setPadding(0)
+        }
 
         val itemDecoration = MessageListItemDecoration(requireContext())
         recyclerView.addItemDecoration(itemDecoration)
