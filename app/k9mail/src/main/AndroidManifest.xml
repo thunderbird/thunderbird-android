@@ -175,6 +175,9 @@
             </intent-filter>
         </activity>
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically after an account has been set up.
+        -->
         <activity
             android:name=".activity.MessageCompose"
             android:configChanges="locale"
@@ -224,10 +227,14 @@
                 android:resource="@xml/searchable"/>
         </activity>
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically after an account has been set up.
+        -->
         <activity
             android:name=".activity.LauncherShortcuts"
             android:configChanges="locale"
             android:label="@string/shortcuts_title"
+            android:enabled="false"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT"/>
@@ -287,10 +294,14 @@
             android:name=".activity.setup.OAuthFlowActivity"
             android:label="@string/account_setup_basics_title" />
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically after an account has been set up.
+        -->
         <receiver
             android:name=".provider.UnreadWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/unread_widget_label"
+            android:enabled="false"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -300,10 +311,14 @@
                 android:resource="@xml/unread_widget_info"/>
         </receiver>
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically after an account has been set up.
+        -->
         <receiver
             android:name=".widget.list.MessageListWidgetProvider"
             android:icon="@drawable/message_list_widget_preview"
             android:label="@string/mail_list_widget_text"
+            android:enabled="false"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -313,6 +328,9 @@
                 android:resource="@xml/message_list_widget_info" />
         </receiver>
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically if necessary.
+        -->
         <receiver
             android:name=".controller.push.BootCompleteReceiver"
             android:exported="false"
