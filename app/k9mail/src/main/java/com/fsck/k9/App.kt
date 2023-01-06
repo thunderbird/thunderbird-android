@@ -7,6 +7,7 @@ import app.k9mail.ui.widget.list.MessageListWidgetManager
 import com.fsck.k9.activity.LauncherShortcuts
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.job.WorkManagerConfigurationProvider
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.ui.base.AppLanguageManager
@@ -24,14 +25,17 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.plus
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import androidx.work.Configuration as WorkManagerConfiguration
 
-class App : Application() {
+class App : Application(), WorkManagerConfiguration.Provider {
     private val messagingController: MessagingController by inject()
     private val messagingListenerProvider: MessagingListenerProvider by inject()
     private val themeManager: ThemeManager by inject()
     private val appLanguageManager: AppLanguageManager by inject()
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val messageListWidgetManager: MessageListWidgetManager by inject()
+    private val workManagerConfigurationProvider: WorkManagerConfigurationProvider by inject()
+
     private val appCoroutineScope: CoroutineScope = GlobalScope + Dispatchers.Main
     private var appLanguageManagerInitialized = false
 
@@ -122,6 +126,10 @@ class App : Application() {
             .distinctUntilChanged()
             .onEach { notificationChannelManager.updateChannels() }
             .launchIn(appCoroutineScope)
+    }
+
+    override fun getWorkManagerConfiguration(): WorkManagerConfiguration {
+        return workManagerConfigurationProvider.getConfiguration()
     }
 
     companion object {
