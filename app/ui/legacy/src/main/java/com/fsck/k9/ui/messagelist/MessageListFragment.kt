@@ -11,7 +11,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
@@ -139,6 +141,8 @@ class MessageListFragment :
      */
     private var isInitialized = false
 
+    private var error: Error? = null
+
     /**
      * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
      * the toolbar. When inactive, the fragment won't add its actions to the toolbar, even it is still visible, e.g. as
@@ -167,7 +171,11 @@ class MessageListFragment :
         setHasOptionsMenu(true)
 
         restoreInstanceState(savedInstanceState)
-        decodeArguments() ?: return
+        val error = decodeArguments()
+        if (error != null) {
+            this.error = error
+            return
+        }
 
         viewModel.getMessageListLiveData().observe(this) { messageListInfo: MessageListInfo ->
             setMessageList(messageListInfo)
@@ -192,7 +200,7 @@ class MessageListFragment :
         rememberedSelected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES)?.toSet()
     }
 
-    private fun decodeArguments(): MessageListFragment? {
+    private fun decodeArguments(): Error? {
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
@@ -218,12 +226,11 @@ class MessageListFragment :
                 currentFolder = getFolderInfoHolder(folderId, account!!)
                 isSingleFolderMode = true
             } catch (e: MessagingException) {
-                fragmentListener.onFolderNotFoundError()
-                return null
+                return Error.FolderNotFound
             }
         }
 
-        return this
+        return null
     }
 
     private fun createMessageListAdapter(): MessageListAdapter {
@@ -241,10 +248,27 @@ class MessageListFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.message_list_fragment, container, false)
+        return if (error == null) {
+            inflater.inflate(R.layout.message_list_fragment, container, false)
+        } else {
+            inflater.inflate(R.layout.message_list_error, container, false)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (error == null) {
+            initializeMessageListLayout(view)
+        } else {
+            initializeErrorLayout(view)
+        }
+    }
+
+    private fun initializeErrorLayout(view: View) {
+        val errorMessageView = view.findViewById<TextView>(R.id.message_list_error_message)
+        errorMessageView.text = getString(error!!.errorText)
+    }
+
+    private fun initializeMessageListLayout(view: View) {
         initializeSwipeRefreshLayout(view)
         initializeFloatingActionButton(view)
         initializeRecyclerView(view)
@@ -393,7 +417,12 @@ class MessageListFragment :
     }
 
     fun updateTitle() {
-        if (!isInitialized) return
+        if (error != null) {
+            fragmentListener.setMessageListTitle(getString(R.string.message_list_error_title))
+            return
+        } else if (!isInitialized) {
+            return
+        }
 
         setWindowTitle()
 
@@ -511,6 +540,8 @@ class MessageListFragment :
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+
+        if (error != null) return
 
         outState.putLongArray(STATE_SELECTED_MESSAGES, adapter.selected.toLongArray())
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
@@ -764,7 +795,7 @@ class MessageListFragment :
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        if (isActive) {
+        if (isActive && error == null) {
             prepareMenu(menu)
         } else {
             hideMenu(menu)
@@ -1984,17 +2015,20 @@ class MessageListFragment :
         COPY, MOVE
     }
 
+    private enum class Error(@StringRes val errorText: Int) {
+        FolderNotFound(R.string.message_list_error_folder_not_found)
+    }
+
     interface MessageListFragmentListener {
         fun setMessageListProgressEnabled(enable: Boolean)
         fun setMessageListProgress(level: Int)
         fun showThread(account: Account, threadRootId: Long)
         fun openMessage(messageReference: MessageReference)
-        fun setMessageListTitle(title: String, subtitle: String?)
+        fun setMessageListTitle(title: String, subtitle: String? = null)
         fun onCompose(account: Account?)
         fun startSearch(query: String, account: Account?, folderId: Long?): Boolean
         fun startSupportActionMode(callback: ActionMode.Callback): ActionMode?
         fun goBack()
-        fun onFolderNotFoundError()
 
         companion object {
             const val MAX_PROGRESS = 10000

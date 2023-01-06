@@ -1351,11 +1351,6 @@ open class MessageList :
         permissionUiHelper.requestPermission(permission)
     }
 
-    override fun onFolderNotFoundError() {
-        val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!)
-        openFolderImmediately(defaultFolderId)
-    }
-
     private enum class DisplayMode {
         MESSAGE_LIST, MESSAGE_VIEW, SPLIT_VIEW
     }
