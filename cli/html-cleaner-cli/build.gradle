@@ -1,5 +1,7 @@
-apply plugin: 'org.jetbrains.kotlin.jvm'
-apply plugin: 'application'
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id 'application'
+}
 
 version 'unspecified'
 
@@ -10,6 +12,6 @@ application {
 dependencies {
     implementation project(':app:html-cleaner')
 
-    implementation "com.github.ajalt.clikt:clikt:3.4.0"
-    implementation "com.squareup.okio:okio:${versions.okio}"
+    implementation libs.clikt
+    implementation libs.okio
 }

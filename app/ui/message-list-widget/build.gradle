@@ -1,11 +1,13 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
 
 dependencies {
     implementation project(":app:ui:legacy")
     implementation project(":app:core")
 
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation libs.timber
 }
 
 android {

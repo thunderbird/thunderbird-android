@@ -1,6 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'org.jetbrains.kotlin.plugin.parcelize'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+}
 
 dependencies {
     api project(":app:ui:base")
@@ -16,57 +18,57 @@ dependencies {
 
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
-    implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
-    implementation "androidx.preference:preference:${versions.androidxPreference}"
-    implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
-    implementation "com.takisoft.preferencex:preferencex-datetimepicker:${versions.preferencesFix}"
-    implementation "com.takisoft.preferencex:preferencex-colorpicker:${versions.preferencesFix}"
-    implementation "androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.preference
+    implementation libs.preferencex
+    implementation libs.preferencex.datetimepicker
+    implementation libs.preferencex.colorpicker
+    implementation libs.androidx.recyclerview
     implementation project(':ui-utils:LinearLayoutManager')
     implementation project(':ui-utils:ItemTouchHelper')
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidxLifecycle}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
-    implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
-    implementation "androidx.cardview:cardview:${versions.androidxCardView}"
-    implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "de.cketti.library.changelog:ckchangelog-core:2.0.0-beta02"
-    implementation "com.splitwise:tokenautocomplete:4.0.0-beta01"
-    implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0"
-    implementation 'com.mikepenz:materialdrawer:8.4.5'
-    implementation 'com.github.ByteHamster:SearchPreference:v2.3.0'
-    implementation "com.mikepenz:fastadapter:${versions.fastAdapter}"
-    implementation "com.mikepenz:fastadapter-extensions-drag:${versions.fastAdapter}"
-    implementation "com.mikepenz:fastadapter-extensions-utils:${versions.fastAdapter}"
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-    api 'net.openid:appauth:0.11.1'
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.lifecycle.livedata.ktx
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.cardview
+    implementation libs.androidx.localbroadcastmanager
+    implementation libs.androidx.swiperefreshlayout
+    implementation libs.ckchangelog.core
+    implementation libs.tokenautocomplete
+    implementation libs.safe.content.resolver.v21
+    implementation libs.materialdrawer
+    implementation libs.search.preference
+    implementation libs.fastadapter
+    implementation libs.fastadapter.extensions.drag
+    implementation libs.fastadapter.extensions.utils
+    implementation libs.circleimageview
+    api libs.appauth
 
-    implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "androidx.core:core-ktx:${versions.androidxCore}"
-    implementation "net.jcip:jcip-annotations:1.0"
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}"
+    implementation libs.commons.io
+    implementation libs.androidx.core.ktx
+    implementation libs.jcip.annotations
+    implementation libs.timber
+    implementation libs.apache.mime4j.core
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.coroutines.android
 
-    implementation "com.github.bumptech.glide:glide:${versions.glide}"
-    annotationProcessor "com.github.bumptech.glide:compiler:${versions.glide}"
+    implementation libs.glide
+    annotationProcessor libs.glide.compiler
 
     testImplementation project(':mail:testing')
     testImplementation project(':app:storage')
     testImplementation project(':app:testing')
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
-    testImplementation "androidx.test:core:${versions.androidxTestCore}"
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "org.jetbrains.kotlin:kotlin-test:${versions.kotlin}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "io.insert-koin:koin-test:${versions.koin}"
-    testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.kotlinCoroutines}"
-    testImplementation "app.cash.turbine:turbine:${versions.turbine}"
+    testImplementation libs.robolectric
+    testImplementation libs.androidx.test.core
+    testImplementation libs.junit
+    testImplementation libs.kotlin.test
+    testImplementation libs.truth
+    testImplementation libs.mockito.inline
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.koin.test
+    testImplementation libs.koin.test.junit4
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.turbine
 }
 
 android {

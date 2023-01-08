@@ -1,27 +1,29 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'com.android.lint'
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    alias(libs.plugins.android.lint)
+}
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
 }
 
 dependencies {
-    api "org.jetbrains:annotations:${versions.jetbrainsAnnotations}"
+    api libs.jetbrains.annotations
 
-    implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
-    implementation "org.apache.james:apache-mime4j-dom:${versions.mime4j}"
-    implementation "com.squareup.okio:okio:${versions.okio}"
-    implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "com.squareup.moshi:moshi:${versions.moshi}"
+    implementation libs.apache.mime4j.core
+    implementation libs.apache.mime4j.dom
+    implementation libs.okio
+    implementation libs.commons.io
+    implementation libs.moshi
 
     // We're only using this for its DefaultHostnameVerifier
-    implementation "org.apache.httpcomponents.client5:httpclient5:5.1.3"
+    implementation libs.apache.httpclient5
 
     testImplementation project(":mail:testing")
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "com.ibm.icu:icu4j-charset:70.1"
+    testImplementation libs.junit
+    testImplementation libs.truth
+    testImplementation libs.mockito.inline
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.icu4j.charset
 }

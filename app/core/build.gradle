@@ -1,6 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'org.jetbrains.kotlin.plugin.parcelize'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+}
 
 dependencies {
     api project(":mail:common")
@@ -9,37 +11,37 @@ dependencies {
 
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
-    api "io.insert-koin:koin-android:${versions.koin}"
+    api libs.koin.android
 
-    api "androidx.annotation:annotation:${versions.androidxAnnotation}"
+    api libs.androidx.annotation
 
-    implementation "com.squareup.okio:okio:${versions.okio}"
-    implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "androidx.core:core-ktx:${versions.androidxCore}"
-    implementation "androidx.work:work-runtime-ktx:${versions.androidxWorkManager}"
-    implementation "androidx.fragment:fragment:${versions.androidxFragment}"
-    implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
-    implementation "org.jsoup:jsoup:${versions.jsoup}"
-    implementation "com.squareup.moshi:moshi:${versions.moshi}"
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
+    implementation libs.okio
+    implementation libs.commons.io
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.work.ktx
+    implementation libs.androidx.fragment
+    implementation libs.androidx.localbroadcastmanager
+    implementation libs.jsoup
+    implementation libs.moshi
+    implementation libs.timber
+    implementation libs.apache.mime4j.core
 
     testImplementation project(':mail:testing')
     testImplementation project(":backend:imap")
     testImplementation project(":mail:protocols:smtp")
     testImplementation project(":app:storage")
     testImplementation project(":app:testing")
-    testImplementation "org.jetbrains.kotlin:kotlin-test:${versions.kotlin}"
-    testImplementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
-    testImplementation "androidx.test:core:${versions.androidxTestCore}"
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "org.jdom:jdom2:2.0.6"
-    testImplementation "io.insert-koin:koin-test:${versions.koin}"
-    testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
+    testImplementation libs.kotlin.test
+    testImplementation libs.kotlin.reflect
+    testImplementation libs.robolectric
+    testImplementation libs.androidx.test.core
+    testImplementation libs.junit
+    testImplementation libs.truth
+    testImplementation libs.mockito.inline
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.jdom2
+    testImplementation libs.koin.test
+    testImplementation libs.koin.test.junit4
 }
 
 android {

@@ -1,76 +1,15 @@
 import com.android.build.gradle.BasePlugin
-import org.gradle.api.plugins.JavaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
-buildscript {
-    ext {
-        // Judging the impact of newer library versions on the app requires being intimately familiar with the code
-        // base. Please don't open pull requests upgrading dependencies if you're a new contributor.
-        versions = [
-                'kotlin': '1.7.22',
-                'kotlinCoroutines': '1.6.4',
-                'jetbrainsAnnotations': '23.0.0',
-                'androidxAppCompat': '1.5.1',
-                'androidxActivity': '1.6.0',
-                'androidxRecyclerView': '1.2.1',
-                'androidxLifecycle': '2.5.1',
-                'androidxAnnotation': '1.5.0',
-                'androidxBiometric': '1.1.0',
-                'androidxNavigation': '2.5.2',
-                'androidxConstraintLayout': '2.1.4',
-                'androidxWorkManager': '2.7.1',
-                'androidxFragment': '1.5.3',
-                'androidxLocalBroadcastManager': '1.1.0',
-                'androidxCore': '1.9.0',
-                'androidxCardView': '1.0.0',
-                'androidxPreference': '1.2.0',
-                'androidxDrawerLayout': '1.1.1',
-                'androidxTransition': '1.4.1',
-                'androidxTestCore': '1.4.0',
-                'materialComponents': '1.6.1',
-                'fastAdapter': '5.7.0',
-                'preferencesFix': '1.1.0',
-                'okio': '3.2.0',
-                'moshi': '1.14.0',
-                'timber': '5.0.1',
-                'koin': '3.2.2',
-                // We can't upgrade Commons IO beyond this version because starting with 2.7 it is using Java 8 API
-                // that is not available until Android API 26 (even with desugaring enabled).
-                // See https://issuetracker.google.com/issues/160484830
-                'commonsIo': '2.6',
-                'mime4j': '0.8.6',
-                'okhttp': '4.10.0',
-                'minidns': '1.0.4',
-                'glide': '4.14.2',
-                'jsoup': '1.15.3',
-                'httpClient': '4.5.13',
-
-                'androidxTestRunner': '1.4.0',
-                'junit': '4.13.2',
-                'robolectric': '4.9',
-                'mockito': '4.8.0',
-                'mockitoKotlin': '4.0.0',
-                'truth': '1.1.3',
-                'turbine': '0.11.0',
-
-                'ktlint': '0.44.0'
-        ]
-
-        javaVersion = JavaVersion.VERSION_1_8
-    }
-
-    repositories {
-        mavenCentral()
-        google()
-        gradlePluginPortal()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.7.22-1.0.8"
-        classpath "org.jlleitschuh.gradle:ktlint-gradle:11.0.0"
-    }
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.android.lint) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.ktlint) apply false
 }
 
 project.ext {
@@ -80,23 +19,23 @@ project.ext {
 allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
-            substitute module("androidx.core:core") using module("androidx.core:core:${versions.androidxCore}")
-            substitute module("androidx.activity:activity") using module("androidx.activity:activity:${versions.androidxActivity}")
-            substitute module("androidx.activity:activity-ktx") using module("androidx.activity:activity-ktx:${versions.androidxActivity}")
-            substitute module("androidx.fragment:fragment") using module("androidx.fragment:fragment:${versions.androidxFragment}")
-            substitute module("androidx.fragment:fragment-ktx") using module("androidx.fragment:fragment-ktx:${versions.androidxFragment}")
-            substitute module("androidx.appcompat:appcompat") using module("androidx.appcompat:appcompat:${versions.androidxAppCompat}")
-            substitute module("androidx.preference:preference") using module("androidx.preference:preference:${versions.androidxPreference}")
-            substitute module("androidx.recyclerview:recyclerview") using module("androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}")
-            substitute module("androidx.constraintlayout:constraintlayout") using module("androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}")
-            substitute module("androidx.drawerlayout:drawerlayout") using module("androidx.drawerlayout:drawerlayout:${versions.androidxDrawerLayout}")
-            substitute module("androidx.lifecycle:lifecycle-livedata") using module("androidx.lifecycle:lifecycle-livedata:${versions.androidxLifecycle}")
-            substitute module("androidx.transition:transition") using module("androidx.transition:transition:${versions.androidxTransition}")
-            substitute module("org.jetbrains:annotations") using module("org.jetbrains:annotations:${versions.jetbrainsAnnotations}")
-            substitute module("org.jetbrains.kotlin:kotlin-stdlib") using module("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}")
-            substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}")
-            substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}")
-            substitute module("org.jetbrains.kotlinx:kotlinx-coroutines-android") using module("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}")
+            substitute module("androidx.core:core") using module("androidx.core:core:${libs.versions.androidxCore.get()}")
+            substitute module("androidx.activity:activity") using module("androidx.activity:activity:${libs.versions.androidxActivity.get()}")
+            substitute module("androidx.activity:activity-ktx") using module("androidx.activity:activity-ktx:${libs.versions.androidxActivity.get()}")
+            substitute module("androidx.fragment:fragment") using module("androidx.fragment:fragment:${libs.versions.androidxFragment.get()}")
+            substitute module("androidx.fragment:fragment-ktx") using module("androidx.fragment:fragment-ktx:${libs.versions.androidxFragment.get()}")
+            substitute module("androidx.appcompat:appcompat") using module("androidx.appcompat:appcompat:${libs.versions.androidxAppCompat.get()}")
+            substitute module("androidx.preference:preference") using module("androidx.preference:preference:${libs.versions.androidxPreference.get()}")
+            substitute module("androidx.recyclerview:recyclerview") using module("androidx.recyclerview:recyclerview:${libs.versions.androidxRecyclerView.get()}")
+            substitute module("androidx.constraintlayout:constraintlayout") using module("androidx.constraintlayout:constraintlayout:${libs.versions.androidxConstraintLayout.get()}")
+            substitute module("androidx.drawerlayout:drawerlayout") using module("androidx.drawerlayout:drawerlayout:${libs.versions.androidxDrawerLayout.get()}")
+            substitute module("androidx.lifecycle:lifecycle-livedata") using module("androidx.lifecycle:lifecycle-livedata:${libs.versions.androidxLifecycle.get()}")
+            substitute module("androidx.transition:transition") using module("androidx.transition:transition:${libs.versions.androidxTransition.get()}")
+            substitute module("org.jetbrains:annotations") using module("org.jetbrains:annotations:${libs.versions.jetbrainsAnnotations.get()}")
+            substitute module("org.jetbrains.kotlin:kotlin-stdlib") using module("org.jetbrains.kotlin:kotlin-stdlib:${libs.versions.kotlin.get()}")
+            substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libs.versions.kotlin.get()}")
+            substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${libs.versions.kotlin.get()}")
+            substitute module("org.jetbrains.kotlinx:kotlinx-coroutines-android") using module("org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.kotlinCoroutines.get()}")
         }
     }
 
@@ -113,8 +52,8 @@ allprojects {
             }
 
             compileOptions {
-                sourceCompatibility javaVersion
-                targetCompatibility javaVersion
+                sourceCompatibility libs.versions.java.get()
+                targetCompatibility libs.versions.java.get()
             }
 
             lintOptions {
@@ -132,8 +71,8 @@ allprojects {
 
     plugins.withType(JavaPlugin).configureEach {
         project.java {
-            sourceCompatibility = javaVersion
-            targetCompatibility = javaVersion
+            sourceCompatibility = libs.versions.java.get()
+            targetCompatibility = libs.versions.java.get()
         }
     }
 
@@ -148,13 +87,13 @@ allprojects {
 
     tasks.withType(KotlinCompile) {
         kotlinOptions {
-            jvmTarget = javaVersion
+            jvmTarget = libs.versions.java.get()
         }
     }
 
     apply plugin: 'org.jlleitschuh.gradle.ktlint'
     ktlint {
-        version = versions.ktlint
+        version = libs.versions.ktlint.get()
     }
 }
 

@@ -1,17 +1,19 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'com.google.devtools.ksp'
-apply plugin: 'com.android.lint'
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.android.lint)
+}
 
 dependencies {
     api project(":backend:api")
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
-    implementation "com.squareup.moshi:moshi:${versions.moshi}"
-    ksp "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.moshi
+    ksp libs.moshi.kotlin.kotgen
 
     testImplementation project(":mail:testing")
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
+    testImplementation libs.junit
+    testImplementation libs.mockito.core
+    testImplementation libs.truth
 }

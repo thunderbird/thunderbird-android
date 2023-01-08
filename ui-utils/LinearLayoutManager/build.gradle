@@ -1,7 +1,9 @@
-apply plugin: 'com.android.library'
+plugins {
+    alias(libs.plugins.android.library)
+}
 
 dependencies {
-    api "androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}"
+    api libs.androidx.recyclerview
 }
 
 android {

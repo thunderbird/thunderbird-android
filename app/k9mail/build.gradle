@@ -1,5 +1,7 @@
-apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.kotlin.android'
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+}
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
@@ -16,30 +18,30 @@ dependencies {
     implementation project(":backend:webdav")
     debugImplementation project(":backend:demo")
 
-    implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
-    implementation "androidx.core:core-ktx:${versions.androidxCore}"
-    implementation "androidx.work:work-runtime-ktx:${versions.androidxWorkManager}"
-    implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.work.ktx
+    implementation libs.preferencex
+    implementation libs.timber
+    implementation libs.kotlinx.coroutines.core
 
-    implementation "com.github.bumptech.glide:glide:${versions.glide}"
-    annotationProcessor "com.github.bumptech.glide:compiler:${versions.glide}"
+    implementation libs.glide
+    annotationProcessor libs.glide.compiler
 
     if (project.hasProperty('k9mail.enableLeakCanary') && project.property('k9mail.enableLeakCanary') == "true") {
-        debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+        debugImplementation libs.leakcanary.android
     }
 
     // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
     testImplementation project(':plugins:openpgp-api-lib:openpgp-api')
 
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "io.insert-koin:koin-test:${versions.koin}"
-    testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
+    testImplementation libs.robolectric
+    testImplementation libs.junit
+    testImplementation libs.truth
+    testImplementation libs.mockito.inline
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.koin.test
+    testImplementation libs.koin.test.junit4
 }
 
 android {
