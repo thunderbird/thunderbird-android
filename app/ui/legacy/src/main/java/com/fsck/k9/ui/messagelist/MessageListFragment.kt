@@ -57,6 +57,7 @@ import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
@@ -369,6 +370,11 @@ class MessageListFragment :
         recentChangesSnackbar = Snackbar
             .make(coordinatorLayout, R.string.changelog_snackbar_text, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.okay_action) { launchRecentChangesActivity() }
+            .addCallback(object : BaseCallback<Snackbar>() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    recentChangesViewModel.onRecentChangesHintDismissed()
+                }
+            })
 
         recentChangesViewModel.shouldShowRecentChangesHint
             .observe(viewLifecycleOwner, shouldShowRecentChangesHintObserver)
