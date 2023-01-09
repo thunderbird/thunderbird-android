@@ -5,6 +5,11 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.501" versioncode="35001" date="2023-01-09">
+        <change>Delete spam messages immediately without moving them to the trash folder</change>
+        <change>Changed the way home screen widgets are disabled when there is no account set up to work around a bug in Android versions prior to 12</change>
+        <change>Mark recent changes as read when the snackbar is dismissed via swipe</change>
+    </release>
     <release version="6.500" versioncode="35000" date="2023-01-06">
         <change>The light and dark themes are now based on Material Design 2. This is still work in progress.</change>
         <change>Added a floating compose button to the message list screen</change>
