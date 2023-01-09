@@ -2024,8 +2024,10 @@ public class MessagingController {
 
             Map<String, String> uidMap = null;
             Long trashFolderId = account.getTrashFolderId();
+            boolean isSpamFolder = account.hasSpamFolder() && account.getSpamFolderId() == folderId;
+
             LocalFolder localTrashFolder = null;
-            if (skipTrashFolder || !account.hasTrashFolder() || folderId == trashFolderId ||
+            if (skipTrashFolder || !account.hasTrashFolder() || folderId == trashFolderId || isSpamFolder ||
                     (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash())) {
                 Timber.d("Not moving deleted messages to local Trash folder. Removing local copies.");
 
