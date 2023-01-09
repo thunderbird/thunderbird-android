@@ -372,7 +372,9 @@ class MessageListFragment :
             .setAction(R.string.okay_action) { launchRecentChangesActivity() }
             .addCallback(object : BaseCallback<Snackbar>() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    recentChangesViewModel.onRecentChangesHintDismissed()
+                    if (event == DISMISS_EVENT_SWIPE) {
+                        recentChangesViewModel.onRecentChangesHintDismissed()
+                    }
                 }
             })
 
