@@ -294,14 +294,12 @@
             android:name=".activity.setup.OAuthFlowActivity"
             android:label="@string/account_setup_basics_title" />
 
-        <!--
-        This component is disabled by default. It will be enabled programmatically after an account has been set up.
-        -->
+        <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
         <receiver
             android:name=".provider.UnreadWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/unread_widget_label"
-            android:enabled="false"
+            android:enabled="@bool/home_screen_widgets_enabled"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -311,14 +309,12 @@
                 android:resource="@xml/unread_widget_info"/>
         </receiver>
 
-        <!--
-        This component is disabled by default. It will be enabled programmatically after an account has been set up.
-        -->
+        <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
         <receiver
             android:name=".widget.list.MessageListWidgetProvider"
             android:icon="@drawable/message_list_widget_preview"
             android:label="@string/mail_list_widget_text"
-            android:enabled="false"
+            android:enabled="@bool/home_screen_widgets_enabled"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -328,9 +324,7 @@
                 android:resource="@xml/message_list_widget_info" />
         </receiver>
 
-        <!--
-        This component is disabled by default. It will be enabled programmatically if necessary.
-        -->
+        <!-- This component is disabled by default. It will be enabled programmatically if necessary. -->
         <receiver
             android:name=".controller.push.BootCompleteReceiver"
             android:exported="false"
