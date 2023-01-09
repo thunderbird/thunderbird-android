@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 @OptIn(ExperimentalCoroutinesApi::class)
 class RecentChangesViewModel(
     private val generalSettingsManager: GeneralSettingsManager,
-    changeLogManager: ChangeLogManager
+    private val changeLogManager: ChangeLogManager
 ) : ViewModel() {
     val shouldShowRecentChangesHint = changeLogManager.changeLogFlow.flatMapLatest { changeLog ->
         if (changeLog.isFirstRun && !changeLog.isFirstRunEver) {
@@ -27,5 +27,9 @@ class RecentChangesViewModel(
         return generalSettingsManager.getSettingsFlow()
             .map { generalSettings -> generalSettings.showRecentChanges }
             .distinctUntilChanged()
+    }
+
+    fun onRecentChangesHintDismissed() {
+        changeLogManager.writeCurrentVersion()
     }
 }
