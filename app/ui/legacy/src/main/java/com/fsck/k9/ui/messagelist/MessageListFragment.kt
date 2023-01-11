@@ -1131,6 +1131,7 @@ class MessageListFragment :
     }
 
     private fun onSpamConfirmed(messages: List<MessageReference>) {
+        setFlagForSelected(Flag.SEEN, true)
         for ((account, messagesInAccount) in groupMessagesByAccount(messages)) {
             account.spamFolderId?.let { spamFolderId ->
                 move(messagesInAccount, spamFolderId)

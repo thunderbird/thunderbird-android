@@ -525,6 +525,7 @@ class MessageViewFragment :
     }
 
     private fun onSpam() {
+        setFlag(Flag.SEEN, true)
         onRefile(account.spamFolderId)
     }
 
@@ -623,13 +624,18 @@ class MessageViewFragment :
     private fun toggleFlag(flag: Flag) {
         check(!isOutbox)
         val message = checkNotNull(this.message)
+        setFlag(flag, !message.isSet(flag))
+    }
 
-        val newState = !message.isSet(flag)
-        messagingController.setFlag(account, message.folder.databaseId, listOf(message), flag, newState)
+    private fun setFlag(flag: Flag, newState: Boolean) {
+        check(!isOutbox)
+        val message = checkNotNull(this.message)
 
-        messageTopView.setHeaders(message, account, true)
-
-        invalidateMenu()
+        if (message.isSet(flag) != newState) {
+            messagingController.setFlag(account, message.folder.databaseId, listOf(message), flag, newState)
+            messageTopView.setHeaders(message, account, true)
+            invalidateMenu()
+        }
     }
 
     private fun moveMessage(reference: MessageReference?, folderId: Long) {
