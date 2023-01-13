@@ -87,6 +87,7 @@
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
+        <item name="messageListSelectedCheckMarkColor">#ff1976d2</item>
         <item name="messageListSelectedBackgroundColor">#ff99d9ee</item>
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">#ffd8d8d8</item>
@@ -240,6 +241,7 @@
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
+        <item name="messageListSelectedCheckMarkColor">#ff1976d2</item>
         <item name="messageListSelectedBackgroundColor">#ff347489</item>
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
