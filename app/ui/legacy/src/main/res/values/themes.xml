@@ -16,14 +16,14 @@
         <item name="android:statusBarColor">@color/material_gray_100</item>
         <item name="toolbarColor">@color/material_gray_100</item>
 
-        <item name="colorPrimary">@color/material_blue_600</item>
-        <item name="colorPrimaryVariant">@color/material_blue_800</item>
-        <item name="colorSecondary">@color/material_pink_400</item>
-        <item name="colorSecondaryVariant">@color/material_pink_200</item>
+        <item name="colorPrimary">@color/material_gray_800</item>
+        <item name="colorPrimaryVariant">@color/material_gray_700</item>
+        <item name="colorSecondary">@color/material_pink_500</item>
+        <item name="colorSecondaryVariant">@color/material_pink_300</item>
         <item name="colorOnSecondary">#ffffff</item>
         <item name="bottomBarBackground">@color/material_gray_50</item>
-        <item name="floatingActionButtonBackgroundColor">?attr/colorSecondary</item>
-        <item name="floatingActionButtonForegroundColor">?attr/colorOnSecondary</item>
+        <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
+        <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
 
         <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
@@ -173,13 +173,13 @@
         <item name="android:statusBarColor">@color/material_gray_900</item>
         <item name="toolbarColor">@color/material_gray_900</item>
 
-        <item name="colorPrimary">@color/material_blue_400</item>
-        <item name="colorPrimaryVariant">@color/material_blue_600</item>
+        <item name="colorPrimary">@color/material_gray_100</item>
+        <item name="colorPrimaryVariant">@color/material_gray_50</item>
         <item name="colorSecondary">@color/material_pink_300</item>
         <item name="colorSecondaryVariant">@color/material_pink_500</item>
         <item name="bottomBarBackground">@color/material_gray_900</item>
-        <item name="floatingActionButtonBackgroundColor">?attr/colorSecondary</item>
-        <item name="floatingActionButtonForegroundColor">?attr/colorOnSecondary</item>
+        <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
+        <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
 
         <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
