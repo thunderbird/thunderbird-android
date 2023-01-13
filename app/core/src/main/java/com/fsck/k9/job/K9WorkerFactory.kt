@@ -12,8 +12,8 @@ class K9WorkerFactory : WorkerFactory() {
         appContext: Context,
         workerClassName: String,
         workerParameters: WorkerParameters
-    ): ListenableWorker {
+    ): ListenableWorker? {
         val workerClass = Class.forName(workerClassName).kotlin
-        return getKoin().get(workerClass) { parametersOf(workerParameters) }
+        return getKoin().getOrNull(workerClass) { parametersOf(workerParameters) }
     }
 }
