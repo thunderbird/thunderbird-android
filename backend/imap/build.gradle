@@ -17,5 +17,5 @@ dependencies {
     testImplementation libs.mockito.inline
     testImplementation libs.mockito.kotlin
     testImplementation libs.truth
-    testImplementation libs.apache.mime4j.dom
+    testImplementation libs.mime4j.dom
 }

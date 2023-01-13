@@ -7,12 +7,12 @@ plugins {
 dependencies {
     api project(":app:autodiscovery:api")
 
-    compileOnly libs.xmlpull.extracted.from.android
+    compileOnly libs.xmlpull
     implementation libs.okhttp
 
     testImplementation libs.junit
     testImplementation libs.truth
     testImplementation libs.mockito.inline
     testImplementation libs.mockito.kotlin
-    testImplementation libs.kxml2.extracted.from.android
+    testImplementation libs.kxml2
 }

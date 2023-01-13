@@ -10,7 +10,7 @@ dependencies {
 
     implementation libs.kotlinx.coroutines.core
     implementation libs.moshi
-    ksp libs.moshi.kotlin.kotgen
+    ksp libs.moshi.kotlin.codegen
 
     testImplementation project(":mail:testing")
     testImplementation libs.junit

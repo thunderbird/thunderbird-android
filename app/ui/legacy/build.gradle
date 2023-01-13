@@ -35,9 +35,9 @@ dependencies {
     implementation libs.androidx.swiperefreshlayout
     implementation libs.ckchangelog.core
     implementation libs.tokenautocomplete
-    implementation libs.safe.content.resolver.v21
+    implementation libs.safeContentResolver
     implementation libs.materialdrawer
-    implementation libs.search.preference
+    implementation libs.searchPreference
     implementation libs.fastadapter
     implementation libs.fastadapter.extensions.drag
     implementation libs.fastadapter.extensions.utils
@@ -48,7 +48,7 @@ dependencies {
     implementation libs.androidx.core.ktx
     implementation libs.jcip.annotations
     implementation libs.timber
-    implementation libs.apache.mime4j.core
+    implementation libs.mime4j.core
     implementation libs.kotlinx.coroutines.core
     implementation libs.kotlinx.coroutines.android
 

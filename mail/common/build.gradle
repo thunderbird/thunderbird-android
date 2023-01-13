@@ -11,8 +11,8 @@ if (rootProject.testCoverage) {
 dependencies {
     api libs.jetbrains.annotations
 
-    implementation libs.apache.mime4j.core
-    implementation libs.apache.mime4j.dom
+    implementation libs.mime4j.core
+    implementation libs.mime4j.dom
     implementation libs.okio
     implementation libs.commons.io
     implementation libs.moshi

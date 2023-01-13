@@ -9,7 +9,7 @@ dependencies {
     implementation project(":app:core")
     implementation libs.androidx.core.ktx
     implementation libs.timber
-    implementation libs.apache.mime4j.core
+    implementation libs.mime4j.core
     implementation libs.commons.io
     implementation libs.moshi
 

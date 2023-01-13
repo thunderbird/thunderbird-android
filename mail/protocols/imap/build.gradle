@@ -22,5 +22,5 @@ dependencies {
     testImplementation libs.mockito.core
     testImplementation libs.mockito.kotlin
     testImplementation libs.okio
-    testImplementation libs.apache.mime4j.core
+    testImplementation libs.mime4j.core
 }

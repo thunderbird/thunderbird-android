@@ -11,7 +11,7 @@ dependencies {
     api libs.okhttp
     implementation libs.jmap.client
     implementation libs.moshi
-    ksp libs.moshi.kotlin.kotgen
+    ksp libs.moshi.kotlin.codegen
 
     testImplementation project(":mail:testing")
     testImplementation project(':backend:testing')
