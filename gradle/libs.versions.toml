@@ -23,7 +23,8 @@ androidxTransition = "1.4.1"
 fastAdapter = "5.7.0"
 preferencesFix = "1.1.0"
 timber = "5.0.1"
-koin = "3.2.2"
+koinCore = "3.3.2"
+koinAndroid = "3.3.2"
 mime4j = "0.8.6"
 okhttp = "4.10.0"
 glide = "4.14.2"
@@ -82,10 +83,10 @@ okio = "com.squareup.okio:okio:3.3.0"
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 timber = "com.jakewharton.timber:timber:5.0.1"
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
-koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koinCore" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinCore" }
 
 # We can't upgrade Commons IO beyond this version because starting with 2.7 it is using Java 8 API
 # that is not available until Android API 26 (even with desugaring enabled).
