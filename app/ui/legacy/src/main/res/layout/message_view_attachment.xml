@@ -7,16 +7,17 @@
     android:paddingBottom="4dp"
     android:id="@+id/attachment">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/attachment_card"
         style="@style/AttachmentCard"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
         android:orientation="vertical"
-        android:foreground="?attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
         app:cardBackgroundColor="?attr/attachmentCardBackground"
-        app:cardCornerRadius="2dp"
         app:cardElevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -97,6 +98,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </com.fsck.k9.ui.messageview.AttachmentView>

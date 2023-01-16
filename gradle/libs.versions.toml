@@ -67,7 +67,6 @@ androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "andr
 androidx-localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
 androidx-core = { module = "androidx.core:core", version.ref = "androidxCore" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
-androidx-cardview = "androidx.cardview:cardview:1.0.0"
 androidx-preference = { module = "androidx.preference:preference", version.ref = "androidxPreference" }
 androidx-swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 androidx-test-core = "androidx.test:core:1.5.0"

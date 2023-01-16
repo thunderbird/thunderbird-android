@@ -8,7 +8,7 @@
     android:outAnimation="@anim/fade_out"
     app:previewInitialChild="0">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         style="@style/AttachmentCard"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -16,7 +16,6 @@
         android:layout_marginBottom="12dp"
         android:orientation="vertical"
         app:cardBackgroundColor="?attr/attachmentCardBackground"
-        app:cardCornerRadius="2dp"
         app:cardElevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,7 +83,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <ViewStub
         android:layout_width="match_parent"
