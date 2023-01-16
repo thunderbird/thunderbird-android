@@ -94,6 +94,7 @@ class ManageFoldersFragment : Fragment() {
         findNavController().navigate(R.id.action_manageFoldersScreen_to_folderSettingsScreen, folderSettingsArguments)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.folder_list_option, menu)
         configureFolderSearchView(menu)
@@ -116,6 +117,7 @@ class ManageFoldersFragment : Fragment() {
         })
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.list_folders -> refreshFolderList()

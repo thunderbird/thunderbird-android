@@ -48,11 +48,13 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         dismissSnackbar()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activity?.title = preferenceScreen.title
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (rootKey == PREFERENCE_SCREEN_DEBUGGING) {
             inflater.inflate(R.menu.debug_settings_option, menu)
@@ -62,6 +64,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.exportLogs) {
             exportLogsResultContract.launch(GeneralSettingsViewModel.DEFAULT_FILENAME)

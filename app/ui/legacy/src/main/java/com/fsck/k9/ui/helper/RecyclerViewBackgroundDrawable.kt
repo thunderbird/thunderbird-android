@@ -43,5 +43,6 @@ class RecyclerViewBackgroundDrawable internal constructor(private val color: Int
 
     override fun setColorFilter(colorFilter: ColorFilter?) = Unit
 
+    @Deprecated("Deprecated in Java")
     override fun getOpacity(): Int = PixelFormat.OPAQUE
 }

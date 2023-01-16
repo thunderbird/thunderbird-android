@@ -299,6 +299,7 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
         actionCheckSettings(this@AccountSetupCheckSettings, account, direction)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(reqCode: Int, resCode: Int, data: Intent?) {
         if (reqCode == ACTIVITY_REQUEST_CODE) {
             setResult(resCode)
@@ -391,6 +392,7 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
      * See also discussion in https://github.com/thundernest/k-9/pull/560
      */
     private inner class CheckAccountTask(private val account: Account) : AsyncTask<CheckDirection, Int, Unit>() {
+        @Deprecated("Deprecated in Java")
         override fun doInBackground(vararg params: CheckDirection) {
             val direction = params[0]
             try {
@@ -479,6 +481,7 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
         private val isWebDavAccount: Boolean
             get() = account.incomingServerSettings.type == Protocols.WEBDAV
 
+        @Deprecated("Deprecated in Java")
         override fun onProgressUpdate(vararg values: Int?) {
             setMessage(values[0]!!)
         }

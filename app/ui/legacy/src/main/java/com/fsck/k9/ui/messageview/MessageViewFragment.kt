@@ -213,6 +213,7 @@ class MessageViewFragment :
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onPrepareOptionsMenu(menu: Menu) {
         if (!isActive) return
 
@@ -293,6 +294,7 @@ class MessageViewFragment :
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (message == null) return false
 
@@ -558,6 +560,7 @@ class MessageViewFragment :
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK) return
 

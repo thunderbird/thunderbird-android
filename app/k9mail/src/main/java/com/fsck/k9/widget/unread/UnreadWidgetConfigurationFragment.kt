@@ -91,6 +91,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && data != null) {
             when (requestCode) {
@@ -151,10 +152,12 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         unreadFolder.summary = folderDisplayName
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.unread_widget_option, menu)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.done -> {

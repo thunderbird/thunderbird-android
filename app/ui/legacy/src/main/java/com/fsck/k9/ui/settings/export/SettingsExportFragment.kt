@@ -146,6 +146,7 @@ class SettingsExportFragment : Fragment() {
         viewModel.saveInstanceState(outState)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RESULT_PICK_DOCUMENT) {
             val contentUri = data?.data

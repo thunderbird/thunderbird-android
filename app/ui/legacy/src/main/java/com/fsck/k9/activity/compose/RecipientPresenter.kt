@@ -397,11 +397,13 @@ class RecipientPresenter(
 
         val recipientAddresses = composeCryptoStatus.recipientAddressesAsArray
         object : AsyncTask<Void?, Void?, RecipientAutocryptStatus?>() {
+            @Deprecated("Deprecated in Java")
             override fun doInBackground(vararg params: Void?): RecipientAutocryptStatus? {
                 val openPgpApi = openPgpApiManager.openPgpApi ?: return null
                 return autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(openPgpApi, recipientAddresses)
             }
 
+            @Deprecated("Deprecated in Java")
             override fun onPostExecute(recipientAutocryptStatus: RecipientAutocryptStatus?) {
                 currentCachedCryptoStatus = if (recipientAutocryptStatus != null) {
                     composeCryptoStatus.withRecipientAutocryptStatus(recipientAutocryptStatus)

@@ -49,6 +49,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         viewModel.getActionEvents().observeNotNull(this) { handleActionEvents(it) }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.folder_settings_option, menu)
@@ -57,6 +58,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         clearFolderItem.isVisible = viewModel.showClearFolderInMenu
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.clear_local_folder -> {

@@ -196,6 +196,7 @@ class SettingsImportFragment : Fragment() {
         viewModel.saveInstanceState(outState)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_PICK_DOCUMENT -> handlePickDocumentResult(resultCode, data)

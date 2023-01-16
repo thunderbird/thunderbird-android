@@ -705,6 +705,7 @@ class MessageListFragment :
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK) return
 
@@ -802,6 +803,7 @@ class MessageListFragment :
         return "dialog-$dialogId"
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onPrepareOptionsMenu(menu: Menu) {
         if (isActive && error == null) {
             prepareMenu(menu)
@@ -843,6 +845,7 @@ class MessageListFragment :
         menu.findItem(R.id.search_everywhere).isVisible = false
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search_remote -> onRemoteSearch()

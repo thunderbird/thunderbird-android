@@ -321,6 +321,7 @@ class AccountSetupBasics : K9Activity() {
         return ConnectionSettings(incomingServerSettings, outgoingServerSettings)
     }
 
+    @Deprecated("Deprecated in Java")
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_CODE_CHECK_SETTINGS -> handleCheckSettingsResult(resultCode)

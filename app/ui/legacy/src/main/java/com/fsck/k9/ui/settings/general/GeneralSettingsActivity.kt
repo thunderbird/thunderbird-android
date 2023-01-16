@@ -116,6 +116,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
         return super.onOptionsItemSelected(item)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (!searchPreferenceActionView.cancelSearch()) {
             super.onBackPressed()

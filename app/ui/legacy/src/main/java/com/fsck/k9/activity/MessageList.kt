@@ -661,6 +661,7 @@ open class MessageList :
         return eventHandled
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (isDrawerEnabled && drawer!!.isOpen) {
             drawer!!.close()
@@ -1243,6 +1244,7 @@ open class MessageList :
         messagingController.clearNotifications(search)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun startIntentSenderForResult(
         intent: IntentSender,
         requestCode: Int,
@@ -1261,6 +1263,7 @@ open class MessageList :
         super.startIntentSenderForResult(intent, modifiedRequestCode, fillInIntent, flagsMask, flagsValues, extraFlags)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
