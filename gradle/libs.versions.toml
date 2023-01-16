@@ -6,7 +6,7 @@ java = "1.8"
 androidGradlePlugin = "7.3.1"
 ktlint = "0.44.0"
 
-kotlin = "1.7.22"
+kotlin = "1.8.0"
 kotlinCoroutines = "1.6.4"
 jetbrainsAnnotations = "23.0.0"
 androidxAppCompat = "1.5.1"
@@ -34,7 +34,7 @@ mockito = "4.8.0"
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
-ksp = "com.google.devtools.ksp:1.7.22-1.0.8"
+ksp = "com.google.devtools.ksp:1.8.0-1.0.8"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
