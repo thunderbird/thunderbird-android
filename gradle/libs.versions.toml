@@ -87,11 +87,7 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koinCore" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinCore" }
-
-# We can't upgrade Commons IO beyond this version because starting with 2.7 it is using Java 8 API
-# that is not available until Android API 26 (even with desugaring enabled).
-# See https://issuetracker.google.com/issues/160484830
-commons-io = "commons-io:commons-io:2.6"
+commons-io = "commons-io:commons-io:2.11.0"
 mime4j-core = { module = "org.apache.james:apache-mime4j-core", version.ref = "mime4j" }
 mime4j-dom = { module = "org.apache.james:apache-mime4j-dom", version.ref = "mime4j" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
