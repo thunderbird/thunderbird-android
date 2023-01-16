@@ -8,7 +8,7 @@ ktlint = "0.44.0"
 
 kotlin = "1.8.0"
 kotlinCoroutines = "1.6.4"
-jetbrainsAnnotations = "23.0.0"
+jetbrainsAnnotations = "24.0.0"
 androidxAppCompat = "1.5.1"
 androidxActivity = "1.6.0"
 androidxRecyclerView = "1.2.1"
