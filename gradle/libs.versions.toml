@@ -119,7 +119,7 @@ mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito
 mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:4.1.0"
 truth = "com.google.truth:truth:1.1.3"
 turbine = "app.cash.turbine:turbine:0.12.1"
-jdom2 = "org.jdom:jdom2:2.0.6"
+jdom2 = "org.jdom:jdom2:2.0.6.1"
 icu4j-charset = "com.ibm.icu:icu4j-charset:70.1"
 
 leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
