@@ -2,7 +2,7 @@
 # Please don't open pull requests upgrading dependencies if you're a new contributor.
 
 [versions]
-java = "1.8"
+java = "11"
 androidGradlePlugin = "7.4.0"
 ktlint = "0.44.0"
 
@@ -41,6 +41,8 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktlint = "org.jlleitschuh.gradle.ktlint:11.0.0"
 
 [libraries]
+desugar = "com.android.tools:desugar_jdk_libs:1.1.8"
+
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }

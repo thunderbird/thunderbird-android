@@ -8,6 +8,8 @@ if (rootProject.testCoverage) {
 }
 
 dependencies {
+    coreLibraryDesugaring libs.desugar
+
     implementation project(":app:ui:legacy")
     implementation project(":app:ui:message-list-widget")
     implementation project(":app:core")
@@ -67,6 +69,10 @@ android {
 
     signingConfigs {
         release
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
     }
 
     buildTypes {
