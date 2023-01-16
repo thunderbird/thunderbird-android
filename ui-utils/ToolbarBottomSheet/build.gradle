@@ -1,0 +1,10 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+dependencies {
+    api "com.google.android.material:material:${versions.materialComponents}"
+}
+
+android {
+    namespace 'app.k9mail.ui.utils.bottomsheet'
+}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:gravity="end"
+            android:text="Wednesday, 11 January 2023, 10:31 pm" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textStyle="bold"
+            android:text="From" />
+        <include layout="@layout/participant_list_item"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textStyle="bold"
+            android:text="To" />
+
+        <include layout="@layout/participant_list_item"/>
+        <include layout="@layout/participant_list_item"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textStyle="bold"
+            android:text="CC" />
+
+        <include layout="@layout/participant_list_item"/>
+        <include layout="@layout/participant_list_item"/>
+        <include layout="@layout/participant_list_item"/>
+        <include layout="@layout/participant_list_item"/>
+        <include layout="@layout/participant_list_item"/>
+        <include layout="@layout/participant_list_item"/>
+        <include layout="@layout/participant_list_item"/>
+        <include layout="@layout/participant_list_item"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

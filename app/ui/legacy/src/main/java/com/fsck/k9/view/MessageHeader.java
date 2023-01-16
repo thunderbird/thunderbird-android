@@ -39,10 +39,9 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter;
 import com.fsck.k9.ui.messageview.DisplayRecipients;
 import com.fsck.k9.ui.messageview.DisplayRecipientsExtractor;
-import com.fsck.k9.ui.messageview.MessageHeaderOnMenuItemClickListener;
+import com.fsck.k9.ui.messageview.MessageHeaderClickListener;
 import com.fsck.k9.ui.messageview.RecipientNamesView;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.snackbar.Snackbar;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
@@ -64,7 +63,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private MessageHelper messageHelper;
     private RelativeDateTimeFormatter relativeDateTimeFormatter;
 
-    private MessageHeaderOnMenuItemClickListener onMenuItemClickListener;
+    private MessageHeaderClickListener messageHeaderClickListener;
     private ReplyActions replyActions;
 
 
@@ -124,7 +123,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         } else if (id == R.id.menu_overflow) {
             showOverflowMenu(view);
         } else if (id == R.id.participants_container) {
-            Snackbar.make(getRootView(), "TODO: Display details popup", Snackbar.LENGTH_LONG).show();
+            messageHeaderClickListener.onParticipantsContainerClick();
         }
     }
 
@@ -136,11 +135,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         switch (defaultAction) {
             case REPLY: {
-                onMenuItemClickListener.onMenuItemClick(R.id.reply);
+                messageHeaderClickListener.onMenuItemClick(R.id.reply);
                 break;
             }
             case REPLY_ALL: {
-                onMenuItemClickListener.onMenuItemClick(R.id.reply_all);
+                messageHeaderClickListener.onMenuItemClick(R.id.reply_all);
                 break;
             }
             default: {
@@ -152,7 +151,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private void showOverflowMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.setOnMenuItemClickListener(item -> {
-            onMenuItemClickListener.onMenuItemClick(item.getItemId());
+            messageHeaderClickListener.onMenuItemClick(item.getItemId());
             return true;
         });
         popupMenu.inflate(R.menu.single_message_options);
@@ -352,7 +351,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         cryptoStatusIcon.setColorFilter(color);
     }
 
-    public void setOnMenuItemClickListener(MessageHeaderOnMenuItemClickListener onMenuItemClickListener) {
-        this.onMenuItemClickListener = onMenuItemClickListener;
+    public void setMessageHeaderClickListener(MessageHeaderClickListener messageHeaderClickListener) {
+        this.messageHeaderClickListener = messageHeaderClickListener;
     }
 }
