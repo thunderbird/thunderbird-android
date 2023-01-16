@@ -78,7 +78,7 @@ materialdrawer = "com.mikepenz:materialdrawer:8.4.5"
 preferencex = { module = "com.takisoft.preferencex:preferencex", version.ref = "preferencesFix" }
 preferencex-datetimepicker = { module = "com.takisoft.preferencex:preferencex-datetimepicker", version.ref = "preferencesFix" }
 preferencex-colorpicker = { module = "com.takisoft.preferencex:preferencex-colorpicker", version.ref = "preferencesFix" }
-okio = "com.squareup.okio:okio:3.2.0"
+okio = "com.squareup.okio:okio:3.3.0"
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 timber = "com.jakewharton.timber:timber:5.0.1"
