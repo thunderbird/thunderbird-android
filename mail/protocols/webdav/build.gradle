@@ -1,5 +1,7 @@
-apply plugin: 'java-library'
-apply plugin: 'com.android.lint'
+plugins {
+    id 'java-library'
+    alias(libs.plugins.android.lint)
+}
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
@@ -8,12 +10,12 @@ if (rootProject.testCoverage) {
 dependencies {
     api project(":mail:common")
 
-    implementation "commons-io:commons-io:${versions.commonsIo}"
-    compileOnly "org.apache.httpcomponents:httpclient:${versions.httpClient}"
+    implementation libs.commons.io
+    compileOnly libs.apache.httpclient
 
     testImplementation project(":mail:testing")
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation "org.apache.httpcomponents:httpclient:${versions.httpClient}"
+    testImplementation libs.junit
+    testImplementation libs.truth
+    testImplementation libs.mockito.inline
+    testImplementation libs.apache.httpclient
 }

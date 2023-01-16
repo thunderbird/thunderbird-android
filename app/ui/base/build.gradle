@@ -1,20 +1,22 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
 
 dependencies {
     implementation project(":app:core")
 
-    api "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
-    api "androidx.activity:activity:${versions.androidxActivity}"
-    api "com.google.android.material:material:${versions.materialComponents}"
-    api "androidx.navigation:navigation-fragment:${versions.androidxNavigation}"
-    api "androidx.navigation:navigation-ui:${versions.androidxNavigation}"
-    api "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
+    api libs.androidx.appcompat
+    api libs.androidx.activity
+    api libs.android.material
+    api libs.androidx.navigation.fragment
+    api libs.androidx.navigation.ui
+    api libs.androidx.lifecycle.livedata.ktx
 
-    implementation "androidx.core:core-ktx:${versions.androidxCore}"
-    implementation "androidx.biometric:biometric:${versions.androidxBiometric}"
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.biometric
+    implementation libs.timber
+    implementation libs.kotlinx.coroutines.core
 }
 
 android {

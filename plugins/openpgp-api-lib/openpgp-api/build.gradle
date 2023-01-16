@@ -1,4 +1,6 @@
-apply plugin: 'com.android.library'
+plugins {
+    alias(libs.plugins.android.library)
+}
 
 android {
     namespace 'org.openintents.openpgp'
@@ -9,7 +11,7 @@ android {
 }
 
 dependencies {
-    implementation "androidx.lifecycle:lifecycle-common:${versions.androidxLifecycle}"
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
+    implementation libs.androidx.lifecycle.common
+    implementation libs.timber
+    implementation libs.preferencex
 }

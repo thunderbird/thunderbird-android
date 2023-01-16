@@ -1,23 +1,25 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
 
 dependencies {
     implementation project(":app:core")
     implementation project(":mail:common")
     implementation project(":app:autodiscovery:api")
 
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation libs.timber
 
     testImplementation project(':app:testing')
     testImplementation project(":backend:imap")
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
-    testImplementation "androidx.test:core:${versions.androidxTestCore}"
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "io.insert-koin:koin-test:${versions.koin}"
-    testImplementation "io.insert-koin:koin-test-junit4:${versions.koin}"
+    testImplementation libs.robolectric
+    testImplementation libs.androidx.test.core
+    testImplementation libs.junit
+    testImplementation libs.truth
+    testImplementation libs.mockito.inline
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.koin.test
+    testImplementation libs.koin.test.junit4
 }
 
 android {

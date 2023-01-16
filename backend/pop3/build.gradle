@@ -1,6 +1,8 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'com.android.lint'
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    alias(libs.plugins.android.lint)
+}
 
 dependencies {
     api project(":backend:api")
@@ -8,6 +10,6 @@ dependencies {
     api project(":mail:protocols:smtp")
 
     testImplementation project(":mail:testing")
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation libs.junit
+    testImplementation libs.mockito.core
 }
