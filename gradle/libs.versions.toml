@@ -69,7 +69,7 @@ androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx
 androidx-cardview = "androidx.cardview:cardview:1.0.0"
 androidx-preference = { module = "androidx.preference:preference", version.ref = "androidxPreference" }
 androidx-swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-androidx-test-core = "androidx.test:core:1.4.0"
+androidx-test-core = "androidx.test:core:1.5.0"
 android-material = "com.google.android.material:material:1.6.1"
 fastadapter = { module = "com.mikepenz:fastadapter", version.ref = "fastAdapter" }
 fastadapter-extensions-drag = { module = "com.mikepenz:fastadapter-extensions-drag", version.ref = "fastAdapter" }
