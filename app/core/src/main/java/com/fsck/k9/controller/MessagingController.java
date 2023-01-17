@@ -1044,12 +1044,9 @@ public class MessagingController {
 
         setFlagInCache(account, messageIds, flag, newState);
 
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                setFlagSynchronous(account, messageIds, flag, newState, false);
-            }
-        });
+        putBackground("setFlag", null, () ->
+            setFlagSynchronous(account, messageIds, flag, newState, false)
+        );
     }
 
     public void setFlagForThreads(final Account account, final List<Long> threadRootIds,
@@ -1057,12 +1054,9 @@ public class MessagingController {
 
         setFlagForThreadsInCache(account, threadRootIds, flag, newState);
 
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                setFlagSynchronous(account, threadRootIds, flag, newState, true);
-            }
-        });
+        putBackground("setFlagForThreads", null, () ->
+            setFlagSynchronous(account, threadRootIds, flag, newState, true)
+        );
     }
 
     private void setFlagSynchronous(final Account account, final List<Long> ids,
