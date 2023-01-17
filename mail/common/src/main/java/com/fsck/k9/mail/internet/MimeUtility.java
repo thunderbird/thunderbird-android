@@ -149,9 +149,13 @@ public class MimeUtility {
             } else if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(encoding)) {
                 inputStream = new QuotedPrintableInputStream(rawInputStream) {
                     @Override
-                    public void close() throws IOException {
+                    public void close() {
                         super.close();
-                        closeInputStreamWithoutDeletingTemporaryFiles(rawInputStream);
+                        try {
+                            closeInputStreamWithoutDeletingTemporaryFiles(rawInputStream);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 };
             } else {

@@ -651,9 +651,13 @@ public class LocalStore {
         if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(encoding)) {
             return new QuotedPrintableInputStream(rawInputStream) {
                 @Override
-                public void close() throws IOException {
+                public void close() {
                     super.close();
-                    rawInputStream.close();
+                    try {
+                        rawInputStream.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             };
         }

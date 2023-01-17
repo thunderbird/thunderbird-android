@@ -8,6 +8,8 @@ if (rootProject.testCoverage) {
 }
 
 dependencies {
+    coreLibraryDesugaring libs.desugar
+
     implementation project(":app:ui:legacy")
     implementation project(":app:ui:message-list-widget")
     implementation project(":app:core")
@@ -69,6 +71,10 @@ android {
         release
     }
 
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
+
     buildTypes {
         release {
             if (project.hasProperty('storeFile')) {
@@ -103,24 +109,32 @@ android {
         }
     }
 
-    lintOptions {
+    lint {
         checkDependencies true
     }
 
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/README'
-        exclude 'META-INF/README.md'
-        exclude 'META-INF/CHANGES'
-        exclude 'LICENSE.txt'
-        exclude 'META-INF/*.kotlin_module'
-        exclude 'META-INF/*.version'
-        exclude 'kotlin/**'
-        exclude 'DebugProbesKt.bin'
+        jniLibs {
+            excludes += ['kotlin/**']
+        }
+
+        resources {
+            excludes += [
+                'META-INF/DEPENDENCIES',
+                'META-INF/LICENSE',
+                'META-INF/LICENSE.txt',
+                'META-INF/NOTICE',
+                'META-INF/NOTICE.txt',
+                'META-INF/README',
+                'META-INF/README.md',
+                'META-INF/CHANGES',
+                'LICENSE.txt',
+                'META-INF/*.kotlin_module',
+                'META-INF/*.version',
+                'kotlin/**',
+                'DebugProbesKt.bin'
+            ]
+        }
     }
 
     dependenciesInfo {
