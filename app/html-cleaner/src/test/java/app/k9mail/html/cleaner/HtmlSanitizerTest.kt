@@ -465,6 +465,25 @@ class HtmlSanitizerTest {
         assertTagsNotStripped("var")
     }
 
+    @Test
+    fun `should keep 'base' element`() {
+        val html =
+            """
+            <html>
+              <head>
+                <base href="https://domain.example/">
+              </head>
+              <body>
+                <a href="relative">Link</a>
+              </body>
+            </html>
+            """.compactHtml()
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(html)
+    }
+
     private fun assertTagsNotStripped(element: String) {
         val html = """<$element>some text</$element>"""
 
@@ -491,4 +510,6 @@ class HtmlSanitizerTest {
     }
 
     private fun String.trimLineBreaks() = replace("\n", "")
+
+    private fun String.compactHtml() = lines().joinToString(separator = "") { it.trim() }
 }
