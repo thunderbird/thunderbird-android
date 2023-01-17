@@ -16,12 +16,14 @@
         <item name="android:statusBarColor">@color/material_gray_100</item>
         <item name="toolbarColor">@color/material_gray_100</item>
 
-        <item name="colorPrimary">@color/material_blue_600</item>
-        <item name="colorPrimaryVariant">@color/material_blue_800</item>
-        <item name="colorSecondary">@color/material_pink_400</item>
-        <item name="colorSecondaryVariant">@color/material_pink_200</item>
+        <item name="colorPrimary">@color/material_gray_800</item>
+        <item name="colorPrimaryVariant">@color/material_gray_700</item>
+        <item name="colorSecondary">@color/material_pink_500</item>
+        <item name="colorSecondaryVariant">@color/material_pink_300</item>
         <item name="colorOnSecondary">#ffffff</item>
         <item name="bottomBarBackground">@color/material_gray_50</item>
+        <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
+        <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
 
         <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
@@ -87,13 +89,18 @@
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
-        <item name="messageListSelectedBackgroundColor">#ff99d9ee</item>
+        <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
+        <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
+        <item name="messageListSelectedBackgroundAlphaFraction">33%</item>
+        <item name="messageListSelectedBackgroundAlphaBackground">?attr/colorSurface</item>
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">#ffd8d8d8</item>
         <item name="messageListUnreadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_light</item>
-        <item name="messageListActiveItemBackgroundColor">#ff2ea7d1</item>
+        <item name="messageListActiveItemBackgroundColor">?attr/colorSecondaryVariant</item>
+        <item name="messageListActiveItemBackgroundAlphaFraction">60%</item>
+        <item name="messageListActiveItemBackgroundAlphaBackground">?attr/colorSurface</item>
         <item name="messageListPreviewTextColor">#ff696969</item>
         <item name="messageListDividerColor">#ffcccccc</item>
         <item name="messageListStateIconTint">#bbbbbb</item>
@@ -170,11 +177,13 @@
         <item name="android:statusBarColor">@color/material_gray_900</item>
         <item name="toolbarColor">@color/material_gray_900</item>
 
-        <item name="colorPrimary">@color/material_blue_400</item>
-        <item name="colorPrimaryVariant">@color/material_blue_600</item>
+        <item name="colorPrimary">@color/material_gray_100</item>
+        <item name="colorPrimaryVariant">@color/material_gray_50</item>
         <item name="colorSecondary">@color/material_pink_300</item>
         <item name="colorSecondaryVariant">@color/material_pink_500</item>
         <item name="bottomBarBackground">@color/material_gray_900</item>
+        <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
+        <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
 
         <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
@@ -240,13 +249,18 @@
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
-        <item name="messageListSelectedBackgroundColor">#ff347489</item>
+        <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
+        <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
+        <item name="messageListSelectedBackgroundAlphaFraction">25%</item>
+        <item name="messageListSelectedBackgroundAlphaBackground">?attr/colorSurface</item>
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
         <item name="messageListUnreadItemBackgroundColor">#ff505050</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_dark</item>
-        <item name="messageListActiveItemBackgroundColor">#ff33b5e5</item>
+        <item name="messageListActiveItemBackgroundColor">?attr/colorSecondaryVariant</item>
+        <item name="messageListActiveItemBackgroundAlphaFraction">50%</item>
+        <item name="messageListActiveItemBackgroundAlphaBackground">?attr/colorSurface</item>
         <item name="messageListPreviewTextColor">#ffa0a0a0</item>
         <item name="messageListDividerColor">#ff333333</item>
         <item name="messageListStateIconTint">#777777</item>

@@ -33,6 +33,9 @@
         android:layout_margin="@dimen/floatingActionButtonMargin"
         android:contentDescription="@string/compose_action"
         android:text="@string/compose_action"
-        app:icon="?attr/iconActionCompose" />
+        android:textColor="?attr/floatingActionButtonForegroundColor"
+        app:backgroundTint="?attr/floatingActionButtonBackgroundColor"
+        app:icon="?attr/iconActionCompose"
+        app:iconTint="?attr/floatingActionButtonForegroundColor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
