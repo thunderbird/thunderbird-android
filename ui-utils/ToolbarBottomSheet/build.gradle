@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
 dependencies {
-    api "com.google.android.material:material:${versions.materialComponents}"
+    api libs.android.material
 }
 
 android {

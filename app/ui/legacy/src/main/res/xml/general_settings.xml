@@ -248,6 +248,10 @@
                 android:summary="@string/global_settings_threaded_view_summary"
                 android:title="@string/global_settings_threaded_view_label" />
 
+            <CheckBoxPreference
+                android:key="show_compose_button"
+                android:title="@string/general_settings_show_compose_button_title" />
+
             <ListPreference
                 android:dialogTitle="@string/global_settings_splitview_mode_label"
                 android:entries="@array/splitview_mode_entries"

@@ -283,8 +283,9 @@ class SmtpTransport(
         logResponse(smtpResponse)
     }
 
-    private fun logResponse(smtpResponse: SmtpResponse, omitText: Boolean = false) {
+    private fun logResponse(smtpResponse: SmtpResponse, sensitive: Boolean = false) {
         if (K9MailLib.isDebug()) {
+            val omitText = sensitive && !K9MailLib.isDebugSensitive()
             Timber.v("%s", smtpResponse.toLogString(omitText, linePrefix = "SMTP <<< "))
         }
     }
@@ -532,7 +533,7 @@ class SmtpTransport(
 
         repeat(pipelinedCommands.size) {
             val response = responseParser.readResponse(isEnhancedStatusCodesProvided)
-            logResponse(response, omitText = false)
+            logResponse(response)
 
             if (response.isNegativeResponse && firstException == null) {
                 firstException = buildNegativeSmtpReplyException(response)

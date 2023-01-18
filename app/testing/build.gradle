@@ -1,14 +1,16 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
 
 dependencies {
     implementation project(':app:core')
 
-    api "junit:junit:${versions.junit}"
-    api "org.robolectric:robolectric:${versions.robolectric}"
-    api "io.insert-koin:koin-core:${versions.koin}"
-    api "org.mockito:mockito-core:${versions.mockito}"
-    api "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
+    api libs.junit
+    api libs.robolectric
+    api libs.koin.core
+    api libs.mockito.core
+    api libs.mockito.kotlin
 }
 
 android {

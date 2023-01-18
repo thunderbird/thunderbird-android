@@ -1,6 +1,8 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'com.android.lint'
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    alias(libs.plugins.android.lint)
+}
 
 dependencies {
     api project(":mail:common")

@@ -4,23 +4,16 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.fsck.k9.Preferences
-import com.fsck.k9.controller.MessagingController
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.getKoin
 
-class K9WorkerFactory(
-    private val messagingController: MessagingController,
-    private val preferences: Preferences
-) : WorkerFactory() {
+class K9WorkerFactory : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? {
-        return when (workerClassName) {
-            MailSyncWorker::class.java.canonicalName -> {
-                MailSyncWorker(messagingController, preferences, appContext, workerParameters)
-            }
-            else -> null
-        }
+        val workerClass = Class.forName(workerClassName).kotlin
+        return getKoin().getOrNull(workerClass) { parametersOf(workerParameters) }
     }
 }

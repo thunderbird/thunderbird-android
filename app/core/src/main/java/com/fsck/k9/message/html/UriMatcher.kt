@@ -3,12 +3,14 @@ package com.fsck.k9.message.html
 object UriMatcher {
     private val SUPPORTED_URIS = run {
         val httpUriParser = HttpUriParser()
+        val genericUriParser = GenericUriParser()
         mapOf(
-            "ethereum:" to EthereumUriParser(),
-            "bitcoin:" to BitcoinUriParser(),
             "http:" to httpUriParser,
             "https:" to httpUriParser,
-            "rtsp:" to httpUriParser
+            "mailto:" to genericUriParser,
+            "matrix:" to genericUriParser,
+            "rtsp:" to httpUriParser,
+            "xmpp:" to genericUriParser,
         )
     }
 

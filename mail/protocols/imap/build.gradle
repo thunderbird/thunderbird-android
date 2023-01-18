@@ -1,6 +1,8 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'com.android.lint'
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    alias(libs.plugins.android.lint)
+}
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
@@ -9,16 +11,16 @@ if (rootProject.testCoverage) {
 dependencies {
     api project(":mail:common")
 
-    implementation "com.jcraft:jzlib:1.0.7"
-    implementation "com.beetstra.jutf7:jutf7:1.0.0"
-    implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "com.squareup.okio:okio:${versions.okio}"
+    implementation libs.jzlib
+    implementation libs.jutf7
+    implementation libs.commons.io
+    implementation libs.okio
 
     testImplementation project(":mail:testing")
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "com.squareup.okio:okio:${versions.okio}"
-    testImplementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
+    testImplementation libs.junit
+    testImplementation libs.truth
+    testImplementation libs.mockito.core
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.okio
+    testImplementation libs.mime4j.core
 }

@@ -5,6 +5,26 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.502" versioncode="35002" date="2023-01-16">
+        <change>Fixed crash at app startup</change>
+    </release>
+    <release version="6.501" versioncode="35001" date="2023-01-09">
+        <change>Delete spam messages immediately without moving them to the trash folder</change>
+        <change>Changed the way home screen widgets are disabled when there is no account set up to work around a bug in Android versions prior to 12</change>
+        <change>Mark recent changes as read when the snackbar is dismissed via swipe</change>
+    </release>
+    <release version="6.500" versioncode="35000" date="2023-01-06">
+        <change>The light and dark themes are now based on Material Design 2. This is still work in progress.</change>
+        <change>Added a floating compose button to the message list screen</change>
+        <change>Search now also considers recipient addresses</change>
+        <change>Always move to previous/next message when swiping left/right outside of the message body</change>
+        <change>Lists of folders are now sorted alphabetically in account settings</change>
+        <change>Added better support for right-to-left languages when composing messages</change>
+        <change>When sending a message, the associated draft message will be deleted immediately, bypassing the Trash folder</change>
+        <change>mailto:, matrix:, and xmpp: URIs in plain text messages are now turned into links</change>
+        <change>Fixed a bug where notifications would sometimes reappear shortly after having been dismissed</change>
+        <change>Various other bug fixes</change>
+    </release>
     <release version="6.400" versioncode="34000" date="2022-11-28">
         <change>Added swipe actions to the message list screen</change>
         <change>Added support for swiping between messages</change>

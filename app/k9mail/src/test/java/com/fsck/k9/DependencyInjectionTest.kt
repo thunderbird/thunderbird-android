@@ -1,6 +1,8 @@
 package com.fsck.k9
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.work.WorkerParameters
+import com.fsck.k9.job.MailSyncWorker
 import com.fsck.k9.ui.changelog.ChangeLogMode
 import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
@@ -41,6 +43,7 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             withParameter<FolderNameFormatter> { RuntimeEnvironment.getApplication() }
             withParameter<SizeFormatter> { RuntimeEnvironment.getApplication() }
             withParameter<ChangelogViewModel> { ChangeLogMode.CHANGE_LOG }
+            withParameter<MailSyncWorker> { mock<WorkerParameters>() }
         }
     }
 }

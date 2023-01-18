@@ -219,6 +219,10 @@ object K9 : EarlyInit {
 
     @get:Synchronized
     @set:Synchronized
+    var isShowComposeButtonOnMessageList = true
+
+    @get:Synchronized
+    @set:Synchronized
     @JvmStatic
     var isThreadedViewEnabled = true
 
@@ -347,6 +351,7 @@ object K9 : EarlyInit {
         splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
 
         isUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", false)
+        isShowComposeButtonOnMessageList = storage.getBoolean("showComposeButtonOnMessageList", true)
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
         fontSizes.load(storage)
 
@@ -413,6 +418,7 @@ object K9 : EarlyInit {
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
         editor.putBoolean("useBackgroundAsUnreadIndicator", isUseBackgroundAsUnreadIndicator)
+        editor.putBoolean("showComposeButtonOnMessageList", isShowComposeButtonOnMessageList)
         editor.putBoolean("threadedView", isThreadedViewEnabled)
         editor.putEnum("splitViewMode", splitViewMode)
         editor.putBoolean("colorizeMissingContactPictures", isColorizeMissingContactPictures)

@@ -31,6 +31,7 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_picture" -> K9.isShowContactPicture
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator
+            "show_compose_button" -> K9.isShowComposeButtonOnMessageList
             "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
@@ -61,6 +62,7 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_picture" -> K9.isShowContactPicture = value
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator = value
+            "show_compose_button" -> K9.isShowComposeButtonOnMessageList = value
             "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
             "messageview_autofit_width" -> K9.isAutoFitWidth = value

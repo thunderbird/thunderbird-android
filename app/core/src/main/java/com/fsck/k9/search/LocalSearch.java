@@ -241,7 +241,7 @@ public class LocalSearch implements SearchSpecification {
     }
 
     ///////////////////////////////////////////////////////////////
-    // Public accesor methods
+    // Public accessor methods
     ///////////////////////////////////////////////////////////////
     /**
      * TODO THIS HAS TO GO!!!!

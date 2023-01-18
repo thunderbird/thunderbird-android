@@ -1,6 +1,8 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'com.android.lint'
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    alias(libs.plugins.android.lint)
+}
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
@@ -9,6 +11,6 @@ if (rootProject.testCoverage) {
 dependencies {
     api project(":mail:common")
 
-    api "com.squareup.okio:okio:${versions.okio}"
-    api "junit:junit:${versions.junit}"
+    api libs.okio
+    api libs.junit
 }

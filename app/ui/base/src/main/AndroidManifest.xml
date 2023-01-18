@@ -3,6 +3,9 @@
 
     <application>
 
+        <!--
+        This component is disabled by default. It will be enabled programmatically by SystemLocaleManager if necessary.
+        -->
         <receiver
             android:name=".locale.LocaleBroadcastReceiver"
             android:exported="false"

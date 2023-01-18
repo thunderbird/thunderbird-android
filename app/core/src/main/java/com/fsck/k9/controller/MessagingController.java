@@ -1894,7 +1894,15 @@ public class MessagingController {
         });
     }
 
+    public void deleteDraftSkippingTrashFolder(Account account, long messageId) {
+        deleteDraft(account, messageId, true);
+    }
+
     public void deleteDraft(Account account, long messageId) {
+        deleteDraft(account, messageId, false);
+    }
+
+    private void deleteDraft(Account account, long messageId, boolean skipTrashFolder) {
         Long folderId = account.getDraftsFolderId();
         if (folderId == null) {
             Timber.w("No Drafts folder configured. Can't delete draft.");
@@ -1905,7 +1913,7 @@ public class MessagingController {
         String messageServerId = messageStore.getMessageServerId(messageId);
         if (messageServerId != null) {
             MessageReference messageReference = new MessageReference(account.getUuid(), folderId, messageServerId);
-            deleteMessage(messageReference);
+            deleteMessages(Collections.singletonList(messageReference), skipTrashFolder);
         }
     }
 
@@ -1913,15 +1921,15 @@ public class MessagingController {
         actOnMessagesGroupedByAccountAndFolder(messages, (account, messageFolder, accountMessages) -> {
             suppressMessages(account, accountMessages);
             putBackground("deleteThreads", null, () ->
-                    deleteThreadsSynchronous(account, messageFolder.getDatabaseId(), accountMessages)
+                deleteThreadsSynchronous(account, messageFolder.getDatabaseId(), accountMessages, false)
             );
         });
     }
 
-    private void deleteThreadsSynchronous(Account account, long folderId, List<LocalMessage> messages) {
+    private void deleteThreadsSynchronous(Account account, long folderId, List<LocalMessage> messages, boolean skipTrashFolder) {
         try {
             List<LocalMessage> messagesToDelete = collectMessagesInThreads(account, messages);
-            deleteMessagesSynchronous(account, folderId, messagesToDelete);
+            deleteMessagesSynchronous(account, folderId, messagesToDelete, skipTrashFolder);
         } catch (MessagingException e) {
             Timber.e(e, "Something went wrong while deleting threads");
         }
@@ -1946,14 +1954,18 @@ public class MessagingController {
     }
 
     public void deleteMessage(MessageReference message) {
-        deleteMessages(Collections.singletonList(message));
+        deleteMessages(Collections.singletonList(message), false);
     }
 
     public void deleteMessages(List<MessageReference> messages) {
+        deleteMessages(messages, false);
+    }
+
+    private void deleteMessages(List<MessageReference> messages, boolean skipTrashFolder) {
         actOnMessagesGroupedByAccountAndFolder(messages, (account, messageFolder, accountMessages) -> {
             suppressMessages(account, accountMessages);
             putBackground("deleteMessages", null, () ->
-                    deleteMessagesSynchronous(account, messageFolder.getDatabaseId(), accountMessages)
+                deleteMessagesSynchronous(account, messageFolder.getDatabaseId(), accountMessages, skipTrashFolder)
             );
         });
     }
@@ -1987,7 +1999,7 @@ public class MessagingController {
 
     }
 
-    private void deleteMessagesSynchronous(Account account, long folderId, List<LocalMessage> messages) {
+    private void deleteMessagesSynchronous(Account account, long folderId, List<LocalMessage> messages, boolean skipTrashFolder) {
         try {
             List<LocalMessage> localOnlyMessages = new ArrayList<>();
             List<LocalMessage> syncedMessages = new ArrayList<>();
@@ -2012,8 +2024,10 @@ public class MessagingController {
 
             Map<String, String> uidMap = null;
             Long trashFolderId = account.getTrashFolderId();
+            boolean isSpamFolder = account.hasSpamFolder() && account.getSpamFolderId() == folderId;
+
             LocalFolder localTrashFolder = null;
-            if (!account.hasTrashFolder() || folderId == trashFolderId ||
+            if (skipTrashFolder || !account.hasTrashFolder() || folderId == trashFolderId || isSpamFolder ||
                     (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash())) {
                 Timber.d("Not moving deleted messages to local Trash folder. Removing local copies.");
 

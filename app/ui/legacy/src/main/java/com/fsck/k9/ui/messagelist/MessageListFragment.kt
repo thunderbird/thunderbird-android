@@ -11,9 +11,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -46,10 +51,13 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.fab.ShrinkFabOnScrollListener
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
@@ -85,6 +93,7 @@ class MessageListFragment :
     private var recyclerView: RecyclerView? = null
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
+    private var floatingActionButton: ExtendedFloatingActionButton? = null
 
     private lateinit var adapter: MessageListAdapter
 
@@ -100,6 +109,7 @@ class MessageListFragment :
     private var sortDateAscending = false
     private var actionMode: ActionMode? = null
     private var hasConnectivity: Boolean? = null
+    private var isShowFloatingActionButton: Boolean = true
 
     /**
      * Relevant messages for the current context when we have to remember the chosen messages
@@ -132,6 +142,8 @@ class MessageListFragment :
      */
     private var isInitialized = false
 
+    private var error: Error? = null
+
     /**
      * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
      * the toolbar. When inactive, the fragment won't add its actions to the toolbar, even it is still visible, e.g. as
@@ -142,6 +154,7 @@ class MessageListFragment :
             field = value
             resetActionMode()
             invalidateMenu()
+            maybeHideFloatingActionButton()
         }
 
     val isShowAccountChip: Boolean
@@ -162,7 +175,11 @@ class MessageListFragment :
         setHasOptionsMenu(true)
 
         restoreInstanceState(savedInstanceState)
-        decodeArguments() ?: return
+        val error = decodeArguments()
+        if (error != null) {
+            this.error = error
+            return
+        }
 
         viewModel.getMessageListLiveData().observe(this) { messageListInfo: MessageListInfo ->
             setMessageList(messageListInfo)
@@ -187,7 +204,7 @@ class MessageListFragment :
         rememberedSelected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES)?.toSet()
     }
 
-    private fun decodeArguments(): MessageListFragment? {
+    private fun decodeArguments(): Error? {
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
@@ -213,12 +230,11 @@ class MessageListFragment :
                 currentFolder = getFolderInfoHolder(folderId, account!!)
                 isSingleFolderMode = true
             } catch (e: MessagingException) {
-                fragmentListener.onFolderNotFoundError()
-                return null
+                return Error.FolderNotFound
             }
         }
 
-        return this
+        return null
     }
 
     private fun createMessageListAdapter(): MessageListAdapter {
@@ -236,11 +252,29 @@ class MessageListFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.message_list_fragment, container, false)
+        return if (error == null) {
+            inflater.inflate(R.layout.message_list_fragment, container, false)
+        } else {
+            inflater.inflate(R.layout.message_list_error, container, false)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (error == null) {
+            initializeMessageListLayout(view)
+        } else {
+            initializeErrorLayout(view)
+        }
+    }
+
+    private fun initializeErrorLayout(view: View) {
+        val errorMessageView = view.findViewById<TextView>(R.id.message_list_error_message)
+        errorMessageView.text = getString(error!!.errorText)
+    }
+
+    private fun initializeMessageListLayout(view: View) {
         initializeSwipeRefreshLayout(view)
+        initializeFloatingActionButton(view)
         initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
 
@@ -265,8 +299,39 @@ class MessageListFragment :
         this.swipeRefreshLayout = swipeRefreshLayout
     }
 
+    private fun initializeFloatingActionButton(view: View) {
+        isShowFloatingActionButton = K9.isShowComposeButtonOnMessageList
+        if (isShowFloatingActionButton) {
+            enableFloatingActionButton(view)
+        } else {
+            disableFloatingActionButton(view)
+        }
+    }
+
+    private fun enableFloatingActionButton(view: View) {
+        val floatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.floating_action_button)
+
+        floatingActionButton.setOnClickListener {
+            onCompose()
+        }
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
+        recyclerView.addOnScrollListener(ShrinkFabOnScrollListener(floatingActionButton))
+
+        this.floatingActionButton = floatingActionButton
+    }
+
+    private fun disableFloatingActionButton(view: View) {
+        val floatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.floating_action_button)
+        floatingActionButton.isGone = true
+    }
+
     private fun initializeRecyclerView(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
+
+        if (!isShowFloatingActionButton) {
+            recyclerView.setPadding(0)
+        }
 
         val itemDecoration = MessageListItemDecoration(requireContext())
         recyclerView.addItemDecoration(itemDecoration)
@@ -308,6 +373,13 @@ class MessageListFragment :
         recentChangesSnackbar = Snackbar
             .make(coordinatorLayout, R.string.changelog_snackbar_text, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.okay_action) { launchRecentChangesActivity() }
+            .addCallback(object : BaseCallback<Snackbar>() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event == DISMISS_EVENT_SWIPE) {
+                        recentChangesViewModel.onRecentChangesHintDismissed()
+                    }
+                }
+            })
 
         recentChangesViewModel.shouldShowRecentChangesHint
             .observe(viewLifecycleOwner, shouldShowRecentChangesHintObserver)
@@ -356,7 +428,12 @@ class MessageListFragment :
     }
 
     fun updateTitle() {
-        if (!isInitialized) return
+        if (error != null) {
+            fragmentListener.setMessageListTitle(getString(R.string.message_list_error_title))
+            return
+        } else if (!isInitialized) {
+            return
+        }
 
         setWindowTitle()
 
@@ -463,6 +540,7 @@ class MessageListFragment :
         recyclerView = null
         itemTouchHelper = null
         swipeRefreshLayout = null
+        floatingActionButton = null
 
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
             messagingController.clearNewMessages(account)
@@ -473,6 +551,8 @@ class MessageListFragment :
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+
+        if (error != null) return
 
         outState.putLongArray(STATE_SELECTED_MESSAGES, adapter.selected.toLongArray())
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
@@ -726,7 +806,7 @@ class MessageListFragment :
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        if (isActive) {
+        if (isActive && error == null) {
             prepareMenu(menu)
         } else {
             hideMenu(menu)
@@ -734,10 +814,9 @@ class MessageListFragment :
     }
 
     private fun prepareMenu(menu: Menu) {
-        menu.findItem(R.id.compose).isVisible = true
+        menu.findItem(R.id.compose).isVisible = !isShowFloatingActionButton
         menu.findItem(R.id.set_sort).isVisible = true
         menu.findItem(R.id.select_all).isVisible = true
-        menu.findItem(R.id.compose).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
         menu.findItem(R.id.empty_trash).isVisible = isShowingTrashFolder
 
@@ -1435,6 +1514,18 @@ class MessageListFragment :
         }
     }
 
+    fun onFullyActive() {
+        maybeShowFloatingActionButton()
+    }
+
+    private fun maybeShowFloatingActionButton() {
+        floatingActionButton?.isVisible = true
+    }
+
+    private fun maybeHideFloatingActionButton() {
+        floatingActionButton?.isGone = true
+    }
+
     // For the last N displayed messages we remember the original 'read' and 'starred' state of the messages. We pass
     // this information to MessageListLoader so messages can be sorted according to these remembered values and not the
     // current state. This way messages, that are marked as read/unread or starred/not starred while being displayed,
@@ -1935,17 +2026,20 @@ class MessageListFragment :
         COPY, MOVE
     }
 
+    private enum class Error(@StringRes val errorText: Int) {
+        FolderNotFound(R.string.message_list_error_folder_not_found)
+    }
+
     interface MessageListFragmentListener {
         fun setMessageListProgressEnabled(enable: Boolean)
         fun setMessageListProgress(level: Int)
         fun showThread(account: Account, threadRootId: Long)
         fun openMessage(messageReference: MessageReference)
-        fun setMessageListTitle(title: String, subtitle: String?)
+        fun setMessageListTitle(title: String, subtitle: String? = null)
         fun onCompose(account: Account?)
         fun startSearch(query: String, account: Account?, folderId: Long?): Boolean
         fun startSupportActionMode(callback: ActionMode.Callback): ActionMode?
         fun goBack()
-        fun onFolderNotFoundError()
 
         companion object {
             const val MAX_PROGRESS = 10000

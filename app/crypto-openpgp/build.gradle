@@ -1,11 +1,13 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
 
 dependencies {
     implementation project(":app:core")
 
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation libs.junit
+    testImplementation libs.mockito.core
 }
 
 android {

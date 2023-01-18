@@ -6,6 +6,8 @@
         <attr name="messageHeaderBackground" format="reference|color" />
         <attr name="extraMessageHeaderBackground" format="reference|color" />
         <attr name="bottomBarBackground" format="reference|color" />
+        <attr name="floatingActionButtonBackgroundColor" format="reference|color" />
+        <attr name="floatingActionButtonForegroundColor" format="reference|color" />
         <attr name="iconUnifiedInbox" format="reference" />
         <attr name="iconFolder" format="reference" />
         <attr name="iconFolderInbox" format="reference" />
@@ -67,13 +69,18 @@
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />
+        <attr name="messageListSelectedCheckMarkColor" format="reference|color"/>
         <attr name="messageListSelectedBackgroundColor" format="reference|color"/>
+        <attr name="messageListSelectedBackgroundAlphaFraction" format="fraction"/>
+        <attr name="messageListSelectedBackgroundAlphaBackground" format="reference|color"/>
         <attr name="messageListRegularItemBackgroundColor" format="reference|color"/>
         <attr name="messageListReadItemBackgroundColor" format="reference|color"/>
         <attr name="messageListUnreadItemBackgroundColor" format="reference|color"/>
         <attr name="messageListThreadCountForegroundColor" format="reference|color"/>
         <attr name="messageListThreadCountBackground" format="reference|color"/>
         <attr name="messageListActiveItemBackgroundColor" format="reference|color"/>
+        <attr name="messageListActiveItemBackgroundAlphaFraction" format="fraction"/>
+        <attr name="messageListActiveItemBackgroundAlphaBackground" format="reference|color"/>
         <attr name="messageListPreviewTextColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
         <attr name="messageListStateIconTint" format="reference|color"/>

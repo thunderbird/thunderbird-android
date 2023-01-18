@@ -12,23 +12,18 @@ import static com.fsck.k9.crypto.openpgp.MessageCreationHelper.createPart;
 import static com.fsck.k9.crypto.openpgp.MessageCreationHelper.createTextMessage;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 public class EncryptionDetectorTest {
     private static final String CRLF = "\r\n";
 
 
-    private TextPartFinder textPartFinder;
     private EncryptionDetector encryptionDetector;
 
 
     @Before
     public void setUp() {
-        textPartFinder = mock(TextPartFinder.class);
-
-        encryptionDetector = new EncryptionDetector(textPartFinder);
+        encryptionDetector = new EncryptionDetector(new TextPartFinder());
     }
 
     @Test
@@ -75,7 +70,6 @@ public class EncryptionDetectorTest {
                 "-----BEGIN PGP MESSAGE-----" + CRLF +
                 "some encrypted stuff here" + CRLF +
                 "-----END PGP MESSAGE-----");
-        when(textPartFinder.findFirstTextPart(message)).thenReturn(message);
 
         boolean encrypted = encryptionDetector.isEncrypted(message);
 
@@ -90,7 +84,6 @@ public class EncryptionDetectorTest {
                 "some encrypted stuff here" + CRLF +
                 "-----END PGP MESSAGE-----" + CRLF +
                 "epilogue");
-        when(textPartFinder.findFirstTextPart(message)).thenReturn(message);
 
         boolean encrypted = encryptionDetector.isEncrypted(message);
 
@@ -108,7 +101,6 @@ public class EncryptionDetectorTest {
                 CRLF +
                 "-- " + CRLF +
                 "my signature");
-        when(textPartFinder.findFirstTextPart(message)).thenReturn(message);
 
         boolean encrypted = encryptionDetector.isEncrypted(message);
 

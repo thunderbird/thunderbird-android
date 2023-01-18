@@ -51,8 +51,16 @@ class MessageListAdapter internal constructor(
     private val answeredIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListAnswered)
     private val forwardedAnsweredIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListAnsweredForwarded)
     private val previewTextColor: Int = theme.resolveColorAttribute(R.attr.messageListPreviewTextColor)
-    private val activeItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListActiveItemBackgroundColor)
-    private val selectedItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListSelectedBackgroundColor)
+    private val activeItemBackgroundColor: Int = theme.resolveColorAttribute(
+        colorAttrId = R.attr.messageListActiveItemBackgroundColor,
+        alphaFractionAttrId = R.attr.messageListActiveItemBackgroundAlphaFraction,
+        backgroundColorAttrId = R.attr.messageListActiveItemBackgroundAlphaBackground
+    )
+    private val selectedItemBackgroundColor: Int = theme.resolveColorAttribute(
+        colorAttrId = R.attr.messageListSelectedBackgroundColor,
+        alphaFractionAttrId = R.attr.messageListSelectedBackgroundAlphaFraction,
+        backgroundColorAttrId = R.attr.messageListSelectedBackgroundAlphaBackground
+    )
     private val regularItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListRegularItemBackgroundColor)
     private val readItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListReadItemBackgroundColor)
     private val unreadItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)

@@ -15,11 +15,11 @@ import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.settings.import.SettingsImportResultViewModel
 import com.fsck.k9.ui.settings.import.SettingsImportSuccess
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class WelcomeFragment : Fragment() {
     private val htmlToSpanned: HtmlToSpanned by inject()
-    private val importResultViewModel: SettingsImportResultViewModel by sharedViewModel()
+    private val importResultViewModel: SettingsImportResultViewModel by activityViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_welcome_message, container, false)
