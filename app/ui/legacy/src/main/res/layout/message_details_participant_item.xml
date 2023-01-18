@@ -5,9 +5,7 @@
     android:id="@+id/participants_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
+    android:background="?attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -15,13 +13,11 @@
         android:id="@+id/contact_picture"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_contact_picture"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_contact_picture" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/name"
@@ -31,29 +27,27 @@
         android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:maxLines="1"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="?android:attr/textColorPrimary"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@+id/address"
+        app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toStartOf="@+id/menu_add_contact"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@id/contact_picture"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        android:text="Alice" />
-
+        app:layout_goneMarginBottom="12dp"
+        tools:text="Alice" />
 
     <TextView
-        android:id="@+id/address"
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="16dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:maxLines="1"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="?android:attr/textColorSecondary"
         app:layout_constrainedWidth="true"
@@ -63,17 +57,17 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/name"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        android:text="alice@domain.example" />
-
+        tools:text="alice@domain.example" />
 
     <ImageView
         android:id="@+id/menu_add_contact"
         android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_height="72dp"
         android:background="?attr/controlBackground"
-        android:paddingHorizontal="12dp"
         android:clickable="true"
+        android:contentDescription="@string/action_add_to_contacts"
         android:focusable="true"
+        android:paddingHorizontal="12dp"
         app:layout_constraintEnd_toStartOf="@+id/menu_compose"
         app:layout_constraintTop_toTopOf="@+id/menu_compose"
         app:srcCompat="?attr/messageDetailsAddContactIcon" />
@@ -81,29 +75,30 @@
     <ImageView
         android:id="@+id/menu_compose"
         android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_height="72dp"
         android:background="?attr/controlBackground"
         android:clickable="true"
+        android:contentDescription="@string/compose_action"
         android:focusable="true"
+        android:paddingHorizontal="12dp"
         app:layout_constraintEnd_toStartOf="@id/menu_overflow"
         app:layout_constraintTop_toTopOf="@+id/menu_overflow"
-        android:paddingHorizontal="12dp"
         app:srcCompat="@drawable/ic_envelope" />
 
     <ImageView
         android:id="@+id/menu_overflow"
         android:layout_width="40dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="72dp"
         android:background="?attr/controlBackground"
         android:clickable="true"
+        android:contentDescription="@string/abc_action_menu_overflow_description"
         android:focusable="true"
         android:paddingStart="6dp"
         android:paddingEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/dots_vertical" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

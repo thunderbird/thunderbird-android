@@ -1,6 +1,8 @@
 package com.fsck.k9.helper;
 
 
+import java.util.HashMap;
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -9,13 +11,12 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import timber.log.Timber;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
+
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-
 import com.fsck.k9.mail.Address;
-
-import java.util.HashMap;
+import timber.log.Timber;
 
 /**
  * Helper class to access the contacts stored on the device.
@@ -37,7 +38,8 @@ public class Contacts {
             ContactsContract.CommonDataKinds.Email._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
-            Photo.PHOTO_URI
+            Photo.PHOTO_URI,
+            ContactsContract.Contacts.LOOKUP_KEY
     };
 
     /**
@@ -51,6 +53,8 @@ public class Contacts {
      * {@link #PROJECTION}.
      */
     protected static final int CONTACT_ID_INDEX = 2;
+
+    protected static final int LOOKUP_KEY_INDEX = 4;
 
 
     /**
@@ -167,6 +171,24 @@ public class Contacts {
             }
         }
         return false;
+    }
+
+    @Nullable
+    public Uri getContactUri(String emailAddress) {
+        Cursor cursor = getContactByAddress(emailAddress);
+        if (cursor == null) {
+            return null;
+        }
+
+        try (cursor) {
+            if (!cursor.moveToFirst()) {
+                return null;
+            }
+
+            long contactId = cursor.getLong(CONTACT_ID_INDEX);
+            String lookupKey = cursor.getString(LOOKUP_KEY_INDEX);
+            return ContactsContract.Contacts.getLookupUri(contactId, lookupKey);
+        }
     }
 
     /**

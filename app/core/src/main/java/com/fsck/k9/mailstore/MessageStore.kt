@@ -156,6 +156,11 @@ interface MessageStore {
     fun getHeaders(folderId: Long, messageServerId: String): List<Header>
 
     /**
+     * Retrieve selected header fields of a message.
+     */
+    fun getHeaders(folderId: Long, messageServerId: String, headerNames: Set<String>): List<Header>
+
+    /**
      * Return the size of this message store in bytes.
      */
     fun getSize(): Long

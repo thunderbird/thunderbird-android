@@ -171,6 +171,34 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `get some headers`() {
+        val messagePartId = sqliteDatabase.createMessagePart(
+            header = """
+                From: <alice@domain.example>
+                To: Bob <bob@domain.example>
+                Date: Thu, 01 Apr 2021 01:23:45 +0200
+                Subject: Test
+                Message-Id: <20210401012345.123456789A@domain.example>
+            """.trimIndent().crlf()
+        )
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid1", messagePartId = messagePartId)
+
+        val headers = retrieveMessageOperations.getHeaders(
+            folderId = 1,
+            messageServerId = "uid1",
+            headerNames = setOf("from", "to", "message-id")
+        )
+
+        assertThat(headers).isEqualTo(
+            listOf(
+                Header("From", "<alice@domain.example>"),
+                Header("To", "Bob <bob@domain.example>"),
+                Header("Message-Id", "<20210401012345.123456789A@domain.example>")
+            )
+        )
+    }
+
+    @Test
     fun `get oldest message date`() {
         sqliteDatabase.createMessage(folderId = 1, date = 42)
         sqliteDatabase.createMessage(folderId = 1, date = 23)

@@ -2,7 +2,7 @@
   "inbox": {
     "name": "Inbox",
     "type": "INBOX",
-    "messageServerIds": ["intro"]
+    "messageServerIds": ["intro", "many_recipients"]
   },
   "trash": {
     "name": "Trash",
