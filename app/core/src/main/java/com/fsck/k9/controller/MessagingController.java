@@ -952,11 +952,8 @@ public class MessagingController {
     }
 
     private void queueSetFlag(Account account, long folderId, boolean newState, Flag flag, List<String> uids) {
-        putBackground("queueSetFlag", null, () -> {
-            PendingCommand command = PendingSetFlag.create(folderId, newState, flag, uids);
-            queuePendingCommand(account, command);
-            processPendingCommands(account);
-        });
+        PendingCommand command = PendingSetFlag.create(folderId, newState, flag, uids);
+        queuePendingCommand(account, command);
     }
 
     /**
@@ -969,11 +966,8 @@ public class MessagingController {
     }
 
     private void queueDelete(Account account, long folderId, List<String> uids) {
-        putBackground("queueDelete", null, () -> {
-            PendingCommand command = PendingDelete.create(folderId, uids);
-            queuePendingCommand(account, command);
-            processPendingCommands(account);
-        });
+        PendingCommand command = PendingDelete.create(folderId, uids);
+        queuePendingCommand(account, command);
     }
 
     void processPendingDelete(PendingDelete command, Account account) throws MessagingException {
@@ -1044,12 +1038,9 @@ public class MessagingController {
 
         setFlagInCache(account, messageIds, flag, newState);
 
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                setFlagSynchronous(account, messageIds, flag, newState, false);
-            }
-        });
+        putBackground("setFlag", null, () ->
+            setFlagSynchronous(account, messageIds, flag, newState, false)
+        );
     }
 
     public void setFlagForThreads(final Account account, final List<Long> threadRootIds,
@@ -1057,12 +1048,9 @@ public class MessagingController {
 
         setFlagForThreadsInCache(account, threadRootIds, flag, newState);
 
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                setFlagSynchronous(account, threadRootIds, flag, newState, true);
-            }
-        });
+        putBackground("setFlagForThreads", null, () ->
+            setFlagSynchronous(account, threadRootIds, flag, newState, true)
+        );
     }
 
     private void setFlagSynchronous(final Account account, final List<Long> ids,
@@ -1284,34 +1272,47 @@ public class MessagingController {
     }
 
     public void markMessageAsOpened(Account account, LocalMessage message) {
-        put("markMessageAsOpened", null, () -> {
-            markMessageAsOpenedBlocking(account, message);
+        threadPool.execute(() ->
+            notificationController.removeNewMailNotification(account, message.makeMessageReference())
+        );
+
+        if (message.isSet(Flag.SEEN)) {
+            // Nothing to do if the message is already marked as read
+            return;
+        }
+
+        boolean markMessageAsRead = account.isMarkMessageAsReadOnView();
+        if (markMessageAsRead) {
+            // Mark the message itself as read right away
+            try {
+                message.setFlagInternal(Flag.SEEN, true);
+            } catch (MessagingException e) {
+                Timber.e(e, "Error while marking message as read");
+            }
+
+            // Also mark the message as read in the cache
+            List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
+            setFlagInCache(account, messageIds, Flag.SEEN, true);
+        }
+
+        putBackground("markMessageAsOpened", null, () -> {
+            markMessageAsOpenedBlocking(account, message, markMessageAsRead);
         });
     }
 
-    private void markMessageAsOpenedBlocking(Account account, LocalMessage message) {
-        notificationController.removeNewMailNotification(account,message.makeMessageReference());
-
-        if (!message.isSet(Flag.SEEN)) {
-            if (account.isMarkMessageAsReadOnView()) {
-                markMessageAsReadOnView(account, message);
-            } else {
-                // Marking a message as read will automatically mark it as "not new". But if we don't mark the message
-                // as read on opening, we have to manually mark it as "not new".
-                markMessageAsNotNew(account, message);
-            }
+    private void markMessageAsOpenedBlocking(Account account, LocalMessage message, boolean markMessageAsRead) {
+        if (markMessageAsRead) {
+            markMessageAsRead(account, message);
+        } else {
+            // Marking a message as read will automatically mark it as "not new". But if we don't mark the message
+            // as read on opening, we have to manually mark it as "not new".
+            markMessageAsNotNew(account, message);
         }
     }
 
-    private void markMessageAsReadOnView(Account account, LocalMessage message) {
-        try {
-            List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
-            setFlag(account, messageIds, Flag.SEEN, true);
-
-            message.setFlagInternal(Flag.SEEN, true);
-        } catch (MessagingException e) {
-            Timber.e(e, "Error while marking message as read");
-        }
+    private void markMessageAsRead(Account account, LocalMessage message) {
+        List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
+        setFlagSynchronous(account, messageIds, Flag.SEEN, true, false);
     }
 
     private void markMessageAsNotNew(Account account, LocalMessage message) {
