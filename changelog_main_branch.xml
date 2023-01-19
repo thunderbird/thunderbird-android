@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.503" versioncode="35003" date="2023-01-19">
+        <change>Tweaked theme colors</change>
+        <change>Added support for HTML messages using the &lt;base> tag and relative links</change>
+        <change>Fixed the logic to skip the trash folder when deleting messages, e.g. when deleting spam</change>
+        <change>Fixed bug that could lead to messages not being marked as read on the server when they should have been</change>
+        <change>Internal changes</change>
+    </release>
     <release version="6.502" versioncode="35002" date="2023-01-16">
         <change>Fixed crash at app startup</change>
     </release>
