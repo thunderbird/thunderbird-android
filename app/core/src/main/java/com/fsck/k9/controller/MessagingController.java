@@ -952,11 +952,8 @@ public class MessagingController {
     }
 
     private void queueSetFlag(Account account, long folderId, boolean newState, Flag flag, List<String> uids) {
-        putBackground("queueSetFlag", null, () -> {
-            PendingCommand command = PendingSetFlag.create(folderId, newState, flag, uids);
-            queuePendingCommand(account, command);
-            processPendingCommands(account);
-        });
+        PendingCommand command = PendingSetFlag.create(folderId, newState, flag, uids);
+        queuePendingCommand(account, command);
     }
 
     /**
@@ -969,11 +966,8 @@ public class MessagingController {
     }
 
     private void queueDelete(Account account, long folderId, List<String> uids) {
-        putBackground("queueDelete", null, () -> {
-            PendingCommand command = PendingDelete.create(folderId, uids);
-            queuePendingCommand(account, command);
-            processPendingCommands(account);
-        });
+        PendingCommand command = PendingDelete.create(folderId, uids);
+        queuePendingCommand(account, command);
     }
 
     void processPendingDelete(PendingDelete command, Account account) throws MessagingException {
