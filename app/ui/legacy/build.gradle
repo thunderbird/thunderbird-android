@@ -30,7 +30,6 @@ dependencies {
     implementation libs.androidx.lifecycle.viewmodel.ktx
     implementation libs.androidx.lifecycle.livedata.ktx
     implementation libs.androidx.constraintlayout
-    implementation libs.androidx.cardview
     implementation libs.androidx.localbroadcastmanager
     implementation libs.androidx.swiperefreshlayout
     implementation libs.ckchangelog.core
