@@ -51,6 +51,7 @@ allprojects {
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
             }
 
+            // Can remove this once https://issuetracker.google.com/issues/260059413 is fixed.
             compileOptions {
                 sourceCompatibility libs.versions.java.get()
                 targetCompatibility libs.versions.java.get()
@@ -69,10 +70,9 @@ allprojects {
         }
     }
 
-    plugins.withType(JavaPlugin).configureEach {
-        project.java {
-            sourceCompatibility = libs.versions.java.get()
-            targetCompatibility = libs.versions.java.get()
+    plugins.withType(JavaBasePlugin).configureEach {
+        java.toolchain {
+            languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get()))
         }
     }
 
@@ -82,12 +82,6 @@ allprojects {
             showCauses true
             showExceptions true
             showStackTraces true
-        }
-    }
-
-    tasks.withType(KotlinCompile) {
-        kotlinOptions {
-            jvmTarget = libs.versions.java.get()
         }
     }
 
