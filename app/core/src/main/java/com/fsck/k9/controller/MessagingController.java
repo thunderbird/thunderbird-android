@@ -2025,10 +2025,13 @@ public class MessagingController {
             Map<String, String> uidMap = null;
             Long trashFolderId = account.getTrashFolderId();
             boolean isSpamFolder = account.hasSpamFolder() && account.getSpamFolderId() == folderId;
+            boolean doNotMoveToTrashFolder = skipTrashFolder ||
+                !account.hasTrashFolder() || folderId == trashFolderId ||
+                isSpamFolder ||
+                (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash());
 
             LocalFolder localTrashFolder = null;
-            if (skipTrashFolder || !account.hasTrashFolder() || folderId == trashFolderId || isSpamFolder ||
-                    (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash())) {
+            if (doNotMoveToTrashFolder) {
                 Timber.d("Not moving deleted messages to local Trash folder. Removing local copies.");
 
                 if (!localOnlyMessages.isEmpty()) {
@@ -2092,8 +2095,7 @@ public class MessagingController {
                 // Nothing to do on the remote side
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                    if (!account.hasTrashFolder() || folderId == trashFolderId ||
-                            !backend.isDeleteMoveToTrash()) {
+                    if (doNotMoveToTrashFolder) {
                         queueDelete(account, folderId, syncedMessageUids);
                     } else if (account.isMarkMessageAsReadOnDelete()) {
                         queueMoveOrCopy(account, folderId, trashFolderId,
