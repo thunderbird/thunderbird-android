@@ -269,11 +269,6 @@ public class LocalFolder {
         });
     }
 
-    public int getVisibleLimit() throws MessagingException {
-        open();
-        return visibleLimit;
-    }
-
     public void setVisibleLimit(final int visibleLimit) throws MessagingException {
         updateMoreMessagesOnVisibleLimitChange(visibleLimit, this.visibleLimit);
 

@@ -508,16 +508,19 @@ public class MessagingController {
 
 
     public void loadMoreMessages(Account account, long folderId, MessagingListener listener) {
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folderId);
-            if (localFolder.getVisibleLimit() > 0) {
-                localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
-            }
-            synchronizeMailbox(account, folderId, false, listener);
-        } catch (MessagingException me) {
-            throw new RuntimeException("Unable to set visible limit on folder", me);
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        Integer visibleLimit = messageStore.getFolder(folderId, FolderDetailsAccessor::getVisibleLimit);
+        if (visibleLimit == null) {
+            Timber.v("loadMoreMessages(%s, %d): Folder not found", account, folderId);
+            return;
         }
+
+        if (visibleLimit > 0) {
+            int newVisibleLimit = visibleLimit + account.getDisplayCount();
+            messageStore.setVisibleLimit(folderId, newVisibleLimit);
+        }
+
+        synchronizeMailbox(account, folderId, false, listener);
     }
 
     /**

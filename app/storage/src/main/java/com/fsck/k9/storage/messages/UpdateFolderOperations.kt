@@ -79,6 +79,16 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
         setString(folderId = folderId, columnName = "status", value = status)
     }
 
+    fun setVisibleLimit(folderId: Long, visibleLimit: Int) {
+        lockableDatabase.execute(false) { db ->
+            val contentValues = ContentValues().apply {
+                put("visible_limit", visibleLimit)
+            }
+
+            db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))
+        }
+    }
+
     private fun setString(folderId: Long, columnName: String, value: String?) {
         lockableDatabase.execute(false) { db ->
             val contentValues = ContentValues().apply {

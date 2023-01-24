@@ -277,6 +277,11 @@ interface MessageStore {
     fun setStatus(folderId: Long, status: String?)
 
     /**
+     * Update a folder's "visible limit" value.
+     */
+    fun setVisibleLimit(folderId: Long, visibleLimit: Int)
+
+    /**
      * Delete folders.
      */
     fun deleteFolders(folderServerIds: List<String>)
