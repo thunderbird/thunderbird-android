@@ -21,7 +21,7 @@ def javaVersion = JavaVersion.VERSION_11
 def jvmTargetVersion = JvmTarget.JVM_11
 
 allprojects {
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy.dependencySubstitution {
             substitute module("androidx.core:core") using module("androidx.core:core:${libs.versions.androidxCore.get()}")
             substitute module("androidx.activity:activity") using module("androidx.activity:activity:${libs.versions.androidxActivity.get()}")
@@ -80,7 +80,7 @@ allprojects {
         }
     }
 
-    tasks.withType(Test) {
+    tasks.withType(Test).configureEach {
         testLogging {
             exceptionFormat "full"
             showCauses true
@@ -89,7 +89,7 @@ allprojects {
         }
     }
 
-    tasks.withType(KotlinCompile) {
+    tasks.withType(KotlinCompile).configureEach {
         compilerOptions {
             jvmTarget = jvmTargetVersion
         }
