@@ -80,6 +80,13 @@ jobs:
           platform_token: ${{ secrets.NS_TOKEN }}
           # TODO: Replace the Group ID.
           group_id: "602abed9-4c66-453d-8431-da0195b682de"
+          
+      - name: Save SARIF File
+        uses: actions/upload-artifact@v2
+        with:
+          name: NowSecure SARIF
+          path: NowSecure.sarif
+          retention-days: 14
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
