@@ -2,7 +2,6 @@
 # Please don't open pull requests upgrading dependencies if you're a new contributor.
 
 [versions]
-java = "11"
 androidGradlePlugin = "7.4.0"
 ktlint = "0.44.0"
 
