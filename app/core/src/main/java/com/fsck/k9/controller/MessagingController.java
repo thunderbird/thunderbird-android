@@ -506,8 +506,11 @@ public class MessagingController {
         }
     }
 
+    public void loadMoreMessages(Account account, long folderId) {
+        putBackground("loadMoreMessages", null, () -> loadMoreMessagesSynchronous(account, folderId));
+    }
 
-    public void loadMoreMessages(Account account, long folderId, MessagingListener listener) {
+    public void loadMoreMessagesSynchronous(Account account, long folderId) {
         MessageStore messageStore = messageStoreManager.getMessageStore(account);
         Integer visibleLimit = messageStore.getFolder(folderId, FolderDetailsAccessor::getVisibleLimit);
         if (visibleLimit == null) {
@@ -520,7 +523,7 @@ public class MessagingController {
             messageStore.setVisibleLimit(folderId, newVisibleLimit);
         }
 
-        synchronizeMailbox(account, folderId, false, listener);
+        synchronizeMailboxSynchronous(account, folderId, false, null, new NotificationState());
     }
 
     /**

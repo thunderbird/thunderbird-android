@@ -485,7 +485,7 @@ class MessageListFragment :
 
         if (currentFolder.moreMessages && !localSearch.isManualSearch) {
             val folderId = currentFolder.databaseId
-            messagingController.loadMoreMessages(account, folderId, null)
+            messagingController.loadMoreMessages(account, folderId)
         } else if (isRemoteSearch) {
             val additionalSearchResults = extraSearchResults ?: return
             if (additionalSearchResults.isEmpty()) return
