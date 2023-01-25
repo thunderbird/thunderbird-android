@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/copy_email_address"
+        android:title="@string/action_copy_email_address" />
+    <item
+        android:id="@+id/copy_name_and_email_address"
+        android:title="@string/action_copy_name_and_email_address" />
+</menu>

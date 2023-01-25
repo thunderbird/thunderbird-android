@@ -45,6 +45,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.messagedetails.MessageDetailsFragment
 import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
@@ -382,8 +383,8 @@ class MessageViewFragment :
 
     private val messageHeaderClickListener = object : MessageHeaderClickListener {
         override fun onParticipantsContainerClick() {
-            val messageBottomSheet = MessageBottomSheet()
-            messageBottomSheet.show(childFragmentManager, "message_details")
+            val messageDetailsFragment = MessageDetailsFragment.create(messageReference)
+            messageDetailsFragment.show(childFragmentManager, "message_details")
         }
 
         override fun onMenuItemClick(itemId: Int) {

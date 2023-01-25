@@ -1307,4 +1307,36 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="message_list_error_title">Error</string>
     <!-- Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut. -->
     <string name="message_list_error_folder_not_found">Folder not found</string>
+
+    <!-- Title of the toolbar that is displayed when the message details bottom sheet has been expanded -->
+    <string name="message_details_toolbar_title">Message details</string>
+    <!-- Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet. -->
+    <string name="message_details_missing_date">Missing \'Date\' header</string>
+    <!-- Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'. -->
+    <string name="message_details_from_section_title">From</string>
+    <!-- Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations. -->
+    <string name="message_details_sender_section_title">Sender</string>
+    <!-- Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'. -->
+    <string name="message_details_replyto_section_title">Reply to</string>
+    <!-- Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'. -->
+    <string name="message_details_to_section_title">To</string>
+    <!-- Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'. -->
+    <string name="message_details_cc_section_title">Cc</string>
+    <!-- Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'. -->
+    <string name="message_details_bcc_section_title">Bcc</string>
+
+    <!-- Displayed when loading the message details has failed -->
+    <string name="message_details_loading_error">An error occurred while loading the message details.</string>
+
+    <!-- Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->
+    <string name="action_add_to_contacts">Add to contacts</string>
+    <!-- Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->
+    <string name="action_copy_email_address">Copy email address</string>
+    <!-- Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->
+    <string name="action_copy_name_and_email_address">Copy name and email address</string>
+
+    <!-- A user visible label for the email address copied to the clipboard -->
+    <string name="clipboard_label_email_address">Email address</string>
+    <!-- A user visible label for the name and email address copied to the clipboard -->
+    <string name="clipboard_label_name_and_email_address">Name and email address</string>
 </resources>

@@ -34,7 +34,6 @@ import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.graphics.Insets
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -191,6 +190,19 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
             container.doOnLayout {
                 behavior.peekHeight = container.height / 2
             }
+
+            bottomSheet.doOnLayout {
+                // Don't draw the toolbar underneath the status bar if the bottom sheet doesn't cover the whole screen
+                // anyway.
+                if (bottomSheet.width < container.width) {
+                    container.fitsSystemWindows = true
+                    coordinator?.fitsSystemWindows = true
+                    setToolbarVisibilityCallback(topInset = 0)
+                } else {
+                    container.fitsSystemWindows = false
+                    coordinator?.fitsSystemWindows = false
+                }
+            }
         }
 
         return container
@@ -200,27 +212,15 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
     private fun wrapInBottomSheet(view: View): View {
         ensureContainerAndBehavior()
 
-        val window = checkNotNull(window)
         val container = checkNotNull(container)
         val coordinator = checkNotNull(coordinator)
         val bottomSheet = checkNotNull(bottomSheet)
-        val toolbar = checkNotNull(toolbar)
 
         ViewCompat.setOnApplyWindowInsetsListener(bottomSheet) { _, windowInsets ->
-            val behavior = checkNotNull(internalBehavior)
-
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val topInset = insets.top
 
-            toolbar.setPadding(0, insets.top, 0, 0)
-
-            toolbarVisibilityCallback?.let { oldCallback ->
-                behavior.removeBottomSheetCallback(oldCallback)
-            }
-
-            val windowInsetsController = WindowCompat.getInsetsController(window, bottomSheet)
-            val newCallback = ToolbarVisibilityCallback(windowInsetsController, toolbar, insets, behavior)
-            behavior.addBottomSheetCallback(newCallback)
-            this.toolbarVisibilityCallback = newCallback
+            setToolbarVisibilityCallback(topInset)
 
             WindowInsetsCompat.CONSUMED
         }
@@ -268,6 +268,23 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
         return container
     }
 
+    private fun setToolbarVisibilityCallback(topInset: Int) {
+        val window = checkNotNull(window)
+        val bottomSheet = checkNotNull(bottomSheet)
+        val toolbar = checkNotNull(toolbar)
+        val behavior = checkNotNull(internalBehavior)
+
+        toolbarVisibilityCallback?.let { oldCallback ->
+            behavior.removeBottomSheetCallback(oldCallback)
+        }
+
+        val windowInsetsController = WindowCompat.getInsetsController(window, bottomSheet)
+        val newCallback = ToolbarVisibilityCallback(windowInsetsController, toolbar, topInset, behavior)
+        behavior.addBottomSheetCallback(newCallback)
+
+        this.toolbarVisibilityCallback = newCallback
+    }
+
     fun removeDefaultCallback() {
         checkNotNull(internalBehavior).removeBottomSheetCallback(cancelDialogCallback)
     }
@@ -285,7 +302,7 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
     private class ToolbarVisibilityCallback(
         private val windowInsetsController: WindowInsetsControllerCompat,
         private val toolbar: Toolbar,
-        private val insets: Insets,
+        private val topInset: Int,
         private val behavior: BottomSheetBehavior<FrameLayout>
     ) : LayoutAwareBottomSheetCallback() {
 
@@ -335,14 +352,14 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
             val top = bottomSheet.top
 
             val collapsedOffset = (bottomSheet.parent as View).height / 2
-            if (top >= collapsedOffset) {
+            if (top >= collapsedOffset || behavior.expandedOffset > 0) {
                 toolbar.isInvisible = true
                 bottomSheet.setPadding(0, 0, 0, 0)
                 return
             }
 
             val toolbarHeight = toolbar.height - toolbar.paddingTop
-            val toolbarHeightAndInset = toolbarHeight + insets.top
+            val toolbarHeightAndInset = toolbarHeight + topInset
             val expandedPercentage =
                 ((collapsedOffset - top).toFloat() / (collapsedOffset - behavior.expandedOffset)).coerceAtMost(1f)
 
@@ -350,7 +367,12 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
             val paddingTop = (toolbarHeightAndInset * expandedPercentage).toInt().coerceAtLeast(0)
             bottomSheet.setPadding(0, paddingTop, 0, 0)
 
-            if (paddingTop > toolbarHeight) {
+            // Start showing the toolbar when the bottom sheet is a toolbar height away from the top of the screen.
+            // This value was chosen rather arbitrarily because it looked nice enough.
+            val toolbarPercentage =
+                ((toolbarHeight - top).toFloat() / (toolbarHeight - behavior.expandedOffset)).coerceAtLeast(0f)
+
+            if (toolbarPercentage > 0) {
                 toolbar.isVisible = true
 
                 // Set the toolbar's top padding so the toolbar covers the bottom sheet's whole top padding
@@ -360,18 +382,14 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
                 // Translate the toolbar view so it is drawn on top of the bottom sheet's top padding
                 toolbar.translationY = -paddingTop.toFloat()
 
-                // Start fading in the toolbar when the bottom sheet is a toolbar height away from the top of the screen.
-                // This value was chosen rather arbitrarily because it looked nice.
-                val alphaPercentage =
-                    ((toolbarHeight - top).toFloat() / (toolbarHeight - behavior.expandedOffset)).coerceAtLeast(0f)
-                toolbar.alpha = alphaPercentage
+                toolbar.alpha = toolbarPercentage
             } else {
                 toolbar.isInvisible = true
             }
         }
 
         private fun setStatusBarColor(bottomSheet: View) {
-            val toolbarLightThreshold = insets.top / 2
+            val toolbarLightThreshold = topInset / 2
             if (bottomSheet.top < toolbarLightThreshold) {
                 windowInsetsController.isAppearanceLightStatusBars = lightToolbar
             } else if (bottomSheet.top != 0) {
