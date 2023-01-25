@@ -1,4 +1,5 @@
 import com.android.build.gradle.BasePlugin
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
@@ -16,8 +17,11 @@ project.ext {
     testCoverage = project.hasProperty('testCoverage')
 }
 
+def javaVersion = JavaVersion.VERSION_11
+def jvmTargetVersion = JvmTarget.JVM_11
+
 allprojects {
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy.dependencySubstitution {
             substitute module("androidx.core:core") using module("androidx.core:core:${libs.versions.androidxCore.get()}")
             substitute module("androidx.activity:activity") using module("androidx.activity:activity:${libs.versions.androidxActivity.get()}")
@@ -52,8 +56,8 @@ allprojects {
             }
 
             compileOptions {
-                sourceCompatibility libs.versions.java.get()
-                targetCompatibility libs.versions.java.get()
+                sourceCompatibility javaVersion
+                targetCompatibility javaVersion
             }
 
             lintOptions {
@@ -71,12 +75,12 @@ allprojects {
 
     plugins.withType(JavaPlugin).configureEach {
         project.java {
-            sourceCompatibility = libs.versions.java.get()
-            targetCompatibility = libs.versions.java.get()
+            sourceCompatibility = javaVersion
+            targetCompatibility = javaVersion
         }
     }
 
-    tasks.withType(Test) {
+    tasks.withType(Test).configureEach {
         testLogging {
             exceptionFormat "full"
             showCauses true
@@ -85,9 +89,9 @@ allprojects {
         }
     }
 
-    tasks.withType(KotlinCompile) {
-        kotlinOptions {
-            jvmTarget = libs.versions.java.get()
+    tasks.withType(KotlinCompile).configureEach {
+        compilerOptions {
+            jvmTarget = jvmTargetVersion
         }
     }
 
