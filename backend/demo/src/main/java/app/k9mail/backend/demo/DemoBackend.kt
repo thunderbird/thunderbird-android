@@ -36,7 +36,6 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
     override val supportsTrashFolder: Boolean = true
     override val supportsSearchByDate: Boolean = false
     override val isPushCapable: Boolean = false
-    override val isDeleteMoveToTrash: Boolean = true
 
     override fun refreshFolderList() {
         val localFolderServerIds = backendStorage.getFolderServerIds().toSet()

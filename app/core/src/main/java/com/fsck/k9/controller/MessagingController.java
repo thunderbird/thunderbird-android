@@ -2028,8 +2028,7 @@ public class MessagingController {
             boolean isSpamFolder = account.hasSpamFolder() && account.getSpamFolderId() == folderId;
             boolean doNotMoveToTrashFolder = skipTrashFolder ||
                 !account.hasTrashFolder() || folderId == trashFolderId ||
-                isSpamFolder ||
-                (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash());
+                isSpamFolder;
 
             LocalFolder localTrashFolder = null;
             if (doNotMoveToTrashFolder) {

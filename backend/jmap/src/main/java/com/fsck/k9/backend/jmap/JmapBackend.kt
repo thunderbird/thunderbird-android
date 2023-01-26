@@ -39,7 +39,6 @@ class JmapBackend(
     override val supportsTrashFolder = true
     override val supportsSearchByDate = true
     override val isPushCapable = false // FIXME
-    override val isDeleteMoveToTrash = true
 
     override fun refreshFolderList() {
         commandRefreshFolderList.refreshFolderList()
