@@ -2095,7 +2095,7 @@ public class MessagingController {
                 // Nothing to do on the remote side
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                    if (doNotMoveToTrashFolder) {
+                    if (doNotMoveToTrashFolder || !backend.getSupportsTrashFolder()) {
                         queueDelete(account, folderId, syncedMessageUids);
                     } else if (account.isMarkMessageAsReadOnDelete()) {
                         queueMoveOrCopy(account, folderId, trashFolderId,
