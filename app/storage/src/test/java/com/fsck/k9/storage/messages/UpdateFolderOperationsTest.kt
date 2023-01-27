@@ -152,4 +152,15 @@ class UpdateFolderOperationsTest : RobolectricTest() {
         assertThat(folder.id).isEqualTo(folderId)
         assertThat(folder.status).isEqualTo("Sync error")
     }
+
+    @Test
+    fun `update visible limit`() {
+        val folderId = sqliteDatabase.createFolder(visibleLimit = 10)
+
+        updateFolderOperations.setVisibleLimit(folderId = folderId, visibleLimit = 25)
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.id).isEqualTo(folderId)
+        assertThat(folder.visibleLimit).isEqualTo(25)
+    }
 }
