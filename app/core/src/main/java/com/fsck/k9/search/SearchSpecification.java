@@ -71,8 +71,7 @@ public interface SearchSpecification extends Parcelable {
         NEW_MESSAGE,
         READ,
         FLAGGED,
-        DISPLAY_CLASS,
-        SEARCHABLE
+        DISPLAY_CLASS
     }
 
 

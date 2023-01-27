@@ -79,30 +79,6 @@ class AccountSearchConditions {
         }
     }
 
-    /**
-     * Modify the supplied [LocalSearch] instance to exclude "unwanted" folders.
-     *
-     * Currently the following folders are excluded:
-     *
-     *  * Trash
-     *  * Spam
-     *  * Outbox
-     *
-     * The Inbox will always be included even if one of the special folders is configured to point
-     * to the Inbox.
-     *
-     * @param search
-     * The `LocalSearch` instance to modify.
-     */
-    fun excludeUnwantedFolders(account: Account, search: LocalSearch) {
-        excludeSpecialFolder(search, account.trashFolderId)
-        excludeSpecialFolder(search, account.spamFolderId)
-        excludeSpecialFolder(search, account.outboxFolderId)
-        account.inboxFolderId?.let { inboxFolderId ->
-            search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, inboxFolderId.toString()))
-        }
-    }
-
     private fun excludeSpecialFolder(search: LocalSearch, folderId: Long?) {
         if (folderId != null) {
             search.and(SearchField.FOLDER, folderId.toString(), Attribute.NOT_EQUALS)

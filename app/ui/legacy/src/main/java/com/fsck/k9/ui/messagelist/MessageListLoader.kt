@@ -77,7 +77,7 @@ class MessageListLoader(
             queryArgs.add(activeMessage.folderId.toString())
         }
 
-        SqlQueryBuilder.buildWhereClause(account, config.search.conditions, query, queryArgs)
+        SqlQueryBuilder.buildWhereClause(config.search.conditions, query, queryArgs)
 
         if (selectActive) {
             query.append(')')

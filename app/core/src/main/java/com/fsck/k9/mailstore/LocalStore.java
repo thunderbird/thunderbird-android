@@ -355,7 +355,7 @@ public class LocalStore {
     public List<LocalMessage> searchForMessages(LocalSearch search) throws MessagingException {
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
-        SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
+        SqlQueryBuilder.buildWhereClause(search.getConditions(), query, queryArgs);
 
         // Avoid "ambiguous column name" error by prefixing "id" with the message table name
         String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
@@ -1008,7 +1008,7 @@ public class LocalStore {
     public int getUnreadMessageCount(LocalSearch search) throws MessagingException {
         StringBuilder whereBuilder = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
-        SqlQueryBuilder.buildWhereClause(account, search.getConditions(), whereBuilder, queryArgs);
+        SqlQueryBuilder.buildWhereClause(search.getConditions(), whereBuilder, queryArgs);
 
         String where = whereBuilder.toString();
         final String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
@@ -1039,7 +1039,7 @@ public class LocalStore {
     private int getStarredMessageCount(LocalSearch search) throws MessagingException {
         StringBuilder whereBuilder = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
-        SqlQueryBuilder.buildWhereClause(account, search.getConditions(), whereBuilder, queryArgs);
+        SqlQueryBuilder.buildWhereClause(search.getConditions(), whereBuilder, queryArgs);
 
         String where = whereBuilder.toString();
         final String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
