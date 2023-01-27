@@ -13,6 +13,7 @@ import timber.log.Timber
 interface MessageCountsProvider {
     fun getMessageCounts(account: Account): MessageCounts
     fun getMessageCounts(searchAccount: SearchAccount): MessageCounts
+    fun getUnreadMessageCount(account: Account, folderId: Long): Int
 }
 
 data class MessageCounts(val unread: Int, val starred: Int)
@@ -50,6 +51,18 @@ internal class DefaultMessageCountsProvider(
         }
 
         return MessageCounts(unreadCount, starredCount)
+    }
+
+    override fun getUnreadMessageCount(account: Account, folderId: Long): Int {
+        return try {
+            val localStore = localStoreProvider.getInstance(account)
+            val localFolder = localStore.getFolder(folderId)
+
+            localFolder.unreadMessageCount
+        } catch (e: MessagingException) {
+            Timber.e(e, "Unable to getUnreadMessageCount for account: %s, folder: %d", account, folderId)
+            0
+        }
     }
 
     private fun getMessageCountsWithLocalSearch(account: Account, search: LocalSearch): MessageCounts {

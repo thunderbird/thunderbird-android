@@ -19,7 +19,6 @@ val controllerModule = module {
             get<NotificationController>(),
             get<NotificationStrategy>(),
             get<LocalStoreProvider>(),
-            get<MessageCountsProvider>(),
             get<BackendManager>(),
             get<Preferences>(),
             get<MessageStoreManager>(),

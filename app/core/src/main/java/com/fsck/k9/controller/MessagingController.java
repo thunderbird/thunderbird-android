@@ -82,7 +82,6 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchAccount;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
@@ -126,7 +125,6 @@ public class MessagingController {
     private final Set<MessagingListener> listeners = new CopyOnWriteArraySet<>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
-    private final MessageCountsProvider messageCountsProvider;
     private final DraftOperations draftOperations;
     private final NotificationOperations notificationOperations;
 
@@ -142,15 +140,13 @@ public class MessagingController {
 
     MessagingController(Context context, NotificationController notificationController,
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
-            MessageCountsProvider messageCountsProvider, BackendManager backendManager,
-            Preferences preferences, MessageStoreManager messageStoreManager,
+            BackendManager backendManager, Preferences preferences, MessageStoreManager messageStoreManager,
             SaveMessageDataCreator saveMessageDataCreator, SpecialLocalFoldersCreator specialLocalFoldersCreator,
             List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
-        this.messageCountsProvider = messageCountsProvider;
         this.backendManager = backendManager;
         this.preferences = preferences;
         this.messageStoreManager = messageStoreManager;
@@ -1652,22 +1648,6 @@ public class MessagingController {
         }
     }
 
-    public int getUnreadMessageCount(Account account) {
-        MessageCounts messageCounts = messageCountsProvider.getMessageCounts(account);
-        return messageCounts.getUnread();
-    }
-
-    public int getUnreadMessageCount(SearchAccount searchAccount) {
-        MessageCounts messageCounts = messageCountsProvider.getMessageCounts(searchAccount);
-        return messageCounts.getUnread();
-    }
-
-    public int getFolderUnreadMessageCount(Account account, Long folderId) throws MessagingException {
-        LocalStore localStore = localStoreProvider.getInstance(account);
-        LocalFolder localFolder = localStore.getFolder(folderId);
-        return localFolder.getUnreadMessageCount();
-    }
-
     public boolean isMoveCapable(MessageReference messageReference) {
         return !messageReference.getUid().startsWith(K9.LOCAL_UID_PREFIX);
     }
@@ -2370,10 +2350,6 @@ public class MessagingController {
                             Timber.v("Clearing notification flag for %s", account);
 
                             clearFetchingMailNotification(account);
-
-                            if (getUnreadMessageCount(account) == 0) {
-                                notificationController.clearNewMailNotifications(account, false);
-                            }
                         }
                     }
             );

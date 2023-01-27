@@ -4,7 +4,8 @@ import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.AppRobolectricTest
 import com.fsck.k9.Preferences
-import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.controller.MessageCounts
+import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.FolderType
@@ -14,22 +15,21 @@ import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.robolectric.RuntimeEnvironment
 
 class UnreadWidgetDataProviderTest : AppRobolectricTest() {
-    val context: Context = RuntimeEnvironment.getApplication()
-    val account = createAccount()
-    val preferences = createPreferences()
-    val messagingController = createMessagingController()
-    val defaultFolderStrategy = createDefaultFolderStrategy()
-    val folderRepository = createFolderRepository()
-    val folderNameFormatterFactory = createFolderNameFormatterFactory()
-    val provider = UnreadWidgetDataProvider(
-        context, preferences, messagingController, defaultFolderStrategy,
+    private val context: Context = RuntimeEnvironment.getApplication()
+    private val account = createAccount()
+    private val preferences = createPreferences()
+    private val messageCountsProvider = createMessageCountsProvider()
+    private val defaultFolderStrategy = createDefaultFolderStrategy()
+    private val folderRepository = createFolderRepository()
+    private val folderNameFormatterFactory = createFolderNameFormatterFactory()
+    private val provider = UnreadWidgetDataProvider(
+        context, preferences, messageCountsProvider, defaultFolderStrategy,
         folderRepository, folderNameFormatterFactory
     )
 
@@ -82,26 +82,34 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         assertThat(widgetData).isNull()
     }
 
-    fun createAccount(): Account = mock {
+    private fun createAccount(): Account = mock {
         on { uuid } doReturn ACCOUNT_UUID
         on { displayName } doReturn ACCOUNT_NAME
     }
 
-    fun createPreferences(): Preferences = mock {
+    private fun createPreferences(): Preferences = mock {
         on { getAccount(ACCOUNT_UUID) } doReturn account
     }
 
-    fun createMessagingController(): MessagingController = mock {
-        on { getUnreadMessageCount(any<SearchAccount>()) } doReturn SEARCH_ACCOUNT_UNREAD_COUNT
-        on { getUnreadMessageCount(account) } doReturn ACCOUNT_UNREAD_COUNT
-        on { getFolderUnreadMessageCount(eq(account), eq(FOLDER_ID)) } doReturn FOLDER_UNREAD_COUNT
+    private fun createMessageCountsProvider() = object : MessageCountsProvider {
+        override fun getMessageCounts(account: Account): MessageCounts {
+            return MessageCounts(unread = ACCOUNT_UNREAD_COUNT, starred = 0)
+        }
+
+        override fun getMessageCounts(searchAccount: SearchAccount): MessageCounts {
+            return MessageCounts(unread = SEARCH_ACCOUNT_UNREAD_COUNT, starred = 0)
+        }
+
+        override fun getUnreadMessageCount(account: Account, folderId: Long): Int {
+            return FOLDER_UNREAD_COUNT
+        }
     }
 
-    fun createDefaultFolderStrategy(): DefaultFolderProvider = mock {
+    private fun createDefaultFolderStrategy(): DefaultFolderProvider = mock {
         on { getDefaultFolder(account) } doReturn FOLDER_ID
     }
 
-    fun createFolderRepository(): FolderRepository {
+    private fun createFolderRepository(): FolderRepository {
         return mock {
             on { getFolder(account, FOLDER_ID) } doReturn FOLDER
         }

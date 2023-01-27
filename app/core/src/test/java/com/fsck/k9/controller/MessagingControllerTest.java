@@ -34,8 +34,6 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.preferences.Protocols;
-import com.fsck.k9.search.SearchAccount;
-import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,18 +106,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private LocalMessage localMessageToSend1;
     private volatile boolean hasFetchedMessage = false;
 
-    private MessageCountsProvider messageCountsProvider = new MessageCountsProvider() {
-        @Override
-        public MessageCounts getMessageCounts(@NotNull SearchAccount searchAccount) {
-            return new MessageCounts(0, 0);
-        }
-
-        @Override
-        public MessageCounts getMessageCounts(@NotNull Account account) {
-            return new MessageCounts(0, 0);
-        }
-    };
-
     private Preferences preferences;
     private String accountUuid;
 
@@ -133,7 +119,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         preferences = Preferences.getPreferences();
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
-                localStoreProvider, messageCountsProvider, backendManager, preferences, messageStoreManager,
+                localStoreProvider, backendManager, preferences, messageStoreManager,
                 saveMessageDataCreator, specialLocalFoldersCreator, Collections.<ControllerExtension>emptyList());
 
         configureAccount();
