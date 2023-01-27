@@ -6,6 +6,8 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toDatabaseFolderType
+import com.fsck.k9.search.LocalSearch
+import com.fsck.k9.search.SearchSpecification
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.fail
@@ -380,6 +382,68 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `get unread message count with condition from empty folder`() {
+        sqliteDatabase.createFolder(integrate = true)
+
+        val result = retrieveFolderOperations.getUnreadMessageCount(unifiedInboxConditions)
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `get unread message count with condition from non-existent folder`() {
+        val result = retrieveFolderOperations.getUnreadMessageCount(unifiedInboxConditions)
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `get unread message count with condition from non-empty folder`() {
+        val folderId1 = sqliteDatabase.createFolder(integrate = true)
+        sqliteDatabase.createMessage(folderId = folderId1, read = false)
+        sqliteDatabase.createMessage(folderId = folderId1, read = false)
+        sqliteDatabase.createMessage(folderId = folderId1, read = true)
+        val folderId2 = sqliteDatabase.createFolder(integrate = true)
+        sqliteDatabase.createMessage(folderId = folderId2, read = false)
+        sqliteDatabase.createMessage(folderId = folderId2, read = true)
+
+        val result = retrieveFolderOperations.getUnreadMessageCount(unifiedInboxConditions)
+
+        assertThat(result).isEqualTo(3)
+    }
+
+    @Test
+    fun `get starred message count with condition from empty folder`() {
+        sqliteDatabase.createFolder(integrate = true)
+
+        val result = retrieveFolderOperations.getStarredMessageCount(unifiedInboxConditions)
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `get starred message count with condition from non-existent folder`() {
+        val result = retrieveFolderOperations.getStarredMessageCount(unifiedInboxConditions)
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `get starred message count with condition from non-empty folder`() {
+        val folderId1 = sqliteDatabase.createFolder(integrate = true)
+        sqliteDatabase.createMessage(folderId = folderId1, flagged = false)
+        sqliteDatabase.createMessage(folderId = folderId1, flagged = true)
+        val folderId2 = sqliteDatabase.createFolder(integrate = true)
+        sqliteDatabase.createMessage(folderId = folderId2, flagged = true)
+        sqliteDatabase.createMessage(folderId = folderId2, flagged = true)
+        sqliteDatabase.createMessage(folderId = folderId2, flagged = false)
+
+        val result = retrieveFolderOperations.getStarredMessageCount(unifiedInboxConditions)
+
+        assertThat(result).isEqualTo(3)
+    }
+
+    @Test
     fun `get 'more messages' value from non-existent folder`() {
         try {
             retrieveFolderOperations.hasMoreMessages(23)
@@ -415,4 +479,8 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
 
         assertThat(result).isEqualTo(MoreMessages.TRUE)
     }
+
+    private val unifiedInboxConditions = LocalSearch().apply {
+        and(SearchSpecification.SearchField.INTEGRATE, "1", SearchSpecification.Attribute.EQUALS)
+    }.conditions
 }

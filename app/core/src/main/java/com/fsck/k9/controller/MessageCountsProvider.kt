@@ -2,10 +2,9 @@ package com.fsck.k9.controller
 
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.mail.MessagingException
-import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.search.AccountSearchConditions
+import com.fsck.k9.search.ConditionsTreeNode
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.getAccounts
@@ -22,22 +21,14 @@ data class MessageCounts(val unread: Int, val starred: Int)
 internal class DefaultMessageCountsProvider(
     private val preferences: Preferences,
     private val accountSearchConditions: AccountSearchConditions,
-    private val localStoreProvider: LocalStoreProvider,
     private val messageStoreManager: MessageStoreManager
 ) : MessageCountsProvider {
     override fun getMessageCounts(account: Account): MessageCounts {
-        return try {
-            val localStore = localStoreProvider.getInstance(account)
+        val search = LocalSearch()
+        accountSearchConditions.excludeSpecialFolders(account, search)
+        accountSearchConditions.limitToDisplayableFolders(account, search)
 
-            val search = LocalSearch()
-            accountSearchConditions.excludeSpecialFolders(account, search)
-            accountSearchConditions.limitToDisplayableFolders(account, search)
-
-            localStore.getMessageCounts(search)
-        } catch (e: MessagingException) {
-            Timber.e(e, "Unable to getMessageCounts for account: %s", account)
-            MessageCounts(0, 0)
-        }
+        return getMessageCounts(account, search.conditions)
     }
 
     override fun getMessageCounts(searchAccount: SearchAccount): MessageCounts {
@@ -47,7 +38,7 @@ internal class DefaultMessageCountsProvider(
         var unreadCount = 0
         var starredCount = 0
         for (account in accounts) {
-            val accountMessageCount = getMessageCountsWithLocalSearch(account, search)
+            val accountMessageCount = getMessageCounts(account, search.conditions)
             unreadCount += accountMessageCount.unread
             starredCount += accountMessageCount.starred
         }
@@ -69,13 +60,16 @@ internal class DefaultMessageCountsProvider(
         }
     }
 
-    private fun getMessageCountsWithLocalSearch(account: Account, search: LocalSearch): MessageCounts {
+    private fun getMessageCounts(account: Account, conditions: ConditionsTreeNode): MessageCounts {
         return try {
-            val localStore = localStoreProvider.getInstance(account)
-            localStore.getMessageCounts(search)
-        } catch (e: MessagingException) {
+            val messageStore = messageStoreManager.getMessageStore(account)
+            return MessageCounts(
+                unread = messageStore.getUnreadMessageCount(conditions),
+                starred = messageStore.getStarredMessageCount(conditions)
+            )
+        } catch (e: Exception) {
             Timber.e(e, "Unable to getMessageCounts for account: %s", account)
-            MessageCounts(0, 0)
+            MessageCounts(unread = 0, starred = 0)
         }
     }
 }
