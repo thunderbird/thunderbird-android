@@ -3,11 +3,12 @@ package com.fsck.k9.controller
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.MessageStoreManager
-import com.fsck.k9.search.AccountSearchConditions
 import com.fsck.k9.search.ConditionsTreeNode
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
+import com.fsck.k9.search.excludeSpecialFolders
 import com.fsck.k9.search.getAccounts
+import com.fsck.k9.search.limitToDisplayableFolders
 import timber.log.Timber
 
 interface MessageCountsProvider {
@@ -20,13 +21,13 @@ data class MessageCounts(val unread: Int, val starred: Int)
 
 internal class DefaultMessageCountsProvider(
     private val preferences: Preferences,
-    private val accountSearchConditions: AccountSearchConditions,
     private val messageStoreManager: MessageStoreManager
 ) : MessageCountsProvider {
     override fun getMessageCounts(account: Account): MessageCounts {
-        val search = LocalSearch()
-        accountSearchConditions.excludeSpecialFolders(account, search)
-        accountSearchConditions.limitToDisplayableFolders(account, search)
+        val search = LocalSearch().apply {
+            excludeSpecialFolders(account)
+            limitToDisplayableFolders(account)
+        }
 
         return getMessageCounts(account, search.conditions)
     }
