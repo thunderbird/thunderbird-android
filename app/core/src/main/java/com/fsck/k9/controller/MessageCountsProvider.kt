@@ -4,6 +4,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
+import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.search.AccountSearchConditions
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
@@ -21,7 +22,8 @@ data class MessageCounts(val unread: Int, val starred: Int)
 internal class DefaultMessageCountsProvider(
     private val preferences: Preferences,
     private val accountSearchConditions: AccountSearchConditions,
-    private val localStoreProvider: LocalStoreProvider
+    private val localStoreProvider: LocalStoreProvider,
+    private val messageStoreManager: MessageStoreManager
 ) : MessageCountsProvider {
     override fun getMessageCounts(account: Account): MessageCounts {
         return try {
@@ -55,11 +57,13 @@ internal class DefaultMessageCountsProvider(
 
     override fun getUnreadMessageCount(account: Account, folderId: Long): Int {
         return try {
-            val localStore = localStoreProvider.getInstance(account)
-            val localFolder = localStore.getFolder(folderId)
-
-            localFolder.unreadMessageCount
-        } catch (e: MessagingException) {
+            val messageStore = messageStoreManager.getMessageStore(account)
+            return if (folderId == account.outboxFolderId) {
+                messageStore.getMessageCount(folderId)
+            } else {
+                messageStore.getUnreadMessageCount(folderId)
+            }
+        } catch (e: Exception) {
             Timber.e(e, "Unable to getUnreadMessageCount for account: %s, folder: %d", account, folderId)
             0
         }

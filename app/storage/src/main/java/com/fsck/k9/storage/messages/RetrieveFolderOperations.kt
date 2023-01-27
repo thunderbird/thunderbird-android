@@ -159,6 +159,17 @@ $displayModeSelection
         }
     }
 
+    fun getUnreadMessageCount(folderId: Long): Int {
+        return lockableDatabase.execute(false) { db ->
+            db.rawQuery(
+                "SELECT COUNT(id) FROM messages WHERE empty = 0 AND deleted = 0 AND read = 0 AND folder_id = ?",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                if (cursor.moveToFirst()) cursor.getInt(0) else 0
+            }
+        }
+    }
+
     fun hasMoreMessages(folderId: Long): MoreMessages {
         return getFolder(folderId) { it.moreMessages } ?: throw FolderNotFoundException(folderId)
     }

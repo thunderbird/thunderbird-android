@@ -352,6 +352,34 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `get unread message count from empty folder`() {
+        val folderId = sqliteDatabase.createFolder()
+
+        val result = retrieveFolderOperations.getUnreadMessageCount(folderId)
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `get unread message count from non-existent folder`() {
+        val result = retrieveFolderOperations.getUnreadMessageCount(23)
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `get unread message count from non-empty folder`() {
+        val folderId = sqliteDatabase.createFolder()
+        sqliteDatabase.createMessage(folderId = folderId, read = false)
+        sqliteDatabase.createMessage(folderId = folderId, read = false)
+        sqliteDatabase.createMessage(folderId = folderId, read = true)
+
+        val result = retrieveFolderOperations.getUnreadMessageCount(folderId)
+
+        assertThat(result).isEqualTo(2)
+    }
+
+    @Test
     fun `get 'more messages' value from non-existent folder`() {
         try {
             retrieveFolderOperations.hasMoreMessages(23)

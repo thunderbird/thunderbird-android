@@ -222,6 +222,11 @@ interface MessageStore {
     fun getMessageCount(folderId: Long): Int
 
     /**
+     * Retrieve the number of unread messages in a folder.
+     */
+    fun getUnreadMessageCount(folderId: Long): Int
+
+    /**
      * Update a folder's name and type.
      */
     fun changeFolder(folderServerId: String, name: String, type: FolderType)

@@ -176,6 +176,10 @@ class K9MessageStore(
         return retrieveFolderOperations.getMessageCount(folderId)
     }
 
+    override fun getUnreadMessageCount(folderId: Long): Int {
+        return retrieveFolderOperations.getUnreadMessageCount(folderId)
+    }
+
     override fun getSize(): Long {
         return databaseOperations.getSize()
     }
