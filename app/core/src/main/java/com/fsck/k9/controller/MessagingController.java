@@ -21,7 +21,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Process;
 import android.os.SystemClock;
@@ -131,7 +130,6 @@ public class MessagingController {
     private final NotificationOperations notificationOperations;
 
 
-    private MessagingListener checkMailListener = null;
     private volatile boolean stopped = false;
 
 
@@ -1182,16 +1180,6 @@ public class MessagingController {
         }
     }
 
-    public void clearAllPending(final Account account) {
-        try {
-            Timber.w("Clearing pending commands!");
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            localStore.removePendingCommands();
-        } catch (MessagingException me) {
-            Timber.e(me, "Unable to clear pending command");
-        }
-    }
-
     public void loadMessageRemotePartial(Account account, long folderId, String uid, MessagingListener listener) {
         put("loadMessageRemotePartial", listener, () ->
             loadMessageRemoteSynchronous(account, folderId, uid, listener, true)
@@ -1977,35 +1965,6 @@ public class MessagingController {
         });
     }
 
-    @SuppressLint("NewApi") // used for debugging only
-    public void debugClearMessagesLocally(final List<MessageReference> messages) {
-        if (!K9.DEVELOPER_MODE) {
-            throw new AssertionError("method must only be used in developer mode!");
-        }
-
-        actOnMessagesGroupedByAccountAndFolder(messages, new MessageActor() {
-
-            @Override
-            public void act(final Account account, final LocalFolder messageFolder,
-                    final List<LocalMessage> accountMessages) {
-
-                putBackground("debugClearLocalMessages", null, new Runnable() {
-                    @Override
-                    public void run() {
-                        for (LocalMessage message : accountMessages) {
-                            try {
-                                message.debugClearLocalData();
-                            } catch (MessagingException e) {
-                                throw new AssertionError("clearing local message content failed!", e);
-                            }
-                        }
-                    }
-                });
-            }
-        });
-
-    }
-
     private void deleteMessagesSynchronous(Account account, long folderId, List<LocalMessage> messages, boolean skipTrashFolder) {
         try {
             List<LocalMessage> localOnlyMessages = new ArrayList<>();
@@ -2489,20 +2448,6 @@ public class MessagingController {
             } else {
                 return (sequence - other.sequence);
             }
-        }
-    }
-
-    public MessagingListener getCheckMailListener() {
-        return checkMailListener;
-    }
-
-    public void setCheckMailListener(MessagingListener checkMailListener) {
-        if (this.checkMailListener != null) {
-            removeListener(this.checkMailListener);
-        }
-        this.checkMailListener = checkMailListener;
-        if (this.checkMailListener != null) {
-            addListener(this.checkMailListener);
         }
     }
 

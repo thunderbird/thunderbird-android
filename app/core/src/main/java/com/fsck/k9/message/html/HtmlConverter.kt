@@ -49,15 +49,4 @@ object HtmlConverter {
     fun textToHtmlFragment(text: String): String {
         return TextToHtml.toHtmlFragment(text, retainOriginalWhitespace = false)
     }
-
-    /**
-     * Convert a plain text string into an HTML fragment.
-     *
-     * This does not convert consecutive spaces to a series of non-breaking spaces followed by a regular space.
-     * Only use this in combination with CSS to properly display the whitespace.
-     */
-    @JvmStatic
-    fun textToHtmlFragmentWithOriginalWhitespace(text: String): String {
-        return TextToHtml.toHtmlFragment(text, retainOriginalWhitespace = true)
-    }
 }

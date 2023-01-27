@@ -184,10 +184,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         return new Recipient(parsedAddresses[0]);
     }
 
-    public boolean isEmpty() {
-        return getObjects().isEmpty();
-    }
-
     public void setLoaderManager(@Nullable LoaderManager loaderManager) {
         this.loaderManager = loaderManager;
     }

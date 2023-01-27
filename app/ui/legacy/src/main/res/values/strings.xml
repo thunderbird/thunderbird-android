@@ -177,12 +177,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>
 
-    <string name="notification_new_title">New mail</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> new message</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> new messages</item>
     </plurals>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Unread (<xliff:g id="account">%2$s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>

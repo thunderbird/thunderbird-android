@@ -41,11 +41,6 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
 
     override fun certificateErrorBody(): String = "Check your server settings"
 
-    override fun newMailTitle(): String = "New mail"
-
-    override fun newMailUnreadMessageCount(unreadMessageCount: Int, accountName: String): String =
-        "$unreadMessageCount Unread ($accountName)"
-
     override fun newMessagesTitle(newMessagesCount: Int): String = when (newMessagesCount) {
         1 -> "1 new message"
         else -> "$newMessagesCount new messages"
