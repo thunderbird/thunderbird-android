@@ -2028,8 +2028,7 @@ public class MessagingController {
             boolean isSpamFolder = account.hasSpamFolder() && account.getSpamFolderId() == folderId;
             boolean doNotMoveToTrashFolder = skipTrashFolder ||
                 !account.hasTrashFolder() || folderId == trashFolderId ||
-                isSpamFolder ||
-                (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash());
+                isSpamFolder;
 
             LocalFolder localTrashFolder = null;
             if (doNotMoveToTrashFolder) {
@@ -2096,7 +2095,7 @@ public class MessagingController {
                 // Nothing to do on the remote side
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                    if (doNotMoveToTrashFolder) {
+                    if (doNotMoveToTrashFolder || !backend.getSupportsTrashFolder()) {
                         queueDelete(account, folderId, syncedMessageUids);
                     } else if (account.isMarkMessageAsReadOnDelete()) {
                         queueMoveOrCopy(account, folderId, trashFolderId,

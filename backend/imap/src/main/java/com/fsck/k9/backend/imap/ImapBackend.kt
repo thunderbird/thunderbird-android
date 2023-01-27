@@ -45,7 +45,6 @@ class ImapBackend(
     override val supportsTrashFolder = true
     override val supportsSearchByDate = true
     override val isPushCapable = true
-    override val isDeleteMoveToTrash = true
 
     override fun refreshFolderList() {
         commandRefreshFolderList.refreshFolderList()

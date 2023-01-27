@@ -15,7 +15,6 @@ interface Backend {
     val supportsTrashFolder: Boolean
     val supportsSearchByDate: Boolean
     val isPushCapable: Boolean
-    val isDeleteMoveToTrash: Boolean
 
     @Throws(MessagingException::class)
     fun refreshFolderList()
