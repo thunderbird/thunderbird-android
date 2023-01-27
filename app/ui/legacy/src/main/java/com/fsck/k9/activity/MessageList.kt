@@ -953,6 +953,7 @@ open class MessageList :
 
         val draftsFolderId = account.draftsFolderId
         if (draftsFolderId != null && folderId == draftsFolderId) {
+            displayMode = DisplayMode.MESSAGE_LIST
             MessageActions.actionEditDraft(this, messageReference)
         } else {
             val fragment = MessageViewContainerFragment.newInstance(messageReference)
