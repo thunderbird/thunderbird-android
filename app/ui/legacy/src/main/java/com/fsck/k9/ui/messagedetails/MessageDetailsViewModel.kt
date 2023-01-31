@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.messagedetails
 
+import android.app.PendingIntent
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,14 +8,18 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mail.Address
+import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.mailstore.MessageDate
 import com.fsck.k9.mailstore.MessageRepository
 import com.fsck.k9.ui.R
+import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.text.DateFormat
 import java.util.Locale
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 internal class MessageDetailsViewModel(
@@ -26,6 +31,10 @@ internal class MessageDetailsViewModel(
 ) : ViewModel() {
     private val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.getDefault())
     private val uiState = MutableStateFlow<MessageDetailsState>(MessageDetailsState.Loading)
+    private val eventChannel = Channel<MessageDetailEvent>()
+
+    val uiEvents = eventChannel.receiveAsFlow()
+    var cryptoResult: CryptoResultAnnotation? = null
 
     fun loadData(messageReference: MessageReference): StateFlow<MessageDetailsState> {
         viewModelScope.launch(Dispatchers.IO) {
@@ -35,6 +44,7 @@ internal class MessageDetailsViewModel(
                 val senderList = messageDetails.sender?.let { listOf(it) } ?: emptyList()
                 val messageDetailsUi = MessageDetailsUi(
                     date = buildDisplayDate(messageDetails.date),
+                    cryptoDetails = cryptoResult?.toCryptoDetails(),
                     from = messageDetails.from.toParticipants(),
                     sender = senderList.toParticipants(),
                     replyTo = messageDetails.replyTo.toParticipants(),
@@ -63,12 +73,43 @@ internal class MessageDetailsViewModel(
         }
     }
 
+    private fun CryptoResultAnnotation.toCryptoDetails(): CryptoDetails {
+        val messageCryptoDisplayStatus = MessageCryptoDisplayStatus.fromResultAnnotation(this)
+        return CryptoDetails(
+            cryptoStatus = messageCryptoDisplayStatus,
+            isClickable = messageCryptoDisplayStatus.hasAssociatedKey() || messageCryptoDisplayStatus.isUnknownKey ||
+                hasOpenPgpInsecureWarningPendingIntent()
+        )
+    }
+
     private fun List<Address>.toParticipants(): List<Participant> {
         return this.map { address ->
             Participant(
                 address = address,
                 contactLookupUri = contacts.getContactUri(address.address)
             )
+        }
+    }
+
+    fun onCryptoStatusClicked() {
+        val cryptoResult = cryptoResult ?: return
+        val cryptoStatus = MessageCryptoDisplayStatus.fromResultAnnotation(cryptoResult)
+
+        if (cryptoStatus.hasAssociatedKey()) {
+            val pendingIntent = cryptoResult.openPgpSigningKeyIntentIfAny
+            if (pendingIntent != null) {
+                viewModelScope.launch {
+                    eventChannel.send(MessageDetailEvent.ShowCryptoKeys(pendingIntent))
+                }
+            }
+        } else if (cryptoStatus.isUnknownKey) {
+            viewModelScope.launch {
+                eventChannel.send(MessageDetailEvent.SearchCryptoKeys)
+            }
+        } else if (cryptoResult.hasOpenPgpInsecureWarningPendingIntent()) {
+            viewModelScope.launch {
+                eventChannel.send(MessageDetailEvent.ShowCryptoWarning)
+            }
         }
     }
 
@@ -92,4 +133,10 @@ sealed interface MessageDetailsState {
         val showContactPicture: Boolean,
         val details: MessageDetailsUi
     ) : MessageDetailsState
+}
+
+sealed interface MessageDetailEvent {
+    data class ShowCryptoKeys(val pendingIntent: PendingIntent) : MessageDetailEvent
+    object SearchCryptoKeys : MessageDetailEvent
+    object ShowCryptoWarning : MessageDetailEvent
 }

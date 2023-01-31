@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.messagedetails
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,13 +12,16 @@ import android.widget.ProgressBar
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.ui.utils.bottomsheet.ToolbarBottomSheetDialogFragment
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
+import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.withArguments
@@ -35,6 +39,9 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     private val contactPictureLoader: ContactPictureLoader by inject()
 
     private lateinit var messageReference: MessageReference
+
+    // FIXME: Replace this with a mechanism that survives process death
+    var cryptoResult: CryptoResultAnnotation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +61,10 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        cryptoResult?.let {
+            viewModel.cryptoResult = it
+        }
+
         val dialog = checkNotNull(dialog)
         dialog.isDismissWithAnimation = true
 
@@ -70,6 +81,14 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         val progressBar = view.findViewById<ProgressBar>(R.id.message_details_progress)
         val errorView = view.findViewById<View>(R.id.message_details_error)
         val recyclerView = view.findViewById<RecyclerView>(R.id.message_details_list)
+
+        viewModel.uiEvents.observe(this) { event ->
+            when (event) {
+                is MessageDetailEvent.ShowCryptoKeys -> showCryptoKeys(event.pendingIntent)
+                MessageDetailEvent.SearchCryptoKeys -> searchCryptoKeys()
+                MessageDetailEvent.ShowCryptoWarning -> showCryptoWarning()
+            }
+        }
 
         viewModel.loadData(messageReference).observe(this) { state ->
             when (state) {
@@ -97,6 +116,10 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         val itemAdapter = ItemAdapter<GenericItem>().apply {
             add(MessageDateItem(details.date ?: getString(R.string.message_details_missing_date)))
 
+            if (details.cryptoDetails != null) {
+                add(CryptoStatusItem(details.cryptoDetails))
+            }
+
             addParticipants(details.from, R.string.message_details_from_section_title, showContactPicture)
             addParticipants(details.sender, R.string.message_details_sender_section_title, showContactPicture)
             addParticipants(details.replyTo, R.string.message_details_replyto_section_title, showContactPicture)
@@ -109,6 +132,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         }
 
         val adapter = FastAdapter.with(itemAdapter).apply {
+            addEventHook(cryptoStatusClickEventHook)
             addEventHook(participantClickEventHook)
             addEventHook(addToContactsClickEventHook)
             addEventHook(composeClickEventHook)
@@ -129,6 +153,27 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
 
             for (participant in participants) {
                 add(ParticipantItem(contactPictureLoader, showContactPicture, participant))
+            }
+        }
+    }
+
+    private val cryptoStatusClickEventHook = object : ClickEventHook<CryptoStatusItem>() {
+        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+            return if (viewHolder is CryptoStatusItem.ViewHolder) {
+                viewHolder.itemView
+            } else {
+                null
+            }
+        }
+
+        override fun onClick(
+            v: View,
+            position: Int,
+            fastAdapter: FastAdapter<CryptoStatusItem>,
+            item: CryptoStatusItem
+        ) {
+            if (item.cryptoDetails.isClickable) {
+                viewModel.onCryptoStatusClicked()
             }
         }
     }
@@ -237,8 +282,27 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         }
     }
 
+    private fun showCryptoKeys(pendingIntent: PendingIntent) {
+        requireActivity().startIntentSender(pendingIntent.intentSender, null, 0, 0, 0)
+    }
+
+    private fun searchCryptoKeys() {
+        setFragmentResult(FRAGMENT_RESULT_KEY, bundleOf(RESULT_ACTION to ACTION_SEARCH_KEYS))
+        dismiss()
+    }
+
+    private fun showCryptoWarning() {
+        setFragmentResult(FRAGMENT_RESULT_KEY, bundleOf(RESULT_ACTION to ACTION_SHOW_WARNING))
+        dismiss()
+    }
+
     companion object {
         private const val ARG_REFERENCE = "reference"
+
+        const val FRAGMENT_RESULT_KEY = "messageDetailsResult"
+        const val RESULT_ACTION = "action"
+        const val ACTION_SEARCH_KEYS = "search_keys"
+        const val ACTION_SHOW_WARNING = "show_warning"
 
         fun create(messageReference: MessageReference): MessageDetailsFragment {
             return MessageDetailsFragment().withArguments(

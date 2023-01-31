@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
@@ -134,6 +135,8 @@ class MessageViewFragment :
             fragmentManager = parentFragmentManager,
             callback = messageLoaderCallbacks
         )
+
+        setFragmentResultListener(MessageDetailsFragment.FRAGMENT_RESULT_KEY, ::onMessageDetailsResult)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -384,7 +387,8 @@ class MessageViewFragment :
     private val messageHeaderClickListener = object : MessageHeaderClickListener {
         override fun onParticipantsContainerClick() {
             val messageDetailsFragment = MessageDetailsFragment.create(messageReference)
-            messageDetailsFragment.show(childFragmentManager, "message_details")
+            messageDetailsFragment.cryptoResult = messageCryptoPresenter.cryptoResultAnnotation
+            messageDetailsFragment.show(parentFragmentManager, "message_details")
         }
 
         override fun onMenuItemClick(itemId: Int) {
@@ -575,6 +579,20 @@ class MessageViewFragment :
             REQUEST_CODE_CREATE_DOCUMENT -> onCreateDocumentResult(data)
             ACTIVITY_CHOOSE_FOLDER_MOVE -> onChooseFolderMoveResult(data)
             ACTIVITY_CHOOSE_FOLDER_COPY -> onChooseFolderCopyResult(data)
+        }
+    }
+
+    private fun onMessageDetailsResult(requestKey: String, result: Bundle) {
+        when (val action = result.getString(MessageDetailsFragment.RESULT_ACTION)) {
+            MessageDetailsFragment.ACTION_SEARCH_KEYS -> {
+                onClickSearchKey()
+            }
+            MessageDetailsFragment.ACTION_SHOW_WARNING -> {
+                onClickShowSecurityWarning()
+            }
+            else -> {
+                error("Unsupported action: $action")
+            }
         }
     }
 

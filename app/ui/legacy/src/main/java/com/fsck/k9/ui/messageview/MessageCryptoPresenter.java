@@ -38,6 +38,10 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
         this.messageCryptoMvpView = messageCryptoMvpView;
     }
 
+    public CryptoResultAnnotation getCryptoResultAnnotation() {
+        return cryptoResultAnnotation;
+    }
+
     public void onResume() {
         if (reloadOnResumeWithoutRecreateFlag) {
             reloadOnResumeWithoutRecreateFlag = false;
