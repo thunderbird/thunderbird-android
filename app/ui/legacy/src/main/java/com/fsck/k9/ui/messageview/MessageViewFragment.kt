@@ -48,12 +48,10 @@ import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.messagedetails.MessageDetailsFragment
 import com.fsck.k9.ui.messagesource.MessageSourceActivity
-import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import com.fsck.k9.ui.withArguments
-import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.util.Locale
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -61,8 +59,7 @@ import timber.log.Timber
 class MessageViewFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
-    AttachmentViewCallback,
-    OnClickShowCryptoKeyListener {
+    AttachmentViewCallback {
 
     private val themeManager: ThemeManager by inject()
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
@@ -585,10 +582,10 @@ class MessageViewFragment :
     private fun onMessageDetailsResult(requestKey: String, result: Bundle) {
         when (val action = result.getString(MessageDetailsFragment.RESULT_ACTION)) {
             MessageDetailsFragment.ACTION_SEARCH_KEYS -> {
-                onClickSearchKey()
+                messageCryptoPresenter.onClickSearchKey()
             }
             MessageDetailsFragment.ACTION_SHOW_WARNING -> {
-                onClickShowSecurityWarning()
+                messageCryptoPresenter.onClickShowCryptoWarningDetails()
             }
             else -> {
                 error("Unsupported action: $action")
@@ -834,12 +831,6 @@ class MessageViewFragment :
             )
         }
 
-        override fun showCryptoInfoDialog(displayStatus: MessageCryptoDisplayStatus, hasSecurityWarning: Boolean) {
-            val dialog = CryptoInfoDialog.newInstance(displayStatus, hasSecurityWarning)
-            dialog.setTargetFragment(this@MessageViewFragment, 0)
-            dialog.show(parentFragmentManager, "crypto_info_dialog")
-        }
-
         override fun restartMessageCryptoProcessing() {
             messageTopView.setToLoadingState()
             messageLoaderHelper.asyncRestartMessageCryptoProcessing()
@@ -848,18 +839,6 @@ class MessageViewFragment :
         override fun showCryptoConfigDialog() {
             AccountSettingsActivity.startCryptoSettings(requireActivity(), account.uuid)
         }
-    }
-
-    override fun onClickShowSecurityWarning() {
-        messageCryptoPresenter.onClickShowCryptoWarningDetails()
-    }
-
-    override fun onClickSearchKey() {
-        messageCryptoPresenter.onClickSearchKey()
-    }
-
-    override fun onClickShowCryptoKey() {
-        messageCryptoPresenter.onClickShowCryptoKey()
     }
 
     interface MessageViewFragmentListener {
