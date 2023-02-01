@@ -1,0 +1,2 @@
+- Redesign of the message view screen
+- Internal changes
