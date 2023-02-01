@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.util.TypedValue
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.ui.R
-import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 class FolderIconProvider(private val theme: Resources.Theme) {
     private val iconFolderInboxResId: Int
@@ -44,17 +43,6 @@ class FolderIconProvider(private val theme: Resources.Theme) {
         FolderType.DRAFTS -> iconFolderDraftsResId
         FolderType.ARCHIVE -> iconFolderArchiveResId
         FolderType.SPAM -> iconFolderSpamResId
-        else -> iconFolderResId
-    }
-
-    fun getFolderIcon(type: LegacyFolderType): Int = when (type) {
-        LegacyFolderType.INBOX -> iconFolderInboxResId
-        LegacyFolderType.OUTBOX -> iconFolderOutboxResId
-        LegacyFolderType.SENT -> iconFolderSentResId
-        LegacyFolderType.TRASH -> iconFolderTrashResId
-        LegacyFolderType.DRAFTS -> iconFolderDraftsResId
-        LegacyFolderType.ARCHIVE -> iconFolderArchiveResId
-        LegacyFolderType.SPAM -> iconFolderSpamResId
         else -> iconFolderResId
     }
 }

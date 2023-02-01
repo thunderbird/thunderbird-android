@@ -233,21 +233,6 @@ public class MessageExtractor {
     }
 
     /**
-     * Collect attachment parts of a message.
-     * @return A list of parts regarded as attachments.
-     * @throws MessagingException In case of an error.
-     */
-    public static List<Part> collectAttachments(Message message) throws MessagingException {
-        try {
-            List<Part> attachments = new ArrayList<>();
-            findViewablesAndAttachments(message, new ArrayList<>(), attachments);
-            return attachments;
-        } catch (Exception e) {
-            throw new MessagingException("Couldn't collect attachment parts", e);
-        }
-    }
-
-    /**
      * Collect the viewable textual parts of a message.
      * @return A set of viewable parts of the message.
      * @throws MessagingException In case of an error.

@@ -96,7 +96,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
     <string name="next_action">Next</string>
-    <string name="previous_action">Previous</string>
     <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="okay_action">OK</string>
     <string name="cancel_action">Cancel</string>
@@ -177,12 +176,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>
 
-    <string name="notification_new_title">New mail</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> new message</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> new messages</item>
     </plurals>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Unread (<xliff:g id="account">%2$s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>
@@ -270,7 +267,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_sender_label">via %1$s</string>
 
     <string name="from_same_sender">More from this sender</string>
-    <string name="search_from_format">From <xliff:g id="sender">%s</xliff:g></string>
 
     <string name="message_discarded_toast">Message discarded</string>
     <string name="message_saved_toast">Message saved as draft</string>

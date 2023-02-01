@@ -100,21 +100,6 @@ public class ContactBadge extends CircleImageView implements OnClickListener {
      * @param lazyLookup
      *         If this is true, the lookup query will not be performed
      *         until this view is clicked.
-     */
-    public void assignContactFromEmail(String emailAddress, boolean lazyLookup) {
-        assignContactFromEmail(emailAddress, lazyLookup, null);
-    }
-
-    /**
-     * Assign a contact based on an email address. This should only be used when
-     * the contact's URI is not available, as an extra query will have to be
-     * performed to lookup the URI based on the email.
-     *
-     * @param emailAddress
-     *         The email address of the contact.
-     * @param lazyLookup
-     *         If this is true, the lookup query will not be performed
-     *         until this view is clicked.
      * @param extras
      *         A bundle of extras to populate the contact edit page with if the contact
      *         is not found and the user chooses to add the email address to an existing contact or

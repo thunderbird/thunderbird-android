@@ -324,10 +324,6 @@ public class LockableDatabase {
         delete(false);
     }
 
-    public void recreate() {
-        delete(true);
-    }
-
     /**
      * @param recreate
      *            <code>true</code> if the DB should be recreated after delete

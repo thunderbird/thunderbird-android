@@ -47,11 +47,6 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
 
     override fun certificateErrorBody(): String = context.getString(R.string.notification_certificate_error_text)
 
-    override fun newMailTitle(): String = context.getString(R.string.notification_new_title)
-
-    override fun newMailUnreadMessageCount(unreadMessageCount: Int, accountName: String): String =
-        context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount, accountName)
-
     override fun newMessagesTitle(newMessagesCount: Int): String =
         context.resources.getQuantityString(
             R.plurals.notification_new_messages_title,
