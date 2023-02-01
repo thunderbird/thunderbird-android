@@ -5,6 +5,7 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
+import com.fsck.k9.search.ConditionsTreeNode
 import java.util.Date
 
 /**
@@ -220,6 +221,21 @@ interface MessageStore {
      * Retrieve the number of messages in a folder.
      */
     fun getMessageCount(folderId: Long): Int
+
+    /**
+     * Retrieve the number of unread messages in a folder.
+     */
+    fun getUnreadMessageCount(folderId: Long): Int
+
+    /**
+     * Retrieve the number of unread messages matching [conditions].
+     */
+    fun getUnreadMessageCount(conditions: ConditionsTreeNode): Int
+
+    /**
+     * Retrieve the number of starred messages matching [conditions].
+     */
+    fun getStarredMessageCount(conditions: ConditionsTreeNode): Int
 
     /**
      * Update a folder's name and type.

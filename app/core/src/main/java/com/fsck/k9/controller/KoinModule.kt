@@ -19,7 +19,6 @@ val controllerModule = module {
             get<NotificationController>(),
             get<NotificationStrategy>(),
             get<LocalStoreProvider>(),
-            get<MessageCountsProvider>(),
             get<BackendManager>(),
             get<Preferences>(),
             get<MessageStoreManager>(),
@@ -31,8 +30,7 @@ val controllerModule = module {
     single<MessageCountsProvider> {
         DefaultMessageCountsProvider(
             preferences = get(),
-            accountSearchConditions = get(),
-            localStoreProvider = get()
+            messageStoreManager = get()
         )
     }
 }

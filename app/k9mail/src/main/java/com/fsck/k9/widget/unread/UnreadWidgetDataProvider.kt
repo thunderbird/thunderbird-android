@@ -5,7 +5,7 @@ import android.content.Intent
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
-import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
@@ -17,13 +17,12 @@ import com.fsck.k9.ui.R as UiR
 class UnreadWidgetDataProvider(
     private val context: Context,
     private val preferences: Preferences,
-    private val messagingController: MessagingController,
+    private val messageCountsProvider: MessageCountsProvider,
     private val defaultFolderProvider: DefaultFolderProvider,
     private val folderRepository: FolderRepository,
     private val folderNameFormatterFactory: FolderNameFormatterFactory
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
-        @Suppress("CascadeIf")
         if (SearchAccount.UNIFIED_INBOX == accountUuid) {
             loadSearchAccountData(configuration)
         } else if (folderId != null) {
@@ -36,7 +35,7 @@ class UnreadWidgetDataProvider(
     private fun loadSearchAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
         val searchAccount = getSearchAccount(configuration.accountUuid)
         val title = searchAccount.name
-        val unreadCount = messagingController.getUnreadMessageCount(searchAccount)
+        val unreadCount = messageCountsProvider.getMessageCounts(searchAccount).unread
         val clickIntent = MessageList.intentDisplaySearch(context, searchAccount.relatedSearch, false, true, true)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
@@ -50,7 +49,7 @@ class UnreadWidgetDataProvider(
     private fun loadAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val account = preferences.getAccount(configuration.accountUuid) ?: return null
         val title = account.displayName
-        val unreadCount = messagingController.getUnreadMessageCount(account)
+        val unreadCount = messageCountsProvider.getMessageCounts(account).unread
         val clickIntent = getClickIntentForAccount(account)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
@@ -70,7 +69,7 @@ class UnreadWidgetDataProvider(
         val folderDisplayName = getFolderDisplayName(account, folderId)
         val title = context.getString(UiR.string.unread_widget_title, accountName, folderDisplayName)
 
-        val unreadCount = messagingController.getFolderUnreadMessageCount(account, folderId)
+        val unreadCount = messageCountsProvider.getUnreadMessageCount(account, folderId)
 
         val clickIntent = getClickIntentForFolder(account, folderId)
 

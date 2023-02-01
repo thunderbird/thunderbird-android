@@ -2,85 +2,45 @@ package com.fsck.k9.search;
 
 import java.util.List;
 
-import com.fsck.k9.DI;
 import timber.log.Timber;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 
 
 public class SqlQueryBuilder {
-    public static void buildWhereClause(Account account, ConditionsTreeNode node,
-            StringBuilder query, List<String> selectionArgs) {
-        buildWhereClauseInternal(account, node, query, selectionArgs);
+    public static void buildWhereClause(ConditionsTreeNode node, StringBuilder query, List<String> selectionArgs) {
+        buildWhereClauseInternal(node, query, selectionArgs);
     }
 
-    private static void buildWhereClauseInternal(Account account, ConditionsTreeNode node,
-            StringBuilder query, List<String> selectionArgs) {
+    private static void buildWhereClauseInternal(ConditionsTreeNode node, StringBuilder query,
+        List<String> selectionArgs) {
+
         if (node == null) {
             query.append("1");
             return;
         }
 
         if (node.mLeft == null && node.mRight == null) {
-            AccountSearchConditions accountSearchConditions = DI.get(AccountSearchConditions.class);
             SearchCondition condition = node.mCondition;
-            switch (condition.field) {
-                case SEARCHABLE: {
-                    switch (account.getSearchableFolders()) {
-                        case ALL: {
-                            // Create temporary LocalSearch object so we can use...
-                            LocalSearch tempSearch = new LocalSearch();
-                            // ...the helper methods in Account to create the necessary conditions
-                            // to exclude "unwanted" folders.
-                            accountSearchConditions.excludeUnwantedFolders(account, tempSearch);
-
-                            buildWhereClauseInternal(account, tempSearch.getConditions(), query,
-                                    selectionArgs);
-                            break;
-                        }
-                        case DISPLAYABLE: {
-                            // Create temporary LocalSearch object so we can use...
-                            LocalSearch tempSearch = new LocalSearch();
-                            // ...the helper methods in Account to create the necessary conditions
-                            // to limit the selection to displayable, non-special folders.
-                            accountSearchConditions.excludeSpecialFolders(account, tempSearch);
-                            accountSearchConditions.limitToDisplayableFolders(account, tempSearch);
-
-                            buildWhereClauseInternal(account, tempSearch.getConditions(), query,
-                                    selectionArgs);
-                            break;
-                        }
-                        case NONE: {
-                            // Dummy condition, never select
-                            query.append("0");
-                            break;
-                        }
-                    }
-                    break;
+            if (condition.field == SearchField.MESSAGE_CONTENTS) {
+                String fulltextQueryString = condition.value;
+                if (condition.attribute != Attribute.CONTAINS) {
+                    Timber.e("message contents can only be matched!");
                 }
-                case MESSAGE_CONTENTS: {
-                    String fulltextQueryString = condition.value;
-                    if (condition.attribute != Attribute.CONTAINS) {
-                        Timber.e("message contents can only be matched!");
-                    }
-                    query.append("messages.id IN (SELECT docid FROM messages_fulltext WHERE fulltext MATCH ?)");
-                    selectionArgs.add(fulltextQueryString);
-                    break;
-                }
-                default: {
-                    appendCondition(condition, query, selectionArgs);
-                }
+                query.append("messages.id IN (SELECT docid FROM messages_fulltext WHERE fulltext MATCH ?)");
+                selectionArgs.add(fulltextQueryString);
+            } else {
+                appendCondition(condition, query, selectionArgs);
             }
         } else {
             query.append("(");
-            buildWhereClauseInternal(account, node.mLeft, query, selectionArgs);
+            buildWhereClauseInternal(node.mLeft, query, selectionArgs);
             query.append(") ");
             query.append(node.mValue.name());
             query.append(" (");
-            buildWhereClauseInternal(account, node.mRight, query, selectionArgs);
+            buildWhereClauseInternal(node.mRight, query, selectionArgs);
             query.append(")");
         }
     }
@@ -170,9 +130,8 @@ public class SqlQueryBuilder {
                 columnName = "threads.root";
                 break;
             }
-            case MESSAGE_CONTENTS:
-            case SEARCHABLE: {
-                // Special cases handled in buildWhereClauseInternal()
+            case MESSAGE_CONTENTS: {
+                // Special case handled in buildWhereClauseInternal()
                 break;
             }
         }

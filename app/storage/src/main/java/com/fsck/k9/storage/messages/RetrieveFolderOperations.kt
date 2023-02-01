@@ -12,6 +12,8 @@ import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toFolderType
+import com.fsck.k9.search.ConditionsTreeNode
+import com.fsck.k9.search.SqlQueryBuilder
 
 internal class RetrieveFolderOperations(private val lockableDatabase: LockableDatabase) {
     fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
@@ -154,6 +156,48 @@ $displayModeSelection
                 "SELECT COUNT(id) FROM messages WHERE empty = 0 AND deleted = 0 AND folder_id = ?",
                 arrayOf(folderId.toString())
             ).use { cursor ->
+                if (cursor.moveToFirst()) cursor.getInt(0) else 0
+            }
+        }
+    }
+
+    fun getUnreadMessageCount(folderId: Long): Int {
+        return lockableDatabase.execute(false) { db ->
+            db.rawQuery(
+                "SELECT COUNT(id) FROM messages WHERE empty = 0 AND deleted = 0 AND read = 0 AND folder_id = ?",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                if (cursor.moveToFirst()) cursor.getInt(0) else 0
+            }
+        }
+    }
+
+    fun getUnreadMessageCount(conditions: ConditionsTreeNode): Int {
+        return getMessageCount(condition = "messages.read = 0", conditions)
+    }
+
+    fun getStarredMessageCount(conditions: ConditionsTreeNode): Int {
+        return getMessageCount(condition = "messages.flagged = 1", conditions)
+    }
+
+    private fun getMessageCount(condition: String, extraConditions: ConditionsTreeNode): Int {
+        val whereBuilder = StringBuilder()
+        val queryArgs = mutableListOf<String>()
+        SqlQueryBuilder.buildWhereClause(extraConditions, whereBuilder, queryArgs)
+
+        val where = if (whereBuilder.isNotEmpty()) "AND ($whereBuilder)" else ""
+        val selectionArgs = queryArgs.toTypedArray()
+
+        val query =
+            """
+SELECT COUNT(messages.id) 
+FROM messages 
+JOIN folders ON (folders.id = messages.folder_id) 
+WHERE (messages.empty = 0 AND messages.deleted = 0 AND $condition) $where
+            """
+
+        return lockableDatabase.execute(false) { db ->
+            db.rawQuery(query, selectionArgs).use { cursor ->
                 if (cursor.moveToFirst()) cursor.getInt(0) else 0
             }
         }

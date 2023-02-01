@@ -56,7 +56,7 @@ internal class MessageListLoader(
         val query = StringBuilder()
         val queryArgs = mutableListOf<String>()
 
-        SqlQueryBuilder.buildWhereClause(account, config.search.conditions, query, queryArgs)
+        SqlQueryBuilder.buildWhereClause(config.search.conditions, query, queryArgs)
 
         val selection = query.toString()
         val selectionArgs = queryArgs.toTypedArray()

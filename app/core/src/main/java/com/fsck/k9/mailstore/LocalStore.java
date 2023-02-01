@@ -29,7 +29,6 @@ import androidx.core.database.CursorKt;
 import com.fsck.k9.Account;
 import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
-import com.fsck.k9.controller.MessageCounts;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
 import com.fsck.k9.controller.PendingCommandSerializer;
@@ -355,7 +354,7 @@ public class LocalStore {
     public List<LocalMessage> searchForMessages(LocalSearch search) throws MessagingException {
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
-        SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
+        SqlQueryBuilder.buildWhereClause(search.getConditions(), query, queryArgs);
 
         // Avoid "ambiguous column name" error by prefixing "id" with the message table name
         String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
@@ -1003,72 +1002,6 @@ public class LocalStore {
         }, UID_CHECK_BATCH_SIZE);
 
         return folderMap;
-    }
-
-    public int getUnreadMessageCount(LocalSearch search) throws MessagingException {
-        StringBuilder whereBuilder = new StringBuilder();
-        List<String> queryArgs = new ArrayList<>();
-        SqlQueryBuilder.buildWhereClause(account, search.getConditions(), whereBuilder, queryArgs);
-
-        String where = whereBuilder.toString();
-        final String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
-
-        final String sqlQuery = "SELECT SUM(read=0) " +
-                "FROM messages " +
-                "JOIN folders ON (folders.id = messages.folder_id) " +
-                "WHERE (messages.empty = 0 AND messages.deleted = 0)" +
-                (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
-
-        return database.execute(false, new DbCallback<Integer>() {
-            @Override
-            public Integer doDbWork(SQLiteDatabase db) {
-                Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
-                try {
-                    if (cursor.moveToFirst()) {
-                        return cursor.getInt(0);
-                    } else {
-                        return 0;
-                    }
-                } finally {
-                    cursor.close();
-                }
-            }
-        });
-    }
-
-    private int getStarredMessageCount(LocalSearch search) throws MessagingException {
-        StringBuilder whereBuilder = new StringBuilder();
-        List<String> queryArgs = new ArrayList<>();
-        SqlQueryBuilder.buildWhereClause(account, search.getConditions(), whereBuilder, queryArgs);
-
-        String where = whereBuilder.toString();
-        final String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
-
-        final String sqlQuery = "SELECT SUM(flagged=1) " +
-                "FROM messages " +
-                "JOIN folders ON (folders.id = messages.folder_id) " +
-                "WHERE (messages.empty = 0 AND messages.deleted = 0)" +
-                (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
-
-        return database.execute(false, new DbCallback<Integer>() {
-            @Override
-            public Integer doDbWork(SQLiteDatabase db) {
-                Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
-                try {
-                    if (cursor.moveToFirst()) {
-                        return cursor.getInt(0);
-                    } else {
-                        return 0;
-                    }
-                } finally {
-                    cursor.close();
-                }
-            }
-        });
-    }
-
-    public MessageCounts getMessageCounts(LocalSearch search) throws MessagingException {
-        return new MessageCounts(getUnreadMessageCount(search), getStarredMessageCount(search));
     }
 
     public List<NotificationMessage> getNotificationMessages() throws MessagingException {

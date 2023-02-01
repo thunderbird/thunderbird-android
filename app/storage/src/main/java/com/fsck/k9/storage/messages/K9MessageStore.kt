@@ -15,6 +15,7 @@ import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.SaveMessageData
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
+import com.fsck.k9.search.ConditionsTreeNode
 import java.util.Date
 
 class K9MessageStore(
@@ -174,6 +175,18 @@ class K9MessageStore(
 
     override fun getMessageCount(folderId: Long): Int {
         return retrieveFolderOperations.getMessageCount(folderId)
+    }
+
+    override fun getUnreadMessageCount(folderId: Long): Int {
+        return retrieveFolderOperations.getUnreadMessageCount(folderId)
+    }
+
+    override fun getUnreadMessageCount(conditions: ConditionsTreeNode): Int {
+        return retrieveFolderOperations.getUnreadMessageCount(conditions)
+    }
+
+    override fun getStarredMessageCount(conditions: ConditionsTreeNode): Int {
+        return retrieveFolderOperations.getStarredMessageCount(conditions)
     }
 
     override fun getSize(): Long {
