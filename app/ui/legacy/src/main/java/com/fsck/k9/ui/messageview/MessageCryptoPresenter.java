@@ -20,7 +20,7 @@ import timber.log.Timber;
 
 
 @SuppressWarnings("WeakerAccess")
-public class MessageCryptoPresenter implements OnCryptoClickListener {
+public class MessageCryptoPresenter {
     public static final int REQUEST_CODE_UNKNOWN_KEY = 123;
     public static final int REQUEST_CODE_SECURITY_WARNING = 124;
 
@@ -36,6 +36,10 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
     public MessageCryptoPresenter(MessageCryptoMvpView messageCryptoMvpView) {
         this.messageCryptoMvpView = messageCryptoMvpView;
+    }
+
+    public CryptoResultAnnotation getCryptoResultAnnotation() {
+        return cryptoResultAnnotation;
     }
 
     public void onResume() {
@@ -96,23 +100,6 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
         return true;
     }
 
-    @Override
-    public void onCryptoClick() {
-        if (cryptoResultAnnotation == null) {
-            return;
-        }
-        MessageCryptoDisplayStatus displayStatus =
-                MessageCryptoDisplayStatus.fromResultAnnotation(cryptoResultAnnotation);
-        switch (displayStatus) {
-            case LOADING:
-                // no need to do anything, there is a progress bar...
-                break;
-            default:
-                displayCryptoInfoDialog(displayStatus);
-                break;
-        }
-    }
-
     @SuppressWarnings("UnusedParameters") // for consistency with Activity.onActivityResult
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_UNKNOWN_KEY) {
@@ -128,29 +115,12 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
         }
     }
 
-    private void displayCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus) {
-        messageCryptoMvpView.showCryptoInfoDialog(
-                displayStatus, cryptoResultAnnotation.hasOpenPgpInsecureWarningPendingIntent());
-    }
-
     void onClickSearchKey() {
         try {
             PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpSigningKeyIntentIfAny();
             if (pendingIntent != null) {
                 messageCryptoMvpView.startPendingIntentForCryptoPresenter(
                         pendingIntent.getIntentSender(), REQUEST_CODE_UNKNOWN_KEY, null, 0, 0, 0);
-            }
-        } catch (IntentSender.SendIntentException e) {
-            Timber.e(e, "SendIntentException");
-        }
-    }
-
-    public void onClickShowCryptoKey() {
-        try {
-            PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpSigningKeyIntentIfAny();
-            if (pendingIntent != null) {
-                messageCryptoMvpView.startPendingIntentForCryptoPresenter(
-                        pendingIntent.getIntentSender(), null, null, 0, 0, 0);
             }
         } catch (IntentSender.SendIntentException e) {
             Timber.e(e, "SendIntentException");
@@ -204,7 +174,6 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
         void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
                 int flagsMask, int flagValues, int extraFlags) throws IntentSender.SendIntentException;
 
-        void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus, boolean hasSecurityWarning);
         void showCryptoConfigDialog();
     }
 }

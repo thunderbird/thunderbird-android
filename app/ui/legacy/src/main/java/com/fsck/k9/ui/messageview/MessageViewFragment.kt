@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
@@ -47,12 +48,10 @@ import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.messagedetails.MessageDetailsFragment
 import com.fsck.k9.ui.messagesource.MessageSourceActivity
-import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import com.fsck.k9.ui.withArguments
-import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.util.Locale
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -60,8 +59,7 @@ import timber.log.Timber
 class MessageViewFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
-    AttachmentViewCallback,
-    OnClickShowCryptoKeyListener {
+    AttachmentViewCallback {
 
     private val themeManager: ThemeManager by inject()
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
@@ -134,6 +132,8 @@ class MessageViewFragment :
             fragmentManager = parentFragmentManager,
             callback = messageLoaderCallbacks
         )
+
+        setFragmentResultListener(MessageDetailsFragment.FRAGMENT_RESULT_KEY, ::onMessageDetailsResult)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -384,7 +384,8 @@ class MessageViewFragment :
     private val messageHeaderClickListener = object : MessageHeaderClickListener {
         override fun onParticipantsContainerClick() {
             val messageDetailsFragment = MessageDetailsFragment.create(messageReference)
-            messageDetailsFragment.show(childFragmentManager, "message_details")
+            messageDetailsFragment.cryptoResult = messageCryptoPresenter.cryptoResultAnnotation
+            messageDetailsFragment.show(parentFragmentManager, "message_details")
         }
 
         override fun onMenuItemClick(itemId: Int) {
@@ -575,6 +576,20 @@ class MessageViewFragment :
             REQUEST_CODE_CREATE_DOCUMENT -> onCreateDocumentResult(data)
             ACTIVITY_CHOOSE_FOLDER_MOVE -> onChooseFolderMoveResult(data)
             ACTIVITY_CHOOSE_FOLDER_COPY -> onChooseFolderCopyResult(data)
+        }
+    }
+
+    private fun onMessageDetailsResult(requestKey: String, result: Bundle) {
+        when (val action = result.getString(MessageDetailsFragment.RESULT_ACTION)) {
+            MessageDetailsFragment.ACTION_SEARCH_KEYS -> {
+                messageCryptoPresenter.onClickSearchKey()
+            }
+            MessageDetailsFragment.ACTION_SHOW_WARNING -> {
+                messageCryptoPresenter.onClickShowCryptoWarningDetails()
+            }
+            else -> {
+                error("Unsupported action: $action")
+            }
         }
     }
 
@@ -816,12 +831,6 @@ class MessageViewFragment :
             )
         }
 
-        override fun showCryptoInfoDialog(displayStatus: MessageCryptoDisplayStatus, hasSecurityWarning: Boolean) {
-            val dialog = CryptoInfoDialog.newInstance(displayStatus, hasSecurityWarning)
-            dialog.setTargetFragment(this@MessageViewFragment, 0)
-            dialog.show(parentFragmentManager, "crypto_info_dialog")
-        }
-
         override fun restartMessageCryptoProcessing() {
             messageTopView.setToLoadingState()
             messageLoaderHelper.asyncRestartMessageCryptoProcessing()
@@ -830,18 +839,6 @@ class MessageViewFragment :
         override fun showCryptoConfigDialog() {
             AccountSettingsActivity.startCryptoSettings(requireActivity(), account.uuid)
         }
-    }
-
-    override fun onClickShowSecurityWarning() {
-        messageCryptoPresenter.onClickShowCryptoWarningDetails()
-    }
-
-    override fun onClickSearchKey() {
-        messageCryptoPresenter.onClickSearchKey()
-    }
-
-    override fun onClickShowCryptoKey() {
-        messageCryptoPresenter.onClickShowCryptoKey()
     }
 
     interface MessageViewFragmentListener {
