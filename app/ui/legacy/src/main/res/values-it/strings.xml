@@ -227,7 +227,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Ccn:</string>
   <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato.</string>
-  <string name="message_view_show_pictures_action">Mostra immagini</string>
   <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Scarica messaggio completo</string>
   <string name="message_view_sender_label">tramite %1$s</string>
@@ -720,10 +719,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="font_size_message_list_preview">Anteprima</string>
   <string name="font_size_message_view">Messaggi</string>
   <string name="font_size_message_view_sender">Mittente</string>
-  <string name="font_size_message_view_to">A</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Ccn</string>
-  <string name="font_size_message_view_additional_headers">Intestazioni aggiuntive</string>
   <string name="font_size_message_view_subject">Oggetto</string>
   <string name="font_size_message_view_date">Ora e data</string>
   <string name="font_size_message_view_content">Corpo del messaggio</string>

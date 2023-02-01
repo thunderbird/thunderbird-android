@@ -3,6 +3,8 @@
 
     <declare-styleable name="K9Styles">
         <attr name="toolbarColor" format="reference|color" />
+        <attr name="messageHeaderBackground" format="reference|color" />
+        <attr name="extraMessageHeaderBackground" format="reference|color" />
         <attr name="bottomBarBackground" format="reference|color" />
         <attr name="floatingActionButtonBackgroundColor" format="reference|color" />
         <attr name="floatingActionButtonForegroundColor" format="reference|color" />
@@ -107,7 +109,8 @@
         <attr name="messageStar" format="reference"/>
         <attr name="messageStarColor" format="color"/>
         <attr name="messageViewBackgroundColor" format="reference|color"/>
-        <attr name="messageComposeAddContactImage" format="reference"/>
+        <attr name="messageDetailsAddContactIcon" format="reference"/>
+        <attr name="messageDetailsDividerColor" format="reference|color"/>
         <attr name="attachmentCardBackground" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>

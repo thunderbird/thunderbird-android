@@ -2,6 +2,7 @@ package com.fsck.k9.storage.messages
 
 import androidx.core.database.getLongOrNull
 import com.fsck.k9.K9
+import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.internet.MimeHeader
@@ -167,7 +168,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
         }
     }
 
-    fun getHeaders(folderId: Long, messageServerId: String): List<Header> {
+    fun getHeaders(folderId: Long, messageServerId: String, headerNames: Set<String>? = null): List<Header> {
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
                 "SELECT message_parts.header FROM messages" +
@@ -178,10 +179,13 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 if (!cursor.moveToFirst()) throw MessageNotFoundException(folderId, messageServerId)
 
                 val headerBytes = cursor.getBlob(0)
+                val lowercaseHeaderNames = headerNames?.mapToSet(headerNames.size) { it.lowercase() }
 
                 val header = MimeHeader()
                 MessageHeaderParser.parse(headerBytes.inputStream()) { name, value ->
-                    header.addRawHeader(name, value)
+                    if (lowercaseHeaderNames == null || name.lowercase() in lowercaseHeaderNames) {
+                        header.addRawHeader(name, value)
+                    }
                 }
 
                 header.headers

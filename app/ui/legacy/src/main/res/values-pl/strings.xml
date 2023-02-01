@@ -228,7 +228,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="message_view_cc_label">DW:</string>
   <string name="message_view_bcc_label">UDW:</string>
   <string name="message_view_status_attachment_not_saved">Nie można zapisać załącznika.</string>
-  <string name="message_view_show_pictures_action">Wyświetl grafikę</string>
   <string name="message_view_no_viewer">Nie moge znaleźć aplikacji do wyświetlenia pliku <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Pobierz całą wiadomość</string>
   <string name="message_view_sender_label">przez %1$s</string>
@@ -728,10 +727,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="font_size_message_list_preview">Podgląd</string>
   <string name="font_size_message_view">Wiadomości</string>
   <string name="font_size_message_view_sender">Nadawca</string>
-  <string name="font_size_message_view_to">Adresat (Do:)</string>
-  <string name="font_size_message_view_cc">Odbiorca kopii (DW:)</string>
-  <string name="font_size_message_view_bcc">UDW</string>
-  <string name="font_size_message_view_additional_headers">Dodatkowe nagłówki</string>
   <string name="font_size_message_view_subject">Temat</string>
   <string name="font_size_message_view_date">Czas i data</string>
   <string name="font_size_message_view_content">Treść wiadomości</string>

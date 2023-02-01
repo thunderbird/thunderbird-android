@@ -1,297 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.view.MessageHeader
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fsck.k9.view.MessageHeader xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header_container"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content">
 
-        <!-- Color chip -->
-        <View
+        <Space
+            android:id="@+id/margin_top"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.chip.Chip
             android:id="@+id/chip"
-            android:layout_width="8dip"
-            android:layout_height="match_parent"
-            tools:background="#FF1976D2" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:clickable="false"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/subject"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:chipBackgroundColor="#1976D2"
+            tools:text="Account name" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/top_margin_barrier"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="chip,margin_top" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                >
+        <com.fsck.k9.ui.helper.BottomBaselineTextView
+            android:id="@+id/subject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chip"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/flagged"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_margin_barrier"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Message subject" />
 
-                <TextView
-                    android:id="@+id/subject"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                    tools:text="(no subject)"
-                    />
+        <ImageView
+            android:id="@+id/flagged"
+            android:layout_width="44dp"
+            android:layout_height="48dp"
+            android:background="?attr/controlBackground"
+            android:baseline="33dp"
+            android:paddingHorizontal="10dp"
+            android:src="@drawable/btn_select_star"
+            app:layout_constraintBaseline_toBaselineOf="@+id/subject"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-                <ImageView
-                    android:id="@+id/crypto_status_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="6dp"
-                    app:srcCompat="@drawable/status_lock_disabled"
-                    app:tint="?attr/openpgp_grey"
-                    android:background="?selectableItemBackground"
-                    android:visibility="gone"
-                    />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <CheckBox
-                    android:id="@+id/flagged"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:focusable="false"
-                    android:checked="false"
-                    style="@style/MessageStarStyle"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <com.fsck.k9.ui.ContactBadge
-                        android:id="@+id/contact_badge"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        tools:src="@drawable/ic_contact_picture"/>
-
-                    <!-- State icons -->
-                    <LinearLayout
-                        android:id="@+id/icon_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dip"
-                        android:layout_marginBottom="2dip"
-                        android:layout_below="@+id/contact_badge"
-                        android:layout_centerHorizontal="true"
-                        android:orientation="vertical" >
-
-                        <View
-                            android:id="@+id/answered"
-                            android:layout_width="32sp"
-                            android:layout_height="32sp"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="2dp"
-                            android:background="?attr/messageListAnswered" />
-
-                        <View
-                            android:id="@+id/forwarded"
-                            android:layout_width="22sp"
-                            android:layout_height="22sp"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="4dp"
-                            android:background="?attr/messageListForwarded" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="6dip"
-                    android:layout_marginStart="2dp" >
-
-                    <!-- From -->
-                    <TextView
-                        android:id="@+id/from"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_toStartOf="@+id/status_icon_strip"
-                        android:layout_alignBottom="@+id/status_icon_strip"
-                        android:paddingTop="0dp"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="6dp"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                        android:textStyle="bold"
-                        android:text="@string/general_no_sender"
-                        android:gravity="center_vertical"
-                        />
-
-                    <!-- Sender -->
-                    <TextView
-                        android:id="@+id/sender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_toStartOf="@+id/status_icon_strip"
-                        android:paddingTop="0dp"
-                        android:layout_below="@+id/from"
-                        android:ellipsize="end"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="@style/TextAppearance.K9.Small"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        android:gravity="center_vertical"
-                        />
-                    
-                    <!-- To -->
-                    <TextView
-                        android:id="@+id/to_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/from"
-                        android:layout_alignBaseline="@+id/to"
-                        android:paddingTop="2dp"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="4dp"
-                        android:text="@string/message_to_label"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/to"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/to_label"
-                        android:layout_below="@+id/sender"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:paddingTop="2dp"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
-                    
-                    <!-- CC -->
-                    <TextView
-                        android:id="@+id/cc_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/to_label"
-                        android:layout_alignStart="@+id/to_label"
-                        android:layout_alignBaseline="@+id/cc"
-                        android:paddingTop="2dp"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="4dp"
-                        android:text="@string/message_view_cc_label"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textStyle="bold"
-                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
-                    
-                    <TextView
-                        android:id="@+id/cc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/cc_label"
-                        android:layout_below="@+id/to"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:paddingTop="2dp"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
-
-                    <!-- BCC -->
-                    <TextView
-                        android:id="@+id/bcc_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/cc_label"
-                        android:layout_alignStart="@+id/cc_label"
-                        android:layout_alignBaseline="@+id/bcc"
-                        android:paddingTop="2dp"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="4dp"
-                        android:text="@string/message_view_bcc_label"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textStyle="bold"
-                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
-
-                    <TextView
-                        android:id="@+id/bcc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/bcc_label"
-                        android:layout_below="@+id/cc"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:paddingTop="2dp"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="@style/TextAppearance.K9.MediumSmall" />
-                    
-                    <!-- Date -->
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/bcc"
-                        android:layout_alignParentEnd="true"
-                        android:paddingTop="8dp"
-                        android:singleLine="true"
-                        android:ellipsize="none"
-                        android:textAppearance="@style/TextAppearance.K9.Small"
-                        android:textColor="?android:attr/textColorSecondary" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:id="@+id/status_icon_strip"
-                        >
-
-                        <ImageView
-                            android:id="@+id/icon_single_message_options"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="?iconActionSingleMessageOptions"
-                            android:padding="8dp"
-                            android:background="?selectableItemBackground"
-                            />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:layout_height="1dip"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/participants_container"
         android:layout_width="match_parent"
-        android:layout_marginBottom="4dip"
-        android:background="@drawable/divider_horizontal_email" />
+        android:layout_height="wrap_content"
+        android:background="?attr/messageHeaderBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/contact_picture"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_contact_picture" />
+
+        <TextView
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/date"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/contact_picture"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Sender name" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="none"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintBaseline_toBaselineOf="@+id/from"
+            app:layout_constraintEnd_toStartOf="@+id/menu_primary_action"
+            app:layout_constraintStart_toEndOf="@id/from"
+            tools:text="Sep 19" />
+
+        <ImageView
+            android:id="@+id/crypto_status_icon"
+            android:layout_width="18sp"
+            android:layout_height="18sp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/recipients"
+            app:layout_constraintStart_toEndOf="@id/contact_picture"
+            app:srcCompat="@drawable/status_lock_disabled"
+            app:tint="?attr/openpgp_grey"
+            tools:visibility="visible" />
+
+        <com.fsck.k9.ui.messageview.RecipientNamesView
+            android:id="@+id/recipients"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/menu_primary_action"
+            app:layout_constraintStart_toEndOf="@id/crypto_status_icon"
+            app:layout_constraintTop_toBottomOf="@+id/from"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_goneMarginStart="16dp" />
+
+        <ImageView
+            android:id="@+id/menu_primary_action"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/controlBackground"
+            android:paddingHorizontal="12dp"
+            app:layout_constraintEnd_toStartOf="@id/menu_overflow"
+            app:layout_constraintTop_toTopOf="@+id/menu_overflow"
+            app:srcCompat="?iconActionSingleMessageOptions" />
+
+        <ImageView
+            android:id="@+id/menu_overflow"
+            android:layout_width="40dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="?attr/controlBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingStart="6dp"
+            android:paddingEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/dots_vertical" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.fsck.k9.view.MessageHeader>

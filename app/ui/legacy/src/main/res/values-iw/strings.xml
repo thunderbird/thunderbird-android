@@ -182,7 +182,6 @@
   <string name="message_view_from_format">מ: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">ל:</string>
   <string name="message_view_cc_label">עותק:</string>
-  <string name="message_view_show_pictures_action">הצג תמונות</string>
   <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
   <string name="message_view_sender_label">באמצעות %1$s</string>
@@ -532,10 +531,6 @@
   <string name="font_size_message_list_preview">תצוגה מקדימה</string>
   <string name="font_size_message_view">הודעות</string>
   <string name="font_size_message_view_sender">שולח</string>
-  <string name="font_size_message_view_to">ל</string>
-  <string name="font_size_message_view_cc">עותק</string>
-  <string name="font_size_message_view_bcc">עותק מוסתר</string>
-  <string name="font_size_message_view_additional_headers">כותרות נוספות</string>
   <string name="font_size_message_view_subject">כותרת</string>
   <string name="font_size_message_view_date">שעה ותאריך</string>
   <string name="font_size_message_view_content">גוף ההודעה</string>

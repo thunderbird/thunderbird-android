@@ -21,6 +21,8 @@
         <item name="colorSecondary">@color/material_pink_500</item>
         <item name="colorSecondaryVariant">@color/material_pink_300</item>
         <item name="colorOnSecondary">#ffffff</item>
+        <item name="messageHeaderBackground">@color/material_gray_200</item>
+        <item name="extraMessageHeaderBackground">@color/material_gray_100</item>
         <item name="bottomBarBackground">@color/material_gray_50</item>
         <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
         <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
@@ -131,7 +133,8 @@
         <item name="messageStar">@drawable/btn_check_star</item>
         <item name="messageStarColor">#fbbc04</item>
         <item name="messageViewBackgroundColor">#ffffffff</item>
-        <item name="messageComposeAddContactImage">@drawable/ic_person_plus</item>
+        <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
+        <item name="messageDetailsDividerColor">#ffcccccc</item>
         <item name="attachmentCardBackground">#e8e8e8</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_light</item>
@@ -181,6 +184,8 @@
         <item name="colorPrimaryVariant">@color/material_gray_50</item>
         <item name="colorSecondary">@color/material_pink_300</item>
         <item name="colorSecondaryVariant">@color/material_pink_500</item>
+        <item name="messageHeaderBackground">@color/material_gray_900</item>
+        <item name="extraMessageHeaderBackground">@color/material_gray_900</item>
         <item name="bottomBarBackground">@color/material_gray_900</item>
         <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
         <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
@@ -291,7 +296,8 @@
         <item name="messageStar">@drawable/btn_check_star</item>
         <item name="messageStarColor">#fdd663</item>
         <item name="messageViewBackgroundColor">#000000</item>
-        <item name="messageComposeAddContactImage">@drawable/ic_person_plus</item>
+        <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
+        <item name="messageDetailsDividerColor">#ff555555</item>
         <item name="attachmentCardBackground">#313131</item>
         <item name="contactTokenBackgroundColor">#313131</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>

@@ -212,7 +212,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="message_view_cc_label">Kopio:</string>
   <string name="message_view_bcc_label">Kaŝkopio:</string>
   <string name="message_view_status_attachment_not_saved">Ne povis konservi kunsendaĵon.</string>
-  <string name="message_view_show_pictures_action">Montri bildojn</string>
   <string name="message_view_no_viewer">Ne povas trovi vidigilon por <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Elŝuti tutan mesaĝon</string>
   <string name="message_view_sender_label">per %1$s</string>
@@ -677,10 +676,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="font_size_message_list_preview">Antaŭmontro</string>
   <string name="font_size_message_view">Mesaĝoj</string>
   <string name="font_size_message_view_sender">Sendinto</string>
-  <string name="font_size_message_view_to">Ricevonto</string>
-  <string name="font_size_message_view_cc">Ricevonto de kopio</string>
-  <string name="font_size_message_view_bcc">Kaŝkopio</string>
-  <string name="font_size_message_view_additional_headers">Aldonaj kapoj</string>
   <string name="font_size_message_view_subject">Temo</string>
   <string name="font_size_message_view_date">Tempo kaj dato</string>
   <string name="font_size_message_view_content">Mesaĝa enhavo</string>

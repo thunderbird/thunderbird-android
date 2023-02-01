@@ -229,7 +229,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="message_view_cc_label">Копія:</string>
   <string name="message_view_bcc_label">Прихована копія:</string>
   <string name="message_view_status_attachment_not_saved">Не вдалося зберегти вкладення.</string>
-  <string name="message_view_show_pictures_action">Показати зображення</string>
   <string name="message_view_no_viewer">Не знайдено додаток для перегляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Завантажити усе повідомлення</string>
   <string name="message_view_sender_label">за допомогою %1$s</string>
@@ -722,10 +721,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="font_size_message_list_preview">Попередній перегляд</string>
   <string name="font_size_message_view">Повідомлення</string>
   <string name="font_size_message_view_sender">Відправник</string>
-  <string name="font_size_message_view_to">Кому</string>
-  <string name="font_size_message_view_cc">Копія</string>
-  <string name="font_size_message_view_bcc">Прихована копія</string>
-  <string name="font_size_message_view_additional_headers">Додаткові заголовки</string>
   <string name="font_size_message_view_subject">Тема</string>
   <string name="font_size_message_view_date">Час і дата</string>
   <string name="font_size_message_view_content">Тіло повідомлення</string>

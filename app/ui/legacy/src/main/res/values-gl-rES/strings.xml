@@ -129,7 +129,6 @@
   <string name="message_view_from_format">Desde: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
-  <string name="message_view_show_pictures_action">Mostrar imaxes</string>
   <string name="message_view_no_viewer">Non é posible atopar un visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
   <string name="from_same_sender">Máis deste remitente</string>
@@ -530,10 +529,6 @@
   <string name="font_size_message_list_preview">Previsualización</string>
   <string name="font_size_message_view">Mensaxes</string>
   <string name="font_size_message_view_sender">Remitente</string>
-  <string name="font_size_message_view_to">Para</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Cabeceiras adicionais</string>
   <string name="font_size_message_view_subject">Asunto</string>
   <string name="font_size_message_view_date">Hora e data</string>
   <string name="font_size_message_view_content">Corpo da mensaxe</string>

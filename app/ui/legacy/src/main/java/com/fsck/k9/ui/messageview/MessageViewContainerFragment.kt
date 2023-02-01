@@ -29,6 +29,8 @@ class MessageViewContainerFragment : Fragment() {
             setMenuVisibility(value)
         }
 
+    private var showAccountChip: Boolean = true
+
     lateinit var messageReference: MessageReference
         private set
 
@@ -72,7 +74,9 @@ class MessageViewContainerFragment : Fragment() {
             lastDirection = savedInstanceState.getSerializable(STATE_LAST_DIRECTION) as Direction?
         }
 
-        adapter = MessageViewContainerAdapter(this)
+        showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP) ?: showAccountChip
+
+        adapter = MessageViewContainerAdapter(this, showAccountChip)
     }
 
     override fun onAttach(context: Context) {
@@ -229,7 +233,11 @@ class MessageViewContainerFragment : Fragment() {
         findMessageViewFragment().onPendingIntentResult(requestCode, resultCode, data)
     }
 
-    private class MessageViewContainerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+    private class MessageViewContainerAdapter(
+        fragment: Fragment,
+        private val showAccountChip: Boolean
+    ) : FragmentStateAdapter(fragment) {
+
         var messageList: List<MessageListItem> = emptyList()
             set(value) {
                 val diffResult = DiffUtil.calculateDiff(
@@ -257,7 +265,7 @@ class MessageViewContainerFragment : Fragment() {
             check(position in messageList.indices)
 
             val messageReference = messageList[position].messageReference
-            return MessageViewFragment.newInstance(messageReference)
+            return MessageViewFragment.newInstance(messageReference, showAccountChip)
         }
 
         fun getMessageReference(position: Int): MessageReference? {
@@ -298,13 +306,15 @@ class MessageViewContainerFragment : Fragment() {
 
     companion object {
         private const val ARG_REFERENCE = "reference"
+        private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
 
         private const val STATE_MESSAGE_REFERENCE = "messageReference"
         private const val STATE_LAST_DIRECTION = "lastDirection"
 
-        fun newInstance(reference: MessageReference): MessageViewContainerFragment {
+        fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
-                ARG_REFERENCE to reference.toIdentityString()
+                ARG_REFERENCE to reference.toIdentityString(),
+                ARG_SHOW_ACCOUNT_CHIP to showAccountChip
             )
         }
     }

@@ -225,7 +225,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="message_view_cc_label">Koopia:</string>
   <string name="message_view_bcc_label">Pimekoopia:</string>
   <string name="message_view_status_attachment_not_saved">Manuse salvestamine ebaõnnestus</string>
-  <string name="message_view_show_pictures_action">Näita pilte</string>
   <string name="message_view_no_viewer">Ei leia <xliff:g id="mimetype">%s</xliff:g> kuvamiseks programmi.</string>
   <string name="message_view_download_remainder">Laadi kogu kiri alla</string>
   <string name="message_view_sender_label">%1$s kaudu</string>
@@ -722,10 +721,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="font_size_message_list_preview">Eelvaade</string>
   <string name="font_size_message_view">Kirjad</string>
   <string name="font_size_message_view_sender">Saatja</string>
-  <string name="font_size_message_view_to">Kellele</string>
-  <string name="font_size_message_view_cc">Koopia</string>
-  <string name="font_size_message_view_bcc">Pimekoopia</string>
-  <string name="font_size_message_view_additional_headers">Täiendavad pealkirjad</string>
   <string name="font_size_message_view_subject">Teema</string>
   <string name="font_size_message_view_date">Kellaaeg ja kuupäev</string>
   <string name="font_size_message_view_content">Kirja põhiosa</string>

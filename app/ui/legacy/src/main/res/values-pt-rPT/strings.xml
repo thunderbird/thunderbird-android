@@ -227,7 +227,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Não foi possível guardar o anexo</string>
-  <string name="message_view_show_pictures_action">Mostrar imagens</string>
   <string name="message_view_no_viewer">Incapaz de encontrar visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Transferir mensagem completa</string>
   <string name="message_view_sender_label">via %1$s</string>
@@ -722,10 +721,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="font_size_message_list_preview">Pré-visualização</string>
   <string name="font_size_message_view">Mensagens</string>
   <string name="font_size_message_view_sender">Remetente</string>
-  <string name="font_size_message_view_to">Para</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Cabeçalhos adicionais</string>
   <string name="font_size_message_view_subject">Assunto</string>
   <string name="font_size_message_view_date">Data e hora</string>
   <string name="font_size_message_view_content">Corpo da mensagem</string>

@@ -227,7 +227,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="message_view_cc_label">Копия:</string>
   <string name="message_view_bcc_label">Скрытая копия:</string>
   <string name="message_view_status_attachment_not_saved">Не получается сохранить вложение.</string>
-  <string name="message_view_show_pictures_action">Изображения</string>
   <string name="message_view_no_viewer">Отсутствует просмотрщик <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Загрузить полностью</string>
   <string name="message_view_sender_label">от %1$s</string>
@@ -727,10 +726,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="font_size_message_list_preview">Просмотр</string>
   <string name="font_size_message_view">Сообщение</string>
   <string name="font_size_message_view_sender">Отправитель</string>
-  <string name="font_size_message_view_to">Кому</string>
-  <string name="font_size_message_view_cc">Копия</string>
-  <string name="font_size_message_view_bcc">Скрытая</string>
-  <string name="font_size_message_view_additional_headers">Все заголовки</string>
   <string name="font_size_message_view_subject">Тема</string>
   <string name="font_size_message_view_date">Дата и время</string>
   <string name="font_size_message_view_content">Тело сообщения</string>

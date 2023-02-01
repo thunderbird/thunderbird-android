@@ -222,7 +222,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="message_view_cc_label">Másolat:</string>
   <string name="message_view_bcc_label">Titkos másolat:</string>
   <string name="message_view_status_attachment_not_saved">Nem lehet elmenteni a mellékletet.</string>
-  <string name="message_view_show_pictures_action">Fényképek megjelenítése</string>
   <string name="message_view_no_viewer">Nem sikerült megjelenítőt találni ehhez: <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Teljes üzenet letöltése</string>
   <string name="message_view_sender_label">ezen keresztül: %1$s</string>
@@ -715,10 +714,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="font_size_message_list_preview">Előnézet</string>
   <string name="font_size_message_view">Üzenetek</string>
   <string name="font_size_message_view_sender">Feladó</string>
-  <string name="font_size_message_view_to">Címzett</string>
-  <string name="font_size_message_view_cc">Másolat</string>
-  <string name="font_size_message_view_bcc">Titkos másolat</string>
-  <string name="font_size_message_view_additional_headers">További fejlécek</string>
   <string name="font_size_message_view_subject">Tárgy</string>
   <string name="font_size_message_view_date">Idő és dátum</string>
   <string name="font_size_message_view_content">Üzenet törzse</string>

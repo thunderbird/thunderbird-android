@@ -25,6 +25,7 @@ dependencies {
     implementation libs.moshi
     implementation libs.timber
     implementation libs.mime4j.core
+    implementation libs.mime4j.dom
 
     testImplementation project(':mail:testing')
     testImplementation project(":backend:imap")

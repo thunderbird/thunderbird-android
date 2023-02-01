@@ -229,7 +229,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Methu â chadw\'r atodiad.</string>
-  <string name="message_view_show_pictures_action">Dangos delweddau</string>
   <string name="message_view_no_viewer">Methwyd cael hyd i ap er mwyn darllen <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Lawrlwytho\'r neges gyfan</string>
   <string name="message_view_sender_label">trwy %1$s</string>
@@ -723,10 +722,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="font_size_message_list_preview">Rhagolwg</string>
   <string name="font_size_message_view">Negeseuon</string>
   <string name="font_size_message_view_sender">Anfonwr</string>
-  <string name="font_size_message_view_to">At</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Penynnau ychwanegol</string>
   <string name="font_size_message_view_subject">Pwnc</string>
   <string name="font_size_message_view_date">Amser a dyddiad</string>
   <string name="font_size_message_view_content">Corff neges</string>

@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
+
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,9 +51,12 @@ public class MessageTopView extends LinearLayout {
     private ViewGroup containerView;
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
+    private View extraHeaderContainer;
     private Button showPicturesButton;
     private boolean isShowingProgress;
     private boolean showPicturesButtonClicked;
+
+    private boolean showAccountChip;
 
     private MessageCryptoPresenter messageCryptoPresenter;
 
@@ -76,12 +79,17 @@ public class MessageTopView extends LinearLayout {
         mDownloadRemainder = findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);
 
+        extraHeaderContainer = findViewById(R.id.extra_header_container);
         showPicturesButton = findViewById(R.id.show_pictures);
         setShowPicturesButtonListener();
 
         containerView = findViewById(R.id.message_container);
 
         hideHeaderView();
+    }
+
+    public void setShowAccountChip(boolean showAccountChip) {
+        this.showAccountChip = showAccountChip;
     }
 
     private void setShowPicturesButtonListener() {
@@ -208,7 +216,7 @@ public class MessageTopView extends LinearLayout {
     }
 
     public void setHeaders(Message message, Account account, boolean showStar) {
-        mHeaderContainer.populate(message, account, showStar);
+        mHeaderContainer.populate(message, account, showStar, showAccountChip);
         mHeaderContainer.setVisibility(View.VISIBLE);
     }
 
@@ -220,8 +228,8 @@ public class MessageTopView extends LinearLayout {
         mHeaderContainer.setOnFlagListener(listener);
     }
 
-    public void setOnMenuItemClickListener(OnMenuItemClickListener listener) {
-        mHeaderContainer.setOnMenuItemClickListener(listener);
+    public void setMessageHeaderClickListener(MessageHeaderClickListener listener) {
+        mHeaderContainer.setMessageHeaderClickListener(listener);
     }
 
     private void hideHeaderView() {
@@ -238,7 +246,6 @@ public class MessageTopView extends LinearLayout {
 
     public void setMessageCryptoPresenter(MessageCryptoPresenter messageCryptoPresenter) {
         this.messageCryptoPresenter = messageCryptoPresenter;
-        mHeaderContainer.setOnCryptoClickListener(messageCryptoPresenter);
     }
 
     public void enableDownloadButton() {
@@ -259,11 +266,11 @@ public class MessageTopView extends LinearLayout {
     }
 
     private void showShowPicturesButton() {
-        showPicturesButton.setVisibility(View.VISIBLE);
+        extraHeaderContainer.setVisibility(View.VISIBLE);
     }
 
     private void hideShowPicturesButton() {
-        showPicturesButton.setVisibility(View.GONE);
+        extraHeaderContainer.setVisibility(View.GONE);
     }
 
     private boolean shouldAutomaticallyLoadPictures(ShowPictures showPicturesSetting, Message message) {

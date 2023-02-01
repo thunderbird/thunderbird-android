@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
@@ -45,13 +46,12 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.messagedetails.MessageDetailsFragment
 import com.fsck.k9.ui.messagesource.MessageSourceActivity
-import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import com.fsck.k9.ui.withArguments
-import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.util.Locale
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -59,8 +59,7 @@ import timber.log.Timber
 class MessageViewFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
-    AttachmentViewCallback,
-    OnClickShowCryptoKeyListener {
+    AttachmentViewCallback {
 
     private val themeManager: ThemeManager by inject()
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
@@ -86,6 +85,7 @@ class MessageViewFragment :
 
     private lateinit var account: Account
     lateinit var messageReference: MessageReference
+    private var showAccountChip: Boolean = true
 
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
     private var isDeleteMenuItemDisabled: Boolean = false
@@ -118,6 +118,9 @@ class MessageViewFragment :
         messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
             ?: error("Invalid argument '$ARG_REFERENCE'")
 
+        showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP)
+            ?: error("Missing argument: '$ARG_SHOW_ACCOUNT_CHIP'")
+
         if (savedInstanceState != null) {
             wasMessageMarkedAsOpened = savedInstanceState.getBoolean(STATE_WAS_MESSAGE_MARKED_AS_OPENED)
         }
@@ -129,6 +132,8 @@ class MessageViewFragment :
             fragmentManager = parentFragmentManager,
             callback = messageLoaderCallbacks
         )
+
+        setFragmentResultListener(MessageDetailsFragment.FRAGMENT_RESULT_KEY, ::onMessageDetailsResult)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -145,6 +150,8 @@ class MessageViewFragment :
     }
 
     private fun initializeMessageTopView(messageTopView: MessageTopView) {
+        messageTopView.setShowAccountChip(showAccountChip)
+
         messageTopView.setAttachmentCallback(this)
         messageTopView.setMessageCryptoPresenter(messageCryptoPresenter)
 
@@ -152,9 +159,7 @@ class MessageViewFragment :
             onToggleFlagged()
         }
 
-        messageTopView.setOnMenuItemClickListener { item ->
-            onReplyMenuItemClicked(item.itemId)
-        }
+        messageTopView.setMessageHeaderClickListener(messageHeaderClickListener)
 
         messageTopView.setOnDownloadButtonClickListener {
             onDownloadButtonClicked()
@@ -376,17 +381,23 @@ class MessageViewFragment :
         messageTopView.setSubject(displaySubject)
     }
 
-    private fun onReplyMenuItemClicked(itemId: Int): Boolean {
-        when (itemId) {
-            R.id.reply -> onReply()
-            R.id.reply_all -> onReplyAll()
-            R.id.forward -> onForward()
-            R.id.forward_as_attachment -> onForwardAsAttachment()
-            R.id.share -> onSendAlternate()
-            else -> error("Missing handler for reply menu item $itemId")
+    private val messageHeaderClickListener = object : MessageHeaderClickListener {
+        override fun onParticipantsContainerClick() {
+            val messageDetailsFragment = MessageDetailsFragment.create(messageReference)
+            messageDetailsFragment.cryptoResult = messageCryptoPresenter.cryptoResultAnnotation
+            messageDetailsFragment.show(parentFragmentManager, "message_details")
         }
 
-        return true
+        override fun onMenuItemClick(itemId: Int) {
+            when (itemId) {
+                R.id.reply -> onReply()
+                R.id.reply_all -> onReplyAll()
+                R.id.forward -> onForward()
+                R.id.forward_as_attachment -> onForwardAsAttachment()
+                R.id.share -> onSendAlternate()
+                else -> error("Missing handler for reply menu item $itemId")
+            }
+        }
     }
 
     private fun onDownloadButtonClicked() {
@@ -565,6 +576,20 @@ class MessageViewFragment :
             REQUEST_CODE_CREATE_DOCUMENT -> onCreateDocumentResult(data)
             ACTIVITY_CHOOSE_FOLDER_MOVE -> onChooseFolderMoveResult(data)
             ACTIVITY_CHOOSE_FOLDER_COPY -> onChooseFolderCopyResult(data)
+        }
+    }
+
+    private fun onMessageDetailsResult(requestKey: String, result: Bundle) {
+        when (val action = result.getString(MessageDetailsFragment.RESULT_ACTION)) {
+            MessageDetailsFragment.ACTION_SEARCH_KEYS -> {
+                messageCryptoPresenter.onClickSearchKey()
+            }
+            MessageDetailsFragment.ACTION_SHOW_WARNING -> {
+                messageCryptoPresenter.onClickShowCryptoWarningDetails()
+            }
+            else -> {
+                error("Unsupported action: $action")
+            }
         }
     }
 
@@ -806,12 +831,6 @@ class MessageViewFragment :
             )
         }
 
-        override fun showCryptoInfoDialog(displayStatus: MessageCryptoDisplayStatus, hasSecurityWarning: Boolean) {
-            val dialog = CryptoInfoDialog.newInstance(displayStatus, hasSecurityWarning)
-            dialog.setTargetFragment(this@MessageViewFragment, 0)
-            dialog.show(parentFragmentManager, "crypto_info_dialog")
-        }
-
         override fun restartMessageCryptoProcessing() {
             messageTopView.setToLoadingState()
             messageLoaderHelper.asyncRestartMessageCryptoProcessing()
@@ -820,18 +839,6 @@ class MessageViewFragment :
         override fun showCryptoConfigDialog() {
             AccountSettingsActivity.startCryptoSettings(requireActivity(), account.uuid)
         }
-    }
-
-    override fun onClickShowSecurityWarning() {
-        messageCryptoPresenter.onClickShowCryptoWarningDetails()
-    }
-
-    override fun onClickSearchKey() {
-        messageCryptoPresenter.onClickSearchKey()
-    }
-
-    override fun onClickShowCryptoKey() {
-        messageCryptoPresenter.onClickShowCryptoKey()
     }
 
     interface MessageViewFragmentListener {
@@ -960,6 +967,7 @@ class MessageViewFragment :
         const val PROGRESS_THRESHOLD_MILLIS = 500 * 1000
 
         private const val ARG_REFERENCE = "reference"
+        private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
 
         private const val STATE_WAS_MESSAGE_MARKED_AS_OPENED = "wasMessageMarkedAsOpened"
 
@@ -967,9 +975,10 @@ class MessageViewFragment :
         private const val ACTIVITY_CHOOSE_FOLDER_COPY = 2
         private const val REQUEST_CODE_CREATE_DOCUMENT = 3
 
-        fun newInstance(reference: MessageReference): MessageViewFragment {
+        fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewFragment {
             return MessageViewFragment().withArguments(
-                ARG_REFERENCE to reference.toIdentityString()
+                ARG_REFERENCE to reference.toIdentityString(),
+                ARG_SHOW_ACCOUNT_CHIP to showAccountChip
             )
         }
     }

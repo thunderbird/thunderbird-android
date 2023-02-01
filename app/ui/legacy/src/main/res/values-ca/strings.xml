@@ -224,7 +224,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_view_cc_label">A/c:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">No s\'ha pogut desar l\'adjunt.</string>
-  <string name="message_view_show_pictures_action">Mostra les imatges</string>
   <string name="message_view_no_viewer">No s\'ha pogut trobar un visualitzador per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Baixa el missatge complet</string>
   <string name="message_view_sender_label">mitjançant %1$s</string>
@@ -724,10 +723,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="font_size_message_list_preview">Vista prèvia</string>
   <string name="font_size_message_view">Missatges</string>
   <string name="font_size_message_view_sender">Remitent</string>
-  <string name="font_size_message_view_to">A</string>
-  <string name="font_size_message_view_cc">A/c</string>
-  <string name="font_size_message_view_bcc">C/o</string>
-  <string name="font_size_message_view_additional_headers">Capçaleres addicionals</string>
   <string name="font_size_message_view_subject">Assumpte</string>
   <string name="font_size_message_view_date">Data i hora</string>
   <string name="font_size_message_view_content">Cos del missatge</string>

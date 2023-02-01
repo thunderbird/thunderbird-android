@@ -226,7 +226,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Nu se poate salva atașamentul.</string>
-  <string name="message_view_show_pictures_action">Arată pozele</string>
   <string name="message_view_no_viewer">Nu se poate găsi vizualizator pentru <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descarcă mesajul complet</string>
   <string name="message_view_sender_label">via %1$s</string>
@@ -728,10 +727,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="font_size_message_list_preview">Previzualizare</string>
   <string name="font_size_message_view">Mesaje</string>
   <string name="font_size_message_view_sender">Expeditor</string>
-  <string name="font_size_message_view_to">Către</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Antete adiționale</string>
   <string name="font_size_message_view_subject">Subiect</string>
   <string name="font_size_message_view_date">Timp și dată</string>
   <string name="font_size_message_view_content">Conținut mesaj</string>

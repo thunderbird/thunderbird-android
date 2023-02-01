@@ -209,7 +209,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="message_view_cc_label">Kópia:</string>
   <string name="message_view_bcc_label">Skrytá kópia (Bcc):</string>
   <string name="message_view_status_attachment_not_saved">Prílohu sa nepodarilo uložiť.</string>
-  <string name="message_view_show_pictures_action">Zobraziť obrázky</string>
   <string name="message_view_no_viewer">Nemožno nájsť prehliadač pre <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Stiahnuť kompletnú správu</string>
   <string name="message_view_sender_label">cez %1$s</string>
@@ -663,10 +662,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="font_size_message_list_preview">Náhľad</string>
   <string name="font_size_message_view">Správy</string>
   <string name="font_size_message_view_sender">Odosielateľ</string>
-  <string name="font_size_message_view_to">Komu</string>
-  <string name="font_size_message_view_cc">Kópia</string>
-  <string name="font_size_message_view_bcc">Skrytá kópia</string>
-  <string name="font_size_message_view_additional_headers">Prídavné hlavičky</string>
   <string name="font_size_message_view_subject">Skrytá kópia</string>
   <string name="font_size_message_view_date">Čas a dátum</string>
   <string name="font_size_message_view_content">Telo správy</string>

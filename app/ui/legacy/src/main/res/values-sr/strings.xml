@@ -207,7 +207,6 @@
   <string name="message_view_cc_label">Коп:</string>
   <string name="message_view_bcc_label">СКоп:</string>
   <string name="message_view_status_attachment_not_saved">Не могу да сачувам прилог.</string>
-  <string name="message_view_show_pictures_action">Приказуј слике</string>
   <string name="message_view_no_viewer">Не могу да нађем прегледач за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Преузми читаву поруку</string>
   <string name="message_view_sender_label">проследи %1$s</string>
@@ -661,10 +660,6 @@
   <string name="font_size_message_list_preview">Преглед</string>
   <string name="font_size_message_view">Поруке</string>
   <string name="font_size_message_view_sender">Пошиљалац</string>
-  <string name="font_size_message_view_to">За</string>
-  <string name="font_size_message_view_cc">Коп</string>
-  <string name="font_size_message_view_bcc">СКоп</string>
-  <string name="font_size_message_view_additional_headers">Додатна заглавља</string>
   <string name="font_size_message_view_subject">Тема</string>
   <string name="font_size_message_view_date">Време и датум</string>
   <string name="font_size_message_view_content">Тело поруке</string>

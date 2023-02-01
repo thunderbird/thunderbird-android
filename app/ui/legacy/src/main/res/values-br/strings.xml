@@ -195,7 +195,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">N\'haller ket enrollañ ar stagadenn.</string>
-  <string name="message_view_show_pictures_action">Diskouez ar skeudennoù</string>
   <string name="message_view_no_viewer">N’haller ket kavout ur gwelerez evit <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Pellgargañ ar gemennadenn glok</string>
   <string name="message_view_sender_label">dre %1$s</string>
@@ -630,10 +629,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="font_size_message_list_preview">Alberz</string>
   <string name="font_size_message_view">Kemennadennoù</string>
   <string name="font_size_message_view_sender">Kaser</string>
-  <string name="font_size_message_view_to">Da</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Talbennoù ouzhpenn</string>
   <string name="font_size_message_view_subject">Danvez</string>
   <string name="font_size_message_view_date">Eur ha deiziad</string>
   <string name="font_size_message_view_content">Korf ar gemennadenn</string>

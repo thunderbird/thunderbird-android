@@ -218,7 +218,6 @@
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">അറ്റാച്ചുമെന്റ് സേവ് ചെയ്യാനായില്ല.</string>
-  <string name="message_view_show_pictures_action">ചിത്രങ്ങൾ കാണിക്കുക</string>
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> എന്നതിനുള്ള വീക്ഷണസഹായസാമഗ്രി കണ്ടെത്താനായില്ല.</string>
   <string name="message_view_download_remainder">പൂർണ്ണ സന്ദേശം ഡൗൺ‌ലോഡു ചെയ്യുക</string>
   <string name="message_view_sender_label">%1$s വഴി</string>
@@ -685,10 +684,6 @@
   <string name="font_size_message_list_preview">പ്രിവ്യൂ</string>
   <string name="font_size_message_view">സന്ദേശങ്ങൾ</string>
   <string name="font_size_message_view_sender">അയച്ചയാൾ</string>
-  <string name="font_size_message_view_to">To</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">അധിക തലക്കെട്ടുകൾ</string>
   <string name="font_size_message_view_subject">വിഷയം</string>
   <string name="font_size_message_view_date">സമയവും തീയതിയും</string>
   <string name="font_size_message_view_content">സന്ദേശ ബോഡി</string>

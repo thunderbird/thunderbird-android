@@ -214,7 +214,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="message_view_cc_label">Копие:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Не може да запази прикачения файл.</string>
-  <string name="message_view_show_pictures_action">Покажи картинките</string>
   <string name="message_view_no_viewer">Не може да намери програма за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Свали цялото съобщение</string>
   <string name="message_view_sender_label">през %1$s</string>
@@ -659,10 +658,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="font_size_message_list_preview">Преглед</string>
   <string name="font_size_message_view">Съобщения</string>
   <string name="font_size_message_view_sender">Изпращач</string>
-  <string name="font_size_message_view_to">До</string>
-  <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_bcc">Bcc</string>
-  <string name="font_size_message_view_additional_headers">Допълнителни header-и</string>
   <string name="font_size_message_view_subject">Тема</string>
   <string name="font_size_message_view_date">Дата и час</string>
   <string name="font_size_message_view_content">Тяло на съобщението</string>

@@ -133,6 +133,10 @@ class K9MessageStore(
         return retrieveMessageOperations.getHeaders(folderId, messageServerId)
     }
 
+    override fun getHeaders(folderId: Long, messageServerId: String, headerNames: Set<String>): List<Header> {
+        return retrieveMessageOperations.getHeaders(folderId, messageServerId, headerNames)
+    }
+
     override fun destroyMessages(folderId: Long, messageServerIds: Collection<String>) {
         deleteMessageOperations.destroyMessages(folderId, messageServerIds)
     }

@@ -105,44 +105,20 @@
                     android:key="message_view_fonts">
 
                     <ListPreference
-                        android:key="message_view_sender_font"
-                        android:title="@string/font_size_message_view_sender"
-                        app:useSimpleSummaryProvider="true"
-                        android:entries="@array/font_entries"
-                        android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_sender" />
-
-                    <ListPreference
-                        android:key="message_view_to_font"
-                        android:title="@string/font_size_message_view_to"
-                        app:useSimpleSummaryProvider="true"
-                        android:entries="@array/font_entries"
-                        android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_to" />
-
-                    <ListPreference
-                        android:key="message_view_cc_font"
-                        android:title="@string/font_size_message_view_cc"
-                        app:useSimpleSummaryProvider="true"
-                        android:entries="@array/font_entries"
-                        android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_cc" />
-
-                    <ListPreference
-                        android:key="message_view_bcc_font"
-                        android:title="@string/font_size_message_view_bcc"
-                        app:useSimpleSummaryProvider="true"
-                        android:entries="@array/font_entries"
-                        android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_bcc" />
-
-                    <ListPreference
                         android:key="message_view_subject_font"
                         android:title="@string/font_size_message_view_subject"
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_view_subject" />
+
+                    <ListPreference
+                        android:key="message_view_sender_font"
+                        android:title="@string/font_size_message_view_sender"
+                        app:useSimpleSummaryProvider="true"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_view_sender" />
 
                     <ListPreference
                         android:key="message_view_date_font"
@@ -153,12 +129,12 @@
                         android:dialogTitle="@string/font_size_message_view_date" />
 
                     <ListPreference
-                        android:key="message_view_additional_headers_font"
-                        android:title="@string/font_size_message_view_additional_headers"
+                        android:key="message_view_recipients_font"
+                        android:title="@string/font_size_message_view_recipients"
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_additional_headers" />
+                        android:dialogTitle="@string/font_size_message_view_recipients" />
 
                     <SeekBarPreference
                         android:key="message_view_content_font_slider"
