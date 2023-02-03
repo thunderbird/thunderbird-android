@@ -39,7 +39,6 @@ ksp = "com.google.devtools.ksp:1.8.0-1.0.8"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-ktlint = "org.jlleitschuh.gradle.ktlint:11.0.0"
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [libraries]
