@@ -23,7 +23,7 @@ Additional, standalone, libraries used by K-9
 # Walkthrough
 
 To help you understand the design, the following sequence diagrams show typical flows through the
-classes. Each class is colour-coded by its top-level project. 
+classes. Each class is colour-coded by its top-level project.
 
 ## Reading email
 

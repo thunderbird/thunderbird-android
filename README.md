@@ -1,9 +1,9 @@
 # K-9 Mail
+
 [![Latest release](https://img.shields.io/github/release/thundernest/k-9.svg?style=flat-square)](https://github.com/thundernest/k-9/releases/latest)
 [![Latest beta release](https://img.shields.io/github/v/release/thundernest/k-9.svg?include_prereleases&style=flat-square)](https://github.com/thundernest/k-9/releases)
 
 K-9 Mail is an open-source email client for Android.
-
 
 ## Download
 
@@ -15,12 +15,10 @@ K-9 Mail can be downloaded from a couple of sources:
 
 You might also be interested in becoming a [tester](https://forum.k9mail.app/t/how-do-i-become-a-beta-tester/68) to get an early look at new versions.
 
-
 ## Release Notes
 
 Check out the [Release Notes](https://github.com/thundernest/k-9/wiki/ReleaseNotes) to find out what changed
 in each version of K-9 Mail.
-
 
 ## Need Help?
 
@@ -30,25 +28,21 @@ If the app is not behaving like it should, you might find these resources helpfu
 - [Frequently Asked Questions](https://forum.k9mail.app/c/faq)
 - [Support Forum](https://forum.k9mail.app/)
 
-
 ## Translations
 
 Interested in helping to translate K-9 Mail? Contribute here:
 
 https://www.transifex.com/projects/p/k9mail/
 
-
 ## Contributing
 
-Thank you for contributing! If you're unfamiliar with the code, 
-start by reading the [developer documentation](docs/DESIGN.md)
+Thank you for contributing! If you're unfamiliar with the code, start by reading the [developer documentation](docs/DESIGN.md)
 
 Please fork this repository and contribute back using [pull requests](https://github.com/thundernest/k-9/pulls).
 
 Any contributions, large or small, major features, bug fixes, unit/integration tests are welcomed and appreciated
 but will be thoroughly reviewed and discussed.
 Please make sure you read the [Code Style Guidelines](https://github.com/thundernest/k-9/wiki/CodeStyle).
-
 
 ## Communication
 
@@ -58,7 +52,6 @@ Aside from discussing changes in [pull requests](https://github.com/thundernest/
 - Matrix: [#k9mail:matrix.org](https://matrix.to/#/#tb-android:mozilla.org)
 - IRC: [#k9mail on Libera Chat](https://web.libera.chat/#k9mail)
 - [Developer mailing list](https://groups.google.com/forum/#!forum/k-9-dev)
-
 
 ## License
 
