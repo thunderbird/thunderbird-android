@@ -108,6 +108,11 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        if (numberOfRecipients == 0) {
+            // There's nothing to display
+            return
+        }
+
         val availableWidth = width
 
         val recipientLayoutData = recipientLayoutCreator.createRecipientLayout(
