@@ -105,6 +105,12 @@ spotless {
         trimTrailingWhitespace()
         endWithNewline()
     }
+    format("markdown") {
+        prettier()
+        target("**/*.md")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 tasks.register('testsOnCi') {
