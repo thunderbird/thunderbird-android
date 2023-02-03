@@ -13,7 +13,8 @@ internal class CheckFolderOperations(private val lockableDatabase: LockableDatab
             ) { selectionSet, selectionArguments ->
                 if (allIncludedInUnifiedInbox) {
                     database.rawQuery(
-                        "SELECT COUNT(id) FROM folders WHERE integrate = 1 AND id $selectionSet", selectionArguments
+                        "SELECT COUNT(id) FROM folders WHERE integrate = 1 AND id $selectionSet",
+                        selectionArguments
                     ).use { cursor ->
                         if (cursor.moveToFirst()) {
                             val count = cursor.getInt(0)

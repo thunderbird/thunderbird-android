@@ -35,7 +35,8 @@ class ContactLetterBitmapCreator(
         canvas.drawText(
             letter,
             pictureSizeInPx / 2f - width / 2f,
-            pictureSizeInPx / 2f + rect.height() / 2f, paint
+            pictureSizeInPx / 2f + rect.height() / 2f,
+            paint
         )
 
         return bitmap

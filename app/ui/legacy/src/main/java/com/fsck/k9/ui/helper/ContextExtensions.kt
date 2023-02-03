@@ -1,4 +1,5 @@
 @file:JvmName("ContextHelper")
+
 package com.fsck.k9.ui.helper
 
 import android.app.Activity

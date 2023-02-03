@@ -197,7 +197,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         val (folderId1, folderId2, _) = listOf(
             sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"),
             sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"),
-            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS"),
+            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS")
         )
 
         val result = retrieveFolderOperations.getDisplayFolders(
@@ -215,7 +215,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         val (folderId1, _, folderId3) = listOf(
             sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"),
             sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"),
-            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS"),
+            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS")
         )
 
         val result = retrieveFolderOperations.getDisplayFolders(
@@ -238,7 +238,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         val (folderId1, folderId2, _) = listOf(
             sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"),
             sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"),
-            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS"),
+            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS")
         )
 
         val result = retrieveFolderOperations.getDisplayFolders(
@@ -292,7 +292,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     fun `get folder id`() {
         val (_, folderId2) = listOf(
             sqliteDatabase.createFolder(serverId = "folder1"),
-            sqliteDatabase.createFolder(serverId = "folder2"),
+            sqliteDatabase.createFolder(serverId = "folder2")
         )
 
         val result = retrieveFolderOperations.getFolderId(folderServerId = "folder2")
@@ -311,7 +311,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     fun `get folder server id`() {
         val (_, folderId2) = listOf(
             sqliteDatabase.createFolder(serverId = "folder1"),
-            sqliteDatabase.createFolder(serverId = "folder2"),
+            sqliteDatabase.createFolder(serverId = "folder2")
         )
 
         val result = retrieveFolderOperations.getFolderServerId(folderId2)

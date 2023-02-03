@@ -551,12 +551,14 @@ class Account(override val uuid: String) : BaseAccount {
 
             if (age < 28) {
                 now.add(Calendar.DATE, age * -1)
-            } else when (age) {
-                28 -> now.add(Calendar.MONTH, -1)
-                56 -> now.add(Calendar.MONTH, -2)
-                84 -> now.add(Calendar.MONTH, -3)
-                168 -> now.add(Calendar.MONTH, -6)
-                365 -> now.add(Calendar.YEAR, -1)
+            } else {
+                when (age) {
+                    28 -> now.add(Calendar.MONTH, -1)
+                    56 -> now.add(Calendar.MONTH, -2)
+                    84 -> now.add(Calendar.MONTH, -3)
+                    168 -> now.add(Calendar.MONTH, -6)
+                    365 -> now.add(Calendar.YEAR, -1)
+                }
             }
 
             return now.time

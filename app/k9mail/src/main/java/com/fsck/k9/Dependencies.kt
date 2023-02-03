@@ -22,7 +22,7 @@ private val mainAppModule = module {
     single {
         MessagingListenerProvider(
             listOf(
-                get<UnreadWidgetUpdateListener>(),
+                get<UnreadWidgetUpdateListener>()
             )
         )
     }

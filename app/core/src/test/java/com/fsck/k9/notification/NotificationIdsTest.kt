@@ -41,9 +41,9 @@ class NotificationIdsTest {
     }
 
     @Test
-    // We avoid gaps. So this test failing is an indication that getGeneralNotificationIds() and/or
-    // getAccountNotificationIds() need to be updated.
     fun `no gaps between general and account notification IDs`() {
+        // We avoid gaps. So this test failing is an indication that getGeneralNotificationIds() and/or
+        // getAccountNotificationIds() need to be updated.
         val account = createAccount(0)
 
         val generalNotificationIds = getGeneralNotificationIds()
@@ -55,8 +55,8 @@ class NotificationIdsTest {
     }
 
     @Test
-    // We avoid gaps. So this test failing is an indication that getAccountNotificationIds() needs to be updated.
     fun `no gaps in notification IDs of an account`() {
+        // We avoid gaps. So this test failing is an indication that getAccountNotificationIds() needs to be updated.
         val account = createAccount(0)
 
         val notificationIds = getAccountNotificationIds(account)
@@ -68,8 +68,8 @@ class NotificationIdsTest {
     }
 
     @Test
-    // We avoid gaps. So this test failing is an indication that getAccountNotificationIds() needs to be updated.
     fun `no gap between notification IDs of adjacent accounts`() {
+        // We avoid gaps. So this test failing is an indication that getAccountNotificationIds() needs to be updated.
         val account1 = createAccount(1)
         val account2 = createAccount(2)
 
@@ -104,7 +104,7 @@ class NotificationIdsTest {
             NotificationIds.getAuthenticationErrorNotificationId(account, true),
             NotificationIds.getAuthenticationErrorNotificationId(account, false),
             NotificationIds.getFetchingMailNotificationId(account),
-            NotificationIds.getNewMailSummaryNotificationId(account),
+            NotificationIds.getNewMailSummaryNotificationId(account)
         ) + getNewMessageNotificationIds(account)
     }
 

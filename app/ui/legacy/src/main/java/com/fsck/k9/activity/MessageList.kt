@@ -274,7 +274,9 @@ open class MessageList :
         if (!hasMessageListFragment) {
             val fragmentTransaction = fragmentManager.beginTransaction()
             val messageListFragment = MessageListFragment.newInstance(
-                search!!, false, K9.isThreadedViewEnabled && !noThreading
+                search!!,
+                false,
+                K9.isThreadedViewEnabled && !noThreading
             )
             fragmentTransaction.add(R.id.message_list_container, messageListFragment)
             fragmentTransaction.commitNow()

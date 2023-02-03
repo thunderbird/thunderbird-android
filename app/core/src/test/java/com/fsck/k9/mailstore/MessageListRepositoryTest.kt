@@ -429,5 +429,5 @@ private data class MessageData(
     val isRead: Boolean = false,
     val isStarred: Boolean = false,
     val isAnswered: Boolean = false,
-    val isForwarded: Boolean = false,
+    val isForwarded: Boolean = false
 )

@@ -9,5 +9,5 @@ data class FolderSettings(
     val notifyClass: FolderClass,
     val pushClass: FolderClass,
     val inTopGroup: Boolean,
-    val integrate: Boolean,
+    val integrate: Boolean
 )

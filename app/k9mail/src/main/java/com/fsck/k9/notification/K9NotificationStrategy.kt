@@ -19,7 +19,6 @@ class K9NotificationStrategy(private val contacts: Contacts) : NotificationStrat
         message: LocalMessage,
         isOldMessage: Boolean
     ): Boolean {
-
         if (!K9.isNotificationDuringQuietTimeEnabled && K9.isQuietTime) {
             Timber.v("No notification: Quiet time is active")
             return false

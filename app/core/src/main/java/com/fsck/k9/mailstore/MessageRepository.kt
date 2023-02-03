@@ -63,7 +63,7 @@ class MessageRepository(private val messageStoreManager: MessageStoreManager) {
             "reply-to",
             "to",
             "cc",
-            "bcc",
+            "bcc"
         )
     }
 }

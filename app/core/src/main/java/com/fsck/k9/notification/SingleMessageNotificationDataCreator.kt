@@ -36,8 +36,8 @@ internal class SingleMessageNotificationDataCreator {
                 content = data.activeNotifications.first().content,
                 actions = createSingleNotificationActions(),
                 wearActions = createSingleNotificationWearActions(data.account),
-                addLockScreenNotification = false,
-            ),
+                addLockScreenNotification = false
+            )
         )
     }
 

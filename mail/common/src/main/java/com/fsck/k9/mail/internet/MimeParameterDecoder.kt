@@ -218,7 +218,12 @@ object MimeParameterDecoder {
                 parser.readExtendedParameterValueInto(data)
 
                 InitialExtendedValueParameterSection(
-                    newParameterName, parameterName, section, charsetName, language, data
+                    newParameterName,
+                    parameterName,
+                    section,
+                    charsetName,
+                    language,
+                    data
                 )
             } else {
                 val encodedParameterText = parameterText.substring(parser.position())

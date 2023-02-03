@@ -414,7 +414,8 @@ class SmtpTransport(
 
             val msgOut = EOLConvertingOutputStream(
                 LineWrapOutputStream(
-                    SmtpDataStuffing(outputStream), 1000
+                    SmtpDataStuffing(outputStream),
+                    1000
                 )
             )
 

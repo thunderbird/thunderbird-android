@@ -65,10 +65,11 @@ object Core : EarlyInit {
             if (enabled != alreadyEnabled) {
                 pm.setComponentEnabledSetting(
                     ComponentName(context, clazz),
-                    if (enabled)
+                    if (enabled) {
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                    else
-                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    } else {
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                    },
                     PackageManager.DONT_KILL_APP
                 )
             }

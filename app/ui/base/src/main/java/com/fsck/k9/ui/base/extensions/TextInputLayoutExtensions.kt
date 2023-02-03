@@ -32,7 +32,7 @@ fun TextInputLayout.configureAuthenticatedPasswordToggle(
     activity: FragmentActivity,
     title: String,
     subtitle: String,
-    needScreenLockMessage: String,
+    needScreenLockMessage: String
 ) {
     val viewModel = ViewModelProvider(activity).get<AuthenticatedPasswordToggleViewModel>()
     viewModel.textInputLayout = this

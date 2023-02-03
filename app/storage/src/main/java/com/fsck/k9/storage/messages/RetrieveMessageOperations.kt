@@ -20,7 +20,9 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 arrayOf("uid"),
                 "id = ?",
                 arrayOf(messageId.toString()),
-                null, null, null
+                null,
+                null,
+                null
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     cursor.getString(0)
@@ -174,7 +176,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 "SELECT message_parts.header FROM messages" +
                     " LEFT JOIN message_parts ON (messages.message_part_id = message_parts.id)" +
                     " WHERE messages.folder_id = ? AND messages.uid = ?",
-                arrayOf(folderId.toString(), messageServerId),
+                arrayOf(folderId.toString(), messageServerId)
             ).use { cursor ->
                 if (!cursor.moveToFirst()) throw MessageNotFoundException(folderId, messageServerId)
 

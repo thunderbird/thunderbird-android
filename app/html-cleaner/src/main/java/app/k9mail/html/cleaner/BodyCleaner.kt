@@ -18,7 +18,13 @@ internal class BodyCleaner {
             .addAttributes("a", "name")
             .addAttributes("div", "align")
             .addAttributes(
-                "table", "align", "background", "bgcolor", "border", "cellpadding", "cellspacing",
+                "table",
+                "align",
+                "background",
+                "bgcolor",
+                "border",
+                "cellpadding",
+                "cellspacing",
                 "width"
             )
             .addAttributes("tr", "align", "background", "bgcolor", "valign")

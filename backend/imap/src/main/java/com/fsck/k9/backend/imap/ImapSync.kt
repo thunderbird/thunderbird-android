@@ -131,7 +131,9 @@ internal class ImapSync(
 
                 Timber.v(
                     "SYNC: About to get messages %d through %d for folder %s",
-                    remoteStart, remoteMessageCount, folder
+                    remoteStart,
+                    remoteMessageCount,
+                    folder
                 )
 
                 val headerProgress = AtomicInteger(0)
@@ -235,7 +237,9 @@ internal class ImapSync(
             listener.syncFailed(folder, rootMessage, e)
 
             Timber.e(
-                "Failed synchronizing folder %s:%s @ %tc", accountName, folder,
+                "Failed synchronizing folder %s:%s @ %tc",
+                accountName,
+                folder,
                 System.currentTimeMillis()
             )
         } finally {
@@ -337,7 +341,9 @@ internal class ImapSync(
 
         Timber.d(
             "SYNC: Have %d large messages and %d small messages out of %d unsynced messages",
-            largeMessages.size, smallMessages.size, unsyncedMessages.size
+            largeMessages.size,
+            smallMessages.size,
+            unsyncedMessages.size
         )
 
         unsyncedMessages.clear()
@@ -458,7 +464,9 @@ internal class ImapSync(
                         if (message.isSet(Flag.DELETED)) {
                             Timber.v(
                                 "Newly downloaded message %s:%s:%s was marked deleted on server, skipping",
-                                accountName, folder, message.uid
+                                accountName,
+                                folder,
+                                message.uid
                             )
 
                             if (isFirstResponse) {
@@ -521,7 +529,9 @@ internal class ImapSync(
                         val messageServerId = message.uid
                         Timber.v(
                             "About to notify listeners that we got a new small message %s:%s:%s",
-                            accountName, folder, messageServerId
+                            accountName,
+                            folder,
+                            messageServerId
                         )
 
                         // Update the listener with what we've found
@@ -569,7 +579,9 @@ internal class ImapSync(
             val messageServerId = message.uid
             Timber.v(
                 "About to notify listeners that we got a new large message %s:%s:%s",
-                accountName, folder, messageServerId
+                accountName,
+                folder,
+                messageServerId
             )
 
             // Update the listener with what we've found

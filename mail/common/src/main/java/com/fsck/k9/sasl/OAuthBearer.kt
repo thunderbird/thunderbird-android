@@ -1,4 +1,5 @@
 @file:JvmName("OAuthBearer")
+
 package com.fsck.k9.sasl
 
 import okio.ByteString.Companion.encodeUtf8

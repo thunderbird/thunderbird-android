@@ -292,7 +292,8 @@ internal class RealImapFolder(
             if (K9MailLib.isDebug()) {
                 Timber.i(
                     "ImapFolder.copyMessages: couldn't find remote folder '%s' for %s",
-                    escapedDestinationFolderName, logId
+                    escapedDestinationFolderName,
+                    logId
                 )
             }
 
@@ -399,7 +400,8 @@ internal class RealImapFolder(
 
         val dateSearchString = getDateSearchString(earliestDate)
         val command = String.format(
-            Locale.US, "UID SEARCH %d:%d%s%s",
+            Locale.US,
+            "UID SEARCH %d:%d%s%s",
             start,
             end,
             dateSearchString,
@@ -448,8 +450,11 @@ internal class RealImapFolder(
     @Throws(MessagingException::class, IOException::class)
     private fun existsNonDeletedMessageInRange(startIndex: Int, endIndex: Int, dateSearchString: String): Boolean {
         val command = String.format(
-            Locale.US, "SEARCH %d:%d%s NOT DELETED",
-            startIndex, endIndex, dateSearchString
+            Locale.US,
+            "SEARCH %d:%d%s NOT DELETED",
+            startIndex,
+            endIndex,
+            dateSearchString
         )
         val imapResponses = executeSimpleCommand(command)
 
@@ -969,8 +974,11 @@ internal class RealImapFolder(
                     canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
                 )
                 val command = String.format(
-                    Locale.US, "APPEND %s (%s) {%d}",
-                    escapedFolderName, combinedFlags, messageSize
+                    Locale.US,
+                    "APPEND %s (%s) {%d}",
+                    escapedFolderName,
+                    combinedFlags,
+                    messageSize
                 )
                 connection!!.sendCommand(command, false)
 

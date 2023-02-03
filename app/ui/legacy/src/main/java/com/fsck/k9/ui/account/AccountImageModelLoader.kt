@@ -18,7 +18,7 @@ import java.security.MessageDigest
  */
 internal class AccountImageModelLoader(
     private val contactPhotoLoader: ContactPhotoLoader,
-    private val accountFallbackImageProvider: AccountFallbackImageProvider,
+    private val accountFallbackImageProvider: AccountFallbackImageProvider
 ) : ModelLoader<AccountImage, Bitmap> {
     override fun buildLoadData(
         accountImage: AccountImage,

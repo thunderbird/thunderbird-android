@@ -113,7 +113,9 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
     }
 
     internal inner class TestCertificateErrorNotificationController : CertificateErrorNotificationController(
-        notificationHelper, mock(), resourceProvider
+        notificationHelper,
+        mock(),
+        resourceProvider
     ) {
         override fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
             return contentIntent

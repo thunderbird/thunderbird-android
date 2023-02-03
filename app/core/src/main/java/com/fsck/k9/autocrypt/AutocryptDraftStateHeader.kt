@@ -49,13 +49,21 @@ data class AutocryptDraftStateHeader(
         fun fromCryptoStatus(cryptoStatus: CryptoStatus): AutocryptDraftStateHeader {
             if (cryptoStatus.isSignOnly) {
                 return AutocryptDraftStateHeader(
-                    false, true, cryptoStatus.isReplyToEncrypted,
-                    cryptoStatus.isUserChoice(), cryptoStatus.isPgpInlineModeEnabled, mapOf()
+                    false,
+                    true,
+                    cryptoStatus.isReplyToEncrypted,
+                    cryptoStatus.isUserChoice(),
+                    cryptoStatus.isPgpInlineModeEnabled,
+                    mapOf()
                 )
             }
             return AutocryptDraftStateHeader(
-                cryptoStatus.isEncryptionEnabled, false, cryptoStatus.isReplyToEncrypted,
-                cryptoStatus.isUserChoice(), cryptoStatus.isPgpInlineModeEnabled, mapOf()
+                cryptoStatus.isEncryptionEnabled,
+                false,
+                cryptoStatus.isReplyToEncrypted,
+                cryptoStatus.isUserChoice(),
+                cryptoStatus.isPgpInlineModeEnabled,
+                mapOf()
             )
         }
     }

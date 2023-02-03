@@ -67,35 +67,40 @@ class AccountPreferenceSerializer(
 
             val draftsFolderId = storage.getString("$accountUuid.draftsFolderId", null)?.toLongOrNull()
             val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage, "$accountUuid.draftsFolderSelection",
+                storage,
+                "$accountUuid.draftsFolderSelection",
                 SpecialFolderSelection.AUTOMATIC
             )
             setDraftsFolderId(draftsFolderId, draftsFolderSelection)
 
             val sentFolderId = storage.getString("$accountUuid.sentFolderId", null)?.toLongOrNull()
             val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage, "$accountUuid.sentFolderSelection",
+                storage,
+                "$accountUuid.sentFolderSelection",
                 SpecialFolderSelection.AUTOMATIC
             )
             setSentFolderId(sentFolderId, sentFolderSelection)
 
             val trashFolderId = storage.getString("$accountUuid.trashFolderId", null)?.toLongOrNull()
             val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage, "$accountUuid.trashFolderSelection",
+                storage,
+                "$accountUuid.trashFolderSelection",
                 SpecialFolderSelection.AUTOMATIC
             )
             setTrashFolderId(trashFolderId, trashFolderSelection)
 
             val archiveFolderId = storage.getString("$accountUuid.archiveFolderId", null)?.toLongOrNull()
             val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage, "$accountUuid.archiveFolderSelection",
+                storage,
+                "$accountUuid.archiveFolderSelection",
                 SpecialFolderSelection.AUTOMATIC
             )
             setArchiveFolderId(archiveFolderId, archiveFolderSelection)
 
             val spamFolderId = storage.getString("$accountUuid.spamFolderId", null)?.toLongOrNull()
             val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage, "$accountUuid.spamFolderSelection",
+                storage,
+                "$accountUuid.spamFolderSelection",
                 SpecialFolderSelection.AUTOMATIC
             )
             setSpamFolderId(spamFolderId, spamFolderSelection)
@@ -524,8 +529,11 @@ class AccountPreferenceSerializer(
                 java.lang.Enum.valueOf<T>(defaultEnum.declaringJavaClass, stringPref)
             } catch (ex: IllegalArgumentException) {
                 Timber.w(
-                    ex, "Unable to convert preference key [%s] value [%s] to enum of type %s",
-                    key, stringPref, defaultEnum.declaringJavaClass
+                    ex,
+                    "Unable to convert preference key [%s] value [%s] to enum of type %s",
+                    key,
+                    stringPref,
+                    defaultEnum.declaringJavaClass
                 )
 
                 defaultEnum

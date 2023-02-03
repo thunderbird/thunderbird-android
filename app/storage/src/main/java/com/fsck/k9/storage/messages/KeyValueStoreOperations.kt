@@ -14,7 +14,9 @@ internal class KeyValueStoreOperations(private val lockableDatabase: LockableDat
                 arrayOf("value_text"),
                 "name = ?",
                 arrayOf(name),
-                null, null, null
+                null,
+                null,
+                null
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     cursor.getStringOrNull(0)
@@ -42,7 +44,9 @@ internal class KeyValueStoreOperations(private val lockableDatabase: LockableDat
                 arrayOf("value_integer"),
                 "name = ?",
                 arrayOf(name),
-                null, null, null
+                null,
+                null,
+                null
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     cursor.getLongOrNull(0)
@@ -70,7 +74,9 @@ internal class KeyValueStoreOperations(private val lockableDatabase: LockableDat
                 arrayOf("value_text"),
                 "name = ? AND folder_id = ?",
                 arrayOf(name, folderId.toString()),
-                null, null, null
+                null,
+                null,
+                null
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     cursor.getStringOrNull(0)
@@ -99,7 +105,9 @@ internal class KeyValueStoreOperations(private val lockableDatabase: LockableDat
                 arrayOf("value_integer"),
                 "name = ? AND folder_id = ?",
                 arrayOf(name, folderId.toString()),
-                null, null, null
+                null,
+                null,
+                null
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     cursor.getLongOrNull(0)

@@ -192,7 +192,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         `when`(
             openPgpApi.executeApi(
                 capturedApiIntent.capture(),
-                any<OpenPgpDataSource>(), anyOrNull()
+                any<OpenPgpDataSource>(),
+                anyOrNull()
             )
         ).thenReturn(returnIntent)
 
@@ -217,7 +218,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val contentBodyPart = multipart.getBodyPart(0)
         Assert.assertEquals(
             "first part must have content type text/plain",
-            "text/plain", MimeUtility.getHeaderParameter(contentBodyPart.contentType, null)
+            "text/plain",
+            MimeUtility.getHeaderParameter(contentBodyPart.contentType, null)
         )
         assertTrue("signed message body must be TextBody", contentBodyPart.body is TextBody)
         Assert.assertEquals(MimeUtil.ENC_QUOTED_PRINTABLE, (contentBodyPart.body as TextBody).encoding)
@@ -226,16 +228,19 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val signatureBodyPart = multipart.getBodyPart(1)
         val contentType = signatureBodyPart.contentType
         Assert.assertEquals(
-            "second part must be pgp signature", "application/pgp-signature",
+            "second part must be pgp signature",
+            "application/pgp-signature",
             MimeUtility.getHeaderParameter(contentType, null)
         )
         Assert.assertEquals(
-            "second part must be called signature.asc", "signature.asc",
+            "second part must be called signature.asc",
+            "signature.asc",
             MimeUtility.getHeaderParameter(contentType, "name")
         )
         assertContentOfBodyPartEquals(
             "content must match the supplied detached signature",
-            signatureBodyPart, byteArrayOf(1, 2, 3)
+            signatureBodyPart,
+            byteArrayOf(1, 2, 3)
         )
 
         assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL)
@@ -483,7 +488,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         `when`(
             openPgpApi.executeApi(
-                capturedApiIntent.capture(), any(OpenPgpDataSource::class.java),
+                capturedApiIntent.capture(),
+                any(OpenPgpDataSource::class.java),
                 any(OutputStream::class.java)
             )
         ).thenReturn(returnIntent)
@@ -512,17 +518,20 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val dummyBodyPart = multipart.getBodyPart(0)
         Assert.assertEquals(
             "first part must be pgp encrypted dummy part",
-            "application/pgp-encrypted", dummyBodyPart.contentType
+            "application/pgp-encrypted",
+            dummyBodyPart.contentType
         )
         assertContentOfBodyPartEquals(
             "content must match the supplied detached signature",
-            dummyBodyPart, "Version: 1"
+            dummyBodyPart,
+            "Version: 1"
         )
 
         val encryptedBodyPart = multipart.getBodyPart(1)
         Assert.assertEquals(
             "second part must be octet-stream of encrypted data",
-            "application/octet-stream; name=\"encrypted.asc\"", encryptedBodyPart.contentType
+            "application/octet-stream; name=\"encrypted.asc\"",
+            encryptedBodyPart.contentType
         )
         assertTrue(
             "message body must be BinaryTempFileBody",
@@ -550,7 +559,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         `when`(
             openPgpApi.executeApi(
-                capturedApiIntent.capture(), any(OpenPgpDataSource::class.java),
+                capturedApiIntent.capture(),
+                any(OpenPgpDataSource::class.java),
                 any(OutputStream::class.java)
             )
         ).thenReturn(returnIntent)
@@ -595,7 +605,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         `when`(
             openPgpApi.executeApi(
-                capturedApiIntent.capture(), any(OpenPgpDataSource::class.java),
+                capturedApiIntent.capture(),
+                any(OpenPgpDataSource::class.java),
                 any(OutputStream::class.java)
             )
         ).thenReturn(returnIntent)
@@ -707,8 +718,11 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             resourceProvider: CoreResourceProvider
         ): PgpMessageBuilder {
             val builder = PgpMessageBuilder(
-                MessageIdGenerator.getInstance(), BoundaryGenerator.getInstance(),
-                AutocryptOperations.getInstance(), autocryptOpenPgpApiInteractor, resourceProvider
+                MessageIdGenerator.getInstance(),
+                BoundaryGenerator.getInstance(),
+                AutocryptOperations.getInstance(),
+                autocryptOpenPgpApiInteractor,
+                resourceProvider
             )
             builder.setOpenPgpApi(openPgpApi)
 

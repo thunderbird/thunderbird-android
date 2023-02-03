@@ -23,7 +23,7 @@ fun SQLiteDatabase.createFolder(
     visibleLimit: Int = 25,
     status: String? = null,
     flaggedCount: Int = 0,
-    moreMessages: String = "unknown",
+    moreMessages: String = "unknown"
 ): Long {
     val values = ContentValues().apply {
         put("name", name)

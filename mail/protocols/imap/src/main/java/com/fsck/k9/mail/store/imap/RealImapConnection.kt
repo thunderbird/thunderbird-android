@@ -710,7 +710,10 @@ internal class RealImapConnection(
     ): List<ImapResponse> {
         val groupedIds = IdGrouper.groupIds(ids)
         val splitCommands = ImapCommandSplitter.splitCommand(
-            commandPrefix, commandSuffix, groupedIds, lineLengthLimit
+            commandPrefix,
+            commandSuffix,
+            groupedIds,
+            lineLengthLimit
         )
 
         return splitCommands.flatMap { splitCommand ->
@@ -831,7 +834,9 @@ internal class RealImapConnection(
                 } else {
                     Timber.w(
                         "After sending tag %s, got tag response from previous command %s for %s",
-                        tag, response, logId
+                        tag,
+                        response,
+                        logId
                     )
                 }
             }

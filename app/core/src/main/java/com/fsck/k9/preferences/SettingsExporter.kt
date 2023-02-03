@@ -105,7 +105,8 @@ class SettingsExporter(
                 } catch (e: InvalidSettingValueException) {
                     Timber.w(
                         "Global setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
-                        key, valueString
+                        key,
+                        valueString
                     )
                 }
             } else {
@@ -271,7 +272,9 @@ class SettingsExporter(
                     Timber.w(
                         "Account setting \"%s\" (%s) has invalid value \"%s\" in preference storage. " +
                             "This shouldn't happen!",
-                        keyPart, account, valueString
+                        keyPart,
+                        account,
+                        valueString
                     )
                 }
             }
@@ -375,7 +378,8 @@ class SettingsExporter(
                         Timber.w(
                             "Identity setting \"%s\" has invalid value \"%s\" in preference storage. " +
                                 "This shouldn't happen!",
-                            identityKey, valueString
+                            identityKey,
+                            valueString
                         )
                     }
                 }
@@ -413,7 +417,8 @@ class SettingsExporter(
                 } catch (e: InvalidSettingValueException) {
                     Timber.w(
                         "Folder setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
-                        key, value
+                        key,
+                        value
                     )
                 }
             }

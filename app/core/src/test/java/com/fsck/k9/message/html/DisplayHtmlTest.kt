@@ -51,7 +51,8 @@ class DisplayHtmlTest {
         val numberOfFoundElements = document.select(cssQuery).size
         assertEquals(
             "Expected to find '$cssQuery' $numberOfExpectedOccurrences time(s) in:\n$html",
-            numberOfExpectedOccurrences, numberOfFoundElements
+            numberOfExpectedOccurrences,
+            numberOfFoundElements
         )
     }
 }

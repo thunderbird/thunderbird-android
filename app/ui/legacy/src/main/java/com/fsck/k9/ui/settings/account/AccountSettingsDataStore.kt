@@ -280,7 +280,7 @@ class AccountSettingsDataStore(
                 vibration = NotificationVibration(
                     isEnabled = isVibrationEnabled,
                     pattern = vibrationPattern,
-                    repeatCount = vibrationTimes,
+                    repeatCount = vibrationTimes
                 )
             )
         }
