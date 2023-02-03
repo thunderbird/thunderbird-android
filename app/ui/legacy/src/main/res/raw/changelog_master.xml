@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.506" versioncode="35006" date="2023-02-03">
+        <change>Fixed a crash when displaying a message without any recipients</change>
+        <change>Fetch BCC header when partially downloading a message</change>
+    </release>
     <release version="6.505" versioncode="35005" date="2023-02-01">
         <change>Redesign of the message view screen</change>
         <change>Internal changes</change>
