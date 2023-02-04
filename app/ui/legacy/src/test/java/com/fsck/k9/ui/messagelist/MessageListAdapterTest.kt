@@ -6,7 +6,6 @@ import android.text.style.AbsoluteSizeSpan
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -63,7 +62,7 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     @Test
-    fun withoutStars_shouldHideStarCheckBox() {
+    fun withoutStars_shouldHideStarView() {
         val adapter = createAdapter(stars = false)
 
         val view = adapter.createAndBindView()
@@ -72,7 +71,7 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     @Test
-    fun withStars_shouldShowStarCheckBox() {
+    fun withStars_shouldShowStarView() {
         val adapter = createAdapter(stars = true)
 
         val view = adapter.createAndBindView()
@@ -81,23 +80,23 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     @Test
-    fun withStarsAndStarredMessage_shouldCheckStarCheckBox() {
+    fun withStarsAndStarredMessage_shouldSetStarViewToSelected() {
         val adapter = createAdapter(stars = true)
         val messageListItem = createMessageListItem(isStarred = true)
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertTrue(view.starView.isChecked)
+        assertTrue(view.starView.isSelected)
     }
 
     @Test
-    fun withStarsAndUnstarredMessage_shouldNotCheckStarCheckBox() {
+    fun withStarsAndUnstarredMessage_shouldNotSetStarViewToSelected() {
         val adapter = createAdapter(stars = true)
         val messageListItem = createMessageListItem(isStarred = false)
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertFalse(view.starView.isChecked)
+        assertFalse(view.starView.isSelected)
     }
 
     @Test
@@ -523,7 +522,7 @@ class MessageListAdapterTest : RobolectricTest() {
     fun secondLine(senderOrSubject: String, preview: String) = "$senderOrSubject $preview"
 
     val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
-    val View.starView: CheckBox get() = findViewById(R.id.star)
+    val View.starView: View get() = findViewById(R.id.star)
     val View.contactPictureContainerView: View get() = findViewById(R.id.contact_picture_container)
     val View.threadCountView: TextView get() = findViewById(R.id.thread_count)
     val View.firstLineView: TextView get() = findViewById(R.id.subject)

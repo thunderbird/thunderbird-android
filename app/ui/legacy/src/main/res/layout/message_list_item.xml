@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:foreground="?attr/selectableItemBackground"
-              android:orientation="horizontal"
-              android:layout_gravity="center_vertical"
-              tools:layout_height="?android:attr/listPreferredItemHeight"
-        >
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground">
+
+    <Space
+        android:id="@+id/margin_start"
+        android:layout_width="16dp"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <FrameLayout
         android:id="@+id/contact_picture_container"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="3dp">
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_check_circle_large" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/contact_picture"
@@ -27,145 +36,138 @@
             android:background="@android:color/transparent"
             tools:src="@drawable/ic_contact_picture" />
 
-        <ImageView
-            android:id="@+id/selected"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_check_circle_large"
-            android:visibility="gone"
-            android:contentDescription="@null" />
-
     </FrameLayout>
 
-    <RelativeLayout
-            android:id="@+id/list_item_inner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:paddingTop="5dip"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:layout_gravity="center_vertical"
-            android:paddingBottom="6dp">
+    <TextView
+        android:id="@+id/preview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:bufferType="spannable"
+        android:singleLine="false"
+        android:textAppearance="@style/TextAppearance.K9.Small"
+        android:textColor="?android:attr/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/divider"
+        app:layout_constraintEnd_toStartOf="@+id/star"
+        app:layout_constraintStart_toEndOf="@+id/barrier_start"
+        app:layout_constraintTop_toTopOf="@+id/barrier_first_line_bottom"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_goneMarginEnd="16dp"
+        tools:text="Message preview" />
 
-        <TextView
-                android:id="@+id/preview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/star"
-                android:layout_marginStart="1dp"
-                android:layout_marginEnd="3dp"
-                android:bufferType="spannable"
-                android:layout_below="@+id/subject_wrapper"
-                android:singleLine="false"
-                android:textAppearance="@style/TextAppearance.K9.Small"
-                android:textColor="?android:attr/textColorPrimary"
-                android:longClickable="false"
-                android:layout_alignWithParentIfMissing="false"
-                android:gravity="top"
-                android:layout_alignParentBottom="false"
-                tools:text="Message preview"/>
+    <ImageView
+        android:id="@+id/account_color_chip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:paddingStart="0dp"
+        android:paddingEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/subject"
+        app:layout_constraintStart_toEndOf="@+id/barrier_start"
+        app:layout_constraintTop_toTopOf="@+id/subject"
+        app:srcCompat="@drawable/ic_account_color"
+        tools:tint="#FF1976D2" />
 
-        <LinearLayout
-                android:id="@+id/subject_wrapper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/attachment">
+    <ImageView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/account_color_chip"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:srcCompat="?attr/messageListAnswered"
+        tools:src="@drawable/ic_messagelist_answered" />
 
-            <ImageView
-                android:id="@+id/account_color_chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="4dp"
-                app:srcCompat="@drawable/ic_account_color"
-                tools:tint="#FF1976D2"/>
+    <TextView
+        android:id="@+id/subject"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+        android:textColor="?android:attr/textColorPrimary"
+        app:layout_constraintEnd_toStartOf="@+id/thread_count"
+        app:layout_constraintStart_toEndOf="@+id/status"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        tools:text="Subject" />
 
-            <ImageView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="?attr/messageListAnswered"
-                tools:src="@drawable/ic_messagelist_answered"/>
+    <TextView
+        android:id="@+id/thread_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:background="?attr/messageListThreadCountBackground"
+        android:focusable="false"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="1dp"
+        android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+        android:textColor="?attr/messageListThreadCountForegroundColor"
+        app:layout_constraintEnd_toStartOf="@+id/attachment"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        tools:text="3" />
 
-            <TextView
-                    android:id="@+id/subject"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.7"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginStart="1dp"
-                    android:ellipsize="marquee"
-                    android:singleLine="true"
-                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:text="Subject"
-                    />
+    <ImageView
+        android:id="@+id/attachment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/date"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:srcCompat="?attr/messageListAttachment" />
 
-            <TextView
-                    android:id="@+id/thread_count"
-                    android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-                    android:textColor="?attr/messageListThreadCountForegroundColor"
-                    android:background="?attr/messageListThreadCountBackground"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginEnd="4dp"
-                    android:paddingRight="4dip"
-                    android:paddingBottom="1dip"
-                    android:paddingLeft="4dip"
-                    android:focusable="false"
-                    tools:text="3"
-                    />
-        </LinearLayout>
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.K9.Small"
+        android:textColor="?android:attr/textColorSecondary"
+        app:layout_constraintBaseline_toBaselineOf="@+id/subject"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Oct 27" />
 
-        <ImageView
-                android:id="@+id/attachment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/date"
-                android:layout_alignBottom="@+id/date"
-                app:srcCompat="?attr/messageListAttachment"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_toStartOf="@+id/date" />
+    <ImageView
+        android:id="@+id/star"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="-8dp"
+        android:paddingHorizontal="12dp"
+        android:src="@drawable/btn_select_star"
+        app:layout_constraintBottom_toBottomOf="@+id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date"
+        app:layout_constraintVertical_bias="1.0" />
 
-        <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/subject_wrapper"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:paddingStart="3dp"
-                android:paddingEnd="8dp"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.K9.Small"
-                android:textColor="?android:attr/textColorSecondary"
-                tools:text="Oct 27"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="12dp" />
 
-        <!-- TODO: Replace with an ImageView. MaterialCheckBox comes with a lot of styling that we don't want. -->
-        <CheckBox
-                android:id="@+id/star"
-                style="@style/MessageStarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_below="@+id/date"
-                android:layout_alignParentEnd="true"
-                android:paddingTop="5dip"
-                android:paddingStart="2dp"
-                android:paddingEnd="4dp"
-                android:focusable="false"
-                android:visibility="visible"
-                android:gravity="center_vertical"
-                tools:text="&#x200B;"/>
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_first_line_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="subject,date,thread_count,status,attachment,account_color_chip" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="margin_start,contact_picture_container" />
 
-    </RelativeLayout>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/contact_picture_container" />
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

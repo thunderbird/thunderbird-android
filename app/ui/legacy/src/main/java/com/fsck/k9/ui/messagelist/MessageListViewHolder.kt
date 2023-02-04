@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.messagelist
 
 import android.view.View
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -19,7 +18,7 @@ class MessageViewHolder(view: View) : MessageListViewHolder(view) {
     val date: TextView = view.findViewById(R.id.date)
     val chip: ImageView = view.findViewById(R.id.account_color_chip)
     val threadCount: TextView = view.findViewById(R.id.thread_count)
-    val flagged: CheckBox = view.findViewById(R.id.star)
+    val star: ImageView = view.findViewById(R.id.star)
     val attachment: ImageView = view.findViewById(R.id.attachment)
     val status: ImageView = view.findViewById(R.id.status)
 }

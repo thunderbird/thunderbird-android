@@ -332,9 +332,6 @@ class MessageListFragment :
             recyclerView.setPadding(0)
         }
 
-        val itemDecoration = MessageListItemDecoration(requireContext())
-        recyclerView.addItemDecoration(itemDecoration)
-
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.itemAnimator = MessageListItemAnimator()
 

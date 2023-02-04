@@ -185,7 +185,7 @@ class MessageListAdapter internal constructor(
         listItemListener.onFooterClicked()
     }
 
-    private val flagClickListener = OnClickListener { view: View ->
+    private val starClickListener = OnClickListener { view: View ->
         val messageListItem = getItemFromView(view) ?: return@OnClickListener
         listItemListener.onToggleMessageFlag(messageListItem)
     }
@@ -271,13 +271,13 @@ class MessageListAdapter internal constructor(
         appearance.fontSizes.setViewTextSize(holder.date, appearance.fontSizes.messageListDate)
 
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
-        holder.preview.setLines(max(appearance.previewLines, 1))
+        holder.preview.maxLines = max(appearance.previewLines, 1)
         appearance.fontSizes.setViewTextSize(holder.preview, appearance.fontSizes.messageListPreview)
         appearance.fontSizes.setViewTextSize(holder.threadCount, appearance.fontSizes.messageListSubject) // thread count is next to subject
 
-        holder.flagged.isVisible = appearance.stars
-        holder.flagged.tag = holder
-        holder.flagged.setOnClickListener(flagClickListener)
+        holder.star.isVisible = appearance.stars
+        holder.star.tag = holder
+        holder.star.setOnClickListener(starClickListener)
 
         view.tag = holder
 
@@ -332,7 +332,7 @@ class MessageListAdapter internal constructor(
             }
 
             if (appearance.stars) {
-                holder.flagged.isChecked = isStarred
+                holder.star.isSelected = isStarred
             }
             holder.uniqueId = uniqueId
             if (appearance.showContactPicture && holder.contactPicture.isVisible) {
