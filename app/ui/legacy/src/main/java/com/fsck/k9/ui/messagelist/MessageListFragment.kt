@@ -53,7 +53,6 @@ import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.fab.ShrinkFabOnScrollListener
 import com.fsck.k9.ui.folders.FolderNameFormatter
-import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -63,6 +62,7 @@ import java.util.concurrent.Future
 import net.jcip.annotations.GuardedBy
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
@@ -77,8 +77,7 @@ class MessageListFragment :
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
 
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
-    private val folderNameFormatterFactory: FolderNameFormatterFactory by inject()
-    private val folderNameFormatter: FolderNameFormatter by lazy { folderNameFormatterFactory.create(requireContext()) }
+    private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
     private val clock: Clock by inject()

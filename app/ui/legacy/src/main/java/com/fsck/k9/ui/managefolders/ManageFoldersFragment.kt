@@ -32,7 +32,7 @@ class ManageFoldersFragment : Fragment() {
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireActivity()) }
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
-    private val folderIconProvider by lazy { FolderIconProvider(requireActivity().theme) }
+    private val folderIconProvider: FolderIconProvider by inject { parametersOf(requireActivity().theme) }
 
     private lateinit var account: Account
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
