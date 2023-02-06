@@ -44,7 +44,7 @@ internal class MessageListItemMapper(
             sortMessageDate = message.messageDate,
             sortInternalDate = message.internalDate,
             sortIsStarred = message.isStarred,
-            sortDatabaseId = message.id,
+            sortDatabaseId = message.id
         )
     }
 

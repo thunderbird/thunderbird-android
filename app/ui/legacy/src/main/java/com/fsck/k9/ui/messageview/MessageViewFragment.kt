@@ -338,7 +338,9 @@ class MessageViewFragment :
         hideKeyboard()
 
         val handledByCryptoPresenter = messageCryptoPresenter.maybeHandleShowMessage(
-            messageTopView, account, messageViewInfo
+            messageTopView,
+            account,
+            messageViewInfo
         )
 
         if (!handledByCryptoPresenter) {
@@ -673,8 +675,11 @@ class MessageViewFragment :
                 val confirmText = getString(R.string.dialog_confirm_delete_confirm_button)
                 val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
                 ConfirmationDialogFragment.newInstance(
-                    dialogId, title, message,
-                    confirmText, cancelText
+                    dialogId,
+                    title,
+                    message,
+                    confirmText,
+                    cancelText
                 )
             }
             R.id.dialog_confirm_spam -> {
@@ -683,8 +688,11 @@ class MessageViewFragment :
                 val confirmText = getString(R.string.dialog_confirm_spam_confirm_button)
                 val cancelText = getString(R.string.dialog_confirm_spam_cancel_button)
                 ConfirmationDialogFragment.newInstance(
-                    dialogId, title, message,
-                    confirmText, cancelText
+                    dialogId,
+                    title,
+                    message,
+                    confirmText,
+                    cancelText
                 )
             }
             R.id.dialog_attachment_progress -> {
@@ -827,7 +835,12 @@ class MessageViewFragment :
 
             val maskedRequestCode = requestCode or REQUEST_MASK_CRYPTO_PRESENTER
             requireActivity().startIntentSenderForResult(
-                intentSender, maskedRequestCode, fillIntent, flagsMask, flagValues, extraFlags
+                intentSender,
+                maskedRequestCode,
+                fillIntent,
+                flagsMask,
+                flagValues,
+                extraFlags
             )
         }
 
@@ -917,7 +930,12 @@ class MessageViewFragment :
             try {
                 val maskedRequestCode = requestCode or REQUEST_MASK_LOADER_HELPER
                 requireActivity().startIntentSenderForResult(
-                    intentSender, maskedRequestCode, fillIntent, flagsMask, flagValues, extraFlags
+                    intentSender,
+                    maskedRequestCode,
+                    fillIntent,
+                    flagsMask,
+                    flagValues,
+                    extraFlags
                 )
             } catch (e: SendIntentException) {
                 Timber.e(e, "Irrecoverable error calling PendingIntent!")

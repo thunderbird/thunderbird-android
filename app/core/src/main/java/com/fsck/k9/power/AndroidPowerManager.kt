@@ -70,7 +70,10 @@ internal class AndroidPowerManager(private val systemPowerManager: SystemPowerMa
 
                 Timber.v(
                     "AndroidWakeLock for tag %s / id %d: releasing after %d ms, timeout = %d ms",
-                    tag, id, endTime - startTime, timeout
+                    tag,
+                    id,
+                    endTime - startTime,
+                    timeout
                 )
             } else {
                 Timber.v("AndroidWakeLock for tag %s / id %d, timeout = %d ms: releasing", tag, id, timeout)

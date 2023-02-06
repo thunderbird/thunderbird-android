@@ -46,7 +46,7 @@ WHERE
   AND empty = 0 AND deleted = 0
 ORDER BY $sortOrder
                 """,
-                selectionArgs,
+                selectionArgs
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)
                 buildList {
@@ -126,7 +126,7 @@ JOIN folders ON (folders.id = messages.folder_id)
 GROUP BY threads.root
 ORDER BY $orderBy
                 """,
-                selectionArgs,
+                selectionArgs
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = true)
                 buildList {
@@ -171,7 +171,7 @@ WHERE
   AND empty = 0 AND deleted = 0
 ORDER BY $sortOrder
                 """,
-                arrayOf(threadId.toString()),
+                arrayOf(threadId.toString())
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)
                 buildList {

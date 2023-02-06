@@ -48,7 +48,8 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
             remoteSrcFolder.open(OpenMode.READ_WRITE)
             if (remoteSrcFolder.mode != OpenMode.READ_WRITE) {
                 throw MessagingException(
-                    "moveOrCopyMessages: could not open remoteSrcFolder $srcFolder read/write", true
+                    "moveOrCopyMessages: could not open remoteSrcFolder $srcFolder read/write",
+                    true
                 )
             }
 
@@ -56,7 +57,10 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
 
             Timber.d(
                 "moveOrCopyMessages: source folder = %s, %d messages, destination folder = %s, isCopy = %s",
-                srcFolder, messages.size, destFolder, isCopy
+                srcFolder,
+                messages.size,
+                destFolder,
+                isCopy
             )
 
             remoteDestFolder = imapStore.getFolder(destFolder)

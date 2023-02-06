@@ -11,7 +11,9 @@ internal class UidValidityResponse private constructor(val uidValidity: Long) {
             val responseTextList = response.getList(1)
             if (responseTextList.size < 2 || !equalsIgnoreCase(responseTextList[0], Responses.UIDVALIDITY) ||
                 !responseTextList.isLong(1)
-            ) return null
+            ) {
+                return null
+            }
 
             val uidValidity = responseTextList.getLong(1)
             if (uidValidity !in 0L..0xFFFFFFFFL) return null

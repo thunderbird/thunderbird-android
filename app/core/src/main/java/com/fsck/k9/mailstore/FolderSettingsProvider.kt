@@ -19,7 +19,7 @@ class FolderSettingsProvider(val preferences: Preferences, val account: Account)
             notifyClass = storage.getString("$prefix.notifyMode", null).toFolderClass(FolderClass.INHERITED),
             pushClass = storage.getString("$prefix.pushMode", null).toFolderClass(FolderClass.SECOND_CLASS),
             inTopGroup = storage.getBoolean("$prefix.inTopGroup", false),
-            integrate = storage.getBoolean("$prefix.integrate", false),
+            integrate = storage.getBoolean("$prefix.integrate", false)
         ).also {
             removeImportedFolderSettings(prefix)
         }

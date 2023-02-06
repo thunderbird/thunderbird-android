@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.kotlin.jvm) apply false
-    alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.spotless)
 }
 
 project.ext {
@@ -94,10 +94,35 @@ allprojects {
             jvmTarget = jvmTargetVersion
         }
     }
+}
 
-    apply plugin: 'org.jlleitschuh.gradle.ktlint'
-    ktlint {
-        version = libs.versions.ktlint.get()
+spotless {
+    kotlin {
+        ktlint(libs.versions.ktlint.get())
+            .setEditorConfigPath("$projectDir/.editorconfig")
+        target("**/*.kt")
+        targetExclude("**/build/", "**/resources/", "plugins/openpgp-api-lib/")
+        endWithNewline()
+    }
+    kotlinGradle {
+        ktlint(libs.versions.ktlint.get())
+            .setEditorConfigPath("$projectDir/.editorconfig")
+        target("**/*.gradle.kts")
+        targetExclude("**/build/")
+        endWithNewline()
+    }
+    format("markdown") {
+        prettier()
+        target("**/*.md")
+        targetExclude("plugins/openpgp-api-lib/")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    format("misc") {
+        target("**/*.gradle", "**/.gitignore")
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
     }
 }
 

@@ -382,7 +382,10 @@ class NewMailNotificationManagerTest {
             on { createFromMessage(account, message) } doReturn
                 NotificationContent(
                     messageReference = createMessageReference(messageUid),
-                    sender, subject, preview, summary
+                    sender,
+                    subject,
+                    preview,
+                    summary
                 )
         }
 
@@ -407,7 +410,10 @@ class NewMailNotificationManagerTest {
             on { createFromMessage(account, message) } doReturn
                 NotificationContent(
                     messageReference = createMessageReference(messageUid),
-                    sender, subject, preview, summary
+                    sender,
+                    subject,
+                    preview,
+                    summary
                 )
         }
     }

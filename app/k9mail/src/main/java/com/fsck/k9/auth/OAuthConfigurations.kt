@@ -39,7 +39,7 @@ fun createOAuthConfigurationProvider(): OAuthConfigurationProvider {
                 authorizationEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
                 tokenEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/token",
                 redirectUri = BuildConfig.OAUTH_MICROSOFT_REDIRECT_URI
-            ),
+            )
         ),
         googleConfiguration = googleConfig
     )

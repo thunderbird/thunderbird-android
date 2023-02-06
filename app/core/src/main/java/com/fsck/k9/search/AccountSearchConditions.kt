@@ -25,7 +25,9 @@ fun LocalSearch.limitToDisplayableFolders(account: Account) {
 
             // TODO: Create a proper interface for creating arbitrary condition trees
             val searchCondition = SearchCondition(
-                SearchField.DISPLAY_CLASS, Attribute.EQUALS, FolderClass.SECOND_CLASS.name
+                SearchField.DISPLAY_CLASS,
+                Attribute.EQUALS,
+                FolderClass.SECOND_CLASS.name
             )
             val root = conditions
             if (root.mRight != null) {

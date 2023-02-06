@@ -86,7 +86,7 @@ internal fun createFolderSettingsProvider(): FolderSettingsProvider {
                 notifyClass = FolderClass.INHERITED,
                 pushClass = FolderClass.SECOND_CLASS,
                 inTopGroup = false,
-                integrate = false,
+                integrate = false
             )
     }
 }

@@ -15,7 +15,10 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
                 TABLE_NAME,
                 COLUMNS,
                 "$COLUMN_MESSAGE_ID = ?",
-                arrayOf(messageId.toString()), null, null, null
+                arrayOf(messageId.toString()),
+                null,
+                null,
+                null
             ).use { cursor ->
                 if (!cursor.moveToFirst()) {
                     throw IllegalStateException("No outbox_state entry for message with id $messageId")

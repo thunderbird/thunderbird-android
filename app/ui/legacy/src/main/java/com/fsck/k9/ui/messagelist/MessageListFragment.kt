@@ -1156,7 +1156,8 @@ class MessageListFragment :
                 operation == FolderOperation.COPY && !messagingController.isCopyCapable(message)
             ) {
                 val toast = Toast.makeText(
-                    activity, R.string.move_copy_cannot_copy_unsynced_message,
+                    activity,
+                    R.string.move_copy_cannot_copy_unsynced_message,
                     Toast.LENGTH_LONG
                 )
                 toast.show()
@@ -2064,7 +2065,7 @@ class MessageListFragment :
                 arguments = bundleOf(
                     ARG_SEARCH to search,
                     ARG_IS_THREAD_DISPLAY to isThreadDisplay,
-                    ARG_THREADED_LIST to threadedList,
+                    ARG_THREADED_LIST to threadedList
                 )
             }
         }

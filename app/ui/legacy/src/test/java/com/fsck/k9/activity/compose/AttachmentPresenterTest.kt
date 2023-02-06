@@ -47,7 +47,10 @@ class AttachmentPresenterTest : K9RobolectricTest() {
     @Before
     fun setUp() {
         attachmentPresenter = AttachmentPresenter(
-            ApplicationProvider.getApplicationContext(), attachmentMvpView, loaderManager, listener
+            ApplicationProvider.getApplicationContext(),
+            attachmentMvpView,
+            loaderManager,
+            listener
         )
     }
 
@@ -57,8 +60,13 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         val message = MimeMessage()
         MimeMessageHelper.setBody(message, TextBody(TEXT))
         val attachmentViewInfo = AttachmentViewInfo(
-            MIME_TYPE, ATTACHMENT_NAME, size, URI, false,
-            LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size), true
+            MIME_TYPE,
+            ATTACHMENT_NAME,
+            size,
+            URI,
+            false,
+            LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size),
+            true
         )
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
@@ -85,8 +93,13 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         val message = MimeMessage()
         MimeMessageHelper.setBody(message, TextBody(TEXT))
         val attachmentViewInfo = AttachmentViewInfo(
-            MIME_TYPE, ATTACHMENT_NAME, size, URI, false,
-            LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size), false
+            MIME_TYPE,
+            ATTACHMENT_NAME,
+            size,
+            URI,
+            false,
+            LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size),
+            false
         )
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,

@@ -10,7 +10,7 @@ object UriMatcher {
             "mailto:" to genericUriParser,
             "matrix:" to genericUriParser,
             "rtsp:" to httpUriParser,
-            "xmpp:" to genericUriParser,
+            "xmpp:" to genericUriParser
         )
     }
 

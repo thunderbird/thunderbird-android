@@ -21,7 +21,7 @@ class ThemeManager(
     private val context: Context,
     private val themeProvider: ThemeProvider,
     private val generalSettingsManager: GeneralSettingsManager,
-    private val appCoroutineScope: CoroutineScope,
+    private val appCoroutineScope: CoroutineScope
 ) {
 
     private val generalSettings: GeneralSettings

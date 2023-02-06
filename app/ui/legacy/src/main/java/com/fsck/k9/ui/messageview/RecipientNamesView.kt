@@ -75,7 +75,11 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
 
         if (isInEditMode) {
             recipientNames = listOf(
-                "Grace Hopper", "Katherine Johnson", "Margaret Hamilton", "Adele Goldberg", "Steve Shirley"
+                "Grace Hopper",
+                "Katherine Johnson",
+                "Margaret Hamilton",
+                "Adele Goldberg",
+                "Steve Shirley"
             )
             numberOfRecipients = 8
         }
@@ -116,7 +120,9 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
         val availableWidth = width
 
         val recipientLayoutData = recipientLayoutCreator.createRecipientLayout(
-            recipientNames, numberOfRecipients, availableWidth
+            recipientNames,
+            numberOfRecipients,
+            availableWidth
         )
 
         recipientNameTextView.text = recipientLayoutData.recipientNames

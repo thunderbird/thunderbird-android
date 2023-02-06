@@ -697,7 +697,7 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(
             server,
-            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
         )
 
         try {

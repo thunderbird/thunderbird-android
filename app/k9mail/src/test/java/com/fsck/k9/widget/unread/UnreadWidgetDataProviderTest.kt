@@ -29,14 +29,20 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     private val folderRepository = createFolderRepository()
     private val folderNameFormatterFactory = createFolderNameFormatterFactory()
     private val provider = UnreadWidgetDataProvider(
-        context, preferences, messageCountsProvider, defaultFolderStrategy,
-        folderRepository, folderNameFormatterFactory
+        context,
+        preferences,
+        messageCountsProvider,
+        defaultFolderStrategy,
+        folderRepository,
+        folderNameFormatterFactory
     )
 
     @Test
     fun unifiedInbox() {
         val configuration = UnreadWidgetConfiguration(
-            appWidgetId = 1, accountUuid = SearchAccount.UNIFIED_INBOX, folderId = null
+            appWidgetId = 1,
+            accountUuid = SearchAccount.UNIFIED_INBOX,
+            folderId = null
         )
 
         val widgetData = provider.loadUnreadWidgetData(configuration)
@@ -50,7 +56,9 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     @Test
     fun regularAccount() {
         val configuration = UnreadWidgetConfiguration(
-            appWidgetId = 3, accountUuid = ACCOUNT_UUID, folderId = null
+            appWidgetId = 3,
+            accountUuid = ACCOUNT_UUID,
+            folderId = null
         )
 
         val widgetData = provider.loadUnreadWidgetData(configuration)

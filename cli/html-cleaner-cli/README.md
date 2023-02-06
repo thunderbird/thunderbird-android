@@ -12,6 +12,6 @@ Arguments:
   OUTPUT  Output file
 ```
 
-You can run this tool using the [html-cleaner](../../html-cleaner) script in the root directory of this repository. 
+You can run this tool using the [html-cleaner](../../html-cleaner) script in the root directory of this repository.
 It will compile the application and then run it using the given arguments. This allows you to make modifications to the
 [HTML cleaning code](../../app/html-cleaner/src/main/java/app/k9mail/html/cleaner) and test the changes right away.

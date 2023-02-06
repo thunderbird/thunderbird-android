@@ -155,7 +155,8 @@ class RecipientPresenterTest : K9RobolectricTest() {
     @Test
     fun getCurrentCryptoStatus_withOpportunistic() {
         val recipientAutocryptStatus = RecipientAutocryptStatus(
-            RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null
+            RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED,
+            null
         )
 
         setupCryptoProvider(recipientAutocryptStatus)
@@ -170,7 +171,8 @@ class RecipientPresenterTest : K9RobolectricTest() {
     @Test
     fun getCurrentCryptoStatus_withOpportunistic__confirmed() {
         val recipientAutocryptStatus = RecipientAutocryptStatus(
-            RecipientAutocryptStatusType.AVAILABLE_CONFIRMED, null
+            RecipientAutocryptStatusType.AVAILABLE_CONFIRMED,
+            null
         )
 
         setupCryptoProvider(recipientAutocryptStatus)
@@ -185,7 +187,8 @@ class RecipientPresenterTest : K9RobolectricTest() {
     @Test
     fun getCurrentCryptoStatus_withOpportunistic__missingKeys() {
         val recipientAutocryptStatus = RecipientAutocryptStatus(
-            RecipientAutocryptStatusType.UNAVAILABLE, null
+            RecipientAutocryptStatusType.UNAVAILABLE,
+            null
         )
 
         setupCryptoProvider(recipientAutocryptStatus)
@@ -200,7 +203,8 @@ class RecipientPresenterTest : K9RobolectricTest() {
     @Test
     fun getCurrentCryptoStatus_withOpportunistic__privateMissingKeys() {
         val recipientAutocryptStatus = RecipientAutocryptStatus(
-            RecipientAutocryptStatusType.UNAVAILABLE, null
+            RecipientAutocryptStatusType.UNAVAILABLE,
+            null
         )
 
         setupCryptoProvider(recipientAutocryptStatus)
@@ -217,7 +221,8 @@ class RecipientPresenterTest : K9RobolectricTest() {
     @Test
     fun getCurrentCryptoStatus_withModeDisabled() {
         val recipientAutocryptStatus = RecipientAutocryptStatus(
-            RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null
+            RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED,
+            null
         )
 
         setupCryptoProvider(recipientAutocryptStatus)
@@ -234,7 +239,8 @@ class RecipientPresenterTest : K9RobolectricTest() {
     @Test
     fun getCurrentCryptoStatus_withModePrivate() {
         val recipientAutocryptStatus = RecipientAutocryptStatus(
-            RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null
+            RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED,
+            null
         )
 
         setupCryptoProvider(recipientAutocryptStatus)

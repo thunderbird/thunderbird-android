@@ -580,7 +580,8 @@ class RecipientPresenter(
         if (currentCryptoMode == CryptoMode.NO_CHOICE) {
             if (currentCryptoStatus.hasAutocryptPendingIntent()) {
                 recipientMvpView.launchUserInteractionPendingIntent(
-                    currentCryptoStatus.autocryptPendingIntent, REQUEST_CODE_AUTOCRYPT
+                    currentCryptoStatus.autocryptPendingIntent,
+                    REQUEST_CODE_AUTOCRYPT
                 )
             } else if (isEncryptOnNoChoice) {
                 // TODO warning dialog if we override, especially from reply!

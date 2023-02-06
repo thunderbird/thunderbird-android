@@ -17,7 +17,6 @@ internal class MigrationTo84(private val db: SQLiteDatabase) {
             null
         ).use { cursor ->
             cursor.map {
-
                 val messageId = it.getLong(0)
 
                 messageId to AddressSet(

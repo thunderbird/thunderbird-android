@@ -36,5 +36,5 @@ fun SQLiteDatabase.readNotifications(): List<NotificationEntry> {
 data class NotificationEntry(
     val messageId: Long?,
     val notificationId: Int?,
-    val timestamp: Long?,
+    val timestamp: Long?
 )

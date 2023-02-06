@@ -1171,7 +1171,9 @@ class RealImapFolderTest {
         val commandSuffixCaptor = argumentCaptor<String>()
         val commandUidsCaptor = argumentCaptor<Set<Long>>()
         verify(imapConnection, atLeastOnce()).executeCommandWithIdSet(
-            commandPrefixCaptor.capture(), commandSuffixCaptor.capture(), commandUidsCaptor.capture()
+            commandPrefixCaptor.capture(),
+            commandSuffixCaptor.capture(),
+            commandUidsCaptor.capture()
         )
 
         val commandPrefixes = commandPrefixCaptor.allValues

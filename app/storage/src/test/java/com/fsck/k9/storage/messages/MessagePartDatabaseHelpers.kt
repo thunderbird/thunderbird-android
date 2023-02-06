@@ -71,7 +71,7 @@ fun SQLiteDatabase.readMessageParts(): List<MessagePartEntry> {
                 epilogue = cursor.getStringOrNull("epilogue"),
                 boundary = cursor.getStringOrNull("boundary"),
                 contentId = cursor.getStringOrNull("content_id"),
-                serverExtra = cursor.getStringOrNull("server_extra"),
+                serverExtra = cursor.getStringOrNull("server_extra")
             )
         }
     }

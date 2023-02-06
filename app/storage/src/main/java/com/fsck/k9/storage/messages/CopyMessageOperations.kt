@@ -236,7 +236,9 @@ ORDER BY message_parts.seq
             ),
             "id = ?",
             arrayOf(messageId.toString()),
-            null, null, null
+            null,
+            null,
+            null
         ).use { cursor ->
             if (!cursor.moveToNext()) error("Message with ID $messageId not found")
 

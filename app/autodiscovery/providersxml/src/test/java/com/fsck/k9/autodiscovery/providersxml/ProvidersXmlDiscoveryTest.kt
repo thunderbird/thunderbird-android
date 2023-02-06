@@ -53,7 +53,7 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
 
         return OAuthConfigurationProvider(
             configurations = mapOf(
-                listOf("imap.gmail.com", "smtp.gmail.com") to googleConfig,
+                listOf("imap.gmail.com", "smtp.gmail.com") to googleConfig
             ),
             googleConfiguration = googleConfig
         )

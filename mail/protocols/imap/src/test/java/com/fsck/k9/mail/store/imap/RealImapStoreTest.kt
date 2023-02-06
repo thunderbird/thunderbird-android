@@ -413,7 +413,10 @@ class RealImapStoreTest {
         trustedSocketFactory: TrustedSocketFactory,
         oauth2TokenProvider: OAuth2TokenProvider?
     ) : RealImapStore(
-        serverSettings, config, trustedSocketFactory, oauth2TokenProvider
+        serverSettings,
+        config,
+        trustedSocketFactory,
+        oauth2TokenProvider
     ) {
         private val imapConnections: Deque<ImapConnection> = ArrayDeque()
         private var testCombinedPrefix: String? = null

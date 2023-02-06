@@ -120,7 +120,9 @@ val coreNotificationModule = module {
     }
     factory {
         NotificationSettingsUpdater(
-            preferences = get(), notificationChannelManager = get(), notificationConfigurationConverter = get()
+            preferences = get(),
+            notificationChannelManager = get(),
+            notificationConfigurationConverter = get()
         )
     }
 }

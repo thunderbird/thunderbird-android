@@ -55,7 +55,9 @@ internal class MoveMessageOperations(
             ),
             "id = ?",
             arrayOf(messageId.toString()),
-            null, null, null
+            null,
+            null,
+            null
         ).use { cursor ->
             if (!cursor.moveToFirst()) {
                 error("Couldn't find local message [ID: $messageId]")

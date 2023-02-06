@@ -75,7 +75,8 @@ constructor(
 
         init {
             PreferenceFragmentCompat.registerPreferenceFragment(
-                VibrationPreference::class.java, VibrationDialogFragment::class.java
+                VibrationPreference::class.java,
+                VibrationDialogFragment::class.java
             )
         }
 
