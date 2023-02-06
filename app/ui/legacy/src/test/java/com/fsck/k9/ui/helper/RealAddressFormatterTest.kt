@@ -1,4 +1,4 @@
-package com.fsck.k9.helper
+package com.fsck.k9.ui.helper
 
 import android.graphics.Color
 import android.text.Spannable

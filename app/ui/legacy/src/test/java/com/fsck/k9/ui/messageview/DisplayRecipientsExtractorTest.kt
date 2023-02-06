@@ -2,9 +2,9 @@ package com.fsck.k9.ui.messageview
 
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
-import com.fsck.k9.helper.AddressFormatter
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.buildMessage
+import com.fsck.k9.ui.helper.AddressFormatter
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

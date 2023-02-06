@@ -1,4 +1,6 @@
-package com.fsck.k9.helper
+package com.fsck.k9.ui.helper
+
+import com.fsck.k9.helper.Contacts
 
 interface ContactNameProvider {
     fun getNameForAddress(address: String): String?
