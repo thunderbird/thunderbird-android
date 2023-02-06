@@ -101,13 +101,14 @@ spotless {
         ktlint(libs.versions.ktlint.get())
             .setEditorConfigPath("$projectDir/.editorconfig")
         target("**/*.kt")
-        targetExclude("**/build/", "**/resources/")
+        targetExclude("**/build/", "**/resources/", "plugins/openpgp-api-lib/")
         trimTrailingWhitespace()
         endWithNewline()
     }
     format("markdown") {
         prettier()
         target("**/*.md")
+        targetExclude("plugins/openpgp-api-lib/")
         trimTrailingWhitespace()
         endWithNewline()
     }
