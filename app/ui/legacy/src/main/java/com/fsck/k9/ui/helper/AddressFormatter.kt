@@ -11,7 +11,18 @@ import com.fsck.k9.mail.Address
  * Get the display name for an email address.
  */
 interface AddressFormatter {
+    /**
+     * Get the display name for an [Address].
+     *
+     * Use this method for cases where only this display name is shown to the user. Falls back to the email address if
+     * necessary.
+     */
     fun getDisplayName(address: Address): CharSequence
+
+    /**
+     * Get the display name for an [Address], if available.
+     */
+    fun getDisplayNameOrNull(address: Address): CharSequence?
 }
 
 class RealAddressFormatter(
@@ -31,9 +42,22 @@ class RealAddressFormatter(
         return if (!showCorrespondentNames) {
             address.address
         } else if (showContactNames) {
-            getContactName(address)
+            getContactNameOrNull(address) ?: buildDisplayName(address)
         } else {
             buildDisplayName(address)
+        }
+    }
+
+    override fun getDisplayNameOrNull(address: Address): CharSequence? {
+        val identityDisplayName = account.findIdentity(address)?.name
+        if (identityDisplayName != null) {
+            return identityDisplayName
+        }
+
+        return if (showContactNames) {
+            getContactNameOrNull(address) ?: address.personal
+        } else {
+            address.personal
         }
     }
 
@@ -45,8 +69,8 @@ class RealAddressFormatter(
         }
     }
 
-    private fun getContactName(address: Address): CharSequence {
-        val contactName = contactNameProvider.getNameForAddress(address.address) ?: return buildDisplayName(address)
+    private fun getContactNameOrNull(address: Address): CharSequence? {
+        val contactName = contactNameProvider.getNameForAddress(address.address) ?: return null
 
         return if (contactNameColor != null) {
             SpannableString(contactName).apply {

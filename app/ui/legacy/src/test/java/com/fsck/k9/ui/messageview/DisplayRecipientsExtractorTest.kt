@@ -28,6 +28,10 @@ class DisplayRecipientsExtractorTest {
                 else -> address.personal ?: address.address
             }
         }
+
+        override fun getDisplayNameOrNull(address: Address): CharSequence? {
+            error("Not implemented")
+        }
     }
 
     private val displayRecipientsExtractor = DisplayRecipientsExtractor(
@@ -133,6 +137,10 @@ class DisplayRecipientsExtractorTest {
             override fun getDisplayName(address: Address): CharSequence {
                 numberOfTimesCalled++
                 return address.address
+            }
+
+            override fun getDisplayNameOrNull(address: Address): CharSequence? {
+                error("Not implemented")
             }
         }
         val displayRecipientsExtractor = DisplayRecipientsExtractor(

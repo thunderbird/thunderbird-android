@@ -38,20 +38,18 @@ internal class ParticipantItem(
 
         override fun bindView(item: ParticipantItem, payloads: List<Any>) {
             val participant = item.participant
-            val address = participant.address
-            val participantName = address.personal
 
-            if (participantName != null) {
-                name.text = participantName
-                email.text = address.address
+            if (participant.displayName != null) {
+                name.text = participant.displayName
+                email.text = participant.emailAddress
             } else {
-                name.text = address.address
+                name.text = participant.emailAddress
                 email.isVisible = false
             }
             menuAddContact.isVisible = !participant.isInContacts
 
             if (item.showContactsPicture) {
-                item.contactPictureLoader.setContactPicture(contactPicture, address)
+                item.contactPictureLoader.setContactPicture(contactPicture, participant.address)
             } else {
                 contactPicture.isVisible = false
             }

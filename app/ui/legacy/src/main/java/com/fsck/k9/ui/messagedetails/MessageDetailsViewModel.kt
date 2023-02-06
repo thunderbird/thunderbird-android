@@ -11,7 +11,10 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.mailstore.MessageDate
 import com.fsck.k9.mailstore.MessageRepository
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.helper.AddressFormatter
+import com.fsck.k9.ui.helper.AddressFormatterProvider
 import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.text.DateFormat
 import java.util.Locale
@@ -27,7 +30,9 @@ internal class MessageDetailsViewModel(
     private val messageRepository: MessageRepository,
     private val contactSettingsProvider: ContactSettingsProvider,
     private val contacts: Contacts,
-    private val clipboardManager: ClipboardManager
+    private val clipboardManager: ClipboardManager,
+    private val accountManager: AccountManager,
+    private val addressFormatterProvider: AddressFormatterProvider
 ) : ViewModel() {
     private val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.getDefault())
     private val uiState = MutableStateFlow<MessageDetailsState>(MessageDetailsState.Loading)
@@ -39,18 +44,21 @@ internal class MessageDetailsViewModel(
     fun loadData(messageReference: MessageReference): StateFlow<MessageDetailsState> {
         viewModelScope.launch(Dispatchers.IO) {
             uiState.value = try {
+                val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
+                val addressFormatter = addressFormatterProvider.getAddressFormatter(account)
+
                 val messageDetails = messageRepository.getMessageDetails(messageReference)
 
                 val senderList = messageDetails.sender?.let { listOf(it) } ?: emptyList()
                 val messageDetailsUi = MessageDetailsUi(
                     date = buildDisplayDate(messageDetails.date),
                     cryptoDetails = cryptoResult?.toCryptoDetails(),
-                    from = messageDetails.from.toParticipants(),
-                    sender = senderList.toParticipants(),
-                    replyTo = messageDetails.replyTo.toParticipants(),
-                    to = messageDetails.to.toParticipants(),
-                    cc = messageDetails.cc.toParticipants(),
-                    bcc = messageDetails.bcc.toParticipants()
+                    from = messageDetails.from.toParticipants(addressFormatter),
+                    sender = senderList.toParticipants(addressFormatter),
+                    replyTo = messageDetails.replyTo.toParticipants(addressFormatter),
+                    to = messageDetails.to.toParticipants(addressFormatter),
+                    cc = messageDetails.cc.toParticipants(addressFormatter),
+                    bcc = messageDetails.bcc.toParticipants(addressFormatter)
                 )
 
                 MessageDetailsState.DataLoaded(
@@ -82,10 +90,12 @@ internal class MessageDetailsViewModel(
         )
     }
 
-    private fun List<Address>.toParticipants(): List<Participant> {
+    private fun List<Address>.toParticipants(addressFormatter: AddressFormatter): List<Participant> {
         return this.map { address ->
+            val displayName = addressFormatter.getDisplayNameOrNull(address)
             Participant(
-                address = address,
+                displayName = displayName,
+                emailAddress = address.address,
                 contactLookupUri = contacts.getContactUri(address.address)
             )
         }
