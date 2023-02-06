@@ -25,10 +25,9 @@ import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
-import com.fsck.k9.ui.helper.RealAddressFormatter;
-import com.fsck.k9.ui.helper.RealContactNameProvider;
+import com.fsck.k9.ui.helper.AddressFormatter;
+import com.fsck.k9.ui.helper.AddressFormatterProvider;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -48,6 +47,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private static final int DEFAULT_SUBJECT_LINES = 3;
 
     private final ReplyActionStrategy replyActionStrategy = DI.get(ReplyActionStrategy.class);
+    private final AddressFormatterProvider addressFormatterProvider = DI.get(AddressFormatterProvider.class);
     private final FontSizes fontSizes = K9.getFontSizes();
 
     private Chip accountChip;
@@ -244,13 +244,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     private void setRecipientNames(Message message, Account account) {
-        Integer contactNameColor = K9.isChangeContactNameColor() ? K9.getContactNameColor() : null;
-
-        RealContactNameProvider contactNameProvider = new RealContactNameProvider(Contacts.getInstance(getContext()));
-
-        RealAddressFormatter addressFormatter = new RealAddressFormatter(contactNameProvider, account,
-                K9.isShowCorrespondentNames(), K9.isShowContactName(), contactNameColor,
-                getContext().getString(R.string.message_view_me_text));
+        AddressFormatter addressFormatter = addressFormatterProvider.getAddressFormatter(account);
 
         DisplayRecipientsExtractor displayRecipientsExtractor = new DisplayRecipientsExtractor(addressFormatter,
                 recipientNamesView.getMaxNumberOfRecipientNames());
