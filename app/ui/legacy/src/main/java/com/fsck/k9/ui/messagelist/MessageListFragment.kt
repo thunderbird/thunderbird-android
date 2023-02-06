@@ -42,6 +42,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
+import com.fsck.k9.helper.unsafeLazy
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.search.LocalSearch
@@ -78,7 +79,7 @@ class MessageListFragment :
 
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatterFactory: FolderNameFormatterFactory by inject()
-    private val folderNameFormatter: FolderNameFormatter by lazy { folderNameFormatterFactory.create(requireContext()) }
+    private val folderNameFormatter: FolderNameFormatter by unsafeLazy { folderNameFormatterFactory.create(requireContext()) }
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
     private val clock: Clock by inject()

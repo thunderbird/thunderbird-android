@@ -11,10 +11,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.preference.DialogPreference
+import com.fsck.k9.helper.unsafeLazy
 import com.fsck.k9.ui.R
 
 class AutocryptPreferEncryptDialogFragment : DialogFragment() {
-    private val preference: AutocryptPreferEncryptPreference by lazy {
+    private val preference: AutocryptPreferEncryptPreference by unsafeLazy {
         val preferenceKey = arguments?.getString(ARG_KEY) ?: throw IllegalStateException("Argument $ARG_KEY missing")
         val fragment = targetFragment as DialogPreference.TargetFragment
 

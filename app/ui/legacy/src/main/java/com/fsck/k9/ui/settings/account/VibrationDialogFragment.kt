@@ -18,12 +18,13 @@ import androidx.core.content.getSystemService
 import androidx.preference.PreferenceDialogFragmentCompat
 import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
+import com.fsck.k9.helper.unsafeLazy
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.getEnum
 import com.fsck.k9.ui.putEnum
 
 class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
-    private val vibrator by lazy { requireContext().getSystemService<Vibrator>() ?: error("Vibrator service missing") }
+    private val vibrator by unsafeLazy { requireContext().getSystemService<Vibrator>() ?: error("Vibrator service missing") }
 
     private val vibrationPreference: VibrationPreference
         get() = preference as VibrationPreference

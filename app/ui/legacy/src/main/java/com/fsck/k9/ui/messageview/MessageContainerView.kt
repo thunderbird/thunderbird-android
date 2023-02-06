@@ -27,6 +27,7 @@ import androidx.core.view.isVisible
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.Utility
+import com.fsck.k9.helper.unsafeLazy
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.mailstore.AttachmentViewInfo
@@ -45,7 +46,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     OnCreateContextMenuListener,
     KoinComponent {
 
-    private val displayHtml by lazy(mode = LazyThreadSafetyMode.NONE) {
+    private val displayHtml by unsafeLazy {
         get<DisplayHtmlUiFactory>().createForMessageView()
     }
     private val webViewConfigProvider: WebViewConfigProvider by inject()

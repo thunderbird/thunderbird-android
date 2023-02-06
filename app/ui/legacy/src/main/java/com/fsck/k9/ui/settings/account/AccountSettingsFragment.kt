@@ -25,6 +25,7 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
+import com.fsck.k9.helper.unsafeLazy
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.notification.NotificationChannelManager
@@ -54,14 +55,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val notificationSettingsUpdater: NotificationSettingsUpdater by inject()
 
-    private val vibrator by lazy { requireContext().getSystemService<Vibrator>() }
+    private val vibrator by unsafeLazy { requireContext().getSystemService<Vibrator>() }
     private lateinit var dataStore: AccountSettingsDataStore
 
     private var notificationSoundPreference: NotificationSoundPreference? = null
     private var notificationLightPreference: ListPreference? = null
     private var notificationVibrationPreference: VibrationPreference? = null
 
-    private val accountUuid: String by lazy {
+    private val accountUuid: String by unsafeLazy {
         checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
     }
     private var title: CharSequence? = null

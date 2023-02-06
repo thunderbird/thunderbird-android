@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.helper.unsafeLazy
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderIconProvider
@@ -32,7 +33,7 @@ class ManageFoldersFragment : Fragment() {
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireActivity()) }
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
-    private val folderIconProvider by lazy { FolderIconProvider(requireActivity().theme) }
+    private val folderIconProvider by unsafeLazy { FolderIconProvider(requireActivity().theme) }
 
     private lateinit var account: Account
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
