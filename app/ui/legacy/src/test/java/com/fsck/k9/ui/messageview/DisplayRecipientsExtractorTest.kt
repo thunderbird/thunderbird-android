@@ -2,7 +2,6 @@ package com.fsck.k9.ui.messageview
 
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
-import com.fsck.k9.helper.AddressFormatter
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.buildMessage
 import com.google.common.truth.Truth.assertThat
@@ -17,8 +16,8 @@ class DisplayRecipientsExtractorTest {
         )
     }
 
-    private val addressFormatter = object : AddressFormatter {
-        override fun getDisplayName(address: Address): CharSequence {
+    private val recipientFormatter = object : MessageViewRecipientFormatter {
+        override fun getDisplayName(address: Address, account: Account): CharSequence {
             return when (address.address) {
                 IDENTITY_ADDRESS -> "me"
                 "user1@domain.example" -> "Contact One"
@@ -31,7 +30,7 @@ class DisplayRecipientsExtractorTest {
     }
 
     private val displayRecipientsExtractor = DisplayRecipientsExtractor(
-        addressFormatter,
+        recipientFormatter,
         maxNumberOfDisplayRecipients = 5
     )
 
@@ -123,20 +122,20 @@ class DisplayRecipientsExtractorTest {
     }
 
     @Test
-    fun `100 recipients, AddressFormatter_getDisplayName() should only be called maxNumberOfDisplayRecipients times`() {
+    fun `100 recipients, RecipientFormatter_getDisplayName should only be called maxNumberOfDisplayRecipients times`() {
         val recipients = (1..100).joinToString(separator = ", ") { "unknown$it@domain.example" }
         val message = buildMessage {
             header("To", recipients)
         }
         var numberOfTimesCalled = 0
-        val addressFormatter = object : AddressFormatter {
-            override fun getDisplayName(address: Address): CharSequence {
+        val recipientFormatter = object : MessageViewRecipientFormatter {
+            override fun getDisplayName(address: Address, account: Account): CharSequence {
                 numberOfTimesCalled++
                 return address.address
             }
         }
         val displayRecipientsExtractor = DisplayRecipientsExtractor(
-            addressFormatter,
+            recipientFormatter,
             maxNumberOfDisplayRecipients = 5
         )
 

@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.messageview
 
 import com.fsck.k9.Account
-import com.fsck.k9.helper.AddressFormatter
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 
@@ -9,10 +8,10 @@ import com.fsck.k9.mail.Message
  * Extract recipient names from a message to display them in the message view.
  *
  * This class extracts up to [maxNumberOfDisplayRecipients] recipients from the message and converts them to their
- * display name using an [AddressFormatter].
+ * display name using an [MessageViewRecipientFormatter].
  */
 internal class DisplayRecipientsExtractor(
-    private val addressFormatter: AddressFormatter,
+    private val recipientFormatter: MessageViewRecipientFormatter,
     private val maxNumberOfDisplayRecipients: Int
 ) {
     fun extractDisplayRecipients(message: Message, account: Account): DisplayRecipients {
@@ -37,13 +36,13 @@ internal class DisplayRecipientsExtractor(
         val recipientNames = sequenceOf(toRecipients, ccRecipients, bccRecipients)
             .flatMap { addressArray -> addressArray.asSequence() }
             .filter { address -> address.address != identityEmail }
-            .map { address -> addressFormatter.getDisplayName(address) }
+            .map { address -> recipientFormatter.getDisplayName(address, account) }
             .take(maxAdditionalRecipients)
             .toList()
 
         return if (identity != null) {
             val identityAddress = Address(identity.email)
-            val meName = addressFormatter.getDisplayName(identityAddress)
+            val meName = recipientFormatter.getDisplayName(identityAddress, account)
             val recipients = listOf(meName) + recipientNames
 
             DisplayRecipients(recipients, numberOfRecipients)
