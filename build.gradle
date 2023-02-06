@@ -102,7 +102,6 @@ spotless {
             .setEditorConfigPath("$projectDir/.editorconfig")
         target("**/*.kt")
         targetExclude("**/build/", "**/resources/", "plugins/openpgp-api-lib/")
-        trimTrailingWhitespace()
         endWithNewline()
     }
     format("markdown") {

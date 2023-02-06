@@ -25,7 +25,7 @@ FROM messages
 LEFT JOIN message_parts ON (messages.message_part_id = message_parts.id) 
 WHERE messages.id = ?
             """,
-            arrayOf(messageId.toString()),
+            arrayOf(messageId.toString())
         ).use { cursor ->
             if (!cursor.moveToFirst()) error("Message not found: $messageId")
 

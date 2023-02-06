@@ -126,7 +126,7 @@ JOIN folders ON (folders.id = messages.folder_id)
 GROUP BY threads.root
 ORDER BY $orderBy
                 """,
-                selectionArgs,
+                selectionArgs
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = true)
                 buildList {
