@@ -3,8 +3,6 @@ package com.fsck.k9.ui.settings.account
 import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -14,16 +12,16 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.getSystemService
 import androidx.preference.PreferenceDialogFragmentCompat
 import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.getEnum
 import com.fsck.k9.ui.putEnum
+import org.koin.android.ext.android.inject
 
 class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
-    private val vibrator by lazy { requireContext().getSystemService<Vibrator>() ?: error("Vibrator service missing") }
+    private val vibrator: Vibrator by inject()
 
     private val vibrationPreference: VibrationPreference
         get() = preference as VibrationPreference
@@ -83,13 +81,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
         val vibrationTimes = adapter.vibrationTimes
         val vibrationPattern = NotificationVibration.getSystemPattern(vibratePattern, vibrationTimes)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createWaveform(vibrationPattern, -1)
-            vibrator.vibrate(vibrationEffect)
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(vibrationPattern, -1)
-        }
+        vibrator.vibrate(vibrationPattern)
     }
 
     private inner class VibrationPatternAdapter(
