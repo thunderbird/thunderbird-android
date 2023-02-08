@@ -1,12 +1,15 @@
 package com.fsck.k9
 
+import android.view.ContextThemeWrapper
 import androidx.lifecycle.LifecycleOwner
 import androidx.work.WorkerParameters
 import com.fsck.k9.job.MailSyncWorker
+import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.ChangeLogMode
 import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferPresenter
+import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.helper.SizeFormatter
 import org.junit.Test
@@ -44,6 +47,9 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             withParameter<SizeFormatter> { RuntimeEnvironment.getApplication() }
             withParameter<ChangelogViewModel> { ChangeLogMode.CHANGE_LOG }
             withParameter<MailSyncWorker> { mock<WorkerParameters>() }
+            withParameter<FolderIconProvider> {
+                ContextThemeWrapper(RuntimeEnvironment.getApplication(), R.style.Theme_K9_DayNight).theme
+            }
         }
     }
 }

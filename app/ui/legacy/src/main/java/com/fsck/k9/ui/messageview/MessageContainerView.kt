@@ -31,23 +31,21 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.MessageViewInfo
+import com.fsck.k9.message.html.DisplayHtml
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.view.MessageWebView
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
 import com.fsck.k9.view.WebViewConfigProvider
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 
 class MessageContainerView(context: Context, attrs: AttributeSet?) :
     LinearLayout(context, attrs),
     OnCreateContextMenuListener,
     KoinComponent {
 
-    private val displayHtml by lazy(mode = LazyThreadSafetyMode.NONE) {
-        get<DisplayHtmlUiFactory>().createForMessageView()
-    }
+    private val displayHtml: DisplayHtml by inject(named("MessageView"))
     private val webViewConfigProvider: WebViewConfigProvider by inject()
     private val clipboardManager: ClipboardManager by inject()
     private val linkTextHandler: LinkTextHandler by inject()

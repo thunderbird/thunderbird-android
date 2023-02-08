@@ -31,7 +31,7 @@ class ChooseFolderActivity : K9Activity() {
     private val preferences: Preferences by inject()
     private val messagingController: MessagingController by inject()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(this) }
-    private val folderIconProvider by lazy { FolderIconProvider(theme) }
+    private val folderIconProvider: FolderIconProvider by inject { parametersOf(theme) }
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>

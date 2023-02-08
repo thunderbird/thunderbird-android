@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Vibrator
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -53,8 +51,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val accountRemover: BackgroundAccountRemover by inject()
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val notificationSettingsUpdater: NotificationSettingsUpdater by inject()
+    private val vibrator: Vibrator by inject()
 
-    private val vibrator by lazy { requireContext().getSystemService<Vibrator>() }
     private lateinit var dataStore: AccountSettingsDataStore
 
     private var notificationSoundPreference: NotificationSoundPreference? = null
@@ -203,7 +201,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeNotifications(account: Account) {
-        if (vibrator?.hasVibrator() != true) {
+        if (!vibrator.hasVibrator) {
             findPreference<Preference>(PREFERENCE_NOTIFICATION_VIBRATION)?.remove()
         }
 
