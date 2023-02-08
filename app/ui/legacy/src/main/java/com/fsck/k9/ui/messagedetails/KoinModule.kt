@@ -10,10 +10,13 @@ val messageDetailsUiModule = module {
             messageRepository = get(),
             contactSettingsProvider = get(),
             contacts = get(),
-            clipboardManager = get()
+            clipboardManager = get(),
+            accountManager = get(),
+            participantFormatter = get()
         )
     }
     factory { ContactSettingsProvider() }
     factory { AddToContactsLauncher() }
     factory { ShowContactLauncher() }
+    factory { createMessageDetailsParticipantFormatter(contactNameProvider = get()) }
 }

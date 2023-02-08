@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.helper.Contacts
@@ -11,6 +12,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.mailstore.MessageDate
 import com.fsck.k9.mailstore.MessageRepository
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.text.DateFormat
@@ -27,7 +29,9 @@ internal class MessageDetailsViewModel(
     private val messageRepository: MessageRepository,
     private val contactSettingsProvider: ContactSettingsProvider,
     private val contacts: Contacts,
-    private val clipboardManager: ClipboardManager
+    private val clipboardManager: ClipboardManager,
+    private val accountManager: AccountManager,
+    private val participantFormatter: MessageDetailsParticipantFormatter
 ) : ViewModel() {
     private val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.getDefault())
     private val uiState = MutableStateFlow<MessageDetailsState>(MessageDetailsState.Loading)
@@ -39,18 +43,19 @@ internal class MessageDetailsViewModel(
     fun loadData(messageReference: MessageReference): StateFlow<MessageDetailsState> {
         viewModelScope.launch(Dispatchers.IO) {
             uiState.value = try {
+                val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
                 val messageDetails = messageRepository.getMessageDetails(messageReference)
 
                 val senderList = messageDetails.sender?.let { listOf(it) } ?: emptyList()
                 val messageDetailsUi = MessageDetailsUi(
                     date = buildDisplayDate(messageDetails.date),
                     cryptoDetails = cryptoResult?.toCryptoDetails(),
-                    from = messageDetails.from.toParticipants(),
-                    sender = senderList.toParticipants(),
-                    replyTo = messageDetails.replyTo.toParticipants(),
-                    to = messageDetails.to.toParticipants(),
-                    cc = messageDetails.cc.toParticipants(),
-                    bcc = messageDetails.bcc.toParticipants()
+                    from = messageDetails.from.toParticipants(account),
+                    sender = senderList.toParticipants(account),
+                    replyTo = messageDetails.replyTo.toParticipants(account),
+                    to = messageDetails.to.toParticipants(account),
+                    cc = messageDetails.cc.toParticipants(account),
+                    bcc = messageDetails.bcc.toParticipants(account)
                 )
 
                 MessageDetailsState.DataLoaded(
@@ -82,11 +87,15 @@ internal class MessageDetailsViewModel(
         )
     }
 
-    private fun List<Address>.toParticipants(): List<Participant> {
+    private fun List<Address>.toParticipants(account: Account): List<Participant> {
         return this.map { address ->
+            val displayName = participantFormatter.getDisplayName(address, account)
+            val emailAddress = address.address
+
             Participant(
-                address = address,
-                contactLookupUri = contacts.getContactUri(address.address)
+                displayName = displayName,
+                emailAddress = emailAddress,
+                contactLookupUri = contacts.getContactUri(emailAddress)
             )
         }
     }
