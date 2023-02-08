@@ -2,6 +2,7 @@ package com.fsck.k9.ui.messagedetails
 
 import android.net.Uri
 import com.fsck.k9.mail.Address
+import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.view.MessageCryptoDisplayStatus
 
 data class MessageDetailsUi(
@@ -12,7 +13,8 @@ data class MessageDetailsUi(
     val replyTo: List<Participant>,
     val to: List<Participant>,
     val cc: List<Participant>,
-    val bcc: List<Participant>
+    val bcc: List<Participant>,
+    val folder: FolderInfoUi?
 )
 
 data class CryptoDetails(
@@ -31,3 +33,8 @@ data class Participant(
     val address: Address
         get() = Address(emailAddress, displayName?.toString())
 }
+
+data class FolderInfoUi(
+    val displayName: String,
+    val type: FolderType
+)

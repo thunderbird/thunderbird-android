@@ -4,5 +4,6 @@
     <item type="id" name="message_details_crypto_status"/>
     <item type="id" name="message_details_section_header"/>
     <item type="id" name="message_details_participant"/>
+    <item type="id" name="message_details_folder_name"/>
     <item type="id" name="message_details_divider"/>
 </resources>
