@@ -21,9 +21,13 @@ data class CryptoDetails(
 )
 
 data class Participant(
-    val address: Address,
+    val displayName: CharSequence?,
+    val emailAddress: String,
     val contactLookupUri: Uri?
 ) {
     val isInContacts: Boolean
         get() = contactLookupUri != null
+
+    val address: Address
+        get() = Address(emailAddress, displayName?.toString())
 }
