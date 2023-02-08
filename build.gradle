@@ -99,30 +99,22 @@ allprojects {
 spotless {
     kotlin {
         ktlint(libs.versions.ktlint.get())
-            .setEditorConfigPath("$projectDir/.editorconfig")
         target("**/*.kt")
         targetExclude("**/build/", "**/resources/", "plugins/openpgp-api-lib/")
-        endWithNewline()
     }
     kotlinGradle {
         ktlint(libs.versions.ktlint.get())
-            .setEditorConfigPath("$projectDir/.editorconfig")
         target("**/*.gradle.kts")
         targetExclude("**/build/")
-        endWithNewline()
     }
     format("markdown") {
         prettier()
         target("**/*.md")
         targetExclude("plugins/openpgp-api-lib/")
-        trimTrailingWhitespace()
-        endWithNewline()
     }
     format("misc") {
         target("**/*.gradle", "**/.gitignore")
         trimTrailingWhitespace()
-        indentWithSpaces(4)
-        endWithNewline()
     }
 }
 
