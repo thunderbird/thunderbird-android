@@ -11,11 +11,9 @@ import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.folders.FolderNameFormatter
-import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.robolectric.RuntimeEnvironment
@@ -27,14 +25,14 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     private val messageCountsProvider = createMessageCountsProvider()
     private val defaultFolderStrategy = createDefaultFolderStrategy()
     private val folderRepository = createFolderRepository()
-    private val folderNameFormatterFactory = createFolderNameFormatterFactory()
+    private val folderNameFormatter = createFolderNameFormatter()
     private val provider = UnreadWidgetDataProvider(
         context,
         preferences,
         messageCountsProvider,
         defaultFolderStrategy,
         folderRepository,
-        folderNameFormatterFactory
+        folderNameFormatter
     )
 
     @Test
@@ -120,13 +118,6 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     private fun createFolderRepository(): FolderRepository {
         return mock {
             on { getFolder(account, FOLDER_ID) } doReturn FOLDER
-        }
-    }
-
-    private fun createFolderNameFormatterFactory(): FolderNameFormatterFactory {
-        val folderNameFormatter = createFolderNameFormatter()
-        return mock {
-            on { create(any()) } doReturn folderNameFormatter
         }
     }
 

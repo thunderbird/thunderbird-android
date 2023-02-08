@@ -15,11 +15,10 @@ import com.fsck.k9.ui.observeNotNull
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFragmentListener {
     private val viewModel: FolderSettingsViewModel by viewModel()
-    private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireActivity()) }
+    private val folderNameFormatter: FolderNameFormatter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

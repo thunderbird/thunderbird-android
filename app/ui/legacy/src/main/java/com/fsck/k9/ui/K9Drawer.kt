@@ -55,7 +55,6 @@ import java.util.ArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.core.parameter.parametersOf
 import com.fsck.k9.core.R as CoreR
 import com.mikepenz.materialdrawer.R as MaterialDrawerR
 
@@ -67,7 +66,7 @@ private const val EN_SPACE = "\u2000"
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
     private val foldersViewModel: FoldersViewModel by parent.viewModel()
     private val accountsViewModel: AccountsViewModel by parent.viewModel()
-    private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(parent) }
+    private val folderNameFormatter: FolderNameFormatter by inject()
     private val themeManager: ThemeManager by inject()
     private val resources: Resources by inject()
     private val messagingController: MessagingController by inject()

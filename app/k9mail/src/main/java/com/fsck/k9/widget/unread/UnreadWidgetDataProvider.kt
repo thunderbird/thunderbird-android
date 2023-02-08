@@ -9,7 +9,7 @@ import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
-import com.fsck.k9.ui.folders.FolderNameFormatterFactory
+import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import timber.log.Timber
 import com.fsck.k9.ui.R as UiR
@@ -20,7 +20,7 @@ class UnreadWidgetDataProvider(
     private val messageCountsProvider: MessageCountsProvider,
     private val defaultFolderProvider: DefaultFolderProvider,
     private val folderRepository: FolderRepository,
-    private val folderNameFormatterFactory: FolderNameFormatterFactory
+    private val folderNameFormatter: FolderNameFormatter
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_INBOX == accountUuid) {
@@ -79,7 +79,6 @@ class UnreadWidgetDataProvider(
     private fun getFolderDisplayName(account: Account, folderId: Long): String {
         val folder = folderRepository.getFolder(account, folderId)
         return if (folder != null) {
-            val folderNameFormatter = folderNameFormatterFactory.create(context)
             folderNameFormatter.displayName(folder)
         } else {
             Timber.e("Error loading folder for account %s, folder ID: %d", account, folderId)
