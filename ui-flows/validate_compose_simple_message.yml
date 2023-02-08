@@ -1,0 +1,60 @@
+appId: com.fsck.k9.debug
+---
+- launchApp
+
+## Start composing
+- tapOn:
+    id: "com.fsck.k9.debug:id/floating_action_button"
+
+## Compose email
+
+## To
+- tapOn:
+    id: "com.fsck.k9.debug:id/to"
+- inputText: "bob@example.com"
+
+## Subject
+- tapOn:
+    id: "com.fsck.k9.debug:id/subject"
+- inputText: "Compose test"
+
+## Message
+- tapOn:
+    id: "com.fsck.k9.debug:id/message_content"
+- inputText: "Lorem ipsum dolor sit amet."
+
+## Send
+- tapOn:
+    id: "com.fsck.k9.debug:id/send"
+
+## Open message
+- tapOn:
+    id: "com.fsck.k9.debug:id/subject"
+    index: 0
+    text: "Compose test"
+
+## Assert
+- assertVisible:
+    id: "com.fsck.k9.debug:id/subject"
+    text: "Compose test"
+- assertVisible:
+    id: "com.fsck.k9.debug:id/from"
+    text: "Demo Account"
+- assertVisible:
+    id: "com.fsck.k9.debug:id/recipient_names"
+    text: "to bob@example.com"
+- assertVisible: "Lorem ipsum dolor sit amet."
+
+## Delete message
+- tapOn:
+    id: "com.fsck.k9.debug:id/delete"
+- assertNotVisible:
+    id: "com.fsck.k9.debug:id/subject"
+    text: "Compose test"
+
+## Return to inbox
+- tapOn: "Navigate up"
+- assertNotVisible:
+    id: "com.fsck.k9.debug:id/subject"
+    index: 0
+    text: "Compose test"

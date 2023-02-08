@@ -1,0 +1,21 @@
+appId: com.fsck.k9.debug
+---
+
+## Open settings
+- runFlow: open_display_settings.yml
+
+### Scroll to "Show contact names"
+- scrollUntilVisible:
+    element:
+      id: "android:id/title"
+      text: "Show contact names"
+    direction: DOWN
+    timeout: 10000
+
+### Enable "Show contact names"
+- tapOn:
+    id: "android:id/title"
+    text: "Show contact names"
+
+### Close settings
+- runFlow: close_display_settings.yml

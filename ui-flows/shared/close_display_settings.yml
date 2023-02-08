@@ -1,0 +1,9 @@
+appId: com.fsck.k9.debug
+---
+
+- tapOn: "Navigate up"
+- tapOn: "Navigate up"
+- tapOn: "Navigate up"
+- swipe:
+    direction: LEFT
+    duration: 200
