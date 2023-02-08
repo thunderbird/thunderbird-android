@@ -5,8 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.core.content.withStyledAttributes
-import androidx.preference.PreferenceViewHolder
-import androidx.preference.TwoStatePreference
+import androidx.preference.DialogPreference
 import com.fsck.k9.ui.R
 import com.takisoft.preferencex.PreferenceFragmentCompat
 
@@ -22,7 +21,13 @@ constructor(
         android.R.attr.preferenceStyle
     ),
     defStyleRes: Int = 0
-) : TwoStatePreference(context, attrs, defStyleAttr, defStyleRes) {
+) : DialogPreference(context, attrs, defStyleAttr, defStyleRes) {
+
+    internal var isPreferEncryptEnabled: Boolean = false
+        private set
+
+    private var summaryOn: String? = null
+    private var summaryOff: String? = null
 
     init {
         context.withStyledAttributes(attrs, R.styleable.AutocryptPreferEncryptPreference, defStyleAttr, defStyleRes) {
@@ -35,15 +40,22 @@ constructor(
         preferenceManager.showDialog(this)
     }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder) {
-        super.onBindViewHolder(holder)
-        syncSummaryView(holder)
+    override fun onSetInitialValue(defaultValue: Any?) {
+        isPreferEncryptEnabled = getPersistedBoolean(defaultValue as? Boolean ?: false)
+        updateSummary()
     }
 
-    fun userChangedValue(newValue: Boolean) {
+    fun setPreferEncryptEnabled(newValue: Boolean) {
         if (callChangeListener(newValue)) {
-            isChecked = newValue
+            isPreferEncryptEnabled = newValue
+            persistBoolean(newValue)
+
+            updateSummary()
         }
+    }
+
+    private fun updateSummary() {
+        summary = if (isPreferEncryptEnabled) summaryOn else summaryOff
     }
 
     companion object {
