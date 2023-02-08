@@ -11,7 +11,7 @@ appId: com.fsck.k9.debug
 ## To
 - tapOn:
     id: "com.fsck.k9.debug:id/to"
-- inputText: "bob@example.com"
+- inputText: "simple_compose@example.com"
 
 ## Subject
 - tapOn:
@@ -42,7 +42,7 @@ appId: com.fsck.k9.debug
     text: "Demo Account"
 - assertVisible:
     id: "com.fsck.k9.debug:id/recipient_names"
-    text: "to bob@example.com"
+    text: "to simple_compose@example.com"
 - assertVisible: "Lorem ipsum dolor sit amet."
 
 ## Delete message
