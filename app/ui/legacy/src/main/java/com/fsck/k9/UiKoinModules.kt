@@ -14,6 +14,7 @@ import com.fsck.k9.ui.managefolders.manageFoldersUiModule
 import com.fsck.k9.ui.messagedetails.messageDetailsUiModule
 import com.fsck.k9.ui.messagelist.messageListUiModule
 import com.fsck.k9.ui.messagesource.messageSourceModule
+import com.fsck.k9.ui.messageview.messageViewUiModule
 import com.fsck.k9.ui.settings.settingsUiModule
 import com.fsck.k9.ui.uiModule
 import com.fsck.k9.view.viewModule
@@ -35,5 +36,6 @@ val uiModules = listOf(
     changelogUiModule,
     messageSourceModule,
     accountUiModule,
-    messageDetailsUiModule
+    messageDetailsUiModule,
+    messageViewUiModule
 )

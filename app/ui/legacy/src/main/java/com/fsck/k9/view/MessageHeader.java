@@ -25,10 +25,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
-import com.fsck.k9.helper.RealAddressFormatter;
-import com.fsck.k9.helper.RealContactNameProvider;
+import com.fsck.k9.ui.messageview.MessageViewRecipientFormatter;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -47,6 +45,7 @@ import com.google.android.material.chip.Chip;
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private static final int DEFAULT_SUBJECT_LINES = 3;
 
+    private final MessageViewRecipientFormatter recipientFormatter = DI.get(MessageViewRecipientFormatter.class);
     private final ReplyActionStrategy replyActionStrategy = DI.get(ReplyActionStrategy.class);
     private final FontSizes fontSizes = K9.getFontSizes();
 
@@ -244,15 +243,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     private void setRecipientNames(Message message, Account account) {
-        Integer contactNameColor = K9.isChangeContactNameColor() ? K9.getContactNameColor() : null;
-
-        RealContactNameProvider contactNameProvider = new RealContactNameProvider(Contacts.getInstance(getContext()));
-
-        RealAddressFormatter addressFormatter = new RealAddressFormatter(contactNameProvider, account,
-                K9.isShowCorrespondentNames(), K9.isShowContactName(), contactNameColor,
-                getContext().getString(R.string.message_view_me_text));
-
-        DisplayRecipientsExtractor displayRecipientsExtractor = new DisplayRecipientsExtractor(addressFormatter,
+        DisplayRecipientsExtractor displayRecipientsExtractor = new DisplayRecipientsExtractor(recipientFormatter,
                 recipientNamesView.getMaxNumberOfRecipientNames());
 
         DisplayRecipients displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account);

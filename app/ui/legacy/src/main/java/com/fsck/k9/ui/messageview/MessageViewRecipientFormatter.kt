@@ -1,31 +1,34 @@
-package com.fsck.k9.helper
+package com.fsck.k9.ui.messageview
 
+import android.content.res.Resources
 import android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
+import com.fsck.k9.K9
+import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
+import com.fsck.k9.ui.R
 
 /**
- * Get the display name for an email address.
+ * Get the display name for a recipient to be shown in the message view screen.
  */
-interface AddressFormatter {
-    fun getDisplayName(address: Address): CharSequence
+internal interface MessageViewRecipientFormatter {
+    fun getDisplayName(address: Address, account: Account): CharSequence
 }
 
-class RealAddressFormatter(
+internal class RealMessageViewRecipientFormatter(
     private val contactNameProvider: ContactNameProvider,
-    private val account: Account,
     private val showCorrespondentNames: Boolean,
     private val showContactNames: Boolean,
     private val contactNameColor: Int?,
     private val meText: String
-) : AddressFormatter {
-    override fun getDisplayName(address: Address): CharSequence {
+) : MessageViewRecipientFormatter {
+    override fun getDisplayName(address: Address, account: Account): CharSequence {
         val identity = account.findIdentity(address)
         if (identity != null) {
-            return getIdentityName(identity)
+            return getIdentityName(identity, account)
         }
 
         return if (!showCorrespondentNames) {
@@ -37,7 +40,7 @@ class RealAddressFormatter(
         }
     }
 
-    private fun getIdentityName(identity: Identity): String {
+    private fun getIdentityName(identity: Identity, account: Account): String {
         return if (account.identities.size == 1) {
             meText
         } else {
@@ -71,4 +74,17 @@ class RealAddressFormatter(
             false
         }
     }
+}
+
+internal fun createMessageViewRecipientFormatter(
+    contactNameProvider: ContactNameProvider,
+    resources: Resources
+): MessageViewRecipientFormatter {
+    return RealMessageViewRecipientFormatter(
+        contactNameProvider = contactNameProvider,
+        showCorrespondentNames = K9.isShowCorrespondentNames,
+        showContactNames = K9.isShowContactName,
+        contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null,
+        meText = resources.getString(R.string.message_view_me_text)
+    )
 }

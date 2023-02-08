@@ -1,4 +1,4 @@
-package com.fsck.k9.helper
+package com.fsck.k9.ui.messageview
 
 import android.graphics.Color
 import android.text.Spannable
@@ -7,6 +7,7 @@ import androidx.core.text.getSpans
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.RobolectricTest
+import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -14,7 +15,7 @@ import org.junit.Test
 private const val IDENTITY_ADDRESS = "me@domain.example"
 private const val ME_TEXT = "me"
 
-class RealAddressFormatterTest : RobolectricTest() {
+class MessageViewRecipientFormatterTest : RobolectricTest() {
     private val contactNameProvider = object : ContactNameProvider {
         override fun getNameForAddress(address: String): String? {
             return when (address) {
@@ -31,9 +32,9 @@ class RealAddressFormatterTest : RobolectricTest() {
 
     @Test
     fun `single identity`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"))
+        val displayName = recipientFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"), account)
 
         assertThat(displayName).isEqualTo(ME_TEXT)
     }
@@ -44,9 +45,9 @@ class RealAddressFormatterTest : RobolectricTest() {
             identities += Identity(description = "My identity", email = IDENTITY_ADDRESS)
             identities += Identity(email = "another.one@domain.example")
         }
-        val addressFormatter = createAddressFormatter(account)
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"))
+        val displayName = recipientFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"), account)
 
         assertThat(displayName).isEqualTo("My identity")
     }
@@ -57,9 +58,9 @@ class RealAddressFormatterTest : RobolectricTest() {
             identities += Identity(name = "My name", email = IDENTITY_ADDRESS)
             identities += Identity(email = "another.one@domain.example")
         }
-        val addressFormatter = createAddressFormatter(account)
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"))
+        val displayName = recipientFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"), account)
 
         assertThat(displayName).isEqualTo("My name")
     }
@@ -70,63 +71,63 @@ class RealAddressFormatterTest : RobolectricTest() {
             identities += Identity(email = IDENTITY_ADDRESS)
             identities += Identity(email = "another.one@domain.example")
         }
-        val addressFormatter = createAddressFormatter(account)
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"))
+        val displayName = recipientFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"), account)
 
         assertThat(displayName).isEqualTo(IDENTITY_ADDRESS)
     }
 
     @Test
     fun `email address without display name`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address("alice@domain.example"))
+        val displayName = recipientFormatter.getDisplayName(Address("alice@domain.example"), account)
 
         assertThat(displayName).isEqualTo("alice@domain.example")
     }
 
     @Test
     fun `email address with display name`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address("alice@domain.example", "Alice"))
+        val displayName = recipientFormatter.getDisplayName(Address("alice@domain.example", "Alice"), account)
 
         assertThat(displayName).isEqualTo("Alice")
     }
 
     @Test
     fun `don't look up contact when showContactNames = false`() {
-        val addressFormatter = createAddressFormatter(showContactNames = false)
+        val recipientFormatter = createRecipientFormatter(showContactNames = false)
 
-        val displayName = addressFormatter.getDisplayName(Address("user1@domain.example", "User 1"))
+        val displayName = recipientFormatter.getDisplayName(Address("user1@domain.example", "User 1"), account)
 
         assertThat(displayName).isEqualTo("User 1")
     }
 
     @Test
     fun `contact lookup`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address("user1@domain.example"))
+        val displayName = recipientFormatter.getDisplayName(Address("user1@domain.example"), account)
 
         assertThat(displayName).isEqualTo("Contact One")
     }
 
     @Test
     fun `contact lookup despite display name`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address("user1@domain.example", "User 1"))
+        val displayName = recipientFormatter.getDisplayName(Address("user1@domain.example", "User 1"), account)
 
         assertThat(displayName).isEqualTo("Contact One")
     }
 
     @Test
     fun `colored contact name`() {
-        val addressFormatter = createAddressFormatter(contactNameColor = Color.RED)
+        val recipientFormatter = createRecipientFormatter(contactNameColor = Color.RED)
 
-        val displayName = addressFormatter.getDisplayName(Address("user1@domain.example"))
+        val displayName = recipientFormatter.getDisplayName(Address("user1@domain.example"), account)
 
         assertThat(displayName.toString()).isEqualTo("Contact One")
         assertThat(displayName).isInstanceOf(Spannable::class.java)
@@ -136,67 +137,74 @@ class RealAddressFormatterTest : RobolectricTest() {
 
     @Test
     fun `email address with display name but not showing correspondent names`() {
-        val addressFormatter = createAddressFormatter(showCorrespondentNames = false)
+        val recipientFormatter = createRecipientFormatter(showCorrespondentNames = false)
 
-        val displayName = addressFormatter.getDisplayName(Address("alice@domain.example", "Alice"))
+        val displayName = recipientFormatter.getDisplayName(Address("alice@domain.example", "Alice"), account)
 
         assertThat(displayName).isEqualTo("alice@domain.example")
     }
 
     @Test
     fun `do not show display name that looks like an email address`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address("mallory@domain.example", "potus@whitehouse.gov"))
+        val displayName = recipientFormatter.getDisplayName(
+            Address("mallory@domain.example", "potus@whitehouse.gov"),
+            account
+        )
 
         assertThat(displayName).isEqualTo("mallory@domain.example")
     }
 
     @Test
     fun `do show display name that contains an @ preceded by an opening parenthesis`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address("gitlab@gitlab.example", "username (@username)"))
+        val displayName = recipientFormatter.getDisplayName(
+            Address("gitlab@gitlab.example", "username (@username)"),
+            account
+        )
 
         assertThat(displayName).isEqualTo("username (@username)")
     }
 
     @Test
     fun `do show display name that starts with an @`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address("address@domain.example", "@username"))
+        val displayName = recipientFormatter.getDisplayName(Address("address@domain.example", "@username"), account)
 
         assertThat(displayName).isEqualTo("@username")
     }
 
     @Test
     fun `spoof prevention doesn't apply to contact names`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address("spoof@domain.example", "contact@important.example"))
+        val displayName = recipientFormatter.getDisplayName(
+            Address("spoof@domain.example", "contact@important.example"),
+            account
+        )
 
         assertThat(displayName).isEqualTo("contact@important.example")
     }
 
     @Test
     fun `display name matches me text`() {
-        val addressFormatter = createAddressFormatter()
+        val recipientFormatter = createRecipientFormatter()
 
-        val displayName = addressFormatter.getDisplayName(Address("someone_named_me@domain.example", "ME"))
+        val displayName = recipientFormatter.getDisplayName(Address("someone_named_me@domain.example", "ME"), account)
 
         assertThat(displayName).isEqualTo("someone_named_me@domain.example")
     }
 
-    private fun createAddressFormatter(
-        account: Account = this.account,
+    private fun createRecipientFormatter(
         showCorrespondentNames: Boolean = true,
         showContactNames: Boolean = true,
         contactNameColor: Int? = null
-    ): RealAddressFormatter {
-        return RealAddressFormatter(
+    ): RealMessageViewRecipientFormatter {
+        return RealMessageViewRecipientFormatter(
             contactNameProvider = contactNameProvider,
-            account = account,
             showCorrespondentNames = showCorrespondentNames,
             showContactNames = showContactNames,
             contactNameColor = contactNameColor,
