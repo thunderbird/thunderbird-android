@@ -103,6 +103,8 @@
     </com.fsck.k9.view.NonLockingScrollView>
 
     <Button android:id="@+id/download_remainder"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_marginHorizontal="16dp"
         android:text="@string/message_view_download_remainder"
         android:layout_height="wrap_content"
         android:visibility="gone"
