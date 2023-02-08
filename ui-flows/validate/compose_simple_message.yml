@@ -1,6 +1,6 @@
 appId: com.fsck.k9.debug
 ---
-- launchApp
+- runFlow: ../shared/login_demo_account.yml
 
 ## Start composing
 - tapOn:

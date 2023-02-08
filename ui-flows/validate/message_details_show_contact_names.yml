@@ -1,6 +1,6 @@
 appId: com.fsck.k9.debug
 ---
-- runFlow: login_demo_account.yml
+- runFlow: ../shared/login_demo_account.yml
 
 ## Open message
 - tapOn:
@@ -17,7 +17,7 @@ appId: com.fsck.k9.debug
     text: "to User 1.*"
 
 ### Open message details
-- runFlow: shared/open_message_details.yml
+- runFlow: ../shared/open_message_details.yml
 
 ## Check message details
 - assertVisible:
@@ -29,13 +29,13 @@ appId: com.fsck.k9.debug
 
 ## Add contacts
 - runFlow:
-    file: shared/add_contact.yml
+    file: ../shared/add_contact.yml
     env:
       INDEX: 0
       NAME: Alice
       FIRST_NAME: Alice
 - runFlow:
-    file: shared/add_contact.yml
+    file: ../shared/add_contact.yml
     env:
       INDEX: 4
       NAME: User 1
@@ -48,7 +48,7 @@ appId: com.fsck.k9.debug
     id: "com.android.systemui:id/back"
 
 ## Change settings
-- runFlow: shared/change_display_settings_show_contact_names.yml
+- runFlow: ../shared/change_display_settings_show_contact_names.yml
 
 ## Open message
 - tapOn:
@@ -65,7 +65,7 @@ appId: com.fsck.k9.debug
     text: "to User from Contacts.*"
 
 ### Open message details
-- runFlow: shared/open_message_details.yml
+- runFlow: ../shared/open_message_details.yml
 
 ## Check message details
 - assertVisible:
@@ -77,12 +77,12 @@ appId: com.fsck.k9.debug
 
 ## Remove contacts
 - runFlow:
-    file: shared/remove_contact.yml
+    file: ../shared/remove_contact.yml
     env:
       NAME: Alice from Contacts
 
 - runFlow:
-    file: shared/remove_contact.yml
+    file: ../shared/remove_contact.yml
     env:
       NAME: User from Contacts 1
 
