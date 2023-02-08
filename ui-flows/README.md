@@ -1,0 +1,27 @@
+# UI flows
+
+Ui flows are using [Maestro](https://maestro.mobile.dev/), that allows to write UI E2E tests for Android.
+
+## Install
+
+To be able to run the flows, you need to [install the CLI tools](https://maestro.mobile.dev/getting-started/installing-maestro)
+
+## Run
+
+The current flows run best with a Pixel 2 emulator having a 5.0" screen with 1080x1920 resolution and 420dpi.
+
+Ensure a device or emulator is running and execute:
+
+- `maestro test ui-flows/validate_compose_simple_message.yml `
+- `maestro test ui-flows/validate_message_details_show_contact_names.yml`
+
+## Write
+
+Have a look at the [documentation](https://maestro.mobile.dev/) on how to write flows.
+
+The flows are located in the `ui-utils` folder:
+
+- 'shared' folder - for reusable flows usable by other flows
+- 'custom' folder - for custom flows that should not be committed to git
+
+Flows that assert behavior of the app should start with `validate`.
