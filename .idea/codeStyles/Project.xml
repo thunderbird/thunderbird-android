@@ -31,6 +31,8 @@
           <package name="" alias="true" withSubpackages="true" />
         </value>
       </option>
+      <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="99" />
+      <option name="NAME_COUNT_TO_USE_STAR_IMPORT_FOR_MEMBERS" value="99" />
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
     </JetCodeStyleSettings>
     <codeStyleSettings language="JAVA">
