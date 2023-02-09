@@ -22,8 +22,8 @@ To be able to run the flows, you need to [install the CLI tools](https://maestro
 
 Ensure a device or emulator is running and execute:
 
-- `maestro test ui-flows/validate_compose_simple_message.yml `
-- `maestro test ui-flows/validate_message_details_show_contact_names.yml`
+- `maestro test ui-flows/validate/compose_simple_message.yml `
+- `maestro test ui-flows/validate/message_details_show_contact_names.yml`
 
 ## Write
 
