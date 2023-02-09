@@ -801,7 +801,7 @@ class MessageViewFragment :
         }
     }
 
-    fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo?) {
+    fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
         messageTopView.refreshAttachmentThumbnail(attachment)
     }
 
