@@ -1,0 +1,22 @@
+appId: com.fsck.k9.debug
+---
+
+## Open drawer
+- tapOn: "Navigate up"
+
+### Open settings
+- tapOn:
+    id: "com.fsck.k9.debug:id/material_drawer_name"
+    index: 9
+
+### Open general settings
+- tapOn:
+    id: "com.fsck.k9.debug:id/text"
+    index: 0
+    text: "General settings"
+
+### Open display settings
+- tapOn:
+    id: "android:id/title"
+    index: 0
+    text: "Display"

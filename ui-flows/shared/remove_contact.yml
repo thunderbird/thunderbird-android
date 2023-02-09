@@ -1,0 +1,20 @@
+# use env to provide properties:
+# env:
+#     NAME: Alice
+
+appId: com.fsck.k9.debug
+---
+
+## Open contact
+- tapOn:
+    id: "com.fsck.k9.debug:id/name"
+    text: ${NAME}
+
+## Delete contact
+- tapOn: "More options"
+- tapOn:
+    id: "android:id/title"
+    index: 1
+- tapOn:
+    id: "android:id/button1"
+

@@ -1,0 +1,23 @@
+# use env to provide properties:
+# env:
+#     INDEX: 0
+#     NAME: Alice
+#     FIRST_NAME: Alice
+
+appId: com.fsck.k9.debug
+---
+
+## Add contact
+- tapOn:
+    id: "com.fsck.k9.debug:id/menu_add_contact"
+    index: ${INDEX}
+- tapOn: ${FIRST_NAME}
+- inputText: " from Contacts"
+
+### Save
+- tapOn:
+    id: "com.android.contacts:id/editor_menu_save_button"
+
+### Exit
+- tapOn:
+    id: "com.android.systemui:id/back"
