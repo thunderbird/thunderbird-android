@@ -16,6 +16,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import app.k9mail.ui.utils.bottomsheet.ToolbarBottomSheetDialogFragment
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.contacts.ContactPictureLoader
@@ -81,6 +82,14 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         val progressBar = view.findViewById<ProgressBar>(R.id.message_details_progress)
         val errorView = view.findViewById<View>(R.id.message_details_error)
         val recyclerView = view.findViewById<RecyclerView>(R.id.message_details_list)
+
+        // Don't allow dragging down the bottom sheet (by dragging the toolbar) unless the list is scrolled all the way
+        // to the top.
+        recyclerView.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                dialog.behavior.isDraggable = !recyclerView.canScrollVertically(-1)
+            }
+        })
 
         viewModel.uiEvents.observe(this) { event ->
             when (event) {
