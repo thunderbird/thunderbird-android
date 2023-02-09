@@ -11,7 +11,7 @@ val unreadWidgetModule = module {
             messageCountsProvider = get(),
             defaultFolderProvider = get(),
             folderRepository = get(),
-            folderNameFormatterFactory = get()
+            folderNameFormatter = get()
         )
     }
     single { UnreadWidgetUpdater(context = get()) }
