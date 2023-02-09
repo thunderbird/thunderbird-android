@@ -17,10 +17,10 @@ appId: com.fsck.k9.debug
 ## Account name configuration
 - tapOn:
     id: "com.fsck.k9.debug:id/account_description"
-- inputText: "demo@k9mail"
+- inputText: "Demo Account"
 - tapOn:
     id: "com.fsck.k9.debug:id/account_name"
-- inputText: "Demo Account"
+- inputText: "Demo User"
 - tapOn:
     id: "com.fsck.k9.debug:id/done"
 

@@ -8,13 +8,17 @@ The flows are located in the `ui-utils` folder with this structure:
 - `shared` - flows usable by other flows
 - `validate` - flows that assert behavior of the app
 
+## Requirements
+
+- Android Pixel 2 emulator 5.0" screen with 1080x1920 resolution and 420dpi
+- API 31
+- English as system language
+
 ## Install
 
 To be able to run the flows, you need to [install the CLI tools](https://maestro.mobile.dev/getting-started/installing-maestro)
 
 ## Run
-
-The current flows run best with a Pixel 2 emulator having a 5.0" screen with 1080x1920 resolution and 420dpi.
 
 Ensure a device or emulator is running and execute:
 

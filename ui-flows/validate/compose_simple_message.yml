@@ -16,7 +16,7 @@ appId: com.fsck.k9.debug
 ## Subject
 - tapOn:
     id: "com.fsck.k9.debug:id/subject"
-- inputText: "Compose test"
+- inputText: "Simple compose test"
 
 ## Message
 - tapOn:
@@ -31,15 +31,15 @@ appId: com.fsck.k9.debug
 - tapOn:
     id: "com.fsck.k9.debug:id/subject"
     index: 0
-    text: "Compose test"
+    text: "Simple compose test"
 
 ## Assert
 - assertVisible:
     id: "com.fsck.k9.debug:id/subject"
-    text: "Compose test"
+    text: "Simple compose test"
 - assertVisible:
     id: "com.fsck.k9.debug:id/from"
-    text: "Demo Account"
+    text: "Demo User"
 - assertVisible:
     id: "com.fsck.k9.debug:id/recipient_names"
     text: "to simple_compose@example.com"
@@ -50,7 +50,7 @@ appId: com.fsck.k9.debug
     id: "com.fsck.k9.debug:id/delete"
 - assertNotVisible:
     id: "com.fsck.k9.debug:id/subject"
-    text: "Compose test"
+    text: "Simple compose test"
 
 ## Return to inbox
 - tapOn: "Navigate up"

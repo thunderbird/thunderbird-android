@@ -7,11 +7,6 @@
 appId: com.fsck.k9.debug
 ---
 
-## Add to contact
-- tapOn:
-    id: "com.fsck.k9.debug:id/name"
-    text: ${NAME}
-
 ## Add contact
 - tapOn:
     id: "com.fsck.k9.debug:id/menu_add_contact"
