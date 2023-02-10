@@ -77,7 +77,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="choose_folder_copy_title">複製至…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
   <string name="next_action">下一步</string>
-  <string name="previous_action">上一步</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">確定</string>
   <string name="cancel_action">取消</string>
@@ -147,11 +146,9 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="size_format_megabytes">%.1fMB</string>
   <string name="size_format_kilobytes">%.1fkB</string>
   <string name="size_format_bytes">%dB</string>
-  <string name="notification_new_title">您有新郵件</string>
   <plurals name="notification_new_messages_title">
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 條新訊息</item>
   </plurals>
-  <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%1$d</xliff:g>封未讀郵件（<xliff:g id="account">%2$s</xliff:g>）</string>
   <string name="notification_additional_messages">+ 來自<xliff:g id="account">%2$s</xliff:g>已超過<xliff:g id="additional_messages">%1$d</xliff:g>則訊息</string>
   <string name="notification_action_reply">回覆</string>
   <string name="notification_action_mark_as_read">標示為已讀取</string>
@@ -222,11 +219,14 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="message_view_cc_label">副本：</string>
   <string name="message_view_bcc_label">密件副本：</string>
   <string name="message_view_status_attachment_not_saved">無法存檔附件。</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer">無法開啟<xliff:g id="mimetype">%s</xliff:g>。找不到可以開啟該附件的程式。</string>
   <string name="message_view_download_remainder">下載完整郵件</string>
   <string name="message_view_sender_label">透過 %1$s</string>
   <string name="from_same_sender">來自這個寄件人的更多郵件</string>
-  <string name="search_from_format">寄送自 <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">郵件已捨棄</string>
   <string name="message_saved_toast">郵件已儲存為草稿</string>
   <string name="global_settings_flag_label">顯示星號</string>
@@ -1067,4 +1067,28 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="swipe_action_spam">標記為垃圾郵件</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">移動…</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">寄件人：</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">寄件人</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">回覆給</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">收件人</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">副本</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">密件副本</string>
+  <!--Displayed when loading the message details has failed-->
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">電子郵件地址</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
 </resources>

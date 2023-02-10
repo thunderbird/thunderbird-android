@@ -12,6 +12,8 @@
   <string name="app_license">Apache licens, version 2.0</string>
   <string name="about_project_title">Opensource Projekt</string>
   <string name="about_website_title">Websted</string>
+  <string name="user_manual_title">Bruger manual</string>
+  <string name="get_help_title">Få hjælp</string>
   <string name="user_forum_title">Bruger forum</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -63,7 +65,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konti</string>
   <string name="advanced">Avanceret</string>
-  <string name="compose_title_compose">Skrive</string>
+  <string name="compose_title_compose">Skriv</string>
   <string name="compose_title_reply">Svar</string>
   <string name="compose_title_reply_all">Svar alle</string>
   <string name="compose_title_forward">Videresend</string>
@@ -74,7 +76,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="choose_folder_copy_title">Kopier til...</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
   <string name="next_action">Næste</string>
-  <string name="previous_action">Forrige</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">O.k.</string>
   <string name="cancel_action">Annullér</string>
@@ -97,7 +98,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="save_draft_action">Gem som kladde</string>
   <string name="check_mail_action">Synkroniser mails</string>
   <string name="send_messages_action">Send mails</string>
-  <string name="refresh_folders_action">Genindlæse mappe liste</string>
+  <string name="refresh_folders_action">Genindlæs mappeliste</string>
   <string name="filter_folders_action">Find mappe</string>
   <string name="add_account_action">Tilføj konto</string>
   <string name="compose_action">Skriv</string>
@@ -109,7 +110,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="folders_action">Håndtér mapper</string>
   <string name="account_settings_action">Kontoindstillinger</string>
   <string name="remove_account_action">Slet konto</string>
-  <string name="mark_as_read_action">Marker som læst</string>
+  <string name="mark_as_read_action">Markér som læst</string>
   <string name="send_alternate_action">Del</string>
   <string name="send_alternate_chooser_title">Vælg afsender</string>
   <string name="flag_action">Tilføj stjernemarkering</string>
@@ -123,7 +124,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="copy_subject_to_clipboard">Emne kopieret til udklipsholder</string>
   <string name="message_view_theme_action_dark">Skift til mørkt tema</string>
   <string name="message_view_theme_action_light">Skift til lyst tema</string>
-  <string name="mark_as_unread_action">Marker som ulæst</string>
+  <string name="mark_as_unread_action">Markér som ulæst</string>
   <string name="read_receipt">Kvittering for modtagelse</string>
   <string name="read_receipt_enabled">Der vil blive anmodet om kvittering for modtagelse</string>
   <string name="read_receipt_disabled">Der vil ikke blive anmodet om kvittering for modtagelse</string>
@@ -145,19 +146,17 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="notification_new_title">Ny mail</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g>nyt brev</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nye meddelelser</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> ulæst(e) (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> mere på <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Svar</string>
   <string name="notification_action_mark_as_read">Markér som læst</string>
   <string name="notification_action_mark_all_as_read">Markér alle som læst</string>
   <string name="notification_action_delete">Slet</string>
   <string name="notification_action_delete_all">Slet alle</string>
-  <string name="notification_action_archive">Arkivere</string>
+  <string name="notification_action_archive">Arkivér</string>
   <string name="notification_action_archive_all">Arkivér alle</string>
   <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_public">Certifikat fejl</string>
@@ -218,11 +217,14 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Kunne ikke gemme vedhæftning.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hent hele meddelelsen</string>
   <string name="message_view_sender_label">via %1$s</string>
   <string name="from_same_sender">Flere fra denne afsender</string>
-  <string name="search_from_format">Fra <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Mail kasseret</string>
   <string name="message_saved_toast">Mail gemt som kladde</string>
   <string name="global_settings_flag_label">Vis stjerner</string>
@@ -259,9 +261,11 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="general_settings_swipe_action_none">Ingen</string>
   <!--Name of the swipe action to select/deselect a message-->
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Markér som læst/ulæst</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Tilføj/Fjern stjerne</string>
   <!--Name of the swipe action to archive a message-->
-  <string name="general_settings_swipe_action_archive">Arkivere</string>
+  <string name="general_settings_swipe_action_archive">Arkivér</string>
   <!--Name of the swipe action to delete a message-->
   <string name="general_settings_swipe_action_delete">Slet</string>
   <!--Name of the swipe action to move a message to the spam folder-->
@@ -279,6 +283,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="global_settings_lock_screen_notification_visibility_title">Besked på låseskærmen</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen besked på låseskærmen </string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Programnavn</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Antal af nye beskeder</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Antal mails og afsendere</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Samme som når skærmen er ulåst</string>
   <string name="quiet_time">Tidsrum med stilhed</string>
@@ -330,7 +335,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_incoming_delete_policy_label">Når jeg sletter en mail</string>
   <string name="account_setup_incoming_delete_policy_never_label">Undlad at slette på server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Slet på server</string>
-  <string name="account_setup_incoming_delete_policy_markread_label">Marker som læst på server</string>
+  <string name="account_setup_incoming_delete_policy_markread_label">Markér som læst på server</string>
+  <string name="account_setup_incoming_use_compression">Brug komprimering</string>
   <string name="account_setup_expunge_policy_label">Ryd slettede mails</string>
   <string name="account_setup_expunge_policy_immediately">Umiddelbart efter sletning</string>
   <string name="account_setup_expunge_policy_on_poll">I forbindelse med hentning af mails</string>
@@ -500,12 +506,12 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_folder_sync_mode_first_and_second_class">Primære og sekundære mapper</string>
   <string name="account_settings_folder_sync_mode_not_second_class">Alle undtaget sekundære mapper</string>
   <string name="account_settings_folder_sync_mode_none">Ingen</string>
-  <string name="account_settings_folder_push_mode_label">Hent/send mail fra mapper(Push)</string>
+  <string name="account_settings_folder_push_mode_label">Hent/send mail fra mapper (Push)</string>
   <string name="account_settings_folder_push_mode_all">Alle</string>
   <string name="account_settings_folder_push_mode_first_class">Kun primære mapper</string>
   <string name="account_settings_folder_push_mode_first_and_second_class">Primære og sekundære mapper</string>
   <string name="account_settings_folder_push_mode_not_second_class">Alle undtaget sekundære mapper</string>
-  <string name="account_settings_folder_push_mode_none">None</string>
+  <string name="account_settings_folder_push_mode_none">Ingen</string>
   <string name="account_settings_folder_target_mode_label">Flyt/kopier destinations mapper</string>
   <string name="account_settings_folder_target_mode_all">Alle</string>
   <string name="account_settings_folder_target_mode_first_class">Kun primære mapper</string>
@@ -554,7 +560,9 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_vibrate_pattern_4">Mønster 4</string>
   <string name="account_settings_vibrate_pattern_5">Mønster 5</string>
   <string name="account_settings_vibrate_times">Gentag vibration</string>
+  <string name="account_settings_vibrate_summary_disabled">Deaktiveret</string>
   <string name="account_settings_ringtone">Ringetone ved ny mail</string>
+  <string name="account_settings_notification_light_disabled">Deaktiveret</string>
   <string name="account_settings_notification_light_account_color">Kontofarve</string>
   <string name="account_settings_notification_light_white">Hvid</string>
   <string name="account_settings_notification_light_red">Rød</string>
@@ -838,7 +846,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_view_empty">Vær venlig og vælg en meddelelse fra venstre side</string>
   <string name="global_settings_show_contact_picture_label">Vis kontaktbilleder</string>
   <string name="global_settings_show_contact_picture_summary">Vis kontaktbilleder i meddelelsesliste</string>
-  <string name="mark_all_as_read">Marker alle som læst</string>
+  <string name="mark_all_as_read">Markér alle som læst</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Farvelægning af kontakter</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Benyt farver hvis der ikke findes billede af kontakter</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Visning af handlinger for valgte meddelelser</string>
@@ -862,6 +870,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Til</string>
   <string name="recipient_from">Fra</string>
+  <string name="reply_to_label">Svar til</string>
   <string name="unknown_recipient">&lt;Ukendt modtager&gt;</string>
   <string name="unknown_sender">&lt;Ukendt afsender&gt;</string>
   <string name="address_type_home">Hjem</string>
@@ -1019,17 +1028,43 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Fravælg</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Markér som læst</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-  <string name="swipe_action_mark_as_unread">Marker som ulæst</string>
+  <string name="swipe_action_mark_as_unread">Markér som ulæst</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
   <string name="swipe_action_add_star">Tilføj stjernemarkering</string>
   <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
   <string name="swipe_action_remove_star">Fjern stjernemarkering</string>
   <!--Name of the swipe action to archive a message. Try to keep it short.-->
-  <string name="swipe_action_archive">Arkivere</string>
+  <string name="swipe_action_archive">Arkivér</string>
   <!--Name of the swipe action to delete a message. Try to keep it short.-->
   <string name="swipe_action_delete">Slet</string>
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Flyt...</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Fra</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Afsender</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Svar til</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">Til</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Cc</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Bcc</string>
+  <!--Displayed when loading the message details has failed-->
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">Mail addresse</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
 </resources>

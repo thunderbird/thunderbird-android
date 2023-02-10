@@ -77,7 +77,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="choose_folder_copy_title">Kopiuj do…</string>
   <string name="actionbar_selected">Wybrano <xliff:g id="selection_count">%d</xliff:g></string>
   <string name="next_action">Dalej</string>
-  <string name="previous_action">Cofnij</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">OK</string>
   <string name="cancel_action">Anuluj</string>
@@ -150,14 +149,12 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="notification_new_title">Nowa wiadomość</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nowa wiadomość</item>
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nowe wiadomości</item>
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nowych wiadomości</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nowych wiadomości</item>
   </plurals>
-  <string name="notification_new_one_account_fmt">Nowe: <xliff:g id="unread_message_count">%1$d</xliff:g> (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> więcej na <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odpowiedz</string>
   <string name="notification_action_mark_as_read">Oznacz jako przeczytane</string>
@@ -228,11 +225,18 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="message_view_cc_label">DW:</string>
   <string name="message_view_bcc_label">UDW:</string>
   <string name="message_view_status_attachment_not_saved">Nie można zapisać załącznika.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">do </string>
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">mnie</string>
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Wyświetl zdalne obrazy</string>
   <string name="message_view_no_viewer">Nie moge znaleźć aplikacji do wyświetlenia pliku <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Pobierz całą wiadomość</string>
   <string name="message_view_sender_label">przez %1$s</string>
   <string name="from_same_sender">Więcej od tego nadawcy</string>
-  <string name="search_from_format">Od <xliff:g id="sender"> %s </xliff:g></string>
   <string name="message_discarded_toast">Wiadomość usunięta</string>
   <string name="message_saved_toast">Wiadomość zapisana jako wersja robocza</string>
   <string name="global_settings_flag_label">Oznaczaj gwiazdkami</string>
@@ -289,7 +293,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_privacy_hide_useragent_detail">Usuń User-Agent K-9 z nagłówka wiadomości</string>
   <string name="global_settings_privacy_hide_timezone">Ukryj strefę czasową</string>
   <string name="global_settings_privacy_hide_timezone_detail">Używaj czasu UTC zamiast czasu lokalnego w nagłówkach wiadomości i odpowiedzi</string>
-  <string name="global_settings_notification_quick_delete_title">Pokazuj przycisk „Usuń”</string>
+  <string name="global_settings_notification_quick_delete_title">Pokaż przycisk „Usuń”</string>
   <string name="global_settings_notification_quick_delete_never">Nigdy</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Dla powiadomień o pojedynczych wiadomościach</string>
   <string name="global_settings_notification_quick_delete_always">Zawsze</string>
@@ -727,6 +731,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="font_size_message_list_preview">Podgląd</string>
   <string name="font_size_message_view">Wiadomości</string>
   <string name="font_size_message_view_sender">Nadawca</string>
+  <string name="font_size_message_view_recipients">Odbiorcy</string>
   <string name="font_size_message_view_subject">Temat</string>
   <string name="font_size_message_view_date">Czas i data</string>
   <string name="font_size_message_view_content">Treść wiadomości</string>
@@ -780,13 +785,13 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Kopia zapasowa</string>
   <string name="settings_list_miscellaneous_category">Różne</string>
-  <string name="settings_export_title">Eksport ustawień</string>
+  <string name="settings_export_title">Eksportuj ustawienia</string>
   <string name="settings_export_button">Eksportuj</string>
   <string name="settings_export_share_button">Prześlij dalej (alternatywne)</string>
   <string name="settings_export_progress_text">Eksportowanie ustawień…</string>
   <string name="settings_export_success_generic">Eksport ustawień zakończony sukcesem</string>
   <string name="settings_export_failure">Błąd eksportu</string>
-  <string name="settings_import_title">Import</string>
+  <string name="settings_import_title">Importuj ustawienia</string>
   <string name="settings_import_pick_document_button">Wybierz plik</string>
   <string name="settings_import_button">Importuj</string>
   <string name="settings_import_success_generic">Ustawienia zostały zaimportowane</string>
@@ -1088,4 +1093,38 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <string name="swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Przenieś…</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Pokaż przycisk pływający „Nowa wiadomość”</string>
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Błąd</string>
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Nie znaleziono folderu</string>
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Szczegóły wiadomości</string>
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Brak nagłówka „Data”</string>
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Od</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Nadawca</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Odpowiedz do</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">Do</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">DW</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">UDW</string>
+  <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Wystąpił błąd podczas ładowania szczegółów wiadomości.</string>
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Dodaj do kontaktów</string>
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Skopiuj adres e-mail</string>
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Skopiuj nazwę oraz adres e-mail</string>
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">Adres e-mail</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Nazwa oraz adres e-mail</string>
 </resources>

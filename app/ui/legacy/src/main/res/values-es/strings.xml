@@ -75,7 +75,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="choose_folder_copy_title">Copiar a…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionados</string>
   <string name="next_action">Siguiente</string>
-  <string name="previous_action">Anterior</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">Aceptar</string>
   <string name="cancel_action">Cancelar</string>
@@ -147,13 +146,11 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="notification_new_title">Correo nuevo</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> mensaje nuevo</item>
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> mensajes nuevos</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> mensajes nuevos</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Sin leer (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> más en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como leído</string>
@@ -224,11 +221,18 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Cco:</string>
   <string name="message_view_status_attachment_not_saved">No se puede guardar el adjunto.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">para </string>
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">mí</string>
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Mostrar imágenes remotas</string>
   <string name="message_view_no_viewer">Imposible encontrar visor de <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaje completo</string>
   <string name="message_view_sender_label">vía %1$s</string>
   <string name="from_same_sender">Más de este remitente</string>
-  <string name="search_from_format">Desde <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Mensaje descartado</string>
   <string name="message_saved_toast">Mensaje guardado como borrador</string>
   <string name="global_settings_flag_label">Mostrar mensajes destacados</string>
@@ -723,6 +727,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="font_size_message_list_preview">Previsualizar</string>
   <string name="font_size_message_view">Mensajes</string>
   <string name="font_size_message_view_sender">Remitente</string>
+  <string name="font_size_message_view_recipients">Destinatarios</string>
   <string name="font_size_message_view_subject">Asunto</string>
   <string name="font_size_message_view_date">Hora y fecha</string>
   <string name="font_size_message_view_content">Cuerpo de mensaje</string>
@@ -1079,4 +1084,38 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
   <string name="swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Mover…</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Mostrar botón flotante de redacción</string>
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Error</string>
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">No se ha encontrado la carpeta</string>
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Detalles del correo</string>
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Falta el campo de «fecha» en el encabezado</string>
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">De</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Remitente</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Responder a</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">A</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Cc</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Cco</string>
+  <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Se produjo un error al cargar los datos del correo.</string>
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Añadir a contactos</string>
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Copiar dirección de correo</string>
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Copiar nombre y dirección de correo</string>
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">Dirección de correo</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Nombre y dirección de correo</string>
 </resources>

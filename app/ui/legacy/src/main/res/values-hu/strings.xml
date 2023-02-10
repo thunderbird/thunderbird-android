@@ -75,7 +75,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="choose_folder_copy_title">Másolás…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> kiválasztva</string>
   <string name="next_action">Következő</string>
-  <string name="previous_action">Előző</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">OK</string>
   <string name="cancel_action">Mégse</string>
@@ -140,18 +139,16 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="status_loading_more">Üzenetek betöltése\u2026</string>
   <string name="status_network_error">Kapcsolódási hiba történt.</string>
   <string name="status_invalid_id_error">Az üzenet nem található.</string>
-  <string name="status_loading_error">Üzenetbetöltési hiba történt.</string>
+  <string name="status_loading_error">Üzenetbetöltési hiba történt</string>
   <string name="load_more_messages_fmt">Legfeljebb <xliff:g id="messages_to_load">%d</xliff:g> további betöltése</string>
   <string name="size_format_gigabytes">%.1f GB</string>
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="notification_new_title">Új levél</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Olvasatlan (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> további: <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Válasz</string>
   <string name="notification_action_mark_as_read">Megjelölés olvasottként</string>
@@ -222,11 +219,14 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="message_view_cc_label">Másolat:</string>
   <string name="message_view_bcc_label">Titkos másolat:</string>
   <string name="message_view_status_attachment_not_saved">Nem lehet elmenteni a mellékletet.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer">Nem sikerült megjelenítőt találni ehhez: <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Teljes üzenet letöltése</string>
   <string name="message_view_sender_label">ezen keresztül: %1$s</string>
   <string name="from_same_sender">Továbbiak ettől a feladótól</string>
-  <string name="search_from_format">Innen: <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Az üzenet elvetésre került.</string>
   <string name="message_saved_toast">Az üzenet vázlatként lett elmentve.</string>
   <string name="global_settings_flag_label">Csillagok megjelenítése</string>
@@ -258,13 +258,19 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_confirm_menu_mark_all_read">Összes üzenet megjelölése olvasottként</string>
   <string name="global_settings_confirm_action_delete_notif">Törlés (az értesítésekből)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Húzási műveletek</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Jobbra húzás</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Balra húzás</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Nincs</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Kiválasztottak ki/bekapcsolása&lt;br&gt;</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Olvasottnak/olvasatlannak jelölés</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Csillag hozzáadása/eltávolítása</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Archívum</string>
   <!--Name of the swipe action to delete a message-->
@@ -693,6 +699,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_push_limit_1000">1000 mappa</string>
   <string name="animations_title">Animációk</string>
   <string name="animations_summary">Rikító látható hatások használata</string>
+  <string name="volume_navigation_title">Hangerőgomb navigáció az üzenet nézetben</string>
   <string name="show_unified_inbox_title">Egységes beérkezett üzenetek megjelenítése</string>
   <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
   <string name="integrated_inbox_title">Egységes beérkezett üzenetek</string>
@@ -1050,6 +1057,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Kijelölés törlése</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Olvassotnak jeölés</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">Megjelölés olvasatlanként</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -1063,4 +1071,28 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Levélszemét</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Áthelyezés...</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Feladó</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Válasz címzettje</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">Címzett</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Másolat</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Titkos másolat</string>
+  <!--Displayed when loading the message details has failed-->
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">E-mail-cím</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
 </resources>

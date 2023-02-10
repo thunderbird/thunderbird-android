@@ -12,6 +12,8 @@
   <string name="app_license">Apache Lisansı, Versiyon 2.0</string>
   <string name="about_project_title">Açık Kaynak Projesi</string>
   <string name="about_website_title">Web sitesi</string>
+  <string name="user_manual_title">Kullanım kılavuzu</string>
+  <string name="get_help_title">Yardım al</string>
   <string name="user_forum_title">Kullanıcı forumu</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -38,7 +40,7 @@ Geliştirilmiş özellikler içerir:
 <li>E-posta imzaları</li>
 <li>Bcc-to-self</li>
 <li>Klasör kayıtları</li>
-<li>Tüm klasörü eşzamanlama</li>
+<li>Tüm klasörler eşzamanlanır</li>
 <li>Yanıt adresi yapılandırması</li>
 <li>Klavye kısayolları</li>
 <li>Daha iyi IMAP desteği</li>
@@ -70,16 +72,17 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="compose_title_forward_as_attachment">Ek olarak ilet</string>
   <string name="choose_account_title">Hesap Seçin</string>
   <string name="choose_folder_title">Klasör Seç</string>
+  <string name="choose_folder_move_title">Şuraya taşı...</string>
+  <string name="choose_folder_copy_title">Şuraya kopyala...</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
   <string name="next_action">Sonraki</string>
-  <string name="previous_action">Önceki</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">Tamam</string>
   <string name="cancel_action">İptal</string>
   <string name="send_action">Gönder</string>
   <string name="empty_subject">Konu yok, bu şekilde göndermek için tıklayın</string>
   <string name="reply_action">Yanıtla</string>
-  <string name="reply_all_action">Tümünü Yanıtla</string>
+  <string name="reply_all_action">Tümünü yanıtla</string>
   <string name="delete_action">Sil</string>
   <string name="archive_action">Arşiv</string>
   <string name="spam_action">Gereksiz posta</string>
@@ -91,27 +94,27 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="single_message_options_action">Gönder…</string>
   <string name="refile_action">Yeniden işlem…</string>
   <string name="done_action">Tamam</string>
-  <string name="discard_action">Çıkart</string>
+  <string name="discard_action">Yoksay</string>
   <string name="save_draft_action">Taslak olarak Kaydet</string>
-  <string name="check_mail_action">Postayı Kontrol et</string>
-  <string name="send_messages_action">İletileri Gönder</string>
+  <string name="check_mail_action">Postayı kontrol et</string>
+  <string name="send_messages_action">İletileri gönder</string>
   <string name="refresh_folders_action">Klasörleri yinele</string>
   <string name="filter_folders_action">Klasör bul</string>
-  <string name="add_account_action">Hesap Ekle</string>
+  <string name="add_account_action">Hesap ekle</string>
   <string name="compose_action">Oluştur</string>
   <string name="search_action">Arama</string>
   <string name="search_everywhere_action">Her yerde ara</string>
   <string name="search_results">Arama Sonuçları</string>
-  <string name="new_messages_title">Yenı mesajlar</string>
+  <string name="new_messages_title">Yeni iletiler</string>
   <string name="preferences_action">Ayarlar</string>
   <string name="folders_action">Klasörleri yönet</string>
   <string name="account_settings_action">Hesap Ayarları</string>
-  <string name="remove_account_action">Hesabı Kaldır</string>
+  <string name="remove_account_action">Hesabı kaldır</string>
   <string name="mark_as_read_action">Okundu olarak işaretle</string>
   <string name="send_alternate_action">Paylaş</string>
-  <string name="send_alternate_chooser_title">Gönderici Seç</string>
-  <string name="flag_action">Yıldız Ekle</string>
-  <string name="unflag_action">Yıldızı Kaldır</string>
+  <string name="send_alternate_chooser_title">Gönderici seç</string>
+  <string name="flag_action">Yıldız ekle</string>
+  <string name="unflag_action">Yıldızı kaldır</string>
   <string name="copy_action">Kopyala</string>
   <string name="unsubscribe_action">Abonelikten Çık</string>
   <string name="show_headers_action">Başlıkları göster</string>
@@ -143,12 +146,10 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="size_format_megabytes">%.1fMB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="notification_new_title">Yeni posta</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> yeni mesaj</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> yeni ileti</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Okunmadı (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages"><xliff:g id="additional_messages">%1$d</xliff:g> daha fazla <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Yanıtla</string>
   <string name="notification_action_mark_as_read">Okundu olarak işaretle</string>
@@ -164,6 +165,7 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="notification_authentication_error_title">Kimlik Doğrulama Hatası</string>
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> için oturum açılamadı. Sunucu ayarlarınızı güncelleyin.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Bildirim hatası</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Posta kontrol ediliyor: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Posta kontrol ediliyor</string>
@@ -217,13 +219,16 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="message_view_cc_label">Bilgi:</string>
   <string name="message_view_bcc_label">Gizli Kopya:</string>
   <string name="message_view_status_attachment_not_saved">Eklenti kaydedilemedi</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> için görüntüleyici bulunamadı.</string>
-  <string name="message_view_download_remainder">Mesajın tamamını indir</string>
+  <string name="message_view_download_remainder">İletinin tamamını indir</string>
   <string name="message_view_sender_label">%1$skanalıyla</string>
   <string name="from_same_sender">Bu göndericiden daha fazla ileti</string>
-  <string name="search_from_format">Kimden <xliff:g id="sender">%s</xliff:g></string>
-  <string name="message_discarded_toast">Mesaj silindi</string>
-  <string name="message_saved_toast">Mesaj taslak olarak kaydedildi</string>
+  <string name="message_discarded_toast">İleti silindi</string>
+  <string name="message_saved_toast">İleti taslak olarak kaydedildi</string>
   <string name="global_settings_flag_label">Yıldızları Göster</string>
   <string name="global_settings_flag_summary">Yıldız bayraklı mesajları gösterir</string>
   <string name="global_settings_preview_lines_label">Önizleme hatları</string>
@@ -248,17 +253,23 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="global_settings_confirm_action_delete">Sil</string>
   <string name="global_settings_confirm_action_delete_starred">Yıldızlıları Sil (sadece mesaj görünümü)</string>
   <string name="global_settings_confirm_action_spam">Gereksiz posta</string>
-  <string name="global_settings_confirm_menu_discard">Mesajı yoksay</string>
+  <string name="global_settings_confirm_menu_discard">İletiyi yoksay</string>
   <string name="global_settings_confirm_menu_mark_all_read">Tüm iletileri okundu olarak işaretle</string>
   <string name="global_settings_confirm_action_delete_notif">Sil (bildirimden)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Kaydırma eylemleri</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Sağa kaydır</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Sola kaydır</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Hiçbiri</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Seçimi değiştir</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Okundu/okunmadı say</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Yıldızı ekle/kaldır</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Arşiv</string>
   <!--Name of the swipe action to delete a message-->
@@ -271,15 +282,15 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="global_settings_privacy_hide_useragent_detail">Posta başlığından K-9 Kullanıcı Aracısını kaldır</string>
   <string name="global_settings_privacy_hide_timezone">Zaman dilimini gizle</string>
   <string name="global_settings_privacy_hide_timezone_detail">Posta ve yanıt başlıklarında yerel zaman dilimi yerine UTC kullan</string>
-  <string name="global_settings_notification_quick_delete_title">\'Sil\' butonunu göster</string>
+  <string name="global_settings_notification_quick_delete_title">\'Sil\' düğmesini göster</string>
   <string name="global_settings_notification_quick_delete_never">Hiçbir zaman</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Tek bir mesaj bildirimi için</string>
   <string name="global_settings_notification_quick_delete_always">Her zaman</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Kilit Ekranı Bildirimleri</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Kilit ekranı bildirimi yok</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Uygulama adı</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Yeni mesaj sayısı</string>
-  <string name="global_settings_lock_screen_notification_visibility_senders">Mesaj sayısı ve gönderenler</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Yeni ileti sayısı</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">İleti sayısı ve gönderenler</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Ekran kilidi açıkken olduğu gibi</string>
   <string name="quiet_time">Sessiz Zaman</string>
   <string name="quiet_time_description">Zil sesi, titreşim ve flaşı devre dışı bırak</string>
@@ -433,13 +444,13 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="account_settings_show_pictures_only_from_contacts">Kişilerden</string>
   <string name="account_settings_show_pictures_always">Herkesten</string>
   <string name="account_settings_composition">Posta gönderiliyor</string>
-  <string name="account_settings_default_quoted_text_shown_label">Cevaplarken orjinal mesajı sakla</string>
-  <string name="account_settings_default_quoted_text_shown_summary">Mesajları cevaplarken, orjinal mesaj cevabınızın içinde.</string>
-  <string name="account_settings_reply_after_quote_label">Alıntı metinden sonra cevapla</string>
-  <string name="account_settings_reply_after_quote_summary">Mesajları cevaplarken, orjinal mesaj cevabınızın üzerinde gözükecek.</string>
+  <string name="account_settings_default_quoted_text_shown_label">Yanıtlarken orijinal mesajı sakla</string>
+  <string name="account_settings_default_quoted_text_shown_summary">Mesajları yanıtlarken, orijinal mesaj yanıtınızın içinde.</string>
+  <string name="account_settings_reply_after_quote_label">Alıntı metinden sonra yanıtla</string>
+  <string name="account_settings_reply_after_quote_summary">Mesajları yanıtlarken, özgün ileti yanıtınızın üzerinde gözükecek.</string>
   <string name="account_settings_strip_signature_label">Alıntılı yanıtta imzayı kaldır</string>
   <string name="account_settings_strip_signature_summary">Mesajlar yanıtlanırken, alıntı yapılan yazıdaki imzayı kaldır</string>
-  <string name="account_settings_message_format_label">Mesaj Biçimi</string>
+  <string name="account_settings_message_format_label">İleti Biçimi</string>
   <string name="account_settings_message_format_text">Düz Metin (resimler ve biçimler kaldırılacak)</string>
   <string name="account_settings_message_format_html">HTML (resimler ve biçimler korunacak)</string>
   <string name="account_settings_message_format_auto">Otomatik (HTML mesajına yanıt verilmiyorsa düz metin)</string>
@@ -564,8 +575,10 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="account_settings_vibrate_times">Titreşimi tekrarla</string>
   <string name="account_settings_vibrate_summary_disabled">Devre dışı</string>
   <string name="account_settings_ringtone">Yeni posta zil sesi</string>
+  <string name="account_settings_notification_light_label">Bildirim ışığı</string>
   <string name="account_settings_notification_light_disabled">Devre dışı</string>
   <string name="account_settings_notification_light_account_color">Hesap rengi</string>
+  <string name="account_settings_notification_light_default_color">Varsayılan sistem rengi</string>
   <string name="account_settings_notification_light_white">Beyaz</string>
   <string name="account_settings_notification_light_red">Kırmızı</string>
   <string name="account_settings_notification_light_green">Yeşil</string>
@@ -595,7 +608,7 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="edit_identity_name_hint">(İsteğe bağlı)</string>
   <string name="edit_identity_email_label">E-posta adresi</string>
   <string name="edit_identity_email_hint">(Gerekli)</string>
-  <string name="edit_identity_reply_to_label">Cevap adresi</string>
+  <string name="edit_identity_reply_to_label">Yanıt adresi</string>
   <string name="edit_identity_reply_to_hint">(İsteğe bağlı)</string>
   <string name="edit_identity_signature_label">İmza</string>
   <string name="edit_identity_signature_hint">(İsteğe bağlı)</string>
@@ -717,7 +730,7 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="save_or_discard_draft_message_instructions_fmt">Bu mesajı kaydet veya sil?</string>
   <string name="save_or_discard_draft_message_changes">Değişikliklerden vazgeç veya kaydet?</string>
   <string name="confirm_discard_draft_message_title">İleti silinsin mi?</string>
-  <string name="confirm_discard_draft_message">Bu mesajı silmek istediğinizden emin misiniz?</string>
+  <string name="confirm_discard_draft_message">Bu iletiyi silmek istediğinizden emin misiniz?</string>
   <string name="dialog_confirm_clear_local_folder_title">Yerel iletiler temizlensin mi?</string>
   <string name="dialog_confirm_clear_local_folder_message">Bu işlem tüm yerel iletileri klasörden kaldıracak. İletiler sunucudan silinmeyecek.</string>
   <string name="dialog_confirm_clear_local_folder_action">İletileri temizle</string>
@@ -753,7 +766,7 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="settings_export_progress_text">Dışa aktarma ayarları…</string>
   <string name="settings_export_success_generic">Ayarlar başarıyla dışa aktarıldı</string>
   <string name="settings_export_failure">Hesaplar çıkarılırken hata oluştu</string>
-  <string name="settings_import_title">İçe Aktarma ayarları</string>
+  <string name="settings_import_title">İçe aktarım ayarları</string>
   <string name="settings_import_pick_document_button">Dosya seç</string>
   <string name="settings_import_button">İçe Aktar</string>
   <string name="settings_import_success_generic">Ayarlar başarıyla içe aktarıldı</string>
@@ -851,7 +864,7 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="message_view_empty">Sol taraftan bir mesaj seçin</string>
   <string name="global_settings_show_contact_picture_label">Kişi resimlerini göster</string>
   <string name="global_settings_show_contact_picture_summary">Mesaj listesinde kişi resimlerini gösterir</string>
-  <string name="mark_all_as_read">Tümünü okundu olarak işaretle</string>
+  <string name="mark_all_as_read">Tümünü okundu say</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Kişi resimlerini renklendir</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Eksik kişi resimlerini renklendir</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Mesaj eylemlerini görünür yap</string>
@@ -905,7 +918,7 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="openpgp_sign_only_keep_enabled">Koruma etkinleştirildi</string>
   <string name="openpgp_dialog_sign_only_title">PGP Sadece İmza Kipi</string>
   <string name="openpgp_dialog_sign_only_text">Bu modda, PGP anahtarınız, şifrelenmemiş bir e-postanın şifreleme imzasını oluşturmak için kullanılacaktır.</string>
-  <string name="openpgp_dialog_sign_only_plus_verified">Bu, epostayı şifreli yapmaz, fakat sizin anahtarınızdan gönderildiğini doğrular.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Bu, e-postayı şifreli yapmaz, fakat sizin anahtarınızdan gönderildiğini doğrular.</string>
   <string name="openpgp_dialog_sign_only_minus_break">İmzalar posta listelerine gönderildiğinde kırılabilir.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">İmzalar bazı istemcilerde \'signature.asc\' ekleri olarak görüntülenebilir.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Şifrelenmiş iletiler her zaman bir imza içerir.</string>
@@ -959,8 +972,8 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="account_settings_crypto_hide_sign_only_off">Tüm imzalar görüntülenecek</string>
   <string name="error_sign_only_no_encryption">Sadece imza kipinde şifreleme kullanılamaz!</string>
   <string name="unsigned_text_divider_label">İmzasız Metin</string>
-  <string name="crypto_no_provider_title">Bu eposta şifreli</string>
-  <string name="crypto_no_provider_message">Bu eposta OpenPGP ile şifrelendi. On okumak için uyumlu bir OpenPGP uygulaması kurup yapılandırmanız gerekir.</string>
+  <string name="crypto_no_provider_title">Bu e-posta şifreli</string>
+  <string name="crypto_no_provider_message">Bu e-posta OpenPGP ile şifrelendi. On okumak için uyumlu bir OpenPGP uygulaması kurup yapılandırmanız gerekir.</string>
   <string name="crypto_no_provider_button">Ayarlara Git</string>
   <string name="mail_list_widget_text">K-9 İleti Listesi</string>
   <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
@@ -1029,8 +1042,9 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Seçimi Kaldır</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Okundu say</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-  <string name="swipe_action_mark_as_unread">Okunmadı Olarak İşaretle</string>
+  <string name="swipe_action_mark_as_unread">Okunmadı say</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
   <string name="swipe_action_add_star">Yıldız Ekle</string>
   <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
@@ -1042,4 +1056,31 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Gereksiz posta</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Taşı...</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Hata</string>
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Klasör bulunamadı</string>
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Kimden</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Gönderen</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Yanıtla</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">Kime</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Kopya</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Gizli Kopya</string>
+  <!--Displayed when loading the message details has failed-->
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">E-posta adresi</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
 </resources>

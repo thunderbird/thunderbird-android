@@ -77,7 +77,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="choose_folder_copy_title">Copia in…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selezionati</string>
   <string name="next_action">Successivo</string>
-  <string name="previous_action">Precedente</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">OK</string>
   <string name="cancel_action">Annulla</string>
@@ -150,13 +149,11 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="notification_new_title">Nuova posta</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nuovo messaggio</item>
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> non letti (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> altri in <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Rispondi</string>
   <string name="notification_action_mark_as_read">Letto</string>
@@ -227,11 +224,18 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Ccn:</string>
   <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">a </string>
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">me</string>
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Mostra immagini remote</string>
   <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Scarica messaggio completo</string>
   <string name="message_view_sender_label">tramite %1$s</string>
   <string name="from_same_sender">Altri da questo mittente</string>
-  <string name="search_from_format">Da <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Messaggio scartato</string>
   <string name="message_saved_toast">Messaggio salvato come bozza</string>
   <string name="global_settings_flag_label">Mostra stelle</string>
@@ -263,13 +267,19 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="global_settings_confirm_menu_mark_all_read">Marca tutti i messaggi come letti</string>
   <string name="global_settings_confirm_action_delete_notif">Elimina (da notifica)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Azioni di scorrimento</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Scorrimento a destra</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Scorrimento a sinistra</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Nessuna</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Commuta la selezione</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Marca come letto/da leggere</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Aggiungi/rimuovi stella</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Archivia</string>
   <!--Name of the swipe action to delete a message-->
@@ -428,7 +438,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
   <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Tutte eccetto le cartelle di 2a classe</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">Nessuna</string>
-  <string name="account_settings_notify_sync_label">Sincronizza notifiche</string>
+  <string name="account_settings_notify_sync_label">Notifiche di sincronizzazione</string>
   <string name="account_settings_email_label">Il tuo indirizzo email</string>
   <string name="account_settings_notify_summary">Notifica nella barra di stato l\'arrivo di un nuovo messaggio</string>
   <string name="account_settings_notify_sync_summary">Notifica nella barra di stato mentre la posta viene controllata</string>
@@ -698,6 +708,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_push_limit_1000">1000 cartelle</string>
   <string name="animations_title">Animazione</string>
   <string name="animations_summary">Utilizza effetti visivi vistosi</string>
+  <string name="volume_navigation_title">Navigazione mediante tasto del volume nella vista dei messaggi</string>
   <string name="show_unified_inbox_title">Mosta posta in arrivo combinata</string>
   <string name="show_starred_count_title">Mostra il numero dei messaggi con stella</string>
   <string name="integrated_inbox_title">Posta in arrivo combinata</string>
@@ -719,6 +730,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="font_size_message_list_preview">Anteprima</string>
   <string name="font_size_message_view">Messaggi</string>
   <string name="font_size_message_view_sender">Mittente</string>
+  <string name="font_size_message_view_recipients">Destinatari</string>
   <string name="font_size_message_view_subject">Oggetto</string>
   <string name="font_size_message_view_date">Ora e data</string>
   <string name="font_size_message_view_content">Corpo del messaggio</string>
@@ -1060,8 +1072,9 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Deseleziona</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Segna come letto</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-  <string name="swipe_action_mark_as_unread">Marca come da leggere</string>
+  <string name="swipe_action_mark_as_unread">Segna come da leggere</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
   <string name="swipe_action_add_star">Aggiungi stella</string>
   <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
@@ -1073,4 +1086,39 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Sposta...</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Mostra pulsante componi in sovraimpressione</string>
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Errore</string>
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Cartella non trovata</string>
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Dettagli del messaggio</string>
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Intestazione \'Data\' mancante</string>
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Da</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Mittente</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Rispondi a</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">A</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Cc</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Ccn</string>
+  <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Errore nel caricare i dettagli del messaggio.</string>
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Aggiungi ai contatti</string>
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Copia indirizzo email</string>
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Copia nome e indirizzo email</string>
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">Indirizzo email</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Nome e indirizzo email</string>
 </resources>

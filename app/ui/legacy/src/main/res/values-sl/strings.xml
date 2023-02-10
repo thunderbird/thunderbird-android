@@ -12,8 +12,8 @@
   <string name="app_license">Dovoljenje Apache, različica 2.0</string>
   <string name="about_project_title">Odprtokodni projekt</string>
   <string name="about_website_title">Spletna stran</string>
-  <string name="user_manual_title">Navodila za uporabo</string>
-  <string name="get_help_title">Poišči pomoč</string>
+  <string name="user_manual_title">Uporabniški priročnik</string>
+  <string name="get_help_title">Pridobi pomoč</string>
   <string name="user_forum_title">Uporabniški forum</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -24,7 +24,7 @@
   <string name="changelog_version_title">Različica %s</string>
   <string name="changelog_recent_changes_title">Kaj je novega?</string>
   <string name="changelog_show_recent_changes">Pokaže zadnje spremembe po posodobitvi programa</string>
-  <string name="changelog_snackbar_text">Preglejte, kaj je novega v tej izdaji</string>
+  <string name="changelog_snackbar_text">Kaj je novega v tej izdaji</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Dobrodošli v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -76,7 +76,6 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="choose_folder_copy_title">Kopiraj v …</string>
   <string name="actionbar_selected">Izbrano: <xliff:g id="selection_count">%d</xliff:g></string>
   <string name="next_action">Naslednje</string>
-  <string name="previous_action">Predhodno</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">V redu</string>
   <string name="cancel_action">Prekliči</string>
@@ -150,14 +149,12 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="notification_new_title">Nova pošta</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> novo sporočilo</item>
     <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> novi sporočili</item>
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nova sporočila</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novih sporočil</item>
   </plurals>
-  <string name="notification_new_one_account_fmt">Neprebrano: <xliff:g id="unread_message_count">%1$d</xliff:g> (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">in <xliff:g id="additional_messages">%1$d</xliff:g> na <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odgovori</string>
   <string name="notification_action_mark_as_read">Označi kot prebrano</string>
@@ -199,7 +196,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="debug_enable_sensitive_logging_title">Beleženje občutljivih podrobnosti</string>
   <string name="debug_enable_sensitive_logging_summary">V dnevnikih so lahko objavljena tudi gesla.</string>
   <string name="debug_export_logs_title">Izvozi dnevnike</string>
-  <string name="debug_export_logs_success">Izvoz uspešen. Dnevniki lahko vsebujejo občutljive informacije. Bodi previden, komu jih pošlješ. </string>
+  <string name="debug_export_logs_success">Izvoz je uspešno zaključen. Dnevniški zapis lahko vsebuje občutljive podrobnosti. Priporočena je previdnost pri pošiljanju tretjim osebam. </string>
   <string name="debug_export_logs_failure">Izvoz je spodletel.</string>
   <string name="message_list_load_more_messages_action">Naloži več sporočil</string>
   <string name="message_to_fmt">Za:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -228,11 +225,14 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="message_view_cc_label">Kp:</string>
   <string name="message_view_bcc_label">Skp:</string>
   <string name="message_view_status_attachment_not_saved">Priloge ni mogoče shraniti.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer">Ni mogoče najti pregledovalnika za vrsto <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Prejmi celotno sporočilo</string>
   <string name="message_view_sender_label">prek %1$s</string>
   <string name="from_same_sender">Poišči več sporočil tega pošiljatelja</string>
-  <string name="search_from_format">Od <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Sporočilo je zavrženo.</string>
   <string name="message_saved_toast">Sporočilo je shranjeno kot osnutek</string>
   <string name="global_settings_flag_label">Pokaži zvezdice sporočil</string>
@@ -264,21 +264,27 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="global_settings_confirm_menu_mark_all_read">Označi vsa sporočila kot prebrana</string>
   <string name="global_settings_confirm_action_delete_notif">Brisanje neposredno iz obvestilne vrstice</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Dejanja potega</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Desni poteg</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Levi poteg</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
-  <string name="general_settings_swipe_action_none">Brez usklajevanja</string>
+  <string name="general_settings_swipe_action_none">Brez potega</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Preklopi izbor</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Označi kot prebrano/neprebrano</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Dodaj/Odstrani zvezdico</string>
   <!--Name of the swipe action to archive a message-->
-  <string name="general_settings_swipe_action_archive">Arhivirano</string>
+  <string name="general_settings_swipe_action_archive">Arhiviranje</string>
   <!--Name of the swipe action to delete a message-->
-  <string name="general_settings_swipe_action_delete">Brisanje vseh vrst sporočil</string>
+  <string name="general_settings_swipe_action_delete">Brisanje</string>
   <!--Name of the swipe action to move a message to the spam folder-->
   <string name="general_settings_swipe_action_spam">Neželena pošta</string>
   <!--Name of the swipe action to move a message to another folder-->
-  <string name="general_settings_swipe_action_move">Premakni</string>
+  <string name="general_settings_swipe_action_move">Premik</string>
   <string name="global_settings_privacy_hide_useragent">Skrij program</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstrani podatke programa K-9 iz glave pošte</string>
   <string name="global_settings_privacy_hide_timezone">Skrij časovni pas</string>
@@ -302,15 +308,15 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_basics_title">Nastavitev novega računa</string>
   <string name="account_setup_basics_email_hint">Naslov elektronske pošte</string>
   <string name="account_setup_basics_password_hint">Geslo</string>
-  <string name="account_setup_oauth_description">Če želiš uporabljati ta e-poštni račun s K-9 Mail, se moraš prijaviti in aplikaciji odobriti dostop do svojih e-poštnih sporočil.</string>
+  <string name="account_setup_oauth_description">Za uporabo poštnega računa s v programu K-9 Mail, je zahtevana prijava v programu in odobritev dostopa do sporočil.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
   <string name="account_setup_oauth_sign_in">Prijava</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
-  <string name="account_setup_oauth_sign_in_with_google">Prijavi se z Google</string>
+  <string name="account_setup_oauth_sign_in_with_google">Prijava z računom Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-  <string name="account_setup_basics_show_password_need_lock">Če si želiš ogledati svoje geslo tukaj, omogoči zaklepanje zaslona na tej napravi.</string>
-  <string name="account_setup_basics_show_password_biometrics_title">Preverjanje identitete</string>
-  <string name="account_setup_basics_show_password_biometrics_subtitle">Odkleni, za ogled svojega gesla</string>
+  <string name="account_setup_basics_show_password_need_lock">Za prikaz gesla je treba omogočiti zaklepanje zaslona na tej napravi.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Preverjanje istovetnosti</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Odkleni, za prikaz gesla</string>
   <string name="account_setup_basics_manual_setup_action">Ročna nastavitev</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Pridobivanje podrobnosti računa \u2026</string>
@@ -414,10 +420,10 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Napačno uporabniško ime ali geslo\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Strežnik je objavil neveljavno potrdilo SSL. To je lahko posledica napačne nastavitve strežnika ali pa poskusa napada na poštni strežnik. Če niste prepričani v nastavitve, zavrnite sprejem potrdila in stopite v stik s skrbnikom strežnika.\n\nNapaka:\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">S strežnikom ni mogoče vzpostaviti povezave.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_oauth_flow_canceled">Avtorizacija preklicana</string>
-  <string name="account_setup_failed_dlg_oauth_flow_failed">Avtorizacija ni uspela zaradi te napake: <xliff:g id="error">%s</xliff:g></string>
-  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 trenutno ni podprt s tem ponudnikom.</string>
-  <string name="account_setup_failed_dlg_browser_not_found">Aplikacija ni mogla najti brskalnika za odobritev dostopa do tvojega računa.</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Overitev je preklicana</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Overitev je spodletela z napako: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">S tem ponudnikom šifriranje OAuth 2.0 podprto.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Brskalnik nima dostopa do brskalnika za odobritev prijavnih podatkov računa.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Uredi podrobnosti</string>
   <string name="account_setup_failed_dlg_continue_action">Nadaljuj</string>
   <string name="account_settings_push_advanced_title">Napredne možnosti</string>
@@ -437,15 +443,15 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_notify_self_summary">Pokaže obvestilo tudi za poslana sporočila</string>
   <string name="account_notify_contacts_mail_only_label">Pokaži obvestila le za sporočila znanih stikov</string>
   <string name="account_notify_contacts_mail_only_summary">Pokažejo se le obvestila za prispela sporočila od stikov, ki so v krajevnem imeniku</string>
-  <string name="account_settings_ignore_chat_messages_label">Ignoriraj sporočila klepeta</string>
-  <string name="account_settings_ignore_chat_messages_summary">Ne prikazuj obvestil za sporočila, ki spadajo v e-poštni klepet</string>
+  <string name="account_settings_ignore_chat_messages_label">Prezri sporočila klepeta</string>
+  <string name="account_settings_ignore_chat_messages_summary">Ne prikazuj obvestil za sporočila, ki so poslana kot klepet</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Ob odpiranju označi kot prebrano</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Ko se sporočilo prvič odpre, naj bo označeno kot prebrano</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Ob izbrisu označi kot prebrano</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Ob izbrisu označi sporočilo tudi kot prebrano</string>
   <string name="account_settings_notification_channels_label">Kategorije obvestil</string>
-  <string name="account_settings_open_notification_settings_messages_summary">Konfiguriranje obvestil za nova sporočila</string>
-  <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguriranje obvestil o napakah in stanju</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Nastavitev obvestil za nova sporočila</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Nastavitev obvestil o napakah in o stanju računa</string>
   <string name="account_settings_show_pictures_label">Prikaz slik</string>
   <string name="account_settings_show_pictures_never">Ne pokaži slik</string>
   <string name="account_settings_show_pictures_only_from_contacts">Pokaži slike znanih stikov</string>
@@ -584,7 +590,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_vibrate_times">Število ponovitev tresenja</string>
   <string name="account_settings_vibrate_summary_disabled">Onemogočeno</string>
   <string name="account_settings_ringtone">Zvonjenje ob prejemu novega sporočila</string>
-  <string name="account_settings_notification_light_label">Barva luči obvestil</string>
+  <string name="account_settings_notification_light_label">Svetlobno obveščanje</string>
   <string name="account_settings_notification_light_disabled">Onemogočeno</string>
   <string name="account_settings_notification_light_account_color">Barvna shema računa</string>
   <string name="account_settings_notification_light_default_color">sistemsko privzeta barva</string>
@@ -699,6 +705,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_push_limit_1000">1000 map</string>
   <string name="animations_title">Pokaži animirane učinke vmesnika</string>
   <string name="animations_summary">Prehodi dejanj in različni učinki delovanja vmesnika so animirani</string>
+  <string name="volume_navigation_title">Krmarjenje s tipko za glasnost v pogledu sporočila</string>
   <string name="show_unified_inbox_title">Pokaži skupno mapo prejetih sporočil</string>
   <string name="show_starred_count_title">Pokaži število označb z zvezdico</string>
   <string name="integrated_inbox_title">Skupna mapa prejetih sporočil</string>
@@ -786,9 +793,9 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Prosim, vnesite geslo</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-  <string name="settings_import_authorization_required">Prosim, prijavi se</string>
+  <string name="settings_import_authorization_required">Pred nadaljevanjem se je treba prijaviti</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-  <string name="settings_import_authorization_and_password_required">Prosim, prijavi se in vnesi gesla</string>
+  <string name="settings_import_authorization_and_password_required">Za prijavo je treba vpisati gesla</string>
   <string name="settings_import_failure">Napaka pri uvozu nastavitev</string>
   <string name="settings_import_read_failure">Napaka pri branju datoteke nastavitev</string>
   <string name="settings_import_partial_failure">Napaka pri uvozu nekaterih nastavitev</string>
@@ -1028,7 +1035,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="ac_transfer_setting_title">Pošlji nastavitveno sporočilo šifriranja AutoCrypt</string>
   <string name="ac_transfer_setting_summary">Varna izmenjava nastavitev šifriranja med različnimi napravami</string>
   <string name="ac_transfer_title">Nastavitveno sporočilo šifriranja AutoCrypt</string>
-  <string name="ac_transfer_intro">Nastavitveno sporočilo šifriranja AutoCrypt varno deli vašo celovito nastavitev z drugimi napravami.</string>
+  <string name="ac_transfer_intro">Nastavitveno šifrirano sporočilo AutoCrypt omogoča varno izmenjavo celovite nastavitve naprave z drugimi napravami.</string>
   <string name="ac_transfer_button_send">Pošlji nastavitveno sporočilo</string>
   <string name="ac_transfer_will_be_sent">Sporočilo bo poslano na naslov:</string>
   <string name="ac_transfer_generating">Poteka ustvarjanje nastavitvenega sporočila …</string>
@@ -1049,23 +1056,24 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
   <string name="permission_contacts_rationale_title">Dovoli dostop do stikov</string>
   <string name="permission_contacts_rationale_message">Če hočete dobiti predloge za stike in prikazati imena in fotografije stikov, aplikacija potrebuje dostop do vaših stikov.</string>
   <string name="generic_loading_error">Med nalaganjem podatkov je prišlo do napake</string>
-  <string name="push_notification_state_initializing">Inicializacija …</string>
+  <string name="push_notification_state_initializing">Začenjanje …</string>
   <string name="push_notification_state_listening">Čakam na nova e-poštna sporočila</string>
   <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju </string>
   <string name="push_notification_state_wait_network">Spanje, dokler ni na voljo omrežja</string>
   <string name="push_notification_info">Dotakni se, če želiš izvedeti več.</string>
-  <string name="push_info_title">Informacije o potisku</string>
+  <string name="push_info_title">Podrobnosti potisnih storitev</string>
   <string name="push_info_notification_explanation_text">Ko uporabljate potisk, K-9 Mail vzdržuje povezavo s poštnim strežnikom. Android zahteva prikaz obvestila, ko je aplikacija aktivna v ozadju. %s</string>
   <string name="push_info_configure_notification_text">Vendar pa vam Android tudi omogoča, da obvestilo skrijete.</string>
   <string name="push_info_learn_more_text">Več o tem</string>
-  <string name="push_info_configure_notification_action">Nastavitev obvestila</string>
+  <string name="push_info_configure_notification_action">Nastavitev obveščanja</string>
   <string name="push_info_disable_push_text">Če ne potrebuješ takojšnjih obvestil o novih sporočilih, moraš onemogočiti potiskanje in uporabiti navadno izpraševanje. Izpraševanje išče novo pošto v rednih časovnih presledkih in ne potrebuje obvestila.</string>
-  <string name="push_info_disable_push_action">Onemogoči potiskanje</string>
+  <string name="push_info_disable_push_action">Onemogoči potisne storitve</string>
   <!--Name of the swipe action to select a message. Try to keep it short.-->
   <string name="swipe_action_select">Izberi</string>
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Odstrani izbor</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Označi kot prebrano</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">Označi kot neprebrano</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -1073,10 +1081,35 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
   <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
   <string name="swipe_action_remove_star">Odstrani zvezdico</string>
   <!--Name of the swipe action to archive a message. Try to keep it short.-->
-  <string name="swipe_action_archive">Arhivirano</string>
+  <string name="swipe_action_archive">Arhiviraj</string>
   <!--Name of the swipe action to delete a message. Try to keep it short.-->
-  <string name="swipe_action_delete">Brisanje vseh vrst sporočil</string>
+  <string name="swipe_action_delete">Izbriši</string>
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-  <string name="swipe_action_spam">Neželena pošta</string>
+  <string name="swipe_action_spam">Neželeno sporočilo</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Premakni …</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Od</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">po pošiljatelju</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Odgovori na</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">Za</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Kp</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Skp</string>
+  <!--Displayed when loading the message details has failed-->
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">Naslov elektronske pošte</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
 </resources>
