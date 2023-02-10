@@ -1,0 +1,9 @@
+MIME-Version: 1.0
+From: Alice <alice@k9mail.example>
+Date: Fri, 10 Feb 2023 10:00:00 +0100
+Message-ID: <thread-1@k9mail.example>
+Subject: Thread
+To: Bob <bob@k9mail.example>
+Content-Type: text/plain; charset=UTF-8
+
+This is the first message in this thread.
