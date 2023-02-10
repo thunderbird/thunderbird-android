@@ -17,7 +17,7 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeader
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser
-import com.fsck.k9.helper.Contacts
+import com.fsck.k9.contact.ContactIntentHelper
 import com.fsck.k9.helper.MailTo
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.Address
@@ -608,8 +608,7 @@ class RecipientPresenter(
     }
 
     private fun isContactPickerAvailable(): Boolean {
-        val contacts = Contacts.getInstance(context)
-        val resolveInfoList = context.packageManager.queryIntentActivities(contacts.contactPickerIntent(), 0)
+        val resolveInfoList = context.packageManager.queryIntentActivities(ContactIntentHelper.getContactPickerIntent(), 0)
         return resolveInfoList.isNotEmpty()
     }
 

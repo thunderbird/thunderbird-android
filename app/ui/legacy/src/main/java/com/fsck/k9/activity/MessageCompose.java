@@ -72,6 +72,7 @@ import com.fsck.k9.activity.compose.ReplyToView;
 import com.fsck.k9.activity.compose.SaveMessageTask;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
+import com.fsck.k9.contact.ContactIntentHelper;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
@@ -849,7 +850,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void showContactPicker(int requestCode) {
         requestCode |= REQUEST_MASK_RECIPIENT_PRESENTER;
         isInSubActivity = true;
-        startActivityForResult(contacts.contactPickerIntent(), requestCode);
+        startActivityForResult(ContactIntentHelper.getContactPickerIntent(), requestCode);
     }
 
     @Override

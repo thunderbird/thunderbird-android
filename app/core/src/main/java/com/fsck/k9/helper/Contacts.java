@@ -86,50 +86,6 @@ public class Contacts {
         mContentResolver = context.getContentResolver();
     }
 
-    /**
-     * Start the activity to add information to an existing contact or add a
-     * new one.
-     *
-     * @param email An {@link Address} instance containing the email address
-     *              of the entity you want to add to the contacts. Optionally
-     *              the instance also contains the (display) name of that
-     *              entity.
-     */
-    public void createContact(final Address email) {
-        final Uri contactUri = Uri.fromParts("mailto", email.getAddress(), null);
-
-        final Intent contactIntent = new Intent(ContactsContract.Intents.SHOW_OR_CREATE_CONTACT);
-        contactIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        contactIntent.setData(contactUri);
-
-        // Pass along full email string for possible create dialog
-        contactIntent.putExtra(ContactsContract.Intents.EXTRA_CREATE_DESCRIPTION,
-                email.toString());
-
-        // Only provide personal name hint if we have one
-        final String senderPersonal = email.getPersonal();
-        if (senderPersonal != null) {
-            contactIntent.putExtra(ContactsContract.Intents.Insert.NAME, senderPersonal);
-        }
-
-        mContext.startActivity(contactIntent);
-        clearCache();
-    }
-
-    /**
-     * Start the activity to add a phone number to an existing contact or add a new one.
-     *
-     * @param phoneNumber
-     *         The phone number to add to a contact, or to use when creating a new contact.
-     */
-    public void addPhoneContact(final String phoneNumber) {
-        Intent addIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
-        addIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
-        addIntent.putExtra(ContactsContract.Intents.Insert.PHONE, Uri.decode(phoneNumber));
-        addIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(addIntent);
-        clearCache();
-    }
 
     /**
      * Check whether the provided email address belongs to one of the contacts.
@@ -228,14 +184,6 @@ public class Contacts {
         // auto-completion.
     }
 
-    /**
-     * Creates the intent necessary to open a contact picker.
-     *
-     * @return The intent necessary to open a contact picker.
-     */
-    public Intent contactPickerIntent() {
-        return new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Email.CONTENT_URI);
-    }
 
     /**
      * Get URI to the picture of the contact with the supplied email address.

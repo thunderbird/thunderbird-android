@@ -24,8 +24,8 @@ import android.widget.Toast
 import androidx.core.app.ShareCompat.IntentBuilder
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import com.fsck.k9.contact.ContactIntentHelper
 import com.fsck.k9.helper.ClipboardManager
-import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.AttachmentResolver
@@ -252,8 +252,8 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                     startActivityIfAvailable(context, intent)
                 }
                 MENU_ITEM_PHONE_SAVE -> {
-                    val contacts = Contacts.getInstance(context)
-                    contacts.addPhoneContact(phoneNumber)
+                    val intent = ContactIntentHelper.getAddPhoneContactIntent(phoneNumber)
+                    startActivityIfAvailable(context, intent)
                 }
                 MENU_ITEM_PHONE_COPY -> {
                     val label = context.getString(R.string.webview_contextmenu_phone_clipboard_label)
@@ -298,8 +298,8 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                     startActivityIfAvailable(context, intent)
                 }
                 MENU_ITEM_EMAIL_SAVE -> {
-                    val contacts = Contacts.getInstance(context)
-                    contacts.createContact(Address(email))
+                    val intent = ContactIntentHelper.getAddEmailContactIntent(Address(email))
+                    startActivityIfAvailable(context, intent)
                 }
                 MENU_ITEM_EMAIL_COPY -> {
                     val label = context.getString(R.string.webview_contextmenu_email_clipboard_label)
