@@ -12,14 +12,19 @@
   <string name="app_license">Ліцэнзія Apache, версія 2.0</string>
   <string name="about_project_title">Праект з адкрытым зыходным кодам</string>
   <string name="about_website_title">Сайт</string>
+  <string name="user_manual_title">Дапаможнік карыстальніка</string>
+  <string name="get_help_title">Атрымаць дапамогу</string>
   <string name="user_forum_title">Форум</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Бібліятэкі</string>
   <string name="license">Ліцэнзія</string>
-  <string name="changelog_title">Спіс змен</string>
-  <string name="changelog_loading_error">Не атрымалася загрузіць спіс змен.</string>
+  <string name="changelog_title">Спіс зменаў</string>
+  <string name="changelog_loading_error">Не ўдалося загрузіць спіс зменаў.</string>
   <string name="changelog_version_title">Версія %s</string>
+  <string name="changelog_recent_changes_title">Што новага</string>
+  <string name="changelog_show_recent_changes">Пры абнаўленні праграмы паказваць апошнія змены</string>
+  <string name="changelog_snackbar_text">Даведайцеся, што новага ў гэтым выпуску</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Вітаем у K-9</string>
   <string name="accounts_welcome"><![CDATA[<p>
@@ -46,7 +51,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
 <p>
 Калі ласка, звярніце ўвагу, што K-9 не падтрымлівае бясплатныя акаўнты Hotmail і не цалкам падтрымлівае Microsoft Exchange.
 </p><p>
-Пляцоўка распрацоўкі:
+Пляцоўка распрацоўвання:
 <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
@@ -59,16 +64,17 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="about_title">Пра K-9 Mail</string>
   <string name="accounts_title">Акаўнты</string>
   <string name="advanced">Дадаткова</string>
-  <string name="compose_title_compose">Стварыць</string>
+  <string name="compose_title_compose">Напісаць</string>
   <string name="compose_title_reply">Адказаць</string>
   <string name="compose_title_reply_all">Адказаць усім</string>
   <string name="compose_title_forward">Пераслаць</string>
   <string name="compose_title_forward_as_attachment">Пераслаць як далучаны файл</string>
   <string name="choose_account_title">Абраць акаўнт</string>
   <string name="choose_folder_title">Абраць каталог</string>
+  <string name="choose_folder_move_title">Перамясціць у…</string>
+  <string name="choose_folder_copy_title">Скапіяваць у…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> абрана</string>
   <string name="next_action">Далей</string>
-  <string name="previous_action">Назад</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">Добра</string>
   <string name="cancel_action">Скасаваць</string>
@@ -84,8 +90,8 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="edit_as_new_message_action">Рэдагаваць як новы ліст</string>
   <string name="move_action">Перамясціць</string>
   <string name="move_to_drafts_action">Перамясціць у чарнавікі</string>
-  <string name="single_message_options_action">Адправіць…</string>
-  <string name="refile_action">Змяніць…</string>
+  <string name="single_message_options_action">Адпраўленне…</string>
+  <string name="refile_action">Перамяшчэнне…</string>
   <string name="done_action">Завершана</string>
   <string name="discard_action">Адкінуць</string>
   <string name="save_draft_action">Захаваць як чарнавік</string>
@@ -94,9 +100,11 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="refresh_folders_action">Абнавіць спіс каталогаў</string>
   <string name="filter_folders_action">Пошук каталога</string>
   <string name="add_account_action">Дадаць акаўнт</string>
-  <string name="compose_action">Стварыць</string>
+  <string name="compose_action">Напісаць</string>
   <string name="search_action">Пошук</string>
+  <string name="search_everywhere_action">Шукаць паўсюль</string>
   <string name="search_results">Вынікі пошуку</string>
+  <string name="new_messages_title">Новыя лісты</string>
   <string name="preferences_action">Налады</string>
   <string name="folders_action">Кіраванне каталогамі</string>
   <string name="account_settings_action">Налады акаўнта</string>
@@ -107,6 +115,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="flag_action">Адзначыць</string>
   <string name="unflag_action">Выдаліць адзнаку</string>
   <string name="copy_action">Капіяваць</string>
+  <string name="unsubscribe_action">Адпісацца</string>
   <string name="show_headers_action">Паказаць загалоўкі</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Адрас скапіяваны ў буфер абмену</item>
@@ -114,6 +123,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
     <item quantity="many">Адрасы скапіяваныя ў буфер абмену</item>
     <item quantity="other">Адрасы скапіяваныя ў буфер абмену</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Тэкст тэмы скапіяваны ў буфер абмену</string>
   <string name="message_view_theme_action_dark">Цёмная тэма</string>
   <string name="message_view_theme_action_light">Светлая тэма</string>
   <string name="mark_as_unread_action">Пазначыць як нечытанае</string>
@@ -131,22 +141,20 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="status_loading_more">Загрузка лістоў\u2026</string>
   <string name="status_network_error">Памылка злучэння</string>
   <string name="status_invalid_id_error">Ліст не знойдзены</string>
-  <string name="status_loading_error">Не атрымалася загрузіць ліст</string>
+  <string name="status_loading_error">Не ўдалося загрузіць ліст</string>
   <string name="load_more_messages_fmt">Загрузіць да
-    to <xliff:g id="messages_to_load">%d</xliff:g> наступных</string>
+    <xliff:g id="messages_to_load">%d</xliff:g> наступных</string>
   <string name="size_format_gigabytes">%.1f Гб</string>
   <string name="size_format_megabytes">%.1f Мб</string>
   <string name="size_format_kilobytes">%.1f Кб</string>
   <string name="size_format_bytes">%d Б</string>
-  <string name="notification_new_title">Новая пошта</string>
   <plurals name="notification_new_messages_title">
-    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> новыя ліст</item>
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> новы ліст</item>
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> новыя лісты</item>
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> новых лістоў</item>
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> новых лістоў</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> новыя лісты</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> новых (<xliff:g id="account">%2$s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> яшчэ ў <xliff:g id="account">%2$s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> яшчэ <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Адказаць</string>
   <string name="notification_action_mark_as_read">Пазначыць прачытаным</string>
   <string name="notification_action_mark_all_as_read">Пазначыць усё прачытаным</string>
@@ -155,17 +163,22 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="notification_action_archive">Архіў</string>
   <string name="notification_action_archive_all">Усе ў архіў</string>
   <string name="notification_action_spam">Спам</string>
+  <string name="notification_certificate_error_public">Памылка сертыфіката</string>
   <string name="notification_certificate_error_title">Збой сертыфіката <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Праверце налады сервера</string>
   <string name="notification_authentication_error_title">Аўтэнтыфікацыя схібіла</string>
   <string name="notification_authentication_error_text">Няўдалая аўтарызацыя для <xliff:g id="account">%s</xliff:g>. Змяніце налады сервера.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Памылка апавяшчэння</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">Праверка пошты: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
-  <string name="notification_bg_sync_title">Праверка пошты</string>
-  <string name="notification_bg_send_ticker">Адпраўка пошты: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_notify_error_text">Падчас стварэння сістэмнага апавяшчэння пра новы ліст адбылася памылка. Хутчэй за ўсё, прычына ў адсутнасці гуку апавяшчэння.\n\nНацісніце, каб адкрыць налады апавяшчэнняў.</string>
+  <string name="notification_bg_sync_ticker">Правяранне пошты: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_title">Правяранне пошты</string>
+  <string name="notification_bg_send_ticker">Адпраўленне пошты: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Адпраўленне пошты</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Сінхранізаваць (прымусовае правяранне)</string>
+  <string name="notification_channel_push_description">Паказваецца падчас чакання новых лістоў</string>
   <string name="notification_channel_messages_title">Паведамленні</string>
   <string name="notification_channel_messages_description">Апавяшчэнні пра лісты</string>
   <string name="notification_channel_miscellaneous_title">Рознае</string>
@@ -175,12 +188,15 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="special_mailbox_name_drafts">Чарнавікі</string>
   <string name="special_mailbox_name_trash">Сметніца</string>
   <string name="special_mailbox_name_sent">Адпраўлена</string>
-  <string name="send_failure_subject">Не атрымалася адправіць лісты</string>
+  <string name="send_failure_subject">Не ўдалося адправіць лісты</string>
   <string name="version">Версія</string>
-  <string name="debug_enable_debug_logging_title">Уключыць журнал адладкі</string>
+  <string name="debug_enable_debug_logging_title">Уключыць журнал адладжвання</string>
   <string name="debug_enable_debug_logging_summary">Запіс звестак дыягностыкі</string>
   <string name="debug_enable_sensitive_logging_title">Запіс асабістых звестак</string>
   <string name="debug_enable_sensitive_logging_summary">Дазволіць запіс пароляў у журнал.</string>
+  <string name="debug_export_logs_title">Экспартаванне журналаў</string>
+  <string name="debug_export_logs_success">Экспартаванне паспяхова выканана. Журналы могуць змяшчаць канфідэнцыйную інфармацыю. Будзьце ўважлівыя пры выбары адрасатаў.</string>
+  <string name="debug_export_logs_failure">Не ўдалося экспартаваць.</string>
   <string name="message_list_load_more_messages_action">Загрузіць больш лістоў</string>
   <string name="message_to_fmt">Каму:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Тэма</string>
@@ -193,7 +209,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="message_compose_quote_header_to">Каму:</string>
   <string name="message_compose_quote_header_cc">Копія:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> піша:</string>
-  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> піша:</string>
+  <string name="message_compose_reply_header_fmt_with_date">On <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> піша:</string>
   <string name="message_compose_error_no_recipients">Вы мусіце дадаць прынамсі аднаго адрасата.</string>
   <string name="compose_error_incomplete_recipient">Поле адрасата запоўнена не поўнасцю!</string>
   <string name="error_contact_address_not_found">У кантакта няма звестак пра адрас электроннай пошты.</string>
@@ -203,16 +219,19 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="message_compose_description_delete_quoted_text">Выдаліць цытату</string>
   <string name="message_compose_description_edit_quoted_text">Рэдагаваць цытату</string>
   <string name="remove_attachment_action">Выдаліць далучаныя файлы</string>
-  <string name="message_view_from_format">Ад: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Ад: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Каму:</string>
   <string name="message_view_cc_label">Копія:</string>
   <string name="message_view_bcc_label">Схаваная копія:</string>
   <string name="message_view_status_attachment_not_saved">Немагчыма захаваць далучаныя файлы.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer">Няма праграмы для прагляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Спампаваць ліст цалкам</string>
   <string name="message_view_sender_label">ад %1$s</string>
   <string name="from_same_sender">Усё ліставанне</string>
-  <string name="search_from_format">Ад <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Ліст скасаваны</string>
   <string name="message_saved_toast">Ліст захаваны як чарнавік</string>
   <string name="global_settings_flag_label">Паказваць адзнакі</string>
@@ -226,6 +245,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="global_settings_show_contact_name_summary">Выкарыстоўваць імёны адпраўнікоў з кантактаў</string>
   <string name="global_settings_registered_name_color_label">Колер кантактаў</string>
   <string name="global_settings_registered_name_color_changed">Афарбоўваць імёны з кантактаў</string>
+  <string name="general_settings_contact_name_color_label">Колер кантакту</string>
   <string name="global_settings_messageview_fixedwidth_label">Шрыфты з фіксаванай шырынёй</string>
   <string name="global_settings_messageview_fixedwidth_summary">Выкарыстоўваць шрыфты з фіксаванай шырынёй для адлюстравання лістоў з простым тэкстам</string>
   <string name="global_settings_messageview_autofit_width_label">Аўтазапаўненне лістоў</string>
@@ -243,13 +263,19 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="global_settings_confirm_menu_mark_all_read">Пазначыць усе лісты прачытанымі</string>
   <string name="global_settings_confirm_action_delete_notif">Выдаліць (у апавяшчэнні)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Дзеянні вядзення пальцам</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Вядзенне ўправа</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Вядзенне ўлева</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Няма</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Абраць або адкінуць выбар</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Пазначыць прачытаным або непрачытаным</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Дадаць або выдаліць адзнаку</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Архіў</string>
   <!--Name of the swipe action to delete a message-->
@@ -269,6 +295,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="global_settings_lock_screen_notification_visibility_title">Апавяшчэнні на экране блакавання</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Прыбраць з экрана блакавання</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Назва праграмы</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Колькасць новых лістоў</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Лічыльнік лістоў і адпраўнікі</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Як без блакавання</string>
   <string name="quiet_time">Перыяд цішыні</string>
@@ -280,14 +307,20 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_basics_title">Новы акаўнт</string>
   <string name="account_setup_basics_email_hint">Адрас электроннай пошты</string>
   <string name="account_setup_basics_password_hint">Пароль</string>
+  <string name="account_setup_oauth_description">Каб выкарыстоўваць гэты акаўнт электроннай пошты ў K-9 Mail, вам трэба ўвайсці і даць праграме доступ да вашай электроннай пошты.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Увайсці</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Увайсці з дапамогай Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">Каб бачыць тут свой пароль, уключыце блакаванне экрана на гэтай прыладзе.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Праверце свае ўліковыя даныя</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Разблакаваць, каб паглядзець пароль</string>
   <string name="account_setup_basics_manual_setup_action">Уласнаручна</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Атрыманне звестак\u2026</string>
-  <string name="account_setup_check_settings_check_incoming_msg">Праверка налад сервера ўваходнай пошты\u2026</string>
-  <string name="account_setup_check_settings_check_outgoing_msg">Праверка налад сервера выходнай пошты\u2026</string>
+  <string name="account_setup_check_settings_check_incoming_msg">Правяранне налад сервера ўваходнай пошты\u2026</string>
+  <string name="account_setup_check_settings_check_outgoing_msg">Правяранне налад сервера выходнай пошты\u2026</string>
   <string name="account_setup_check_settings_authenticate">Аўтэнтыфікацыя\u2026</string>
   <string name="account_setup_check_settings_fetch">Атрыманне налад акаўнта\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Скасаванне\u2026</string>
@@ -302,6 +335,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_auth_type_insecure_password">Пароль, перададзены небяспечна</string>
   <string name="account_setup_auth_type_encrypted_password">Зашыфраваны пароль</string>
   <string name="account_setup_auth_type_tls_client_certificate">Сертыфікат кліента</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Сервер уваходнай пошты</string>
   <string name="account_setup_incoming_username_label">Імя карыстальніка</string>
   <string name="account_setup_incoming_password_label">Пароль</string>
@@ -320,9 +354,10 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_incoming_delete_policy_never_label">Пакінуць на серверы</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Выдаліць з сервера</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Пазначыць на серверы як прачытанае</string>
+  <string name="account_setup_incoming_use_compression">Выкарыстоўваць сцісканне</string>
   <string name="account_setup_expunge_policy_label">Сціранне выдаленых лістоў з сервера</string>
   <string name="account_setup_expunge_policy_immediately">Неадкладна</string>
-  <string name="account_setup_expunge_policy_on_poll">Падчас праверкі</string>
+  <string name="account_setup_expunge_policy_on_poll">Падчас апытання</string>
   <string name="account_setup_expunge_policy_manual">Уласнаручна</string>
   <string name="account_setup_incoming_autodetect_namespace_label">Аўтавызначэнне вобласці назваў IMAP</string>
   <string name="account_setup_incoming_imap_path_prefix_label">Прэфікс шляху IMAP</string>
@@ -345,9 +380,9 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_outgoing_password_label">Пароль</string>
   <string name="account_setup_outgoing_authentication_label">Аўтэнтыфікацыя</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" непрыдатны для \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-  <string name="account_setup_bad_uri">Хібная наладка: <xliff:g id="err_mess">%s</xliff:g></string>
+  <string name="account_setup_bad_uri">Хібнае наладжванне: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Параметры акаўнта</string>
-  <string name="account_setup_options_mail_check_frequency_label">Чашчыня праверкі</string>
+  <string name="account_setup_options_mail_check_frequency_label">Частата апытання</string>
   <string name="account_setup_options_mail_check_frequency_never">Ніколі</string>
   <string name="account_setup_options_mail_check_frequency_15min">Кожныя 15 хвілін</string>
   <string name="account_setup_options_mail_check_frequency_30min">Кожныя 30 хвілін</string>
@@ -380,10 +415,14 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_options_mail_display_count_10000">10000 лістоў</string>
   <string name="account_setup_options_mail_display_count_all">усе лісты</string>
   <string name="move_copy_cannot_copy_unsynced_message">Немагчыма скапіяваць ці перамясціць паведамленне, якое не сінхранізавана з серверам</string>
-  <string name="account_setup_failed_dlg_title">Наладка не завершаная</string>
+  <string name="account_setup_failed_dlg_title">Наладжванне не завершана</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Хібныя лагін ці пароль.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Сервер падае хібны сертыфікат SSL. Гэта можа адбывацца праз няправільныя налады. Таксама праз тое, што нехта спрабуе атакаваць ваш паштовы сервер альбо камп’ютар. Калі вы не ведаеце канкрэтнай прычыны, то адхіліце і звяжыцеся з тым, хто абслугоўвае сервер.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Не атрымалася злучыцца з серверам.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Не ўдалося злучыцца з серверам.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Аўтарызацыя скасаваная</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Не ўдалося выканаць аўтарызацыю праз наступную памылку: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">На дадзены момант OAuth 2.0 не падтрымліваецца гэтай службай.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Праграме не ўдалося знайсці браўзер, каб даць доступ да вашага акаўнта.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Рэдагаваць падрабязнасці</string>
   <string name="account_setup_failed_dlg_continue_action">Працягнуць</string>
   <string name="account_settings_push_advanced_title">Дадаткова</string>
@@ -398,15 +437,20 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_notify_sync_label">Апавяшчэнне пра сінхранізацыю</string>
   <string name="account_settings_email_label">Ваш адрас электроннай пошты</string>
   <string name="account_settings_notify_summary">Паказваць на панэлі стану апавяшчэнні пра новую пошту</string>
-  <string name="account_settings_notify_sync_summary">Паказваць на панэлі стану апавяшчэнні пра праверку пошты</string>
+  <string name="account_settings_notify_sync_summary">Паказваць на панэлі стану апавяшчэнні пра правяранне пошты</string>
   <string name="account_settings_notify_self_label">Уключаючы адпраўленую пошту</string>
   <string name="account_settings_notify_self_summary">Паказваць апавяшчэнні пры атрыманні пошты</string>
   <string name="account_notify_contacts_mail_only_label">Толькі кантакты</string>
   <string name="account_notify_contacts_mail_only_summary">Апавяшчаць толькі пра лісты ад кантактаў</string>
+  <string name="account_settings_ignore_chat_messages_label">Не зважаць на лісты ў чаце</string>
+  <string name="account_settings_ignore_chat_messages_summary">Не паказваць апавяшчэнні пра лісты паштовага чата</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Пазначаць прачытаным пры адкрыцці</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Пазначаць ліст прачытаным пасля прагляду</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Пазначаць як прачытанае пры выдаленні</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Пазначаць ліст як прачытаны пасля яго выдалення</string>
+  <string name="account_settings_notification_channels_label">Катэгорыі апавяшчэнняў</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Наладжванне апавяшчэнняў пра новыя лісты</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Наладжванне апавяшчэнняў пра памылкі і стан</string>
   <string name="account_settings_show_pictures_label">Заўсёды паказваць выявы</string>
   <string name="account_settings_show_pictures_never">Не</string>
   <string name="account_settings_show_pictures_only_from_contacts">Ад кантактаў</string>
@@ -438,14 +482,14 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_crypto">Скразное шыфраванне</string>
   <string name="account_settings_crypto_app">Уключыць падтрымку OpenPGP</string>
   <string name="account_settings_crypto_app_select_title">Праграма OpenPGP</string>
-  <string name="account_settings_crypto_key">Наладка ключа шыфравання</string>
+  <string name="account_settings_crypto_key">Наладжванне ключа шыфравання</string>
   <string name="account_settings_crypto_summary_off">Няма наладжанай праграмы OpenPGP</string>
   <string name="account_settings_crypto_summary_on">Падлучана да %s</string>
-  <string name="account_settings_crypto_summary_config">Наладка…</string>
+  <string name="account_settings_crypto_summary_config">Наладжванне…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Захоўваць чарнавікі зашыфраванымі</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Усе чарнавікі будуць захоўвацца зашыфраванымі</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Шыфраваць чарнавікі, калі шыфраванне ўключана</string>
-  <string name="account_settings_mail_check_frequency_label">Чашчыня праверкі</string>
+  <string name="account_settings_mail_check_frequency_label">Частата апытання</string>
   <string name="account_settings_color_label">Колер акаўнта</string>
   <string name="account_settings_color_summary">Колер гэтага акаўнта для каталогаў і спіса акаўнтаў</string>
   <string name="account_settings_mail_display_count_label">Памер лакальнага каталога</string>
@@ -483,13 +527,13 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_folder_display_mode_first_class">1 клас</string>
   <string name="account_settings_folder_display_mode_first_and_second_class">1 і 2 класы</string>
   <string name="account_settings_folder_display_mode_not_second_class">Апроч 1 і 2 класаў</string>
-  <string name="account_settings_folder_sync_mode_label">Праверка каталогаў</string>
+  <string name="account_settings_folder_sync_mode_label">Апытанне каталогаў</string>
   <string name="account_settings_folder_sync_mode_all">Усе</string>
   <string name="account_settings_folder_sync_mode_first_class">1 клас</string>
   <string name="account_settings_folder_sync_mode_first_and_second_class">1 і 2 класы</string>
   <string name="account_settings_folder_sync_mode_not_second_class">Апроч 1 і 2 класаў</string>
   <string name="account_settings_folder_sync_mode_none">Няма</string>
-  <string name="account_settings_folder_push_mode_label">Push</string>
+  <string name="account_settings_folder_push_mode_label">Каталогі прымусовага правярання</string>
   <string name="account_settings_folder_push_mode_all">Усе</string>
   <string name="account_settings_folder_push_mode_first_class">1 клас</string>
   <string name="account_settings_folder_push_mode_first_and_second_class">1 і 2 класы</string>
@@ -510,33 +554,52 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="folder_settings_folder_display_mode_normal">Без класа</string>
   <string name="folder_settings_folder_display_mode_first_class">1 клас</string>
   <string name="folder_settings_folder_display_mode_second_class">2 клас</string>
-  <string name="folder_settings_folder_sync_mode_label">Праверка каталогаў</string>
+  <string name="folder_settings_folder_sync_mode_label">Клас апытання каталогаў</string>
   <string name="folder_settings_folder_sync_mode_normal">Няма</string>
   <string name="folder_settings_folder_sync_mode_first_class">1 клас</string>
   <string name="folder_settings_folder_sync_mode_second_class">2 клас</string>
   <string name="folder_settings_folder_sync_mode_inherited">Як клас бачнасці</string>
-  <string name="folder_settings_folder_push_mode_label">Push</string>
+  <string name="folder_settings_folder_push_mode_label">Клас прымусовага правярання каталога</string>
   <string name="folder_settings_folder_push_mode_normal">Без класа</string>
   <string name="folder_settings_folder_push_mode_first_class">1 клас</string>
   <string name="folder_settings_folder_push_mode_second_class">2 клас</string>
+  <string name="folder_settings_folder_push_mode_inherited">Тое самае, што і клас апытання</string>
   <string name="folder_settings_folder_notify_mode_label">Апавяшчэнне пра каталог</string>
   <string name="folder_settings_folder_notify_mode_normal">Без класа</string>
   <string name="folder_settings_folder_notify_mode_first_class">1 клас</string>
   <string name="folder_settings_folder_notify_mode_second_class">2 клас</string>
-  <string name="folder_settings_folder_notify_mode_inherited">Як push</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Тое самае, што і клас прымусовага правярання</string>
   <string name="folder_settings_clear_local_folder_action">Выдаліць лакальныя лісты</string>
   <string name="account_settings_incoming_label">Сервер уваходных лістоў</string>
-  <string name="account_settings_incoming_summary">Наладка сервера ўваходнай пошты</string>
+  <string name="account_settings_incoming_summary">Наладжванне сервера ўваходнай пошты</string>
   <string name="account_settings_outgoing_label">Сервер выходных лістоў</string>
-  <string name="account_settings_outgoing_summary">Наладка сервера выходнай пошты (SMTP)</string>
+  <string name="account_settings_outgoing_summary">Наладжванне сервера выходнай пошты (SMTP)</string>
   <string name="account_settings_description_label">Назва акаўнта</string>
   <string name="account_settings_name_label">Ваша імя</string>
   <string name="notifications_title">Апавяшчэнні</string>
+  <string name="account_settings_vibration">Вібрацыя</string>
   <string name="account_settings_vibrate_enable">Вібрацыя</string>
-  <string name="account_settings_vibrate_pattern_default">Прадвызначана</string>
+  <string name="account_settings_vibrate_pattern_label">Шаблон вібрацыі</string>
+  <string name="account_settings_vibrate_pattern_default">Прадвызначаная</string>
+  <string name="account_settings_vibrate_pattern_1">Шаблон 1</string>
+  <string name="account_settings_vibrate_pattern_2">Шаблон 2</string>
+  <string name="account_settings_vibrate_pattern_3">Шаблон 3</string>
+  <string name="account_settings_vibrate_pattern_4">Шаблон 4</string>
+  <string name="account_settings_vibrate_pattern_5">Шаблон 5</string>
   <string name="account_settings_vibrate_times">Паўтор вібрацыі</string>
+  <string name="account_settings_vibrate_summary_disabled">Адключана</string>
   <string name="account_settings_ringtone">Мелодыя атрымання новай пошты</string>
+  <string name="account_settings_notification_light_label">Светлавы індыкатар</string>
+  <string name="account_settings_notification_light_disabled">Адключана</string>
   <string name="account_settings_notification_light_account_color">Колер акаўнта</string>
+  <string name="account_settings_notification_light_default_color">Прадвызначаны сістэмны колер</string>
+  <string name="account_settings_notification_light_white">Белы</string>
+  <string name="account_settings_notification_light_red">Чырвоны</string>
+  <string name="account_settings_notification_light_green">Зялёны</string>
+  <string name="account_settings_notification_light_blue">Сіні</string>
+  <string name="account_settings_notification_light_yellow">Жоўты</string>
+  <string name="account_settings_notification_light_cyan">Марской хвалі</string>
+  <string name="account_settings_notification_light_magenta">Пурпуровы</string>
   <string name="account_settings_composition_title">Параметры стварэння ліста</string>
   <string name="account_settings_composition_label">Новы ліст</string>
   <string name="account_settings_composition_summary">Прадвызначаныя адпраўнік, копія, схаваная копія</string>
@@ -581,15 +644,15 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="sort_unread_first">Спачатку непрачытаныя лісты</string>
   <string name="sort_unread_last">Спачатку прачытаныя лісты</string>
   <string name="sort_attach_first">Спачатку лісты з далучанымі файламі</string>
-  <string name="sort_unattached_first">Спачатку лісты без укладзеных файлаў</string>
-  <string name="sort_by">Сартаваць па…</string>
+  <string name="sort_unattached_first">Спачатку лісты без далучаных файлаў</string>
+  <string name="sort_by">Сартаванне…</string>
   <string name="sort_by_date">Дата</string>
   <string name="sort_by_arrival">Атрымана</string>
   <string name="sort_by_subject">Тэма</string>
   <string name="sort_by_sender">Адпраўнік</string>
   <string name="sort_by_flag">Адзнака</string>
   <string name="sort_by_unread">Прачытана / Не чытана</string>
-  <string name="sort_by_attach">Укладзеныя файлы</string>
+  <string name="sort_by_attach">Далучаныя файлы</string>
   <string name="account_delete_dlg_title">Выдаліць акаўнт</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Нераспазнаны сертыфікат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Ухваліць</string>
@@ -609,7 +672,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="setting_theme_follow_system">Выкарыстоўваць прадвызначаныя сістэмныя параметры</string>
   <string name="display_preferences">Выгляд</string>
   <string name="global_preferences">Агульныя</string>
-  <string name="debug_preferences">Адладка</string>
+  <string name="debug_preferences">Адладжванне</string>
   <string name="privacy_preferences">Прыватнасць</string>
   <string name="network_preferences">Сетка</string>
   <string name="interaction_preferences">Інтэрфейс</string>
@@ -630,7 +693,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="background_ops_always">Заўсёды</string>
   <string name="background_ops_auto_sync_only">Калі аўтасінхранізацыя ўключаная</string>
   <string name="batch_select_all">Абраць усё</string>
-  <string name="account_setup_push_limit_label">Максімальная колькасць каталогаў для push-праверкі</string>
+  <string name="account_setup_push_limit_label">Максімальная колькасць каталогаў для прымусовага правярання</string>
   <string name="account_setup_push_limit_5">5 каталогаў</string>
   <string name="account_setup_push_limit_10">10 каталогаў</string>
   <string name="account_setup_push_limit_25">25 каталогаў</string>
@@ -641,7 +704,9 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_push_limit_1000">1000 каталогаў</string>
   <string name="animations_title">Анімацыя</string>
   <string name="animations_summary">Анімацыя інтэрфейсу</string>
+  <string name="volume_navigation_title">Навігацыя клавішамі гучнасці</string>
   <string name="show_unified_inbox_title">Агульная скрыня ўваходных лістоў для ўсіх акаўнтаў</string>
+  <string name="show_starred_count_title">Паказваць колькасць адзначаных</string>
   <string name="integrated_inbox_title">Усе атрыманыя</string>
   <string name="integrated_inbox_detail">Усе лісты са ўсіх каталогаў</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Усе атрыманыя</string>
@@ -653,7 +718,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_no_folder_selected">Няма</string>
   <string name="account_settings_automatic_special_folder">Аўтаматычна (%s)</string>
   <string name="font_size_settings_title">Памер шрыфту</string>
-  <string name="font_size_settings_description">Наладка памеру шрыфтоў</string>
+  <string name="font_size_settings_description">Наладжванне памеру шрыфтоў</string>
   <string name="font_size_message_list">Спіс лістоў</string>
   <string name="font_size_message_list_subject">Тэма</string>
   <string name="font_size_message_list_sender">Адпраўнік</string>
@@ -675,10 +740,10 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="font_size_large">Буйны</string>
   <string name="font_size_larger">Вельмі вялікі</string>
   <string name="error_activity_not_found">Патрэбнай праграмы не знойдзена.</string>
-  <string name="send_failed_reason">Не атрымалася адправіць: %s</string>
+  <string name="send_failed_reason">Не ўдалося адправіць: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Захаваць чарнавік?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Захаваць ці скасаваць ліст?</string>
-  <string name="save_or_discard_draft_message_changes">Захаваць альбо адкінуць змены?</string>
+  <string name="save_or_discard_draft_message_changes">Захаваць або адкінуць змены?</string>
   <string name="confirm_discard_draft_message_title">Скасаваць ліст?</string>
   <string name="confirm_discard_draft_message">Сапраўды хочаце скасаваць ліст?</string>
   <string name="dialog_confirm_clear_local_folder_title">Выдаліць лакальныя лісты?</string>
@@ -719,7 +784,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="settings_export_share_button">Падзяліцца</string>
   <string name="settings_export_progress_text">Экспарт налад…</string>
   <string name="settings_export_success_generic">Налады паспяхова экспартаваныя</string>
-  <string name="settings_export_failure">Не атрымалася экспартаваць налады</string>
+  <string name="settings_export_failure">Не ўдалося экспартаваць налады</string>
   <string name="settings_import_title">Імпартаваць налады</string>
   <string name="settings_import_pick_document_button">Абраць файл</string>
   <string name="settings_import_button">Імпарт</string>
@@ -727,23 +792,26 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Калі ласка, увядзіце пароль</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Увайдзіце</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-  <string name="settings_import_failure">Не атрымалася імпартаваць налады</string>
-  <string name="settings_import_read_failure">Не атрымалася прачытаць файл налад</string>
-  <string name="settings_import_partial_failure">Не атрымалася імпартаваць некаторыя налады</string>
+  <string name="settings_import_authorization_and_password_required">Увайдзіце і ўвядзіце пароль</string>
+  <string name="settings_import_failure">Не ўдалося імпартаваць налады</string>
+  <string name="settings_import_read_failure">Не ўдалося прачытаць файл налад</string>
+  <string name="settings_import_partial_failure">Не ўдалося імпартаваць некаторыя налады</string>
   <string name="settings_import_status_success">Паспяхова імпартавана</string>
   <string name="settings_import_status_password_required">Патрабуецца пароль</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Неабходна ўвайсці</string>
   <string name="settings_import_status_not_imported">Не імпартавана</string>
-  <string name="settings_import_status_error">Не атрымалася імпартаваць</string>
+  <string name="settings_import_status_error">Не ўдалося імпартаваць</string>
   <string name="settings_import_later_button">Пазней</string>
   <string name="settings_import">Імпартаваць налады</string>
   <string name="settings_importing">Імпарт налад…</string>
   <plurals name="settings_import_password_prompt">
-    <item quantity="one">Каб мець магчымасць выкарыстоўваць аказалі \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці пароль для сервера.</item>
-    <item quantity="few">Каб мець магчымасць выкарыстоўваць аказалі \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
-    <item quantity="many">Каб мець магчымасць выкарыстоўваць аказалі \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
-    <item quantity="other">Каб мець магчымасць выкарыстоўваць аказалі \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
+    <item quantity="one">Каб мець магчымасць выкарыстоўваць акаўнт \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці пароль для сервера.</item>
+    <item quantity="few">Каб мець магчымасць выкарыстоўваць акаўнт \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
+    <item quantity="many">Каб мець магчымасць выкарыстоўваць акаўнт \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
+    <item quantity="other">Каб мець магчымасць выкарыстоўваць акаўнт \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Пароль для сервера ўваходнай пошты</string>
   <string name="settings_import_outgoing_server_password_hint">Пароль для сервера выходнай пошты</string>
@@ -791,7 +859,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Ліміт пошуку на серверы</string>
-  <string name="remote_search_sending_query">Адпраўка запытаў на сервер</string>
+  <string name="remote_search_sending_query">Адпраўленне запытаў на сервер</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">Атрыманне %d выніку</item>
     <item quantity="few">Атрыманне %d вынікаў</item>
@@ -804,7 +872,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
     <item quantity="many">Атрыманне %1$d з %2$d вынікаў</item>
     <item quantity="other">Атрыманне %1$d з %2$d вынікаў</item>
   </plurals>
-  <string name="remote_search_error">Не атрымалася выканаць адлеглы пошук</string>
+  <string name="remote_search_error">Не ўдалося выканаць адлеглы пошук</string>
   <string name="account_settings_search">Пошук</string>
   <string name="action_remote_search">Пошук лістоў на серверы</string>
   <string name="remote_search_unavailable_no_network">Для пошуку на серверы патрабуецца злучэнне з сеткай.</string>
@@ -828,17 +896,17 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="global_settings_messageview_visible_refile_actions_title">Дзеянні для лістоў</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Паказваць абраныя дзеянні ў меню ліста</string>
   <string name="loading_attachment">Загрузка ўкладзеных файлаў…</string>
-  <string name="fetching_attachment_dialog_title_send">Адпраўка ліста</string>
+  <string name="fetching_attachment_dialog_title_send">Адпраўленне ліста</string>
   <string name="fetching_attachment_dialog_title_save">Захаванне чарнавіка</string>
   <string name="fetching_attachment_dialog_message">Атрыманне ўкладзеных файлаў…</string>
-  <string name="auth_external_error">Не атрымалася выканаць аўтэнтыфікацыю. Сервер не паведамляе пра сумяшчальнасць з SASL EXTERNAL. Прычынай можа быць хібны сертыфікат кліента (пратэрмінаваны, ад невядомага) альбо праблема канфігурацыі.</string>
+  <string name="auth_external_error">Не ўдалося выканаць аўтэнтыфікацыю. Сервер не паведамляе пра сумяшчальнасць з SASL EXTERNAL. Прычынай можа быць хібны сертыфікат кліента (пратэрмінаваны, ад невядомага) альбо праблема канфігурацыі.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Выкарыстоўваць сертыфікат кліента</string>
   <string name="client_certificate_spinner_empty">Не выкарыстоўваць сертыфікат</string>
   <string name="client_certificate_spinner_delete">Адключыць выбар сертыфіката кліента</string>
   <string name="client_certificate_retrieval_failure">Не ўдалося атрымаць сертыфікат кліента для \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Дадатковыя параметры</string>
-  <string name="client_certificate_expired">Тэрмін дзеяння сертыфіката кліента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" сыйшоў альбо яшчэ не надышоў (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="client_certificate_expired">Тэрмін дзеяння сертыфіката кліента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" скончыўся альбо яшчэ не надышоў (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*Зашыфравана*</string>
   <string name="add_from_contacts">Дадаць з кантактаў</string>
@@ -846,6 +914,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="recipient_bcc">Схаваная копія</string>
   <string name="recipient_to">Каму</string>
   <string name="recipient_from">Ад</string>
+  <string name="reply_to_label">Адказаць</string>
   <string name="unknown_recipient">&lt;Невядомы атрымальнік&gt;</string>
   <string name="unknown_sender">&lt;Невядомы адпраўнік&gt;</string>
   <string name="address_type_home">Хатні</string>
@@ -855,8 +924,8 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="compose_error_no_draft_folder">Для гэтага акаўнта не наладжаны каталог чарнавікоў!</string>
   <string name="compose_error_no_key_configured">Для гэтага акаўнта ключоў не наладжана! Праверце свае налады.</string>
   <string name="error_crypto_provider_incompatible">Крыптапастаўшчык выкарыстоўвае несумяшчальную версію. Калі ласка, праверце налады!</string>
-  <string name="error_crypto_provider_connect">Не атрымалася злучыцца з крыптапастаўшчыком. Праверце налады альбо зноў націсніце на значок шыфравання!</string>
-  <string name="error_crypto_provider_ui_required">Не атрымалася ініцыялізаваць скразное шыфраванне. Калі ласка, праверце налады</string>
+  <string name="error_crypto_provider_connect">Не ўдалося злучыцца з крыптапастаўшчыком. Праверце налады альбо зноў націсніце на значок шыфравання!</string>
+  <string name="error_crypto_provider_ui_required">Не ўдалося ініцыялізаваць скразное шыфраванне. Калі ласка, праверце налады</string>
   <string name="error_crypto_inline_attach">Рэжым PGP/INLINE не падтрымлівае ўкладзеных файлаў!</string>
   <string name="enable_inline_pgp">Уключыць PGP/INLINE</string>
   <string name="disable_inline_pgp">Адключыць PGP/INLINE</string>
@@ -866,7 +935,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="openpgp_inline_text">Ліст адпраўлены ў фармаце PGP/INLINE.\nВыкарыстоўвайце толькі для сумяшчальнасці:</string>
   <string name="openpgp_inline_plus_compat">Некаторыя кліенты падтрымліваюць толькі гэты фармат</string>
   <string name="openpgp_inline_minus_transit">Падчас перадачы подпісы могуць пашкодзіцца</string>
-  <string name="openpgp_inline_minus_attach">Укладзеныя файлы не падтрымліваюцца</string>
+  <string name="openpgp_inline_minus_attach">Далучэнне файлаў не падтрымліваецца</string>
   <string name="openpgp_inline_ok">Зразумела!</string>
   <string name="openpgp_inline_disable">Адключыць</string>
   <string name="openpgp_inline_keep_enabled">Не адключаць</string>
@@ -877,11 +946,11 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="openpgp_dialog_sign_only_text">У гэтым рэжыме ваш ключ PGP будзе выкарыстоўвацца для стварэння крыптаграфічнага подпісу да незашыфраванага ліста.</string>
   <string name="openpgp_dialog_sign_only_plus_verified">Адрасат зможа пераканацца, што ліст сапраўдны і падпісаны вашым ключом.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Подпісы могуць пашкодзіцца пры адпраўцы некалькім адрасатам.</string>
-  <string name="openpgp_dialog_sign_only_minus_attach">Подпісы могуць паказвацца як укладзеныя файлы \"signature.asc\".</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Подпісы могуць паказвацца як далучаныя файлы \"signature.asc\".</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Зашыфраваныя лісты заўсёды змяшчаюць подпіс.</string>
   <string name="crypto_msg_title_plaintext">Просты тэкст</string>
   <string name="crypto_msg_unencrypted_sign_error">подпіс скразнога шыфравання змяшчае памылку</string>
-  <string name="crypto_msg_incomplete_signed">для праверкі подпісу патрэбна поўнасцю спампаваць ліст</string>
+  <string name="crypto_msg_incomplete_signed">для правярання подпісу патрэбна поўнасцю спампаваць ліст</string>
   <string name="crypto_msg_unsupported_signed">змяшчае непадтрымліваемы подпіс скразнога шыфравання</string>
   <string name="crypto_msg_unsupported_encrypted">Ліст зашыфраваны ў непадтрымліваемым фармаце.</string>
   <string name="crypto_msg_cancelled">Ліст зашыфраваны, расшыфроўка скасаваная.</string>
@@ -917,13 +986,13 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="locked_attach_unlock">Разблакаваць</string>
   <string name="locked_attach_unencrypted">Гэтая частка незашыфраваная, таму небяспечная.</string>
   <string name="locked_attach_title">Неабароненыя ўкладзеныя файлы</string>
-  <string name="message_progress_text">Загрузка…</string>
+  <string name="message_progress_text">Загрузка...</string>
   <string name="messageview_decrypt_cancelled">Расшыфроўка скасаваная.</string>
   <string name="messageview_decrypt_retry">Паўтарыць</string>
   <string name="messageview_decrypt_incomplete">Для расшыфроўкі зашыфраваны ліст патрэбна спампаваць.</string>
-  <string name="messageview_crypto_error_title">Не атрымалася расшыфраваць пошту</string>
+  <string name="messageview_crypto_error_title">Не ўдалося расшыфраваць пошту</string>
   <string name="recipient_error_non_ascii">Адмысловыя сімвалы зараз не падтрымліваюцца!</string>
-  <string name="recipient_error_parse_failed">Не атрымалася разабраць адрас!</string>
+  <string name="recipient_error_parse_failed">Не ўдалося разабраць адрас!</string>
   <string name="account_settings_crypto_hide_sign_only">Схаваць незашыфраваныя подпісы</string>
   <string name="account_settings_crypto_hide_sign_only_on">Паказваюцца толькі зашыфраваныя подпісы</string>
   <string name="account_settings_crypto_hide_sign_only_off">Паказваюцца ўсе подпісы</string>
@@ -952,7 +1021,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="dialog_autocrypt_mutual_title">Узаемнае аўташыфраванне</string>
   <string name="dialog_autocrypt_mutual_description_1">Лісты шыфруюцца па жаданні ці пры адказе на зашыфраваны ліст.</string>
   <string name="dialog_autocrypt_mutual_description_2">Калі адпраўнік і адрасат уключылі ўзаемнае шыфраванне, шыфраванне будзе ўключацца прадвызначана.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Націсніце <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">сюды</a>, каб даведацца больш.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Вы можаце <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">пстрыкнуць сюды</a>, каб даведацца падрабязней.</string>
   <string name="general_settings_title">Асноўныя налады</string>
   <string name="dialog_openkeychain_info_title">Няма ўсталяванай праграмы OpenPGP</string>
   <string name="dialog_openkeychain_info_install">Усталяваць</string>
@@ -961,37 +1030,50 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_crypto_encrypt_subject">Шыфраваць тэмы лістоў</string>
   <string name="account_settings_crypto_encrypt_subject_subtitle">Можа падтрымлівацца не ўсімі адрасатамі</string>
   <string name="toast_account_not_found">Унутраная памылка: хібны акаўнт!</string>
-  <string name="toast_openpgp_provider_error">Не атрымалася злучыцца з %s!</string>
+  <string name="toast_openpgp_provider_error">Не ўдалося злучыцца з %s!</string>
   <string name="ac_transfer_setting_title">Адправіць налады аўташыфравання</string>
   <string name="ac_transfer_setting_summary">Перадаць налады скразнога шыфравання на іншыя прылады</string>
-  <string name="ac_transfer_title">Наладка аўташыфравання</string>
+  <string name="ac_transfer_title">Наладжванне аўтаматычнага шыфравання</string>
   <string name="ac_transfer_intro">Ліст з наладамі аўтаматычнага ўзаемнага шыфравання дае магчымасць бяспечна адправіць гэтыя налады на іншую прыладу.</string>
   <string name="ac_transfer_button_send">Адправіць налады</string>
   <string name="ac_transfer_will_be_sent">Ліст будзе адпраўлены на ваш адрас:</string>
   <string name="ac_transfer_generating">Стварэнне ліста з наладамі…</string>
-  <string name="ac_transfer_sending_to">Адпраўка ліста для:</string>
+  <string name="ac_transfer_sending_to">Адпраўленне ліста для:</string>
   <string name="ac_transfer_finish">Каб скончыць, адкрыйце ліст на іншай прыладзе і ўвядзіце код усталёўкі.</string>
   <string name="ac_transfer_show_code">Паказаць код усталёўкі</string>
-  <string name="ac_transfer_msg_subject">Наладка аўташыфравання</string>
-  <string name="ac_transfer_msg_body">Гэты ліст змяшчае ўсе звесткі, якія неабходныя для пераносу налад узаемнага аўташыфравання разам з сакрэтным ключом з зыходнай прылады.
+  <string name="ac_transfer_msg_subject">Наладжванне аўтаматычнага шыфравання</string>
+  <string name="ac_transfer_msg_body">Гэты ліст змяшчае ўсе звесткі, якія неабходныя для пераносу налад узаемнага аўтаматычнага шыфравання разам з сакрэтным ключом з зыходнай прылады.
 
 
-Для наладкі ўзаемнага аўташыфравання на новай прыладзе выконвайце інструкцыі, якія паказваюцца на новай прыладзе. 
+Для наладжвання ўзаемнага аўтаматычнага шыфравання на новай прыладзе выконвайце інструкцыі, якія паказваюцца на новай прыладзе. 
 
 
 Вы можаце пакінуць гэты ліст як рэзервовую копію вашага сакрэтнага ключа. Запішыце і надзейна захавайце пароль.</string>
-  <string name="ac_transfer_error_send">Падчас адпраўкі ліста адбылася памылка. Калі ласка, праверце злучэнне і канфігурацыю сервера выходнай пошты.</string>
+  <string name="ac_transfer_error_send">Падчас адпраўлення ліста адбылася памылка. Калі ласка, праверце злучэнне і канфігурацыю сервера выходнай пошты.</string>
   <string name="switch_on">Укл</string>
   <string name="switch_off">Выкл</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Дазволіць доступ да кантактаў</string>
   <string name="permission_contacts_rationale_message">Для вываду прапаноў імёнаў і фота праграме неабходна мець доступ да кантактаў.</string>
   <string name="generic_loading_error">Падчас загрузкі даных адбылася памылка</string>
+  <string name="push_notification_state_initializing">Ініцыялізацыя…</string>
+  <string name="push_notification_state_listening">Чаканне новых лістоў</string>
+  <string name="push_notification_state_wait_background_sync">Знаходзіцца ў рэжыме сну, пакуль фонавая сінхранізацыя не будзе дазволеная</string>
+  <string name="push_notification_state_wait_network">Знаходзіцца ў рэжыме сну, пакуль не стане даступная сетка</string>
+  <string name="push_notification_info">Націсніце, каб даведацца больш.</string>
+  <string name="push_info_title">Звесткі пра прымусовае правяранне</string>
+  <string name="push_info_notification_explanation_text">Пры выкарыстанні прымусовага правярання K-9 Mail падтрымлівае злучэнне з паштовым серверам. Android патрабуе паказу бягучага апавяшчэння, пакуль праграма актыўная ў фонавым рэжыме. %s</string>
+  <string name="push_info_configure_notification_text">Аднак Android таксама дазваляе схаваць апавяшчэнне.</string>
+  <string name="push_info_learn_more_text">Даведацца больш</string>
+  <string name="push_info_configure_notification_action">Наладжванне апавяшчэння</string>
+  <string name="push_info_disable_push_text">Калі вам не патрэбныя імгненныя апавяшчэнні пра новыя лісты, вам варта адключыць прымусовае правяранне і выкарыстоўваць апытанне сервера. Апытанне правярае наяўнасць новай пошты праз пэўныя інтэрвалы.</string>
+  <string name="push_info_disable_push_action">Адключыць прымусовае правяранне</string>
   <!--Name of the swipe action to select a message. Try to keep it short.-->
   <string name="swipe_action_select">Абраць</string>
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Зняць выбар</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Пазначыць прачытаным</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">Пазначыць як нечытанае</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -1005,4 +1087,31 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Спам</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Перамясціць…</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Памылка</string>
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Каталог не знойдзены</string>
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Ад</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Адпраўнік</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Адказаць</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">Каму</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Копія</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Схаваная копія</string>
+  <!--Displayed when loading the message details has failed-->
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">Адрас электроннай пошты</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
 </resources>

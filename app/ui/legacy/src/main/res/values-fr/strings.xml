@@ -76,7 +76,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="choose_folder_copy_title">Copier vers…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> sélectionné(s)</string>
   <string name="next_action">Suivant</string>
-  <string name="previous_action">Précédent</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">OK</string>
   <string name="cancel_action">Annuler</string>
@@ -150,13 +149,11 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="size_format_megabytes">%.1f Mo</string>
   <string name="size_format_kilobytes">%.1f ko</string>
   <string name="size_format_bytes">%d o</string>
-  <string name="notification_new_title">Nouveau courriel</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nouveau courriel</item>
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nouveaux courriels</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nouveaux courriels</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> non lus (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> de plus sur <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Répondre</string>
   <string name="notification_action_mark_as_read">Marquer comme lu</string>
@@ -227,11 +224,14 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="message_view_cc_label">Cc :</string>
   <string name="message_view_bcc_label">Cci :</string>
   <string name="message_view_status_attachment_not_saved">Impossible d’enregistrer le fichier joint.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer">Impossible de trouver un visualiseur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Télécharger le courriel complet</string>
   <string name="message_view_sender_label">par %1$s</string>
   <string name="from_same_sender">Plus de cet expéditeur</string>
-  <string name="search_from_format">De <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Le courriel a été abandonné</string>
   <string name="message_saved_toast">Le courriel a été enregistré comme brouillon</string>
   <string name="global_settings_flag_label">Afficher les étoiles</string>
@@ -1077,4 +1077,31 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="swipe_action_spam">Pourriel</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Déplacer…</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Afficher un bouton de rédaction flottant</string>
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Erreur</string>
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Le dossier est introuvable</string>
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">De</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Expéditeur</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Répondre à</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">À</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Cc</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Cci</string>
+  <!--Displayed when loading the message details has failed-->
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">Adresse courriel</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
 </resources>

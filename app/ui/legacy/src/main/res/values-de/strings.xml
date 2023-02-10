@@ -23,7 +23,7 @@
   <string name="changelog_loading_error">Changelog konnte nicht geladen werden.</string>
   <string name="changelog_version_title">Version %s</string>
   <string name="changelog_recent_changes_title">Was gibt es Neues</string>
-  <string name="changelog_show_recent_changes">Zeige die neuesten Änderungen nach einem App-Update</string>
+  <string name="changelog_show_recent_changes">Neueste Änderungen nach einem App-Update anzeigen</string>
   <string name="changelog_snackbar_text">Finde heraus, was es Neues in diesem Release gibt</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
@@ -38,7 +38,7 @@ Seine verbesserten Funktionen beinhalten:
   <li>Bessere Leistung</li>
   <li>Nachrichtenneuordnung</li>
   <li>E-Mail-Signaturen</li>
-  <li>Bcc-to-self</li>
+  <li>BCC an sich selbst</li>
   <li>Ordnerabonnements</li>
   <li>Synchronisation aller Ordner</li>
   <li>Rücksendeadresskonfiguration</li>
@@ -50,9 +50,9 @@ Seine verbesserten Funktionen beinhalten:
   <li>…und weitere</li>
 </ul>
 <p>
-Bitte beachten Sie, dass K-9 die meisten kostenlosen Hotmail-Konten nicht unterstützt und, wie viele andere E-Mail-Clients, einige Macken bei der Kommunikation mit Microsoft Exchange hat.
+Bitte beachte, dass K-9 die meisten kostenlosen Hotmail-Konten nicht unterstützt und, wie viele andere E-Mail-Clients, einige Macken bei der Kommunikation mit Microsoft Exchange hat.
 </p><p>
-Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Fragen an
+Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
 <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
@@ -76,7 +76,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="choose_folder_copy_title">Kopieren nach…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ausgewählt</string>
   <string name="next_action">Weiter</string>
-  <string name="previous_action">Zurück</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">OK</string>
   <string name="cancel_action">Abbrechen</string>
@@ -147,12 +146,10 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="notification_new_title">Neue E-Mail</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> neue Nachricht</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> neue Nachrichten</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Ungelesen (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> weitere auf <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Antworten</string>
   <string name="notification_action_mark_as_read">Gelesen</string>
@@ -164,9 +161,9 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_public">Zertifikatsfehler</string>
   <string name="notification_certificate_error_title">Zertifikatsproblem (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_certificate_error_text">Überprüfen Sie Ihre Servereinstellungen</string>
+  <string name="notification_certificate_error_text">Überprüfe deine Servereinstellungen</string>
   <string name="notification_authentication_error_title">Authentifizierung fehlgeschlagen</string>
-  <string name="notification_authentication_error_text">Authentifizierung fehlgeschlagen für <xliff:g id="account">%s</xliff:g>. Überprüfen Sie Ihre Servereinstellungen.</string>
+  <string name="notification_authentication_error_text">Authentifizierung fehlgeschlagen für <xliff:g id="account">%s</xliff:g>. Überprüfe deine Servereinstellungen.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_title">Benachrichtigungsfehler</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
@@ -194,7 +191,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen protokollieren</string>
   <string name="debug_enable_sensitive_logging_summary">Passwörter können in Protokollen sichtbar sein.</string>
   <string name="debug_export_logs_title">Protokolle exportieren</string>
-  <string name="debug_export_logs_success">Export erfolgreich. Die Protokolle können sensible Informationen enthalten. Achten Sie darauf, an wen Sie sie senden.</string>
+  <string name="debug_export_logs_success">Export erfolgreich. Die Protokolle können sensible Informationen enthalten. Achte darauf, an wen du sie sendest.</string>
   <string name="debug_export_logs_failure">Export fehlgeschlagen.</string>
   <string name="message_list_load_more_messages_action">Weitere Nachrichten laden</string>
   <string name="message_to_fmt">An:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -209,7 +206,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="message_compose_quote_header_cc">CC:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schrieb:</string>
   <string name="message_compose_reply_header_fmt_with_date">Am <xliff:g id="sent_date">%1$s</xliff:g> schrieb <xliff:g id="sender">%2$s</xliff:g>:</string>
-  <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger auswählen.</string>
+  <string name="message_compose_error_no_recipients">Du musst mindestens einen Empfänger auswählen.</string>
   <string name="compose_error_incomplete_recipient">Empfänger-Feld enthält unvollständigen Inhalt!</string>
   <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
   <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
@@ -223,11 +220,18 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="message_view_cc_label">CC:</string>
   <string name="message_view_bcc_label">BCC:</string>
   <string name="message_view_status_attachment_not_saved">Anhang konnte nicht gespeichert werden</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">an </string>
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">mich</string>
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Externe Bilder anzeigen</string>
   <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
   <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
   <string name="message_view_sender_label">über %1$s</string>
   <string name="from_same_sender">Mehr von diesem Absender</string>
-  <string name="search_from_format">Von <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Nachricht wurde verworfen</string>
   <string name="message_saved_toast">Nachricht wurde als Entwurf gespeichert</string>
   <string name="global_settings_flag_label">Wichtige Nachrichten</string>
@@ -238,9 +242,9 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_sender_above_subject_label">Korrespondent über Betreff</string>
   <string name="global_settings_sender_above_subject_summary">Namen der Korrespondenten über anstatt unter der Betreffzeile anzeigen</string>
   <string name="global_settings_show_contact_name_label">Namen aus Adressbuch</string>
-  <string name="global_settings_show_contact_name_summary">Bekannte Namen aus dem Adressbuch (\'Kontakte\') anzeigen</string>
+  <string name="global_settings_show_contact_name_summary">Empfängernamen aus Kontakten verwenden, wenn verfügbar</string>
   <string name="global_settings_registered_name_color_label">Farbe von bekannten Namen</string>
-  <string name="global_settings_registered_name_color_changed">Namen in Ihrer Kontaktliste einfärben</string>
+  <string name="global_settings_registered_name_color_changed">Namen in deiner Kontaktliste einfärben</string>
   <string name="general_settings_contact_name_color_label">Farbe des Kontaktnamens</string>
   <string name="global_settings_messageview_fixedwidth_label">Monotype-Schriftart</string>
   <string name="global_settings_messageview_fixedwidth_summary">Schriftart mit gleicher Zeichenbreite für Nur-Text-Nachrichten verwenden</string>
@@ -303,15 +307,15 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_basics_title">E-Mail-Konto einrichten</string>
   <string name="account_setup_basics_email_hint">E-Mail-Adresse</string>
   <string name="account_setup_basics_password_hint">Passwort</string>
-  <string name="account_setup_oauth_description">Um dieses E-Mail-Konto mit K-9 Mail zu verwenden, müssen Sie sich anmelden und der App Zugriff auf Ihre E-Mails gewähren.</string>
+  <string name="account_setup_oauth_description">Um dieses E-Mail-Konto mit K-9 Mail zu verwenden, musst du dich anmelden und der App Zugriff auf deine E-Mails gewähren.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
   <string name="account_setup_oauth_sign_in">Anmelden</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
   <string name="account_setup_oauth_sign_in_with_google">Mit Google anmelden</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-  <string name="account_setup_basics_show_password_need_lock">Um Ihr Passwort hier anzuzeigen, aktivieren Sie die Bildschirmsperre auf diesem Gerät.</string>
-  <string name="account_setup_basics_show_password_biometrics_title">Ihre Identität bestätigen</string>
-  <string name="account_setup_basics_show_password_biometrics_subtitle">Entsperren, um Ihr Passwort anzuzeigen</string>
+  <string name="account_setup_basics_show_password_need_lock">Um dein Passwort hier anzuzeigen, aktiviere die Bildschirmsperre auf diesem Gerät.</string>
+  <string name="account_setup_basics_show_password_biometrics_title">Deine Identität bestätigen</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Entsperren, um dein Passwort anzuzeigen</string>
   <string name="account_setup_basics_manual_setup_action">Manuelle Einrichtung</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Kontoinformationen werden abgerufen\u2026</string>
@@ -322,7 +326,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_check_settings_canceling_msg">Aktion wird abgebrochen\u2026</string>
   <string name="account_setup_names_title">Fast fertig!</string>
   <string name="account_setup_names_account_name_label">Kontoname (optional):</string>
-  <string name="account_setup_names_user_name_label">Ihr Name (Anzeige bei ausgehenden Nachrichten):</string>
+  <string name="account_setup_names_user_name_label">Dein Name (Anzeige bei ausgehenden Nachrichten):</string>
   <string name="account_setup_account_type_title">Kontotyp</string>
   <string name="account_setup_account_type_instructions">Art des Kontos?</string>
   <string name="account_setup_account_type_pop_action">POP3-Konto</string>
@@ -351,7 +355,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Auf Server als gelesen markieren</string>
   <string name="account_setup_incoming_use_compression">Komprimierung durchführen</string>
-  <string name="account_setup_expunge_policy_label">Ordner bereinigen (Expunge)</string>
+  <string name="account_setup_expunge_policy_label">Gelöschte Nachrichten auf dem Server löschen</string>
   <string name="account_setup_expunge_policy_immediately">Sofort nach Verschieben oder Kopieren</string>
   <string name="account_setup_expunge_policy_on_poll">Bei jedem Abrufen</string>
   <string name="account_setup_expunge_policy_manual">Nur manuell</string>
@@ -410,16 +414,16 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_options_mail_display_count_5000">5000 Nachrichten</string>
   <string name="account_setup_options_mail_display_count_10000">10000 Nachrichten</string>
   <string name="account_setup_options_mail_display_count_all">Alle Nachrichten</string>
-  <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
+  <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden</string>
   <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Passwort ist falsch.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen, dass der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen, dass jemand versucht Sie oder ihren E-Mail-Server anzugreifen. Falls Sie sich nicht sicher sind was der Grund ist, klicken Sie auf Abbrechen und kontaktieren Sie die Administratoren Ihres E-Mail-Servers. \n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen, dass der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen, dass jemand versucht dich oder deinen E-Mail-Server anzugreifen. Falls du dir nicht sicher bist, was der Grund ist, klicke auf Abbrechen und kontaktiere die Administratoren deines E-Mail-Servers.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.
 (<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_oauth_flow_canceled">Berechtigung aufgehoben</string>
   <string name="account_setup_failed_dlg_oauth_flow_failed">Die Autorisierung ist aufgrund des folgenden Fehlers fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
   <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wird von diesem Anbieter derzeit nicht unterstützt.</string>
-  <string name="account_setup_failed_dlg_browser_not_found">Die App konnte keinen Browser finden, der für den Zugriff auf Ihr Konto verwendet werden kann.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Die App konnte keinen Browser finden, der für den Zugriff auf dein Konto verwendet werden kann.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
   <string name="account_setup_failed_dlg_continue_action">Weiter</string>
   <string name="account_settings_push_advanced_title">Erweitert</string>
@@ -432,11 +436,11 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Alle außer Nebenordner</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">Kein</string>
   <string name="account_settings_notify_sync_label">Benachrichtigung bei Synchronisation</string>
-  <string name="account_settings_email_label">Ihre E-Mail-Adresse</string>
+  <string name="account_settings_email_label">Deine E-Mail-Adresse</string>
   <string name="account_settings_notify_summary">Benachrichtigung in der Statuszeile anzeigen, wenn eine neue Nachricht empfangen wird</string>
   <string name="account_settings_notify_sync_summary">Benachrichtigung in der Statuszeile anzeigen, während nach neuen Nachrichten gesucht wird</string>
   <string name="account_settings_notify_self_label">Bei eigenen Nachrichten</string>
-  <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine Ihrer eigenen E-Mail-Adressen als Absender tragen</string>
+  <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine deiner eigenen E-Mail-Adressen als Absender tragen</string>
   <string name="account_notify_contacts_mail_only_label">Nur Kontakte</string>
   <string name="account_notify_contacts_mail_only_summary">Benachrichtigungen nur für Nachrichten von bekannten Kontakten anzeigen</string>
   <string name="account_settings_ignore_chat_messages_label">Chat-Nachrichten ignorieren</string>
@@ -572,7 +576,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_outgoing_label">Postausgangsserver</string>
   <string name="account_settings_outgoing_summary">Einstellungen des Postausgangsservers (SMTP) bearbeiten</string>
   <string name="account_settings_description_label">Kontoname</string>
-  <string name="account_settings_name_label">Ihr Name</string>
+  <string name="account_settings_name_label">Dein Name</string>
   <string name="notifications_title">Benachrichtigungen</string>
   <string name="account_settings_vibration">Vibration</string>
   <string name="account_settings_vibrate_enable">Vibration</string>
@@ -603,7 +607,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_identities_label">Identitäten verwalten</string>
   <string name="account_settings_identities_summary">Alternative Absenderadressen und Signaturen konfigurieren</string>
   <string name="manage_identities_title">Identitäten verwalten</string>
-  <string name="manage_identities_context_menu_title">Identität bearbeiten</string>
+  <string name="manage_identities_context_menu_title">Identität verwalten</string>
   <string name="edit_identity_title">Identität bearbeiten</string>
   <string name="edit_identity_save">Speichern</string>
   <string name="new_identity_action">Neue Identität erstellen</string>
@@ -615,7 +619,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="manage_identities_remove_action">Entfernen</string>
   <string name="edit_identity_description_label">Name der Identität</string>
   <string name="edit_identity_description_hint">(Optional)</string>
-  <string name="edit_identity_name_label">Ihr Name</string>
+  <string name="edit_identity_name_label">Dein Name</string>
   <string name="edit_identity_name_hint">(Optional)</string>
   <string name="edit_identity_email_label">E-Mail-Adresse</string>
   <string name="edit_identity_email_hint">(Erforderlich)</string>
@@ -628,8 +632,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="default_identity_description">Standard-Identität</string>
   <string name="choose_identity_title">Identität auswählen</string>
   <string name="send_as">Sende als</string>
-  <string name="no_removable_identity">Sie können Ihre einzige Identität nicht löschen</string>
-  <string name="identity_has_no_email">Sie können keine Identität ohne E-Mail-Adresse verwenden</string>
+  <string name="no_removable_identity">Du kannst deine einzige Identität nicht löschen</string>
+  <string name="identity_has_no_email">Du kannst keine Identität ohne E-Mail-Adresse verwenden</string>
   <string name="sort_earliest_first">Älteste Nachrichten zuerst</string>
   <string name="sort_latest_first">Neueste Nachrichten zuerst</string>
   <string name="sort_subject_alpha">Alphabetisch nach Betreff (A-Z)</string>
@@ -663,7 +667,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_signature__location_label">Position der Signatur</string>
   <string name="account_settings_signature__location_before_quoted_text">Vor zitierter Nachricht</string>
   <string name="account_settings_signature__location_after_quoted_text">Nach zitierter Nachricht</string>
-  <string name="setting_theme_global">Zu verwendendes Anwendungsdesign</string>
+  <string name="setting_theme_global">App-Design verwenden</string>
   <string name="setting_theme_dark">Dunkel</string>
   <string name="setting_theme_light">Hell</string>
   <string name="setting_theme_follow_system">Systemvorgabe verwenden</string>
@@ -723,6 +727,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="font_size_message_list_preview">Vorschau</string>
   <string name="font_size_message_view">Nachrichtenanzeige</string>
   <string name="font_size_message_view_sender">Absender</string>
+  <string name="font_size_message_view_recipients">Empfänger</string>
   <string name="font_size_message_view_subject">Betreff</string>
   <string name="font_size_message_view_date">Uhrzeit und Datum</string>
   <string name="font_size_message_view_content">Nachrichtentext</string>
@@ -736,34 +741,34 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="font_size_medium">Mittel</string>
   <string name="font_size_large">Groß</string>
   <string name="font_size_larger">Größer</string>
-  <string name="error_activity_not_found">Keine geeignete Anwendung für diese Aktion gefunden.</string>
+  <string name="error_activity_not_found">Keine geeignete App für diese Aktion gefunden.</string>
   <string name="send_failed_reason">Senden fehlgeschlagen: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Entwurf speichern?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Entwurf speichern oder verwerfen?</string>
   <string name="save_or_discard_draft_message_changes">Änderungen speichern oder verwerfen?</string>
   <string name="confirm_discard_draft_message_title">Nachricht verwerfen?</string>
-  <string name="confirm_discard_draft_message">Sind Sie sicher, dass Sie die Nachricht verwerfen möchten?</string>
+  <string name="confirm_discard_draft_message">Bist du sicher, dass du die Nachricht verwerfen möchtest?</string>
   <string name="dialog_confirm_clear_local_folder_title">Lokale Nachrichten löschen?</string>
   <string name="dialog_confirm_clear_local_folder_message">Dadurch werden alle lokalen Nachrichten aus dem Ordner entfernt. Es werden keine Nachrichten vom Server gelöscht.</string>
   <string name="dialog_confirm_clear_local_folder_action">Nachrichten löschen</string>
   <string name="dialog_confirm_delete_title">Löschen bestätigen</string>
-  <string name="dialog_confirm_delete_message">Möchten Sie diese Nachricht löschen?</string>
+  <string name="dialog_confirm_delete_message">Möchtest du diese Nachricht löschen?</string>
   <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">Möchten Sie diese Nachricht wirklich löschen?</item>
-    <item quantity="other">Möchten Sie wirklich <xliff:g id="message_count">%1$d</xliff:g> Nachrichten löschen?</item>
+    <item quantity="one">Möchtest du diese Nachricht wirklich löschen?</item>
+    <item quantity="other">Möchtest du wirklich <xliff:g id="message_count">%1$d</xliff:g> Nachrichten löschen?</item>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Löschen</string>
   <string name="dialog_confirm_delete_cancel_button">Nicht löschen</string>
   <string name="dialog_confirm_mark_all_as_read_title">Alle als gelesen markieren bestätigen</string>
-  <string name="dialog_confirm_mark_all_as_read_message">Möchten Sie alle Nachrichten als gelesen markieren?</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Möchtest du alle Nachrichten als gelesen markieren?</string>
   <string name="dialog_confirm_empty_trash_title">Leeren des Papierkorbs bestätigen</string>
-  <string name="dialog_confirm_empty_trash_message">Möchten Sie den Papierkorb leeren?</string>
+  <string name="dialog_confirm_empty_trash_message">Möchtest du den Papierkorb leeren?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Ja</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">Nein</string>
   <string name="dialog_confirm_spam_title">Als Spam markieren</string>
   <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">Möchten Sie diese Nachricht in den Spam-Ordner verschieben?</item>
-    <item quantity="other">Möchten Sie diese Nachrichten in den Spam-Ordner verschieben?</item>
+    <item quantity="one">Möchtest du diese Nachricht in den Spam-Ordner verschieben?</item>
+    <item quantity="other">Möchtest du <xliff:g id="message_count">%1$d</xliff:g> Nachrichten in den Spam-Ordner verschieben?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Ja</string>
   <string name="dialog_confirm_spam_cancel_button">Nein</string>
@@ -783,11 +788,11 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_import_button">Importieren</string>
   <string name="settings_import_success_generic">Einstellungen erfolgreich importiert</string>
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-  <string name="settings_import_password_required">Bitte geben Sie die Passwörter ein</string>
+  <string name="settings_import_password_required">Bitte gib die Passwörter ein</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-  <string name="settings_import_authorization_required">Bitte melden Sie sich an</string>
+  <string name="settings_import_authorization_required">Bitte melde dich an</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-  <string name="settings_import_authorization_and_password_required">Bitte melden Sie sich an und geben Sie Ihre Passwörter ein</string>
+  <string name="settings_import_authorization_and_password_required">Bitte melde dich an und gib deine Passwörter ein</string>
   <string name="settings_import_failure">Einstellungen konnten nicht importiert werden</string>
   <string name="settings_import_read_failure">Einstellungsdatei konnte nicht gelesen werden</string>
   <string name="settings_import_partial_failure">Einige Einstellungen konnten nicht importiert werden</string>
@@ -801,8 +806,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_import">Einstellungen importieren</string>
   <string name="settings_importing">Einstellungen werden importiert…</string>
   <plurals name="settings_import_password_prompt">
-    <item quantity="one">Um das Konto \"<xliff:g id="account">%s</xliff:g>\" nutzen zu können, müssen Sie das Serverpasswort eingeben.</item>
-    <item quantity="other">Um das Konto \"<xliff:g id="account">%s</xliff:g>\" nutzen zu können, müssen Sie die Serverpasswörter eingeben.</item>
+    <item quantity="one">Um das Konto \"<xliff:g id="account">%s</xliff:g>\" nutzen zu können, musst du das Serverpasswort eingeben.</item>
+    <item quantity="other">Um das Konto \"<xliff:g id="account">%s</xliff:g>\" nutzen zu können, musst du die Serverpasswörter eingeben.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Passwort des Posteingangsservers</string>
   <string name="settings_import_outgoing_server_password_hint">Passwort des Postausgangsservers</string>
@@ -834,11 +839,11 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="webview_contextmenu_image_copy_action">Bild-URL kopieren</string>
   <string name="webview_contextmenu_image_clipboard_label">Bild-URL</string>
   <string name="webview_contextmenu_phone_call_action">Anrufen</string>
-  <string name="webview_contextmenu_phone_save_action">Im Adressbuch speichern</string>
+  <string name="webview_contextmenu_phone_save_action">In Kontakten speichern</string>
   <string name="webview_contextmenu_phone_copy_action">Telefonnummer kopieren</string>
   <string name="webview_contextmenu_phone_clipboard_label">Telefonnummer</string>
   <string name="webview_contextmenu_email_send_action">E-Mail senden</string>
-  <string name="webview_contextmenu_email_save_action">Im Adressbuch speichern</string>
+  <string name="webview_contextmenu_email_save_action">Im Kontakten speichern</string>
   <string name="webview_contextmenu_email_copy_action">E-Mail-Adresse kopieren</string>
   <string name="webview_contextmenu_email_clipboard_label">E-Mail-Adresse</string>
   <string name="account_settings_remote_search_num_results_entries_all">Alle</string>
@@ -909,10 +914,10 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="address_type_other">Anderes</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Kein Ordner für Entwürfe für dieses Konto festgelegt!</string>
-  <string name="compose_error_no_key_configured">Kein Schlüssel für dieses Konto konfiguriert! Überprüfen Sie die Einstellungen.</string>
-  <string name="error_crypto_provider_incompatible">Verschlüsselungsdienst verwendet inkompatible Version. Bitte überprüfen Sie Ihre Einstellungen!</string>
-  <string name="error_crypto_provider_connect">Verbindung zu Verschlüsselungsdienst fehlgeschlagen. Überprüfen Sie die Einstellungen oder tippen Sie auf das Verschlüsselungs-Symbol um es erneut zu versuchen.</string>
-  <string name="error_crypto_provider_ui_required">Die Ende-zu-Ende Verschlüsselung konnte nicht initialisiert werden, bitte überprüfen Sie Ihre Einstellungen.</string>
+  <string name="compose_error_no_key_configured">Kein Schlüssel für dieses Konto konfiguriert! Überprüfe deine Einstellungen.</string>
+  <string name="error_crypto_provider_incompatible">Verschlüsselungsdienst verwendet inkompatible Version. Bitte überprüfe deine Einstellungen!</string>
+  <string name="error_crypto_provider_connect">Verbindung zu Verschlüsselungsdienst fehlgeschlagen. Überprüfe deine Einstellungen oder tippe auf das Verschlüsselungs-Symbol, um es erneut zu versuchen.</string>
+  <string name="error_crypto_provider_ui_required">Die Ende-zu-Ende Verschlüsselung konnte nicht initialisiert werden, bitte überprüfe deine Einstellungen.</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-Modus unterstützt keine Anhänge!</string>
   <string name="enable_inline_pgp">PGP/INLINE aktivieren</string>
   <string name="disable_inline_pgp">PGP/INLINE deaktivieren</string>
@@ -930,8 +935,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="openpgp_sign_only_disable">Deaktivieren</string>
   <string name="openpgp_sign_only_keep_enabled">Aktiviert lassen</string>
   <string name="openpgp_dialog_sign_only_title">PGP Nur-Signieren-Modus</string>
-  <string name="openpgp_dialog_sign_only_text">In diesem Modus wird Ihr PGP-Schlüssel verwendet, um eine kryptografische Signatur einer unverschlüsselten E-Mail zu erstellen.</string>
-  <string name="openpgp_dialog_sign_only_plus_verified">Dadurch wird die E-Mail nicht verschlüsselt, sondern es wird überprüft, ob sie von Ihrem Schlüssel gesendet wurde.</string>
+  <string name="openpgp_dialog_sign_only_text">In diesem Modus wird dein PGP-Schlüssel verwendet, um eine kryptografische Signatur einer unverschlüsselten E-Mail zu erstellen.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Dadurch wird die E-Mail nicht verschlüsselt, sondern es wird überprüft, ob sie von deinem Schlüssel gesendet wurde.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Signaturen können kaputtgehen, wenn sie an Mailinglisten gesendet werden.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Signaturen können als \'signature.asc\'-Anhänge in einigen Clients angezeigt werden.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Verschlüsselte Nachrichten enthalten immer eine Signatur.</string>
@@ -999,8 +1004,8 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="enable_encryption">Verschlüsselung aktivieren</string>
   <string name="disable_encryption">Verschlüsselung deaktivieren</string>
   <string name="openpgp_description_text1">Durch die Verschlüsselung von Nachrichten wird sichergestellt, dass sie für den Empfänger und sonst niemanden lesbar sind.</string>
-  <string name="openpgp_description_text3">Die Verschlüsselung wird nur angezeigt, wenn sie von allen Empfängern unterstützt wird und diese Ihnen zuvor schon eine E-Mail gesendet haben.</string>
-  <string name="openpgp_description_text2">Schalten Sie die Verschlüsselung um, indem Sie auf dieses Symbol klicken.</string>
+  <string name="openpgp_description_text3">Die Verschlüsselung wird nur angezeigt, wenn sie von allen Empfängern unterstützt wird und diese dir zuvor schon eine E-Mail gesendet haben.</string>
+  <string name="openpgp_description_text2">Schalte die Verschlüsselung um, indem du auf dieses Symbol klickst.</string>
   <string name="openpgp_enabled_error_gotit">Verstanden</string>
   <string name="openpgp_enabled_error_back">Zurück</string>
   <string name="openpgp_enabled_error_disable">Verschlüsselung deaktivieren</string>
@@ -1009,7 +1014,7 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="dialog_autocrypt_mutual_title">Autocrypt wechselseitiger Modus</string>
   <string name="dialog_autocrypt_mutual_description_1">Nachrichten werden normalerweise auf Wunsch oder beim Antworten auf eine verschlüsselte Nachricht verschlüsselt.</string>
   <string name="dialog_autocrypt_mutual_description_2">Wenn sowohl Sender als auch Empfänger den wechselseitigen Modus aktiviert haben, wird die Verschlüsselung automatisch aktiviert.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Sie können <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">hier klicken</a>, um mehr zu erfahren.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Du kannst <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">hier klicken</a>, um mehr zu erfahren.</string>
   <string name="general_settings_title">Allgemeine Einstellungen</string>
   <string name="dialog_openkeychain_info_title">Keine OpenPGP-App installiert</string>
   <string name="dialog_openkeychain_info_install">Installieren</string>
@@ -1022,26 +1027,26 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="ac_transfer_setting_title">Autocrypt-Setup-Nachricht senden</string>
   <string name="ac_transfer_setting_summary">Das Ende-zu-Ende-Setup auf sichere Art mit anderen Geräten teilen</string>
   <string name="ac_transfer_title">Autocrypt-Setup-Nachricht</string>
-  <string name="ac_transfer_intro">Eine Autocrypt-Setup-Nachricht teilt Ihr Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten</string>
+  <string name="ac_transfer_intro">Eine Autocrypt-Setup-Nachricht teilt dein Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten</string>
   <string name="ac_transfer_button_send">Setup-Nachricht senden</string>
-  <string name="ac_transfer_will_be_sent">Diese Nachricht wird an Ihre Adresse gesendet:</string>
+  <string name="ac_transfer_will_be_sent">Diese Nachricht wird an dein Adresse gesendet:</string>
   <string name="ac_transfer_generating">Erstelle Setup-Nachricht…</string>
   <string name="ac_transfer_sending_to">Sende Nachricht an:</string>
-  <string name="ac_transfer_finish">Um abzuschließen, öffnen Sie die Nachricht auf einem anderen Gerät und geben Sie den Setup-Code ein.</string>
+  <string name="ac_transfer_finish">Um abzuschließen, öffne die Nachricht auf einem anderen Gerät und gib den Setup-Code ein.</string>
   <string name="ac_transfer_show_code">Setup-Code anzeigen</string>
   <string name="ac_transfer_msg_subject">Autocrypt-Setup-Nachricht</string>
-  <string name="ac_transfer_msg_body">Diese Nachricht enthält alle Informationen, um Ihre Autocrypt-Einstellungen zusammen mit Ihrem geheimen Schlüssel von Ihrem ursprünglichen Gerät sicher zu übertragen.
+  <string name="ac_transfer_msg_body">Diese Nachricht enthält alle Informationen, um deine Autocrypt-Einstellungen zusammen mit deinem geheimen Schlüssel von deinem ursprünglichen Gerät sicher zu übertragen.
 
-Um Ihr neues Gerät für Autocrypt einzurichten, folgen Sie bitte den Anweisungen, die auf dem neuen Gerät angezeigt werden.
+Um dein neues Gerät für Autocrypt einzurichten, folge bitte den Anweisungen, die auf dem neuen Gerät angezeigt werden.
 
-Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schlüssel nutzen. Wenn Sie das tun möchten, sollten Sie sich das Passwort notieren und sicher verwahren.
+Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schlüssel nutzen. Wenn du das tun möchtest, solltest du dir das Passwort notieren und sicher verwahren.
 </string>
-  <string name="ac_transfer_error_send">Beim Senden der Nachricht trat ein Fehler auf. Bitte überprüfen Sie die Netzwerkverbindung und die Konfiguration ausgehender Server.</string>
+  <string name="ac_transfer_error_send">Beim Senden der Nachricht trat ein Fehler auf. Bitte überprüfe deine Netzwerkverbindung und die Konfiguration deines Postausgangsservers.</string>
   <string name="switch_on">An</string>
   <string name="switch_off">Aus</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Zugriff auf Kontakte erlauben</string>
-  <string name="permission_contacts_rationale_message">Damit die App Kontakte vorschlagen sowie Namen und Fotos der Kontakte anzeigen kann, benötigt sie Zugriff auf Ihre Kontakte.</string>
+  <string name="permission_contacts_rationale_message">Damit die App Kontaktvorschläge machen und Namen und Fotos von Kontakten anzeigen kann, benötigt sie Zugriff auf deine Kontakte.</string>
   <string name="generic_loading_error">Beim Laden der Daten ist ein Fehler aufgetreten</string>
   <string name="push_notification_state_initializing">Initialisieren…</string>
   <string name="push_notification_state_listening">Warte auf neue E-Mails</string>
@@ -1053,7 +1058,7 @@ Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schl
   <string name="push_info_configure_notification_text">Allerdings erlaubt Android auch, dass die Benachrichtigung ausgeblendet wird.</string>
   <string name="push_info_learn_more_text">Mehr erfahren</string>
   <string name="push_info_configure_notification_action">Benachrichtigung einstellen</string>
-  <string name="push_info_disable_push_text">Wenn Sie keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, sollten Sie Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue E-Mails und benötigt die Benachrichtigung nicht.</string>
+  <string name="push_info_disable_push_text">Wenn du keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, solltest du Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue E-Mails und benötigt die Benachrichtigung nicht.</string>
   <string name="push_info_disable_push_action">Push deaktivieren</string>
   <!--Name of the swipe action to select a message. Try to keep it short.-->
   <string name="swipe_action_select">Auswählen</string>
@@ -1075,4 +1080,38 @@ Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schl
   <string name="swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Verschieben…</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Schwebendes Verfassen anzeigen</string>
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Fehler</string>
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Ordner nicht gefunden</string>
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Nachrichtendetails</string>
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">\'Datum\' fehlt in der Kopfzeile</string>
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Von</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Absender</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Antworten an</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">An</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">CC</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Blindkopie (BCC)</string>
+  <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Beim Laden der Nachrichtendetails ist ein Fehler aufgetreten.</string>
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Kontakten hinzufügen</string>
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">E-Mail-Adresse kopieren</string>
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Name und E-Mail-Adresse kopieren</string>
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">E-Mail-Adresse</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Name und E-Mail-Adresse</string>
 </resources>

@@ -15,6 +15,8 @@
   <string name="user_manual_title">도움말</string>
   <string name="get_help_title">지원</string>
   <string name="user_forum_title">사용자 포럼</string>
+  <string name="about_twitter_title">트위터</string>
+  <string name="about_libraries">라이브러리</string>
   <string name="license">라이선스</string>
   <string name="changelog_title">변경 내용</string>
   <string name="changelog_loading_error">변경 내용을 불러오지 못했습니다.</string>
@@ -29,6 +31,7 @@
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
   <!--=== General strings ==================================================================-->
+  <string name="authors">제작자</string>
   <string name="about_title">K-9 메일에 대하여</string>
   <string name="accounts_title">계정</string>
   <string name="advanced">고급</string>
@@ -39,9 +42,10 @@
   <string name="compose_title_forward_as_attachment">첨부 파일 형태로 전달</string>
   <string name="choose_account_title">계정 선택</string>
   <string name="choose_folder_title">폴더 선택</string>
+  <string name="choose_folder_move_title">다음으로 이동</string>
+  <string name="choose_folder_copy_title">다음으로 복사</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택</string>
   <string name="next_action">다음</string>
-  <string name="previous_action">이전</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">확인</string>
   <string name="cancel_action">취소</string>
@@ -54,7 +58,9 @@
   <string name="spam_action">스팸</string>
   <string name="forward_action">전달</string>
   <string name="forward_as_attachment_action">첨부 파일 형태로 전달</string>
+  <string name="edit_as_new_message_action">새로운 메시지처럼 수정하기</string>
   <string name="move_action">이동</string>
+  <string name="move_to_drafts_action">초안으로 이동</string>
   <string name="single_message_options_action">메시지 옵션…</string>
   <string name="refile_action">관리…</string>
   <string name="done_action">완료</string>
@@ -67,8 +73,11 @@
   <string name="add_account_action">계정 추가</string>
   <string name="compose_action">작성</string>
   <string name="search_action">검색</string>
+  <string name="search_everywhere_action">모든 곳에서 검색</string>
   <string name="search_results">검색 결과</string>
+  <string name="new_messages_title">새 메시지</string>
   <string name="preferences_action">설정</string>
+  <string name="folders_action">폴더 관리</string>
   <string name="account_settings_action">계정 설정</string>
   <string name="remove_account_action">계정 삭제</string>
   <string name="mark_as_read_action">읽은 메일로 표시</string>
@@ -81,6 +90,7 @@
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">클립보드에 이메일 주소 복사</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">제목을 클립보드로 복사함</string>
   <string name="message_view_theme_action_dark">어두운 테마로 바꾸기</string>
   <string name="message_view_theme_action_light">밝은 테마로 바꾸기</string>
   <string name="mark_as_unread_action">읽지 않은 메일로 표시</string>
@@ -100,11 +110,9 @@
   <string name="status_invalid_id_error">메시지를 찾을 수 없습니다</string>
   <string name="status_loading_error">메시지 로딩 에러</string>
   <string name="load_more_messages_fmt">최대 <xliff:g id="messages_to_load">%d</xliff:g>개 더 불러오기</string>
-  <string name="notification_new_title">새 메일</string>
   <plurals name="notification_new_messages_title">
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 새 메세지</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> 통의 읽지 않은 메일 (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">답장</string>
   <string name="notification_action_mark_as_read">읽음</string>
@@ -120,11 +128,13 @@
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> 계정 인증 오류. 서버 설정을 업데이트하세요.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">새로운 메시지를 위한 시스템 알림을 만드는 중에 오류가 발생했습니다. 알림 소리가 지정되지 않아 그럴 가능성이 높습니다.\n\n여기를 눌러 알림 설정으로 이동하세요.</string>
   <string name="notification_bg_sync_ticker">메일 체크 중: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">메일 체크 중</string>
   <string name="notification_bg_send_ticker">메일 전송 중: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">메일 전송 중</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">동기화 하기 (누르세요)</string>
   <string name="notification_channel_messages_title">메시지</string>
   <string name="notification_channel_miscellaneous_title">기타 설정</string>
   <string name="special_mailbox_name_inbox">받은 편지함</string>
@@ -137,6 +147,9 @@
   <string name="debug_enable_debug_logging_summary">부차적인 진단 정보를 기록합니다</string>
   <string name="debug_enable_sensitive_logging_title">중요 정보 기록</string>
   <string name="debug_enable_sensitive_logging_summary">로그에 비밀번호를 남길 수도 있습니다</string>
+  <string name="debug_export_logs_title">로그 내보내기</string>
+  <string name="debug_export_logs_success">내보내기에 성공했습니다. 로그는 민감한 정보를 포함하고 있을 수도 있습니다. 전송할 때 유의하세요.</string>
+  <string name="debug_export_logs_failure">내보내기 실패</string>
   <string name="message_list_load_more_messages_action">메시지 추가 로드</string>
   <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">제목</string>
@@ -162,11 +175,15 @@
   <string name="message_to_label">수신자:</string>
   <string name="message_view_cc_label">참조:</string>
   <string name="message_view_bcc_label">Bcc:</string>
+  <string name="message_view_status_attachment_not_saved">첨부파일을 저장할 수 없음</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>에 대한 뷰어를 찾을 수 없습니다.</string>
   <string name="message_view_download_remainder">메시지의 남은 부분 다운로드</string>
   <string name="message_view_sender_label">%1$s을 통하여</string>
   <string name="from_same_sender">이 발신자에 대한 추가 작업</string>
-  <string name="search_from_format"><xliff:g id="sender">%s</xliff:g>이 씀:</string>
   <string name="message_discarded_toast">삭제됨</string>
   <string name="message_saved_toast">임시 보관함에 저장되었습니다</string>
   <string name="global_settings_flag_label">별표 보기</string>
@@ -180,6 +197,7 @@
   <string name="global_settings_show_contact_name_summary">받는 사람 이름을 연락처에서 가져 옵니다</string>
   <string name="global_settings_registered_name_color_label">아는 연락처 색깔 표시</string>
   <string name="global_settings_registered_name_color_changed">연락처 목록에 있는 이름을 색으로 표시합니다</string>
+  <string name="general_settings_contact_name_color_label">연락처 이름 색상</string>
   <string name="global_settings_messageview_fixedwidth_label">고정폭 폰트</string>
   <string name="global_settings_messageview_fixedwidth_summary">평문 메시지를 보여줄때 고정폭 폰트를 사용합니다</string>
   <string name="global_settings_messageview_autofit_width_label">너비 자동 맞춤</string>
@@ -197,12 +215,17 @@
   <string name="global_settings_confirm_menu_mark_all_read">모든 메시지를 읽은 상태로 표시</string>
   <string name="global_settings_confirm_action_delete_notif">삭제 (알림에서)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">스와이프 동작</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">오른쪽으로 스와이프</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">왼쪽으로 스와이프</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">없음</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">선택으로 전환</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">읽음/읽지 않음으로 바꾸기</string>
   <!--Name of the swipe action to add/remove a star-->
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">보관</string>
@@ -802,4 +825,27 @@
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">스팸</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">보낸 사람</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">보낸이</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">받는 사람</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">참조</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">숨은 참조</string>
+  <!--Displayed when loading the message details has failed-->
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">전자우편 주소</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
 </resources>

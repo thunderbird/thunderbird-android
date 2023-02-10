@@ -76,7 +76,6 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="choose_folder_copy_title">Kopiera till…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valda</string>
   <string name="next_action">Nästa</string>
-  <string name="previous_action">Föregående</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">OK</string>
   <string name="cancel_action">Avbryt</string>
@@ -148,12 +147,10 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="size_format_megabytes">%.1f MB</string>
   <string name="size_format_kilobytes">%.1f kB</string>
   <string name="size_format_bytes">%d B</string>
-  <string name="notification_new_title">Ny e-post</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nytt meddelande</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> olästa (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> fler på <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Svara</string>
   <string name="notification_action_mark_as_read">Markera som läst</string>
@@ -224,11 +221,18 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="message_view_cc_label">Kopia:</string>
   <string name="message_view_bcc_label">Blindkopia:</string>
   <string name="message_view_status_attachment_not_saved">Det går inte att spara bilaga.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">till</string>
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">mig</string>
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Visa fjärrbilder</string>
   <string name="message_view_no_viewer">Kan inte hitta visare för <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hämta hela meddelandet</string>
   <string name="message_view_sender_label">via %1$s</string>
   <string name="from_same_sender">Mer från denna avsändare</string>
-  <string name="search_from_format">Från <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Meddelandet kasserades</string>
   <string name="message_saved_toast">Meddelandet sparat som utkast</string>
   <string name="global_settings_flag_label">Visa stjärnor</string>
@@ -723,6 +727,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="font_size_message_list_preview">Förhandsgranskning</string>
   <string name="font_size_message_view">Meddelanden</string>
   <string name="font_size_message_view_sender">Avsändare</string>
+  <string name="font_size_message_view_recipients">Mottagare</string>
   <string name="font_size_message_view_subject">Ämne</string>
   <string name="font_size_message_view_date">Tid och datum</string>
   <string name="font_size_message_view_content">Innehåll</string>
@@ -1008,7 +1013,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="dialog_autocrypt_mutual_title">Autocrypt ömsesidigt läge</string>
   <string name="dialog_autocrypt_mutual_description_1">Meddelanden kommer normalt att krypteras efter eget val, eller när man svarar på ett krypterat meddelande.</string>
   <string name="dialog_autocrypt_mutual_description_2">Om både avsändare och mottagare aktiverar ömsesidigt läge aktiveras kryptering som standard.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">trycka här</a> för att lära dig mer.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">trycka här</a> för att läsa mer.</string>
   <string name="general_settings_title">Allmänna inställningar</string>
   <string name="dialog_openkeychain_info_title">Ingen OpenPGP-app installerad</string>
   <string name="dialog_openkeychain_info_install">Installera</string>
@@ -1046,7 +1051,7 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
   <string name="push_notification_state_listening">Väntar på nya e-postmeddelanden</string>
   <string name="push_notification_state_wait_background_sync">Sover tills bakgrundssynkronisering är tillåten</string>
   <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>
-  <string name="push_notification_info">Tryck för att lära dig mer.</string>
+  <string name="push_notification_info">Tryck för att läsa mer.</string>
   <string name="push_info_title">Push-info</string>
   <string name="push_info_notification_explanation_text">Vid användning av Push upprätthåller K-9 Mail en anslutning till e-postservern. Android kräver att ett pågående meddelande visas medan appen är aktiv i bakgrunden. %s</string>
   <string name="push_info_configure_notification_text">Men Android låter dig också dölja aviseringen.</string>
@@ -1074,4 +1079,38 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
   <string name="swipe_action_spam">Skräppost</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Flytta…</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Visa flytande skrivknapp</string>
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Fel</string>
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Mappen hittades inte</string>
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Meddelande detaljer</string>
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Rubriken \"Date\" saknas</string>
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Från</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Avsändare</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Svara till</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">Till</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Kopia</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Blindkopia</string>
+  <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Ett fel uppstod när meddelande detaljerna lästes in.</string>
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Lägg till i kontakter</string>
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Kopiera e-postadress</string>
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Kopiera namn och e-postadress</string>
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">E-postadress</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Namn och e-postadress</string>
 </resources>

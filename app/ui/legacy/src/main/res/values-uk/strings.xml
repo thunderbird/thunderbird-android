@@ -77,7 +77,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="choose_folder_copy_title">Копіювати до…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> вибрано</string>
   <string name="next_action">Наступний</string>
-  <string name="previous_action">Попередній</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">Гаразд</string>
   <string name="cancel_action">Скасувати</string>
@@ -151,14 +150,12 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="size_format_megabytes">%.1f МБ</string>
   <string name="size_format_kilobytes">%.1f кБ</string>
   <string name="size_format_bytes">%d Б</string>
-  <string name="notification_new_title">Нова пошта</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> нове повідомлення</item>
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> нових повідомлень</item>
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> нових повідомлень</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> нових повідомлень</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> непрочитане(-их) (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">ще <xliff:g id="additional_messages">%1$d</xliff:g> у <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Відповісти</string>
   <string name="notification_action_mark_as_read">Позначити прочитаним</string>
@@ -229,11 +226,14 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="message_view_cc_label">Копія:</string>
   <string name="message_view_bcc_label">Прихована копія:</string>
   <string name="message_view_status_attachment_not_saved">Не вдалося зберегти вкладення.</string>
+  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer">Не знайдено додаток для перегляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Завантажити усе повідомлення</string>
   <string name="message_view_sender_label">за допомогою %1$s</string>
   <string name="from_same_sender">Більше від цього відправника</string>
-  <string name="search_from_format">Від <xliff:g id="sender">%s</xliff:g></string>
   <string name="message_discarded_toast">Повідомлення скасовано</string>
   <string name="message_saved_toast">Повідомлення збережено як чернетку</string>
   <string name="global_settings_flag_label">Показувати зірочки</string>
@@ -265,13 +265,19 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="global_settings_confirm_menu_mark_all_read">Позначити всі повідомлення як прочитані</string>
   <string name="global_settings_confirm_action_delete_notif">Видалити (зі сповіщення)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Змахи</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Змах вправо</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Змах вліво</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Жодна</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Перемкнути вибір</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Позначити прочитаним/непрочитаним</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Додати/вилучити зірку</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Архівувати</string>
   <!--Name of the swipe action to delete a message-->
@@ -700,6 +706,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_push_limit_1000">1000 тек</string>
   <string name="animations_title">Анімація</string>
   <string name="animations_summary">Використовувати яскраві візуальні ефекти</string>
+  <string name="volume_navigation_title">Навігація у повідомленні кнопками гучності</string>
   <string name="show_unified_inbox_title">Показувати Об\'єднані Вхідні</string>
   <string name="show_starred_count_title">Показати лічильник зірочок</string>
   <string name="integrated_inbox_title">Об\'єднані Вхідні</string>
@@ -1067,6 +1074,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Скасувати вибір</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Позначити прочитаним</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">Позначити непрочитаним</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -1080,4 +1088,29 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Спам</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Перемістити...</string>
+  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+  <string name="message_details_from_section_title">Від</string>
+  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">відправником</string>
+  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">Відповісти до</string>
+  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+  <string name="message_details_to_section_title">До</string>
+  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+  <string name="message_details_cc_section_title">Копія</string>
+  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">Прихована копія</string>
+  <!--Displayed when loading the message details has failed-->
+  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--A user visible label for the email address copied to the clipboard-->
+  <string name="clipboard_label_email_address">Електронна адреса</string>
+  <!--A user visible label for the name and email address copied to the clipboard-->
 </resources>
