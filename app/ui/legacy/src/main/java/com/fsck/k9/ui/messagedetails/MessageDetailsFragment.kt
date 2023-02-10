@@ -24,6 +24,7 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.withArguments
 import com.mikepenz.fastadapter.FastAdapter
@@ -32,12 +33,14 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     private val viewModel: MessageDetailsViewModel by viewModel()
     private val addToContactsLauncher: AddToContactsLauncher by inject()
     private val showContactLauncher: ShowContactLauncher by inject()
     private val contactPictureLoader: ContactPictureLoader by inject()
+    private val folderIconProvider: FolderIconProvider by inject { parametersOf(requireContext().theme) }
 
     private lateinit var messageReference: MessageReference
 
@@ -138,6 +141,10 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
             addParticipants(details.to, R.string.message_details_to_section_title, showContactPicture)
             addParticipants(details.cc, R.string.message_details_cc_section_title, showContactPicture)
             addParticipants(details.bcc, R.string.message_details_bcc_section_title, showContactPicture)
+
+            if (details.folder != null) {
+                addFolderName(details.folder)
+            }
         }
 
         val adapter = FastAdapter.with(itemAdapter).apply {
@@ -164,6 +171,14 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
                 add(ParticipantItem(contactPictureLoader, showContactPicture, participant))
             }
         }
+    }
+
+    private fun ItemAdapter<GenericItem>.addFolderName(folder: FolderInfoUi) {
+        val folderNameItem = FolderNameItem(
+            displayName = folder.displayName,
+            iconResourceId = folderIconProvider.getFolderIcon(folder.type)
+        )
+        add(folderNameItem)
     }
 
     private val cryptoStatusClickEventHook = object : ClickEventHook<CryptoStatusItem>() {

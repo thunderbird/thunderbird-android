@@ -10,10 +10,13 @@ import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.CryptoResultAnnotation
+import com.fsck.k9.mailstore.Folder
+import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.MessageDate
 import com.fsck.k9.mailstore.MessageRepository
 import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.text.DateFormat
 import java.util.Locale
@@ -27,11 +30,13 @@ import kotlinx.coroutines.launch
 internal class MessageDetailsViewModel(
     private val resources: Resources,
     private val messageRepository: MessageRepository,
+    private val folderRepository: FolderRepository,
     private val contactSettingsProvider: ContactSettingsProvider,
     private val contacts: Contacts,
     private val clipboardManager: ClipboardManager,
     private val accountManager: AccountManager,
-    private val participantFormatter: MessageDetailsParticipantFormatter
+    private val participantFormatter: MessageDetailsParticipantFormatter,
+    private val folderNameFormatter: FolderNameFormatter
 ) : ViewModel() {
     private val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.getDefault())
     private val uiState = MutableStateFlow<MessageDetailsState>(MessageDetailsState.Loading)
@@ -46,6 +51,8 @@ internal class MessageDetailsViewModel(
                 val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
                 val messageDetails = messageRepository.getMessageDetails(messageReference)
 
+                val folder = folderRepository.getFolder(account, folderId = messageReference.folderId)
+
                 val senderList = messageDetails.sender?.let { listOf(it) } ?: emptyList()
                 val messageDetailsUi = MessageDetailsUi(
                     date = buildDisplayDate(messageDetails.date),
@@ -55,7 +62,8 @@ internal class MessageDetailsViewModel(
                     replyTo = messageDetails.replyTo.toParticipants(account),
                     to = messageDetails.to.toParticipants(account),
                     cc = messageDetails.cc.toParticipants(account),
-                    bcc = messageDetails.bcc.toParticipants(account)
+                    bcc = messageDetails.bcc.toParticipants(account),
+                    folder = folder?.toFolderInfo()
                 )
 
                 MessageDetailsState.DataLoaded(
@@ -98,6 +106,13 @@ internal class MessageDetailsViewModel(
                 contactLookupUri = contacts.getContactUri(emailAddress)
             )
         }
+    }
+
+    private fun Folder.toFolderInfo(): FolderInfoUi {
+        return FolderInfoUi(
+            displayName = folderNameFormatter.displayName(this),
+            type = this.type
+        )
     }
 
     fun onCryptoStatusClicked() {

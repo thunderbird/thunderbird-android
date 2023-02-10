@@ -8,11 +8,13 @@ val messageDetailsUiModule = module {
         MessageDetailsViewModel(
             resources = get(),
             messageRepository = get(),
+            folderRepository = get(),
             contactSettingsProvider = get(),
             contacts = get(),
             clipboardManager = get(),
             accountManager = get(),
-            participantFormatter = get()
+            participantFormatter = get(),
+            folderNameFormatter = get()
         )
     }
     factory { ContactSettingsProvider() }
