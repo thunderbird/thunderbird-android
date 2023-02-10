@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.507" versioncode="35007" date="2023-02-10">
+        <change>Respect "show contact names" setting in message details screen</change>
+        <change>Display folder name in message details screen</change>
+        <change>Small adjustment to the appearance of the "Download complete message" button</change>
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.506" versioncode="35006" date="2023-02-03">
         <change>Fixed a crash when displaying a message without any recipients</change>
         <change>Fetch BCC header when partially downloading a message</change>
