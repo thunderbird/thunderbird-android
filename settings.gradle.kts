@@ -15,6 +15,8 @@ dependencyResolutionManagement {
     }
 }
 
+includeBuild("build-plugin")
+
 include(":app:k9mail")
 include(":app:ui:base")
 include(":app:ui:setup")
