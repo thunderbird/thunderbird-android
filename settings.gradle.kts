@@ -15,37 +15,52 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 includeBuild("build-plugin")
 
-include(":app:k9mail")
-include(":app:ui:base")
-include(":app:ui:setup")
-include(":app:ui:legacy")
-include(":app:ui:message-list-widget")
-include(":app:core")
-include(":app:storage")
-include(":app:crypto-openpgp")
-include(":app:testing")
-include(":app:autodiscovery:api")
-include(":app:autodiscovery:providersxml")
-include(":app:autodiscovery:srvrecords")
-include(":app:autodiscovery:thunderbird")
-include(":app:html-cleaner")
-include(":ui-utils:LinearLayoutManager")
-include(":ui-utils:ItemTouchHelper")
-include(":ui-utils:ToolbarBottomSheet")
-include(":mail:common")
-include(":mail:testing")
-include(":mail:protocols:imap")
-include(":mail:protocols:pop3")
-include(":mail:protocols:webdav")
-include(":mail:protocols:smtp")
-include(":backend:api")
-include(":backend:testing")
-include(":backend:imap")
-include(":backend:pop3")
-include(":backend:webdav")
-include(":backend:jmap")
-include(":backend:demo")
+include(
+    ":app:k9mail",
+    ":app:ui:base",
+    ":app:ui:setup",
+    ":app:ui:legacy",
+    ":app:ui:message-list-widget",
+    ":app:core",
+    ":app:storage",
+    ":app:crypto-openpgp",
+    ":app:testing",
+    ":app:autodiscovery:api",
+    ":app:autodiscovery:providersxml",
+    ":app:autodiscovery:srvrecords",
+    ":app:autodiscovery:thunderbird",
+    ":app:html-cleaner"
+)
+
+include(
+    ":ui-utils:LinearLayoutManager",
+    ":ui-utils:ItemTouchHelper",
+    ":ui-utils:ToolbarBottomSheet"
+)
+
+include(
+    ":mail:common",
+    ":mail:testing",
+    ":mail:protocols:imap",
+    ":mail:protocols:pop3",
+    ":mail:protocols:webdav",
+    ":mail:protocols:smtp"
+)
+
+include(
+    ":backend:api",
+    ":backend:testing",
+    ":backend:imap",
+    ":backend:pop3",
+    ":backend:webdav",
+    ":backend:jmap",
+    ":backend:demo"
+)
+
 include(":plugins:openpgp-api-lib:openpgp-api")
+
 include(":cli:html-cleaner-cli")
