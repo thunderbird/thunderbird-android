@@ -220,16 +220,18 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             context.getString(R.string.webview_contextmenu_image_view_action)
         ).setOnMenuItemClickListener(listener)
 
-        menu.add(
-            Menu.NONE,
-            MENU_ITEM_IMAGE_SAVE,
-            1,
-            if (inlineImage) {
-                context.getString(R.string.webview_contextmenu_image_save_action)
-            } else {
-                context.getString(R.string.webview_contextmenu_image_download_action)
-            }
-        ).setOnMenuItemClickListener(listener)
+        if (inlineImage || imageUri.scheme?.lowercase() in supportedDownloadUriSchemes) {
+            menu.add(
+                Menu.NONE,
+                MENU_ITEM_IMAGE_SAVE,
+                1,
+                if (inlineImage) {
+                    context.getString(R.string.webview_contextmenu_image_save_action)
+                } else {
+                    context.getString(R.string.webview_contextmenu_image_download_action)
+                }
+            ).setOnMenuItemClickListener(listener)
+        }
 
         if (!inlineImage) {
             menu.add(
@@ -532,5 +534,8 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         private const val MENU_ITEM_EMAIL_SEND = Menu.FIRST
         private const val MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1
         private const val MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2
+
+        // DownloadManager only supports http and https URIs
+        private val supportedDownloadUriSchemes = setOf("http", "https")
     }
 }
