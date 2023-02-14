@@ -29,6 +29,9 @@ internal data class NotificationData(
             }
         }
 
+    val activeMessageReferences: List<MessageReference>
+        get() = activeNotifications.map { it.content.messageReference }
+
     fun isEmpty() = activeNotifications.isEmpty()
 
     companion object {

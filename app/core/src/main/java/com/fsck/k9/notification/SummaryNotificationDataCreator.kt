@@ -37,7 +37,7 @@ internal class SummaryNotificationDataCreator(
             timestamp = timestamp,
             content = data.summaryContent,
             additionalMessagesCount = data.additionalMessagesCount,
-            messageReferences = data.messageReferences,
+            messageReferences = data.activeMessageReferences,
             actions = createSummaryNotificationActions(),
             wearActions = createSummaryWearNotificationActions(data.account)
         )
