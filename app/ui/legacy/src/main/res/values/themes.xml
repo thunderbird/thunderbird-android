@@ -52,7 +52,6 @@
         <item name="iconActionSearchFolder">@drawable/ic_folder_magnify</item>
         <item name="iconActionSend">@drawable/ic_send</item>
         <item name="iconActionSettings">@drawable/ic_cog</item>
-        <item name="iconActionSingleMessageOptions">@drawable/ic_reply_all</item>
         <item name="iconActionSort">@drawable/ic_sort</item>
         <item name="iconActionSpam">@drawable/ic_alert_octagon</item>
         <item name="iconActionFlag">@drawable/ic_star</item>
@@ -215,7 +214,6 @@
         <item name="iconActionSearchFolder">@drawable/ic_folder_magnify</item>
         <item name="iconActionSend">@drawable/ic_send</item>
         <item name="iconActionSettings">@drawable/ic_cog</item>
-        <item name="iconActionSingleMessageOptions">@drawable/ic_reply_all</item>
         <item name="iconActionSort">@drawable/ic_sort</item>
         <item name="iconActionSpam">@drawable/ic_alert_octagon</item>
         <item name="iconActionFlag">@drawable/ic_star</item>

@@ -82,7 +82,6 @@
     <!-- MessageView -->
     <item
         android:id="@+id/refile"
-        android:icon="?attr/iconActionSingleMessageOptions"
         android:title="@string/refile_action"
         android:visible="false"
         app:showAsAction="never">

@@ -29,7 +29,6 @@
         <attr name="iconActionSearchFolder" format="reference" />
         <attr name="iconActionSend" format="reference" />
         <attr name="iconActionSettings" format="reference" />
-        <attr name="iconActionSingleMessageOptions" format="reference" />
         <attr name="iconActionSort" format="reference" />
         <attr name="iconActionSpam" format="reference" />
         <attr name="iconActionFlag" format="reference" />
