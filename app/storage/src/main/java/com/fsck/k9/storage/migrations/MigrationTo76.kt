@@ -30,7 +30,8 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
         val account = migrationsHelper.account
 
         Timber.v("Cleaning up Outbox folder")
-        val outboxFolderId = account.outboxFolderId ?: createFolder("Outbox", "K9MAIL_INTERNAL_OUTBOX", OUTBOX_FOLDER_TYPE)
+        val outboxFolderId =
+            account.outboxFolderId ?: createFolder("Outbox", "K9MAIL_INTERNAL_OUTBOX", OUTBOX_FOLDER_TYPE)
         deleteOtherOutboxFolders(outboxFolderId)
         account.outboxFolderId = outboxFolderId
 

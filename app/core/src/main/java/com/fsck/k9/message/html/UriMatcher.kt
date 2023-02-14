@@ -17,7 +17,7 @@ object UriMatcher {
     private const val SCHEME_SEPARATORS = "\\s(\\n<"
     private const val ALLOWED_SEPARATORS_PATTERN = "(?:^|[$SCHEME_SEPARATORS])"
     private val URI_SCHEME = Regex(
-        "$ALLOWED_SEPARATORS_PATTERN(${ SUPPORTED_URIS.keys.joinToString("|") })",
+        "$ALLOWED_SEPARATORS_PATTERN(${SUPPORTED_URIS.keys.joinToString("|")})",
         RegexOption.IGNORE_CASE,
     )
 

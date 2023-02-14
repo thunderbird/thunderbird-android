@@ -11,13 +11,17 @@ class FolderInfoHolder(
     localFolder: LocalFolder,
     account: Account,
 ) {
-    @JvmField val databaseId = localFolder.databaseId
+    @JvmField
+    val databaseId = localFolder.databaseId
 
-    @JvmField val displayName = getDisplayName(account, localFolder)
+    @JvmField
+    val displayName = getDisplayName(account, localFolder)
 
-    @JvmField var loading = false
+    @JvmField
+    var loading = false
 
-    @JvmField var moreMessages = localFolder.hasMoreMessages()
+    @JvmField
+    var moreMessages = localFolder.hasMoreMessages()
 
     private fun getDisplayName(account: Account, localFolder: LocalFolder): String {
         val folderId = localFolder.databaseId

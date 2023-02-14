@@ -282,11 +282,13 @@ class MessageTopView(
             progressBar.progress,
             PROGRESS_MAX,
         )
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animator: Animator) {
-                viewAnimator.displayedChild = 2
-            }
-        })
+        animator.addListener(
+            object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animator: Animator) {
+                    viewAnimator.displayedChild = 2
+                }
+            },
+        )
         animator.duration = PROGRESS_STEP_DURATION.toLong()
         animator.start()
     }

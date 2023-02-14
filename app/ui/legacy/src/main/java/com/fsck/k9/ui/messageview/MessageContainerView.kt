@@ -229,7 +229,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                     context.getString(R.string.webview_contextmenu_image_save_action)
                 } else {
                     context.getString(R.string.webview_contextmenu_image_download_action)
-                }
+                },
             ).setOnMenuItemClickListener(listener)
         }
 

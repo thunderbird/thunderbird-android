@@ -61,7 +61,8 @@ constructor(
         ).italicize()
 
         entries = (listOf(automaticFolderOption) + noFolderSelectedName + getFolderDisplayNames(folders)).toTypedArray()
-        entryValues = (listOf(automaticFolderValue) + NO_FOLDER_SELECTED_VALUE + getFolderValues(folders)).toTypedArray()
+        entryValues =
+            (listOf(automaticFolderValue) + NO_FOLDER_SELECTED_VALUE + getFolderValues(folders)).toTypedArray()
 
         isEnabled = true
     }

@@ -38,9 +38,15 @@ data class ComposeCryptoStatus(
         isEncryptSubject: Boolean,
         cryptoMode: CryptoMode,
     ) : this(
-        openPgpProviderState, openPgpKeyId,
+        openPgpProviderState,
+        openPgpKeyId,
         recipientAddresses.map { it.address.address },
-        isPgpInlineModeEnabled, isSenderPreferEncryptMutual, isReplyToEncrypted, isEncryptAllDrafts, isEncryptSubject, cryptoMode,
+        isPgpInlineModeEnabled,
+        isSenderPreferEncryptMutual,
+        isReplyToEncrypted,
+        isEncryptAllDrafts,
+        isEncryptSubject,
+        cryptoMode,
     )
 
     private val recipientAutocryptStatusType = recipientAutocryptStatus?.type
@@ -132,7 +138,8 @@ data class ComposeCryptoStatus(
 
     fun allRecipientsCanEncrypt() = recipientAutocryptStatus?.type?.canEncrypt() == true
 
-    fun canEncryptAndIsMutualDefault() = allRecipientsCanEncrypt() && isSenderPreferEncryptMutual && isRecipientsPreferEncryptMutual
+    fun canEncryptAndIsMutualDefault() =
+        allRecipientsCanEncrypt() && isSenderPreferEncryptMutual && isRecipientsPreferEncryptMutual
 
     fun hasAutocryptPendingIntent() = recipientAutocryptStatus?.hasPendingIntent() == true
 

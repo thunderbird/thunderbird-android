@@ -61,7 +61,10 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
             assertThat(message.folderId).isEqualTo(folderId)
             assertThat(message.fromAddresses).containsExactly(Address("from@domain.example"))
             assertThat(message.toAddresses).containsExactly(Address("to@domain.example"))
-            assertThat(message.ccAddresses).containsExactly(Address("cc1@domain.example"), Address("cc2@domain.example"))
+            assertThat(message.ccAddresses).containsExactly(
+                Address("cc1@domain.example"),
+                Address("cc2@domain.example"),
+            )
             assertThat(message.messageDate).isEqualTo(123L)
             assertThat(message.internalDate).isEqualTo(456L)
             assertThat(message.subject).isEqualTo("subject")
@@ -175,7 +178,10 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
             assertThat(message.folderId).isEqualTo(folderId)
             assertThat(message.fromAddresses).containsExactly(Address("from@domain.example"))
             assertThat(message.toAddresses).containsExactly(Address("to@domain.example"))
-            assertThat(message.ccAddresses).containsExactly(Address("cc1@domain.example"), Address("cc2@domain.example"))
+            assertThat(message.ccAddresses).containsExactly(
+                Address("cc1@domain.example"),
+                Address("cc2@domain.example"),
+            )
             assertThat(message.messageDate).isEqualTo(123L)
             assertThat(message.internalDate).isEqualTo(456L)
             assertThat(message.subject).isEqualTo("subject")

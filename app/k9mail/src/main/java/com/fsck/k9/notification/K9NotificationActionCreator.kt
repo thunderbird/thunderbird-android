@@ -104,9 +104,10 @@ internal class K9NotificationActionCreator(
         messageReferences: List<MessageReference>,
     ): PendingIntent {
         val accountUuid = account.uuid
-        val intent = NotificationActionService.createMarkAllAsReadIntent(context, accountUuid, messageReferences).apply {
-            data = Uri.parse("data:,markAllAsRead/$accountUuid/${System.currentTimeMillis()}")
-        }
+        val intent =
+            NotificationActionService.createMarkAllAsReadIntent(context, accountUuid, messageReferences).apply {
+                data = Uri.parse("data:,markAllAsRead/$accountUuid/${System.currentTimeMillis()}")
+            }
         return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
@@ -165,9 +166,10 @@ internal class K9NotificationActionCreator(
         messageReferences: List<MessageReference>,
     ): PendingIntent {
         val accountUuid = account.uuid
-        val intent = NotificationActionService.createDeleteAllMessagesIntent(context, accountUuid, messageReferences).apply {
-            data = Uri.parse("data:,deleteAll/$accountUuid/${System.currentTimeMillis()}")
-        }
+        val intent =
+            NotificationActionService.createDeleteAllMessagesIntent(context, accountUuid, messageReferences).apply {
+                data = Uri.parse("data:,deleteAll/$accountUuid/${System.currentTimeMillis()}")
+            }
         return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 

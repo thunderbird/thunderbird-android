@@ -214,6 +214,7 @@ class PushController internal constructor(
             account.folderPushMode != FolderMode.NONE && backendManager.getBackend(account).isPushCapable
         }
     }
+
     private fun setPushNotificationState(notificationState: PushNotificationState) {
         pushNotificationManager.notificationState = notificationState
     }

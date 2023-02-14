@@ -124,11 +124,13 @@ class AuthenticatedPasswordToggleViewModel : ViewModel() {
         set(value) {
             field = value
 
-            value?.lifecycle?.addObserver(object : DefaultLifecycleObserver {
-                override fun onDestroy(owner: LifecycleOwner) {
-                    textInputLayout = null
-                    field = null
-                }
-            })
+            value?.lifecycle?.addObserver(
+                object : DefaultLifecycleObserver {
+                    override fun onDestroy(owner: LifecycleOwner) {
+                        textInputLayout = null
+                        field = null
+                    }
+                },
+            )
         }
 }

@@ -193,20 +193,24 @@ class SimpleHighlightView private constructor(context: Context, style: Int) : Fr
     }
 
     private inline fun ObjectAnimator.onAnimationStart(crossinline block: () -> Unit): ObjectAnimator {
-        addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                block()
-            }
-        })
+        addListener(
+            object : AnimatorListenerAdapter() {
+                override fun onAnimationStart(animation: Animator) {
+                    block()
+                }
+            },
+        )
         return this
     }
 
     private inline fun ObjectAnimator.onAnimationEnd(crossinline block: () -> Unit): ObjectAnimator {
-        addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                block()
-            }
-        })
+        addListener(
+            object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    block()
+                }
+            },
+        )
         return this
     }
 

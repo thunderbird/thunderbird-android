@@ -19,7 +19,12 @@ val coreNotificationModule = module {
     }
     single { NotificationManagerCompat.from(get()) }
     single {
-        NotificationHelper(context = get(), notificationManager = get(), notificationChannelManager = get(), resourceProvider = get())
+        NotificationHelper(
+            context = get(),
+            notificationManager = get(),
+            notificationChannelManager = get(),
+            resourceProvider = get(),
+        )
     }
     single {
         NotificationChannelManager(

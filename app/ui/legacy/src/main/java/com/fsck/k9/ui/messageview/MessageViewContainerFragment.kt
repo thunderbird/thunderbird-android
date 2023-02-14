@@ -99,21 +99,23 @@ class MessageViewContainerFragment : Fragment() {
         viewPager.isUserInputEnabled = true
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         viewPager.setPageTransformer(MarginPageTransformer(pageMargin))
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            // The message list is updated each time the active message is changed. To avoid message list updates
-            // during the animation, we only set the active message after the animation has finished.
-            override fun onPageScrollStateChanged(state: Int) {
-                if (state == ViewPager2.SCROLL_STATE_IDLE) {
-                    setActiveMessage(viewPager.currentItem)
+        viewPager.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
+                // The message list is updated each time the active message is changed. To avoid message list updates
+                // during the animation, we only set the active message after the animation has finished.
+                override fun onPageScrollStateChanged(state: Int) {
+                    if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                        setActiveMessage(viewPager.currentItem)
+                    }
                 }
-            }
 
-            override fun onPageSelected(position: Int) {
-                if (viewPager.scrollState == ViewPager2.SCROLL_STATE_IDLE) {
-                    setActiveMessage(position)
+                override fun onPageSelected(position: Int) {
+                    if (viewPager.scrollState == ViewPager2.SCROLL_STATE_IDLE) {
+                        setActiveMessage(position)
+                    }
                 }
-            }
-        })
+            },
+        )
 
         return view
     }

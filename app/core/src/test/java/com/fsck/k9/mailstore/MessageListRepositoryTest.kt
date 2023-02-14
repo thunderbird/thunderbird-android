@@ -383,25 +383,27 @@ class MessageListRepositoryTest {
 
     private fun runMessageMapper(messages: Array<out MessageData>, mapper: MessageMapper<Any?>): List<Any> {
         return messages.mapNotNull { message ->
-            mapper.map(object : MessageDetailsAccessor {
-                override val id = message.messageId
-                override val messageServerId = "irrelevant"
-                override val folderId = message.folderId
-                override val fromAddresses = emptyList<Address>()
-                override val toAddresses = emptyList<Address>()
-                override val ccAddresses = emptyList<Address>()
-                override val messageDate = 0L
-                override val internalDate = 0L
-                override val subject = "irrelevant"
-                override val preview = PreviewResult.error()
-                override val isRead = message.isRead
-                override val isStarred = message.isStarred
-                override val isAnswered = message.isAnswered
-                override val isForwarded = message.isForwarded
-                override val hasAttachments = false
-                override val threadRoot = message.threadRoot
-                override val threadCount = 0
-            })
+            mapper.map(
+                object : MessageDetailsAccessor {
+                    override val id = message.messageId
+                    override val messageServerId = "irrelevant"
+                    override val folderId = message.folderId
+                    override val fromAddresses = emptyList<Address>()
+                    override val toAddresses = emptyList<Address>()
+                    override val ccAddresses = emptyList<Address>()
+                    override val messageDate = 0L
+                    override val internalDate = 0L
+                    override val subject = "irrelevant"
+                    override val preview = PreviewResult.error()
+                    override val isRead = message.isRead
+                    override val isStarred = message.isStarred
+                    override val isAnswered = message.isAnswered
+                    override val isForwarded = message.isForwarded
+                    override val hasAttachments = false
+                    override val threadRoot = message.threadRoot
+                    override val threadCount = 0
+                },
+            )
         }
     }
 

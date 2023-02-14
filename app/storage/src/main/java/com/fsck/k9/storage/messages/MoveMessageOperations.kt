@@ -18,7 +18,8 @@ internal class MoveMessageOperations(
         Timber.d("Moving message [ID: $messageId] to folder [ID: $destinationFolderId]")
 
         return database.execute(true) { database ->
-            val threadInfo = threadMessageOperations.createOrUpdateParentThreadEntries(database, messageId, destinationFolderId)
+            val threadInfo =
+                threadMessageOperations.createOrUpdateParentThreadEntries(database, messageId, destinationFolderId)
             val destinationMessageId = createMessageEntry(database, messageId, destinationFolderId, threadInfo)
             threadMessageOperations.createThreadEntryIfNecessary(database, destinationMessageId, threadInfo)
 

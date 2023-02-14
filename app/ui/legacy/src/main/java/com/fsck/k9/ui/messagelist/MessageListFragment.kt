@@ -369,13 +369,15 @@ class MessageListFragment :
         recentChangesSnackbar = Snackbar
             .make(coordinatorLayout, R.string.changelog_snackbar_text, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.okay_action) { launchRecentChangesActivity() }
-            .addCallback(object : BaseCallback<Snackbar>() {
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    if (event == DISMISS_EVENT_SWIPE) {
-                        recentChangesViewModel.onRecentChangesHintDismissed()
+            .addCallback(
+                object : BaseCallback<Snackbar>() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        if (event == DISMISS_EVENT_SWIPE) {
+                            recentChangesViewModel.onRecentChangesHintDismissed()
+                        }
                     }
-                }
-            })
+                },
+            )
 
         recentChangesViewModel.shouldShowRecentChangesHint
             .observe(viewLifecycleOwner, shouldShowRecentChangesHintObserver)

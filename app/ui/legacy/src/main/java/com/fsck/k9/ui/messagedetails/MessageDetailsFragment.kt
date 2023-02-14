@@ -88,11 +88,13 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
 
         // Don't allow dragging down the bottom sheet (by dragging the toolbar) unless the list is scrolled all the way
         // to the top.
-        recyclerView.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                dialog.behavior.isDraggable = !recyclerView.canScrollVertically(-1)
-            }
-        })
+        recyclerView.addOnScrollListener(
+            object : OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    dialog.behavior.isDraggable = !recyclerView.canScrollVertically(-1)
+                }
+            },
+        )
 
         viewModel.uiEvents.observe(this) { event ->
             when (event) {

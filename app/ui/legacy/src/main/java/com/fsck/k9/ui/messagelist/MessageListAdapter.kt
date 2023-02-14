@@ -61,9 +61,11 @@ class MessageListAdapter internal constructor(
         alphaFractionAttrId = R.attr.messageListSelectedBackgroundAlphaFraction,
         backgroundColorAttrId = R.attr.messageListSelectedBackgroundAlphaBackground,
     )
-    private val regularItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListRegularItemBackgroundColor)
+    private val regularItemBackgroundColor: Int =
+        theme.resolveColorAttribute(R.attr.messageListRegularItemBackgroundColor)
     private val readItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListReadItemBackgroundColor)
-    private val unreadItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)
+    private val unreadItemBackgroundColor: Int =
+        theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)
 
     var messages: List<MessageListItem> = emptyList()
         @SuppressLint("NotifyDataSetChanged")
@@ -267,7 +269,10 @@ class MessageListAdapter internal constructor(
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
         holder.preview.maxLines = max(appearance.previewLines, 1)
         appearance.fontSizes.setViewTextSize(holder.preview, appearance.fontSizes.messageListPreview)
-        appearance.fontSizes.setViewTextSize(holder.threadCount, appearance.fontSizes.messageListSubject) // thread count is next to subject
+        appearance.fontSizes.setViewTextSize(
+            holder.threadCount,
+            appearance.fontSizes.messageListSubject,
+        ) // thread count is next to subject
 
         holder.star.isVisible = appearance.stars
         holder.star.tag = holder

@@ -608,7 +608,8 @@ class RecipientPresenter(
     }
 
     private fun isContactPickerAvailable(): Boolean {
-        val resolveInfoList = context.packageManager.queryIntentActivities(ContactIntentHelper.getContactPickerIntent(), 0)
+        val resolveInfoList =
+            context.packageManager.queryIntentActivities(ContactIntentHelper.getContactPickerIntent(), 0)
         return resolveInfoList.isNotEmpty()
     }
 

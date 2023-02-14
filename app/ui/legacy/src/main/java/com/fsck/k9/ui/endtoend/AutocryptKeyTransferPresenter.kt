@@ -71,7 +71,10 @@ class AutocryptKeyTransferPresenter internal constructor(
             view.uxDelay()
             view.setLoadingStateGenerating()
 
-            viewModel.autocryptSetupMessageLiveEvent.loadAutocryptSetupMessageAsync(openPgpApiManager.openPgpApi, account)
+            viewModel.autocryptSetupMessageLiveEvent.loadAutocryptSetupMessageAsync(
+                openPgpApiManager.openPgpApi,
+                account,
+            )
         }
     }
 

@@ -180,18 +180,20 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
                     vibrationTimesSeekBar.progress = progress
                 }
 
-                vibrationTimesSeekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-                    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                        vibrationTimes = progress + 1
-                        vibrationTimesValue.text = vibrationTimes.toString()
-                    }
+                vibrationTimesSeekBar.setOnSeekBarChangeListener(
+                    object : OnSeekBarChangeListener {
+                        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                            vibrationTimes = progress + 1
+                            vibrationTimesValue.text = vibrationTimes.toString()
+                        }
 
-                    override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+                        override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
 
-                    override fun onStopTrackingTouch(seekBar: SeekBar) {
-                        playVibration()
-                    }
-                })
+                        override fun onStopTrackingTouch(seekBar: SeekBar) {
+                            playVibration()
+                        }
+                    },
+                )
             }
         }
 

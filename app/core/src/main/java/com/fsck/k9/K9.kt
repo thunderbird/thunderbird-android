@@ -287,11 +287,13 @@ object K9 : EarlyInit {
     }
 
     fun init(context: Context) {
-        K9MailLib.setDebugStatus(object : K9MailLib.DebugStatus {
-            override fun enabled(): Boolean = isDebugLoggingEnabled
+        K9MailLib.setDebugStatus(
+            object : K9MailLib.DebugStatus {
+                override fun enabled(): Boolean = isDebugLoggingEnabled
 
-            override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
-        })
+                override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
+            },
+        )
         com.fsck.k9.logging.Timber.logger = TimberLogger()
 
         checkCachedDatabaseVersion(context)

@@ -38,7 +38,8 @@ class SettingsActivity : K9Activity() {
     }
 
     companion object {
-        @JvmStatic fun launch(activity: Activity) {
+        @JvmStatic
+        fun launch(activity: Activity) {
             val intent = Intent(activity, SettingsActivity::class.java)
             activity.startActivity(intent)
         }

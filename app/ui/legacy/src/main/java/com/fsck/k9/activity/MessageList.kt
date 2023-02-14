@@ -226,7 +226,10 @@ open class MessageList :
         setIntent(intent)
 
         // Start with a fresh fragment back stack
-        supportFragmentManager.popBackStackImmediate(FIRST_FRAGMENT_TRANSACTION, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        supportFragmentManager.popBackStackImmediate(
+            FIRST_FRAGMENT_TRANSACTION,
+            FragmentManager.POP_BACK_STACK_INCLUSIVE,
+        )
 
         removeMessageListFragment()
         removeMessageViewContainerFragment()
@@ -906,17 +909,19 @@ open class MessageList :
         searchView.queryHint = resources.getString(R.string.search_action)
         val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                messageListFragment?.onSearchRequested(query)
-                collapseSearchView()
-                return true
-            }
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    messageListFragment?.onSearchRequested(query)
+                    collapseSearchView()
+                    return true
+                }
 
-            override fun onQueryTextChange(s: String): Boolean {
-                return false
-            }
-        })
+                override fun onQueryTextChange(s: String): Boolean {
+                    return false
+                }
+            },
+        )
 
         searchView.setQuery(initialSearchViewQuery, false)
         searchView.isIconified = initialSearchViewIconified

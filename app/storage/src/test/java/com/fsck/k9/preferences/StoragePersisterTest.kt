@@ -104,17 +104,19 @@ class StoragePersisterTest : K9RobolectricTest() {
         persistOp: ((StoragePersistOperations) -> Unit)? = null,
         before: ((MutableMap<String, String>) -> Unit)? = null,
         onSuccess: ((Map<String, String>) -> Unit)? = null,
-    ): StoragePersistOperationCallback = spy(object : StoragePersistOperationCallback {
-        override fun beforePersistTransaction(workingStorage: MutableMap<String, String>) {
-            before?.invoke(workingStorage)
-        }
+    ): StoragePersistOperationCallback = spy(
+        object : StoragePersistOperationCallback {
+            override fun beforePersistTransaction(workingStorage: MutableMap<String, String>) {
+                before?.invoke(workingStorage)
+            }
 
-        override fun persist(ops: StoragePersistOperations) {
-            persistOp?.invoke(ops)
-        }
+            override fun persist(ops: StoragePersistOperations) {
+                persistOp?.invoke(ops)
+            }
 
-        override fun onPersistTransactionSuccess(workingStorage: Map<String, String>) {
-            onSuccess?.invoke(workingStorage)
-        }
-    })
+            override fun onPersistTransactionSuccess(workingStorage: Map<String, String>) {
+                onSuccess?.invoke(workingStorage)
+            }
+        },
+    )
 }
