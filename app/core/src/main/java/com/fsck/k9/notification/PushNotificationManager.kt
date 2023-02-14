@@ -15,7 +15,7 @@ internal class PushNotificationManager(
     private val context: Context,
     private val resourceProvider: CoreResourceProvider,
     private val notificationChannelManager: NotificationChannelManager,
-    private val notificationManager: NotificationManagerCompat
+    private val notificationManager: NotificationManagerCompat,
 ) {
     val notificationId = NotificationIds.PUSH_NOTIFICATION_ID
 
@@ -75,5 +75,5 @@ enum class PushNotificationState {
     INITIALIZING,
     LISTENING,
     WAIT_BACKGROUND_SYNC,
-    WAIT_NETWORK
+    WAIT_NETWORK,
 }

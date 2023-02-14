@@ -17,7 +17,7 @@ val mailStoreModule = module {
             folderRepository = get(),
             messageStoreManager = get(),
             specialFolderSelectionStrategy = get(),
-            saveMessageDataCreator = get()
+            saveMessageDataCreator = get(),
         )
     }
     factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get()) }
@@ -31,7 +31,7 @@ val mailStoreModule = module {
             encryptionExtractor = get(),
             messagePreviewCreator = get(),
             messageFulltextCreator = get(),
-            attachmentCounter = get()
+            attachmentCounter = get(),
         )
     }
     single { MessageListRepository(messageStoreManager = get()) }

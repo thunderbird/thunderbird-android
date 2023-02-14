@@ -65,7 +65,7 @@ class SimpleHighlightView private constructor(context: Context, style: Int) : Fr
         val styled = getContext().obtainStyledAttributes(style, R.styleable.SimpleHighlightView)
         backgroundColor = styled.getColor(
             R.styleable.SimpleHighlightView_highlightBackgroundColor,
-            Color.argb(128, 80, 80, 80)
+            Color.argb(128, 80, 80, 80),
         )
         styled.recycle()
     }
@@ -128,7 +128,7 @@ class SimpleHighlightView private constructor(context: Context, style: Int) : Fr
                 val point = targetView.getHighlightPoint()
                 setHighlightPosition(point.x, point.y)
             },
-            100
+            100,
         )
     }
 

@@ -44,7 +44,7 @@ class MessageListAdapter internal constructor(
     private val contactsPictureLoader: ContactPictureLoader,
     private val listItemListener: MessageListItemActionListener,
     private val appearance: MessageListAppearance,
-    private val relativeDateTimeFormatter: RelativeDateTimeFormatter
+    private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
 ) : RecyclerView.Adapter<MessageListViewHolder>() {
 
     private val forwardedIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListForwarded)
@@ -54,12 +54,12 @@ class MessageListAdapter internal constructor(
     private val activeItemBackgroundColor: Int = theme.resolveColorAttribute(
         colorAttrId = R.attr.messageListActiveItemBackgroundColor,
         alphaFractionAttrId = R.attr.messageListActiveItemBackgroundAlphaFraction,
-        backgroundColorAttrId = R.attr.messageListActiveItemBackgroundAlphaBackground
+        backgroundColorAttrId = R.attr.messageListActiveItemBackgroundAlphaBackground,
     )
     private val selectedItemBackgroundColor: Int = theme.resolveColorAttribute(
         colorAttrId = R.attr.messageListSelectedBackgroundColor,
         alphaFractionAttrId = R.attr.messageListSelectedBackgroundAlphaFraction,
-        backgroundColorAttrId = R.attr.messageListSelectedBackgroundAlphaBackground
+        backgroundColorAttrId = R.attr.messageListSelectedBackgroundAlphaBackground,
     )
     private val regularItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListRegularItemBackgroundColor)
     private val readItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListReadItemBackgroundColor)
@@ -79,7 +79,7 @@ class MessageListAdapter internal constructor(
             }
 
             val diffResult = DiffUtil.calculateDiff(
-                MessageListDiffCallback(oldMessageList = oldMessageList, newMessageList = value)
+                MessageListDiffCallback(oldMessageList = oldMessageList, newMessageList = value),
             )
             diffResult.dispatchUpdatesTo(this)
         }
@@ -379,7 +379,7 @@ class MessageListAdapter internal constructor(
             ForegroundColorSpan(previewTextColor),
             beforePreviewLength,
             previewText.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
         )
     }
 
@@ -524,7 +524,7 @@ class MessageListAdapter internal constructor(
 
 private class MessageListDiffCallback(
     private val oldMessageList: List<MessageListItem>,
-    private val newMessageList: List<MessageListItem>
+    private val newMessageList: List<MessageListItem>,
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldMessageList.size
 

@@ -15,7 +15,7 @@ class MessageListLiveData(
     private val preferences: Preferences,
     private val messageListRepository: MessageListRepository,
     private val coroutineScope: CoroutineScope,
-    val config: MessageListConfig
+    val config: MessageListConfig,
 ) : LiveData<MessageListInfo>() {
 
     private val messageListChangedListener = MessageListChangedListener {

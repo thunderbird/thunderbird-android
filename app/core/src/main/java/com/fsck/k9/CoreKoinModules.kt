@@ -32,5 +32,5 @@ val coreModules = listOf(
     preferencesModule,
     connectivityModule,
     powerModule,
-    loggingModule
+    loggingModule,
 )

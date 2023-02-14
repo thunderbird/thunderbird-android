@@ -11,7 +11,7 @@ import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 class K9MessageStoreFactory(
     private val localStoreProvider: LocalStoreProvider,
     private val storageManager: StorageManager,
-    private val basicPartInfoExtractor: BasicPartInfoExtractor
+    private val basicPartInfoExtractor: BasicPartInfoExtractor,
 ) : MessageStoreFactory {
     override fun create(account: Account): ListenableMessageStore {
         val localStore = localStoreProvider.getInstance(account)

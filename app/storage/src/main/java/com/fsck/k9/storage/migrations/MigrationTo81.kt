@@ -13,7 +13,7 @@ internal class MigrationTo81(private val db: SQLiteDatabase) {
                 "message_id INTEGER PRIMARY KEY NOT NULL REFERENCES messages(id) ON DELETE CASCADE," +
                 "notification_id INTEGER UNIQUE," +
                 "timestamp INTEGER NOT NULL" +
-                ")"
+                ")",
         )
 
         db.execSQL("DROP INDEX IF EXISTS notifications_timestamp")

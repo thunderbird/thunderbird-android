@@ -5,5 +5,5 @@ data class OAuthConfiguration(
     val scopes: List<String>,
     val authorizationEndpoint: String,
     val tokenEndpoint: String,
-    val redirectUri: String
+    val redirectUri: String,
 )

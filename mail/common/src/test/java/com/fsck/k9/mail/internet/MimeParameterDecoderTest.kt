@@ -29,13 +29,13 @@ class MimeParameterDecoderTest {
         val mimeValue = MimeParameterDecoder.decode(
             "message/external-body; access-type=URL;\r\n" +
                 " URL*0=\"ftp://\";\r\n" +
-                " URL*1=\"cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\""
+                " URL*1=\"cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"",
         )
 
         assertThat(mimeValue.value).isEqualTo("message/external-body")
         assertThat(mimeValue.parameters).containsExactlyEntries(
             "access-type" to "URL",
-            "url" to "ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar"
+            "url" to "ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar",
         )
         assertThat(mimeValue.ignoredParameters).isEmpty()
     }
@@ -44,13 +44,13 @@ class MimeParameterDecoderTest {
     fun rfc2231_example2() {
         val mimeValue = MimeParameterDecoder.decode(
             "message/external-body; access-type=URL;\r\n" +
-                " URL=\"ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\""
+                " URL=\"ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"",
         )
 
         assertThat(mimeValue.value).isEqualTo("message/external-body")
         assertThat(mimeValue.parameters).containsExactlyEntries(
             "access-type" to "URL",
-            "url" to "ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar"
+            "url" to "ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar",
         )
         assertThat(mimeValue.ignoredParameters).isEmpty()
     }
@@ -59,7 +59,7 @@ class MimeParameterDecoderTest {
     fun rfc2231_example3() {
         val mimeValue = MimeParameterDecoder.decode(
             "application/x-stuff;\r\n" +
-                " name*=us-ascii'en-us'This%20is%20%2A%2A%2Afun%2A%2A%2A"
+                " name*=us-ascii'en-us'This%20is%20%2A%2A%2Afun%2A%2A%2A",
         )
 
         assertThat(mimeValue.value).isEqualTo("application/x-stuff")
@@ -73,7 +73,7 @@ class MimeParameterDecoderTest {
             "application/x-stuff;\r\n" +
                 " name*0*=us-ascii'en'This%20is%20even%20more%20;\r\n" +
                 " name*1*=%2A%2A%2Afun%2A%2A%2A%20;\r\n" +
-                " name*2=\"isn't it!\""
+                " name*2=\"isn't it!\"",
         )
 
         assertThat(mimeValue.value).isEqualTo("application/x-stuff")
@@ -87,7 +87,7 @@ class MimeParameterDecoderTest {
             "application/x-stuff;\r\n" +
                 " name*2=\"[three]\";\r\n" +
                 " name*1=\"[two]\";\r\n" +
-                " name*0=\"[one]\""
+                " name*0=\"[one]\"",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("name" to "[one][two][three]")
@@ -100,7 +100,7 @@ class MimeParameterDecoderTest {
             "application/x-stuff;\r\n" +
                 " name*0=\"[one]\";\r\n" +
                 " NAME*1=\"[two]\";\r\n" +
-                " nAmE*2=\"[three]\""
+                " nAmE*2=\"[three]\"",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("name" to "[one][two][three]")
@@ -116,7 +116,7 @@ class MimeParameterDecoderTest {
                 " name*2=\"[three]\";\r\n" +
                 " name*3*=%5Bfour%5D;\r\n" +
                 " name*4=\"[five]\";\r\n" +
-                " name*5=six"
+                " name*5=six",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("name" to "[one][two][three][four][five]six")
@@ -128,7 +128,7 @@ class MimeParameterDecoderTest {
         val mimeValue = MimeParameterDecoder.decode(
             "application/x-stuff;\r\n" +
                 " name=\"filename.ext\";\r\n" +
-                " name*=utf-8''filen%C3%A4me.ext"
+                " name*=utf-8''filen%C3%A4me.ext",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("name" to "filenäme.ext")
@@ -141,7 +141,7 @@ class MimeParameterDecoderTest {
             "application/x-stuff;\r\n" +
                 " name=one;\r\n" +
                 " extra=something;\r\n" +
-                " name=two"
+                " name=two",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("extra" to "something")
@@ -154,7 +154,7 @@ class MimeParameterDecoderTest {
             "application/x-stuff;\r\n" +
                 " name=one;\r\n" +
                 " extra=something;\r\n" +
-                " NAME=two"
+                " NAME=two",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("extra" to "something")
@@ -185,7 +185,7 @@ class MimeParameterDecoderTest {
             "(comment)application(comment)/(comment)x-stuff" +
                 "(comment);(comment)\r\n" +
                 " (comment)name(comment)=(comment)one(comment);(comment)\r\n" +
-                "  (comment) extra (comment) = (comment) something (comment)"
+                "  (comment) extra (comment) = (comment) something (comment)",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("name" to "one", "extra" to "something")
@@ -261,7 +261,7 @@ class MimeParameterDecoderTest {
         val mimeValue = MimeParameterDecoder.decode(
             "application/x-stuff;\r\n" +
                 " name*0=one;\r\n" +
-                " name*01=two"
+                " name*01=two",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("name" to "one", "name*01" to "two")
@@ -272,7 +272,7 @@ class MimeParameterDecoderTest {
     fun section_index_with_huge_number() {
         val mimeValue = MimeParameterDecoder.decode(
             "application/x-stuff;\r\n" +
-                " name*10000000000000000000=filename"
+                " name*10000000000000000000=filename",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("name*10000000000000000000" to "filename")
@@ -355,7 +355,7 @@ class MimeParameterDecoderTest {
     fun rfc2047_encoded() {
         val mimeValue = MimeParameterDecoder.decode(
             "application/x-stuff;\r\n" +
-                " name=\"=?UTF-8?Q?filn=C3=A4me=2Eext?=\""
+                " name=\"=?UTF-8?Q?filn=C3=A4me=2Eext?=\"",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries("name" to "filnäme.ext")
@@ -368,12 +368,12 @@ class MimeParameterDecoderTest {
             "application/x-stuff;\r\n" +
                 " name=\"=?UTF-8?Q?File_name_that_is_so_long_it_likes_to_be_wrapped_i?=\r\n" +
                 " =?UTF-8?Q?nto_multiple_lines=2E_Also_?=\r\n" +
-                " =?UTF-8?Q?non-ASCII_characters=3A_=C3=A4=E2=82=AC=F0=9F=8C=9E?=\""
+                " =?UTF-8?Q?non-ASCII_characters=3A_=C3=A4=E2=82=AC=F0=9F=8C=9E?=\"",
         )
 
         assertThat(mimeValue.parameters).containsExactlyEntries(
             "name" to "File name that is so long it likes to be wrapped " +
-                "into multiple lines. Also non-ASCII characters: ä€\uD83C\uDF1E"
+                "into multiple lines. Also non-ASCII characters: ä€\uD83C\uDF1E",
         )
         assertThat(mimeValue.ignoredParameters).isEmpty()
     }

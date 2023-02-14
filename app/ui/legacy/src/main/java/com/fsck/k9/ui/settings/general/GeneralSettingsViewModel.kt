@@ -87,5 +87,5 @@ sealed interface GeneralSettingsUiState {
 enum class SnackbarState {
     Hidden,
     ExportLogSuccess,
-    ExportLogFailure
+    ExportLogFailure,
 }

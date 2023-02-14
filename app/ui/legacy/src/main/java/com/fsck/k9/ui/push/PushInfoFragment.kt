@@ -41,7 +41,7 @@ class PushInfoFragment : Fragment() {
             val configureNotificationText = getString(R.string.push_info_configure_notification_text)
             notificationTextView.text = getString(
                 R.string.push_info_notification_explanation_text,
-                configureNotificationText
+                configureNotificationText,
             )
             val configureNotificationButton = view.findViewById<Button>(R.id.configureNotificationButton)
             configureNotificationButton.isVisible = true

@@ -32,7 +32,7 @@ data class MessageListActivityConfig(
     val fontSizeMessageViewDate: Int,
     val fontSizeMessageViewContentAsPercent: Int,
     val swipeRightAction: SwipeAction,
-    val swipeLeftAction: SwipeAction
+    val swipeLeftAction: SwipeAction,
 ) {
 
     companion object {
@@ -64,7 +64,7 @@ data class MessageListActivityConfig(
                 fontSizeMessageViewDate = K9.fontSizes.messageViewDate,
                 fontSizeMessageViewContentAsPercent = K9.fontSizes.messageViewContentAsPercent,
                 swipeRightAction = K9.swipeRightAction,
-                swipeLeftAction = K9.swipeLeftAction
+                swipeLeftAction = K9.swipeLeftAction,
             )
         }
     }

@@ -19,7 +19,7 @@ val mainModule = module {
         Preferences(
             storagePersister = get(),
             localStoreProvider = get(),
-            accountPreferenceSerializer = get()
+            accountPreferenceSerializer = get(),
         )
     }
     single { get<Context>().resources }

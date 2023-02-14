@@ -14,7 +14,7 @@ import okio.source
 
 @Suppress("MemberVisibilityCanBePrivate")
 class HtmlCleaner : CliktCommand(
-    help = "A tool that modifies HTML to only keep allowed elements and attributes the same way that K-9 Mail does."
+    help = "A tool that modifies HTML to only keep allowed elements and attributes the same way that K-9 Mail does.",
 ) {
     val input by argument(help = "HTML input file (needs to be UTF-8 encoded)")
         .inputStream()

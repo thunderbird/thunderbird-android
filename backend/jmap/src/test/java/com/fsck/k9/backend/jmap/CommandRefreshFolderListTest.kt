@@ -22,7 +22,7 @@ class CommandRefreshFolderListTest {
     @Test
     fun sessionResourceWithAuthenticationError() {
         val command = createCommandRefreshFolderList(
-            MockResponse().setResponseCode(401)
+            MockResponse().setResponseCode(401),
         )
 
         try {
@@ -35,7 +35,7 @@ class CommandRefreshFolderListTest {
     @Test
     fun invalidSessionResource() {
         val command = createCommandRefreshFolderList(
-            MockResponse().setBody("invalid")
+            MockResponse().setBody("invalid"),
         )
 
         try {
@@ -50,7 +50,7 @@ class CommandRefreshFolderListTest {
     fun fetchMailboxes() {
         val command = createCommandRefreshFolderList(
             responseBodyFromResource("/jmap_responses/session/valid_session.json"),
-            responseBodyFromResource("/jmap_responses/mailbox/mailbox_get.json")
+            responseBodyFromResource("/jmap_responses/mailbox/mailbox_get.json"),
         )
 
         command.refreshFolderList()
@@ -69,7 +69,7 @@ class CommandRefreshFolderListTest {
     fun fetchMailboxUpdates() {
         val command = createCommandRefreshFolderList(
             responseBodyFromResource("/jmap_responses/session/valid_session.json"),
-            responseBodyFromResource("/jmap_responses/mailbox/mailbox_changes.json")
+            responseBodyFromResource("/jmap_responses/mailbox/mailbox_changes.json"),
         )
         createFoldersInBackendStorage(state = "23")
 
@@ -90,7 +90,7 @@ class CommandRefreshFolderListTest {
         val command = createCommandRefreshFolderList(
             responseBodyFromResource("/jmap_responses/session/valid_session.json"),
             responseBodyFromResource("/jmap_responses/mailbox/mailbox_changes_1.json"),
-            responseBodyFromResource("/jmap_responses/mailbox/mailbox_changes_2.json")
+            responseBodyFromResource("/jmap_responses/mailbox/mailbox_changes_2.json"),
         )
         createFoldersInBackendStorage(state = "23")
 
@@ -111,7 +111,7 @@ class CommandRefreshFolderListTest {
         val command = createCommandRefreshFolderList(
             responseBodyFromResource("/jmap_responses/session/valid_session.json"),
             responseBodyFromResource("/jmap_responses/mailbox/mailbox_changes_error_cannot_calculate_changes.json"),
-            responseBodyFromResource("/jmap_responses/mailbox/mailbox_get.json")
+            responseBodyFromResource("/jmap_responses/mailbox/mailbox_get.json"),
         )
         setMailboxState("unknownToServer")
 
@@ -134,7 +134,7 @@ class CommandRefreshFolderListTest {
 
     private fun createCommandRefreshFolderList(
         baseUrl: HttpUrl,
-        accountId: String = "test@example.com"
+        accountId: String = "test@example.com",
     ): CommandRefreshFolderList {
         val jmapClient = JmapClient("test", "test", baseUrl)
         return CommandRefreshFolderList(backendStorage, jmapClient, accountId)

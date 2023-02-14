@@ -37,7 +37,7 @@ object MessageHeaderParser {
     }
 
     private class MessageHeaderParserContentHandler(
-        private val collector: MessageHeaderCollector
+        private val collector: MessageHeaderCollector,
     ) : AbstractContentHandler() {
         override fun field(rawField: Field) {
             val name = rawField.name

@@ -64,7 +64,7 @@ class SmtpResponseParserTest {
                 "SIZE",
                 "DELIVERBY",
                 "AUTH",
-                "HELP"
+                "HELP",
             )
             assertThat(hello.keywords["PIPELINING"]).isEmpty()
             assertThat(hello.keywords["SIZE"]).containsExactly("104857600")
@@ -115,8 +115,8 @@ class SmtpResponseParserTest {
                 message = """
                     SMTP response data on parser error:
                     250
-                """.trimIndent()
-            )
+                """.trimIndent(),
+            ),
         )
     }
 
@@ -139,8 +139,8 @@ class SmtpResponseParserTest {
                     SMTP response data on parser error:
                     250-smtp.domain.example
                     220
-                """.trimIndent()
-            )
+                """.trimIndent(),
+            ),
         )
     }
 
@@ -164,17 +164,17 @@ class SmtpResponseParserTest {
                 "SIZE",
                 "8BITMIME",
                 "PIPELINING",
-                "HELP"
+                "HELP",
             )
         }
 
         assertThat(logger.logEntries.map { it.message }).containsExactly(
             "Ignoring EHLO keyword line: PIPE_CONNECT",
-            "Ignoring EHLO keyword line: AUTH=PLAIN"
+            "Ignoring EHLO keyword line: AUTH=PLAIN",
         )
         assertThat(logger.logEntries.map { it.throwable?.message }).containsExactly(
             "EHLO keyword contains invalid character",
-            "EHLO keyword contains invalid character"
+            "EHLO keyword contains invalid character",
         )
     }
 
@@ -238,8 +238,8 @@ class SmtpResponseParserTest {
                 message = """
                     SMTP response data on parser error:
                     I
-                """.trimIndent()
-            )
+                """.trimIndent(),
+            ),
         )
     }
 
@@ -298,7 +298,7 @@ class SmtpResponseParserTest {
 
         assertThat(response.replyCode).isEqualTo(250)
         assertThat(response.enhancedStatusCode).isEqualTo(
-            EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0)
+            EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0),
         )
         assertThat(response.texts).containsExactly("Originator <sender@domain.example> ok")
         assertInputExhausted(input)
@@ -378,7 +378,7 @@ class SmtpResponseParserTest {
 
         assertThat(response.replyCode).isEqualTo(250)
         assertThat(response.enhancedStatusCode).isEqualTo(
-            EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0)
+            EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0),
         )
         assertThat(response.texts).containsExactly("Sender <sender@domain.example>", "OK")
         assertInputExhausted(input)
@@ -425,8 +425,8 @@ class SmtpResponseParserTest {
                     SMTP response data on parser error:
                     200-Line one
                     500
-                """.trimIndent()
-            )
+                """.trimIndent(),
+            ),
         )
     }
 
@@ -467,7 +467,7 @@ class SmtpResponseParserTest {
         assertThat(response.enhancedStatusCode).isNull()
         assertThat(response.texts).containsExactly("Something")
         assertThat(logger.logEntries).containsExactly(
-            LogEntry(throwable = null, message = "2nd digit of reply code outside of specified range (0..5): 8")
+            LogEntry(throwable = null, message = "2nd digit of reply code outside of specified range (0..5): 8"),
         )
     }
 
@@ -486,8 +486,8 @@ class SmtpResponseParserTest {
                 message = """
                     SMTP response data on parser error:
                     20x
-                """.trimIndent()
-            )
+                """.trimIndent(),
+            ),
         )
     }
 
@@ -506,8 +506,8 @@ class SmtpResponseParserTest {
                 message = """
                     SMTP response data on parser error:
                     200
-                """.trimIndent()
-            )
+                """.trimIndent(),
+            ),
         )
     }
 
@@ -536,8 +536,8 @@ class SmtpResponseParserTest {
                 message = """
                     SMTP response data on parser error:
                     200
-                """.trimIndent()
-            )
+                """.trimIndent(),
+            ),
         )
     }
 
@@ -553,7 +553,7 @@ class SmtpResponseParserTest {
         assertThat(response.texts).isEmpty()
         assertInputExhausted(input)
         assertThat(logger.logEntries).containsExactly(
-            LogEntry(throwable = null, message = "'textstring' expected, but CR found instead")
+            LogEntry(throwable = null, message = "'textstring' expected, but CR found instead"),
         )
     }
 
@@ -569,7 +569,7 @@ class SmtpResponseParserTest {
         assertThat(response.texts).containsExactly("über")
         assertInputExhausted(input)
         assertThat(logger.logEntries).containsExactly(
-            LogEntry(throwable = null, message = "Text contains characters not allowed in 'textstring'")
+            LogEntry(throwable = null, message = "Text contains characters not allowed in 'textstring'"),
         )
     }
 
@@ -656,7 +656,7 @@ class SmtpResponseParserTest {
 
         assertFailsWithMessage(
             "Multi-line response with enhanced status codes not matching: " +
-                "EnhancedStatusCode(statusClass=PERMANENT_FAILURE, subject=2, detail=1) != null"
+                "EnhancedStatusCode(statusClass=PERMANENT_FAILURE, subject=2, detail=1) != null",
         ) {
             parser.readResponse(enhancedStatusCodes = true)
         }

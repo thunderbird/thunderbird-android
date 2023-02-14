@@ -98,7 +98,7 @@ class BackendIdleRefreshManagerTest {
         alarmManager.advanceTime(timeout1)
 
         assertThat(alarmManager.alarmTimes).isEqualTo(
-            listOf(START_TIME + timeout1, START_TIME + timeout2, START_TIME + timeout1 + timeout1)
+            listOf(START_TIME + timeout1, START_TIME + timeout2, START_TIME + timeout1 + timeout1),
         )
         assertThat(callback2.wasCalled).isTrue()
         assertThat(callback3.wasCalled).isTrue()

@@ -31,6 +31,6 @@ interface BackendFolder {
     enum class MoreMessages {
         UNKNOWN,
         FALSE,
-        TRUE
+        TRUE,
     }
 }

@@ -22,7 +22,7 @@ internal class AccountPushController(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val account: Account
+    private val account: Account,
 ) {
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
 

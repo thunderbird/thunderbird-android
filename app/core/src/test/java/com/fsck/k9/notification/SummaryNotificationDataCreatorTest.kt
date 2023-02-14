@@ -25,7 +25,7 @@ class SummaryNotificationDataCreatorTest {
             modules(
                 module {
                     single<Clock> { TestClock() }
-                }
+                },
             )
         }
     }
@@ -42,7 +42,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = false
+            silent = false,
         )
 
         assertThat(result).isInstanceOf(SummarySingleNotificationData::class.java)
@@ -55,7 +55,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = false
+            silent = false,
         )
 
         val summaryNotificationData = result as SummarySingleNotificationData
@@ -69,7 +69,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = false
+            silent = false,
         )
 
         val summaryNotificationData = result as SummarySingleNotificationData
@@ -83,7 +83,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = false
+            silent = false,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
@@ -97,7 +97,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = false
+            silent = false,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
@@ -110,12 +110,12 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = true
+            silent = true,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
         assertThat(summaryNotificationData.notificationId).isEqualTo(
-            NotificationIds.getNewMailSummaryNotificationId(account)
+            NotificationIds.getNewMailSummaryNotificationId(account),
         )
         assertThat(summaryNotificationData.isSilent).isTrue()
         assertThat(summaryNotificationData.timestamp).isEqualTo(TIMESTAMP)
@@ -127,7 +127,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = true
+            silent = true,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
@@ -143,7 +143,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = true
+            silent = true,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
@@ -159,7 +159,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = true
+            silent = true,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
@@ -175,7 +175,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = true
+            silent = true,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
@@ -190,7 +190,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = true
+            silent = true,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
@@ -205,7 +205,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = true
+            silent = true,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
@@ -219,7 +219,7 @@ class SummaryNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
-            silent = true
+            silent = true,
         )
 
         val summaryNotificationData = result as SummaryInboxNotificationData
@@ -253,11 +253,11 @@ class SummaryNotificationDataCreatorTest {
         sender = "irrelevant",
         subject = "irrelevant",
         preview = "irrelevant",
-        summary = "irrelevant"
+        summary = "irrelevant",
     )
 
     private fun createNotificationData(
-        contentList: List<NotificationContent> = listOf(createNotificationContent())
+        contentList: List<NotificationContent> = listOf(createNotificationContent()),
     ): NotificationData {
         val activeNotifications = contentList.mapIndexed { index, content ->
             NotificationHolder(notificationId = index, TIMESTAMP, content)

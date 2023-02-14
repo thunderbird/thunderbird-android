@@ -9,7 +9,7 @@ import com.fsck.k9.Preferences
 class AutoExpandFolderBackendFoldersRefreshListener(
     private val preferences: Preferences,
     private val account: Account,
-    private val folderRepository: FolderRepository
+    private val folderRepository: FolderRepository,
 ) : BackendFoldersRefreshListener {
     private var isFirstSync = false
 

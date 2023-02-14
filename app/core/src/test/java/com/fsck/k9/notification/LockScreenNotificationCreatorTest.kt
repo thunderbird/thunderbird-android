@@ -18,7 +18,7 @@ class LockScreenNotificationCreatorTest : RobolectricTest() {
     private val publicBuilder = createFakeNotificationBuilder()
     private var notificationCreator = LockScreenNotificationCreator(
         notificationHelper = createFakeNotificationHelper(publicBuilder),
-        resourceProvider = resourceProvider
+        resourceProvider = resourceProvider,
     )
 
     @Test
@@ -52,7 +52,7 @@ class LockScreenNotificationCreatorTest : RobolectricTest() {
     fun `list of sender names`() {
         val baseNotificationData = createBaseNotificationData(
             lockScreenNotificationData = LockScreenNotificationData.SenderNames("Alice, Bob"),
-            newMessagesCount = 2
+            newMessagesCount = 2,
         )
 
         notificationCreator.configureLockScreenNotification(builder, baseNotificationData)
@@ -69,7 +69,7 @@ class LockScreenNotificationCreatorTest : RobolectricTest() {
         val baseNotificationData = createBaseNotificationData(
             lockScreenNotificationData = LockScreenNotificationData.MessageCount,
             accountName = "Account name",
-            newMessagesCount = 23
+            newMessagesCount = 23,
         )
 
         notificationCreator.configureLockScreenNotification(builder, baseNotificationData)
@@ -97,7 +97,7 @@ class LockScreenNotificationCreatorTest : RobolectricTest() {
     private fun createBaseNotificationData(
         lockScreenNotificationData: LockScreenNotificationData,
         accountName: String = "irrelevant",
-        newMessagesCount: Int = 0
+        newMessagesCount: Int = 0,
     ): BaseNotificationData {
         return BaseNotificationData(
             account = account,
@@ -109,8 +109,8 @@ class LockScreenNotificationCreatorTest : RobolectricTest() {
             appearance = NotificationAppearance(
                 ringtone = null,
                 vibrationPattern = longArrayOf(),
-                ledColor = 0
-            )
+                ledColor = 0,
+            ),
         )
     }
 }

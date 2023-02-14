@@ -9,7 +9,7 @@ import timber.log.Timber
 
 internal class AttachmentFileManager(
     private val storageManager: StorageManager,
-    private val accountUuid: String
+    private val accountUuid: String,
 ) {
     fun deleteFile(messagePartId: Long) {
         val file = getAttachmentFile(messagePartId)

@@ -13,7 +13,7 @@ internal class RealImapFolderIdler(
     private val imapStore: ImapStore,
     private val connectionProvider: ImapConnectionProvider,
     private val folderServerId: String,
-    private val idleRefreshTimeoutProvider: IdleRefreshTimeoutProvider
+    private val idleRefreshTimeoutProvider: IdleRefreshTimeoutProvider,
 ) : ImapFolderIdler {
     private val logTag = "ImapFolderIdler[$folderServerId]"
 
@@ -115,7 +115,7 @@ internal class RealImapFolderIdler(
             do {
                 idleRefreshTimer = idleRefreshManager.startTimer(
                     timeout = idleRefreshTimeoutProvider.idleRefreshTimeoutMs,
-                    callback = ::idleRefresh
+                    callback = ::idleRefresh,
                 )
 
                 wakeLock.release()

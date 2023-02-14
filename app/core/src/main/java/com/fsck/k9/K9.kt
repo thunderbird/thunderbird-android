@@ -345,7 +345,7 @@ object K9 : EarlyInit {
 
         lockScreenNotificationVisibility = storage.getEnum(
             "lockScreenNotificationVisibility",
-            LockScreenNotificationVisibility.MESSAGE_COUNT
+            LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
         splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
@@ -507,7 +507,7 @@ object K9 : EarlyInit {
     enum class NotificationQuickDelete {
         ALWAYS,
         FOR_SINGLE_MSG,
-        NEVER
+        NEVER,
     }
 
     enum class LockScreenNotificationVisibility {
@@ -515,7 +515,7 @@ object K9 : EarlyInit {
         SENDERS,
         MESSAGE_COUNT,
         APP_NAME,
-        NOTHING
+        NOTHING,
     }
 
     /**
@@ -524,6 +524,6 @@ object K9 : EarlyInit {
     enum class SplitViewMode {
         ALWAYS,
         NEVER,
-        WHEN_IN_LANDSCAPE
+        WHEN_IN_LANDSCAPE,
     }
 }

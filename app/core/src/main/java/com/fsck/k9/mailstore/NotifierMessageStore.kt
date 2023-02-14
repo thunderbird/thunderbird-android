@@ -7,7 +7,7 @@ import com.fsck.k9.mail.Flag
  */
 class NotifierMessageStore(
     private val messageStore: MessageStore,
-    private val localStore: LocalStore
+    private val localStore: LocalStore,
 ) : MessageStore by messageStore {
 
     override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {

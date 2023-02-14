@@ -16,7 +16,7 @@ import com.squareup.moshi.Types
  */
 class StorageMigrationTo19(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper
+    private val migrationsHelper: StorageMigrationsHelper,
 ) {
     fun markGmailAccounts() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")
@@ -36,7 +36,7 @@ class StorageMigrationTo19(
 
         val moshi = Moshi.Builder().build()
         val adapter = moshi.adapter<Map<String, Any?>>(
-            Types.newParameterizedType(Map::class.java, String::class.java, Any::class.java)
+            Types.newParameterizedType(Map::class.java, String::class.java, Any::class.java),
         )
 
         val incomingServerSettings = adapter.fromJson(incomingServerSettingsJson) ?: return

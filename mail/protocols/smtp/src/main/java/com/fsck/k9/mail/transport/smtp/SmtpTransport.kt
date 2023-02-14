@@ -48,7 +48,7 @@ private const val SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535
 class SmtpTransport(
     serverSettings: ServerSettings,
     private val trustedSocketFactory: TrustedSocketFactory,
-    private val oauthTokenProvider: OAuth2TokenProvider?
+    private val oauthTokenProvider: OAuth2TokenProvider?,
 ) {
     private val host = serverSettings.host
     private val port = serverSettings.port
@@ -114,7 +114,7 @@ class SmtpTransport(
                         socket,
                         host,
                         port,
-                        clientCertificateAlias
+                        clientCertificateAlias,
                     )
                     this.socket = tlsSocket
                     inputStream = PeekableInputStream(BufferedInputStream(tlsSocket.getInputStream(), 1024))
@@ -191,7 +191,7 @@ class SmtpTransport(
                             // So, we treat it is an error to not offer AUTH EXTERNAL when using client certificates.
                             // That way, the user can be notified of a problem during account setup.
                             throw CertificateValidationException(
-                                CertificateValidationException.Reason.MissingCapability
+                                CertificateValidationException.Reason.MissingCapability,
                             )
                         }
                     }
@@ -216,7 +216,7 @@ class SmtpTransport(
                                 // setting.
                                 throw MessagingException(
                                     "Update your outgoing server authentication setting. " +
-                                        "AUTOMATIC authentication is unavailable."
+                                        "AUTOMATIC authentication is unavailable.",
                                 )
                             }
                         }
@@ -415,8 +415,8 @@ class SmtpTransport(
             val msgOut = EOLConvertingOutputStream(
                 LineWrapOutputStream(
                     SmtpDataStuffing(outputStream),
-                    1000
-                )
+                    1000,
+                ),
             )
 
             message.writeTo(msgOut)
@@ -518,7 +518,7 @@ class SmtpTransport(
         return NegativeSmtpReplyException(
             replyCode = response.replyCode,
             replyText = response.joinedText,
-            enhancedStatusCode = response.enhancedStatusCode
+            enhancedStatusCode = response.enhancedStatusCode,
         )
     }
 
@@ -618,7 +618,7 @@ class SmtpTransport(
     private fun handleTemporaryFailure(
         method: OAuthMethod,
         username: String,
-        negativeResponseFromOldToken: NegativeSmtpReplyException
+        negativeResponseFromOldToken: NegativeSmtpReplyException,
     ) {
         // Token was invalid. We could avoid this double check if we had a reasonable chance of knowing if a token was
         // invalid before use (e.g. due to expiry). But we don't. This is the intended behaviour per AccountManager.
@@ -683,7 +683,8 @@ private enum class OAuthMethod {
         override fun buildInitialClientResponse(username: String, token: String): String {
             return buildOAuthBearerInitialClientResponse(username, token)
         }
-    };
+    },
+    ;
 
     abstract val command: String
     abstract fun buildInitialClientResponse(username: String, token: String): String

@@ -67,7 +67,7 @@ class RealImapStoreTest {
                 createImapResponse("""* LIST (\HasNoChildren \Junk) "/" "[Gmail]/Spam""""),
                 createImapResponse("""* LIST (\HasNoChildren \Flagged) "/" "[Gmail]/Starred""""),
                 createImapResponse("""* LIST (\HasNoChildren \Trash) "/" "[Gmail]/Trash""""),
-                createImapResponse("5 OK Success")
+                createImapResponse("5 OK Success"),
             )
         }
         imapStore.enqueueImapConnection(imapConnection)
@@ -83,7 +83,7 @@ class RealImapStoreTest {
             "[Gmail]/Sent Mail" to FolderType.SENT,
             "[Gmail]/Spam" to FolderType.SPAM,
             "[Gmail]/Starred" to FolderType.REGULAR,
-            "[Gmail]/Trash" to FolderType.TRASH
+            "[Gmail]/Trash" to FolderType.TRASH,
         )
     }
 
@@ -123,7 +123,7 @@ class RealImapStoreTest {
                 createImapResponse("""* LIST (\HasNoChildren) "." "INBOX""""),
                 createImapResponse("""* LIST (\Noselect \HasChildren) "." "Folder""""),
                 createImapResponse("""* LIST (\HasNoChildren) "." "Folder.SubFolder""""),
-                createImapResponse("6 OK Success")
+                createImapResponse("6 OK Success"),
             )
         }
         imapStore.enqueueImapConnection(imapConnection)
@@ -143,13 +143,13 @@ class RealImapStoreTest {
                 createImapResponse("""* LSUB (\Noselect \HasChildren) "." "Folder""""),
                 createImapResponse("""* LSUB (\HasNoChildren) "." "Folder.SubFolder""""),
                 createImapResponse("""* LSUB (\HasNoChildren) "." "SubscribedFolderThatHasBeenDeleted""""),
-                createImapResponse("5 OK Success")
+                createImapResponse("5 OK Success"),
             )
             on { executeSimpleCommand("""LIST "" "*"""") } doReturn listOf(
                 createImapResponse("""* LIST (\HasNoChildren) "." "INBOX""""),
                 createImapResponse("""* LIST (\Noselect \HasChildren) "." "Folder""""),
                 createImapResponse("""* LIST (\HasNoChildren) "." "Folder.SubFolder""""),
-                createImapResponse("6 OK Success")
+                createImapResponse("6 OK Success"),
             )
         }
         imapStore.enqueueImapConnection(imapConnection)
@@ -167,7 +167,7 @@ class RealImapStoreTest {
                 createImapResponse("""* LIST () "." "INBOX""""),
                 createImapResponse("""* LIST () "." "INBOX.FolderOne""""),
                 createImapResponse("""* LIST () "." "INBOX.FolderTwo""""),
-                createImapResponse("5 OK Success")
+                createImapResponse("5 OK Success"),
             )
         }
         imapStore.enqueueImapConnection(imapConnection)
@@ -188,7 +188,7 @@ class RealImapStoreTest {
                 createImapResponse("""* LIST () "." "INBOX""""),
                 createImapResponse("""* LIST () "." "INBOX.FolderOne""""),
                 createImapResponse("""* LIST () "." "FolderTwo""""),
-                createImapResponse("5 OK Success")
+                createImapResponse("5 OK Success"),
             )
         }
         imapStore.enqueueImapConnection(imapConnection)
@@ -212,7 +212,7 @@ class RealImapStoreTest {
                 createImapResponse("""* LIST (\HasNoChildren) "." "Junk""""),
                 createImapResponse("""* LIST (\Junk) "." "Junk""""),
                 createImapResponse("""* LIST (\HasNoChildren) "." "Junk""""),
-                createImapResponse("5 OK Success")
+                createImapResponse("5 OK Success"),
             )
         }
         imapStore.enqueueImapConnection(imapConnection)
@@ -221,7 +221,7 @@ class RealImapStoreTest {
 
         assertThat(folders.map { it.serverId to it.type }).containsExactly(
             "INBOX" to FolderType.INBOX,
-            "Junk" to FolderType.SPAM
+            "Junk" to FolderType.SPAM,
         )
     }
 
@@ -383,19 +383,19 @@ class RealImapStoreTest {
             username = "user",
             password = "password",
             clientCertificateAlias = null,
-            extra = createExtra(autoDetectNamespace = true, pathPrefix = null)
+            extra = createExtra(autoDetectNamespace = true, pathPrefix = null),
         )
     }
 
     private fun createTestImapStore(
         isSubscribedFoldersOnly: Boolean = false,
-        useCompression: Boolean = false
+        useCompression: Boolean = false,
     ): TestImapStore {
         return TestImapStore(
             serverSettings = createServerSettings(),
             config = createImapStoreConfig(isSubscribedFoldersOnly, useCompression),
             trustedSocketFactory = mock(),
-            oauth2TokenProvider = null
+            oauth2TokenProvider = null,
         )
     }
 
@@ -411,12 +411,12 @@ class RealImapStoreTest {
         serverSettings: ServerSettings,
         config: ImapStoreConfig,
         trustedSocketFactory: TrustedSocketFactory,
-        oauth2TokenProvider: OAuth2TokenProvider?
+        oauth2TokenProvider: OAuth2TokenProvider?,
     ) : RealImapStore(
         serverSettings,
         config,
         trustedSocketFactory,
-        oauth2TokenProvider
+        oauth2TokenProvider,
     ) {
         private val imapConnections: Deque<ImapConnection> = ArrayDeque()
         private var testCombinedPrefix: String? = null

@@ -9,7 +9,7 @@ import com.fsck.k9.mail.store.imap.ImapStore
 
 internal class CommandRefreshFolderList(
     private val backendStorage: BackendStorage,
-    private val imapStore: ImapStore
+    private val imapStore: ImapStore,
 ) {
     fun refreshFolderList() {
         // TODO: Start using the proper server ID.
@@ -43,5 +43,5 @@ private fun List<FolderListItem>.toLegacyFolderList(): List<LegacyFolderListItem
 private data class LegacyFolderListItem(
     val serverId: String,
     val name: String,
-    val type: FolderType
+    val type: FolderType,
 )

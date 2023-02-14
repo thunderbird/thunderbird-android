@@ -115,7 +115,7 @@ class TimberLogger : Logger {
             Timber.Tree::class.java.name,
             Timber.DebugTree::class.java.name,
             TimberLogger::class.java.name,
-            com.fsck.k9.logging.Timber::class.java.name
+            com.fsck.k9.logging.Timber::class.java.name,
         )
     }
 }

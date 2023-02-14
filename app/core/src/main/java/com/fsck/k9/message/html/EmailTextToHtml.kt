@@ -39,7 +39,7 @@ class EmailTextToHtml private constructor(private val text: String) {
                 html.append(
                     "<blockquote " +
                         "class=\"gmail_quote\" " +
-                        "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid "
+                        "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid ",
                 )
                 html.append(quoteColor(depth))
                 html.append("; padding-left: 1ex;\">")

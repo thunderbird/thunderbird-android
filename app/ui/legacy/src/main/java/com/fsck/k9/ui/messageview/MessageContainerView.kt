@@ -114,7 +114,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     private fun createLinkMenu(
         menu: ContextMenu,
         webView: WebView,
-        linkUrl: String?
+        linkUrl: String?,
     ) {
         if (linkUrl == null) return
 
@@ -148,28 +148,28 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             Menu.NONE,
             MENU_ITEM_LINK_VIEW,
             0,
-            context.getString(R.string.webview_contextmenu_link_view_action)
+            context.getString(R.string.webview_contextmenu_link_view_action),
         ).setOnMenuItemClickListener(listener)
 
         menu.add(
             Menu.NONE,
             MENU_ITEM_LINK_SHARE,
             1,
-            context.getString(R.string.webview_contextmenu_link_share_action)
+            context.getString(R.string.webview_contextmenu_link_share_action),
         ).setOnMenuItemClickListener(listener)
 
         menu.add(
             Menu.NONE,
             MENU_ITEM_LINK_COPY,
             2,
-            context.getString(R.string.webview_contextmenu_link_copy_action)
+            context.getString(R.string.webview_contextmenu_link_copy_action),
         ).setOnMenuItemClickListener(listener)
 
         menu.add(
             Menu.NONE,
             MENU_ITEM_LINK_TEXT_COPY,
             3,
-            context.getString(R.string.webview_contextmenu_link_text_copy_action)
+            context.getString(R.string.webview_contextmenu_link_text_copy_action),
         ).setOnMenuItemClickListener(listener)
     }
 
@@ -217,7 +217,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             Menu.NONE,
             MENU_ITEM_IMAGE_VIEW,
             0,
-            context.getString(R.string.webview_contextmenu_image_view_action)
+            context.getString(R.string.webview_contextmenu_image_view_action),
         ).setOnMenuItemClickListener(listener)
 
         if (inlineImage || imageUri.scheme?.lowercase() in supportedDownloadUriSchemes) {
@@ -238,7 +238,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                 Menu.NONE,
                 MENU_ITEM_IMAGE_COPY,
                 2,
-                context.getString(R.string.webview_contextmenu_image_copy_action)
+                context.getString(R.string.webview_contextmenu_image_copy_action),
             ).setOnMenuItemClickListener(listener)
         }
     }
@@ -271,21 +271,21 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             Menu.NONE,
             MENU_ITEM_PHONE_CALL,
             0,
-            context.getString(R.string.webview_contextmenu_phone_call_action)
+            context.getString(R.string.webview_contextmenu_phone_call_action),
         ).setOnMenuItemClickListener(listener)
 
         menu.add(
             Menu.NONE,
             MENU_ITEM_PHONE_SAVE,
             1,
-            context.getString(R.string.webview_contextmenu_phone_save_action)
+            context.getString(R.string.webview_contextmenu_phone_save_action),
         ).setOnMenuItemClickListener(listener)
 
         menu.add(
             Menu.NONE,
             MENU_ITEM_PHONE_COPY,
             2,
-            context.getString(R.string.webview_contextmenu_phone_copy_action)
+            context.getString(R.string.webview_contextmenu_phone_copy_action),
         ).setOnMenuItemClickListener(listener)
     }
 
@@ -317,21 +317,21 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             Menu.NONE,
             MENU_ITEM_EMAIL_SEND,
             0,
-            context.getString(R.string.webview_contextmenu_email_send_action)
+            context.getString(R.string.webview_contextmenu_email_send_action),
         ).setOnMenuItemClickListener(listener)
 
         menu.add(
             Menu.NONE,
             MENU_ITEM_EMAIL_SAVE,
             1,
-            context.getString(R.string.webview_contextmenu_email_save_action)
+            context.getString(R.string.webview_contextmenu_email_save_action),
         ).setOnMenuItemClickListener(listener)
 
         menu.add(
             Menu.NONE,
             MENU_ITEM_EMAIL_COPY,
             2,
-            context.getString(R.string.webview_contextmenu_email_copy_action)
+            context.getString(R.string.webview_contextmenu_email_copy_action),
         ).setOnMenuItemClickListener(listener)
     }
 
@@ -383,7 +383,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         onRenderingFinishedListener: OnRenderingFinishedListener,
         loadPictures: Boolean,
         hideUnsignedTextDivider: Boolean,
-        attachmentCallback: AttachmentViewCallback?
+        attachmentCallback: AttachmentViewCallback?,
     ) {
         this.attachmentCallback = attachmentCallback
 
@@ -407,7 +407,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         displayHtmlContentWithInlineAttachments(
             htmlText = textToDisplay,
             attachmentResolver = messageViewInfo.attachmentResolver,
-            onPageFinishedListener = onRenderingFinishedListener::onLoadFinished
+            onPageFinishedListener = onRenderingFinishedListener::onLoadFinished,
         )
 
         if (!messageViewInfo.extraText.isNullOrEmpty()) {
@@ -420,7 +420,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     private fun displayHtmlContentWithInlineAttachments(
         htmlText: String,
         attachmentResolver: AttachmentResolver,
-        onPageFinishedListener: OnPageFinishedListener
+        onPageFinishedListener: OnPageFinishedListener,
     ) {
         currentHtmlText = htmlText
         currentAttachmentResolver = attachmentResolver
@@ -433,7 +433,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         messageContentView.displayHtmlContentWithInlineAttachments(
             htmlText = htmlText,
             attachmentResolver = currentAttachmentResolver,
-            onPageFinishedListener = null
+            onPageFinishedListener = null,
         )
     }
 
@@ -441,7 +441,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         messageContentView.displayHtmlContentWithInlineAttachments(
             htmlText = "",
             attachmentResolver = null,
-            onPageFinishedListener = null
+            onPageFinishedListener = null,
         )
 
         unsignedTextContainer.isVisible = false
@@ -459,7 +459,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                 val attachmentView = layoutInflater.inflate(
                     R.layout.message_view_attachment,
                     attachmentsContainer,
-                    false
+                    false,
                 ) as AttachmentView
 
                 attachmentView.setCallback(attachmentCallback)
@@ -480,7 +480,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                 val lockedAttachmentView = layoutInflater.inflate(
                     R.layout.message_view_attachment_locked,
                     attachmentsContainer,
-                    false
+                    false,
                 ) as LockedAttachmentView
 
                 lockedAttachmentView.setCallback(attachmentCallback)

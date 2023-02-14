@@ -21,7 +21,7 @@ interface ImapStore {
             serverSettings: ServerSettings,
             config: ImapStoreConfig,
             trustedSocketFactory: TrustedSocketFactory,
-            oauthTokenProvider: OAuth2TokenProvider?
+            oauthTokenProvider: OAuth2TokenProvider?,
         ): ImapStore {
             return RealImapStore(serverSettings, config, trustedSocketFactory, oauthTokenProvider)
         }

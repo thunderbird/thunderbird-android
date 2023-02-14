@@ -12,7 +12,7 @@ class AccountSettingsDataStoreFactory(
     private val jobManager: K9JobManager,
     private val executorService: ExecutorService,
     private val notificationChannelManager: NotificationChannelManager,
-    private val notificationController: NotificationController
+    private val notificationController: NotificationController,
 ) {
     fun create(account: Account): AccountSettingsDataStore {
         return AccountSettingsDataStore(
@@ -21,7 +21,7 @@ class AccountSettingsDataStoreFactory(
             account,
             jobManager,
             notificationChannelManager,
-            notificationController
+            notificationController,
         )
     }
 }

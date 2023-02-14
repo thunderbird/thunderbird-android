@@ -30,7 +30,7 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
     private val notificationHelper = createFakeNotificationHelper(
         notificationManager,
         builder,
-        lockScreenNotificationBuilder
+        lockScreenNotificationBuilder,
     )
     private val account = createFakeAccount()
     private val controller = TestAuthenticationErrorNotificationController()
@@ -95,7 +95,7 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
     private fun createFakeNotificationHelper(
         notificationManager: NotificationManagerCompat,
         notificationBuilder: NotificationCompat.Builder,
-        lockScreenNotificationBuilder: NotificationCompat.Builder
+        lockScreenNotificationBuilder: NotificationCompat.Builder,
     ): NotificationHelper {
         return mock {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()

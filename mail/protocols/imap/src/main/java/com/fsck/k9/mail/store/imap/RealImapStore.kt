@@ -20,7 +20,7 @@ internal open class RealImapStore(
     private val serverSettings: ServerSettings,
     private val config: ImapStoreConfig,
     private val trustedSocketFactory: TrustedSocketFactory,
-    private val oauthTokenProvider: OAuth2TokenProvider?
+    private val oauthTokenProvider: OAuth2TokenProvider?,
 ) : ImapStore, ImapConnectionManager, InternalImapStore {
     private val folderNameCodec: FolderNameCodec = FolderNameCodec()
 
@@ -49,7 +49,7 @@ internal open class RealImapStore(
             internalImapStore = this,
             connectionManager = this,
             serverId = name,
-            folderNameCodec = folderNameCodec
+            folderNameCodec = folderNameCodec,
         )
     }
 
@@ -100,7 +100,7 @@ internal open class RealImapStore(
 
     private fun limitToSubscribedFolders(
         folders: List<FolderListItem>,
-        subscribedFolders: List<FolderListItem>
+        subscribedFolders: List<FolderListItem>,
     ): List<FolderListItem> {
         val subscribedFolderServerIds = subscribedFolders.map { it.serverId }.toSet()
         return folders.filter { it.serverId in subscribedFolderServerIds }
@@ -276,7 +276,7 @@ internal open class RealImapStore(
             StoreImapSettings(),
             trustedSocketFactory,
             oauthTokenProvider,
-            connectionGeneration
+            connectionGeneration,
         )
     }
 

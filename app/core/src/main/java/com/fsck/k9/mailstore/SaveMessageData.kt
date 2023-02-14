@@ -13,5 +13,5 @@ data class SaveMessageData(
     val attachmentCount: Int,
     val previewResult: PreviewResult,
     val textForSearchIndex: String? = null,
-    val encryptionType: String?
+    val encryptionType: String?,
 )

@@ -150,7 +150,7 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
 
         val displayName = recipientFormatter.getDisplayName(
             Address("mallory@domain.example", "potus@whitehouse.gov"),
-            account
+            account,
         )
 
         assertThat(displayName).isEqualTo("mallory@domain.example")
@@ -162,7 +162,7 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
 
         val displayName = recipientFormatter.getDisplayName(
             Address("gitlab@gitlab.example", "username (@username)"),
-            account
+            account,
         )
 
         assertThat(displayName).isEqualTo("username (@username)")
@@ -183,7 +183,7 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
 
         val displayName = recipientFormatter.getDisplayName(
             Address("spoof@domain.example", "contact@important.example"),
-            account
+            account,
         )
 
         assertThat(displayName).isEqualTo("contact@important.example")
@@ -201,14 +201,14 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
     private fun createRecipientFormatter(
         showCorrespondentNames: Boolean = true,
         showContactNames: Boolean = true,
-        contactNameColor: Int? = null
+        contactNameColor: Int? = null,
     ): RealMessageViewRecipientFormatter {
         return RealMessageViewRecipientFormatter(
             contactNameProvider = contactNameProvider,
             showCorrespondentNames = showCorrespondentNames,
             showContactNames = showContactNames,
             contactNameColor = contactNameColor,
-            meText = ME_TEXT
+            meText = ME_TEXT,
         )
     }
 }

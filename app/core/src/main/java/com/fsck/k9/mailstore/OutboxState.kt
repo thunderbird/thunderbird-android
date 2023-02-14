@@ -4,5 +4,5 @@ data class OutboxState(
     val sendState: SendState,
     val numberOfSendAttempts: Int,
     val sendError: String?,
-    val sendErrorTimestamp: Long
+    val sendErrorTimestamp: Long,
 )

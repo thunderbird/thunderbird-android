@@ -235,13 +235,13 @@ class MessageViewContainerFragment : Fragment() {
 
     private class MessageViewContainerAdapter(
         fragment: Fragment,
-        private val showAccountChip: Boolean
+        private val showAccountChip: Boolean,
     ) : FragmentStateAdapter(fragment) {
 
         var messageList: List<MessageListItem> = emptyList()
             set(value) {
                 val diffResult = DiffUtil.calculateDiff(
-                    MessageListDiffCallback(oldMessageList = messageList, newMessageList = value)
+                    MessageListDiffCallback(oldMessageList = messageList, newMessageList = value),
                 )
 
                 field = value
@@ -283,7 +283,7 @@ class MessageViewContainerFragment : Fragment() {
 
     private class MessageListDiffCallback(
         private val oldMessageList: List<MessageListItem>,
-        private val newMessageList: List<MessageListItem>
+        private val newMessageList: List<MessageListItem>,
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = oldMessageList.size
 
@@ -314,7 +314,7 @@ class MessageViewContainerFragment : Fragment() {
         fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
-                ARG_SHOW_ACCOUNT_CHIP to showAccountChip
+                ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
             )
         }
     }

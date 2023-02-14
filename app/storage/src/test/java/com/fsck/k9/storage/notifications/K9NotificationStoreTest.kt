@@ -24,8 +24,8 @@ class K9NotificationStoreTest : RobolectricTest() {
             NotificationStoreOperation.Add(
                 messageReference = createMessageReference("uid-1"),
                 notificationId = 42,
-                timestamp = 23L
-            )
+                timestamp = 23L,
+            ),
         )
 
         store.persistNotificationChanges(operations)
@@ -46,8 +46,8 @@ class K9NotificationStoreTest : RobolectricTest() {
             NotificationStoreOperation.Add(
                 messageReference = createMessageReference("uid-2"),
                 notificationId = 10,
-                timestamp = 30L
-            )
+                timestamp = 30L,
+            ),
         )
 
         store.persistNotificationChanges(operations)
@@ -66,7 +66,7 @@ class K9NotificationStoreTest : RobolectricTest() {
     fun `remove notification`() {
         sqliteDatabase.createNotification(messageId = messageIdOne, notificationId = 10, timestamp = 20L)
         val operations = listOf(
-            NotificationStoreOperation.Remove(messageReference = createMessageReference("uid-1"))
+            NotificationStoreOperation.Remove(messageReference = createMessageReference("uid-1")),
         )
 
         store.persistNotificationChanges(operations)
@@ -83,8 +83,8 @@ class K9NotificationStoreTest : RobolectricTest() {
             NotificationStoreOperation.Remove(messageReference = createMessageReference("uid-2")),
             NotificationStoreOperation.ChangeToActive(
                 messageReference = createMessageReference("uid-1"),
-                notificationId = 23
-            )
+                notificationId = 23,
+            ),
         )
 
         store.persistNotificationChanges(operations)

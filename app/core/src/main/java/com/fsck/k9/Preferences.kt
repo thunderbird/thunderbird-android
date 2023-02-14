@@ -28,7 +28,7 @@ class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
     private val accountPreferenceSerializer: AccountPreferenceSerializer,
-    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountManager {
     private val accountLock = Any()
     private val storageLock = Any()

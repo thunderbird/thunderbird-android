@@ -266,7 +266,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             preference.setVibration(
                 isVibrationEnabled = notificationVibration.isEnabled,
                 vibratePattern = notificationVibration.pattern,
-                vibrationTimes = notificationVibration.repeatCount
+                vibrationTimes = notificationVibration.repeatCount,
             )
             preference.isEnabled = true
         }
@@ -404,7 +404,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             getString(R.string.account_delete_dlg_title),
             getString(R.string.account_delete_dlg_instructions_fmt, getAccount().displayName),
             getString(R.string.okay_action),
-            getString(R.string.cancel_action)
+            getString(R.string.cancel_action),
         )
         dialogFragment.setTargetFragment(this, REQUEST_DELETE_ACCOUNT)
         dialogFragment.show(requireFragmentManager(), TAG_DELETE_ACCOUNT_CONFIRMATION)
@@ -472,7 +472,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
             ARG_ACCOUNT_UUID to accountUuid,
-            PreferenceFragmentCompat.ARG_PREFERENCE_ROOT to rootKey
+            PreferenceFragmentCompat.ARG_PREFERENCE_ROOT to rootKey,
         )
     }
 }

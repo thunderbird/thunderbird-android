@@ -8,7 +8,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 
 internal class SettingsDividerItem(
     override var identifier: Long,
-    val text: String
+    val text: String,
 ) : AbstractItem<SettingsDividerItem.ViewHolder>() {
     override val type = R.id.settings_list_header_item
 

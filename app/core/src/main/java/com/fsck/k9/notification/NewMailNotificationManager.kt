@@ -14,7 +14,7 @@ internal class NewMailNotificationManager(
     private val baseNotificationDataCreator: BaseNotificationDataCreator,
     private val singleMessageNotificationDataCreator: SingleMessageNotificationDataCreator,
     private val summaryNotificationDataCreator: SummaryNotificationDataCreator,
-    private val clock: Clock
+    private val clock: Clock,
 ) {
     fun restoreNewMailNotifications(account: Account): NewMailNotificationData? {
         val notificationData = notificationRepository.restoreNotifications(account) ?: return null
@@ -26,7 +26,7 @@ internal class NewMailNotificationManager(
                 notificationId = notificationHolder.notificationId,
                 content = notificationHolder.content,
                 timestamp = notificationHolder.timestamp,
-                addLockScreenNotification = addLockScreenNotification
+                addLockScreenNotification = addLockScreenNotification,
             )
         }
 
@@ -34,7 +34,7 @@ internal class NewMailNotificationManager(
             cancelNotificationIds = emptyList(),
             baseNotificationData = createBaseNotificationData(notificationData),
             singleNotificationData = singleNotificationDataList,
-            summaryNotificationData = createSummaryNotificationData(notificationData, silent = true)
+            summaryNotificationData = createSummaryNotificationData(notificationData, silent = true),
         )
     }
 
@@ -48,7 +48,7 @@ internal class NewMailNotificationManager(
             notificationId = result.notificationHolder.notificationId,
             content = result.notificationHolder.content,
             timestamp = result.notificationHolder.timestamp,
-            addLockScreenNotification = result.notificationData.isSingleMessageNotification
+            addLockScreenNotification = result.notificationData.isSingleMessageNotification,
         )
 
         return NewMailNotificationData(
@@ -59,14 +59,14 @@ internal class NewMailNotificationManager(
             },
             baseNotificationData = createBaseNotificationData(result.notificationData),
             singleNotificationData = listOf(singleNotificationData),
-            summaryNotificationData = createSummaryNotificationData(result.notificationData, silent)
+            summaryNotificationData = createSummaryNotificationData(result.notificationData, silent),
         )
     }
 
     fun removeNewMailNotifications(
         account: Account,
         clearNewMessageState: Boolean,
-        selector: (List<MessageReference>) -> List<MessageReference>
+        selector: (List<MessageReference>) -> List<MessageReference>,
     ): NewMailNotificationData? {
         val result = notificationRepository.removeNotifications(account, clearNewMessageState, selector) ?: return null
 
@@ -85,7 +85,7 @@ internal class NewMailNotificationManager(
                 notificationId = notificationHolder.notificationId,
                 content = notificationHolder.content,
                 timestamp = notificationHolder.timestamp,
-                addLockScreenNotification = result.notificationData.isSingleMessageNotification
+                addLockScreenNotification = result.notificationData.isSingleMessageNotification,
             )
         }
 
@@ -93,7 +93,7 @@ internal class NewMailNotificationManager(
             cancelNotificationIds = cancelNotificationIds,
             baseNotificationData = createBaseNotificationData(result.notificationData),
             singleNotificationData = singleNotificationData,
-            summaryNotificationData = createSummaryNotificationData(result.notificationData, silent = true)
+            summaryNotificationData = createSummaryNotificationData(result.notificationData, silent = true),
         )
     }
 
@@ -111,14 +111,14 @@ internal class NewMailNotificationManager(
         notificationId: Int,
         content: NotificationContent,
         timestamp: Long,
-        addLockScreenNotification: Boolean
+        addLockScreenNotification: Boolean,
     ): SingleNotificationData {
         return singleMessageNotificationDataCreator.createSingleNotificationData(
             account,
             notificationId,
             content,
             timestamp,
-            addLockScreenNotification
+            addLockScreenNotification,
         )
     }
 

@@ -26,7 +26,7 @@ import com.fsck.k9.mail.FolderType as RemoteFolderType
 class FolderRepository(
     private val messageStoreManager: MessageStoreManager,
     private val accountManager: AccountManager,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     private val sortForDisplay =
         compareByDescending<DisplayFolder> { it.folder.type == FolderType.INBOX }
@@ -39,18 +39,18 @@ class FolderRepository(
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getDisplayFolders(
             displayMode = displayMode ?: account.folderDisplayMode,
-            outboxFolderId = account.outboxFolderId
+            outboxFolderId = account.outboxFolderId,
         ) { folder ->
             DisplayFolder(
                 folder = Folder(
                     id = folder.id,
                     name = folder.name,
                     type = folderTypeOf(account, folder.id),
-                    isLocalOnly = folder.isLocalOnly
+                    isLocalOnly = folder.isLocalOnly,
                 ),
                 isInTopGroup = folder.isInTopGroup,
                 unreadMessageCount = folder.unreadMessageCount,
-                starredMessageCount = folder.starredMessageCount
+                starredMessageCount = folder.starredMessageCount,
             )
         }.sortedWith(sortForDisplay)
     }
@@ -103,7 +103,7 @@ class FolderRepository(
                 id = folder.id,
                 name = folder.name,
                 type = folderTypeOf(account, folder.id),
-                isLocalOnly = folder.isLocalOnly
+                isLocalOnly = folder.isLocalOnly,
             )
         }
     }
@@ -116,14 +116,14 @@ class FolderRepository(
                     id = folder.id,
                     name = folder.name,
                     type = folderTypeOf(account, folder.id),
-                    isLocalOnly = folder.isLocalOnly
+                    isLocalOnly = folder.isLocalOnly,
                 ),
                 isInTopGroup = folder.isInTopGroup,
                 isIntegrate = folder.isIntegrate,
                 syncClass = folder.syncClass,
                 displayClass = folder.displayClass,
                 notifyClass = folder.notifyClass,
-                pushClass = folder.pushClass
+                pushClass = folder.pushClass,
             )
         }
     }
@@ -135,7 +135,7 @@ class FolderRepository(
                 id = folder.id,
                 serverId = folder.serverIdOrThrow(),
                 name = folder.name,
-                type = folder.type.toFolderType()
+                type = folder.type.toFolderType(),
             )
         }
     }
@@ -148,14 +148,14 @@ class FolderRepository(
                     id = folder.id,
                     serverId = folder.serverIdOrThrow(),
                     name = folder.name,
-                    type = folder.type.toFolderType()
+                    type = folder.type.toFolderType(),
                 ),
                 isInTopGroup = folder.isInTopGroup,
                 isIntegrate = folder.isIntegrate,
                 syncClass = folder.syncClass,
                 displayClass = folder.displayClass,
                 notifyClass = folder.notifyClass,
-                pushClass = folder.pushClass
+                pushClass = folder.pushClass,
             )
         }
     }
@@ -288,7 +288,7 @@ class FolderRepository(
 
 private data class AccountContainer(
     val account: Account,
-    val folderDisplayMode: FolderMode
+    val folderDisplayMode: FolderMode,
 )
 
 data class Folder(val id: Long, val name: String, val type: FolderType, val isLocalOnly: Boolean)
@@ -302,7 +302,7 @@ data class FolderDetails(
     val syncClass: FolderClass,
     val displayClass: FolderClass,
     val notifyClass: FolderClass,
-    val pushClass: FolderClass
+    val pushClass: FolderClass,
 )
 
 data class RemoteFolderDetails(
@@ -312,14 +312,14 @@ data class RemoteFolderDetails(
     val syncClass: FolderClass,
     val displayClass: FolderClass,
     val notifyClass: FolderClass,
-    val pushClass: FolderClass
+    val pushClass: FolderClass,
 )
 
 data class DisplayFolder(
     val folder: Folder,
     val isInTopGroup: Boolean,
     val unreadMessageCount: Int,
-    val starredMessageCount: Int
+    val starredMessageCount: Int,
 )
 
 enum class FolderType {
@@ -330,5 +330,5 @@ enum class FolderType {
     TRASH,
     DRAFTS,
     ARCHIVE,
-    SPAM
+    SPAM,
 }

@@ -11,10 +11,10 @@ data class MessageListConfig(
     val sortAscending: Boolean,
     val sortDateAscending: Boolean,
     val activeMessage: MessageReference?,
-    val sortOverrides: Map<MessageReference, MessageSortOverride>
+    val sortOverrides: Map<MessageReference, MessageSortOverride>,
 )
 
 data class MessageSortOverride(
     val isRead: Boolean,
-    val isStarred: Boolean
+    val isStarred: Boolean,
 )

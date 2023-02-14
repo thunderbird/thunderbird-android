@@ -24,8 +24,8 @@ class SrvServiceDiscoveryTest {
         val srvResolver = newMockSrvResolver(
             imapServices = listOf(newMailService(port = 143, srvType = SrvType.IMAP)),
             imapsServices = listOf(
-                newMailService(port = 993, srvType = SrvType.IMAPS, security = ConnectionSecurity.SSL_TLS_REQUIRED)
-            )
+                newMailService(port = 993, srvType = SrvType.IMAPS, security = ConnectionSecurity.SSL_TLS_REQUIRED),
+            ),
         )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
@@ -42,14 +42,14 @@ class SrvServiceDiscoveryTest {
                 newMailService(
                     port = 25,
                     srvType = SrvType.SUBMISSION,
-                    security = ConnectionSecurity.STARTTLS_REQUIRED
+                    security = ConnectionSecurity.STARTTLS_REQUIRED,
                 ),
                 newMailService(
                     port = 465,
                     srvType = SrvType.SUBMISSIONS,
-                    security = ConnectionSecurity.SSL_TLS_REQUIRED
-                )
-            )
+                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                ),
+            ),
         )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
@@ -68,15 +68,15 @@ class SrvServiceDiscoveryTest {
                     port = 25,
                     srvType = SrvType.SUBMISSION,
                     security = ConnectionSecurity.STARTTLS_REQUIRED,
-                    priority = 0
+                    priority = 0,
                 ),
                 newMailService(
                     host = "smtp2.example.com",
                     port = 25,
                     srvType = SrvType.SUBMISSION,
                     security = ConnectionSecurity.STARTTLS_REQUIRED,
-                    priority = 1
-                )
+                    priority = 1,
+                ),
             ),
             submissionsServices = listOf(
                 newMailService(
@@ -84,15 +84,15 @@ class SrvServiceDiscoveryTest {
                     port = 465,
                     srvType = SrvType.SUBMISSIONS,
                     security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    priority = 0
+                    priority = 0,
                 ),
                 newMailService(
                     host = "smtp4.example.com",
                     port = 465,
                     srvType = SrvType.SUBMISSIONS,
                     security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    priority = 1
-                )
+                    priority = 1,
+                ),
             ),
             imapServices = listOf(
                 newMailService(
@@ -100,15 +100,15 @@ class SrvServiceDiscoveryTest {
                     port = 143,
                     srvType = SrvType.IMAP,
                     security = ConnectionSecurity.STARTTLS_REQUIRED,
-                    priority = 0
+                    priority = 0,
                 ),
                 newMailService(
                     host = "imap2.example.com",
                     port = 143,
                     srvType = SrvType.IMAP,
                     security = ConnectionSecurity.STARTTLS_REQUIRED,
-                    priority = 1
-                )
+                    priority = 1,
+                ),
             ),
             imapsServices = listOf(
                 newMailService(
@@ -116,16 +116,16 @@ class SrvServiceDiscoveryTest {
                     port = 993,
                     srvType = SrvType.IMAPS,
                     security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    priority = 0
+                    priority = 0,
                 ),
                 newMailService(
                     host = "imaps2.example.com",
                     port = 993,
                     srvType = SrvType.IMAPS,
                     security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    priority = 1
-                )
-            )
+                    priority = 1,
+                ),
+            ),
         )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
@@ -136,18 +136,18 @@ class SrvServiceDiscoveryTest {
                 "smtp3.example.com",
                 "smtp1.example.com",
                 "smtp4.example.com",
-                "smtp2.example.com"
+                "smtp2.example.com",
             ),
-            result?.outgoing?.map { it.host }
+            result?.outgoing?.map { it.host },
         )
         assertEquals(
             listOf(
                 "imaps1.example.com",
                 "imap1.example.com",
                 "imaps2.example.com",
-                "imap2.example.com"
+                "imap2.example.com",
             ),
-            result?.incoming?.map { it.host }
+            result?.incoming?.map { it.host },
         )
     }
 
@@ -156,7 +156,7 @@ class SrvServiceDiscoveryTest {
         priority: Int = 0,
         security: ConnectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
         srvType: SrvType,
-        port: Int
+        port: Int,
     ): MailService {
         return MailService(srvType, host, port, priority, security)
     }
@@ -166,7 +166,7 @@ class SrvServiceDiscoveryTest {
         submissionServices: List<MailService> = listOf(),
         submissionsServices: List<MailService> = listOf(),
         imapServices: List<MailService> = listOf(),
-        imapsServices: List<MailService> = listOf()
+        imapsServices: List<MailService> = listOf(),
     ): MiniDnsSrvResolver {
         return mock {
             on { lookup(host, SrvType.SUBMISSION) } doReturn submissionServices

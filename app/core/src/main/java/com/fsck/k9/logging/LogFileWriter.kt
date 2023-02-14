@@ -15,7 +15,7 @@ interface LogFileWriter {
 class LogcatLogFileWriter(
     private val contentResolver: ContentResolver,
     private val processExecutor: ProcessExecutor,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : LogFileWriter {
     override suspend fun writeLogTo(contentUri: Uri) {
         return withContext(coroutineDispatcher) {

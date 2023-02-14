@@ -7,5 +7,5 @@ internal data class NotificationContent(
     val sender: String,
     val subject: String,
     val preview: CharSequence,
-    val summary: CharSequence
+    val summary: CharSequence,
 )

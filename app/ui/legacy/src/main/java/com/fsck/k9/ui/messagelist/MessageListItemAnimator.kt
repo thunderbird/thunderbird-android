@@ -15,7 +15,7 @@ class MessageListItemAnimator : DefaultItemAnimator() {
         fromX: Int,
         fromY: Int,
         toX: Int,
-        toY: Int
+        toY: Int,
     ): Boolean {
         if (oldHolder == newHolder && newHolder.wasSwiped) {
             // Don't touch views currently being swiped

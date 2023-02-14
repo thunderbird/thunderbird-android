@@ -10,7 +10,7 @@ import java.util.Date
 
 internal open class TestImapFolder(
     override val serverId: String,
-    val connection: TestImapConnection
+    val connection: TestImapConnection,
 ) : ImapFolder {
     override var mode: OpenMode? = null
         protected set
@@ -56,7 +56,7 @@ internal open class TestImapFolder(
         start: Int,
         end: Int,
         earliestDate: Date?,
-        listener: MessageRetrievalListener<ImapMessage>?
+        listener: MessageRetrievalListener<ImapMessage>?,
     ): List<ImapMessage> {
         throw UnsupportedOperationException("not implemented")
     }
@@ -69,7 +69,7 @@ internal open class TestImapFolder(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
         listener: FetchListener?,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     ) {
         throw UnsupportedOperationException("not implemented")
     }
@@ -78,7 +78,7 @@ internal open class TestImapFolder(
         message: ImapMessage,
         part: Part,
         bodyFactory: BodyFactory,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     ) {
         throw UnsupportedOperationException("not implemented")
     }
@@ -87,7 +87,7 @@ internal open class TestImapFolder(
         queryString: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<ImapMessage> {
         throw UnsupportedOperationException("not implemented")
     }

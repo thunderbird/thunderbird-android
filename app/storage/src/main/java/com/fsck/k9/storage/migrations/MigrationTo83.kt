@@ -17,7 +17,7 @@ internal class MigrationTo83(private val db: SQLiteDatabase, private val migrati
 
         val highestKnownUids = db.rawQuery(
             "SELECT folder_id, MAX(CAST(uid AS INTEGER)) FROM messages GROUP BY folder_id",
-            null
+            null,
         ).use { cursor ->
             cursor.map {
                 it.getLong(0) to it.getLongOrNull(1)

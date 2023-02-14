@@ -13,11 +13,11 @@ internal class SummaryNotificationCreator(
     private val actionCreator: NotificationActionCreator,
     private val lockScreenNotificationCreator: LockScreenNotificationCreator,
     private val singleMessageNotificationCreator: SingleMessageNotificationCreator,
-    private val resourceProvider: NotificationResourceProvider
+    private val resourceProvider: NotificationResourceProvider,
 ) {
     fun createSummaryNotification(
         baseNotificationData: BaseNotificationData,
-        summaryNotificationData: SummaryNotificationData
+        summaryNotificationData: SummaryNotificationData,
     ) {
         when (summaryNotificationData) {
             is SummarySingleNotificationData -> {
@@ -31,18 +31,18 @@ internal class SummaryNotificationCreator(
 
     private fun createSingleMessageNotification(
         baseNotificationData: BaseNotificationData,
-        singleNotificationData: SingleNotificationData
+        singleNotificationData: SingleNotificationData,
     ) {
         singleMessageNotificationCreator.createSingleNotification(
             baseNotificationData,
             singleNotificationData,
-            isGroupSummary = true
+            isGroupSummary = true,
         )
     }
 
     private fun createInboxStyleSummaryNotification(
         baseNotificationData: BaseNotificationData,
-        notificationData: SummaryInboxNotificationData
+        notificationData: SummaryInboxNotificationData,
     ) {
         val account = baseNotificationData.account
         val accountName = baseNotificationData.accountName
@@ -85,7 +85,7 @@ internal class SummaryNotificationCreator(
     private fun NotificationBuilder.setInboxStyle(
         title: String,
         summary: String,
-        contentLines: List<CharSequence>
+        contentLines: List<CharSequence>,
     ) = apply {
         val style = NotificationCompat.InboxStyle()
             .setBigContentTitle(title)
@@ -104,7 +104,7 @@ internal class SummaryNotificationCreator(
 
     private fun NotificationBuilder.setDeviceActions(
         account: Account,
-        notificationData: SummaryInboxNotificationData
+        notificationData: SummaryInboxNotificationData,
     ) = apply {
         for (action in notificationData.actions) {
             when (action) {
@@ -116,7 +116,7 @@ internal class SummaryNotificationCreator(
 
     private fun NotificationBuilder.addMarkAllAsReadAction(
         account: Account,
-        notificationData: SummaryInboxNotificationData
+        notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.iconMarkAsRead
         val title = resourceProvider.actionMarkAsRead()
@@ -128,7 +128,7 @@ internal class SummaryNotificationCreator(
 
     private fun NotificationBuilder.addDeleteAllAction(
         account: Account,
-        notificationData: SummaryInboxNotificationData
+        notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.iconDelete
         val title = resourceProvider.actionDelete()
@@ -140,7 +140,7 @@ internal class SummaryNotificationCreator(
 
     private fun NotificationBuilder.setWearActions(
         account: Account,
-        notificationData: SummaryInboxNotificationData
+        notificationData: SummaryInboxNotificationData,
     ) = apply {
         val wearableExtender = WearableExtender().apply {
             for (action in notificationData.wearActions) {
@@ -157,7 +157,7 @@ internal class SummaryNotificationCreator(
 
     private fun WearableExtender.addMarkAllAsReadAction(
         account: Account,
-        notificationData: SummaryInboxNotificationData
+        notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.wearIconMarkAsRead
         val title = resourceProvider.actionMarkAllAsRead()

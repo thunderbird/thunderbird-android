@@ -10,7 +10,7 @@ internal object DividerReplacer : TextToHtml.HtmlModifier {
             "(?:" + SIMPLE_DIVIDER + "|" + ASCII_SCISSORS + ")" +
             "\\s*" +
             "(?:\\n|$)" +
-            ")+"
+            ")+",
     )
 
     override fun findModifications(text: CharSequence): List<HtmlModification> {

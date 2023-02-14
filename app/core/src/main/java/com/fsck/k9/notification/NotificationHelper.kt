@@ -19,7 +19,7 @@ class NotificationHelper(
     private val context: Context,
     private val notificationManager: NotificationManagerCompat,
     private val notificationChannelManager: NotificationChannelManager,
-    private val resourceProvider: NotificationResourceProvider
+    private val resourceProvider: NotificationResourceProvider,
 ) {
     fun getContext(): Context {
         return context
@@ -101,14 +101,14 @@ internal fun NotificationCompat.Builder.setErrorAppearance(): NotificationCompat
         setLights(
             NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR,
             NotificationHelper.NOTIFICATION_LED_FAST_ON_TIME,
-            NotificationHelper.NOTIFICATION_LED_FAST_OFF_TIME
+            NotificationHelper.NOTIFICATION_LED_FAST_OFF_TIME,
         )
     }
 }
 
 internal fun NotificationCompat.Builder.setAppearance(
     silent: Boolean,
-    appearance: NotificationAppearance
+    appearance: NotificationAppearance,
 ): NotificationCompat.Builder = apply {
     if (silent) {
         setSilent(true)
@@ -125,7 +125,7 @@ internal fun NotificationCompat.Builder.setAppearance(
             setLights(
                 appearance.ledColor,
                 NotificationHelper.NOTIFICATION_LED_ON_TIME,
-                NotificationHelper.NOTIFICATION_LED_OFF_TIME
+                NotificationHelper.NOTIFICATION_LED_OFF_TIME,
             )
         }
     }

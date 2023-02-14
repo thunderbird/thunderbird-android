@@ -6,7 +6,7 @@ import java.util.StringTokenizer
 data class MessageReference(
     val accountUuid: String,
     val folderId: Long,
-    val uid: String
+    val uid: String,
 ) {
     fun toIdentityString(): String {
         return buildString {

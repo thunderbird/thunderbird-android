@@ -16,23 +16,23 @@ data class GeneralSettings(
     val appTheme: AppTheme,
     val messageViewTheme: SubTheme,
     val messageComposeTheme: SubTheme,
-    val fixedMessageViewTheme: Boolean
+    val fixedMessageViewTheme: Boolean,
 )
 
 enum class BackgroundSync {
     ALWAYS,
     NEVER,
-    FOLLOW_SYSTEM_AUTO_SYNC
+    FOLLOW_SYSTEM_AUTO_SYNC,
 }
 
 enum class AppTheme {
     LIGHT,
     DARK,
-    FOLLOW_SYSTEM
+    FOLLOW_SYSTEM,
 }
 
 enum class SubTheme {
     LIGHT,
     DARK,
-    USE_GLOBAL
+    USE_GLOBAL,
 }

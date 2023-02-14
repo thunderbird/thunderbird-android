@@ -14,18 +14,18 @@ data class MessageDetailsUi(
     val to: List<Participant>,
     val cc: List<Participant>,
     val bcc: List<Participant>,
-    val folder: FolderInfoUi?
+    val folder: FolderInfoUi?,
 )
 
 data class CryptoDetails(
     val cryptoStatus: MessageCryptoDisplayStatus,
-    val isClickable: Boolean
+    val isClickable: Boolean,
 )
 
 data class Participant(
     val displayName: CharSequence?,
     val emailAddress: String,
-    val contactLookupUri: Uri?
+    val contactLookupUri: Uri?,
 ) {
     val isInContacts: Boolean
         get() = contactLookupUri != null
@@ -36,5 +36,5 @@ data class Participant(
 
 data class FolderInfoUi(
     val displayName: String,
-    val type: FolderType
+    val type: FolderType,
 )

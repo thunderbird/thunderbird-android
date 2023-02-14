@@ -53,21 +53,21 @@ interface Backend {
     fun moveMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>?
 
     @Throws(MessagingException::class)
     fun moveMessagesAndMarkAsRead(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>?
 
     @Throws(MessagingException::class)
     fun copyMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>?
 
     @Throws(MessagingException::class)
@@ -76,7 +76,7 @@ interface Backend {
         query: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<String>
 
     @Throws(MessagingException::class)

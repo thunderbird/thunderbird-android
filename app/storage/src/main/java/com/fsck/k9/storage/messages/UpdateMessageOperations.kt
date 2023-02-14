@@ -15,7 +15,7 @@ internal class UpdateMessageOperations(private val lockableDatabase: LockableDat
                 "messages",
                 values,
                 "folder_id = ? AND uid = ?",
-                arrayOf(folderId.toString(), messageServerId)
+                arrayOf(folderId.toString(), messageServerId),
             )
         }
     }

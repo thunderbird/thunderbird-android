@@ -31,7 +31,7 @@ class FlowedMessageUtilsTest {
             Text that should be displayed on one line.
             Text that should retain
             its line break.
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 
@@ -62,7 +62,7 @@ class FlowedMessageUtilsTest {
             |
             |Some more text that should be displayed on one line.
             |
-            """.trimMargin().crlf()
+            """.trimMargin().crlf(),
         )
     }
 
@@ -90,7 +90,7 @@ class FlowedMessageUtilsTest {
             >> Depth 2${" "}
             > Depth 1 is here
             Some other text
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 
@@ -172,7 +172,7 @@ class FlowedMessageUtilsTest {
             
             --${" "}
             Signature text
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 
@@ -193,7 +193,7 @@ class FlowedMessageUtilsTest {
             >${" "}
             > --${" "}
             > Signature text
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 
@@ -210,7 +210,7 @@ class FlowedMessageUtilsTest {
             Fake flowed line
             --${" "}
             Signature
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 }

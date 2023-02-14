@@ -6,7 +6,7 @@ sealed interface NotificationStoreOperation {
     data class Add(
         val messageReference: MessageReference,
         val notificationId: Int,
-        val timestamp: Long
+        val timestamp: Long,
     ) : NotificationStoreOperation
 
     data class Remove(val messageReference: MessageReference) : NotificationStoreOperation
@@ -15,6 +15,6 @@ sealed interface NotificationStoreOperation {
 
     data class ChangeToActive(
         val messageReference: MessageReference,
-        val notificationId: Int
+        val notificationId: Int,
     ) : NotificationStoreOperation
 }

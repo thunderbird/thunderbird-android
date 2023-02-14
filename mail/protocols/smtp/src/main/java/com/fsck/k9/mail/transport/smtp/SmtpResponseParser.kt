@@ -23,7 +23,7 @@ private const val END_OF_STREAM = -1
  */
 internal class SmtpResponseParser(
     private val logger: SmtpLogger,
-    private val input: PeekableInputStream
+    private val input: PeekableInputStream,
 ) {
     private val logBuffer = Buffer()
 
@@ -56,7 +56,7 @@ internal class SmtpResponseParser(
 
                 return SmtpHelloResponse.Hello(
                     response = SmtpResponse(replyCode, enhancedStatusCode = null, texts = listOf(text)),
-                    keywords = emptyMap()
+                    keywords = emptyMap(),
                 )
             }
             DASH -> {
@@ -95,7 +95,7 @@ internal class SmtpResponseParser(
 
                     return SmtpHelloResponse.Hello(
                         response = SmtpResponse(replyCode, enhancedStatusCode = null, texts),
-                        keywords = keywords
+                        keywords = keywords,
                     )
                 }
                 DASH -> {
@@ -171,7 +171,7 @@ internal class SmtpResponseParser(
             if (!isFirstLine && enhancedStatusCode != currentStatusCode) {
                 parserError(
                     "Multi-line response with enhanced status codes not matching: " +
-                        "$enhancedStatusCode != $currentStatusCode"
+                        "$enhancedStatusCode != $currentStatusCode",
                 )
             }
             isFirstLine = false
@@ -224,7 +224,7 @@ internal class SmtpResponseParser(
                     val currentReplyCode = readReplyCode()
                     if (currentReplyCode != replyCode) {
                         parserError(
-                            "Multi-line response with reply codes not matching: $replyCode != $currentReplyCode"
+                            "Multi-line response with reply codes not matching: $replyCode != $currentReplyCode",
                         )
                     }
                 }

@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteDatabase
  */
 class StorageMigrationTo10(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper
+    private val migrationsHelper: StorageMigrationsHelper,
 ) {
     private val folderKeyPattern = Regex("[^.]+\\..+\\.([^.]+)")
     private val folderSettingKeys = setOf(
@@ -20,7 +20,7 @@ class StorageMigrationTo10(
         "syncMode",
         "pushMode",
         "inTopGroup",
-        "integrate"
+        "integrate",
     )
 
     fun removeSavedFolderSettings() {

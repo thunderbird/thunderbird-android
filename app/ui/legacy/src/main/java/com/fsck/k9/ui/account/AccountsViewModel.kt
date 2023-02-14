@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class AccountsViewModel(
     accountManager: AccountManager,
     private val messageCountsProvider: MessageCountsProvider,
-    private val messageListRepository: MessageListRepository
+    private val messageListRepository: MessageListRepository,
 ) : ViewModel() {
     private val displayAccountFlow: Flow<List<DisplayAccount>> = accountManager.getAccountsFlow()
         .flatMapLatest { accounts ->
@@ -36,7 +36,7 @@ class AccountsViewModel(
                     DisplayAccount(
                         account = accounts[index],
                         unreadMessageCount = messageCounts.unread,
-                        starredMessageCount = messageCounts.starred
+                        starredMessageCount = messageCounts.starred,
                     )
                 }
             }

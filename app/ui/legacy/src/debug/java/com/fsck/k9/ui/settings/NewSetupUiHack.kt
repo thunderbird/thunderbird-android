@@ -9,7 +9,7 @@ internal object NewSetupUiHack {
         builder.addAction(
             "Add account (NEW)",
             R.id.action_settingsListScreen_to_newAddAccountScreen,
-            R.attr.iconSettingsAccountAdd
+            R.attr.iconSettingsAccountAdd,
         )
     }
 }

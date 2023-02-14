@@ -3,7 +3,7 @@ package com.fsck.k9.mail.transport.smtp
 internal data class SmtpResponse(
     val replyCode: Int,
     val enhancedStatusCode: EnhancedStatusCode?,
-    val texts: List<String>
+    val texts: List<String>,
 ) {
     val isNegativeResponse = replyCode >= 400
 

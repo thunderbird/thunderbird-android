@@ -17,7 +17,7 @@ class AutocryptKeyTransferPresenter internal constructor(
     private val openPgpApiManager: OpenPgpApiManager,
     private val preferences: Preferences,
     private val viewModel: AutocryptKeyTransferViewModel,
-    private val view: AutocryptKeyTransferActivity
+    private val view: AutocryptKeyTransferActivity,
 ) {
 
     private lateinit var account: Account
@@ -52,7 +52,7 @@ class AutocryptKeyTransferPresenter internal constructor(
                 override fun onOpenPgpProviderError(error: OpenPgpProviderError) {
                     view.finishWithProviderConnectError(openPgpApiManager.readableOpenPgpProviderName)
                 }
-            }
+            },
         )
 
         view.setAddress(account.identities[0].email!!)

@@ -15,7 +15,7 @@ class WebDavBackendFactory(
     private val backendStorageFactory: K9BackendStorageFactory,
     private val trustManagerFactory: TrustManagerFactory,
     private val sniHostSetter: SniHostSetter,
-    private val folderRepository: FolderRepository
+    private val folderRepository: FolderRepository,
 ) : BackendFactory {
     override fun createBackend(account: Account): Backend {
         val accountName = account.displayName

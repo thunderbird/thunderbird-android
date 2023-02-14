@@ -180,14 +180,14 @@ enum class ImportStatus(val isSuccess: Boolean, val isActionRequired: Boolean) {
     IMPORT_SUCCESS(isSuccess = true, isActionRequired = false),
     IMPORT_SUCCESS_PASSWORD_REQUIRED(isSuccess = true, isActionRequired = true),
     IMPORT_SUCCESS_AUTHORIZATION_REQUIRED(isSuccess = true, isActionRequired = true),
-    IMPORT_FAILURE(isSuccess = false, isActionRequired = false)
+    IMPORT_FAILURE(isSuccess = false, isActionRequired = false),
 }
 
 enum class ButtonState {
     DISABLED,
     ENABLED,
     INVISIBLE,
-    GONE
+    GONE,
 }
 
 enum class StatusText {
@@ -199,10 +199,10 @@ enum class StatusText {
     IMPORT_SUCCESS_PASSWORD_AND_AUTHORIZATION_REQUIRED,
     IMPORT_READ_FAILURE,
     IMPORT_PARTIAL_FAILURE,
-    IMPORT_FAILURE
+    IMPORT_FAILURE,
 }
 
 enum class CloseButtonLabel {
     OK,
-    LATER
+    LATER,
 }

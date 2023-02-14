@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
  */
 class StorageMigrationTo16(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper
+    private val migrationsHelper: StorageMigrationsHelper,
 ) {
     fun changeDefaultRegisteredNameColor() {
         val registeredNameColorValue = migrationsHelper.readValue(db, "registeredNameColor")?.toInt()

@@ -11,7 +11,7 @@ class ContactImage(
     val contactLetterOnly: Boolean,
     val backgroundCacheId: String,
     val contactLetterBitmapCreator: ContactLetterBitmapCreator,
-    val address: Address
+    val address: Address,
 ) : Key {
     private val contactLetterSignature = contactLetterBitmapCreator.signatureOf(address)
 

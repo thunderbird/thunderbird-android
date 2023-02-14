@@ -43,7 +43,7 @@ class TextPartFinderTest {
         val part = createMultipart(
             "multipart/alternative",
             expected,
-            createTextPart("text/html")
+            createTextPart("text/html"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -57,7 +57,7 @@ class TextPartFinderTest {
         val part = createMultipart(
             "multipart/alternative",
             createTextPart("text/html"),
-            expected
+            expected,
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -72,7 +72,7 @@ class TextPartFinderTest {
             "multipart/alternative",
             createPart("image/gif"),
             expected,
-            createTextPart("text/html")
+            createTextPart("text/html"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -85,7 +85,7 @@ class TextPartFinderTest {
         val part = createMultipart(
             "multipart/alternative",
             createPart("image/gif"),
-            createPart("application/pdf")
+            createPart("application/pdf"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -101,9 +101,9 @@ class TextPartFinderTest {
             createMultipart(
                 "multipart/related",
                 expected,
-                createPart("image/jpeg")
+                createPart("image/jpeg"),
             ),
-            createTextPart("text/html")
+            createTextPart("text/html"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -119,9 +119,9 @@ class TextPartFinderTest {
             createMultipart(
                 "multipart/related",
                 createTextPart("text/html"),
-                createPart("image/jpeg")
+                createPart("image/jpeg"),
             ),
-            expected
+            expected,
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -135,7 +135,7 @@ class TextPartFinderTest {
         val part = createMultipart(
             "multipart/mixed",
             createPart("image/jpeg"),
-            expected
+            expected,
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -149,7 +149,7 @@ class TextPartFinderTest {
         val part = createMultipart(
             "multipart/mixed",
             expected,
-            createTextPart("text/plain")
+            createTextPart("text/plain"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -162,7 +162,7 @@ class TextPartFinderTest {
         val part = createMultipart(
             "multipart/mixed",
             createPart("image/jpeg"),
-            createPart("image/gif")
+            createPart("image/gif"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -179,9 +179,9 @@ class TextPartFinderTest {
             createMultipart(
                 "multipart/alternative",
                 expected,
-                createTextPart("text/html")
+                createTextPart("text/html"),
             ),
-            createTextPart("text/plain")
+            createTextPart("text/plain"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -197,8 +197,8 @@ class TextPartFinderTest {
             createMultipart(
                 "multipart/alternative",
                 createTextPart("text/html"),
-                expected
-            )
+                expected,
+            ),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -212,7 +212,7 @@ class TextPartFinderTest {
         val part = createMultipart(
             "multipart/alternative",
             expected,
-            createTextPart("text/html")
+            createTextPart("text/html"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -226,7 +226,7 @@ class TextPartFinderTest {
         val part = createMultipart(
             "multipart/mixed",
             expected,
-            createTextPart("text/plain")
+            createTextPart("text/plain"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -242,9 +242,9 @@ class TextPartFinderTest {
             createMultipart(
                 "multipart/alternative",
                 createPart("image/jpeg"),
-                createPart("image/png")
+                createPart("image/png"),
             ),
-            expected
+            expected,
         )
 
         val result = textPartFinder.findFirstTextPart(part)

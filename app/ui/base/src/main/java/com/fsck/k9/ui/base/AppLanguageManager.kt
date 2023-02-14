@@ -22,7 +22,7 @@ import kotlinx.coroutines.plus
  */
 class AppLanguageManager(
     private val systemLocaleManager: SystemLocaleManager,
-    private val coroutineScope: CoroutineScope = GlobalScope + Dispatchers.Main
+    private val coroutineScope: CoroutineScope = GlobalScope + Dispatchers.Main,
 ) {
     private var currentOverrideLocale: Locale? = null
     private val _overrideLocale = MutableSharedFlow<Locale?>(replay = 1)

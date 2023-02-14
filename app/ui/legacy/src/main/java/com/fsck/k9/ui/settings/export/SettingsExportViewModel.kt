@@ -22,7 +22,7 @@ private typealias AccountNumber = Int
 class SettingsExportViewModel(
     val context: Context,
     val preferences: Preferences,
-    val settingsExporter: SettingsExporter
+    val settingsExporter: SettingsExporter,
 ) : ViewModel() {
     private val uiModelLiveData = MutableLiveData<SettingsExportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
@@ -87,13 +87,13 @@ class SettingsExportViewModel(
     fun initializeFromSavedState(savedInstanceState: Bundle) {
         savedSelection = SavedListItemSelection(
             includeGeneralSettings = savedInstanceState.getBoolean(STATE_INCLUDE_GENERAL_SETTINGS),
-            selectedAccountUuids = savedInstanceState.getStringArray(STATE_SELECTED_ACCOUNTS)?.toSet() ?: emptySet()
+            selectedAccountUuids = savedInstanceState.getStringArray(STATE_SELECTED_ACCOUNTS)?.toSet() ?: emptySet(),
         )
 
         uiModel.apply {
             isSettingsListEnabled = savedInstanceState.getBoolean(STATE_SETTINGS_LIST_ENABLED)
             exportButton = ButtonState.valueOf(
-                savedInstanceState.getString(STATE_EXPORT_BUTTON, ButtonState.DISABLED.name)
+                savedInstanceState.getString(STATE_EXPORT_BUTTON, ButtonState.DISABLED.name),
             )
             isShareButtonVisible = savedInstanceState.getBoolean(STATE_SHARE_BUTTON_VISIBLE)
             isProgressVisible = savedInstanceState.getBoolean(STATE_PROGRESS_VISIBLE)
@@ -211,5 +211,5 @@ sealed class Action {
 
 private data class SavedListItemSelection(
     val includeGeneralSettings: Boolean,
-    val selectedAccountUuids: Set<AccountUuid>
+    val selectedAccountUuids: Set<AccountUuid>,
 )

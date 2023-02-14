@@ -25,7 +25,7 @@ class LogcatLogFileWriterTest {
         val logFileWriter = LogcatLogFileWriter(
             contentResolver = createContentResolver(),
             processExecutor = createProcessExecutor(logData),
-            coroutineDispatcher = Dispatchers.Unconfined
+            coroutineDispatcher = Dispatchers.Unconfined,
         )
 
         logFileWriter.writeLogTo(contentUri)
@@ -38,7 +38,7 @@ class LogcatLogFileWriterTest {
         val logFileWriter = LogcatLogFileWriter(
             contentResolver = createThrowingContentResolver(FileNotFoundException()),
             processExecutor = createProcessExecutor("irrelevant"),
-            coroutineDispatcher = Dispatchers.Unconfined
+            coroutineDispatcher = Dispatchers.Unconfined,
         )
 
         logFileWriter.writeLogTo(contentUri)
@@ -49,7 +49,7 @@ class LogcatLogFileWriterTest {
         val logFileWriter = LogcatLogFileWriter(
             contentResolver = createContentResolver(),
             processExecutor = ThrowingProcessExecutor(IOException()),
-            coroutineDispatcher = Dispatchers.Unconfined
+            coroutineDispatcher = Dispatchers.Unconfined,
         )
 
         logFileWriter.writeLogTo(contentUri)

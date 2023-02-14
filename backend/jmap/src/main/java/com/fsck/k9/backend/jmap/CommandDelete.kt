@@ -11,7 +11,7 @@ import rs.ltt.jmap.common.method.response.email.SetEmailMethodResponse
 
 class CommandDelete(
     private val jmapClient: JmapClient,
-    private val accountId: String
+    private val accountId: String,
 ) {
     fun deleteMessages(messageServerIds: List<String>) {
         Timber.v("Deleting messages %s", messageServerIds)
@@ -24,7 +24,7 @@ class CommandDelete(
                 SetEmailMethodCall.builder()
                     .accountId(accountId)
                     .destroy(emailIds.toTypedArray())
-                    .build()
+                    .build(),
             )
 
             setEmailCall.getMainResponseBlocking<SetEmailMethodResponse>()
@@ -47,14 +47,14 @@ class CommandDelete(
                     .filter(EmailFilterCondition.builder().inMailbox(folderServerId).build())
                     .calculateTotal(true)
                     .limit(limit)
-                    .build()
+                    .build(),
             )
 
             val setEmailCall = multiCall.call(
                 SetEmailMethodCall.builder()
                     .accountId(accountId)
                     .destroyReference(queryEmailCall.createResultReference(ResultReference.Path.IDS))
-                    .build()
+                    .build(),
             )
 
             multiCall.execute()

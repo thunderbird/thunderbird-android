@@ -12,7 +12,7 @@ import com.fsck.k9.controller.MessagingController
 class AccountActivator(
     private val context: Context,
     private val preferences: Preferences,
-    private val messagingController: MessagingController
+    private val messagingController: MessagingController,
 ) {
     fun enableAccount(accountUuid: String, incomingServerPassword: String?, outgoingServerPassword: String?) {
         val account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
@@ -38,7 +38,7 @@ class AccountActivator(
     private fun setAccountPasswords(
         account: Account,
         incomingServerPassword: String?,
-        outgoingServerPassword: String?
+        outgoingServerPassword: String?,
     ) {
         if (incomingServerPassword != null) {
             account.incomingServerSettings = account.incomingServerSettings.newPassword(incomingServerPassword)

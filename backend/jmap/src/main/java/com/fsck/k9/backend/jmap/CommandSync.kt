@@ -33,7 +33,7 @@ class CommandSync(
     private val jmapClient: JmapClient,
     private val okHttpClient: OkHttpClient,
     private val accountId: String,
-    private val httpAuthentication: HttpAuthentication
+    private val httpAuthentication: HttpAuthentication,
 ) {
 
     fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
@@ -68,7 +68,7 @@ class CommandSync(
         folderServerId: String,
         syncConfig: SyncConfig,
         limit: Long?,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         val cachedServerIds: Set<String> = backendFolder.getMessageServerIds()
 
@@ -83,7 +83,7 @@ class CommandSync(
                 .accountId(accountId)
                 .query(createEmailQuery(folderServerId))
                 .limit(limit)
-                .build()
+                .build(),
         )
         val queryEmailResponse = queryEmailCall.getMainResponseBlocking<QueryEmailMethodResponse>()
         val queryState = if (queryEmailResponse.isCanCalculateChanges) queryEmailResponse.queryState else null
@@ -113,7 +113,7 @@ class CommandSync(
         syncConfig: SyncConfig,
         limit: Long?,
         queryState: String,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         Timber.d("Updating messages in %s (%s)", backendFolder.name, folderServerId)
 
@@ -123,7 +123,7 @@ class CommandSync(
                 .accountId(accountId)
                 .sinceQueryState(queryState)
                 .query(emailQuery)
-                .build()
+                .build(),
         )
 
         val queryChangesEmailResponse = try {
@@ -164,7 +164,7 @@ class CommandSync(
         destroyServerIds: List<String>,
         newServerIds: Set<String>,
         newQueryState: String?,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         if (destroyServerIds.isNotEmpty()) {
             Timber.d("Removing messages no longer on server: %s", destroyServerIds)
@@ -221,7 +221,7 @@ class CommandSync(
                 .accountId(accountId)
                 .ids(emailIdsChunk.toTypedArray())
                 .properties(properties)
-                .build()
+                .build(),
         )
 
         val getEmailResponse = getEmailCall.getMainResponseBlocking<GetEmailMethodResponse>()
@@ -318,5 +318,5 @@ private data class MessageInfo(
     val serverId: String,
     val downloadUrl: HttpUrl,
     val receivedAt: Date,
-    val flags: Set<Flag>
+    val flags: Set<Flag>,
 )

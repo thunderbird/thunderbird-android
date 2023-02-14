@@ -21,7 +21,7 @@ data class MessageCounts(val unread: Int, val starred: Int)
 
 internal class DefaultMessageCountsProvider(
     private val preferences: Preferences,
-    private val messageStoreManager: MessageStoreManager
+    private val messageStoreManager: MessageStoreManager,
 ) : MessageCountsProvider {
     override fun getMessageCounts(account: Account): MessageCounts {
         val search = LocalSearch().apply {
@@ -66,7 +66,7 @@ internal class DefaultMessageCountsProvider(
             val messageStore = messageStoreManager.getMessageStore(account)
             return MessageCounts(
                 unread = messageStore.getUnreadMessageCount(conditions),
-                starred = messageStore.getStarredMessageCount(conditions)
+                starred = messageStore.getStarredMessageCount(conditions),
             )
         } catch (e: Exception) {
             Timber.e(e, "Unable to getMessageCounts for account: %s", account)

@@ -124,7 +124,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
 
     override fun onPreferenceStartScreen(
         caller: PreferenceFragmentCompat,
-        preferenceScreen: PreferenceScreen
+        preferenceScreen: PreferenceScreen,
     ): Boolean {
         fragmentTransactionWithBackStack {
             replace(R.id.generalSettingsContainer, GeneralSettingsFragment.create(preferenceScreen.key))

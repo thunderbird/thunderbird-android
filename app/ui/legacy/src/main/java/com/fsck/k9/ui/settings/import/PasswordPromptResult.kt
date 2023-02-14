@@ -5,7 +5,7 @@ import android.content.Intent
 data class PasswordPromptResult(
     val accountUuid: String,
     val incomingServerPassword: String?,
-    val outgoingServerPassword: String?
+    val outgoingServerPassword: String?,
 ) {
     fun asIntent() = Intent().apply {
         putExtra(EXTRA_ACCOUNT_UUID, accountUuid)

@@ -20,7 +20,7 @@ class MimeParameterEncoderTest {
             """
             |attachment;
             | filename=kitten.png
-            """.trimMargin().crlf()
+            """.trimMargin().crlf(),
         )
     }
 
@@ -28,14 +28,14 @@ class MimeParameterEncoderTest {
     fun backslashesInParameterValue() {
         val header = MimeParameterEncoder.encode(
             "attachment",
-            mapOf("filename" to "Important Document \\Confidential\\.pdf")
+            mapOf("filename" to "Important Document \\Confidential\\.pdf"),
         )
 
         assertThat(header).isEqualTo(
             """
             |attachment;
             | filename="Important Document \\Confidential\\.pdf"
-            """.trimMargin().crlf()
+            """.trimMargin().crlf(),
         )
     }
 
@@ -47,7 +47,7 @@ class MimeParameterEncoderTest {
             """
             |attachment;
             | filename*=UTF-8''%C3%9Cbergr%C3%B6%C3%9Fentr%C3%A4ger.dat
-            """.trimMargin().crlf()
+            """.trimMargin().crlf(),
         )
     }
 
@@ -57,8 +57,8 @@ class MimeParameterEncoderTest {
             "attachment",
             mapOf(
                 "filename" to "This file name is quite long and exceeds the recommended header line length " +
-                    "of 78 characters.txt"
-            )
+                    "of 78 characters.txt",
+            ),
         )
 
         // For now this is encoded like parameters that contain non-ASCII characters. However we could use
@@ -73,7 +73,7 @@ class MimeParameterEncoderTest {
             | filename*0*=UTF-8''This%20file%20name%20is%20quite%20long%20and%20exceeds%20;
             | filename*1*=the%20recommended%20header%20line%20length%20of%2078%20character;
             | filename*2*=s.txt
-            """.trimMargin().crlf()
+            """.trimMargin().crlf(),
         )
     }
 
@@ -81,7 +81,7 @@ class MimeParameterEncoderTest {
     fun longParameterValueWithNonAsciiCharacters() {
         val header = MimeParameterEncoder.encode(
             "attachment",
-            mapOf("filename" to "üüüüüüüüüüüüüüüüüüüüüü.txt", "size" to "54321")
+            mapOf("filename" to "üüüüüüüüüüüüüüüüüüüüüü.txt", "size" to "54321"),
         )
 
         assertThat(header).isEqualTo(
@@ -91,7 +91,7 @@ class MimeParameterEncoderTest {
             | filename*1*=%C3%BC%C3%BC%C3%BC%C3%BC%C3%BC%C3%BC%C3%BC%C3%BC%C3%BC%C3%BC;
             | filename*2*=%C3%BC%C3%BC%C3%BC.txt;
             | size=54321
-            """.trimMargin().crlf()
+            """.trimMargin().crlf(),
         )
     }
 
@@ -99,14 +99,14 @@ class MimeParameterEncoderTest {
     fun parameterValueWithControlCharacter() {
         val header = MimeParameterEncoder.encode(
             "value",
-            mapOf("something" to "foo\u0000bar")
+            mapOf("something" to "foo\u0000bar"),
         )
 
         assertThat(header).isEqualTo(
             """
             |value;
             | something*=UTF-8''foo%00bar
-            """.trimMargin().crlf()
+            """.trimMargin().crlf(),
         )
     }
 
@@ -118,8 +118,8 @@ class MimeParameterEncoderTest {
                 "token" to "foobar",
                 "quoted" to "something containing spaces",
                 "non-ascii" to "Grüße",
-                "long" to "one~two~three~four~five~six~seven~eight~nine~ten~eleven~twelve~thirteen~fourteen~fifteen"
-            )
+                "long" to "one~two~three~four~five~six~seven~eight~nine~ten~eleven~twelve~thirteen~fourteen~fifteen",
+            ),
         )
 
         assertThat(header).isEqualTo(
@@ -130,7 +130,7 @@ class MimeParameterEncoderTest {
             | non-ascii*=UTF-8''Gr%C3%BC%C3%9Fe;
             | long*0*=UTF-8''one~two~three~four~five~six~seven~eight~nine~ten~eleven~twelv;
             | long*1*=e~thirteen~fourteen~fifteen
-            """.trimMargin().crlf()
+            """.trimMargin().crlf(),
         )
     }
 
@@ -141,8 +141,8 @@ class MimeParameterEncoderTest {
             mapOf(
                 "param1" to "*'%",
                 "param2" to "=*'%",
-                "param3" to "ü*'%"
-            )
+                "param3" to "ü*'%",
+            ),
         )
 
         assertThat(header).isEqualTo(
@@ -151,7 +151,7 @@ class MimeParameterEncoderTest {
             | param1=*'%;
             | param2="=*'%";
             | param3*=UTF-8''%C3%BC%2A%27%25
-            """.trimMargin().crlf()
+            """.trimMargin().crlf(),
         )
     }
 
@@ -159,7 +159,7 @@ class MimeParameterEncoderTest {
     fun overlyLongParameterName_shouldThrow() {
         MimeParameterEncoder.encode(
             "attachment",
-            mapOf("parameter_name_that_exceeds_the_line_length_recommendation_almost_on_its_own" to "foobar")
+            mapOf("parameter_name_that_exceeds_the_line_length_recommendation_almost_on_its_own" to "foobar"),
         )
     }
 }

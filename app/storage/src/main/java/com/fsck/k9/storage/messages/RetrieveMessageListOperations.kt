@@ -15,7 +15,7 @@ internal class RetrieveMessageListOperations(private val lockableDatabase: Locka
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        mapper: MessageMapper<out T?>
+        mapper: MessageMapper<out T?>,
     ): List<T> {
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
@@ -46,7 +46,7 @@ WHERE
   AND empty = 0 AND deleted = 0
 ORDER BY $sortOrder
                 """,
-                selectionArgs
+                selectionArgs,
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)
                 buildList {
@@ -65,7 +65,7 @@ ORDER BY $sortOrder
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        mapper: MessageMapper<out T?>
+        mapper: MessageMapper<out T?>,
     ): List<T> {
         val orderBy = SqlQueryBuilder.addPrefixToSelection(AGGREGATED_MESSAGES_COLUMNS, "aggregated.", sortOrder)
 
@@ -126,7 +126,7 @@ JOIN folders ON (folders.id = messages.folder_id)
 GROUP BY threads.root
 ORDER BY $orderBy
                 """,
-                selectionArgs
+                selectionArgs,
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = true)
                 buildList {
@@ -171,7 +171,7 @@ WHERE
   AND empty = 0 AND deleted = 0
 ORDER BY $sortOrder
                 """,
-                arrayOf(threadId.toString())
+                arrayOf(threadId.toString()),
             ).use { cursor ->
                 val cursorMessageAccessor = CursorMessageAccessor(cursor, includesThreadCount = false)
                 buildList {
@@ -238,5 +238,5 @@ private val AGGREGATED_MESSAGES_COLUMNS = arrayOf(
     "read",
     "flagged",
     "answered",
-    "forwarded"
+    "forwarded",
 )

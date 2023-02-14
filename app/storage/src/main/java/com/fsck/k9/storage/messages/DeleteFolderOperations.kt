@@ -5,7 +5,7 @@ import com.fsck.k9.mailstore.LockableDatabase
 
 internal class DeleteFolderOperations(
     private val lockableDatabase: LockableDatabase,
-    private val attachmentFileManager: AttachmentFileManager
+    private val attachmentFileManager: AttachmentFileManager,
 ) {
     fun deleteFolders(folderServerIds: List<String>) {
         lockableDatabase.execute(true) { db ->
@@ -29,7 +29,7 @@ JOIN message_parts ON (
 ) 
 WHERE folders.server_id = ?
             """,
-            arrayOf(folderServerId)
+            arrayOf(folderServerId),
         ).use { cursor ->
             while (cursor.moveToNext()) {
                 val messagePartId = cursor.getLong(0)

@@ -114,7 +114,7 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
     override fun moveMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String> {
         // We do just enough to simulate a successful operation on the server.
         return messageServerIds.associateWith { createNewServerId() }
@@ -123,7 +123,7 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
     override fun moveMessagesAndMarkAsRead(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String> {
         // We do just enough to simulate a successful operation on the server.
         return messageServerIds.associateWith { createNewServerId() }
@@ -132,7 +132,7 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
     override fun copyMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String> {
         // We do just enough to simulate a successful operation on the server.
         return messageServerIds.associateWith { createNewServerId() }
@@ -143,7 +143,7 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
         query: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<String> {
         throw UnsupportedOperationException("not implemented")
     }

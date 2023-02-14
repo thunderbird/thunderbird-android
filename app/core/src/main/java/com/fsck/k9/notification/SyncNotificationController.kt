@@ -9,7 +9,7 @@ import com.fsck.k9.mailstore.LocalFolder
 internal class SyncNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionBuilder: NotificationActionCreator,
-    private val resourceProvider: NotificationResourceProvider
+    private val resourceProvider: NotificationResourceProvider,
 ) {
     fun showSendingNotification(account: Account) {
         val accountName = account.displayName

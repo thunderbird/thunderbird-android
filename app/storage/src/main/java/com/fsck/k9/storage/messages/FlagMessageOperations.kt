@@ -47,7 +47,7 @@ internal class FlagMessageOperations(private val lockableDatabase: LockableDatab
         lockableDatabase.execute(true) { database ->
             performChunkedOperation(
                 arguments = messageIds,
-                argumentTransformation = Long::toString
+                argumentTransformation = Long::toString,
             ) { selectionSet, selectionArguments ->
                 database.update("messages", contentValues, "id $selectionSet", selectionArguments)
             }
@@ -69,7 +69,7 @@ internal class FlagMessageOperations(private val lockableDatabase: LockableDatab
                 "messages",
                 values,
                 "folder_id = ? AND uid = ?",
-                arrayOf(folderId.toString(), messageServerId)
+                arrayOf(folderId.toString(), messageServerId),
             )
         }
     }
@@ -82,7 +82,7 @@ internal class FlagMessageOperations(private val lockableDatabase: LockableDatab
             arrayOf(folderId.toString(), messageServerId),
             null,
             null,
-            null
+            null,
         ).use { cursor ->
             if (!cursor.moveToFirst()) error("Message not found $folderId:$messageServerId")
 
@@ -104,7 +104,7 @@ internal class FlagMessageOperations(private val lockableDatabase: LockableDatab
                 "messages",
                 values,
                 "folder_id = ? AND uid = ?",
-                arrayOf(folderId.toString(), messageServerId)
+                arrayOf(folderId.toString(), messageServerId),
             )
         }
     }

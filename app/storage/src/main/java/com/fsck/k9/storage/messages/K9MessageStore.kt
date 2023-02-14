@@ -22,7 +22,7 @@ class K9MessageStore(
     database: LockableDatabase,
     storageManager: StorageManager,
     basicPartInfoExtractor: BasicPartInfoExtractor,
-    accountUuid: String
+    accountUuid: String,
 ) : MessageStore {
     private val attachmentFileManager = AttachmentFileManager(storageManager, accountUuid)
     private val threadMessageOperations = ThreadMessageOperations()
@@ -30,7 +30,7 @@ class K9MessageStore(
         database,
         attachmentFileManager,
         basicPartInfoExtractor,
-        threadMessageOperations
+        threadMessageOperations,
     )
     private val copyMessageOperations = CopyMessageOperations(database, attachmentFileManager, threadMessageOperations)
     private val moveMessageOperations = MoveMessageOperations(database, threadMessageOperations)
@@ -107,7 +107,7 @@ class K9MessageStore(
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        messageMapper: MessageMapper<out T?>
+        messageMapper: MessageMapper<out T?>,
     ): List<T> {
         return retrieveMessageListOperations.getMessages(selection, selectionArgs, sortOrder, messageMapper)
     }
@@ -116,7 +116,7 @@ class K9MessageStore(
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        messageMapper: MessageMapper<out T?>
+        messageMapper: MessageMapper<out T?>,
     ): List<T> {
         return retrieveMessageListOperations.getThreadedMessages(selection, selectionArgs, sortOrder, messageMapper)
     }
@@ -160,7 +160,7 @@ class K9MessageStore(
     override fun <T> getDisplayFolders(
         displayMode: FolderMode,
         outboxFolderId: Long?,
-        mapper: FolderMapper<T>
+        mapper: FolderMapper<T>,
     ): List<T> {
         return retrieveFolderOperations.getDisplayFolders(displayMode, outboxFolderId, mapper)
     }

@@ -1,7 +1,7 @@
 package com.fsck.k9.cache
 
 internal class InMemoryCache<KEY : Any, VALUE : Any>(
-    private val cache: MutableMap<KEY, VALUE> = mutableMapOf()
+    private val cache: MutableMap<KEY, VALUE> = mutableMapOf(),
 ) : Cache<KEY, VALUE> {
     override fun get(key: KEY): VALUE? {
         return cache[key]

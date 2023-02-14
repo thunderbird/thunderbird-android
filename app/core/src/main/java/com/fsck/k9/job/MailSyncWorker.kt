@@ -15,7 +15,7 @@ class MailSyncWorker(
     private val messagingController: MessagingController,
     private val preferences: Preferences,
     context: Context,
-    parameters: WorkerParameters
+    parameters: WorkerParameters,
 ) : Worker(context, parameters) {
 
     override fun doWork(): Result {

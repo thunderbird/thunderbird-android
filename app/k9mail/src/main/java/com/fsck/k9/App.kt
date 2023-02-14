@@ -138,8 +138,8 @@ class App : Application(), WorkManagerConfiguration.Provider {
                 MessageCompose::class.java,
                 LauncherShortcuts::class.java,
                 UnreadWidgetProvider::class.java,
-                MessageListWidgetProvider::class.java
-            )
+                MessageListWidgetProvider::class.java,
+            ),
         )
     }
 }

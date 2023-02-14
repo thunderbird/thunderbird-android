@@ -4,5 +4,5 @@ data class JmapConfig(
     val username: String,
     val password: String,
     val baseUrl: String?,
-    val accountId: String
+    val accountId: String,
 )

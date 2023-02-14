@@ -9,7 +9,7 @@ import com.fsck.k9.widget.unread.UnreadWidgetRepository.Companion.PREF_VERSION_K
 
 internal class UnreadWidgetMigrations(
     private val accountRepository: Preferences,
-    private val folderRepository: FolderRepository
+    private val folderRepository: FolderRepository,
 ) {
     fun upgradePreferences(preferences: SharedPreferences, version: Int) {
         if (version < 2) rewriteFolderNameToFolderId(preferences)

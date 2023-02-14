@@ -2,7 +2,7 @@ package com.fsck.k9.mail
 
 class MimeType private constructor(
     val type: String,
-    val subtype: String
+    val subtype: String,
 ) {
     override fun toString(): String {
         return "$type/$subtype"

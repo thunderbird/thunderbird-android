@@ -30,7 +30,7 @@ internal class RealImapFolder(
     private val internalImapStore: InternalImapStore,
     private val connectionManager: ImapConnectionManager,
     override val serverId: String,
-    private val folderNameCodec: FolderNameCodec
+    private val folderNameCodec: FolderNameCodec,
 ) : ImapFolder {
     private var uidNext = -1L
     internal var connection: ImapConnection? = null
@@ -293,7 +293,7 @@ internal class RealImapFolder(
                 Timber.i(
                     "ImapFolder.copyMessages: couldn't find remote folder '%s' for %s",
                     escapedDestinationFolderName,
-                    logId
+                    logId,
                 )
             }
 
@@ -304,7 +304,7 @@ internal class RealImapFolder(
             val imapResponses = connection!!.executeCommandWithIdSet(
                 Commands.UID_COPY,
                 escapedDestinationFolderName,
-                uids
+                uids,
             )
 
             UidCopyResponse.parse(imapResponses)?.uidMapping
@@ -379,7 +379,7 @@ internal class RealImapFolder(
         start: Int,
         end: Int,
         earliestDate: Date?,
-        listener: MessageRetrievalListener<ImapMessage>?
+        listener: MessageRetrievalListener<ImapMessage>?,
     ): List<ImapMessage> {
         return getMessages(start, end, earliestDate, false, listener)
     }
@@ -390,7 +390,7 @@ internal class RealImapFolder(
         end: Int,
         earliestDate: Date?,
         includeDeleted: Boolean,
-        listener: MessageRetrievalListener<ImapMessage>?
+        listener: MessageRetrievalListener<ImapMessage>?,
     ): List<ImapMessage> {
         if (start < 1 || end < 1 || end < start) {
             throw MessagingException(String.format(Locale.US, "Invalid message set %d %d", start, end))
@@ -405,7 +405,7 @@ internal class RealImapFolder(
             start,
             end,
             dateSearchString,
-            if (includeDeleted) "" else " NOT DELETED"
+            if (includeDeleted) "" else " NOT DELETED",
         )
 
         try {
@@ -454,7 +454,7 @@ internal class RealImapFolder(
             "SEARCH %d:%d%s NOT DELETED",
             startIndex,
             endIndex,
-            dateSearchString
+            dateSearchString,
         )
         val imapResponses = executeSimpleCommand(command)
 
@@ -466,7 +466,7 @@ internal class RealImapFolder(
     internal fun getMessages(
         mesgSeqs: Set<Long>,
         includeDeleted: Boolean,
-        listener: MessageRetrievalListener<ImapMessage>?
+        listener: MessageRetrievalListener<ImapMessage>?,
     ): List<ImapMessage> {
         checkOpen()
 
@@ -499,7 +499,7 @@ internal class RealImapFolder(
 
     private fun getMessages(
         searchResponse: SearchResponse,
-        listener: MessageRetrievalListener<ImapMessage>?
+        listener: MessageRetrievalListener<ImapMessage>?,
     ): List<ImapMessage> {
         // Sort the uids in numerically decreasing order
         // By doing it in decreasing order, we ensure newest messages are dealt with first
@@ -521,7 +521,7 @@ internal class RealImapFolder(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
         listener: FetchListener?,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     ) {
         if (messages.isEmpty()) {
             return
@@ -544,7 +544,7 @@ internal class RealImapFolder(
             fetchFields.add(
                 "BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc bcc " +
                     "reply-to message-id references in-reply-to list-unsubscribe sender " +
-                    K9MailLib.IDENTITY_HEADER + " " + K9MailLib.CHAT_HEADER + ")]"
+                    K9MailLib.IDENTITY_HEADER + " " + K9MailLib.CHAT_HEADER + ")]",
             )
         }
 
@@ -637,7 +637,7 @@ internal class RealImapFolder(
         message: ImapMessage,
         part: Part,
         bodyFactory: BodyFactory,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     ) {
         checkOpen()
 
@@ -971,14 +971,14 @@ internal class RealImapFolder(
                 val escapedFolderName = ImapUtility.encodeString(encodeFolderName)
                 val combinedFlags = ImapUtility.combineFlags(
                     message.flags,
-                    canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
+                    canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED),
                 )
                 val command = String.format(
                     Locale.US,
                     "APPEND %s (%s) {%d}",
                     escapedFolderName,
                     combinedFlags,
-                    messageSize
+                    messageSize,
                 )
                 connection!!.sendCommand(command, false)
 
@@ -1107,7 +1107,7 @@ internal class RealImapFolder(
                 "%s 1:* %sFLAGS.SILENT (%s)",
                 Commands.UID_STORE,
                 if (value) "+" else "-",
-                combinedFlags
+                combinedFlags,
             )
 
             executeSimpleCommand(command)
@@ -1174,7 +1174,7 @@ internal class RealImapFolder(
         queryString: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<ImapMessage> {
         try {
             open(OpenMode.READ_ONLY)
@@ -1218,5 +1218,5 @@ internal class RealImapFolder(
 
 enum class OpenMode {
     READ_WRITE,
-    READ_ONLY
+    READ_ONLY,
 }

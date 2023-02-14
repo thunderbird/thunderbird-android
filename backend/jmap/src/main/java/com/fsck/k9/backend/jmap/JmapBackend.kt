@@ -20,7 +20,7 @@ import rs.ltt.jmap.common.method.call.core.EchoMethodCall
 class JmapBackend(
     backendStorage: BackendStorage,
     okHttpClient: OkHttpClient,
-    config: JmapConfig
+    config: JmapConfig,
 ) : Backend {
     private val httpAuthentication = config.toHttpAuthentication()
     private val jmapClient = createJmapClient(config, httpAuthentication)
@@ -87,7 +87,7 @@ class JmapBackend(
     override fun moveMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         commandMove.moveMessages(targetFolderServerId, messageServerIds)
         return messageServerIds.associateWith { it }
@@ -101,7 +101,7 @@ class JmapBackend(
     override fun copyMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         commandMove.copyMessages(targetFolderServerId, messageServerIds)
         return messageServerIds.associateWith { it }
@@ -112,7 +112,7 @@ class JmapBackend(
         query: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<String> {
         throw UnsupportedOperationException("not implemented")
     }

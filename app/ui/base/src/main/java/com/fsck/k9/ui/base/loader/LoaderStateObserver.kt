@@ -18,7 +18,7 @@ fun <T> LiveData<LoaderState<T>>.observeLoading(
     loadingView: View,
     errorView: View,
     dataView: View,
-    displayData: (T) -> Unit
+    displayData: (T) -> Unit,
 ) {
     observe(owner, LoaderStateObserver(loadingView, errorView, dataView, displayData))
 }
@@ -27,7 +27,7 @@ private class LoaderStateObserver<T>(
     private val loadingView: View,
     private val errorView: View,
     private val dataView: View,
-    private val displayData: (T) -> Unit
+    private val displayData: (T) -> Unit,
 ) : Observer<LoaderState<T>> {
     private val allViews = setOf(loadingView, errorView, dataView)
 

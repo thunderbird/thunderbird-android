@@ -11,7 +11,7 @@ val messageListUiModule = module {
             preferences = get(),
             localStoreProvider = get(),
             messageListRepository = get(),
-            messageHelper = get()
+            messageHelper = get(),
         )
     }
     factory {

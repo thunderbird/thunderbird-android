@@ -90,7 +90,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
             arrayOf(folderType, excludeFolderId.toString()),
             null,
             null,
-            null
+            null,
         ).use { cursor ->
             cursor.map { cursor.getLong(0) }
         }

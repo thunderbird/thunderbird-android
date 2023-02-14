@@ -5,7 +5,7 @@ import java.util.ArrayDeque
 class TextToHtml private constructor(
     private val text: CharSequence,
     private val html: StringBuilder,
-    private val retainOriginalWhitespace: Boolean
+    private val retainOriginalWhitespace: Boolean,
 ) {
     fun appendAsHtmlFragment() {
         appendHtmlPrefix()
@@ -29,7 +29,7 @@ class TextToHtml private constructor(
             if (modification.endIndex > modificationStack.peek()?.endIndex ?: Int.MAX_VALUE) {
                 error(
                     "HtmlModification $modification must be fully contained within " +
-                        "outer HtmlModification ${modificationStack.peek()}"
+                        "outer HtmlModification ${modificationStack.peek()}",
                 )
             }
 

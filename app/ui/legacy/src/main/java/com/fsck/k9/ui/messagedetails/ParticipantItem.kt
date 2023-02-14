@@ -13,7 +13,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 internal class ParticipantItem(
     private val contactPictureLoader: ContactPictureLoader,
     private val showContactsPicture: Boolean,
-    val participant: Participant
+    val participant: Participant,
 ) : AbstractItem<ParticipantItem.ViewHolder>() {
     override val type: Int = R.id.message_details_participant
     override val layoutRes = R.layout.message_details_participant_item

@@ -9,7 +9,7 @@ val accountModule = module {
             messagingController = get(),
             backendManager = get(),
             localKeyStoreManager = get(),
-            preferences = get()
+            preferences = get(),
         )
     }
     factory { BackgroundAccountRemover(get()) }

@@ -6,7 +6,7 @@ import com.fsck.k9.autodiscovery.api.DiscoveryResults
 class ThunderbirdDiscovery(
     private val urlProvider: ThunderbirdAutoconfigUrlProvider,
     private val fetcher: ThunderbirdAutoconfigFetcher,
-    private val parser: ThunderbirdAutoconfigParser
+    private val parser: ThunderbirdAutoconfigParser,
 ) : ConnectionSettingsDiscovery {
 
     override fun discover(email: String): DiscoveryResults? {

@@ -51,7 +51,7 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
         context.resources.getQuantityString(
             R.plurals.notification_new_messages_title,
             newMessagesCount,
-            newMessagesCount
+            newMessagesCount,
         )
 
     override fun additionalMessages(overflowMessagesCount: Int, accountName: String): String =

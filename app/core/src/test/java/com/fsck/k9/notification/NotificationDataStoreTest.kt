@@ -237,7 +237,7 @@ class NotificationDataStoreTest : RobolectricTest() {
             sender = "irrelevant",
             subject = "irrelevant",
             preview = "irrelevant",
-            summary = "irrelevant"
+            summary = "irrelevant",
         )
     }
 }

@@ -20,7 +20,7 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
         return getFolder(
             selection = "id = ?",
             selectionArguments = arrayOf(folderId.toString()),
-            mapper = mapper
+            mapper = mapper,
         )
     }
 
@@ -28,7 +28,7 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
         return getFolder(
             selection = "server_id = ?",
             selectionArguments = arrayOf(folderServerId),
-            mapper = mapper
+            mapper = mapper,
         )
     }
 
@@ -41,7 +41,7 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
                 selectionArguments,
                 null,
                 null,
-                null
+                null,
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     val cursorFolderAccessor = CursorFolderAccessor(cursor)
@@ -127,7 +127,7 @@ $displayModeSelection
                 arrayOf(folderServerId),
                 null,
                 null,
-                null
+                null,
             ).use { cursor ->
                 if (cursor.moveToFirst()) cursor.getLong(0) else null
             }
@@ -143,7 +143,7 @@ $displayModeSelection
                 arrayOf(folderId.toString()),
                 null,
                 null,
-                null
+                null,
             ).use { cursor ->
                 if (cursor.moveToFirst()) cursor.getString(0) else null
             }
@@ -154,7 +154,7 @@ $displayModeSelection
         return lockableDatabase.execute(false) { db ->
             db.rawQuery(
                 "SELECT COUNT(id) FROM messages WHERE empty = 0 AND deleted = 0 AND folder_id = ?",
-                arrayOf(folderId.toString())
+                arrayOf(folderId.toString()),
             ).use { cursor ->
                 if (cursor.moveToFirst()) cursor.getInt(0) else 0
             }
@@ -165,7 +165,7 @@ $displayModeSelection
         return lockableDatabase.execute(false) { db ->
             db.rawQuery(
                 "SELECT COUNT(id) FROM messages WHERE empty = 0 AND deleted = 0 AND read = 0 AND folder_id = ?",
-                arrayOf(folderId.toString())
+                arrayOf(folderId.toString()),
             ).use { cursor ->
                 if (cursor.moveToFirst()) cursor.getInt(0) else 0
             }
@@ -280,5 +280,5 @@ private val FOLDER_COLUMNS = arrayOf(
     "push_class",
     "visible_limit",
     "more_messages",
-    "last_updated"
+    "last_updated",
 )

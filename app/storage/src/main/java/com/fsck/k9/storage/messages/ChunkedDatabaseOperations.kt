@@ -4,7 +4,7 @@ internal fun <T> performChunkedOperation(
     arguments: Collection<T>,
     argumentTransformation: (T) -> String,
     chunkSize: Int = 500,
-    operation: (selectionSet: String, selectionArguments: Array<String>) -> Unit
+    operation: (selectionSet: String, selectionArguments: Array<String>) -> Unit,
 ) {
     require(arguments.isNotEmpty()) { "'arguments' must not be empty" }
     require(chunkSize in 1..1000) { "'chunkSize' needs to be in 1..1000" }

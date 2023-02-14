@@ -60,7 +60,7 @@ class SettingsImportFragment : Fragment() {
             addEventHook(
                 ImportListItemClickEvent { position ->
                     viewModel.onSettingsListItemClicked(position)
-                }
+                },
             )
         }
 
@@ -171,7 +171,7 @@ class SettingsImportFragment : Fragment() {
     private fun startAuthorization(action: Action.StartAuthorization) {
         val intent = OAuthFlowActivity.buildLaunchIntent(
             context = requireContext(),
-            accountUuid = action.accountUuid
+            accountUuid = action.accountUuid,
         )
 
         startActivityForResult(intent, REQUEST_AUTHORIZATION)
@@ -186,7 +186,7 @@ class SettingsImportFragment : Fragment() {
             action.inputOutgoingServerPassword,
             action.outgoingServerName,
             targetFragment = this,
-            requestCode = REQUEST_PASSWORD_PROMPT
+            requestCode = REQUEST_PASSWORD_PROMPT,
         )
         dialogFragment.show(requireFragmentManager(), null)
     }

@@ -16,7 +16,7 @@ import com.mikepenz.fastadapter.listeners.TouchEventHook
 
 internal class AccountItem(
     val account: Account,
-    override var isDraggable: Boolean
+    override var isDraggable: Boolean,
 ) : AbstractItem<AccountItem.ViewHolder>(), IDraggable {
     override var identifier = 200L + account.accountNumber
 
@@ -62,7 +62,7 @@ internal class DragHandleTouchEvent(val action: (position: Int) -> Unit) : Touch
         event: MotionEvent,
         position: Int,
         fastAdapter: FastAdapter<AccountItem>,
-        item: AccountItem
+        item: AccountItem,
     ): Boolean {
         return if (event.action == MotionEvent.ACTION_DOWN) {
             action(position)

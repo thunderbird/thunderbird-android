@@ -34,7 +34,7 @@ class NewMailNotificationManagerTest {
         BaseNotificationDataCreator(),
         SingleMessageNotificationDataCreator(),
         SummaryNotificationDataCreator(SingleMessageNotificationDataCreator()),
-        clock
+        clock,
     )
 
     @Test
@@ -44,7 +44,7 @@ class NewMailNotificationManagerTest {
             subject = "subject",
             preview = "preview",
             summary = "summary",
-            messageUid = "msg-1"
+            messageUid = "msg-1",
         )
 
         val result = manager.addNewMailNotification(account, message, silent = false)
@@ -56,8 +56,8 @@ class NewMailNotificationManagerTest {
                 sender = "sender",
                 subject = "subject",
                 preview = "preview",
-                summary = "summary"
-            )
+                summary = "summary",
+            ),
         )
         assertThat(result.summaryNotificationData).isInstanceOf(SummarySingleNotificationData::class.java)
         val summaryNotificationData = result.summaryNotificationData as SummarySingleNotificationData
@@ -71,14 +71,14 @@ class NewMailNotificationManagerTest {
             subject = "Hi Bob",
             preview = "How are you?",
             summary = "Alice Hi Bob",
-            messageUid = "msg-1"
+            messageUid = "msg-1",
         )
         val messageTwo = addMessageToNotificationContentCreator(
             sender = "Zoe",
             subject = "Meeting",
             preview = "We need to talk",
             summary = "Zoe Meeting",
-            messageUid = "msg-2"
+            messageUid = "msg-2",
         )
         manager.addNewMailNotification(account, messageOne, silent = false)
         val timestamp = TIMESTAMP + 1000
@@ -93,8 +93,8 @@ class NewMailNotificationManagerTest {
                 sender = "Zoe",
                 subject = "Meeting",
                 preview = "We need to talk",
-                summary = "Zoe Meeting"
-            )
+                summary = "Zoe Meeting",
+            ),
         )
         assertThat(result.baseNotificationData.newMessagesCount).isEqualTo(2)
         assertThat(result.summaryNotificationData).isInstanceOf(SummaryInboxNotificationData::class.java)
@@ -103,8 +103,8 @@ class NewMailNotificationManagerTest {
         assertThat(summaryNotificationData.messageReferences).isEqualTo(
             listOf(
                 createMessageReference("msg-2"),
-                createMessageReference("msg-1")
-            )
+                createMessageReference("msg-1"),
+            ),
         )
         assertThat(summaryNotificationData.additionalMessagesCount).isEqualTo(0)
         assertThat(summaryNotificationData.isSilent).isFalse()
@@ -118,7 +118,7 @@ class NewMailNotificationManagerTest {
             subject = "Another one",
             preview = "Are you tired of me yet?",
             summary = "Alice Another one",
-            messageUid = "msg-x"
+            messageUid = "msg-x",
         )
 
         val result = manager.addNewMailNotification(account, message, silent = false)
@@ -145,7 +145,7 @@ class NewMailNotificationManagerTest {
             subject = "Another one",
             preview = "Are you tired of me yet?",
             summary = "Alice Another one",
-            messageUid = "msg-x"
+            messageUid = "msg-x",
         )
         manager.addNewMailNotification(account, message, silent = false)
 
@@ -163,7 +163,7 @@ class NewMailNotificationManagerTest {
             subject = "Hello",
             preview = "How are you?",
             summary = "Alice Hello",
-            messageUid = "msg-1"
+            messageUid = "msg-1",
         )
         manager.addNewMailNotification(account, message, silent = false)
 
@@ -174,7 +174,7 @@ class NewMailNotificationManagerTest {
         assertNotNull(result) { data ->
             assertThat(data.cancelNotificationIds).containsExactly(
                 NotificationIds.getNewMailSummaryNotificationId(account),
-                NotificationIds.getSingleMessageNotificationId(account, 0)
+                NotificationIds.getSingleMessageNotificationId(account, 0),
             )
             assertThat(data.singleNotificationData).isEmpty()
             assertThat(data.summaryNotificationData).isNull()
@@ -188,7 +188,7 @@ class NewMailNotificationManagerTest {
             subject = "One",
             preview = "preview",
             summary = "Alice One",
-            messageUid = "msg-1"
+            messageUid = "msg-1",
         )
         manager.addNewMailNotification(account, messageOne, silent = false)
         val messageTwo = addMessageToNotificationContentCreator(
@@ -196,7 +196,7 @@ class NewMailNotificationManagerTest {
             subject = "Two",
             preview = "preview",
             summary = "Alice Two",
-            messageUid = "msg-2"
+            messageUid = "msg-2",
         )
         val dataTwo = manager.addNewMailNotification(account, messageTwo, silent = true)
         assertNotNull(dataTwo)
@@ -206,7 +206,7 @@ class NewMailNotificationManagerTest {
             subject = "Three",
             preview = "preview",
             summary = "Alice Three",
-            messageUid = "msg-3"
+            messageUid = "msg-3",
         )
         manager.addNewMailNotification(account, messageThree, silent = true)
 
@@ -224,8 +224,8 @@ class NewMailNotificationManagerTest {
             assertThat(summaryNotificationData.messageReferences).isEqualTo(
                 listOf(
                     createMessageReference("msg-3"),
-                    createMessageReference("msg-1")
-                )
+                    createMessageReference("msg-1"),
+                ),
             )
         }
     }
@@ -237,7 +237,7 @@ class NewMailNotificationManagerTest {
             subject = "Another one",
             preview = "Are you tired of me yet?",
             summary = "Alice Another one",
-            messageUid = "msg-restore"
+            messageUid = "msg-restore",
         )
         manager.addNewMailNotification(account, message, silent = false)
         addMaximumNumberOfNotifications()
@@ -260,8 +260,8 @@ class NewMailNotificationManagerTest {
                     sender = "Alice",
                     subject = "Another one",
                     preview = "Are you tired of me yet?",
-                    summary = "Alice Another one"
-                )
+                    summary = "Alice Another one",
+                ),
             )
         }
     }
@@ -282,7 +282,7 @@ class NewMailNotificationManagerTest {
             subject = "Subject",
             summary = "Summary",
             preview = "Preview",
-            messageUid = "uid-1"
+            messageUid = "uid-1",
         )
 
         val result = manager.restoreNewMailNotifications(account)
@@ -302,8 +302,8 @@ class NewMailNotificationManagerTest {
                     sender = "Sender",
                     subject = "Subject",
                     preview = "Preview",
-                    summary = "Summary"
-                )
+                    summary = "Summary",
+                ),
             )
 
             assertThat(data.summaryNotificationData).isInstanceOf(SummarySingleNotificationData::class.java)
@@ -315,8 +315,8 @@ class NewMailNotificationManagerTest {
                     sender = "Sender",
                     subject = "Subject",
                     preview = "Preview",
-                    summary = "Summary"
-                )
+                    summary = "Summary",
+                ),
             )
         }
     }
@@ -331,7 +331,7 @@ class NewMailNotificationManagerTest {
             subject = "inactive",
             summary = "inactive",
             preview = "inactive",
-            messageUid = "uid-inactive"
+            messageUid = "uid-inactive",
         )
 
         val result = manager.restoreNewMailNotifications(account)
@@ -363,7 +363,7 @@ class NewMailNotificationManagerTest {
                 subject = "subject",
                 preview = "preview",
                 summary = "summary",
-                messageUid = "msg-$index"
+                messageUid = "msg-$index",
             )
             manager.addNewMailNotification(account, message, silent = true)
         }
@@ -374,7 +374,7 @@ class NewMailNotificationManagerTest {
         subject: String,
         preview: String,
         summary: String,
-        messageUid: String
+        messageUid: String,
     ): LocalMessage {
         val message = mock<LocalMessage>()
 
@@ -385,7 +385,7 @@ class NewMailNotificationManagerTest {
                     sender,
                     subject,
                     preview,
-                    summary
+                    summary,
                 )
         }
 
@@ -399,7 +399,7 @@ class NewMailNotificationManagerTest {
         subject: String,
         preview: String,
         summary: String,
-        messageUid: String
+        messageUid: String,
     ) {
         val message = mock<LocalMessage>()
 
@@ -413,7 +413,7 @@ class NewMailNotificationManagerTest {
                     sender,
                     subject,
                     preview,
-                    summary
+                    summary,
                 )
         }
     }
@@ -427,7 +427,7 @@ class NewMailNotificationManagerTest {
                 subject = "irrelevant",
                 preview = "irrelevant",
                 summary = "irrelevant",
-                messageUid = "uid-$index"
+                messageUid = "uid-$index",
             )
         }
     }
@@ -461,7 +461,7 @@ class NewMailNotificationManagerTest {
             notificationStoreProvider,
             localStoreProvider,
             messageStoreManager,
-            notificationContentCreator
+            notificationContentCreator,
         )
     }
 }

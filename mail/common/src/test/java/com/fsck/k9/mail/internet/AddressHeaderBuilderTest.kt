@@ -20,7 +20,7 @@ class AddressHeaderBuilderTest {
     fun createHeaderValue_withTwoAddressesThatFitOnSingleLine() {
         val addresses = arrayOf(
             Address("one@domain.example"),
-            Address("two@domain.example")
+            Address("two@domain.example"),
         )
 
         val headerValue = AddressHeaderBuilder.createHeaderValue(addresses)
@@ -35,7 +35,7 @@ class AddressHeaderBuilderTest {
             Address("two+because.i.can@this.is.quite.some.domain.example", "Person \"Long Email Address\" Two"),
             Address("three@domain.example", "Person Three"),
             Address("four@domain.example", "Person Four"),
-            Address("five@domain.example", "Person Five")
+            Address("five@domain.example", "Person Five"),
         )
 
         val headerValue = AddressHeaderBuilder.createHeaderValue(addresses)
@@ -47,7 +47,7 @@ class AddressHeaderBuilderTest {
             | Person Three <three@domain.example>, Person Four <four@domain.example>,
             | Person Five <five@domain.example>
             """.trimMargin().crlf(),
-            headerValue
+            headerValue,
         )
     }
 

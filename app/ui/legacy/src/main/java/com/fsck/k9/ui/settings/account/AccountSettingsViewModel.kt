@@ -20,7 +20,7 @@ class AccountSettingsViewModel(
     private val accountManager: AccountManager,
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
-    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
     val accounts = accountManager.getAccountsFlow().asLiveData()
     private var accountUuid: String? = null
@@ -72,7 +72,7 @@ class AccountSettingsViewModel(
                 val folders = folderRepository.getRemoteFolders(account)
                     .sortedWith(
                         compareByDescending<RemoteFolder> { it.type == FolderType.INBOX }
-                            .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name }
+                            .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name },
                     )
 
                 val automaticSpecialFolders = getAutomaticSpecialFolders(folders)
@@ -88,12 +88,12 @@ class AccountSettingsViewModel(
             FolderType.DRAFTS to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.DRAFTS),
             FolderType.SENT to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.SENT),
             FolderType.SPAM to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.SPAM),
-            FolderType.TRASH to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.TRASH)
+            FolderType.TRASH to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.TRASH),
         )
     }
 }
 
 data class RemoteFolderInfo(
     val folders: List<RemoteFolder>,
-    val automaticSpecialFolders: Map<FolderType, RemoteFolder?>
+    val automaticSpecialFolders: Map<FolderType, RemoteFolder?>,
 )

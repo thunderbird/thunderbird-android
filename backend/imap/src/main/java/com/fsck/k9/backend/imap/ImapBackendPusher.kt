@@ -30,7 +30,7 @@ internal class ImapBackendPusher(
     private val pushConfigProvider: ImapPushConfigProvider,
     private val callback: BackendPusherCallback,
     private val accountName: String,
-    backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
+    backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BackendPusher, ImapPusherCallback {
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
     private val lock = Any()
@@ -178,7 +178,7 @@ internal class ImapBackendPusher(
             this,
             accountName,
             folderServerId,
-            idleRefreshTimeoutProvider
+            idleRefreshTimeoutProvider,
         )
     }
 

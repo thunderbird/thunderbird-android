@@ -27,9 +27,9 @@ constructor(
     defStyleAttr: Int = TypedArrayUtils.getAttr(
         context,
         androidx.preference.R.attr.dialogPreferenceStyle,
-        android.R.attr.dialogPreferenceStyle
+        android.R.attr.dialogPreferenceStyle,
     ),
-    defStyleRes: Int = 0
+    defStyleRes: Int = 0,
 ) : ListPreference(context, attrs, defStyleAttr, defStyleRes), KoinComponent {
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(context) }
     private val noFolderSelectedName = context.getString(R.string.account_settings_no_folder_selected).italicize()
@@ -57,7 +57,7 @@ constructor(
 
         automaticFolderOption = context.getString(
             R.string.account_settings_automatic_special_folder,
-            automaticFolderName
+            automaticFolderName,
         ).italicize()
 
         entries = (listOf(automaticFolderOption) + noFolderSelectedName + getFolderDisplayNames(folders)).toTypedArray()

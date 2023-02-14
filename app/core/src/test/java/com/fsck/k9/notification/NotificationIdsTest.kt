@@ -88,7 +88,7 @@ class NotificationIdsTest {
         val notificationIds = NotificationIds.getAllMessageNotificationIds(account)
 
         assertThat(notificationIds).containsExactlyElementsIn(
-            getNewMessageNotificationIds(account) + NotificationIds.getNewMailSummaryNotificationId(account)
+            getNewMessageNotificationIds(account) + NotificationIds.getNewMailSummaryNotificationId(account),
         )
     }
 
@@ -104,7 +104,7 @@ class NotificationIdsTest {
             NotificationIds.getAuthenticationErrorNotificationId(account, true),
             NotificationIds.getAuthenticationErrorNotificationId(account, false),
             NotificationIds.getFetchingMailNotificationId(account),
-            NotificationIds.getNewMailSummaryNotificationId(account)
+            NotificationIds.getNewMailSummaryNotificationId(account),
         ) + getNewMessageNotificationIds(account)
     }
 

@@ -21,9 +21,9 @@ constructor(
     defStyleAttr: Int = TypedArrayUtils.getAttr(
         context,
         androidx.preference.R.attr.preferenceStyle,
-        android.R.attr.preferenceStyle
+        android.R.attr.preferenceStyle,
     ),
-    defStyleRes: Int = 0
+    defStyleRes: Int = 0,
 ) : ListPreference(context, attrs, defStyleAttr, defStyleRes) {
     internal var isVibrationEnabled: Boolean = false
         private set
@@ -76,7 +76,7 @@ constructor(
         init {
             PreferenceFragmentCompat.registerPreferenceFragment(
                 VibrationPreference::class.java,
-                VibrationDialogFragment::class.java
+                VibrationDialogFragment::class.java,
             )
         }
 

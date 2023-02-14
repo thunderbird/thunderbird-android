@@ -130,7 +130,7 @@ class MessageViewFragment :
             context = requireContext().applicationContext,
             loaderManager = loaderManager,
             fragmentManager = parentFragmentManager,
-            callback = messageLoaderCallbacks
+            callback = messageLoaderCallbacks,
         )
 
         setFragmentResultListener(MessageDetailsFragment.FRAGMENT_RESULT_KEY, ::onMessageDetailsResult)
@@ -339,7 +339,7 @@ class MessageViewFragment :
         val handledByCryptoPresenter = messageCryptoPresenter.maybeHandleShowMessage(
             messageTopView,
             account,
-            messageViewInfo
+            messageViewInfo,
         )
 
         if (!handledByCryptoPresenter) {
@@ -463,7 +463,7 @@ class MessageViewFragment :
 
         fragmentListener.onReply(
             messageReference = message.makeMessageReference(),
-            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply
+            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply,
         )
     }
 
@@ -472,7 +472,7 @@ class MessageViewFragment :
 
         fragmentListener.onReplyAll(
             messageReference = message.makeMessageReference(),
-            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply
+            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply,
         )
     }
 
@@ -481,7 +481,7 @@ class MessageViewFragment :
 
         fragmentListener.onForward(
             messageReference = message.makeMessageReference(),
-            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply
+            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply,
         )
     }
 
@@ -490,7 +490,7 @@ class MessageViewFragment :
 
         fragmentListener.onForwardAsAttachment(
             messageReference = message.makeMessageReference(),
-            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply
+            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply,
         )
     }
 
@@ -555,7 +555,7 @@ class MessageViewFragment :
             currentFolderId = messageReference.folderId,
             scrollToFolderId = account.lastSelectedFolderId,
             showDisplayableOnly = false,
-            messageReference = messageReference
+            messageReference = messageReference,
         )
 
         startActivityForResult(intent, requestCode)
@@ -679,7 +679,7 @@ class MessageViewFragment :
                     title,
                     message,
                     confirmText,
-                    cancelText
+                    cancelText,
                 )
             }
             R.id.dialog_confirm_spam -> {
@@ -692,7 +692,7 @@ class MessageViewFragment :
                     title,
                     message,
                     confirmText,
-                    cancelText
+                    cancelText,
                 )
             }
             R.id.dialog_attachment_progress -> {
@@ -826,7 +826,7 @@ class MessageViewFragment :
             fillIntent: Intent?,
             flagsMask: Int,
             flagValues: Int,
-            extraFlags: Int
+            extraFlags: Int,
         ) {
             if (requestCode == null) {
                 requireActivity().startIntentSender(intentSender, fillIntent, flagsMask, flagValues, extraFlags)
@@ -840,7 +840,7 @@ class MessageViewFragment :
                 fillIntent,
                 flagsMask,
                 flagValues,
-                extraFlags
+                extraFlags,
             )
         }
 
@@ -922,7 +922,7 @@ class MessageViewFragment :
             fillIntent: Intent?,
             flagsMask: Int,
             flagValues: Int,
-            extraFlags: Int
+            extraFlags: Int,
         ): Boolean {
             if (!isActive) return false
 
@@ -935,7 +935,7 @@ class MessageViewFragment :
                     fillIntent,
                     flagsMask,
                     flagValues,
-                    extraFlags
+                    extraFlags,
                 )
             } catch (e: SendIntentException) {
                 Timber.e(e, "Irrecoverable error calling PendingIntent!")
@@ -996,7 +996,7 @@ class MessageViewFragment :
         fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewFragment {
             return MessageViewFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
-                ARG_SHOW_ACCOUNT_CHIP to showAccountChip
+                ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
             )
         }
     }

@@ -46,8 +46,8 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
                 messageId1 to "uid1",
                 messageId2 to "uid2",
                 messageId3 to "uid3",
-                messageId4 to "uid4"
-            )
+                messageId4 to "uid4",
+            ),
         )
     }
 
@@ -91,7 +91,7 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
             read = true,
             flagged = true,
             answered = true,
-            forwarded = true
+            forwarded = true,
         )
 
         val flags = retrieveMessageOperations.getMessageFlags(folderId = 1, messageServerId = "uid1")
@@ -113,8 +113,8 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
                 Flag.X_REMOTE_COPY_STARTED,
                 Flag.X_MIGRATED_FROM_V50,
                 Flag.X_DRAFT_OPENPGP_INLINE,
-                Flag.X_SUBJECT_DECRYPTED
-            )
+                Flag.X_SUBJECT_DECRYPTED,
+            ),
         )
     }
 
@@ -139,8 +139,8 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
         assertThat(result).isEqualTo(
             mapOf(
                 "uid1" to 23L,
-                "uid3" to 42L
-            )
+                "uid3" to 42L,
+            ),
         )
     }
 
@@ -153,7 +153,7 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
                 Date: Thu, 01 Apr 2021 01:23:45 +0200
                 Subject: Test
                 Message-Id: <20210401012345.123456789A@domain.example>
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
         sqliteDatabase.createMessage(folderId = 1, uid = "uid1", messagePartId = messagePartId)
 
@@ -165,8 +165,8 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
                 Header("To", "Bob <bob@domain.example>"),
                 Header("Date", "Thu, 01 Apr 2021 01:23:45 +0200"),
                 Header("Subject", "Test"),
-                Header("Message-Id", "<20210401012345.123456789A@domain.example>")
-            )
+                Header("Message-Id", "<20210401012345.123456789A@domain.example>"),
+            ),
         )
     }
 
@@ -179,22 +179,22 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
                 Date: Thu, 01 Apr 2021 01:23:45 +0200
                 Subject: Test
                 Message-Id: <20210401012345.123456789A@domain.example>
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
         sqliteDatabase.createMessage(folderId = 1, uid = "uid1", messagePartId = messagePartId)
 
         val headers = retrieveMessageOperations.getHeaders(
             folderId = 1,
             messageServerId = "uid1",
-            headerNames = setOf("from", "to", "message-id")
+            headerNames = setOf("from", "to", "message-id"),
         )
 
         assertThat(headers).isEqualTo(
             listOf(
                 Header("From", "<alice@domain.example>"),
                 Header("To", "Bob <bob@domain.example>"),
-                Header("Message-Id", "<20210401012345.123456789A@domain.example>")
-            )
+                Header("Message-Id", "<20210401012345.123456789A@domain.example>"),
+            ),
         )
     }
 

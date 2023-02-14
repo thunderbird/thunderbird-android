@@ -80,7 +80,7 @@ class AccountSetupAccountType : K9Activity() {
             initialAccountSettings.authenticationType,
             initialAccountSettings.email,
             initialAccountSettings.password,
-            initialAccountSettings.clientCertificateAlias
+            initialAccountSettings.clientCertificateAlias,
         )
         account.incomingServerSettings = storeServer
     }
@@ -95,7 +95,7 @@ class AccountSetupAccountType : K9Activity() {
             initialAccountSettings.authenticationType,
             initialAccountSettings.email,
             initialAccountSettings.password,
-            initialAccountSettings.clientCertificateAlias
+            initialAccountSettings.clientCertificateAlias,
         )
         account.outgoingServerSettings = transportServer
     }
@@ -118,7 +118,7 @@ class AccountSetupAccountType : K9Activity() {
             context: Context,
             account: Account,
             makeDefault: Boolean,
-            initialAccountSettings: InitialAccountSettings
+            initialAccountSettings: InitialAccountSettings,
         ) {
             val intent = Intent(context, AccountSetupAccountType::class.java).apply {
                 putExtra(EXTRA_ACCOUNT, account.uuid)

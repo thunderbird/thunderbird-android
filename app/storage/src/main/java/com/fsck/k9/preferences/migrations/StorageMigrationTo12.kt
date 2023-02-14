@@ -13,7 +13,7 @@ import com.fsck.k9.preferences.migrations.migration12.WebDavStoreUriDecoder
  */
 class StorageMigrationTo12(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper
+    private val migrationsHelper: StorageMigrationsHelper,
 ) {
     private val serverSettingsSerializer = ServerSettingsSerializer()
 

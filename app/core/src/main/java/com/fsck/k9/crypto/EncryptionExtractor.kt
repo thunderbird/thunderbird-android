@@ -13,5 +13,5 @@ data class EncryptionResult(
     val attachmentCount: Int,
     val previewResult: PreviewResult = PreviewResult.encrypted(),
     val textForSearchIndex: String? = null,
-    val extraContentValues: ContentValues? = null
+    val extraContentValues: ContentValues? = null,
 )

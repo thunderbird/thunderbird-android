@@ -22,7 +22,7 @@ class ImapBackend(
     private val powerManager: PowerManager,
     private val idleRefreshManager: IdleRefreshManager,
     private val pushConfigProvider: ImapPushConfigProvider,
-    private val smtpTransport: SmtpTransport
+    private val smtpTransport: SmtpTransport,
 ) : Backend {
     private val imapSync = ImapSync(accountName, backendStorage, imapStore)
     private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage, imapStore)
@@ -93,7 +93,7 @@ class ImapBackend(
     override fun moveMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         return commandMoveOrCopyMessages.moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
     }
@@ -101,12 +101,12 @@ class ImapBackend(
     override fun moveMessagesAndMarkAsRead(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         val uidMapping = commandMoveOrCopyMessages.moveMessages(
             sourceFolderServerId,
             targetFolderServerId,
-            messageServerIds
+            messageServerIds,
         )
         if (uidMapping != null) {
             setFlag(targetFolderServerId, uidMapping.values.toList(), Flag.SEEN, true)
@@ -117,7 +117,7 @@ class ImapBackend(
     override fun copyMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         return commandMoveOrCopyMessages.copyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
     }
@@ -127,7 +127,7 @@ class ImapBackend(
         query: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<String> {
         return commandSearch.search(folderServerId, query, requiredFlags, forbiddenFlags, performFullTextSearch)
     }

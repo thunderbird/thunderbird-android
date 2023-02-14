@@ -33,7 +33,7 @@ class MessageListCacheTest {
             modules(
                 module {
                     single { mock<MessageListRepository>() }
-                }
+                },
             )
         }
     }

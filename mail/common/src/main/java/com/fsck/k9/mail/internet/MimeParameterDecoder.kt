@@ -50,7 +50,7 @@ object MimeParameterDecoder {
             value = value,
             parameters = parameters,
             ignoredParameters = duplicateParameters + ignoredParameters,
-            parserErrorIndex = parserErrorIndex
+            parserErrorIndex = parserErrorIndex,
         )
     }
 
@@ -70,7 +70,7 @@ object MimeParameterDecoder {
             value = value,
             parameters = parameters,
             ignoredParameters = duplicateParameters,
-            parserErrorIndex = parserErrorIndex
+            parserErrorIndex = parserErrorIndex,
         )
     }
 
@@ -205,7 +205,7 @@ object MimeParameterDecoder {
         parameterName: String,
         newParameterName: String,
         section: Int?,
-        parameterText: String
+        parameterText: String,
     ): ParameterSection? {
         return try {
             val charsetName = parser.readUntil(SINGLE_QUOTE)
@@ -223,7 +223,7 @@ object MimeParameterDecoder {
                     section,
                     charsetName,
                     language,
-                    data
+                    data,
                 )
             } else {
                 val encodedParameterText = parameterText.substring(parser.position())
@@ -306,5 +306,5 @@ private data class ParameterValue(val value: String, val wasToken: Boolean)
 private data class BasicParameterResults(
     val parameters: BasicParameters,
     val ignoredParameters: IgnoredParameters,
-    val parserErrorIndex: Int?
+    val parserErrorIndex: Int?,
 )

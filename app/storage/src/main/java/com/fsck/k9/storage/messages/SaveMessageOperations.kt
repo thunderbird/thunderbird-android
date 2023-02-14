@@ -41,7 +41,7 @@ internal class SaveMessageOperations(
     private val lockableDatabase: LockableDatabase,
     private val attachmentFileManager: AttachmentFileManager,
     private val partInfoExtractor: BasicPartInfoExtractor,
-    private val threadMessageOperations: ThreadMessageOperations
+    private val threadMessageOperations: ThreadMessageOperations,
 ) {
     fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
         saveMessage(folderId, messageServerId, messageData)
@@ -70,7 +70,7 @@ internal class SaveMessageOperations(
                 messageServerId,
                 existingMessageId = messageId,
                 existingRootMessagePartId = rootMessagePartId,
-                messageData
+                messageData,
             )
 
             messageId
@@ -90,7 +90,7 @@ internal class SaveMessageOperations(
                     messageServerId,
                     existingMessageId,
                     existingRootMessagePartId,
-                    messageData
+                    messageData,
                 )
 
                 existingMessageId
@@ -105,7 +105,7 @@ internal class SaveMessageOperations(
         folderId: Long,
         messageServerId: String,
         message: Message,
-        messageData: SaveMessageData
+        messageData: SaveMessageData,
     ): Long {
         val threadInfo = threadMessageOperations.doMessageThreading(database, folderId, message.toThreadHeaders())
 
@@ -116,7 +116,7 @@ internal class SaveMessageOperations(
             messageServerId,
             rootMessagePartId,
             messageData,
-            replaceMessageId = threadInfo?.messageId
+            replaceMessageId = threadInfo?.messageId,
         )
 
         if (threadInfo?.threadId == null) {
@@ -134,7 +134,7 @@ internal class SaveMessageOperations(
         messageServerId: String,
         existingMessageId: Long,
         existingRootMessagePartId: Long?,
-        messageData: SaveMessageData
+        messageData: SaveMessageData,
     ) {
         if (existingRootMessagePartId != null) {
             deleteMessagePartsAndDataFromDisk(database, existingRootMessagePartId)
@@ -147,7 +147,7 @@ internal class SaveMessageOperations(
             messageServerId,
             rootMessagePartId,
             messageData,
-            replaceMessageId = existingMessageId
+            replaceMessageId = existingMessageId,
         )
 
         createOrReplaceFulltextEntry(database, messageId, messageData)
@@ -175,7 +175,7 @@ internal class SaveMessageOperations(
         database: SQLiteDatabase,
         partContainer: PartContainer,
         rootId: Long?,
-        order: Int
+        order: Int,
     ): Long {
         val part = partContainer.part
         val values = ContentValues().apply {
@@ -192,7 +192,7 @@ internal class SaveMessageOperations(
         database: SQLiteDatabase,
         values: ContentValues,
         part: Part,
-        existingMessagePartId: Long?
+        existingMessagePartId: Long?,
     ): Long {
         val headerBytes = getHeaderBytes(part)
         values.put("mime_type", part.mimeType)
@@ -378,7 +378,7 @@ internal class SaveMessageOperations(
         messageServerId: String,
         rootMessagePartId: Long,
         messageData: SaveMessageData,
-        replaceMessageId: Long?
+        replaceMessageId: Long?,
     ): Long {
         val message = messageData.message
 
@@ -450,7 +450,7 @@ internal class SaveMessageOperations(
                 arrayOf(folderId.toString(), messageServerId),
                 null,
                 null,
-                null
+                null,
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     val messageId = cursor.getLong(0)
@@ -472,7 +472,7 @@ internal class SaveMessageOperations(
                 arrayOf(folderId.toString(), messageId.toString()),
                 null,
                 null,
-                null
+                null,
             ).use { cursor ->
                 if (!cursor.moveToFirst()) error("Local message not found $folderId:$messageId")
 
@@ -496,7 +496,7 @@ internal class SaveMessageOperations(
             arrayOf(rootMessagePartId.toString()),
             null,
             null,
-            null
+            null,
         ).use { cursor ->
             while (cursor.moveToNext()) {
                 val messagePartId = cursor.getLong(0)

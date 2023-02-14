@@ -7,7 +7,7 @@ import timber.log.Timber
 internal class DatabaseOperations(
     private val lockableDatabase: LockableDatabase,
     val storageManager: StorageManager,
-    val accountUuid: String
+    val accountUuid: String,
 ) {
     fun getSize(): Long {
         val storageProviderId = lockableDatabase.storageProviderId

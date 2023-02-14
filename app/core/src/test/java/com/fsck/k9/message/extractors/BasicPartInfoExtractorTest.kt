@@ -12,7 +12,7 @@ class BasicPartInfoExtractorTest {
     fun `extractPartInfo with 'filename' parameter in Content-Disposition header`() {
         val part = createPart(
             contentType = "application/octet-stream",
-            contentDisposition = "attachment; filename=\"attachment_name.txt\"; size=23"
+            contentDisposition = "attachment; filename=\"attachment_name.txt\"; size=23",
         )
 
         val partInfo = basicPartInfoExtractor.extractPartInfo(part)
@@ -25,7 +25,7 @@ class BasicPartInfoExtractorTest {
     fun `extractPartInfo with 'name' parameter in Content-Type header`() {
         val part = createPart(
             contentType = "image/jpeg; name=\"attachment.jpeg\"",
-            contentDisposition = "attachment; size=42"
+            contentDisposition = "attachment; size=42",
         )
 
         val partInfo = basicPartInfoExtractor.extractPartInfo(part)
@@ -58,7 +58,7 @@ class BasicPartInfoExtractorTest {
     fun `extractPartInfo with missing Content-Disposition header`() {
         val part = createPart(
             contentType = "application/octet-stream; name=\"attachment.dat\"",
-            contentDisposition = null
+            contentDisposition = null,
         )
 
         val partInfo = basicPartInfoExtractor.extractPartInfo(part)
@@ -71,7 +71,7 @@ class BasicPartInfoExtractorTest {
     fun `extractPartInfo with missing Content-Disposition header and name`() {
         val part = createPart(
             contentType = "application/octet-stream",
-            contentDisposition = null
+            contentDisposition = null,
         )
 
         val partInfo = basicPartInfoExtractor.extractPartInfo(part)
@@ -84,7 +84,7 @@ class BasicPartInfoExtractorTest {
     fun `extractPartInfo without any relevant headers`() {
         val part = createPart(
             contentType = null,
-            contentDisposition = null
+            contentDisposition = null,
         )
 
         val partInfo = basicPartInfoExtractor.extractPartInfo(part)
@@ -97,7 +97,7 @@ class BasicPartInfoExtractorTest {
     fun `extractPartInfo with invalid Content-Disposition header`() {
         val part = createPart(
             contentType = "application/octet-stream",
-            contentDisposition = "something; <invalid>"
+            contentDisposition = "something; <invalid>",
         )
 
         val partInfo = basicPartInfoExtractor.extractPartInfo(part)

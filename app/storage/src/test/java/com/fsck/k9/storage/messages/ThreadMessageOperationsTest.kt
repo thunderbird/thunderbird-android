@@ -13,7 +13,7 @@ class ThreadMessageOperationsTest : RobolectricTest() {
         val threadInfo = threadMessageOperations.doMessageThreading(
             sqliteDatabase,
             folderId = 1,
-            ThreadHeaders(messageIdHeader = "<msg001@domain.example>", inReplyToHeader = null, referencesHeader = null)
+            ThreadHeaders(messageIdHeader = "<msg001@domain.example>", inReplyToHeader = null, referencesHeader = null),
         )
 
         assertThat(threadInfo).isNull()
@@ -29,8 +29,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadHeaders(
                 messageIdHeader = "<msg002@domain.example>",
                 inReplyToHeader = "<msg001@domain.example>",
-                referencesHeader = null
-            )
+                referencesHeader = null,
+            ),
         )
 
         val threads = sqliteDatabase.readThreads()
@@ -52,8 +52,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
                 threadId = null,
                 messageId = null,
                 rootId = rootThread.id!!,
-                parentId = rootThread.id
-            )
+                parentId = rootThread.id,
+            ),
         )
     }
 
@@ -62,7 +62,7 @@ class ThreadMessageOperationsTest : RobolectricTest() {
         val messageId = sqliteDatabase.createMessage(
             folderId = 1,
             empty = false,
-            messageIdHeader = "<msg001@domain.example>"
+            messageIdHeader = "<msg001@domain.example>",
         )
         val threadId = sqliteDatabase.createThread(messageId)
 
@@ -72,8 +72,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadHeaders(
                 messageIdHeader = "<msg002@domain.example>",
                 inReplyToHeader = "<msg001@domain.example>",
-                referencesHeader = null
-            )
+                referencesHeader = null,
+            ),
         )
 
         val threads = sqliteDatabase.readThreads()
@@ -87,8 +87,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
                 threadId = null,
                 messageId = null,
                 rootId = threadId,
-                parentId = threadId
-            )
+                parentId = threadId,
+            ),
         )
     }
 
@@ -97,12 +97,12 @@ class ThreadMessageOperationsTest : RobolectricTest() {
         val messageId1 = sqliteDatabase.createMessage(
             folderId = 1,
             empty = true,
-            messageIdHeader = "<msg001@domain.example>"
+            messageIdHeader = "<msg001@domain.example>",
         )
         val messageId2 = sqliteDatabase.createMessage(
             folderId = 1,
             empty = false,
-            messageIdHeader = "<msg002@domain.example>"
+            messageIdHeader = "<msg002@domain.example>",
         )
         val threadId1 = sqliteDatabase.createThread(messageId1)
         sqliteDatabase.createThread(messageId2, root = threadId1, parent = threadId1)
@@ -113,8 +113,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadHeaders(
                 messageIdHeader = "<msg001@domain.example>",
                 inReplyToHeader = null,
-                referencesHeader = null
-            )
+                referencesHeader = null,
+            ),
         )
 
         val threads = sqliteDatabase.readThreads()
@@ -128,8 +128,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
                 threadId = threadId1,
                 messageId = messageId1,
                 rootId = threadId1,
-                parentId = null
-            )
+                parentId = null,
+            ),
         )
     }
 
@@ -138,17 +138,17 @@ class ThreadMessageOperationsTest : RobolectricTest() {
         val messageId1 = sqliteDatabase.createMessage(
             folderId = 1,
             messageIdHeader = "<msg001@domain.example>",
-            empty = true
+            empty = true,
         )
         val messageId2 = sqliteDatabase.createMessage(
             folderId = 1,
             messageIdHeader = "<msg002@domain.example>",
-            empty = true
+            empty = true,
         )
         val messageId3 = sqliteDatabase.createMessage(
             folderId = 1,
             messageIdHeader = "<msg003@domain.example>",
-            empty = false
+            empty = false,
         )
         val threadId1 = sqliteDatabase.createThread(messageId1)
         val threadId2 = sqliteDatabase.createThread(messageId2, root = threadId1, parent = threadId1)
@@ -160,8 +160,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadHeaders(
                 messageIdHeader = "<msg002@domain.example>",
                 inReplyToHeader = "<msg001@domain.example>",
-                referencesHeader = "<msg000@domain.example> <msg001@domain.example>"
-            )
+                referencesHeader = "<msg000@domain.example> <msg001@domain.example>",
+            ),
         )
 
         val threads = sqliteDatabase.readThreads()
@@ -180,8 +180,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
                 threadId = threadId2,
                 messageId = messageId2,
                 rootId = newRootThread.id!!,
-                parentId = threadId1
-            )
+                parentId = threadId1,
+            ),
         )
     }
 
@@ -190,22 +190,22 @@ class ThreadMessageOperationsTest : RobolectricTest() {
         val messageIdB = sqliteDatabase.createMessage(
             folderId = 1,
             messageIdHeader = "<msgB@domain.example>",
-            empty = true
+            empty = true,
         )
         val messageIdC = sqliteDatabase.createMessage(
             folderId = 1,
             messageIdHeader = "<msgC@domain.example>",
-            empty = false
+            empty = false,
         )
         val messageIdD = sqliteDatabase.createMessage(
             folderId = 1,
             messageIdHeader = "<msgD@domain.example>",
-            empty = true
+            empty = true,
         )
         val messageIdE = sqliteDatabase.createMessage(
             folderId = 1,
             messageIdHeader = "<msgE@domain.example>",
-            empty = false
+            empty = false,
         )
         val threadIdB = sqliteDatabase.createThread(messageIdB)
         val threadIdC = sqliteDatabase.createThread(messageIdC, root = threadIdB, parent = threadIdB)
@@ -218,8 +218,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadHeaders(
                 messageIdHeader = "<msgD@domain.example>",
                 inReplyToHeader = "<msgC@domain.example>",
-                referencesHeader = "<msgA@domain.example>"
-            )
+                referencesHeader = "<msgA@domain.example>",
+            ),
         )
 
         val threads = sqliteDatabase.readThreads()
@@ -255,8 +255,8 @@ class ThreadMessageOperationsTest : RobolectricTest() {
                 threadId = threadIdD,
                 messageId = messageIdD,
                 rootId = threadA.id!!,
-                parentId = threadIdC
-            )
+                parentId = threadIdC,
+            ),
         )
     }
 }

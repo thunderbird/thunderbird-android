@@ -36,7 +36,7 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
     @Test
     fun discover_withUnknownDomain_shouldReturnNull() {
         val connectionSettings = providersXmlDiscovery.discover(
-            "user@not.present.in.providers.xml.example"
+            "user@not.present.in.providers.xml.example",
         )
 
         assertThat(connectionSettings).isNull()
@@ -48,14 +48,14 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
             scopes = listOf("irrelevant"),
             authorizationEndpoint = "irrelevant",
             tokenEndpoint = "irrelevant",
-            redirectUri = "irrelevant"
+            redirectUri = "irrelevant",
         )
 
         return OAuthConfigurationProvider(
             configurations = mapOf(
-                listOf("imap.gmail.com", "smtp.gmail.com") to googleConfig
+                listOf("imap.gmail.com", "smtp.gmail.com") to googleConfig,
             ),
-            googleConfiguration = googleConfig
+            googleConfiguration = googleConfig,
         )
     }
 }

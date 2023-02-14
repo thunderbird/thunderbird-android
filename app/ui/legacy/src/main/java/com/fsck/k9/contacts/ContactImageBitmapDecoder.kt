@@ -14,7 +14,7 @@ import kotlin.math.max
  */
 internal class ContactImageBitmapDecoder(
     private val contactPhotoLoader: ContactPhotoLoader,
-    private val bitmapPool: BitmapPool
+    private val bitmapPool: BitmapPool,
 ) : ResourceDecoder<ContactImage, Bitmap> {
 
     override fun decode(contactImage: ContactImage, width: Int, height: Int, options: Options): Resource<Bitmap>? {

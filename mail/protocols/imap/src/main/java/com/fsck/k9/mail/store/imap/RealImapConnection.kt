@@ -46,7 +46,7 @@ internal class RealImapConnection(
     private val oauthTokenProvider: OAuth2TokenProvider?,
     override val connectionGeneration: Int,
     private val socketConnectTimeout: Int = SOCKET_CONNECT_TIMEOUT,
-    private val socketReadTimeout: Int = SOCKET_READ_TIMEOUT
+    private val socketReadTimeout: Int = SOCKET_READ_TIMEOUT,
 ) : ImapConnection {
     private var socket: Socket? = null
     private var inputStream: PeekableInputStream? = null
@@ -70,7 +70,7 @@ internal class RealImapConnection(
         } else if (stacktraceForClose != null) {
             throw IllegalStateException(
                 "open() called after close(). Check wrapped exception to see where close() was called.",
-                stacktraceForClose
+                stacktraceForClose,
             )
         }
 
@@ -320,7 +320,7 @@ internal class RealImapConnection(
                     login()
                 } else {
                     throw MessagingException(
-                        "Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled."
+                        "Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled.",
                     )
                 }
             }
@@ -513,7 +513,7 @@ internal class RealImapConnection(
     }
 
     private fun handleAuthenticationFailure(
-        negativeResponseException: NegativeImapResponseException
+        negativeResponseException: NegativeImapResponseException,
     ): MessagingException {
         val lastResponse = negativeResponseException.lastResponse
         val responseCode = ResponseCodeExtractor.getResponseCode(lastResponse)
@@ -706,14 +706,14 @@ internal class RealImapConnection(
     override fun executeCommandWithIdSet(
         commandPrefix: String,
         commandSuffix: String,
-        ids: Set<Long>
+        ids: Set<Long>,
     ): List<ImapResponse> {
         val groupedIds = IdGrouper.groupIds(ids)
         val splitCommands = ImapCommandSplitter.splitCommand(
             commandPrefix,
             commandSuffix,
             groupedIds,
-            lineLengthLimit
+            lineLengthLimit,
         )
 
         return splitCommands.flatMap { splitCommand ->
@@ -836,7 +836,7 @@ internal class RealImapConnection(
                         "After sending tag %s, got tag response from previous command %s for %s",
                         tag,
                         response,
-                        logId
+                        logId,
                     )
                 }
             }
@@ -863,7 +863,8 @@ internal class RealImapConnection(
             override fun buildInitialClientResponse(username: String, token: String): String {
                 return buildOAuthBearerInitialClientResponse(username, token)
             }
-        };
+        },
+        ;
 
         abstract val command: String
         abstract fun buildInitialClientResponse(username: String, token: String): String

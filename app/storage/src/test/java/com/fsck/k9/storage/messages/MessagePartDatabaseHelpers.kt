@@ -25,7 +25,7 @@ fun SQLiteDatabase.createMessagePart(
     epilogue: String? = null,
     boundary: String? = null,
     contentId: String? = null,
-    serverExtra: String? = null
+    serverExtra: String? = null,
 ): Long {
     val values = ContentValues().apply {
         put("type", type)
@@ -71,7 +71,7 @@ fun SQLiteDatabase.readMessageParts(): List<MessagePartEntry> {
                 epilogue = cursor.getStringOrNull("epilogue"),
                 boundary = cursor.getStringOrNull("boundary"),
                 contentId = cursor.getStringOrNull("content_id"),
-                serverExtra = cursor.getStringOrNull("server_extra")
+                serverExtra = cursor.getStringOrNull("server_extra"),
             )
         }
     }
@@ -95,7 +95,7 @@ data class MessagePartEntry(
     val epilogue: String?,
     val boundary: String?,
     val contentId: String?,
-    val serverExtra: String?
+    val serverExtra: String?,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

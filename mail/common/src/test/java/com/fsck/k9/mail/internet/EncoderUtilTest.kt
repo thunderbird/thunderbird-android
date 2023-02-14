@@ -22,7 +22,7 @@ class EncoderUtilTest {
                 "\uD83D\uDC25\uD83D\uDC26\uD83D\uDC0F\uD83D\uDC11\uD83D\uDC10",
             "=?UTF-8?B?UmU6IPCfkJXwn5C28J+QqfCfkIjwn5Cx8J+QgPCfkIHwn5Ct8J+QuQ==?= " +
                 "=?UTF-8?B?8J+QovCfkIfwn5Cw8J+Qk/CfkJTwn5Cj?= " +
-                "=?UTF-8?B?8J+QpPCfkKXwn5Cm8J+Qj/CfkJHwn5CQ?="
+                "=?UTF-8?B?8J+QpPCfkKXwn5Cm8J+Qj/CfkJHwn5CQ?=",
         )
     }
 

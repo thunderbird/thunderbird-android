@@ -10,7 +10,7 @@ internal class AccountPushControllerFactory(
     private val backendManager: BackendManager,
     private val messagingController: MessagingController,
     private val folderRepository: FolderRepository,
-    private val preferences: Preferences
+    private val preferences: Preferences,
 ) {
     fun create(account: Account): AccountPushController {
         return AccountPushController(
@@ -18,7 +18,7 @@ internal class AccountPushControllerFactory(
             messagingController,
             preferences,
             folderRepository,
-            account = account
+            account = account,
         )
     }
 }

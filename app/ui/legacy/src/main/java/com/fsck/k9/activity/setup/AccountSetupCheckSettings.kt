@@ -139,12 +139,12 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
         if (chain != null) {
             acceptKeyDialog(
                 R.string.account_setup_failed_dlg_certificate_message_fmt,
-                exception
+                exception,
             )
         } else {
             showErrorDialog(
                 R.string.account_setup_failed_dlg_server_message_fmt,
-                errorMessageForCertificateException(exception)!!
+                errorMessageForCertificateException(exception)!!,
             )
         }
     }
@@ -333,7 +333,7 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
                 getString(R.string.account_setup_failed_dlg_title),
                 customMessage,
                 getString(R.string.account_setup_failed_dlg_edit_details_action),
-                getString(R.string.account_setup_failed_dlg_continue_action)
+                getString(R.string.account_setup_failed_dlg_continue_action),
             )
         } else {
             throw RuntimeException("Called showDialog(int) with unknown dialog id.")

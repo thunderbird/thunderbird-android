@@ -23,7 +23,7 @@ internal class RealMessageViewRecipientFormatter(
     private val showCorrespondentNames: Boolean,
     private val showContactNames: Boolean,
     private val contactNameColor: Int?,
-    private val meText: String
+    private val meText: String,
 ) : MessageViewRecipientFormatter {
     override fun getDisplayName(address: Address, account: Account): CharSequence {
         val identity = account.findIdentity(address)
@@ -78,13 +78,13 @@ internal class RealMessageViewRecipientFormatter(
 
 internal fun createMessageViewRecipientFormatter(
     contactNameProvider: ContactNameProvider,
-    resources: Resources
+    resources: Resources,
 ): MessageViewRecipientFormatter {
     return RealMessageViewRecipientFormatter(
         contactNameProvider = contactNameProvider,
         showCorrespondentNames = K9.isShowCorrespondentNames,
         showContactNames = K9.isShowContactName,
         contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null,
-        meText = resources.getString(R.string.message_view_me_text)
+        meText = resources.getString(R.string.message_view_me_text),
     )
 }

@@ -8,5 +8,5 @@ internal data class MessageListConfig(
     val showingThreadedList: Boolean,
     val sortType: SortType,
     val sortAscending: Boolean,
-    val sortDateAscending: Boolean
+    val sortDateAscending: Boolean,
 )

@@ -9,7 +9,7 @@ import com.fsck.k9.controller.MessageReference
 internal data class NotificationData(
     val account: Account,
     val activeNotifications: List<NotificationHolder>,
-    val inactiveNotifications: List<InactiveNotificationHolder>
+    val inactiveNotifications: List<InactiveNotificationHolder>,
 ) {
     val newMessagesCount: Int
         get() = activeNotifications.size + inactiveNotifications.size

@@ -41,7 +41,7 @@ class StoragePersisterTest : K9RobolectricTest() {
             onSuccess = { map ->
                 assertEquals(1, map.size)
                 assertEquals("y", map["x"])
-            }
+            },
         )
 
         storagePersister.doInTransaction(operationCallback)
@@ -58,7 +58,7 @@ class StoragePersisterTest : K9RobolectricTest() {
             persistOp = { ops ->
                 ops.put("x", "y")
                 throw exception
-            }
+            },
         )
 
         try {
@@ -78,7 +78,7 @@ class StoragePersisterTest : K9RobolectricTest() {
         val operationCallback = prepareCallback(
             before = { map -> map["x"] = "y" },
             persistOp = { ops -> ops.remove("x") },
-            onSuccess = { map -> assertTrue(map.isEmpty()) }
+            onSuccess = { map -> assertTrue(map.isEmpty()) },
         )
 
         storagePersister.doInTransaction(operationCallback)
@@ -91,7 +91,7 @@ class StoragePersisterTest : K9RobolectricTest() {
     fun doInTransaction_before_preserveButNotPersist() {
         val operationCallback = prepareCallback(
             before = { map -> map["x"] = "y" },
-            onSuccess = { map -> assertEquals("y", map["x"]) }
+            onSuccess = { map -> assertEquals("y", map["x"]) },
         )
 
         storagePersister.doInTransaction(operationCallback)
@@ -103,7 +103,7 @@ class StoragePersisterTest : K9RobolectricTest() {
     private fun prepareCallback(
         persistOp: ((StoragePersistOperations) -> Unit)? = null,
         before: ((MutableMap<String, String>) -> Unit)? = null,
-        onSuccess: ((Map<String, String>) -> Unit)? = null
+        onSuccess: ((Map<String, String>) -> Unit)? = null,
     ): StoragePersistOperationCallback = spy(object : StoragePersistOperationCallback {
         override fun beforePersistTransaction(workingStorage: MutableMap<String, String>) {
             before?.invoke(workingStorage)

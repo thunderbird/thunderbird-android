@@ -63,7 +63,7 @@ fun SQLiteDatabase.createMessage(
     forwarded: Boolean = false,
     messagePartId: Long = 0L,
     encryptionType: String? = null,
-    newMessage: Boolean = false
+    newMessage: Boolean = false,
 ): Long {
     val values = ContentValues().apply {
         put("deleted", if (deleted) 1 else 0)
@@ -128,7 +128,7 @@ fun SQLiteDatabase.readMessages(): List<MessageEntry> {
                 forwarded = cursor.getIntOrNull("forwarded"),
                 messagePartId = cursor.getLongOrNull("message_part_id"),
                 encryptionType = cursor.getStringOrNull("encryption_type"),
-                newMessage = cursor.getIntOrNull("new_message")
+                newMessage = cursor.getIntOrNull("new_message"),
             )
         }
     }
@@ -161,7 +161,7 @@ data class MessageEntry(
     val forwarded: Int?,
     val messagePartId: Long?,
     val encryptionType: String?,
-    val newMessage: Int?
+    val newMessage: Int?,
 )
 
 fun SQLiteDatabase.createMessagePart(
@@ -182,7 +182,7 @@ fun SQLiteDatabase.createMessagePart(
     boundary: String? = null,
     contentId: String? = null,
     serverExtra: String? = null,
-    directory: File? = null
+    directory: File? = null,
 ): Long {
     val values = ContentValues().apply {
         put("type", type)

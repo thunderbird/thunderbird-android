@@ -9,12 +9,12 @@ internal class CheckFolderOperations(private val lockableDatabase: LockableDatab
 
             performChunkedOperation(
                 arguments = folderIds,
-                argumentTransformation = Long::toString
+                argumentTransformation = Long::toString,
             ) { selectionSet, selectionArguments ->
                 if (allIncludedInUnifiedInbox) {
                     database.rawQuery(
                         "SELECT COUNT(id) FROM folders WHERE integrate = 1 AND id $selectionSet",
-                        selectionArguments
+                        selectionArguments,
                     ).use { cursor ->
                         if (cursor.moveToFirst()) {
                             val count = cursor.getInt(0)

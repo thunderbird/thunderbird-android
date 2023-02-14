@@ -12,7 +12,7 @@ val preferencesModule = module {
             preferences = get(),
             folderSettingsProvider = get(),
             folderRepository = get(),
-            notificationSettingsUpdater = get()
+            notificationSettingsUpdater = get(),
         )
     }
     factory { FolderSettingsProvider(folderRepository = get()) }
@@ -20,7 +20,7 @@ val preferencesModule = module {
     single {
         RealGeneralSettingsManager(
             preferences = get(),
-            coroutineScope = get(named("AppCoroutineScope"))
+            coroutineScope = get(named("AppCoroutineScope")),
         )
     } bind GeneralSettingsManager::class
 }

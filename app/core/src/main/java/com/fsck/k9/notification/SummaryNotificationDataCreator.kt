@@ -6,7 +6,7 @@ import com.fsck.k9.K9
 private const val MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5
 
 internal class SummaryNotificationDataCreator(
-    private val singleMessageNotificationDataCreator: SingleMessageNotificationDataCreator
+    private val singleMessageNotificationDataCreator: SingleMessageNotificationDataCreator,
 ) {
     fun createSummaryNotificationData(data: NotificationData, silent: Boolean): SummaryNotificationData {
         val timestamp = data.latestTimestamp
@@ -21,7 +21,7 @@ internal class SummaryNotificationDataCreator(
     private fun createSummarySingleNotificationData(
         data: NotificationData,
         timestamp: Long,
-        silent: Boolean
+        silent: Boolean,
     ): SummaryNotificationData {
         return singleMessageNotificationDataCreator.createSummarySingleNotificationData(data, timestamp, silent)
     }
@@ -29,7 +29,7 @@ internal class SummaryNotificationDataCreator(
     private fun createSummaryInboxNotificationData(
         data: NotificationData,
         timestamp: Long,
-        silent: Boolean
+        silent: Boolean,
     ): SummaryNotificationData {
         return SummaryInboxNotificationData(
             notificationId = NotificationIds.getNewMailSummaryNotificationId(data.account),
@@ -39,7 +39,7 @@ internal class SummaryNotificationDataCreator(
             additionalMessagesCount = data.additionalMessagesCount,
             messageReferences = data.activeMessageReferences,
             actions = createSummaryNotificationActions(),
-            wearActions = createSummaryWearNotificationActions(data.account)
+            wearActions = createSummaryWearNotificationActions(data.account),
         )
     }
 

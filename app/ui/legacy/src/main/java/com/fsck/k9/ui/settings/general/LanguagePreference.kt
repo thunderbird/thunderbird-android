@@ -16,9 +16,9 @@ constructor(
     defStyleAttr: Int = TypedArrayUtils.getAttr(
         context,
         androidx.preference.R.attr.dialogPreferenceStyle,
-        android.R.attr.dialogPreferenceStyle
+        android.R.attr.dialogPreferenceStyle,
     ),
-    defStyleRes: Int = 0
+    defStyleRes: Int = 0,
 ) : ListPreference(context, attrs, defStyleAttr, defStyleRes) {
 
     init {

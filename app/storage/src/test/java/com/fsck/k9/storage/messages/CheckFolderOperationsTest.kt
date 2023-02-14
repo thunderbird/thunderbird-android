@@ -31,7 +31,7 @@ class CheckFolderOperationsTest : RobolectricTest() {
     fun `not all folders included in Unified Inbox`() {
         val folderIds = listOf(
             sqliteDatabase.createFolder(integrate = true),
-            sqliteDatabase.createFolder(integrate = false)
+            sqliteDatabase.createFolder(integrate = false),
         )
 
         val result = checkFolderOperations.areAllIncludedInUnifiedInbox(folderIds)

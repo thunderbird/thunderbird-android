@@ -32,7 +32,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         messageCountsProvider,
         defaultFolderStrategy,
         folderRepository,
-        folderNameFormatter
+        folderNameFormatter,
     )
 
     @Test
@@ -40,7 +40,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 1,
             accountUuid = SearchAccount.UNIFIED_INBOX,
-            folderId = null
+            folderId = null,
         )
 
         val widgetData = provider.loadUnreadWidgetData(configuration)
@@ -56,7 +56,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 3,
             accountUuid = ACCOUNT_UUID,
-            folderId = null
+            folderId = null,
         )
 
         val widgetData = provider.loadUnreadWidgetData(configuration)
@@ -137,7 +137,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
             id = FOLDER_ID,
             name = "INBOX",
             type = FolderType.INBOX,
-            isLocalOnly = false
+            isLocalOnly = false,
         )
     }
 }

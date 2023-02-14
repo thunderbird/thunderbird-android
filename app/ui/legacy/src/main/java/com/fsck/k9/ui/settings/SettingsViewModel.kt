@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 internal class SettingsViewModel(
     private val accountManager: AccountManager,
     private val coroutineScope: CoroutineScope = GlobalScope,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
     val accounts = accountManager.getAccountsFlow().asLiveData()
 

@@ -39,7 +39,7 @@ class MessageHeadersFragment : Fragment() {
             owner = this,
             loadingView = view.findViewById(R.id.message_headers_loading),
             errorView = view.findViewById(R.id.message_headers_error),
-            dataView = view.findViewById(R.id.message_headers_data)
+            dataView = view.findViewById(R.id.message_headers_data),
         ) { headers ->
             populateHeadersList(messageHeaderView, headers)
         }
@@ -68,7 +68,7 @@ class MessageHeadersFragment : Fragment() {
 
         fun newInstance(reference: MessageReference): MessageHeadersFragment {
             return MessageHeadersFragment().withArguments(
-                ARG_REFERENCE to reference.toIdentityString()
+                ARG_REFERENCE to reference.toIdentityString(),
             )
         }
     }

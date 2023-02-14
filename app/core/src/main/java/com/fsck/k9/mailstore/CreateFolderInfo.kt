@@ -6,5 +6,5 @@ data class CreateFolderInfo(
     val serverId: String,
     val name: String,
     val type: FolderType,
-    val settings: FolderSettings
+    val settings: FolderSettings,
 )

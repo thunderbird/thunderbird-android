@@ -8,7 +8,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 
 internal class SectionHeaderItem(
     private val title: String,
-    private val extra: String?
+    private val extra: String?,
 ) : AbstractItem<SectionHeaderItem.ViewHolder>() {
     override val type: Int = R.id.message_details_section_header
     override val layoutRes = R.layout.message_details_section_header_item

@@ -4,5 +4,5 @@ import androidx.lifecycle.ViewModel
 
 internal class AutocryptKeyTransferViewModel(
     val autocryptSetupMessageLiveEvent: AutocryptSetupMessageLiveEvent,
-    val autocryptSetupTransferLiveEvent: AutocryptSetupTransferLiveEvent
+    val autocryptSetupTransferLiveEvent: AutocryptSetupTransferLiveEvent,
 ) : ViewModel()

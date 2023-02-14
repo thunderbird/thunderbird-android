@@ -14,7 +14,7 @@ val coreNotificationModule = module {
             authenticationErrorNotificationController = get(),
             syncNotificationController = get(),
             sendFailedNotificationController = get(),
-            newMailNotificationController = get()
+            newMailNotificationController = get(),
         )
     }
     single { NotificationManagerCompat.from(get()) }
@@ -27,28 +27,28 @@ val coreNotificationModule = module {
             backgroundExecutor = Executors.newSingleThreadExecutor(),
             notificationManager = get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
             resourceProvider = get(),
-            notificationLightDecoder = get()
+            notificationLightDecoder = get(),
         )
     }
     single {
         AccountPreferenceSerializer(
             storageManager = get(),
             resourceProvider = get(),
-            serverSettingsSerializer = get()
+            serverSettingsSerializer = get(),
         )
     }
     single {
         CertificateErrorNotificationController(
             notificationHelper = get(),
             actionCreator = get(),
-            resourceProvider = get()
+            resourceProvider = get(),
         )
     }
     single {
         AuthenticationErrorNotificationController(
             notificationHelper = get(),
             actionCreator = get(),
-            resourceProvider = get()
+            resourceProvider = get(),
         )
     }
     single {
@@ -62,7 +62,7 @@ val coreNotificationModule = module {
             notificationManager = get(),
             newMailNotificationManager = get(),
             summaryNotificationCreator = get(),
-            singleMessageNotificationCreator = get()
+            singleMessageNotificationCreator = get(),
         )
     }
     single {
@@ -72,7 +72,7 @@ val coreNotificationModule = module {
             baseNotificationDataCreator = get(),
             singleMessageNotificationDataCreator = get(),
             summaryNotificationDataCreator = get(),
-            clock = get()
+            clock = get(),
         )
     }
     factory { NotificationContentCreator(context = get(), resourceProvider = get()) }
@@ -84,7 +84,7 @@ val coreNotificationModule = module {
             notificationHelper = get(),
             actionCreator = get(),
             resourceProvider = get(),
-            lockScreenNotificationCreator = get()
+            lockScreenNotificationCreator = get(),
         )
     }
     factory {
@@ -93,7 +93,7 @@ val coreNotificationModule = module {
             actionCreator = get(),
             lockScreenNotificationCreator = get(),
             singleMessageNotificationCreator = get(),
-            resourceProvider = get()
+            resourceProvider = get(),
         )
     }
     factory { LockScreenNotificationCreator(notificationHelper = get(), resourceProvider = get()) }
@@ -102,7 +102,7 @@ val coreNotificationModule = module {
             context = get(),
             resourceProvider = get(),
             notificationChannelManager = get(),
-            notificationManager = get()
+            notificationManager = get(),
         )
     }
     single {
@@ -110,7 +110,7 @@ val coreNotificationModule = module {
             notificationStoreProvider = get(),
             localStoreProvider = get(),
             messageStoreManager = get(),
-            notificationContentCreator = get()
+            notificationContentCreator = get(),
         )
     }
     factory { NotificationLightDecoder() }
@@ -122,7 +122,7 @@ val coreNotificationModule = module {
         NotificationSettingsUpdater(
             preferences = get(),
             notificationChannelManager = get(),
-            notificationConfigurationConverter = get()
+            notificationConfigurationConverter = get(),
         )
     }
 }

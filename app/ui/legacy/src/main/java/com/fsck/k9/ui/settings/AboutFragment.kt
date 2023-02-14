@@ -118,7 +118,7 @@ class AboutFragment : Fragment() {
             Library("SafeContentResolver", "https://github.com/cketti/SafeContentResolver", "Apache License, Version 2.0"),
             Library("SearchPreference", "https://github.com/ByteHamster/SearchPreference", "MIT License"),
             Library("Timber", "https://github.com/JakeWharton/timber", "Apache License, Version 2.0"),
-            Library("TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/", "Apache License, Version 2.0")
+            Library("TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/", "Apache License, Version 2.0"),
         )
     }
 }

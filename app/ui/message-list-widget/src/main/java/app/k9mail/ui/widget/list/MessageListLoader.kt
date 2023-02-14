@@ -13,7 +13,7 @@ import timber.log.Timber
 internal class MessageListLoader(
     private val preferences: Preferences,
     private val messageListRepository: MessageListRepository,
-    private val messageHelper: MessageHelper
+    private val messageHelper: MessageHelper,
 ) {
 
     fun getMessageList(config: MessageListConfig): List<MessageListItem> {

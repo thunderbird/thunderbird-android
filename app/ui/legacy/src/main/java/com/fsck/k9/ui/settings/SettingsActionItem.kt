@@ -13,7 +13,7 @@ internal class SettingsActionItem(
     override var identifier: Long,
     val text: String,
     @IdRes val navigationAction: Int,
-    val icon: Int
+    val icon: Int,
 ) : AbstractItem<SettingsActionItem.ViewHolder>() {
     override val type = R.id.settings_list_action_item
 

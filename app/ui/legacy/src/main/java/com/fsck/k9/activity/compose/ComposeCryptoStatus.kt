@@ -24,7 +24,7 @@ data class ComposeCryptoStatus(
     override val isEncryptAllDrafts: Boolean,
     override val isEncryptSubject: Boolean,
     private val cryptoMode: CryptoMode,
-    private val recipientAutocryptStatus: RecipientAutocryptStatus? = null
+    private val recipientAutocryptStatus: RecipientAutocryptStatus? = null,
 ) : CryptoStatus {
 
     constructor(
@@ -36,11 +36,11 @@ data class ComposeCryptoStatus(
         isReplyToEncrypted: Boolean,
         isEncryptAllDrafts: Boolean,
         isEncryptSubject: Boolean,
-        cryptoMode: CryptoMode
+        cryptoMode: CryptoMode,
     ) : this(
         openPgpProviderState, openPgpKeyId,
         recipientAddresses.map { it.address.address },
-        isPgpInlineModeEnabled, isSenderPreferEncryptMutual, isReplyToEncrypted, isEncryptAllDrafts, isEncryptSubject, cryptoMode
+        isPgpInlineModeEnabled, isSenderPreferEncryptMutual, isReplyToEncrypted, isEncryptAllDrafts, isEncryptSubject, cryptoMode,
     )
 
     private val recipientAutocryptStatusType = recipientAutocryptStatus?.type
@@ -150,16 +150,16 @@ data class ComposeCryptoStatus(
         isEncryptAllDrafts = isEncryptAllDrafts,
         isEncryptSubject = isEncryptSubject,
         recipientAddresses = recipientAddresses,
-        recipientAutocryptStatus = recipientAutocryptStatusType
+        recipientAutocryptStatus = recipientAutocryptStatusType,
     )
 
     enum class SendErrorState {
         PROVIDER_ERROR,
         KEY_CONFIG_ERROR,
-        ENABLED_ERROR
+        ENABLED_ERROR,
     }
 
     enum class AttachErrorState {
-        IS_INLINE
+        IS_INLINE,
     }
 }

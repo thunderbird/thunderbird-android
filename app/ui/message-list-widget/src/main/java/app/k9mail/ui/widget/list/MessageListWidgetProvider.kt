@@ -57,7 +57,7 @@ open class MessageListWidgetProvider : AppWidgetProvider(), KoinComponent {
         val intent = MessageList.actionDisplayMessageTemplateIntent(
             context,
             openInUnifiedInbox = true,
-            messageViewOnly = true
+            messageViewOnly = true,
         )
 
         return PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_MUTABLE)
@@ -70,7 +70,7 @@ open class MessageListWidgetProvider : AppWidgetProvider(), KoinComponent {
             search = unifiedInboxAccount.relatedSearch,
             noThreading = true,
             newTask = true,
-            clearTop = true
+            clearTop = true,
         )
 
         return PendingIntent.getActivity(context, -1, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)

@@ -17,7 +17,7 @@ class Pop3Backend(
     accountName: String,
     backendStorage: BackendStorage,
     private val pop3Store: Pop3Store,
-    private val smtpTransport: SmtpTransport
+    private val smtpTransport: SmtpTransport,
 ) : Backend {
     private val pop3Sync: Pop3Sync = Pop3Sync(accountName, backendStorage, pop3Store)
     private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage)
@@ -80,7 +80,7 @@ class Pop3Backend(
     override fun moveMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         throw UnsupportedOperationException("not supported")
     }
@@ -88,7 +88,7 @@ class Pop3Backend(
     override fun copyMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         throw UnsupportedOperationException("not supported")
     }
@@ -96,7 +96,7 @@ class Pop3Backend(
     override fun moveMessagesAndMarkAsRead(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         throw UnsupportedOperationException("not supported")
     }
@@ -106,7 +106,7 @@ class Pop3Backend(
         query: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<String> {
         throw UnsupportedOperationException("not supported")
     }

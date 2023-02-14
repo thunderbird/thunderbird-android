@@ -4,7 +4,7 @@ import com.fsck.k9.mail.Flag
 
 internal class CacheAwareMessageMapper<T>(
     private val cache: MessageListCache,
-    private val messageMapper: MessageMapper<T>
+    private val messageMapper: MessageMapper<T>,
 ) : MessageMapper<T?> {
     override fun map(message: MessageDetailsAccessor): T? {
         val messageId = message.id
@@ -21,7 +21,7 @@ internal class CacheAwareMessageMapper<T>(
 
 private class CacheAwareMessageDetailsAccessor(
     private val cache: MessageListCache,
-    private val message: MessageDetailsAccessor
+    private val message: MessageDetailsAccessor,
 ) : MessageDetailsAccessor by message {
     override val isRead: Boolean
         get() {

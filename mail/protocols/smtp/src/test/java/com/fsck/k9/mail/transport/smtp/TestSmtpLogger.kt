@@ -11,5 +11,5 @@ class TestSmtpLogger(override val isRawProtocolLoggingEnabled: Boolean = true) :
 
 data class LogEntry(
     val throwable: Throwable?,
-    val message: String
+    val message: String,
 )

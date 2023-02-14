@@ -12,7 +12,7 @@ import com.fsck.k9.search.isUnifiedInbox
 internal class NotificationOperations(
     private val notificationController: NotificationController,
     private val preferences: Preferences,
-    private val messageStoreManager: MessageStoreManager
+    private val messageStoreManager: MessageStoreManager,
 ) {
     fun clearNotifications(search: LocalSearch) {
         if (search.isUnifiedInbox) {

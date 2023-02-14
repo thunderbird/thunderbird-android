@@ -10,5 +10,5 @@ data class MessageListAppearance(
     val showContactPicture: Boolean,
     val showingThreadedList: Boolean,
     val backGroundAsReadIndicator: Boolean,
-    val showAccountChip: Boolean
+    val showAccountChip: Boolean,
 )

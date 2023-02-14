@@ -18,7 +18,7 @@ internal class MigrationTo82(private val db: SQLiteDatabase) {
                 "FOR EACH ROW WHEN NEW.read = 1 AND NEW.new_message = 1 " +
                 "BEGIN " +
                 "UPDATE messages SET new_message = 0 WHERE ROWID = NEW.ROWID; " +
-                "END"
+                "END",
         )
 
         // Mark messages with existing notifications as "new"

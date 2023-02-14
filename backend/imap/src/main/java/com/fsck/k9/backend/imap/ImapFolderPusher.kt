@@ -19,7 +19,7 @@ class ImapFolderPusher(
     private val callback: ImapPusherCallback,
     private val accountName: String,
     private val folderServerId: String,
-    private val idleRefreshTimeoutProvider: IdleRefreshTimeoutProvider
+    private val idleRefreshTimeoutProvider: IdleRefreshTimeoutProvider,
 ) {
     @Volatile
     private var folderIdler: ImapFolderIdler? = null
@@ -63,7 +63,7 @@ class ImapFolderPusher(
             wakeLock,
             imapStore,
             folderServerId,
-            idleRefreshTimeoutProvider
+            idleRefreshTimeoutProvider,
         ).also {
             folderIdler = it
         }

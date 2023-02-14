@@ -40,5 +40,5 @@ interface EarlyInit
 // Copied from ComponentCallbacks.inject()
 inline fun <reified T : Any> EarlyInit.inject(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
+    noinline parameters: ParametersDefinition? = null,
 ) = lazy { getKoin().get<T>(qualifier, parameters) }

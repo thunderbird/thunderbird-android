@@ -14,7 +14,7 @@ val messageDetailsUiModule = module {
             clipboardManager = get(),
             accountManager = get(),
             participantFormatter = get(),
-            folderNameFormatter = get()
+            folderNameFormatter = get(),
         )
     }
     factory { ContactSettingsProvider() }

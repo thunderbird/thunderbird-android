@@ -149,7 +149,7 @@ class HtmlSanitizerTest {
             <head><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head>
             <body>Message</body>
             </html>
-            """.trimIndent().trimLineBreaks()
+            """.trimIndent().trimLineBreaks(),
         )
     }
 
@@ -176,7 +176,7 @@ class HtmlSanitizerTest {
         val result = htmlSanitizer.sanitize(html)
 
         assertThat(result.toCompactString()).isEqualTo(
-            "<html><head></head><body><table><tbody><tr><td></td><td></td></tr></tbody></table></body></html>"
+            "<html><head></head><body><table><tbody><tr><td></td><td></td></tr></tbody></table></body></html>",
         )
     }
 
@@ -200,7 +200,7 @@ class HtmlSanitizerTest {
             <head></head>
             <body><table><tbody><tr><td>Hmailserver service shutdown:</td><td>Ok</td></tr></tbody></table></body>
             </html>
-            """.trimIndent().trimLineBreaks()
+            """.trimIndent().trimLineBreaks(),
         )
     }
 
@@ -297,7 +297,7 @@ class HtmlSanitizerTest {
             <head></head>
             <body><center><font face="Arial" color="red" size="12">A</font></center></body>
             </html>
-            """.trimIndent().trimLineBreaks()
+            """.trimIndent().trimLineBreaks(),
         )
     }
 
@@ -338,7 +338,7 @@ class HtmlSanitizerTest {
             <a href="rtsp://example.com/media.mp4">RTSP</a>
             </body>
             </html>
-            """.trimIndent().trimLineBreaks()
+            """.trimIndent().trimLineBreaks(),
         )
     }
 
@@ -374,7 +374,7 @@ class HtmlSanitizerTest {
             <head></head>
             <body style="color: #fff" class="body" id></body>
             </html>
-            """.trimIndent().trimLineBreaks()
+            """.trimIndent().trimLineBreaks(),
         )
     }
 
@@ -405,7 +405,7 @@ class HtmlSanitizerTest {
             """
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
             <html><head></head><body>text</body></html>
-            """.trimIndent().trimLineBreaks()
+            """.trimIndent().trimLineBreaks(),
         )
     }
 
@@ -423,7 +423,7 @@ class HtmlSanitizerTest {
             <div align="center">text</div>
             </body>
             </html>
-            """.trimIndent().trimLineBreaks()
+            """.trimIndent().trimLineBreaks(),
         )
     }
 
@@ -441,7 +441,7 @@ class HtmlSanitizerTest {
             <a name="something"></a>
             </body>
             </html>
-            """.trimIndent().trimLineBreaks()
+            """.trimIndent().trimLineBreaks(),
         )
     }
 
@@ -497,7 +497,7 @@ class HtmlSanitizerTest {
             <$element>some text</$element>
             </body>
             </html>
-            """.trimIndent().trimLineBreaks()
+            """.trimIndent().trimLineBreaks(),
         )
     }
 

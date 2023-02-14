@@ -59,7 +59,7 @@ class ImapSyncTest {
         verify(syncListener).syncFailed(
             folderServerId = eq(FOLDER_SERVER_ID),
             message = eq("Exception: Message count -1 for folder $FOLDER_SERVER_ID"),
-            exception = any()
+            exception = any(),
         )
     }
 
@@ -136,7 +136,7 @@ class ImapSyncTest {
         addMessageToImapAndBackendFolder(uid = 42, date = "Wed, 05 Jan 2022 20:00:00 +0100")
         val syncConfig = defaultSyncConfig.copy(
             syncRemoteDeletions = true,
-            earliestPollDate = "Tue, 04 Jan 2022 12:00:00 +0100".toDate()
+            earliestPollDate = "Tue, 04 Jan 2022 12:00:00 +0100".toDate(),
         )
 
         imapSync.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
@@ -221,7 +221,7 @@ class ImapSyncTest {
                 messages: List<ImapMessage>,
                 fetchProfile: FetchProfile,
                 listener: FetchListener?,
-                maxDownloadSize: Int
+                maxDownloadSize: Int,
             ) {
                 super.fetch(messages, fetchProfile, listener, maxDownloadSize)
 
@@ -261,7 +261,7 @@ class ImapSyncTest {
     private fun TestImapFolder.addMessage(
         uid: Long,
         flags: Set<Flag> = emptySet(),
-        date: String = DEFAULT_MESSAGE_DATE
+        date: String = DEFAULT_MESSAGE_DATE,
     ) {
         val messageServerId = uid.toString()
         val message = createSimpleMessage(messageServerId, date)
@@ -289,7 +289,7 @@ class ImapSyncTest {
             val folderInfo = FolderInfo(
                 serverId = serverId,
                 name = "irrelevant",
-                type = FolderType.REGULAR
+                type = FolderType.REGULAR,
             )
             updater.createFolders(listOf(folderInfo))
         }
@@ -302,7 +302,7 @@ class ImapSyncTest {
             syncRemoteDeletions = true,
             maximumAutoDownloadMessageSize = MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE,
             defaultVisibleLimit = DEFAULT_VISIBLE_LIMIT,
-            syncFlags = setOf(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED)
+            syncFlags = setOf(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED),
         )
     }
 

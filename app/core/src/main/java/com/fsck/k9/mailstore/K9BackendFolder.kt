@@ -11,7 +11,7 @@ import com.fsck.k9.mailstore.MoreMessages as StoreMoreMessages
 class K9BackendFolder(
     private val messageStore: MessageStore,
     private val saveMessageDataCreator: SaveMessageDataCreator,
-    folderServerId: String
+    folderServerId: String,
 ) : BackendFolder {
     private val databaseId: String
     private val folderId: Long
@@ -25,7 +25,7 @@ class K9BackendFolder(
             Init(
                 folderId = folder.id,
                 name = folder.name,
-                visibleLimit = folder.visibleLimit
+                visibleLimit = folder.visibleLimit,
             )
         } ?: error("Couldn't find folder $folderServerId")
 

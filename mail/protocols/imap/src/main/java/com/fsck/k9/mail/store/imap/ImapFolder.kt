@@ -35,7 +35,7 @@ interface ImapFolder {
         start: Int,
         end: Int,
         earliestDate: Date?,
-        listener: MessageRetrievalListener<ImapMessage>?
+        listener: MessageRetrievalListener<ImapMessage>?,
     ): List<ImapMessage>
 
     @Throws(IOException::class, MessagingException::class)
@@ -46,7 +46,7 @@ interface ImapFolder {
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
         listener: FetchListener?,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     )
 
     @Throws(MessagingException::class)
@@ -54,7 +54,7 @@ interface ImapFolder {
         message: ImapMessage,
         part: Part,
         bodyFactory: BodyFactory,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     )
 
     @Throws(MessagingException::class)
@@ -62,7 +62,7 @@ interface ImapFolder {
         queryString: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<ImapMessage>
 
     @Throws(MessagingException::class)

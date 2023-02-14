@@ -9,7 +9,7 @@ import com.fsck.k9.ui.helper.DisplayAddressHelper
 
 class MessageListItemMapper(
     private val messageHelper: MessageHelper,
-    private val account: Account
+    private val account: Account,
 ) : MessageMapper<MessageListItem> {
 
     override fun map(message: MessageDetailsAccessor): MessageListItem {
@@ -46,7 +46,7 @@ class MessageListItemMapper(
             message.folderId,
             message.messageServerId,
             message.id,
-            message.threadRoot
+            message.threadRoot,
         )
     }
 

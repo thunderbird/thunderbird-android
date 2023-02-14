@@ -221,7 +221,7 @@ internal class HttpUriParser : UriParser {
     private fun matchUnreservedPCTEncodedSubDelimClassesGreedy(
         text: CharSequence,
         startPos: Int,
-        additionalCharacters: String
+        additionalCharacters: String,
     ): Int {
         val allowedCharacters = SUB_DELIM + "-._~" + additionalCharacters
         var shouldBeHex = 0

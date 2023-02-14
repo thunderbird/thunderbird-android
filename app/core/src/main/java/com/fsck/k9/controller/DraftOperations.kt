@@ -21,14 +21,14 @@ import timber.log.Timber
 internal class DraftOperations(
     private val messagingController: @NotNull MessagingController,
     private val messageStoreManager: @NotNull MessageStoreManager,
-    private val saveMessageDataCreator: SaveMessageDataCreator
+    private val saveMessageDataCreator: SaveMessageDataCreator,
 ) {
 
     fun saveDraft(
         account: Account,
         message: Message,
         existingDraftId: Long?,
-        plaintextSubject: String?
+        plaintextSubject: String?,
     ): Long? {
         return try {
             val draftsFolderId = account.draftsFolderId ?: error("No Drafts folder configured")
@@ -51,7 +51,7 @@ internal class DraftOperations(
         message: Message,
         folderId: Long,
         existingDraftId: Long?,
-        subject: String?
+        subject: String?,
     ): Long {
         val messageStore = messageStoreManager.getMessageStore(account)
 
@@ -91,7 +91,7 @@ internal class DraftOperations(
         message: Message,
         folderId: Long,
         existingDraftId: Long?,
-        plaintextSubject: String?
+        plaintextSubject: String?,
     ): Long {
         val messageStore = messageStoreManager.getMessageStore(account)
         val messageData = message.toSaveMessageData(plaintextSubject)
@@ -124,7 +124,7 @@ internal class DraftOperations(
         backend: Backend,
         account: Account,
         localFolder: LocalFolder,
-        localMessage: LocalMessage
+        localMessage: LocalMessage,
     ) {
         val folderServerId = localFolder.serverId
         Timber.d("Uploading message [ID: %d] to remote folder '%s'", localMessage.databaseId, folderServerId)
@@ -139,7 +139,7 @@ internal class DraftOperations(
         if (messageServerId == null) {
             Timber.w(
                 "Failed to get a server ID for the uploaded message. Removing local copy [ID: %d]",
-                localMessage.databaseId
+                localMessage.databaseId,
             )
             localMessage.destroy()
         } else {

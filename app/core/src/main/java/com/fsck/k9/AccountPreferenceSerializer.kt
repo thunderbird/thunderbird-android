@@ -23,7 +23,7 @@ import timber.log.Timber
 class AccountPreferenceSerializer(
     private val storageManager: StorageManager,
     private val resourceProvider: CoreResourceProvider,
-    private val serverSettingsSerializer: ServerSettingsSerializer
+    private val serverSettingsSerializer: ServerSettingsSerializer,
 ) {
 
     @Synchronized
@@ -31,10 +31,10 @@ class AccountPreferenceSerializer(
         val accountUuid = account.uuid
         with(account) {
             incomingServerSettings = serverSettingsSerializer.deserialize(
-                storage.getString("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", "")
+                storage.getString("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", ""),
             )
             outgoingServerSettings = serverSettingsSerializer.deserialize(
-                storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", "")
+                storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", ""),
             )
             oAuthState = storage.getString("$accountUuid.oAuthState", null)
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
@@ -69,7 +69,7 @@ class AccountPreferenceSerializer(
             val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(
                 storage,
                 "$accountUuid.draftsFolderSelection",
-                SpecialFolderSelection.AUTOMATIC
+                SpecialFolderSelection.AUTOMATIC,
             )
             setDraftsFolderId(draftsFolderId, draftsFolderSelection)
 
@@ -77,7 +77,7 @@ class AccountPreferenceSerializer(
             val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(
                 storage,
                 "$accountUuid.sentFolderSelection",
-                SpecialFolderSelection.AUTOMATIC
+                SpecialFolderSelection.AUTOMATIC,
             )
             setSentFolderId(sentFolderId, sentFolderSelection)
 
@@ -85,7 +85,7 @@ class AccountPreferenceSerializer(
             val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(
                 storage,
                 "$accountUuid.trashFolderSelection",
-                SpecialFolderSelection.AUTOMATIC
+                SpecialFolderSelection.AUTOMATIC,
             )
             setTrashFolderId(trashFolderId, trashFolderSelection)
 
@@ -93,7 +93,7 @@ class AccountPreferenceSerializer(
             val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(
                 storage,
                 "$accountUuid.archiveFolderSelection",
-                SpecialFolderSelection.AUTOMATIC
+                SpecialFolderSelection.AUTOMATIC,
             )
             setArchiveFolderId(archiveFolderId, archiveFolderSelection)
 
@@ -101,7 +101,7 @@ class AccountPreferenceSerializer(
             val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(
                 storage,
                 "$accountUuid.spamFolderSelection",
-                SpecialFolderSelection.AUTOMATIC
+                SpecialFolderSelection.AUTOMATIC,
             )
             setSpamFolderId(spamFolderId, spamFolderSelection)
 
@@ -147,8 +147,8 @@ class AccountPreferenceSerializer(
                     vibration = NotificationVibration(
                         isEnabled = storage.getBoolean("$accountUuid.vibrate", false),
                         pattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0)),
-                        repeatCount = storage.getInt("$accountUuid.vibrateTimes", 5)
-                    )
+                        repeatCount = storage.getInt("$accountUuid.vibrateTimes", 5),
+                    ),
                 )
             }
 
@@ -210,7 +210,7 @@ class AccountPreferenceSerializer(
                     signatureUse = signatureUse,
                     signature = signature,
                     description = description,
-                    replyTo = replyTo
+                    replyTo = replyTo,
                 )
                 newIdentities.add(identity)
                 gotOne = true
@@ -228,7 +228,7 @@ class AccountPreferenceSerializer(
                 email = email,
                 signatureUse = signatureUse,
                 signature = signature,
-                description = email
+                description = email,
             )
             newIdentities.add(identity)
         }
@@ -533,7 +533,7 @@ class AccountPreferenceSerializer(
                     "Unable to convert preference key [%s] value [%s] to enum of type %s",
                     key,
                     stringPref,
-                    defaultEnum.declaringJavaClass
+                    defaultEnum.declaringJavaClass,
                 )
 
                 defaultEnum
@@ -603,7 +603,7 @@ class AccountPreferenceSerializer(
             val identity = Identity(
                 signatureUse = false,
                 signature = resourceProvider.defaultSignature(),
-                description = resourceProvider.defaultIdentityDescription()
+                description = resourceProvider.defaultIdentityDescription(),
             )
             identities.add(identity)
 
@@ -612,7 +612,7 @@ class AccountPreferenceSerializer(
                     isRingEnabled = true,
                     ringtone = DEFAULT_RINGTONE_URI,
                     light = NotificationLight.Disabled,
-                    vibration = NotificationVibration.DEFAULT
+                    vibration = NotificationVibration.DEFAULT,
                 )
             }
 

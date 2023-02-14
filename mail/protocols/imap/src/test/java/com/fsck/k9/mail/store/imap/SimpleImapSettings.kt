@@ -10,7 +10,7 @@ internal class SimpleImapSettings(
     override val authType: AuthType,
     override val username: String,
     override val password: String? = null,
-    override val useCompression: Boolean = false
+    override val useCompression: Boolean = false,
 ) : ImapSettings {
     override val clientCertificateAlias: String? = null
 

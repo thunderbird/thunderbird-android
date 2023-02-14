@@ -51,7 +51,7 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
             read = true,
             flagged = true,
             answered = true,
-            forwarded = true
+            forwarded = true,
         )
         val threadId = sqliteDatabase.createThread(messageId)
 
@@ -119,7 +119,7 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
         val result = retrieveMessageListOperations.getThreadedMessages(
             selection = "folder_id = ? AND read = 0",
             selectionArgs = arrayOf(folderId.toString()),
-            sortOrder = "date DESC, id DESC"
+            sortOrder = "date DESC, id DESC",
         ) { message ->
             message.id
         }
@@ -165,7 +165,7 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
             read = true,
             flagged = true,
             answered = true,
-            forwarded = true
+            forwarded = true,
         )
         val threadId = sqliteDatabase.createThread(messageId)
 
@@ -219,14 +219,14 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
             folderId,
             uid = "uid1",
             date = 1000L,
-            internalDate = 1001L
+            internalDate = 1001L,
         )
         val threadId1 = sqliteDatabase.createThread(messageId1)
         val messageId2 = sqliteDatabase.createMessage(
             folderId,
             uid = "uid2",
             date = 2000L,
-            internalDate = 2001L
+            internalDate = 2001L,
         )
         sqliteDatabase.createThread(messageId2, root = threadId1)
 
@@ -471,7 +471,7 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
             selection = "folder_id = ?",
             selectionArgs = arrayOf(folderId.toString()),
             sortOrder = "date DESC, id DESC",
-            mapper
+            mapper,
         )
     }
 
@@ -480,7 +480,7 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
             selection = "folder_id = ?",
             selectionArgs = arrayOf(folderId.toString()),
             sortOrder = "date DESC, id DESC",
-            mapper
+            mapper,
         )
     }
 }

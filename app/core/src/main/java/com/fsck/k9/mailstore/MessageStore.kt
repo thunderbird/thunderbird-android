@@ -128,7 +128,7 @@ interface MessageStore {
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        messageMapper: MessageMapper<out T?>
+        messageMapper: MessageMapper<out T?>,
     ): List<T>
 
     /**
@@ -138,7 +138,7 @@ interface MessageStore {
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        messageMapper: MessageMapper<out T?>
+        messageMapper: MessageMapper<out T?>,
     ): List<T>
 
     /**

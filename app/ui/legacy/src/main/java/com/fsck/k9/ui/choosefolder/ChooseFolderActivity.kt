@@ -233,7 +233,7 @@ class ChooseFolderActivity : K9Activity() {
     enum class Action {
         MOVE,
         COPY,
-        CHOOSE
+        CHOOSE,
     }
 
     companion object {
@@ -256,7 +256,7 @@ class ChooseFolderActivity : K9Activity() {
             currentFolderId: Long? = null,
             scrollToFolderId: Long? = null,
             showDisplayableOnly: Boolean = false,
-            messageReference: MessageReference? = null
+            messageReference: MessageReference? = null,
         ): Intent {
             return Intent(context, ChooseFolderActivity::class.java).apply {
                 this.action = action.toString()

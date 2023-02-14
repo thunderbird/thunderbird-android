@@ -8,7 +8,7 @@ import com.fsck.k9.ui.R
 
 internal class LinkTextHandler(
     private val context: Context,
-    private val clipboardManager: ClipboardManager
+    private val clipboardManager: ClipboardManager,
 ) : Handler() {
 
     override fun handleMessage(message: Message) {

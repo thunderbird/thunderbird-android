@@ -20,7 +20,7 @@ class CommandUpload(
     private val jmapClient: JmapClient,
     private val okHttpClient: OkHttpClient,
     private val httpAuthentication: HttpAuthentication,
-    private val accountId: String
+    private val accountId: String,
 ) {
     private val moshi = Moshi.Builder().build()
 
@@ -65,7 +65,7 @@ class CommandUpload(
                     .blobId(uploadResponse.blobId)
                     .keywords(mapOf("\$seen" to true))
                     .mailboxIds(mapOf(folderServerId to true))
-                    .build()
+                    .build(),
             )
             .build()
 

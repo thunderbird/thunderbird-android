@@ -591,7 +591,7 @@ class RealImapConnectionTest {
             output(
                 "* CAPABILITY IMAP4rev1 UNSELECT IDLE QUOTA ID XLIST CHILDREN X-GM-EXT-1 UIDPLUS " +
                     "ENABLE MOVE CONDSTORE ESEARCH UTF8=ACCEPT LIST-EXTENDED LIST-STATUS LITERAL- SPECIAL-USE " +
-                    "APPENDLIMIT=35651584"
+                    "APPENDLIMIT=35651584",
             )
             output("2 OK")
             simplePostAuthenticationDialog(tag = 3)
@@ -681,7 +681,7 @@ class RealImapConnectionTest {
         val imapConnection = startServerAndCreateImapConnection(
             server,
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
-            authType = AuthType.PLAIN
+            authType = AuthType.PLAIN,
         )
 
         imapConnection.open()
@@ -697,7 +697,7 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(
             server,
-            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
         )
 
         try {
@@ -730,7 +730,7 @@ class RealImapConnectionTest {
         val imapConnection = startServerAndCreateImapConnection(
             server,
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
-            authType = AuthType.PLAIN
+            authType = AuthType.PLAIN,
         )
 
         imapConnection.open()
@@ -749,7 +749,7 @@ class RealImapConnectionTest {
         val imapConnection = startServerAndCreateImapConnection(
             server,
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
-            authType = AuthType.PLAIN
+            authType = AuthType.PLAIN,
         )
 
         try {
@@ -998,7 +998,7 @@ class RealImapConnectionTest {
     private fun createImapConnection(
         settings: ImapSettings,
         socketFactory: TrustedSocketFactory,
-        oAuth2TokenProvider: OAuth2TokenProvider
+        oAuth2TokenProvider: OAuth2TokenProvider,
     ): ImapConnection {
         val connectionGeneration = 1
         return RealImapConnection(
@@ -1007,7 +1007,7 @@ class RealImapConnectionTest {
             oAuth2TokenProvider,
             connectionGeneration,
             SOCKET_CONNECT_TIMEOUT,
-            SOCKET_READ_TIMEOUT
+            SOCKET_READ_TIMEOUT,
         )
     }
 
@@ -1015,7 +1015,7 @@ class RealImapConnectionTest {
         server: MockImapServer,
         connectionSecurity: ConnectionSecurity = ConnectionSecurity.NONE,
         authType: AuthType = AuthType.PLAIN,
-        useCompression: Boolean = false
+        useCompression: Boolean = false,
     ): ImapConnection {
         server.start()
 
@@ -1026,7 +1026,7 @@ class RealImapConnectionTest {
             authType = authType,
             username = USERNAME,
             password = PASSWORD,
-            useCompression = useCompression
+            useCompression = useCompression,
         )
 
         return createImapConnection(settings, socketFactory, oAuth2TokenProvider)
@@ -1085,7 +1085,7 @@ class RealImapConnectionTest {
             host = host,
             port = 143,
             authType = AuthType.PLAIN,
-            username = "irrelevant"
+            username = "irrelevant",
         )
     }
 }
@@ -1101,7 +1101,7 @@ class TestTokenProvider : OAuth2TokenProvider {
             1 -> XOAUTH_TOKEN_2
             else -> {
                 throw AuthenticationFailedException(
-                    "Ran out of auth tokens. invalidateToken() called too often?"
+                    "Ran out of auth tokens. invalidateToken() called too often?",
                 )
             }
         }

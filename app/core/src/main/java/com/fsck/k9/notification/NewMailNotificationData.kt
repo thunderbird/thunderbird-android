@@ -7,7 +7,7 @@ internal data class NewMailNotificationData(
     val cancelNotificationIds: List<Int>,
     val baseNotificationData: BaseNotificationData,
     val singleNotificationData: List<SingleNotificationData>,
-    val summaryNotificationData: SummaryNotificationData?
+    val summaryNotificationData: SummaryNotificationData?,
 )
 
 internal data class BaseNotificationData(
@@ -17,7 +17,7 @@ internal data class BaseNotificationData(
     val color: Int,
     val newMessagesCount: Int,
     val lockScreenNotificationData: LockScreenNotificationData,
-    val appearance: NotificationAppearance
+    val appearance: NotificationAppearance,
 )
 
 internal sealed interface LockScreenNotificationData {
@@ -31,7 +31,7 @@ internal sealed interface LockScreenNotificationData {
 internal data class NotificationAppearance(
     val ringtone: String?,
     val vibrationPattern: LongArray?,
-    val ledColor: Int?
+    val ledColor: Int?,
 )
 
 internal data class SingleNotificationData(
@@ -41,13 +41,13 @@ internal data class SingleNotificationData(
     val content: NotificationContent,
     val actions: List<NotificationAction>,
     val wearActions: List<WearNotificationAction>,
-    val addLockScreenNotification: Boolean
+    val addLockScreenNotification: Boolean,
 )
 
 internal sealed interface SummaryNotificationData
 
 internal data class SummarySingleNotificationData(
-    val singleNotificationData: SingleNotificationData
+    val singleNotificationData: SingleNotificationData,
 ) : SummaryNotificationData
 
 internal data class SummaryInboxNotificationData(
@@ -58,13 +58,13 @@ internal data class SummaryInboxNotificationData(
     val additionalMessagesCount: Int,
     val messageReferences: List<MessageReference>,
     val actions: List<SummaryNotificationAction>,
-    val wearActions: List<SummaryWearNotificationAction>
+    val wearActions: List<SummaryWearNotificationAction>,
 ) : SummaryNotificationData
 
 internal enum class NotificationAction {
     Reply,
     MarkAsRead,
-    Delete
+    Delete,
 }
 
 internal enum class WearNotificationAction {
@@ -72,16 +72,16 @@ internal enum class WearNotificationAction {
     MarkAsRead,
     Delete,
     Archive,
-    Spam
+    Spam,
 }
 
 internal enum class SummaryNotificationAction {
     MarkAsRead,
-    Delete
+    Delete,
 }
 
 internal enum class SummaryWearNotificationAction {
     MarkAsRead,
     Delete,
-    Archive
+    Archive,
 }

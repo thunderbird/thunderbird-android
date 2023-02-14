@@ -10,6 +10,6 @@ interface NotificationStrategy {
         account: Account,
         localFolder: LocalFolder,
         message: LocalMessage,
-        isOldMessage: Boolean
+        isOldMessage: Boolean,
     ): Boolean
 }

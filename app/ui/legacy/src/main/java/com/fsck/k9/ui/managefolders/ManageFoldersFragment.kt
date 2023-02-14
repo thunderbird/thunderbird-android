@@ -89,7 +89,7 @@ class ManageFoldersFragment : Fragment() {
     private fun openFolderSettings(folderId: Long) {
         val folderSettingsArguments = bundleOf(
             FolderSettingsFragment.EXTRA_ACCOUNT to account.uuid,
-            FolderSettingsFragment.EXTRA_FOLDER_ID to folderId
+            FolderSettingsFragment.EXTRA_FOLDER_ID to folderId,
         )
         findNavController().navigate(R.id.action_manageFoldersScreen_to_folderSettingsScreen, folderSettingsArguments)
     }

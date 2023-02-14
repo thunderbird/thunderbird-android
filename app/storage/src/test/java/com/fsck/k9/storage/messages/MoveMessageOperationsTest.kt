@@ -21,14 +21,14 @@ class MoveMessageOperationsTest : RobolectricTest() {
             folderId = SOURCE_FOLDER_ID,
             uid = "uid1",
             subject = "Move me",
-            messageIdHeader = MESSAGE_ID_HEADER
+            messageIdHeader = MESSAGE_ID_HEADER,
         )
         sqliteDatabase.createThread(messageId = originalMessageId)
         val originalMessage = sqliteDatabase.readMessages().first()
 
         val destinationMessageId = moveMessageOperations.moveMessage(
             messageId = originalMessageId,
-            destinationFolderId = DESTINATION_FOLDER_ID
+            destinationFolderId = DESTINATION_FOLDER_ID,
         )
 
         val messages = sqliteDatabase.readMessages()
@@ -48,8 +48,8 @@ class MoveMessageOperationsTest : RobolectricTest() {
                 folderId = DESTINATION_FOLDER_ID,
                 uid = destinationMessage.uid,
                 deleted = 0,
-                empty = 0
-            )
+                empty = 0,
+            ),
         )
 
         val threads = sqliteDatabase.readThreads()
@@ -71,7 +71,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
             uid = "uid1",
             subject = "Move me",
             messageIdHeader = MESSAGE_ID_HEADER,
-            read = false
+            read = false,
         )
         sqliteDatabase.createThread(messageId = originalMessageId)
         val originalMessage = sqliteDatabase.readMessages().first()
@@ -79,23 +79,23 @@ class MoveMessageOperationsTest : RobolectricTest() {
             empty = true,
             folderId = DESTINATION_FOLDER_ID,
             messageIdHeader = MESSAGE_ID_HEADER,
-            uid = ""
+            uid = "",
         )
         val placeholderThreadId = sqliteDatabase.createThread(messageId = placeholderMessageId)
         val childMessageId = sqliteDatabase.createMessage(
             folderId = DESTINATION_FOLDER_ID,
             messageIdHeader = "<msg02@domain.example>",
-            uid = "uid2"
+            uid = "uid2",
         )
         sqliteDatabase.createThread(
             messageId = childMessageId,
             root = placeholderThreadId,
-            parent = placeholderThreadId
+            parent = placeholderThreadId,
         )
 
         val destinationMessageId = moveMessageOperations.moveMessage(
             messageId = originalMessageId,
-            destinationFolderId = DESTINATION_FOLDER_ID
+            destinationFolderId = DESTINATION_FOLDER_ID,
         )
 
         val messages = sqliteDatabase.readMessages()
@@ -115,8 +115,8 @@ class MoveMessageOperationsTest : RobolectricTest() {
                 folderId = DESTINATION_FOLDER_ID,
                 uid = destinationMessage.uid,
                 deleted = 0,
-                empty = 0
-            )
+                empty = 0,
+            ),
         )
 
         val threads = sqliteDatabase.readThreads()
@@ -141,14 +141,14 @@ class MoveMessageOperationsTest : RobolectricTest() {
             folderId = SOURCE_FOLDER_ID,
             uid = "uid1",
             subject = "Move me",
-            messageIdHeader = null
+            messageIdHeader = null,
         )
         sqliteDatabase.createThread(messageId = originalMessageId)
         val originalMessage = sqliteDatabase.readMessages().first()
 
         val destinationMessageId = moveMessageOperations.moveMessage(
             messageId = originalMessageId,
-            destinationFolderId = DESTINATION_FOLDER_ID
+            destinationFolderId = DESTINATION_FOLDER_ID,
         )
 
         val messages = sqliteDatabase.readMessages()
@@ -167,8 +167,8 @@ class MoveMessageOperationsTest : RobolectricTest() {
                 folderId = DESTINATION_FOLDER_ID,
                 uid = destinationMessage.uid,
                 deleted = 0,
-                empty = 0
-            )
+                empty = 0,
+            ),
         )
 
         val threads = sqliteDatabase.readThreads()

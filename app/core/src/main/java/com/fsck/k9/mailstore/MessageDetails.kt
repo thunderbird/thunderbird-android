@@ -10,7 +10,7 @@ data class MessageDetails(
     val replyTo: List<Address>,
     val to: List<Address>,
     val cc: List<Address>,
-    val bcc: List<Address>
+    val bcc: List<Address>,
 )
 
 sealed interface MessageDate {

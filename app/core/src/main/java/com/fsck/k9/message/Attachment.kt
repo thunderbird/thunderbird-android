@@ -12,6 +12,6 @@ interface Attachment {
         URI_ONLY,
         METADATA,
         COMPLETE,
-        CANCELLED
+        CANCELLED,
     }
 }

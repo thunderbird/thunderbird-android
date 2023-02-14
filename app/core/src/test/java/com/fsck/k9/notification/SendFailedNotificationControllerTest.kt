@@ -32,7 +32,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
     private val controller = SendFailedNotificationController(
         notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
         actionBuilder = createActionBuilder(contentIntent),
-        resourceProvider = resourceProvider
+        resourceProvider = resourceProvider,
     )
 
     @Test
@@ -69,7 +69,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
     private fun createFakeNotificationHelper(
         notificationManager: NotificationManagerCompat,
         notificationBuilder: NotificationCompat.Builder,
-        lockScreenNotificationBuilder: NotificationCompat.Builder
+        lockScreenNotificationBuilder: NotificationCompat.Builder,
     ): NotificationHelper {
         return mock {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()

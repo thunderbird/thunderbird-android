@@ -22,7 +22,7 @@ import rs.ltt.jmap.common.method.response.mailbox.GetMailboxMethodResponse
 internal class CommandRefreshFolderList(
     private val backendStorage: BackendStorage,
     private val jmapClient: JmapClient,
-    private val accountId: String
+    private val accountId: String,
 ) {
     fun refreshFolderList() {
         try {
@@ -49,7 +49,7 @@ internal class CommandRefreshFolderList(
 
     private fun fetchMailboxes(folderUpdater: BackendFolderUpdater) {
         val call = jmapClient.call(
-            GetMailboxMethodCall.builder().accountId(accountId).build()
+            GetMailboxMethodCall.builder().accountId(accountId).build(),
         )
         val response = call.getMainResponseBlocking<GetMailboxMethodResponse>()
         val foldersOnServer = response.list
@@ -99,19 +99,19 @@ internal class CommandRefreshFolderList(
             ChangesMailboxMethodCall.builder()
                 .accountId(accountId)
                 .sinceState(state)
-                .build()
+                .build(),
         )
         val createdMailboxesCall = multiCall.call(
             GetMailboxMethodCall.builder()
                 .accountId(accountId)
                 .idsReference(mailboxChangesCall.createResultReference(ResultReference.Path.CREATED))
-                .build()
+                .build(),
         )
         val changedMailboxesCall = multiCall.call(
             GetMailboxMethodCall.builder()
                 .accountId(accountId)
                 .idsReference(mailboxChangesCall.createResultReference(ResultReference.Path.UPDATED))
-                .build()
+                .build(),
         )
         multiCall.execute()
 
@@ -137,7 +137,7 @@ internal class CommandRefreshFolderList(
 
         return UpdateState(
             state = mailboxChangesResponse.newState,
-            hasMoreChanges = mailboxChangesResponse.isHasMoreChanges
+            hasMoreChanges = mailboxChangesResponse.isHasMoreChanges,
         )
     }
 

@@ -46,7 +46,7 @@ class MessageListRepositoryTest {
             modules(
                 module {
                     single { messageListRepository }
-                }
+                },
             )
         }
     }
@@ -103,8 +103,8 @@ class MessageListRepositoryTest {
                 isRead = false,
                 isStarred = true,
                 isAnswered = false,
-                isForwarded = true
-            )
+                isForwarded = true,
+            ),
         )
         MessageListCache.getCache(accountUuid).apply {
             setFlagForMessages(listOf(MESSAGE_ID), Flag.SEEN, true)
@@ -119,7 +119,7 @@ class MessageListRepositoryTest {
                 isRead = message.isRead,
                 isStarred = message.isStarred,
                 isAnswered = message.isAnswered,
-                isForwarded = message.isForwarded
+                isForwarded = message.isForwarded,
             )
         }
 
@@ -131,8 +131,8 @@ class MessageListRepositoryTest {
                 isRead = true,
                 isStarred = false,
                 isAnswered = false,
-                isForwarded = true
-            )
+                isForwarded = true,
+            ),
         )
     }
 
@@ -140,7 +140,7 @@ class MessageListRepositoryTest {
     fun `getMessages() should skip messages marked as hidden in the cache`() {
         addMessages(
             MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
-            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT)
+            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
         )
         hideMessage(MESSAGE_ID, FOLDER_ID)
 
@@ -155,7 +155,7 @@ class MessageListRepositoryTest {
     fun `getMessages() should not skip message when marked as hidden in a different folder`() {
         addMessages(
             MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
-            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT)
+            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
         )
         hideMessage(MESSAGE_ID, FOLDER_ID_2)
 
@@ -176,8 +176,8 @@ class MessageListRepositoryTest {
                 isRead = false,
                 isStarred = true,
                 isAnswered = false,
-                isForwarded = true
-            )
+                isForwarded = true,
+            ),
         )
         MessageListCache.getCache(accountUuid).apply {
             setFlagForMessages(listOf(MESSAGE_ID), Flag.SEEN, true)
@@ -188,7 +188,7 @@ class MessageListRepositoryTest {
             accountUuid,
             SELECTION,
             SELECTION_ARGS,
-            SORT_ORDER
+            SORT_ORDER,
         ) { message ->
             MessageData(
                 messageId = message.id,
@@ -197,7 +197,7 @@ class MessageListRepositoryTest {
                 isRead = message.isRead,
                 isStarred = message.isStarred,
                 isAnswered = message.isAnswered,
-                isForwarded = message.isForwarded
+                isForwarded = message.isForwarded,
             )
         }
 
@@ -209,8 +209,8 @@ class MessageListRepositoryTest {
                 isRead = true,
                 isStarred = false,
                 isAnswered = false,
-                isForwarded = true
-            )
+                isForwarded = true,
+            ),
         )
     }
 
@@ -218,7 +218,7 @@ class MessageListRepositoryTest {
     fun `getThreadedMessages() should skip messages marked as hidden in the cache`() {
         addThreadedMessages(
             MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
-            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT_2)
+            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT_2),
         )
         hideMessage(MESSAGE_ID, FOLDER_ID)
 
@@ -226,7 +226,7 @@ class MessageListRepositoryTest {
             accountUuid,
             SELECTION,
             SELECTION_ARGS,
-            SORT_ORDER
+            SORT_ORDER,
         ) { message ->
             message.id
         }
@@ -238,7 +238,7 @@ class MessageListRepositoryTest {
     fun `getThreadedMessages() should not skip message when marked as hidden in a different folder`() {
         addThreadedMessages(
             MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
-            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT_2)
+            MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT_2),
         )
         hideMessage(MESSAGE_ID, FOLDER_ID_2)
 
@@ -246,7 +246,7 @@ class MessageListRepositoryTest {
             accountUuid,
             SELECTION,
             SELECTION_ARGS,
-            SORT_ORDER
+            SORT_ORDER,
         ) { message ->
             message.id
         }
@@ -265,7 +265,7 @@ class MessageListRepositoryTest {
                 isRead = false,
                 isStarred = true,
                 isAnswered = false,
-                isForwarded = true
+                isForwarded = true,
             ),
             MessageData(
                 messageId = MESSAGE_ID_2,
@@ -274,8 +274,8 @@ class MessageListRepositoryTest {
                 isRead = false,
                 isStarred = true,
                 isAnswered = true,
-                isForwarded = false
-            )
+                isForwarded = false,
+            ),
         )
         MessageListCache.getCache(accountUuid).apply {
             setFlagForMessages(listOf(MESSAGE_ID), Flag.SEEN, true)
@@ -285,7 +285,7 @@ class MessageListRepositoryTest {
         val result = messageListRepository.getThread(
             accountUuid,
             THREAD_ROOT,
-            SORT_ORDER
+            SORT_ORDER,
         ) { message ->
             MessageData(
                 messageId = message.id,
@@ -294,7 +294,7 @@ class MessageListRepositoryTest {
                 isRead = message.isRead,
                 isStarred = message.isStarred,
                 isAnswered = message.isAnswered,
-                isForwarded = message.isForwarded
+                isForwarded = message.isForwarded,
             )
         }
 
@@ -306,7 +306,7 @@ class MessageListRepositoryTest {
                 isRead = true,
                 isStarred = false,
                 isAnswered = false,
-                isForwarded = true
+                isForwarded = true,
             ),
             MessageData(
                 messageId = MESSAGE_ID_2,
@@ -315,8 +315,8 @@ class MessageListRepositoryTest {
                 isRead = false,
                 isStarred = false,
                 isAnswered = true,
-                isForwarded = false
-            )
+                isForwarded = false,
+            ),
         )
     }
 
@@ -326,7 +326,7 @@ class MessageListRepositoryTest {
             THREAD_ROOT,
             MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
             MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
-            MessageData(messageId = MESSAGE_ID_3, folderId = FOLDER_ID, threadRoot = THREAD_ROOT)
+            MessageData(messageId = MESSAGE_ID_3, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
         )
         hideMessage(MESSAGE_ID, FOLDER_ID)
 
@@ -341,7 +341,7 @@ class MessageListRepositoryTest {
             THREAD_ROOT,
             MessageData(messageId = MESSAGE_ID, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
             MessageData(messageId = MESSAGE_ID_2, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
-            MessageData(messageId = MESSAGE_ID_3, folderId = FOLDER_ID, threadRoot = THREAD_ROOT)
+            MessageData(messageId = MESSAGE_ID_3, folderId = FOLDER_ID, threadRoot = THREAD_ROOT),
         )
         hideMessage(MESSAGE_ID, FOLDER_ID_2)
 
@@ -429,5 +429,5 @@ private data class MessageData(
     val isRead: Boolean = false,
     val isStarred: Boolean = false,
     val isAnswered: Boolean = false,
-    val isForwarded: Boolean = false
+    val isForwarded: Boolean = false,
 )

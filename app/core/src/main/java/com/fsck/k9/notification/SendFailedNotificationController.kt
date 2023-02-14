@@ -9,7 +9,7 @@ import com.fsck.k9.helper.ExceptionHelper
 internal class SendFailedNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionBuilder: NotificationActionCreator,
-    private val resourceProvider: NotificationResourceProvider
+    private val resourceProvider: NotificationResourceProvider,
 ) {
     fun showSendFailedNotification(account: Account, exception: Exception) {
         val title = resourceProvider.sendFailedTitle()

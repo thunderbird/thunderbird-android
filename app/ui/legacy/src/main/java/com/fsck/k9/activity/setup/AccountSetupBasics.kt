@@ -285,7 +285,7 @@ class AccountSetupBasics : K9Activity() {
             authenticationType = authenticationType,
             email = email,
             password = password,
-            clientCertificateAlias = clientCertificateAlias
+            clientCertificateAlias = clientCertificateAlias,
         )
 
         AccountSetupAccountType.actionSelectAccountType(this, account, makeDefault = false, initialAccountSettings)
@@ -357,7 +357,7 @@ class AccountSetupBasics : K9Activity() {
 
     private enum class UiState {
         EMAIL_ADDRESS_ONLY,
-        PASSWORD_FLOW
+        PASSWORD_FLOW,
     }
 
     companion object {
@@ -387,6 +387,6 @@ private fun DiscoveredServerSettings.toServerSettings(): ServerSettings? {
         authenticationType = authType,
         username = username,
         password = null,
-        clientCertificateAlias = null
+        clientCertificateAlias = null,
     )
 }

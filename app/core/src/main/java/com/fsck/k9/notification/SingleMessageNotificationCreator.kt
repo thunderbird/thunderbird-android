@@ -10,12 +10,12 @@ internal class SingleMessageNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
-    private val lockScreenNotificationCreator: LockScreenNotificationCreator
+    private val lockScreenNotificationCreator: LockScreenNotificationCreator,
 ) {
     fun createSingleNotification(
         baseNotificationData: BaseNotificationData,
         singleNotificationData: SingleNotificationData,
-        isGroupSummary: Boolean = false
+        isGroupSummary: Boolean = false,
     ) {
         val account = baseNotificationData.account
         val notificationId = singleNotificationData.notificationId
@@ -45,7 +45,7 @@ internal class SingleMessageNotificationCreator(
             Timber.v(
                 "Creating single summary notification (silent=%b): %s",
                 singleNotificationData.isSilent,
-                notification
+                notification,
             )
         }
         notificationHelper.notify(account, notificationId, notification)
@@ -164,7 +164,7 @@ internal class SingleMessageNotificationCreator(
 
     private fun NotificationBuilder.setLockScreenNotification(
         notificationData: BaseNotificationData,
-        addLockScreenNotification: Boolean
+        addLockScreenNotification: Boolean,
     ) = apply {
         if (addLockScreenNotification) {
             lockScreenNotificationCreator.configureLockScreenNotification(this, notificationData)

@@ -25,7 +25,7 @@ import timber.log.Timber
 internal class RealGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
-    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GeneralSettingsManager {
     private val settingsFlow = MutableSharedFlow<GeneralSettings>(replay = 1)
     private var generalSettings: GeneralSettings? = null
@@ -71,7 +71,7 @@ internal class RealGeneralSettingsManager(
     @Synchronized
     private fun updateGeneralSettingsWithStateFromK9(): GeneralSettings {
         return getSettings().copy(
-            backgroundSync = K9.backgroundOps.toBackgroundSync()
+            backgroundSync = K9.backgroundOps.toBackgroundSync(),
         ).also { generalSettings ->
             this.generalSettings = generalSettings
         }
@@ -140,7 +140,7 @@ internal class RealGeneralSettingsManager(
             appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM),
             messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL),
             messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL),
-            fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
+            fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true),
         )
 
         updateSettingsFlow(settings)

@@ -83,5 +83,5 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
 
 enum class ThemeType {
     DEFAULT,
-    DIALOG
+    DIALOG,
 }

@@ -2,7 +2,7 @@ package com.fsck.k9.oauth
 
 class OAuthConfigurationProvider(
     private val configurations: Map<List<String>, OAuthConfiguration>,
-    private val googleConfiguration: OAuthConfiguration
+    private val googleConfiguration: OAuthConfiguration,
 ) {
     private val hostnameMapping: Map<String, OAuthConfiguration> = buildMap {
         for ((hostnames, configuration) in configurations) {

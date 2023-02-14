@@ -9,7 +9,7 @@ import com.fsck.k9.ui.folders.FolderNameFormatter
 class FolderInfoHolder(
     private val folderNameFormatter: FolderNameFormatter,
     localFolder: LocalFolder,
-    account: Account
+    account: Account,
 ) {
     @JvmField val databaseId = localFolder.databaseId
 
@@ -25,7 +25,7 @@ class FolderInfoHolder(
             id = folderId,
             name = localFolder.name,
             type = getFolderType(account, folderId),
-            isLocalOnly = localFolder.isLocalOnly
+            isLocalOnly = localFolder.isLocalOnly,
         )
         return folderNameFormatter.displayName(folder)
     }

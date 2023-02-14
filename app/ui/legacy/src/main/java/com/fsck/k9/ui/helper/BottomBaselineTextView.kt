@@ -10,7 +10,7 @@ import androidx.appcompat.widget.AppCompatTextView
 // Source: https://stackoverflow.com/a/62419876
 class BottomBaselineTextView @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null
+    attrs: AttributeSet? = null,
 ) : AppCompatTextView(context, attrs) {
 
     override fun getBaseline(): Int {

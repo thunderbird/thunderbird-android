@@ -21,12 +21,12 @@ internal class RecipientLayoutCreator(
     private val maxNumberOfRecipientNames: Int,
     private val recipientsPrefix: String,
     private val additionalRecipientSpacing: Int,
-    private val additionalRecipientsPrefix: String
+    private val additionalRecipientsPrefix: String,
 ) {
     fun createRecipientLayout(
         recipientNames: List<CharSequence>,
         totalNumberOfRecipients: Int,
-        availableWidth: Int
+        availableWidth: Int,
     ): RecipientLayoutData {
         require(recipientNames.isNotEmpty())
 
@@ -38,7 +38,7 @@ internal class RecipientLayoutCreator(
 
             return RecipientLayoutData(
                 recipientNames = displayRecipientsBuilder,
-                additionalRecipients = null
+                additionalRecipients = null,
             )
         }
 
@@ -63,7 +63,7 @@ internal class RecipientLayoutCreator(
             if (doesTextFitAvailableWidth(displayRecipientsBuilder, additionalRecipientsBuilder, availableWidth)) {
                 return RecipientLayoutData(
                     recipientNames = displayRecipientsBuilder,
-                    additionalRecipients = additionalRecipientsBuilder.toStringOrNull()
+                    additionalRecipients = additionalRecipientsBuilder.toStringOrNull(),
                 )
             }
         }
@@ -74,14 +74,14 @@ internal class RecipientLayoutCreator(
 
         return RecipientLayoutData(
             recipientNames = displayRecipientsBuilder,
-            additionalRecipients = "$additionalRecipientsPrefix${totalNumberOfRecipients - 1}"
+            additionalRecipients = "$additionalRecipientsPrefix${totalNumberOfRecipients - 1}",
         )
     }
 
     private fun doesTextFitAvailableWidth(
         displayRecipients: CharSequence,
         additionalRecipients: CharSequence,
-        availableWidth: Int
+        availableWidth: Int,
     ): Boolean {
         val recipientNamesWidth = textMeasure.measureRecipientNames(displayRecipients)
         if (recipientNamesWidth > availableWidth) {
@@ -103,7 +103,7 @@ private fun StringBuilder.toStringOrNull(): String? {
 
 internal data class RecipientLayoutData(
     val recipientNames: CharSequence,
-    val additionalRecipients: String?
+    val additionalRecipients: String?,
 )
 
 internal interface TextMeasure {

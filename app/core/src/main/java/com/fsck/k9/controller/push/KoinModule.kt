@@ -11,7 +11,7 @@ internal val controllerPushModule = module {
             backendManager = get(),
             messagingController = get(),
             folderRepository = get(),
-            preferences = get()
+            preferences = get(),
         )
     }
     single {
@@ -24,7 +24,7 @@ internal val controllerPushModule = module {
             autoSyncManager = get(),
             pushNotificationManager = get(),
             connectivityManager = get(),
-            accountPushControllerFactory = get()
+            accountPushControllerFactory = get(),
         )
     }
 }

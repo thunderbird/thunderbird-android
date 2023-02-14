@@ -244,7 +244,7 @@ class MessageListFragment :
             contactsPictureLoader = ContactPicture.getContactPictureLoader(),
             listItemListener = this,
             appearance = messageListAppearance,
-            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock)
+            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock),
         ).apply {
             activeMessage = this@MessageListFragment.activeMessage
         }
@@ -343,8 +343,8 @@ class MessageListFragment :
                 swipeRightAction = K9.swipeRightAction,
                 swipeLeftAction = K9.swipeLeftAction,
                 adapter,
-                swipeListener
-            )
+                swipeListener,
+            ),
         )
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
@@ -409,7 +409,7 @@ class MessageListFragment :
             sortAscending,
             sortDateAscending,
             activeMessage,
-            viewModel.messageSortOverrides.toMap()
+            viewModel.messageSortOverrides.toMap(),
         )
         viewModel.loadMessageList(config)
     }
@@ -505,7 +505,7 @@ class MessageListFragment :
                 account,
                 currentFolder.databaseId,
                 loadSearchResults,
-                activityListener
+                activityListener,
             )
         }
     }
@@ -554,7 +554,7 @@ class MessageListFragment :
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
         outState.putStringArray(
             STATE_ACTIVE_MESSAGES,
-            activeMessages?.map(MessageReference::toIdentityString)?.toTypedArray()
+            activeMessages?.map(MessageReference::toIdentityString)?.toTypedArray(),
         )
         if (activeMessage != null) {
             outState.putString(STATE_ACTIVE_MESSAGE, activeMessage!!.toIdentityString())
@@ -570,7 +570,7 @@ class MessageListFragment :
             showContactPicture = K9.isShowContactPicture,
             showingThreadedList = showingThreadedList,
             backGroundAsReadIndicator = K9.isUseBackgroundAsUnreadIndicator,
-            showAccountChip = isShowAccountChip
+            showAccountChip = isShowAccountChip,
         )
 
     private fun getFolderInfoHolder(folderId: Long, account: Account): FolderInfoHolder {
@@ -627,7 +627,7 @@ class MessageListFragment :
             queryString,
             null,
             null,
-            activityListener
+            activityListener,
         )
 
         invalidateMenu()
@@ -709,7 +709,8 @@ class MessageListFragment :
 
         when (requestCode) {
             ACTIVITY_CHOOSE_FOLDER_MOVE,
-            ACTIVITY_CHOOSE_FOLDER_COPY -> {
+            ACTIVITY_CHOOSE_FOLDER_COPY,
+            -> {
                 if (data == null) return
 
                 val destinationFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L)
@@ -756,7 +757,7 @@ class MessageListFragment :
                 val message = resources.getQuantityString(
                     R.plurals.dialog_confirm_spam_message,
                     selectionSize,
-                    selectionSize
+                    selectionSize,
                 )
                 val confirmText = getString(R.string.dialog_confirm_spam_confirm_button)
                 val cancelText = getString(R.string.dialog_confirm_spam_cancel_button)
@@ -768,7 +769,7 @@ class MessageListFragment :
                 val message = resources.getQuantityString(
                     R.plurals.dialog_confirm_delete_messages,
                     selectionSize,
-                    selectionSize
+                    selectionSize,
                 )
                 val confirmText = getString(R.string.dialog_confirm_delete_confirm_button)
                 val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
@@ -1048,7 +1049,7 @@ class MessageListFragment :
             sourceFolderId = folderId,
             accountUuid = messages.first().accountUuid,
             lastSelectedFolderId = null,
-            messages = messages
+            messages = messages,
         )
     }
 
@@ -1071,7 +1072,7 @@ class MessageListFragment :
             sourceFolderId = folderId,
             accountUuid = messages.first().accountUuid,
             lastSelectedFolderId = null,
-            messages = messages
+            messages = messages,
         )
     }
 
@@ -1081,7 +1082,7 @@ class MessageListFragment :
         sourceFolderId: Long?,
         accountUuid: String,
         lastSelectedFolderId: Long?,
-        messages: List<MessageReference>
+        messages: List<MessageReference>,
     ) {
         val action = when (operation) {
             FolderOperation.COPY -> ChooseFolderActivity.Action.COPY
@@ -1094,7 +1095,7 @@ class MessageListFragment :
             currentFolderId = sourceFolderId,
             scrollToFolderId = lastSelectedFolderId,
             showDisplayableOnly = false,
-            messageReference = null
+            messageReference = null,
         )
 
         // remember the selected messages for #onActivityResult
@@ -1154,7 +1155,7 @@ class MessageListFragment :
                 val toast = Toast.makeText(
                     activity,
                     R.string.move_copy_cannot_copy_unsynced_message,
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_LONG,
                 )
                 toast.show()
                 return false
@@ -1286,7 +1287,7 @@ class MessageListFragment :
                     currentFolder!!.databaseId,
                     0,
                     searchAccount.remoteSearchNumResults,
-                    null
+                    null,
                 )
             } catch (e: Exception) {
                 // Since the user is going back, log and squash any exceptions.
@@ -1546,7 +1547,7 @@ class MessageListFragment :
             messageSortOverrides.addLast(existingEntry)
         } else {
             messageSortOverrides.addLast(
-                messageReference to MessageSortOverride(messageListItem.isRead, messageListItem.isStarred)
+                messageReference to MessageSortOverride(messageListItem.isRead, messageListItem.isStarred),
             )
             if (messageSortOverrides.size > MAXIMUM_MESSAGE_SORT_OVERRIDES) {
                 messageSortOverrides.removeFirst()
@@ -1707,7 +1708,7 @@ class MessageListFragment :
             folderId: Long,
             numResults: Int,
             maxResults: Int,
-            extraResults: List<String>?
+            extraResults: List<String>?,
         ) {
             handler.progress(false)
             handler.remoteSearchFinished()
@@ -1728,7 +1729,7 @@ class MessageListFragment :
                     R.plurals.remote_search_downloading_limited,
                     maxResults,
                     maxResults,
-                    numResults
+                    numResults,
                 )
             } else {
                 resources.getQuantityString(R.plurals.remote_search_downloading, numResults, numResults)
@@ -1760,7 +1761,7 @@ class MessageListFragment :
             account: Account,
             folderServerId: String,
             completed: Int,
-            total: Int
+            total: Int,
         ) {
             synchronized(lock) {
                 folderCompleted = completed
@@ -1774,7 +1775,7 @@ class MessageListFragment :
             account: Account,
             folderServerId: String,
             total: Int,
-            completed: Int
+            completed: Int,
         ) {
             synchronized(lock) {
                 folderCompleted = 0
@@ -2024,7 +2025,7 @@ class MessageListFragment :
     }
 
     private enum class Error(@StringRes val errorText: Int) {
-        FolderNotFound(R.string.message_list_error_folder_not_found)
+        FolderNotFound(R.string.message_list_error_folder_not_found),
     }
 
     interface MessageListFragmentListener {
@@ -2061,7 +2062,7 @@ class MessageListFragment :
                 arguments = bundleOf(
                     ARG_SEARCH to search,
                     ARG_IS_THREAD_DISPLAY to isThreadDisplay,
-                    ARG_THREADED_LIST to threadedList
+                    ARG_THREADED_LIST to threadedList,
                 )
             }
         }

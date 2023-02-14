@@ -22,7 +22,7 @@ class ServerSettingsSerializerTest {
             username = "user",
             password = null,
             clientCertificateAlias = "alias",
-            extra = ImapStoreSettings.createExtra(autoDetectNamespace = true, pathPrefix = null)
+            extra = ImapStoreSettings.createExtra(autoDetectNamespace = true, pathPrefix = null),
         )
 
         val json = serverSettingsSerializer.serialize(serverSettings)
@@ -41,7 +41,7 @@ class ServerSettingsSerializerTest {
             authenticationType = AuthType.PLAIN,
             username = "user",
             password = "password",
-            clientCertificateAlias = null
+            clientCertificateAlias = null,
         )
 
         val json = serverSettingsSerializer.serialize(serverSettings)

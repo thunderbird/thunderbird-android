@@ -8,7 +8,7 @@ internal class BodyCleaner {
     private val cleaner: Cleaner
     private val allowedBodyAttributes = setOf(
         "id", "class", "dir", "lang", "style",
-        "alink", "background", "bgcolor", "link", "text", "vlink"
+        "alink", "background", "bgcolor", "link", "text", "vlink",
     )
 
     init {
@@ -25,18 +25,18 @@ internal class BodyCleaner {
                 "border",
                 "cellpadding",
                 "cellspacing",
-                "width"
+                "width",
             )
             .addAttributes("tr", "align", "background", "bgcolor", "valign")
             .addAttributes(
                 "th",
                 "align", "background", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope",
-                "sorted", "valign", "width"
+                "sorted", "valign", "width",
             )
             .addAttributes(
                 "td",
                 "align", "background", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope",
-                "valign", "width"
+                "valign", "width",
             )
             .addAttributes("map", "name")
             .addAttributes("area", "shape", "coords", "href", "alt")

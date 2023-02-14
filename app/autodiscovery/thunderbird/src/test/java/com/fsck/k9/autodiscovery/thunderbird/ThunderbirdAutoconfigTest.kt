@@ -162,11 +162,11 @@ class ThunderbirdAutoconfigTest {
                         port = 993,
                         security = ConnectionSecurity.SSL_TLS_REQUIRED,
                         authType = AuthType.PLAIN,
-                        username = "test@metacode.biz"
-                    )
+                        username = "test@metacode.biz",
+                    ),
                 ),
-                listOf()
-            )
+                listOf(),
+            ),
         )
     }
 }

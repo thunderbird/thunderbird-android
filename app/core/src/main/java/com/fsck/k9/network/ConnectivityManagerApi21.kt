@@ -8,7 +8,7 @@ import android.net.ConnectivityManager as SystemConnectivityManager
 
 @Suppress("DEPRECATION")
 internal class ConnectivityManagerApi21(
-    private val systemConnectivityManager: SystemConnectivityManager
+    private val systemConnectivityManager: SystemConnectivityManager,
 ) : ConnectivityManagerBase() {
     private var isRunning = false
     private var lastNetworkType: Int? = null

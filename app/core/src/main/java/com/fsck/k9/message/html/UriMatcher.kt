@@ -10,7 +10,7 @@ object UriMatcher {
             "mailto:" to genericUriParser,
             "matrix:" to genericUriParser,
             "rtsp:" to httpUriParser,
-            "xmpp:" to genericUriParser
+            "xmpp:" to genericUriParser,
         )
     }
 
@@ -18,7 +18,7 @@ object UriMatcher {
     private const val ALLOWED_SEPARATORS_PATTERN = "(?:^|[$SCHEME_SEPARATORS])"
     private val URI_SCHEME = Regex(
         "$ALLOWED_SEPARATORS_PATTERN(${ SUPPORTED_URIS.keys.joinToString("|") })",
-        RegexOption.IGNORE_CASE
+        RegexOption.IGNORE_CASE,
     )
 
     fun findUris(text: CharSequence): List<UriMatch> {
