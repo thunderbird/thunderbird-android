@@ -39,13 +39,6 @@ class CacheTest(data: CacheTestData<Any, Any>) {
     }
 
     @Test
-    fun `get should return entry when present`() {
-        testSubject[KEY] = VALUE
-
-        assertThat(testSubject[KEY]).isEqualTo(VALUE)
-    }
-
-    @Test
     fun `set should add entry with empty cache`() {
         testSubject[KEY] = VALUE
 
