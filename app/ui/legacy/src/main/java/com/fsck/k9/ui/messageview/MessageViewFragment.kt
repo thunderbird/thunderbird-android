@@ -279,7 +279,6 @@ class MessageViewFragment :
         }
 
         menu.findItem(R.id.move_to_drafts).isVisible = isOutbox
-        menu.findItem(R.id.single_message_options).isVisible = true
         menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
         menu.findItem(R.id.show_headers).isVisible = true
         menu.findItem(R.id.compose).isVisible = true
@@ -396,6 +395,7 @@ class MessageViewFragment :
                 R.id.reply_all -> onReplyAll()
                 R.id.forward -> onForward()
                 R.id.forward_as_attachment -> onForwardAsAttachment()
+                R.id.edit_as_new_message -> onEditAsNewMessage()
                 R.id.share -> onSendAlternate()
                 else -> error("Missing handler for reply menu item $itemId")
             }
