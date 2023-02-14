@@ -11,7 +11,8 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.kotlin.jvm) apply false
-    alias(libs.plugins.spotless)
+
+    id("app.k9mail.gradle.plugin.quality.spotless")
 }
 
 val propertyTestCoverage: String? by extra
@@ -111,28 +112,6 @@ allprojects {
             showExceptions = true
             showStackTraces = true
         }
-    }
-}
-
-spotless {
-    kotlin {
-        ktlint(libs.versions.ktlint.get())
-        target("**/*.kt")
-        targetExclude("**/build/", "**/resources/", "plugins/openpgp-api-lib/")
-    }
-    kotlinGradle {
-        ktlint(libs.versions.ktlint.get())
-        target("**/*.gradle.kts")
-        targetExclude("**/build/")
-    }
-    format("markdown") {
-        prettier()
-        target("**/*.md")
-        targetExclude("plugins/openpgp-api-lib/")
-    }
-    format("misc") {
-        target("**/*.gradle", "**/.gitignore")
-        trimTrailingWhitespace()
     }
 }
 

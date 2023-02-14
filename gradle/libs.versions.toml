@@ -4,7 +4,6 @@
 [versions]
 androidGradlePlugin = "7.4.0"
 ktlint = "0.47.1"
-spotless = "6.14.0"
 
 kotlin = "1.8.0"
 kotlinCoroutines = "1.6.4"
@@ -39,7 +38,7 @@ ksp = "com.google.devtools.ksp:1.8.0-1.0.8"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+spotless = "com.diffplug.spotless:6.14.0"
 
 [libraries]
 desugar = "com.android.tools:desugar_jdk_libs:1.1.8"
