@@ -9,5 +9,5 @@ insert_final_newline = true
 [*.{kt,kts}]
 ij_kotlin_imports_layout = *,^*
 
-[*.{yml,yaml}]
+[*.{yml,yaml,json}]
 indent_size = 2
