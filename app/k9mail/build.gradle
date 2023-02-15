@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("thunderbird.app.android.default")
 }
 
 if (rootProject.testCoverage) {
@@ -8,8 +7,6 @@ if (rootProject.testCoverage) {
 }
 
 dependencies {
-    coreLibraryDesugaring libs.desugar
-
     implementation project(":app:ui:legacy")
     implementation project(":app:ui:message-list-widget")
     implementation project(":app:core")
@@ -38,10 +35,6 @@ dependencies {
     testImplementation project(':plugins:openpgp-api-lib:openpgp-api')
 
     testImplementation libs.robolectric
-    testImplementation libs.junit
-    testImplementation libs.truth
-    testImplementation libs.mockito.inline
-    testImplementation libs.mockito.kotlin
     testImplementation libs.koin.test
     testImplementation libs.koin.test.junit4
 }
@@ -63,16 +56,8 @@ android {
                 "fy"
     }
 
-    buildFeatures {
-        buildConfig true
-    }
-
     signingConfigs {
         release
-    }
-
-    compileOptions {
-        coreLibraryDesugaringEnabled true
     }
 
     buildTypes {
@@ -109,10 +94,6 @@ android {
         }
     }
 
-    lint {
-        checkDependencies true
-    }
-
     packagingOptions {
         jniLibs {
             excludes += ['kotlin/**']
@@ -135,11 +116,6 @@ android {
                 'DebugProbesKt.bin'
             ]
         }
-    }
-
-    dependenciesInfo {
-        includeInApk = false
-        includeInBundle = false
     }
 }
 
