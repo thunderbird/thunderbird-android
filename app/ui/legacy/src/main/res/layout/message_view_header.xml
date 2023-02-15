@@ -162,7 +162,7 @@
             android:paddingHorizontal="12dp"
             app:layout_constraintEnd_toStartOf="@id/menu_overflow"
             app:layout_constraintTop_toTopOf="@+id/menu_overflow"
-            app:srcCompat="?iconActionSingleMessageOptions" />
+            tools:srcCompat="@drawable/ic_reply_all" />
 
         <ImageView
             android:id="@+id/menu_overflow"
