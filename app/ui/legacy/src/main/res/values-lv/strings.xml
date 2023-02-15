@@ -91,7 +91,6 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="edit_as_new_message_action">Rediģēt kā jaunu vēstuli</string>
   <string name="move_action">Pārvietot</string>
   <string name="move_to_drafts_action">Pārvietot uz melnrakstiem</string>
-  <string name="single_message_options_action">Sūtīt…</string>
   <string name="refile_action">Atkārtoti iearhivēt…</string>
   <string name="done_action">Gatavs</string>
   <string name="discard_action">Izmest</string>
@@ -224,9 +223,13 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="message_view_bcc_label">Neredzamais:</string>
   <string name="message_view_status_attachment_not_saved">Nevar saglabāt pielikumu.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"kam "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">man</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Rādīt lejupielādējamos attēlus</string>
   <string name="message_view_no_viewer">Nevar atrast programmu, lai atvērtu <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">lejupielādēt pilnu vēstuli</string>
   <string name="message_view_sender_label">caur %1$s</string>
@@ -725,6 +728,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="font_size_message_list_preview">Priekšskatījums</string>
   <string name="font_size_message_view">Vēstules</string>
   <string name="font_size_message_view_sender">Sūtītājs</string>
+  <string name="font_size_message_view_recipients">Saņēmēji</string>
   <string name="font_size_message_view_subject">Temats</string>
   <string name="font_size_message_view_date">Laiks un datums</string>
   <string name="font_size_message_view_content">Vēstules pamatteksts</string>
@@ -1066,6 +1070,7 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Noņemt atzīmi</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Atzīmēt kā izlasītu</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">Atzīmēt kā nelasītu</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -1079,11 +1084,17 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Surogātpasts</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Pārvietot…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Rādīt peldošo vēstules izveides pogu</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Kļūda</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Mape netika atrasta</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Vēstules papildinformācija</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Trūkst \'Datuma\' virsraksta</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">No kā</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1097,10 +1108,15 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Neredzamais</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Lejupielādējot vēstules papildinformāciju notika kāda kļūda.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Pievienot kontaktiem</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Nokopēt e-pasta adresi</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Nokopēt vārdu un e-pasta adresi</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">E-pasta adrese</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Vārds un e-pasta adrese</string>
 </resources>

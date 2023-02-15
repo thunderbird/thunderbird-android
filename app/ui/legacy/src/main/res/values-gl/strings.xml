@@ -90,7 +90,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="edit_as_new_message_action">Editar como nova mensaxe</string>
   <string name="move_action">Mover</string>
   <string name="move_to_drafts_action">Mover a Borradores</string>
-  <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Arquivar…</string>
   <string name="done_action">Feito</string>
   <string name="discard_action">Descartar</string>

@@ -91,7 +91,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="edit_as_new_message_action">Éditer en tant que nouveau courriel</string>
   <string name="move_action">Déplacer</string>
   <string name="move_to_drafts_action">Déplacer vers Brouillons</string>
-  <string name="single_message_options_action">Envoyer…</string>
   <string name="refile_action">Reclasser…</string>
   <string name="done_action">Terminé</string>
   <string name="discard_action">Abandonner</string>
@@ -225,9 +224,13 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="message_view_bcc_label">Cci :</string>
   <string name="message_view_status_attachment_not_saved">Impossible d’enregistrer le fichier joint.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"à "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">moi</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Afficher les images distantes</string>
   <string name="message_view_no_viewer">Impossible de trouver un visualiseur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Télécharger le courriel complet</string>
   <string name="message_view_sender_label">par %1$s</string>
@@ -726,6 +729,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="font_size_message_list_preview">Aperçu</string>
   <string name="font_size_message_view">Courriels</string>
   <string name="font_size_message_view_sender">Expéditeur</string>
+  <string name="font_size_message_view_recipients">Destinataires</string>
   <string name="font_size_message_view_subject">Objet</string>
   <string name="font_size_message_view_date">Horodatage</string>
   <string name="font_size_message_view_content">Corps du courriel</string>
@@ -1084,7 +1088,9 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
   <string name="message_list_error_folder_not_found">Le dossier est introuvable</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Détails du message</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">En-tête \'Date\' manquante</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">De</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1098,10 +1104,15 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Cci</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Une erreur s\'est produite lors du chargement des détails du message.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Ajouter aux contacts</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Copier l\'adresse courriel</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Copier le nom et l\'adresse courriel</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Adresse courriel</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Nom et adresse courriel</string>
 </resources>

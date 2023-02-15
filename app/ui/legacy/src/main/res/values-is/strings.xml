@@ -91,7 +91,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="edit_as_new_message_action">Breyta sem nýjum skilaboðum</string>
   <string name="move_action">Færa</string>
   <string name="move_to_drafts_action">Færa í drög</string>
-  <string name="single_message_options_action">Senda…</string>
   <string name="refile_action">Endurraða…</string>
   <string name="done_action">Búið</string>
   <string name="discard_action">Henda</string>

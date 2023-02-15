@@ -90,8 +90,7 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="edit_as_new_message_action">Redaguoti kaip naują žinutę</string>
   <string name="move_action">Perkelti</string>
   <string name="move_to_drafts_action">Perkelti į Juodraščius</string>
-  <string name="single_message_options_action">Siųsti…</string>
-  <string name="refile_action">Pertvarkyti...</string>
+  <string name="refile_action">Pertvarkyti…</string>
   <string name="done_action">Atlikta</string>
   <string name="discard_action">Atmesti</string>
   <string name="save_draft_action">Išsaugoti kaip juodraštį</string>

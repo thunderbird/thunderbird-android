@@ -91,7 +91,6 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="edit_as_new_message_action">Uredi kot novo sporočilo</string>
   <string name="move_action">Premakni</string>
   <string name="move_to_drafts_action">Premakni med Osnutke</string>
-  <string name="single_message_options_action">Pošlji …</string>
   <string name="refile_action">Določi mapo …</string>
   <string name="done_action">Končano</string>
   <string name="discard_action">Zavrzi</string>
@@ -226,9 +225,13 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="message_view_bcc_label">Skp:</string>
   <string name="message_view_status_attachment_not_saved">Priloge ni mogoče shraniti.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"za "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">mene</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Pokaži oddaljene slike</string>
   <string name="message_view_no_viewer">Ni mogoče najti pregledovalnika za vrsto <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Prejmi celotno sporočilo</string>
   <string name="message_view_sender_label">prek %1$s</string>
@@ -727,6 +730,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="font_size_message_list_preview">Predogled</string>
   <string name="font_size_message_view">Sporočila</string>
   <string name="font_size_message_view_sender">Pošiljatelj</string>
+  <string name="font_size_message_view_recipients">Prejemniki</string>
   <string name="font_size_message_view_subject">Zadeva</string>
   <string name="font_size_message_view_date">Čas in datum</string>
   <string name="font_size_message_view_content">Telo sporočila</string>
@@ -1090,6 +1094,7 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
   <string name="swipe_action_move">Premakni …</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Napaka</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->

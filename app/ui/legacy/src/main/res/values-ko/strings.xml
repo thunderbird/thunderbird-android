@@ -61,7 +61,6 @@
   <string name="edit_as_new_message_action">새로운 메시지처럼 수정하기</string>
   <string name="move_action">이동</string>
   <string name="move_to_drafts_action">초안으로 이동</string>
-  <string name="single_message_options_action">메시지 옵션…</string>
   <string name="refile_action">관리…</string>
   <string name="done_action">완료</string>
   <string name="discard_action">버리기</string>

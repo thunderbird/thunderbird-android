@@ -87,7 +87,6 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="edit_as_new_message_action">As nij berjocht bewurkje</string>
   <string name="move_action">Ferpleatse</string>
   <string name="move_to_drafts_action">Nei konsepten ferpleatse</string>
-  <string name="single_message_options_action">Ferstjoere…</string>
   <string name="refile_action">Opnij bewarje…</string>
   <string name="done_action">Dien</string>
   <string name="discard_action">Ferjitte</string>
@@ -217,7 +216,7 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Kin bylage net bewarje.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
-  <string name="message_view_recipient_prefix">oan </string>
+  <string name="message_view_recipient_prefix">"oan "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
   <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->

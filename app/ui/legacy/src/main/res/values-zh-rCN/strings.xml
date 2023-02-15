@@ -92,7 +92,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="edit_as_new_message_action">作为新消息编辑</string>
   <string name="move_action">移动</string>
   <string name="move_to_drafts_action">移动到草稿</string>
-  <string name="single_message_options_action">发送…</string>
   <string name="refile_action">重新归档…</string>
   <string name="done_action">完成</string>
   <string name="discard_action">丢弃</string>

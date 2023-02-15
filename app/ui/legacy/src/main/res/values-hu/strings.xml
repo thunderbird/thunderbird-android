@@ -90,7 +90,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="edit_as_new_message_action">Szerkesztés új üzenetként</string>
   <string name="move_action">Áthelyezés</string>
   <string name="move_to_drafts_action">Áthelyezés a Piszkozatokhoz</string>
-  <string name="single_message_options_action">Küldés…</string>
   <string name="refile_action">Iktatás…</string>
   <string name="done_action">Kész</string>
   <string name="discard_action">Elvetés</string>

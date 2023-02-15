@@ -92,7 +92,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="edit_as_new_message_action">Редагувати як нове повідомлення</string>
   <string name="move_action">Перемістити</string>
   <string name="move_to_drafts_action">Перемістити в Чернетки</string>
-  <string name="single_message_options_action">Надіслати…</string>
   <string name="refile_action">Перемістити…</string>
   <string name="done_action">Готово</string>
   <string name="discard_action">Скасувати зміни</string>

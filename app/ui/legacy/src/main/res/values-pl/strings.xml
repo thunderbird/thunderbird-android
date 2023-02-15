@@ -92,7 +92,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="edit_as_new_message_action">Edytuj jako nową wiadomość</string>
   <string name="move_action">Przenieś</string>
   <string name="move_to_drafts_action">Przenieś do wersji roboczych</string>
-  <string name="single_message_options_action">Wyślij…</string>
   <string name="refile_action">Operacje…</string>
   <string name="done_action">Gotowe</string>
   <string name="discard_action">Usuń</string>
@@ -157,7 +156,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   </plurals>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> więcej na <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odpowiedz</string>
-  <string name="notification_action_mark_as_read">Oznacz jako przeczytane</string>
+  <string name="notification_action_mark_as_read">Przeczytane</string>
   <string name="notification_action_mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
   <string name="notification_action_delete">Usuń</string>
   <string name="notification_action_delete_all">Skasuj wszystkie</string>
@@ -226,7 +225,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="message_view_bcc_label">UDW:</string>
   <string name="message_view_status_attachment_not_saved">Nie można zapisać załącznika.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
-  <string name="message_view_recipient_prefix">do </string>
+  <string name="message_view_recipient_prefix">"do "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
   <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->

@@ -34,7 +34,6 @@
   <string name="spam_action">Lixo</string>
   <string name="forward_action">Reenviar</string>
   <string name="move_action">Mover</string>
-  <string name="single_message_options_action">Enviar…</string>
   <string name="done_action">Feito</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Gardar como borrador</string>

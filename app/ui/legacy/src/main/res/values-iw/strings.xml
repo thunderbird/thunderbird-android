@@ -53,7 +53,6 @@
   <string name="forward_as_attachment_action">העבר כקובץ מצורף</string>
   <string name="move_action">העבר</string>
   <string name="move_to_drafts_action">העבר אל \'טיוטות\'</string>
-  <string name="single_message_options_action">שלח</string>
   <string name="refile_action">תייק מחדש…</string>
   <string name="done_action">סיום</string>
   <string name="discard_action">השלך</string>

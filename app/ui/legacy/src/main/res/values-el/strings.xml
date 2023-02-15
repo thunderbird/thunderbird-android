@@ -92,7 +92,6 @@
   <string name="edit_as_new_message_action">Επεξεργασία ως νέο μήνυμα</string>
   <string name="move_action">Μετακίνηση</string>
   <string name="move_to_drafts_action">Μετακίνηση στα πρόχειρα</string>
-  <string name="single_message_options_action">Επιλογές μηνύματος…</string>
   <string name="refile_action">Επαναρχειοθέτηση…</string>
   <string name="done_action">Ολοκληρώθηκε</string>
   <string name="discard_action">Απόρριψη</string>
