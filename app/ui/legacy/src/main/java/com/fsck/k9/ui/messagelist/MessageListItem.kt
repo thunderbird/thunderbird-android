@@ -12,8 +12,6 @@ data class MessageListItem(
     val internalDate: Long,
     val displayName: CharSequence,
     val displayAddress: Address?,
-    val toMe: Boolean,
-    val ccMe: Boolean,
     val previewText: String,
     val isMessageEncrypted: Boolean,
     val isRead: Boolean,

@@ -200,12 +200,6 @@ class MessageListAdapter internal constructor(
         setHasStableIds(true)
     }
 
-    private fun recipientSigil(toMe: Boolean, ccMe: Boolean) = when {
-        toMe -> res.getString(R.string.messagelist_sent_to_me_sigil) + " "
-        ccMe -> res.getString(R.string.messagelist_sent_cc_me_sigil) + " "
-        else -> ""
-    }
-
     override fun getItemCount(): Int = messages.size + if (hasFooter) 1 else 0
 
     override fun getItemId(position: Int): Long {
@@ -341,16 +335,14 @@ class MessageListAdapter internal constructor(
             setBackgroundColor(holder.itemView, isSelected, isRead, isActive)
             updateWithThreadCount(holder, displayThreadCount)
             val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
-            val sigil = recipientSigil(toMe, ccMe)
-            val messageStringBuilder = SpannableStringBuilder(sigil)
-                .append(beforePreviewText)
+            val messageStringBuilder = SpannableStringBuilder(beforePreviewText)
             if (appearance.previewLines > 0) {
                 val preview = getPreview(isMessageEncrypted, previewText)
                 messageStringBuilder.append(" ").append(preview)
             }
             holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
 
-            formatPreviewText(holder.preview, beforePreviewText, sigil, isRead)
+            formatPreviewText(holder.preview, beforePreviewText, isRead)
 
             holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
             if (appearance.senderAboveSubject) {
@@ -376,15 +368,10 @@ class MessageListAdapter internal constructor(
         holder.text.text = footerText
     }
 
-    private fun formatPreviewText(
-        preview: TextView,
-        beforePreviewText: CharSequence,
-        sigil: String,
-        messageRead: Boolean
-    ) {
+    private fun formatPreviewText(preview: TextView, beforePreviewText: CharSequence, messageRead: Boolean) {
         val previewText = preview.text as Spannable
 
-        val beforePreviewLength = beforePreviewText.length + sigil.length
+        val beforePreviewLength = beforePreviewText.length
         addBeforePreviewSpan(previewText, beforePreviewLength, messageRead)
 
         // Set span (color) for preview message

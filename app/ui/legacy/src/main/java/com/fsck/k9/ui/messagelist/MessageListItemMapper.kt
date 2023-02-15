@@ -15,8 +15,6 @@ class MessageListItemMapper(
     override fun map(message: MessageDetailsAccessor): MessageListItem {
         val fromAddresses = message.fromAddresses
         val toAddresses = message.toAddresses
-        val toMe = messageHelper.toMe(account, toAddresses)
-        val ccMe = messageHelper.toMe(account, message.ccAddresses)
         val previewResult = message.preview
         val isMessageEncrypted = previewResult.previewType == PreviewType.ENCRYPTED
         val previewText = if (previewResult.isPreviewTextAvailable) previewResult.previewText else ""
@@ -37,8 +35,6 @@ class MessageListItemMapper(
             message.internalDate,
             displayName,
             displayAddress,
-            toMe,
-            ccMe,
             previewText,
             isMessageEncrypted,
             message.isRead,

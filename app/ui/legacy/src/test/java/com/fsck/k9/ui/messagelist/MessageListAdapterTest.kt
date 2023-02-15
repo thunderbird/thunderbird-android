@@ -26,7 +26,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.robolectric.Robolectric
@@ -216,48 +215,6 @@ class MessageListAdapterTest : RobolectricTest() {
         val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.firstLineView.containsNoSubjectIndicator())
-    }
-
-    @Test
-    @Ignore("Currently failing. See issue #4152.")
-    fun withSenderAboveSubjectAndMessageToMe_shouldDisplayIndicatorInFirstLine() {
-        val adapter = createAdapter(senderAboveSubject = true)
-        val messageListItem = createMessageListItem(toMe = true)
-
-        val view = adapter.createAndBindView(messageListItem)
-
-        assertTrue(view.firstLineView.containsToMeIndicator())
-    }
-
-    @Test
-    @Ignore("Currently failing. See issue #4152.")
-    fun withSenderAboveSubjectAndMessageCcMe_shouldDisplayIndicatorInFirstLine() {
-        val adapter = createAdapter(senderAboveSubject = true)
-        val messageListItem = createMessageListItem(ccMe = true)
-
-        val view = adapter.createAndBindView(messageListItem)
-
-        assertTrue(view.firstLineView.containsCcMeIndicator())
-    }
-
-    @Test
-    fun withoutSenderAboveSubjectAndMessageToMe_shouldDisplayIndicatorInSecondLine() {
-        val adapter = createAdapter(senderAboveSubject = false)
-        val messageListItem = createMessageListItem(toMe = true)
-
-        val view = adapter.createAndBindView(messageListItem)
-
-        assertTrue(view.secondLineView.containsToMeIndicator())
-    }
-
-    @Test
-    fun withoutSenderAboveSubjectAndMessageCcMe_shouldDisplayIndicatorInSecondLine() {
-        val adapter = createAdapter(senderAboveSubject = false)
-        val messageListItem = createMessageListItem(ccMe = true)
-
-        val view = adapter.createAndBindView(messageListItem)
-
-        assertTrue(view.secondLineView.containsCcMeIndicator())
     }
 
     @Test
@@ -472,8 +429,6 @@ class MessageListAdapterTest : RobolectricTest() {
         internalDate: Long = 0L,
         displayName: CharSequence = "irrelevant",
         displayAddress: Address? = Address.parse("irrelevant@domain.example").first(),
-        toMe: Boolean = false,
-        ccMe: Boolean = false,
         previewText: String = "irrelevant",
         isMessageEncrypted: Boolean = false,
         isRead: Boolean = false,
@@ -495,8 +450,6 @@ class MessageListAdapterTest : RobolectricTest() {
             internalDate,
             displayName,
             displayAddress,
-            toMe,
-            ccMe,
             previewText,
             isMessageEncrypted,
             isRead,
@@ -530,8 +483,6 @@ class MessageListAdapterTest : RobolectricTest() {
     val View.attachmentCountView: View get() = findViewById(R.id.attachment)
     val View.dateView: TextView get() = findViewById(R.id.date)
 
-    fun TextView.containsToMeIndicator() = textString.startsWith("»")
-    fun TextView.containsCcMeIndicator() = textString.startsWith("›")
     fun TextView.containsNoSubjectIndicator() = textString.contains(context.getString(R.string.general_no_subject))
 
     fun TextView.getFirstAbsoluteSizeSpanValueOrNull(): Int? {
