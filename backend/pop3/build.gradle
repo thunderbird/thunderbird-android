@@ -1,6 +1,5 @@
 plugins {
-    id 'java-library'
-    id 'kotlin'
+    id "thunderbird.library.jvm"
     alias(libs.plugins.android.lint)
 }
 
@@ -10,6 +9,4 @@ dependencies {
     api project(":mail:protocols:smtp")
 
     testImplementation project(":mail:testing")
-    testImplementation libs.junit
-    testImplementation libs.mockito.core
 }

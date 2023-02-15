@@ -1,6 +1,5 @@
 plugins {
-    id 'java-library'
-    id 'kotlin'
+    id "thunderbird.library.jvm"
     alias(libs.plugins.android.lint)
 }
 
@@ -8,9 +7,4 @@ dependencies {
     api project(":app:autodiscovery:api")
 
     implementation libs.minidns.hla
-
-    testImplementation libs.junit
-    testImplementation libs.truth
-    testImplementation libs.mockito.inline
-    testImplementation libs.mockito.kotlin
 }

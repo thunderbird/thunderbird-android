@@ -1,6 +1,5 @@
 plugins {
-    id 'java-library'
-    id 'kotlin'
+    id "thunderbird.library.jvm"
     alias(libs.plugins.android.lint)
 }
 

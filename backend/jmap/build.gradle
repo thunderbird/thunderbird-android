@@ -1,6 +1,5 @@
 plugins {
-    id 'java-library'
-    id 'kotlin'
+    id "thunderbird.library.jvm"
     alias(libs.plugins.ksp)
     alias(libs.plugins.android.lint)
 }
@@ -15,6 +14,5 @@ dependencies {
 
     testImplementation project(":mail:testing")
     testImplementation project(':backend:testing')
-    testImplementation libs.mockito.core
     testImplementation libs.okhttp.mockwebserver
 }

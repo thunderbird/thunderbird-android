@@ -1,5 +1,5 @@
 plugins {
-    id 'java-library'
+    id "thunderbird.library.jvm"
     alias(libs.plugins.android.lint)
 }
 
@@ -14,8 +14,5 @@ dependencies {
     compileOnly libs.apache.httpclient
 
     testImplementation project(":mail:testing")
-    testImplementation libs.junit
-    testImplementation libs.truth
-    testImplementation libs.mockito.inline
     testImplementation libs.apache.httpclient
 }
