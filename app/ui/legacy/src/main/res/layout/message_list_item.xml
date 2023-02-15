@@ -79,14 +79,16 @@
 
     <TextView
         android:id="@+id/subject"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:textAppearance="@style/TextAppearance.K9.MediumSmall"
         android:textColor="?android:attr/textColorPrimary"
+        app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toStartOf="@+id/thread_count"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@+id/status"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         tools:text="Subject" />
@@ -95,16 +97,15 @@
         android:id="@+id/thread_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:background="?attr/messageListThreadCountBackground"
+        android:layout_marginStart="6dp"
         android:focusable="false"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingBottom="1dp"
-        android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-        android:textColor="?attr/messageListThreadCountForegroundColor"
+        android:textAppearance="@style/TextAppearance.K9.Small"
+        android:textColor="?attr/messageListThreadCountTextColor"
+        app:layout_constraintBaseline_toBaselineOf="@+id/subject"
         app:layout_constraintEnd_toStartOf="@+id/attachment"
-        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/subject"
+        app:layout_goneMarginEnd="8dp"
         tools:text="3" />
 
     <ImageView
