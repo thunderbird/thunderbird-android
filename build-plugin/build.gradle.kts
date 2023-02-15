@@ -5,6 +5,8 @@ plugins {
 dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
+    implementation(plugin(libs.plugins.kotlin.jvm))
+
     implementation(plugin(libs.plugins.spotless))
 }
 
