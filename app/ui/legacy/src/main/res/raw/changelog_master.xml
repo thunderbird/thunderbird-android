@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.508" versioncode="35008" date="2023-02-15">
+        <change>Removed "Send…" submenu from the message view toolbar</change>
+        <change>Limit summary notification actions to messages for which individual notifications are currently being displayed</change>
+        <change>Fixed crash when trying to download an embedded image not using an http(s) URI</change>
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.507" versioncode="35007" date="2023-02-10">
         <change>Respect "show contact names" setting in message details screen</change>
         <change>Display folder name in message details screen</change>
