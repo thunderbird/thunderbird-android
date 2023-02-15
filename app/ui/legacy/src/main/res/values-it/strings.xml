@@ -92,7 +92,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="edit_as_new_message_action">Modifica come nuovo messaggio</string>
   <string name="move_action">Sposta</string>
   <string name="move_to_drafts_action">Sposta in Bozze</string>
-  <string name="single_message_options_action">Invio…</string>
   <string name="refile_action">Riarchivia…</string>
   <string name="done_action">Fatto</string>
   <string name="discard_action">Ignora</string>
@@ -225,7 +224,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_view_bcc_label">Ccn:</string>
   <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
-  <string name="message_view_recipient_prefix">a </string>
+  <string name="message_view_recipient_prefix">"a "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
   <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->

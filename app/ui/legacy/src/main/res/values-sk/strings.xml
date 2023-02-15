@@ -85,7 +85,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="edit_as_new_message_action">Upraviť ako novú správu</string>
   <string name="move_action">Presunúť</string>
   <string name="move_to_drafts_action">Presunúť do konceptov</string>
-  <string name="single_message_options_action">Odoslať…</string>
   <string name="refile_action">Presunúť…</string>
   <string name="done_action">Hotovo</string>
   <string name="discard_action">Zahodiť</string>

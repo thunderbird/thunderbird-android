@@ -84,7 +84,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="edit_as_new_message_action">Ubah sebagai pesan baru</string>
   <string name="move_action">Pindah</string>
   <string name="move_to_drafts_action">Pindah ke Draf</string>
-  <string name="single_message_options_action">Kirim…</string>
   <string name="refile_action">File kan kembali…</string>
   <string name="done_action">Selesai</string>
   <string name="discard_action">Batalkan</string>

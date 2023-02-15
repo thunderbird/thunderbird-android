@@ -45,7 +45,6 @@
   <string name="forward_as_attachment_action">Proslijedi kao privitak</string>
   <string name="edit_as_new_message_action">Uređuj kao novu poruku</string>
   <string name="move_action">Premjesti</string>
-  <string name="single_message_options_action">Pošalji…</string>
   <string name="refile_action">Ponovno punjenje…</string>
   <string name="done_action">Gotovo</string>
   <string name="discard_action">Otpusti</string>

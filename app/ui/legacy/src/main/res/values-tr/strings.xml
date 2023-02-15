@@ -91,7 +91,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="edit_as_new_message_action">Yeni bir ileti olarak düzenle</string>
   <string name="move_action">Taşı</string>
   <string name="move_to_drafts_action">Taslaklara Taşı</string>
-  <string name="single_message_options_action">Gönder…</string>
   <string name="refile_action">Yeniden işlem…</string>
   <string name="done_action">Tamam</string>
   <string name="discard_action">Yoksay</string>

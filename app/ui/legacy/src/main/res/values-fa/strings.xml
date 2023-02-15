@@ -91,7 +91,6 @@
   <string name="edit_as_new_message_action">ویرایش به‌عنوان پیام جدید</string>
   <string name="move_action">انتقال</string>
   <string name="move_to_drafts_action">انتقال به پیش‌نویس‌ها</string>
-  <string name="single_message_options_action">ارسال…</string>
   <string name="refile_action">سامان‌دهی…</string>
   <string name="done_action">انجام شد</string>
   <string name="discard_action">دورانداختن</string>

@@ -21,3 +21,6 @@ perl -i -pe 's/"><\/string>/"\/>/g' $FILE
 
 # Escape single and double quotes (but not in comments or the xml tag)
 perl -i -pe 's/([^\\])'\''/\1\\'\''/g unless /(<!--|xml)/' $FILE
+
+# Use double quotes for 'message_view_recipient_prefix' value to retain trailing space
+perl -i -pe 's/<string name="message_view_recipient_prefix">(.* )<\/string>/<string name="message_view_recipient_prefix">"\1"<\/string>/' $FILE

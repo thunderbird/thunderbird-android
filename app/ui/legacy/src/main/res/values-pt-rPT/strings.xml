@@ -92,7 +92,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="edit_as_new_message_action">Editar como nova mensagem</string>
   <string name="move_action">Mover</string>
   <string name="move_to_drafts_action">Mover para os Rascunhos</string>
-  <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Relocar…</string>
   <string name="done_action">Terminado</string>
   <string name="discard_action">Rejeitar</string>

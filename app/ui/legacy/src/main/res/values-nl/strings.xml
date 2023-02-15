@@ -87,7 +87,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="edit_as_new_message_action">Als nieuw bericht bewerken</string>
   <string name="move_action">Verplaatsen</string>
   <string name="move_to_drafts_action">Naar concepten verplaatsen</string>
-  <string name="single_message_options_action">Verzenden …</string>
   <string name="refile_action">Opnieuw opslaan …</string>
   <string name="done_action">Klaar</string>
   <string name="discard_action">Vergeten</string>
@@ -217,7 +216,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="message_view_bcc_label">BCC:</string>
   <string name="message_view_status_attachment_not_saved">Kan bijlage niet opslaan.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
-  <string name="message_view_recipient_prefix">aan </string>
+  <string name="message_view_recipient_prefix">"aan "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
   <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->

@@ -83,7 +83,6 @@ Send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
   <string name="edit_as_new_message_action">Rediger som ny melding</string>
   <string name="move_action">Flytt</string>
   <string name="move_to_drafts_action">Flytt til utkast</string>
-  <string name="single_message_options_action">Send…</string>
   <string name="refile_action">Omorganiser …</string>
   <string name="done_action">Ferdig</string>
   <string name="discard_action">Forkast</string>

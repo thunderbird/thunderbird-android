@@ -91,7 +91,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="edit_as_new_message_action">Rediger som ny besked besked</string>
   <string name="move_action">Flyt</string>
   <string name="move_to_drafts_action">Flyt til kladder</string>
-  <string name="single_message_options_action">Send…</string>
   <string name="refile_action">Genarkivering…</string>
   <string name="done_action">Afslut</string>
   <string name="discard_action">Slet</string>

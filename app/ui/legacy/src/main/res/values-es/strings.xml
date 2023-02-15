@@ -90,7 +90,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="edit_as_new_message_action">Editar como nuevo mensaje</string>
   <string name="move_action">Mover</string>
   <string name="move_to_drafts_action">Mover a Borradores</string>
-  <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Archivar…</string>
   <string name="done_action">Terminado</string>
   <string name="discard_action">Descartar</string>
@@ -222,7 +221,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="message_view_bcc_label">Cco:</string>
   <string name="message_view_status_attachment_not_saved">No se puede guardar el adjunto.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
-  <string name="message_view_recipient_prefix">para </string>
+  <string name="message_view_recipient_prefix">"para "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
   <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->

@@ -89,7 +89,6 @@
   <string name="edit_as_new_message_action">പുതിയ സന്ദേശമായി എഡിറ്റ് ചെയ്യുക</string>
   <string name="move_action">നീക്കുക</string>
   <string name="move_to_drafts_action">ഡ്രാഫ്റ്റുകളിലേക്ക് നീക്കുക</string>
-  <string name="single_message_options_action">അയയ്ക്കുക…</string>
   <string name="refile_action">പുതുക്കുക…</string>
   <string name="done_action">ചെയ്തു</string>
   <string name="discard_action">നിരസിക്കുക</string>

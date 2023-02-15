@@ -91,7 +91,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="edit_as_new_message_action">Upravit jako novou zprávu</string>
   <string name="move_action">Přesunout</string>
   <string name="move_to_drafts_action">Přesunout do konceptů</string>
-  <string name="single_message_options_action">Odeslat…</string>
   <string name="refile_action">Přesměrovat…</string>
   <string name="done_action">Hotovo</string>
   <string name="discard_action">Zahodit</string>

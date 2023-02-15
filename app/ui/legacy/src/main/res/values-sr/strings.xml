@@ -84,7 +84,6 @@
   <string name="edit_as_new_message_action">Уреди као нову поруку</string>
   <string name="move_action">Премести</string>
   <string name="move_to_drafts_action">Премести у нацрте</string>
-  <string name="single_message_options_action">Пошаљи…</string>
   <string name="refile_action">Поново заведи…</string>
   <string name="done_action">Заврши</string>
   <string name="discard_action">Одбаци</string>

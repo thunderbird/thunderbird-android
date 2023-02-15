@@ -80,7 +80,6 @@
   <string name="edit_as_new_message_action">تحرير كرسالة جديدة</string>
   <string name="move_action">حَرِّكْ</string>
   <string name="move_to_drafts_action">نقل إلى المسودات</string>
-  <string name="single_message_options_action">يُرسل…</string>
   <string name="refile_action">إعادة الترتيب جارية …</string>
   <string name="done_action">تم</string>
   <string name="discard_action">حذف</string>
