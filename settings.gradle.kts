@@ -17,6 +17,8 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
+rootProject.name = "k-9"
+
 includeBuild("build-plugin")
 
 include(
