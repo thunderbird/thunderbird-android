@@ -39,6 +39,10 @@ include(
 )
 
 include(
+    ":core:ui:compose:demo"
+)
+
+include(
     ":ui-utils:LinearLayoutManager",
     ":ui-utils:ItemTouchHelper",
     ":ui-utils:ToolbarBottomSheet"
