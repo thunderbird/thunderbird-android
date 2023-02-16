@@ -1,5 +1,3 @@
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryPlugin
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -61,36 +59,6 @@ allprojects {
                 .using(module("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${libs.versions.kotlin.get()}"))
             substitute(module("org.jetbrains.kotlinx:kotlinx-coroutines-android"))
                 .using(module("org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.kotlinCoroutines.get()}"))
-        }
-    }
-
-    plugins.withType<LibraryPlugin> {
-        configure<BaseExtension> {
-            compileSdkVersion(33)
-
-            defaultConfig {
-                minSdk = 21
-                targetSdk = 31
-
-                vectorDrawables.useSupportLibrary = true
-                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-            }
-
-            compileOptions {
-                sourceCompatibility = javaVersion
-                targetCompatibility = javaVersion
-            }
-
-            lintOptions {
-                isAbortOnError = false
-                lintConfig = file("${rootProject.projectDir}/config/lint/lint.xml")
-            }
-
-            testOptions {
-                unitTests {
-                    isIncludeAndroidResources = true
-                }
-            }
         }
     }
 
