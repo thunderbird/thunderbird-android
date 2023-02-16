@@ -10,6 +10,10 @@ android {
         targetSdk = ThunderbirdProjectConfig.androidSdkTarget
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }

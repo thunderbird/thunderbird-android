@@ -11,6 +11,10 @@ android {
         targetSdk = ThunderbirdProjectConfig.androidSdkTarget
     }
 
+    buildFeatures {
+        buildConfig = false
+    }
+
     kotlinOptions {
         jvmTarget = ThunderbirdProjectConfig.javaVersion.toString()
     }

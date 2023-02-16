@@ -11,10 +11,6 @@ fun CommonExtension<*, *, *, *>.configureSharedConfig() {
         vectorDrawables.useSupportLibrary = true
     }
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     compileOptions {
         sourceCompatibility = ThunderbirdProjectConfig.javaVersion
         targetCompatibility = ThunderbirdProjectConfig.javaVersion
