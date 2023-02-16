@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.CommonExtension
+import org.gradle.accessors.dm.LibrariesForLibs
 
 fun CommonExtension<*, *, *, *>.configureSharedConfig() {
     compileSdk = ThunderbirdProjectConfig.androidSdkCompile
@@ -23,6 +24,27 @@ fun CommonExtension<*, *, *, *>.configureSharedConfig() {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+        }
+    }
+}
+
+fun CommonExtension<*, *, *, *>.configureSharedComposeConfig(libs: LibrariesForLibs) {
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+    }
+
+    lint {
+        warningsAsErrors = true
+        abortOnError = true
+    }
+
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 }
