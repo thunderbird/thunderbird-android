@@ -19,6 +19,8 @@ androidxCore = "1.9.0"
 androidxPreference = "1.2.0"
 androidxDrawerLayout = "1.1.1"
 androidxTransition = "1.4.1"
+androidxComposeCompiler = "1.4.1"
+androidxComposeBom = "2023.01.00"
 fastAdapter = "5.7.0"
 preferencesFix = "1.1.0"
 timber = "5.0.1"
@@ -68,7 +70,11 @@ androidx-core = { module = "androidx.core:core", version.ref = "androidxCore" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-preference = { module = "androidx.preference:preference", version.ref = "androidxPreference" }
 androidx-swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+androidx-compose-activity = "androidx.activity:activity-compose:1.6.1"
+androidx-compose-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 androidx-test-core = "androidx.test:core:1.5.0"
+androidx-test-ext-junit-ktx = "androidx.test.ext:junit-ktx:1.1.5"
+androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
 android-material = "com.google.android.material:material:1.7.0"
 fastadapter = { module = "com.mikepenz:fastadapter", version.ref = "fastAdapter" }
 fastadapter-extensions-drag = { module = "com.mikepenz:fastadapter-extensions-drag", version.ref = "fastAdapter" }
@@ -123,7 +129,7 @@ icu4j-charset = "com.ibm.icu:icu4j-charset:72.1"
 leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
 
 [bundles]
-library-jvm-test = [
+shared-jvm-test = [
   "junit",
   "truth",
   "mockito-inline",

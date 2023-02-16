@@ -1,5 +1,5 @@
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.BasePlugin
+import com.android.build.gradle.LibraryPlugin
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -64,7 +64,7 @@ allprojects {
         }
     }
 
-    plugins.withType<BasePlugin> {
+    plugins.withType<LibraryPlugin> {
         configure<BaseExtension> {
             compileSdkVersion(33)
 
