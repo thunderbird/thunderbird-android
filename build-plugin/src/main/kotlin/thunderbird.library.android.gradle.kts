@@ -6,6 +6,11 @@ plugins {
 android {
     configureSharedConfig()
 
+    defaultConfig {
+        @Suppress("DEPRECATION")
+        targetSdk = ThunderbirdProjectConfig.androidSdkTarget
+    }
+
     kotlinOptions {
         jvmTarget = ThunderbirdProjectConfig.javaVersion.toString()
     }
