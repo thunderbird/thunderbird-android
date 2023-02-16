@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.kotlin.jvm) apply false
 
-    id("app.k9mail.gradle.plugin.quality.spotless")
+    id("thunderbird.quality.spotless")
 }
 
 val propertyTestCoverage: String? by extra

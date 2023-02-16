@@ -1,6 +1,5 @@
 import com.diffplug.gradle.spotless.SpotlessExtension
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("com.diffplug.spotless")
 }
