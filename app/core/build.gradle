@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    id "thunderbird.library.android"
     alias(libs.plugins.kotlin.parcelize)
 }
 
@@ -36,13 +35,7 @@ dependencies {
     testImplementation libs.kotlin.reflect
     testImplementation libs.robolectric
     testImplementation libs.androidx.test.core
-    testImplementation libs.junit
-    testImplementation libs.truth
-    testImplementation libs.mockito.inline
-    testImplementation libs.mockito.kotlin
     testImplementation libs.jdom2
-    testImplementation libs.koin.test
-    testImplementation libs.koin.test.junit4
 }
 
 android {

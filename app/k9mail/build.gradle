@@ -35,8 +35,6 @@ dependencies {
     testImplementation project(':plugins:openpgp-api-lib:openpgp-api')
 
     testImplementation libs.robolectric
-    testImplementation libs.koin.test
-    testImplementation libs.koin.test.junit4
 }
 
 android {
