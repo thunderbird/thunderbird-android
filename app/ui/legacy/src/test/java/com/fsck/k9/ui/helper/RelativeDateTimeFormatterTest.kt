@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.helper
 
+import android.os.Build
 import android.os.SystemClock
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.TestClock
@@ -13,7 +14,10 @@ import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
-@Config(qualifiers = "en")
+@Config(
+    qualifiers = "en",
+    sdk = [Build.VERSION_CODES.S]
+)
 class RelativeDateTimeFormatterTest : RobolectricTest() {
 
     private val context = RuntimeEnvironment.getApplication().applicationContext

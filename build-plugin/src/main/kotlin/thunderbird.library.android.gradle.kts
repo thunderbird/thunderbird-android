@@ -6,11 +6,6 @@ plugins {
 android {
     configureSharedConfig()
 
-    defaultConfig {
-        @Suppress("DEPRECATION")
-        targetSdk = ThunderbirdProjectConfig.androidSdkTarget
-    }
-
     buildFeatures {
         buildConfig = false
     }
