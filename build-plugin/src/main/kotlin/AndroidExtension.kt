@@ -17,7 +17,6 @@ fun CommonExtension<*, *, *, *>.configureSharedConfig() {
     }
 
     lint {
-        checkDependencies = true
         abortOnError = false
     }
 

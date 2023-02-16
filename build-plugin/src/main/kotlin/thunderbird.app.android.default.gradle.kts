@@ -23,6 +23,7 @@ android {
     }
 
     lint {
+        checkDependencies = true
         lintConfig = file("${rootProject.projectDir}/config/lint/lint.xml")
     }
 
