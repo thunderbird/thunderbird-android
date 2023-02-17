@@ -185,7 +185,7 @@ class MessageListAdapter internal constructor(
         listItemListener.onFooterClicked()
     }
 
-    private val flagClickListener = OnClickListener { view: View ->
+    private val starClickListener = OnClickListener { view: View ->
         val messageListItem = getItemFromView(view) ?: return@OnClickListener
         listItemListener.onToggleMessageFlag(messageListItem)
     }
@@ -198,12 +198,6 @@ class MessageListAdapter internal constructor(
 
     init {
         setHasStableIds(true)
-    }
-
-    private fun recipientSigil(toMe: Boolean, ccMe: Boolean) = when {
-        toMe -> res.getString(R.string.messagelist_sent_to_me_sigil) + " "
-        ccMe -> res.getString(R.string.messagelist_sent_cc_me_sigil) + " "
-        else -> ""
     }
 
     override fun getItemCount(): Int = messages.size + if (hasFooter) 1 else 0
@@ -271,13 +265,13 @@ class MessageListAdapter internal constructor(
         appearance.fontSizes.setViewTextSize(holder.date, appearance.fontSizes.messageListDate)
 
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
-        holder.preview.setLines(max(appearance.previewLines, 1))
+        holder.preview.maxLines = max(appearance.previewLines, 1)
         appearance.fontSizes.setViewTextSize(holder.preview, appearance.fontSizes.messageListPreview)
         appearance.fontSizes.setViewTextSize(holder.threadCount, appearance.fontSizes.messageListSubject) // thread count is next to subject
 
-        holder.flagged.isVisible = appearance.stars
-        holder.flagged.tag = holder
-        holder.flagged.setOnClickListener(flagClickListener)
+        holder.star.isVisible = appearance.stars
+        holder.star.tag = holder
+        holder.star.setOnClickListener(starClickListener)
 
         view.tag = holder
 
@@ -332,7 +326,7 @@ class MessageListAdapter internal constructor(
             }
 
             if (appearance.stars) {
-                holder.flagged.isChecked = isStarred
+                holder.star.isSelected = isStarred
             }
             holder.uniqueId = uniqueId
             if (appearance.showContactPicture && holder.contactPicture.isVisible) {
@@ -341,16 +335,14 @@ class MessageListAdapter internal constructor(
             setBackgroundColor(holder.itemView, isSelected, isRead, isActive)
             updateWithThreadCount(holder, displayThreadCount)
             val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
-            val sigil = recipientSigil(toMe, ccMe)
-            val messageStringBuilder = SpannableStringBuilder(sigil)
-                .append(beforePreviewText)
+            val messageStringBuilder = SpannableStringBuilder(beforePreviewText)
             if (appearance.previewLines > 0) {
                 val preview = getPreview(isMessageEncrypted, previewText)
                 messageStringBuilder.append(" ").append(preview)
             }
             holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
 
-            formatPreviewText(holder.preview, beforePreviewText, sigil, isRead)
+            formatPreviewText(holder.preview, beforePreviewText, isRead)
 
             holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
             if (appearance.senderAboveSubject) {
@@ -376,15 +368,10 @@ class MessageListAdapter internal constructor(
         holder.text.text = footerText
     }
 
-    private fun formatPreviewText(
-        preview: TextView,
-        beforePreviewText: CharSequence,
-        sigil: String,
-        messageRead: Boolean
-    ) {
+    private fun formatPreviewText(preview: TextView, beforePreviewText: CharSequence, messageRead: Boolean) {
         val previewText = preview.text as Spannable
 
-        val beforePreviewLength = beforePreviewText.length + sigil.length
+        val beforePreviewLength = beforePreviewText.length
         addBeforePreviewSpan(previewText, beforePreviewLength, messageRead)
 
         // Set span (color) for preview message
