@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 class ChangeLogManager(
     private val context: Context,
     private val appCoroutineScope: CoroutineScope,
-    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     private val mutableChangeLogFlow = MutableSharedFlow<ChangeLog>(replay = 1)
 

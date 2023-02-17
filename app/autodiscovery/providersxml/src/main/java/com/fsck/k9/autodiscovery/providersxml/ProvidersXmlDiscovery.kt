@@ -15,7 +15,7 @@ import timber.log.Timber
 
 class ProvidersXmlDiscovery(
     private val xmlProvider: ProvidersXmlProvider,
-    private val oAuthConfigurationProvider: OAuthConfigurationProvider
+    private val oAuthConfigurationProvider: OAuthConfigurationProvider,
 ) : ConnectionSettingsDiscovery {
 
     override fun discover(email: String): DiscoveryResults? {
@@ -151,6 +151,6 @@ class ProvidersXmlDiscovery(
         val incomingUriTemplate: String,
         val incomingUsernameTemplate: String,
         val outgoingUriTemplate: String,
-        val outgoingUsernameTemplate: String
+        val outgoingUsernameTemplate: String,
     )
 }

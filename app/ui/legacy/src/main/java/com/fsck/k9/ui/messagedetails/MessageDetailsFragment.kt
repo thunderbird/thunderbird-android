@@ -57,7 +57,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.message_bottom_sheet, container, false)
     }
@@ -88,11 +88,13 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
 
         // Don't allow dragging down the bottom sheet (by dragging the toolbar) unless the list is scrolled all the way
         // to the top.
-        recyclerView.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                dialog.behavior.isDraggable = !recyclerView.canScrollVertically(-1)
-            }
-        })
+        recyclerView.addOnScrollListener(
+            object : OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    dialog.behavior.isDraggable = !recyclerView.canScrollVertically(-1)
+                }
+            },
+        )
 
         viewModel.uiEvents.observe(this) { event ->
             when (event) {
@@ -161,7 +163,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     private fun ItemAdapter<GenericItem>.addParticipants(
         participants: List<Participant>,
         @StringRes title: Int,
-        showContactPicture: Boolean
+        showContactPicture: Boolean,
     ) {
         if (participants.isNotEmpty()) {
             val extraText = if (participants.size > 1) participants.size.toString() else null
@@ -176,7 +178,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     private fun ItemAdapter<GenericItem>.addFolderName(folder: FolderInfoUi) {
         val folderNameItem = FolderNameItem(
             displayName = folder.displayName,
-            iconResourceId = folderIconProvider.getFolderIcon(folder.type)
+            iconResourceId = folderIconProvider.getFolderIcon(folder.type),
         )
         add(folderNameItem)
     }
@@ -194,7 +196,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
             v: View,
             position: Int,
             fastAdapter: FastAdapter<CryptoStatusItem>,
-            item: CryptoStatusItem
+            item: CryptoStatusItem,
         ) {
             if (item.cryptoDetails.isClickable) {
                 viewModel.onCryptoStatusClicked()
@@ -330,7 +332,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
 
         fun create(messageReference: MessageReference): MessageDetailsFragment {
             return MessageDetailsFragment().withArguments(
-                ARG_REFERENCE to messageReference.toIdentityString()
+                ARG_REFERENCE to messageReference.toIdentityString(),
             )
         }
     }

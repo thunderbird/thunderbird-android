@@ -71,12 +71,13 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         false,
         true,
         true,
-        CryptoMode.NO_CHOICE
+        CryptoMode.NO_CHOICE,
     )
     private val resourceProvider: CoreResourceProvider by inject()
     private val openPgpApi = mock(OpenPgpApi::class.java)
     private val autocryptOpenPgpApiInteractor = mock(AutocryptOpenPgpApiInteractor::class.java)
-    private val pgpMessageBuilder = createDefaultPgpMessageBuilder(openPgpApi, autocryptOpenPgpApiInteractor, resourceProvider)
+    private val pgpMessageBuilder =
+        createDefaultPgpMessageBuilder(openPgpApi, autocryptOpenPgpApiInteractor, resourceProvider)
 
     @Before
     @Throws(Exception::class)
@@ -169,7 +170,9 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val returnIntent = Intent()
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
-        `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(returnIntent)
+        `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
+            returnIntent,
+        )
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
@@ -193,8 +196,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             openPgpApi.executeApi(
                 capturedApiIntent.capture(),
                 any<OpenPgpDataSource>(),
-                anyOrNull()
-            )
+                anyOrNull(),
+            ),
         ).thenReturn(returnIntent)
 
         val mockCallback = mock(Callback::class.java)
@@ -219,7 +222,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         Assert.assertEquals(
             "first part must have content type text/plain",
             "text/plain",
-            MimeUtility.getHeaderParameter(contentBodyPart.contentType, null)
+            MimeUtility.getHeaderParameter(contentBodyPart.contentType, null),
         )
         assertTrue("signed message body must be TextBody", contentBodyPart.body is TextBody)
         Assert.assertEquals(MimeUtil.ENC_QUOTED_PRINTABLE, (contentBodyPart.body as TextBody).encoding)
@@ -230,17 +233,17 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         Assert.assertEquals(
             "second part must be pgp signature",
             "application/pgp-signature",
-            MimeUtility.getHeaderParameter(contentType, null)
+            MimeUtility.getHeaderParameter(contentType, null),
         )
         Assert.assertEquals(
             "second part must be called signature.asc",
             "signature.asc",
-            MimeUtility.getHeaderParameter(contentType, "name")
+            MimeUtility.getHeaderParameter(contentType, "name"),
         )
         assertContentOfBodyPartEquals(
             "content must match the supplied detached signature",
             signatureBodyPart,
-            byteArrayOf(1, 2, 3)
+            byteArrayOf(1, 2, 3),
         )
 
         assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL)
@@ -259,7 +262,9 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         `when`<Parcelable>(returnIntent.getParcelableExtra<Parcelable>(eq(OpenPgpApi.RESULT_INTENT)))
             .thenReturn(mockPendingIntent)
 
-        `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(returnIntent)
+        `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
+            returnIntent,
+        )
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
@@ -287,7 +292,9 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             `when`<Parcelable>(returnIntent.getParcelableExtra<Parcelable>(eq(OpenPgpApi.RESULT_INTENT)))
                 .thenReturn(mockPendingIntent)
 
-            `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(returnIntent)
+            `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
+                returnIntent,
+            )
 
             val mockCallback = mock(Callback::class.java)
             pgpMessageBuilder.buildAsync(mockCallback)
@@ -307,7 +314,9 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
 
             val mockReturnIntent = mock(Intent::class.java)
-            `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(returnIntent)
+            `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
+                returnIntent,
+            )
 
             val mockCallback = mock(Callback::class.java)
             pgpMessageBuilder.onActivityResult(returnedRequestCode, Activity.RESULT_OK, mockReturnIntent, mockCallback)
@@ -324,7 +333,13 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val returnIntent = spy(Intent())
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
-        `when`(openPgpApi.executeApi(any(Intent::class.java), any(OpenPgpDataSource::class.java), any(OutputStream::class.java)))
+        `when`(
+            openPgpApi.executeApi(
+                any(Intent::class.java),
+                any(OpenPgpDataSource::class.java),
+                any(OutputStream::class.java),
+            ),
+        )
             .thenReturn(returnIntent)
 
         val mockCallback = mock(Callback::class.java)
@@ -360,7 +375,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     fun buildDraft_replyToEncrypted() {
         val cryptoStatus = defaultCryptoStatus.copy(
             cryptoMode = CryptoMode.NO_CHOICE,
-            isReplyToEncrypted = true
+            isReplyToEncrypted = true,
         )
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
         pgpMessageBuilder.isDraft = true
@@ -391,13 +406,22 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mimeMessage = buildMessage()
 
-        assertEquals("encrypt=no; _sign-only=yes; _by-choice=yes; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
+        assertEquals(
+            "encrypt=no; _sign-only=yes; _by-choice=yes; ",
+            mimeMessage.getHeader("Autocrypt-Draft-State").get(0),
+        )
     }
 
     private fun buildMessage(): MimeMessage {
         val returnIntent = spy(Intent())
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
-        `when`(openPgpApi.executeApi(any(Intent::class.java), any(OpenPgpDataSource::class.java), any(OutputStream::class.java)))
+        `when`(
+            openPgpApi.executeApi(
+                any(Intent::class.java),
+                any(OpenPgpDataSource::class.java),
+                any(OutputStream::class.java),
+            ),
+        )
             .thenReturn(returnIntent)
 
         val mockCallback = mock(Callback::class.java)
@@ -416,13 +440,19 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     fun buildEncrypt__checkGossip() {
         val cryptoStatus = defaultCryptoStatus.copy(
             cryptoMode = CryptoMode.CHOICE_ENABLED,
-            recipientAddresses = listOf("alice@example.org", "bob@example.org")
+            recipientAddresses = listOf("alice@example.org", "bob@example.org"),
         )
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
 
         val returnIntent = Intent()
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
-        `when`(openPgpApi.executeApi(any(Intent::class.java), any(OpenPgpDataSource::class.java), any(OutputStream::class.java)))
+        `when`(
+            openPgpApi.executeApi(
+                any(Intent::class.java),
+                any(OpenPgpDataSource::class.java),
+                any(OutputStream::class.java),
+            ),
+        )
             .thenReturn(returnIntent)
         pgpMessageBuilder.buildAsync(mock(Callback::class.java))
 
@@ -435,18 +465,28 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     fun buildEncrypt__checkGossip__filterBcc() {
         val cryptoStatus = defaultCryptoStatus.copy(
             cryptoMode = CryptoMode.CHOICE_ENABLED,
-            recipientAddresses = listOf("alice@example.org", "bob@example.org", "carol@example.org")
+            recipientAddresses = listOf("alice@example.org", "bob@example.org", "carol@example.org"),
         )
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
         pgpMessageBuilder.setBcc(listOf(Address("carol@example.org")))
 
         val returnIntent = Intent()
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
-        `when`(openPgpApi.executeApi(any(Intent::class.java), any(OpenPgpDataSource::class.java), any(OutputStream::class.java)))
+        `when`(
+            openPgpApi.executeApi(
+                any(Intent::class.java),
+                any(OpenPgpDataSource::class.java),
+                any(OutputStream::class.java),
+            ),
+        )
             .thenReturn(returnIntent)
         pgpMessageBuilder.buildAsync(mock(Callback::class.java))
 
-        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForKeyId(same(openPgpApi), eq(TEST_KEY_ID), eq(SENDER_EMAIL))
+        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForKeyId(
+            same(openPgpApi),
+            eq(TEST_KEY_ID),
+            eq(SENDER_EMAIL),
+        )
         verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"))
         verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("bob@example.org"))
     }
@@ -457,18 +497,28 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val cryptoStatus = defaultCryptoStatus.copy(
             cryptoMode = CryptoMode.CHOICE_ENABLED,
             isPgpInlineModeEnabled = true,
-            recipientAddresses = listOf("alice@example.org", "carol@example.org")
+            recipientAddresses = listOf("alice@example.org", "carol@example.org"),
         )
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
         pgpMessageBuilder.setBcc(listOf(Address("carol@example.org")))
 
         val returnIntent = Intent()
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
-        `when`(openPgpApi.executeApi(any(Intent::class.java), any(OpenPgpDataSource::class.java), any(OutputStream::class.java)))
+        `when`(
+            openPgpApi.executeApi(
+                any(Intent::class.java),
+                any(OpenPgpDataSource::class.java),
+                any(OutputStream::class.java),
+            ),
+        )
             .thenReturn(returnIntent)
         pgpMessageBuilder.buildAsync(mock(Callback::class.java))
 
-        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForKeyId(any(OpenPgpApi::class.java), any(Long::class.java), any(String::class.java))
+        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForKeyId(
+            any(OpenPgpApi::class.java),
+            any(Long::class.java),
+            any(String::class.java),
+        )
         verifyNoMoreInteractions(autocryptOpenPgpApiInteractor)
     }
 
@@ -477,7 +527,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     fun buildEncrypt__shouldSucceed() {
         val cryptoStatus = defaultCryptoStatus.copy(
             cryptoMode = CryptoMode.CHOICE_ENABLED,
-            recipientAddresses = listOf("test@example.org")
+            recipientAddresses = listOf("test@example.org"),
         )
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
 
@@ -490,8 +540,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             openPgpApi.executeApi(
                 capturedApiIntent.capture(),
                 any(OpenPgpDataSource::class.java),
-                any(OutputStream::class.java)
-            )
+                any(OutputStream::class.java),
+            ),
         ).thenReturn(returnIntent)
 
         val mockCallback = mock(Callback::class.java)
@@ -519,23 +569,23 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         Assert.assertEquals(
             "first part must be pgp encrypted dummy part",
             "application/pgp-encrypted",
-            dummyBodyPart.contentType
+            dummyBodyPart.contentType,
         )
         assertContentOfBodyPartEquals(
             "content must match the supplied detached signature",
             dummyBodyPart,
-            "Version: 1"
+            "Version: 1",
         )
 
         val encryptedBodyPart = multipart.getBodyPart(1)
         Assert.assertEquals(
             "second part must be octet-stream of encrypted data",
             "application/octet-stream; name=\"encrypted.asc\"",
-            encryptedBodyPart.contentType
+            encryptedBodyPart.contentType,
         )
         assertTrue(
             "message body must be BinaryTempFileBody",
-            encryptedBodyPart.body is BinaryTempFileBody
+            encryptedBodyPart.body is BinaryTempFileBody,
         )
         Assert.assertEquals(MimeUtil.ENC_7BIT, (encryptedBodyPart.body as BinaryTempFileBody).encoding)
 
@@ -548,7 +598,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val cryptoStatus = defaultCryptoStatus.copy(
             cryptoMode = CryptoMode.CHOICE_ENABLED,
             isPgpInlineModeEnabled = true,
-            recipientAddresses = listOf("test@example.org")
+            recipientAddresses = listOf("test@example.org"),
         )
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
 
@@ -561,8 +611,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             openPgpApi.executeApi(
                 capturedApiIntent.capture(),
                 any(OpenPgpDataSource::class.java),
-                any(OutputStream::class.java)
-            )
+                any(OutputStream::class.java),
+            ),
         ).thenReturn(returnIntent)
 
         val mockCallback = mock(Callback::class.java)
@@ -593,7 +643,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val cryptoStatus = defaultCryptoStatus.copy(
             cryptoMode = CryptoMode.SIGN_ONLY,
             isPgpInlineModeEnabled = true,
-            recipientAddresses = listOf("test@example.org")
+            recipientAddresses = listOf("test@example.org"),
         )
 
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
@@ -607,8 +657,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             openPgpApi.executeApi(
                 capturedApiIntent.capture(),
                 any(OpenPgpDataSource::class.java),
-                any(OutputStream::class.java)
-            )
+                any(OutputStream::class.java),
+            ),
         ).thenReturn(returnIntent)
 
         val mockCallback = mock(Callback::class.java)
@@ -648,7 +698,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     @Test
     @Throws(MessagingException::class)
     fun buildEncryptWithAttach__withInlineEnabled__shouldThrow() {
-        val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.CHOICE_ENABLED, isPgpInlineModeEnabled = true)
+        val cryptoStatus =
+            defaultCryptoStatus.copy(cryptoMode = CryptoMode.CHOICE_ENABLED, isPgpInlineModeEnabled = true)
 
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
         pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(null, 0, null, true, true)))
@@ -671,10 +722,16 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)
         returnIntent.putExtra(
             OpenPgpApi.RESULT_ERROR,
-            OpenPgpError(OpenPgpError.OPPORTUNISTIC_MISSING_KEYS, "Missing keys")
+            OpenPgpError(OpenPgpError.OPPORTUNISTIC_MISSING_KEYS, "Missing keys"),
         )
 
-        `when`(openPgpApi.executeApi(any(Intent::class.java), any(OpenPgpDataSource::class.java), any(OutputStream::class.java)))
+        `when`(
+            openPgpApi.executeApi(
+                any(Intent::class.java),
+                any(OpenPgpDataSource::class.java),
+                any(OutputStream::class.java),
+            ),
+        )
             .thenReturn(returnIntent)
 
         val mockCallback = mock(Callback::class.java)
@@ -698,7 +755,9 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         returnIntentSigned.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
         // no OpenPgpApi.EXTRA_DETACHED_SIGNATURE!
 
-        `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(returnIntentSigned)
+        `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
+            returnIntentSigned,
+        )
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
 
@@ -715,14 +774,14 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         private fun createDefaultPgpMessageBuilder(
             openPgpApi: OpenPgpApi,
             autocryptOpenPgpApiInteractor: AutocryptOpenPgpApiInteractor,
-            resourceProvider: CoreResourceProvider
+            resourceProvider: CoreResourceProvider,
         ): PgpMessageBuilder {
             val builder = PgpMessageBuilder(
                 MessageIdGenerator.getInstance(),
                 BoundaryGenerator.getInstance(),
                 AutocryptOperations.getInstance(),
                 autocryptOpenPgpApiInteractor,
-                resourceProvider
+                resourceProvider,
             )
             builder.setOpenPgpApi(openPgpApi)
 
@@ -730,7 +789,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                 name = "tester",
                 email = SENDER_EMAIL,
                 description = "test identity",
-                signatureUse = false
+                signatureUse = false,
             )
 
             builder.setSubject("subject")

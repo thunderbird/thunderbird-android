@@ -28,10 +28,10 @@ class CreateFolderOperationsTest : RobolectricTest() {
                         notifyClass = FolderClass.NO_CLASS,
                         pushClass = FolderClass.NO_CLASS,
                         inTopGroup = true,
-                        integrate = false
-                    )
-                )
-            )
+                        integrate = false,
+                    ),
+                ),
+            ),
         )
 
         val folders = sqliteDatabase.readFolders()
@@ -55,8 +55,8 @@ class CreateFolderOperationsTest : RobolectricTest() {
             listOf(
                 createCreateFolderInfo(serverId = "folder1", name = "Inbox"),
                 createCreateFolderInfo(serverId = "folder2", name = "Sent"),
-                createCreateFolderInfo(serverId = "folder3", name = "Trash")
-            )
+                createCreateFolderInfo(serverId = "folder3", name = "Trash"),
+            ),
         )
 
         val folders = sqliteDatabase.readFolders()
@@ -65,8 +65,8 @@ class CreateFolderOperationsTest : RobolectricTest() {
             setOf(
                 "folder1" to "Inbox",
                 "folder2" to "Sent",
-                "folder3" to "Trash"
-            )
+                "folder3" to "Trash",
+            ),
         )
     }
 
@@ -82,8 +82,8 @@ class CreateFolderOperationsTest : RobolectricTest() {
                 notifyClass = FolderClass.INHERITED,
                 pushClass = FolderClass.NO_CLASS,
                 inTopGroup = false,
-                integrate = false
-            )
+                integrate = false,
+            ),
         )
     }
 }

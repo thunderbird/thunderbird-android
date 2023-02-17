@@ -24,13 +24,13 @@ val controllerModule = module {
             get<MessageStoreManager>(),
             get<SaveMessageDataCreator>(),
             get<SpecialLocalFoldersCreator>(),
-            get(named("controllerExtensions"))
+            get(named("controllerExtensions")),
         )
     }
     single<MessageCountsProvider> {
         DefaultMessageCountsProvider(
             preferences = get(),
-            messageStoreManager = get()
+            messageStoreManager = get(),
         )
     }
 }

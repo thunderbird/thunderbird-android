@@ -17,7 +17,7 @@ object ExtraAccountDiscovery {
                 authenticationType = AuthType.AUTOMATIC,
                 username = "irrelevant",
                 password = "irrelevant",
-                clientCertificateAlias = null
+                clientCertificateAlias = null,
             )
             ConnectionSettings(incoming = serverSettings, outgoing = serverSettings)
         } else {

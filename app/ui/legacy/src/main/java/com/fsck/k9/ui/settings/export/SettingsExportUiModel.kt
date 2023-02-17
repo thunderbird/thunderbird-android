@@ -76,7 +76,7 @@ sealed class SettingsListItem {
     data class Account(
         val accountNumber: Int,
         val displayName: String,
-        val email: String
+        val email: String,
     ) : SettingsListItem()
 }
 
@@ -84,12 +84,12 @@ enum class ButtonState {
     DISABLED,
     ENABLED,
     INVISIBLE,
-    GONE
+    GONE,
 }
 
 enum class StatusText {
     HIDDEN,
     PROGRESS,
     EXPORT_SUCCESS,
-    EXPORT_FAILURE
+    EXPORT_FAILURE,
 }

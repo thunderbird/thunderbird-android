@@ -165,7 +165,7 @@ class MessageTest {
 
             ------Boundary103--
 
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 
@@ -266,7 +266,7 @@ class MessageTest {
 
             ------Boundary103--
 
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 
@@ -324,7 +324,7 @@ class MessageTest {
             αβγδεζηθ
             End of test.
 
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
 
         return MimeBodyPart().apply {

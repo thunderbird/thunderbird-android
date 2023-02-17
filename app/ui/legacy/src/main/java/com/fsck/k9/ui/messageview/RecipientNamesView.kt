@@ -70,7 +70,7 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
             maxNumberOfRecipientNames = MAX_NUMBER_OF_RECIPIENT_NAMES,
             recipientsPrefix = context.getString(R.string.message_view_recipient_prefix),
             additionalRecipientSpacing = additionRecipientSpacing,
-            additionalRecipientsPrefix = context.getString(R.string.message_view_additional_recipient_prefix)
+            additionalRecipientsPrefix = context.getString(R.string.message_view_additional_recipient_prefix),
         )
 
         if (isInEditMode) {
@@ -79,7 +79,7 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
                 "Katherine Johnson",
                 "Margaret Hamilton",
                 "Adele Goldberg",
-                "Steve Shirley"
+                "Steve Shirley",
             )
             numberOfRecipients = 8
         }
@@ -122,7 +122,7 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
         val recipientLayoutData = recipientLayoutCreator.createRecipientLayout(
             recipientNames,
             numberOfRecipients,
-            availableWidth
+            availableWidth,
         )
 
         recipientNameTextView.text = recipientLayoutData.recipientNames
@@ -134,7 +134,7 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
 
             recipientCountTextView.measure(
                 MeasureSpec.makeMeasureSpec(availableWidth, MeasureSpec.AT_MOST),
-                MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.AT_MOST)
+                MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.AT_MOST),
             )
 
             remainingWidth = availableWidth - additionRecipientSpacing - recipientCountTextView.measuredWidth
@@ -145,7 +145,7 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
 
         recipientNameTextView.measure(
             MeasureSpec.makeMeasureSpec(remainingWidth, MeasureSpec.AT_MOST),
-            MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.AT_MOST)
+            MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.AT_MOST),
         )
 
         if (layoutDirection == LAYOUT_DIRECTION_LTR) {
@@ -154,14 +154,14 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
                 0,
                 0,
                 recipientNameRight,
-                recipientNameTextView.measuredHeight
+                recipientNameTextView.measuredHeight,
             )
             val recipientCountLeft = recipientNameRight + additionRecipientSpacing
             recipientCountTextView.layout(
                 recipientCountLeft,
                 0,
                 recipientCountLeft + recipientCountTextView.measuredWidth,
-                recipientCountTextView.measuredHeight
+                recipientCountTextView.measuredHeight,
             )
         } else {
             val recipientNameLeft = width - recipientNameTextView.measuredWidth
@@ -169,14 +169,14 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
                 recipientNameLeft,
                 0,
                 right,
-                recipientNameTextView.measuredHeight
+                recipientNameTextView.measuredHeight,
             )
             val recipientCountRight = recipientNameLeft - additionRecipientSpacing
             recipientCountTextView.layout(
                 recipientCountRight - recipientCountTextView.measuredWidth,
                 0,
                 recipientCountRight,
-                0 + recipientCountTextView.measuredHeight
+                0 + recipientCountTextView.measuredHeight,
             )
         }
     }

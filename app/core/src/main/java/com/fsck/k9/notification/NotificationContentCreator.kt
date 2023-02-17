@@ -12,7 +12,7 @@ import com.fsck.k9.message.extractors.PreviewResult.PreviewType
 
 internal class NotificationContentCreator(
     private val context: Context,
-    private val resourceProvider: NotificationResourceProvider
+    private val resourceProvider: NotificationResourceProvider,
 ) {
     fun createFromMessage(account: Account, message: LocalMessage): NotificationContent {
         val sender = getMessageSender(account, message)
@@ -22,7 +22,7 @@ internal class NotificationContentCreator(
             sender = getMessageSenderForDisplay(sender),
             subject = getMessageSubject(message),
             preview = getMessagePreview(message),
-            summary = buildMessageSummary(sender, getMessageSubject(message))
+            summary = buildMessageSummary(sender, getMessageSubject(message)),
         )
     }
 

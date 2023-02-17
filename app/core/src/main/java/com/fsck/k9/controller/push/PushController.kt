@@ -39,7 +39,7 @@ class PushController internal constructor(
     private val connectivityManager: ConnectivityManager,
     private val accountPushControllerFactory: AccountPushControllerFactory,
     private val coroutineScope: CoroutineScope = GlobalScope,
-    private val coroutineDispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+    private val coroutineDispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
 ) {
     private val lock = Any()
     private var initializationStarted = false
@@ -214,6 +214,7 @@ class PushController internal constructor(
             account.folderPushMode != FolderMode.NONE && backendManager.getBackend(account).isPushCapable
         }
     }
+
     private fun setPushNotificationState(notificationState: PushNotificationState) {
         pushNotificationManager.notificationState = notificationState
     }

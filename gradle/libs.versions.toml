@@ -3,7 +3,7 @@
 
 [versions]
 androidGradlePlugin = "7.4.0"
-ktlint = "0.47.1"
+ktlint = "0.48.2"
 
 kotlin = "1.8.0"
 kotlinCoroutines = "1.6.4"

@@ -94,8 +94,16 @@ class AboutFragment : Fragment() {
 
     companion object {
         private val USED_LIBRARIES = arrayOf(
-            Library("Android Jetpack libraries", "https://developer.android.com/jetpack", "Apache License, Version 2.0"),
-            Library("AndroidX Preference eXtended", "https://github.com/takisoft/preferencex-android", "Apache License, Version 2.0"),
+            Library(
+                "Android Jetpack libraries",
+                "https://developer.android.com/jetpack",
+                "Apache License, Version 2.0",
+            ),
+            Library(
+                "AndroidX Preference eXtended",
+                "https://github.com/takisoft/preferencex-android",
+                "Apache License, Version 2.0",
+            ),
             Library("AppAuth for Android", "https://github.com/openid/AppAuth-Android", "Apache License, Version 2.0"),
             Library("CircleImageView", "https://github.com/hdodenhof/CircleImageView", "Apache License, Version 2.0"),
             Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
@@ -106,19 +114,39 @@ class AboutFragment : Fragment() {
             Library("jutf7", "http://jutf7.sourceforge.net/", "MIT License"),
             Library("JZlib", "http://www.jcraft.com/jzlib/", "BSD-style License"),
             Library("Koin", "https://insert-koin.io/", "Apache License, Version 2.0"),
-            Library("Kotlin Standard Library", "https://kotlinlang.org/api/latest/jvm/stdlib/", "Apache License, Version 2.0"),
-            Library("KotlinX coroutines", "https://github.com/Kotlin/kotlinx.coroutines", "Apache License, Version 2.0"),
-            Library("Material Components for Android", "https://github.com/material-components/material-components-android", "Apache License, Version 2.0"),
+            Library(
+                "Kotlin Standard Library",
+                "https://kotlinlang.org/api/latest/jvm/stdlib/",
+                "Apache License, Version 2.0",
+            ),
+            Library(
+                "KotlinX coroutines",
+                "https://github.com/Kotlin/kotlinx.coroutines",
+                "Apache License, Version 2.0",
+            ),
+            Library(
+                "Material Components for Android",
+                "https://github.com/material-components/material-components-android",
+                "Apache License, Version 2.0",
+            ),
             Library("Material Drawer", "https://github.com/mikepenz/MaterialDrawer", "Apache License, Version 2.0"),
             Library("Mime4j", "https://james.apache.org/mime4j/", "Apache License, Version 2.0"),
             Library("MiniDNS", "https://github.com/MiniDNS/minidns", "Multiple, Apache License, Version 2.0"),
             Library("Moshi", "https://github.com/square/moshi", "Apache License, Version 2.0"),
             Library("OkHttp", "https://github.com/square/okhttp", "Apache License, Version 2.0"),
             Library("Okio", "https://github.com/square/okio", "Apache License, Version 2.0"),
-            Library("SafeContentResolver", "https://github.com/cketti/SafeContentResolver", "Apache License, Version 2.0"),
+            Library(
+                "SafeContentResolver",
+                "https://github.com/cketti/SafeContentResolver",
+                "Apache License, Version 2.0",
+            ),
             Library("SearchPreference", "https://github.com/ByteHamster/SearchPreference", "MIT License"),
             Library("Timber", "https://github.com/JakeWharton/timber", "Apache License, Version 2.0"),
-            Library("TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/", "Apache License, Version 2.0")
+            Library(
+                "TokenAutoComplete",
+                "https://github.com/splitwise/TokenAutoComplete/",
+                "Apache License, Version 2.0",
+            ),
         )
     }
 }

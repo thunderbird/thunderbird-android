@@ -89,7 +89,7 @@ sealed class SyncListenerEvent {
     data class SyncFailed(
         val folderServerId: String,
         val message: String,
-        val exception: Exception?
+        val exception: Exception?,
     ) : SyncListenerEvent()
 
     data class SyncProgress(val folderServerId: String, val completed: Int, val total: Int) : SyncListenerEvent()

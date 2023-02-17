@@ -9,7 +9,7 @@ import com.fsck.k9.helper.map
 fun SQLiteDatabase.createExtraValue(
     name: String = "irrelevant",
     text: String? = null,
-    number: Long? = null
+    number: Long? = null,
 ): Long {
     val values = ContentValues().apply {
         put("name", name)
@@ -27,7 +27,7 @@ fun SQLiteDatabase.readExtraValues(): List<ExtraValueEntry> {
             ExtraValueEntry(
                 name = cursor.getStringOrNull("name"),
                 text = cursor.getStringOrNull("value_text"),
-                number = cursor.getLongOrNull("value_integer")
+                number = cursor.getLongOrNull("value_integer"),
             )
         }
     }
@@ -36,14 +36,14 @@ fun SQLiteDatabase.readExtraValues(): List<ExtraValueEntry> {
 data class ExtraValueEntry(
     val name: String?,
     val text: String?,
-    val number: Long?
+    val number: Long?,
 )
 
 fun SQLiteDatabase.createFolderExtraValue(
     folderId: Long,
     name: String = "irrelevant",
     text: String? = null,
-    number: Long? = null
+    number: Long? = null,
 ): Long {
     val values = ContentValues().apply {
         put("folder_id", folderId)
@@ -63,7 +63,7 @@ fun SQLiteDatabase.readFolderExtraValues(): List<FolderExtraValueEntry> {
                 folderId = cursor.getLongOrNull("folder_id"),
                 name = cursor.getStringOrNull("name"),
                 text = cursor.getStringOrNull("value_text"),
-                number = cursor.getLongOrNull("value_integer")
+                number = cursor.getLongOrNull("value_integer"),
             )
         }
     }
@@ -73,5 +73,5 @@ data class FolderExtraValueEntry(
     val folderId: Long?,
     val name: String?,
     val text: String?,
-    val number: Long?
+    val number: Long?,
 )

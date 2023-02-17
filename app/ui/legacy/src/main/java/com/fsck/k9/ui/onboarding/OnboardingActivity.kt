@@ -33,7 +33,8 @@ class OnboardingActivity : K9Activity() {
     }
 
     companion object {
-        @JvmStatic fun launch(activity: Activity) {
+        @JvmStatic
+        fun launch(activity: Activity) {
             val intent = Intent(activity, OnboardingActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }

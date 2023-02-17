@@ -22,8 +22,8 @@ private val mainAppModule = module {
     single {
         MessagingListenerProvider(
             listOf(
-                get<UnreadWidgetUpdateListener>()
-            )
+                get<UnreadWidgetUpdateListener>(),
+            ),
         )
     }
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
@@ -40,5 +40,5 @@ val appModules = listOf(
     notificationModule,
     resourcesModule,
     backendsModule,
-    storageModule
+    storageModule,
 )

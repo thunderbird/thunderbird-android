@@ -21,7 +21,7 @@ class EmailAddressValidator {
 
         private val EMAIL_ADDRESS_PATTERN = Pattern.compile(
             "^($ATEXT+(\\.$ATEXT+)*|\"$QCONTENT+\")" +
-                "\\@$HOST_NAME"
+                "\\@$HOST_NAME",
         )
     }
 }

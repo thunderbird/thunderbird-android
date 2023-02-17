@@ -42,7 +42,7 @@ class TextQuoteCreatorTest : RobolectricTest() {
             > Line 1
             > Line 2
             > Line 3
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 
@@ -59,7 +59,7 @@ class TextQuoteCreatorTest : RobolectricTest() {
             On January 18, 1970 7:53:41 PM UTC, Alice <alice@sender.example> wrote:
             $1\t Line 1
             $1\t Line 2
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 
@@ -80,7 +80,7 @@ class TextQuoteCreatorTest : RobolectricTest() {
             On January 18, 1970 7:53:41 PM UTC, Alice <alice@sender.example> wrote:
             > [-------] [-------] [-------] [-------] [-------] [-------] [-------] [-------] [-------] [-------]
             > [-------------------------------------------------------------------------------------------------]
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 
@@ -103,7 +103,7 @@ class TextQuoteCreatorTest : RobolectricTest() {
             Line 1
             Line 2
             Line 3
-            """.trimIndent().crlf()
+            """.trimIndent().crlf(),
         )
     }
 

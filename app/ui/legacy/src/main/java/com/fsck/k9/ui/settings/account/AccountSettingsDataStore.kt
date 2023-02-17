@@ -17,7 +17,7 @@ class AccountSettingsDataStore(
     private val account: Account,
     private val jobManager: K9JobManager,
     private val notificationChannelManager: NotificationChannelManager,
-    private val notificationController: NotificationController
+    private val notificationController: NotificationController,
 ) : PreferenceDataStore() {
     private var notificationSettingsChanged = false
 
@@ -241,7 +241,7 @@ class AccountSettingsDataStore(
 
     private fun saveSpecialFolderSelection(
         preferenceValue: String,
-        specialFolderSetter: (Long?, SpecialFolderSelection) -> Unit
+        specialFolderSetter: (Long?, SpecialFolderSelection) -> Unit,
     ) {
         val specialFolder = extractFolderId(preferenceValue)
 
@@ -268,7 +268,7 @@ class AccountSettingsDataStore(
             VibrationPreference.encode(
                 isVibrationEnabled = isEnabled,
                 vibratePattern = pattern,
-                vibrationTimes = repeatCount
+                vibrationTimes = repeatCount,
             )
         }
     }
@@ -280,8 +280,8 @@ class AccountSettingsDataStore(
                 vibration = NotificationVibration(
                     isEnabled = isVibrationEnabled,
                     pattern = vibrationPattern,
-                    repeatCount = vibrationTimes
-                )
+                    repeatCount = vibrationTimes,
+                ),
             )
         }
         notificationSettingsChanged = true

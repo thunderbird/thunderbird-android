@@ -11,7 +11,7 @@ object IdentityHelper {
         RecipientType.CC,
         RecipientType.X_ORIGINAL_TO,
         RecipientType.DELIVERED_TO,
-        RecipientType.X_ENVELOPE_TO
+        RecipientType.X_ENVELOPE_TO,
     )
 
     /**

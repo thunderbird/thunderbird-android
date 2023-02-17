@@ -10,7 +10,7 @@ internal class CommandSearch(private val imapStore: ImapStore) {
         query: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<String> {
         val folder = imapStore.getFolder(folderServerId)
         try {

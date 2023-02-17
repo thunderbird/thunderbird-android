@@ -25,7 +25,7 @@ internal class MigrationTo73(private val db: SQLiteDatabase) {
         "delete" to moshi.adapter(LegacyPendingDelete::class.java),
         "expunge" to moshi.adapter(LegacyPendingExpunge::class.java),
         "move_or_copy" to moshi.adapter(LegacyPendingMoveOrCopy::class.java),
-        "move_and_mark_as_read" to moshi.adapter(LegacyPendingMoveAndMarkAsRead::class.java)
+        "move_and_mark_as_read" to moshi.adapter(LegacyPendingMoveAndMarkAsRead::class.java),
     ).toMap()
 
     fun rewritePendingCommandsToUseFolderIds() {
@@ -36,7 +36,7 @@ internal class MigrationTo73(private val db: SQLiteDatabase) {
     private fun loadPendingCommands(): Map<Long, LegacyPendingCommand> {
         return db.rawQuery(
             "SELECT id, command, data FROM pending_commands WHERE command != 'empty_trash'",
-            null
+            null,
         ).use { cursor ->
             cursor.map {
                 val commandId = cursor.getLong(0)
@@ -81,7 +81,7 @@ internal class MigrationTo73(private val db: SQLiteDatabase) {
                 folderId,
                 legacyPendingCommand.newState,
                 legacyPendingCommand.flag,
-                legacyPendingCommand.uids
+                legacyPendingCommand.uids,
             )
         }
     }
@@ -102,13 +102,13 @@ internal class MigrationTo73(private val db: SQLiteDatabase) {
         rewriteOrRemovePendingCommand(
             commandId,
             legacyPendingCommand.srcFolder,
-            legacyPendingCommand.destFolder
+            legacyPendingCommand.destFolder,
         ) { (srcFolderId, destFolderId) ->
             PendingMoveOrCopy.create(
                 srcFolderId,
                 destFolderId,
                 legacyPendingCommand.isCopy,
-                legacyPendingCommand.newUidMap
+                legacyPendingCommand.newUidMap,
             )
         }
     }
@@ -117,7 +117,7 @@ internal class MigrationTo73(private val db: SQLiteDatabase) {
         rewriteOrRemovePendingCommand(
             commandId,
             legacyPendingCommand.srcFolder,
-            legacyPendingCommand.destFolder
+            legacyPendingCommand.destFolder,
         ) { (srcFolderId, destFolderId) ->
             PendingMoveAndMarkAsRead.create(srcFolderId, destFolderId, legacyPendingCommand.newUidMap)
         }
@@ -126,7 +126,7 @@ internal class MigrationTo73(private val db: SQLiteDatabase) {
     private fun rewriteOrRemovePendingCommand(
         commandId: Long,
         vararg folderServerIds: String,
-        convertPendingCommand: (folderIds: List<Long>) -> PendingCommand
+        convertPendingCommand: (folderIds: List<Long>) -> PendingCommand,
     ) {
         val folderIds = folderServerIds.map {
             loadFolderId(it)

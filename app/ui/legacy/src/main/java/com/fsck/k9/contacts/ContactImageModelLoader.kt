@@ -18,7 +18,7 @@ class ContactImageModelLoader : ModelLoader<ContactImage, ContactImage> {
         contactImage: ContactImage,
         width: Int,
         height: Int,
-        options: Options
+        options: Options,
     ): ModelLoader.LoadData<ContactImage> {
         return ModelLoader.LoadData(contactImage, ContactImageDataFetcher(contactImage))
     }

@@ -12,7 +12,7 @@ import timber.log.Timber
 class MessageListWidgetManager(
     private val context: Context,
     private val messageListRepository: MessageListRepository,
-    private val config: MessageListWidgetConfig
+    private val config: MessageListWidgetConfig,
 ) {
     private lateinit var appWidgetManager: AppWidgetManager
 

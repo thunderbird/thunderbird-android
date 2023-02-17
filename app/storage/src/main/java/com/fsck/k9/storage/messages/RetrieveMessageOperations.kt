@@ -22,7 +22,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 arrayOf(messageId.toString()),
                 null,
                 null,
-                null
+                null,
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     cursor.getString(0)
@@ -40,7 +40,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
             val databaseIdToServerIdMapping = mutableMapOf<Long, String>()
             performChunkedOperation(
                 arguments = messageIds,
-                argumentTransformation = Long::toString
+                argumentTransformation = Long::toString,
             ) { selectionSet, selectionArguments ->
                 database.query(
                     "messages",
@@ -49,7 +49,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                     selectionArguments,
                     null,
                     null,
-                    null
+                    null,
                 ).use { cursor ->
                     while (cursor.moveToNext()) {
                         val databaseId = cursor.getLong(0)
@@ -69,7 +69,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
             database.rawQuery(
                 "SELECT uid FROM messages" +
                     " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'",
-                arrayOf(folderId.toString())
+                arrayOf(folderId.toString()),
             ).use { cursor ->
                 val result = mutableSetOf<String>()
                 while (cursor.moveToNext()) {
@@ -90,7 +90,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 arrayOf(folderId.toString(), messageServerId),
                 null,
                 null,
-                null
+                null,
             ).use { cursor ->
                 cursor.moveToFirst()
             }
@@ -106,7 +106,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 arrayOf(folderId.toString(), messageServerId),
                 null,
                 null,
-                null
+                null,
             ).use { cursor ->
                 if (!cursor.moveToFirst()) error("Couldn't read flags for $folderId:$messageServerId")
 
@@ -141,7 +141,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
             database.rawQuery(
                 "SELECT uid, date FROM messages" +
                     " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'",
-                arrayOf(folderId.toString())
+                arrayOf(folderId.toString()),
             ).use { cursor ->
                 val result = mutableMapOf<String, Long?>()
                 while (cursor.moveToNext()) {
@@ -158,7 +158,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
                 "SELECT MIN(date) FROM messages WHERE folder_id = ?",
-                arrayOf(folderId.toString())
+                arrayOf(folderId.toString()),
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     val timestamp = cursor.getLong(0)
@@ -176,7 +176,7 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 "SELECT message_parts.header FROM messages" +
                     " LEFT JOIN message_parts ON (messages.message_part_id = message_parts.id)" +
                     " WHERE messages.folder_id = ? AND messages.uid = ?",
-                arrayOf(folderId.toString(), messageServerId)
+                arrayOf(folderId.toString(), messageServerId),
             ).use { cursor ->
                 if (!cursor.moveToFirst()) throw MessageNotFoundException(folderId, messageServerId)
 

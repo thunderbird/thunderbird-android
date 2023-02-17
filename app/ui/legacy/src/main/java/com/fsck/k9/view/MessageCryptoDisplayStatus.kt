@@ -18,6 +18,7 @@ import org.openintents.openpgp.OpenPgpSignatureResult.RESULT_KEY_MISSING
 import org.openintents.openpgp.OpenPgpSignatureResult.RESULT_NO_SIGNATURE
 import org.openintents.openpgp.OpenPgpSignatureResult.RESULT_VALID_KEY_CONFIRMED
 import org.openintents.openpgp.OpenPgpSignatureResult.RESULT_VALID_KEY_UNCONFIRMED
+import org.openintents.openpgp.OpenPgpSignatureResult.SenderStatusResult
 import org.openintents.openpgp.OpenPgpSignatureResult.SenderStatusResult.UNKNOWN
 import org.openintents.openpgp.OpenPgpSignatureResult.SenderStatusResult.USER_ID_CONFIRMED
 import org.openintents.openpgp.OpenPgpSignatureResult.SenderStatusResult.USER_ID_MISSING
@@ -36,167 +37,168 @@ enum class MessageCryptoDisplayStatus(
     val titleTextRes: Int? = null,
 
     @StringRes
-    val descriptionTextRes: Int? = null
+    val descriptionTextRes: Int? = null,
 ) {
     LOADING(
         isEnabled = false,
         colorAttr = R.attr.openpgp_grey,
-        statusIconRes = R.drawable.status_lock_disabled
+        statusIconRes = R.drawable.status_lock_disabled,
     ),
     CANCELLED(
         colorAttr = R.attr.openpgp_black,
         statusIconRes = R.drawable.status_lock_unknown,
         titleTextRes = R.string.crypto_msg_title_encrypted_unknown,
-        descriptionTextRes = R.string.crypto_msg_cancelled
+        descriptionTextRes = R.string.crypto_msg_cancelled,
     ),
     DISABLED(
         isEnabled = false,
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_lock_disabled,
-        titleTextRes = R.string.crypto_msg_title_plaintext
+        titleTextRes = R.string.crypto_msg_title_plaintext,
     ),
     UNENCRYPTED_SIGN_ERROR(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_signature_unknown,
         titleTextRes = R.string.crypto_msg_title_plaintext,
-        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_error
+        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_error,
     ),
     INCOMPLETE_SIGNED(
         colorAttr = R.attr.openpgp_black,
         statusIconRes = R.drawable.status_signature_unknown,
         titleTextRes = R.string.crypto_msg_title_plaintext,
-        descriptionTextRes = R.string.crypto_msg_incomplete_signed
+        descriptionTextRes = R.string.crypto_msg_incomplete_signed,
     ),
     UNENCRYPTED_SIGN_VERIFIED(
         colorAttr = R.attr.openpgp_blue,
         statusIconRes = R.drawable.status_signature_dots_3,
         titleTextRes = R.string.crypto_msg_title_unencrypted_signed_e2e,
-        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_verified
+        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_verified,
     ),
     UNENCRYPTED_SIGN_UNVERIFIED(
         colorAttr = R.attr.openpgp_blue,
         statusIconRes = R.drawable.status_signature,
-        titleTextRes = R.string.crypto_msg_title_unencrypted_signed_e2e
+        titleTextRes = R.string.crypto_msg_title_unencrypted_signed_e2e,
     ),
     UNENCRYPTED_SIGN_UNKNOWN(
         colorAttr = R.attr.openpgp_orange,
         statusIconRes = R.drawable.status_signature_unknown,
         titleTextRes = R.string.crypto_msg_title_unencrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_unknown
+        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_unknown,
     ),
     UNENCRYPTED_SIGN_MISMATCH(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_signature_unknown,
         titleTextRes = R.string.crypto_msg_title_unencrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_mismatch
+        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_mismatch,
     ),
     UNENCRYPTED_SIGN_EXPIRED(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_signature_unknown,
         titleTextRes = R.string.crypto_msg_title_unencrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_expired
+        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_expired,
     ),
     UNENCRYPTED_SIGN_REVOKED(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_signature_unknown,
         titleTextRes = R.string.crypto_msg_title_unencrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_revoked
+        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_revoked,
     ),
     UNENCRYPTED_SIGN_INSECURE(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_signature_unknown,
         titleTextRes = R.string.crypto_msg_title_unencrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_insecure
+        descriptionTextRes = R.string.crypto_msg_unencrypted_sign_insecure,
     ),
     ENCRYPTED_SIGN_VERIFIED(
         colorAttr = R.attr.openpgp_green,
         statusIconRes = R.drawable.status_lock_dots_3,
         titleTextRes = R.string.crypto_msg_title_encrypted_signed_e2e,
-        descriptionTextRes = R.string.crypto_msg_encrypted_sign_verified
+        descriptionTextRes = R.string.crypto_msg_encrypted_sign_verified,
     ),
     ENCRYPTED_SIGN_UNVERIFIED(
         colorAttr = R.attr.openpgp_green,
         statusIconRes = R.drawable.status_lock,
-        titleTextRes = R.string.crypto_msg_title_encrypted_signed_e2e
+        titleTextRes = R.string.crypto_msg_title_encrypted_signed_e2e,
     ),
     ENCRYPTED_SIGN_UNKNOWN(
         colorAttr = R.attr.openpgp_orange,
         statusIconRes = R.drawable.status_lock_unknown,
         titleTextRes = R.string.crypto_msg_title_encrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_encrypted_sign_unknown
+        descriptionTextRes = R.string.crypto_msg_encrypted_sign_unknown,
     ),
     ENCRYPTED_SIGN_MISMATCH(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_encrypted_sign_mismatch
+        descriptionTextRes = R.string.crypto_msg_encrypted_sign_mismatch,
     ),
     ENCRYPTED_SIGN_EXPIRED(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_encrypted_sign_expired
+        descriptionTextRes = R.string.crypto_msg_encrypted_sign_expired,
     ),
     ENCRYPTED_SIGN_REVOKED(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_encrypted_sign_revoked
+        descriptionTextRes = R.string.crypto_msg_encrypted_sign_revoked,
     ),
     ENCRYPTED_SIGN_INSECURE(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_encrypted_sign_insecure
+        descriptionTextRes = R.string.crypto_msg_encrypted_sign_insecure,
     ),
     ENCRYPTED_SIGN_ERROR(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_encrypted_sign_error
+        descriptionTextRes = R.string.crypto_msg_encrypted_sign_error,
     ),
     ENCRYPTED_INSECURE(
         colorAttr = R.attr.openpgp_red,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_signed,
-        descriptionTextRes = R.string.crypto_msg_encrypted_insecure
+        descriptionTextRes = R.string.crypto_msg_encrypted_insecure,
     ),
     ENCRYPTED_UNSIGNED(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_unsigned,
-        descriptionTextRes = R.string.crypto_msg_encrypted_unsigned
+        descriptionTextRes = R.string.crypto_msg_encrypted_unsigned,
     ),
     ENCRYPTED_ERROR(
         colorAttr = R.attr.openpgp_red,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_unknown,
-        descriptionTextRes = R.string.crypto_msg_encrypted_error
+        descriptionTextRes = R.string.crypto_msg_encrypted_error,
     ),
     INCOMPLETE_ENCRYPTED(
         colorAttr = R.attr.openpgp_black,
         statusIconRes = R.drawable.status_lock_unknown,
         titleTextRes = R.string.crypto_msg_title_encrypted_unknown,
-        descriptionTextRes = R.string.crypto_msg_encrypted_incomplete
+        descriptionTextRes = R.string.crypto_msg_encrypted_incomplete,
     ),
     ENCRYPTED_NO_PROVIDER(
         colorAttr = R.attr.openpgp_red,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_unknown,
-        descriptionTextRes = R.string.crypto_msg_encrypted_no_provider
+        descriptionTextRes = R.string.crypto_msg_encrypted_no_provider,
     ),
     UNSUPPORTED_ENCRYPTED(
         colorAttr = R.attr.openpgp_red,
         statusIconRes = R.drawable.status_lock_error,
         titleTextRes = R.string.crypto_msg_title_encrypted_unknown,
-        descriptionTextRes = R.string.crypto_msg_unsupported_encrypted
+        descriptionTextRes = R.string.crypto_msg_unsupported_encrypted,
     ),
     UNSUPPORTED_SIGNED(
         colorAttr = R.attr.openpgp_grey,
         statusIconRes = R.drawable.status_lock_disabled,
         titleTextRes = R.string.crypto_msg_title_encrypted_unknown,
-        descriptionTextRes = R.string.crypto_msg_unsupported_signed
-    );
+        descriptionTextRes = R.string.crypto_msg_unsupported_signed,
+    ),
+    ;
 
     fun hasAssociatedKey(): Boolean {
         return when (this) {
@@ -211,7 +213,8 @@ enum class MessageCryptoDisplayStatus(
             UNENCRYPTED_SIGN_MISMATCH,
             UNENCRYPTED_SIGN_EXPIRED,
             UNENCRYPTED_SIGN_REVOKED,
-            UNENCRYPTED_SIGN_INSECURE -> true
+            UNENCRYPTED_SIGN_INSECURE,
+            -> true
             else -> false
         }
     }
@@ -225,7 +228,8 @@ enum class MessageCryptoDisplayStatus(
             UNENCRYPTED_SIGN_MISMATCH,
             UNENCRYPTED_SIGN_EXPIRED,
             UNENCRYPTED_SIGN_REVOKED,
-            UNENCRYPTED_SIGN_INSECURE -> true
+            UNENCRYPTED_SIGN_INSECURE,
+            -> true
             else -> false
         }
 
@@ -237,7 +241,9 @@ enum class MessageCryptoDisplayStatus(
 
     companion object {
         @JvmStatic
-        fun fromResultAnnotation(cryptoResult: CryptoResultAnnotation?): MessageCryptoDisplayStatus {
+        fun fromResultAnnotation(
+            cryptoResult: CryptoResultAnnotation?,
+        ): MessageCryptoDisplayStatus {
             return when (cryptoResult?.errorType) {
                 null -> DISABLED
                 CryptoError.OPENPGP_OK -> getDisplayStatusForPgpResult(cryptoResult)
@@ -253,7 +259,9 @@ enum class MessageCryptoDisplayStatus(
             }
         }
 
-        private fun getDisplayStatusForPgpResult(cryptoResult: CryptoResultAnnotation): MessageCryptoDisplayStatus {
+        private fun getDisplayStatusForPgpResult(
+            cryptoResult: CryptoResultAnnotation,
+        ): MessageCryptoDisplayStatus {
             var signatureResult = cryptoResult.openPgpSignatureResult
             val decryptionResult = cryptoResult.openPgpDecryptionResult
             if (decryptionResult == null || signatureResult == null) {
@@ -268,7 +276,14 @@ enum class MessageCryptoDisplayStatus(
                 }
             }
 
-            return when (decryptionResult.getResult()) {
+            return getStatusForPgpResult(decryptionResult.getResult(), signatureResult)
+        }
+
+        private fun getStatusForPgpResult(
+            pgpResult: Int,
+            signatureResult: OpenPgpSignatureResult,
+        ): MessageCryptoDisplayStatus {
+            return when (pgpResult) {
                 RESULT_NOT_ENCRYPTED -> getStatusForPgpUnencryptedResult(signatureResult)
                 RESULT_ENCRYPTED -> getStatusForPgpEncryptedResult(signatureResult)
                 RESULT_INSECURE -> ENCRYPTED_INSECURE
@@ -277,19 +292,12 @@ enum class MessageCryptoDisplayStatus(
         }
 
         private fun getStatusForPgpEncryptedResult(
-            signatureResult: OpenPgpSignatureResult
+            signatureResult: OpenPgpSignatureResult,
         ): MessageCryptoDisplayStatus {
             return when (signatureResult.result) {
                 RESULT_NO_SIGNATURE -> ENCRYPTED_UNSIGNED
-                RESULT_VALID_KEY_CONFIRMED, RESULT_VALID_KEY_UNCONFIRMED -> {
-                    return when (signatureResult.senderStatusResult) {
-                        USER_ID_CONFIRMED -> ENCRYPTED_SIGN_VERIFIED
-                        USER_ID_UNCONFIRMED -> ENCRYPTED_SIGN_UNVERIFIED
-                        USER_ID_MISSING -> ENCRYPTED_SIGN_MISMATCH
-                        UNKNOWN -> ENCRYPTED_SIGN_UNVERIFIED
-                        else -> error("unhandled encrypted result case!")
-                    }
-                }
+                RESULT_VALID_KEY_CONFIRMED, RESULT_VALID_KEY_UNCONFIRMED ->
+                    getStatusForPgpEncryptedSenderStatusResult(signatureResult.senderStatusResult)
                 RESULT_KEY_MISSING -> ENCRYPTED_SIGN_UNKNOWN
                 RESULT_INVALID_SIGNATURE -> ENCRYPTED_SIGN_ERROR
                 RESULT_INVALID_KEY_EXPIRED -> ENCRYPTED_SIGN_EXPIRED
@@ -299,25 +307,42 @@ enum class MessageCryptoDisplayStatus(
             }
         }
 
+        private fun getStatusForPgpEncryptedSenderStatusResult(
+            senderStatusResult: SenderStatusResult,
+        ): MessageCryptoDisplayStatus {
+            return when (senderStatusResult) {
+                USER_ID_CONFIRMED -> ENCRYPTED_SIGN_VERIFIED
+                USER_ID_UNCONFIRMED -> ENCRYPTED_SIGN_UNVERIFIED
+                USER_ID_MISSING -> ENCRYPTED_SIGN_MISMATCH
+                UNKNOWN -> ENCRYPTED_SIGN_UNVERIFIED
+                else -> error("unhandled encrypted result case!")
+            }
+        }
+
         private fun getStatusForPgpUnencryptedResult(
-            signatureResult: OpenPgpSignatureResult
+            signatureResult: OpenPgpSignatureResult,
         ): MessageCryptoDisplayStatus {
             return when (signatureResult.result) {
                 RESULT_NO_SIGNATURE -> DISABLED
-                RESULT_VALID_KEY_CONFIRMED, RESULT_VALID_KEY_UNCONFIRMED -> {
-                    return when (signatureResult.senderStatusResult) {
-                        USER_ID_CONFIRMED -> UNENCRYPTED_SIGN_VERIFIED
-                        USER_ID_UNCONFIRMED -> UNENCRYPTED_SIGN_UNVERIFIED
-                        USER_ID_MISSING -> UNENCRYPTED_SIGN_MISMATCH
-                        UNKNOWN -> UNENCRYPTED_SIGN_UNVERIFIED
-                        else -> error("unhandled encrypted result case!")
-                    }
-                }
+                RESULT_VALID_KEY_CONFIRMED, RESULT_VALID_KEY_UNCONFIRMED ->
+                    getStatusForPgpUnencryptedSenderStatusResult(signatureResult.senderStatusResult)
                 RESULT_KEY_MISSING -> UNENCRYPTED_SIGN_UNKNOWN
                 RESULT_INVALID_SIGNATURE -> UNENCRYPTED_SIGN_ERROR
                 RESULT_INVALID_KEY_EXPIRED -> UNENCRYPTED_SIGN_EXPIRED
                 RESULT_INVALID_KEY_REVOKED -> UNENCRYPTED_SIGN_REVOKED
                 RESULT_INVALID_KEY_INSECURE -> UNENCRYPTED_SIGN_INSECURE
+                else -> error("unhandled encrypted result case!")
+            }
+        }
+
+        private fun getStatusForPgpUnencryptedSenderStatusResult(
+            senderStatusResult: SenderStatusResult,
+        ): MessageCryptoDisplayStatus {
+            return when (senderStatusResult) {
+                USER_ID_CONFIRMED -> UNENCRYPTED_SIGN_VERIFIED
+                USER_ID_UNCONFIRMED -> UNENCRYPTED_SIGN_UNVERIFIED
+                USER_ID_MISSING -> UNENCRYPTED_SIGN_MISMATCH
+                UNKNOWN -> UNENCRYPTED_SIGN_UNVERIFIED
                 else -> error("unhandled encrypted result case!")
             }
         }

@@ -6,7 +6,7 @@ import android.content.SharedPreferences
 internal class UnreadWidgetRepository(
     private val context: Context,
     private val dataRetriever: UnreadWidgetDataProvider,
-    private val migrations: UnreadWidgetMigrations
+    private val migrations: UnreadWidgetMigrations,
 ) {
 
     fun saveWidgetConfiguration(configuration: UnreadWidgetConfiguration) {

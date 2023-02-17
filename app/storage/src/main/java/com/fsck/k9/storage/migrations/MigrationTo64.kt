@@ -10,7 +10,7 @@ internal object MigrationTo64 {
                 "name TEXT NOT NULL PRIMARY KEY, " +
                 "value_text TEXT, " +
                 "value_integer INTEGER " +
-                ")"
+                ")",
         )
 
         db.execSQL(
@@ -20,7 +20,7 @@ internal object MigrationTo64 {
                 "value_text TEXT, " +
                 "value_integer INTEGER, " +
                 "PRIMARY KEY (folder_id, name)" +
-                ")"
+                ")",
         )
 
         db.execSQL(
@@ -28,7 +28,7 @@ internal object MigrationTo64 {
                 "BEFORE DELETE ON folders " +
                 "BEGIN " +
                 "DELETE FROM folder_extra_values WHERE old.id = folder_id; " +
-                "END;"
+                "END;",
         )
     }
 }

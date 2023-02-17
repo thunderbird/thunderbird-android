@@ -25,7 +25,7 @@ class MessageListSwipeCallback(
     private val swipeRightAction: SwipeAction,
     private val swipeLeftAction: SwipeAction,
     private val adapter: MessageListAdapter,
-    private val listener: MessageListSwipeListener
+    private val listener: MessageListSwipeListener,
 ) : ItemTouchHelper.Callback() {
     private val swipePadding = context.resources.getDimension(R.dimen.messageListSwipeIconPadding).toInt()
     private val swipeThreshold = context.resources.getDimension(R.dimen.messageListSwipeThreshold)
@@ -63,7 +63,7 @@ class MessageListSwipeCallback(
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: ViewHolder,
-        target: ViewHolder
+        target: ViewHolder,
     ): Boolean {
         throw UnsupportedOperationException("not implemented")
     }
@@ -128,7 +128,7 @@ class MessageListSwipeCallback(
         dY: Float,
         actionState: Int,
         isCurrentlyActive: Boolean,
-        success: Boolean
+        success: Boolean,
     ) {
         val view = viewHolder.itemView
         val viewWidth = view.width
@@ -158,7 +158,7 @@ class MessageListSwipeCallback(
             0F,
             width.toFloat(),
             height.toFloat(),
-            backgroundColorPaint
+            backgroundColorPaint,
         )
     }
 
@@ -230,7 +230,7 @@ class MessageListSwipeCallback(
         recyclerView: RecyclerView,
         animationType: Int,
         animateDx: Float,
-        animateDy: Float
+        animateDy: Float,
     ): Long {
         val percentage = abs(animateDx) / recyclerView.width
         return (super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy) * percentage).toLong()

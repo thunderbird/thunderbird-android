@@ -24,7 +24,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         maxNumberOfRecipientNames = 5,
         recipientsPrefix = "to ",
         additionalRecipientSpacing = 1,
-        additionalRecipientsPrefix = "+"
+        additionalRecipientsPrefix = "+",
     )
 
     @Test(expected = IllegalArgumentException::class)
@@ -32,7 +32,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         recipientLayoutCreator.createRecipientLayout(
             recipientNames = emptyList(),
             totalNumberOfRecipients = 0,
-            availableWidth = 100
+            availableWidth = 100,
         )
     }
 
@@ -41,7 +41,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         val result = recipientLayoutCreator.createRecipientLayout(
             recipientNames = listOf("me"),
             totalNumberOfRecipients = 1,
-            availableWidth = 10
+            availableWidth = 10,
         )
 
         assertThat(result.recipientNames.toString()).isEqualTo("to me")
@@ -53,7 +53,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         val result = recipientLayoutCreator.createRecipientLayout(
             recipientNames = listOf("me"),
             totalNumberOfRecipients = 1,
-            availableWidth = 1
+            availableWidth = 1,
         )
 
         assertThat(result.recipientNames.toString()).isEqualTo("to me")
@@ -65,7 +65,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         val result = recipientLayoutCreator.createRecipientLayout(
             recipientNames = listOf("Alice", "Bob"),
             totalNumberOfRecipients = 2,
-            availableWidth = 5
+            availableWidth = 5,
         )
 
         assertThat(result.recipientNames.toString()).isEqualTo("to Alice")
@@ -77,7 +77,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         val result = recipientLayoutCreator.createRecipientLayout(
             recipientNames = listOf("Alice", "Bob"),
             totalNumberOfRecipients = 2,
-            availableWidth = 13
+            availableWidth = 13,
         )
 
         assertThat(result.recipientNames.toString()).isEqualTo("to Alice, Bob")
@@ -89,7 +89,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         val result = recipientLayoutCreator.createRecipientLayout(
             recipientNames = listOf("Alice", "Bob", "Charly"),
             totalNumberOfRecipients = 3,
-            availableWidth = 13
+            availableWidth = 13,
         )
 
         assertThat(result.recipientNames.toString()).isEqualTo("to Alice")
@@ -101,7 +101,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         val result = recipientLayoutCreator.createRecipientLayout(
             recipientNames = listOf("Alice", "Bob", "Charly"),
             totalNumberOfRecipients = 3,
-            availableWidth = 16
+            availableWidth = 16,
         )
 
         assertThat(result.recipientNames.toString()).isEqualTo("to Alice, Bob")
@@ -113,7 +113,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         val result = recipientLayoutCreator.createRecipientLayout(
             recipientNames = listOf("Alice", "Bob", "Charly"),
             totalNumberOfRecipients = 3,
-            availableWidth = 100
+            availableWidth = 100,
         )
 
         assertThat(result.recipientNames.toString()).isEqualTo("to Alice, Bob, Charly")
@@ -125,7 +125,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         val result = recipientLayoutCreator.createRecipientLayout(
             recipientNames = listOf("One", "Two", "Three", "Four", "Five"),
             totalNumberOfRecipients = 10,
-            availableWidth = 20
+            availableWidth = 20,
         )
 
         assertThat(result.recipientNames.toString()).isEqualTo("to One, Two")
@@ -137,7 +137,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
         val result = recipientLayoutCreator.createRecipientLayout(
             recipientNames = listOf("One", "Two", "Three", "Four", "Five"),
             totalNumberOfRecipients = 10,
-            availableWidth = 100
+            availableWidth = 100,
         )
 
         assertThat(result.recipientNames.toString()).isEqualTo("to One, Two, Three, Four, Five")

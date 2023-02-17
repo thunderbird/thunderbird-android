@@ -50,7 +50,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
             ApplicationProvider.getApplicationContext(),
             attachmentMvpView,
             loaderManager,
-            listener
+            listener,
         )
     }
 
@@ -66,11 +66,11 @@ class AttachmentPresenterTest : K9RobolectricTest() {
             URI,
             false,
             LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size),
-            true
+            true,
         )
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
-            EXTRA_TEXT, ArrayList(), null
+            EXTRA_TEXT, ArrayList(), null,
         )
 
         mockLoaderManager({ attachmentPresenter.attachments.get(0) as Attachment })
@@ -99,11 +99,11 @@ class AttachmentPresenterTest : K9RobolectricTest() {
             URI,
             false,
             LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size),
-            false
+            false,
         )
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
-            EXTRA_TEXT, ArrayList(), null
+            EXTRA_TEXT, ArrayList(), null,
         )
 
         val result = attachmentPresenter.loadAllAvailableAttachments(messageViewInfo)
@@ -124,7 +124,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         val attachmentViewInfo = AttachmentViewInfo(MIME_TYPE, ATTACHMENT_NAME, size, URI, true, localBodyPart, true)
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
-            EXTRA_TEXT, ArrayList(), null
+            EXTRA_TEXT, ArrayList(), null,
         )
 
         mockLoaderManager({ attachmentPresenter.inlineAttachments.get(contentId) as Attachment })
@@ -152,7 +152,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         val attachmentViewInfo = AttachmentViewInfo(MIME_TYPE, ATTACHMENT_NAME, size, URI, true, localBodyPart, false)
         val messageViewInfo = MessageViewInfo(
             message, false, message, SUBJECT, false, TEXT, listOf(attachmentViewInfo), null, attachmentResolver,
-            EXTRA_TEXT, ArrayList(), null
+            EXTRA_TEXT, ArrayList(), null,
         )
 
         val result = attachmentPresenter.loadAllAvailableAttachments(messageViewInfo)

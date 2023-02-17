@@ -12,7 +12,7 @@ import com.fsck.k9.mail.Message
  */
 internal class DisplayRecipientsExtractor(
     private val recipientFormatter: MessageViewRecipientFormatter,
-    private val maxNumberOfDisplayRecipients: Int
+    private val maxNumberOfDisplayRecipients: Int,
 ) {
     fun extractDisplayRecipients(message: Message, account: Account): DisplayRecipients {
         val toRecipients = message.getRecipients(Message.RecipientType.TO)
@@ -54,5 +54,5 @@ internal class DisplayRecipientsExtractor(
 
 internal data class DisplayRecipients(
     val recipientNames: List<CharSequence>,
-    val numberOfRecipients: Int
+    val numberOfRecipients: Int,
 )

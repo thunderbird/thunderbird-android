@@ -11,12 +11,12 @@ class SaveMessageDataCreator(
     private val encryptionExtractor: EncryptionExtractor,
     private val messagePreviewCreator: MessagePreviewCreator,
     private val messageFulltextCreator: MessageFulltextCreator,
-    private val attachmentCounter: AttachmentCounter
+    private val attachmentCounter: AttachmentCounter,
 ) {
     fun createSaveMessageData(
         message: Message,
         downloadState: MessageDownloadState,
-        subject: String? = null
+        subject: String? = null,
     ): SaveMessageData {
         val now = System.currentTimeMillis()
         val date = message.sentDate?.time ?: now
@@ -34,7 +34,7 @@ class SaveMessageDataCreator(
                 attachmentCount = encryptionResult.attachmentCount,
                 previewResult = encryptionResult.previewResult,
                 textForSearchIndex = encryptionResult.textForSearchIndex,
-                encryptionType = encryptionResult.encryptionType
+                encryptionType = encryptionResult.encryptionType,
             )
         } else {
             SaveMessageData(
@@ -46,7 +46,7 @@ class SaveMessageDataCreator(
                 attachmentCount = attachmentCounter.getAttachmentCount(message),
                 previewResult = messagePreviewCreator.createPreview(message),
                 textForSearchIndex = messageFulltextCreator.createFulltext(message),
-                encryptionType = null
+                encryptionType = null,
             )
         }
     }

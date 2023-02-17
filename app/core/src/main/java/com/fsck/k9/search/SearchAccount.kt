@@ -14,7 +14,7 @@ class SearchAccount(
     val id: String,
     search: LocalSearch,
     override val name: String,
-    override val email: String
+    override val email: String,
 ) : BaseAccount {
     /**
      * Returns the ID of this `SearchAccount` instance.
@@ -46,7 +46,7 @@ class SearchAccount(
                 id = UNIFIED_INBOX,
                 search = tmpSearch,
                 name = resourceProvider.searchUnifiedInboxTitle(),
-                email = resourceProvider.searchUnifiedInboxDetail()
+                email = resourceProvider.searchUnifiedInboxDetail(),
             )
         }
     }

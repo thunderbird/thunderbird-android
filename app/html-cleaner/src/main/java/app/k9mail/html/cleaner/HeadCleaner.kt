@@ -24,7 +24,7 @@ internal class HeadCleaner {
 
 internal class CleaningVisitor(
     private val root: Element,
-    private var destination: Element
+    private var destination: Element,
 ) : NodeVisitor {
     private var elementToSkip: Element? = null
 

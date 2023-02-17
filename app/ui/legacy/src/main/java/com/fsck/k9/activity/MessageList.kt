@@ -226,7 +226,10 @@ open class MessageList :
         setIntent(intent)
 
         // Start with a fresh fragment back stack
-        supportFragmentManager.popBackStackImmediate(FIRST_FRAGMENT_TRANSACTION, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        supportFragmentManager.popBackStackImmediate(
+            FIRST_FRAGMENT_TRANSACTION,
+            FragmentManager.POP_BACK_STACK_INCLUSIVE,
+        )
 
         removeMessageListFragment()
         removeMessageViewContainerFragment()
@@ -276,7 +279,7 @@ open class MessageList :
             val messageListFragment = MessageListFragment.newInstance(
                 search!!,
                 false,
-                K9.isThreadedViewEnabled && !noThreading
+                K9.isThreadedViewEnabled && !noThreading,
             )
             fragmentTransaction.add(R.id.message_list_container, messageListFragment)
             fragmentTransaction.commitNow()
@@ -447,7 +450,7 @@ open class MessageList :
 
             return LaunchData(
                 search = search,
-                noThreading = true
+                noThreading = true,
             )
         } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCE)) {
             val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
@@ -463,7 +466,7 @@ open class MessageList :
                 return LaunchData(
                     search = search,
                     messageReference = messageReference,
-                    messageViewOnly = intent.getBooleanExtra(EXTRA_MESSAGE_VIEW_ONLY, false)
+                    messageViewOnly = intent.getBooleanExtra(EXTRA_MESSAGE_VIEW_ONLY, false),
                 )
             }
         } else if (intent.hasExtra(EXTRA_SEARCH)) {
@@ -906,17 +909,19 @@ open class MessageList :
         searchView.queryHint = resources.getString(R.string.search_action)
         val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                messageListFragment?.onSearchRequested(query)
-                collapseSearchView()
-                return true
-            }
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    messageListFragment?.onSearchRequested(query)
+                    collapseSearchView()
+                    return true
+                }
 
-            override fun onQueryTextChange(s: String): Boolean {
-                return false
-            }
-        })
+                override fun onQueryTextChange(s: String): Boolean {
+                    return false
+                }
+            },
+        )
 
         searchView.setQuery(initialSearchViewQuery, false)
         searchView.isIconified = initialSearchViewIconified
@@ -1255,7 +1260,7 @@ open class MessageList :
         fillInIntent: Intent?,
         flagsMask: Int,
         flagsValues: Int,
-        extraFlags: Int
+        extraFlags: Int,
     ) {
         // If any of the high 16 bits are set it is not one of our request codes
         if (requestCode and REQUEST_CODE_MASK != 0) {
@@ -1366,7 +1371,7 @@ open class MessageList :
         val account: Account? = null,
         val messageReference: MessageReference? = null,
         val noThreading: Boolean = false,
-        val messageViewOnly: Boolean = false
+        val messageViewOnly: Boolean = false,
     )
 
     companion object : KoinComponent {
@@ -1406,7 +1411,7 @@ open class MessageList :
             search: SearchSpecification?,
             noThreading: Boolean,
             newTask: Boolean,
-            clearTop: Boolean = true
+            clearTop: Boolean = true,
         ) {
             context.startActivity(intentDisplaySearch(context, search, noThreading, newTask, clearTop))
         }
@@ -1417,7 +1422,7 @@ open class MessageList :
             search: SearchSpecification?,
             noThreading: Boolean,
             newTask: Boolean,
-            clearTop: Boolean
+            clearTop: Boolean,
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
                 putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
@@ -1482,7 +1487,7 @@ open class MessageList :
             context: Context,
             messageReference: MessageReference,
             openInUnifiedInbox: Boolean = false,
-            messageViewOnly: Boolean = false
+            messageViewOnly: Boolean = false,
         ): Intent {
             return actionDisplayMessageTemplateIntent(context, openInUnifiedInbox, messageViewOnly).apply {
                 putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
@@ -1492,7 +1497,7 @@ open class MessageList :
         fun actionDisplayMessageTemplateIntent(
             context: Context,
             openInUnifiedInbox: Boolean,
-            messageViewOnly: Boolean
+            messageViewOnly: Boolean,
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
                 if (openInUnifiedInbox) {

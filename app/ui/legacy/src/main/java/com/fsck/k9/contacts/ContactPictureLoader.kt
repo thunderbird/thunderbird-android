@@ -14,7 +14,7 @@ import com.fsck.k9.view.RecipientSelectView.Recipient
 
 class ContactPictureLoader(
     private val context: Context,
-    private val contactLetterBitmapCreator: ContactLetterBitmapCreator
+    private val contactLetterBitmapCreator: ContactLetterBitmapCreator,
 ) {
     private val pictureSizeInPx: Int = PICTURE_SIZE.toDip(context)
     private val backgroundCacheId: String = with(contactLetterBitmapCreator.config) {
@@ -94,7 +94,7 @@ class ContactPictureLoader(
             contactLetterOnly = contactLetterOnly,
             backgroundCacheId = backgroundCacheId,
             contactLetterBitmapCreator = contactLetterBitmapCreator,
-            address = address
+            address = address,
         )
     }
 

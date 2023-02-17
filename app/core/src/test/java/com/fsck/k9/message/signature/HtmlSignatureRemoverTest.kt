@@ -58,7 +58,7 @@ class HtmlSignatureRemoverTest {
         val withoutSignature = stripSignature(html)
 
         assertThat(withoutSignature).isEqualTo(
-            """<html><head></head><body><div>This is the body text</div></body></html>"""
+            """<html><head></head><body><div>This is the body text</div></body></html>""",
         )
     }
 
@@ -114,7 +114,7 @@ class HtmlSignatureRemoverTest {
             <div>This is the body text</div>
             </body>
             </html>
-            """.trimIndent().removeNewlines()
+            """.trimIndent().removeNewlines(),
         )
     }
 
@@ -145,7 +145,7 @@ class HtmlSignatureRemoverTest {
             <blockquote>Some quote</blockquote>
             </body>
             </html>
-            """.trimIndent().removeNewlines()
+            """.trimIndent().removeNewlines(),
         )
     }
 
@@ -178,7 +178,7 @@ class HtmlSignatureRemoverTest {
             <br>
             </body>
             </html>
-            """.trimIndent().removeNewlines()
+            """.trimIndent().removeNewlines(),
         )
     }
 }

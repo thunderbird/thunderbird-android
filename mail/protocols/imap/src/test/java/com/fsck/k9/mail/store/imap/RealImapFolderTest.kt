@@ -179,7 +179,7 @@ class RealImapFolderTest {
         val imapFolder = createFolder("Folder")
         val selectResponses = listOf(
             createImapResponse("* OK [UIDNEXT 57576] Predicted next UID"),
-            createImapResponse("2 OK [READ-WRITE] Select completed.")
+            createImapResponse("2 OK [READ-WRITE] Select completed."),
         )
         whenever(imapConnection.executeSimpleCommand("SELECT \"Folder\"")).thenReturn(selectResponses)
 
@@ -396,7 +396,7 @@ class RealImapFolderTest {
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
         val imapResponses = listOf(
             createImapResponse("* SEARCH 1 2"),
-            createImapResponse("* SEARCH 23 42")
+            createImapResponse("* SEARCH 23 42"),
         )
         whenever(imapConnection.executeSimpleCommand("SEARCH 1:* FLAGGED NOT DELETED")).thenReturn(imapResponses)
         folder.open(OpenMode.READ_WRITE)
@@ -699,7 +699,7 @@ class RealImapFolderTest {
             "UID FETCH 1 (UID INTERNALDATE RFC822.SIZE BODY.PEEK[HEADER.FIELDS " +
                 "(date subject from content-type to cc bcc reply-to message-id references in-reply-to " +
                 "list-unsubscribe sender X-K9mail-Identity Chat-Version)])",
-            false
+            false,
         )
     }
 
@@ -739,7 +739,7 @@ class RealImapFolderTest {
         testHeaderFromBodyStructure(
             bodyStructure = """("text" "plain" ("name" "token") NIL NIL "7bit" 42 23)""",
             headerName = MimeHeader.HEADER_CONTENT_TYPE,
-            expectedHeaderValue = "text/plain;\r\n name=token"
+            expectedHeaderValue = "text/plain;\r\n name=token",
         )
     }
 
@@ -748,7 +748,7 @@ class RealImapFolderTest {
         testHeaderFromBodyStructure(
             bodyStructure = """("text" "plain" ("name" "one two three") NIL NIL "7bit" 42 23)""",
             headerName = MimeHeader.HEADER_CONTENT_TYPE,
-            expectedHeaderValue = "text/plain;\r\n name=\"one two three\""
+            expectedHeaderValue = "text/plain;\r\n name=\"one two three\"",
         )
     }
 
@@ -757,7 +757,7 @@ class RealImapFolderTest {
         testHeaderFromBodyStructure(
             bodyStructure = """("text" "plain" ("name" "one \"two\" three") NIL NIL "7bit" 42 23)""",
             headerName = MimeHeader.HEADER_CONTENT_TYPE,
-            expectedHeaderValue = "text/plain;\r\n name=\"one \\\"two\\\" three\""
+            expectedHeaderValue = "text/plain;\r\n name=\"one \\\"two\\\" three\"",
         )
     }
 
@@ -766,7 +766,7 @@ class RealImapFolderTest {
         testHeaderFromBodyStructure(
             bodyStructure = """("text" "plain" ("name*" "utf-8''filen%C3%A4me.ext") NIL NIL "7bit" 42 23)""",
             headerName = MimeHeader.HEADER_CONTENT_TYPE,
-            expectedHeaderValue = "text/plain;\r\n name*=utf-8''filen%C3%A4me.ext"
+            expectedHeaderValue = "text/plain;\r\n name*=utf-8''filen%C3%A4me.ext",
         )
     }
 
@@ -775,7 +775,7 @@ class RealImapFolderTest {
         testHeaderFromBodyStructure(
             bodyStructure = """("text" "plain" ("name" "filenäme.ext") NIL NIL "7bit" 42 23)""",
             headerName = MimeHeader.HEADER_CONTENT_TYPE,
-            expectedHeaderValue = "text/plain;\r\n name=\"filenäme.ext\""
+            expectedHeaderValue = "text/plain;\r\n name=\"filenäme.ext\"",
         )
     }
 
@@ -785,7 +785,7 @@ class RealImapFolderTest {
             bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
                 """("attachment" ("filename" "token")) NIL NIL)""",
             headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
-            expectedHeaderValue = "attachment;\r\n filename=token;\r\n size=23"
+            expectedHeaderValue = "attachment;\r\n filename=token;\r\n size=23",
         )
     }
 
@@ -795,7 +795,7 @@ class RealImapFolderTest {
             bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
                 """("attachment" ("filename" "one two three")) NIL NIL)""",
             headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
-            expectedHeaderValue = "attachment;\r\n filename=\"one two three\";\r\n size=23"
+            expectedHeaderValue = "attachment;\r\n filename=\"one two three\";\r\n size=23",
         )
     }
 
@@ -805,7 +805,7 @@ class RealImapFolderTest {
             bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
                 """("attachment" ("filename" "one \"two\" three")) NIL NIL)""",
             headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
-            expectedHeaderValue = "attachment;\r\n filename=\"one \\\"two\\\" three\";\r\n size=23"
+            expectedHeaderValue = "attachment;\r\n filename=\"one \\\"two\\\" three\";\r\n size=23",
         )
     }
 
@@ -815,7 +815,7 @@ class RealImapFolderTest {
             bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
                 """("attachment" ("filename*" "utf-8''filen%C3%A4me.ext")) NIL NIL)""",
             headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
-            expectedHeaderValue = "attachment;\r\n filename*=utf-8''filen%C3%A4me.ext;\r\n size=23"
+            expectedHeaderValue = "attachment;\r\n filename*=utf-8''filen%C3%A4me.ext;\r\n size=23",
         )
     }
 
@@ -825,7 +825,7 @@ class RealImapFolderTest {
             bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
                 """("attachment" ("filename" "filenäme.ext")) NIL NIL)""",
             headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
-            expectedHeaderValue = "attachment;\r\n filename=\"filenäme.ext\";\r\n size=23"
+            expectedHeaderValue = "attachment;\r\n filename=\"filenäme.ext\";\r\n size=23",
         )
     }
 
@@ -1141,7 +1141,7 @@ class RealImapFolderTest {
             createImapResponse("* FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft NonJunk \$MDNSent)"),
             createImapResponse(
                 "* OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft NonJunk \$MDNSent \\*)] " +
-                    "Flags permitted."
+                    "Flags permitted.",
             ),
             createImapResponse("* 23 EXISTS"),
             createImapResponse("* 0 RECENT"),
@@ -1151,7 +1151,7 @@ class RealImapFolderTest {
                 createImapResponse("2 OK [READ-WRITE] Select completed.")
             } else {
                 createImapResponse("2 OK [READ-ONLY] Examine completed.")
-            }
+            },
         )
 
         if (openMode == OpenMode.READ_WRITE) {
@@ -1173,7 +1173,7 @@ class RealImapFolderTest {
         verify(imapConnection, atLeastOnce()).executeCommandWithIdSet(
             commandPrefixCaptor.capture(),
             commandSuffixCaptor.capture(),
-            commandUidsCaptor.capture()
+            commandUidsCaptor.capture(),
         )
 
         val commandPrefixes = commandPrefixCaptor.allValues

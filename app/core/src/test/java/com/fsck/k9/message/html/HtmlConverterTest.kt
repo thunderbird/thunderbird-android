@@ -60,7 +60,7 @@ class HtmlConverterTest {
             |</blockquote>
             |</blockquote>
             |</pre>
-            """.trimMargin().removeLineBreaks()
+            """.trimMargin().removeLineBreaks(),
         )
     }
 
@@ -98,7 +98,7 @@ class HtmlConverterTest {
             |</div>
             |</blockquote>
             |</pre>
-            """.trimMargin().removeLineBreaks()
+            """.trimMargin().removeLineBreaks(),
         )
     }
 
@@ -154,7 +154,7 @@ class HtmlConverterTest {
             |</blockquote>
             |</blockquote>
             |</pre>
-            """.trimMargin().removeLineBreaks()
+            """.trimMargin().removeLineBreaks(),
         )
     }
 
@@ -179,7 +179,7 @@ class HtmlConverterTest {
             |  baz<br>
             |</div>
             |</pre>
-            """.trimMargin().removeLineBreaks()
+            """.trimMargin().removeLineBreaks(),
         )
     }
 
@@ -212,7 +212,7 @@ class HtmlConverterTest {
             |</div>
             |</blockquote>
             |</pre>
-            """.trimMargin().removeLineBreaks()
+            """.trimMargin().removeLineBreaks(),
         )
     }
 
@@ -252,7 +252,7 @@ class HtmlConverterTest {
             end
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks()
+            """.trimIndent().removeLineBreaks(),
         )
     }
 
@@ -276,7 +276,7 @@ class HtmlConverterTest {
             foo bar
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks()
+            """.trimIndent().removeLineBreaks(),
         )
     }
 
@@ -301,7 +301,7 @@ class HtmlConverterTest {
             foo bar
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks()
+            """.trimIndent().removeLineBreaks(),
         )
     }
 
@@ -319,7 +319,7 @@ class HtmlConverterTest {
             <br>
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks()
+            """.trimIndent().removeLineBreaks(),
         )
     }
 
@@ -380,7 +380,7 @@ class HtmlConverterTest {
             foo bar
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks()
+            """.trimIndent().removeLineBreaks(),
         )
     }
 
@@ -398,7 +398,7 @@ class HtmlConverterTest {
             <hr>
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks()
+            """.trimIndent().removeLineBreaks(),
         )
     }
 
@@ -422,7 +422,7 @@ class HtmlConverterTest {
             world
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks()
+            """.trimIndent().removeLineBreaks(),
         )
     }
 
@@ -448,7 +448,7 @@ class HtmlConverterTest {
             </div>
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks()
+            """.trimIndent().removeLineBreaks(),
         )
     }
 
@@ -524,7 +524,7 @@ class HtmlConverterTest {
             Two
 
             Three
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 
@@ -550,7 +550,7 @@ class HtmlConverterTest {
             Three
             
             Four
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 

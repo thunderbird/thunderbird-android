@@ -24,7 +24,7 @@ class SettingsExporterTest : K9RobolectricTest() {
         preferences,
         folderSettingsProvider,
         folderRepository,
-        notificationSettingsUpdater = mock()
+        notificationSettingsUpdater = mock(),
     )
 
     @Test

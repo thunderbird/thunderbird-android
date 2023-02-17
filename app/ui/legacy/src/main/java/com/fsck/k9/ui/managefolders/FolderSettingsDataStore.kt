@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class FolderSettingsDataStore(
     private val folderRepository: FolderRepository,
     private val account: Account,
-    private var folder: FolderDetails
+    private var folder: FolderDetails,
 ) : PreferenceDataStore() {
     private val saveScope = CoroutineScope(GlobalScope.coroutineContext + Dispatchers.IO)
 

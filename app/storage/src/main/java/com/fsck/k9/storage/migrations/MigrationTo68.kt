@@ -16,7 +16,7 @@ internal object MigrationTo68 {
                 "send_state TEXT," +
                 "number_of_send_attempts INTEGER DEFAULT 0," +
                 "error_timestamp INTEGER DEFAULT 0," +
-                "error TEXT)"
+                "error TEXT)",
         )
     }
 
@@ -27,7 +27,7 @@ internal object MigrationTo68 {
               SELECT messages.id, 'ready' FROM folders
                 JOIN messages ON (folders.id = messages.folder_id)
                 WHERE folders.server_id = 'K9MAIL_INTERNAL_OUTBOX'
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 }

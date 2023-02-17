@@ -112,12 +112,12 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     private fun createParticipantFormatter(
         showContactNames: Boolean = true,
-        contactNameColor: Int? = null
+        contactNameColor: Int? = null,
     ): MessageDetailsParticipantFormatter {
         return RealMessageDetailsParticipantFormatter(
             contactNameProvider = contactNameProvider,
             showContactNames = showContactNames,
-            contactNameColor = contactNameColor
+            contactNameColor = contactNameColor,
         )
     }
 }

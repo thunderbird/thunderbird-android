@@ -14,7 +14,7 @@ val endToEndUiModule = module {
             get { parametersOf(lifecycleOwner) },
             get(),
             get(),
-            autocryptTransferView
+            autocryptTransferView,
         )
     }
     viewModel { AutocryptKeyTransferViewModel(get(), get()) }

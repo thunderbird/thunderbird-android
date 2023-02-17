@@ -12,13 +12,14 @@ import timber.log.Timber
 
 internal class MoveMessageOperations(
     private val database: LockableDatabase,
-    private val threadMessageOperations: ThreadMessageOperations
+    private val threadMessageOperations: ThreadMessageOperations,
 ) {
     fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
         Timber.d("Moving message [ID: $messageId] to folder [ID: $destinationFolderId]")
 
         return database.execute(true) { database ->
-            val threadInfo = threadMessageOperations.createOrUpdateParentThreadEntries(database, messageId, destinationFolderId)
+            val threadInfo =
+                threadMessageOperations.createOrUpdateParentThreadEntries(database, messageId, destinationFolderId)
             val destinationMessageId = createMessageEntry(database, messageId, destinationFolderId, threadInfo)
             threadMessageOperations.createThreadEntryIfNecessary(database, destinationMessageId, threadInfo)
 
@@ -41,7 +42,7 @@ internal class MoveMessageOperations(
         database: SQLiteDatabase,
         messageId: Long,
         destinationFolderId: Long,
-        threadInfo: ThreadInfo?
+        threadInfo: ThreadInfo?,
     ): Long {
         val destinationUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString()
 
@@ -51,13 +52,13 @@ internal class MoveMessageOperations(
                 "subject", "date", "flags", "sender_list", "to_list", "cc_list", "bcc_list", "reply_to_list",
                 "attachment_count", "internal_date", "message_id", "preview_type", "preview", "mime_type",
                 "normalized_subject_hash", "read", "flagged", "answered", "forwarded", "message_part_id",
-                "encryption_type"
+                "encryption_type",
             ),
             "id = ?",
             arrayOf(messageId.toString()),
             null,
             null,
-            null
+            null,
         ).use { cursor ->
             if (!cursor.moveToFirst()) {
                 error("Couldn't find local message [ID: $messageId]")

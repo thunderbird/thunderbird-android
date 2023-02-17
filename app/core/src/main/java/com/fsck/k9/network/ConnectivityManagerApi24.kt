@@ -10,7 +10,7 @@ import android.net.ConnectivityManager as SystemConnectivityManager
 
 @RequiresApi(Build.VERSION_CODES.N)
 internal class ConnectivityManagerApi24(
-    private val systemConnectivityManager: SystemConnectivityManager
+    private val systemConnectivityManager: SystemConnectivityManager,
 ) : ConnectivityManagerBase() {
     private var isRunning = false
     private var isNetworkAvailable: Boolean? = null

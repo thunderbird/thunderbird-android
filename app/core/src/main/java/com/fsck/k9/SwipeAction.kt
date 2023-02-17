@@ -8,5 +8,5 @@ enum class SwipeAction(val removesItem: Boolean) {
     Archive(removesItem = true),
     Delete(removesItem = true),
     Spam(removesItem = true),
-    Move(removesItem = true)
+    Move(removesItem = true),
 }

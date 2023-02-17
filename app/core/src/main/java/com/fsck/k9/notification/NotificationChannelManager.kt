@@ -20,7 +20,7 @@ class NotificationChannelManager(
     private val backgroundExecutor: Executor,
     private val notificationManager: NotificationManager,
     private val resourceProvider: NotificationResourceProvider,
-    private val notificationLightDecoder: NotificationLightDecoder
+    private val notificationLightDecoder: NotificationLightDecoder,
 ) {
     val pushChannelId = "push"
 
@@ -55,7 +55,7 @@ class NotificationChannelManager(
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun addChannelsForAccounts(
         notificationManager: NotificationManager,
-        accounts: List<Account>
+        accounts: List<Account>,
     ) {
         for (account in accounts) {
             val groupId = account.notificationChannelGroupId
@@ -73,7 +73,7 @@ class NotificationChannelManager(
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun removeChannelsForNonExistingOrChangedAccounts(
         notificationManager: NotificationManager,
-        accounts: List<Account>
+        accounts: List<Account>,
     ) {
         val accountUuids = accounts.map { it.uuid }.toSet()
 
@@ -152,7 +152,7 @@ class NotificationChannelManager(
             isBlinkLightsEnabled = notificationChannel.shouldShowLights(),
             lightColor = notificationChannel.lightColor,
             isVibrationEnabled = notificationChannel.shouldVibrate(),
-            vibrationPattern = notificationChannel.vibrationPattern?.toList()
+            vibrationPattern = notificationChannel.vibrationPattern?.toList(),
         )
     }
 
@@ -196,7 +196,7 @@ class NotificationChannelManager(
         val systemLight = notificationLightDecoder.decode(
             isBlinkLightsEnabled = shouldShowLights(),
             lightColor = lightColor,
-            accountColor = account.chipColor
+            accountColor = account.chipColor,
         )
         val notificationSettings = account.notificationSettings
         return sound == notificationSettings.ringtoneUri &&
@@ -253,5 +253,5 @@ data class NotificationConfiguration(
     val isBlinkLightsEnabled: Boolean,
     val lightColor: Int,
     val isVibrationEnabled: Boolean,
-    val vibrationPattern: List<Long>?
+    val vibrationPattern: List<Long>?,
 )

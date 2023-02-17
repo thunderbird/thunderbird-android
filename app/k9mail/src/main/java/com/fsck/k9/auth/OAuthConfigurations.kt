@@ -13,7 +13,7 @@ fun createOAuthConfigurationProvider(): OAuthConfigurationProvider {
         scopes = listOf("https://mail.google.com/"),
         authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth",
         tokenEndpoint = "https://oauth2.googleapis.com/token",
-        redirectUri = redirectUriSlash
+        redirectUri = redirectUriSlash,
     )
 
     return OAuthConfigurationProvider(
@@ -24,23 +24,27 @@ fun createOAuthConfigurationProvider(): OAuthConfigurationProvider {
                 scopes = listOf("mail-w"),
                 authorizationEndpoint = "https://api.login.yahoo.com/oauth2/request_auth",
                 tokenEndpoint = "https://api.login.yahoo.com/oauth2/get_token",
-                redirectUri = redirectUriDoubleSlash
+                redirectUri = redirectUriDoubleSlash,
             ),
             listOf("imap.aol.com", "smtp.aol.com") to OAuthConfiguration(
                 clientId = BuildConfig.OAUTH_AOL_CLIENT_ID,
                 scopes = listOf("mail-w"),
                 authorizationEndpoint = "https://api.login.aol.com/oauth2/request_auth",
                 tokenEndpoint = "https://api.login.aol.com/oauth2/get_token",
-                redirectUri = redirectUriDoubleSlash
+                redirectUri = redirectUriDoubleSlash,
             ),
             listOf("outlook.office365.com", "smtp.office365.com") to OAuthConfiguration(
                 clientId = BuildConfig.OAUTH_MICROSOFT_CLIENT_ID,
-                scopes = listOf("https://outlook.office.com/IMAP.AccessAsUser.All", "https://outlook.office.com/SMTP.Send", "offline_access"),
+                scopes = listOf(
+                    "https://outlook.office.com/IMAP.AccessAsUser.All",
+                    "https://outlook.office.com/SMTP.Send",
+                    "offline_access",
+                ),
                 authorizationEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
                 tokenEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-                redirectUri = BuildConfig.OAUTH_MICROSOFT_REDIRECT_URI
-            )
+                redirectUri = BuildConfig.OAUTH_MICROSOFT_REDIRECT_URI,
+            ),
         ),
-        googleConfiguration = googleConfig
+        googleConfiguration = googleConfig,
     )
 }

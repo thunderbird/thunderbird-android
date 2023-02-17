@@ -12,7 +12,7 @@ private const val IDENTITY_ADDRESS = "me@domain.example"
 class DisplayRecipientsExtractorTest {
     private val account = Account("uuid").apply {
         identities += Identity(
-            email = IDENTITY_ADDRESS
+            email = IDENTITY_ADDRESS,
         )
     }
 
@@ -31,7 +31,7 @@ class DisplayRecipientsExtractorTest {
 
     private val displayRecipientsExtractor = DisplayRecipientsExtractor(
         recipientFormatter,
-        maxNumberOfDisplayRecipients = 5
+        maxNumberOfDisplayRecipients = 5,
     )
 
     @Test
@@ -43,7 +43,7 @@ class DisplayRecipientsExtractorTest {
         val displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account)
 
         assertThat(displayRecipients).isEqualTo(
-            DisplayRecipients(recipientNames = listOf("me"), numberOfRecipients = 1)
+            DisplayRecipients(recipientNames = listOf("me"), numberOfRecipients = 1),
         )
     }
 
@@ -56,7 +56,7 @@ class DisplayRecipientsExtractorTest {
         val displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account)
 
         assertThat(displayRecipients).isEqualTo(
-            DisplayRecipients(recipientNames = listOf("Contact One"), numberOfRecipients = 1)
+            DisplayRecipients(recipientNames = listOf("Contact One"), numberOfRecipients = 1),
         )
     }
 
@@ -69,7 +69,7 @@ class DisplayRecipientsExtractorTest {
         val displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account)
 
         assertThat(displayRecipients).isEqualTo(
-            DisplayRecipients(recipientNames = listOf("Alice"), numberOfRecipients = 1)
+            DisplayRecipients(recipientNames = listOf("Alice"), numberOfRecipients = 1),
         )
     }
 
@@ -82,7 +82,7 @@ class DisplayRecipientsExtractorTest {
         val displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account)
 
         assertThat(displayRecipients).isEqualTo(
-            DisplayRecipients(recipientNames = listOf("alice@domain.example"), numberOfRecipients = 1)
+            DisplayRecipients(recipientNames = listOf("alice@domain.example"), numberOfRecipients = 1),
         )
     }
 
@@ -98,8 +98,8 @@ class DisplayRecipientsExtractorTest {
         assertThat(displayRecipients).isEqualTo(
             DisplayRecipients(
                 recipientNames = listOf("Unknown 1", "Unknown 2", "Unknown 3"),
-                numberOfRecipients = 3
-            )
+                numberOfRecipients = 3,
+            ),
         )
     }
 
@@ -116,8 +116,8 @@ class DisplayRecipientsExtractorTest {
         assertThat(displayRecipients).isEqualTo(
             DisplayRecipients(
                 recipientNames = listOf("me", "Contact One", "Alice", "Contact Two", "Contact Four"),
-                numberOfRecipients = 7
-            )
+                numberOfRecipients = 7,
+            ),
         )
     }
 
@@ -136,7 +136,7 @@ class DisplayRecipientsExtractorTest {
         }
         val displayRecipientsExtractor = DisplayRecipientsExtractor(
             recipientFormatter,
-            maxNumberOfDisplayRecipients = 5
+            maxNumberOfDisplayRecipients = 5,
         )
 
         val displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account)

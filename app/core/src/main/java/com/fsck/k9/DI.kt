@@ -14,7 +14,8 @@ import org.koin.java.KoinJavaComponent.get as koinGet
 object DI {
     private const val DEBUG = false
 
-    @JvmStatic fun start(application: Application, modules: List<Module>) {
+    @JvmStatic
+    fun start(application: Application, modules: List<Module>) {
         startKoin {
             if (BuildConfig.DEBUG && DEBUG) {
                 androidLogger()
@@ -40,5 +41,5 @@ interface EarlyInit
 // Copied from ComponentCallbacks.inject()
 inline fun <reified T : Any> EarlyInit.inject(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
+    noinline parameters: ParametersDefinition? = null,
 ) = lazy { getKoin().get<T>(qualifier, parameters) }

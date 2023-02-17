@@ -50,7 +50,7 @@ class Pop3StoreTest {
                 CAPA_RESPONSE +
                 AUTH_PLAIN_AUTHENTICATED_RESPONSE +
                 STAT_RESPONSE +
-                UIDL_UNSUPPORTED_RESPONSE
+                UIDL_UNSUPPORTED_RESPONSE,
         )
 
         store.checkSettings()
@@ -63,7 +63,7 @@ class Pop3StoreTest {
                 CAPA_RESPONSE +
                 AUTH_PLAIN_AUTHENTICATED_RESPONSE +
                 STAT_RESPONSE +
-                UIDL_SUPPORTED_RESPONSE
+                UIDL_SUPPORTED_RESPONSE,
         )
 
         store.checkSettings()
@@ -78,7 +78,7 @@ class Pop3StoreTest {
             authenticationType = AuthType.PLAIN,
             username = "user",
             password = "password",
-            clientCertificateAlias = null
+            clientCertificateAlias = null,
         )
     }
 

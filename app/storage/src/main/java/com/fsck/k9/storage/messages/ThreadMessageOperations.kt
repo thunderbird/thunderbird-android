@@ -11,7 +11,7 @@ internal class ThreadMessageOperations {
     fun createOrUpdateParentThreadEntries(
         database: SQLiteDatabase,
         messageId: Long,
-        destinationFolderId: Long
+        destinationFolderId: Long,
     ): ThreadInfo? {
         val threadHeaders = getMessageThreadHeaders(database, messageId)
         return doMessageThreading(database, destinationFolderId, threadHeaders)
@@ -25,7 +25,7 @@ FROM messages
 LEFT JOIN message_parts ON (messages.message_part_id = message_parts.id) 
 WHERE messages.id = ?
             """,
-            arrayOf(messageId.toString())
+            arrayOf(messageId.toString()),
         ).use { cursor ->
             if (!cursor.moveToFirst()) error("Message not found: $messageId")
 
@@ -130,7 +130,7 @@ WHERE messages.id = ?
         folderId: Long,
         messageIdHeader: String,
         rootId: Long?,
-        parentId: Long?
+        parentId: Long?,
     ): Long {
         val messageValues = ContentValues().apply {
             put("message_id", messageIdHeader)
@@ -151,7 +151,7 @@ WHERE messages.id = ?
         db: SQLiteDatabase,
         folderId: Long,
         messageIdHeader: String?,
-        onlyEmpty: Boolean
+        onlyEmpty: Boolean,
     ): ThreadInfo? {
         if (messageIdHeader == null) return null
 
@@ -165,7 +165,7 @@ ${if (onlyEmpty) "AND m.empty = 1 " else ""}
 ORDER BY m.id 
 LIMIT 1
             """,
-            arrayOf(folderId.toString(), messageIdHeader)
+            arrayOf(folderId.toString(), messageIdHeader),
         ).use { cursor ->
             if (cursor.moveToFirst()) {
                 val threadId = cursor.getLong(0)
@@ -182,7 +182,7 @@ LIMIT 1
     private fun getThreadRoot(database: SQLiteDatabase, threadId: Long): Long {
         return database.rawQuery(
             "SELECT root FROM threads WHERE id = ?",
-            arrayOf(threadId.toString())
+            arrayOf(threadId.toString()),
         ).use { cursor ->
             if (cursor.moveToFirst()) {
                 cursor.getLong(0)
@@ -205,19 +205,19 @@ internal data class ThreadInfo(
     val threadId: Long?,
     val messageId: Long?,
     val rootId: Long,
-    val parentId: Long?
+    val parentId: Long?,
 )
 
 internal data class ThreadHeaders(
     val messageIdHeader: String?,
     val inReplyToHeader: String?,
-    val referencesHeader: String?
+    val referencesHeader: String?,
 )
 
 internal fun Message.toThreadHeaders(): ThreadHeaders {
     return ThreadHeaders(
         messageIdHeader = messageId,
         inReplyToHeader = getHeader("In-Reply-To").firstOrNull(),
-        referencesHeader = getHeader("References").firstOrNull()
+        referencesHeader = getHeader("References").firstOrNull(),
     )
 }

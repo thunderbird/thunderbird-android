@@ -18,7 +18,7 @@ import com.fsck.k9.message.quote.QuoteDateFormatter
 class ShareIntentBuilder(
     private val resourceProvider: CoreResourceProvider,
     private val textPartFinder: TextPartFinder,
-    private val quoteDateFormatter: QuoteDateFormatter
+    private val quoteDateFormatter: QuoteDateFormatter,
 ) {
     // TODO: Pass MessageViewInfo and extract text from there
     // TODO: Use display HTML for EXTRA_HTML_TEXT and convert it to plain text for EXTRA_TEXT

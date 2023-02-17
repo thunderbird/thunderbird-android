@@ -75,7 +75,7 @@ open class TestImapFolder(override val serverId: String) : ImapFolder {
         start: Int,
         end: Int,
         earliestDate: Date?,
-        listener: MessageRetrievalListener<ImapMessage>?
+        listener: MessageRetrievalListener<ImapMessage>?,
     ): List<ImapMessage> {
         require(start > 0)
         require(end >= start)
@@ -94,7 +94,7 @@ open class TestImapFolder(override val serverId: String) : ImapFolder {
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
         listener: FetchListener?,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     ) {
         if (messages.isEmpty()) return
 
@@ -118,7 +118,7 @@ open class TestImapFolder(override val serverId: String) : ImapFolder {
         message: ImapMessage,
         part: Part,
         bodyFactory: BodyFactory,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     ) {
         throw UnsupportedOperationException("not implemented")
     }
@@ -127,7 +127,7 @@ open class TestImapFolder(override val serverId: String) : ImapFolder {
         queryString: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
-        performFullTextSearch: Boolean
+        performFullTextSearch: Boolean,
     ): List<ImapMessage> {
         throw UnsupportedOperationException("not implemented")
     }

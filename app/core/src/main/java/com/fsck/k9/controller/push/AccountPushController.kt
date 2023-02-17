@@ -12,7 +12,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -22,7 +21,7 @@ internal class AccountPushController(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val account: Account
+    private val account: Account,
 ) {
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
 

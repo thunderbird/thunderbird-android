@@ -24,7 +24,7 @@ private typealias Callback = () -> Unit
 class AndroidAlarmManager(
     private val context: Context,
     private val alarmManager: AlarmManagerCompat,
-    backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
+    backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : SystemAlarmManager {
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
 
@@ -53,7 +53,7 @@ class AndroidAlarmManager(
                     }
                 }
             },
-            intentFilter
+            intentFilter,
         )
     }
 

@@ -24,7 +24,7 @@ internal class NotificationDataStore {
     fun initializeAccount(
         account: Account,
         activeNotifications: List<NotificationHolder>,
-        inactiveNotifications: List<InactiveNotificationHolder>
+        inactiveNotifications: List<InactiveNotificationHolder>,
     ): NotificationData {
         require(activeNotifications.size <= MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
 
@@ -48,7 +48,7 @@ internal class NotificationDataStore {
         return if (activeNotification != null) {
             val newActiveNotification = activeNotification.copy(content = content)
             val notificationHolder = activeNotification.copy(
-                content = content
+                content = content,
             )
 
             val operations = emptyList<NotificationStoreOperation>()
@@ -56,7 +56,7 @@ internal class NotificationDataStore {
             val newActiveNotifications = notificationData.activeNotifications
                 .replace(activeNotification, newActiveNotification)
             val newNotificationData = notificationData.copy(
-                activeNotifications = newActiveNotifications
+                activeNotifications = newActiveNotifications,
             )
             notificationDataMap[account.uuid] = newNotificationData
 
@@ -67,7 +67,7 @@ internal class NotificationDataStore {
                 .replace(inactiveNotification, newInactiveNotification)
 
             val newNotificationData = notificationData.copy(
-                inactiveNotifications = newInactiveNotifications
+                inactiveNotifications = newInactiveNotifications,
             )
             notificationDataMap[account.uuid] = newNotificationData
 
@@ -81,12 +81,12 @@ internal class NotificationDataStore {
 
             val operations = listOf(
                 NotificationStoreOperation.ChangeToInactive(lastNotificationHolder.content.messageReference),
-                NotificationStoreOperation.Add(messageReference, notificationId, timestamp)
+                NotificationStoreOperation.Add(messageReference, notificationId, timestamp),
             )
 
             val newNotificationData = notificationData.copy(
                 activeNotifications = listOf(notificationHolder) + notificationData.activeNotifications.dropLast(1),
-                inactiveNotifications = listOf(inactiveNotificationHolder) + notificationData.inactiveNotifications
+                inactiveNotifications = listOf(inactiveNotificationHolder) + notificationData.inactiveNotifications,
             )
             notificationDataMap[account.uuid] = newNotificationData
 
@@ -96,11 +96,11 @@ internal class NotificationDataStore {
             val notificationHolder = NotificationHolder(notificationId, timestamp, content)
 
             val operations = listOf(
-                NotificationStoreOperation.Add(messageReference, notificationId, timestamp)
+                NotificationStoreOperation.Add(messageReference, notificationId, timestamp),
             )
 
             val newNotificationData = notificationData.copy(
-                activeNotifications = listOf(notificationHolder) + notificationData.activeNotifications
+                activeNotifications = listOf(notificationHolder) + notificationData.activeNotifications,
             )
             notificationDataMap[account.uuid] = newNotificationData
 
@@ -111,7 +111,7 @@ internal class NotificationDataStore {
     @Synchronized
     fun removeNotifications(
         account: Account,
-        selector: (List<MessageReference>) -> List<MessageReference>
+        selector: (List<MessageReference>) -> List<MessageReference>,
     ): RemoveNotificationsResult? {
         var notificationData = getNotificationData(account)
         if (notificationData.isEmpty()) return null
@@ -140,7 +140,7 @@ internal class NotificationDataStore {
             val removeMessageReferenceSet = removeInactiveMessageReferences.toSet()
             notificationData = notificationData.copy(
                 inactiveNotifications = notificationData.inactiveNotifications
-                    .filter { it.content.messageReference !in removeMessageReferenceSet }
+                    .filter { it.content.messageReference !in removeMessageReferenceSet },
             )
         }
 
@@ -160,14 +160,14 @@ internal class NotificationDataStore {
                 operations.add(
                     NotificationStoreOperation.ChangeToActive(
                         newNotificationHolder.content.messageReference,
-                        newNotificationHolder.notificationId
-                    )
+                        newNotificationHolder.notificationId,
+                    ),
                 )
 
                 notificationData = notificationData.copy(
                     activeNotifications = notificationData.activeNotifications - notificationHolder +
                         newNotificationHolder,
-                    inactiveNotifications = notificationData.inactiveNotifications.drop(1)
+                    inactiveNotifications = notificationData.inactiveNotifications.drop(1),
                 )
             } else {
                 cancelNotificationIds.add(notificationHolder.notificationId)
@@ -175,7 +175,7 @@ internal class NotificationDataStore {
                 operations.add(NotificationStoreOperation.Remove(messageReference))
 
                 notificationData = notificationData.copy(
-                    activeNotifications = notificationData.activeNotifications - notificationHolder
+                    activeNotifications = notificationData.activeNotifications - notificationHolder,
                 )
             }
         }
@@ -189,7 +189,7 @@ internal class NotificationDataStore {
                 notificationData = notificationData,
                 notificationStoreOperations = operations,
                 notificationHolders = newNotificationHolders,
-                cancelNotificationIds = cancelNotificationIds
+                cancelNotificationIds = cancelNotificationIds,
             )
         }
     }

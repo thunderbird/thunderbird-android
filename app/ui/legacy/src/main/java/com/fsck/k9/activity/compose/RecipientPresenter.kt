@@ -62,7 +62,7 @@ class RecipientPresenter(
     private val composePgpEnableByDefaultDecider: ComposePgpEnableByDefaultDecider,
     private val autocryptStatusInteractor: AutocryptStatusInteractor,
     private val replyToParser: ReplyToParser,
-    private val draftStateHeaderParser: AutocryptDraftStateHeaderParser
+    private val draftStateHeaderParser: AutocryptDraftStateHeaderParser,
 ) {
     private lateinit var account: Account
     private var alwaysBccAddresses: Array<Address>? = null
@@ -386,7 +386,7 @@ class RecipientPresenter(
             isReplyToEncrypted = isReplyToEncryptedMessage,
             isEncryptAllDrafts = account.isOpenPgpEncryptAllDrafts,
             isEncryptSubject = account.isOpenPgpEncryptSubject,
-            cryptoMode = currentCryptoMode
+            cryptoMode = currentCryptoMode,
         )
 
         if (openPgpProviderState != OpenPgpProviderState.OK) {
@@ -581,7 +581,7 @@ class RecipientPresenter(
             if (currentCryptoStatus.hasAutocryptPendingIntent()) {
                 recipientMvpView.launchUserInteractionPendingIntent(
                     currentCryptoStatus.autocryptPendingIntent,
-                    REQUEST_CODE_AUTOCRYPT
+                    REQUEST_CODE_AUTOCRYPT,
                 )
             } else if (isEncryptOnNoChoice) {
                 // TODO warning dialog if we override, especially from reply!
@@ -608,7 +608,8 @@ class RecipientPresenter(
     }
 
     private fun isContactPickerAvailable(): Boolean {
-        val resolveInfoList = context.packageManager.queryIntentActivities(ContactIntentHelper.getContactPickerIntent(), 0)
+        val resolveInfoList =
+            context.packageManager.queryIntentActivities(ContactIntentHelper.getContactPickerIntent(), 0)
         return resolveInfoList.isNotEmpty()
     }
 

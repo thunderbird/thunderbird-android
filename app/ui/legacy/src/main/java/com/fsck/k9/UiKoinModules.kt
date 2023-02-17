@@ -37,5 +37,5 @@ val uiModules = listOf(
     messageSourceModule,
     accountUiModule,
     messageDetailsUiModule,
-    messageViewUiModule
+    messageViewUiModule,
 )

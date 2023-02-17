@@ -18,7 +18,7 @@ internal interface MessageDetailsParticipantFormatter {
 internal class RealMessageDetailsParticipantFormatter(
     private val contactNameProvider: ContactNameProvider,
     private val showContactNames: Boolean,
-    private val contactNameColor: Int?
+    private val contactNameColor: Int?,
 ) : MessageDetailsParticipantFormatter {
     override fun getDisplayName(address: Address, account: Account): CharSequence? {
         val identityDisplayName = account.findIdentity(address)?.name
@@ -47,11 +47,11 @@ internal class RealMessageDetailsParticipantFormatter(
 }
 
 internal fun createMessageDetailsParticipantFormatter(
-    contactNameProvider: ContactNameProvider
+    contactNameProvider: ContactNameProvider,
 ): MessageDetailsParticipantFormatter {
     return RealMessageDetailsParticipantFormatter(
         contactNameProvider = contactNameProvider,
         showContactNames = K9.isShowContactName,
-        contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null
+        contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null,
     )
 }

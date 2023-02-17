@@ -12,7 +12,7 @@ internal class UrlActionItem(
     override var identifier: Long,
     val text: String,
     val url: String,
-    val icon: Int
+    val icon: Int,
 ) : AbstractItem<UrlActionItem.ViewHolder>() {
     override val type = R.id.settings_list_url_item
 

@@ -52,7 +52,7 @@ class DisplayHtmlTest {
         assertEquals(
             "Expected to find '$cssQuery' $numberOfExpectedOccurrences time(s) in:\n$html",
             numberOfExpectedOccurrences,
-            numberOfFoundElements
+            numberOfFoundElements,
         )
     }
 }

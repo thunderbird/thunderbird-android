@@ -17,7 +17,7 @@ internal class BaseNotificationDataCreator {
             color = account.chipColor,
             newMessagesCount = notificationData.newMessagesCount,
             lockScreenNotificationData = createLockScreenNotificationData(notificationData),
-            appearance = createNotificationAppearance(account)
+            appearance = createNotificationAppearance(account),
         )
     }
 

@@ -35,8 +35,8 @@ class KeyValueStoreOperationsTest : RobolectricTest() {
             ExtraValueEntry(
                 name = "jmapState",
                 text = "ABC42",
-                number = null
-            )
+                number = null,
+            ),
         )
     }
 
@@ -52,8 +52,8 @@ class KeyValueStoreOperationsTest : RobolectricTest() {
             ExtraValueEntry(
                 name = "jmapState",
                 text = "ABC42",
-                number = null
-            )
+                number = null,
+            ),
         )
     }
 
@@ -83,8 +83,8 @@ class KeyValueStoreOperationsTest : RobolectricTest() {
             ExtraValueEntry(
                 name = "lastChanged",
                 text = null,
-                number = 123L
-            )
+                number = 123L,
+            ),
         )
     }
 
@@ -100,8 +100,8 @@ class KeyValueStoreOperationsTest : RobolectricTest() {
             ExtraValueEntry(
                 name = "lastChanged",
                 text = null,
-                number = 42
-            )
+                number = 42,
+            ),
         )
     }
 
@@ -132,8 +132,8 @@ class KeyValueStoreOperationsTest : RobolectricTest() {
                 folderId = 1,
                 name = "imapUidValidity",
                 text = "1",
-                number = null
-            )
+                number = null,
+            ),
         )
     }
 
@@ -150,8 +150,8 @@ class KeyValueStoreOperationsTest : RobolectricTest() {
                 folderId = 1,
                 name = "imapUidValidity",
                 text = "42",
-                number = null
-            )
+                number = null,
+            ),
         )
     }
 
@@ -182,8 +182,8 @@ class KeyValueStoreOperationsTest : RobolectricTest() {
                 folderId = 1,
                 name = "lastChanged",
                 text = null,
-                number = 123L
-            )
+                number = 123L,
+            ),
         )
     }
 
@@ -200,8 +200,8 @@ class KeyValueStoreOperationsTest : RobolectricTest() {
                 folderId = 1,
                 name = "lastChanged",
                 text = null,
-                number = 42
-            )
+                number = 42,
+            ),
         )
     }
 }

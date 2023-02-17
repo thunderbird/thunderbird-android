@@ -33,7 +33,7 @@ class TestImapStore : ImapStore {
                 serverId = folder.serverId,
                 name = "irrelevant",
                 type = FolderType.REGULAR,
-                oldServerId = null
+                oldServerId = null,
             )
         }
     }

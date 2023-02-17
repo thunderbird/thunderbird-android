@@ -16,8 +16,8 @@ val backendsModule = module {
             mapOf(
                 "imap" to get<ImapBackendFactory>(),
                 "pop3" to get<Pop3BackendFactory>(),
-                "webdav" to get<WebDavBackendFactory>()
-            ) + developmentBackends()
+                "webdav" to get<WebDavBackendFactory>(),
+            ) + developmentBackends(),
         )
     }
     single {
@@ -27,7 +27,7 @@ val backendsModule = module {
             idleRefreshManager = get(),
             backendStorageFactory = get(),
             trustedSocketFactory = get(),
-            context = get()
+            context = get(),
         )
     }
     single<SystemAlarmManager> { AndroidAlarmManager(context = get(), alarmManager = get()) }
@@ -38,7 +38,7 @@ val backendsModule = module {
             backendStorageFactory = get(),
             trustManagerFactory = get(),
             sniHostSetter = get(),
-            folderRepository = get()
+            folderRepository = get(),
         )
     }
     single {

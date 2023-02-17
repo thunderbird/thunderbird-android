@@ -12,7 +12,7 @@ import rs.ltt.jmap.common.util.Patches
 
 class CommandSetFlag(
     private val jmapClient: JmapClient,
-    private val accountId: String
+    private val accountId: String,
 ) {
     fun setFlag(messageServerIds: List<String>, flag: Flag, newState: Boolean) {
         if (newState) {
@@ -40,7 +40,7 @@ class CommandSetFlag(
                 SetEmailMethodCall.builder()
                     .accountId(accountId)
                     .update(updates)
-                    .build()
+                    .build(),
             )
 
             setEmailCall.getMainResponseBlocking<SetEmailMethodResponse>()
@@ -65,11 +65,11 @@ class CommandSetFlag(
                         EmailFilterCondition.builder()
                             .inMailbox(folderServerId)
                             .notKeyword("\$seen")
-                            .build()
+                            .build(),
                     )
                     .calculateTotal(true)
                     .limit(limit)
-                    .build()
+                    .build(),
             )
 
             val queryEmailResponse = queryEmailCall.getMainResponseBlocking<QueryEmailMethodResponse>()
@@ -87,7 +87,7 @@ class CommandSetFlag(
                     SetEmailMethodCall.builder()
                         .accountId(accountId)
                         .update(updates)
-                        .build()
+                        .build(),
                 )
 
                 setEmailCall.getMainResponseBlocking<SetEmailMethodResponse>()

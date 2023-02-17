@@ -27,10 +27,10 @@ class ReplyActionStrategy(private val replyRoParser: ReplyToParser) {
 
 data class ReplyActions(
     val defaultAction: ReplyAction?,
-    val additionalActions: List<ReplyAction> = emptyList()
+    val additionalActions: List<ReplyAction> = emptyList(),
 )
 
 enum class ReplyAction {
     REPLY,
-    REPLY_ALL
+    REPLY_ALL,
 }

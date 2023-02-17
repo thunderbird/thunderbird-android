@@ -20,7 +20,7 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
                 backendCache[account.uuid] = BackendContainer(
                     backend,
                     account.incomingServerSettings,
-                    account.outgoingServerSettings
+                    account.outgoingServerSettings,
                 )
             }
         }
@@ -67,7 +67,7 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
 private data class BackendContainer(
     val backend: Backend,
     val incomingServerSettings: ServerSettings,
-    val outgoingServerSettings: ServerSettings
+    val outgoingServerSettings: ServerSettings,
 )
 
 fun interface BackendChangedListener {

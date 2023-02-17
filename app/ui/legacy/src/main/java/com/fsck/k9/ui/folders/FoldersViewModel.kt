@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 class FoldersViewModel(
     private val folderRepository: FolderRepository,
     private val messageCountsProvider: MessageCountsProvider,
-    backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
+    backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
     private val inputFlow = MutableSharedFlow<Account?>(replay = 1)
     private val foldersFlow = inputFlow
@@ -42,7 +42,7 @@ class FoldersViewModel(
             FolderList(
                 unifiedInbox = createDisplayUnifiedInbox(),
                 accountId = accountNumber + 1,
-                folders = displayFolders
+                folders = displayFolders,
             )
         }
         .flowOn(backgroundDispatcher)
@@ -76,10 +76,10 @@ class FoldersViewModel(
 data class FolderList(
     val unifiedInbox: DisplayUnifiedInbox?,
     val accountId: Int,
-    val folders: List<DisplayFolder>
+    val folders: List<DisplayFolder>,
 )
 
 data class DisplayUnifiedInbox(
     val unreadMessageCount: Int,
-    val starredMessageCount: Int
+    val starredMessageCount: Int,
 )

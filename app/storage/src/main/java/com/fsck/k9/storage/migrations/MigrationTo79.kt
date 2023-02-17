@@ -15,7 +15,7 @@ internal class MigrationTo79(private val db: SQLiteDatabase) {
                 "DELETE FROM message_parts WHERE root = OLD.message_part_id; " +
                 "DELETE FROM messages_fulltext WHERE docid = OLD.id; " +
                 "DELETE FROM threads WHERE message_id = OLD.id; " +
-                "END"
+                "END",
         )
     }
 }

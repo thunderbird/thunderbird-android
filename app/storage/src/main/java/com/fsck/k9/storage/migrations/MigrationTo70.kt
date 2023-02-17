@@ -37,7 +37,7 @@ internal class MigrationTo70(private val db: SQLiteDatabase) {
                 "server_id TEXT, " +
                 "local_only INTEGER, " +
                 "type TEXT DEFAULT \"regular\"" +
-                ")"
+                ")",
         )
     }
 
@@ -64,7 +64,7 @@ internal class MigrationTo70(private val db: SQLiteDatabase) {
                 local_only,
                 type
             FROM folders_old 
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 
@@ -87,7 +87,7 @@ internal class MigrationTo70(private val db: SQLiteDatabase) {
                 "BEFORE DELETE ON folders " +
                 "BEGIN " +
                 "DELETE FROM folder_extra_values WHERE old.id = folder_id; " +
-                "END;"
+                "END;",
         )
     }
 }

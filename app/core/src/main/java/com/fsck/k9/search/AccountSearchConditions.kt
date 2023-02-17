@@ -27,7 +27,7 @@ fun LocalSearch.limitToDisplayableFolders(account: Account) {
             val searchCondition = SearchCondition(
                 SearchField.DISPLAY_CLASS,
                 Attribute.EQUALS,
-                FolderClass.SECOND_CLASS.name
+                FolderClass.SECOND_CLASS.name,
             )
             val root = conditions
             if (root.mRight != null) {

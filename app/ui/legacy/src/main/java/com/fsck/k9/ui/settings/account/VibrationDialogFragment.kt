@@ -49,7 +49,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
             entries = vibrationPreference.entries.map { it.toString() },
             entryValues = vibrationPreference.entryValues.map { it.toString().toInt() },
             vibratePattern,
-            vibrationTimes
+            vibrationTimes,
         )
 
         return AlertDialog.Builder(context)
@@ -64,7 +64,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
             vibrationPreference.setVibration(
                 isVibrationEnabled = adapter.isVibrationEnabled,
                 vibratePattern = adapter.vibratePattern,
-                vibrationTimes = adapter.vibrationTimes
+                vibrationTimes = adapter.vibrationTimes,
             )
         }
     }
@@ -89,7 +89,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
         private val entries: List<String>,
         private val entryValues: List<Int>,
         initialVibratePattern: VibratePattern,
-        initialVibrationTimes: Int
+        initialVibrationTimes: Int,
     ) : BaseAdapter() {
         private var checkedEntryIndex = entryValues.indexOf(initialVibratePattern.serialize()).takeIf { it != -1 } ?: 0
 
@@ -180,18 +180,20 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
                     vibrationTimesSeekBar.progress = progress
                 }
 
-                vibrationTimesSeekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-                    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                        vibrationTimes = progress + 1
-                        vibrationTimesValue.text = vibrationTimes.toString()
-                    }
+                vibrationTimesSeekBar.setOnSeekBarChangeListener(
+                    object : OnSeekBarChangeListener {
+                        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                            vibrationTimes = progress + 1
+                            vibrationTimesValue.text = vibrationTimes.toString()
+                        }
 
-                    override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+                        override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
 
-                    override fun onStopTrackingTouch(seekBar: SeekBar) {
-                        playVibration()
-                    }
-                })
+                        override fun onStopTrackingTouch(seekBar: SeekBar) {
+                            playVibration()
+                        }
+                    },
+                )
             }
         }
 

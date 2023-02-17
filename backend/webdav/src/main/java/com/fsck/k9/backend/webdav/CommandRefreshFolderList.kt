@@ -7,7 +7,7 @@ import com.fsck.k9.mail.store.webdav.WebDavStore
 
 internal class CommandRefreshFolderList(
     private val backendStorage: BackendStorage,
-    private val webDavStore: WebDavStore
+    private val webDavStore: WebDavStore,
 ) {
     fun refreshFolderList() {
         val foldersOnServer = webDavStore.personalNamespaces

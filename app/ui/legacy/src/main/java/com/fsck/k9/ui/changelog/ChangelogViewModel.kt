@@ -15,7 +15,7 @@ private typealias ChangeLogState = LoaderState<List<ReleaseItem>>
 class ChangelogViewModel(
     private val generalSettingsManager: GeneralSettingsManager,
     private val changeLogManager: ChangeLogManager,
-    private val mode: ChangeLogMode
+    private val mode: ChangeLogMode,
 ) : ViewModel() {
     val showRecentChangesState: LiveData<Boolean> =
         generalSettingsManager.getSettingsFlow()
@@ -42,5 +42,5 @@ class ChangelogViewModel(
 
 enum class ChangeLogMode {
     CHANGE_LOG,
-    RECENT_CHANGES
+    RECENT_CHANGES,
 }

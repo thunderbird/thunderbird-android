@@ -9,7 +9,7 @@ internal class NotificationRepository(
     private val notificationStoreProvider: NotificationStoreProvider,
     private val localStoreProvider: LocalStoreProvider,
     private val messageStoreManager: MessageStoreManager,
-    private val notificationContentCreator: NotificationContentCreator
+    private val notificationContentCreator: NotificationContentCreator,
 ) {
     private val notificationDataStore = NotificationDataStore()
 
@@ -36,7 +36,7 @@ internal class NotificationRepository(
         val notificationData = notificationDataStore.initializeAccount(
             account,
             activeNotifications,
-            inactiveNotifications
+            inactiveNotifications,
         )
 
         return if (notificationData.activeNotifications.isNotEmpty()) notificationData else null
@@ -50,7 +50,7 @@ internal class NotificationRepository(
             persistNotificationDataStoreChanges(
                 account = account,
                 operations = result.notificationStoreOperations,
-                updateNewMessageState = true
+                updateNewMessageState = true,
             )
         }
     }
@@ -59,7 +59,7 @@ internal class NotificationRepository(
     fun removeNotifications(
         account: Account,
         clearNewMessageState: Boolean = true,
-        selector: (List<MessageReference>) -> List<MessageReference>
+        selector: (List<MessageReference>) -> List<MessageReference>,
     ): RemoveNotificationsResult? {
         restoreNotifications(account)
 
@@ -67,7 +67,7 @@ internal class NotificationRepository(
             persistNotificationDataStoreChanges(
                 account = account,
                 operations = result.notificationStoreOperations,
-                updateNewMessageState = clearNewMessageState
+                updateNewMessageState = clearNewMessageState,
             )
         }
     }
@@ -85,7 +85,7 @@ internal class NotificationRepository(
     private fun persistNotificationDataStoreChanges(
         account: Account,
         operations: List<NotificationStoreOperation>,
-        updateNewMessageState: Boolean
+        updateNewMessageState: Boolean,
     ) {
         val notificationStore = notificationStoreProvider.getNotificationStore(account)
         notificationStore.persistNotificationChanges(operations)
@@ -105,7 +105,7 @@ internal class NotificationRepository(
                     messageStore.setNewMessageState(
                         folderId = messageReference.folderId,
                         messageServerId = messageReference.uid,
-                        newMessage = true
+                        newMessage = true,
                     )
                 }
                 is NotificationStoreOperation.Remove -> {
@@ -113,7 +113,7 @@ internal class NotificationRepository(
                     messageStore.setNewMessageState(
                         folderId = messageReference.folderId,
                         messageServerId = messageReference.uid,
-                        newMessage = false
+                        newMessage = false,
                     )
                 }
                 else -> Unit

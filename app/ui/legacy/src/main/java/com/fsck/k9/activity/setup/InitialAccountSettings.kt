@@ -9,5 +9,5 @@ data class InitialAccountSettings(
     val authenticationType: AuthType,
     val email: String,
     val password: String?,
-    val clientCertificateAlias: String?
+    val clientCertificateAlias: String?,
 ) : Parcelable

@@ -22,7 +22,7 @@ class IdentityHelperTest : RobolectricTest() {
             RecipientType.CC to IDENTITY_2_ADDRESS,
             RecipientType.X_ORIGINAL_TO to IDENTITY_3_ADDRESS,
             RecipientType.DELIVERED_TO to IDENTITY_4_ADDRESS,
-            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS
+            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS,
         )
 
         val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message)
@@ -37,7 +37,7 @@ class IdentityHelperTest : RobolectricTest() {
             RecipientType.CC to IDENTITY_2_ADDRESS,
             RecipientType.X_ORIGINAL_TO to IDENTITY_3_ADDRESS,
             RecipientType.DELIVERED_TO to IDENTITY_4_ADDRESS,
-            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS
+            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS,
         )
 
         val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message)
@@ -52,7 +52,7 @@ class IdentityHelperTest : RobolectricTest() {
             RecipientType.CC to "unrelated2@example.org",
             RecipientType.X_ORIGINAL_TO to IDENTITY_3_ADDRESS,
             RecipientType.DELIVERED_TO to IDENTITY_4_ADDRESS,
-            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS
+            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS,
         )
 
         val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message)
@@ -67,7 +67,7 @@ class IdentityHelperTest : RobolectricTest() {
             RecipientType.CC to "unrelated2@example.org",
             RecipientType.X_ORIGINAL_TO to "unrelated3@example.org",
             RecipientType.DELIVERED_TO to IDENTITY_4_ADDRESS,
-            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS
+            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS,
         )
 
         val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message)
@@ -82,7 +82,7 @@ class IdentityHelperTest : RobolectricTest() {
             RecipientType.CC to "unrelated2@example.org",
             RecipientType.X_ORIGINAL_TO to "unrelated3@example.org",
             RecipientType.DELIVERED_TO to "unrelated4@example.org",
-            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS
+            RecipientType.X_ENVELOPE_TO to IDENTITY_5_ADDRESS,
         )
 
         val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message)
@@ -97,7 +97,7 @@ class IdentityHelperTest : RobolectricTest() {
             RecipientType.CC to "unrelated2@example.org",
             RecipientType.X_ORIGINAL_TO to "unrelated3@example.org",
             RecipientType.DELIVERED_TO to "unrelated4@example.org",
-            RecipientType.X_ENVELOPE_TO to "unrelated5@example.org"
+            RecipientType.X_ENVELOPE_TO to "unrelated5@example.org",
         )
 
         val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message)
@@ -122,14 +122,14 @@ class IdentityHelperTest : RobolectricTest() {
                 newIdentity("Identity 2", IDENTITY_2_ADDRESS),
                 newIdentity("Identity 3", IDENTITY_3_ADDRESS),
                 newIdentity("Identity 4", IDENTITY_4_ADDRESS),
-                newIdentity("Identity 5", IDENTITY_5_ADDRESS)
-            )
+                newIdentity("Identity 5", IDENTITY_5_ADDRESS),
+            ),
         )
     }
 
     private fun newIdentity(name: String, email: String) = Identity(
         name = name,
-        email = email
+        email = email,
     )
 
     private fun messageWithRecipients(vararg recipients: Pair<RecipientType, String>): Message {

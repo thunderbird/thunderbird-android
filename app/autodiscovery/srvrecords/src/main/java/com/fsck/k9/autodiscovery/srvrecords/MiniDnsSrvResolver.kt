@@ -12,7 +12,7 @@ class MiniDnsSrvResolver : SrvResolver {
         val result = ResolverApi.INSTANCE.resolveSrv(
             DnsLabel.from(type.label),
             SrvProto.tcp.dnsLabel,
-            DnsName.from(domain)
+            DnsName.from(domain),
         )
 
         val security = if (type.assumeTls) SSL_TLS_REQUIRED else STARTTLS_REQUIRED
@@ -22,7 +22,7 @@ class MiniDnsSrvResolver : SrvResolver {
                 host = it.target.toString(),
                 port = it.port,
                 priority = it.priority,
-                security = security
+                security = security,
             )
         }
     }

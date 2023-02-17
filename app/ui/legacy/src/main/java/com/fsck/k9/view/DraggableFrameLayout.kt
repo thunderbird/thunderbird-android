@@ -8,7 +8,7 @@ import com.google.android.material.R
 private val DRAGGED_STATE_SET = intArrayOf(
     R.attr.state_dragged,
     // When the item is dragged we also set the 'pressed' state so the item background is changed
-    android.R.attr.state_pressed
+    android.R.attr.state_pressed,
 )
 
 class DraggableFrameLayout : FrameLayout {

@@ -8,7 +8,7 @@ import com.fsck.k9.helper.map
 fun SQLiteDatabase.createThread(
     messageId: Long,
     root: Long? = null,
-    parent: Long? = null
+    parent: Long? = null,
 ): Long {
     val values = ContentValues().apply {
         put("message_id", messageId)
@@ -26,7 +26,7 @@ fun SQLiteDatabase.readThreads(): List<ThreadEntry> {
                 id = cursor.getLongOrNull("id"),
                 messageId = cursor.getLongOrNull("message_id"),
                 root = cursor.getLongOrNull("root"),
-                parent = cursor.getLongOrNull("parent")
+                parent = cursor.getLongOrNull("parent"),
             )
         }
     }
@@ -36,5 +36,5 @@ data class ThreadEntry(
     val id: Long?,
     val messageId: Long?,
     val root: Long?,
-    val parent: Long?
+    val parent: Long?,
 )

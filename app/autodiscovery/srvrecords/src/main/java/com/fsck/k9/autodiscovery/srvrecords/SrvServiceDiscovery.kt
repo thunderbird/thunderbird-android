@@ -8,7 +8,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 
 class SrvServiceDiscovery(
-    private val srvResolver: MiniDnsSrvResolver
+    private val srvResolver: MiniDnsSrvResolver,
 ) : ConnectionSettingsDiscovery {
 
     override fun discover(email: String): DiscoveryResults? {
@@ -36,7 +36,7 @@ fun newServerSettings(service: MailService, email: String): DiscoveredServerSett
         service.port,
         service.security,
         AuthType.PLAIN,
-        email
+        email,
     )
 }
 
@@ -44,7 +44,7 @@ enum class SrvType(val label: String, val protocol: String, val assumeTls: Boole
     SUBMISSIONS("_submissions", "smtp", true),
     SUBMISSION("_submission", "smtp", false),
     IMAPS("_imaps", "imap", true),
-    IMAP("_imap", "imap", false)
+    IMAP("_imap", "imap", false),
 }
 
 data class MailService(
@@ -52,5 +52,5 @@ data class MailService(
     val host: String,
     val port: Int,
     val priority: Int,
-    val security: ConnectionSecurity
+    val security: ConnectionSecurity,
 )

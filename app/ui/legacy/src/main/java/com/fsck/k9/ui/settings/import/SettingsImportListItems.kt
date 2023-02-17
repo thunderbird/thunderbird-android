@@ -16,7 +16,7 @@ private const val ACCOUNT_ITEMS_ID_OFFSET = 1L
 
 abstract class ImportListItem<VH : ImportCheckBoxViewHolder>(
     override var identifier: Long,
-    private val importStatus: ImportStatus
+    private val importStatus: ImportStatus,
 ) : AbstractItem<VH>() {
 
     override fun bindView(holder: VH, payloads: List<Any>) {
@@ -68,7 +68,7 @@ class ImportListItemClickEvent(val action: (position: Int) -> Unit) : ClickEvent
         v: View,
         position: Int,
         fastAdapter: FastAdapter<ImportListItem<*>>,
-        item: ImportListItem<*>
+        item: ImportListItem<*>,
     ) {
         action(position)
     }

@@ -149,7 +149,7 @@ class MimeHeaderParser(private val input: String) {
                     currentIndex--
                     throw MimeHeaderParserException(
                         "Unexpected '$character' (${character.code}) in comment",
-                        errorIndex = currentIndex
+                        errorIndex = currentIndex,
                     )
                 }
             }

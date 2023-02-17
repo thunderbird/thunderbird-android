@@ -174,14 +174,14 @@ class NotificationActionService : Service() {
         fun createMarkAllAsReadIntent(
             context: Context,
             accountUuid: String,
-            messageReferences: List<MessageReference>
+            messageReferences: List<MessageReference>,
         ): Intent {
             return Intent(context, NotificationActionService::class.java).apply {
                 action = ACTION_MARK_AS_READ
                 putExtra(EXTRA_ACCOUNT_UUID, accountUuid)
                 putExtra(
                     EXTRA_MESSAGE_REFERENCES,
-                    MessageReferenceHelper.toMessageReferenceStringList(messageReferences)
+                    MessageReferenceHelper.toMessageReferenceStringList(messageReferences),
                 )
             }
         }
@@ -212,14 +212,14 @@ class NotificationActionService : Service() {
         fun createDeleteAllMessagesIntent(
             context: Context,
             accountUuid: String,
-            messageReferences: List<MessageReference>
+            messageReferences: List<MessageReference>,
         ): Intent {
             return Intent(context, NotificationActionService::class.java).apply {
                 action = ACTION_DELETE
                 putExtra(EXTRA_ACCOUNT_UUID, accountUuid)
                 putExtra(
                     EXTRA_MESSAGE_REFERENCES,
-                    MessageReferenceHelper.toMessageReferenceStringList(messageReferences)
+                    MessageReferenceHelper.toMessageReferenceStringList(messageReferences),
                 )
             }
         }
@@ -235,14 +235,14 @@ class NotificationActionService : Service() {
         fun createArchiveAllIntent(
             context: Context,
             account: Account,
-            messageReferences: List<MessageReference>
+            messageReferences: List<MessageReference>,
         ): Intent {
             return Intent(context, NotificationActionService::class.java).apply {
                 action = ACTION_ARCHIVE
                 putExtra(EXTRA_ACCOUNT_UUID, account.uuid)
                 putExtra(
                     EXTRA_MESSAGE_REFERENCES,
-                    MessageReferenceHelper.toMessageReferenceStringList(messageReferences)
+                    MessageReferenceHelper.toMessageReferenceStringList(messageReferences),
                 )
             }
         }

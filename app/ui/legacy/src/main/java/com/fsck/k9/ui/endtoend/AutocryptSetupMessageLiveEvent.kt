@@ -15,7 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.openintents.openpgp.util.OpenPgpApi
 
-class AutocryptSetupMessageLiveEvent(val messageCreator: AutocryptTransferMessageCreator) : SingleLiveEvent<AutocryptSetupMessage>() {
+class AutocryptSetupMessageLiveEvent(
+    val messageCreator: AutocryptTransferMessageCreator,
+) : SingleLiveEvent<AutocryptSetupMessage>() {
     fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, account: Account) {
         GlobalScope.launch(Dispatchers.Main) {
             value = withContext(Dispatchers.IO) {

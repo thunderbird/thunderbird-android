@@ -36,7 +36,7 @@ internal class MessageDetailsViewModel(
     private val clipboardManager: ClipboardManager,
     private val accountManager: AccountManager,
     private val participantFormatter: MessageDetailsParticipantFormatter,
-    private val folderNameFormatter: FolderNameFormatter
+    private val folderNameFormatter: FolderNameFormatter,
 ) : ViewModel() {
     private val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.getDefault())
     private val uiState = MutableStateFlow<MessageDetailsState>(MessageDetailsState.Loading)
@@ -63,12 +63,12 @@ internal class MessageDetailsViewModel(
                     to = messageDetails.to.toParticipants(account),
                     cc = messageDetails.cc.toParticipants(account),
                     bcc = messageDetails.bcc.toParticipants(account),
-                    folder = folder?.toFolderInfo()
+                    folder = folder?.toFolderInfo(),
                 )
 
                 MessageDetailsState.DataLoaded(
                     showContactPicture = contactSettingsProvider.isShowContactPicture,
-                    details = messageDetailsUi
+                    details = messageDetailsUi,
                 )
             } catch (e: Exception) {
                 MessageDetailsState.Error
@@ -91,7 +91,7 @@ internal class MessageDetailsViewModel(
         return CryptoDetails(
             cryptoStatus = messageCryptoDisplayStatus,
             isClickable = messageCryptoDisplayStatus.hasAssociatedKey() || messageCryptoDisplayStatus.isUnknownKey ||
-                hasOpenPgpInsecureWarningPendingIntent()
+                hasOpenPgpInsecureWarningPendingIntent(),
         )
     }
 
@@ -103,7 +103,7 @@ internal class MessageDetailsViewModel(
             Participant(
                 displayName = displayName,
                 emailAddress = emailAddress,
-                contactLookupUri = contacts.getContactUri(emailAddress)
+                contactLookupUri = contacts.getContactUri(emailAddress),
             )
         }
     }
@@ -111,7 +111,7 @@ internal class MessageDetailsViewModel(
     private fun Folder.toFolderInfo(): FolderInfoUi {
         return FolderInfoUi(
             displayName = folderNameFormatter.displayName(this),
-            type = this.type
+            type = this.type,
         )
     }
 
@@ -155,7 +155,7 @@ sealed interface MessageDetailsState {
     object Error : MessageDetailsState
     data class DataLoaded(
         val showContactPicture: Boolean,
-        val details: MessageDetailsUi
+        val details: MessageDetailsUi,
     ) : MessageDetailsState
 }
 

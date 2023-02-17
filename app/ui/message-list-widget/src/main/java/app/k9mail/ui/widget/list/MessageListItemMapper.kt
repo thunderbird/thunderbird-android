@@ -11,7 +11,7 @@ import java.util.Locale
 
 internal class MessageListItemMapper(
     private val messageHelper: MessageHelper,
-    private val account: Account
+    private val account: Account,
 ) : MessageMapper<MessageListItem> {
     private val calendar: Calendar = Calendar.getInstance()
 
@@ -44,7 +44,7 @@ internal class MessageListItemMapper(
             sortMessageDate = message.messageDate,
             sortInternalDate = message.internalDate,
             sortIsStarred = message.isStarred,
-            sortDatabaseId = message.id
+            sortDatabaseId = message.id,
         )
     }
 

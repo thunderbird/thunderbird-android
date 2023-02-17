@@ -9,7 +9,7 @@ import com.fsck.k9.Account
 internal open class CertificateErrorNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
-    private val resourceProvider: NotificationResourceProvider
+    private val resourceProvider: NotificationResourceProvider,
 ) {
     fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
         val notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming)

@@ -25,9 +25,9 @@ constructor(
     defStyleAttr: Int = TypedArrayUtils.getAttr(
         context,
         androidx.preference.R.attr.preferenceStyle,
-        android.R.attr.preferenceStyle
+        android.R.attr.preferenceStyle,
     ),
-    defStyleRes: Int = 0
+    defStyleRes: Int = 0,
 ) : Preference(context, attrs, defStyleAttr, defStyleRes) {
 
     var notificationChannelIdProvider: NotificationChannelIdProvider? = null
@@ -51,7 +51,7 @@ constructor(
         init {
             PreferenceFragmentCompat.registerPreferenceFragment(
                 NotificationsPreference::class.java,
-                DialogFragment::class.java
+                DialogFragment::class.java,
             )
         }
     }

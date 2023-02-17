@@ -121,7 +121,7 @@ class LocalKeyStore(private val directoryProvider: KeyStoreDirectoryProvider) {
                     host,
                     port,
                     storedCert,
-                    certificate
+                    certificate,
                 )
                 false
             } else {

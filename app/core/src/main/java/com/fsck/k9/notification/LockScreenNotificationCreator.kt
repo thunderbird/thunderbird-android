@@ -5,11 +5,11 @@ import androidx.core.app.NotificationCompat
 
 internal class LockScreenNotificationCreator(
     private val notificationHelper: NotificationHelper,
-    private val resourceProvider: NotificationResourceProvider
+    private val resourceProvider: NotificationResourceProvider,
 ) {
     fun configureLockScreenNotification(
         builder: NotificationCompat.Builder,
-        baseNotificationData: BaseNotificationData
+        baseNotificationData: BaseNotificationData,
     ) {
         when (baseNotificationData.lockScreenNotificationData) {
             LockScreenNotificationData.None -> {

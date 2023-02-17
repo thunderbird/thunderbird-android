@@ -8,7 +8,7 @@ data class AutocryptDraftStateHeader(
     val isReply: Boolean,
     val isByChoice: Boolean,
     val isPgpInline: Boolean,
-    val parameters: Map<String, String> = mapOf()
+    val parameters: Map<String, String> = mapOf(),
 ) {
 
     fun toHeaderValue(): String {
@@ -54,7 +54,7 @@ data class AutocryptDraftStateHeader(
                     cryptoStatus.isReplyToEncrypted,
                     cryptoStatus.isUserChoice(),
                     cryptoStatus.isPgpInlineModeEnabled,
-                    mapOf()
+                    mapOf(),
                 )
             }
             return AutocryptDraftStateHeader(
@@ -63,7 +63,7 @@ data class AutocryptDraftStateHeader(
                 cryptoStatus.isReplyToEncrypted,
                 cryptoStatus.isUserChoice(),
                 cryptoStatus.isPgpInlineModeEnabled,
-                mapOf()
+                mapOf(),
             )
         }
     }

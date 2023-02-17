@@ -20,7 +20,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 23,
             content = content,
             timestamp = 9000,
-            addLockScreenNotification = true
+            addLockScreenNotification = true,
         )
 
         assertThat(result.notificationId).isEqualTo(23)
@@ -38,11 +38,11 @@ class SingleMessageNotificationDataCreatorTest {
         val result = notificationDataCreator.createSummarySingleNotificationData(
             timestamp = 9000,
             silent = false,
-            data = notificationData
+            data = notificationData,
         )
 
         assertThat(result.singleNotificationData.notificationId).isEqualTo(
-            NotificationIds.getNewMailSummaryNotificationId(account)
+            NotificationIds.getNewMailSummaryNotificationId(account),
         )
         assertThat(result.singleNotificationData.isSilent).isFalse()
         assertThat(result.singleNotificationData.timestamp).isEqualTo(9000)
@@ -59,7 +59,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.actions).contains(NotificationAction.Reply)
@@ -79,7 +79,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.actions).contains(NotificationAction.Delete)
@@ -97,7 +97,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.actions).contains(NotificationAction.Delete)
@@ -115,7 +115,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.actions).contains(NotificationAction.Delete)
@@ -133,7 +133,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.actions).contains(NotificationAction.Delete)
@@ -150,7 +150,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.actions).doesNotContain(NotificationAction.Delete)
@@ -167,7 +167,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.wearActions).contains(WearNotificationAction.Archive)
@@ -183,7 +183,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.wearActions).doesNotContain(WearNotificationAction.Archive)
@@ -200,7 +200,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.wearActions).contains(WearNotificationAction.Spam)
@@ -217,7 +217,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.wearActions).doesNotContain(WearNotificationAction.Spam)
@@ -234,7 +234,7 @@ class SingleMessageNotificationDataCreatorTest {
             notificationId = 0,
             content = content,
             timestamp = 0,
-            addLockScreenNotification = false
+            addLockScreenNotification = false,
         )
 
         assertThat(result.wearActions).doesNotContain(WearNotificationAction.Spam)
@@ -263,7 +263,7 @@ class SingleMessageNotificationDataCreatorTest {
         sender = "irrelevant",
         subject = "irrelevant",
         preview = "irrelevant",
-        summary = "irrelevant"
+        summary = "irrelevant",
     )
 
     private fun createNotificationData(content: NotificationContent): NotificationData {
@@ -273,10 +273,10 @@ class SingleMessageNotificationDataCreatorTest {
                 NotificationHolder(
                     notificationId = 1,
                     timestamp = 0,
-                    content = content
-                )
+                    content = content,
+                ),
             ),
-            inactiveNotifications = emptyList()
+            inactiveNotifications = emptyList(),
         )
     }
 }

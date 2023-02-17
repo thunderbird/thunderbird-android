@@ -104,7 +104,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
             messageStore,
             createFolderSettingsProvider(),
             saveMessageDataCreator,
-            emptyList()
+            emptyList(),
         )
         backendStorage.updateFolders {
             createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, FOLDER_NAME, FOLDER_TYPE)))
@@ -142,7 +142,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
                 "messages",
                 contentValuesOf("flags" to null),
                 "uid = ?",
-                arrayOf(MESSAGE_SERVER_ID)
+                arrayOf(MESSAGE_SERVER_ID),
             )
             assertEquals(1, numberOfUpdatedRows)
         }

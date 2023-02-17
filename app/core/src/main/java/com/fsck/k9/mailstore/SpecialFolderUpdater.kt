@@ -15,7 +15,7 @@ class SpecialFolderUpdater(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
-    private val account: Account
+    private val account: Account,
 ) {
     fun updateSpecialFolders() {
         val folders = folderRepository.getRemoteFolders(account)

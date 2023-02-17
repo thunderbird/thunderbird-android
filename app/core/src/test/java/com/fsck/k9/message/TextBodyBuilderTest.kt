@@ -33,7 +33,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = MESSAGE_TEXT,
                     expectedHtmlTextMessage = TextBodyBuilder.HTML_AND_BODY_START + MESSAGE_TEXT_HTML +
-                        TextBodyBuilder.HTML_AND_BODY_END
+                        TextBodyBuilder.HTML_AND_BODY_END,
                 ),
                 TestData(
                     appendSignature = true,
@@ -43,7 +43,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = MESSAGE_TEXT + "\r\n" + SIGNATURE_TEXT,
                     expectedHtmlTextMessage = TextBodyBuilder.HTML_AND_BODY_START + MESSAGE_TEXT_HTML +
-                        SIGNATURE_TEXT_HTML + TextBodyBuilder.HTML_AND_BODY_END
+                        SIGNATURE_TEXT_HTML + TextBodyBuilder.HTML_AND_BODY_END,
                 ),
                 TestData(
                     appendSignature = false,
@@ -53,7 +53,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = MESSAGE_TEXT + "\r\n\r\n" + QUOTED_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + MESSAGE_TEXT_HTML + QUOTED_HTML_BODY +
-                        QUOTED_HTML_TAGS_END
+                        QUOTED_HTML_TAGS_END,
                 ),
                 TestData(
                     appendSignature = false,
@@ -63,7 +63,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = MESSAGE_TEXT + "\r\n\r\n" + QUOTED_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + MESSAGE_TEXT_HTML + "<br><br>" +
-                        QUOTED_HTML_BODY + QUOTED_HTML_TAGS_END
+                        QUOTED_HTML_BODY + QUOTED_HTML_TAGS_END,
                 ),
                 TestData(
                     appendSignature = false,
@@ -73,7 +73,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = QUOTED_TEXT + "\r\n" + MESSAGE_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + QUOTED_HTML_BODY + MESSAGE_TEXT_HTML +
-                        QUOTED_HTML_TAGS_END
+                        QUOTED_HTML_TAGS_END,
                 ),
                 TestData(
                     appendSignature = false,
@@ -83,7 +83,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = QUOTED_TEXT + "\r\n" + MESSAGE_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + QUOTED_HTML_BODY + "<br clear=\"all\">" +
-                        MESSAGE_TEXT_HTML + QUOTED_HTML_TAGS_END
+                        MESSAGE_TEXT_HTML + QUOTED_HTML_TAGS_END,
                 ),
                 TestData(
                     appendSignature = true,
@@ -93,7 +93,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = MESSAGE_TEXT + "\r\n\r\n" + QUOTED_TEXT + "\r\n" + SIGNATURE_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + MESSAGE_TEXT_HTML + QUOTED_HTML_BODY +
-                        SIGNATURE_TEXT_HTML + QUOTED_HTML_TAGS_END
+                        SIGNATURE_TEXT_HTML + QUOTED_HTML_TAGS_END,
                 ),
                 TestData(
                     appendSignature = true,
@@ -103,7 +103,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = MESSAGE_TEXT + "\r\n\r\n" + QUOTED_TEXT + "\r\n" + SIGNATURE_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + MESSAGE_TEXT_HTML + "<br><br>" +
-                        QUOTED_HTML_BODY + SIGNATURE_TEXT_HTML + QUOTED_HTML_TAGS_END
+                        QUOTED_HTML_BODY + SIGNATURE_TEXT_HTML + QUOTED_HTML_TAGS_END,
                 ),
                 TestData(
                     appendSignature = true,
@@ -113,7 +113,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = QUOTED_TEXT + "\r\n" + MESSAGE_TEXT + "\r\n" + SIGNATURE_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + QUOTED_HTML_BODY + MESSAGE_TEXT_HTML +
-                        SIGNATURE_TEXT_HTML + QUOTED_HTML_TAGS_END
+                        SIGNATURE_TEXT_HTML + QUOTED_HTML_TAGS_END,
                 ),
                 TestData(
                     appendSignature = true,
@@ -123,7 +123,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = false,
                     expectedPlainTextMessage = QUOTED_TEXT + "\r\n" + MESSAGE_TEXT + "\r\n" + SIGNATURE_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + QUOTED_HTML_BODY + "<br clear=\"all\">" +
-                        MESSAGE_TEXT_HTML + SIGNATURE_TEXT_HTML + QUOTED_HTML_TAGS_END
+                        MESSAGE_TEXT_HTML + SIGNATURE_TEXT_HTML + QUOTED_HTML_TAGS_END,
                 ),
                 TestData(
                     appendSignature = true,
@@ -133,7 +133,7 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = true,
                     expectedPlainTextMessage = MESSAGE_TEXT + "\r\n" + SIGNATURE_TEXT + "\r\n\r\n" + QUOTED_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + MESSAGE_TEXT_HTML + SIGNATURE_TEXT_HTML +
-                        QUOTED_HTML_BODY + QUOTED_HTML_TAGS_END
+                        QUOTED_HTML_BODY + QUOTED_HTML_TAGS_END,
                 ),
                 TestData(
                     appendSignature = true,
@@ -143,8 +143,8 @@ class TextBodyBuilderTest(val testData: TestData) {
                     signatureBeforeQuotedText = true,
                     expectedPlainTextMessage = MESSAGE_TEXT + "\r\n" + SIGNATURE_TEXT + "\r\n\r\n" + QUOTED_TEXT,
                     expectedHtmlTextMessage = QUOTED_HTML_TAGS_START + MESSAGE_TEXT_HTML + SIGNATURE_TEXT_HTML +
-                        "<br><br>" + QUOTED_HTML_BODY + QUOTED_HTML_TAGS_END
-                )
+                        "<br><br>" + QUOTED_HTML_BODY + QUOTED_HTML_TAGS_END,
+                ),
             )
         }
     }
@@ -161,7 +161,7 @@ class TextBodyBuilderTest(val testData: TestData) {
         toTest.setQuotedText(QUOTED_TEXT)
         val quotedHtmlContent = InsertableHtmlContent()
         quotedHtmlContent.setQuotedContent(
-            StringBuilder(QUOTED_HTML_TAGS_START + QUOTED_HTML_BODY + QUOTED_HTML_TAGS_END)
+            StringBuilder(QUOTED_HTML_TAGS_START + QUOTED_HTML_BODY + QUOTED_HTML_TAGS_END),
         )
         quotedHtmlContent.setHeaderInsertionPoint(QUOTED_HTML_TAGS_START.length)
         quotedHtmlContent.footerInsertionPoint =
@@ -209,7 +209,7 @@ class TextBodyBuilderTest(val testData: TestData) {
         val replyAfterQuote: Boolean,
         val signatureBeforeQuotedText: Boolean,
         val expectedPlainTextMessage: String,
-        val expectedHtmlTextMessage: String
+        val expectedHtmlTextMessage: String,
     ) {
         override fun toString(): String {
             return "appendSignature=$appendSignature," +

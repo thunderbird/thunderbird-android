@@ -31,7 +31,7 @@ import com.fsck.k9.view.ToolableViewAnimator
 
 class MessageTopView(
     context: Context,
-    attrs: AttributeSet?
+    attrs: AttributeSet?,
 ) : LinearLayout(context, attrs) {
 
     private lateinit var layoutInflater: LayoutInflater
@@ -112,7 +112,7 @@ class MessageTopView(
         val view = layoutInflater.inflate(
             R.layout.message_container,
             containerView,
-            false
+            false,
         ) as MessageContainerView
         containerView.addView(view)
 
@@ -126,7 +126,7 @@ class MessageTopView(
             },
             loadPictures,
             hideUnsignedTextDivider,
-            attachmentCallback
+            attachmentCallback,
         )
 
         if (view.hasHiddenExternalImages && !showPicturesButtonClicked) {
@@ -280,13 +280,15 @@ class MessageTopView(
             progressBar,
             "progress",
             progressBar.progress,
-            PROGRESS_MAX
+            PROGRESS_MAX,
         )
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animator: Animator) {
-                viewAnimator.displayedChild = 2
-            }
-        })
+        animator.addListener(
+            object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animator: Animator) {
+                    viewAnimator.displayedChild = 2
+                }
+            },
+        )
         animator.duration = PROGRESS_STEP_DURATION.toLong()
         animator.start()
     }

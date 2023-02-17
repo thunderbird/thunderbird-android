@@ -20,7 +20,7 @@ private const val NO_FOLDER_ID = 0L
 class FolderSettingsViewModel(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
-    private val messagingController: MessagingController
+    private val messagingController: MessagingController,
 ) : ViewModel() {
     private val actionLiveData = SingleLiveEvent<Action>()
     private var folderSettingsLiveData: LiveData<FolderSettingsResult>? = null
@@ -39,7 +39,7 @@ class FolderSettingsViewModel(
 
     private fun createFolderSettingsLiveData(
         accountUuid: String,
-        folderId: Long
+        folderId: Long,
     ): LiveData<FolderSettingsResult> {
         return liveData(context = viewModelScope.coroutineContext) {
             val account = loadAccount(accountUuid)
@@ -55,7 +55,7 @@ class FolderSettingsViewModel(
 
             val folderSettingsData = FolderSettingsData(
                 folder = folderDetails.folder,
-                dataStore = FolderSettingsDataStore(folderRepository, account, folderDetails)
+                dataStore = FolderSettingsDataStore(folderRepository, account, folderDetails),
             )
             emit(folderSettingsData)
         }

@@ -35,7 +35,7 @@ class RecyclerViewBackgroundDrawable internal constructor(private val color: Int
             recyclerView.top.toFloat(),
             recyclerView.right.toFloat(),
             bottom.toFloat(),
-            paint
+            paint,
         )
     }
 

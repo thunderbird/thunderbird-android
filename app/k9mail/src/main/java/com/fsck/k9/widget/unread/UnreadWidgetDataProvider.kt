@@ -20,7 +20,7 @@ class UnreadWidgetDataProvider(
     private val messageCountsProvider: MessageCountsProvider,
     private val defaultFolderProvider: DefaultFolderProvider,
     private val folderRepository: FolderRepository,
-    private val folderNameFormatter: FolderNameFormatter
+    private val folderNameFormatter: FolderNameFormatter,
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_INBOX == accountUuid) {

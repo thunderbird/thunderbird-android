@@ -30,7 +30,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
     private val notificationHelper = createFakeNotificationHelper(
         notificationManager,
         builder,
-        lockScreenNotificationBuilder
+        lockScreenNotificationBuilder,
     )
     private val account = createFakeAccount()
     private val controller = TestCertificateErrorNotificationController()
@@ -95,7 +95,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
     private fun createFakeNotificationHelper(
         notificationManager: NotificationManagerCompat,
         notificationBuilder: NotificationCompat.Builder,
-        lockScreenNotificationBuilder: NotificationCompat.Builder
+        lockScreenNotificationBuilder: NotificationCompat.Builder,
     ): NotificationHelper {
         return mock {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()
@@ -115,7 +115,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
     internal inner class TestCertificateErrorNotificationController : CertificateErrorNotificationController(
         notificationHelper,
         mock(),
-        resourceProvider
+        resourceProvider,
     ) {
         override fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
             return contentIntent

@@ -287,11 +287,13 @@ object K9 : EarlyInit {
     }
 
     fun init(context: Context) {
-        K9MailLib.setDebugStatus(object : K9MailLib.DebugStatus {
-            override fun enabled(): Boolean = isDebugLoggingEnabled
+        K9MailLib.setDebugStatus(
+            object : K9MailLib.DebugStatus {
+                override fun enabled(): Boolean = isDebugLoggingEnabled
 
-            override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
-        })
+                override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
+            },
+        )
         com.fsck.k9.logging.Timber.logger = TimberLogger()
 
         checkCachedDatabaseVersion(context)
@@ -345,7 +347,7 @@ object K9 : EarlyInit {
 
         lockScreenNotificationVisibility = storage.getEnum(
             "lockScreenNotificationVisibility",
-            LockScreenNotificationVisibility.MESSAGE_COUNT
+            LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
         splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
@@ -507,7 +509,7 @@ object K9 : EarlyInit {
     enum class NotificationQuickDelete {
         ALWAYS,
         FOR_SINGLE_MSG,
-        NEVER
+        NEVER,
     }
 
     enum class LockScreenNotificationVisibility {
@@ -515,7 +517,7 @@ object K9 : EarlyInit {
         SENDERS,
         MESSAGE_COUNT,
         APP_NAME,
-        NOTHING
+        NOTHING,
     }
 
     /**
@@ -524,6 +526,6 @@ object K9 : EarlyInit {
     enum class SplitViewMode {
         ALWAYS,
         NEVER,
-        WHEN_IN_LANDSCAPE
+        WHEN_IN_LANDSCAPE,
     }
 }

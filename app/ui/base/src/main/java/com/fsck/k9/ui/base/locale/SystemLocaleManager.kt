@@ -42,7 +42,7 @@ class SystemLocaleManager(context: Context) {
             packageManager.setComponentEnabledSetting(
                 componentName,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP
+                PackageManager.DONT_KILL_APP,
             )
         } catch (e: Exception) {
             Timber.e(e, "Error enabling LocaleBroadcastReceiver")
@@ -55,7 +55,7 @@ class SystemLocaleManager(context: Context) {
             packageManager.setComponentEnabledSetting(
                 componentName,
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
+                PackageManager.DONT_KILL_APP,
             )
         } catch (e: Exception) {
             Timber.e(e, "Error disabling LocaleBroadcastReceiver")

@@ -4,7 +4,7 @@ internal class AddNotificationResult private constructor(
     val notificationData: NotificationData,
     val notificationStoreOperations: List<NotificationStoreOperation>,
     val notificationHolder: NotificationHolder,
-    val shouldCancelNotification: Boolean
+    val shouldCancelNotification: Boolean,
 ) {
     val cancelNotificationId: Int
         get() {
@@ -16,26 +16,26 @@ internal class AddNotificationResult private constructor(
         fun newNotification(
             notificationData: NotificationData,
             notificationStoreOperations: List<NotificationStoreOperation>,
-            notificationHolder: NotificationHolder
+            notificationHolder: NotificationHolder,
         ): AddNotificationResult {
             return AddNotificationResult(
                 notificationData,
                 notificationStoreOperations,
                 notificationHolder,
-                shouldCancelNotification = false
+                shouldCancelNotification = false,
             )
         }
 
         fun replaceNotification(
             notificationData: NotificationData,
             notificationStoreOperations: List<NotificationStoreOperation>,
-            notificationHolder: NotificationHolder
+            notificationHolder: NotificationHolder,
         ): AddNotificationResult {
             return AddNotificationResult(
                 notificationData,
                 notificationStoreOperations,
                 notificationHolder,
-                shouldCancelNotification = true
+                shouldCancelNotification = true,
             )
         }
     }

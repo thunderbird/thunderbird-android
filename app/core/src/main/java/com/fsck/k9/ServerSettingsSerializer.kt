@@ -37,7 +37,7 @@ private val JSON_KEYS = JsonReader.Options.of(
     KEY_AUTHENTICATION_TYPE,
     KEY_USERNAME,
     KEY_PASSWORD,
-    KEY_CLIENT_CERTIFICATE_ALIAS
+    KEY_CLIENT_CERTIFICATE_ALIAS,
 )
 
 private class ServerSettingsAdapter : JsonAdapter<ServerSettings>() {
@@ -90,7 +90,7 @@ private class ServerSettingsAdapter : JsonAdapter<ServerSettings>() {
             username,
             password,
             clientCertificateAlias,
-            extra
+            extra,
         )
     }
 

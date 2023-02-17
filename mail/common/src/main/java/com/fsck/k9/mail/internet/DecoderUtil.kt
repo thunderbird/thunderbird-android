@@ -96,7 +96,7 @@ internal object DecoderUtil {
         output: StringBuilder,
         previousWord: EncodedWord?,
         body: String,
-        previousEnd: Int
+        previousEnd: Int,
     ) {
         if (previousWord != null) {
             output.append(charsetDecode(previousWord))
@@ -184,7 +184,7 @@ internal object DecoderUtil {
     private class EncodedWord(
         val charset: String,
         val encoding: Encoding,
-        var data: ByteString
+        var data: ByteString,
     ) {
         fun canBeCombinedWith(other: EncodedWord): Boolean {
             return encoding == other.encoding && charset == other.charset && !isAsciiEscapeSequence()

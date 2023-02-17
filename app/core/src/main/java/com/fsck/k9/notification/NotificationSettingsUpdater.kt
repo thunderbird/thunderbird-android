@@ -11,7 +11,7 @@ import com.fsck.k9.Preferences
 class NotificationSettingsUpdater(
     private val preferences: Preferences,
     private val notificationChannelManager: NotificationChannelManager,
-    private val notificationConfigurationConverter: NotificationConfigurationConverter
+    private val notificationConfigurationConverter: NotificationConfigurationConverter,
 ) {
     fun updateNotificationSettings(accountUuids: Collection<String>) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return

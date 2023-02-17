@@ -6,7 +6,7 @@ import com.fsck.k9.mailstore.LockableDatabase
 
 internal class DeleteMessageOperations(
     private val lockableDatabase: LockableDatabase,
-    private val attachmentFileManager: AttachmentFileManager
+    private val attachmentFileManager: AttachmentFileManager,
 ) {
     fun destroyMessages(folderId: Long, messageServerIds: Collection<String>) {
         for (messageServerId in messageServerIds) {
@@ -44,13 +44,13 @@ LEFT JOIN threads threads1 ON (threads1.message_id = messages.id)
 LEFT JOIN threads threads2 ON (threads2.parent = threads1.id) 
 WHERE folder_id = ? AND uid = ?
                 """,
-                arrayOf(folderId.toString(), messageServerId)
+                arrayOf(folderId.toString(), messageServerId),
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     MessageData(
                         messageId = cursor.getLong(0),
                         messagePartId = cursor.getLong(1),
-                        hasThreadChildren = !cursor.isNull(2) && cursor.getInt(2) > 0
+                        hasThreadChildren = !cursor.isNull(2) && cursor.getInt(2) > 0,
                     )
                 } else {
                     null
@@ -67,7 +67,7 @@ WHERE folder_id = ? AND uid = ?
             arrayOf(rootMessagePartId.toString()),
             null,
             null,
-            null
+            null,
         ).use { cursor ->
             while (cursor.moveToNext()) {
                 val messagePartId = cursor.getLong(0)
@@ -134,7 +134,7 @@ JOIN threads threads2 ON (threads1.parent = threads2.id)
 JOIN messages ON (threads2.message_id = messages.id AND messages.empty = 1) 
 WHERE threads1.message_id = ?
             """,
-            arrayOf(messageId.toString())
+            arrayOf(messageId.toString()),
         ).use { cursor ->
             if (cursor.moveToFirst() && !cursor.isNull(0)) {
                 cursor.getLong(0)
@@ -156,7 +156,7 @@ FROM threads threads1
 JOIN threads threads2 ON (threads2.parent = threads1.id) 
 WHERE threads1.message_id = ?
             """,
-            arrayOf(messageId.toString())
+            arrayOf(messageId.toString()),
         ).use { cursor ->
             cursor.moveToFirst() && !cursor.isNull(0) && cursor.getLong(0) > 0L
         }
@@ -166,5 +166,5 @@ WHERE threads1.message_id = ?
 private data class MessageData(
     val messageId: Long,
     val messagePartId: Long,
-    val hasThreadChildren: Boolean
+    val hasThreadChildren: Boolean,
 )

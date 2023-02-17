@@ -10,7 +10,7 @@ internal class SingleMessageNotificationDataCreator {
         notificationId: Int,
         content: NotificationContent,
         timestamp: Long,
-        addLockScreenNotification: Boolean
+        addLockScreenNotification: Boolean,
     ): SingleNotificationData {
         return SingleNotificationData(
             notificationId = notificationId,
@@ -19,14 +19,14 @@ internal class SingleMessageNotificationDataCreator {
             content = content,
             actions = createSingleNotificationActions(),
             wearActions = createSingleNotificationWearActions(account),
-            addLockScreenNotification = addLockScreenNotification
+            addLockScreenNotification = addLockScreenNotification,
         )
     }
 
     fun createSummarySingleNotificationData(
         data: NotificationData,
         timestamp: Long,
-        silent: Boolean
+        silent: Boolean,
     ): SummarySingleNotificationData {
         return SummarySingleNotificationData(
             SingleNotificationData(
@@ -36,8 +36,8 @@ internal class SingleMessageNotificationDataCreator {
                 content = data.activeNotifications.first().content,
                 actions = createSingleNotificationActions(),
                 wearActions = createSingleNotificationWearActions(data.account),
-                addLockScreenNotification = false
-            )
+                addLockScreenNotification = false,
+            ),
         )
     }
 

@@ -9,7 +9,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 200,
             enhancedStatusCode = null,
-            texts = emptyList()
+            texts = emptyList(),
         )
 
         val output = response.toLogString(omitText = false, linePrefix = "SMTP <<< ")
@@ -22,7 +22,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 200,
             enhancedStatusCode = null,
-            texts = emptyList()
+            texts = emptyList(),
         )
 
         val output = response.toLogString(omitText = true, linePrefix = "SMTP <<< ")
@@ -35,7 +35,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 200,
             enhancedStatusCode = null,
-            texts = listOf("OK")
+            texts = listOf("OK"),
         )
 
         val output = response.toLogString(omitText = false, linePrefix = "SMTP <<< ")
@@ -48,7 +48,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 250,
             enhancedStatusCode = null,
-            texts = listOf("Sender <sender@domain.example> OK")
+            texts = listOf("Sender <sender@domain.example> OK"),
         )
 
         val output = response.toLogString(omitText = true, linePrefix = "SMTP <<< ")
@@ -61,7 +61,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 200,
             enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
-            texts = emptyList()
+            texts = emptyList(),
         )
 
         val output = response.toLogString(omitText = false, linePrefix = "SMTP <<< ")
@@ -74,7 +74,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 200,
             enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
-            texts = emptyList()
+            texts = emptyList(),
         )
 
         val output = response.toLogString(omitText = true, linePrefix = "SMTP <<< ")
@@ -87,7 +87,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 200,
             enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
-            texts = listOf("OK")
+            texts = listOf("OK"),
         )
 
         val output = response.toLogString(omitText = false, linePrefix = "SMTP <<< ")
@@ -100,7 +100,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 200,
             enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 0, detail = 0),
-            texts = listOf("OK")
+            texts = listOf("OK"),
         )
 
         val output = response.toLogString(omitText = true, linePrefix = "SMTP <<< ")
@@ -113,7 +113,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 250,
             enhancedStatusCode = null,
-            texts = listOf("Sender <sender@domain.example>", "OK")
+            texts = listOf("Sender <sender@domain.example>", "OK"),
         )
 
         val output = response.toLogString(omitText = false, linePrefix = "SMTP <<< ")
@@ -122,7 +122,7 @@ class SmtpResponseTest {
             """
             SMTP <<< 250-Sender <sender@domain.example>
             SMTP <<< 250 OK
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 
@@ -131,7 +131,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 250,
             enhancedStatusCode = null,
-            texts = listOf("Sender <sender@domain.example>", "OK")
+            texts = listOf("Sender <sender@domain.example>", "OK"),
         )
 
         val output = response.toLogString(omitText = true, linePrefix = "SMTP <<< ")
@@ -144,7 +144,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 250,
             enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0),
-            texts = listOf("Sender <sender@domain.example>", "OK")
+            texts = listOf("Sender <sender@domain.example>", "OK"),
         )
 
         val output = response.toLogString(omitText = false, linePrefix = "SMTP <<< ")
@@ -153,7 +153,7 @@ class SmtpResponseTest {
             """
             SMTP <<< 250-2.1.0 Sender <sender@domain.example>
             SMTP <<< 250 2.1.0 OK
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 
@@ -162,7 +162,7 @@ class SmtpResponseTest {
         val response = SmtpResponse(
             replyCode = 250,
             enhancedStatusCode = EnhancedStatusCode(statusClass = StatusCodeClass.SUCCESS, subject = 1, detail = 0),
-            texts = listOf("Sender <sender@domain.example>", "OK")
+            texts = listOf("Sender <sender@domain.example>", "OK"),
         )
 
         val output = response.toLogString(omitText = true, linePrefix = "SMTP <<< ")

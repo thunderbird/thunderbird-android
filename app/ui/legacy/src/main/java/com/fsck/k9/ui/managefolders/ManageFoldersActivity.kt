@@ -29,7 +29,7 @@ class ManageFoldersActivity : K9Activity() {
         navController = findNavController(R.id.nav_host_fragment)
 
         val fragmentArguments = bundleOf(
-            ManageFoldersFragment.EXTRA_ACCOUNT to accountUuid
+            ManageFoldersFragment.EXTRA_ACCOUNT to accountUuid,
         )
         navController.setGraph(R.navigation.navigation_manage_folders, fragmentArguments)
 

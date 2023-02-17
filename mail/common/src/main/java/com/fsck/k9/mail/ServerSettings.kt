@@ -12,7 +12,7 @@ data class ServerSettings @JvmOverloads constructor(
     @JvmField val username: String,
     @JvmField val password: String?,
     @JvmField val clientCertificateAlias: String?,
-    val extra: Map<String, String?> = emptyMap()
+    val extra: Map<String, String?> = emptyMap(),
 ) {
     val isMissingCredentials: Boolean = when (authenticationType) {
         AuthType.EXTERNAL -> clientCertificateAlias == null

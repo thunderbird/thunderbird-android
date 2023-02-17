@@ -20,7 +20,7 @@ interface ImapFolderIdler {
             wakeLock: WakeLock,
             imapStore: ImapStore,
             folderServerId: String,
-            idleRefreshTimeoutProvider: IdleRefreshTimeoutProvider
+            idleRefreshTimeoutProvider: IdleRefreshTimeoutProvider,
         ): ImapFolderIdler {
             return RealImapFolderIdler(
                 idleRefreshManager,
@@ -28,7 +28,7 @@ interface ImapFolderIdler {
                 imapStore,
                 connectionProvider,
                 folderServerId,
-                idleRefreshTimeoutProvider
+                idleRefreshTimeoutProvider,
             )
         }
     }
@@ -37,5 +37,5 @@ interface ImapFolderIdler {
 enum class IdleResult {
     SYNC,
     STOPPED,
-    NOT_SUPPORTED
+    NOT_SUPPORTED,
 }

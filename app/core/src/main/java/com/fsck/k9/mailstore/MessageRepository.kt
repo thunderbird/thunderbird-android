@@ -32,7 +32,7 @@ class MessageRepository(private val messageStoreManager: MessageStoreManager) {
             replyTo = replyToAddresses,
             to = toAddresses,
             cc = ccAddresses,
-            bcc = bccAddresses
+            bcc = bccAddresses,
         )
     }
 
@@ -63,7 +63,7 @@ class MessageRepository(private val messageStoreManager: MessageStoreManager) {
             "reply-to",
             "to",
             "cc",
-            "bcc"
+            "bcc",
         )
     }
 }

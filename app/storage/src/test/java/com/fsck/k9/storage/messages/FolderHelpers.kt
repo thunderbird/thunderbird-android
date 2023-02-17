@@ -23,7 +23,7 @@ fun SQLiteDatabase.createFolder(
     visibleLimit: Int = 25,
     status: String? = null,
     flaggedCount: Int = 0,
-    moreMessages: String = "unknown"
+    moreMessages: String = "unknown",
 ): Long {
     val values = ContentValues().apply {
         put("name", name)
@@ -68,7 +68,7 @@ fun SQLiteDatabase.readFolders(): List<FolderEntry> {
                 visibleLimit = cursor.getIntOrNull("visible_limit"),
                 status = cursor.getStringOrNull("status"),
                 flaggedCount = cursor.getIntOrNull("flagged_count"),
-                moreMessages = cursor.getStringOrNull("more_messages")
+                moreMessages = cursor.getStringOrNull("more_messages"),
             )
         }
     }
@@ -91,5 +91,5 @@ data class FolderEntry(
     val visibleLimit: Int?,
     val status: String?,
     val flaggedCount: Int?,
-    val moreMessages: String?
+    val moreMessages: String?,
 )

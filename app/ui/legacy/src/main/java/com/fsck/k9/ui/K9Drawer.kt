@@ -51,7 +51,6 @@ import com.mikepenz.materialdrawer.util.getDrawerItem
 import com.mikepenz.materialdrawer.util.removeAllItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
-import java.util.ArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -141,19 +140,21 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun initializeImageLoader() {
-        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
-            override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
-                val email = uri.getQueryParameter(QUERY_EMAIL) ?: error("Missing '$QUERY_EMAIL' parameter in $uri")
-                val color = uri.getQueryParameter(QUERY_COLOR)?.toInt()
-                    ?: error("Missing '$QUERY_COLOR' parameter in $uri")
+        DrawerImageLoader.init(
+            object : AbstractDrawerImageLoader() {
+                override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
+                    val email = uri.getQueryParameter(QUERY_EMAIL) ?: error("Missing '$QUERY_EMAIL' parameter in $uri")
+                    val color = uri.getQueryParameter(QUERY_COLOR)?.toInt()
+                        ?: error("Missing '$QUERY_COLOR' parameter in $uri")
 
-                accountImageLoader.setAccountImage(imageView, email, color)
-            }
+                    accountImageLoader.setAccountImage(imageView, email, color)
+                }
 
-            override fun cancel(imageView: ImageView) {
-                accountImageLoader.cancel(imageView)
-            }
-        }).apply {
+                override fun cancel(imageView: ImageView) {
+                    accountImageLoader.cancel(imageView)
+                }
+            },
+        ).apply {
             handledProtocols = listOf(INTERNAL_URI_SCHEME)
         }
     }
@@ -275,7 +276,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 iconRes = folderIconProvider.iconFolderResId
                 identifier = DRAWER_ID_FOLDERS
                 isSelectable = false
-            }
+            },
         )
 
         sliderView.addStickyFooterItem(
@@ -284,7 +285,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 iconRes = getResId(R.attr.iconActionSettings)
                 identifier = DRAWER_ID_PREFERENCES
                 isSelectable = false
-            }
+            },
         )
     }
 
@@ -322,7 +323,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                             swipeRefreshLayout.isRefreshing = false
                         }
                     }
-                }
+                },
             )
         }
     }
@@ -454,7 +455,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private data class DrawerColors(
         val accentColor: Int,
-        val selectedColor: Int
+        val selectedColor: Int,
     )
 
     private fun getDrawerColorsForAccount(account: Account): DrawerColors {
@@ -465,7 +466,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
         return DrawerColors(
             accentColor = baseColor,
-            selectedColor = baseColor.and(0xffffff).or(0x22000000)
+            selectedColor = baseColor.and(0xffffff).or(0x22000000),
         )
     }
 
@@ -503,12 +504,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun Int.toSelectedColorStateList(): ColorStateList {
         val states = arrayOf(
             intArrayOf(android.R.attr.state_selected),
-            intArrayOf()
+            intArrayOf(),
         )
 
         val colors = intArrayOf(
             this,
-            textColor
+            textColor,
         )
 
         return ColorStateList(states, colors)
@@ -543,9 +544,10 @@ private fun Context.obtainDrawerTextColor(): Int {
         null,
         MaterialDrawerR.styleable.MaterialDrawerSliderView,
         MaterialDrawerR.attr.materialDrawerStyle,
-        MaterialDrawerR.style.Widget_MaterialDrawerStyle
+        MaterialDrawerR.style.Widget_MaterialDrawerStyle,
     )
-    val textColor = styledAttributes.getColor(MaterialDrawerR.styleable.MaterialDrawerSliderView_materialDrawerPrimaryText, 0)
+    val textColor =
+        styledAttributes.getColor(MaterialDrawerR.styleable.MaterialDrawerSliderView_materialDrawerPrimaryText, 0)
     styledAttributes.recycle()
 
     return textColor

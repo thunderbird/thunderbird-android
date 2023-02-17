@@ -11,7 +11,7 @@ class NotificationController internal constructor(
     private val authenticationErrorNotificationController: AuthenticationErrorNotificationController,
     private val syncNotificationController: SyncNotificationController,
     private val sendFailedNotificationController: SendFailedNotificationController,
-    private val newMailNotificationController: NewMailNotificationController
+    private val newMailNotificationController: NewMailNotificationController,
 ) {
     fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
         certificateErrorNotificationController.showCertificateErrorNotification(account, incoming)
@@ -66,7 +66,7 @@ class NotificationController internal constructor(
             "Creating notification for message %s:%s:%s",
             message.account.uuid,
             message.folder.databaseId,
-            message.uid
+            message.uid,
         )
 
         newMailNotificationController.addNewMailNotification(account, message, silent)

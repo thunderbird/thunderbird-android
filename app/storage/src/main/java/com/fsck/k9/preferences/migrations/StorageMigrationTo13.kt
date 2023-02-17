@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
  */
 class StorageMigrationTo13(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper
+    private val migrationsHelper: StorageMigrationsHelper,
 ) {
     fun renameHideSpecialAccounts() {
         val hideSpecialAccounts = migrationsHelper.readValue(db, "hideSpecialAccounts")?.toBoolean() ?: false

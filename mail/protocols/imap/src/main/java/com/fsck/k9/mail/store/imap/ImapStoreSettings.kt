@@ -21,7 +21,7 @@ object ImapStoreSettings {
     fun createExtra(autoDetectNamespace: Boolean, pathPrefix: String?): Map<String, String?> {
         return mapOf(
             AUTODETECT_NAMESPACE_KEY to autoDetectNamespace.toString(),
-            PATH_PREFIX_KEY to pathPrefix
+            PATH_PREFIX_KEY to pathPrefix,
         )
     }
 }

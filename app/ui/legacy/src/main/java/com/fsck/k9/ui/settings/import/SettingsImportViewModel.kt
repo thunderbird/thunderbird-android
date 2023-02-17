@@ -27,7 +27,7 @@ private typealias AccountNumber = Int
 
 class SettingsImportViewModel(
     private val context: Context,
-    private val accountActivator: AccountActivator
+    private val accountActivator: AccountActivator,
 ) : ViewModel() {
     private val uiModelLiveData = MutableLiveData<SettingsImportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
@@ -91,7 +91,7 @@ class SettingsImportViewModel(
                 val includeGeneralSettings = savedInstanceState.getBoolean(STATE_INCLUDE_GENERAL_SETTINGS)
                 val generalSettingsImportState = savedInstanceState.getEnum(
                     STATE_GENERAL_SETTINGS_IMPORT_STATUS,
-                    ImportStatus.NOT_AVAILABLE
+                    ImportStatus.NOT_AVAILABLE,
                 )
 
                 SettingsListItem.GeneralSettings().apply {
@@ -111,7 +111,7 @@ class SettingsImportViewModel(
                     saved.incomingServerName,
                     saved.outgoingServerName,
                     saved.incomingServerPasswordNeeded,
-                    saved.outgoingServerPasswordNeeded
+                    saved.outgoingServerPasswordNeeded,
                 )
             }
 
@@ -328,7 +328,7 @@ class SettingsImportViewModel(
 
     private fun SettingsImportUiModel.setGeneralSettingsImportStatus(
         importResults: ImportResults,
-        importGeneralSettings: Boolean
+        importGeneralSettings: Boolean,
     ) {
         val importStatus = when {
             importResults.globalSettings -> ImportStatus.IMPORT_SUCCESS
@@ -361,7 +361,7 @@ class SettingsImportViewModel(
                             accountPair.incomingServerName,
                             accountPair.outgoingServerName,
                             accountPair.incomingPasswordNeeded,
-                            accountPair.outgoingPasswordNeeded
+                            accountPair.outgoingPasswordNeeded,
                         )
 
                         setSettingsListState(index, ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED)
@@ -408,8 +408,8 @@ class SettingsImportViewModel(
                 accountState.incomingServerPasswordNeeded,
                 accountState.incomingServerName,
                 accountState.outgoingServerPasswordNeeded,
-                accountState.outgoingServerName
-            )
+                accountState.outgoingServerName,
+            ),
         )
     }
 
@@ -438,7 +438,7 @@ class SettingsImportViewModel(
                     incomingServerName = accountState?.incomingServerName,
                     outgoingServerName = accountState?.outgoingServerName,
                     incomingServerPasswordNeeded = accountState?.incomingServerPasswordNeeded ?: false,
-                    outgoingServerPasswordNeeded = accountState?.outgoingServerPasswordNeeded ?: false
+                    outgoingServerPasswordNeeded = accountState?.outgoingServerPasswordNeeded ?: false,
                 )
             }
             .toCollection(ArrayList(uiModel.settingsList.size - 1))
@@ -476,7 +476,7 @@ sealed class Action {
         val inputIncomingServerPassword: Boolean,
         val incomingServerName: String?,
         val inputOutgoingServerPassword: Boolean,
-        val outgoingServerName: String?
+        val outgoingServerName: String?,
     ) : Action()
 }
 
@@ -484,7 +484,7 @@ private class AccountState(
     val incomingServerName: String?,
     val outgoingServerName: String?,
     val incomingServerPasswordNeeded: Boolean,
-    val outgoingServerPasswordNeeded: Boolean
+    val outgoingServerPasswordNeeded: Boolean,
 )
 
 @Parcelize
@@ -497,5 +497,5 @@ private class SavedAccountState(
     val incomingServerName: String?,
     val outgoingServerName: String?,
     val incomingServerPasswordNeeded: Boolean,
-    val outgoingServerPasswordNeeded: Boolean
+    val outgoingServerPasswordNeeded: Boolean,
 ) : Parcelable

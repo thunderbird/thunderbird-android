@@ -18,7 +18,8 @@ class AutocryptDraftStateHeaderParserTest : RobolectricTest() {
 
     @Test
     fun testSignOnly() {
-        val parsedHeader = autocryptHeaderParser.parseAutocryptDraftStateHeader("encrypt=no; _by-choice=yes; _sign-only=yes")
+        val parsedHeader =
+            autocryptHeaderParser.parseAutocryptDraftStateHeader("encrypt=no; _by-choice=yes; _sign-only=yes")
 
         with(parsedHeader!!) {
             assertThat(isEncrypt).isFalse()
@@ -38,7 +39,8 @@ class AutocryptDraftStateHeaderParserTest : RobolectricTest() {
 
     @Test
     fun missingEncrypt() {
-        val parsedHeader = autocryptHeaderParser.parseAutocryptDraftStateHeader("encrpt-with-typo=no; _non_critical=value")
+        val parsedHeader =
+            autocryptHeaderParser.parseAutocryptDraftStateHeader("encrpt-with-typo=no; _non_critical=value")
 
         assertThat(parsedHeader).isNull()
     }

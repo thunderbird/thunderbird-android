@@ -16,7 +16,7 @@ import org.robolectric.annotation.Config
 
 @Config(
     qualifiers = "en",
-    sdk = [Build.VERSION_CODES.S]
+    sdk = [Build.VERSION_CODES.S],
 )
 class RelativeDateTimeFormatterTest : RobolectricTest() {
 

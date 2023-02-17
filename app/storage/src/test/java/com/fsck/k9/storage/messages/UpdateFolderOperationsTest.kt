@@ -35,7 +35,7 @@ class UpdateFolderOperationsTest : RobolectricTest() {
             displayClass = "NO_CLASS",
             syncClass = "NO_CLASS",
             notifyClass = "NO_CLASS",
-            pushClass = "NO_CLASS"
+            pushClass = "NO_CLASS",
         )
 
         updateFolderOperations.updateFolderSettings(
@@ -44,15 +44,15 @@ class UpdateFolderOperationsTest : RobolectricTest() {
                     id = folderId,
                     name = "irrelevant",
                     type = FolderType.REGULAR,
-                    isLocalOnly = false
+                    isLocalOnly = false,
                 ),
                 isInTopGroup = true,
                 isIntegrate = true,
                 displayClass = FolderClass.FIRST_CLASS,
                 syncClass = FolderClass.FIRST_CLASS,
                 notifyClass = FolderClass.FIRST_CLASS,
-                pushClass = FolderClass.FIRST_CLASS
-            )
+                pushClass = FolderClass.FIRST_CLASS,
+            ),
         )
 
         val folder = sqliteDatabase.readFolders().first()

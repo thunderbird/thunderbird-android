@@ -26,7 +26,7 @@ class SettingsExporter(
     private val preferences: Preferences,
     private val folderSettingsProvider: FolderSettingsProvider,
     private val folderRepository: FolderRepository,
-    private val notificationSettingsUpdater: NotificationSettingsUpdater
+    private val notificationSettingsUpdater: NotificationSettingsUpdater,
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
@@ -106,7 +106,7 @@ class SettingsExporter(
                     Timber.w(
                         "Global setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
                         key,
-                        valueString
+                        valueString,
                     )
                 }
             } else {
@@ -257,7 +257,7 @@ class SettingsExporter(
         serializer: XmlSerializer,
         keyPart: String,
         valueString: String,
-        account: Account
+        account: Account,
     ) {
         val versionedSetting = AccountSettingsDescriptions.SETTINGS[keyPart]
         if (versionedSetting != null) {
@@ -274,7 +274,7 @@ class SettingsExporter(
                             "This shouldn't happen!",
                         keyPart,
                         account,
-                        valueString
+                        valueString,
                     )
                 }
             }
@@ -284,13 +284,13 @@ class SettingsExporter(
     private fun writeFolderNameSettings(
         account: Account,
         folderRepository: FolderRepository,
-        serializer: XmlSerializer
+        serializer: XmlSerializer,
     ) {
         fun writeFolderNameSetting(
             key: String,
             folderId: Long?,
             importedFolderServerId: String?,
-            writeEmptyValue: Boolean = false
+            writeEmptyValue: Boolean = false,
         ) {
             val folderServerId = folderId?.let {
                 folderRepository.getFolderServerId(account, folderId)
@@ -307,7 +307,7 @@ class SettingsExporter(
             "autoExpandFolderName",
             account.autoExpandFolderId,
             account.importedAutoExpandFolder,
-            writeEmptyValue = true
+            writeEmptyValue = true,
         )
         writeFolderNameSetting("archiveFolderName", account.archiveFolderId, account.importedArchiveFolder)
         writeFolderNameSetting("draftsFolderName", account.draftsFolderId, account.importedDraftsFolder)
@@ -320,7 +320,7 @@ class SettingsExporter(
         serializer: XmlSerializer,
         accountUuid: String,
         identity: String,
-        prefs: Map<String, Any>
+        prefs: Map<String, Any>,
     ) {
         serializer.startTag(null, IDENTITY_ELEMENT)
 
@@ -379,7 +379,7 @@ class SettingsExporter(
                             "Identity setting \"%s\" has invalid value \"%s\" in preference storage. " +
                                 "This shouldn't happen!",
                             identityKey,
-                            valueString
+                            valueString,
                         )
                     }
                 }
@@ -418,7 +418,7 @@ class SettingsExporter(
                     Timber.w(
                         "Folder setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
                         key,
-                        value
+                        value,
                     )
                 }
             }
@@ -437,7 +437,7 @@ class SettingsExporter(
         serializer: XmlSerializer,
         key: String,
         setting: SettingsDescription<T>,
-        valueString: String
+        valueString: String,
     ) {
         val value = setting.fromString(valueString)
         val outputValue = setting.toPrettyString(value)
@@ -447,7 +447,7 @@ class SettingsExporter(
     private fun <T> writeKeyAndDefaultValueFromSetting(
         serializer: XmlSerializer,
         key: String,
-        setting: SettingsDescription<T>
+        setting: SettingsDescription<T>,
     ) {
         val value = setting.getDefaultValue()
         val outputValue = setting.toPrettyString(value)
@@ -518,7 +518,7 @@ class SettingsExporter(
             "draftsFolderName",
             "sentFolderName",
             "spamFolderName",
-            "trashFolderName"
+            "trashFolderName",
         )
     }
 }

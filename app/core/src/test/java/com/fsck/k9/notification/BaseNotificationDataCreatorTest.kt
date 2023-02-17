@@ -155,8 +155,8 @@ class BaseNotificationDataCreatorTest {
                 vibration = NotificationVibration(
                     isEnabled = true,
                     pattern = VibratePattern.Pattern3,
-                    repeatCount = 2
-                )
+                    repeatCount = 2,
+                ),
             )
         }
         val notificationData = createNotificationData()
@@ -164,7 +164,7 @@ class BaseNotificationDataCreatorTest {
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
         assertThat(result.appearance.vibrationPattern).isEqualTo(
-            NotificationVibration.getSystemPattern(VibratePattern.Pattern3, 2)
+            NotificationVibration.getSystemPattern(VibratePattern.Pattern3, 2),
         )
     }
 
@@ -192,8 +192,8 @@ class BaseNotificationDataCreatorTest {
                     sender = sender,
                     preview = "irrelevant",
                     summary = "irrelevant",
-                    subject = "irrelevant"
-                )
+                    subject = "irrelevant",
+                ),
             )
         }
         return NotificationData(account, activeNotifications, inactiveNotifications = emptyList())

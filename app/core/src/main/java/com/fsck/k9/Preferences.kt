@@ -8,7 +8,6 @@ import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import com.fsck.k9.preferences.StoragePersister
-import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArraySet
@@ -28,7 +27,7 @@ class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
     private val accountPreferenceSerializer: AccountPreferenceSerializer,
-    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountManager {
     private val accountLock = Any()
     private val storageLock = Any()

@@ -18,9 +18,9 @@ constructor(
     defStyleAttr: Int = TypedArrayUtils.getAttr(
         context,
         androidx.preference.R.attr.preferenceStyle,
-        android.R.attr.preferenceStyle
+        android.R.attr.preferenceStyle,
     ),
-    defStyleRes: Int = 0
+    defStyleRes: Int = 0,
 ) : DialogPreference(context, attrs, defStyleAttr, defStyleRes) {
 
     internal var isPreferEncryptEnabled: Boolean = false
@@ -62,7 +62,7 @@ constructor(
         init {
             PreferenceFragmentCompat.registerPreferenceFragment(
                 AutocryptPreferEncryptPreference::class.java,
-                AutocryptPreferEncryptDialogFragment::class.java
+                AutocryptPreferEncryptDialogFragment::class.java,
             )
         }
     }

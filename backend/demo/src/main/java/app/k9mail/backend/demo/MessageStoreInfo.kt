@@ -9,5 +9,5 @@ typealias MessageStoreInfo = Map<String, FolderData>
 data class FolderData(
     val name: String,
     val type: FolderType,
-    val messageServerIds: List<String>
+    val messageServerIds: List<String>,
 )

@@ -80,7 +80,7 @@ class EditIdentity : K9Activity() {
             name = name.text.toString(),
             signatureUse = signatureUse.isChecked,
             signature = signature.text.toString(),
-            replyTo = if (replyTo.text.isNotEmpty()) replyTo.text.toString() else null
+            replyTo = if (replyTo.text.isNotEmpty()) replyTo.text.toString() else null,
         )
 
         val identities = account.identities

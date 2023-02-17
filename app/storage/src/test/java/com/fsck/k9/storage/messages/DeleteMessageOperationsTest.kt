@@ -34,19 +34,19 @@ class DeleteMessageOperationsTest : RobolectricTest() {
             folderId = folderId,
             uid = "empty1",
             empty = true,
-            messageIdHeader = "msg001@domain.example"
+            messageIdHeader = "msg001@domain.example",
         )
         val messageId2 = sqliteDatabase.createMessage(
             folderId = folderId,
             uid = "empty2",
             empty = true,
-            messageIdHeader = "msg002@domain.example"
+            messageIdHeader = "msg002@domain.example",
         )
         val messageId3 = sqliteDatabase.createMessage(
             folderId = folderId,
             uid = "delete",
             empty = false,
-            messageIdHeader = "msg003@domain.example"
+            messageIdHeader = "msg003@domain.example",
         )
         val threadId1 = sqliteDatabase.createThread(messageId = messageId1)
         val threadId2 = sqliteDatabase.createThread(messageId = messageId2, root = threadId1, parent = threadId1)
@@ -65,19 +65,19 @@ class DeleteMessageOperationsTest : RobolectricTest() {
             folderId = folderId,
             uid = "empty",
             empty = true,
-            messageIdHeader = "msg001@domain.example"
+            messageIdHeader = "msg001@domain.example",
         )
         val messageId2 = sqliteDatabase.createMessage(
             folderId = folderId,
             uid = "child1",
             empty = false,
-            messageIdHeader = "msg002@domain.example"
+            messageIdHeader = "msg002@domain.example",
         )
         val messageId3 = sqliteDatabase.createMessage(
             folderId = folderId,
             uid = "delete",
             empty = false,
-            messageIdHeader = "msg003@domain.example"
+            messageIdHeader = "msg003@domain.example",
         )
         val threadId1 = sqliteDatabase.createThread(messageId = messageId1)
         val threadId2 = sqliteDatabase.createThread(messageId = messageId2, root = threadId1, parent = threadId1)
@@ -101,13 +101,13 @@ class DeleteMessageOperationsTest : RobolectricTest() {
             folderId = folderId,
             uid = "parent",
             empty = false,
-            messageIdHeader = "msg001@domain.example"
+            messageIdHeader = "msg001@domain.example",
         )
         val messageId2 = sqliteDatabase.createMessage(
             folderId = folderId,
             uid = "delete",
             empty = false,
-            messageIdHeader = "msg002@domain.example"
+            messageIdHeader = "msg002@domain.example",
         )
         val threadId1 = sqliteDatabase.createThread(messageId = messageId1)
         sqliteDatabase.createThread(messageId = messageId2, root = threadId1, parent = threadId1)
@@ -130,7 +130,7 @@ class DeleteMessageOperationsTest : RobolectricTest() {
             folderId = folderId,
             uid = "delete",
             empty = false,
-            messageIdHeader = "msg001@domain.example"
+            messageIdHeader = "msg001@domain.example",
         )
         sqliteDatabase.createThread(messageId = messageId1)
 
@@ -147,13 +147,13 @@ class DeleteMessageOperationsTest : RobolectricTest() {
             folderId = folderId,
             uid = "delete",
             empty = false,
-            messageIdHeader = "msg001@domain.example"
+            messageIdHeader = "msg001@domain.example",
         )
         val messageId2 = sqliteDatabase.createMessage(
             folderId = folderId,
             uid = "child",
             empty = false,
-            messageIdHeader = "msg002@domain.example"
+            messageIdHeader = "msg002@domain.example",
         )
         val threadId1 = sqliteDatabase.createThread(messageId = messageId1)
         val threadId2 = sqliteDatabase.createThread(messageId = messageId2, root = threadId1, parent = threadId1)

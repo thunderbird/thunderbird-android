@@ -12,7 +12,7 @@ import com.fsck.k9.ui.base.AppLanguageManager
 class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,
     private val appLanguageManager: AppLanguageManager,
-    private val generalSettingsManager: GeneralSettingsManager
+    private val generalSettingsManager: GeneralSettingsManager,
 ) : PreferenceDataStore() {
 
     private var skipSaveSettings = false

@@ -48,7 +48,7 @@ internal open class TestImapConnection(val timeout: Long, override val connectio
     override fun executeCommandWithIdSet(
         commandPrefix: String,
         commandSuffix: String,
-        ids: Set<Long>
+        ids: Set<Long>,
     ): List<ImapResponse> {
         throw UnsupportedOperationException("not implemented")
     }

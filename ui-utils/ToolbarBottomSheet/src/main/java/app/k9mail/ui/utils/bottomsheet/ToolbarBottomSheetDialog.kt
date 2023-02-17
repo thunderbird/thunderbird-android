@@ -257,7 +257,7 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
 
                     return super.performAccessibilityAction(host, action, args)
                 }
-            }
+            },
         )
 
         bottomSheet.setOnTouchListener { _, _ ->
@@ -303,7 +303,7 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
         private val windowInsetsController: WindowInsetsControllerCompat,
         private val toolbar: Toolbar,
         private val topInset: Int,
-        private val behavior: BottomSheetBehavior<FrameLayout>
+        private val behavior: BottomSheetBehavior<FrameLayout>,
     ) : LayoutAwareBottomSheetCallback() {
 
         private val lightStatusBar: Boolean = windowInsetsController.isAppearanceLightStatusBars
@@ -409,7 +409,7 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
             val wasAttributeResolved = context.theme.resolveAttribute(
                 com.google.android.material.R.attr.bottomSheetDialogTheme,
                 outValue,
-                true
+                true,
             )
 
             return if (wasAttributeResolved) {

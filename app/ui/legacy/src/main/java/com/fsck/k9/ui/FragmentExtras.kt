@@ -14,7 +14,7 @@ inline fun FragmentActivity.fragmentTransaction(crossinline block: FragmentTrans
 
 inline fun FragmentActivity.fragmentTransactionWithBackStack(
     name: String? = null,
-    crossinline block: FragmentTransaction.() -> Unit
+    crossinline block: FragmentTransaction.() -> Unit,
 ) {
     fragmentTransaction {
         block()

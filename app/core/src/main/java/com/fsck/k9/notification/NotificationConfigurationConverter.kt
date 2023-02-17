@@ -8,25 +8,25 @@ import com.fsck.k9.NotificationSettings
  */
 class NotificationConfigurationConverter(
     private val notificationLightDecoder: NotificationLightDecoder,
-    private val notificationVibrationDecoder: NotificationVibrationDecoder
+    private val notificationVibrationDecoder: NotificationVibrationDecoder,
 ) {
     fun convert(account: Account, notificationConfiguration: NotificationConfiguration): NotificationSettings {
         val light = notificationLightDecoder.decode(
             isBlinkLightsEnabled = notificationConfiguration.isBlinkLightsEnabled,
             lightColor = notificationConfiguration.lightColor,
-            accountColor = account.chipColor
+            accountColor = account.chipColor,
         )
 
         val vibration = notificationVibrationDecoder.decode(
             isVibrationEnabled = notificationConfiguration.isVibrationEnabled,
-            systemPattern = notificationConfiguration.vibrationPattern
+            systemPattern = notificationConfiguration.vibrationPattern,
         )
 
         return NotificationSettings(
             isRingEnabled = notificationConfiguration.sound != null,
             ringtone = notificationConfiguration.sound?.toString(),
             light = light,
-            vibration = vibration
+            vibration = vibration,
         )
     }
 }

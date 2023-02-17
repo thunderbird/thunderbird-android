@@ -9,7 +9,7 @@ import timber.log.Timber
 
 class SpecialLocalFoldersCreator(
     private val preferences: Preferences,
-    private val localStoreProvider: LocalStoreProvider
+    private val localStoreProvider: LocalStoreProvider,
 ) {
     // TODO: When rewriting the account setup code make sure this method is only called once. Until then this can be
     //  called multiple times and we have to make sure folders are only created once.

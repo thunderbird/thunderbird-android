@@ -30,7 +30,7 @@ class RealImapFolderIdlerTest {
         imapStore,
         imapStore,
         FOLDER_SERVER_ID,
-        idleRefreshTimeoutProvider
+        idleRefreshTimeoutProvider,
     )
 
     @Test

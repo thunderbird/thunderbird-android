@@ -60,7 +60,7 @@ class DeleteConfirmationActivity : K9Activity(ThemeType.DIALOG), ConfirmationDia
             getString(R.string.dialog_confirm_delete_title),
             message,
             getString(R.string.dialog_confirm_delete_confirm_button),
-            getString(R.string.dialog_confirm_delete_cancel_button)
+            getString(R.string.dialog_confirm_delete_cancel_button),
         )
     }
 

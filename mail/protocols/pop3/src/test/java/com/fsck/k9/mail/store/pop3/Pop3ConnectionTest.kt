@@ -360,7 +360,7 @@ class Pop3ConnectionTest {
 
     private fun createAndOpenPop3Connection(
         settings: Pop3Settings,
-        trustedSocketFactory: TrustedSocketFactory = socketFactory
+        trustedSocketFactory: TrustedSocketFactory = socketFactory,
     ) {
         val connection = Pop3Connection(settings, trustedSocketFactory)
         connection.open()
@@ -391,7 +391,7 @@ class Pop3ConnectionTest {
 
     private fun MockPop3Server.createSettings(
         authType: AuthType = LOGIN,
-        connectionSecurity: ConnectionSecurity = NONE
+        connectionSecurity: ConnectionSecurity = NONE,
     ): Pop3Settings {
         return SimplePop3Settings().apply {
             username = USERNAME

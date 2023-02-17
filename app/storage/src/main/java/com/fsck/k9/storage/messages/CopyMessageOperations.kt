@@ -13,7 +13,7 @@ import java.util.UUID
 internal class CopyMessageOperations(
     private val lockableDatabase: LockableDatabase,
     private val attachmentFileManager: AttachmentFileManager,
-    private val threadMessageOperations: ThreadMessageOperations
+    private val threadMessageOperations: ThreadMessageOperations,
 ) {
     fun copyMessage(messageId: Long, destinationFolderId: Long): Long {
         return lockableDatabase.execute(true) { database ->
@@ -28,14 +28,14 @@ internal class CopyMessageOperations(
     private fun copyMessage(
         database: SQLiteDatabase,
         messageId: Long,
-        destinationFolderId: Long
+        destinationFolderId: Long,
     ): Long {
         val rootMessagePart = copyMessageParts(database, messageId)
 
         val threadInfo = threadMessageOperations.doMessageThreading(
             database,
             folderId = destinationFolderId,
-            threadHeaders = threadMessageOperations.getMessageThreadHeaders(database, messageId)
+            threadHeaders = threadMessageOperations.getMessageThreadHeaders(database, messageId),
         )
 
         return if (threadInfo?.messageId != null) {
@@ -44,14 +44,14 @@ internal class CopyMessageOperations(
                 sourceMessageId = messageId,
                 destinationMessageId = threadInfo.messageId,
                 destinationFolderId,
-                rootMessagePart
+                rootMessagePart,
             )
         } else {
             val newMessageId = insertMessageRow(
                 database,
                 sourceMessageId = messageId,
                 destinationFolderId = destinationFolderId,
-                rootMessagePartId = rootMessagePart
+                rootMessagePartId = rootMessagePart,
             )
 
             if (threadInfo?.threadId == null) {
@@ -59,7 +59,7 @@ internal class CopyMessageOperations(
                     database,
                     newMessageId,
                     threadInfo?.rootId,
-                    threadInfo?.parentId
+                    threadInfo?.parentId,
                 )
             }
 
@@ -94,7 +94,7 @@ JOIN message_parts ON (message_parts.root = messages.message_part_id)
 WHERE messages.id = ? 
 ORDER BY message_parts.seq
             """,
-            arrayOf(messageId.toString())
+            arrayOf(messageId.toString()),
         ).use { cursor ->
             if (!cursor.moveToNext()) error("No message part found for message with ID $messageId")
 
@@ -104,7 +104,7 @@ ORDER BY message_parts.seq
                 database = database,
                 databaseMessagePart = rootMessagePart,
                 newRootId = null,
-                newParentId = -1
+                newParentId = -1,
             )
 
             val messagePartIdMapping = mutableMapOf<Long, Long>()
@@ -117,7 +117,7 @@ ORDER BY message_parts.seq
                     database = database,
                     databaseMessagePart = messagePart,
                     newRootId = rootMessagePartId,
-                    newParentId = messagePartIdMapping[messagePart.parent] ?: error("parent ID not found")
+                    newParentId = messagePartIdMapping[messagePart.parent] ?: error("parent ID not found"),
                 )
             }
 
@@ -129,7 +129,7 @@ ORDER BY message_parts.seq
         database: SQLiteDatabase,
         databaseMessagePart: DatabaseMessagePart,
         newRootId: Long?,
-        newParentId: Long
+        newParentId: Long,
     ): Long {
         val values = ContentValues().apply {
             put("type", databaseMessagePart.type)
@@ -165,7 +165,7 @@ ORDER BY message_parts.seq
         sourceMessageId: Long,
         destinationMessageId: Long,
         destinationFolderId: Long,
-        rootMessagePartId: Long
+        rootMessagePartId: Long,
     ): Long {
         val values = readMessageToContentValues(database, sourceMessageId, destinationFolderId, rootMessagePartId)
 
@@ -177,7 +177,7 @@ ORDER BY message_parts.seq
         database: SQLiteDatabase,
         sourceMessageId: Long,
         destinationFolderId: Long,
-        rootMessagePartId: Long
+        rootMessagePartId: Long,
     ): Long {
         val values = readMessageToContentValues(database, sourceMessageId, destinationFolderId, rootMessagePartId)
 
@@ -188,7 +188,7 @@ ORDER BY message_parts.seq
         database: SQLiteDatabase,
         sourceMessageId: Long,
         destinationFolderId: Long,
-        rootMessagePartId: Long
+        rootMessagePartId: Long,
     ): ContentValues {
         val values = readMessageToContentValues(database, sourceMessageId)
 
@@ -203,7 +203,7 @@ ORDER BY message_parts.seq
         database.execSQL(
             "INSERT OR REPLACE INTO messages_fulltext (docid, fulltext) " +
                 "SELECT ?, fulltext FROM messages_fulltext WHERE docid = ?",
-            arrayOf(newMessageId.toString(), messageId.toString())
+            arrayOf(newMessageId.toString(), messageId.toString()),
         )
     }
 
@@ -232,13 +232,13 @@ ORDER BY message_parts.seq
                 "flagged",
                 "answered",
                 "forwarded",
-                "encryption_type"
+                "encryption_type",
             ),
             "id = ?",
             arrayOf(messageId.toString()),
             null,
             null,
-            null
+            null,
         ).use { cursor ->
             if (!cursor.moveToNext()) error("Message with ID $messageId not found")
 
@@ -288,7 +288,7 @@ ORDER BY message_parts.seq
             epilogue = getBlobOrNull(14),
             boundary = getStringOrNull(15),
             contentId = getStringOrNull(16),
-            serverExtra = getStringOrNull(17)
+            serverExtra = getStringOrNull(17),
         )
     }
 }
@@ -311,5 +311,5 @@ private class DatabaseMessagePart(
     val epilogue: ByteArray?,
     val boundary: String?,
     val contentId: String?,
-    val serverExtra: String?
+    val serverExtra: String?,
 )

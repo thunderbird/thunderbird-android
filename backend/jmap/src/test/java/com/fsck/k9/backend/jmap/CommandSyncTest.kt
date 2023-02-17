@@ -32,7 +32,7 @@ class CommandSyncTest {
         syncRemoteDeletions = true,
         maximumAutoDownloadMessageSize = 1000,
         defaultVisibleLimit = 25,
-        syncFlags = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED)
+        syncFlags = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED),
     )
 
     @Before
@@ -44,7 +44,7 @@ class CommandSyncTest {
     @Test
     fun sessionResourceWithAuthenticationError() {
         val command = createCommandSync(
-            MockResponse().setResponseCode(401)
+            MockResponse().setResponseCode(401),
         )
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
@@ -61,7 +61,7 @@ class CommandSyncTest {
             responseBodyFromResource("/jmap_responses/email/email_query_M001_and_M002.json"),
             responseBodyFromResource("/jmap_responses/email/email_get_ids_M001_and_M002.json"),
             responseBodyFromResource("/jmap_responses/blob/email/email_1.eml"),
-            responseBodyFromResource("/jmap_responses/blob/email/email_2.eml")
+            responseBodyFromResource("/jmap_responses/blob/email/email_2.eml"),
         )
         val baseUrl = server.url("/jmap/")
         val command = createCommandSync(baseUrl)
@@ -71,14 +71,14 @@ class CommandSyncTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.assertMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
-            "M002" to "/jmap_responses/blob/email/email_2.eml"
+            "M002" to "/jmap_responses/blob/email/email_2.eml",
         )
         backendFolder.assertQueryState("50:0")
         syncListener.assertSyncEvents(
             SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID),
             SyncListenerEvent.SyncProgress(FOLDER_SERVER_ID, completed = 1, total = 2),
             SyncListenerEvent.SyncProgress(FOLDER_SERVER_ID, completed = 2, total = 2),
-            SyncListenerEvent.SyncFinished(FOLDER_SERVER_ID)
+            SyncListenerEvent.SyncFinished(FOLDER_SERVER_ID),
         )
         server.skipRequests(3)
         server.assertRequestUrlPath("/jmap/download/test%40example.com/B001/B001?accept=application%2Foctet-stream")
@@ -97,7 +97,7 @@ class CommandSyncTest {
             responseBodyFromResource("/jmap_responses/blob/email/email_2.eml"),
             responseBodyFromResource("/jmap_responses/blob/email/email_3.eml"),
             responseBodyFromResource("/jmap_responses/blob/email/email_3.eml"),
-            responseBodyFromResource("/jmap_responses/blob/email/email_3.eml")
+            responseBodyFromResource("/jmap_responses/blob/email/email_3.eml"),
         )
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
@@ -112,21 +112,21 @@ class CommandSyncTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
-            "M002" to "/jmap_responses/blob/email/email_2.eml"
+            "M002" to "/jmap_responses/blob/email/email_2.eml",
         )
         val command = createCommandSync(
             responseBodyFromResource("/jmap_responses/session/valid_session.json"),
             responseBodyFromResource("/jmap_responses/email/email_query_M002_and_M003.json"),
             responseBodyFromResource("/jmap_responses/email/email_get_ids_M003.json"),
             responseBodyFromResource("/jmap_responses/blob/email/email_3.eml"),
-            responseBodyFromResource("/jmap_responses/email/email_get_keywords_M002.json")
+            responseBodyFromResource("/jmap_responses/email/email_get_keywords_M002.json"),
         )
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
         backendFolder.assertMessages(
             "M002" to "/jmap_responses/blob/email/email_2.eml",
-            "M003" to "/jmap_responses/blob/email/email_3.eml"
+            "M003" to "/jmap_responses/blob/email/email_3.eml",
         )
         syncListener.assertSyncSuccess()
     }
@@ -136,11 +136,11 @@ class CommandSyncTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
-            "M002" to "/jmap_responses/blob/email/email_2.eml"
+            "M002" to "/jmap_responses/blob/email/email_2.eml",
         )
         val command = createCommandSync(
             responseBodyFromResource("/jmap_responses/session/valid_session.json"),
-            responseBodyFromResource("/jmap_responses/email/email_query_empty_result.json")
+            responseBodyFromResource("/jmap_responses/email/email_query_empty_result.json"),
         )
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
@@ -148,7 +148,7 @@ class CommandSyncTest {
         assertEquals(emptySet<String>(), backendFolder.getMessageServerIds())
         syncListener.assertSyncEvents(
             SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID),
-            SyncListenerEvent.SyncFinished(FOLDER_SERVER_ID)
+            SyncListenerEvent.SyncFinished(FOLDER_SERVER_ID),
         )
     }
 
@@ -157,13 +157,13 @@ class CommandSyncTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
-            "M002" to "/jmap_responses/blob/email/email_2.eml"
+            "M002" to "/jmap_responses/blob/email/email_2.eml",
         )
         backendFolder.setQueryState("50:0")
         val command = createCommandSync(
             responseBodyFromResource("/jmap_responses/session/valid_session.json"),
             responseBodyFromResource("/jmap_responses/email/email_query_changes_empty_result.json"),
-            responseBodyFromResource("/jmap_responses/email/email_get_keywords_M001_and_M002.json")
+            responseBodyFromResource("/jmap_responses/email/email_get_keywords_M001_and_M002.json"),
         )
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
@@ -174,7 +174,7 @@ class CommandSyncTest {
         backendFolder.assertQueryState("50:0")
         syncListener.assertSyncEvents(
             SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID),
-            SyncListenerEvent.SyncFinished(FOLDER_SERVER_ID)
+            SyncListenerEvent.SyncFinished(FOLDER_SERVER_ID),
         )
     }
 
@@ -183,7 +183,7 @@ class CommandSyncTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
-            "M002" to "/jmap_responses/blob/email/email_2.eml"
+            "M002" to "/jmap_responses/blob/email/email_2.eml",
         )
         backendFolder.setQueryState("50:0")
         val command = createCommandSync(
@@ -191,7 +191,7 @@ class CommandSyncTest {
             responseBodyFromResource("/jmap_responses/email/email_query_changes_M001_deleted_M003_added.json"),
             responseBodyFromResource("/jmap_responses/email/email_get_ids_M003.json"),
             responseBodyFromResource("/jmap_responses/blob/email/email_3.eml"),
-            responseBodyFromResource("/jmap_responses/email/email_get_keywords_M002.json")
+            responseBodyFromResource("/jmap_responses/email/email_get_keywords_M002.json"),
         )
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
@@ -206,7 +206,7 @@ class CommandSyncTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
-            "M002" to "/jmap_responses/blob/email/email_2.eml"
+            "M002" to "/jmap_responses/blob/email/email_2.eml",
         )
         backendFolder.setQueryState("10:0")
         val command = createCommandSync(
@@ -215,7 +215,7 @@ class CommandSyncTest {
             responseBodyFromResource("/jmap_responses/email/email_query_M002_and_M003.json"),
             responseBodyFromResource("/jmap_responses/email/email_get_ids_M003.json"),
             responseBodyFromResource("/jmap_responses/blob/email/email_3.eml"),
-            responseBodyFromResource("/jmap_responses/email/email_get_keywords_M002.json")
+            responseBodyFromResource("/jmap_responses/email/email_get_keywords_M002.json"),
         )
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)

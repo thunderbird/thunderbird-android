@@ -16,7 +16,7 @@ class BasicPartInfoExtractor {
 
         return BasicPartInfo(
             displayName = part.getDisplayName(contentDisposition),
-            size = contentDisposition?.getParameter("size")?.toLongOrNull()
+            size = contentDisposition?.getParameter("size")?.toLongOrNull(),
         )
     }
 
@@ -47,5 +47,5 @@ class BasicPartInfoExtractor {
 
 data class BasicPartInfo(
     val displayName: String,
-    val size: Long?
+    val size: Long?,
 )

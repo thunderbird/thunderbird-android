@@ -11,7 +11,7 @@ import android.net.ConnectivityManager as SystemConnectivityManager
 
 @RequiresApi(Build.VERSION_CODES.M)
 internal class ConnectivityManagerApi23(
-    private val systemConnectivityManager: SystemConnectivityManager
+    private val systemConnectivityManager: SystemConnectivityManager,
 ) : ConnectivityManagerBase() {
     private var isRunning = false
     private var lastActiveNetwork: Network? = null

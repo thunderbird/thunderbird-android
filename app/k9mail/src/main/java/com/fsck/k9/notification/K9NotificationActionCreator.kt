@@ -34,7 +34,7 @@ import com.fsck.k9.ui.notification.DeleteConfirmationActivity
 internal class K9NotificationActionCreator(
     private val context: Context,
     private val defaultFolderProvider: DefaultFolderProvider,
-    private val messageStoreManager: MessageStoreManager
+    private val messageStoreManager: MessageStoreManager,
 ) : NotificationActionCreator {
 
     override fun createViewMessagePendingIntent(messageReference: MessageReference): PendingIntent {
@@ -51,7 +51,7 @@ internal class K9NotificationActionCreator(
 
     override fun createViewMessagesPendingIntent(
         account: Account,
-        messageReferences: List<MessageReference>
+        messageReferences: List<MessageReference>,
     ): PendingIntent {
         val folderIds = extractFolderIds(messageReferences)
 
@@ -101,12 +101,13 @@ internal class K9NotificationActionCreator(
 
     override fun createMarkAllAsReadPendingIntent(
         account: Account,
-        messageReferences: List<MessageReference>
+        messageReferences: List<MessageReference>,
     ): PendingIntent {
         val accountUuid = account.uuid
-        val intent = NotificationActionService.createMarkAllAsReadIntent(context, accountUuid, messageReferences).apply {
-            data = Uri.parse("data:,markAllAsRead/$accountUuid/${System.currentTimeMillis()}")
-        }
+        val intent =
+            NotificationActionService.createMarkAllAsReadIntent(context, accountUuid, messageReferences).apply {
+                data = Uri.parse("data:,markAllAsRead/$accountUuid/${System.currentTimeMillis()}")
+            }
         return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
@@ -144,7 +145,7 @@ internal class K9NotificationActionCreator(
 
     override fun createDeleteAllPendingIntent(
         account: Account,
-        messageReferences: List<MessageReference>
+        messageReferences: List<MessageReference>,
     ): PendingIntent {
         return if (K9.isConfirmDeleteFromNotification) {
             getDeleteAllConfirmationPendingIntent(messageReferences)
@@ -162,12 +163,13 @@ internal class K9NotificationActionCreator(
 
     private fun getDeleteAllServicePendingIntent(
         account: Account,
-        messageReferences: List<MessageReference>
+        messageReferences: List<MessageReference>,
     ): PendingIntent {
         val accountUuid = account.uuid
-        val intent = NotificationActionService.createDeleteAllMessagesIntent(context, accountUuid, messageReferences).apply {
-            data = Uri.parse("data:,deleteAll/$accountUuid/${System.currentTimeMillis()}")
-        }
+        val intent =
+            NotificationActionService.createDeleteAllMessagesIntent(context, accountUuid, messageReferences).apply {
+                data = Uri.parse("data:,deleteAll/$accountUuid/${System.currentTimeMillis()}")
+            }
         return PendingIntent.getService(context, 0, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
@@ -180,7 +182,7 @@ internal class K9NotificationActionCreator(
 
     override fun createArchiveAllPendingIntent(
         account: Account,
-        messageReferences: List<MessageReference>
+        messageReferences: List<MessageReference>,
     ): PendingIntent {
         val intent = NotificationActionService.createArchiveAllIntent(context, account, messageReferences).apply {
             data = Uri.parse("data:,archiveAll/${account.uuid}/${System.currentTimeMillis()}")
@@ -207,7 +209,7 @@ internal class K9NotificationActionCreator(
             search = search,
             noThreading = false,
             newTask = true,
-            clearTop = true
+            clearTop = true,
         ).apply {
             data = Uri.parse("data:,messageList/${account.uuid}/$folderId")
         }
@@ -224,7 +226,7 @@ internal class K9NotificationActionCreator(
             search = search,
             noThreading = false,
             newTask = true,
-            clearTop = true
+            clearTop = true,
         ).apply {
             data = Uri.parse("data:,messageList/${account.uuid}/$folderId")
         }

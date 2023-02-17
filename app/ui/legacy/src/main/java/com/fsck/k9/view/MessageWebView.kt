@@ -71,7 +71,7 @@ class MessageWebView : WebView {
     fun displayHtmlContentWithInlineAttachments(
         htmlText: String,
         attachmentResolver: AttachmentResolver?,
-        onPageFinishedListener: OnPageFinishedListener?
+        onPageFinishedListener: OnPageFinishedListener?,
     ) {
         setWebViewClient(attachmentResolver, onPageFinishedListener)
         setHtmlContent(htmlText)
@@ -79,7 +79,7 @@ class MessageWebView : WebView {
 
     private fun setWebViewClient(
         attachmentResolver: AttachmentResolver?,
-        onPageFinishedListener: OnPageFinishedListener?
+        onPageFinishedListener: OnPageFinishedListener?,
     ) {
         val webViewClient = K9WebViewClient.newInstance(attachmentResolver)
         if (onPageFinishedListener != null) {

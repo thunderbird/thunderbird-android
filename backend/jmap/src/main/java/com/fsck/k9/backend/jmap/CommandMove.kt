@@ -8,7 +8,7 @@ import rs.ltt.jmap.common.util.Patches
 
 class CommandMove(
     private val jmapClient: JmapClient,
-    private val accountId: String
+    private val accountId: String,
 ) {
     fun moveMessages(targetFolderServerId: String, messageServerIds: List<String>) {
         Timber.v("Moving %d messages to %s", messageServerIds.size, targetFolderServerId)
@@ -47,7 +47,7 @@ class CommandMove(
                 SetEmailMethodCall.builder()
                     .accountId(accountId)
                     .update(updates)
-                    .build()
+                    .build(),
             )
 
             setEmailCall.getMainResponseBlocking<SetEmailMethodResponse>()

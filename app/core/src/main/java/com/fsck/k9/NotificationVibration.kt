@@ -3,7 +3,7 @@ package com.fsck.k9
 data class NotificationVibration(
     val isEnabled: Boolean,
     val pattern: VibratePattern,
-    val repeatCount: Int
+    val repeatCount: Int,
 ) {
     val systemPattern: LongArray
         get() = getSystemPattern(pattern, repeatCount)
@@ -30,14 +30,15 @@ enum class VibratePattern(
     /**
      * These are "off, on" patterns, specified in milliseconds.
      */
-    val vibrationPattern: LongArray
+    val vibrationPattern: LongArray,
 ) {
     Default(vibrationPattern = longArrayOf(300, 200)),
     Pattern1(vibrationPattern = longArrayOf(100, 200)),
     Pattern2(vibrationPattern = longArrayOf(100, 500)),
     Pattern3(vibrationPattern = longArrayOf(200, 200)),
     Pattern4(vibrationPattern = longArrayOf(200, 500)),
-    Pattern5(vibrationPattern = longArrayOf(500, 500));
+    Pattern5(vibrationPattern = longArrayOf(500, 500)),
+    ;
 
     fun serialize(): Int = when (this) {
         Default -> 0

@@ -39,7 +39,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
         lockableDatabase,
         attachmentFileManager,
         basicPartInfoExtractor,
-        threadMessageOperations
+        threadMessageOperations,
     )
 
     @After
@@ -64,7 +64,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             setFlag(Flag.ANSWERED, true)
             setFlag(Flag.FORWARDED, true)
         }.toSaveMessageData(
-            previewResult = PreviewResult.text("Preview")
+            previewResult = PreviewResult.text("Preview"),
         )
 
         saveMessageOperations.saveRemoteMessage(folderId = 1, messageServerId = "uid1", messageData)
@@ -218,17 +218,17 @@ class SaveMessageOperationsTest : RobolectricTest() {
         val messageId1 = sqliteDatabase.createMessage(
             folderId = 1,
             empty = true,
-            messageIdHeader = "<msg0001@domain.example>"
+            messageIdHeader = "<msg0001@domain.example>",
         )
         val messageId2 = sqliteDatabase.createMessage(
             folderId = 1,
             empty = true,
-            messageIdHeader = "<msg0002@domain.example>"
+            messageIdHeader = "<msg0002@domain.example>",
         )
         val messageId3 = sqliteDatabase.createMessage(
             folderId = 1,
             empty = false,
-            messageIdHeader = "<msg0003@domain.example>"
+            messageIdHeader = "<msg0003@domain.example>",
         )
         val threadId1 = sqliteDatabase.createThread(messageId1)
         val threadId2 = sqliteDatabase.createThread(messageId2, root = threadId1, parent = threadId1)
@@ -250,8 +250,8 @@ class SaveMessageOperationsTest : RobolectricTest() {
                 id = threadId1,
                 messageId = messageId1,
                 root = threadId1,
-                parent = null
-            )
+                parent = null,
+            ),
         )
 
         assertThat(threads.first { it.id == threadId2 }).isEqualTo(
@@ -259,8 +259,8 @@ class SaveMessageOperationsTest : RobolectricTest() {
                 id = threadId2,
                 messageId = messageId2,
                 root = threadId1,
-                parent = threadId1
-            )
+                parent = threadId1,
+            ),
         )
 
         assertThat(threads.first { it.id == threadId3 }).isEqualTo(
@@ -268,8 +268,8 @@ class SaveMessageOperationsTest : RobolectricTest() {
                 id = threadId3,
                 messageId = messageId3,
                 root = threadId1,
-                parent = threadId2
-            )
+                parent = threadId2,
+            ),
         )
     }
 
@@ -368,7 +368,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             subject = "Provided subject",
             date = 1618191720000L,
             internalDate = 1618191720000L,
-            previewResult = PreviewResult.text("Preview")
+            previewResult = PreviewResult.text("Preview"),
         )
 
         val newMessageId = saveMessageOperations.saveLocalMessage(folderId = 1, messageData, existingMessageId = null)
@@ -451,7 +451,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
         val existingMessageId = saveMessageOperations.saveLocalMessage(
             folderId = 1,
             existingMessageData,
-            existingMessageId = null
+            existingMessageId = null,
         )
         val messageData = buildMessage {
             textBody("new")
@@ -505,7 +505,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
         attachmentCount: Int = 0,
         previewResult: PreviewResult = PreviewResult.none(),
         textForSearchIndex: String? = null,
-        encryptionType: String? = null
+        encryptionType: String? = null,
     ): SaveMessageData {
         return SaveMessageData(
             message = this,
@@ -516,7 +516,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             attachmentCount,
             previewResult,
             textForSearchIndex,
-            encryptionType
+            encryptionType,
         )
     }
 

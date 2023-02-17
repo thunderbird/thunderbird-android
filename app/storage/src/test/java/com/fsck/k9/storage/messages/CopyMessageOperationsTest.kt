@@ -28,7 +28,7 @@ class CopyMessageOperationsTest : RobolectricTest() {
     private val copyMessageOperations = CopyMessageOperations(
         lockableDatabase,
         attachmentFileManager,
-        threadMessageOperations
+        threadMessageOperations,
     )
 
     @After
@@ -43,7 +43,7 @@ class CopyMessageOperationsTest : RobolectricTest() {
             dataLocation = DataLocation.CHILD_PART_CONTAINS_DATA,
             mimeType = "multipart/mixed",
             boundary = "--boundary",
-            header = "Message-ID: <msg0002@domain.example>\nIn-Reply-To: <msg0001@domain.example>\n".crlf()
+            header = "Message-ID: <msg0002@domain.example>\nIn-Reply-To: <msg0001@domain.example>\n".crlf(),
         )
         val sourceMessagePartId2 = sqliteDatabase.createMessagePart(
             seq = 1,
@@ -51,14 +51,14 @@ class CopyMessageOperationsTest : RobolectricTest() {
             parent = sourceMessagePartId1,
             mimeType = "text/plain",
             dataLocation = DataLocation.IN_DATABASE,
-            data = "Text part".toByteArray()
+            data = "Text part".toByteArray(),
         )
         val sourceMessagePartId3 = sqliteDatabase.createMessagePart(
             seq = 2,
             root = sourceMessagePartId1,
             parent = sourceMessagePartId1,
             mimeType = "application/octet-stream",
-            dataLocation = DataLocation.ON_DISK
+            dataLocation = DataLocation.ON_DISK,
         )
         attachmentFileManager.getAttachmentFile(sourceMessagePartId3).sink().buffer().use { sink ->
             sink.writeUtf8("Part contents")
@@ -67,18 +67,18 @@ class CopyMessageOperationsTest : RobolectricTest() {
         val messageId1 = sqliteDatabase.createMessage(
             folderId = 1,
             empty = true,
-            messageIdHeader = "<msg0001@domain.example>"
+            messageIdHeader = "<msg0001@domain.example>",
         )
         val messageId2 = sqliteDatabase.createMessage(
             folderId = 1,
             empty = false,
             messageIdHeader = "<msg0002@domain.example>",
-            messagePartId = sourceMessagePartId1
+            messagePartId = sourceMessagePartId1,
         )
         val messageId3 = sqliteDatabase.createMessage(
             folderId = 1,
             empty = false,
-            messageIdHeader = "<msg0003@domain.example>"
+            messageIdHeader = "<msg0003@domain.example>",
         )
         val threadId1 = sqliteDatabase.createThread(messageId1)
         val threadId2 = sqliteDatabase.createThread(messageId2, root = threadId1, parent = threadId1)
@@ -113,8 +113,8 @@ class CopyMessageOperationsTest : RobolectricTest() {
                 id = destinationMessageId,
                 uid = destinationMessage.uid,
                 folderId = 2,
-                messagePartId = destinationMessage.messagePartId
-            )
+                messagePartId = destinationMessage.messagePartId,
+            ),
         )
 
         val messageParts = sqliteDatabase.readMessageParts()
@@ -131,24 +131,24 @@ class CopyMessageOperationsTest : RobolectricTest() {
             sourceMessagePart1.copy(
                 id = destinationMessagePart1.id,
                 root = destinationMessagePart1.id,
-                parent = -1
-            )
+                parent = -1,
+            ),
         )
         assertThat(destinationMessagePart2).isNotIn(setOf(sourceMessagePart1, sourceMessagePart2, sourceMessagePart3))
         assertThat(destinationMessagePart2).isEqualTo(
             sourceMessagePart2.copy(
                 id = destinationMessagePart2.id,
                 root = destinationMessagePart1.id,
-                parent = destinationMessagePart1.id
-            )
+                parent = destinationMessagePart1.id,
+            ),
         )
         assertThat(destinationMessagePart3).isNotIn(setOf(sourceMessagePart1, sourceMessagePart2, sourceMessagePart3))
         assertThat(destinationMessagePart3).isEqualTo(
             sourceMessagePart3.copy(
                 id = destinationMessagePart3.id,
                 root = destinationMessagePart1.id,
-                parent = destinationMessagePart1.id
-            )
+                parent = destinationMessagePart1.id,
+            ),
         )
 
         val files = messagePartDirectory.list()?.toList() ?: emptyList()
@@ -165,7 +165,7 @@ class CopyMessageOperationsTest : RobolectricTest() {
             header = "Message-ID: <msg0002@domain.example>\nIn-Reply-To: <msg0001@domain.example>\n".crlf(),
             mimeType = "text/plain",
             dataLocation = DataLocation.IN_DATABASE,
-            data = "Text part".toByteArray()
+            data = "Text part".toByteArray(),
         )
         attachmentFileManager.getAttachmentFile(sourceMessagePartId).sink().buffer().use { sink ->
             sink.writeUtf8("Part contents")
@@ -175,23 +175,23 @@ class CopyMessageOperationsTest : RobolectricTest() {
             folderId = 1,
             empty = false,
             messageIdHeader = "<msg0002@domain.example>",
-            messagePartId = sourceMessagePartId
+            messagePartId = sourceMessagePartId,
         )
         val destinationMessageId = sqliteDatabase.createMessage(
             folderId = 2,
             empty = true,
-            messageIdHeader = "<msg0002@domain.example>"
+            messageIdHeader = "<msg0002@domain.example>",
         )
         val otherDestinationMessageId = sqliteDatabase.createMessage(
             folderId = 2,
             empty = false,
-            messageIdHeader = "<msg0003@domain.example>"
+            messageIdHeader = "<msg0003@domain.example>",
         )
         val destinationThreadId = sqliteDatabase.createThread(destinationMessageId)
         val otherDestinationThreadId = sqliteDatabase.createThread(
             otherDestinationMessageId,
             root = destinationThreadId,
-            parent = destinationThreadId
+            parent = destinationThreadId,
         )
 
         val resultMessageId = copyMessageOperations.copyMessage(messageId = sourceMessageId, destinationFolderId = 2)
@@ -228,8 +228,8 @@ class CopyMessageOperationsTest : RobolectricTest() {
                 id = destinationMessageId,
                 uid = destinationMessage.uid,
                 folderId = 2,
-                messagePartId = destinationMessage.messagePartId
-            )
+                messagePartId = destinationMessage.messagePartId,
+            ),
         )
 
         val messageParts = sqliteDatabase.readMessageParts()
@@ -241,8 +241,8 @@ class CopyMessageOperationsTest : RobolectricTest() {
             sourceMessagePart.copy(
                 id = destinationMessagePart.id,
                 root = destinationMessagePart.id,
-                parent = -1
-            )
+                parent = -1,
+            ),
         )
     }
 }

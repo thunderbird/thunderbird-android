@@ -7,7 +7,7 @@ internal const val RECOMMENDED_MAX_LINE_LENGTH = 78
 private val TSPECIALS = charArrayOf('(', ')', '<', '>', '@', ',', ';', ':', '\\', '"', '/', '[', ']', '?', '=')
 
 private val ATEXT_SPECIAL = charArrayOf(
-    '!', '#', '$', '%', '&', '\'', '*', '+', '-', '/', '=', '?', '^', '_', '`', '{', '|', '}', '~'
+    '!', '#', '$', '%', '&', '\'', '*', '+', '-', '/', '=', '?', '^', '_', '`', '{', '|', '}', '~',
 )
 
 // RFC 5234: HTAB = %x09

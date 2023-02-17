@@ -8,7 +8,7 @@ import com.fsck.k9.mail.Message.RecipientType
 
 class TextQuoteCreator(
     private val quoteDateFormatter: QuoteDateFormatter,
-    private val resourceProvider: CoreResourceProvider
+    private val resourceProvider: CoreResourceProvider,
 ) {
     private val prefixInsertionRegex = Regex("(?m)^")
 
@@ -16,7 +16,7 @@ class TextQuoteCreator(
         originalMessage: Message,
         messageBody: String?,
         quoteStyle: QuoteStyle,
-        prefix: String
+        prefix: String,
     ): String {
         val body = messageBody ?: ""
         return when (quoteStyle) {

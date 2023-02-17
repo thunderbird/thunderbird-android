@@ -99,21 +99,23 @@ class MessageViewContainerFragment : Fragment() {
         viewPager.isUserInputEnabled = true
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         viewPager.setPageTransformer(MarginPageTransformer(pageMargin))
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            // The message list is updated each time the active message is changed. To avoid message list updates
-            // during the animation, we only set the active message after the animation has finished.
-            override fun onPageScrollStateChanged(state: Int) {
-                if (state == ViewPager2.SCROLL_STATE_IDLE) {
-                    setActiveMessage(viewPager.currentItem)
+        viewPager.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
+                // The message list is updated each time the active message is changed. To avoid message list updates
+                // during the animation, we only set the active message after the animation has finished.
+                override fun onPageScrollStateChanged(state: Int) {
+                    if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                        setActiveMessage(viewPager.currentItem)
+                    }
                 }
-            }
 
-            override fun onPageSelected(position: Int) {
-                if (viewPager.scrollState == ViewPager2.SCROLL_STATE_IDLE) {
-                    setActiveMessage(position)
+                override fun onPageSelected(position: Int) {
+                    if (viewPager.scrollState == ViewPager2.SCROLL_STATE_IDLE) {
+                        setActiveMessage(position)
+                    }
                 }
-            }
-        })
+            },
+        )
 
         return view
     }
@@ -235,13 +237,13 @@ class MessageViewContainerFragment : Fragment() {
 
     private class MessageViewContainerAdapter(
         fragment: Fragment,
-        private val showAccountChip: Boolean
+        private val showAccountChip: Boolean,
     ) : FragmentStateAdapter(fragment) {
 
         var messageList: List<MessageListItem> = emptyList()
             set(value) {
                 val diffResult = DiffUtil.calculateDiff(
-                    MessageListDiffCallback(oldMessageList = messageList, newMessageList = value)
+                    MessageListDiffCallback(oldMessageList = messageList, newMessageList = value),
                 )
 
                 field = value
@@ -283,7 +285,7 @@ class MessageViewContainerFragment : Fragment() {
 
     private class MessageListDiffCallback(
         private val oldMessageList: List<MessageListItem>,
-        private val newMessageList: List<MessageListItem>
+        private val newMessageList: List<MessageListItem>,
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = oldMessageList.size
 
@@ -314,7 +316,7 @@ class MessageViewContainerFragment : Fragment() {
         fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
-                ARG_SHOW_ACCOUNT_CHIP to showAccountChip
+                ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
             )
         }
     }

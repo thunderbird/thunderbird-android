@@ -15,5 +15,5 @@ data class DiscoveredServerSettings(
     val port: Int,
     val security: ConnectionSecurity,
     val authType: AuthType?,
-    val username: String?
+    val username: String?,
 )

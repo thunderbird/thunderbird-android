@@ -3,7 +3,7 @@ package com.fsck.k9.mailstore
 import java.util.concurrent.CopyOnWriteArraySet
 
 class MessageListRepository(
-    private val messageStoreManager: MessageStoreManager
+    private val messageStoreManager: MessageStoreManager,
 ) {
     private val globalListeners = CopyOnWriteArraySet<MessageListChangedListener>()
     private val accountListeners = CopyOnWriteArraySet<Pair<String, MessageListChangedListener>>()
@@ -45,7 +45,7 @@ class MessageListRepository(
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        messageMapper: MessageMapper<T>
+        messageMapper: MessageMapper<T>,
     ): List<T> {
         val messageStore = messageStoreManager.getMessageStore(accountUuid)
         val cache = MessageListCache.getCache(accountUuid)
@@ -62,7 +62,7 @@ class MessageListRepository(
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
-        messageMapper: MessageMapper<T>
+        messageMapper: MessageMapper<T>,
     ): List<T> {
         val messageStore = messageStoreManager.getMessageStore(accountUuid)
         val cache = MessageListCache.getCache(accountUuid)
@@ -78,7 +78,7 @@ class MessageListRepository(
         accountUuid: String,
         threadId: Long,
         sortOrder: String,
-        messageMapper: MessageMapper<T>
+        messageMapper: MessageMapper<T>,
     ): List<T> {
         val messageStore = messageStoreManager.getMessageStore(accountUuid)
         val cache = MessageListCache.getCache(accountUuid)

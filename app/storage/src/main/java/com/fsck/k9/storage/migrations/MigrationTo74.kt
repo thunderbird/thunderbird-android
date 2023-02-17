@@ -95,7 +95,7 @@ internal class MigrationTo74(private val db: SQLiteDatabase, private val account
                 "FROM threads t1 " +
                 "JOIN threads t2 ON (t2.parent = t1.id) " +
                 "WHERE t1.message_id = ?",
-            arrayOf(messageId.toString())
+            arrayOf(messageId.toString()),
         ).use { cursor ->
             cursor.moveToFirst() && !cursor.isNull(0) && cursor.getLong(0) > 0L
         }
@@ -108,7 +108,7 @@ internal class MigrationTo74(private val db: SQLiteDatabase, private val account
                 "JOIN threads t2 ON (t1.parent = t2.id) " +
                 "LEFT JOIN messages m ON (t2.message_id = m.id) " +
                 "WHERE t1.message_id = ? AND m.empty = 1",
-            arrayOf(messageId.toString())
+            arrayOf(messageId.toString()),
         ).use { cursor ->
             if (cursor.moveToFirst() && !cursor.isNull(0)) cursor.getLong(0) else -1
         }

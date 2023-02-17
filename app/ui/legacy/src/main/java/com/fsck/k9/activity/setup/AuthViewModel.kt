@@ -39,7 +39,7 @@ private const val KEY_AUTHORIZATION = "app.k9mail_auth"
 class AuthViewModel(
     application: Application,
     private val accountManager: AccountManager,
-    private val oAuthConfigurationProvider: OAuthConfigurationProvider
+    private val oAuthConfigurationProvider: OAuthConfigurationProvider,
 ) : AndroidViewModel(application) {
     private var authService: AuthorizationService? = null
     private val authState = AuthState()
@@ -112,14 +112,14 @@ class AuthViewModel(
     private fun createAuthorizationRequestIntent(email: String, config: OAuthConfiguration): Intent {
         val serviceConfig = AuthorizationServiceConfiguration(
             config.authorizationEndpoint.toUri(),
-            config.tokenEndpoint.toUri()
+            config.tokenEndpoint.toUri(),
         )
 
         val authRequestBuilder = AuthorizationRequest.Builder(
             serviceConfig,
             config.clientId,
             ResponseTypeValues.CODE,
-            config.redirectUri.toUri()
+            config.redirectUri.toUri(),
         )
 
         val scopeString = config.scopes.joinToString(separator = " ")
@@ -152,7 +152,7 @@ class AuthViewModel(
             _uiState.update {
                 AuthFlowState.Failed(
                     errorCode = authorizationException.error,
-                    errorMessage = authorizationException.errorDescription
+                    errorMessage = authorizationException.errorDescription,
                 )
             }
         }
@@ -177,7 +177,7 @@ class AuthViewModel(
                     _uiState.update {
                         AuthFlowState.Failed(
                             errorCode = authorizationException.error,
-                            errorMessage = authorizationException.errorDescription
+                            errorMessage = authorizationException.errorDescription,
                         )
                     }
                 } else {
@@ -229,7 +229,7 @@ private class AuthorizationContract : ActivityResultContract<Intent, Authorizati
         return if (resultCode == Activity.RESULT_OK && intent != null) {
             AuthorizationResult(
                 response = AuthorizationResponse.fromIntent(intent),
-                exception = AuthorizationException.fromIntent(intent)
+                exception = AuthorizationException.fromIntent(intent),
             )
         } else {
             null
@@ -239,7 +239,7 @@ private class AuthorizationContract : ActivityResultContract<Intent, Authorizati
 
 private data class AuthorizationResult(
     val response: AuthorizationResponse?,
-    val exception: AuthorizationException?
+    val exception: AuthorizationException?,
 )
 
 sealed interface AuthFlowState {

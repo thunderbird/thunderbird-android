@@ -247,7 +247,7 @@ class SmtpTransportTest {
         } catch (e: AuthenticationFailedException) {
             assertThat(e).hasMessageThat().isEqualTo(
                 "5.7.1 Username and Password not accepted. Learn more at " +
-                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68"
+                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
             )
         }
 
@@ -372,7 +372,7 @@ class SmtpTransportTest {
         } catch (e: AuthenticationFailedException) {
             assertThat(e).hasMessageThat().isEqualTo(
                 "5.7.1 Username and Password not accepted. Learn more at " +
-                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68"
+                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
             )
         }
 
@@ -485,7 +485,7 @@ class SmtpTransportTest {
         val transport = startServerAndCreateSmtpTransport(
             server,
             authenticationType = AuthType.AUTOMATIC,
-            connectionSecurity = ConnectionSecurity.NONE
+            connectionSecurity = ConnectionSecurity.NONE,
         )
 
         transport.open()
@@ -506,7 +506,7 @@ class SmtpTransportTest {
         val transport = startServerAndCreateSmtpTransport(
             server,
             authenticationType = AuthType.AUTOMATIC,
-            connectionSecurity = ConnectionSecurity.NONE
+            connectionSecurity = ConnectionSecurity.NONE,
         )
 
         try {
@@ -514,7 +514,7 @@ class SmtpTransportTest {
             fail("Exception expected")
         } catch (e: MessagingException) {
             assertThat(e).hasMessageThat().isEqualTo(
-                "Update your outgoing server authentication setting. AUTOMATIC authentication is unavailable."
+                "Update your outgoing server authentication setting. AUTOMATIC authentication is unavailable.",
             )
         }
 
@@ -562,7 +562,7 @@ class SmtpTransportTest {
         } catch (e: AuthenticationFailedException) {
             assertThat(e).hasMessageThat().isEqualTo(
                 "Username and Password not accepted. " +
-                    "Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68"
+                    "Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
             )
         }
 
@@ -618,7 +618,7 @@ class SmtpTransportTest {
         val transport = startServerAndCreateSmtpTransport(
             server,
             authenticationType = AuthType.PLAIN,
-            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
         )
 
         transport.open()
@@ -930,7 +930,7 @@ class SmtpTransportTest {
         server: MockSmtpServer,
         authenticationType: AuthType = AuthType.PLAIN,
         connectionSecurity: ConnectionSecurity = ConnectionSecurity.NONE,
-        password: String? = PASSWORD
+        password: String? = PASSWORD,
     ): SmtpTransport {
         server.start()
         val host = server.host
@@ -943,7 +943,7 @@ class SmtpTransportTest {
             authenticationType,
             USERNAME,
             password,
-            CLIENT_CERTIFICATE_ALIAS
+            CLIENT_CERTIFICATE_ALIAS,
         )
 
         return SmtpTransport(serverSettings, socketFactory, oAuth2TokenProvider)

@@ -17,7 +17,7 @@ class AccountRemover(
     private val messagingController: MessagingController,
     private val backendManager: BackendManager,
     private val localKeyStoreManager: LocalKeyStoreManager,
-    private val preferences: Preferences
+    private val preferences: Preferences,
 ) {
 
     fun removeAccount(accountUuid: String) {

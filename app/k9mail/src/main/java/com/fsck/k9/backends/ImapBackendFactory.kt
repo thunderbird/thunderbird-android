@@ -25,7 +25,7 @@ class ImapBackendFactory(
     private val idleRefreshManager: IdleRefreshManager,
     private val backendStorageFactory: K9BackendStorageFactory,
     private val trustedSocketFactory: TrustedSocketFactory,
-    private val context: Context
+    private val context: Context,
 ) : BackendFactory {
     override fun createBackend(account: Account): Backend {
         val accountName = account.displayName
@@ -41,7 +41,7 @@ class ImapBackendFactory(
             powerManager,
             idleRefreshManager,
             pushConfigProvider,
-            smtpTransport
+            smtpTransport,
         )
     }
 
@@ -57,7 +57,7 @@ class ImapBackendFactory(
             account.incomingServerSettings,
             config,
             trustedSocketFactory,
-            oAuth2TokenProvider
+            oAuth2TokenProvider,
         )
     }
 

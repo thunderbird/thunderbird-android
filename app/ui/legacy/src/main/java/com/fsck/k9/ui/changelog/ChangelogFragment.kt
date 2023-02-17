@@ -35,7 +35,7 @@ class ChangelogFragment : Fragment() {
             owner = viewLifecycleOwner,
             loadingView = view.findViewById(R.id.changelog_loading),
             errorView = view.findViewById(R.id.changelog_error),
-            dataView = listView
+            dataView = listView,
         ) { changeLog ->
             listView.adapter = ChangelogAdapter(changeLog)
         }

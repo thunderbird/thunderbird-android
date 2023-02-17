@@ -12,7 +12,8 @@ enum class NotificationLight {
     Blue,
     Yellow,
     Cyan,
-    Magenta;
+    Magenta,
+    ;
 
     fun toColor(account: Account): Int? {
         return when (this) {

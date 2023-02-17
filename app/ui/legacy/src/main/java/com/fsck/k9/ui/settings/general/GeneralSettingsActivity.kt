@@ -82,16 +82,18 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
             index(R.xml.general_settings)
         }
 
-        searchPreferenceMenuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                searchPreferenceActionView.cancelSearch()
-                return true
-            }
+        searchPreferenceMenuItem.setOnActionExpandListener(
+            object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                    searchPreferenceActionView.cancelSearch()
+                    return true
+                }
 
-            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                return true
-            }
-        })
+                override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                    return true
+                }
+            },
+        )
 
         if (searchEnabled) {
             Handler().post {
@@ -124,7 +126,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
 
     override fun onPreferenceStartScreen(
         caller: PreferenceFragmentCompat,
-        preferenceScreen: PreferenceScreen
+        preferenceScreen: PreferenceScreen,
     ): Boolean {
         fragmentTransactionWithBackStack {
             replace(R.id.generalSettingsContainer, GeneralSettingsFragment.create(preferenceScreen.key))

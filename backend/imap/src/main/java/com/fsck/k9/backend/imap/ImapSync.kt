@@ -28,7 +28,7 @@ import kotlin.math.max
 internal class ImapSync(
     private val accountName: String,
     private val backendStorage: BackendStorage,
-    private val imapStore: ImapStore
+    private val imapStore: ImapStore,
 ) {
     fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         synchronizeMailboxSynchronous(folder, syncConfig, listener)
@@ -133,7 +133,7 @@ internal class ImapSync(
                     "SYNC: About to get messages %d through %d for folder %s",
                     remoteStart,
                     remoteMessageCount,
-                    folder
+                    folder,
                 )
 
                 val headerProgress = AtomicInteger(0)
@@ -203,7 +203,7 @@ internal class ImapSync(
                 backendFolder,
                 remoteMessages,
                 highestKnownUid,
-                listener
+                listener,
             )
 
             listener.folderStatusChanged(folder)
@@ -240,7 +240,7 @@ internal class ImapSync(
                 "Failed synchronizing folder %s:%s @ %tc",
                 accountName,
                 folder,
-                System.currentTimeMillis()
+                System.currentTimeMillis(),
             )
         } finally {
             if (newHighestKnownUid > 0 && backendFolder != null) {
@@ -264,7 +264,7 @@ internal class ImapSync(
                 backendFolder,
                 listOf(remoteMessage),
                 null,
-                SimpleSyncListener()
+                SimpleSyncListener(),
             )
         } finally {
             remoteFolder.close()
@@ -287,7 +287,7 @@ internal class ImapSync(
         backendFolder: BackendFolder,
         inputMessages: List<ImapMessage>,
         highestKnownUid: Long?,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         val folder = remoteFolder.serverId
 
@@ -301,7 +301,7 @@ internal class ImapSync(
                 message,
                 backendFolder,
                 unsyncedMessages,
-                syncFlagMessages
+                syncFlagMessages,
             )
         }
 
@@ -333,7 +333,7 @@ internal class ImapSync(
                 largeMessages,
                 progress,
                 todo,
-                listener
+                listener,
             )
 
             Timber.d("SYNC: Synced unsynced messages for folder %s", folder)
@@ -343,7 +343,7 @@ internal class ImapSync(
             "SYNC: Have %d large messages and %d small messages out of %d unsynced messages",
             largeMessages.size,
             smallMessages.size,
-            unsyncedMessages.size
+            unsyncedMessages.size,
         )
 
         unsyncedMessages.clear()
@@ -363,7 +363,7 @@ internal class ImapSync(
             downloadedMessageCount,
             todo,
             highestKnownUid,
-            listener
+            listener,
         )
         smallMessages.clear()
 
@@ -379,7 +379,7 @@ internal class ImapSync(
             todo,
             highestKnownUid,
             listener,
-            maxDownloadSize
+            maxDownloadSize,
         )
         largeMessages.clear()
 
@@ -396,7 +396,7 @@ internal class ImapSync(
         message: ImapMessage,
         backendFolder: BackendFolder,
         unsyncedMessages: MutableList<ImapMessage>,
-        syncFlagMessages: MutableList<ImapMessage>
+        syncFlagMessages: MutableList<ImapMessage>,
     ) {
         val messageServerId = message.uid
         if (message.isSet(Flag.DELETED)) {
@@ -447,7 +447,7 @@ internal class ImapSync(
         largeMessages: MutableList<ImapMessage>,
         progress: AtomicInteger,
         todo: Int,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         val folder = remoteFolder.serverId
         val fetchProfile = FetchProfile().apply {
@@ -466,7 +466,7 @@ internal class ImapSync(
                                 "Newly downloaded message %s:%s:%s was marked deleted on server, skipping",
                                 accountName,
                                 folder,
-                                message.uid
+                                message.uid,
                             )
 
                             if (isFirstResponse) {
@@ -491,7 +491,7 @@ internal class ImapSync(
                     }
                 }
             },
-            syncConfig.maximumAutoDownloadMessageSize
+            syncConfig.maximumAutoDownloadMessageSize,
         )
     }
 
@@ -503,7 +503,7 @@ internal class ImapSync(
         downloadedMessageCount: AtomicInteger,
         todo: Int,
         highestKnownUid: Long?,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         val folder = remoteFolder.serverId
         val fetchProfile = FetchProfile().apply {
@@ -531,7 +531,7 @@ internal class ImapSync(
                             "About to notify listeners that we got a new small message %s:%s:%s",
                             accountName,
                             folder,
-                            messageServerId
+                            messageServerId,
                         )
 
                         // Update the listener with what we've found
@@ -544,7 +544,7 @@ internal class ImapSync(
                     }
                 }
             },
-            -1
+            -1,
         )
 
         Timber.d("SYNC: Done fetching small messages for folder %s", folder)
@@ -559,7 +559,7 @@ internal class ImapSync(
         todo: Int,
         highestKnownUid: Long?,
         listener: SyncListener,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     ) {
         val folder = remoteFolder.serverId
         val fetchProfile = FetchProfile().apply {
@@ -581,7 +581,7 @@ internal class ImapSync(
                 "About to notify listeners that we got a new large message %s:%s:%s",
                 accountName,
                 folder,
-                messageServerId
+                messageServerId,
             )
 
             // Update the listener with what we've found
@@ -604,7 +604,7 @@ internal class ImapSync(
         syncFlagMessages: List<ImapMessage>,
         progress: AtomicInteger,
         todo: Int,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         val folder = remoteFolder.serverId
         Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size, folder)
@@ -635,7 +635,7 @@ internal class ImapSync(
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
         message: ImapMessage,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     ) {
         /*
          * The provider was unable to get the structure of the message, so
@@ -660,7 +660,7 @@ internal class ImapSync(
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
         message: ImapMessage,
-        maxDownloadSize: Int
+        maxDownloadSize: Int,
     ) {
         /*
          * We have a structure to deal with, from which
@@ -711,7 +711,7 @@ internal class ImapSync(
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
         earliestDate: Date?,
-        remoteStart: Int
+        remoteStart: Int,
     ) {
         if (remoteStart == 1) {
             backendFolder.setMoreMessages(MoreMessages.FALSE)

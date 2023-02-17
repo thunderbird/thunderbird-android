@@ -11,7 +11,7 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
     fun moveMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, false)
     }
@@ -19,7 +19,7 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
     fun copyMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
-        messageServerIds: List<String>
+        messageServerIds: List<String>,
     ): Map<String, String>? {
         return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, true)
     }
@@ -28,7 +28,7 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
         srcFolder: String,
         destFolder: String,
         uids: Collection<String>,
-        isCopy: Boolean
+        isCopy: Boolean,
     ): Map<String, String>? {
         var remoteSrcFolder: ImapFolder? = null
         var remoteDestFolder: ImapFolder? = null
@@ -49,7 +49,7 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
             if (remoteSrcFolder.mode != OpenMode.READ_WRITE) {
                 throw MessagingException(
                     "moveOrCopyMessages: could not open remoteSrcFolder $srcFolder read/write",
-                    true
+                    true,
                 )
             }
 
@@ -60,7 +60,7 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
                 srcFolder,
                 messages.size,
                 destFolder,
-                isCopy
+                isCopy,
             )
 
             remoteDestFolder = imapStore.getFolder(destFolder)

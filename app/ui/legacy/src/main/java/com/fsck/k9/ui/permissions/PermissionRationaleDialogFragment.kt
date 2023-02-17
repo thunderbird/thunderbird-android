@@ -27,7 +27,7 @@ class PermissionRationaleDialogFragment : DialogFragment() {
                 val permissionUiHelper = requireActivity() as? PermissionUiHelper
                     ?: throw AssertionError(
                         "Activities using PermissionRationaleDialogFragment need to " +
-                            "implement PermissionUiHelper"
+                            "implement PermissionUiHelper",
                     )
 
                 permissionUiHelper.requestPermission(permission)

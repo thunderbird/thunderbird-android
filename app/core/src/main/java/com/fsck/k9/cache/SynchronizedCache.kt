@@ -1,7 +1,7 @@
 package com.fsck.k9.cache
 
 internal class SynchronizedCache<KEY : Any, VALUE : Any>(
-    private val delegateCache: Cache<KEY, VALUE>
+    private val delegateCache: Cache<KEY, VALUE>,
 ) : Cache<KEY, VALUE> {
 
     override fun get(key: KEY): VALUE? {

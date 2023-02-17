@@ -4,7 +4,10 @@ import com.fsck.k9.Account
 import com.fsck.k9.preferences.AccountManager
 import java.util.concurrent.ConcurrentHashMap
 
-class MessageStoreManager(private val accountManager: AccountManager, private val messageStoreFactory: MessageStoreFactory) {
+class MessageStoreManager(
+    private val accountManager: AccountManager,
+    private val messageStoreFactory: MessageStoreFactory,
+) {
     private val messageStores = ConcurrentHashMap<String, ListenableMessageStore>()
 
     init {

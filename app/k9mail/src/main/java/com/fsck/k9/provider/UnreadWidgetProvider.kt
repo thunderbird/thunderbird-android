@@ -90,7 +90,7 @@ class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
             context,
             appWidgetId,
             clickIntent,
-            FLAG_UPDATE_CURRENT or FLAG_MUTABLE
+            FLAG_UPDATE_CURRENT or FLAG_MUTABLE,
         )
         remoteViews.setOnClickPendingIntent(R.id.unread_widget_layout, pendingIntent)
 

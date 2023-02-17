@@ -35,17 +35,17 @@ include(
     ":app:autodiscovery:providersxml",
     ":app:autodiscovery:srvrecords",
     ":app:autodiscovery:thunderbird",
-    ":app:html-cleaner"
+    ":app:html-cleaner",
 )
 
 include(
-    ":core:ui:compose:demo"
+    ":core:ui:compose:demo",
 )
 
 include(
     ":ui-utils:LinearLayoutManager",
     ":ui-utils:ItemTouchHelper",
-    ":ui-utils:ToolbarBottomSheet"
+    ":ui-utils:ToolbarBottomSheet",
 )
 
 include(
@@ -54,7 +54,7 @@ include(
     ":mail:protocols:imap",
     ":mail:protocols:pop3",
     ":mail:protocols:webdav",
-    ":mail:protocols:smtp"
+    ":mail:protocols:smtp",
 )
 
 include(
@@ -64,7 +64,7 @@ include(
     ":backend:pop3",
     ":backend:webdav",
     ":backend:jmap",
-    ":backend:demo"
+    ":backend:demo",
 )
 
 include(":plugins:openpgp-api-lib:openpgp-api")

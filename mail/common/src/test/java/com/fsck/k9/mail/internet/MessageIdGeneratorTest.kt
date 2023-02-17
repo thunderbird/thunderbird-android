@@ -8,7 +8,7 @@ class MessageIdGeneratorTest {
     private val messageIdGenerator = MessageIdGenerator(
         object : UuidGenerator {
             override fun randomUuid() = "00000000-0000-4000-0000-000000000000"
-        }
+        },
     )
 
     @Test

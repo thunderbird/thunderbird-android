@@ -613,41 +613,42 @@ class Account(override val uuid: String) : BaseAccount {
         ALL,
         FIRST_CLASS,
         FIRST_AND_SECOND_CLASS,
-        NOT_SECOND_CLASS
+        NOT_SECOND_CLASS,
     }
 
     enum class SpecialFolderSelection {
         AUTOMATIC,
-        MANUAL
+        MANUAL,
     }
 
     enum class ShowPictures {
         NEVER,
         ALWAYS,
-        ONLY_FROM_CONTACTS
+        ONLY_FROM_CONTACTS,
     }
 
     enum class Searchable {
         ALL,
         DISPLAYABLE,
-        NONE
+        NONE,
     }
 
     enum class QuoteStyle {
         PREFIX,
-        HEADER
+        HEADER,
     }
 
     enum class MessageFormat {
         TEXT,
         HTML,
-        AUTO
+        AUTO,
     }
 
     enum class Expunge {
         EXPUNGE_IMMEDIATELY,
         EXPUNGE_MANUALLY,
-        EXPUNGE_ON_POLL;
+        EXPUNGE_ON_POLL,
+        ;
 
         fun toBackendExpungePolicy(): ExpungePolicy = when (this) {
             EXPUNGE_IMMEDIATELY -> ExpungePolicy.IMMEDIATELY
@@ -660,7 +661,8 @@ class Account(override val uuid: String) : BaseAccount {
         NEVER(0),
         SEVEN_DAYS(1),
         ON_DELETE(2),
-        MARK_AS_READ(3);
+        MARK_AS_READ(3),
+        ;
 
         companion object {
             fun fromInt(initialSetting: Int): DeletePolicy {
@@ -676,7 +678,7 @@ class Account(override val uuid: String) : BaseAccount {
         SORT_SENDER(true),
         SORT_UNREAD(true),
         SORT_FLAGGED(true),
-        SORT_ATTACHMENT(true);
+        SORT_ATTACHMENT(true),
     }
 
     companion object {

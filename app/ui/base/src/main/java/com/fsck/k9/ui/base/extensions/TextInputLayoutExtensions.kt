@@ -32,7 +32,7 @@ fun TextInputLayout.configureAuthenticatedPasswordToggle(
     activity: FragmentActivity,
     title: String,
     subtitle: String,
-    needScreenLockMessage: String
+    needScreenLockMessage: String,
 ) {
     val viewModel = ViewModelProvider(activity).get<AuthenticatedPasswordToggleViewModel>()
     viewModel.textInputLayout = this
@@ -68,7 +68,7 @@ fun TextInputLayout.configureAuthenticatedPasswordToggle(
                 .setAllowedAuthenticators(BIOMETRIC_STRONG or BIOMETRIC_WEAK or DEVICE_CREDENTIAL)
                 .setTitle(title)
                 .setSubtitle(subtitle)
-                .build()
+                .build(),
         )
     }
 
@@ -124,11 +124,13 @@ class AuthenticatedPasswordToggleViewModel : ViewModel() {
         set(value) {
             field = value
 
-            value?.lifecycle?.addObserver(object : DefaultLifecycleObserver {
-                override fun onDestroy(owner: LifecycleOwner) {
-                    textInputLayout = null
-                    field = null
-                }
-            })
+            value?.lifecycle?.addObserver(
+                object : DefaultLifecycleObserver {
+                    override fun onDestroy(owner: LifecycleOwner) {
+                        textInputLayout = null
+                        field = null
+                    }
+                },
+            )
         }
 }

@@ -42,7 +42,7 @@ class PasswordPromptDialogFragment : DialogFragment() {
             inputIncomingServerPassword,
             incomingServerName,
             inputOutgoingServerPassword,
-            outgoingServerName
+            outgoingServerName,
         )
 
         return AlertDialog.Builder(requireContext())
@@ -58,7 +58,7 @@ class PasswordPromptDialogFragment : DialogFragment() {
         inputIncomingServerPassword: Boolean,
         incomingServerName: String?,
         inputOutgoingServerPassword: Boolean,
-        outgoingServerName: String?
+        outgoingServerName: String?,
     ): View {
         val layoutInflater = LayoutInflater.from(requireContext())
         val view = layoutInflater.inflate(R.layout.password_prompt_dialog, null)
@@ -74,7 +74,7 @@ class PasswordPromptDialogFragment : DialogFragment() {
         passwordPromptIntro.text = resources.getQuantityString(
             R.plurals.settings_import_password_prompt,
             quantity,
-            accountName
+            accountName,
         )
         incomingServerNameView.text = getString(R.string.server_name_format, incomingServerName)
         outgoingServerNameView.text = getString(R.string.server_name_format, outgoingServerName)
@@ -132,7 +132,7 @@ class PasswordPromptDialogFragment : DialogFragment() {
             inputOutgoingServerPassword: Boolean,
             outgoingServerName: String?,
             targetFragment: Fragment,
-            requestCode: Int
+            requestCode: Int,
         ) = PasswordPromptDialogFragment().apply {
             arguments = bundleOf(
                 ARG_ACCOUNT_UUID to accountUuid,
@@ -140,7 +140,7 @@ class PasswordPromptDialogFragment : DialogFragment() {
                 ARG_INPUT_INCOMING_SERVER_PASSWORD to inputIncomingServerPassword,
                 ARG_INCOMING_SERVER_NAME to incomingServerName,
                 ARG_INPUT_OUTGOING_SERVER_PASSWORD to inputOutgoingServerPassword,
-                ARG_OUTGOING_SERVER_NAME to outgoingServerName
+                ARG_OUTGOING_SERVER_NAME to outgoingServerName,
             )
             setTargetFragment(targetFragment, requestCode)
         }

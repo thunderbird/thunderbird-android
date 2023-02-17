@@ -10,7 +10,7 @@ class ChunkedDatabaseOperationsTest {
         performChunkedOperation(
             arguments = emptyList(),
             argumentTransformation = Int::toString,
-            operation = ::failCallback
+            operation = ::failCallback,
         )
     }
 
@@ -20,7 +20,7 @@ class ChunkedDatabaseOperationsTest {
             arguments = listOf(1),
             argumentTransformation = Int::toString,
             chunkSize = 0,
-            operation = ::failCallback
+            operation = ::failCallback,
         )
     }
 
@@ -30,7 +30,7 @@ class ChunkedDatabaseOperationsTest {
             arguments = listOf(1),
             argumentTransformation = Int::toString,
             chunkSize = 1001,
-            operation = ::failCallback
+            operation = ::failCallback,
         )
     }
 
@@ -40,7 +40,7 @@ class ChunkedDatabaseOperationsTest {
 
         performChunkedOperation(
             arguments = listOf(1),
-            argumentTransformation = Int::toString
+            argumentTransformation = Int::toString,
         ) { selectionSet, selectionArguments ->
             chunks.add(selectionSet to selectionArguments)
             Unit
@@ -60,7 +60,7 @@ class ChunkedDatabaseOperationsTest {
         performChunkedOperation(
             arguments = listOf(1, 2),
             argumentTransformation = Int::toString,
-            chunkSize = 1
+            chunkSize = 1,
         ) { selectionSet, selectionArguments ->
             chunks.add(selectionSet to selectionArguments)
             Unit
@@ -84,7 +84,7 @@ class ChunkedDatabaseOperationsTest {
         performChunkedOperation(
             arguments = (1..14).toList(),
             argumentTransformation = Int::toString,
-            chunkSize = 5
+            chunkSize = 5,
         ) { selectionSet, selectionArguments ->
             chunks.add(selectionSet to selectionArguments)
             Unit

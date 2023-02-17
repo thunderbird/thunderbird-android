@@ -107,7 +107,7 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
 
     override fun onPreferenceStartScreen(
         caller: PreferenceFragmentCompat,
-        preferenceScreen: PreferenceScreen
+        preferenceScreen: PreferenceScreen,
     ): Boolean {
         fragmentTransactionWithBackStack {
             replace(R.id.accountSettingsContainer, AccountSettingsFragment.create(accountUuid, preferenceScreen.key))

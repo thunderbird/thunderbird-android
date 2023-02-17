@@ -36,7 +36,7 @@ class FolderSettingsProvider(private val folderRepository: FolderRepository) {
             syncClass,
             displayClass,
             notifyClass,
-            pushClass
+            pushClass,
         )
     }
 }
@@ -48,5 +48,5 @@ data class FolderSettings(
     val syncClass: FolderClass,
     val displayClass: FolderClass,
     val notifyClass: FolderClass,
-    val pushClass: FolderClass
+    val pushClass: FolderClass,
 )

@@ -112,7 +112,7 @@ class BackendIdleRefreshManager(private val alarmManager: SystemAlarmManager) : 
 
     internal inner class BackendIdleRefreshTimer(
         val triggerTime: Long,
-        val callback: Callback
+        val callback: Callback,
     ) : IdleRefreshTimer {
         override var isWaiting: Boolean = true
             private set

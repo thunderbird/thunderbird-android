@@ -23,9 +23,9 @@ constructor(
     defStyleAttr: Int = TypedArrayUtils.getAttr(
         context,
         androidx.preference.R.attr.preferenceStyle,
-        android.R.attr.preferenceStyle
+        android.R.attr.preferenceStyle,
     ),
-    defStyleRes: Int = 0
+    defStyleRes: Int = 0,
 ) : Preference(context, attrs, defStyleAttr, defStyleRes), PreferenceActivityResultListener {
     var receivedActivityResultJustNow = false
 
@@ -54,7 +54,7 @@ constructor(
             .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
             .putExtra(
                 RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI,
-                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),
             )
             .putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, title)
             .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)

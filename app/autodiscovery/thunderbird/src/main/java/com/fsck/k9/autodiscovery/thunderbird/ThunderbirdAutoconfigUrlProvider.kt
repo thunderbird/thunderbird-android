@@ -13,7 +13,7 @@ class ThunderbirdAutoconfigUrlProvider {
             createProviderUrl(domain, email),
             createDomainUrl(scheme = "https", domain),
             createDomainUrl(scheme = "http", domain),
-            createIspDbUrl(domain)
+            createIspDbUrl(domain),
         )
     }
 

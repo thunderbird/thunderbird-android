@@ -6,7 +6,7 @@ internal class ExpiringCache<KEY : Any, VALUE : Any>(
     private val clock: Clock,
     private val delegateCache: Cache<KEY, VALUE> = InMemoryCache(),
     private var lastClearTime: Long = clock.time,
-    private val cacheTimeValidity: Long = CACHE_TIME_VALIDITY_IN_MILLIS
+    private val cacheTimeValidity: Long = CACHE_TIME_VALIDITY_IN_MILLIS,
 ) : Cache<KEY, VALUE> {
 
     override fun get(key: KEY): VALUE? {

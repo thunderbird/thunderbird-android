@@ -46,7 +46,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
             showingThreadedList = K9.isThreadedViewEnabled,
             sortType = SortType.SORT_DATE,
             sortAscending = false,
-            sortDateAscending = false
+            sortDateAscending = false,
         )
 
         messageListItems = messageListLoader.getMessageList(messageListConfig)

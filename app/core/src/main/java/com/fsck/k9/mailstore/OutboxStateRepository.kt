@@ -18,7 +18,7 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
                 arrayOf(messageId.toString()),
                 null,
                 null,
-                null
+                null,
             ).use { cursor ->
                 if (!cursor.moveToFirst()) {
                     throw IllegalStateException("No outbox_state entry for message with id $messageId")
@@ -59,7 +59,7 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
                 "UPDATE $TABLE_NAME " +
                     "SET $COLUMN_NUMBER_OF_SEND_ATTEMPTS = $COLUMN_NUMBER_OF_SEND_ATTEMPTS + 1 " +
                     "WHERE $COLUMN_MESSAGE_ID = ?",
-                arrayOf(messageId.toString())
+                arrayOf(messageId.toString()),
             )
         }
     }
@@ -70,7 +70,7 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
                 "UPDATE $TABLE_NAME " +
                     "SET $COLUMN_NUMBER_OF_SEND_ATTEMPTS = $COLUMN_NUMBER_OF_SEND_ATTEMPTS - 1 " +
                     "WHERE $COLUMN_MESSAGE_ID = ?",
-                arrayOf(messageId.toString())
+                arrayOf(messageId.toString()),
             )
         }
     }
@@ -115,7 +115,7 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
             COLUMN_SEND_STATE,
             COLUMN_NUMBER_OF_SEND_ATTEMPTS,
             COLUMN_ERROR_TIMESTAMP,
-            COLUMN_ERROR
+            COLUMN_ERROR,
         )
     }
 }

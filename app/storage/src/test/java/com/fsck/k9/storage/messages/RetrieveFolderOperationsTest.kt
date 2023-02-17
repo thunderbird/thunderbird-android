@@ -30,7 +30,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             displayClass = "FIRST_CLASS",
             syncClass = "FIRST_CLASS",
             notifyClass = "NO_CLASS",
-            pushClass = "NO_CLASS"
+            pushClass = "NO_CLASS",
         )
 
         val result = retrieveFolderOperations.getFolder(folderId) { folder ->
@@ -64,7 +64,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             displayClass = FolderClass.FIRST_CLASS.name,
             syncClass = null,
             notifyClass = null,
-            pushClass = null
+            pushClass = null,
         )
 
         val result = retrieveFolderOperations.getFolder(folderId) { folder ->
@@ -104,7 +104,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             displayClass = "FIRST_CLASS",
             syncClass = "FIRST_CLASS",
             notifyClass = "NO_CLASS",
-            pushClass = "NO_CLASS"
+            pushClass = "NO_CLASS",
         )
 
         val result = retrieveFolderOperations.getFolder("folder1") { folder ->
@@ -144,7 +144,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             displayClass = "FIRST_CLASS",
             syncClass = "FIRST_CLASS",
             notifyClass = "NO_CLASS",
-            pushClass = "NO_CLASS"
+            pushClass = "NO_CLASS",
         )
 
         val result = retrieveFolderOperations.getFolders { folder ->
@@ -170,7 +170,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         val (folderId1, _, folderId3) = listOf(
             sqliteDatabase.createFolder(name = "Folder 1", isLocalOnly = false),
             sqliteDatabase.createFolder(name = "Folder 2", isLocalOnly = true),
-            sqliteDatabase.createFolder(name = "Folder 3", isLocalOnly = false)
+            sqliteDatabase.createFolder(name = "Folder 3", isLocalOnly = false),
         )
 
         val result = retrieveFolderOperations.getFolders(excludeLocalOnly = true) { folder ->
@@ -180,8 +180,8 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         assertThat(result).isEqualTo(
             listOf(
                 folderId1 to "Folder 1",
-                folderId3 to "Folder 3"
-            )
+                folderId3 to "Folder 3",
+            ),
         )
     }
 
@@ -197,12 +197,12 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         val (folderId1, folderId2, _) = listOf(
             sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"),
             sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"),
-            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS")
+            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS"),
         )
 
         val result = retrieveFolderOperations.getDisplayFolders(
             displayMode = FolderMode.FIRST_CLASS,
-            outboxFolderId = folderId2
+            outboxFolderId = folderId2,
         ) { folder ->
             folder.id to folder.name
         }
@@ -215,12 +215,12 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         val (folderId1, _, folderId3) = listOf(
             sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"),
             sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"),
-            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS")
+            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS"),
         )
 
         val result = retrieveFolderOperations.getDisplayFolders(
             displayMode = FolderMode.NOT_SECOND_CLASS,
-            outboxFolderId = folderId1
+            outboxFolderId = folderId1,
         ) { folder ->
             folder.id to folder.name
         }
@@ -228,8 +228,8 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         assertThat(result).isEqualTo(
             listOf(
                 folderId1 to "Folder 1",
-                folderId3 to "Folder 3"
-            )
+                folderId3 to "Folder 3",
+            ),
         )
     }
 
@@ -238,12 +238,12 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         val (folderId1, folderId2, _) = listOf(
             sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"),
             sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"),
-            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS")
+            sqliteDatabase.createFolder(name = "Folder 3", displayClass = "NO_CLASS"),
         )
 
         val result = retrieveFolderOperations.getDisplayFolders(
             displayMode = FolderMode.FIRST_AND_SECOND_CLASS,
-            outboxFolderId = folderId1
+            outboxFolderId = folderId1,
         ) { folder ->
             folder.id to folder.name
         }
@@ -251,8 +251,8 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         assertThat(result).isEqualTo(
             listOf(
                 folderId1 to "Folder 1",
-                folderId2 to "Folder 2"
-            )
+                folderId2 to "Folder 2",
+            ),
         )
     }
 
@@ -262,7 +262,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"),
             sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"),
             sqliteDatabase.createFolder(name = "Folder 3", displayClass = "FIRST_CLASS"),
-            sqliteDatabase.createFolder(name = "Folder 4", displayClass = "NO_CLASS")
+            sqliteDatabase.createFolder(name = "Folder 4", displayClass = "NO_CLASS"),
         )
         sqliteDatabase.createMessage(uid = "msg1", folderId = folderId1, read = true)
         sqliteDatabase.createMessage(uid = "msg2", folderId = folderId2, read = true)
@@ -272,7 +272,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
 
         val result = retrieveFolderOperations.getDisplayFolders(
             displayMode = FolderMode.ALL,
-            outboxFolderId = folderId2
+            outboxFolderId = folderId2,
         ) { folder ->
             Triple(folder.id, folder.name, folder.unreadMessageCount)
         }
@@ -283,8 +283,8 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
                 Triple(folderId1, "Folder 1", 0),
                 Triple(folderId2, "Folder 2", 1),
                 Triple(folderId3, "Folder 3", 2),
-                Triple(folderId4, "Folder 4", 0)
-            )
+                Triple(folderId4, "Folder 4", 0),
+            ),
         )
     }
 
@@ -292,7 +292,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     fun `get folder id`() {
         val (_, folderId2) = listOf(
             sqliteDatabase.createFolder(serverId = "folder1"),
-            sqliteDatabase.createFolder(serverId = "folder2")
+            sqliteDatabase.createFolder(serverId = "folder2"),
         )
 
         val result = retrieveFolderOperations.getFolderId(folderServerId = "folder2")
@@ -311,7 +311,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     fun `get folder server id`() {
         val (_, folderId2) = listOf(
             sqliteDatabase.createFolder(serverId = "folder1"),
-            sqliteDatabase.createFolder(serverId = "folder2")
+            sqliteDatabase.createFolder(serverId = "folder2"),
         )
 
         val result = retrieveFolderOperations.getFolderServerId(folderId2)

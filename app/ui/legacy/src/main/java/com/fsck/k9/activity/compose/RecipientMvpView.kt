@@ -19,7 +19,6 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.view.RecipientSelectView
 import com.fsck.k9.view.RecipientSelectView.Recipient
 import com.fsck.k9.view.ToolableViewAnimator
-import java.lang.AssertionError
 
 class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChangeListener, View.OnClickListener {
     private val toView: RecipientSelectView = activity.findViewById(R.id.to)
@@ -80,35 +79,41 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
 
     fun setPresenter(presenter: RecipientPresenter) {
         this.presenter = presenter
-        toView.setTokenListener(object : RecipientSelectView.TokenListener<Recipient> {
-            override fun onTokenAdded(recipient: Recipient) = presenter.onToTokenAdded()
+        toView.setTokenListener(
+            object : RecipientSelectView.TokenListener<Recipient> {
+                override fun onTokenAdded(recipient: Recipient) = presenter.onToTokenAdded()
 
-            override fun onTokenRemoved(recipient: Recipient) = presenter.onToTokenRemoved()
+                override fun onTokenRemoved(recipient: Recipient) = presenter.onToTokenRemoved()
 
-            override fun onTokenChanged(recipient: Recipient) = presenter.onToTokenChanged()
+                override fun onTokenChanged(recipient: Recipient) = presenter.onToTokenChanged()
 
-            override fun onTokenIgnored(token: Recipient) = Unit
-        })
+                override fun onTokenIgnored(token: Recipient) = Unit
+            },
+        )
 
-        ccView.setTokenListener(object : RecipientSelectView.TokenListener<Recipient> {
-            override fun onTokenAdded(recipient: Recipient) = presenter.onCcTokenAdded()
+        ccView.setTokenListener(
+            object : RecipientSelectView.TokenListener<Recipient> {
+                override fun onTokenAdded(recipient: Recipient) = presenter.onCcTokenAdded()
 
-            override fun onTokenRemoved(recipient: Recipient) = presenter.onCcTokenRemoved()
+                override fun onTokenRemoved(recipient: Recipient) = presenter.onCcTokenRemoved()
 
-            override fun onTokenChanged(recipient: Recipient) = presenter.onCcTokenChanged()
+                override fun onTokenChanged(recipient: Recipient) = presenter.onCcTokenChanged()
 
-            override fun onTokenIgnored(token: Recipient) = Unit
-        })
+                override fun onTokenIgnored(token: Recipient) = Unit
+            },
+        )
 
-        bccView.setTokenListener(object : RecipientSelectView.TokenListener<Recipient> {
-            override fun onTokenAdded(recipient: Recipient) = presenter.onBccTokenAdded()
+        bccView.setTokenListener(
+            object : RecipientSelectView.TokenListener<Recipient> {
+                override fun onTokenAdded(recipient: Recipient) = presenter.onBccTokenAdded()
 
-            override fun onTokenRemoved(recipient: Recipient) = presenter.onBccTokenRemoved()
+                override fun onTokenRemoved(recipient: Recipient) = presenter.onBccTokenRemoved()
 
-            override fun onTokenChanged(recipient: Recipient) = presenter.onBccTokenChanged()
+                override fun onTokenChanged(recipient: Recipient) = presenter.onBccTokenChanged()
 
-            override fun onTokenIgnored(token: Recipient) = Unit
-        })
+                override fun onTokenIgnored(token: Recipient) = Unit
+            },
+        )
     }
 
     fun addTextChangedListener(textWatcher: TextWatcher) {
@@ -396,14 +401,14 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
         ENABLED_ERROR(R.id.crypto_status_error),
         ENABLED_TRUSTED(R.id.crypto_status_trusted),
         AVAILABLE(R.id.crypto_status_disabled),
-        ERROR(R.id.crypto_status_error);
+        ERROR(R.id.crypto_status_error),
     }
 
     enum class CryptoSpecialModeDisplayType(val childIdToDisplay: Int) {
         NONE(VIEW_INDEX_HIDDEN),
         PGP_INLINE(R.id.crypto_special_inline),
         SIGN_ONLY(R.id.crypto_special_sign_only),
-        SIGN_ONLY_PGP_INLINE(R.id.crypto_special_sign_only_inline);
+        SIGN_ONLY_PGP_INLINE(R.id.crypto_special_sign_only_inline),
     }
 
     companion object {

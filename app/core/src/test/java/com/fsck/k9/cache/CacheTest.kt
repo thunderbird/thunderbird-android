@@ -8,7 +8,7 @@ import org.junit.runners.Parameterized
 
 data class CacheTestData<KEY : Any, VALUE : Any>(
     val name: String,
-    val createCache: () -> Cache<KEY, VALUE>
+    val createCache: () -> Cache<KEY, VALUE>,
 ) {
     override fun toString(): String = name
 }
@@ -25,7 +25,7 @@ class CacheTest(data: CacheTestData<Any, Any>) {
             return listOf(
                 CacheTestData("InMemoryCache") { InMemoryCache() },
                 CacheTestData("ExpiringCache") { ExpiringCache(TestClock(), InMemoryCache()) },
-                CacheTestData("SynchronizedCache") { SynchronizedCache(InMemoryCache()) }
+                CacheTestData("SynchronizedCache") { SynchronizedCache(InMemoryCache()) },
             )
         }
 

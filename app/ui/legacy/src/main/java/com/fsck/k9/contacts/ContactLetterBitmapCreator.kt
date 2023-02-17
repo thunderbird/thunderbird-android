@@ -11,7 +11,7 @@ import com.fsck.k9.mail.Address
  */
 class ContactLetterBitmapCreator(
     private val letterExtractor: ContactLetterExtractor,
-    val config: ContactLetterBitmapConfig
+    val config: ContactLetterBitmapConfig,
 ) {
     fun drawBitmap(bitmap: Bitmap, pictureSizeInPx: Int, address: Address): Bitmap {
         val canvas = Canvas(bitmap)
@@ -36,7 +36,7 @@ class ContactLetterBitmapCreator(
             letter,
             pictureSizeInPx / 2f - width / 2f,
             pictureSizeInPx / 2f + rect.height() / 2f,
-            paint
+            paint,
         )
 
         return bitmap

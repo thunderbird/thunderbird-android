@@ -53,7 +53,7 @@ class SettingsExportFragment : Fragment() {
             addEventHook(
                 CheckBoxClickEvent { position, isSelected ->
                     viewModel.onSettingsListItemSelected(position, isSelected)
-                }
+                },
             )
         }
 

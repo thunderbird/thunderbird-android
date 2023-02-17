@@ -9,13 +9,13 @@ import com.fsck.k9.ui.helper.HtmlSettingsProvider
 
 class MessageLoaderHelperFactory(
     private val messageViewInfoExtractorFactory: MessageViewInfoExtractorFactory,
-    private val htmlSettingsProvider: HtmlSettingsProvider
+    private val htmlSettingsProvider: HtmlSettingsProvider,
 ) {
     fun createForMessageView(
         context: Context,
         loaderManager: LoaderManager,
         fragmentManager: FragmentManager,
-        callback: MessageLoaderCallbacks
+        callback: MessageLoaderCallbacks,
     ): MessageLoaderHelper {
         val htmlSettings = htmlSettingsProvider.createForMessageView()
         val messageViewInfoExtractor = messageViewInfoExtractorFactory.create(htmlSettings)
@@ -26,7 +26,7 @@ class MessageLoaderHelperFactory(
         context: Context,
         loaderManager: LoaderManager,
         fragmentManager: FragmentManager,
-        callback: MessageLoaderCallbacks
+        callback: MessageLoaderCallbacks,
     ): MessageLoaderHelper {
         val htmlSettings = htmlSettingsProvider.createForMessageCompose()
         val messageViewInfoExtractor = messageViewInfoExtractorFactory.create(htmlSettings)

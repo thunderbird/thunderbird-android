@@ -7,5 +7,5 @@ data class JmapUploadResponse(
     val accountId: String,
     val blobId: String,
     val type: String,
-    val size: Long
+    val size: Long,
 )
