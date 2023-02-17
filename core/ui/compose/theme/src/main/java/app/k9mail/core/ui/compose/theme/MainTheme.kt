@@ -36,8 +36,8 @@ fun MainTheme(
     ) {
         MaterialTheme(
             colors = colors,
-            typography = Typography,
-            shapes = Shapes,
+            typography = typography,
+            shapes = shapes,
             content = content
         )
     }

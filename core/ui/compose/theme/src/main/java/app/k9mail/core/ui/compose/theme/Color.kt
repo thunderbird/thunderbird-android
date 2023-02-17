@@ -194,11 +194,11 @@ val material_lime_900 = Color(0xFF827717)
 val material_orange_50 = Color(0xFFFFF3E0)
 val material_orange_100 = Color(0xFFFFE0B2)
 val material_orange_200 = Color(0xFFFFCC80)
-val material_orange_300 = Color(0xFFFFB74D) //
+val material_orange_300 = Color(0xFFFFB74D)
 val material_orange_400 = Color(0xFFFFA726)
 val material_orange_500 = Color(0xFFFF9800)
 val material_orange_600 = Color(0xFFFB8C00)
-val material_orange_700 = Color(0xFFF57C00) //
+val material_orange_700 = Color(0xFFF57C00)
 val material_orange_800 = Color(0xFFEF6C00)
 val material_orange_900 = Color(0xFFE65100)
 
