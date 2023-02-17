@@ -9,7 +9,7 @@ data class Sizes(
     val small: Dp = 16.dp,
     val medium: Dp = 32.dp,
     val large: Dp = 64.dp,
-    val larger: Dp = 128.dp
+    val larger: Dp = 128.dp,
 )
 
 internal val LocalSizes = staticCompositionLocalOf { Sizes() }

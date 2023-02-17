@@ -15,7 +15,7 @@ fun MainTheme(
     lightImages: Images,
     darkImages: Images,
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colors = if (darkTheme) {
         darkColorPalette
@@ -32,13 +32,13 @@ fun MainTheme(
         LocalElevations provides Elevations(),
         LocalImages provides images,
         LocalSizes provides Sizes(),
-        LocalSpacings provides Spacings()
+        LocalSpacings provides Spacings(),
     ) {
         MaterialTheme(
             colors = colors,
             typography = typography,
             shapes = shapes,
-            content = content
+            content = content,
         )
     }
 }

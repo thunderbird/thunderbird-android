@@ -17,7 +17,7 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 @Composable
 fun MainView() {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         K9Theme {
             MainContent(name = "K-9")
@@ -36,7 +36,7 @@ fun MainView() {
 
 @Composable
 fun MainContent(
-    name: String
+    name: String,
 ) {
     Surface(modifier = Modifier.fillMaxWidth(), color = MainTheme.colors.background) {
         Column {

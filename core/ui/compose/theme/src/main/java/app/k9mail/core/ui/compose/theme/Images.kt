@@ -6,7 +6,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 
 @Immutable
 data class Images(
-    @DrawableRes val logo: Int
+    @DrawableRes val logo: Int,
 )
 
 internal val LocalImages = staticCompositionLocalOf<Images> {

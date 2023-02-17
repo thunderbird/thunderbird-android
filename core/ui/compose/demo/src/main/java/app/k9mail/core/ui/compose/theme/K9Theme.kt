@@ -9,20 +9,20 @@ private val k9LightColorPalette = lightColors(
     primary = material_gray_800,
     primaryVariant = material_gray_700,
     secondary = material_pink_500,
-    secondaryVariant = material_pink_300
+    secondaryVariant = material_pink_300,
 )
 
 private val k9DarkColorPalette = darkColors(
     primary = material_gray_100,
     primaryVariant = material_gray_50,
     secondary = material_pink_300,
-    secondaryVariant = material_pink_500
+    secondaryVariant = material_pink_500,
 )
 
 @Composable
 fun K9Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val images = Images(logo = app.k9mail.core.ui.compose.demo.R.drawable.logo_orange)
 
@@ -32,6 +32,6 @@ fun K9Theme(
         lightImages = images,
         darkImages = images,
         darkTheme = darkTheme,
-        content = content
+        content = content,
     )
 }
