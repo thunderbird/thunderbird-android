@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    id "thunderbird.library.android"
     alias(libs.plugins.kotlin.parcelize)
 }
 
@@ -60,13 +59,7 @@ dependencies {
     testImplementation project(':app:testing')
     testImplementation libs.robolectric
     testImplementation libs.androidx.test.core
-    testImplementation libs.junit
     testImplementation libs.kotlin.test
-    testImplementation libs.truth
-    testImplementation libs.mockito.inline
-    testImplementation libs.mockito.kotlin
-    testImplementation libs.koin.test
-    testImplementation libs.koin.test.junit4
     testImplementation libs.kotlinx.coroutines.test
     testImplementation libs.turbine
 }
@@ -75,7 +68,7 @@ android {
     namespace 'com.fsck.k9.ui'
 
     buildFeatures {
-        buildConfig true
+        buildConfig = true
     }
 
     buildTypes {

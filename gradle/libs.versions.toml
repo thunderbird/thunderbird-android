@@ -134,4 +134,6 @@ shared-jvm-test = [
   "truth",
   "mockito-inline",
   "mockito-kotlin",
+  "koin-test",
+  "koin-test-junit4",
 ]

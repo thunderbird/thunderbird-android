@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    id "thunderbird.library.android"
 }
 
 dependencies {
@@ -16,12 +15,6 @@ dependencies {
     testImplementation project(':mail:testing')
     testImplementation project(':app:testing')
     testImplementation libs.robolectric
-    testImplementation libs.junit
-    testImplementation libs.truth
-    testImplementation libs.mockito.inline
-    testImplementation libs.mockito.kotlin
-    testImplementation libs.koin.test
-    testImplementation libs.koin.test.junit4
     testImplementation libs.commons.io
 }
 
