@@ -5,10 +5,10 @@
 1. Download `tb-android keystore` from 1Password and place it somewhere outside the root of the Git repository.
 2. Add the following to `~/.gradle/gradle.properties` (create the file if necessary)
    ```
-   storeFile=<path to keystore>
-   storePassword=<password 'tb-android keystore' in 1Password>
-   keyAlias=k9mail
-   keyPassword=<password 'k9mail@tb-android' in 1Password>
+   k9mail.storeFile=<path to keystore>
+   k9mail.storePassword=<password 'tb-android keystore' in 1Password>
+   k9mail.keyAlias=k9mail
+   k9mail.keyPassword=<password 'k9mail@tb-android' in 1Password>
    ```
 
 ## Release a beta version

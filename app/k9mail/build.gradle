@@ -119,15 +119,15 @@ android {
     }
 }
 
-if (project.hasProperty('keyAlias')) {
-    android.signingConfigs.release.keyAlias = keyAlias
+if (project.hasProperty('k9mail.keyAlias')) {
+    android.signingConfigs.release.keyAlias = project.property('k9mail.keyAlias')
 }
-if (project.hasProperty('keyPassword')) {
-    android.signingConfigs.release.keyPassword = keyPassword
+if (project.hasProperty('k9mail.keyPassword')) {
+    android.signingConfigs.release.keyPassword = project.property('k9mail.keyPassword')
 }
-if (project.hasProperty('storeFile')) {
-    android.signingConfigs.release.storeFile = file(storeFile)
+if (project.hasProperty('k9mail.storeFile')) {
+    android.signingConfigs.release.storeFile = file(project.property('k9mail.storeFile'))
 }
-if (project.hasProperty('storePassword')) {
-    android.signingConfigs.release.storePassword = storePassword
+if (project.hasProperty('k9mail.storePassword')) {
+    android.signingConfigs.release.storePassword = project.property('k9mail.storePassword')
 }
