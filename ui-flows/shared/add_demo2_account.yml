@@ -1,0 +1,37 @@
+appId: com.fsck.k9.debug
+---
+
+# Open drawer
+- tapOn: "Navigate up"
+
+## Open settings
+- tapOn:
+    id: "com.fsck.k9.debug:id/material_drawer_name"
+    index: 9
+
+## Add new account
+- tapOn:
+    id: "com.fsck.k9.debug:id/text"
+    index: 2
+
+# Welcome
+- tapOn:
+    id: "com.fsck.k9.debug:id/next"
+
+## Setup new account
+- tapOn:
+    id: "com.fsck.k9.debug:id/account_email"
+- inputText: "demo2@k9mail.example"
+- tapOn:
+    id: "com.fsck.k9.debug:id/next"
+
+## Account name configuration
+- tapOn:
+    id: "com.fsck.k9.debug:id/account_description"
+- inputText: "Demo2 Account"
+- tapOn:
+    id: "com.fsck.k9.debug:id/account_name"
+- eraseText
+- inputText: "Demo2 User"
+- tapOn:
+    id: "com.fsck.k9.debug:id/done"
