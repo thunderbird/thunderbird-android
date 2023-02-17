@@ -22,7 +22,6 @@ internal class ParticipantItem(
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<ParticipantItem>(view) {
         val menuAddContact: View = view.findViewById(R.id.menu_add_contact)
-        val menuCompose: View = view.findViewById(R.id.menu_compose)
         val menuOverflow: View = view.findViewById(R.id.menu_overflow)
 
         private val contactPicture: ImageView = view.findViewById(R.id.contact_picture)
@@ -32,7 +31,6 @@ internal class ParticipantItem(
 
         init {
             TooltipCompat.setTooltipText(menuAddContact, menuAddContact.contentDescription)
-            TooltipCompat.setTooltipText(menuCompose, menuCompose.contentDescription)
             TooltipCompat.setTooltipText(menuOverflow, menuOverflow.contentDescription)
         }
 

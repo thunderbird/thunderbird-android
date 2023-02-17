@@ -1322,6 +1322,8 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
     <!-- Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->
     <string name="action_add_to_contacts">Add to contacts</string>
+    <!-- Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->
+    <string name="action_compose_message_to">Compose message to</string>
     <!-- Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->
     <string name="action_copy_email_address">Copy email address</string>
     <!-- Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->

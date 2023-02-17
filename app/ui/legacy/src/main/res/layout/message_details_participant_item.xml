@@ -68,22 +68,9 @@
         android:contentDescription="@string/action_add_to_contacts"
         android:focusable="true"
         android:paddingHorizontal="12dp"
-        app:layout_constraintEnd_toStartOf="@+id/menu_compose"
-        app:layout_constraintTop_toTopOf="@+id/menu_compose"
-        app:srcCompat="?attr/messageDetailsAddContactIcon" />
-
-    <ImageView
-        android:id="@+id/menu_compose"
-        android:layout_width="48dp"
-        android:layout_height="72dp"
-        android:background="?attr/controlBackground"
-        android:clickable="true"
-        android:contentDescription="@string/compose_action"
-        android:focusable="true"
-        android:paddingHorizontal="12dp"
         app:layout_constraintEnd_toStartOf="@id/menu_overflow"
         app:layout_constraintTop_toTopOf="@+id/menu_overflow"
-        app:srcCompat="@drawable/ic_envelope" />
+        app:srcCompat="?attr/messageDetailsAddContactIcon" />
 
     <ImageView
         android:id="@+id/menu_overflow"
