@@ -39,11 +39,11 @@ internal class ParticipantItem(
 
             if (participant.displayName != null) {
                 name.text = participant.displayName
-                email.text = participant.emailAddress
             } else {
-                name.text = participant.emailAddress
-                email.isVisible = false
+                name.isVisible = false
             }
+            email.text = participant.emailAddress
+
             menuAddContact.isVisible = !participant.isInContacts
 
             if (item.showContactsPicture) {
@@ -60,8 +60,8 @@ internal class ParticipantItem(
 
         override fun unbindView(item: ParticipantItem) {
             name.text = null
+            name.isVisible = true
             email.text = null
-            email.isVisible = true
             contactPicture.isVisible = true
             itemView.background = originalBackground
             itemView.isClickable = true
