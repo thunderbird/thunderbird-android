@@ -17,7 +17,6 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -263,6 +262,9 @@ class MessageListAdapter internal constructor(
         holder.chip.isVisible = appearance.showAccountChip
 
         appearance.fontSizes.setViewTextSize(holder.subject, subjectViewFontSize)
+        if (subjectViewFontSize != FontSizes.FONT_DEFAULT) {
+            holder.chip.setTextSizeSp(subjectViewFontSize)
+        }
 
         appearance.fontSizes.setViewTextSize(holder.date, appearance.fontSizes.messageListDate)
 
@@ -325,9 +327,7 @@ class MessageListAdapter internal constructor(
             val subject = MlfUtils.buildSubject(subject, res.getString(R.string.general_no_subject), displayThreadCount)
 
             if (appearance.showAccountChip) {
-                val accountChipDrawable = holder.chip.drawable.mutate()
-                DrawableCompat.setTint(accountChipDrawable, account.chipColor)
-                holder.chip.setImageDrawable(accountChipDrawable)
+                holder.chip.setColor(account.chipColor)
             }
 
             if (appearance.stars) {
