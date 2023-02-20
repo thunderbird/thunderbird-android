@@ -1,19 +1,9 @@
 plugins {
-    id("thunderbird.app.android.default")
+    id("thunderbird.library.android")
 }
 
 android {
     configureSharedComposeConfig(libs)
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-    }
 }
 
 dependencies {
@@ -32,6 +22,4 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
     implementation(libs.androidx.compose.lifecycle.viewmodel)
-
-    implementation(libs.androidx.compose.activity)
 }
