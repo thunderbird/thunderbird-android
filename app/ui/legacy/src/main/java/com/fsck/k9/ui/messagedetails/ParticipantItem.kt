@@ -22,7 +22,6 @@ internal class ParticipantItem(
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<ParticipantItem>(view) {
         val menuAddContact: View = view.findViewById(R.id.menu_add_contact)
-        val menuCompose: View = view.findViewById(R.id.menu_compose)
         val menuOverflow: View = view.findViewById(R.id.menu_overflow)
 
         private val contactPicture: ImageView = view.findViewById(R.id.contact_picture)
@@ -32,7 +31,6 @@ internal class ParticipantItem(
 
         init {
             TooltipCompat.setTooltipText(menuAddContact, menuAddContact.contentDescription)
-            TooltipCompat.setTooltipText(menuCompose, menuCompose.contentDescription)
             TooltipCompat.setTooltipText(menuOverflow, menuOverflow.contentDescription)
         }
 
@@ -41,11 +39,11 @@ internal class ParticipantItem(
 
             if (participant.displayName != null) {
                 name.text = participant.displayName
-                email.text = participant.emailAddress
             } else {
-                name.text = participant.emailAddress
-                email.isVisible = false
+                name.isVisible = false
             }
+            email.text = participant.emailAddress
+
             menuAddContact.isVisible = !participant.isInContacts
 
             if (item.showContactsPicture) {
@@ -62,8 +60,8 @@ internal class ParticipantItem(
 
         override fun unbindView(item: ParticipantItem) {
             name.text = null
+            name.isVisible = true
             email.text = null
-            email.isVisible = true
             contactPicture.isVisible = true
             itemView.background = originalBackground
             itemView.isClickable = true

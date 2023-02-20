@@ -1,12 +1,15 @@
 package com.fsck.k9.ui.messagedetails
 
+import android.content.res.Resources
 import android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import com.fsck.k9.Account
+import com.fsck.k9.Identity
 import com.fsck.k9.K9
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
+import com.fsck.k9.ui.R
 
 /**
  * Get the display name for a participant to be shown in the message details screen.
@@ -19,17 +22,26 @@ internal class RealMessageDetailsParticipantFormatter(
     private val contactNameProvider: ContactNameProvider,
     private val showContactNames: Boolean,
     private val contactNameColor: Int?,
+    private val meText: String,
 ) : MessageDetailsParticipantFormatter {
     override fun getDisplayName(address: Address, account: Account): CharSequence? {
-        val identityDisplayName = account.findIdentity(address)?.name
-        if (identityDisplayName != null) {
-            return identityDisplayName
+        val identity = account.findIdentity(address)
+        if (identity != null) {
+            return getIdentityName(identity, account)
         }
 
         return if (showContactNames) {
             getContactNameOrNull(address) ?: address.personal
         } else {
             address.personal
+        }
+    }
+
+    private fun getIdentityName(identity: Identity, account: Account): String {
+        return if (account.identities.size == 1) {
+            meText
+        } else {
+            identity.description ?: identity.name ?: meText
         }
     }
 
@@ -48,10 +60,12 @@ internal class RealMessageDetailsParticipantFormatter(
 
 internal fun createMessageDetailsParticipantFormatter(
     contactNameProvider: ContactNameProvider,
+    resources: Resources,
 ): MessageDetailsParticipantFormatter {
     return RealMessageDetailsParticipantFormatter(
         contactNameProvider = contactNameProvider,
         showContactNames = K9.isShowContactName,
         contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null,
+        meText = resources.getString(R.string.message_view_me_text),
     )
 }

@@ -13,6 +13,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
@@ -153,7 +154,6 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
             addEventHook(cryptoStatusClickEventHook)
             addEventHook(participantClickEventHook)
             addEventHook(addToContactsClickEventHook)
-            addEventHook(composeClickEventHook)
             addEventHook(overflowClickEventHook)
         }
 
@@ -242,34 +242,6 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         addToContactsLauncher.launch(context = requireContext(), name = address.personal, email = address.address)
     }
 
-    private val composeClickEventHook = object : ClickEventHook<ParticipantItem>() {
-        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
-            return if (viewHolder is ParticipantItem.ViewHolder) {
-                viewHolder.menuCompose
-            } else {
-                null
-            }
-        }
-
-        override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<ParticipantItem>, item: ParticipantItem) {
-            val address = item.participant.address
-            composeMessageToAddress(address)
-        }
-    }
-
-    private fun composeMessageToAddress(address: Address) {
-        // TODO: Use the identity this message was sent to as sender identity
-
-        val intent = Intent(context, MessageCompose::class.java).apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(address.toString()))
-            putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
-        }
-
-        dismiss()
-        requireContext().startActivity(intent)
-    }
-
     private val overflowClickEventHook = object : ClickEventHook<ParticipantItem>() {
         override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
             return if (viewHolder is ParticipantItem.ViewHolder) {
@@ -289,8 +261,11 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
             inflate(R.menu.participant_overflow_menu)
         }
 
+        val menu = popupMenu.menu
+        MenuCompat.setGroupDividerEnabled(menu, true)
+
         if (participant.address.personal == null) {
-            popupMenu.menu.findItem(R.id.copy_name_and_email_address).isVisible = false
+            menu.findItem(R.id.copy_name_and_email_address).isVisible = false
         }
 
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
@@ -303,9 +278,23 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
 
     private fun onOverflowMenuItemClick(itemId: Int, participant: Participant) {
         when (itemId) {
+            R.id.compose_to -> composeMessageToAddress(participant.address)
             R.id.copy_email_address -> viewModel.onCopyEmailAddressToClipboard(participant)
             R.id.copy_name_and_email_address -> viewModel.onCopyNameAndEmailAddressToClipboard(participant)
         }
+    }
+
+    private fun composeMessageToAddress(address: Address) {
+        // TODO: Use the identity this message was sent to as sender identity
+
+        val intent = Intent(context, MessageCompose::class.java).apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(address.toString()))
+            putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
+        }
+
+        dismiss()
+        requireContext().startActivity(intent)
     }
 
     private fun showCryptoKeys(pendingIntent: PendingIntent) {

@@ -14,6 +14,7 @@ import org.junit.Test
 
 private const val IDENTITY_NAME = "Alice"
 private const val IDENTITY_ADDRESS = "me@domain.example"
+private const val ME_TEXT = "me"
 
 class MessageDetailsParticipantFormatterTest : RobolectricTest() {
     private val contactNameProvider = object : ContactNameProvider {
@@ -33,7 +34,19 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
     private val participantFormatter = createParticipantFormatter()
 
     @Test
-    fun `identity address`() {
+    fun `identity address with single identity`() {
+        val displayName = participantFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"), account)
+
+        assertThat(displayName).isEqualTo(ME_TEXT)
+    }
+
+    @Test
+    fun `identity address with multiple identities`() {
+        val account = Account("uuid").apply {
+            identities += Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS)
+            identities += Identity(name = "Another identity", email = "irrelevant@domain.example")
+        }
+
         val displayName = participantFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"), account)
 
         assertThat(displayName).isEqualTo(IDENTITY_NAME)
@@ -47,18 +60,19 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
         val displayName = participantFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "Bob"), account)
 
-        assertThat(displayName).isEqualTo("Bob")
+        assertThat(displayName).isEqualTo(ME_TEXT)
     }
 
     @Test
     fun `identity and address without a display name`() {
         val account = Account("uuid").apply {
             identities += Identity(name = null, email = IDENTITY_ADDRESS)
+            identities += Identity(name = "Another identity", email = "irrelevant@domain.example")
         }
 
         val displayName = participantFormatter.getDisplayName(Address(IDENTITY_ADDRESS), account)
 
-        assertThat(displayName).isNull()
+        assertThat(displayName).isEqualTo(ME_TEXT)
     }
 
     @Test
@@ -118,6 +132,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
             contactNameProvider = contactNameProvider,
             showContactNames = showContactNames,
             contactNameColor = contactNameColor,
+            meText = ME_TEXT,
         )
     }
 }
