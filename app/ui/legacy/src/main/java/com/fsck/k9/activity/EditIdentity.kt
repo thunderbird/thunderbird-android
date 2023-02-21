@@ -95,7 +95,7 @@ class EditIdentity : K9Activity() {
     }
 
     private fun isValidEmailAddress(textView: TextView): Boolean {
-        return emailAddressValidator.isValidAddressOnly(textView.text)
+        return emailAddressValidator.isValidAddressOnly(textView.text.trim())
     }
 
     private fun isValidEmailAddressOrEmpty(textView: TextView): Boolean {
@@ -105,11 +105,11 @@ class EditIdentity : K9Activity() {
     private fun saveIdentity() {
         identity = identity.copy(
             description = description.text.toString().takeUnless { it.isBlank() },
-            email = email.text.toString(),
+            email = email.text.toString().trim(),
             name = name.text.toString().takeUnless { it.isBlank() },
             signatureUse = signatureUse.isChecked,
             signature = signature.text.toString(),
-            replyTo = replyTo.text.toString().takeUnless { it.isBlank() },
+            replyTo = replyTo.text.toString().trim().takeUnless { it.isBlank() },
         )
 
         val identities = account.identities
