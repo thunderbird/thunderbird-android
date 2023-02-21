@@ -25,5 +25,6 @@ internal object StorageMigrations {
         if (oldVersion < 17) StorageMigrationTo17(db, migrationsHelper).rewriteNotificationLightSettings()
         if (oldVersion < 18) StorageMigrationTo18(db, migrationsHelper).rewriteImapCompressionSettings()
         if (oldVersion < 19) StorageMigrationTo19(db, migrationsHelper).markGmailAccounts()
+        if (oldVersion < 20) StorageMigrationTo20(db, migrationsHelper).fixIdentities()
     }
 }
