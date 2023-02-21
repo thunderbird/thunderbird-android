@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 data class Spacings(
     val quarter: Dp = 2.dp,
     val half: Dp = 4.dp,
-    val single: Dp = 8.dp,
+    val default: Dp = 8.dp,
     val oneHalf: Dp = 12.dp,
     val double: Dp = 16.dp,
     val triple: Dp = 24.dp,
