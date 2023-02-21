@@ -11,9 +11,12 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun PreviewWithThemes(
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    Column {
+    Column(
+        modifier = modifier,
+    ) {
         PreviewHeader(themeName = "K9Theme")
         K9Theme {
             PreviewSurface(content = content)

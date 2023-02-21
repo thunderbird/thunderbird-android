@@ -40,6 +40,7 @@ include(
 
 include(
     ":core:ui:compose:demo",
+    ":core:ui:compose:designsystem",
     ":core:ui:compose:theme",
 )
 

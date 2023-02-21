@@ -13,7 +13,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.theme)
+    implementation(projects.core.ui.compose.designsystem)
 
     androidTestImplementation(libs.androidx.test.ext.junit.ktx)
     androidTestImplementation(libs.androidx.test.espresso.core)

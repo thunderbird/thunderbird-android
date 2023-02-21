@@ -1,9 +1,11 @@
 package app.k9mail.core.ui.compose.theme
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@Immutable
 data class Sizes(
     val smaller: Dp = 8.dp,
     val small: Dp = 16.dp,
