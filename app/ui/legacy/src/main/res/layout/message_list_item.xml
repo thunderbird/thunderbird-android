@@ -55,24 +55,20 @@
         app:layout_goneMarginEnd="16dp"
         tools:text="Message preview" />
 
-    <ImageView
+    <com.fsck.k9.ui.messagelist.AccountChip
         android:id="@+id/account_color_chip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:paddingStart="0dp"
-        android:paddingEnd="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/subject"
-        app:layout_constraintStart_toEndOf="@+id/barrier_start"
+        android:layout_width="3dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="4dp"
         app:layout_constraintTop_toTopOf="@+id/subject"
-        app:srcCompat="@drawable/ic_account_color"
-        tools:tint="#FF1976D2" />
+        app:layout_constraintBottom_toBottomOf="@+id/subject"
+        app:layout_constraintEnd_toEndOf="@+id/barrier_start" />
 
     <ImageView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/account_color_chip"
+        app:layout_constraintStart_toEndOf="@+id/barrier_start"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:srcCompat="?attr/messageListAnswered"
         tools:src="@drawable/ic_messagelist_answered" />
