@@ -24,7 +24,7 @@ fun ThunderbirdTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val images = Images(logo = app.k9mail.core.ui.compose.demo.R.drawable.logo_teal)
+    val images = Images(logo = R.drawable.logo_teal)
 
     MainTheme(
         lightColorPalette = thunderbirdLightColorPalette,
