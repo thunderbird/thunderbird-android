@@ -10,12 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.identity.IdentityFormatter;
+
 import java.util.List;
 
 public class ChooseIdentity extends K9ListActivity {
+    private final IdentityFormatter identityFormatter = DI.get(IdentityFormatter.class);
+
     Account mAccount;
     ArrayAdapter<String> adapter;
 
@@ -59,11 +64,8 @@ public class ChooseIdentity extends K9ListActivity {
 
         identities = mAccount.getIdentities();
         for (Identity identity : identities) {
-            String description = identity.getDescription();
-            if (description == null || description.trim().isEmpty()) {
-                description = getString(R.string.message_view_from_format, identity.getName(), identity.getEmail());
-            }
-            adapter.add(description);
+            String identityDisplayName = identityFormatter.getDisplayName(identity);
+            adapter.add(identityDisplayName);
         }
 
         adapter.notifyDataSetChanged();

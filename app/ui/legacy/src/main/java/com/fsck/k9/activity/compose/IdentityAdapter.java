@@ -8,9 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.identity.IdentityFormatter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +26,8 @@ import java.util.List;
  * </p>
  */
 public class IdentityAdapter extends BaseAdapter {
+    private final IdentityFormatter identityFormatter = DI.get(IdentityFormatter.class);
+
     private LayoutInflater mLayoutInflater;
     private List<Object> mItems;
 
@@ -114,14 +118,10 @@ public class IdentityAdapter extends BaseAdapter {
             Identity identity = identityContainer.identity;
             IdentityHolder holder = (IdentityHolder) view.getTag();
             holder.name.setText(identity.getDescription());
-            holder.description.setText(getIdentityDescription(identity));
+            holder.description.setText(identityFormatter.getEmailDisplayName(identity));
         }
 
         return view;
-    }
-
-    private static String getIdentityDescription(Identity identity) {
-        return String.format("%s <%s>", identity.getName(), identity.getEmail());
     }
 
     /**
