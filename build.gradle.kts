@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
 
     id("thunderbird.quality.spotless")
+    id("thunderbird.quality.detekt")
 }
 
 val propertyTestCoverage: String? by extra
