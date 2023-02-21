@@ -363,6 +363,8 @@ class MessageListAdapter internal constructor(
                 holder.subject.text = subject
             }
 
+            holder.date.typeface = Typeface.create(holder.date.typeface, maybeBoldTypeface)
+            holder.date.setTextColor(textColor)
             holder.date.text = displayDate
             holder.attachment.isVisible = hasAttachments
 
