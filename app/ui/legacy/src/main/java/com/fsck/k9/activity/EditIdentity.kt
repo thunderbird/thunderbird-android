@@ -104,12 +104,12 @@ class EditIdentity : K9Activity() {
 
     private fun saveIdentity() {
         identity = identity.copy(
-            description = description.text.toString(),
+            description = description.text.toString().takeUnless { it.isBlank() },
             email = email.text.toString(),
-            name = name.text.toString(),
+            name = name.text.toString().takeUnless { it.isBlank() },
             signatureUse = signatureUse.isChecked,
             signature = signature.text.toString(),
-            replyTo = if (replyTo.text.isNotEmpty()) replyTo.text.toString() else null,
+            replyTo = replyTo.text.toString().takeUnless { it.isBlank() },
         )
 
         val identities = account.identities
