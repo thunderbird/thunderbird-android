@@ -7,13 +7,18 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import com.fsck.k9.Account
+import com.fsck.k9.EmailAddressValidator
 import com.fsck.k9.Identity
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
+import org.koin.android.ext.android.inject
 
 class EditIdentity : K9Activity() {
+    private val emailAddressValidator: EmailAddressValidator by inject()
+
     private lateinit var account: Account
     private lateinit var identity: Identity
 
@@ -26,6 +31,7 @@ class EditIdentity : K9Activity() {
     private lateinit var signatureLayout: View
 
     private var identityIndex: Int = 0
+    private var isSaveActionEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +77,29 @@ class EditIdentity : K9Activity() {
         } else {
             signatureLayout.isVisible = false
         }
+
+        setTextChangedListeners()
+        validateFields()
+    }
+
+    private fun setTextChangedListeners() {
+        email.doAfterTextChanged { validateFields() }
+        replyTo.doAfterTextChanged { validateFields() }
+    }
+
+    private fun validateFields() {
+        val valid = isValidEmailAddress(email) && isValidEmailAddressOrEmpty(replyTo)
+
+        isSaveActionEnabled = valid
+        invalidateOptionsMenu()
+    }
+
+    private fun isValidEmailAddress(textView: TextView): Boolean {
+        return emailAddressValidator.isValidAddressOnly(textView.text)
+    }
+
+    private fun isValidEmailAddressOrEmpty(textView: TextView): Boolean {
+        return textView.text.isBlank() || isValidEmailAddress(textView)
     }
 
     private fun saveIdentity() {
@@ -103,6 +132,11 @@ class EditIdentity : K9Activity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.edit_identity_menu, menu)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        menu.findItem(R.id.edit_identity_save).isEnabled = isSaveActionEnabled
         return true
     }
 
