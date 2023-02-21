@@ -343,7 +343,9 @@ class MessageListAdapter internal constructor(
             val messageStringBuilder = SpannableStringBuilder(beforePreviewText)
             if (appearance.previewLines > 0) {
                 val preview = getPreview(isMessageEncrypted, previewText)
-                messageStringBuilder.append(" ").append(preview)
+                if (preview.isNotEmpty()) {
+                    messageStringBuilder.append(" – ").append(preview)
+                }
             }
             holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
 
