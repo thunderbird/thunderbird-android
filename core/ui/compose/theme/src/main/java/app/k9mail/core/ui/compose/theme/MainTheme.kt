@@ -7,6 +7,7 @@ import androidx.compose.material.Shapes
 import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
 
 @Composable
 fun MainTheme(
@@ -46,29 +47,36 @@ fun MainTheme(
 object MainTheme {
     val colors: Colors
         @Composable
+        @ReadOnlyComposable
         get() = MaterialTheme.colors
 
     val typography: Typography
         @Composable
+        @ReadOnlyComposable
         get() = MaterialTheme.typography
 
     val shapes: Shapes
         @Composable
+        @ReadOnlyComposable
         get() = MaterialTheme.shapes
 
     val spacings: Spacings
         @Composable
+        @ReadOnlyComposable
         get() = LocalSpacings.current
 
     val sizes: Sizes
         @Composable
+        @ReadOnlyComposable
         get() = LocalSizes.current
 
     val elevations: Elevations
         @Composable
+        @ReadOnlyComposable
         get() = LocalElevations.current
 
     val images: Images
         @Composable
+        @ReadOnlyComposable
         get() = LocalImages.current
 }
