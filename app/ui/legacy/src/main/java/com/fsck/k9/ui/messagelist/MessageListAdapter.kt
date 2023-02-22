@@ -193,8 +193,8 @@ class MessageListAdapter internal constructor(
         listItemListener.onToggleMessageFlag(messageListItem)
     }
 
-    private val contactPictureClickListener = OnClickListener { view: View ->
-        val parentView = view.parent.parent as View
+    private val contactPictureContainerClickListener = OnClickListener { view: View ->
+        val parentView = view.parent as View
         val messageListItem = getItemFromView(parentView) ?: return@OnClickListener
         listItemListener.onToggleMessageSelection(messageListItem)
     }
@@ -258,8 +258,9 @@ class MessageListAdapter internal constructor(
 
         val holder = MessageViewHolder(view)
 
-        view.findViewById<View>(R.id.contact_picture_container).isVisible = appearance.showContactPicture
-        holder.contactPicture.setOnClickListener(contactPictureClickListener)
+        val contactPictureContainer = view.findViewById<View>(R.id.contact_picture_container)
+        contactPictureContainer.isVisible = appearance.showContactPicture
+        contactPictureContainer.setOnClickListener(contactPictureContainerClickListener)
 
         holder.chip.isVisible = appearance.showAccountChip
 

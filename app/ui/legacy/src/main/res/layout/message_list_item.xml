@@ -15,24 +15,26 @@
     <FrameLayout
         android:id="@+id/contact_picture_container"
         android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_gravity="center_vertical"
+        android:layout_height="0dp"
         android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/selected"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top"
             android:contentDescription="@null"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_check_circle_large" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/contact_picture"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top"
             android:background="@android:color/transparent"
             tools:src="@drawable/ic_contact_picture" />
 
