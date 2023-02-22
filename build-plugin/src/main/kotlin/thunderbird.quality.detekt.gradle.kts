@@ -42,3 +42,7 @@ tasks.withType<DetektCreateBaselineTask>().configureEach {
         "gradle/**",
     )
 }
+
+dependencies {
+    detektPlugins(libs.detekt.plugin.compose)
+}

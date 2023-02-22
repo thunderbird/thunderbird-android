@@ -725,3 +725,47 @@ style:
     active: true
     excludeImports:
       - 'java.util.*'
+
+Compose:
+  CompositionLocalAllowlist:
+    active: true
+    allowedCompositionLocals: [LocalElevations, LocalImages, LocalSizes, LocalSpacings]
+  ContentEmitterReturningValues:
+    active: true
+    # You can optionally add your own composables here
+    # contentEmitters: MyComposable,MyOtherComposable
+  ModifierComposable:
+    active: true
+  ModifierMissing:
+    active: true
+  ModifierReused:
+    active: true
+  ModifierWithoutDefault:
+    active: true
+  MultipleEmitters:
+    active: true
+      # You can optionally add your own composables here
+    # contentEmitters: MyComposable,MyOtherComposable
+  MutableParams:
+    active: true
+  ComposableNaming:
+    active: true
+    # You can optionally disable the checks in this rule for regex matches against the composable name (e.g. molecule presenters)
+    # allowedComposableFunctionNames: .*Presenter,.*MoleculePresenter
+  ComposableParamOrder:
+    active: true
+  PreviewNaming:
+    active: true
+  PreviewPublic:
+    active: true
+    # You can optionally disable that only previews with @PreviewParameter are flagged
+    # previewPublicOnlyIfParams: false
+  RememberMissing:
+    active: true
+  UnstableCollections:
+    active: true
+  ViewModelForwarding:
+    active: true
+  ViewModelInjection:
+    active: true
+
