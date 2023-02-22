@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
 
     id("thunderbird.quality.spotless")
+    id("thunderbird.quality.detekt")
 }
 
 val propertyTestCoverage: String? by extra
@@ -42,7 +43,11 @@ allprojects {
             substitute(module("androidx.recyclerview:recyclerview"))
                 .using(module("androidx.recyclerview:recyclerview:${libs.versions.androidxRecyclerView.get()}"))
             substitute(module("androidx.constraintlayout:constraintlayout"))
-                .using(module("androidx.constraintlayout:constraintlayout:${libs.versions.androidxConstraintLayout.get()}"))
+                .using(
+                    module(
+                        "androidx.constraintlayout:constraintlayout:${libs.versions.androidxConstraintLayout.get()}",
+                    ),
+                )
             substitute(module("androidx.drawerlayout:drawerlayout"))
                 .using(module("androidx.drawerlayout:drawerlayout:${libs.versions.androidxDrawerLayout.get()}"))
             substitute(module("androidx.lifecycle:lifecycle-livedata"))
@@ -58,7 +63,11 @@ allprojects {
             substitute(module("org.jetbrains.kotlin:kotlin-stdlib-jdk8"))
                 .using(module("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${libs.versions.kotlin.get()}"))
             substitute(module("org.jetbrains.kotlinx:kotlinx-coroutines-android"))
-                .using(module("org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.kotlinCoroutines.get()}"))
+                .using(
+                    module(
+                        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.kotlinCoroutines.get()}",
+                    ),
+                )
         }
     }
 

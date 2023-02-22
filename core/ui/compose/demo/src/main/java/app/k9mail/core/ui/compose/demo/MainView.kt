@@ -15,9 +15,13 @@ import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 
 @Composable
-fun MainView() {
+fun MainView(
+    modifier: Modifier = Modifier,
+) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .then(modifier),
     ) {
         K9Theme {
             MainContent(name = "K-9")
@@ -37,8 +41,14 @@ fun MainView() {
 @Composable
 fun MainContent(
     name: String,
+    modifier: Modifier = Modifier,
 ) {
-    Surface(modifier = Modifier.fillMaxWidth(), color = MainTheme.colors.background) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(modifier),
+        color = MainTheme.colors.background,
+    ) {
         Column {
             Text(text = "Hello $name!")
             Image(painter = painterResource(id = MainTheme.images.logo), contentDescription = "logo")

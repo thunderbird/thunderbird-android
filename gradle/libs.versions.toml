@@ -41,6 +41,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 spotless = "com.diffplug.spotless:6.14.0"
+detekt = "io.gitlab.arturbosch.detekt:1.22.0"
 
 [libraries]
 desugar = "com.android.tools:desugar_jdk_libs:1.1.8"
@@ -127,6 +128,8 @@ jdom2 = "org.jdom:jdom2:2.0.6.1"
 icu4j-charset = "com.ibm.icu:icu4j-charset:72.1"
 
 leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
+
+detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.1"
 
 [bundles]
 shared-jvm-test = [
