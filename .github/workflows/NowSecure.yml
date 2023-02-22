@@ -56,7 +56,7 @@ jobs:
         name: NowSecure upload app
         uses: nowsecure/nowsecure-action/upload-app@v3
         with:
-          platform_token: "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2ZDIzNGRkOC1iMTQ2LTQ4OGYtOGU1OS0zMWQzZjRkMTM0NDUiLCJpc3MiOiJsYWItYXBpLm5vd3NlY3VyZS5jb20iLCJzdWIiOiJkNDY2ZmVlMC1mN2FhLTQ5NjMtYWExNy0xMzE3NmM3NjZkYmYiLCJuYW1lIjoiSGFybmVzczEiLCJpYXQiOjE2NzYzMTM4OTIsImF1ZCI6ImxhYi1hdXRvbWF0ZWQifQ.AdtjuUI4aVbi4pwrzR55pu95KuCf_mxbC6M57QRVtR7R1QnGXrwA-nFTgMJGX1rEHP156pXxhvf_rpTM5OhTspFwAKzZiHij0l2l_LhiOWz68FxkNIIkLSAkfGVY-OQoZWl_yFzYDpDy2IDjaMRpTUPIUCsAaTwkTF0n2o8mh0Z2SOE2"
+          platform_token: ${{ secrets.NS_TOKEN }}
           # TODO: Replace application path.
           app_file:  "k9mail-debug.apk"	
           # TODO: Replace the Group ID.
