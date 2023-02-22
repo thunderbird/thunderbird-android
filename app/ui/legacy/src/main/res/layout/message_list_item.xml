@@ -46,14 +46,14 @@
         android:bufferType="spannable"
         android:singleLine="false"
         android:textAppearance="@style/TextAppearance.K9.Small"
-        android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/divider"
         app:layout_constraintEnd_toStartOf="@+id/star"
         app:layout_constraintStart_toEndOf="@+id/barrier_start"
         app:layout_constraintTop_toTopOf="@+id/barrier_first_line_bottom"
         app:layout_constraintVertical_bias="0.0"
         app:layout_goneMarginEnd="16dp"
-        tools:text="Message preview" />
+        tools:text="Message preview"
+        tools:textColor="?attr/messageListPreviewTextColor" />
 
     <com.fsck.k9.ui.messagelist.AccountChip
         android:id="@+id/account_color_chip"
@@ -77,23 +77,24 @@
         android:id="@+id/subject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ellipsize="marquee"
+        android:layout_marginEnd="6dp"
+        android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="@style/TextAppearance.K9.MediumSmall"
-        android:textColor="?android:attr/textColorPrimary"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toStartOf="@+id/thread_count"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@+id/status"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
-        tools:text="Subject" />
+        tools:text="Subject"
+        tools:textColor="?attr/messageListReadTextColor" />
 
     <TextView
         android:id="@+id/thread_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_marginEnd="4dp"
         android:focusable="false"
         android:textAppearance="@style/TextAppearance.K9.Small"
         android:textColor="?attr/messageListThreadCountTextColor"

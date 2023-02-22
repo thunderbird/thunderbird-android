@@ -472,7 +472,7 @@ class MessageListAdapterTest : RobolectricTest() {
         return holder.itemView
     }
 
-    fun secondLine(senderOrSubject: String, preview: String) = "$senderOrSubject $preview"
+    fun secondLine(senderOrSubject: String, preview: String) = "$senderOrSubject – $preview"
 
     val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
     val View.starView: View get() = findViewById(R.id.star)

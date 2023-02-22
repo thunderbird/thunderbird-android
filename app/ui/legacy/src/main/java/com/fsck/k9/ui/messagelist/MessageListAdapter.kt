@@ -49,6 +49,8 @@ class MessageListAdapter internal constructor(
     private val forwardedIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListForwarded)
     private val answeredIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListAnswered)
     private val forwardedAnsweredIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListAnsweredForwarded)
+    private val unreadTextColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadTextColor)
+    private val readTextColor: Int = theme.resolveColorAttribute(R.attr.messageListReadTextColor)
     private val previewTextColor: Int = theme.resolveColorAttribute(R.attr.messageListPreviewTextColor)
     private val activeItemBackgroundColor: Int = theme.resolveColorAttribute(
         colorAttrId = R.attr.messageListActiveItemBackgroundColor,
@@ -321,6 +323,7 @@ class MessageListAdapter internal constructor(
         }
 
         with(messageListItem) {
+            val textColor = if (isRead) readTextColor else unreadTextColor
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
             val displayDate = relativeDateTimeFormatter.formatDate(messageDate)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
@@ -343,19 +346,25 @@ class MessageListAdapter internal constructor(
             val messageStringBuilder = SpannableStringBuilder(beforePreviewText)
             if (appearance.previewLines > 0) {
                 val preview = getPreview(isMessageEncrypted, previewText)
-                messageStringBuilder.append(" ").append(preview)
+                if (preview.isNotEmpty()) {
+                    messageStringBuilder.append(" – ").append(preview)
+                }
             }
+            holder.preview.setTextColor(textColor)
             holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
 
             formatPreviewText(holder.preview, beforePreviewText, isRead)
 
             holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
+            holder.subject.setTextColor(textColor)
             if (appearance.senderAboveSubject) {
                 holder.subject.text = displayName
             } else {
                 holder.subject.text = subject
             }
 
+            holder.date.typeface = Typeface.create(holder.date.typeface, maybeBoldTypeface)
+            holder.date.setTextColor(textColor)
             holder.date.text = displayDate
             holder.attachment.isVisible = hasAttachments
 
