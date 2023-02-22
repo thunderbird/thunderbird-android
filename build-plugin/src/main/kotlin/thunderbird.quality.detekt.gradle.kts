@@ -1,4 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 plugins {
@@ -11,7 +12,7 @@ configure<DetektExtension> {
     )
 
     config = project.rootProject.files("config/detekt/detekt.yml")
-    baseline = project.rootProject.file("config/detekt/baseline.yml")
+    baseline = project.rootProject.file("config/detekt/baseline.xml")
 }
 
 tasks.withType<Detekt>().configureEach {
@@ -30,4 +31,14 @@ tasks.withType<Detekt>().configureEach {
         sarif.required.set(true)
         xml.required.set(true)
     }
+}
+
+tasks.withType<DetektCreateBaselineTask>().configureEach {
+    exclude(
+        "**/.gradle/**",
+        "**/.idea/**",
+        "**/build/**",
+        ".github/**",
+        "gradle/**",
+    )
 }
