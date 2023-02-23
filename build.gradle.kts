@@ -71,13 +71,6 @@ allprojects {
         }
     }
 
-    plugins.withType<JavaPlugin> {
-        configure<JavaPluginExtension> {
-            sourceCompatibility = javaVersion
-            targetCompatibility = javaVersion
-        }
-    }
-
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = jvmTargetVersion.target
     }
