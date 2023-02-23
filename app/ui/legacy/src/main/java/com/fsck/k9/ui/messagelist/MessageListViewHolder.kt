@@ -16,7 +16,7 @@ class MessageViewHolder(view: View) : MessageListViewHolder(view) {
     val subject: TextView = view.findViewById(R.id.subject)
     val preview: TextView = view.findViewById(R.id.preview)
     val date: TextView = view.findViewById(R.id.date)
-    val chip: AccountChip = view.findViewById(R.id.account_color_chip)
+    val chip: ImageView = view.findViewById(R.id.account_color_chip)
     val threadCount: TextView = view.findViewById(R.id.thread_count)
     val star: ImageView = view.findViewById(R.id.star)
     val attachment: ImageView = view.findViewById(R.id.attachment)
