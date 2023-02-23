@@ -1,6 +1,7 @@
 object ThunderbirdPlugins {
 
     object App {
+        const val android = "thunderbird.app.android"
         const val androidCompose = "thunderbird.app.android.compose"
     }
     object Library {
