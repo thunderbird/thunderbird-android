@@ -1,23 +1,23 @@
 plugins {
-    id "thunderbird.library.android"
+    id(ThunderbirdPlugins.Library.android)
 }
 
 dependencies {
-    implementation project(":app:core")
+    implementation(projects.app.core)
 
-    api libs.androidx.appcompat
-    api libs.androidx.activity
-    api libs.android.material
-    api libs.androidx.navigation.fragment
-    api libs.androidx.navigation.ui
-    api libs.androidx.lifecycle.livedata.ktx
+    api(libs.androidx.appcompat)
+    api(libs.androidx.activity)
+    api(libs.android.material)
+    api(libs.androidx.navigation.fragment)
+    api(libs.androidx.navigation.ui)
+    api(libs.androidx.lifecycle.livedata.ktx)
 
-    implementation libs.androidx.core.ktx
-    implementation libs.androidx.biometric
-    implementation libs.timber
-    implementation libs.kotlinx.coroutines.core
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.biometric)
+    implementation(libs.timber)
+    implementation(libs.kotlinx.coroutines.core)
 }
 
 android {
-    namespace 'com.fsck.k9.ui.base'
+    namespace = "com.fsck.k9.ui.base"
 }

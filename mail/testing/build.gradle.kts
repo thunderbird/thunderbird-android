@@ -1,15 +1,17 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id "thunderbird.library.jvm"
+    id(ThunderbirdPlugins.Library.jvm)
     alias(libs.plugins.android.lint)
 }
 
-if (rootProject.testCoverage) {
-    apply plugin: 'jacoco'
+val testCoverageEnabled: Boolean by extra
+if (testCoverageEnabled) {
+    apply(plugin = "jacoco")
 }
 
 dependencies {
-    api project(":mail:common")
+    api(projects.mail.common)
 
-    api libs.okio
-    api libs.junit
+    api(libs.okio)
+    api(libs.junit)
 }

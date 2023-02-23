@@ -1,11 +1,12 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id "thunderbird.library.jvm"
+    id(ThunderbirdPlugins.Library.jvm)
     alias(libs.plugins.android.lint)
 }
 
 dependencies {
-    implementation project(":backend:api")
+    implementation(projects.backend.api)
 
-    implementation libs.okio
-    implementation libs.junit
+    implementation(libs.okio)
+    implementation(libs.junit)
 }

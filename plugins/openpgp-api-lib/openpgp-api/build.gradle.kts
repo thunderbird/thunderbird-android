@@ -1,17 +1,17 @@
 plugins {
-    id "thunderbird.library.android"
+    id(ThunderbirdPlugins.Library.android)
 }
 
 android {
-    namespace 'org.openintents.openpgp'
+    namespace = "org.openintents.openpgp"
 
     buildFeatures {
-        aidl true
+        aidl = true
     }
 }
 
 dependencies {
-    implementation libs.androidx.lifecycle.common
-    implementation libs.timber
-    implementation libs.preferencex
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.timber)
+    implementation(libs.preferencex)
 }

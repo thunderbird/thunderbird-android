@@ -1,11 +1,11 @@
 plugins {
-    id "thunderbird.library.android"
+    id(ThunderbirdPlugins.Library.android)
 }
 
 dependencies {
-    api libs.android.material
+    api(libs.android.material)
 }
 
 android {
-    namespace 'app.k9mail.ui.utils.bottomsheet'
+    namespace = "app.k9mail.ui.utils.bottomsheet"
 }

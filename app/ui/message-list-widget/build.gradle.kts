@@ -1,27 +1,27 @@
 plugins {
-    id "thunderbird.library.android"
+    id(ThunderbirdPlugins.Library.android)
 }
 
 dependencies {
-    implementation project(":app:ui:legacy")
-    implementation project(":app:core")
+    implementation(projects.app.ui.legacy)
+    implementation(projects.app.core)
 
-    implementation libs.timber
+    implementation(libs.timber)
 }
 
 android {
-    namespace 'app.k9mail.ui.widget.list'
+    namespace = "app.k9mail.ui.widget.list"
 
     buildFeatures {
-        buildConfig true
+        buildConfig = true
     }
 
     buildTypes {
         debug {
-            manifestPlaceholders = ['appAuthRedirectScheme': 'FIXME: override this in your app project']
+            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
         }
         release {
-            manifestPlaceholders = ['appAuthRedirectScheme': 'FIXME: override this in your app project']
+            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
         }
     }
 }

@@ -1,17 +1,23 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    id 'application'
+    id("application")
 }
 
-version 'unspecified'
+version = "unspecified"
 
 application {
-    mainClass = "app.k9mail.cli.html.cleaner.MainKt"
+    mainClass.set("app.k9mail.cli.html.cleaner.MainKt")
 }
 
 dependencies {
-    implementation project(':app:html-cleaner')
+    implementation(projects.app.htmlCleaner)
 
-    implementation libs.clikt
-    implementation libs.okio
+    implementation(libs.clikt)
+    implementation(libs.okio)
+}
+
+java {
+    sourceCompatibility = ThunderbirdProjectConfig.javaVersion
+    targetCompatibility = ThunderbirdProjectConfig.javaVersion
 }

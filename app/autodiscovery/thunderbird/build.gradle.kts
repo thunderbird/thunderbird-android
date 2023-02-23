@@ -1,13 +1,14 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id "thunderbird.library.jvm"
+    id(ThunderbirdPlugins.Library.jvm)
     alias(libs.plugins.android.lint)
 }
 
 dependencies {
-    api project(":app:autodiscovery:api")
+    api(projects.app.autodiscovery.api)
 
-    compileOnly libs.xmlpull
-    implementation libs.okhttp
+    compileOnly(libs.xmlpull)
+    implementation(libs.okhttp)
 
-    testImplementation libs.kxml2
+    testImplementation(libs.kxml2)
 }

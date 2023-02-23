@@ -1,11 +1,11 @@
 plugins {
-    id "thunderbird.library.android"
+    id(ThunderbirdPlugins.Library.android)
 }
 
 dependencies {
-    implementation project(":app:core")
+    implementation(projects.app.core)
 }
 
 android {
-    namespace 'com.fsck.k9.crypto.openpgp'
+    namespace = "com.fsck.k9.crypto.openpgp"
 }

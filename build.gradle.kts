@@ -21,7 +21,7 @@ val jvmTargetVersion = JvmTarget.JVM_11
 
 allprojects {
     extra.apply {
-        set("testCoverage", propertyTestCoverage != null)
+        set("testCoverageEnabled", propertyTestCoverage != null)
     }
 
     configurations.configureEach {

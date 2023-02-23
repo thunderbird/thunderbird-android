@@ -1,10 +1,11 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id "thunderbird.library.jvm"
+    id(ThunderbirdPlugins.Library.jvm)
     alias(libs.plugins.android.lint)
 }
 
 dependencies {
-    api project(":app:autodiscovery:api")
+    api(projects.app.autodiscovery.api)
 
-    implementation libs.minidns.hla
+    implementation(libs.minidns.hla)
 }
