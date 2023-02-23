@@ -3,6 +3,7 @@ package com.fsck.k9.ui.settings.general
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
 import com.fsck.k9.SwipeAction
+import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.preferences.AppTheme
 import com.fsck.k9.preferences.GeneralSettingsManager
@@ -123,6 +124,7 @@ class GeneralSettingsDataStore(
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput.toString()
             "swipe_action_right" -> swipeActionToString(K9.swipeRightAction)
             "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
+            "message_list_density" -> K9.messageListDensity.toString()
             else -> defValue
         }
     }
@@ -157,6 +159,7 @@ class GeneralSettingsDataStore(
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput = value.toInt()
             "swipe_action_right" -> K9.swipeRightAction = stringToSwipeAction(value)
             "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
+            "message_list_density" -> K9.messageListDensity = UiDensity.valueOf(value)
             else -> return
         }
 

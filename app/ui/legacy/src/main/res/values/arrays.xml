@@ -92,4 +92,10 @@
         <item>22</item>
     </string-array>
 
+    <string-array name="message_list_density_values">
+        <item>Compact</item>
+        <item>Default</item>
+        <item>Relaxed</item>
+    </string-array>
+
 </resources>

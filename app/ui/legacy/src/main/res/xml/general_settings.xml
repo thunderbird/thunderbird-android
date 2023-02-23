@@ -187,6 +187,14 @@
             android:title="@string/messagelist_preferences">
 
             <ListPreference
+                android:dialogTitle="@string/general_settings_message_list_density_title"
+                android:entries="@array/message_list_density_entries"
+                android:entryValues="@array/message_list_density_values"
+                android:key="message_list_density"
+                app:useSimpleSummaryProvider="true"
+                android:title="@string/general_settings_message_list_density_title" />
+
+            <ListPreference
                 android:dialogTitle="@string/global_settings_preview_lines_label"
                 android:entries="@array/preview_lines_entries"
                 android:entryValues="@array/preview_lines_values"
