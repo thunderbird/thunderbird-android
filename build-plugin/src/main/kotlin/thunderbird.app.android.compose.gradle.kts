@@ -1,5 +1,5 @@
 plugins {
-    id("thunderbird.app.android.default")
+    id("thunderbird.app.android")
 }
 
 android {

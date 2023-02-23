@@ -30,6 +30,7 @@
     <ID>CyclomaticComplexMethod:K9NotificationStrategy.kt$K9NotificationStrategy$override fun shouldNotifyForMessage( account: Account, localFolder: LocalFolder, message: LocalMessage, isOldMessage: Boolean, ): Boolean</ID>
     <ID>CyclomaticComplexMethod:MessageList.kt$MessageList$private fun decodeExtrasToLaunchData(intent: Intent): LaunchData</ID>
     <ID>CyclomaticComplexMethod:MessageList.kt$MessageList$private fun onCustomKeyDown(event: KeyEvent): Boolean</ID>
+    <ID>CyclomaticComplexMethod:MessageListAdapter.kt$MessageListAdapter$private fun bindMessageViewHolder(holder: MessageViewHolder, messageListItem: MessageListItem)</ID>
     <ID>CyclomaticComplexMethod:MessageListFragment.kt$MessageListFragment$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
     <ID>CyclomaticComplexMethod:MessagePartDatabaseHelpers.kt$MessagePartEntry$override fun equals(other: Any?): Boolean</ID>
     <ID>CyclomaticComplexMethod:MessagePartDatabaseHelpers.kt$MessagePartEntry$override fun hashCode(): Int</ID>
@@ -139,6 +140,7 @@
     <ID>LongMethod:MessageList.kt$MessageList$private fun decodeExtrasToLaunchData(intent: Intent): LaunchData</ID>
     <ID>LongMethod:MessageList.kt$MessageList$private fun onCustomKeyDown(event: KeyEvent): Boolean</ID>
     <ID>LongMethod:MessageList.kt$MessageList$public override fun onCreate(savedInstanceState: Bundle?)</ID>
+    <ID>LongMethod:MessageListAdapter.kt$MessageListAdapter$private fun bindMessageViewHolder(holder: MessageViewHolder, messageListItem: MessageListItem)</ID>
     <ID>LongMethod:MessageListRepositoryTest.kt$MessageListRepositoryTest$@Test fun `getThread() should use flag values from the cache`()</ID>
     <ID>LongMethod:MessageTest.kt$MessageTest$@Test fun toBodyPart()</ID>
     <ID>LongMethod:MessageTest.kt$MessageTest$@Test fun writeTo_withNestedMessage()</ID>
@@ -448,6 +450,7 @@
     <ID>MagicNumber:StorageMigrations.kt$StorageMigrations$17</ID>
     <ID>MagicNumber:StorageMigrations.kt$StorageMigrations$18</ID>
     <ID>MagicNumber:StorageMigrations.kt$StorageMigrations$19</ID>
+    <ID>MagicNumber:StorageMigrations.kt$StorageMigrations$20</ID>
     <ID>MagicNumber:StorageMigrations.kt$StorageMigrations$3</ID>
     <ID>MagicNumber:StorageMigrations.kt$StorageMigrations$4</ID>
     <ID>MagicNumber:StorageMigrations.kt$StorageMigrations$5</ID>
