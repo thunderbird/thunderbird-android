@@ -12,6 +12,7 @@ plugins {
 
     id("thunderbird.quality.spotless")
     id("thunderbird.quality.detekt")
+    id("thunderbird.dependency.check")
 }
 
 val propertyTestCoverage: String? by extra

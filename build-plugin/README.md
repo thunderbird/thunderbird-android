@@ -27,6 +27,8 @@ The plugins should try to accomplish single responsibility and leave one-off con
 
 ## Supportive plugins
 
+- `thunderbird.dependency.check` - [Gradle Versions: Gradle plugin to discover dependency updates](https://github.com/ben-manes/gradle-versions-plugin)
+  - Use `./gradlew dependencyUpdates` to generate a dependency update report
 - `thunderbird.quality.detekt` - [Detekt - Static code analysis for Kotlin ](https://detekt.dev/)
   - Use `./gradlew detekt` to check for any issue and `./gradlew detektBaseline` in case you can't fix the reported
     issue.

@@ -13,6 +13,7 @@ dependencies {
 
     implementation(plugin(libs.plugins.spotless))
     implementation(plugin(libs.plugins.detekt))
+    implementation(plugin(libs.plugins.dependency.check))
 }
 
 fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
