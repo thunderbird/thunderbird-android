@@ -21,7 +21,7 @@ val jvmTargetVersion = JvmTarget.JVM_11
 
 allprojects {
     extra.apply {
-        set("testCoverage", propertyTestCoverage != null)
+        set("testCoverageEnabled", propertyTestCoverage != null)
     }
 
     configurations.configureEach {
@@ -68,13 +68,6 @@ allprojects {
                         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.kotlinCoroutines.get()}",
                     ),
                 )
-        }
-    }
-
-    plugins.withType<JavaPlugin> {
-        configure<JavaPluginExtension> {
-            sourceCompatibility = javaVersion
-            targetCompatibility = javaVersion
         }
     }
 

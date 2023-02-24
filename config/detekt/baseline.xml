@@ -13,6 +13,7 @@
     <ID>ComplexCondition:StorageMigrationTo19.kt$StorageMigrationTo19$incomingServerSettings["type"] == "imap" &amp;&amp; incomingServerSettings["host"] in setOf("imap.gmail.com", "imap.googlemail.com") &amp;&amp; incomingServerSettings["authenticationType"] != "XOAUTH2" || outgoingServerSettings["host"] in setOf("smtp.gmail.com", "smtp.googlemail.com") &amp;&amp; outgoingServerSettings["authenticationType"] != "XOAUTH2"</ID>
     <ID>ComplexCondition:TextInputLayoutExtensions.kt$text != null &amp;&amp; before &gt; 0 &amp;&amp; (text.isEmpty() || text.length - count == 0)</ID>
     <ID>ComplexCondition:TouchInterceptView.kt$TouchInterceptView$absoluteDeltaY &gt; touchSlop &amp;&amp; absoluteDeltaY &gt; absoluteDeltaX &amp;&amp; (scrollView.canScrollVertically(deltaY.toInt()) || webView.canScrollVertically(deltaY.toInt()))</ID>
+    <ID>ComplexCondition:build.gradle.kts$project.hasProperty("k9mail.keyAlias") &amp;&amp; project.hasProperty("k9mail.keyPassword") &amp;&amp; project.hasProperty("k9mail.storeFile") &amp;&amp; project.hasProperty("k9mail.storePassword")</ID>
     <ID>ConstructorParameterNaming:MessageTopView.kt$MessageTopView.SavedState$`in`: Parcel</ID>
     <ID>CyclomaticComplexMethod:AccountSettingsDataStore.kt$AccountSettingsDataStore$override fun getBoolean(key: String, defValue: Boolean): Boolean</ID>
     <ID>CyclomaticComplexMethod:AccountSettingsDataStore.kt$AccountSettingsDataStore$override fun getString(key: String, defValue: String?): String?</ID>
