@@ -190,7 +190,8 @@ class MessageListAdapter internal constructor(
     }
 
     private val starClickListener = OnClickListener { view: View ->
-        val messageListItem = getItemFromView(view) ?: return@OnClickListener
+        val parentView = view.parent as View
+        val messageListItem = getItemFromView(parentView) ?: return@OnClickListener
         listItemListener.onToggleMessageFlag(messageListItem)
     }
 
@@ -277,8 +278,7 @@ class MessageListAdapter internal constructor(
         ) // thread count is next to subject
 
         holder.star.isVisible = appearance.stars
-        holder.star.tag = holder
-        holder.star.setOnClickListener(starClickListener)
+        holder.starClickArea.setOnClickListener(starClickListener)
 
         view.tag = holder
 
