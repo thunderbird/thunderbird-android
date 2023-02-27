@@ -17,12 +17,16 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DimenRes
+import androidx.constraintlayout.widget.Guideline
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.fsck.k9.FontSizes
+import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
@@ -68,6 +72,16 @@ class MessageListAdapter internal constructor(
     private val readItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListReadItemBackgroundColor)
     private val unreadItemBackgroundColor: Int =
         theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)
+
+    private val compactVerticalPadding = res.getDimensionPixelSize(R.dimen.messageListCompactVerticalPadding)
+    private val compactTextViewMarginTop = res.getDimensionPixelSize(R.dimen.messageListCompactTextViewMargin)
+    private val compactLineSpacingMultiplier = res.getFloatCompat(R.dimen.messageListCompactLineSpacingMultiplier)
+    private val defaultVerticalPadding = res.getDimensionPixelSize(R.dimen.messageListDefaultVerticalPadding)
+    private val defaultTextViewMarginTop = res.getDimensionPixelSize(R.dimen.messageListDefaultTextViewMargin)
+    private val defaultLineSpacingMultiplier = res.getFloatCompat(R.dimen.messageListDefaultLineSpacingMultiplier)
+    private val relaxedVerticalPadding = res.getDimensionPixelSize(R.dimen.messageListRelaxedVerticalPadding)
+    private val relaxedTextViewMarginTop = res.getDimensionPixelSize(R.dimen.messageListRelaxedTextViewMargin)
+    private val relaxedLineSpacingMultiplier = res.getFloatCompat(R.dimen.messageListRelaxedLineSpacingMultiplier)
 
     var messages: List<MessageListItem> = emptyList()
         @SuppressLint("NotifyDataSetChanged")
@@ -260,9 +274,14 @@ class MessageListAdapter internal constructor(
 
         val holder = MessageViewHolder(view)
 
-        val contactPictureContainer = view.findViewById<View>(R.id.contact_picture_container)
-        contactPictureContainer.isVisible = appearance.showContactPicture
-        contactPictureContainer.setOnClickListener(contactPictureContainerClickListener)
+        val contactPictureClickArea = view.findViewById<View>(R.id.contact_picture_click_area)
+        if (appearance.showContactPicture) {
+            contactPictureClickArea.setOnClickListener(contactPictureContainerClickListener)
+        } else {
+            contactPictureClickArea.isVisible = false
+            holder.selected.isVisible = false
+            holder.contactPicture.isVisible = false
+        }
 
         holder.chip.isVisible = appearance.showAccountChip
 
@@ -281,9 +300,41 @@ class MessageListAdapter internal constructor(
         holder.starClickArea.isVisible = appearance.stars
         holder.starClickArea.setOnClickListener(starClickListener)
 
+        applyDensityValue(holder, appearance.density)
+
         view.tag = holder
 
         return holder
+    }
+
+    private fun applyDensityValue(holder: MessageViewHolder, density: UiDensity) {
+        val verticalPadding: Int
+        val textViewMarginTop: Int
+        val lineSpacingMultiplier: Float
+        when (density) {
+            UiDensity.Compact -> {
+                verticalPadding = compactVerticalPadding
+                textViewMarginTop = compactTextViewMarginTop
+                lineSpacingMultiplier = compactLineSpacingMultiplier
+            }
+            UiDensity.Default -> {
+                verticalPadding = defaultVerticalPadding
+                textViewMarginTop = defaultTextViewMarginTop
+                lineSpacingMultiplier = defaultLineSpacingMultiplier
+            }
+            UiDensity.Relaxed -> {
+                verticalPadding = relaxedVerticalPadding
+                textViewMarginTop = relaxedTextViewMarginTop
+                lineSpacingMultiplier = relaxedLineSpacingMultiplier
+            }
+        }
+
+        holder.itemView.findViewById<Guideline>(R.id.top_guideline).setGuidelineBegin(verticalPadding)
+        holder.itemView.findViewById<Guideline>(R.id.bottom_guideline).setGuidelineEnd(verticalPadding)
+        holder.preview.apply {
+            setMarginTop(textViewMarginTop)
+            setLineSpacing(lineSpacingExtra, lineSpacingMultiplier)
+        }
     }
 
     private fun createFooterViewHolder(parent: ViewGroup): MessageListViewHolder {
@@ -535,6 +586,12 @@ class MessageListAdapter internal constructor(
         val messageViewHolder = view.tag as MessageViewHolder
         return getItemById(messageViewHolder.uniqueId)
     }
+}
+
+private fun Resources.getFloatCompat(@DimenRes resId: Int) = ResourcesCompat.getFloat(this, resId)
+
+private fun View.setMarginTop(margin: Int) {
+    (layoutParams as? ViewGroup.MarginLayoutParams)?.topMargin = margin
 }
 
 private class MessageListDiffCallback(

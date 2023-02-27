@@ -573,6 +573,7 @@ class MessageListFragment :
             showingThreadedList = showingThreadedList,
             backGroundAsReadIndicator = K9.isUseBackgroundAsUnreadIndicator,
             showAccountChip = isShowAccountChip,
+            density = K9.messageListDensity,
         )
 
     private fun getFolderInfoHolder(folderId: Long, account: Account): FolderInfoHolder {
