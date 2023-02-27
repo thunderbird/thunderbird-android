@@ -278,6 +278,7 @@ class MessageListAdapter internal constructor(
         ) // thread count is next to subject
 
         holder.star.isVisible = appearance.stars
+        holder.starClickArea.isVisible = appearance.stars
         holder.starClickArea.setOnClickListener(starClickListener)
 
         view.tag = holder
