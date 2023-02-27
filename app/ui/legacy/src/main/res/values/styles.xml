@@ -35,10 +35,6 @@
         <item name="android:tint">?attr/tintColorBulletPointNegative</item>
     </style>
 
-    <style name="MessageStarStyle">
-        <item name="android:button">?attr/messageStar</item>
-    </style>
-
     <style name="InputLabel" parent="TextAppearance.AppCompat.Caption">
         <item name="android:paddingBottom">@dimen/input_label_vertical_spacing</item>
         <item name="android:paddingLeft">@dimen/input_label_horizontal_spacing</item>

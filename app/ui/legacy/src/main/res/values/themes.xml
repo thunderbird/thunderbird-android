@@ -130,7 +130,6 @@
         <item name="messageListSwipeMoveIcon">?attr/iconActionMove</item>
         <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_500</item>
 
-        <item name="messageStar">@drawable/btn_check_star</item>
         <item name="messageStarColor">#fbbc04</item>
         <item name="messageViewBackgroundColor">#ffffffff</item>
         <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
@@ -293,7 +292,6 @@
         <item name="messageListSwipeMoveIcon">?attr/iconActionMove</item>
         <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_600</item>
 
-        <item name="messageStar">@drawable/btn_check_star</item>
         <item name="messageStarColor">#fdd663</item>
         <item name="messageViewBackgroundColor">#000000</item>
         <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
