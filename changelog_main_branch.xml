@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.509" versioncode="35009" date="2023-02-28">
+        <change>Cleaned up the message list design</change>
+        <change>Added setting for three different message list densities: compact, default, relaxed</change>
+        <change>Made small changes to the appearance of participant entries in the message details screen</change>
+        <change>Added validation for email address fields in "Edit identity" screen</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.508" versioncode="35008" date="2023-02-15">
         <change>Removed "Send…" submenu from the message view toolbar</change>
         <change>Limit summary notification actions to messages for which individual notifications are currently being displayed</change>
