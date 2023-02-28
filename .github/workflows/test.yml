@@ -10,10 +10,7 @@ jobs:
   process:
     if: ${{ needs.scan.outputs.report_id }}
     runs-on: ubuntu-latest
-    environment:
-      name: nowsecure-env
     # The above stage we introduced.
-    needs: scan
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
