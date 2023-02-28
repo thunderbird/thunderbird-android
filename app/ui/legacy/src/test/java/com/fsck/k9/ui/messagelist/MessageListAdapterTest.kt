@@ -17,6 +17,7 @@ import com.fsck.k9.FontSizes.FONT_DEFAULT
 import com.fsck.k9.FontSizes.LARGE
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.TestClock
+import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.textString
@@ -398,6 +399,7 @@ class MessageListAdapterTest : RobolectricTest() {
         showingThreadedList: Boolean = true,
         backGroundAsReadIndicator: Boolean = false,
         showAccountChip: Boolean = false,
+        density: UiDensity = UiDensity.Default,
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
             fontSizes,
@@ -408,6 +410,7 @@ class MessageListAdapterTest : RobolectricTest() {
             showingThreadedList,
             backGroundAsReadIndicator,
             showAccountChip,
+            density,
         )
 
         return MessageListAdapter(
@@ -476,7 +479,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
     val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
     val View.starView: View get() = findViewById(R.id.star)
-    val View.contactPictureContainerView: View get() = findViewById(R.id.contact_picture_container)
+    val View.contactPictureContainerView: View get() = findViewById(R.id.contact_picture_click_area)
     val View.threadCountView: TextView get() = findViewById(R.id.thread_count)
     val View.firstLineView: TextView get() = findViewById(R.id.subject)
     val View.secondLineView: TextView get() = findViewById(R.id.preview)

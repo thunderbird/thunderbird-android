@@ -153,6 +153,9 @@ object K9 : EarlyInit {
     var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
 
     @JvmStatic
+    var messageListDensity: UiDensity = UiDensity.Default
+
+    @JvmStatic
     var isShowMessageListStars = true
 
     @JvmStatic
@@ -320,6 +323,7 @@ object K9 : EarlyInit {
         quietTimeStarts = storage.getString("quietTimeStarts", "21:00")
         quietTimeEnds = storage.getString("quietTimeEnds", "7:00")
 
+        messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
         isShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true)
         isShowContactName = storage.getBoolean("showContactName", false)
         isShowContactPicture = storage.getBoolean("showContactPicture", true)
@@ -388,6 +392,7 @@ object K9 : EarlyInit {
         editor.putString("quietTimeStarts", quietTimeStarts)
         editor.putString("quietTimeEnds", quietTimeEnds)
 
+        editor.putEnum("messageListDensity", messageListDensity)
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("showUnifiedInbox", isShowUnifiedInbox)
         editor.putBoolean("showStarredCount", isShowStarredCount)

@@ -13,6 +13,27 @@
     <dimen name="messageListSwipeIconPadding">24dp</dimen>
     <dimen name="messageListSwipeTextPadding">12dp</dimen>
 
+    <dimen name="messageListStartKeyline">72dp</dimen>
+    <dimen name="messageListContactPictureSize">40dp</dimen>
+    <dimen name="messageListHorizontalPadding">16dp</dimen>
+
+    <!-- Message list density: compact -->
+    <dimen name="messageListCompactVerticalPadding">4dp</dimen>
+    <dimen name="messageListCompactTextViewMargin">0dp</dimen>
+    <item name="messageListCompactLineSpacingMultiplier" format="float" type="dimen">1.0</item>
+
+    <!-- Message list density: default -->
+    <dimen name="messageListDefaultVerticalPadding">12dp</dimen>
+    <dimen name="messageListDefaultTextViewMargin">2dp</dimen>
+    <item name="messageListDefaultLineSpacingMultiplier" format="float" type="dimen">1.1</item>
+
+    <!-- Message list density: relaxed -->
+    <dimen name="messageListRelaxedTextViewMargin">4dp</dimen>
+    <dimen name="messageListRelaxedVerticalPadding">16dp</dimen>
+    <item name="messageListRelaxedLineSpacingMultiplier" format="float" type="dimen">1.2</item>
+
+    <dimen name="fakeAlignImageTopToTextTopPadding">4dp</dimen>
+
     <dimen name="floatingActionButtonMargin">16dp</dimen>
     <!-- Height of ExtendedFloatingActionButton (48dp) plus two times floatingActionButtonMargin -->
     <dimen name="floatingActionButtonSpacing">80dp</dimen>

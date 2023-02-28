@@ -168,4 +168,10 @@
         <item>@string/general_settings_swipe_action_move</item>
     </string-array>
 
+    <string-array name="message_list_density_entries">
+        <item>@string/general_settings_ui_density_compact</item>
+        <item>@string/general_settings_ui_density_default</item>
+        <item>@string/general_settings_ui_density_relaxed</item>
+    </string-array>
+
 </resources>

@@ -20,6 +20,7 @@ import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.SwipeAction;
+import com.fsck.k9.UiDensity;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;
@@ -273,6 +274,9 @@ public class GeneralSettingsDescriptions {
         ));
         s.put("showComposeButtonOnMessageList", Settings.versions(
             new V(85, new BooleanSetting(true))
+        ));
+        s.put("messageListDensity", Settings.versions(
+            new V(86, new EnumSetting(UiDensity.class, UiDensity.Default))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);

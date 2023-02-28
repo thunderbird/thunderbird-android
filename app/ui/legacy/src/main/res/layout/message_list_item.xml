@@ -8,54 +8,55 @@
 
     <Space
         android:id="@+id/margin_start"
-        android:layout_width="16dp"
+        android:layout_width="@dimen/messageListHorizontalPadding"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/contact_picture_container"
-        android:layout_width="72dp"
-        android:layout_height="0dp"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/selected"
+        android:layout_width="@dimen/messageListContactPictureSize"
+        android:layout_height="@dimen/messageListContactPictureSize"
+        android:layout_marginStart="@dimen/messageListHorizontalPadding"
+        android:layout_marginTop="@dimen/fakeAlignImageTopToTextTopPadding"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_check_circle_large" />
 
-        <ImageView
-            android:id="@+id/selected"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="top"
-            android:contentDescription="@null"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_check_circle_large" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/contact_picture"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="top"
-            android:background="@android:color/transparent"
-            tools:src="@drawable/ic_contact_picture" />
-
-    </FrameLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/contact_picture"
+        android:layout_width="@dimen/messageListContactPictureSize"
+        android:layout_height="@dimen/messageListContactPictureSize"
+        android:layout_marginStart="@dimen/messageListHorizontalPadding"
+        android:layout_marginTop="@dimen/fakeAlignImageTopToTextTopPadding"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:layout_constraintVertical_bias="0.0"
+        tools:src="@drawable/ic_contact_picture" />
 
     <TextView
         android:id="@+id/preview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="@dimen/messageListDefaultTextViewMargin"
         android:layout_marginEnd="8dp"
         android:bufferType="spannable"
+        android:lineSpacingMultiplier="@dimen/messageListDefaultLineSpacingMultiplier"
         android:singleLine="false"
         android:textAppearance="@style/TextAppearance.K9.Small"
-        app:layout_constraintBottom_toBottomOf="@+id/divider"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_guideline"
         app:layout_constraintEnd_toStartOf="@+id/star"
         app:layout_constraintStart_toEndOf="@+id/barrier_start"
         app:layout_constraintTop_toTopOf="@+id/barrier_first_line_bottom"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_goneMarginEnd="16dp"
-        tools:text="Message preview"
+        app:layout_goneMarginEnd="@dimen/messageListHorizontalPadding"
+        tools:maxLines="2"
+        tools:text="Sender – Message preview text that can span multiple lines. Users can specify in settings how much of that is displayed."
         tools:textColor="?attr/messageListPreviewTextColor" />
 
     <ImageView
@@ -76,8 +77,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/barrier_start"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
-        app:srcCompat="?attr/messageListAnswered"
-        tools:src="@drawable/ic_messagelist_answered" />
+        app:srcCompat="?attr/messageListAnswered" />
 
     <TextView
         android:id="@+id/subject"
@@ -124,7 +124,7 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/messageListHorizontalPadding"
         android:singleLine="true"
         android:textAppearance="@style/TextAppearance.K9.Small"
         android:textColor="?android:attr/textColorSecondary"
@@ -136,8 +136,8 @@
         android:id="@+id/star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginTop="@dimen/fakeAlignImageTopToTextTopPadding"
+        android:layout_marginEnd="@dimen/messageListHorizontalPadding"
         android:src="@drawable/btn_select_star"
         app:layout_constraintBottom_toBottomOf="@+id/bottom_guideline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -145,18 +145,25 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_keyline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="72dp" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="12dp" />
+        app:layout_constraintGuide_begin="@dimen/messageListDefaultVerticalPadding" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottom_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="12dp" />
+        app:layout_constraintGuide_end="@dimen/messageListDefaultVerticalPadding" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_first_line_bottom"
@@ -170,7 +177,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="margin_start,contact_picture_container" />
+        app:constraint_referenced_ids="margin_start,contact_picture_click_area" />
 
     <View
         android:id="@+id/divider"
@@ -179,14 +186,22 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/contact_picture_container" />
+        app:layout_constraintStart_toEndOf="@+id/contact_picture_click_area" />
 
     <View
         android:id="@+id/star_click_area"
         android:layout_width="48dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/contact_picture_click_area"
+        android:layout_width="@dimen/messageListStartKeyline"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

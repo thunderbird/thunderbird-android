@@ -336,6 +336,12 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- Name of the swipe action to move a message to another folder -->
     <string name="general_settings_swipe_action_move">Move</string>
 
+    <!-- Title of the setting to specify the density of the message list -->
+    <string name="general_settings_message_list_density_title">Density</string>
+    <string name="general_settings_ui_density_compact">Compact</string>
+    <string name="general_settings_ui_density_default">Default</string>
+    <string name="general_settings_ui_density_relaxed">Relaxed</string>
+
     <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
     <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>

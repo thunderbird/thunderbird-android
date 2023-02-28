@@ -2,6 +2,7 @@ package com.fsck.k9.activity
 
 import com.fsck.k9.K9
 import com.fsck.k9.SwipeAction
+import com.fsck.k9.UiDensity
 import com.fsck.k9.preferences.AppTheme
 import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.preferences.SubTheme
@@ -21,6 +22,7 @@ data class MessageListActivityConfig(
     val contactNameColor: Int,
     val messageViewTheme: SubTheme,
     val messageListPreviewLines: Int,
+    val messageListDensity: UiDensity,
     val splitViewMode: K9.SplitViewMode,
     val fontSizeMessageListSubject: Int,
     val fontSizeMessageListSender: Int,
@@ -53,6 +55,7 @@ data class MessageListActivityConfig(
                 contactNameColor = K9.contactNameColor,
                 messageViewTheme = settings.messageViewTheme,
                 messageListPreviewLines = K9.messageListPreviewLines,
+                messageListDensity = K9.messageListDensity,
                 splitViewMode = K9.splitViewMode,
                 fontSizeMessageListSubject = K9.fontSizes.messageListSubject,
                 fontSizeMessageListSender = K9.fontSizes.messageListSender,
