@@ -137,6 +137,7 @@ detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.1"
 
 [bundles]
 shared-jvm-main = [
+  "koin-core",
   "kotlinx-datetime",
 ]
 shared-jvm-test = [
