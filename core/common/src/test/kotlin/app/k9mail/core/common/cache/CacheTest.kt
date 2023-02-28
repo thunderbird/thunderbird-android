@@ -1,8 +1,12 @@
-package com.fsck.k9.cache
+package app.k9mail.core.common.cache
 
 import app.k9mail.core.testing.TestClock
-import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
+import kotlin.test.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 

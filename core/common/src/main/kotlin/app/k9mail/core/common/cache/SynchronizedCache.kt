@@ -1,6 +1,6 @@
-package com.fsck.k9.cache
+package app.k9mail.core.common.cache
 
-internal class SynchronizedCache<KEY : Any, VALUE : Any>(
+class SynchronizedCache<KEY : Any, VALUE : Any>(
     private val delegateCache: Cache<KEY, VALUE>,
 ) : Cache<KEY, VALUE> {
 
