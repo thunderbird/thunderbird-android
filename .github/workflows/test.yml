@@ -1,0 +1,36 @@
+name: "NowSecure GHAS"
+
+on:
+ 
+  workflow_dispatch:
+    branches: [ main ]
+
+jobs:
+    
+  process:
+    if: ${{ needs.scan.outputs.report_id }}
+    runs-on: ubuntu-latest
+    environment:
+      name: nowsecure-env
+    # The above stage we introduced.
+    needs: scan
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: NowSecure download report
+        uses: nowsecure/nowsecure-action/convert-sarif@v3
+        timeout-minutes: 30
+        with:
+          report_id: 8c7fdf66-b63f-11ed-ac54-d765fca77473
+          platform_token: ${{ secrets.NS_TOKEN }}
+          # TODO: Replace the Group ID.
+          group_id: "602abed9-4c66-453d-8431-da0195b682de"
+          
+          
+      - name: echo output
+        run: |
+         echo $GITHUB_OUTPUT
+   
+
+    
