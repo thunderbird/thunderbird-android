@@ -220,7 +220,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="message_compose_description_delete_quoted_text">Видалити цитований текст</string>
   <string name="message_compose_description_edit_quoted_text">Редагувати цитований текст</string>
   <string name="remove_attachment_action">Видалити вкладення</string>
-  <string name="message_view_from_format">Від: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Кому:</string>
   <string name="message_view_cc_label">Копія:</string>
   <string name="message_view_bcc_label">Прихована копія:</string>
@@ -776,8 +775,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="dialog_confirm_spam_confirm_button">Так</string>
   <string name="dialog_confirm_spam_cancel_button">Ні</string>
   <string name="dialog_attachment_progress_title">Завантаження вкладення</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Резервне копіювання</string>
   <string name="settings_list_miscellaneous_category">Різне</string>
   <string name="settings_export_title">Експорт налаштувань</string>
@@ -1107,6 +1104,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="message_details_bcc_section_title">Прихована копія</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

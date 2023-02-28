@@ -203,7 +203,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="message_compose_description_delete_quoted_text">Forigi citatan tekston</string>
   <string name="message_compose_description_edit_quoted_text">Redakti citatan tekston</string>
   <string name="remove_attachment_action">Forigi kunsendaĵon</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Al:</string>
   <string name="message_view_cc_label">Kopio:</string>
   <string name="message_view_bcc_label">Kaŝkopio:</string>
@@ -720,8 +719,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="dialog_confirm_spam_confirm_button">Jes</string>
   <string name="dialog_confirm_spam_cancel_button">Ne</string>
   <string name="dialog_attachment_progress_title">Elŝutado de kunsendaĵo</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Sekurkopio</string>
   <string name="settings_list_miscellaneous_category">Diversaj</string>
   <string name="settings_export_title">Elporti agordojn</string>
@@ -1040,6 +1037,7 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
   <string name="message_details_bcc_section_title">Kaŝkopio</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

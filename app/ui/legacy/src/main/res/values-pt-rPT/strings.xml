@@ -218,7 +218,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_compose_description_delete_quoted_text">Remover texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
   <string name="remove_attachment_action">Remover anexo</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -767,8 +766,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="dialog_confirm_spam_confirm_button">Sim</string>
   <string name="dialog_confirm_spam_cancel_button">Não</string>
   <string name="dialog_attachment_progress_title">A transferir anexo</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">&gt;</string>
   <string name="settings_list_backup_category">Cópia de segurança</string>
   <string name="settings_list_miscellaneous_category">Diversos</string>
   <string name="settings_export_title">Exportar configurações</string>
@@ -1095,6 +1092,7 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
   <string name="message_details_bcc_section_title">Bcc</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

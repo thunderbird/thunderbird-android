@@ -215,7 +215,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="message_compose_description_delete_quoted_text">Fjarlægja tilvitnun</string>
   <string name="message_compose_description_edit_quoted_text">Breyta tilvitnun</string>
   <string name="remove_attachment_action">Fjarlægja viðhengi</string>
-  <string name="message_view_from_format">Frá: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Afrit:</string>
   <string name="message_view_bcc_label">Falið afrit:</string>
@@ -767,8 +766,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="dialog_confirm_spam_confirm_button">Já</string>
   <string name="dialog_confirm_spam_cancel_button">Nei</string>
   <string name="dialog_attachment_progress_title">Næ í viðhengi</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Öryggisafrit</string>
   <string name="settings_list_miscellaneous_category">Ýmislegt</string>
   <string name="settings_export_title">Flytja út stillingar</string>
@@ -1092,6 +1089,7 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
   <string name="message_details_bcc_section_title">Falið afrit</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

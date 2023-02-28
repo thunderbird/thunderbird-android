@@ -156,7 +156,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   </plurals>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> więcej na <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odpowiedz</string>
-  <string name="notification_action_mark_as_read">Przeczytane</string>
+  <string name="notification_action_mark_as_read">Oznacz jako przeczytane</string>
   <string name="notification_action_mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
   <string name="notification_action_delete">Usuń</string>
   <string name="notification_action_delete_all">Skasuj wszystkie</string>
@@ -219,7 +219,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="message_compose_description_delete_quoted_text">Usuń cytowany tekst</string>
   <string name="message_compose_description_edit_quoted_text">Edytuj cytowany tekst</string>
   <string name="remove_attachment_action">Usuń załącznik</string>
-  <string name="message_view_from_format">Od: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Do:</string>
   <string name="message_view_cc_label">DW:</string>
   <string name="message_view_bcc_label">UDW:</string>
@@ -780,8 +779,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="dialog_confirm_spam_confirm_button">Tak</string>
   <string name="dialog_confirm_spam_cancel_button">Nie</string>
   <string name="dialog_attachment_progress_title">Pobieranie załącznika</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Kopia zapasowa</string>
   <string name="settings_list_miscellaneous_category">Różne</string>
   <string name="settings_export_title">Eksportuj ustawienia</string>
@@ -1118,6 +1115,8 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <string name="message_details_loading_error">Wystąpił błąd podczas ładowania szczegółów wiadomości.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Dodaj do kontaktów</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Nowa wiadomość do</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Skopiuj adres e-mail</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

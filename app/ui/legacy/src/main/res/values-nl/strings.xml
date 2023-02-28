@@ -210,7 +210,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="message_compose_description_delete_quoted_text">Citaattekst verwijderen</string>
   <string name="message_compose_description_edit_quoted_text">Citaattekst bewerken</string>
   <string name="remove_attachment_action">Bijlage verwijderen</string>
-  <string name="message_view_from_format">Van: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Aan:</string>
   <string name="message_view_cc_label">CC:</string>
   <string name="message_view_bcc_label">BCC:</string>
@@ -767,8 +766,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="dialog_confirm_spam_confirm_button">Ja</string>
   <string name="dialog_confirm_spam_cancel_button">Nee</string>
   <string name="dialog_attachment_progress_title">Bijlage wordt opgehaald</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Back-up</string>
   <string name="settings_list_miscellaneous_category">Diversen</string>
   <string name="settings_export_title">Instellingen exporteren</string>
@@ -1099,6 +1096,8 @@ Je kunt dit bericht bewaren als back-up voor de geheime sleutel. Als je dit wilt
   <string name="message_details_loading_error">Er is een fout opgetreden bij het laden van de berichtdetails.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Aan contacten toevoegen</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Bericht opstellen aan</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">E-mailadres kopiëren</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

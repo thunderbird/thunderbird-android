@@ -105,7 +105,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="search_action">Rechercher</string>
   <string name="search_everywhere_action">Chercher partout</string>
   <string name="search_results">Résultats de la recherche</string>
-  <string name="new_messages_title">Nouveaux messages</string>
+  <string name="new_messages_title">Nouveaux courriels</string>
   <string name="preferences_action">Paramètres</string>
   <string name="folders_action">Gérer les dossiers</string>
   <string name="account_settings_action">Paramètres du compte</string>
@@ -170,7 +170,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_title">Erreur de notification</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_notify_error_text">Impossible de créer une notification système de nouveau message. Un son de notification manquant en est probablement la cause.\n\nToucher pour ouvrir les paramètres de notification.</string>
+  <string name="notification_notify_error_text">Impossible de créer une notification système de nouveau courriel. Un son de notification manquant en est probablement la cause.\n\nToucher pour ouvrir les paramètres de notification.</string>
   <string name="notification_bg_sync_ticker">Relève des courriels : <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Relève des courriels</string>
   <string name="notification_bg_send_ticker">Envoi du courriel : <xliff:g id="account">%s</xliff:g></string>
@@ -194,7 +194,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="debug_enable_sensitive_logging_title">Journaliser les renseignements délicates</string>
   <string name="debug_enable_sensitive_logging_summary">Pourrait inclure les mots de passe dans les journaux.</string>
   <string name="debug_export_logs_title">Exporter les journaux</string>
-  <string name="debug_export_logs_success">L\'exportation est réussie. Les journaux pourraient contenir des renseignements sensibles. Faites attention à qui vous les envoyés.</string>
+  <string name="debug_export_logs_success">L’exportation est réussie. Les journaux pourraient contenir des renseignements sensibles. Faites attention à qui vous les envoyés.</string>
   <string name="debug_export_logs_failure">Échec d’exportation.</string>
   <string name="message_list_load_more_messages_action">Charger plus de courriels</string>
   <string name="message_to_fmt">À : <xliff:g id="counterParty">%s</xliff:g></string>
@@ -218,7 +218,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="message_compose_description_delete_quoted_text">Supprimer le texte entre guillemets</string>
   <string name="message_compose_description_edit_quoted_text">Modifier le texte entre guillemets</string>
   <string name="remove_attachment_action">Supprimer le fichier joint</string>
-  <string name="message_view_from_format">De : <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">À :</string>
   <string name="message_view_cc_label">Cc :</string>
   <string name="message_view_bcc_label">Cci :</string>
@@ -777,8 +776,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="dialog_confirm_spam_confirm_button">Oui</string>
   <string name="dialog_confirm_spam_cancel_button">Non</string>
   <string name="dialog_attachment_progress_title">Téléchargement du fichier joint</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Sauvegarde</string>
   <string name="settings_list_miscellaneous_category">Divers</string>
   <string name="settings_export_title">Exporter les paramètres</string>
@@ -1088,9 +1085,9 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
   <string name="message_list_error_folder_not_found">Le dossier est introuvable</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
-  <string name="message_details_toolbar_title">Détails du message</string>
+  <string name="message_details_toolbar_title">Détails du courriel</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-  <string name="message_details_missing_date">En-tête \'Date\' manquante</string>
+  <string name="message_details_missing_date">L’en-tête « Date » est manquante</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">De</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1104,13 +1101,15 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Cci</string>
   <!--Displayed when loading the message details has failed-->
-  <string name="message_details_loading_error">Une erreur s\'est produite lors du chargement des détails du message.</string>
+  <string name="message_details_loading_error">Une erreur est survenue lors du chargement des détails du courriel.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Ajouter aux contacts</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Rédiger un courriel </string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_copy_email_address">Copier l\'adresse courriel</string>
+  <string name="action_copy_email_address">Copier l’adresse courriel</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_copy_name_and_email_address">Copier le nom et l\'adresse courriel</string>
+  <string name="action_copy_name_and_email_address">Copier le nom et l’adresse courriel</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Adresse courriel</string>
   <!--A user visible label for the name and email address copied to the clipboard-->

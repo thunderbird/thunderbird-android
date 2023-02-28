@@ -215,7 +215,6 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="message_compose_description_delete_quoted_text">Ta bort citerad text</string>
   <string name="message_compose_description_edit_quoted_text">Redigera citerad text</string>
   <string name="remove_attachment_action">Ta bort bilaga</string>
-  <string name="message_view_from_format">Från: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Till:</string>
   <string name="message_view_cc_label">Kopia:</string>
   <string name="message_view_bcc_label">Blindkopia:</string>
@@ -772,8 +771,6 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="dialog_confirm_spam_confirm_button">Ja</string>
   <string name="dialog_confirm_spam_cancel_button">Nej</string>
   <string name="dialog_attachment_progress_title">Hämta bilaga</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Säkerhetskopiering</string>
   <string name="settings_list_miscellaneous_category">Diverse</string>
   <string name="settings_export_title">Exportera inställningar</string>
@@ -1104,6 +1101,8 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
   <string name="message_details_loading_error">Ett fel uppstod när meddelande detaljerna lästes in.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Lägg till i kontakter</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Skriv meddelande till</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Kopiera e-postadress</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

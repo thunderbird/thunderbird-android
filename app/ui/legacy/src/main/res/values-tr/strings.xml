@@ -213,7 +213,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="message_compose_description_delete_quoted_text">Alıntı yapılan metni sil</string>
   <string name="message_compose_description_edit_quoted_text">Alıntı yapılan metni düzenle</string>
   <string name="remove_attachment_action">Eki kaldır</string>
-  <string name="message_view_from_format">Kimden: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Kime:</string>
   <string name="message_view_cc_label">Bilgi:</string>
   <string name="message_view_bcc_label">Gizli Kopya:</string>
@@ -755,8 +754,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="dialog_confirm_spam_confirm_button">Evet</string>
   <string name="dialog_confirm_spam_cancel_button">Hayır</string>
   <string name="dialog_attachment_progress_title">Ek indiriliyor</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Yedekleme</string>
   <string name="settings_list_miscellaneous_category">Çeşitli</string>
   <string name="settings_export_title">Dışa aktarım ayarları</string>
@@ -1077,6 +1074,7 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <string name="message_details_bcc_section_title">Gizli Kopya</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->
