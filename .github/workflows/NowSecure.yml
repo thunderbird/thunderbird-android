@@ -87,6 +87,11 @@ jobs:
           name: NowSecure SARIF
           path: NowSecure.sarif
           retention-days: 14
+          
+      - name: echo output
+        run: |
+         echo "output\n" >> $GITHUB_OUTPUT
+   
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
