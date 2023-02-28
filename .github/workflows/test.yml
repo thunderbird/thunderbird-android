@@ -26,7 +26,8 @@ jobs:
   
       - name: echo output
         run: |
-         echo ${{steps.getreport.outputs.*}}
+         echo ${{join(steps.getreport.outputs.*, '\n')}}
+        
    
 
     
