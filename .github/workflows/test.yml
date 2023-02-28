@@ -17,18 +17,16 @@ jobs:
       - name: NowSecure download report
         uses: nowsecure/nowsecure-action/convert-sarif@v3
         timeout-minutes: 30
+        id: getreport
         with:
           report_id: 8c7fdf66-b63f-11ed-ac54-d765fca77473
           platform_token: ${{ secrets.NS_TOKEN }}
           # TODO: Replace the Group ID.
           group_id: "602abed9-4c66-453d-8431-da0195b682de"
-  printoutput: 
-    runs-on: ubuntu-latest
-    # The above stage we introduced.
-    steps:
+  
       - name: echo output
         run: |
-         echo ${{process.outputs.*}}
+         echo ${{steps.getreport.outputs.*}}
    
 
     
