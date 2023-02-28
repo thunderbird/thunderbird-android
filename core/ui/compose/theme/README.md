@@ -2,7 +2,7 @@
 
 This provides the `MainTheme` with dark/light variation, a wrapper for the Compose Material2 theme. It supports [CompositionLocal](https://developer.android.com/jetpack/compose/compositionlocal) changes to colors, typography, shapes and adds additionally elevations, sizes, spacings and images.
 
-To change Material2 related properties use `MainTheme` instead of `MaterialTheme`: 
+To change Material2 related properties use `MainTheme` instead of `MaterialTheme`:
 
 - `MainTheme.colors`: Material2 colors
 - `MainTheme.typography`: Material 2 typography
