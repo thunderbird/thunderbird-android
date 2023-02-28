@@ -8,7 +8,6 @@ on:
 jobs:
     
   process:
-    if: ${{ needs.scan.outputs.report_id }}
     runs-on: ubuntu-latest
     # The above stage we introduced.
     steps:
