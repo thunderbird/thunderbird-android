@@ -175,7 +175,6 @@
   <string name="message_compose_description_delete_quoted_text">מחק טקסט מצוטט</string>
   <string name="message_compose_description_edit_quoted_text">ערוך טקסט מצוטט</string>
   <string name="remove_attachment_action">מחק קובץ מצורף</string>
-  <string name="message_view_from_format">מ: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">ל:</string>
   <string name="message_view_cc_label">עותק:</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
@@ -562,8 +561,6 @@
   <string name="dialog_confirm_spam_confirm_button">כן</string>
   <string name="dialog_confirm_spam_cancel_button">לא</string>
   <string name="dialog_attachment_progress_title">מוריד קבצים</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_miscellaneous_category">שונות</string>
   <string name="settings_export_button">יצא</string>
   <string name="settings_export_share_button">שתף</string>
@@ -641,6 +638,7 @@
   <string name="message_details_bcc_section_title">עותק מוסתר</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

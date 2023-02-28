@@ -215,7 +215,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="message_compose_description_delete_quoted_text">No incluir el mensaje original</string>
   <string name="message_compose_description_edit_quoted_text">Editar el mensaje original</string>
   <string name="remove_attachment_action">Eliminar adjunto</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Cco:</string>
@@ -774,8 +773,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="dialog_confirm_spam_confirm_button">Sí</string>
   <string name="dialog_confirm_spam_cancel_button">No</string>
   <string name="dialog_attachment_progress_title">Descargando adjunto</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Respaldo</string>
   <string name="settings_list_miscellaneous_category">Varios</string>
   <string name="settings_export_title">Exportar ajustes</string>
@@ -1109,6 +1106,8 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
   <string name="message_details_loading_error">Se produjo un error al cargar los datos del correo.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Añadir a contactos</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Redactar un correo dirigido a</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Copiar dirección de correo</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

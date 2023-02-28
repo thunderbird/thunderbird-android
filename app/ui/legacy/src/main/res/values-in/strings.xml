@@ -194,7 +194,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="message_compose_description_delete_quoted_text">Buang teks kutipan</string>
   <string name="message_compose_description_edit_quoted_text">Sunting teks kutipan</string>
   <string name="remove_attachment_action">Buang lampiran</string>
-  <string name="message_view_from_format">Dari: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Kepada:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -697,8 +696,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="dialog_confirm_spam_confirm_button">Ya</string>
   <string name="dialog_confirm_spam_cancel_button">Tidak</string>
   <string name="dialog_attachment_progress_title">Mengunduh lampiran</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Cadangan</string>
   <string name="settings_list_miscellaneous_category">Lain-lain</string>
   <string name="settings_export_title">Ekspor pengaturan</string>
@@ -1000,6 +997,7 @@ Anda dapat menyimpan pesan ini dan menggunakannya sebagai cadangan untuk kunci r
   <string name="message_details_bcc_section_title">Bcc</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

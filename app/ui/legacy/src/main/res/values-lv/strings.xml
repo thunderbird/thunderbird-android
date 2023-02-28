@@ -217,7 +217,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="message_compose_description_delete_quoted_text">Noņemt citēto tekstu</string>
   <string name="message_compose_description_edit_quoted_text">Redigēt citēto tekstu</string>
   <string name="remove_attachment_action">Noņemt pielikumu</string>
-  <string name="message_view_from_format">No: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Kam:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Neredzamais:</string>
@@ -776,8 +775,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="dialog_confirm_spam_confirm_button">Jā</string>
   <string name="dialog_confirm_spam_cancel_button">Nē</string>
   <string name="dialog_attachment_progress_title">Lejupielādē pielikumu</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Rezerves kopija</string>
   <string name="settings_list_miscellaneous_category">Dažādi</string>
   <string name="settings_export_title">Eksportēt iestatījumus</string>
@@ -1111,6 +1108,7 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <string name="message_details_loading_error">Lejupielādējot vēstules papildinformāciju notika kāda kļūda.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Pievienot kontaktiem</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Nokopēt e-pasta adresi</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

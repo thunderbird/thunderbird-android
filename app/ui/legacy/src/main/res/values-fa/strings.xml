@@ -215,7 +215,6 @@
   <string name="message_compose_description_delete_quoted_text">حذف نقل‌قول</string>
   <string name="message_compose_description_edit_quoted_text">ویرایش نقل‌قول</string>
   <string name="remove_attachment_action">حذف پیوست</string>
-  <string name="message_view_from_format">از: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">به:</string>
   <string name="message_view_cc_label">رونوشت به:</string>
   <string name="message_view_bcc_label">مخفیانه به:</string>
@@ -760,8 +759,6 @@
   <string name="dialog_confirm_spam_confirm_button">بله</string>
   <string name="dialog_confirm_spam_cancel_button">خیر</string>
   <string name="dialog_attachment_progress_title">در حال دانلود پیوست</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">پشتیبان</string>
   <string name="settings_list_miscellaneous_category">متفرقه</string>
   <string name="settings_export_title">برون‌برد تنظیمات</string>
@@ -1082,6 +1079,7 @@
   <string name="message_details_bcc_section_title">مخفیانه به</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

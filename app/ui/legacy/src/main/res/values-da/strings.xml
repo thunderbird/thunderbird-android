@@ -164,6 +164,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="notification_authentication_error_title">Godkendelse mislykkedes</string>
   <string name="notification_authentication_error_text">Godkendelse mislykkedes for <xliff:g id="account">%s</xliff:g>. Opdater dine serverindstillinger.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Notifikation fejl</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollere post</string>
@@ -211,14 +212,16 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_compose_description_delete_quoted_text">Fjerne citeret tekst</string>
   <string name="message_compose_description_edit_quoted_text">Redigere citeret tekst</string>
   <string name="remove_attachment_action">Fjern vedhæftning</string>
-  <string name="message_view_from_format">Fra: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Kunne ikke gemme vedhæftning.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"til "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">mig</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hent hele meddelelsen</string>
@@ -237,6 +240,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="global_settings_show_contact_name_summary">Benyt afsendernavne fra eksisterende kontakter</string>
   <string name="global_settings_registered_name_color_label">Farvelæg kontakter</string>
   <string name="global_settings_registered_name_color_changed">Farvelæg navne i kontaklisten</string>
+  <string name="general_settings_contact_name_color_label">Farve på kontakt navn</string>
   <string name="global_settings_messageview_fixedwidth_label">Tegnsæt med fast bredde</string>
   <string name="global_settings_messageview_fixedwidth_summary">Benyt tegnsæt med fast bredde til visning af mails med ren tekst</string>
   <string name="global_settings_messageview_autofit_width_label">Auto tilpas størrelse på meddelelser</string>
@@ -254,11 +258,15 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="global_settings_confirm_menu_mark_all_read">Marker alle meddelelser som læst</string>
   <string name="global_settings_confirm_action_delete_notif">Slet (fra beskedbjælke)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Strygehandlinger</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Højre stryg</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Venstre stryg</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Ingen</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Skift det valgte</string>
   <!--Name of the swipe action to mark as message as read/unread-->
   <string name="general_settings_swipe_action_toggle_read">Markér som læst/ulæst</string>
   <!--Name of the swipe action to add/remove a star-->
@@ -295,9 +303,12 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_basics_email_hint">Mail addresse</string>
   <string name="account_setup_basics_password_hint">Password</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Log ind</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Log ind med Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_biometrics_title">Verificer din identitet</string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">Lås op for at vise din adgangskode</string>
   <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Henter konto-information\u2026</string>
@@ -317,6 +328,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_auth_type_insecure_password">Kodeord; sendt usikret</string>
   <string name="account_setup_auth_type_encrypted_password">Krypteret kodeord</string>
   <string name="account_setup_auth_type_tls_client_certificate">Klient certifikat</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Indgående serverindstillinger</string>
   <string name="account_setup_incoming_username_label">Brugernavn</string>
   <string name="account_setup_incoming_password_label">Password</string>
@@ -419,6 +431,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_notify_self_summary">Vis besked for mails sendt af mig</string>
   <string name="account_notify_contacts_mail_only_label">Kun kontakter</string>
   <string name="account_notify_contacts_mail_only_summary">Vis kun besked for meddelelser fra kendte kontakter</string>
+  <string name="account_settings_ignore_chat_messages_label">Ignorér chat-beskeder</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marker som læst ved åbning</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marker som læst når meddelses åbnes for læsning</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marker som læst ved sletning</string>
@@ -561,6 +574,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_vibrate_times">Gentag vibration</string>
   <string name="account_settings_vibrate_summary_disabled">Deaktiveret</string>
   <string name="account_settings_ringtone">Ringetone ved ny mail</string>
+  <string name="account_settings_notification_light_label">Notifikation lys</string>
   <string name="account_settings_notification_light_disabled">Deaktiveret</string>
   <string name="account_settings_notification_light_account_color">Kontofarve</string>
   <string name="account_settings_notification_light_white">Hvid</string>
@@ -739,8 +753,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="dialog_confirm_spam_confirm_button">Ja</string>
   <string name="dialog_confirm_spam_cancel_button">Nej</string>
   <string name="dialog_attachment_progress_title">Henter vedhæftning</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Sikkerhedskopi</string>
   <string name="settings_list_miscellaneous_category">Diverse</string>
   <string name="settings_export_title">Eksportér opsætning</string>
@@ -756,13 +768,16 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Indtast venligst kodeord</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Log venligst ind</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Log ind og indtast adgangskoder</string>
   <string name="settings_import_failure">Importen af indstillinger fejlede</string>
   <string name="settings_import_read_failure">Indlæsning af fil med indstillinger mislykkedes</string>
   <string name="settings_import_partial_failure">Import af nogle indstillinger fejlede</string>
   <string name="settings_import_status_success">Importeret korrrekt</string>
   <string name="settings_import_status_password_required">Kodeord påkrævet</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Log-ind er påkrævet</string>
   <string name="settings_import_status_not_imported">Ikke importeret</string>
   <string name="settings_import_status_error">Import fejlede</string>
   <string name="settings_import_later_button">Senere</string>
@@ -1044,8 +1059,11 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <string name="swipe_action_move">Flyt...</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Fejl</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Mappe ikke fundet</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Besked detaljer</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">Fra</string>
@@ -1061,9 +1079,14 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <string name="message_details_bcc_section_title">Bcc</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Tilføj til kontakter</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Kopiér email-adresse</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Kopiér navn og email-adresse</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Mail addresse</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Navn og email-adresse</string>
 </resources>

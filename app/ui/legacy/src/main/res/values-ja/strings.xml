@@ -213,7 +213,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="message_compose_description_delete_quoted_text">引用文を削除します</string>
   <string name="message_compose_description_edit_quoted_text">引用文を編集します</string>
   <string name="remove_attachment_action">添付ファイルの削除</string>
-  <string name="message_view_from_format">送信者: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">宛先:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -768,8 +767,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="dialog_confirm_spam_confirm_button">はい</string>
   <string name="dialog_confirm_spam_cancel_button">いいえ</string>
   <string name="dialog_attachment_progress_title">添付ファイルをダウンロードしています</string>
-  <string name="messagelist_sent_to_me_sigil">\u00bb</string>
-  <string name="messagelist_sent_cc_me_sigil">\u203a</string>
   <string name="settings_list_backup_category">バックアップ</string>
   <string name="settings_list_miscellaneous_category">その他</string>
   <string name="settings_export_title">設定をエクスポート</string>
@@ -1097,6 +1094,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="message_details_loading_error">メッセージの詳細の読み込み中にエラーが発生しました。</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">連絡先に追加</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">メールアドレスをコピー</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

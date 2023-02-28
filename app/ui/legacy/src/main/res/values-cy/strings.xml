@@ -220,7 +220,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="message_compose_description_delete_quoted_text">Tynnu\'r testun wedi ei ddyfynnu</string>
   <string name="message_compose_description_edit_quoted_text">Golygu\'r testun wedi ei ddyfynnu</string>
   <string name="remove_attachment_action">Tynnu atodiad</string>
-  <string name="message_view_from_format">Oddi wrth: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">At:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -770,8 +769,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="dialog_confirm_spam_confirm_button">Ydw</string>
   <string name="dialog_confirm_spam_cancel_button">Nac ydw</string>
   <string name="dialog_attachment_progress_title">Yn lawrlwytho\'r atodiad</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Copi wrth gefn</string>
   <string name="settings_list_miscellaneous_category">Amrywiol</string>
   <string name="settings_export_title">Allforio gosodiadau</string>
@@ -1099,6 +1096,7 @@ Mae\'n bosib i ti gadw\'r neges hon a\'i ddefnyddio wrth gefn fel dy allwedd gyf
   <string name="message_details_bcc_section_title">Bcc</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

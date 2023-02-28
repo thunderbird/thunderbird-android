@@ -23,7 +23,7 @@
   <string name="changelog_loading_error">Changelog konnte nicht geladen werden.</string>
   <string name="changelog_version_title">Version %s</string>
   <string name="changelog_recent_changes_title">Was gibt es Neues</string>
-  <string name="changelog_show_recent_changes">Neueste Änderungen nach einem App-Update anzeigen</string>
+  <string name="changelog_show_recent_changes">Änderungen nach dem Update der App anzeigen</string>
   <string name="changelog_snackbar_text">Finde heraus, was es Neues in diesem Release gibt</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
@@ -214,7 +214,6 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="message_compose_description_delete_quoted_text">Zitierten Text entfernen</string>
   <string name="message_compose_description_edit_quoted_text">Zitierten Text bearbeiten</string>
   <string name="remove_attachment_action">Anhang entfernen</string>
-  <string name="message_view_from_format">Von: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">An:</string>
   <string name="message_view_cc_label">CC:</string>
   <string name="message_view_bcc_label">BCC:</string>
@@ -772,8 +771,6 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="dialog_confirm_spam_confirm_button">Ja</string>
   <string name="dialog_confirm_spam_cancel_button">Nein</string>
   <string name="dialog_attachment_progress_title">Anhang wird heruntergeladen</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Backup</string>
   <string name="settings_list_miscellaneous_category">Verschiedenes</string>
   <string name="settings_export_title">Einstellungen exportieren</string>
@@ -1100,11 +1097,13 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
   <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
   <string name="message_details_cc_section_title">CC</string>
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
-  <string name="message_details_bcc_section_title">Blindkopie (BCC)</string>
+  <string name="message_details_bcc_section_title">BCC</string>
   <!--Displayed when loading the message details has failed-->
   <string name="message_details_loading_error">Beim Laden der Nachrichtendetails ist ein Fehler aufgetreten.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_add_to_contacts">Kontakten hinzufügen</string>
+  <string name="action_add_to_contacts">Zu Kontakten hinzufügen</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Nachricht verfassen an</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">E-Mail-Adresse kopieren</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

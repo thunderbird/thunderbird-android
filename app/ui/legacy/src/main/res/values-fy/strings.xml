@@ -210,7 +210,6 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="message_compose_description_delete_quoted_text">Sitaattekst fuortsmite</string>
   <string name="message_compose_description_edit_quoted_text">Sitaattekst bewurkje</string>
   <string name="remove_attachment_action">Bylage fuortsmite</string>
-  <string name="message_view_from_format">Fan: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Oan:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -767,8 +766,6 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="dialog_confirm_spam_confirm_button">Ja</string>
   <string name="dialog_confirm_spam_cancel_button">Nee</string>
   <string name="dialog_attachment_progress_title">Bylage wurdt ophelle</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Reservekopy</string>
   <string name="settings_list_miscellaneous_category">Diversken</string>
   <string name="settings_export_title">Ynstellingen eksportearje</string>
@@ -1099,6 +1096,8 @@ Jo kinne dit berjocht bewarje as reservekopy foar jo geheime kaai. As jo dit dwa
   <string name="message_details_loading_error">Der is in flater bard by it laden fan de berjochtdetails.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Oan kontakten tafoegje</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Berjocht opstelle oan</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">E-mailadres kopiearje</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

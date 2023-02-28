@@ -20,11 +20,11 @@
   <string name="about_libraries">Librari</string>
   <string name="license">Licencë</string>
   <string name="changelog_title">Regjistër ndryshimesh</string>
-  <string name="changelog_loading_error">S’u ngarkua dot regjistri i ndryshimeve.</string>
+  <string name="changelog_loading_error">S\’u ngarkua dot regjistri i ndryshimeve.</string>
   <string name="changelog_version_title">Version %s</string>
-  <string name="changelog_recent_changes_title">Ç’ka të re</string>
+  <string name="changelog_recent_changes_title">Ç\’ka të re</string>
   <string name="changelog_show_recent_changes">Shfaq ndryshime së fundi, kur përditësohet aplikacioni</string>
-  <string name="changelog_snackbar_text">Mësoni ç’ka të re në këtë hedhje në qarkullim</string>
+  <string name="changelog_snackbar_text">Mësoni ç\’ka të re në këtë hedhje në qarkullim</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Mirë se vini te K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -60,7 +60,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <!--Default signature-->
   <string name="default_signature">-- \nDërguar nga pajisja ime Android, me K-9 Mail. Ju lutem, më ndjeni për shkurtësinë.</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">Llogaria \"<xliff:g id="account">%s</xliff:g>\" do të hiqet që nga K-9 Mail.</string>
+  <string name="account_delete_dlg_instructions_fmt">Llogaria \“<xliff:g id="account">%s</xliff:g>\” do të hiqet që nga K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autorë</string>
   <string name="about_title">Mbi K-9 Mail</string>
@@ -216,7 +216,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="message_compose_description_delete_quoted_text">Hiqe tekstin e cituar</string>
   <string name="message_compose_description_edit_quoted_text">Përpunoni tekstin e cituar</string>
   <string name="remove_attachment_action">Hiqe bashkëngjitjen</string>
-  <string name="message_view_from_format">Nga: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Për:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -308,7 +307,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_basics_title">Rregulloni një llogari të re</string>
   <string name="account_setup_basics_email_hint">Adresë email</string>
   <string name="account_setup_basics_password_hint">Fjalëkalim</string>
-  <string name="account_setup_oauth_description">Që të përdorni këtë llogari email me K-9 Mail, lypset të bëni hyrjen dhe t’i akordoni aplikacionit hyrje te email-et tuaj.</string>
+  <string name="account_setup_oauth_description">Që të përdorni këtë llogari email me K-9 Mail, lypset të bëni hyrjen dhe t\’i akordoni aplikacionit hyrje te email-et tuaj.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
   <string name="account_setup_oauth_sign_in">Hyni</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
@@ -350,7 +349,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_incoming_security_none_label">Asnjë</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-  <string name="account_setup_incoming_invalid_setting_combo_notice"><xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" s\’është i vlefshëm me \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g></string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\“<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\” s\’është i vlefshëm me \“<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\”</string>
   <string name="account_setup_incoming_delete_policy_label">Kur fshij një mesazh</string>
   <string name="account_setup_incoming_delete_policy_never_label">Mos e fshi te shërbyesi</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Fshije te shërbyesi</string>
@@ -380,7 +379,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_outgoing_username_label">Emër përdoruesi</string>
   <string name="account_setup_outgoing_password_label">Fjalëkalim</string>
   <string name="account_setup_outgoing_authentication_label">Mirëfilltësim</string>
-  <string name="account_setup_outgoing_invalid_setting_combo_notice"><xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" s\’është i vlefshëm me \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g></string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\“<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\” s\’është i vlefshëm me \“<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\”</string>
   <string name="account_setup_bad_uri">Rregullim i pavefshëm: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Mundësi llogarie</string>
   <string name="account_setup_options_mail_check_frequency_label">Shpeshti vjeljeje dosjeje</string>
@@ -423,7 +422,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizimi u anulua</string>
   <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizimi dështoi me gabimin vijues: <xliff:g id="error">%s</xliff:g></string>
   <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 aktualisht nuk mbulohet me këtë furnizues shërbimi.</string>
-  <string name="account_setup_failed_dlg_browser_not_found">Aplikacioni s’gjeti dot një shfletues për ta përdorur për t’i akorduar hyrje te llogaria juaj.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Aplikacioni s\’gjeti dot një shfletues për ta përdorur për t\’i akorduar hyrje te llogaria juaj.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Përpunoni hollësitë</string>
   <string name="account_setup_failed_dlg_continue_action">Vazhdo</string>
   <string name="account_settings_push_advanced_title">Të mëtejshme</string>
@@ -749,7 +748,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="confirm_discard_draft_message_title">Të hidhet tej mesazhi?</string>
   <string name="confirm_discard_draft_message">Jeni i sigurt se doni të hidhet tej ky mesazh?</string>
   <string name="dialog_confirm_clear_local_folder_title">Të spastrohen mesazhe vendore?</string>
-  <string name="dialog_confirm_clear_local_folder_message">Kjo do të heqë nga dosja krejt mesazhet vendore. Prej shërbyesit s’do të fshihet ndonjë mesazh.</string>
+  <string name="dialog_confirm_clear_local_folder_message">Kjo do të heqë nga dosja krejt mesazhet vendore. Prej shërbyesit s\’do të fshihet ndonjë mesazh.</string>
   <string name="dialog_confirm_clear_local_folder_action">Spastroji mesazhet</string>
   <string name="dialog_confirm_delete_title">Ripohoni fshirjen</string>
   <string name="dialog_confirm_delete_message">Doni të fshihet ky mesazh?</string>
@@ -760,7 +759,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="dialog_confirm_delete_confirm_button">Po</string>
   <string name="dialog_confirm_delete_cancel_button">Jo</string>
   <string name="dialog_confirm_mark_all_as_read_title">Ripohoni vënien shenjë krejt mesazheve si të lexuar</string>
-  <string name="dialog_confirm_mark_all_as_read_message">Doni t’u vihet shenjë krejt mesazheve si të lexuar?</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Doni t\’u vihet shenjë krejt mesazheve si të lexuar?</string>
   <string name="dialog_confirm_empty_trash_title">Ripohoni zbrazje hedhurinash</string>
   <string name="dialog_confirm_empty_trash_message">Doni të zbrazet dosja e hedhurinave?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Po</string>
@@ -773,8 +772,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="dialog_confirm_spam_confirm_button">Po</string>
   <string name="dialog_confirm_spam_cancel_button">Jo</string>
   <string name="dialog_attachment_progress_title">Po shkarkohet bashkëngjitje</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Kopjeruajtje</string>
   <string name="settings_list_miscellaneous_category">Të ndryshme</string>
   <string name="settings_export_title">Rregullime eksportimi</string>
@@ -793,9 +790,9 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="settings_import_authorization_required">Ju lutemi, bëni hyrjen</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_authorization_and_password_required">Ju lutemi, bëni hyrjen dhe jepni fjalëkalime</string>
-  <string name="settings_import_failure">S’u arrit të importohen rregullime</string>
-  <string name="settings_import_read_failure">S’u arrit të lexohet kartelë rregullimesh</string>
-  <string name="settings_import_partial_failure">S’u arrit të importohen disa rregullime</string>
+  <string name="settings_import_failure">S\’u arrit të importohen rregullime</string>
+  <string name="settings_import_read_failure">S\’u arrit të lexohet kartelë rregullimesh</string>
+  <string name="settings_import_partial_failure">S\’u arrit të importohen disa rregullime</string>
   <string name="settings_import_status_success">U importuan me sukses</string>
   <string name="settings_import_status_password_required">Lypset fjalëkalim</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
@@ -806,8 +803,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="settings_import">Importo rregullime</string>
   <string name="settings_importing">Po importohen rregullime…</string>
   <plurals name="settings_import_password_prompt">
-    <item quantity="one">Që të mund të përdorni llogarinë \"<xliff:g id="account">%s</xliff:g>\" duhet të jepni fjalëkalimin e shërbyesit.</item>
-    <item quantity="other">Që të mund të përdorni llogarinë \"<xliff:g id="account">%s</xliff:g>\" duhet të jepni fjalëkalimet e shërbyesit.</item>
+    <item quantity="one">Që të mund të përdorni llogarinë \“<xliff:g id="account">%s</xliff:g>\” duhet të jepni fjalëkalimin e shërbyesit.</item>
+    <item quantity="other">Që të mund të përdorni llogarinë \“<xliff:g id="account">%s</xliff:g>\” duhet të jepni fjalëkalimet e shërbyesit.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Fjalëkalim shërbyesi marrjesh</string>
   <string name="settings_import_outgoing_server_password_hint">Fjalëkalim shërbyesi dërgimesh</string>
@@ -874,7 +871,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="global_settings_threaded_view_summary">Grupoji mesazhet sipas bisedash</string>
   <string name="upgrade_databases_title">Përditësim bazash të dhënash</string>
   <string name="upgrade_databases_unspecified">Po përditësohen baza të dhënash…</string>
-  <string name="upgrade_database_format">Po përditësohet baza e të dhënave për \"<xliff:g id="account">%s</xliff:g>\"</string>
+  <string name="upgrade_database_format">Po përditësohet baza e të dhënave për \“<xliff:g id="account">%s</xliff:g>\”</string>
   <string name="global_settings_splitview_mode_label">Shfaqe me ekranin të ndarë</string>
   <string name="global_settings_splitview_always">Përherë</string>
   <string name="global_settings_splitview_never">Kurrë</string>
@@ -896,9 +893,9 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_basics_client_certificate">Përdor dëshmi klienti</string>
   <string name="client_certificate_spinner_empty">S\’ka dëshmi klienti</string>
   <string name="client_certificate_spinner_delete">Hiqe përzgjedhjen për dëshmi klienti</string>
-  <string name="client_certificate_retrieval_failure">Dështoi të merrej dëshmi klienti për aliasin \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_retrieval_failure">Dështoi të merrej dëshmi klienti për aliasin \“<xliff:g id="alias">%s</xliff:g>\”</string>
   <string name="client_certificate_advanced_options">Mundësi të mëtejshme</string>
-  <string name="client_certificate_expired">Dëshmia e klientit \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ka skaduar ose s\’është ende e vlefshme (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="client_certificate_expired">Dëshmia e klientit \“<xliff:g id="certificate_alias">%1$s</xliff:g>\” ka skaduar ose s\’është ende e vlefshme (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*I fshehtëzuar*</string>
   <string name="add_from_contacts">Shtoni prej Kontakteve</string>
@@ -1080,10 +1077,11 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Lëvizeni…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Shfaq buton hartimesh pezull</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
   <string name="message_list_error_title">Gabim</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
-  <string name="message_list_error_folder_not_found">S’u gjet dosja</string>
+  <string name="message_list_error_folder_not_found">S\’u gjet dosja</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
   <string name="message_details_toolbar_title">Hollësi mesazhi</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
@@ -1104,6 +1102,8 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
   <string name="message_details_loading_error">Ndodhi një gabim gjatë ngarkimit të hollësive të mesazhit.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Shtoje te kontaktet</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Hartoni mesazh për</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Kopjo adresë email</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

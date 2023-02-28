@@ -215,7 +215,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_compose_description_delete_quoted_text">Elimina el text citat</string>
   <string name="message_compose_description_edit_quoted_text">Edita el text citat</string>
   <string name="remove_attachment_action">Elimina l\'adjunt</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">A:</string>
   <string name="message_view_cc_label">A/c:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -772,8 +771,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="dialog_confirm_spam_confirm_button">Sí</string>
   <string name="dialog_confirm_spam_cancel_button">No</string>
   <string name="dialog_attachment_progress_title">S\'està baixant l\'adjunt</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Còpia de seguretat</string>
   <string name="settings_list_miscellaneous_category">Miscel·lània</string>
   <string name="settings_export_title">Exporta la configuració</string>
@@ -1104,6 +1101,8 @@ Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la v
   <string name="message_details_loading_error">S\'ha produït un error en carregar els detalls del missatge.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Afegeix als contactes</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Escriure un missatge electrònic</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Copia l\'adreça de correu</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

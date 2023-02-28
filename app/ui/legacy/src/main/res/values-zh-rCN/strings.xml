@@ -213,7 +213,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="message_compose_description_delete_quoted_text">删除引用文本</string>
   <string name="message_compose_description_edit_quoted_text">编辑引用文本</string>
   <string name="remove_attachment_action">移除附件</string>
-  <string name="message_view_from_format">发件人：<xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">收件人：</string>
   <string name="message_view_cc_label">抄送：</string>
   <string name="message_view_bcc_label">密送:</string>
@@ -768,8 +767,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="dialog_confirm_spam_confirm_button">是</string>
   <string name="dialog_confirm_spam_cancel_button">否</string>
   <string name="dialog_attachment_progress_title">正在下载附件</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">备份</string>
   <string name="settings_list_miscellaneous_category">杂项</string>
   <string name="settings_export_title">导出设置</string>
@@ -1097,6 +1094,8 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="message_details_loading_error">加载邮件详情时出错。</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">添加到联系人</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">撰写消息到</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">复制电子邮箱地址</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

@@ -209,7 +209,6 @@
   <string name="message_compose_description_delete_quoted_text">ഉദ്ധരിച്ച വാചകം നീക്കംചെയ്യുക</string>
   <string name="message_compose_description_edit_quoted_text">ഉദ്ധരിച്ച വാചകം എഡിറ്റുചെയ്യുക</string>
   <string name="remove_attachment_action">അറ്റാച്ചുമെന്റ് നീക്കംചെയ്യുക</string>
-  <string name="message_view_from_format">പ്രേഷിതാവ്: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">സ്വീകർത്താവ്:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -727,8 +726,6 @@
   <string name="dialog_confirm_spam_confirm_button">അതെ</string>
   <string name="dialog_confirm_spam_cancel_button">ഇല്ല</string>
   <string name="dialog_attachment_progress_title">അറ്റാച്ചുമെന്റ് ഡൗൺലോഡുചെയ്യുന്നു</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">ബാക്കപ്പ്</string>
   <string name="settings_list_miscellaneous_category">പലവക</string>
   <string name="settings_export_title">ക്രമീകരണങ്ങൾ എക്‌സ്‌പോർട്ടുചെയ്യുക</string>
@@ -1032,6 +1029,7 @@
   <string name="message_details_bcc_section_title">Bcc</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

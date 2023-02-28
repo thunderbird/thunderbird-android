@@ -170,7 +170,6 @@
   <string name="message_compose_show_quoted_text_action">인용 메세지 포함</string>
   <string name="message_compose_description_delete_quoted_text">인용된 메시지 제거</string>
   <string name="message_compose_description_edit_quoted_text">인용된 메시지 편집</string>
-  <string name="message_view_from_format">발신자: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">수신자:</string>
   <string name="message_view_cc_label">참조:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -634,8 +633,6 @@
   <string name="dialog_confirm_spam_confirm_button">예</string>
   <string name="dialog_confirm_spam_cancel_button">아니오</string>
   <string name="dialog_attachment_progress_title">첨부 파일 다운로드 중</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_miscellaneous_category">기타 설정</string>
   <string name="settings_export_button">내보내기</string>
   <string name="settings_export_share_button">공유</string>
@@ -842,6 +839,7 @@
   <string name="message_details_bcc_section_title">숨은 참조</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--A user visible label for the email address copied to the clipboard-->

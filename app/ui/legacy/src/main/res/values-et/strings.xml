@@ -216,7 +216,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="message_compose_description_delete_quoted_text">Eemalda osundatud tekst</string>
   <string name="message_compose_description_edit_quoted_text">Muuda osundatud teksti</string>
   <string name="remove_attachment_action">Eemalda manus</string>
-  <string name="message_view_from_format">Kellelt: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Kellele:</string>
   <string name="message_view_cc_label">Koopia:</string>
   <string name="message_view_bcc_label">Pimekoopia:</string>
@@ -775,8 +774,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="dialog_confirm_spam_confirm_button">Jah</string>
   <string name="dialog_confirm_spam_cancel_button">Ei</string>
   <string name="dialog_attachment_progress_title">Laadib manuseid</string>
-  <string name="messagelist_sent_to_me_sigil">»</string>
-  <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Varundus</string>
   <string name="settings_list_miscellaneous_category">Muu</string>
   <string name="settings_export_title">Ekspordi sätted</string>
@@ -1107,6 +1104,8 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
   <string name="message_details_loading_error">Kirja lisateabe laadimisel tekkis viga</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Lisa kontaktide hulka</string>
+  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Koosta kiri adressaadile</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Kopeeri e-posti aadress</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
