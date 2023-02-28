@@ -26,7 +26,7 @@ jobs:
           
       - name: echo output
         run: |
-         echo $GITHUB_OUTPUT
+         echo ${{process.outputs.*}}
    
 
     
