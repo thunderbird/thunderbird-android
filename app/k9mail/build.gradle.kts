@@ -76,8 +76,8 @@ android {
 
     buildTypes {
         release {
-            if (project.hasProperty("storeFile")) {
-                signingConfig = signingConfigs.getByName("release")
+            signingConfigs.findByName("release")?.let { releaseSigningConfig ->
+                signingConfig = releaseSigningConfig
             }
 
             isMinifyEnabled = true
