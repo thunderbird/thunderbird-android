@@ -24,7 +24,7 @@ fun K9Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val images = Images(logo = app.k9mail.core.ui.compose.demo.R.drawable.logo_orange)
+    val images = Images(logo = R.drawable.core_ui_theme_logo_orange)
 
     MainTheme(
         lightColorPalette = k9LightColorPalette,

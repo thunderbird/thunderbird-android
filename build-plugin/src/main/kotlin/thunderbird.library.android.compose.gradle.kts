@@ -11,7 +11,7 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.foundation:foundation")
 
     // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")
