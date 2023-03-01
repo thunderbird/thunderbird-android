@@ -136,6 +136,9 @@ leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
 detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.1"
 
 [bundles]
+shared-jvm-main = [
+  "kotlinx-datetime",
+]
 shared-jvm-test = [
   "junit",
   "truth",

@@ -1,5 +1,6 @@
 package app.k9mail.core.testing
 
+import kotlin.time.Duration
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
@@ -10,5 +11,9 @@ class TestClock(
 
     fun changeTimeTo(time: Instant) {
         currentTime = time
+    }
+
+    fun advanceTimeBy(duration: Duration) {
+        currentTime += duration
     }
 }

@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.mime4j.core)
     implementation(libs.mime4j.dom)
 
+    testApi(projects.core.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.backend.imap)
     testImplementation(projects.mail.protocols.smtp)

@@ -1,6 +1,6 @@
 package com.fsck.k9.cache
 
-import com.fsck.k9.TestClock
+import app.k9mail.core.testing.TestClock
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith

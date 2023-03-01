@@ -28,7 +28,6 @@ import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
 import com.fsck.k9.Account
 import com.fsck.k9.Account.Expunge
 import com.fsck.k9.Account.SortType
-import com.fsck.k9.Clock
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.SwipeAction
@@ -59,6 +58,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.Future
+import kotlinx.datetime.Clock
 import net.jcip.annotations.GuardedBy
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

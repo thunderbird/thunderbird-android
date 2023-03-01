@@ -1,8 +1,9 @@
 package com.fsck.k9.cache
 
-import com.fsck.k9.TestClock
+import app.k9mail.core.testing.TestClock
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.milliseconds
 
 class ExpiringCacheTest {
 
@@ -13,7 +14,7 @@ class ExpiringCacheTest {
     @Test
     fun `get should return null when entry present and cache expired`() {
         testSubject[KEY] = VALUE
-        advanceClockBy(CACHE_TIME_VALIDITY_IN_MILLIS)
+        clock.advanceTimeBy(CACHE_TIME_VALIDITY_DURATION)
 
         val result = testSubject[KEY]
 
@@ -23,7 +24,7 @@ class ExpiringCacheTest {
     @Test
     fun `set should clear cache and add new entry when cache expired`() {
         testSubject[KEY] = VALUE
-        advanceClockBy(CACHE_TIME_VALIDITY_IN_MILLIS)
+        clock.advanceTimeBy(CACHE_TIME_VALIDITY_DURATION)
 
         testSubject[KEY + 1] = "$VALUE changed"
 
@@ -34,7 +35,7 @@ class ExpiringCacheTest {
     @Test
     fun `hasKey should answer no when cache has entry and validity expired`() {
         testSubject[KEY] = VALUE
-        advanceClockBy(CACHE_TIME_VALIDITY_IN_MILLIS)
+        clock.advanceTimeBy(CACHE_TIME_VALIDITY_DURATION)
 
         assertThat(testSubject.hasKey(KEY)).isFalse()
     }
@@ -42,7 +43,7 @@ class ExpiringCacheTest {
     @Test
     fun `should keep cache when time progresses within expiration`() {
         testSubject[KEY] = VALUE
-        advanceClockBy(CACHE_TIME_VALIDITY_IN_MILLIS - 1)
+        clock.advanceTimeBy(CACHE_TIME_VALIDITY_DURATION.minus(1L.milliseconds))
 
         assertThat(testSubject[KEY]).isEqualTo(VALUE)
     }
@@ -51,18 +52,14 @@ class ExpiringCacheTest {
     fun `should empty cache after time progresses to expiration`() {
         testSubject[KEY] = VALUE
 
-        advanceClockBy(CACHE_TIME_VALIDITY_IN_MILLIS)
+        clock.advanceTimeBy(CACHE_TIME_VALIDITY_DURATION)
 
         assertThat(testSubject[KEY]).isNull()
-    }
-
-    private fun advanceClockBy(timeInMillis: Long) {
-        clock.time = clock.time + timeInMillis
     }
 
     private companion object {
         const val KEY = "key"
         const val VALUE = "value"
-        const val CACHE_TIME_VALIDITY_IN_MILLIS = 30_000L
+        val CACHE_TIME_VALIDITY_DURATION = 30_000L.milliseconds
     }
 }

@@ -8,12 +8,15 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.fsck.k9.Account
-import com.fsck.k9.Clock
 import com.fsck.k9.K9
 import java.util.concurrent.TimeUnit
+import kotlinx.datetime.Clock
 import timber.log.Timber
 
-class MailSyncWorkerManager(private val workManager: WorkManager, val clock: Clock) {
+class MailSyncWorkerManager(
+    private val workManager: WorkManager,
+    val clock: Clock,
+) {
 
     fun cancelMailSync(account: Account) {
         Timber.v("Canceling mail sync worker for %s", account)
@@ -66,7 +69,7 @@ class MailSyncWorkerManager(private val workManager: WorkManager, val clock: Clo
     }
 
     private fun calculateInitialDelay(lastSyncTime: Long, syncIntervalMinutes: Long): Long {
-        val now = clock.time
+        val now = clock.now().toEpochMilliseconds()
         val nextSyncTime = lastSyncTime + (syncIntervalMinutes * 60L * 1000L)
 
         return if (lastSyncTime > now || nextSyncTime <= now) {
