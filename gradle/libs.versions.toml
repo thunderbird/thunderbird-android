@@ -69,7 +69,6 @@ androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 androidx-work-ktx = "androidx.work:work-runtime-ktx:2.7.1"
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidxFragment" }
 androidx-localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
-androidx-core = { module = "androidx.core:core", version.ref = "androidxCore" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-preference = { module = "androidx.preference:preference", version.ref = "androidxPreference" }
 androidx-swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
@@ -139,6 +138,9 @@ detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.1"
 shared-jvm-main = [
   "koin-core",
   "kotlinx-datetime",
+]
+shared-jvm-android = [
+  "androidx-core-ktx",
 ]
 shared-jvm-test = [
   "junit",
