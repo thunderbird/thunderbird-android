@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
+import app.k9mail.core.testing.TestClock
 import com.fsck.k9.Account
-import com.fsck.k9.TestClock
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.LocalStore
@@ -10,6 +10,7 @@ import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.mailstore.NotificationMessage
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.assertNotNull
+import kotlinx.datetime.Instant
 import org.junit.Test
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
@@ -27,7 +28,7 @@ class NewMailNotificationManagerTest {
     private val account = createAccount()
     private val notificationContentCreator = mock<NotificationContentCreator>()
     private val localStoreProvider = createLocalStoreProvider()
-    private val clock = TestClock(TIMESTAMP)
+    private val clock = TestClock(Instant.fromEpochMilliseconds(TIMESTAMP))
     private val manager = NewMailNotificationManager(
         notificationContentCreator,
         createNotificationRepository(),
@@ -82,7 +83,7 @@ class NewMailNotificationManagerTest {
         )
         manager.addNewMailNotification(account, messageOne, silent = false)
         val timestamp = TIMESTAMP + 1000
-        clock.time = timestamp
+        clock.changeTimeTo(Instant.fromEpochMilliseconds(timestamp))
 
         val result = manager.addNewMailNotification(account, messageTwo, silent = false)
 

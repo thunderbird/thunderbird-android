@@ -18,7 +18,6 @@ import android.text.TextUtils;
 import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountPreferenceSerializer;
-import com.fsck.k9.Clock;
 import com.fsck.k9.Core;
 import com.fsck.k9.DI;
 import com.fsck.k9.Identity;
@@ -30,6 +29,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
+import kotlinx.datetime.Clock;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -469,7 +469,7 @@ public class SettingsImporter {
         // To avoid reusing a previously existing notification channel ID, we need to make sure to use a unique value
         // for `messagesNotificationChannelVersion`.
         Clock clock = DI.get(Clock.class);
-        String messageNotificationChannelVersion = Long.toString(clock.getTime() / 1000);
+        String messageNotificationChannelVersion = Long.toString(clock.now().getEpochSeconds());
         putString(editor, accountKeyPrefix + "messagesNotificationChannelVersion", messageNotificationChannelVersion);
 
         AccountDescription imported = new AccountDescription(accountName, uuid);

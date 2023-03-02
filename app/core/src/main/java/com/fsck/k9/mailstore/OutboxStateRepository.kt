@@ -1,13 +1,16 @@
 package com.fsck.k9.mailstore
 
 import android.content.ContentValues
-import com.fsck.k9.Clock
 import com.fsck.k9.helper.getIntOrThrow
 import com.fsck.k9.helper.getLongOrThrow
 import com.fsck.k9.helper.getStringOrNull
 import com.fsck.k9.helper.getStringOrThrow
+import kotlinx.datetime.Clock
 
-class OutboxStateRepository(private val database: LockableDatabase, private val clock: Clock) {
+class OutboxStateRepository(
+    private val database: LockableDatabase,
+    private val clock: Clock,
+) {
 
     fun getOutboxState(messageId: Long): OutboxState {
         return database.execute(false) { db ->
@@ -76,7 +79,7 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
     }
 
     fun setSendAttemptError(messageId: Long, errorMessage: String) {
-        val sendErrorTimestamp = clock.time
+        val sendErrorTimestamp = clock.now().toEpochMilliseconds()
 
         database.execute(false) { db ->
             val contentValues = ContentValues().apply {
@@ -90,7 +93,7 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
     }
 
     fun setSendAttemptsExceeded(messageId: Long) {
-        val sendErrorTimestamp = clock.time
+        val sendErrorTimestamp = clock.now().toEpochMilliseconds()
 
         database.execute(false) { db ->
             val contentValues = ContentValues().apply {

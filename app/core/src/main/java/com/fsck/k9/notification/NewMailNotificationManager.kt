@@ -1,9 +1,9 @@
 package com.fsck.k9.notification
 
 import com.fsck.k9.Account
-import com.fsck.k9.Clock
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
+import kotlinx.datetime.Clock
 
 /**
  * Manages notifications for new messages
@@ -130,5 +130,5 @@ internal class NewMailNotificationManager(
         }
     }
 
-    private fun now(): Long = clock.time
+    private fun now(): Long = clock.now().toEpochMilliseconds()
 }

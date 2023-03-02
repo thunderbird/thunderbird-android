@@ -3,6 +3,8 @@ package com.fsck.k9;
 
 import java.util.Calendar;
 
+import kotlinx.datetime.Clock;
+
 
 class QuietTimeChecker {
     private final Clock clock;
@@ -31,7 +33,7 @@ class QuietTimeChecker {
         }
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(clock.getTime());
+        calendar.setTimeInMillis(clock.now().toEpochMilliseconds());
 
         int minutesSinceMidnight = (calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE);
 

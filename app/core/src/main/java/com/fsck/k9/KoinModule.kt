@@ -10,6 +10,7 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.setup.ServerNameSuggester
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import kotlinx.datetime.Clock
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -30,7 +31,7 @@ val mainModule = module {
     single { TrustManagerFactory.createInstance(get()) }
     single { LocalKeyStoreManager(get()) }
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
-    single<Clock> { RealClock() }
+    single<Clock> { Clock.System }
     factory { ServerNameSuggester() }
     factory { EmailAddressValidator() }
     factory { ServerSettingsSerializer() }

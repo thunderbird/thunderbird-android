@@ -1,6 +1,8 @@
 package com.fsck.k9
 
+import app.k9mail.core.testing.TestClock
 import java.util.Calendar
+import kotlinx.datetime.Instant
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -111,6 +113,6 @@ class QuietTimeCheckerTest {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
 
-        clock.time = calendar.timeInMillis
+        clock.changeTimeTo(Instant.fromEpochMilliseconds(calendar.timeInMillis))
     }
 }

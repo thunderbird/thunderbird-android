@@ -1,11 +1,12 @@
 package com.fsck.k9.cache
 
-import com.fsck.k9.Clock
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 internal class ExpiringCache<KEY : Any, VALUE : Any>(
     private val clock: Clock,
     private val delegateCache: Cache<KEY, VALUE> = InMemoryCache(),
-    private var lastClearTime: Long = clock.time,
+    private var lastClearTime: Instant = clock.now(),
     private val cacheTimeValidity: Long = CACHE_TIME_VALIDITY_IN_MILLIS,
 ) : Cache<KEY, VALUE> {
 
@@ -25,7 +26,7 @@ internal class ExpiringCache<KEY : Any, VALUE : Any>(
     }
 
     override fun clear() {
-        lastClearTime = clock.time
+        lastClearTime = clock.now()
         delegateCache.clear()
     }
 
@@ -36,7 +37,7 @@ internal class ExpiringCache<KEY : Any, VALUE : Any>(
     }
 
     private fun isExpired(): Boolean {
-        return (clock.time - lastClearTime) >= cacheTimeValidity
+        return (clock.now() - lastClearTime).inWholeMilliseconds >= cacheTimeValidity
     }
 
     private companion object {

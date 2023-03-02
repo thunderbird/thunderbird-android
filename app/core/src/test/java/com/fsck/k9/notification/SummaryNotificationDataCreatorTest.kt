@@ -1,11 +1,11 @@
 package com.fsck.k9.notification
 
+import app.k9mail.core.testing.TestClock
 import com.fsck.k9.Account
-import com.fsck.k9.Clock
 import com.fsck.k9.K9
-import com.fsck.k9.TestClock
 import com.fsck.k9.controller.MessageReference
 import com.google.common.truth.Truth.assertThat
+import kotlinx.datetime.Clock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

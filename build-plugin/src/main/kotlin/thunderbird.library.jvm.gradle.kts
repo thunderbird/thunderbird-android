@@ -9,5 +9,6 @@ java {
 }
 
 dependencies {
+    implementation(libs.bundles.shared.jvm.main)
     testImplementation(libs.bundles.shared.jvm.test)
 }
