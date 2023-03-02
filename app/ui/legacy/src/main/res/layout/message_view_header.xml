@@ -64,7 +64,7 @@
             android:layout_height="48dp"
             android:background="?attr/controlBackground"
             android:baseline="33dp"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="12dp"
             android:src="@drawable/btn_select_star"
             app:layout_constraintBaseline_toBaselineOf="@+id/subject"
             app:layout_constraintEnd_toEndOf="parent" />
