@@ -10,6 +10,7 @@ import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds
 import androidx.core.content.ContextCompat
 import app.k9mail.core.android.common.database.EmptyCursor
+import app.k9mail.core.common.mail.EmailAddress
 import com.fsck.k9.mail.Address
 import timber.log.Timber
 
@@ -28,9 +29,9 @@ open class Contacts(
      * @return <tt>true</tt>, if the email address belongs to a contact.
      * <tt>false</tt>, otherwise.
      */
-    fun isInContacts(emailAddress: String): Boolean {
+    fun isInContacts(emailAddress: EmailAddress): Boolean {
         var result = false
-        val cursor = getContactByAddress(emailAddress)
+        val cursor = getContactFor(emailAddress)
         if (cursor != null) {
             if (cursor.count > 0) {
                 result = true
@@ -41,26 +42,17 @@ open class Contacts(
     }
 
     /**
-     * Check whether one of the provided addresses belongs to one of the contacts.
+     * Check whether one of the provided email addresses belongs to one of the contacts.
      *
-     * @param addresses The addresses to search in contacts
-     * @return <tt>true</tt>, if one address belongs to a contact.
+     * @param emailAddresses The email addresses to search in contacts
+     * @return <tt>true</tt>, if one of the email addresses belongs to a contact.
      * <tt>false</tt>, otherwise.
      */
-    fun isAnyInContacts(addresses: Array<Address>?): Boolean {
-        if (addresses == null) {
-            return false
-        }
-        for (addr in addresses) {
-            if (isInContacts(addr.address)) {
-                return true
-            }
-        }
-        return false
-    }
+    fun isAnyInContacts(emailAddresses: List<EmailAddress>): Boolean =
+        emailAddresses.any { emailAddress -> isInContacts(emailAddress) }
 
-    fun getContactUri(emailAddress: String): Uri? {
-        val cursor = getContactByAddress(emailAddress) ?: return null
+    fun getContactUri(emailAddress: EmailAddress): Uri? {
+        val cursor = getContactFor(emailAddress) ?: return null
         cursor.use {
             if (!cursor.moveToFirst()) {
                 return null
@@ -74,17 +66,15 @@ open class Contacts(
     /**
      * Get the name of the contact an email address belongs to.
      *
-     * @param address The email address to search for.
+     * @param emailAddress The email address to search for.
      * @return The name of the contact the email address belongs to. Or
      * <tt>null</tt> if there's no matching contact.
      */
-    open fun getNameForAddress(address: String?): String? {
-        if (address == null) {
-            return null
-        } else if (nameCache.containsKey(address)) {
-            return nameCache[address]
+    open fun getNameFor(emailAddress: EmailAddress): String? {
+        if (nameCache.containsKey(emailAddress)) {
+            return nameCache[emailAddress]
         }
-        val cursor = getContactByAddress(address)
+        val cursor = getContactFor(emailAddress)
         var name: String? = null
         if (cursor != null) {
             if (cursor.count > 0) {
@@ -93,7 +83,7 @@ open class Contacts(
             }
             cursor.close()
         }
-        nameCache[address] = name
+        nameCache[emailAddress] = name
         return name
     }
 
@@ -108,16 +98,14 @@ open class Contacts(
     /**
      * Get URI to the picture of the contact with the supplied email address.
      *
-     * @param address
-     * An email address. The contact database is searched for a contact with this email
-     * address.
+     * @param emailAddress An email address, the contact database is searched for.
      *
      * @return URI to the picture of the contact with the supplied email address. `null` if
      * no such contact could be found or the contact doesn't have a picture.
      */
-    fun getPhotoUri(address: String): Uri? {
+    fun getPhotoUri(emailAddress: EmailAddress): Uri? {
         return try {
-            val cursor = getContactByAddress(address) ?: return null
+            val cursor = getContactFor(emailAddress) ?: return null
             try {
                 if (!cursor.moveToFirst()) {
                     return null
@@ -131,7 +119,7 @@ open class Contacts(
                 cursor.close()
             }
         } catch (e: Exception) {
-            Timber.e(e, "Couldn't fetch photo for contact with email $address")
+            Timber.e(e, "Couldn't fetch photo for contact with email ${emailAddress.address}")
             null
         }
     }
@@ -147,12 +135,12 @@ open class Contacts(
      * Return a [Cursor] instance that can be used to fetch information
      * about the contact with the given email address.
      *
-     * @param address The email address to search for.
+     * @param emailAddress The email address to search for.
      * @return A [Cursor] instance that can be used to fetch information
      * about the contact with the given email address
      */
-    private fun getContactByAddress(address: String): Cursor? {
-        val uri = Uri.withAppendedPath(CommonDataKinds.Email.CONTENT_LOOKUP_URI, Uri.encode(address))
+    private fun getContactFor(emailAddress: EmailAddress): Cursor? {
+        val uri = Uri.withAppendedPath(CommonDataKinds.Email.CONTENT_LOOKUP_URI, Uri.encode(emailAddress.address))
         return if (hasContactPermission()) {
             contentResolver.query(
                 uri,
@@ -169,7 +157,7 @@ open class Contacts(
     companion object {
         /**
          * The order in which the search results are returned by
-         * [.getContactByAddress].
+         * [.getContactBy].
          */
         private const val SORT_ORDER = CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
             ContactsContract.Contacts.DISPLAY_NAME + ", " +
@@ -199,7 +187,7 @@ open class Contacts(
         private const val CONTACT_ID_INDEX = 2
         private const val LOOKUP_KEY_INDEX = 4
 
-        private val nameCache = HashMap<String, String?>()
+        private val nameCache = HashMap<EmailAddress, String?>()
 
         /**
          * Clears the cache for names and photo uris
