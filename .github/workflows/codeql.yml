@@ -1,0 +1,37 @@
+name: CodeQL - Code scanning
+
+on:
+  schedule:
+    - cron: '0 10 * * 1'
+
+jobs:
+  codeql-scan:
+
+    strategy:
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/gradle-build-action@v2
+
+      - uses: github/codeql-action/init@v2
+        with:
+          languages: java
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
