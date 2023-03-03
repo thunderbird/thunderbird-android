@@ -12,8 +12,6 @@
     <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-        <item name="android:statusBarColor">@color/material_gray_100</item>
         <item name="toolbarColor">@color/material_gray_100</item>
 
         <item name="colorPrimary">@color/material_gray_800</item>
@@ -168,15 +166,18 @@
         <item name="behindRecyclerView">#F0F0F0</item>
     </style>
 
-    <style name="Theme.K9.Light" parent="Theme.K9.Light.Common" />
+    <style name="Theme.K9.Light" parent="Theme.K9.Light.Common">
+        <item name="android:statusBarColor">#000000</item>
+    </style>
 
-    <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Common" />
+    <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Common">
+        <item name="android:statusBarColor">#000000</item>
+    </style>
+
     <style name="Theme.K9.Dark.Common" parent="Theme.K9.Dark.Base">
         <item name="android:navigationBarColor">#000000</item>
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
-        <item name="android:statusBarColor">@color/material_gray_900</item>
         <item name="toolbarColor">@color/material_gray_900</item>
 
         <item name="colorPrimary">@color/material_gray_100</item>

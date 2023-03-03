@@ -6,12 +6,14 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.res.Configuration
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import androidx.appcompat.app.ActionBar
@@ -177,6 +179,10 @@ open class MessageList :
         val rootLayout = findViewById<View>(R.id.drawerLayout)
         rootLayout.systemUiVisibility = rootLayout.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        }
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.setOnApplyWindowInsetsListener { view, insets ->
