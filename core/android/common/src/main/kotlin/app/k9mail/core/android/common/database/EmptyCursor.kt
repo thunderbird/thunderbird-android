@@ -1,4 +1,4 @@
-package com.fsck.k9.helper
+package app.k9mail.core.android.common.database
 
 import android.database.AbstractCursor
 

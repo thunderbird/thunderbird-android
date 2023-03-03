@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import android.content.Context
+import app.k9mail.core.android.common.coreCommonAndroidModule
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.DefaultTrustedSocketFactory
 import com.fsck.k9.mail.ssl.LocalKeyStore
@@ -15,6 +16,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val mainModule = module {
+    includes(coreCommonAndroidModule)
     single<CoroutineScope>(named("AppCoroutineScope")) { GlobalScope }
     single {
         Preferences(

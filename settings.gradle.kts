@@ -39,10 +39,12 @@ include(
 )
 
 include(
+    ":core:common",
+    ":core:testing",
+    ":core:android:common",
     ":core:ui:compose:demo",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:theme",
-    ":core:testing",
 )
 
 include(

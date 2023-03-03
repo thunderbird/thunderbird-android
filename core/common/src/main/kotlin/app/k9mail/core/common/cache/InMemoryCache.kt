@@ -1,6 +1,6 @@
-package com.fsck.k9.cache
+package app.k9mail.core.common.cache
 
-internal class InMemoryCache<KEY : Any, VALUE : Any>(
+class InMemoryCache<KEY : Any, VALUE : Any>(
     private val cache: MutableMap<KEY, VALUE> = mutableMapOf(),
 ) : Cache<KEY, VALUE> {
     override fun get(key: KEY): VALUE? {

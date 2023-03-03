@@ -6,7 +6,6 @@ import java.util.HashMap;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,6 +14,7 @@ import android.provider.ContactsContract.CommonDataKinds.Photo;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import app.k9mail.core.android.common.database.EmptyCursor;
 import com.fsck.k9.mail.Address;
 import timber.log.Timber;
 

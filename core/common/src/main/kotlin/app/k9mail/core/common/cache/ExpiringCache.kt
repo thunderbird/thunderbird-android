@@ -1,9 +1,9 @@
-package com.fsck.k9.cache
+package app.k9mail.core.common.cache
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
-internal class ExpiringCache<KEY : Any, VALUE : Any>(
+class ExpiringCache<KEY : Any, VALUE : Any>(
     private val clock: Clock,
     private val delegateCache: Cache<KEY, VALUE> = InMemoryCache(),
     private var lastClearTime: Instant = clock.now(),

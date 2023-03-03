@@ -1,4 +1,4 @@
-package com.fsck.k9.cache
+package app.k9mail.core.common.cache
 
 interface Cache<KEY : Any, VALUE : Any> {
 

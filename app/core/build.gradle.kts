@@ -8,6 +8,7 @@ dependencies {
     api(projects.mail.common)
     api(projects.backend.api)
     api(projects.app.htmlCleaner)
+    api(projects.core.android.common)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
 

@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.core.content.ContextCompat;
 
-import com.fsck.k9.helper.EmptyCursor;
+import app.k9mail.core.android.common.database.EmptyCursor;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
