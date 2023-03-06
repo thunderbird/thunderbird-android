@@ -185,14 +185,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final Preferences preferences = DI.get(Preferences.class);
 
+    private final Contacts contacts = DI.get(Contacts.class);
+
     private final PermissionUiHelper permissionUiHelper = new K9PermissionUiHelper(this);
 
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
     private AttachmentPresenter attachmentPresenter;
     private SizeFormatter sizeFormatter;
-
-    private Contacts contacts;
 
     /**
      * The account used for message composition.
@@ -307,8 +307,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             finish();
             return;
         }
-
-        contacts = Contacts.getInstance(MessageCompose.this);
 
         chooseIdentityButton = findViewById(R.id.identity);
         chooseIdentityButton.setOnClickListener(this);

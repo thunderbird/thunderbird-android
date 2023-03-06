@@ -80,7 +80,7 @@ val coreNotificationModule = module {
             clock = get(),
         )
     }
-    factory { NotificationContentCreator(context = get(), resourceProvider = get()) }
+    factory { NotificationContentCreator(resourceProvider = get(), contacts = get()) }
     factory { BaseNotificationDataCreator() }
     factory { SingleMessageNotificationDataCreator() }
     factory { SummaryNotificationDataCreator(singleMessageNotificationDataCreator = get()) }

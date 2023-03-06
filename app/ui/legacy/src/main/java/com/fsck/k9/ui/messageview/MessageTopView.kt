@@ -28,11 +28,15 @@ import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListen
 import com.fsck.k9.view.MessageHeader
 import com.fsck.k9.view.ThemeUtils
 import com.fsck.k9.view.ToolableViewAnimator
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class MessageTopView(
     context: Context,
     attrs: AttributeSet?,
-) : LinearLayout(context, attrs) {
+) : LinearLayout(context, attrs), KoinComponent {
+
+    private val contacts: Contacts by inject()
 
     private lateinit var layoutInflater: LayoutInflater
 
@@ -257,7 +261,6 @@ class MessageTopView(
             return false
         }
         val senderEmailAddress = getSenderEmailAddress(message) ?: return false
-        val contacts = Contacts.getInstance(context)
         return contacts.isInContacts(senderEmailAddress)
     }
 

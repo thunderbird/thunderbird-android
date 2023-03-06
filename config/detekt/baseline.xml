@@ -65,6 +65,7 @@
     <ID>ForbiddenComment:BackgroundAccountRemover.kt$BackgroundAccountRemover$// TODO: Add a mechanism to hide the account from the UI right away</ID>
     <ID>ForbiddenComment:CommandRefreshFolderList.kt$CommandRefreshFolderList$// TODO: Start using the proper server ID.</ID>
     <ID>ForbiddenComment:CommandSync.kt$CommandSync$// FIXME: Add sort parameter</ID>
+    <ID>ForbiddenComment:Contacts.kt$Contacts$// TODO: Keep track of this information in a local database. Then use this information when sorting contacts for</ID>
     <ID>ForbiddenComment:GeneralSettings.kt$GeneralSettings$// TODO: Move over settings from K9</ID>
     <ID>ForbiddenComment:GeneralSettingsManager.kt$GeneralSettingsManager$* Retrieve and modify general settings. * * TODO: Add more settings as needed.</ID>
     <ID>ForbiddenComment:ImapBackendPusher.kt$ImapBackendPusher$// TODO: This could be happening because of too many connections to the host. Ideally we'd want to</ID>
@@ -526,6 +527,10 @@
     <ID>ReturnCount:AutocryptDraftStateHeaderParser.kt$AutocryptDraftStateHeaderParser$fun parseAutocryptDraftStateHeader(headerValue: String): AutocryptDraftStateHeader?</ID>
     <ID>ReturnCount:ChooseFolderActivity.kt$ChooseFolderActivity$private fun decodeArguments(savedInstanceState: Bundle?): Boolean</ID>
     <ID>ReturnCount:CommandSetFlag.kt$CommandSetFlag$fun setFlag(folderServerId: String, messageServerIds: List&lt;String&gt;, flag: Flag, newState: Boolean)</ID>
+    <ID>ReturnCount:Contacts.kt$Contacts$fun getContactUri(emailAddress: String): Uri?</ID>
+    <ID>ReturnCount:Contacts.kt$Contacts$fun getPhotoUri(address: String): Uri?</ID>
+    <ID>ReturnCount:Contacts.kt$Contacts$fun isAnyInContacts(addresses: Array&lt;Address&gt;?): Boolean</ID>
+    <ID>ReturnCount:Contacts.kt$Contacts$open fun getNameForAddress(address: String?): String?</ID>
     <ID>ReturnCount:DecoderUtil.kt$DecoderUtil$@JvmStatic fun decodeEncodedWords(body: String, message: Message?): String</ID>
     <ID>ReturnCount:DecoderUtil.kt$DecoderUtil$private fun extractEncodedWord(body: String, begin: Int, end: Int, message: Message?): EncodedWord?</ID>
     <ID>ReturnCount:EditIdentity.kt$EditIdentity$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
@@ -610,6 +615,7 @@
     <ID>SwallowedException:AuthViewModel.kt$AuthViewModel$e: ActivityNotFoundException</ID>
     <ID>SwallowedException:CommandRefreshFolderListTest.kt$CommandRefreshFolderListTest$e: AuthenticationFailedException</ID>
     <ID>SwallowedException:ContactPictureLoader.kt$ContactPictureLoader$e: Exception</ID>
+    <ID>SwallowedException:Contacts.kt$Contacts$e: IllegalStateException</ID>
     <ID>SwallowedException:DecoderUtil.kt$DecoderUtil$e: IOException</ID>
     <ID>SwallowedException:DecoderUtil.kt$DecoderUtil$e: MessagingException</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: EndpointNotFoundException</ID>
@@ -663,6 +669,7 @@
     <ID>TooGenericExceptionCaught:CommandSync.kt$CommandSync$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ContactPhotoLoader.kt$ContactPhotoLoader$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ContactPictureLoader.kt$ContactPictureLoader$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Contacts.kt$Contacts$e: Exception</ID>
     <ID>TooGenericExceptionCaught:GeneralSettingsViewModel.kt$GeneralSettingsViewModel$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ImapFolderPusher.kt$ImapFolderPusher$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ImapSync.kt$ImapSync$e: Exception</ID>
@@ -743,7 +750,7 @@
     <ID>TooManyFunctions:MessageListRemoteViewFactory.kt$MessageListRemoteViewFactory : RemoteViewsFactoryKoinComponent</ID>
     <ID>TooManyFunctions:MessageListSwipeCallback.kt$MessageListSwipeCallback : Callback</ID>
     <ID>TooManyFunctions:MessageStore.kt$MessageStore</ID>
-    <ID>TooManyFunctions:MessageTopView.kt$MessageTopView : LinearLayout</ID>
+    <ID>TooManyFunctions:MessageTopView.kt$MessageTopView : LinearLayoutKoinComponent</ID>
     <ID>TooManyFunctions:MessageViewContainerFragment.kt$MessageViewContainerFragment : Fragment</ID>
     <ID>TooManyFunctions:MessageViewFragment.kt$MessageViewFragment : FragmentConfirmationDialogFragmentListenerAttachmentViewCallback</ID>
     <ID>TooManyFunctions:MigrationTo73.kt$MigrationTo73</ID>
@@ -797,6 +804,7 @@
     <ID>UnnecessaryAbstractClass:HtmlModification.kt$HtmlModification$HtmlModification</ID>
     <ID>UnnecessaryAbstractClass:K9RobolectricTest.kt$K9RobolectricTest$K9RobolectricTest</ID>
     <ID>UnnecessaryAbstractClass:RobolectricTest.kt$RobolectricTest$RobolectricTest</ID>
+    <ID>UnusedPrivateMember:Contacts.kt$Contacts$addresses: Array&lt;Address?&gt;?</ID>
     <ID>UnusedPrivateMember:ExtraAccountDiscovery.kt$ExtraAccountDiscovery$email: String</ID>
     <ID>UnusedPrivateMember:HttpUriParser.kt$HttpUriParser$i</ID>
     <ID>UnusedPrivateMember:MessageListLoader.kt$MessageListLoader$account: Account</ID>
