@@ -70,7 +70,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         super(context, attrs);
 
         if (!isInEditMode()) {
-            messageHelper = MessageHelper.getInstance(getContext());
+            messageHelper = MessageHelper.getInstance();
             relativeDateTimeFormatter = DI.get(RelativeDateTimeFormatter.class);
         }
     }

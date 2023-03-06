@@ -1,12 +1,10 @@
 package com.fsck.k9.helper
 
-import android.content.Context
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
-import com.fsck.k9.Account
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.DI
 import com.fsck.k9.K9.contactNameColor
@@ -17,7 +15,6 @@ import com.fsck.k9.mail.Address
 import java.util.regex.Pattern
 
 class MessageHelper private constructor(
-    private val mContext: Context,
     private val resourceProvider: CoreResourceProvider,
 ) {
 
@@ -38,15 +35,6 @@ class MessageHelper private constructor(
         return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(recipients)
     }
 
-    fun toMe(account: Account, toAddrs: List<Address?>): Boolean {
-        for (address in toAddrs) {
-            if (account.isAnIdentity(address!!)) {
-                return true
-            }
-        }
-        return false
-    }
-
     companion object {
         /**
          * If the number of addresses exceeds this value the addresses aren't
@@ -62,10 +50,10 @@ class MessageHelper private constructor(
 
         @JvmStatic
         @Synchronized
-        fun getInstance(context: Context): MessageHelper? {
+        fun getInstance(): MessageHelper? {
             if (sInstance == null) {
                 val resourceProvider = DI.get(CoreResourceProvider::class.java)
-                sInstance = MessageHelper(context, resourceProvider)
+                sInstance = MessageHelper(resourceProvider)
             }
             return sInstance
         }

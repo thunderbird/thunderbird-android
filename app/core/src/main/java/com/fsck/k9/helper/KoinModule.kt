@@ -7,7 +7,7 @@ import org.koin.dsl.module
 
 val helperModule = module {
     single { ClipboardManager(get()) }
-    single { MessageHelper.getInstance(get()) }
+    single { MessageHelper.getInstance() }
     factory<KeyStoreDirectoryProvider> { AndroidKeyStoreDirectoryProvider(context = get()) }
     factory { get<Context>().getSystemService(Context.ALARM_SERVICE) as AlarmManager }
     single { AlarmManagerCompat(alarmManager = get()) }
