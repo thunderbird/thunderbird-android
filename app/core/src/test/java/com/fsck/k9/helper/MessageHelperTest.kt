@@ -1,118 +1,132 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.helper
 
+import android.content.Context
+import android.graphics.Color
+import android.text.SpannableString
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import com.fsck.k9.RobolectricTest
+import com.fsck.k9.helper.MessageHelper.Companion.toFriendly
+import com.fsck.k9.mail.Address
+import org.junit.Before
+import org.junit.Test
+import org.robolectric.RuntimeEnvironment
 
-import android.content.Context;
-import android.graphics.Color;
-import android.text.SpannableString;
+class MessageHelperTest : RobolectricTest() {
 
-import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.mail.Address;
-import org.junit.Before;
-import org.junit.Test;
-import org.robolectric.RuntimeEnvironment;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-
-
-public class MessageHelperTest extends RobolectricTest {
-    private Contacts contacts;
-    private Contacts contactsWithFakeContact;
-    private Contacts contactsWithFakeSpoofContact;
+    private lateinit var contacts: Contacts
+    private lateinit var contactsWithFakeContact: Contacts
+    private lateinit var contactsWithFakeSpoofContact: Contacts
 
     @Before
-    public void setUp() throws Exception {
-        Context context = RuntimeEnvironment.getApplication();
-        contacts = new Contacts(context);
-        contactsWithFakeContact = new Contacts(context) {
-            @Override public String getNameForAddress(String address) {
-                if ("test@testor.com".equals(address)) {
-                    return "Tim Testor";
+    fun setUp() {
+        val context: Context = RuntimeEnvironment.getApplication()
+        contacts = Contacts(context)
+        contactsWithFakeContact = object : Contacts(context) {
+            override fun getNameForAddress(address: String?): String? {
+                return if ("test@testor.com" == address) {
+                    "Tim Testor"
                 } else {
-                    return null;
+                    null
                 }
             }
-        };
-        contactsWithFakeSpoofContact = new Contacts(context) {
-            @Override public String getNameForAddress(String address) {
-                if ("test@testor.com".equals(address)) {
-                    return "Tim@Testor";
+        }
+        contactsWithFakeSpoofContact = object : Contacts(context) {
+            override fun getNameForAddress(address: String?): String? {
+                return if ("test@testor.com" == address) {
+                    "Tim@Testor"
                 } else {
-                    return null;
+                    null
                 }
             }
-        };
+        }
     }
 
     @Test
-    public void testToFriendlyShowsPersonalPartIfItExists() throws Exception {
-        Address address = new Address("test@testor.com", "Tim Testor");
-        assertEquals("Tim Testor", MessageHelper.Companion.toFriendly(address, contacts));
+    fun testToFriendlyShowsPersonalPartIfItExists() {
+        val address = Address("test@testor.com", "Tim Testor")
+        assertThat(toFriendly(address, contacts)).isEqualTo("Tim Testor")
     }
 
     @Test
-    public void testToFriendlyShowsEmailPartIfNoPersonalPartExists() throws Exception {
-        Address address = new Address("test@testor.com");
-        assertEquals("test@testor.com", MessageHelper.Companion.toFriendly(address, contacts));
+    fun testToFriendlyShowsEmailPartIfNoPersonalPartExists() {
+        val address = Address("test@testor.com")
+        assertThat(toFriendly(address, contacts)).isEqualTo("test@testor.com")
     }
 
     @Test
-    public void testToFriendlyArray() throws Exception {
-        Address address1 = new Address("test@testor.com", "Tim Testor");
-        Address address2 = new Address("foo@bar.com", "Foo Bar");
-        Address[] addresses = new Address[] { address1, address2 };
-        assertEquals("Tim Testor,Foo Bar", MessageHelper.Companion.toFriendly(addresses, contacts).toString());
+    fun testToFriendlyArray() {
+        val address1 = Address("test@testor.com", "Tim Testor")
+        val address2 = Address("foo@bar.com", "Foo Bar")
+        val addresses = arrayOf(address1, address2)
+        assertThat(toFriendly(addresses, contacts).toString()).isEqualTo("Tim Testor,Foo Bar")
     }
 
     @Test
-    public void testToFriendlyWithContactLookup() throws Exception {
-        Address address = new Address("test@testor.com");
-        assertEquals("Tim Testor", MessageHelper.Companion.toFriendly(address, contactsWithFakeContact).toString());
+    fun testToFriendlyWithContactLookup() {
+        val address = Address("test@testor.com")
+        assertThat(toFriendly(address, contactsWithFakeContact)).isEqualTo("Tim Testor")
     }
 
     @Test
-    public void testToFriendlyWithChangeContactColor() throws Exception {
-        Address address = new Address("test@testor.com");
-        CharSequence friendly = MessageHelper.toFriendly(address, contactsWithFakeContact,
-                true, true, Color.RED);
-        assertTrue(friendly instanceof SpannableString);
-        assertEquals("Tim Testor", friendly.toString());
+    fun testToFriendlyWithChangeContactColor() {
+        val address = Address("test@testor.com")
+        val friendly = toFriendly(
+            address = address,
+            contacts = contactsWithFakeContact,
+            showCorrespondentNames = true,
+            changeContactNameColor = true,
+            contactNameColor = Color.RED,
+        )
+        assertThat(friendly).isInstanceOf(SpannableString::class.java)
+        assertThat(friendly.toString()).isEqualTo("Tim Testor")
     }
 
     @Test
-    public void testToFriendlyWithoutCorrespondentNames() throws Exception {
-        Address address = new Address("test@testor.com", "Tim Testor");
-        CharSequence friendly = MessageHelper.toFriendly(address, contactsWithFakeContact,
-                false, false, 0);
-        assertEquals("test@testor.com", friendly.toString());
+    fun testToFriendlyWithoutCorrespondentNames() {
+        val address = Address("test@testor.com", "Tim Testor")
+        val friendly = toFriendly(
+            address = address,
+            contacts = contactsWithFakeContact,
+            showCorrespondentNames = false,
+            changeContactNameColor = false,
+            contactNameColor = 0,
+        )
+        assertThat(friendly).isEqualTo("test@testor.com")
     }
 
     @Test
-    public void toFriendly_spoofPreventionOverridesPersonal() {
-        Address address = new Address("test@testor.com", "potus@whitehouse.gov");
-        CharSequence friendly = MessageHelper.Companion.toFriendly(address, contacts);
-        assertEquals("test@testor.com", friendly.toString());
+    fun toFriendly_spoofPreventionOverridesPersonal() {
+        val address = Address("test@testor.com", "potus@whitehouse.gov")
+        val friendly = toFriendly(address, contacts)
+        assertThat(friendly).isEqualTo("test@testor.com")
     }
 
     @Test
-    public void toFriendly_atPrecededByOpeningParenthesisShouldNotTriggerSpoofPrevention() {
-        Address address = new Address("gitlab@gitlab.example", "username (@username)");
-        CharSequence friendly = MessageHelper.Companion.toFriendly(address, contacts);
-        assertEquals("username (@username)", friendly.toString());
+    fun toFriendly_atPrecededByOpeningParenthesisShouldNotTriggerSpoofPrevention() {
+        val address = Address("gitlab@gitlab.example", "username (@username)")
+        val friendly = toFriendly(address, contacts)
+        assertThat(friendly).isEqualTo("username (@username)")
     }
 
     @Test
-    public void toFriendly_nameStartingWithAtShouldNotTriggerSpoofPrevention() {
-        Address address = new Address("address@domain.example", "@username");
-        CharSequence friendly = MessageHelper.Companion.toFriendly(address, contacts);
-        assertEquals("@username", friendly.toString());
+    fun toFriendly_nameStartingWithAtShouldNotTriggerSpoofPrevention() {
+        val address = Address("address@domain.example", "@username")
+        val friendly = toFriendly(address, contacts)
+        assertThat(friendly).isEqualTo("@username")
     }
 
     @Test
-    public void toFriendly_spoofPreventionDoesntOverrideContact() {
-        Address address = new Address("test@testor.com", "Tim Testor");
-        CharSequence friendly = MessageHelper.Companion.toFriendly(address, contactsWithFakeSpoofContact,
-            true, false, 0);
-        assertEquals("Tim@Testor", friendly.toString());
+    fun toFriendly_spoofPreventionDoesntOverrideContact() {
+        val address = Address("test@testor.com", "Tim Testor")
+        val friendly = toFriendly(
+            address = address,
+            contacts = contactsWithFakeSpoofContact,
+            showCorrespondentNames = true,
+            changeContactNameColor = false,
+            contactNameColor = 0,
+        )
+        assertThat(friendly).isEqualTo("Tim@Testor")
     }
 }
