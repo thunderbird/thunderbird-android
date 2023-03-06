@@ -47,13 +47,13 @@ public class MessageHelperTest extends RobolectricTest {
     @Test
     public void testToFriendlyShowsPersonalPartIfItExists() throws Exception {
         Address address = new Address("test@testor.com", "Tim Testor");
-        assertEquals("Tim Testor", MessageHelper.toFriendly(address, contacts));
+        assertEquals("Tim Testor", MessageHelper.Companion.toFriendly(address, contacts));
     }
 
     @Test
     public void testToFriendlyShowsEmailPartIfNoPersonalPartExists() throws Exception {
         Address address = new Address("test@testor.com");
-        assertEquals("test@testor.com", MessageHelper.toFriendly(address, contacts));
+        assertEquals("test@testor.com", MessageHelper.Companion.toFriendly(address, contacts));
     }
 
     @Test
@@ -61,13 +61,13 @@ public class MessageHelperTest extends RobolectricTest {
         Address address1 = new Address("test@testor.com", "Tim Testor");
         Address address2 = new Address("foo@bar.com", "Foo Bar");
         Address[] addresses = new Address[] { address1, address2 };
-        assertEquals("Tim Testor,Foo Bar", MessageHelper.toFriendly(addresses, contacts).toString());
+        assertEquals("Tim Testor,Foo Bar", MessageHelper.Companion.toFriendly(addresses, contacts).toString());
     }
 
     @Test
     public void testToFriendlyWithContactLookup() throws Exception {
         Address address = new Address("test@testor.com");
-        assertEquals("Tim Testor", MessageHelper.toFriendly(address, contactsWithFakeContact).toString());
+        assertEquals("Tim Testor", MessageHelper.Companion.toFriendly(address, contactsWithFakeContact).toString());
     }
 
     @Test
@@ -90,29 +90,29 @@ public class MessageHelperTest extends RobolectricTest {
     @Test
     public void toFriendly_spoofPreventionOverridesPersonal() {
         Address address = new Address("test@testor.com", "potus@whitehouse.gov");
-        CharSequence friendly = MessageHelper.toFriendly(address, contacts);
+        CharSequence friendly = MessageHelper.Companion.toFriendly(address, contacts);
         assertEquals("test@testor.com", friendly.toString());
     }
 
     @Test
     public void toFriendly_atPrecededByOpeningParenthesisShouldNotTriggerSpoofPrevention() {
         Address address = new Address("gitlab@gitlab.example", "username (@username)");
-        CharSequence friendly = MessageHelper.toFriendly(address, contacts);
+        CharSequence friendly = MessageHelper.Companion.toFriendly(address, contacts);
         assertEquals("username (@username)", friendly.toString());
     }
 
     @Test
     public void toFriendly_nameStartingWithAtShouldNotTriggerSpoofPrevention() {
         Address address = new Address("address@domain.example", "@username");
-        CharSequence friendly = MessageHelper.toFriendly(address, contacts);
+        CharSequence friendly = MessageHelper.Companion.toFriendly(address, contacts);
         assertEquals("@username", friendly.toString());
     }
 
     @Test
     public void toFriendly_spoofPreventionDoesntOverrideContact() {
         Address address = new Address("test@testor.com", "Tim Testor");
-        CharSequence friendly = MessageHelper.toFriendly(address, contactsWithFakeSpoofContact,
-                true, false, 0);
+        CharSequence friendly = MessageHelper.Companion.toFriendly(address, contactsWithFakeSpoofContact,
+            true, false, 0);
         assertEquals("Tim@Testor", friendly.toString());
     }
 }

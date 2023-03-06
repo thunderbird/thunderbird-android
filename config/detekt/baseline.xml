@@ -76,6 +76,7 @@
     <ID>ForbiddenComment:K9ThemeProvider.kt$K9ThemeProvider$// TODO: Move this class and the theme resources to the main app module</ID>
     <ID>ForbiddenComment:MessageDetailsFragment.kt$MessageDetailsFragment$// FIXME: Replace this with a mechanism that survives process death</ID>
     <ID>ForbiddenComment:MessageDetailsFragment.kt$MessageDetailsFragment$// TODO: Use the identity this message was sent to as sender identity</ID>
+    <ID>ForbiddenComment:MessageHelper.kt$MessageHelper.Companion$* If the number of addresses exceeds this value the addresses aren't * resolved to the names of Android contacts. * * TODO: This number was chosen arbitrarily and should be determined by performance tests. * * @see .toFriendly</ID>
     <ID>ForbiddenComment:MessageListFragment.kt$MessageListFragment$// FIXME: Don't save the changes in the UI thread</ID>
     <ID>ForbiddenComment:MessageListFragment.kt$MessageListFragment$// TODO: empty thread view -&gt; return to full message list</ID>
     <ID>ForbiddenComment:MessageListFragment.kt$MessageListFragment.ActionModeCallback$// TODO: Only finish action mode if all messages have been moved.</ID>
@@ -551,6 +552,7 @@
     <ID>ReturnCount:ListUnsubscribeHelper.kt$ListUnsubscribeHelper$fun getPreferredListUnsubscribeUri(message: Message): UnsubscribeUri?</ID>
     <ID>ReturnCount:ListUnsubscribeHelper.kt$ListUnsubscribeHelper$private fun extractUri(headerValue: String?): Uri?</ID>
     <ID>ReturnCount:MailSyncWorker.kt$MailSyncWorker$override fun doWork(): Result</ID>
+    <ID>ReturnCount:MessageHelper.kt$MessageHelper.Companion$@JvmStatic fun toFriendly( address: Address, contacts: Contacts?, showCorrespondentNames: Boolean, changeContactNameColor: Boolean, contactNameColor: Int, ): CharSequence</ID>
     <ID>ReturnCount:MessageList.kt$MessageList$private fun decodeExtrasToLaunchData(intent: Intent): LaunchData</ID>
     <ID>ReturnCount:MessageList.kt$MessageList$private fun onCustomKeyDown(event: KeyEvent): Boolean</ID>
     <ID>ReturnCount:MessageList.kt$MessageList$public override fun onCreate(savedInstanceState: Bundle?)</ID>
@@ -807,6 +809,7 @@
     <ID>UnusedPrivateMember:Contacts.kt$Contacts$addresses: Array&lt;Address?&gt;?</ID>
     <ID>UnusedPrivateMember:ExtraAccountDiscovery.kt$ExtraAccountDiscovery$email: String</ID>
     <ID>UnusedPrivateMember:HttpUriParser.kt$HttpUriParser$i</ID>
+    <ID>UnusedPrivateMember:MessageHelper.kt$MessageHelper$private val mContext: Context</ID>
     <ID>UnusedPrivateMember:MessageListLoader.kt$MessageListLoader$account: Account</ID>
     <ID>UnusedPrivateMember:MessageViewFragment.kt$MessageViewFragment$requestKey: String</ID>
     <ID>UnusedPrivateMember:NewSetupUiHack.kt$NewSetupUiHack$builder: SettingsListBuilder</ID>

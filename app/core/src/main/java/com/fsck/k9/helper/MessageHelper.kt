@@ -1,152 +1,152 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.helper
 
+import android.content.Context
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
+import com.fsck.k9.Account
+import com.fsck.k9.CoreResourceProvider
+import com.fsck.k9.DI
+import com.fsck.k9.K9.contactNameColor
+import com.fsck.k9.K9.isChangeContactNameColor
+import com.fsck.k9.K9.isShowContactName
+import com.fsck.k9.K9.isShowCorrespondentNames
+import com.fsck.k9.mail.Address
+import java.util.regex.Pattern
 
-import java.util.List;
-import java.util.regex.Pattern;
+class MessageHelper private constructor(
+    private val mContext: Context,
+    private val resourceProvider: CoreResourceProvider,
+) {
 
-import android.content.Context;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-
-import com.fsck.k9.Account;
-import com.fsck.k9.CoreResourceProvider;
-import com.fsck.k9.DI;
-import com.fsck.k9.K9;
-import com.fsck.k9.mail.Address;
-
-public class MessageHelper {
-    /**
-     * If the number of addresses exceeds this value the addresses aren't
-     * resolved to the names of Android contacts.
-     *
-     * <p>
-     * TODO: This number was chosen arbitrarily and should be determined by
-     * performance tests.
-     * </p>
-     *
-     * @see #toFriendly(Address[], com.fsck.k9.helper.Contacts)
-     */
-    private static final int TOO_MANY_ADDRESSES = 50;
-    private static final Pattern SPOOF_ADDRESS_PATTERN = Pattern.compile("[^(]@");
-
-    private static MessageHelper sInstance;
-
-    public synchronized static MessageHelper getInstance(final Context context) {
-        if (sInstance == null) {
-            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-            sInstance = new MessageHelper(context, resourceProvider);
-        }
-        return sInstance;
-    }
-
-    private final CoreResourceProvider resourceProvider;
-    private Context mContext;
-
-    private MessageHelper(Context context, CoreResourceProvider resourceProvider) {
-        mContext = context;
-        this.resourceProvider = resourceProvider;
-    }
-
-    public CharSequence getSenderDisplayName(Address address) {
+    fun getSenderDisplayName(address: Address?): CharSequence {
         if (address == null) {
-            return resourceProvider.contactUnknownSender();
+            return resourceProvider.contactUnknownSender()
         }
-
-        Contacts contactHelper = K9.isShowContactName() ? DI.get(Contacts.class) : null;
-        return toFriendly(address, contactHelper);
+        val contactHelper = if (isShowContactName) DI.get(Contacts::class.java) else null
+        return toFriendly(address, contactHelper)
     }
 
-    public CharSequence getRecipientDisplayNames(Address[] addresses) {
-        if (addresses == null || addresses.length == 0) {
-            return resourceProvider.contactUnknownRecipient();
+    fun getRecipientDisplayNames(addresses: Array<Address>?): CharSequence {
+        if (addresses == null || addresses.isEmpty()) {
+            return resourceProvider.contactUnknownRecipient()
         }
-
-        Contacts contactHelper = K9.isShowContactName() ? DI.get(Contacts.class) : null;
-        CharSequence recipients = toFriendly(addresses, contactHelper);
-        return new SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(recipients);
+        val contactHelper = if (isShowContactName) DI.get(Contacts::class.java) else null
+        val recipients = toFriendly(addresses, contactHelper)
+        return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(recipients)
     }
 
-    public boolean toMe(Account account, List<Address> toAddrs) {
-        for (Address address : toAddrs) {
-            if (account.isAnIdentity(address)) {
-                return true;
+    fun toMe(account: Account, toAddrs: List<Address?>): Boolean {
+        for (address in toAddrs) {
+            if (account.isAnIdentity(address!!)) {
+                return true
             }
         }
-        return false;
+        return false
     }
 
-    /**
-     * Returns the name of the contact this email address belongs to if
-     * the {@link Contacts contacts} parameter is not {@code null} and a
-     * contact is found. Otherwise the personal portion of the {@link Address}
-     * is returned. If that isn't available either, the email address is
-     * returned.
-     *
-     * @param address An {@link com.fsck.k9.mail.Address}
-     * @param contacts A {@link Contacts} instance or {@code null}.
-     * @return A "friendly" name for this {@link Address}.
-     */
-    public static CharSequence toFriendly(Address address, Contacts contacts) {
-        return toFriendly(address,contacts,
-                K9.isShowCorrespondentNames(),
-                K9.isChangeContactNameColor(),
-                K9.getContactNameColor());
-    }
+    companion object {
+        /**
+         * If the number of addresses exceeds this value the addresses aren't
+         * resolved to the names of Android contacts.
+         *
+         * TODO: This number was chosen arbitrarily and should be determined by performance tests.
+         *
+         * @see .toFriendly
+         */
+        private const val TOO_MANY_ADDRESSES = 50
+        private val SPOOF_ADDRESS_PATTERN = Pattern.compile("[^(]@")
+        private var sInstance: MessageHelper? = null
 
-    public static CharSequence toFriendly(Address[] addresses, Contacts contacts) {
-        if (addresses == null) {
-            return null;
-        }
-
-        if (addresses.length >= TOO_MANY_ADDRESSES) {
-            // Don't look up contacts if the number of addresses is very high.
-            contacts = null;
-        }
-
-        SpannableStringBuilder sb = new SpannableStringBuilder();
-        for (int i = 0; i < addresses.length; i++) {
-            sb.append(toFriendly(addresses[i], contacts));
-            if (i < addresses.length - 1) {
-                sb.append(',');
+        @JvmStatic
+        @Synchronized
+        fun getInstance(context: Context): MessageHelper? {
+            if (sInstance == null) {
+                val resourceProvider = DI.get(CoreResourceProvider::class.java)
+                sInstance = MessageHelper(context, resourceProvider)
             }
+            return sInstance
         }
-        return sb;
-    }
 
-    /* package, for testing */ static CharSequence toFriendly(Address address, Contacts contacts,
-                                                 boolean showCorrespondentNames,
-                                                 boolean changeContactNameColor,
-                                                 int contactNameColor) {
-        if (!showCorrespondentNames) {
-            return address.getAddress();
-        } else if (contacts != null) {
-            final String name = contacts.getNameForAddress(address.getAddress());
-            if (name != null) {
-                if (changeContactNameColor) {
-                    final SpannableString coloredName = new SpannableString(name);
-                    coloredName.setSpan(new ForegroundColorSpan(contactNameColor),
-                            0,
-                            coloredName.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    );
-                    return coloredName;
-                } else {
-                    return name;
+        /**
+         * Returns the name of the contact this email address belongs to if
+         * the [contacts][Contacts] parameter is not `null` and a
+         * contact is found. Otherwise the personal portion of the [Address]
+         * is returned. If that isn't available either, the email address is
+         * returned.
+         *
+         * @param address An [com.fsck.k9.mail.Address]
+         * @param contacts A [Contacts] instance or `null`.
+         * @return A "friendly" name for this [Address].
+         */
+        fun toFriendly(address: Address, contacts: Contacts?): CharSequence {
+            return toFriendly(
+                address,
+                contacts,
+                isShowCorrespondentNames,
+                isChangeContactNameColor,
+                contactNameColor,
+            )
+        }
+
+        fun toFriendly(addresses: Array<Address>?, contacts: Contacts?): CharSequence? {
+            var contacts = contacts
+            if (addresses == null) {
+                return null
+            }
+            if (addresses.size >= TOO_MANY_ADDRESSES) {
+                // Don't look up contacts if the number of addresses is very high.
+                contacts = null
+            }
+            val stringBuilder = SpannableStringBuilder()
+            for (i in addresses.indices) {
+                stringBuilder.append(toFriendly(addresses[i], contacts))
+                if (i < addresses.size - 1) {
+                    stringBuilder.append(',')
                 }
             }
+            return stringBuilder
         }
 
-        if (!TextUtils.isEmpty(address.getPersonal()) && !isSpoofAddress(address.getPersonal())) {
-            return address.getPersonal();
-        } else {
-            return address.getAddress();
+        /* package, for testing */
+        @JvmStatic
+        fun toFriendly(
+            address: Address,
+            contacts: Contacts?,
+            showCorrespondentNames: Boolean,
+            changeContactNameColor: Boolean,
+            contactNameColor: Int,
+        ): CharSequence {
+            if (!showCorrespondentNames) {
+                return address.address
+            } else if (contacts != null) {
+                val name = contacts.getNameForAddress(address.address)
+                if (name != null) {
+                    return if (changeContactNameColor) {
+                        val coloredName = SpannableString(name)
+                        coloredName.setSpan(
+                            ForegroundColorSpan(contactNameColor),
+                            0,
+                            coloredName.length,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+                        )
+                        coloredName
+                    } else {
+                        name
+                    }
+                }
+            }
+            return if (!TextUtils.isEmpty(address.personal) && !isSpoofAddress(address.personal)) {
+                address.personal
+            } else {
+                address.address
+            }
         }
-    }
 
-    private static boolean isSpoofAddress(String displayName) {
-        return displayName.contains("@") && SPOOF_ADDRESS_PATTERN.matcher(displayName).find();
+        private fun isSpoofAddress(displayName: String): Boolean {
+            return displayName.contains("@") && SPOOF_ADDRESS_PATTERN.matcher(displayName).find()
+        }
     }
 }
