@@ -1,9 +1,9 @@
 package com.fsck.k9.notification
 
-import androidx.test.core.app.ApplicationProvider
 import com.fsck.k9.Account
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mailstore.LocalMessage
@@ -27,6 +27,7 @@ private const val RECIPIENT_NAME = "Bob"
 
 class NotificationContentCreatorTest : RobolectricTest() {
     private val resourceProvider = TestNotificationResourceProvider()
+    private val contacts = mock<Contacts>()
     private val contentCreator = createNotificationContentCreator()
     private val messageReference = createMessageReference()
     private val account = createFakeAccount()
@@ -137,7 +138,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
     }
 
     private fun createNotificationContentCreator(): NotificationContentCreator {
-        return NotificationContentCreator(ApplicationProvider.getApplicationContext(), resourceProvider)
+        return NotificationContentCreator(resourceProvider, contacts)
     }
 
     private fun createFakeAccount(): Account = mock()

@@ -750,7 +750,7 @@
     <ID>TooManyFunctions:MessageListRemoteViewFactory.kt$MessageListRemoteViewFactory : RemoteViewsFactoryKoinComponent</ID>
     <ID>TooManyFunctions:MessageListSwipeCallback.kt$MessageListSwipeCallback : Callback</ID>
     <ID>TooManyFunctions:MessageStore.kt$MessageStore</ID>
-    <ID>TooManyFunctions:MessageTopView.kt$MessageTopView : LinearLayout</ID>
+    <ID>TooManyFunctions:MessageTopView.kt$MessageTopView : LinearLayoutKoinComponent</ID>
     <ID>TooManyFunctions:MessageViewContainerFragment.kt$MessageViewContainerFragment : Fragment</ID>
     <ID>TooManyFunctions:MessageViewFragment.kt$MessageViewFragment : FragmentConfirmationDialogFragmentListenerAttachmentViewCallback</ID>
     <ID>TooManyFunctions:MigrationTo73.kt$MigrationTo73</ID>

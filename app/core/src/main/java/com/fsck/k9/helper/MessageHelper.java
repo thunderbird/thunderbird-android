@@ -55,7 +55,7 @@ public class MessageHelper {
             return resourceProvider.contactUnknownSender();
         }
 
-        Contacts contactHelper = K9.isShowContactName() ? Contacts.getInstance(mContext) : null;
+        Contacts contactHelper = K9.isShowContactName() ? DI.get(Contacts.class) : null;
         return toFriendly(address, contactHelper);
     }
 
@@ -64,7 +64,7 @@ public class MessageHelper {
             return resourceProvider.contactUnknownRecipient();
         }
 
-        Contacts contactHelper = K9.isShowContactName() ? Contacts.getInstance(mContext) : null;
+        Contacts contactHelper = K9.isShowContactName() ? DI.get(Contacts.class) : null;
         CharSequence recipients = toFriendly(addresses, contactHelper);
         return new SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(recipients);
     }

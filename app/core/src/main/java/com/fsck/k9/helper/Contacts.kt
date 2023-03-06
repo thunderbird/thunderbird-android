@@ -199,21 +199,6 @@ open class Contacts(
         private const val CONTACT_ID_INDEX = 2
         private const val LOOKUP_KEY_INDEX = 4
 
-        /**
-         * Get instance of the Contacts class.
-         *
-         *
-         * Note: This is left over from the days when we needed to have SDK-specific code to access
-         * the contacts.
-         *
-         * @param context A [Context] instance.
-         * @return Appropriate [Contacts] instance for this device.
-         */
-        @JvmStatic
-        fun getInstance(context: Context): Contacts {
-            return Contacts(context)
-        }
-
         private val nameCache = HashMap<String, String?>()
 
         /**
