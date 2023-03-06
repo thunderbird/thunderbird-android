@@ -6,7 +6,6 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.DI
 import com.fsck.k9.K9.contactNameColor
 import com.fsck.k9.K9.isChangeContactNameColor
 import com.fsck.k9.K9.isShowContactName
@@ -14,15 +13,16 @@ import com.fsck.k9.K9.isShowCorrespondentNames
 import com.fsck.k9.mail.Address
 import java.util.regex.Pattern
 
-class MessageHelper private constructor(
+class MessageHelper(
     private val resourceProvider: CoreResourceProvider,
+    private val contacts: Contacts,
 ) {
 
     fun getSenderDisplayName(address: Address?): CharSequence {
         if (address == null) {
             return resourceProvider.contactUnknownSender()
         }
-        val contactHelper = if (isShowContactName) DI.get(Contacts::class.java) else null
+        val contactHelper = if (isShowContactName) contacts else null
         return toFriendly(address, contactHelper)
     }
 
@@ -30,7 +30,7 @@ class MessageHelper private constructor(
         if (addresses == null || addresses.isEmpty()) {
             return resourceProvider.contactUnknownRecipient()
         }
-        val contactHelper = if (isShowContactName) DI.get(Contacts::class.java) else null
+        val contactHelper = if (isShowContactName) contacts else null
         val recipients = toFriendly(addresses, contactHelper)
         return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(recipients)
     }
@@ -46,17 +46,6 @@ class MessageHelper private constructor(
          */
         private const val TOO_MANY_ADDRESSES = 50
         private val SPOOF_ADDRESS_PATTERN = Pattern.compile("[^(]@")
-        private var sInstance: MessageHelper? = null
-
-        @JvmStatic
-        @Synchronized
-        fun getInstance(): MessageHelper? {
-            if (sInstance == null) {
-                val resourceProvider = DI.get(CoreResourceProvider::class.java)
-                sInstance = MessageHelper(resourceProvider)
-            }
-            return sInstance
-        }
 
         /**
          * Returns the name of the contact this email address belongs to if

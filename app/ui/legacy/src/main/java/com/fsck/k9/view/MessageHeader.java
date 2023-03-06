@@ -47,6 +47,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private final MessageViewRecipientFormatter recipientFormatter = DI.get(MessageViewRecipientFormatter.class);
     private final ReplyActionStrategy replyActionStrategy = DI.get(ReplyActionStrategy.class);
+    private final MessageHelper messageHelper = DI.get(MessageHelper.class);
     private final FontSizes fontSizes = K9.getFontSizes();
 
     private Chip accountChip;
@@ -59,7 +60,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView dateView;
     private ImageView menuPrimaryActionView;
 
-    private MessageHelper messageHelper;
     private RelativeDateTimeFormatter relativeDateTimeFormatter;
 
     private MessageHeaderClickListener messageHeaderClickListener;
@@ -70,7 +70,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         super(context, attrs);
 
         if (!isInEditMode()) {
-            messageHelper = MessageHelper.getInstance();
             relativeDateTimeFormatter = DI.get(RelativeDateTimeFormatter.class);
         }
     }
