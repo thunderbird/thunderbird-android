@@ -28,4 +28,4 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/gradle-build-action@v2
-      - run: ./gradlew assembleDebug spotlessCheck testsOnCi
+      - run: ./gradlew assembleDebug detekt spotlessCheck testsOnCi
