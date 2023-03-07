@@ -141,7 +141,7 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
             coordinator?.fitsSystemWindows = false
 
             val flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            window.decorView.systemUiVisibility = flags
+            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or flags
         }
     }
 
