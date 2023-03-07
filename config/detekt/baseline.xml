@@ -528,8 +528,6 @@
     <ID>ReturnCount:AutocryptDraftStateHeaderParser.kt$AutocryptDraftStateHeaderParser$fun parseAutocryptDraftStateHeader(headerValue: String): AutocryptDraftStateHeader?</ID>
     <ID>ReturnCount:ChooseFolderActivity.kt$ChooseFolderActivity$private fun decodeArguments(savedInstanceState: Bundle?): Boolean</ID>
     <ID>ReturnCount:CommandSetFlag.kt$CommandSetFlag$fun setFlag(folderServerId: String, messageServerIds: List&lt;String&gt;, flag: Flag, newState: Boolean)</ID>
-    <ID>ReturnCount:Contacts.kt$Contacts$fun getContactUri(emailAddress: EmailAddress): Uri?</ID>
-    <ID>ReturnCount:Contacts.kt$Contacts$fun getPhotoUri(emailAddress: EmailAddress): Uri?</ID>
     <ID>ReturnCount:DecoderUtil.kt$DecoderUtil$@JvmStatic fun decodeEncodedWords(body: String, message: Message?): String</ID>
     <ID>ReturnCount:DecoderUtil.kt$DecoderUtil$private fun extractEncodedWord(body: String, begin: Int, end: Int, message: Message?): EncodedWord?</ID>
     <ID>ReturnCount:EditIdentity.kt$EditIdentity$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
@@ -615,7 +613,6 @@
     <ID>SwallowedException:AuthViewModel.kt$AuthViewModel$e: ActivityNotFoundException</ID>
     <ID>SwallowedException:CommandRefreshFolderListTest.kt$CommandRefreshFolderListTest$e: AuthenticationFailedException</ID>
     <ID>SwallowedException:ContactPictureLoader.kt$ContactPictureLoader$e: Exception</ID>
-    <ID>SwallowedException:Contacts.kt$Contacts$e: IllegalStateException</ID>
     <ID>SwallowedException:DecoderUtil.kt$DecoderUtil$e: IOException</ID>
     <ID>SwallowedException:DecoderUtil.kt$DecoderUtil$e: MessagingException</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: EndpointNotFoundException</ID>

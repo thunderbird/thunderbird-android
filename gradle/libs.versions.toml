@@ -141,6 +141,7 @@ shared-jvm-main = [
 ]
 shared-jvm-android = [
   "androidx-core-ktx",
+  "koin-android",
 ]
 shared-jvm-test = [
   "junit",
