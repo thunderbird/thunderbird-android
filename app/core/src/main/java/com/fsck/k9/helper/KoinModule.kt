@@ -7,9 +7,9 @@ import org.koin.dsl.module
 
 val helperModule = module {
     single { ClipboardManager(get()) }
-    single { MessageHelper(resourceProvider = get(), contacts = get()) }
+    single { MessageHelper(resourceProvider = get(), contactRepository = get()) }
     factory<KeyStoreDirectoryProvider> { AndroidKeyStoreDirectoryProvider(context = get()) }
     factory { get<Context>().getSystemService(Context.ALARM_SERVICE) as AlarmManager }
     single { AlarmManagerCompat(alarmManager = get()) }
-    factory<ContactNameProvider> { RealContactNameProvider(contacts = get()) }
+    factory<ContactNameProvider> { RealContactNameProvider(contactRepository = get()) }
 }

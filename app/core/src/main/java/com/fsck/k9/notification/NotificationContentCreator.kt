@@ -1,9 +1,9 @@
 package com.fsck.k9.notification
 
 import android.text.SpannableStringBuilder
+import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.Account
 import com.fsck.k9.K9
-import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalMessage
@@ -11,7 +11,7 @@ import com.fsck.k9.message.extractors.PreviewResult.PreviewType
 
 internal class NotificationContentCreator(
     private val resourceProvider: NotificationResourceProvider,
-    private val contacts: Contacts,
+    private val contactRepository: ContactRepository,
 ) {
     fun createFromMessage(account: Account, message: LocalMessage): NotificationContent {
         val sender = getMessageSender(account, message)
@@ -69,14 +69,14 @@ internal class NotificationContentCreator(
     }
 
     private fun getMessageSender(account: Account, message: Message): String? {
-        val localContacts = if (K9.isShowContactName) contacts else null
+        val localContactRepository = if (K9.isShowContactName) contactRepository else null
         var isSelf = false
 
         val fromAddresses = message.from
         if (!fromAddresses.isNullOrEmpty()) {
             isSelf = account.isAnIdentity(fromAddresses)
             if (!isSelf) {
-                return MessageHelper.toFriendly(fromAddresses.first(), localContacts).toString()
+                return MessageHelper.toFriendly(fromAddresses.first(), localContactRepository).toString()
             }
         }
 
@@ -84,7 +84,10 @@ internal class NotificationContentCreator(
             // show To: if the message was sent from me
             val recipients = message.getRecipients(Message.RecipientType.TO)
             if (!recipients.isNullOrEmpty()) {
-                val recipientDisplayName = MessageHelper.toFriendly(recipients.first(), localContacts).toString()
+                val recipientDisplayName = MessageHelper.toFriendly(
+                    address = recipients.first(),
+                    contactRepository = localContactRepository,
+                ).toString()
                 return resourceProvider.recipientDisplayName(recipientDisplayName)
             }
         }
