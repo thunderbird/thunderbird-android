@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
 import android.provider.ContactsContract
-import app.k9mail.core.common.mail.EmailAddress
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -112,26 +111,11 @@ internal class ContentResolverContactDataSourceTest {
 
     private fun setupContactCursor(): Cursor {
         return MatrixCursor(PROJECTION).apply {
-            addRow(arrayOf(CONTACT_ID, CONTACT_NAME, CONTACT_PHOTO_URI, LOOKUP_KEY))
+            addRow(arrayOf(CONTACT_ID, CONTACT_NAME, CONTACT_PHOTO_URI, CONTACT_LOOKUP_KEY))
         }
     }
 
     private companion object {
-        const val CONTACT_ID = 123L
-        const val CONTACT_NAME = "name"
-        const val LOOKUP_KEY = "0r1-4F314D4F2F294F29"
-        val CONTACT_EMAIL_ADDRESS = EmailAddress("user@example.com")
-        val CONTACT_URI: Uri = Uri.parse("content://com.android.contacts/contacts/lookup/$LOOKUP_KEY/$CONTACT_ID")
-        val CONTACT_PHOTO_URI: Uri = Uri.parse("content://com.android.contacts/display_photo/$CONTACT_ID")
-
-        val CONTACT = Contact(
-            id = CONTACT_ID,
-            name = CONTACT_NAME,
-            emailAddress = CONTACT_EMAIL_ADDRESS,
-            uri = CONTACT_URI,
-            photoUri = CONTACT_PHOTO_URI,
-        )
-
         val PROJECTION = arrayOf(
             ContactsContract.CommonDataKinds.Email._ID,
             ContactsContract.CommonDataKinds.Identity.DISPLAY_NAME,
