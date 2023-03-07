@@ -1,5 +1,6 @@
 package com.fsck.k9.notification
 
+import app.k9mail.core.common.mail.EmailAddress
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.helper.Contacts
@@ -84,7 +85,9 @@ class K9NotificationStrategy(private val contacts: Contacts) : NotificationStrat
             return false
         }
 
-        if (account.isNotifyContactsMailOnly && !contacts.isAnyInContacts(message.from)) {
+        if (account.isNotifyContactsMailOnly &&
+            !contacts.isAnyInContacts(message.from.map { EmailAddress(it.address) })
+        ) {
             Timber.v("No notification: Message is not from a known contact")
             return false
         }

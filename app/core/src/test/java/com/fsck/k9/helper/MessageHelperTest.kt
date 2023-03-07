@@ -3,6 +3,7 @@ package com.fsck.k9.helper
 import android.content.Context
 import android.graphics.Color
 import android.text.SpannableString
+import app.k9mail.core.common.mail.EmailAddress
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -24,8 +25,8 @@ class MessageHelperTest : RobolectricTest() {
         val context: Context = RuntimeEnvironment.getApplication()
         contacts = Contacts(context)
         contactsWithFakeContact = object : Contacts(context) {
-            override fun getNameForAddress(address: String?): String? {
-                return if ("test@testor.com" == address) {
+            override fun getNameFor(emailAddress: EmailAddress): String? {
+                return if ("test@testor.com" == emailAddress.address) {
                     "Tim Testor"
                 } else {
                     null
@@ -33,8 +34,8 @@ class MessageHelperTest : RobolectricTest() {
             }
         }
         contactsWithFakeSpoofContact = object : Contacts(context) {
-            override fun getNameForAddress(address: String?): String? {
-                return if ("test@testor.com" == address) {
+            override fun getNameFor(emailAddress: EmailAddress): String? {
+                return if ("test@testor.com" == emailAddress.address) {
                     "Tim@Testor"
                 } else {
                     null

@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.k9mail.core.common.mail.EmailAddress
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.ClipboardManager
@@ -103,7 +104,7 @@ internal class MessageDetailsViewModel(
             Participant(
                 displayName = displayName,
                 emailAddress = emailAddress,
-                contactLookupUri = contacts.getContactUri(emailAddress),
+                contactLookupUri = contacts.getContactUri(EmailAddress(emailAddress)),
             )
         }
     }
