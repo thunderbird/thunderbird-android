@@ -86,8 +86,8 @@ import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
+import static com.fsck.k9.controller.Preconditions.requireNotNull;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
-import static com.fsck.k9.helper.Preconditions.checkNotNull;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 
 
@@ -863,7 +863,7 @@ public class MessagingController {
     @VisibleForTesting
     void processPendingMoveOrCopy(Account account, long srcFolderId, long destFolderId, List<String> uids,
                                   MoveOrCopyFlavor operation, Map<String, String> newUidMap) throws MessagingException {
-        checkNotNull(newUidMap);
+        requireNotNull(newUidMap);
 
         LocalStore localStore = localStoreProvider.getInstance(account);
 

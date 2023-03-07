@@ -2,8 +2,9 @@ package com.fsck.k9.storage.migrations;
 
 import java.util.List;
 
+import static com.fsck.k9.controller.Preconditions.requireNotNull;
 import static com.fsck.k9.controller.Preconditions.requireValidUids;
-import static com.fsck.k9.helper.Preconditions.checkNotNull;
+
 
 class LegacyPendingDelete extends LegacyPendingCommand {
     public final String folder;
@@ -11,7 +12,7 @@ class LegacyPendingDelete extends LegacyPendingCommand {
 
 
     static LegacyPendingDelete create(String folder, List<String> uids) {
-        checkNotNull(folder);
+        requireNotNull(folder);
         requireValidUids(uids);
         return new LegacyPendingDelete(folder, uids);
     }

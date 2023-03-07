@@ -8,8 +8,8 @@ import com.fsck.k9.Account;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 
+import static com.fsck.k9.controller.Preconditions.requireNotNull;
 import static com.fsck.k9.controller.Preconditions.requireValidUids;
-import static com.fsck.k9.helper.Preconditions.checkNotNull;
 
 
 public class MessagingControllerCommands {
@@ -119,7 +119,7 @@ public class MessagingControllerCommands {
 
 
         public static PendingSetFlag create(long folderId, boolean newState, Flag flag, List<String> uids) {
-            checkNotNull(flag);
+            requireNotNull(flag);
             requireValidUids(uids);
             return new PendingSetFlag(folderId, newState, flag, uids);
         }
@@ -148,7 +148,7 @@ public class MessagingControllerCommands {
 
 
         public static PendingAppend create(long folderId, String uid) {
-            checkNotNull(uid);
+            requireNotNull(uid);
             return new PendingAppend(folderId, uid);
         }
 
