@@ -2,8 +2,8 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
+import app.k9mail.core.android.common.database.map
 import com.fsck.k9.Account
-import com.fsck.k9.helper.map
 import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.preferences.Protocols
 import timber.log.Timber

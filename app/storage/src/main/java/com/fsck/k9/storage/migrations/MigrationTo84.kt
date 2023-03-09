@@ -3,7 +3,7 @@ package com.fsck.k9.storage.migrations
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.getStringOrNull
-import com.fsck.k9.helper.map
+import app.k9mail.core.android.common.database.map
 
 /**
  * Write the address fields to use ASCII 1 instead of ASCII 0 as separator.

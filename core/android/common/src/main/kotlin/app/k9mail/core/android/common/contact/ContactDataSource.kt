@@ -9,8 +9,8 @@ import android.net.Uri
 import android.provider.ContactsContract
 import androidx.core.content.ContextCompat
 import app.k9mail.core.android.common.database.EmptyCursor
-import app.k9mail.core.android.common.database.getLongValue
-import app.k9mail.core.android.common.database.getStringValue
+import app.k9mail.core.android.common.database.getLongOrThrow
+import app.k9mail.core.android.common.database.getStringOrNull
 import app.k9mail.core.common.mail.EmailAddress
 
 interface ContactDataSource {
@@ -28,13 +28,13 @@ internal class ContentResolverContactDataSource(
     override fun getContactFor(emailAddress: EmailAddress): Contact? {
         getCursorFor(emailAddress).use { cursor ->
             if (cursor.moveToFirst()) {
-                val contactId = cursor.getLongValue(ContactsContract.CommonDataKinds.Email._ID)
-                val lookupKey = cursor.getStringValue(ContactsContract.Contacts.LOOKUP_KEY)
+                val contactId = cursor.getLongOrThrow(ContactsContract.CommonDataKinds.Email._ID)
+                val lookupKey = cursor.getStringOrNull(ContactsContract.Contacts.LOOKUP_KEY)
                 val uri = ContactsContract.Contacts.getLookupUri(contactId, lookupKey)
 
-                val name = cursor.getStringValue(ContactsContract.CommonDataKinds.Identity.DISPLAY_NAME)
+                val name = cursor.getStringOrNull(ContactsContract.CommonDataKinds.Identity.DISPLAY_NAME)
 
-                val photoUri = cursor.getStringValue(ContactsContract.CommonDataKinds.Photo.PHOTO_URI)
+                val photoUri = cursor.getStringOrNull(ContactsContract.CommonDataKinds.Photo.PHOTO_URI)
                     ?.let { photoUriString -> Uri.parse(photoUriString) }
 
                 return Contact(

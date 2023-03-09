@@ -2,8 +2,8 @@ package com.fsck.k9.storage.messages
 
 import android.database.Cursor
 import androidx.core.database.getLongOrNull
+import app.k9mail.core.android.common.database.map
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.helper.map
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderDetailsAccessor

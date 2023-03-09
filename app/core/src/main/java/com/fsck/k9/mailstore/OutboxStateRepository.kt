@@ -1,10 +1,10 @@
 package com.fsck.k9.mailstore
 
 import android.content.ContentValues
-import com.fsck.k9.helper.getIntOrThrow
-import com.fsck.k9.helper.getLongOrThrow
-import com.fsck.k9.helper.getStringOrNull
-import com.fsck.k9.helper.getStringOrThrow
+import app.k9mail.core.android.common.database.getIntOrThrow
+import app.k9mail.core.android.common.database.getLongOrThrow
+import app.k9mail.core.android.common.database.getStringOrNull
+import app.k9mail.core.android.common.database.getStringOrThrow
 import kotlinx.datetime.Clock
 
 class OutboxStateRepository(
