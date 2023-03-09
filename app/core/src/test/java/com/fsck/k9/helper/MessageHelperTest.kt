@@ -1,6 +1,5 @@
 package com.fsck.k9.helper
 
-import android.content.Context
 import android.graphics.Color
 import android.text.SpannableString
 import app.k9mail.core.common.mail.EmailAddress
@@ -12,7 +11,7 @@ import com.fsck.k9.helper.MessageHelper.Companion.toFriendly
 import com.fsck.k9.mail.Address
 import org.junit.Before
 import org.junit.Test
-import org.robolectric.RuntimeEnvironment
+import org.mockito.kotlin.mock
 
 class MessageHelperTest : RobolectricTest() {
 
@@ -22,9 +21,8 @@ class MessageHelperTest : RobolectricTest() {
 
     @Before
     fun setUp() {
-        val context: Context = RuntimeEnvironment.getApplication()
-        contacts = Contacts(context)
-        contactsWithFakeContact = object : Contacts(context) {
+        contacts = mock()
+        contactsWithFakeContact = object : Contacts(mock()) {
             override fun getNameFor(emailAddress: EmailAddress): String? {
                 return if ("test@testor.com" == emailAddress.address) {
                     "Tim Testor"
@@ -33,7 +31,7 @@ class MessageHelperTest : RobolectricTest() {
                 }
             }
         }
-        contactsWithFakeSpoofContact = object : Contacts(context) {
+        contactsWithFakeSpoofContact = object : Contacts(mock()) {
             override fun getNameFor(emailAddress: EmailAddress): String? {
                 return if ("test@testor.com" == emailAddress.address) {
                     "Tim@Testor"

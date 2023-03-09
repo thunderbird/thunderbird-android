@@ -1,4 +1,4 @@
-package com.fsck.k9.helper
+package app.k9mail.core.android.common.database
 
 import android.database.Cursor
 
@@ -34,8 +34,4 @@ fun Cursor.getIntOrThrow(columnName: String): Int {
 
 fun Cursor.getLongOrThrow(columnName: String): Long {
     return getLongOrNull(columnName) ?: error("Column $columnName must not be null")
-}
-
-fun Cursor.getBoolean(columnIndex: Int): Boolean {
-    return getString(columnIndex).toBoolean()
 }

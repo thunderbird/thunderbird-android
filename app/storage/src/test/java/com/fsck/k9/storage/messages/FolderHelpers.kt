@@ -2,10 +2,10 @@ package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.helper.getIntOrNull
-import com.fsck.k9.helper.getLongOrNull
-import com.fsck.k9.helper.getStringOrNull
-import com.fsck.k9.helper.map
+import app.k9mail.core.android.common.database.getIntOrNull
+import app.k9mail.core.android.common.database.getLongOrNull
+import app.k9mail.core.android.common.database.getStringOrNull
+import app.k9mail.core.android.common.database.map
 
 fun SQLiteDatabase.createFolder(
     name: String = "irrelevant",

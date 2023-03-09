@@ -2,6 +2,7 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
+import app.k9mail.core.android.common.database.map
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand
 import com.fsck.k9.controller.MessagingControllerCommands.PendingDelete
@@ -11,7 +12,6 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveAndMarkAsRe
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag
 import com.fsck.k9.controller.PendingCommandSerializer
-import com.fsck.k9.helper.map
 import com.squareup.moshi.Moshi
 import timber.log.Timber
 
