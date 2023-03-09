@@ -35,6 +35,6 @@
     <dimen name="fakeAlignImageTopToTextTopPadding">4dp</dimen>
 
     <dimen name="floatingActionButtonMargin">16dp</dimen>
-    <!-- Height of ExtendedFloatingActionButton (48dp) plus two times floatingActionButtonMargin -->
-    <dimen name="floatingActionButtonSpacing">80dp</dimen>
+    <!-- Height of FloatingActionButton (56dp) plus two times floatingActionButtonMargin -->
+    <dimen name="floatingActionButtonSpacing">88dp</dimen>
 </resources>

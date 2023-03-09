@@ -50,11 +50,10 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
-import com.fsck.k9.ui.fab.ShrinkFabOnScrollListener
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.Future
@@ -92,7 +91,7 @@ class MessageListFragment :
     private var recyclerView: RecyclerView? = null
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
-    private var floatingActionButton: ExtendedFloatingActionButton? = null
+    private var floatingActionButton: FloatingActionButton? = null
 
     private lateinit var adapter: MessageListAdapter
 
@@ -308,20 +307,17 @@ class MessageListFragment :
     }
 
     private fun enableFloatingActionButton(view: View) {
-        val floatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.floating_action_button)
+        val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floating_action_button)
 
         floatingActionButton.setOnClickListener {
             onCompose()
         }
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
-        recyclerView.addOnScrollListener(ShrinkFabOnScrollListener(floatingActionButton))
-
         this.floatingActionButton = floatingActionButton
     }
 
     private fun disableFloatingActionButton(view: View) {
-        val floatingActionButton = view.findViewById<ExtendedFloatingActionButton>(R.id.floating_action_button)
+        val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floating_action_button)
         floatingActionButton.isGone = true
     }
 
