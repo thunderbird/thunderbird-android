@@ -20,7 +20,7 @@ import org.robolectric.RobolectricTestRunner
 internal class CachingContactRepositoryTest {
 
     private val dataSource = mock<ContactDataSource>()
-    private val cache = InMemoryCache<EmailAddress, Contact>()
+    private val cache = InMemoryCache<EmailAddress, Contact?>()
 
     private val testSubject = CachingContactRepository(cache = cache, dataSource = dataSource)
 
@@ -61,6 +61,21 @@ internal class CachingContactRepositoryTest {
     }
 
     @Test
+    fun `getContactFor() caches null`() {
+        dataSource.stub {
+            on { getContactFor(CONTACT_EMAIL_ADDRESS) } doReturnConsecutively listOf(
+                null,
+                CONTACT,
+            )
+        }
+
+        val result1 = testSubject.getContactFor(CONTACT_EMAIL_ADDRESS)
+        val result2 = testSubject.getContactFor(CONTACT_EMAIL_ADDRESS)
+
+        assertThat(result1).isEqualTo(result2)
+    }
+
+    @Test
     fun `getContactFor() returns cached contact`() {
         cache[CONTACT_EMAIL_ADDRESS] = CONTACT
 
@@ -71,6 +86,15 @@ internal class CachingContactRepositoryTest {
 
     @Test
     fun `hasContactFor() returns false if no contact exists`() {
+        val result = testSubject.hasContactFor(CONTACT_EMAIL_ADDRESS)
+
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `hasContactFor() returns false if cached contact is null`() {
+        cache[CONTACT_EMAIL_ADDRESS] = null
+
         val result = testSubject.hasContactFor(CONTACT_EMAIL_ADDRESS)
 
         assertThat(result).isFalse()

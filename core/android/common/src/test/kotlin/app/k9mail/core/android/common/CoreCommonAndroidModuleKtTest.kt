@@ -9,7 +9,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-internal class CoreCommonAndroidModuleTest {
+internal class CoreCommonAndroidModuleKtTest {
 
     @Test
     fun `should have a valid di module`() {

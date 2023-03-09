@@ -17,7 +17,7 @@ interface CachingRepository {
 }
 
 internal class CachingContactRepository(
-    private val cache: Cache<EmailAddress, Contact>,
+    private val cache: Cache<EmailAddress, Contact?>,
     private val dataSource: ContactDataSource,
 ) : ContactRepository, CachingRepository {
 
@@ -26,16 +26,16 @@ internal class CachingContactRepository(
             return cache[emailAddress]
         }
 
-        val contact = dataSource.getContactFor(emailAddress)
-
-        if (contact != null) {
-            cache[emailAddress] = contact
+        return dataSource.getContactFor(emailAddress).also {
+            cache[emailAddress] = it
         }
-
-        return contact
     }
 
     override fun hasContactFor(emailAddress: EmailAddress): Boolean {
+        if (cache.hasKey(emailAddress)) {
+            return cache[emailAddress] != null
+        }
+
         return dataSource.hasContactFor(emailAddress)
     }
 

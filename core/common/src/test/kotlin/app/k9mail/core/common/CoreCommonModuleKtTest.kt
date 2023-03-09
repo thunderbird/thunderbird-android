@@ -4,7 +4,7 @@ import org.junit.Test
 import org.koin.dsl.koinApplication
 import org.koin.test.check.checkModules
 
-internal class CoreCommonModuleTest {
+internal class CoreCommonModuleKtTest {
 
     @Test
     fun `should have a valid di module`() {

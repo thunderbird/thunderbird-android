@@ -1,6 +1,6 @@
 package app.k9mail.core.common.cache
 
-class SynchronizedCache<KEY : Any, VALUE : Any>(
+class SynchronizedCache<KEY : Any, VALUE : Any?>(
     private val delegateCache: Cache<KEY, VALUE>,
 ) : Cache<KEY, VALUE> {
 

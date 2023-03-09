@@ -8,7 +8,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 internal val contactModule = module {
-    single<Cache<EmailAddress, Contact>>(named(CACHE_NAME)) {
+    single<Cache<EmailAddress, Contact?>>(named(CACHE_NAME)) {
         SynchronizedCache(
             delegateCache = ExpiringCache(clock = get()),
         )

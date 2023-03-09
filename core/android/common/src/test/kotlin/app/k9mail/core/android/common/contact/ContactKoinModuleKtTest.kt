@@ -10,7 +10,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-internal class ContactKoinModuleTest {
+internal class ContactKoinModuleKtTest {
     @Test
     fun `should have a valid di module`() {
         koinApplication {

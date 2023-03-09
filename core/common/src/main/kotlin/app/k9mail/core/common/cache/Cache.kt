@@ -1,6 +1,6 @@
 package app.k9mail.core.common.cache
 
-interface Cache<KEY : Any, VALUE : Any> {
+interface Cache<KEY : Any, VALUE : Any?> {
 
     operator fun get(key: KEY): VALUE?
 
