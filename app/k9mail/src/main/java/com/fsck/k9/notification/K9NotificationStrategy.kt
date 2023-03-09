@@ -1,9 +1,9 @@
 package com.fsck.k9.notification
 
+import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.EmailAddress
 import com.fsck.k9.Account
 import com.fsck.k9.K9
-import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
@@ -12,7 +12,9 @@ import com.fsck.k9.mailstore.LocalFolder.isModeMismatch
 import com.fsck.k9.mailstore.LocalMessage
 import timber.log.Timber
 
-class K9NotificationStrategy(private val contacts: Contacts) : NotificationStrategy {
+class K9NotificationStrategy(
+    private val contactRepository: ContactRepository,
+) : NotificationStrategy {
 
     override fun shouldNotifyForMessage(
         account: Account,
@@ -86,7 +88,7 @@ class K9NotificationStrategy(private val contacts: Contacts) : NotificationStrat
         }
 
         if (account.isNotifyContactsMailOnly &&
-            !contacts.isAnyInContacts(message.from.map { EmailAddress(it.address) })
+            !contactRepository.hasAnyContactFor(message.from.asList().mapNotNull { EmailAddress(it.address) })
         ) {
             Timber.v("No notification: Message is not from a known contact")
             return false

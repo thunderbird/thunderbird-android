@@ -28,7 +28,7 @@ val mainModule = module {
     single { get<Context>().resources }
     single { get<Context>().contentResolver }
     single { LocalStoreProvider() }
-    single { Contacts(contactDataSource = get()) }
+    single { Contacts() }
     single { LocalKeyStore(directoryProvider = get()) }
     single { TrustManagerFactory.createInstance(get()) }
     single { LocalKeyStoreManager(get()) }

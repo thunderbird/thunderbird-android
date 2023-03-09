@@ -5,6 +5,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
+import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.EmailAddress
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9.contactNameColor
@@ -16,23 +17,23 @@ import java.util.regex.Pattern
 
 class MessageHelper(
     private val resourceProvider: CoreResourceProvider,
-    private val contacts: Contacts,
+    private val contactRepository: ContactRepository,
 ) {
 
     fun getSenderDisplayName(address: Address?): CharSequence {
         if (address == null) {
             return resourceProvider.contactUnknownSender()
         }
-        val contactHelper = if (isShowContactName) contacts else null
-        return toFriendly(address, contactHelper)
+        val repository = if (isShowContactName) contactRepository else null
+        return toFriendly(address, repository)
     }
 
     fun getRecipientDisplayNames(addresses: Array<Address>?): CharSequence {
         if (addresses == null || addresses.isEmpty()) {
             return resourceProvider.contactUnknownRecipient()
         }
-        val contactHelper = if (isShowContactName) contacts else null
-        val recipients = toFriendly(addresses, contactHelper)
+        val repository = if (isShowContactName) contactRepository else null
+        val recipients = toFriendly(addresses, repository)
         return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(recipients)
     }
 
@@ -59,28 +60,28 @@ class MessageHelper(
          * @param contacts A [Contacts] instance or `null`.
          * @return A "friendly" name for this [Address].
          */
-        fun toFriendly(address: Address, contacts: Contacts?): CharSequence {
+        fun toFriendly(address: Address, contactRepository: ContactRepository?): CharSequence {
             return toFriendly(
                 address,
-                contacts,
+                contactRepository,
                 isShowCorrespondentNames,
                 isChangeContactNameColor,
                 contactNameColor,
             )
         }
 
-        fun toFriendly(addresses: Array<Address>?, contacts: Contacts?): CharSequence? {
-            var contacts = contacts
+        fun toFriendly(addresses: Array<Address>?, contactRepository: ContactRepository?): CharSequence? {
+            var repository = contactRepository
             if (addresses == null) {
                 return null
             }
             if (addresses.size >= TOO_MANY_ADDRESSES) {
                 // Don't look up contacts if the number of addresses is very high.
-                contacts = null
+                repository = null
             }
             val stringBuilder = SpannableStringBuilder()
             for (i in addresses.indices) {
-                stringBuilder.append(toFriendly(addresses[i], contacts))
+                stringBuilder.append(toFriendly(addresses[i], repository))
                 if (i < addresses.size - 1) {
                     stringBuilder.append(',')
                 }
@@ -92,15 +93,15 @@ class MessageHelper(
         @JvmStatic
         fun toFriendly(
             address: Address,
-            contacts: Contacts?,
+            contactRepository: ContactRepository?,
             showCorrespondentNames: Boolean,
             changeContactNameColor: Boolean,
             contactNameColor: Int,
         ): CharSequence {
             if (!showCorrespondentNames) {
                 return address.address
-            } else if (contacts != null) {
-                val name = contacts.getNameFor(EmailAddress(address.address))
+            } else if (contactRepository != null) {
+                val name = contactRepository.getContactFor(EmailAddress(address.address))?.name
                 if (name != null) {
                     return if (changeContactNameColor) {
                         val coloredName = SpannableString(name)

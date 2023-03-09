@@ -1,4 +1,4 @@
-package app.k9mail.core.android.common.contact
+package app.k9mail.core.android.common
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -9,11 +9,12 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-internal class ContactKoinModuleTest {
+internal class CoreCommonAndroidModuleKtTest {
+
     @Test
     fun `should have a valid di module`() {
         koinApplication {
-            modules(contactModule)
+            modules(coreCommonAndroidModule)
             androidContext(RuntimeEnvironment.getApplication())
             checkModules()
         }

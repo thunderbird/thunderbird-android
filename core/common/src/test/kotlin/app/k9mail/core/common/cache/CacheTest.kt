@@ -10,7 +10,7 @@ import kotlin.test.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
-data class CacheTestData<KEY : Any, VALUE : Any>(
+data class CacheTestData<KEY : Any, VALUE : Any?>(
     val name: String,
     val createCache: () -> Cache<KEY, VALUE>,
 ) {
@@ -18,14 +18,14 @@ data class CacheTestData<KEY : Any, VALUE : Any>(
 }
 
 @RunWith(Parameterized::class)
-class CacheTest(data: CacheTestData<Any, Any>) {
+class CacheTest(data: CacheTestData<Any, Any?>) {
 
     private val testSubject = data.createCache()
 
     companion object {
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
-        fun data(): Collection<CacheTestData<Any, Any>> {
+        fun data(): Collection<CacheTestData<Any, Any?>> {
             return listOf(
                 CacheTestData("InMemoryCache") { InMemoryCache() },
                 CacheTestData("ExpiringCache") { ExpiringCache(TestClock(), InMemoryCache()) },

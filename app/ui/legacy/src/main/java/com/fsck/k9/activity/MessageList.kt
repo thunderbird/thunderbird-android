@@ -26,6 +26,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
+import app.k9mail.core.android.common.contact.CachingRepository
+import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.K9.SplitViewMode
@@ -34,7 +36,6 @@ import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
 import com.fsck.k9.preferences.GeneralSettingsManager
@@ -89,6 +90,7 @@ open class MessageList :
     private val accountRemover: BackgroundAccountRemover by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val messagingController: MessagingController by inject()
+    private val contactRepository: ContactRepository by inject()
 
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
@@ -532,7 +534,10 @@ open class MessageList :
 
     override fun onStart() {
         super.onStart()
-        Contacts.clearCache()
+
+        if (contactRepository is CachingRepository) {
+            (contactRepository as CachingRepository).clearCache()
+        }
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {
