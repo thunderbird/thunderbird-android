@@ -25,17 +25,16 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/floatingActionButtonMargin"
         android:contentDescription="@string/compose_action"
-        android:text="@string/compose_action"
-        android:textColor="?attr/floatingActionButtonForegroundColor"
         app:backgroundTint="?attr/floatingActionButtonBackgroundColor"
-        app:icon="?attr/iconActionCompose"
-        app:iconTint="?attr/floatingActionButtonForegroundColor" />
+        app:layout_behavior="com.fsck.k9.ui.fab.HideFabOnScrollBehavior"
+        app:srcCompat="?attr/iconActionCompose"
+        app:tint="?attr/floatingActionButtonForegroundColor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
