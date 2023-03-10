@@ -66,6 +66,7 @@ import timber.log.Timber
 
 private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
 private const val MINIMUM_CLICK_INTERVAL = 200L
+private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
 
 class MessageListFragment :
     Fragment(),
@@ -363,12 +364,12 @@ class MessageListFragment :
         val coordinatorLayout = requireView().findViewById<View>(R.id.message_list_coordinator)
 
         recentChangesSnackbar = Snackbar
-            .make(coordinatorLayout, R.string.changelog_snackbar_text, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.okay_action) { launchRecentChangesActivity() }
+            .make(coordinatorLayout, R.string.changelog_snackbar_text, RECENT_CHANGES_SNACKBAR_DURATION)
+            .setAction(R.string.changelog_snackbar_button_text) { launchRecentChangesActivity() }
             .addCallback(
                 object : BaseCallback<Snackbar>() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                        if (event == DISMISS_EVENT_SWIPE) {
+                        if (event == DISMISS_EVENT_SWIPE || event == DISMISS_EVENT_TIMEOUT) {
                             recentChangesViewModel.onRecentChangesHintDismissed()
                         }
                     }
