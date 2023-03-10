@@ -364,7 +364,7 @@ class MessageListFragment :
 
         recentChangesSnackbar = Snackbar
             .make(coordinatorLayout, R.string.changelog_snackbar_text, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.okay_action) { launchRecentChangesActivity() }
+            .setAction(R.string.changelog_snackbar_button_text) { launchRecentChangesActivity() }
             .addCallback(
                 object : BaseCallback<Snackbar>() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
