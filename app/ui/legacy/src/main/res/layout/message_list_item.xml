@@ -61,12 +61,13 @@
 
     <ImageView
         android:id="@+id/account_color_chip"
-        android:layout_width="3dp"
+        android:layout_width="7dp"
         android:layout_height="12dp"
-        android:layout_marginEnd="4dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="4dp"
         android:contentDescription="@null"
         app:layout_constraintBottom_toBottomOf="@+id/subject"
-        app:layout_constraintEnd_toEndOf="@+id/barrier_start"
+        app:layout_constraintStart_toEndOf="@+id/barrier_start"
         app:layout_constraintTop_toTopOf="@+id/subject"
         app:srcCompat="@drawable/ic_account_color"
         tools:tint="@color/material_blue_700" />
@@ -75,7 +76,7 @@
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/barrier_start"
+        app:layout_constraintStart_toEndOf="@+id/account_color_chip"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:srcCompat="?attr/messageListAnswered" />
 
