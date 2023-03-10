@@ -115,5 +115,9 @@
         <item name="actionMenuTextColor">?android:attr/textColorSecondary</item>
     </style>
 
+    <style name="Widget.K9.Button.Snackbar" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textColor">?attr/colorSecondary</item>
+    </style>
+
 </resources>
 
