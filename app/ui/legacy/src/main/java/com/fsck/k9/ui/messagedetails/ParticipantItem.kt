@@ -13,6 +13,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 internal class ParticipantItem(
     private val contactPictureLoader: ContactPictureLoader,
     private val showContactsPicture: Boolean,
+    private val alwaysHideAddContactsButton: Boolean,
     val participant: Participant,
 ) : AbstractItem<ParticipantItem.ViewHolder>() {
     override val type: Int = R.id.message_details_participant
@@ -44,7 +45,7 @@ internal class ParticipantItem(
             }
             email.text = participant.emailAddress
 
-            menuAddContact.isVisible = !participant.isInContacts
+            menuAddContact.isVisible = !item.alwaysHideAddContactsButton && !participant.isInContacts
 
             if (item.showContactsPicture) {
                 item.contactPictureLoader.setContactPicture(contactPicture, participant.address)
