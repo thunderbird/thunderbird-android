@@ -50,7 +50,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private final MessageHelper messageHelper = DI.get(MessageHelper.class);
     private final FontSizes fontSizes = K9.getFontSizes();
 
-    private Chip accountChip;
+    private Chip accountNameView;
     private TextView subjectView;
     private ImageView starView;
     private ImageView contactPictureView;
@@ -78,7 +78,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        accountChip = findViewById(R.id.chip);
+        accountNameView = findViewById(R.id.account_name);
         subjectView = findViewById(R.id.subject);
         starView = findViewById(R.id.flagged);
         contactPictureView = findViewById(R.id.contact_picture);
@@ -87,6 +87,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         recipientNamesView = findViewById(R.id.recipients);
         dateView = findViewById(R.id.date);
 
+        fontSizes.setViewTextSize(accountNameView, fontSizes.getMessageViewAccountName());
         fontSizes.setViewTextSize(subjectView, fontSizes.getMessageViewSubject());
         fontSizes.setViewTextSize(dateView, fontSizes.getMessageViewDate());
         fontSizes.setViewTextSize(fromView, fontSizes.getMessageViewSender());
@@ -193,11 +194,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public void populate(final Message message, final Account account, boolean showStar, boolean showAccountChip) {
         if (showAccountChip) {
-            accountChip.setVisibility(View.VISIBLE);
-            accountChip.setText(account.getDisplayName());
-            accountChip.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));
+            accountNameView.setVisibility(View.VISIBLE);
+            accountNameView.setText(account.getDisplayName());
+            accountNameView.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));
         } else {
-            accountChip.setVisibility(View.GONE);
+            accountNameView.setVisibility(View.GONE);
         }
 
         Address fromAddress = null;

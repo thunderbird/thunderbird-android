@@ -278,6 +278,9 @@ public class GeneralSettingsDescriptions {
         s.put("messageListDensity", Settings.versions(
             new V(86, new EnumSetting(UiDensity.class, UiDensity.Default))
         ));
+        s.put("fontSizeMessageViewAccountName", Settings.versions(
+            new V(87, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

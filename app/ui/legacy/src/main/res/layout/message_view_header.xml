@@ -18,7 +18,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip"
+            android:id="@+id/account_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -37,13 +37,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="chip,margin_top" />
+            app:constraint_referenced_ids="account_name,margin_top" />
 
         <com.fsck.k9.ui.helper.BottomBaselineTextView
             android:id="@+id/subject"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/chip"
+            android:layout_below="@id/account_name"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"

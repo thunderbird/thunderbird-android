@@ -877,6 +877,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_message_list_preview">Preview</string>
 
     <string name="font_size_message_view">Messages</string>
+    <!-- Displayed in the font size settings screen to configure the font size of the account name in the message view. -->
+    <string name="font_size_message_view_account">Account name</string>
     <string name="font_size_message_view_sender">Sender</string>
     <string name="font_size_message_view_recipients">Recipients</string>
     <string name="font_size_message_view_subject">Subject</string>

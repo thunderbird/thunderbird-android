@@ -105,6 +105,14 @@
                     android:key="message_view_fonts">
 
                     <ListPreference
+                        android:key="message_view_account_name_font"
+                        android:title="@string/font_size_message_view_account"
+                        app:useSimpleSummaryProvider="true"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_view_account" />
+
+                    <ListPreference
                         android:key="message_view_subject_font"
                         android:title="@string/font_size_message_view_subject"
                         app:useSimpleSummaryProvider="true"
