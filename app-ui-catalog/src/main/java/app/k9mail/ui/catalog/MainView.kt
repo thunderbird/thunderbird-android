@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.demo
+package app.k9mail.ui.catalog
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

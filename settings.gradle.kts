@@ -22,6 +22,10 @@ rootProject.name = "k-9"
 includeBuild("build-plugin")
 
 include(
+    ":app-ui-catalog",
+)
+
+include(
     ":app:k9mail",
     ":app:ui:base",
     ":app:ui:setup",
@@ -42,7 +46,6 @@ include(
     ":core:common",
     ":core:testing",
     ":core:android:common",
-    ":core:ui:compose:demo",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:theme",
 )

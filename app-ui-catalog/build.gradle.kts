@@ -3,10 +3,10 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.core.ui.compose.demo"
+    namespace = "app.k9mail.ui.catalog"
 
     defaultConfig {
-        applicationId = "app.k9mail.core.ui.compose.demo"
+        applicationId = "app.k9mail.ui.catalog"
         versionCode = 1
         versionName = "1.0"
     }
