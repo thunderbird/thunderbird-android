@@ -1,10 +1,12 @@
 package com.fsck.k9.autodiscovery.thunderbird
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
 import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings
 import com.fsck.k9.autodiscovery.api.DiscoveryResults
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class ThunderbirdAutoconfigTest {

@@ -145,10 +145,12 @@ shared-jvm-android = [
 ]
 shared-jvm-test = [
   "junit",
-  "truth",
   "assertk",
   "mockito-inline",
   "mockito-kotlin",
   "koin-test",
   "koin-test-junit4",
+]
+shared-jvm-test-legacy = [
+  "truth",
 ]

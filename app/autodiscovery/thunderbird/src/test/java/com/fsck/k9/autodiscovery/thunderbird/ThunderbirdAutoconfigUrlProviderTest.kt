@@ -1,6 +1,7 @@
 package com.fsck.k9.autodiscovery.thunderbird
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.containsExactly
 import org.junit.Test
 
 class ThunderbirdAutoconfigUrlProviderTest {

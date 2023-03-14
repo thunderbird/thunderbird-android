@@ -1,6 +1,7 @@
 package app.k9mail.html.cleaner
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import org.jsoup.nodes.Document
 import org.junit.Test
 
