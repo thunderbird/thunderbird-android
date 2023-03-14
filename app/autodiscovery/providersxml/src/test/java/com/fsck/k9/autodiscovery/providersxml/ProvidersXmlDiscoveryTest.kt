@@ -1,12 +1,15 @@
 package com.fsck.k9.autodiscovery.providersxml
 
 import androidx.test.core.app.ApplicationProvider
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.oauth.OAuthConfiguration
 import com.fsck.k9.oauth.OAuthConfigurationProvider
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class ProvidersXmlDiscoveryTest : RobolectricTest() {

@@ -35,6 +35,7 @@ dependencies {
     testImplementation(projects.app.storage)
     testImplementation(projects.app.testing)
 
+    testImplementation(libs.bundles.shared.jvm.test.legacy)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.robolectric)

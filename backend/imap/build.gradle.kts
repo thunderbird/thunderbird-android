@@ -11,6 +11,7 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.core)
 
+    testImplementation(libs.bundles.shared.jvm.test.legacy)
     testImplementation(projects.mail.testing)
     testImplementation(projects.backend.testing)
     testImplementation(libs.mime4j.dom)
