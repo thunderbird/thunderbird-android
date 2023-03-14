@@ -39,6 +39,7 @@ include(
 )
 
 include(
+    ":feature:account:setup",
     ":feature:onboarding",
     ":feature:autodiscovery:api",
     ":feature:autodiscovery:providersxml",
