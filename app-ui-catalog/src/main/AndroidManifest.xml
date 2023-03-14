@@ -10,7 +10,7 @@
         android:theme="@style/Theme.Thunderbird"
         >
         <activity
-            android:name=".MainActivity"
+            android:name=".CatalogActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
