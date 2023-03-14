@@ -42,6 +42,10 @@ include(
 )
 
 include(
+    ":feature:onboarding",
+)
+
+include(
     ":core:common",
     ":core:testing",
     ":core:android:common",
