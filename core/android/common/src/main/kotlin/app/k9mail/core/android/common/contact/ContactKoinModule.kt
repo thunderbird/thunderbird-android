@@ -1,5 +1,6 @@
 package app.k9mail.core.android.common.contact
 
+import android.content.Context
 import app.k9mail.core.common.cache.Cache
 import app.k9mail.core.common.cache.ExpiringCache
 import app.k9mail.core.common.cache.SynchronizedCache
@@ -14,13 +15,19 @@ internal val contactModule = module {
         )
     }
     factory<ContactDataSource> {
-        ContentResolverContactDataSource(context = get())
+        ContentResolverContactDataSource(
+            contentResolver = get<Context>().contentResolver,
+            contactPermissionResolver = get(),
+        )
     }
     factory<ContactRepository> {
         CachingContactRepository(
             cache = get(named(CACHE_NAME)),
             dataSource = get(),
         )
+    }
+    factory<ContactPermissionResolver> {
+        AndroidContactPermissionResolver(context = get())
     }
 }
 

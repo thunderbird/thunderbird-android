@@ -121,13 +121,17 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
                     progressBar.isVisible = false
                     errorView.isVisible = false
                     recyclerView.isVisible = true
-                    setMessageDetails(recyclerView, state.details, state.showContactPicture)
+                    setMessageDetails(recyclerView, state.details, state.appearance)
                 }
             }
         }
     }
 
-    private fun setMessageDetails(recyclerView: RecyclerView, details: MessageDetailsUi, showContactPicture: Boolean) {
+    private fun setMessageDetails(
+        recyclerView: RecyclerView,
+        details: MessageDetailsUi,
+        appearance: MessageDetailsAppearance,
+    ) {
         val itemAdapter = ItemAdapter<GenericItem>().apply {
             add(MessageDateItem(details.date ?: getString(R.string.message_details_missing_date)))
 
@@ -135,15 +139,15 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
                 add(CryptoStatusItem(details.cryptoDetails))
             }
 
-            addParticipants(details.from, R.string.message_details_from_section_title, showContactPicture)
-            addParticipants(details.sender, R.string.message_details_sender_section_title, showContactPicture)
-            addParticipants(details.replyTo, R.string.message_details_replyto_section_title, showContactPicture)
+            addParticipants(details.from, R.string.message_details_from_section_title, appearance)
+            addParticipants(details.sender, R.string.message_details_sender_section_title, appearance)
+            addParticipants(details.replyTo, R.string.message_details_replyto_section_title, appearance)
 
             add(MessageDetailsDividerItem())
 
-            addParticipants(details.to, R.string.message_details_to_section_title, showContactPicture)
-            addParticipants(details.cc, R.string.message_details_cc_section_title, showContactPicture)
-            addParticipants(details.bcc, R.string.message_details_bcc_section_title, showContactPicture)
+            addParticipants(details.to, R.string.message_details_to_section_title, appearance)
+            addParticipants(details.cc, R.string.message_details_cc_section_title, appearance)
+            addParticipants(details.bcc, R.string.message_details_bcc_section_title, appearance)
 
             if (details.folder != null) {
                 addFolderName(details.folder)
@@ -163,14 +167,21 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     private fun ItemAdapter<GenericItem>.addParticipants(
         participants: List<Participant>,
         @StringRes title: Int,
-        showContactPicture: Boolean,
+        appearance: MessageDetailsAppearance,
     ) {
         if (participants.isNotEmpty()) {
             val extraText = if (participants.size > 1) participants.size.toString() else null
             add(SectionHeaderItem(title = getString(title), extra = extraText))
 
             for (participant in participants) {
-                add(ParticipantItem(contactPictureLoader, showContactPicture, participant))
+                add(
+                    ParticipantItem(
+                        contactPictureLoader,
+                        appearance.showContactPicture,
+                        appearance.alwaysHideAddToContactsButton,
+                        participant,
+                    ),
+                )
             }
         }
     }

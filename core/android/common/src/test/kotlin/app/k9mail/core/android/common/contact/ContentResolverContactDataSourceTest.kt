@@ -1,6 +1,5 @@
 package app.k9mail.core.android.common.contact
 
-import android.Manifest
 import android.content.ContentResolver
 import android.database.Cursor
 import android.database.MatrixCursor
@@ -12,7 +11,6 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import kotlin.test.Test
-import org.junit.Before
 import org.junit.runner.RunWith
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
@@ -20,27 +18,20 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stub
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
-import org.robolectric.Shadows
 
 @RunWith(RobolectricTestRunner::class)
 internal class ContentResolverContactDataSourceTest {
-
+    private val contactPermissionResolver = TestContactPermissionResolver(hasPermission = true)
     private val contentResolver = mock<ContentResolver>()
 
     private val testSubject = ContentResolverContactDataSource(
-        context = RuntimeEnvironment.getApplication(),
         contentResolver = contentResolver,
+        contactPermissionResolver = contactPermissionResolver,
     )
-
-    @Before
-    fun setUp() {
-        Shadows.shadowOf(RuntimeEnvironment.getApplication()).grantPermissions(Manifest.permission.READ_CONTACTS)
-    }
 
     @Test
     fun `getContactForEmail() returns null if permission is not granted`() {
-        Shadows.shadowOf(RuntimeEnvironment.getApplication()).denyPermissions(Manifest.permission.READ_CONTACTS)
+        contactPermissionResolver.hasContactPermission = false
 
         val result = testSubject.getContactFor(CONTACT_EMAIL_ADDRESS)
 
@@ -67,7 +58,7 @@ internal class ContentResolverContactDataSourceTest {
 
     @Test
     fun `hasContactForEmail() returns false if permission is not granted`() {
-        Shadows.shadowOf(RuntimeEnvironment.getApplication()).denyPermissions(Manifest.permission.READ_CONTACTS)
+        contactPermissionResolver.hasContactPermission = false
 
         val result = testSubject.hasContactFor(CONTACT_EMAIL_ADDRESS)
 

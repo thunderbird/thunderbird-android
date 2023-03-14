@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.EmailAddress
 import com.fsck.k9.Account
@@ -34,6 +35,7 @@ internal class MessageDetailsViewModel(
     private val folderRepository: FolderRepository,
     private val contactSettingsProvider: ContactSettingsProvider,
     private val contactRepository: ContactRepository,
+    private val contactPermissionResolver: ContactPermissionResolver,
     private val clipboardManager: ClipboardManager,
     private val accountManager: AccountManager,
     private val participantFormatter: MessageDetailsParticipantFormatter,
@@ -67,8 +69,13 @@ internal class MessageDetailsViewModel(
                     folder = folder?.toFolderInfo(),
                 )
 
-                MessageDetailsState.DataLoaded(
+                val messageDetailsAppearance = MessageDetailsAppearance(
                     showContactPicture = contactSettingsProvider.isShowContactPicture,
+                    alwaysHideAddToContactsButton = !contactPermissionResolver.hasContactPermission(),
+                )
+
+                MessageDetailsState.DataLoaded(
+                    appearance = messageDetailsAppearance,
                     details = messageDetailsUi,
                 )
             } catch (e: Exception) {
@@ -155,7 +162,7 @@ sealed interface MessageDetailsState {
     object Loading : MessageDetailsState
     object Error : MessageDetailsState
     data class DataLoaded(
-        val showContactPicture: Boolean,
+        val appearance: MessageDetailsAppearance,
         val details: MessageDetailsUi,
     ) : MessageDetailsState
 }

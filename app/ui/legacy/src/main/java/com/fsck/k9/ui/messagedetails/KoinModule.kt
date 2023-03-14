@@ -11,6 +11,7 @@ val messageDetailsUiModule = module {
             folderRepository = get(),
             contactSettingsProvider = get(),
             contactRepository = get(),
+            contactPermissionResolver = get(),
             clipboardManager = get(),
             accountManager = get(),
             participantFormatter = get(),

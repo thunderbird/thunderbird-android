@@ -1,13 +1,9 @@
 package app.k9mail.core.android.common.contact
 
-import android.Manifest
 import android.content.ContentResolver
-import android.content.Context
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
-import androidx.core.content.ContextCompat
 import app.k9mail.core.android.common.database.EmptyCursor
 import app.k9mail.core.android.common.database.getLongOrThrow
 import app.k9mail.core.android.common.database.getStringOrNull
@@ -21,8 +17,8 @@ interface ContactDataSource {
 }
 
 internal class ContentResolverContactDataSource(
-    private val context: Context,
-    private val contentResolver: ContentResolver = context.contentResolver,
+    private val contentResolver: ContentResolver,
+    private val contactPermissionResolver: ContactPermissionResolver,
 ) : ContactDataSource {
 
     override fun getContactFor(emailAddress: EmailAddress): Contact? {
@@ -57,12 +53,12 @@ internal class ContentResolverContactDataSource(
     }
 
     private fun getCursorFor(emailAddress: EmailAddress): Cursor {
-        val uri = Uri.withAppendedPath(
-            ContactsContract.CommonDataKinds.Email.CONTENT_LOOKUP_URI,
-            Uri.encode(emailAddress.address),
-        )
+        return if (contactPermissionResolver.hasContactPermission()) {
+            val uri = Uri.withAppendedPath(
+                ContactsContract.CommonDataKinds.Email.CONTENT_LOOKUP_URI,
+                Uri.encode(emailAddress.address),
+            )
 
-        return if (hasContactPermission()) {
             contentResolver.query(
                 uri,
                 PROJECTION,
@@ -73,13 +69,6 @@ internal class ContentResolverContactDataSource(
         } else {
             EmptyCursor()
         }
-    }
-
-    private fun hasContactPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.READ_CONTACTS,
-        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private companion object {
