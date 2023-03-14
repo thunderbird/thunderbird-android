@@ -15,6 +15,7 @@ public class FontSizes {
     private static final String MESSAGE_LIST_SENDER = "fontSizeMessageListSender";
     private static final String MESSAGE_LIST_DATE = "fontSizeMessageListDate";
     private static final String MESSAGE_LIST_PREVIEW = "fontSizeMessageListPreview";
+    private static final String MESSAGE_VIEW_ACCOUNT_NAME = "fontSizeMessageViewAccountName";
     private static final String MESSAGE_VIEW_SENDER = "fontSizeMessageViewSender";
     private static final String MESSAGE_VIEW_RECIPIENTS = "fontSizeMessageViewTo";
     private static final String MESSAGE_VIEW_SUBJECT = "fontSizeMessageViewSubject";
@@ -36,6 +37,7 @@ public class FontSizes {
     private int messageListSender;
     private int messageListDate;
     private int messageListPreview;
+    private int messageViewAccountName;
     private int messageViewSender;
     private int messageViewRecipients;
     private int messageViewSubject;
@@ -50,6 +52,7 @@ public class FontSizes {
         messageListDate = FONT_DEFAULT;
         messageListPreview = FONT_DEFAULT;
 
+        messageViewAccountName = FONT_DEFAULT;
         messageViewSender = FONT_DEFAULT;
         messageViewRecipients = FONT_DEFAULT;
         messageViewSubject = FONT_DEFAULT;
@@ -65,6 +68,7 @@ public class FontSizes {
         editor.putInt(MESSAGE_LIST_DATE, messageListDate);
         editor.putInt(MESSAGE_LIST_PREVIEW, messageListPreview);
 
+        editor.putInt(MESSAGE_VIEW_ACCOUNT_NAME, messageViewAccountName);
         editor.putInt(MESSAGE_VIEW_SENDER, messageViewSender);
         editor.putInt(MESSAGE_VIEW_RECIPIENTS, messageViewRecipients);
         editor.putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
@@ -80,6 +84,7 @@ public class FontSizes {
         messageListDate = storage.getInt(MESSAGE_LIST_DATE, messageListDate);
         messageListPreview = storage.getInt(MESSAGE_LIST_PREVIEW, messageListPreview);
 
+        messageViewAccountName = storage.getInt(MESSAGE_VIEW_ACCOUNT_NAME, messageViewAccountName);
         messageViewSender = storage.getInt(MESSAGE_VIEW_SENDER, messageViewSender);
         messageViewRecipients = storage.getInt(MESSAGE_VIEW_RECIPIENTS, messageViewRecipients);
         messageViewSubject = storage.getInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
@@ -124,6 +129,14 @@ public class FontSizes {
 
     public void setMessageListPreview(int messageListPreview) {
         this.messageListPreview = messageListPreview;
+    }
+
+    public int getMessageViewAccountName() {
+        return messageViewAccountName;
+    }
+
+    public void setMessageViewAccountName(int messageViewAccountName) {
+        this.messageViewAccountName = messageViewAccountName;
     }
 
     public int getMessageViewSender() {
