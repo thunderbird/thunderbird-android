@@ -99,7 +99,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
             }
         }
 
-        viewModel.loadData(messageReference).observe(this) { state ->
+        viewModel.uiState.observe(this) { state ->
             when (state) {
                 MessageDetailsState.Loading -> {
                     progressBar.isVisible = true
@@ -119,6 +119,14 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
                 }
             }
         }
+
+        viewModel.initialize(messageReference)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.reload()
     }
 
     private fun initializeRecyclerView(recyclerView: RecyclerView, dialog: ToolbarBottomSheetDialog) {
