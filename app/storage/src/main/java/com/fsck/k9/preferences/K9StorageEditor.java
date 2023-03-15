@@ -28,21 +28,6 @@ public class K9StorageEditor implements StorageEditor {
     }
 
     @Override
-    public void copy(android.content.SharedPreferences input) {
-        Map < String, ? > oldVals = input.getAll();
-        for (Entry < String, ? > entry : oldVals.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            if (key != null && value != null) {
-                Timber.d("Copying key '%s', value '%s'", key, value);
-                changes.put(key, "" + value);
-            } else {
-                Timber.d("Skipping copying key '%s', value '%s'", key, value);
-            }
-        }
-    }
-
-    @Override
     public boolean commit() {
         try {
             storageUpdater.updateStorage(this::commitChanges);

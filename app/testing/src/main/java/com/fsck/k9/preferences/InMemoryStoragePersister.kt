@@ -1,7 +1,5 @@
 package com.fsck.k9.preferences
 
-import android.content.SharedPreferences
-
 class InMemoryStoragePersister : StoragePersister {
     private val values = mutableMapOf<String, Any?>()
 
@@ -17,8 +15,6 @@ class InMemoryStoragePersister : StoragePersister {
         private val removals = mutableSetOf<String>()
         private val changes = mutableMapOf<String, String>()
         private var alreadyCommitted = false
-
-        override fun copy(input: SharedPreferences) = Unit
 
         override fun putBoolean(key: String, value: Boolean) = apply {
             changes[key] = value.toString()
