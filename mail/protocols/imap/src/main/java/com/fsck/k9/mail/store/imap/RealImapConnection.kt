@@ -359,7 +359,11 @@ internal class RealImapConnection(
     private fun handlePermanentOAuthFailure(e: NegativeImapResponseException): AuthenticationFailedException {
         Timber.v(e, "Permanent failure during authentication using OAuth token")
 
-        return AuthenticationFailedException(message = e.message!!, throwable = e, messageFromServer = e.alertText)
+        return AuthenticationFailedException(
+            message = "Authentication failed",
+            throwable = e,
+            messageFromServer = ResponseTextExtractor.getResponseText(e.lastResponse),
+        )
     }
 
     private fun handleTemporaryOAuthFailure(method: OAuthMethod, e: NegativeImapResponseException): List<ImapResponse> {
@@ -524,7 +528,11 @@ internal class RealImapConnection(
                 close()
             }
 
-            AuthenticationFailedException(negativeResponseException.message!!)
+            AuthenticationFailedException(
+                message = "Authentication failed",
+                throwable = negativeResponseException,
+                messageFromServer = ResponseTextExtractor.getResponseText(lastResponse),
+            )
         } else {
             close()
 
