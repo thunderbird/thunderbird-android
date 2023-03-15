@@ -6,4 +6,5 @@
     <item type="id" name="message_details_participant"/>
     <item type="id" name="message_details_folder_name"/>
     <item type="id" name="message_details_divider"/>
+    <item type="id" name="message_details_empty"/>
 </resources>

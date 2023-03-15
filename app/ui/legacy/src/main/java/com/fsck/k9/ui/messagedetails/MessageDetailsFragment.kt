@@ -144,9 +144,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         val items = buildList {
             add(MessageDateItem(details.date ?: getString(R.string.message_details_missing_date)))
 
-            if (details.cryptoDetails != null) {
-                add(CryptoStatusItem(details.cryptoDetails))
-            }
+            addCryptoStatus(details)
 
             addParticipants(details.from, R.string.message_details_from_section_title, appearance)
             addParticipants(details.sender, R.string.message_details_sender_section_title, appearance)
@@ -158,12 +156,24 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
             addParticipants(details.cc, R.string.message_details_cc_section_title, appearance)
             addParticipants(details.bcc, R.string.message_details_bcc_section_title, appearance)
 
-            if (details.folder != null) {
-                addFolderName(details.folder)
-            }
+            addFolderName(details.folder)
+        }
+
+        // Use list index as stable identifier. This means changes to the list may only update existing items or add
+        // new items to the end of the list. Use place holder items (EmptyItem) if necessary.
+        items.forEachIndexed { index, item ->
+            item.identifier = index.toLong()
         }
 
         itemAdapter.setNewList(items)
+    }
+
+    private fun MutableList<GenericItem>.addCryptoStatus(details: MessageDetailsUi) {
+        if (details.cryptoDetails != null) {
+            add(CryptoStatusItem(details.cryptoDetails))
+        } else {
+            add(EmptyItem())
+        }
     }
 
     private fun MutableList<GenericItem>.addParticipants(
@@ -188,12 +198,16 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         }
     }
 
-    private fun MutableList<GenericItem>.addFolderName(folder: FolderInfoUi) {
-        val folderNameItem = FolderNameItem(
-            displayName = folder.displayName,
-            iconResourceId = folderIconProvider.getFolderIcon(folder.type),
-        )
-        add(folderNameItem)
+    private fun MutableList<GenericItem>.addFolderName(folder: FolderInfoUi?) {
+        if (folder != null) {
+            val folderNameItem = FolderNameItem(
+                displayName = folder.displayName,
+                iconResourceId = folderIconProvider.getFolderIcon(folder.type),
+            )
+            add(folderNameItem)
+        } else {
+            add(EmptyItem())
+        }
     }
 
     private val cryptoStatusClickEventHook = object : ClickEventHook<CryptoStatusItem>() {
