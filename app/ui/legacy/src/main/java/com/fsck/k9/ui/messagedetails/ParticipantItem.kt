@@ -40,6 +40,7 @@ internal class ParticipantItem(
 
             if (participant.displayName != null) {
                 name.text = participant.displayName
+                name.isVisible = true
             } else {
                 name.isVisible = false
             }
@@ -48,12 +49,16 @@ internal class ParticipantItem(
             menuAddContact.isVisible = !item.alwaysHideAddContactsButton && !participant.isInContacts
 
             if (item.showContactsPicture) {
+                contactPicture.isVisible = true
                 item.contactPictureLoader.setContactPicture(contactPicture, participant.address)
             } else {
                 contactPicture.isVisible = false
             }
 
-            if (!item.participant.isInContacts) {
+            if (item.participant.isInContacts) {
+                itemView.isClickable = true
+                itemView.background = originalBackground
+            } else {
                 itemView.isClickable = false
                 itemView.background = null
             }
@@ -61,11 +66,7 @@ internal class ParticipantItem(
 
         override fun unbindView(item: ParticipantItem) {
             name.text = null
-            name.isVisible = true
             email.text = null
-            contactPicture.isVisible = true
-            itemView.background = originalBackground
-            itemView.isClickable = true
         }
     }
 }
