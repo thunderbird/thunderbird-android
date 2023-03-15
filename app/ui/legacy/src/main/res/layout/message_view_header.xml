@@ -11,33 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Space
-            android:id="@+id/margin_top"
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.google.android.material.chip.Chip
             android:id="@+id/account_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:clickable="false"
+            android:paddingVertical="4sp"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/subject"
+            app:chipMinHeight="0dp"
+            app:ensureMinTouchTargetSize="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:textEndPadding="6sp"
+            app:textStartPadding="8sp"
             tools:chipBackgroundColor="#1976D2"
             tools:text="Account name" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/top_margin_barrier"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="account_name,margin_top" />
 
         <com.fsck.k9.ui.helper.BottomBaselineTextView
             android:id="@+id/subject"
@@ -45,16 +36,18 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/account_name"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:ellipsize="end"
             android:maxLines="3"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
+            app:layout_goneMarginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/flagged"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_margin_barrier"
+            app:layout_constraintTop_toBottomOf="@id/account_name"
             app:layout_constraintVertical_bias="0.0"
             tools:text="Message subject" />
 
