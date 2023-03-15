@@ -18,6 +18,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import app.k9mail.ui.utils.bottomsheet.ToolbarBottomSheetDialog
 import app.k9mail.ui.utils.bottomsheet.ToolbarBottomSheetDialogFragment
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.contacts.ContactPictureLoader
@@ -44,6 +45,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     private val folderIconProvider: FolderIconProvider by inject { parametersOf(requireContext().theme) }
 
     private lateinit var messageReference: MessageReference
+    private val itemAdapter = ItemAdapter<GenericItem>()
 
     // FIXME: Replace this with a mechanism that survives process death
     var cryptoResult: CryptoResultAnnotation? = null
@@ -87,15 +89,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         val errorView = view.findViewById<View>(R.id.message_details_error)
         val recyclerView = view.findViewById<RecyclerView>(R.id.message_details_list)
 
-        // Don't allow dragging down the bottom sheet (by dragging the toolbar) unless the list is scrolled all the way
-        // to the top.
-        recyclerView.addOnScrollListener(
-            object : OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    dialog.behavior.isDraggable = !recyclerView.canScrollVertically(-1)
-                }
-            },
-        )
+        initializeRecyclerView(recyclerView, dialog)
 
         viewModel.uiEvents.observe(this) { event ->
             when (event) {
@@ -121,18 +115,33 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
                     progressBar.isVisible = false
                     errorView.isVisible = false
                     recyclerView.isVisible = true
-                    setMessageDetails(recyclerView, state.details, state.appearance)
+                    setMessageDetails(state.details, state.appearance)
                 }
             }
         }
     }
 
-    private fun setMessageDetails(
-        recyclerView: RecyclerView,
-        details: MessageDetailsUi,
-        appearance: MessageDetailsAppearance,
-    ) {
-        val itemAdapter = ItemAdapter<GenericItem>().apply {
+    private fun initializeRecyclerView(recyclerView: RecyclerView, dialog: ToolbarBottomSheetDialog) {
+        // Don't allow dragging down the bottom sheet (by dragging the toolbar) unless the list is scrolled all the way
+        // to the top.
+        recyclerView.addOnScrollListener(
+            object : OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    dialog.behavior.isDraggable = !recyclerView.canScrollVertically(-1)
+                }
+            },
+        )
+
+        recyclerView.adapter = FastAdapter.with(itemAdapter).apply {
+            addEventHook(cryptoStatusClickEventHook)
+            addEventHook(participantClickEventHook)
+            addEventHook(addToContactsClickEventHook)
+            addEventHook(overflowClickEventHook)
+        }
+    }
+
+    private fun setMessageDetails(details: MessageDetailsUi, appearance: MessageDetailsAppearance) {
+        val items = buildList {
             add(MessageDateItem(details.date ?: getString(R.string.message_details_missing_date)))
 
             if (details.cryptoDetails != null) {
@@ -154,17 +163,10 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
             }
         }
 
-        val adapter = FastAdapter.with(itemAdapter).apply {
-            addEventHook(cryptoStatusClickEventHook)
-            addEventHook(participantClickEventHook)
-            addEventHook(addToContactsClickEventHook)
-            addEventHook(overflowClickEventHook)
-        }
-
-        recyclerView.adapter = adapter
+        itemAdapter.setNewList(items)
     }
 
-    private fun ItemAdapter<GenericItem>.addParticipants(
+    private fun MutableList<GenericItem>.addParticipants(
         participants: List<Participant>,
         @StringRes title: Int,
         appearance: MessageDetailsAppearance,
@@ -186,7 +188,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         }
     }
 
-    private fun ItemAdapter<GenericItem>.addFolderName(folder: FolderInfoUi) {
+    private fun MutableList<GenericItem>.addFolderName(folder: FolderInfoUi) {
         val folderNameItem = FolderNameItem(
             displayName = folder.displayName,
             iconResourceId = folderIconProvider.getFolderIcon(folder.type),
