@@ -7,10 +7,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.K9"
+        android:theme="@style/Theme.Thunderbird"
         >
         <activity
-            android:name=".MainActivity"
+            android:name=".CatalogActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
