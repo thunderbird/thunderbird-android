@@ -415,7 +415,7 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
                 finish()
             } catch (e: AuthenticationFailedException) {
                 Timber.e(e, "Error while testing settings")
-                showErrorDialog(R.string.account_setup_failed_dlg_auth_message_fmt, e.message.orEmpty())
+                showErrorDialog(R.string.account_setup_failed_dlg_auth_message_fmt, e.messageFromServer.orEmpty())
             } catch (e: CertificateValidationException) {
                 handleCertificateValidationException(e)
             } catch (e: Exception) {
