@@ -990,6 +990,33 @@ class RealImapConnectionTest {
         server.verifyInteractionCompleted()
     }
 
+    @Test
+    fun `disconnect during LOGIN fallback should throw AuthenticationFailedException`() {
+        val server = MockImapServer().apply {
+            output("* OK example.org server")
+            expect("1 CAPABILITY")
+            output("* CAPABILITY IMAP4 IMAP4REV1 AUTH=PLAIN")
+            output("1 OK CAPABILITY Completed")
+            expect("2 AUTHENTICATE PLAIN")
+            output("+")
+            expect("\u0000$USERNAME\u0000$PASSWORD".base64())
+            output("2 NO AUTHENTICATE failed")
+            expect("3 LOGIN \"$USERNAME\" \"$PASSWORD\"")
+            output("* BYE IMAP server terminating connection")
+            closeConnection()
+        }
+        val imapConnection = startServerAndCreateImapConnection(server)
+
+        try {
+            imapConnection.open()
+            fail("Expected exception")
+        } catch (e: AuthenticationFailedException) {
+            assertThat(e.messageFromServer).isEqualTo("AUTHENTICATE failed")
+        }
+
+        server.verifyInteractionCompleted()
+    }
+
     private fun createImapConnection(
         settings: ImapSettings,
         socketFactory: TrustedSocketFactory,

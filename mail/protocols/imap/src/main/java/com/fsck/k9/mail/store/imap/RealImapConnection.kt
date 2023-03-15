@@ -449,7 +449,22 @@ internal class RealImapConnection(
                 throw e
             }
 
+            loginOrThrow(e)
+        }
+    }
+
+    @Suppress("ThrowsCount")
+    private fun loginOrThrow(originalException: AuthenticationFailedException): List<ImapResponse> {
+        return try {
             login()
+        } catch (e: AuthenticationFailedException) {
+            throw e
+        } catch (e: IOException) {
+            Timber.d(e, "LOGIN fallback failed")
+            throw originalException
+        } catch (e: MessagingException) {
+            Timber.d(e, "LOGIN fallback failed")
+            throw originalException
         }
     }
 
