@@ -1,7 +1,8 @@
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.api.artifacts.dsl.DependencyHandler
 
-fun CommonExtension<*, *, *, *>.configureSharedConfig() {
+internal fun CommonExtension<*, *, *, *>.configureSharedConfig() {
     compileSdk = ThunderbirdProjectConfig.androidSdkCompile
 
     defaultConfig {
@@ -28,7 +29,9 @@ fun CommonExtension<*, *, *, *>.configureSharedConfig() {
     }
 }
 
-fun CommonExtension<*, *, *, *>.configureSharedComposeConfig(libs: LibrariesForLibs) {
+internal fun CommonExtension<*, *, *, *>.configureSharedComposeConfig(
+    libs: LibrariesForLibs,
+) {
     buildFeatures {
         compose = true
     }
@@ -47,4 +50,20 @@ fun CommonExtension<*, *, *, *>.configureSharedComposeConfig(libs: LibrariesForL
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+internal fun DependencyHandler.configureSharedComposeDependencies(
+    libs: LibrariesForLibs,
+) {
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    implementation(libs.bundles.shared.jvm.android.compose)
+
+    debugImplementation(libs.bundles.shared.jvm.android.compose.debug)
+
+    testImplementation(libs.bundles.shared.jvm.test.compose)
+
+    androidTestImplementation(libs.bundles.shared.jvm.androidtest.compose)
 }
