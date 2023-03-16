@@ -31,3 +31,15 @@ internal fun CheckboxPreview() {
         )
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+internal fun CheckboxDisabledPreview() {
+    PreviewWithThemes {
+        Checkbox(
+            checked = true,
+            onCheckedChange = {},
+            enabled = false,
+        )
+    }
+}
