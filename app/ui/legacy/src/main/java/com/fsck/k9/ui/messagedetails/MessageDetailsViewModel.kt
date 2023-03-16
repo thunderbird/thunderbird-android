@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.EmailAddress
@@ -24,8 +25,8 @@ import java.text.DateFormat
 import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -42,15 +43,35 @@ internal class MessageDetailsViewModel(
     private val folderNameFormatter: FolderNameFormatter,
 ) : ViewModel() {
     private val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.getDefault())
-    private val uiState = MutableStateFlow<MessageDetailsState>(MessageDetailsState.Loading)
-    private val eventChannel = Channel<MessageDetailEvent>()
 
+    private val internalUiState = MutableStateFlow<MessageDetailsState>(MessageDetailsState.Loading)
+    val uiState: Flow<MessageDetailsState>
+        get() = internalUiState
+
+    private val eventChannel = Channel<MessageDetailEvent>()
     val uiEvents = eventChannel.receiveAsFlow()
+
+    private var messageReference: MessageReference? = null
     var cryptoResult: CryptoResultAnnotation? = null
 
-    fun loadData(messageReference: MessageReference): StateFlow<MessageDetailsState> {
+    fun initialize(messageReference: MessageReference) {
+        this.messageReference = messageReference
+        loadData(messageReference)
+    }
+
+    fun reload() {
+        messageReference?.let { messageReference ->
+            if (contactRepository is CachingRepository) {
+                contactRepository.clearCache()
+            }
+
+            loadData(messageReference)
+        }
+    }
+
+    private fun loadData(messageReference: MessageReference) {
         viewModelScope.launch(Dispatchers.IO) {
-            uiState.value = try {
+            internalUiState.value = try {
                 val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
                 val messageDetails = messageRepository.getMessageDetails(messageReference)
 
@@ -82,8 +103,6 @@ internal class MessageDetailsViewModel(
                 MessageDetailsState.Error
             }
         }
-
-        return uiState
     }
 
     private fun buildDisplayDate(messageDate: MessageDate): String? {

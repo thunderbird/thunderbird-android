@@ -37,7 +37,9 @@ internal class CryptoStatusItem(val cryptoDetails: CryptoDetails) : AbstractItem
                 descriptionTextView.text = context.getString(stringResId)
             }
 
-            if (!cryptoDetails.isClickable) {
+            if (cryptoDetails.isClickable) {
+                itemView.background = originalBackground
+            } else {
                 itemView.background = null
             }
         }
@@ -46,7 +48,6 @@ internal class CryptoStatusItem(val cryptoDetails: CryptoDetails) : AbstractItem
             imageView.setImageDrawable(null)
             titleTextView.text = null
             descriptionTextView.text = null
-            itemView.background = originalBackground
         }
     }
 }
