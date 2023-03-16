@@ -21,17 +21,12 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    implementation(libs.androidx.compose.foundation)
-
-    // Android Studio Preview support
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-
-    // UI Tests
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-
-    implementation(libs.androidx.compose.lifecycle.viewmodel)
-
+    implementation(libs.bundles.shared.jvm.android.compose)
     implementation(libs.androidx.compose.activity)
+
+    debugImplementation(libs.bundles.shared.jvm.android.compose.debug)
+
+    testImplementation(libs.bundles.shared.jvm.test.compose)
+
+    androidTestImplementation(libs.bundles.shared.jvm.androidtest.compose)
 }

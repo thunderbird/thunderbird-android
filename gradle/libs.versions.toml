@@ -149,6 +149,18 @@ shared-jvm-android = [
   "androidx-core-ktx",
   "koin-android",
 ]
+shared-jvm-android-compose = [
+  "androidx-compose-foundation",
+  "androidx-compose-ui-tooling-preview",
+  "androidx-compose-lifecycle-viewmodel",
+]
+shared-jvm-android-compose-debug = [
+  "androidx-compose-ui-tooling",
+  "androidx-compose-ui-test-manifest",
+]
+shared-jvm-androidtest-compose = [
+  "androidx-compose-ui-test-junit4",
+]
 shared-jvm-test = [
   "junit",
   "assertk",
