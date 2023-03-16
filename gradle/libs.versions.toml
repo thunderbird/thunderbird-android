@@ -157,6 +157,11 @@ shared-jvm-test = [
   "koin-test",
   "koin-test-junit4",
 ]
+shared-jvm-test-compose = [
+  "robolectric",
+  "androidx-compose-ui-test-junit4",
+  "androidx-test-espresso-core",
+]
 shared-jvm-test-legacy = [
   "truth",
 ]

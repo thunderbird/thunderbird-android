@@ -22,4 +22,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     implementation(libs.androidx.compose.lifecycle.viewmodel)
+
+    testImplementation(libs.bundles.shared.jvm.test.compose)
 }
