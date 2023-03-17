@@ -15,7 +15,6 @@ dependencies {
     implementation(libs.commons.io)
     implementation(libs.okio)
 
-    testImplementation(libs.bundles.shared.jvm.test.legacy)
     testImplementation(projects.mail.testing)
     testImplementation(libs.okio)
     testImplementation(libs.jzlib)
