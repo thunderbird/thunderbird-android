@@ -1,5 +1,14 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
@@ -9,8 +18,6 @@ import com.fsck.k9.mailstore.toDatabaseFolderType
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchSpecification
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
-import org.junit.Assert.fail
 import org.junit.Test
 
 class RetrieveFolderOperationsTest : RobolectricTest() {
@@ -48,7 +55,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             true
         }
 
-        assertThat(result).isTrue()
+        assertThat(result).isNotNull().isTrue()
     }
 
     @Test
@@ -82,7 +89,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             true
         }
 
-        assertThat(result).isTrue()
+        assertThat(result).isNotNull().isTrue()
     }
 
     @Test
@@ -122,7 +129,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             true
         }
 
-        assertThat(result).isTrue()
+        assertThat(result).isNotNull().isTrue()
     }
 
     @Test
@@ -445,12 +452,11 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
 
     @Test
     fun `get 'more messages' value from non-existent folder`() {
-        try {
+        assertThat {
             retrieveFolderOperations.hasMoreMessages(23)
-            fail("Expected exception")
-        } catch (e: FolderNotFoundException) {
-            assertThat(e.folderId).isEqualTo(23)
-        }
+        }.isFailure()
+            .isInstanceOf(FolderNotFoundException::class)
+            .transform { it.folderId }.isEqualTo(23)
     }
 
     @Test

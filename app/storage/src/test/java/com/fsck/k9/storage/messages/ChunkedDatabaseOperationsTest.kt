@@ -1,6 +1,8 @@
 package com.fsck.k9.storage.messages
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
 import org.junit.Assert.fail
 import org.junit.Test
 

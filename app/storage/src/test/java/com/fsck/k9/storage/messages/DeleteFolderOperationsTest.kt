@@ -1,8 +1,13 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.extracting
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Test
 import org.mockito.kotlin.anyOrNull
@@ -43,8 +48,8 @@ class DeleteFolderOperationsTest : RobolectricTest() {
         assertThat(messages.first().uid).isEqualTo("message2")
 
         val messagePartFiles = messagePartDirectory.listFiles()
-        assertThat(messagePartFiles).hasLength(1)
-        assertThat(messagePartFiles!!.first().name).isEqualTo(messagePartId.toString())
+        assertThat(messagePartFiles).isNotNull()
+            .extracting { it.name }.containsExactly(messagePartId.toString())
     }
 
     private fun createFolderWithMessage(folderServerId: String, messageServerId: String): Long {
