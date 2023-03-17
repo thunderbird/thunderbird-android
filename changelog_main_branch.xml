@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.510" versioncode="35010" date="2023-03-17">
+        <change>Made small changes to the appearance of the message list</change>
+        <change>Added a font size setting for the account name when viewing a message</change>
+        <change>Use colored navigation bar on Android 8.1 and above</change>
+        <change>Fixed status bar color on Android 5</change>
+        <change>IMAP: Fixed a bug where sometimes an authentication error was silently ignored</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.509" versioncode="35009" date="2023-02-28">
         <change>Cleaned up the message list design</change>
         <change>Added setting for three different message list densities: compact, default, relaxed</change>
