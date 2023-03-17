@@ -1,5 +1,11 @@
 package com.fsck.k9.mail.store.pop3
 
+import assertk.assertThat
+import assertk.assertions.hasMessage
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
+import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthType.CRAM_MD5
 import com.fsck.k9.mail.AuthType.EXTERNAL
@@ -14,13 +20,11 @@ import com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.helpers.TestTrustedSocketFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
-import com.google.common.truth.Truth.assertThat
 import java.io.IOException
 import java.security.NoSuchAlgorithmException
 import java.security.cert.CertificateException
 import javax.net.ssl.SSLException
 import okio.ByteString.Companion.encodeUtf8
-import org.junit.Assert.fail
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doThrow
@@ -158,11 +162,10 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = PLAIN)
 
-        try {
+        assertThat {
             createAndOpenPop3Connection(settings)
-            fail("Expected auth failure")
-        } catch (ignored: AuthenticationFailedException) {
-        }
+        }.isFailure()
+            .isInstanceOf(AuthenticationFailedException::class)
 
         server.verifyInteractionCompleted()
     }
@@ -194,11 +197,10 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = PLAIN)
 
-        try {
+        assertThat {
             createAndOpenPop3Connection(settings)
-            fail("Expected auth failure")
-        } catch (ignored: AuthenticationFailedException) {
-        }
+        }.isFailure()
+            .isInstanceOf(AuthenticationFailedException::class)
 
         server.verifyInteractionCompleted()
     }
@@ -231,11 +233,10 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = CRAM_MD5)
 
-        try {
+        assertThat {
             createAndOpenPop3Connection(settings)
-            fail("Expected auth failure")
-        } catch (ignored: AuthenticationFailedException) {
-        }
+        }.isFailure()
+            .isInstanceOf(AuthenticationFailedException::class)
 
         server.verifyInteractionCompleted()
     }
@@ -272,11 +273,10 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = CRAM_MD5)
 
-        try {
+        assertThat {
             createAndOpenPop3Connection(settings)
-            fail("Expected auth failure")
-        } catch (ignored: AuthenticationFailedException) {
-        }
+        }.isFailure()
+            .isInstanceOf(AuthenticationFailedException::class)
 
         server.verifyInteractionCompleted()
     }
@@ -303,12 +303,12 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = EXTERNAL)
 
-        try {
+        assertThat {
             createAndOpenPop3Connection(settings)
-            fail("CVE expected")
-        } catch (e: CertificateValidationException) {
-            assertThat(e.reason).isEqualTo(CertificateValidationException.Reason.MissingCapability)
-        }
+        }.isFailure()
+            .isInstanceOf(CertificateValidationException::class.java)
+            .prop(CertificateValidationException::getReason)
+            .isEqualTo(CertificateValidationException.Reason.MissingCapability)
 
         server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
@@ -323,13 +323,11 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = EXTERNAL)
 
-        try {
+        assertThat {
             createAndOpenPop3Connection(settings)
-            fail("CVE expected")
-        } catch (e: CertificateValidationException) {
-            assertThat(e).hasMessageThat()
-                .isEqualTo("POP3 client certificate authentication failed: -ERR Invalid certificate")
-        }
+        }.isFailure()
+            .isInstanceOf(CertificateValidationException::class.java)
+            .hasMessage("POP3 client certificate authentication failed: -ERR Invalid certificate")
 
         server.verifyInteractionCompleted()
     }
