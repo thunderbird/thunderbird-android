@@ -1,6 +1,8 @@
 package com.fsck.k9.mail.ssl
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import java.nio.file.Files
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
