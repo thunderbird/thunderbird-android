@@ -182,8 +182,7 @@ class RealImapConnectionTest {
             imapConnection.open()
             fail("Expected exception")
         } catch (e: AuthenticationFailedException) {
-            // FIXME: improve exception message
-            assertThat(e).hasMessageThat().contains("Go away")
+            assertThat(e.messageFromServer).isEqualTo("Go away")
         }
 
         server.verifyConnectionClosed()
@@ -231,8 +230,7 @@ class RealImapConnectionTest {
             imapConnection.open()
             fail("Expected exception")
         } catch (e: AuthenticationFailedException) {
-            // FIXME: improve exception message
-            assertThat(e).hasMessageThat().contains("Login Failure")
+            assertThat(e.messageFromServer).isEqualTo("Login Failure")
         }
 
         server.verifyConnectionClosed()
@@ -288,8 +286,7 @@ class RealImapConnectionTest {
             imapConnection.open()
             fail("Expected exception")
         } catch (e: AuthenticationFailedException) {
-            // FIXME: improve exception message
-            assertThat(e).hasMessageThat().contains("Who are you?")
+            assertThat(e.messageFromServer).isEqualTo("Who are you?")
         }
 
         server.verifyConnectionClosed()
@@ -395,8 +392,7 @@ class RealImapConnectionTest {
             imapConnection.open()
             fail()
         } catch (e: AuthenticationFailedException) {
-            assertThat(e).hasMessageThat()
-                .isEqualTo("Command: AUTHENTICATE XOAUTH2; response: #2# [NO, SASL authentication failed]")
+            assertThat(e.messageFromServer).isEqualTo("SASL authentication failed")
         }
     }
 
@@ -482,8 +478,7 @@ class RealImapConnectionTest {
             imapConnection.open()
             fail()
         } catch (e: AuthenticationFailedException) {
-            assertThat(e).hasMessageThat()
-                .isEqualTo("Command: AUTHENTICATE XOAUTH2; response: #3# [NO, SASL authentication failed]")
+            assertThat(e.messageFromServer).isEqualTo("SASL authentication failed")
         }
     }
 
@@ -992,6 +987,33 @@ class RealImapConnectionTest {
 
         assertThat(capabilityPresent).isTrue()
         server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `disconnect during LOGIN fallback should throw AuthenticationFailedException`() {
+        val server = MockImapServer().apply {
+            output("* OK example.org server")
+            expect("1 CAPABILITY")
+            output("* CAPABILITY IMAP4 IMAP4REV1 AUTH=PLAIN")
+            output("1 OK CAPABILITY Completed")
+            expect("2 AUTHENTICATE PLAIN")
+            output("+")
+            expect("\u0000$USERNAME\u0000$PASSWORD".base64())
+            output("2 NO AUTHENTICATE failed")
+            expect("3 LOGIN \"$USERNAME\" \"$PASSWORD\"")
+            output("* BYE IMAP server terminating connection")
+            closeConnection()
+        }
+        val imapConnection = startServerAndCreateImapConnection(server)
+
+        try {
+            imapConnection.open()
+            fail("Expected exception")
+        } catch (e: AuthenticationFailedException) {
+            assertThat(e.messageFromServer).isEqualTo("AUTHENTICATE failed")
+        }
+
         server.verifyInteractionCompleted()
     }
 
