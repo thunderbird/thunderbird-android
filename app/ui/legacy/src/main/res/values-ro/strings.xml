@@ -24,7 +24,9 @@
   <string name="changelog_version_title">Versiune %s</string>
   <string name="changelog_recent_changes_title">Ce este nou</string>
   <string name="changelog_show_recent_changes">Afișați modificările recente atunci când aplicația a fost actualizată</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Aflați ce este nou în această versiune</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Bun venit la K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -285,6 +287,8 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="general_settings_swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Mută</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Implicit</string>
   <string name="global_settings_privacy_hide_useragent">Ascunde clientul de mail</string>
   <string name="global_settings_privacy_hide_useragent_detail">Elimină K-9 User-Agent din anteturile mesajelor</string>
   <string name="global_settings_privacy_hide_timezone">Ascunde fusul orar</string>
@@ -728,6 +732,8 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="font_size_message_list_date">Dată</string>
   <string name="font_size_message_list_preview">Previzualizare</string>
   <string name="font_size_message_view">Mesaje</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Nume cont</string>
   <string name="font_size_message_view_sender">Expeditor</string>
   <string name="font_size_message_view_recipients">Recipiente</string>
   <string name="font_size_message_view_subject">Subiect</string>

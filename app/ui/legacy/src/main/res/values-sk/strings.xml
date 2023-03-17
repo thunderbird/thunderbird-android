@@ -20,6 +20,8 @@
   <string name="changelog_title">História zmien</string>
   <string name="changelog_loading_error">Nepodarilo sa načítať históriu zmien</string>
   <string name="changelog_version_title">Verzia %s</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Vitajte v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -257,6 +259,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="general_settings_swipe_action_spam">Nevyžiadaná pošta</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Presunúť</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Predvolené</string>
   <string name="global_settings_privacy_hide_useragent">Skryť e-mail klienta</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstrániť používateľského agenta K-9 z hlavičiek správ</string>
   <string name="global_settings_privacy_hide_timezone">Skryť časové pásmo</string>
@@ -659,6 +663,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="font_size_message_list_date">Dátum</string>
   <string name="font_size_message_list_preview">Náhľad</string>
   <string name="font_size_message_view">Správy</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Názov účtu</string>
   <string name="font_size_message_view_sender">Odosielateľ</string>
   <string name="font_size_message_view_subject">Skrytá kópia</string>
   <string name="font_size_message_view_date">Čas a dátum</string>

@@ -21,6 +21,8 @@
   <string name="changelog_loading_error">Cha b’ urrainn dhuinn loga nan atharraichean a luchdadh.</string>
   <string name="changelog_version_title">Tionndadh %s</string>
   <string name="changelog_recent_changes_title">Na tha ùr</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Fàilte gu aplacaid a’ phuist</string>
   <string name="accounts_welcome">&lt;p&gt; Tha aplacaid a’ phuist ’na aplacaid shaor agus chumhachdach airson post-d air Android. &lt;/p&gt;&lt;p&gt; Tha na gleusan leasaichte aige a’ gabhail a-staigh: &lt;/p&gt; &lt;ul&gt; &lt;li&gt;Put post slighe IMAP IDLE&lt;/li&gt; &lt;li&gt;Dèanadas nas fheàrr&lt;/li&gt; &lt;li&gt;Ath-fhaidhleadh theachdaireachdan&lt;/li&gt; &lt;li&gt;Eàrr-sgrìobhaidhean puist-d&lt;/li&gt; &lt;li&gt;Bcc dhut fhèin&lt;/li&gt; &lt;li&gt;Fo-sgrìobhaidhean phasganan&lt;/li&gt; &lt;li&gt;Sioncronachadh nam pasgan air fad&lt;/li&gt; &lt;li&gt;Rèiteachadh seòladh nam freagairt&lt;/li&gt; &lt;li&gt;Ath-ghoiridean a’ mheur-chlàir&lt;/li&gt; &lt;li&gt;Taic nas fheàrr airson IMAP&lt;/li&gt; &lt;li&gt;Sàbhaladh de cheanglachain air SD&lt;/li&gt; &lt;li&gt;Falamhachadh an sgudail&lt;/li&gt; &lt;li&gt;Seòrsachadh theachdaireachdan&lt;/li&gt; &lt;li&gt;…is mòran a bharrachd&lt;/li&gt; &lt;/ul&gt; &lt;p&gt; Thoir an aire nach cuir aplacaid a’ phuist taic ri cuid mhòr de chunntasan saora Hotmail agus mar iomadh prògram puist-d eile, tachraidh rudan neònach nuair a bhruidhneas e ri Microsoft Exchange. &lt;/p&gt;&lt;p&gt; Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceistean aig &lt;a href=https://github.com/k9mail/k-9/&gt;https://github.com/k9mail/k-9/&lt;/a&gt;. &lt;/p&gt;</string>
@@ -228,6 +230,8 @@
   <string name="general_settings_swipe_action_spam">Spama</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Gluais</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Bun-roghainn</string>
   <string name="global_settings_privacy_hide_useragent">Falaich cliant a’ phuist</string>
   <string name="global_settings_privacy_hide_useragent_detail">Thoir air falbh an raon Mail User-Agent o bhannan-cinn phost</string>
   <string name="global_settings_privacy_hide_timezone">Falaich an roinn-tìde</string>
@@ -621,6 +625,8 @@
   <string name="font_size_message_list_date">Ceann-là</string>
   <string name="font_size_message_list_preview">Ro-shealladh</string>
   <string name="font_size_message_view">Teachdaireachdan</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Ainm a’ chunntais</string>
   <string name="font_size_message_view_sender">Seòladair</string>
   <string name="font_size_message_view_subject">Cuspair</string>
   <string name="font_size_message_view_date">Ceann-là ’s àm</string>

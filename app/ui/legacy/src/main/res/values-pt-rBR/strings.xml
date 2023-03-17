@@ -24,7 +24,10 @@
   <string name="changelog_version_title">Versão %s</string>
   <string name="changelog_recent_changes_title">Novidades</string>
   <string name="changelog_show_recent_changes">Exibir as alterações recentes, quando o aplicativo for atualizado</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Descubra as novidades dessa versão</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Ver</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bem-vindo ao K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -284,6 +287,11 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="general_settings_swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Mover</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Densidade</string>
+  <string name="general_settings_ui_density_compact">Compacto</string>
+  <string name="general_settings_ui_density_default">Padrão</string>
+  <string name="general_settings_ui_density_relaxed">Expandido</string>
   <string name="global_settings_privacy_hide_useragent">Ocultar o cliente de e-mail</string>
   <string name="global_settings_privacy_hide_useragent_detail">Remove o User-Agent do K-9 dos cabeçalhos das mensagens</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar o fuso horário</string>
@@ -580,7 +588,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_vibration">Vibração</string>
   <string name="account_settings_vibrate_enable">Vibrar</string>
   <string name="account_settings_vibrate_pattern_label">Padrão de vibração</string>
-  <string name="account_settings_vibrate_pattern_default">Original</string>
+  <string name="account_settings_vibrate_pattern_default">Padrão</string>
   <string name="account_settings_vibrate_pattern_1">Padrão 1</string>
   <string name="account_settings_vibrate_pattern_2">Padrão 2</string>
   <string name="account_settings_vibrate_pattern_3">Padrão 3</string>
@@ -725,6 +733,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="font_size_message_list_date">Data</string>
   <string name="font_size_message_list_preview">Visualização</string>
   <string name="font_size_message_view">Mensagens</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Nome da conta</string>
   <string name="font_size_message_view_sender">Remetente</string>
   <string name="font_size_message_view_recipients">Destinatários</string>
   <string name="font_size_message_view_subject">Assunto</string>
@@ -1108,6 +1118,7 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Adicionar aos contatos</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Escrever mensagem para</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Copiar o endereço de e-mail</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

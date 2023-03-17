@@ -12,6 +12,8 @@
   <string name="app_license">Apache licencija, versija 2.0</string>
   <string name="about_project_title">Atviro kodo projektas</string>
   <string name="about_website_title">Svetainė</string>
+  <string name="user_manual_title">Naudotojo vadovas</string>
+  <string name="get_help_title">Gauti pagalbos</string>
   <string name="user_forum_title">Naudotojų forumas</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -22,7 +24,9 @@
   <string name="changelog_version_title">Versija %s</string>
   <string name="changelog_recent_changes_title">Kas naujo</string>
   <string name="changelog_show_recent_changes">Rodyti naujausius pakeitimus, kai programa buvo atnaujinta</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Sužinokite, kas naujo šioje versijoje</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Sveiki atvykę į K-9 paštą</string>
   <string name="accounts_welcome"><![CDATA[
@@ -168,6 +172,7 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="notification_authentication_error_title">Autentifikavimas nepavyko</string>
   <string name="notification_authentication_error_text">Nepavyko nustatyti autentiškumo <xliff:g id="account">%s</xliff:g>. Atnaujinkite serverio nustatymus.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Pranešimo klaida</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_bg_sync_ticker">Tikrinamas paštas: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Tikrinamas paštas</string>
@@ -222,9 +227,13 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Nepavyko išsaugoti priedo.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"kam "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">aš</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Rodyti nuotolinius paveikslėlius</string>
   <string name="message_view_no_viewer">Nepavyko rasto <xliff:g id="mimetype">%s</xliff:g> peržiūros programos.</string>
   <string name="message_view_download_remainder">Parsiųsti visą laišką</string>
   <string name="message_view_sender_label">per %1$s</string>
@@ -267,6 +276,7 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <!--Name of the swipe action to select/deselect a message-->
   <!--Name of the swipe action to mark as message as read/unread-->
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Pridėti/pašalinti žvaigždutę</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Archyvuoti</string>
   <!--Name of the swipe action to delete a message-->
@@ -275,6 +285,8 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="general_settings_swipe_action_spam">Brukalas</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Perkelti</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Numatytas</string>
   <string name="global_settings_privacy_hide_useragent">Slėpti pašto klientą</string>
   <string name="global_settings_privacy_hide_useragent_detail">Pašalinti K-9 User-Agent iš pašto antraščių</string>
   <string name="global_settings_privacy_hide_timezone">Slėpti laiko juostą</string>
@@ -298,8 +310,11 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="account_setup_basics_title">Nustatyti naują paskyrą</string>
   <string name="account_setup_basics_email_hint">El. pašto adresas</string>
   <string name="account_setup_basics_password_hint">Slaptažodis</string>
+  <string name="account_setup_oauth_description">Norėdami naudoti šią el. pašto paskyrą su K-9 Mail, turite prisijungti ir suteikti programėlei prieigą prie savo el. laiškų.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Prisijungti</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Prisijungti su Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Norėdami čia peržiūrėti slaptažodį, įjunkite ekrano užraktą šiame prietaise.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Patvirtinkite savo tapatybę</string>
@@ -712,7 +727,10 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <string name="font_size_message_list_date">Data</string>
   <string name="font_size_message_list_preview">Peržiūra</string>
   <string name="font_size_message_view">Laiškai</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Paskyros pavadinimas</string>
   <string name="font_size_message_view_sender">Siuntėjas</string>
+  <string name="font_size_message_view_recipients">Gavėjai</string>
   <string name="font_size_message_view_subject">Tema</string>
   <string name="font_size_message_view_date">Laikas ir data</string>
   <string name="font_size_message_view_content">Pagrindinė laiško dalis</string>
@@ -777,13 +795,16 @@ Pateikite pranešimus apie klaidas, prisidėkite prie naujų funkcijų kūrimo i
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Prašome įvesti slaptažodžius</string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Prašome prisijungti</string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Prašome priisjungti ir įvesti slaptažodžius</string>
   <string name="settings_import_failure">Nepavyko importuoti nustatymų</string>
   <string name="settings_import_read_failure">Nepavyko nuskaityti nustatymų failo</string>
   <string name="settings_import_partial_failure">Nepavyko importuoti kai kurių nustatymų</string>
   <string name="settings_import_status_success">Sėkmingai importuota</string>
   <string name="settings_import_status_password_required">Būtinas slaptažodis</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Reikalingas prisijungimas</string>
   <string name="settings_import_status_not_imported">Neimportuota</string>
   <string name="settings_import_status_error">Importo sutrikimas</string>
   <string name="settings_import_later_button">Vėliau</string>
@@ -1054,6 +1075,7 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Nebežymėti</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Pažymėti kaip skaitytą</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">Pažymėti kaip neskaitytą</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -1067,10 +1089,14 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Brukalas</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Perkelti…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Klaida</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Aplankas nerastas</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Žinutės detalės</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">Nuo</string>
@@ -1086,10 +1112,14 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
   <string name="message_details_bcc_section_title">Slapta kopija</string>
   <!--Displayed when loading the message details has failed-->
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Pridėti prie kontaktų</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Kopijuoti el. pašto adresą</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Kopijuoti vardą ir el. pašto adresą</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">El. pašto adresas</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Vardas ir el. pašto adresas</string>
 </resources>

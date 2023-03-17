@@ -24,7 +24,9 @@
   <string name="changelog_version_title">Verzió: %s</string>
   <string name="changelog_recent_changes_title">Újdonságok</string>
   <string name="changelog_show_recent_changes">Friss változások megjelenítése az alkalmazás frissítésekor</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Tudja meg, hogy mik az újdonságok ebben a kiadásban</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Üdvözlet a K-9 Mail alkalmazásban.</string>
   <string name="accounts_welcome"><![CDATA[
@@ -277,6 +279,8 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="general_settings_swipe_action_spam">Levélszemét</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Áthelyezés</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Alapértelmezett</string>
   <string name="global_settings_privacy_hide_useragent">Levelező alkalmazás elrejtése</string>
   <string name="global_settings_privacy_hide_useragent_detail">A K-9 azonosító eltávolítása a levél fejlécéből</string>
   <string name="global_settings_privacy_hide_timezone">Időzóna elrejtése</string>
@@ -718,6 +722,8 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="font_size_message_list_date">Dátum</string>
   <string name="font_size_message_list_preview">Előnézet</string>
   <string name="font_size_message_view">Üzenetek</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Fióknév</string>
   <string name="font_size_message_view_sender">Feladó</string>
   <string name="font_size_message_view_subject">Tárgy</string>
   <string name="font_size_message_view_date">Idő és dátum</string>

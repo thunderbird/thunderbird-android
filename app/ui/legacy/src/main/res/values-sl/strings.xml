@@ -24,7 +24,9 @@
   <string name="changelog_version_title">Različica %s</string>
   <string name="changelog_recent_changes_title">Kaj je novega?</string>
   <string name="changelog_show_recent_changes">Pokaže zadnje spremembe po posodobitvi programa</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Kaj je novega v tej izdaji</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Dobrodošli v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -287,6 +289,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="general_settings_swipe_action_spam">Neželena pošta</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Premik</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">privzeto</string>
   <string name="global_settings_privacy_hide_useragent">Skrij program</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstrani podatke programa K-9 iz glave pošte</string>
   <string name="global_settings_privacy_hide_timezone">Skrij časovni pas</string>
@@ -728,6 +732,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="font_size_message_list_date">Datum</string>
   <string name="font_size_message_list_preview">Predogled</string>
   <string name="font_size_message_view">Sporočila</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Ime računa</string>
   <string name="font_size_message_view_sender">Pošiljatelj</string>
   <string name="font_size_message_view_recipients">Prejemniki</string>
   <string name="font_size_message_view_subject">Zadeva</string>

@@ -24,7 +24,10 @@
   <string name="changelog_version_title">第%s版</string>
   <string name="changelog_recent_changes_title">最新消息</string>
   <string name="changelog_show_recent_changes">顯示應用程式更新後的最新變更</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">了解此版本的新增功能</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">檢視</string>
   <!--Welcome message-->
   <string name="welcome_message_title">歡迎使用 K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -218,9 +221,13 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="message_view_bcc_label">密件副本：</string>
   <string name="message_view_status_attachment_not_saved">無法存檔附件。</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">至</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">我</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">顯示遠端圖片</string>
   <string name="message_view_no_viewer">無法開啟<xliff:g id="mimetype">%s</xliff:g>。找不到可以開啟該附件的程式。</string>
   <string name="message_view_download_remainder">下載完整郵件</string>
   <string name="message_view_sender_label">透過 %1$s</string>
@@ -277,6 +284,11 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="general_settings_swipe_action_spam">標記為垃圾郵件</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">移動</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">密度</string>
+  <string name="general_settings_ui_density_compact">密集</string>
+  <string name="general_settings_ui_density_default">預設</string>
+  <string name="general_settings_ui_density_relaxed">寬鬆</string>
   <string name="global_settings_privacy_hide_useragent">隱藏郵件客戶端</string>
   <string name="global_settings_privacy_hide_useragent_detail">從郵件標頭中移除 K-9 的 User-Agent</string>
   <string name="global_settings_privacy_hide_timezone">隱藏時區</string>
@@ -718,7 +730,10 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="font_size_message_list_date">日期</string>
   <string name="font_size_message_list_preview">預覽</string>
   <string name="font_size_message_view">郵件</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">帳號名稱</string>
   <string name="font_size_message_view_sender">寄件人</string>
+  <string name="font_size_message_view_recipients">收件人</string>
   <string name="font_size_message_view_subject">主題</string>
   <string name="font_size_message_view_date">日期</string>
   <string name="font_size_message_view_content">郵件本文內容</string>
@@ -1064,10 +1079,15 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">移動…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">顯示懸浮「寫郵件」按鈕</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">錯誤</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">未找到信件匣</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">郵件詳情</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">缺少「Date」標頭</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">寄件人：</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1081,11 +1101,17 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">密件副本</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">載入郵件詳情時發生錯誤</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">新增到聯絡人</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">撰寫郵件到</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">複製電子郵件地址</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">複製姓名和電子郵件地址</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">電子郵件地址</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">姓名和電子郵件地址</string>
 </resources>

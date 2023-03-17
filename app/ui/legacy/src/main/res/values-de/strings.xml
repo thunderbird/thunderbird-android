@@ -24,7 +24,10 @@
   <string name="changelog_version_title">Version %s</string>
   <string name="changelog_recent_changes_title">Was gibt es Neues</string>
   <string name="changelog_show_recent_changes">Änderungen nach dem Update der App anzeigen</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Finde heraus, was es Neues in diesem Release gibt</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Ansehen</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -282,6 +285,11 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="general_settings_swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Verschieben</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Nachrichtenlistendichte</string>
+  <string name="general_settings_ui_density_compact">Kompakt</string>
+  <string name="general_settings_ui_density_default">Standard</string>
+  <string name="general_settings_ui_density_relaxed">Großzügig</string>
   <string name="global_settings_privacy_hide_useragent">E-Mail-Client ausblenden</string>
   <string name="global_settings_privacy_hide_useragent_detail">K-9 Benutzer-Agent aus E-Mail-Kopfzeilen entfernen</string>
   <string name="global_settings_privacy_hide_timezone">Zeitzone ausblenden</string>
@@ -724,6 +732,8 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="font_size_message_list_date">Datum</string>
   <string name="font_size_message_list_preview">Vorschau</string>
   <string name="font_size_message_view">Nachrichtenanzeige</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Kontoname</string>
   <string name="font_size_message_view_sender">Absender</string>
   <string name="font_size_message_view_recipients">Empfänger</string>
   <string name="font_size_message_view_subject">Betreff</string>

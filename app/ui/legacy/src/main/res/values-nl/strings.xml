@@ -24,7 +24,10 @@
   <string name="changelog_version_title">Versie %s</string>
   <string name="changelog_recent_changes_title">Wat is er nieuw</string>
   <string name="changelog_show_recent_changes">Laat veranderingen zien als de app recent is bijgewerkt</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Ontdek wat er nieuw is in deze versie</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Bekijken</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Welkom bij K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[ <p> K-9 Mail is een gratis krachtige e-mailclient voor Android. </p><p> De verbeterde mogelijkheden bestaan ondermeer uit:
@@ -278,6 +281,11 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="general_settings_swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Verplaats</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Dichtheid</string>
+  <string name="general_settings_ui_density_compact">Compact</string>
+  <string name="general_settings_ui_density_default">Standaard</string>
+  <string name="general_settings_ui_density_relaxed">Relaxt</string>
   <string name="global_settings_privacy_hide_useragent">Mailclient verbergen</string>
   <string name="global_settings_privacy_hide_useragent_detail">K-9-gebruikersagent van e-mailkoppen verwijderen</string>
   <string name="global_settings_privacy_hide_timezone">Tijdzone verbergen</string>
@@ -719,6 +727,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="font_size_message_list_date">Datum</string>
   <string name="font_size_message_list_preview">Voorbeeld</string>
   <string name="font_size_message_view">Berichten</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Accountnaam</string>
   <string name="font_size_message_view_sender">Afzender</string>
   <string name="font_size_message_view_recipients">Ontvangers</string>
   <string name="font_size_message_view_subject">Onderwerp</string>

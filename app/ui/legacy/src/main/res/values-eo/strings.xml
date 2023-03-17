@@ -22,7 +22,9 @@
   <string name="changelog_version_title">Versio %s</string>
   <string name="changelog_recent_changes_title">Kio estas nova</string>
   <string name="changelog_show_recent_changes">Montri lastajn ŝanĝojn je ĝisdatigo de la aplikaĵo</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Kio estas nova en tiu ĉi versio</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Bonvenon al K-9 Retpoŝtilo</string>
   <string name="accounts_welcome"><![CDATA[
@@ -260,6 +262,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="general_settings_swipe_action_spam">Trudmesaĝo</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Movi</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Norma</string>
   <string name="global_settings_privacy_hide_useragent">Kaŝi retpoŝtilan nomon</string>
   <string name="global_settings_privacy_hide_useragent_detail">Forviŝi nomon de klienta aplikaĵo K-9 el mesaĝokapo</string>
   <string name="global_settings_privacy_hide_timezone">Kaŝi horzonon</string>
@@ -673,6 +677,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="font_size_message_list_date">Dato</string>
   <string name="font_size_message_list_preview">Antaŭmontro</string>
   <string name="font_size_message_view">Mesaĝoj</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Nomo de konto</string>
   <string name="font_size_message_view_sender">Sendinto</string>
   <string name="font_size_message_view_subject">Temo</string>
   <string name="font_size_message_view_date">Tempo kaj dato</string>

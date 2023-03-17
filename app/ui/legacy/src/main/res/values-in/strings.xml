@@ -11,7 +11,9 @@
   <string name="source_code">Kode Sumber</string>
   <string name="app_license">Lisensi Apache, Versi 2.0</string>
   <string name="about_project_title">Proyek Sumber Terbuka</string>
-  <string name="about_website_title">Website</string>
+  <string name="about_website_title">Situs</string>
+  <string name="user_manual_title">Panduan pengguna</string>
+  <string name="get_help_title">Dapatkan bantuan</string>
   <string name="user_forum_title">Forum Pengguna</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -20,6 +22,9 @@
   <string name="changelog_title">Catatan Perubahan</string>
   <string name="changelog_loading_error">Tidak dapat memuat catatan perubahan.</string>
   <string name="changelog_version_title">Versi %s</string>
+  <string name="changelog_recent_changes_title">Apa yang baru</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Selamat datang di K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -251,6 +256,8 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="general_settings_swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Pindah</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Bawaan</string>
   <string name="global_settings_privacy_hide_useragent">Sembunyikan mail client</string>
   <string name="global_settings_privacy_hide_useragent_detail">Buang User-Agent K-9 dari tajuk surel</string>
   <string name="global_settings_privacy_hide_timezone">Sembunyikan zona waktu</string>
@@ -653,6 +660,8 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="font_size_message_list_date">Tanggal</string>
   <string name="font_size_message_list_preview">Pratinjau</string>
   <string name="font_size_message_view">Pesan</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Nama akun</string>
   <string name="font_size_message_view_sender">Pengirim</string>
   <string name="font_size_message_view_subject">Subyek</string>
   <string name="font_size_message_view_date">Tanggal dan waktu</string>

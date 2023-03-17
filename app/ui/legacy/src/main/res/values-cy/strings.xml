@@ -24,7 +24,9 @@
   <string name="changelog_version_title">Fersiwn %s</string>
   <string name="changelog_recent_changes_title">Beth sy\'n newydd</string>
   <string name="changelog_show_recent_changes">Dangos newidiadau diweddar pan ddiweddarwyd yr ap</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Darganfod beth sy\'n newydd yn y diweddariad hwn</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Croeso i K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -278,6 +280,8 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="general_settings_swipe_action_spam">Sbam</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Symud</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Rhagosodedig</string>
   <string name="global_settings_privacy_hide_useragent">Cuddio cleient e-bost</string>
   <string name="global_settings_privacy_hide_useragent_detail">Cuddio\'r Cleient K-9 o benynnau negeseuon</string>
   <string name="global_settings_privacy_hide_timezone">Cuddio cylchfa amser</string>
@@ -719,6 +723,8 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="font_size_message_list_date">Dyddiad</string>
   <string name="font_size_message_list_preview">Rhagolwg</string>
   <string name="font_size_message_view">Negeseuon</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Enw\'r cyfrif</string>
   <string name="font_size_message_view_sender">Anfonwr</string>
   <string name="font_size_message_view_subject">Pwnc</string>
   <string name="font_size_message_view_date">Amser a dyddiad</string>

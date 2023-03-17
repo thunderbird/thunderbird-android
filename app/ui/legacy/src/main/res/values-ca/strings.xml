@@ -24,7 +24,10 @@
   <string name="changelog_version_title">Versió %s</string>
   <string name="changelog_recent_changes_title">Novetats</string>
   <string name="changelog_show_recent_changes">Mostra els canvis recents quan s\'ha actualitzat l\'aplicació.</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Esbrineu les novetats d’aquesta versió.</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Vista</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Us donem la benvinguda al K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -283,6 +286,11 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="general_settings_swipe_action_spam">Correu brossa</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Mou</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Densitat</string>
+  <string name="general_settings_ui_density_compact">Compacta</string>
+  <string name="general_settings_ui_density_default">Per defecte</string>
+  <string name="general_settings_ui_density_relaxed">Relaxada</string>
   <string name="global_settings_privacy_hide_useragent">Amaga el client de correu</string>
   <string name="global_settings_privacy_hide_useragent_detail">Elimina el nom K-9 User-Agent de les capçaleres del missatge</string>
   <string name="global_settings_privacy_hide_timezone">Amaga el fus horari</string>
@@ -724,6 +732,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="font_size_message_list_date">Data</string>
   <string name="font_size_message_list_preview">Vista prèvia</string>
   <string name="font_size_message_view">Missatges</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Nom del compte</string>
   <string name="font_size_message_view_sender">Remitent</string>
   <string name="font_size_message_view_recipients">Destinataris</string>
   <string name="font_size_message_view_subject">Assumpte</string>
