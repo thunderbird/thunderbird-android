@@ -1,92 +1,79 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isLessThanOrEqualTo
+import java.util.TreeSet
+import org.junit.Test
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import com.google.common.collect.Sets;
-import org.junit.Test;
-
-import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createNonContiguousIdSet;
-import static java.util.Collections.singletonList;
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
-
-public class ImapCommandSplitterTest {
-    private static final String COMMAND_PREFIX = "UID COPY";
-    private static final String COMMAND_SUFFIX = "\"Destination\"";
-
+class ImapCommandSplitterTest {
 
     @Test
-    public void splitCommand_withManyNonContiguousIds_shouldSplitCommand() throws Exception {
-        Set<Long> ids = createNonContiguousIdSet(10000, 10500, 2);
-        GroupedIds groupedIds = new GroupedIds(ids, Collections.emptyList());
+    fun splitCommand_withManyNonContiguousIds_shouldSplitCommand() {
+        val ids = ImapResponseHelper.createNonContiguousIdSet(10000, 10500, 2)
+        val groupedIds = GroupedIds(ids, emptyList())
 
-        List<String> commands = ImapCommandSplitter.splitCommand(COMMAND_PREFIX, COMMAND_SUFFIX, groupedIds, 980);
+        val commands = ImapCommandSplitter.splitCommand(COMMAND_PREFIX, COMMAND_SUFFIX, groupedIds, 980)
 
-        assertEquals(commands.size(), 2);
-        assertCommandLengthLimit(commands, 980);
-        verifyCommandString(commands.get(0), createNonContiguousIdSet(10000, 10316, 2));
-        verifyCommandString(commands.get(1), createNonContiguousIdSet(10318, 10500, 2));
+        assertThat(commands.size).isEqualTo(2)
+        assertCommandLengthLimit(commands, 980)
+        verifyCommandString(commands[0], ImapResponseHelper.createNonContiguousIdSet(10000, 10316, 2))
+        verifyCommandString(commands[1], ImapResponseHelper.createNonContiguousIdSet(10318, 10500, 2))
     }
 
     @Test
-    public void splitCommand_withContiguousAndNonContiguousIds_shouldGroupIdsAndSplitCommand() throws Exception {
-        Set<Long> idSet = Sets.union(
-                createNonContiguousIdSet(10000, 10298, 2),
-                createNonContiguousIdSet(10402, 10500, 2));
-        List<ContiguousIdGroup> idGroups = singletonList(new ContiguousIdGroup(10300L, 10400L));
-        GroupedIds groupedIds = new GroupedIds(idSet, idGroups);
+    fun splitCommand_withContiguousAndNonContiguousIds_shouldGroupIdsAndSplitCommand() {
+        val idSet: Set<Long> = ImapResponseHelper.createNonContiguousIdSet(10000, 10298, 2) +
+            ImapResponseHelper.createNonContiguousIdSet(10402, 10500, 2)
+        val idGroups = listOf(ContiguousIdGroup(10300L, 10400L))
+        val groupedIds = GroupedIds(idSet, idGroups)
 
-        List<String> commands = ImapCommandSplitter.splitCommand(COMMAND_PREFIX, COMMAND_SUFFIX, groupedIds, 980);
+        val commands = ImapCommandSplitter.splitCommand(COMMAND_PREFIX, COMMAND_SUFFIX, groupedIds, 980)
 
-        assertEquals(commands.size(), 2);
-        assertCommandLengthLimit(commands, 980);
-        verifyCommandString(commands.get(0), Sets.union(
-                createNonContiguousIdSet(10000, 10298, 2),
-                createNonContiguousIdSet(10402, 10418, 2)));
-        verifyCommandString(commands.get(1), createNonContiguousIdSet(10420, 10500, 2), "10300:10400");
+        assertThat(commands.size).isEqualTo(2)
+        assertCommandLengthLimit(commands, 980)
+        verifyCommandString(
+            commands[0],
+            ImapResponseHelper.createNonContiguousIdSet(10000, 10298, 2) +
+                ImapResponseHelper.createNonContiguousIdSet(10402, 10418, 2),
+        )
+        verifyCommandString(commands[1], ImapResponseHelper.createNonContiguousIdSet(10420, 10500, 2), "10300:10400")
     }
 
     @Test
-    public void splitCommand_withEmptySuffix_shouldCreateCommandWithoutTrailingSpace() throws Exception {
-        Set<Long> ids = createNonContiguousIdSet(1, 2, 1);
-        GroupedIds groupedIds = new GroupedIds(ids, Collections.<ContiguousIdGroup>emptyList());
+    fun splitCommand_withEmptySuffix_shouldCreateCommandWithoutTrailingSpace() {
+        val ids = ImapResponseHelper.createNonContiguousIdSet(1, 2, 1)
+        val groupedIds = GroupedIds(ids, emptyList())
 
-        List<String> commands = ImapCommandSplitter.splitCommand("UID SEARCH UID", "", groupedIds, 980);
+        val commands = ImapCommandSplitter.splitCommand("UID SEARCH UID", "", groupedIds, 980)
 
-        assertEquals(commands.size(), 1);
-        assertEquals("UID SEARCH UID 1,2", commands.get(0));
+        assertThat(commands.size).isEqualTo(1)
+        assertThat(commands[0]).isEqualTo("UID SEARCH UID 1,2")
     }
 
-
-    private void assertCommandLengthLimit(List<String> commands, int lengthLimit) {
-        for (String command : commands) {
-            assertFalse("Command is too long (" + command.length() + " > " + lengthLimit + ")",
-                    command.length() > lengthLimit);
+    private fun assertCommandLengthLimit(commands: List<String>, lengthLimit: Int) {
+        for (command in commands) {
+            assertThat(command.length, "Command is too long").isLessThanOrEqualTo(lengthLimit)
         }
     }
 
-    private void verifyCommandString(String actualCommand, Set<Long> ids) {
-        verifyCommandString(actualCommand, ids, null);
-    }
-
-    private void verifyCommandString(String actualCommand, Set<Long> ids, String idGroupString) {
-        Set<Long> sortedIds = new TreeSet<>(ids);
-        StringBuilder expectedCommandBuilder = new StringBuilder(COMMAND_PREFIX)
-                .append(" ")
-                .append(ImapUtility.join(",", sortedIds));
-
+    private fun verifyCommandString(actualCommand: String, ids: Set<Long>, idGroupString: String? = null) {
+        val sortedIds: Set<Long> = TreeSet(ids)
+        val expectedCommandBuilder = StringBuilder(COMMAND_PREFIX)
+            .append(" ")
+            .append(ImapUtility.join(",", sortedIds))
         if (idGroupString != null) {
-            expectedCommandBuilder.append(',').append(idGroupString);
+            expectedCommandBuilder.append(',').append(idGroupString)
         }
+        expectedCommandBuilder.append(" ").append(COMMAND_SUFFIX)
 
-        expectedCommandBuilder.append(" ").append(COMMAND_SUFFIX);
-        String expectedCommand = expectedCommandBuilder.toString();
+        val expectedCommand = expectedCommandBuilder.toString()
 
-        assertEquals(expectedCommand, actualCommand);
+        assertThat(actualCommand).isEqualTo(expectedCommand)
+    }
+
+    companion object {
+        private const val COMMAND_PREFIX = "UID COPY"
+        private const val COMMAND_SUFFIX = "\"Destination\""
     }
 }
