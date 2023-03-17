@@ -55,7 +55,6 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
 
-    testImplementation(libs.bundles.shared.jvm.test.legacy)
     testImplementation(projects.core.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.app.storage)

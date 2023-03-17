@@ -4,6 +4,12 @@ import android.net.Uri
 import androidx.loader.app.LoaderManager
 import androidx.loader.app.LoaderManager.LoaderCallbacks
 import androidx.test.core.app.ApplicationProvider
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.activity.compose.AttachmentPresenter.AttachmentMvpView
 import com.fsck.k9.activity.compose.AttachmentPresenter.AttachmentsChangedListener
@@ -16,7 +22,6 @@ import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalBodyPart
 import com.fsck.k9.mailstore.MessageViewInfo
-import com.google.common.truth.Truth.assertThat
 import java.util.function.Supplier
 import org.junit.Before
 import org.junit.Test

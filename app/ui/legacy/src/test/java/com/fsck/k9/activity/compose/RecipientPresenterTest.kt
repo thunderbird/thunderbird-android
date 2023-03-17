@@ -1,6 +1,11 @@
 package com.fsck.k9.activity.compose
 
 import androidx.test.core.app.ApplicationProvider
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import com.fsck.k9.Account
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType
@@ -18,7 +23,6 @@ import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusTyp
 import com.fsck.k9.message.ComposePgpEnableByDefaultDecider
 import com.fsck.k9.message.ComposePgpInlineDecider
 import com.fsck.k9.view.RecipientSelectView.Recipient
-import com.google.common.truth.Truth.assertThat
 import kotlin.test.assertNotNull
 import org.junit.Before
 import org.junit.Ignore
