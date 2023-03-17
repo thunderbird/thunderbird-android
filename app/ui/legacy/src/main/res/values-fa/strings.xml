@@ -24,7 +24,9 @@
   <string name="changelog_version_title">نسخهٔ %s</string>
   <string name="changelog_recent_changes_title">تازه‌ها</string>
   <string name="changelog_show_recent_changes">هنگامی که برنامه روزآمد شد تغییرات تازه را نشان بده</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">از تازه‌های این نسخه باخبر شوید</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">به «K-9 Mail» خوش آمدید</string>
   <string name="accounts_welcome"><![CDATA[
@@ -273,6 +275,8 @@
   <string name="general_settings_swipe_action_spam">هرزنامه</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">انتقال</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">پیش‌فرض</string>
   <string name="global_settings_privacy_hide_useragent">کارخواه رایانامه را مخفی کن</string>
   <string name="global_settings_privacy_hide_useragent_detail">شناسهٔ K-9 User-Agent را از سرایند رایانامه‌ها بردار</string>
   <string name="global_settings_privacy_hide_timezone">منطقهٔ زمانی را مخفی کن</string>
@@ -713,6 +717,8 @@
   <string name="font_size_message_list_date">تاریخ</string>
   <string name="font_size_message_list_preview">پیش‌نمایش</string>
   <string name="font_size_message_view">پیام‌ها</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">نام حساب</string>
   <string name="font_size_message_view_sender">فرستنده</string>
   <string name="font_size_message_view_subject">موضوع</string>
   <string name="font_size_message_view_date">ساعت و تاریخ</string>

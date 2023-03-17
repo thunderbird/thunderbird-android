@@ -24,7 +24,9 @@
   <string name="changelog_version_title">Útgáfa %s</string>
   <string name="changelog_recent_changes_title">Nýtt á döfinni</string>
   <string name="changelog_show_recent_changes">Birta nýlegar breytingar þegar forritið er uppfært</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Skoðaðu hvað sé nýtt við þessa útgáfu</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Velkomin í K-9 póstinn</string>
   <string name="accounts_welcome"><![CDATA[
@@ -279,6 +281,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="general_settings_swipe_action_spam">Ruslpóstur</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Færa</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Sjálfgefið</string>
   <string name="global_settings_privacy_hide_useragent">Fela póstforrit</string>
   <string name="global_settings_privacy_hide_useragent_detail">Fjarlægja kennistreng K-9 úr pósthausum</string>
   <string name="global_settings_privacy_hide_timezone">Fela tímabelti</string>
@@ -720,6 +724,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="font_size_message_list_date">Dagsetning</string>
   <string name="font_size_message_list_preview">Forskoðun</string>
   <string name="font_size_message_view">Skilaboð</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Nafn aðgangsins</string>
   <string name="font_size_message_view_sender">Sendandi</string>
   <string name="font_size_message_view_subject">Viðfangsefni</string>
   <string name="font_size_message_view_date">Tími og dagsetning</string>

@@ -20,6 +20,8 @@
   <string name="changelog_title">Дневник измена</string>
   <string name="changelog_loading_error">Не могу да учитам дневник измена.</string>
   <string name="changelog_version_title">Верзија %s</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Добро дошли у К-9 Пошту</string>
   <string name="accounts_welcome"><![CDATA[
@@ -255,6 +257,8 @@
   <string name="general_settings_swipe_action_spam">померања у нежељене</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Премести</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">подразумеван</string>
   <string name="global_settings_privacy_hide_useragent">Сакриј клијента</string>
   <string name="global_settings_privacy_hide_useragent_detail">Уклања К-9 идентификацију из заглавља поруке</string>
   <string name="global_settings_privacy_hide_timezone">Сакриј временску зону</string>
@@ -657,6 +661,8 @@
   <string name="font_size_message_list_date">Датум</string>
   <string name="font_size_message_list_preview">Преглед</string>
   <string name="font_size_message_view">Поруке</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Назив налога</string>
   <string name="font_size_message_view_sender">Пошиљалац</string>
   <string name="font_size_message_view_subject">Тема</string>
   <string name="font_size_message_view_date">Време и датум</string>

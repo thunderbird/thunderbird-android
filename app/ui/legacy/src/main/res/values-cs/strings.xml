@@ -24,7 +24,9 @@
   <string name="changelog_version_title">Verze %s</string>
   <string name="changelog_recent_changes_title">Co je nového</string>
   <string name="changelog_show_recent_changes">Po aktualizaci aplikace, zobrazovat nejnovější změny</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Zjistěte, co je v tomto vydání nového</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Vítejte v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -283,6 +285,8 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="general_settings_swipe_action_spam">Nevyžádaná</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Přesunout</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Standardní</string>
   <string name="global_settings_privacy_hide_useragent">Skrýt e-mailového klienta</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstraňovat z hlaviček e-mailů informaci o K-9 (user agent)</string>
   <string name="global_settings_privacy_hide_timezone">Skrýt časovou zónu</string>
@@ -724,6 +728,8 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="font_size_message_list_date">Datum</string>
   <string name="font_size_message_list_preview">Náhled</string>
   <string name="font_size_message_view">Zpráva</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Název účtu</string>
   <string name="font_size_message_view_sender">Odesílatel</string>
   <string name="font_size_message_view_subject">Předmět</string>
   <string name="font_size_message_view_date">Datum a čas</string>

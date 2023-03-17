@@ -18,6 +18,8 @@
   <string name="license">Lisens</string>
   <string name="changelog_title">Endringslogg</string>
   <string name="changelog_recent_changes_title">Hva er nytt?</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Velkommen til K-9 e-post</string>
   <string name="accounts_welcome"><![CDATA[
@@ -252,6 +254,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="general_settings_swipe_action_spam">Søppelpost</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Flytt</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Forvalg</string>
   <string name="global_settings_privacy_hide_useragent">Skjul e-postklient</string>
   <string name="global_settings_privacy_hide_useragent_detail">Fjern K-9 -brukeragent fra meldingshoder</string>
   <string name="global_settings_privacy_hide_timezone">Skjul tidssone</string>
@@ -652,6 +656,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="font_size_message_list_date">Dato</string>
   <string name="font_size_message_list_preview">Forhåndsvisning</string>
   <string name="font_size_message_view">Meldinger</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Kontonavn</string>
   <string name="font_size_message_view_sender">Avsender</string>
   <string name="font_size_message_view_subject">Emne</string>
   <string name="font_size_message_view_date">Tid og dato</string>

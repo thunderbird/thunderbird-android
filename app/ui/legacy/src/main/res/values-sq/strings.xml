@@ -24,7 +24,10 @@
   <string name="changelog_version_title">Version %s</string>
   <string name="changelog_recent_changes_title">Ç\’ka të re</string>
   <string name="changelog_show_recent_changes">Shfaq ndryshime së fundi, kur përditësohet aplikacioni</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Mësoni ç\’ka të re në këtë hedhje në qarkullim</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Shiheni</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Mirë se vini te K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -284,6 +287,10 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="general_settings_swipe_action_spam">Shënoje si të padëshiruar</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Lëvizeni</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Dendësi</string>
+  <string name="general_settings_ui_density_compact">Kompakte</string>
+  <string name="general_settings_ui_density_default">Parazgjedhje</string>
   <string name="global_settings_privacy_hide_useragent">Fshihe klientin e postës</string>
   <string name="global_settings_privacy_hide_useragent_detail">Hiqeni K-9 User-Agent nga kryet e email-it</string>
   <string name="global_settings_privacy_hide_timezone">Fshihe zonën kohore</string>
@@ -304,7 +311,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="quiet_time_notification_description">Çaktivizoji plotësisht njoftimet gjatë Qetësisë</string>
   <string name="quiet_time_starts">Qetësia fillon</string>
   <string name="quiet_time_ends">Qetësia mbaron</string>
-  <string name="account_setup_basics_title">Rregulloni një llogari të re</string>
+  <string name="account_setup_basics_title">Ujdisni një llogari të re</string>
   <string name="account_setup_basics_email_hint">Adresë email</string>
   <string name="account_setup_basics_password_hint">Fjalëkalim</string>
   <string name="account_setup_oauth_description">Që të përdorni këtë llogari email me K-9 Mail, lypset të bëni hyrjen dhe t\’i akordoni aplikacionit hyrje te email-et tuaj.</string>
@@ -725,6 +732,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="font_size_message_list_date">Datë</string>
   <string name="font_size_message_list_preview">Paraparje</string>
   <string name="font_size_message_view">Mesazhe</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Emër llogarie</string>
   <string name="font_size_message_view_sender">Dërgues</string>
   <string name="font_size_message_view_recipients">Marrës</string>
   <string name="font_size_message_view_subject">Subjekt</string>

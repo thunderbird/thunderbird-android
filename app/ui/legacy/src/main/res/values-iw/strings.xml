@@ -17,7 +17,9 @@
   <string name="changelog_version_title">גירסא %s</string>
   <string name="changelog_recent_changes_title">מה חדש</string>
   <string name="changelog_show_recent_changes">הצג שינויים אחרונים לאחר עדכון האפליקצייה</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">גלה מה חדש בגירסא זו</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">ברוך הבא אל דואר K-9</string>
   <!--Default signature-->
@@ -225,6 +227,8 @@
   <string name="general_settings_swipe_action_spam">דואר זבל</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">העבר</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">ברירת מחדל</string>
   <string name="global_settings_privacy_hide_timezone">הסתר איזור זמן</string>
   <string name="global_settings_notification_quick_delete_title">הצג את הכפתור \'מחק\'</string>
   <string name="global_settings_notification_quick_delete_never">אף פעם</string>
@@ -528,6 +532,8 @@
   <string name="font_size_message_list_date">תאריך</string>
   <string name="font_size_message_list_preview">תצוגה מקדימה</string>
   <string name="font_size_message_view">הודעות</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">שם חשבון</string>
   <string name="font_size_message_view_sender">שולח</string>
   <string name="font_size_message_view_subject">כותרת</string>
   <string name="font_size_message_view_date">שעה ותאריך</string>

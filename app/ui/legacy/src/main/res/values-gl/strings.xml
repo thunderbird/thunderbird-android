@@ -22,7 +22,9 @@
   <string name="changelog_version_title">Versión %s</string>
   <string name="changelog_recent_changes_title">Novidades</string>
   <string name="changelog_show_recent_changes">Amosar os cambios recentes cando o aplicativo se actualice</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Mira as novidades deste lanzamento</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Benvido/a a K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -266,6 +268,8 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="general_settings_swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Mover</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Predefinido</string>
   <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
   <string name="global_settings_privacy_hide_useragent_detail">Quitar K-9 User-Agent dos cabezallos do correo</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
@@ -679,6 +683,8 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="font_size_message_list_date">Data</string>
   <string name="font_size_message_list_preview">Vista previa</string>
   <string name="font_size_message_view">mensaxes</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Nome Conta</string>
   <string name="font_size_message_view_sender">Remitente</string>
   <string name="font_size_message_view_subject">Asunto</string>
   <string name="font_size_message_view_date">Data e Hora</string>

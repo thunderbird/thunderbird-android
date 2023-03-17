@@ -16,6 +16,8 @@
   <string name="license">الرخصة</string>
   <string name="changelog_title">سجل التغييرات</string>
   <string name="changelog_recent_changes_title">مالجديد</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">أهلا بكم في بريد K-9</string>
   <string name="accounts_welcome"><![CDATA[
@@ -251,6 +253,8 @@
   <string name="general_settings_swipe_action_spam">بريد مُزعج</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">حَرِّكْ</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">الإفتراضي</string>
   <string name="global_settings_privacy_hide_useragent">إخفاء عميل البريد</string>
   <string name="global_settings_privacy_hide_useragent_detail">احذف مُعرف بريد كية-9 من ترويسات الرسالة</string>
   <string name="global_settings_privacy_hide_timezone">احذف التوقيت</string>
@@ -595,6 +599,8 @@
   <string name="font_size_message_list_date">تاريخ</string>
   <string name="font_size_message_list_preview">معاينة</string>
   <string name="font_size_message_view">رسائل</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">اسم الحساب</string>
   <string name="font_size_message_view_sender">مُرسِل</string>
   <string name="font_size_message_view_subject">العنوان</string>
   <string name="font_size_message_view_date">الوقت والتاريخ</string>

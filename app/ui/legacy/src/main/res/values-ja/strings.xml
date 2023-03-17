@@ -24,7 +24,10 @@
   <string name="changelog_version_title">バージョン %s</string>
   <string name="changelog_recent_changes_title">新着</string>
   <string name="changelog_show_recent_changes">アプリの更新後に更新内容を表示</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">このリリースは何が新しいのかを知る</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">表示</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Mailへようこそ</string>
   <string name="accounts_welcome"><![CDATA[
@@ -280,6 +283,11 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="general_settings_swipe_action_spam">迷惑メール</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">移動</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">密度</string>
+  <string name="general_settings_ui_density_compact">コンパクト</string>
+  <string name="general_settings_ui_density_default">デフォルト</string>
+  <string name="general_settings_ui_density_relaxed">リラックス</string>
   <string name="global_settings_privacy_hide_useragent">メールクライアントを隠す</string>
   <string name="global_settings_privacy_hide_useragent_detail">メールヘッダからK-9のUser-Agentヘッダを削除する</string>
   <string name="global_settings_privacy_hide_timezone">タイムゾーンを隠す</string>
@@ -721,6 +729,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="font_size_message_list_date">日付</string>
   <string name="font_size_message_list_preview">プレビュー</string>
   <string name="font_size_message_view">メッセージ表示</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">アカウント名</string>
   <string name="font_size_message_view_sender">送信者</string>
   <string name="font_size_message_view_recipients">受信者</string>
   <string name="font_size_message_view_subject">件名</string>
@@ -1095,6 +1105,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">連絡先に追加</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">メッセージを作成</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">メールアドレスをコピー</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->

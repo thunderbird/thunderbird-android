@@ -24,7 +24,9 @@
   <string name="changelog_version_title">Версія %s</string>
   <string name="changelog_recent_changes_title">Што новага</string>
   <string name="changelog_show_recent_changes">Пры абнаўленні праграмы паказваць апошнія змены</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Даведайцеся, што новага ў гэтым выпуску</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Вітаем у K-9</string>
   <string name="accounts_welcome"><![CDATA[<p>
@@ -282,6 +284,8 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="general_settings_swipe_action_spam">Спам</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Перамясціць</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Прадвызначаная</string>
   <string name="global_settings_privacy_hide_useragent">Схаваць паштовы кліент</string>
   <string name="global_settings_privacy_hide_useragent_detail">Прыбраць \"K-9 User-Agent\" з загалоўкаў лістоў</string>
   <string name="global_settings_privacy_hide_timezone">Схаваць часавы пояс</string>
@@ -723,6 +727,8 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="font_size_message_list_date">Дата</string>
   <string name="font_size_message_list_preview">Папярэдні прагляд</string>
   <string name="font_size_message_view">Паведамленне</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Назва акаўнта</string>
   <string name="font_size_message_view_sender">Адпраўнік</string>
   <string name="font_size_message_view_subject">Тэма</string>
   <string name="font_size_message_view_date">Час і дата</string>

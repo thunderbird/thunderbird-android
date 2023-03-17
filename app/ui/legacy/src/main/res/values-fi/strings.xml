@@ -24,7 +24,10 @@
   <string name="changelog_version_title">Versio %s</string>
   <string name="changelog_recent_changes_title">Mitä uutta</string>
   <string name="changelog_show_recent_changes">Näytä viimeisimmät muutokset kun sovellus päivitettiin</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Selvitä mitä uutta tämä julkaisu sisältää</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Näytä</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
   <string name="accounts_welcome"><![CDATA[
@@ -282,6 +285,11 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="general_settings_swipe_action_spam">Roskaposti</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Siirrä</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Tiheys</string>
+  <string name="general_settings_ui_density_compact">Kompakti</string>
+  <string name="general_settings_ui_density_default">Oletus</string>
+  <string name="general_settings_ui_density_relaxed">Rento</string>
   <string name="global_settings_privacy_hide_useragent">Piilota sähköpostisovellus</string>
   <string name="global_settings_privacy_hide_useragent_detail">Poista K-9-tunnistetiedot viestin otsaketiedoista</string>
   <string name="global_settings_privacy_hide_timezone">Piilota aikavyöhyke</string>
@@ -723,6 +731,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="font_size_message_list_date">Päiväys</string>
   <string name="font_size_message_list_preview">Esikatselu</string>
   <string name="font_size_message_view">Viestinäkymä</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Tilin nimi</string>
   <string name="font_size_message_view_sender">Lähettäjä</string>
   <string name="font_size_message_view_recipients">Vastaanottajat</string>
   <string name="font_size_message_view_subject">Viestin aihe</string>

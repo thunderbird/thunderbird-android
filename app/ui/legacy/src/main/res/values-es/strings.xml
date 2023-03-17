@@ -24,7 +24,10 @@
   <string name="changelog_version_title">Versión %s</string>
   <string name="changelog_recent_changes_title">Novedades</string>
   <string name="changelog_show_recent_changes">Ver cambios recientes al actualizar la aplicación</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Descubre las novedades de esta versión</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Leer</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Te damos la bienvenida a K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -283,6 +286,11 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="general_settings_swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Mover</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Espacio entre elementos</string>
+  <string name="general_settings_ui_density_compact">Compacto</string>
+  <string name="general_settings_ui_density_default">Predeterminado</string>
+  <string name="general_settings_ui_density_relaxed">Espacioso</string>
   <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
   <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de K-9 de las cabeceras del mensaje, el destinatario no verá qué programa de correo usas</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
@@ -724,6 +732,8 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="font_size_message_list_date">Fecha</string>
   <string name="font_size_message_list_preview">Previsualizar</string>
   <string name="font_size_message_view">Mensajes</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Nombre de la cuenta</string>
   <string name="font_size_message_view_sender">Remitente</string>
   <string name="font_size_message_view_recipients">Destinatarios</string>
   <string name="font_size_message_view_subject">Asunto</string>

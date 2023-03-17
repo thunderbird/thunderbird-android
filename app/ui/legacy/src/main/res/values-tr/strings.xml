@@ -24,7 +24,9 @@
   <string name="changelog_version_title">Versiyon %s</string>
   <string name="changelog_recent_changes_title">Yenilikler</string>
   <string name="changelog_show_recent_changes">Uygulama güncellendiğinde son değişiklikleri göster </string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Bu sürümdeki yenilikleri öğrenin </string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Posta\'ya Hoşgeldiniz</string>
   <string name="accounts_welcome"><![CDATA[
@@ -276,6 +278,8 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="general_settings_swipe_action_spam">Gereksiz posta</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Taşı</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Varsayılan</string>
   <string name="global_settings_privacy_hide_useragent">Posta istemcisini gizle</string>
   <string name="global_settings_privacy_hide_useragent_detail">Posta başlığından K-9 Kullanıcı Aracısını kaldır</string>
   <string name="global_settings_privacy_hide_timezone">Zaman dilimini gizle</string>
@@ -708,6 +712,8 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="font_size_message_list_date">Tarih</string>
   <string name="font_size_message_list_preview">Önizleme</string>
   <string name="font_size_message_view">Mesajlar</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Hesap adı</string>
   <string name="font_size_message_view_sender">Gönderen</string>
   <string name="font_size_message_view_subject">Konu</string>
   <string name="font_size_message_view_date">Saat ve Tarih</string>

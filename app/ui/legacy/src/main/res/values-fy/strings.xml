@@ -24,7 +24,10 @@
   <string name="changelog_version_title">Ferzje %s</string>
   <string name="changelog_recent_changes_title">Wat is der nij</string>
   <string name="changelog_show_recent_changes">Lit wizigingen sjen as de app resint bywurke is</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Untdek wat der nij is yn dizze ferzje</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Besjen</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Wolkom by K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[ <p> K-9 Mail is in fergees krêftige e-mailclient foar Android. </p><p> De ferbettere mooglikheden bestean ûnder oare út:
@@ -278,6 +281,11 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="general_settings_swipe_action_spam">Net-winske</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Ferpleatse</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Tichtens</string>
+  <string name="general_settings_ui_density_compact">Kompakt</string>
+  <string name="general_settings_ui_density_default">Standert</string>
+  <string name="general_settings_ui_density_relaxed">Untspand</string>
   <string name="global_settings_privacy_hide_useragent">E-mailclient ferstopje</string>
   <string name="global_settings_privacy_hide_useragent_detail">K-9-brûkersagent fan e-mailkopteksten fuortsmite</string>
   <string name="global_settings_privacy_hide_timezone">Tiidsône ferstopje</string>
@@ -355,7 +363,7 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="account_setup_expunge_policy_manual">Hânmjittich</string>
   <string name="account_setup_incoming_autodetect_namespace_label">IMAP-namespace automatysk detektearje</string>
   <string name="account_setup_incoming_imap_path_prefix_label">IMAP-paadfoarfoegsel</string>
-  <string name="drafts_folder_label">Konseptenmap</string>
+  <string name="drafts_folder_label">Konseptemap</string>
   <string name="sent_folder_label">Ferstjoerdmap</string>
   <string name="trash_folder_label">Jiskefetmap</string>
   <string name="archive_folder_label">Argyfmap</string>
@@ -431,15 +439,15 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="account_settings_notify_sync_label">Syngronisaasjemeldingen</string>
   <string name="account_settings_email_label">Jo e-mailadres</string>
   <string name="account_settings_notify_summary">Melding yn steatbalke by in nij e-mailberjocht</string>
-  <string name="account_settings_notify_sync_summary">Yn steatbalke melding werjaan wannear op nije e-mailberjochten kontrolearre wurdt</string>
+  <string name="account_settings_notify_sync_summary">Yn steatbalke melding werjaan wannear’t op nije e-mailberjochten kontrolearre wurdt.</string>
   <string name="account_settings_notify_self_label">By eigen berjochten</string>
-  <string name="account_settings_notify_self_summary">Melding ek foar e-mailberjocht ferstjoerd fan in identiteit ôf</string>
+  <string name="account_settings_notify_self_summary">Melding ek foar e-mailberjocht ferstjoerd fan in identiteit ôf.</string>
   <string name="account_notify_contacts_mail_only_label">Allinnich kontakten</string>
-  <string name="account_notify_contacts_mail_only_summary">Meldingen allinnich werjaan foar bekende kontakten</string>
+  <string name="account_notify_contacts_mail_only_summary">Meldingen allinnich werjaan foar bekende kontakten.</string>
   <string name="account_settings_ignore_chat_messages_label">Petearberjochten negearje</string>
-  <string name="account_settings_ignore_chat_messages_summary">Gjin meldingen toane foar berjochten dy’t ûnderdiel binne fan in e-mailpetear</string>
-  <string name="account_settings_mark_message_as_read_on_view_label">As lêzen markearje as iepene</string>
-  <string name="account_settings_mark_message_as_read_on_view_summary">As lêzen markearje as besjoen</string>
+  <string name="account_settings_ignore_chat_messages_summary">Gjin meldingen toane foar berjochten dy’t ûnderdiel binne fan in e-mailpetear.</string>
+  <string name="account_settings_mark_message_as_read_on_view_label">As lêzen markearje nei iepenjen</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">As lêzen markearje wannear besjoen</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">As lêzen markearje by wiskjen</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Markearje in berjocht as lêzen wannear’t dy wiske wurdt</string>
   <string name="account_settings_notification_channels_label">Meldingskategoryen</string>
@@ -455,19 +463,19 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="account_settings_reply_after_quote_label">Beäntwurdzje nei sitaat</string>
   <string name="account_settings_reply_after_quote_summary">Wannear’t jo in berjocht beäntwurdzje , sil it orizjinele berjocht boppe jo antwurd stean.</string>
   <string name="account_settings_strip_signature_label">Hantekening by reaksje fuortsmite</string>
-  <string name="account_settings_strip_signature_summary">Hantekeningen wurde by sitearre berjochten fuortsmiten</string>
+  <string name="account_settings_strip_signature_summary">Hantekeningen wurde by sitearre berjochten fuortsmiten.</string>
   <string name="account_settings_message_format_label">Berjochtopmaak</string>
   <string name="account_settings_message_format_text">Platte tekst (ôfbyldingen en opmaak wurde fuortsmiten)</string>
   <string name="account_settings_message_format_html">HTML (ôfbyldingen en opmaak bliuwe behâlden)</string>
   <string name="account_settings_message_format_auto">Automatysk</string>
   <string name="account_settings_always_show_cc_bcc_label">Cc/Bcc altyd toane</string>
   <string name="account_settings_message_read_receipt_label">Untfangstbefêstiging</string>
-  <string name="account_settings_message_read_receipt_summary">Altyd in lêsbefêstiging freegje</string>
+  <string name="account_settings_message_read_receipt_summary">Altyd in ûntfangstbefêstiging freegje.</string>
   <string name="account_settings_quote_style_label">Sitaatstyl by beäntwurdzjen</string>
   <string name="account_settings_quote_style_prefix">Prefix (lykas Gmail, Pine)</string>
   <string name="account_settings_quote_style_header">Kop (lykas Outlook)</string>
   <string name="account_settings_upload_sent_messages_label">Ferstjoerde berjochten oplade</string>
-  <string name="account_settings_upload_sent_messages_summary">Berjochten nei ferstjoeren nei ‘Ferstjoerd’-map oplade</string>
+  <string name="account_settings_upload_sent_messages_summary">Berjochten nei ferstjoeren nei ‘Ferstjoerd’-map oplade.</string>
   <string name="account_settings_general_title">Algemiene ynstellingen</string>
   <string name="account_settings_reading_mail">Berjochten lêze</string>
   <string name="account_settings_sync">Berjochten ophelje</string>
@@ -719,6 +727,8 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="font_size_message_list_date">Datum</string>
   <string name="font_size_message_list_preview">Foarbyld</string>
   <string name="font_size_message_view">Berjochten</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Accountnamme</string>
   <string name="font_size_message_view_sender">Ofstjoerder</string>
   <string name="font_size_message_view_recipients">Untfangers</string>
   <string name="font_size_message_view_subject">Underwerp</string>

@@ -24,7 +24,9 @@
   <string name="changelog_version_title">Έκδοση %s</string>
   <string name="changelog_recent_changes_title">Τι νέο υπάρχει</string>
   <string name="changelog_show_recent_changes">Εμφάνιση πρόσφατων αλλαγών από την ενημέρωση της εφαρμογής</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Δείτε τι έχει αλλάξει σε αυτή την έκδοση</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Καλώς ορίσατε στο K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -274,6 +276,8 @@
   <string name="general_settings_swipe_action_spam">Ανεπιθύμητα</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Μετακίνηση</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Εξ ορισμού</string>
   <string name="global_settings_privacy_hide_useragent">Απόκρυψη προγράμματος-πελάτη αλληλογραφίας</string>
   <string name="global_settings_privacy_hide_useragent_detail">Αφαίρεση του Πράκτορα-χρήστη K-9 από την επικεφαλίδα του μηνύματος</string>
   <string name="global_settings_privacy_hide_timezone">Απόκρυψη ζώνης ώρας</string>
@@ -715,6 +719,8 @@
   <string name="font_size_message_list_date">Ημερομηνία</string>
   <string name="font_size_message_list_preview">Προεπισκόπηση</string>
   <string name="font_size_message_view">Μηνύματα</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Όνομα λογαριασμού</string>
   <string name="font_size_message_view_sender">Αποστολέας</string>
   <string name="font_size_message_view_subject">Θέμα</string>
   <string name="font_size_message_view_date">Ώρα και Ημερομηνία</string>

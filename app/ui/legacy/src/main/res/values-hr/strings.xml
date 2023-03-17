@@ -11,6 +11,8 @@
   <string name="app_license">Apache Licenca, Verzija 2.0</string>
   <string name="about_libraries">Knjižnice</string>
   <string name="license">Licenca</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">Dobrodošli u K-9 Mail</string>
   <!--Default signature-->
@@ -216,6 +218,8 @@
   <string name="general_settings_swipe_action_spam">Neželjena pošta</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Premjesti</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">Zadano</string>
   <string name="global_settings_privacy_hide_useragent">Sakrij klijent e-pošte</string>
   <string name="global_settings_privacy_hide_useragent_detail">Makni K-9 Korisničkog agenta iz zaglavlja pošte</string>
   <string name="global_settings_privacy_hide_timezone">Sakrij vremensku zonu</string>
@@ -617,6 +621,8 @@
   <string name="font_size_message_list_date">Datum</string>
   <string name="font_size_message_list_preview">Pedpregled</string>
   <string name="font_size_message_view">Poruke</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">Naziv računa</string>
   <string name="font_size_message_view_sender">Pošiljatelj</string>
   <string name="font_size_message_view_subject">Subjekt</string>
   <string name="font_size_message_view_date">Vrijeme i datum</string>

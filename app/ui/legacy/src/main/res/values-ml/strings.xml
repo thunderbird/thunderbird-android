@@ -22,7 +22,9 @@
   <string name="changelog_version_title">പതിപ്പ് %s</string>
   <string name="changelog_recent_changes_title">എന്താണ് പുതിയത്</string>
   <string name="changelog_show_recent_changes">ആപ്പ് അപ്‌ഡേറ്റ് ചെയ്യുമ്പോൾ സമീപകാല മാറ്റങ്ങൾ കാണിക്കുക</string>
+  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">ഈ റിലീസിൽ പുതിയത് എന്താണെന്ന് കണ്ടെത്തുക</string>
+  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <!--Welcome message-->
   <string name="welcome_message_title">കെ-9 മെയിലിലേക്ക് സ്വാഗതം</string>
   <string name="accounts_welcome"><![CDATA[
@@ -267,6 +269,8 @@
   <string name="general_settings_swipe_action_spam">സ്പാം</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">നീക്കുക</string>
+  <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_default">സ്ഥിരസ്ഥിതി</string>
   <string name="global_settings_privacy_hide_useragent">മെയിൽ ക്ലയന്റ് മറയ്‌ക്കുക</string>
   <string name="global_settings_privacy_hide_useragent_detail">മെയിൽ തലക്കെട്ടുകളിൽ നിന്ന് കെ-9 യൂസർ-ഏജന്റിനെ നീക്കം ചെയ്യുക</string>
   <string name="global_settings_privacy_hide_timezone">സമയ മേഖല മറയ്ക്കൂ</string>
@@ -681,6 +685,8 @@
   <string name="font_size_message_list_date">തീയതി</string>
   <string name="font_size_message_list_preview">പ്രിവ്യൂ</string>
   <string name="font_size_message_view">സന്ദേശങ്ങൾ</string>
+  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+  <string name="font_size_message_view_account">അക്കൗണ്ടിന്റെ പേര്</string>
   <string name="font_size_message_view_sender">അയച്ചയാൾ</string>
   <string name="font_size_message_view_subject">വിഷയം</string>
   <string name="font_size_message_view_date">സമയവും തീയതിയും</string>
