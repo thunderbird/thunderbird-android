@@ -1,6 +1,12 @@
 package com.fsck.k9.backend.imap
 
 import app.k9mail.backend.testing.InMemoryBackendStorage
+import assertk.assertThat
+import assertk.assertions.containsAll
+import assertk.assertions.containsExactlyInAnyOrder
+import assertk.assertions.isEmpty
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
@@ -13,7 +19,6 @@ import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.buildMessage
 import com.fsck.k9.mail.store.imap.FetchListener
 import com.fsck.k9.mail.store.imap.ImapMessage
-import com.google.common.truth.Truth.assertThat
 import java.util.Date
 import org.apache.james.mime4j.dom.field.DateTimeField
 import org.apache.james.mime4j.field.DefaultFieldParser
@@ -125,7 +130,7 @@ class ImapSyncTest {
 
         imapSync.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
-        assertThat(backendFolder.getMessageServerIds()).containsExactly("23")
+        assertThat(backendFolder.getMessageServerIds()).containsExactlyInAnyOrder("23")
         verify(syncListener).syncStarted(FOLDER_SERVER_ID)
         verify(syncListener).syncFinished(FOLDER_SERVER_ID)
     }
@@ -141,7 +146,7 @@ class ImapSyncTest {
 
         imapSync.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
-        assertThat(backendFolder.getMessageServerIds()).containsExactly("42")
+        assertThat(backendFolder.getMessageServerIds()).containsExactlyInAnyOrder("42")
     }
 
     @Test
@@ -151,7 +156,7 @@ class ImapSyncTest {
 
         imapSync.sync(FOLDER_SERVER_ID, defaultSyncConfig, syncListener)
 
-        assertThat(backendFolder.getMessageServerIds()).containsExactly("9", "13")
+        assertThat(backendFolder.getMessageServerIds()).containsExactlyInAnyOrder("9", "13")
         verify(syncListener).syncNewMessage(FOLDER_SERVER_ID, messageServerId = "9", isOldMessage = false)
         verify(syncListener).syncNewMessage(FOLDER_SERVER_ID, messageServerId = "13", isOldMessage = false)
     }
@@ -164,7 +169,7 @@ class ImapSyncTest {
 
         imapSync.sync(FOLDER_SERVER_ID, defaultSyncConfig, syncListener)
 
-        assertThat(backendFolder.getMessageServerIds()).containsExactly("23", "42")
+        assertThat(backendFolder.getMessageServerIds()).containsExactlyInAnyOrder("23", "42")
         verify(syncListener).syncNewMessage(FOLDER_SERVER_ID, messageServerId = "23", isOldMessage = true)
     }
 
@@ -188,7 +193,7 @@ class ImapSyncTest {
 
         imapSync.sync(FOLDER_SERVER_ID, defaultSyncConfig, syncListener)
 
-        assertThat(backendFolder.getMessageFlags(messageServerId = "2")).containsAtLeast(Flag.SEEN, Flag.ANSWERED)
+        assertThat(backendFolder.getMessageFlags(messageServerId = "2")).containsAll(Flag.SEEN, Flag.ANSWERED)
     }
 
     @Test
@@ -200,7 +205,7 @@ class ImapSyncTest {
 
         imapSync.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
-        assertThat(backendFolder.getMessageServerIds()).containsExactly("300", "301")
+        assertThat(backendFolder.getMessageServerIds()).containsExactlyInAnyOrder("300", "301")
 
         imapFolder.setUidValidity(9000)
         imapFolder.removeAllMessages()
@@ -208,7 +213,7 @@ class ImapSyncTest {
 
         imapSync.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
-        assertThat(backendFolder.getMessageServerIds()).containsExactly("1")
+        assertThat(backendFolder.getMessageServerIds()).containsExactlyInAnyOrder("1")
         verify(syncListener).syncNewMessage(FOLDER_SERVER_ID, messageServerId = "1", isOldMessage = false)
     }
 
