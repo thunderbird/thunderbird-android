@@ -1,8 +1,10 @@
 package com.fsck.k9.message.extractors
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.MimeBodyPart
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class BasicPartInfoExtractorTest {

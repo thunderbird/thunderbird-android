@@ -1,9 +1,19 @@
 package com.fsck.k9.notification
 
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isSameAs
+import assertk.assertions.isTrue
 import com.fsck.k9.Account
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.controller.MessageReference
-import com.google.common.truth.Truth.assertThat
 import kotlin.test.assertNotNull
 import org.junit.Test
 
@@ -177,12 +187,12 @@ class NotificationDataStoreTest : RobolectricTest() {
         assertNotNull(resultOne)
         assertNotNull(resultTwo)
         assertThat(resultTwo.notificationData.activeNotifications).hasSize(1)
-        assertThat(resultTwo.notificationData.activeNotifications.first().content).isSameInstanceAs(content2)
+        assertThat(resultTwo.notificationData.activeNotifications.first().content).isSameAs(content2)
         assertThat(resultTwo.notificationStoreOperations).isEmpty()
         with(resultTwo.notificationHolder) {
             assertThat(notificationId).isEqualTo(resultOne.notificationHolder.notificationId)
             assertThat(timestamp).isEqualTo(resultOne.notificationHolder.timestamp)
-            assertThat(content).isSameInstanceAs(content2)
+            assertThat(content).isSameAs(content2)
         }
         assertThat(resultTwo.shouldCancelNotification).isFalse()
     }
@@ -213,7 +223,7 @@ class NotificationDataStoreTest : RobolectricTest() {
         val notificationHolder = resultTwo.notificationData.activeNotifications.first { notificationHolder ->
             notificationHolder.content.messageReference == content.messageReference
         }
-        assertThat(notificationHolder.content).isSameInstanceAs(content)
+        assertThat(notificationHolder.content).isSameAs(content)
     }
 
     private fun createAccount(): Account {

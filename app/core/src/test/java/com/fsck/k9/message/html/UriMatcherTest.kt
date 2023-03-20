@@ -96,10 +96,10 @@ class UriMatcherTest {
             val uri = uris[i]
             val startIndex = text.indexOf(uri)
             assertThat(startIndex).isNotEqualTo(-1)
-            val (startIndex1, endIndex, uri1) = uriMatches[i]
-            assertThat(startIndex1).isEqualTo(startIndex)
-            assertThat(endIndex).isEqualTo(startIndex + uri.length)
-            assertThat(uri1).isEqualTo(uri)
+            val uriMatch = uriMatches[i]
+            assertThat(uriMatch.startIndex).isEqualTo(startIndex)
+            assertThat(uriMatch.endIndex).isEqualTo(startIndex + uri.length)
+            assertThat(uriMatch.uri).isEqualTo(uri)
             i++
         }
     }

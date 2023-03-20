@@ -1,8 +1,9 @@
 package com.fsck.k9.message.html
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.crlf
 import com.fsck.k9.mail.removeLineBreaks
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class HtmlConverterTest {

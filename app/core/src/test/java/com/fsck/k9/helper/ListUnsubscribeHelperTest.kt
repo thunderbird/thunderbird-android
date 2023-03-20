@@ -1,9 +1,10 @@
 package com.fsck.k9.helper
 
 import androidx.core.net.toUri
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.internet.MimeMessage
-import com.google.common.truth.Truth.assertThat
 import kotlin.test.assertNull
 import org.junit.Test
 

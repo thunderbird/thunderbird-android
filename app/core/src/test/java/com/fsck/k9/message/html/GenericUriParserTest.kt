@@ -1,6 +1,7 @@
 package com.fsck.k9.message.html
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import kotlin.test.assertNotNull
 import org.junit.Test
 

@@ -1,11 +1,14 @@
 package com.fsck.k9
 
+import assertk.assertThat
+import assertk.assertions.hasMessage
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
-import com.google.common.truth.Truth.assertThat
-import org.junit.Assert.fail
 import org.junit.Test
 
 class ServerSettingsSerializerTest {
@@ -64,11 +67,10 @@ class ServerSettingsSerializerTest {
             }
         """.trimIndent()
 
-        try {
+        assertThat {
             serverSettingsSerializer.deserialize(json)
-            fail("Expected exception")
-        } catch (e: IllegalArgumentException) {
-            assertThat(e).hasMessageThat().isEqualTo("'type' must not be missing")
-        }
+        }.isFailure()
+            .isInstanceOf(IllegalArgumentException::class)
+            .hasMessage("'type' must not be missing")
     }
 }

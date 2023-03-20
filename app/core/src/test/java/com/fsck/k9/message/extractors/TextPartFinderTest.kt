@@ -1,10 +1,12 @@
 package com.fsck.k9.message.extractors
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import com.fsck.k9.message.MessageCreationHelper.createEmptyPart
 import com.fsck.k9.message.MessageCreationHelper.createMultipart
 import com.fsck.k9.message.MessageCreationHelper.createPart
 import com.fsck.k9.message.MessageCreationHelper.createTextPart
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class TextPartFinderTest {

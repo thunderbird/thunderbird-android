@@ -1,6 +1,8 @@
 package com.fsck.k9.notification
 
 import app.k9mail.core.android.common.contact.ContactRepository
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.Account
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.controller.MessageReference
@@ -8,7 +10,6 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn

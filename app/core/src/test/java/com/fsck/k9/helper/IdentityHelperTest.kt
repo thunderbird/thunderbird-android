@@ -1,5 +1,7 @@
 package com.fsck.k9.helper
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.RobolectricTest
@@ -8,7 +10,6 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.internet.AddressHeaderBuilder
 import com.fsck.k9.mail.internet.MimeMessage
-import com.google.common.truth.Truth.assertThat
 import java.util.UUID
 import org.junit.Test
 

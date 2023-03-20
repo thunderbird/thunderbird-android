@@ -1,7 +1,12 @@
 package com.fsck.k9.autocrypt
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import com.fsck.k9.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class AutocryptDraftStateHeaderParserTest : RobolectricTest() {

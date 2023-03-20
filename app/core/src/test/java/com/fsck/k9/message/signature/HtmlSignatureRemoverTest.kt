@@ -1,9 +1,10 @@
 package com.fsck.k9.message.signature
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.message.html.HtmlHelper.extractText
 import com.fsck.k9.message.signature.HtmlSignatureRemover.Companion.stripSignature
 import com.fsck.k9.testing.removeNewlines
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class HtmlSignatureRemoverTest {
