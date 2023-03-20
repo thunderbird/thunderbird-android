@@ -132,7 +132,6 @@ robolectric = "org.robolectric:robolectric:4.9.2"
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito" }
 mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:4.1.0"
-truth = "com.google.truth:truth:1.1.3"
 turbine = "app.cash.turbine:turbine:0.12.1"
 jdom2 = "org.jdom:jdom2:2.0.6.1"
 icu4j-charset = "com.ibm.icu:icu4j-charset:72.1"
@@ -175,7 +174,4 @@ shared-jvm-test-compose = [
   "robolectric",
   "androidx-compose-ui-test-junit4",
   "androidx-test-espresso-core",
-]
-shared-jvm-test-legacy = [
-  "truth",
 ]
