@@ -81,7 +81,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
             navigationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)
 
             setNavigationOnClickListener {
-                dismiss()
+                dismissAllowingStateLoss()
             }
         }
 
@@ -328,7 +328,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
             putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
         }
 
-        dismiss()
+        dismissAllowingStateLoss()
         requireContext().startActivity(intent)
     }
 
@@ -338,12 +338,12 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
 
     private fun searchCryptoKeys() {
         setFragmentResult(FRAGMENT_RESULT_KEY, bundleOf(RESULT_ACTION to ACTION_SEARCH_KEYS))
-        dismiss()
+        dismissAllowingStateLoss()
     }
 
     private fun showCryptoWarning() {
         setFragmentResult(FRAGMENT_RESULT_KEY, bundleOf(RESULT_ACTION to ACTION_SHOW_WARNING))
-        dismiss()
+        dismissAllowingStateLoss()
     }
 
     companion object {
