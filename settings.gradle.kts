@@ -49,6 +49,7 @@ include(
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:theme",
+    ":core:ui:compose:testing",
 )
 
 include(

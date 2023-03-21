@@ -15,6 +15,7 @@ import app.k9mail.ui.catalog.items.buttonItems
 import app.k9mail.ui.catalog.items.colorItems
 import app.k9mail.ui.catalog.items.imageItems
 import app.k9mail.ui.catalog.items.selectionControlItems
+import app.k9mail.ui.catalog.items.textFieldItems
 import app.k9mail.ui.catalog.items.themeHeaderItem
 import app.k9mail.ui.catalog.items.themeSelectorItems
 import app.k9mail.ui.catalog.items.typographyItems
@@ -48,6 +49,7 @@ fun CatalogContent(
             colorItems()
             buttonItems()
             selectionControlItems()
+            textFieldItems()
             imageItems()
         }
     }
