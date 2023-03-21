@@ -1,6 +1,10 @@
 package com.fsck.k9.mail.store.imap
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.containsExactlyInAnyOrder
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
 import org.junit.Test
 
 class IdGrouperTest {
@@ -30,7 +34,7 @@ class IdGrouperTest {
 
         val groupedIds = IdGrouper.groupIds(ids)
 
-        assertThat(groupedIds.ids).containsExactly(1L, 10L, 23L)
+        assertThat(groupedIds.ids).containsExactlyInAnyOrder(1L, 10L, 23L)
         assertThat(groupedIds.idGroups.mapToString()).containsExactly("3:6", "12:14")
     }
 
@@ -40,7 +44,7 @@ class IdGrouperTest {
 
         val groupedIds = IdGrouper.groupIds(ids)
 
-        assertThat(groupedIds.ids).containsExactly(23L)
+        assertThat(groupedIds.ids).containsExactlyInAnyOrder(23L)
         assertThat(groupedIds.idGroups).isEmpty()
     }
 

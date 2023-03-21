@@ -1,11 +1,13 @@
 package com.fsck.k9.mail.store.pop3
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isSameAs
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
-import com.google.common.truth.Truth.assertThat
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.net.Socket
@@ -24,7 +26,7 @@ class Pop3StoreTest {
         val folderOne = store.getFolder("TestFolder")
         val folderTwo = store.getFolder("TestFolder")
 
-        assertThat(folderTwo).isSameInstanceAs(folderOne)
+        assertThat(folderTwo).isSameAs(folderOne)
     }
 
     @Test

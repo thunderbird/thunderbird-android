@@ -1,14 +1,19 @@
 package com.fsck.k9.mail.store.imap
 
+import assertk.assertThat
+import assertk.assertions.hasMessage
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isFalse
+import assertk.assertions.isGreaterThan
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isTrue
 import com.fsck.k9.mail.AuthenticationFailedException
-import com.google.common.truth.Truth.assertThat
-import com.google.common.truth.Truth.assertWithMessage
 import java.io.IOException
 import java.net.SocketException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
-import org.junit.Assert.fail
 import org.junit.Test
 
 private const val FOLDER_SERVER_ID = "folder"
@@ -219,12 +224,11 @@ class RealImapFolderIdlerTest {
         imapFolder.throwOnOpen { throw AuthenticationFailedException("Authentication failure for test") }
 
         thread {
-            try {
+            assertThat {
                 idler.idle()
-                fail("Expected exception")
-            } catch (e: AuthenticationFailedException) {
-                assertThat(e).hasMessageThat().isEqualTo("Authentication failure for test")
-            }
+            }.isFailure()
+                .isInstanceOf(AuthenticationFailedException::class)
+                .hasMessage("Authentication failure for test")
 
             latch.countDown()
         }
@@ -239,12 +243,11 @@ class RealImapFolderIdlerTest {
         imapFolder.throwOnOpen { throw IOException("I/O error for test") }
 
         thread {
-            try {
+            assertThat {
                 idler.idle()
-                fail("Expected exception")
-            } catch (e: IOException) {
-                assertThat(e).hasMessageThat().isEqualTo("I/O error for test")
-            }
+            }.isFailure()
+                .isInstanceOf(IOException::class)
+                .hasMessage("I/O error for test")
 
             latch.countDown()
         }
@@ -258,12 +261,11 @@ class RealImapFolderIdlerTest {
         val latch = CountDownLatch(1)
 
         thread {
-            try {
+            assertThat {
                 idler.idle()
-                fail("Expected exception")
-            } catch (e: IOException) {
-                assertThat(e).hasMessageThat().isEqualTo("Socket closed during IDLE")
-            }
+            }.isFailure()
+                .isInstanceOf(IOException::class)
+                .hasMessage("Socket closed during IDLE")
 
             latch.countDown()
         }
@@ -338,5 +340,5 @@ class RealImapFolderIdlerTest {
 }
 
 private fun CountDownLatch.awaitWithTimeout() {
-    assertWithMessage("Test timed out").that(await(TEST_TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue()
+    assertThat(await(TEST_TIMEOUT_SECONDS, TimeUnit.SECONDS), "Test timed out").isTrue()
 }

@@ -1,5 +1,14 @@
 package com.fsck.k9.mail.store.imap
 
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.cause
+import assertk.assertions.containsExactly
+import assertk.assertions.hasMessage
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isSameAs
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.FolderType
@@ -9,11 +18,9 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
-import com.google.common.truth.Truth.assertThat
 import java.io.IOException
 import java.util.ArrayDeque
 import java.util.Deque
-import org.junit.Assert.fail
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.kotlin.doReturn
@@ -43,13 +50,11 @@ class RealImapStoreTest {
         }
         imapStore.enqueueImapConnection(imapConnection)
 
-        try {
-            imapStore.checkSettings()
-            fail("Expected exception")
-        } catch (e: MessagingException) {
-            assertThat(e).hasMessageThat().isEqualTo("Unable to connect")
-            assertThat(e).hasCauseThat().isInstanceOf(IOException::class.java)
-        }
+        assertThat { imapStore.checkSettings() }.isFailure()
+            .isInstanceOf(MessagingException::class).all {
+                hasMessage("Unable to connect")
+                cause().isNotNull().isInstanceOf(IOException::class)
+            }
     }
 
     @Test
@@ -244,11 +249,8 @@ class RealImapStoreTest {
         }
         imapStore.enqueueImapConnection(imapConnection)
 
-        try {
-            imapStore.getFolders()
-            fail("Expected exception")
-        } catch (ignored: MessagingException) {
-        }
+        assertThat { imapStore.getFolders() }.isFailure()
+            .isInstanceOf(MessagingException::class)
 
         verify(imapConnection).close()
     }
@@ -260,7 +262,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameInstanceAs(imapConnection)
+        assertThat(result).isSameAs(imapConnection)
     }
 
     @Test
@@ -273,8 +275,8 @@ class RealImapStoreTest {
         val resultOne = imapStore.getConnection()
         val resultTwo = imapStore.getConnection()
 
-        assertThat(resultOne).isSameInstanceAs(imapConnectionOne)
-        assertThat(resultTwo).isSameInstanceAs(imapConnectionTwo)
+        assertThat(resultOne).isSameAs(imapConnectionOne)
+        assertThat(resultTwo).isSameAs(imapConnectionTwo)
     }
 
     @Test
@@ -289,7 +291,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameInstanceAs(imapConnection)
+        assertThat(result).isSameAs(imapConnection)
     }
 
     @Test
@@ -307,7 +309,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameInstanceAs(imapConnectionTwo)
+        assertThat(result).isSameAs(imapConnectionTwo)
     }
 
     @Test
@@ -326,7 +328,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameInstanceAs(imapConnectionTwo)
+        assertThat(result).isSameAs(imapConnectionTwo)
     }
 
     @Test
@@ -345,7 +347,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameInstanceAs(imapConnectionTwo)
+        assertThat(result).isSameAs(imapConnectionTwo)
     }
 
     @Test
@@ -364,7 +366,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameInstanceAs(imapConnectionTwo)
+        assertThat(result).isSameAs(imapConnectionTwo)
     }
 
     private fun createMockConnection(connectionGeneration: Int = 1): ImapConnection {

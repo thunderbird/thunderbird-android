@@ -1,9 +1,15 @@
 package com.fsck.k9.mail
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.message
+import assertk.assertions.startsWith
 import com.fsck.k9.mail.MimeType.Companion.toMimeType
 import com.fsck.k9.mail.MimeType.Companion.toMimeTypeOrNull
-import com.google.common.truth.Truth.assertThat
-import org.junit.Assert.fail
 import org.junit.Test
 
 class MimeTypeTest {
@@ -63,12 +69,11 @@ class MimeTypeTest {
     }
 
     private fun assertInvalidMimeType(input: String) {
-        try {
+        assertThat {
             input.toMimeType()
-            fail("Expected exception")
-        } catch (e: IllegalArgumentException) {
-            assertThat(e.message).startsWith("Invalid MIME type: ")
-        }
+        }.isFailure()
+            .isInstanceOf(IllegalArgumentException::class)
+            .message().isNotNull().startsWith("Invalid MIME type: ")
     }
 
     private fun assertInvalidMimeTypeReturnsNull(input: String) {

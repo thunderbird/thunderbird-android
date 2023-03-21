@@ -1,9 +1,23 @@
 package com.fsck.k9.mail.transport.smtp
 
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.containsExactlyInAnyOrder
+import assertk.assertions.hasMessage
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isFalse
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
+import assertk.assertions.key
+import assertk.assertions.prop
 import com.fsck.k9.mail.crlf
 import com.fsck.k9.mail.filter.PeekableInputStream
-import com.google.common.truth.Truth.assertThat
-import org.junit.Assert.fail
 import org.junit.Test
 
 class SmtpResponseParserTest {
@@ -55,21 +69,25 @@ class SmtpResponseParserTest {
 
         val response = parser.readHelloResponse()
 
-        assertType<SmtpHelloResponse.Hello>(response) { hello ->
-            assertThat(hello.response.toLogString(omitText = false, linePrefix = "")).isEqualTo(input)
-            assertThat(hello.keywords.keys).containsExactly(
-                "PIPELINING",
-                "ENHANCEDSTATUSCODES",
-                "8BITMIME",
-                "SIZE",
-                "DELIVERBY",
-                "AUTH",
-                "HELP",
-            )
-            assertThat(hello.keywords["PIPELINING"]).isEmpty()
-            assertThat(hello.keywords["SIZE"]).containsExactly("104857600")
-            assertThat(hello.keywords["AUTH"]).containsExactly("PLAIN", "LOGIN", "CRAM-MD5", "DIGEST-MD5")
+        assertThat(response).isInstanceOf(SmtpHelloResponse.Hello::class).all {
+            prop(SmtpHelloResponse.Hello::response)
+                .transform { it.toLogString(false, "") }.isEqualTo(input)
+            prop(SmtpHelloResponse.Hello::keywords).all {
+                transform { it.keys }.containsExactlyInAnyOrder(
+                    "PIPELINING",
+                    "ENHANCEDSTATUSCODES",
+                    "8BITMIME",
+                    "SIZE",
+                    "DELIVERBY",
+                    "AUTH",
+                    "HELP",
+                )
+                key("PIPELINING").isNotNull().isEmpty()
+                key("SIZE").isNotNull().containsExactly("104857600")
+                key("AUTH").isNotNull().containsExactly("PLAIN", "LOGIN", "CRAM-MD5", "DIGEST-MD5")
+            }
         }
+
         assertInputExhausted(inputStream)
     }
 
@@ -80,10 +98,12 @@ class SmtpResponseParserTest {
 
         val response = parser.readHelloResponse()
 
-        assertType<SmtpHelloResponse.Hello>(response) { hello ->
-            assertThat(hello.response.replyCode).isEqualTo(250)
-            assertThat(hello.response.texts).containsExactly("smtp.domain.example")
-            assertThat(hello.keywords).isEmpty()
+        assertThat(response).isInstanceOf(SmtpHelloResponse.Hello::class).all {
+            prop(SmtpHelloResponse.Hello::response).all {
+                prop(SmtpResponse::replyCode).isEqualTo(250)
+                prop(SmtpResponse::texts).containsExactly("smtp.domain.example")
+            }
+            prop(SmtpHelloResponse.Hello::keywords).isEmpty()
         }
     }
 
@@ -94,10 +114,11 @@ class SmtpResponseParserTest {
 
         val response = parser.readHelloResponse()
 
-        assertType<SmtpHelloResponse.Error>(response) { error ->
-            assertThat(error.response.replyCode).isEqualTo(421)
-            assertThat(error.response.texts).containsExactly("Service not available")
-        }
+        assertThat(response).isInstanceOf(SmtpHelloResponse.Error::class)
+            .prop(SmtpHelloResponse.Error::response).all {
+                prop(SmtpResponse::replyCode).isEqualTo(421)
+                prop(SmtpResponse::texts).containsExactly("Service not available")
+            }
     }
 
     @Test
@@ -105,9 +126,11 @@ class SmtpResponseParserTest {
         val input = "250".toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("Unexpected character: (13)") {
+        assertThat {
             parser.readHelloResponse()
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Unexpected character: (13)")
 
         assertThat(logger.logEntries).containsExactly(
             LogEntry(
@@ -128,9 +151,11 @@ class SmtpResponseParserTest {
         """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("Multi-line response with reply codes not matching: 250 != 220") {
+        assertThat {
             parser.readHelloResponse()
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Multi-line response with reply codes not matching: 250 != 220")
 
         assertThat(logger.logEntries).containsExactly(
             LogEntry(
@@ -159,14 +184,13 @@ class SmtpResponseParserTest {
 
         val response = parser.readHelloResponse()
 
-        assertType<SmtpHelloResponse.Hello>(response) { hello ->
-            assertThat(hello.keywords.keys).containsExactly(
+        assertThat(response).isInstanceOf(SmtpHelloResponse.Hello::class)
+            .prop(SmtpHelloResponse.Hello::keywords).transform { it.keys }.containsExactlyInAnyOrder(
                 "SIZE",
                 "8BITMIME",
                 "PIPELINING",
                 "HELP",
             )
-        }
 
         assertThat(logger.logEntries.map { it.message }).containsExactly(
             "Ignoring EHLO keyword line: PIPE_CONNECT",
@@ -188,12 +212,11 @@ class SmtpResponseParserTest {
 
         val response = parser.readHelloResponse()
 
-        assertType<SmtpHelloResponse.Hello>(response) { hello ->
-            assertThat(hello.keywords.keys).isEmpty()
-        }
+        assertThat(response).isInstanceOf(SmtpHelloResponse.Hello::class)
+            .transform { it.keywords.keys }.isEmpty()
 
-        assertThat(logger.logEntries).hasSize(1)
-        assertThat(logger.logEntries.first().throwable).hasMessageThat().isEqualTo("EHLO parameter must not be empty")
+        assertThat(logger.logEntries).isNotNull().hasSize(1)
+        assertThat(logger.logEntries.first().throwable).isNotNull().hasMessage("EHLO parameter must not be empty")
         assertThat(logger.logEntries.first().message).isEqualTo("Ignoring EHLO keyword line: KEYWORD ")
     }
 
@@ -208,13 +231,12 @@ class SmtpResponseParserTest {
 
         val response = parser.readHelloResponse()
 
-        assertType<SmtpHelloResponse.Hello>(response) { hello ->
-            assertThat(hello.keywords.keys).containsExactly("8BITMIME")
-        }
+        assertThat(response).isInstanceOf(SmtpHelloResponse.Hello::class)
+            .transform { it.keywords.keys }.containsExactlyInAnyOrder("8BITMIME")
 
         assertThat(logger.logEntries).hasSize(1)
-        assertThat(logger.logEntries.first().throwable)
-            .hasMessageThat().isEqualTo("EHLO parameter contains invalid character")
+        assertThat(logger.logEntries.first().throwable).isNotNull()
+            .hasMessage("EHLO parameter contains invalid character")
         assertThat(logger.logEntries.first().message)
             .isEqualTo("Ignoring EHLO keyword line: KEYWORD para${"\t"}meter")
     }
@@ -228,9 +250,11 @@ class SmtpResponseParserTest {
         val parser = SmtpResponseParser(logger, input)
         parser.readGreeting()
 
-        assertFailsWithMessage("Unexpected character: I (73)") {
+        assertThat {
             parser.readHelloResponse()
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Unexpected character: I (73)")
 
         assertThat(logger.logEntries).containsExactly(
             LogEntry(
@@ -414,9 +438,11 @@ class SmtpResponseParserTest {
         """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("Multi-line response with reply codes not matching: 200 != 500") {
+        assertThat {
             parser.readResponse(enhancedStatusCodes = false)
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Multi-line response with reply codes not matching: 200 != 500")
 
         assertThat(logger.logEntries).containsExactly(
             LogEntry(
@@ -439,10 +465,11 @@ class SmtpResponseParserTest {
         val logger = TestSmtpLogger(isRawProtocolLoggingEnabled = false)
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("Multi-line response with reply codes not matching: 200 != 500") {
+        assertThat {
             parser.readResponse(enhancedStatusCodes = false)
-        }
-
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Multi-line response with reply codes not matching: 200 != 500")
         assertThat(logger.logEntries).isEmpty()
     }
 
@@ -451,9 +478,11 @@ class SmtpResponseParserTest {
         val input = "611".toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("Unsupported 1st reply code digit: 6") {
+        assertThat {
             parser.readResponse(enhancedStatusCodes = false)
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Unsupported 1st reply code digit: 6")
     }
 
     @Test
@@ -476,9 +505,11 @@ class SmtpResponseParserTest {
         val input = "20x".toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("Unexpected character: x (120)") {
+        assertThat {
             parser.readResponse(enhancedStatusCodes = false)
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Unexpected character: x (120)")
 
         assertThat(logger.logEntries).containsExactly(
             LogEntry(
@@ -496,9 +527,11 @@ class SmtpResponseParserTest {
         val input = PeekableInputStream("200".byteInputStream())
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("Unexpected end of stream") {
+        assertThat {
             parser.readResponse(enhancedStatusCodes = false)
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Unexpected end of stream")
 
         assertThat(logger.logEntries).containsExactly(
             LogEntry(
@@ -516,9 +549,11 @@ class SmtpResponseParserTest {
         val input = PeekableInputStream("200\r".byteInputStream())
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("Unexpected end of stream") {
+        assertThat {
             parser.readResponse(enhancedStatusCodes = false)
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Unexpected end of stream")
     }
 
     @Test
@@ -526,9 +561,11 @@ class SmtpResponseParserTest {
         val input = PeekableInputStream("200\n".byteInputStream())
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage("Unexpected character: (10)") {
+        assertThat {
             parser.readResponse(enhancedStatusCodes = false)
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage("Unexpected character: (10)")
 
         assertThat(logger.logEntries).containsExactly(
             LogEntry(
@@ -654,12 +691,14 @@ class SmtpResponseParserTest {
         """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
 
-        assertFailsWithMessage(
-            "Multi-line response with enhanced status codes not matching: " +
-                "EnhancedStatusCode(statusClass=PERMANENT_FAILURE, subject=2, detail=1) != null",
-        ) {
+        assertThat {
             parser.readResponse(enhancedStatusCodes = true)
-        }
+        }.isFailure()
+            .isInstanceOf(SmtpResponseParserException::class)
+            .hasMessage(
+                "Multi-line response with enhanced status codes not matching: " +
+                    "EnhancedStatusCode(statusClass=PERMANENT_FAILURE, subject=2, detail=1) != null",
+            )
     }
 
     @Test
@@ -682,21 +721,7 @@ class SmtpResponseParserTest {
         assertThat(input.read()).isEqualTo(-1)
     }
 
-    private fun assertFailsWithMessage(expectedMessage: String, block: () -> Unit) {
-        try {
-            block()
-            fail("Expected SmtpResponseParserException")
-        } catch (e: SmtpResponseParserException) {
-            assertThat(e).hasMessageThat().isEqualTo(expectedMessage)
-        }
-    }
-
     private fun String.toPeekableInputStream(): PeekableInputStream {
         return PeekableInputStream((this.trimIndent().crlf() + "\r\n").byteInputStream())
-    }
-
-    private inline fun <reified T> assertType(actual: Any, block: (T) -> Unit) {
-        assertThat(actual).isInstanceOf(T::class.java)
-        block(actual as T)
     }
 }

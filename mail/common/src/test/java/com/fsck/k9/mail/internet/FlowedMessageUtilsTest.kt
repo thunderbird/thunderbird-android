@@ -1,7 +1,8 @@
 package com.fsck.k9.mail.internet
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.crlf
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class FlowedMessageUtilsTest {

@@ -1,6 +1,7 @@
 package com.fsck.k9.mail.internet
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import org.junit.Test
 
 private const val MESSAGE_ID = "<left-side@domain.example>"

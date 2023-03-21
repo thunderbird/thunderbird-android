@@ -1,5 +1,10 @@
 package com.fsck.k9.mail.store.pop3
 
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isSameAs
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.FetchProfile
@@ -8,7 +13,6 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.crlf
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.store.pop3.Pop3Commands.STAT_COMMAND
-import com.google.common.truth.Truth.assertThat
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -184,7 +188,7 @@ class Pop3FolderTest {
 
         val message = folder.getMessage(MESSAGE_SERVER_ID)
 
-        assertThat(message).isSameInstanceAs(messageList.first())
+        assertThat(message).isSameAs(messageList.first())
     }
 
     @Test

@@ -1,5 +1,7 @@
 package com.fsck.k9.mail
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.BinaryTempFileMessageBody
 import com.fsck.k9.mail.internet.MimeBodyPart
@@ -8,7 +10,6 @@ import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.MimeMultipart
 import com.fsck.k9.mail.internet.TextBody
-import com.google.common.truth.Truth.assertThat
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.file.Files

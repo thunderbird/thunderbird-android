@@ -1,6 +1,7 @@
 package com.fsck.k9.mail
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import java.util.Random
 import org.junit.Test
 import org.mockito.kotlin.mock
