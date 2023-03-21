@@ -1,8 +1,9 @@
 package com.fsck.k9.message.extractors
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.message.MessageCreationHelper
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class PreviewTextExtractorTest {

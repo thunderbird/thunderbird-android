@@ -1,7 +1,10 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class KeyValueStoreOperationsTest : RobolectricTest() {

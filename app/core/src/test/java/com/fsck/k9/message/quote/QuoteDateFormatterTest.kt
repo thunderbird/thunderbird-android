@@ -1,7 +1,8 @@
 package com.fsck.k9.message.quote
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.K9
-import com.google.common.truth.Truth.assertThat
 import java.time.ZonedDateTime
 import java.util.Date
 import java.util.Locale

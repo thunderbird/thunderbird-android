@@ -1,7 +1,13 @@
 package com.fsck.k9.mailstore
 
+import assertk.assertThat
+import assertk.assertions.isFalse
+import assertk.assertions.isNotNull
+import assertk.assertions.isNotSameAs
+import assertk.assertions.isNull
+import assertk.assertions.isSameAs
+import assertk.assertions.isTrue
 import com.fsck.k9.mail.Flag
-import com.google.common.truth.Truth.assertThat
 import java.util.UUID
 import org.junit.After
 import org.junit.Before
@@ -49,7 +55,7 @@ class MessageListCacheTest {
 
         val cache2 = MessageListCache.getCache("u002")
 
-        assertThat(cache2).isNotSameInstanceAs(cache)
+        assertThat(cache2).isNotSameAs(cache)
     }
 
     @Test
@@ -58,7 +64,7 @@ class MessageListCacheTest {
 
         val cache2 = MessageListCache.getCache("u001")
 
-        assertThat(cache2).isSameInstanceAs(cache)
+        assertThat(cache2).isSameAs(cache)
     }
 
     @Test
@@ -67,7 +73,7 @@ class MessageListCacheTest {
 
         val result = cache.getFlagForMessage(1L, Flag.SEEN)
 
-        assertThat(result).isTrue()
+        assertThat(result).isNotNull().isTrue()
     }
 
     @Test
@@ -93,7 +99,7 @@ class MessageListCacheTest {
 
         val result = cache.getFlagForThread(1L, Flag.SEEN)
 
-        assertThat(result).isFalse()
+        assertThat(result).isNotNull().isFalse()
     }
 
     @Test

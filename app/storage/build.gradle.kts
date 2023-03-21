@@ -12,7 +12,6 @@ dependencies {
     implementation(libs.commons.io)
     implementation(libs.moshi)
 
-    testImplementation(libs.bundles.shared.jvm.test.legacy)
     testImplementation(projects.mail.testing)
     testImplementation(projects.app.testing)
     testImplementation(libs.robolectric)

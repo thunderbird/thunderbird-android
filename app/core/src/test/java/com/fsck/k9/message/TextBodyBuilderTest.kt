@@ -1,7 +1,8 @@
 package com.fsck.k9.message
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.message.quote.InsertableHtmlContent
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized

@@ -1,8 +1,13 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.startsWith
 import com.fsck.k9.K9
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.Assert.fail as junitFail
 
@@ -41,7 +46,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
         assertPlaceholderEntry(sourceMessage)
 
         val destinationMessage = messages.first { it.id == destinationMessageId }
-        assertThat(destinationMessage.uid).startsWith(K9.LOCAL_UID_PREFIX)
+        assertThat(destinationMessage.uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
         assertThat(destinationMessage).isEqualTo(
             originalMessage.copy(
                 id = destinationMessageId,
@@ -108,7 +113,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
         assertPlaceholderEntry(sourceMessage)
 
         val destinationMessage = messages.first { it.id == destinationMessageId }
-        assertThat(destinationMessage.uid).startsWith(K9.LOCAL_UID_PREFIX)
+        assertThat(destinationMessage.uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
         assertThat(destinationMessage).isEqualTo(
             originalMessage.copy(
                 id = destinationMessageId,
@@ -160,7 +165,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
         assertPlaceholderEntry(sourceMessage)
 
         val destinationMessage = messages.first { it.id == destinationMessageId }
-        assertThat(destinationMessage.uid).startsWith(K9.LOCAL_UID_PREFIX)
+        assertThat(destinationMessage.uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
         assertThat(destinationMessage).isEqualTo(
             originalMessage.copy(
                 id = destinationMessageId,

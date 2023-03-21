@@ -1,6 +1,8 @@
 package com.fsck.k9.message.html
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isSameAs
 import org.junit.Test
 
 class EmailSectionTest {
@@ -45,7 +47,7 @@ class EmailSectionTest {
     fun subSequence() {
         val section = "[ One][ Two][ Three]".asEmailSection()
 
-        assertThat(section.subSequence(0, 11)).isSameInstanceAs(section)
+        assertThat(section.subSequence(0, 11)).isSameAs(section)
         assertThat(section.subSequence(0, 3).asString()).isEqualTo("One")
         assertThat(section.subSequence(0, 2).asString()).isEqualTo("On")
         assertThat(section.subSequence(1, 3).asString()).isEqualTo("ne")

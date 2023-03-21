@@ -1,8 +1,9 @@
 package com.fsck.k9.message
 
+import assertk.assertThat
+import assertk.assertions.contains
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.helper.toCrLf
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class IdentityHeaderParserTest : RobolectricTest() {
@@ -28,6 +29,6 @@ class IdentityHeaderParserTest : RobolectricTest() {
 
         val result = IdentityHeaderParser.parse(input)
 
-        assertThat(result).containsEntry(IdentityField.SIGNATURE, "a".repeat(1000))
+        assertThat(result).contains(IdentityField.SIGNATURE, "a".repeat(1000))
     }
 }

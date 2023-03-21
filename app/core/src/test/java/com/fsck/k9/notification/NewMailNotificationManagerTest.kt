@@ -1,6 +1,17 @@
 package com.fsck.k9.notification
 
 import app.k9mail.core.testing.TestClock
+import assertk.assertThat
+import assertk.assertions.containsExactlyInAnyOrder
+import assertk.assertions.doesNotContain
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
@@ -8,7 +19,6 @@ import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.mailstore.NotificationMessage
-import com.google.common.truth.Truth.assertThat
 import kotlin.test.assertNotNull
 import kotlinx.datetime.Instant
 import org.junit.Test
@@ -60,7 +70,7 @@ class NewMailNotificationManagerTest {
                 summary = "summary",
             ),
         )
-        assertThat(result.summaryNotificationData).isInstanceOf(SummarySingleNotificationData::class.java)
+        assertThat(result.summaryNotificationData).isNotNull().isInstanceOf(SummarySingleNotificationData::class.java)
         val summaryNotificationData = result.summaryNotificationData as SummarySingleNotificationData
         assertThat(summaryNotificationData.singleNotificationData.isSilent).isFalse()
     }
@@ -98,7 +108,7 @@ class NewMailNotificationManagerTest {
             ),
         )
         assertThat(result.baseNotificationData.newMessagesCount).isEqualTo(2)
-        assertThat(result.summaryNotificationData).isInstanceOf(SummaryInboxNotificationData::class.java)
+        assertThat(result.summaryNotificationData).isNotNull().isInstanceOf(SummaryInboxNotificationData::class.java)
         val summaryNotificationData = result.summaryNotificationData as SummaryInboxNotificationData
         assertThat(summaryNotificationData.content).isEqualTo(listOf("Zoe Meeting", "Alice Hi Bob"))
         assertThat(summaryNotificationData.messageReferences).isEqualTo(
@@ -173,7 +183,7 @@ class NewMailNotificationManagerTest {
         }
 
         assertNotNull(result) { data ->
-            assertThat(data.cancelNotificationIds).containsExactly(
+            assertThat(data.cancelNotificationIds).containsExactlyInAnyOrder(
                 NotificationIds.getNewMailSummaryNotificationId(account),
                 NotificationIds.getSingleMessageNotificationId(account, 0),
             )
@@ -219,7 +229,7 @@ class NewMailNotificationManagerTest {
             assertThat(data.cancelNotificationIds).isEqualTo(listOf(notificationIdTwo))
             assertThat(data.singleNotificationData).isEmpty()
             assertThat(data.baseNotificationData.newMessagesCount).isEqualTo(2)
-            assertThat(data.summaryNotificationData).isInstanceOf(SummaryInboxNotificationData::class.java)
+            assertThat(data.summaryNotificationData).isNotNull().isInstanceOf(SummaryInboxNotificationData::class.java)
             val summaryNotificationData = data.summaryNotificationData as SummaryInboxNotificationData
             assertThat(summaryNotificationData.content).isEqualTo(listOf("Alice Three", "Alice One"))
             assertThat(summaryNotificationData.messageReferences).isEqualTo(
@@ -307,7 +317,7 @@ class NewMailNotificationManagerTest {
                 ),
             )
 
-            assertThat(data.summaryNotificationData).isInstanceOf(SummarySingleNotificationData::class.java)
+            assertThat(data.summaryNotificationData).isNotNull().isInstanceOf(SummarySingleNotificationData::class.java)
             val summaryNotificationData = data.summaryNotificationData as SummarySingleNotificationData
             assertThat(summaryNotificationData.singleNotificationData.isSilent).isTrue()
             assertThat(summaryNotificationData.singleNotificationData.content).isEqualTo(
@@ -344,7 +354,7 @@ class NewMailNotificationManagerTest {
             assertThat(data.singleNotificationData).hasSize(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
             assertThat(data.singleNotificationData.map { it.content.sender }).doesNotContain("inactive")
 
-            assertThat(data.summaryNotificationData).isInstanceOf(SummaryInboxNotificationData::class.java)
+            assertThat(data.summaryNotificationData).isNotNull().isInstanceOf(SummaryInboxNotificationData::class.java)
             val summaryNotificationData = data.summaryNotificationData as SummaryInboxNotificationData
             assertThat(summaryNotificationData.isSilent).isTrue()
         }

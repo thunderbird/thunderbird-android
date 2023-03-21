@@ -1,10 +1,14 @@
 package com.fsck.k9.message
 
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.buildMessage
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 private const val IDENTITY_EMAIL_ADDRESS = "myself@domain.example"

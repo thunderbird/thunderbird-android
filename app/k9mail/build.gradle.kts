@@ -32,8 +32,6 @@ dependencies {
         debugImplementation(libs.leakcanary.android)
     }
 
-    testImplementation(libs.bundles.shared.jvm.test.legacy)
-
     // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
     testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
 

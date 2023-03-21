@@ -1,9 +1,13 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotIn
+import assertk.assertions.isNull
 import com.fsck.k9.mail.crlf
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import okio.buffer
 import okio.sink
 import okio.source

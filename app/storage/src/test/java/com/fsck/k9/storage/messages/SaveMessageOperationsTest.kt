@@ -1,5 +1,11 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.startsWith
 import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
@@ -13,7 +19,6 @@ import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import com.fsck.k9.message.extractors.PreviewResult
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import java.io.ByteArrayOutputStream
 import java.util.Stack
 import org.junit.After
@@ -381,7 +386,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             assertThat(id).isEqualTo(newMessageId)
             assertThat(deleted).isEqualTo(0)
             assertThat(folderId).isEqualTo(1)
-            assertThat(uid).startsWith(K9.LOCAL_UID_PREFIX)
+            assertThat(uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
             assertThat(subject).isEqualTo("Provided subject")
             assertThat(date).isEqualTo(1618191720000L)
             assertThat(internalDate).isEqualTo(1618191720000L)

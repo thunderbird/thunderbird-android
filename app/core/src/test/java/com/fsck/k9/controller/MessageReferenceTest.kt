@@ -1,6 +1,9 @@
 package com.fsck.k9.controller
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import kotlin.test.assertNotNull
 import org.junit.Test
 

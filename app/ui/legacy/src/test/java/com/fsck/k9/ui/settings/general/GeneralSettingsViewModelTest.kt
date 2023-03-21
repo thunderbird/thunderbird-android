@@ -2,8 +2,10 @@ package com.fsck.k9.ui.settings.general
 
 import android.net.Uri
 import app.cash.turbine.test
+import assertk.assertThat
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
 import com.fsck.k9.logging.LogFileWriter
-import com.google.common.truth.Truth.assertThat
 import java.io.IOException
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers

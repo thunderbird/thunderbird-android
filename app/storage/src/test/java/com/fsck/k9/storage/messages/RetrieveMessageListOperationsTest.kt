@@ -1,11 +1,16 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.mailstore.MessageMapper
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class RetrieveMessageListOperationsTest : RobolectricTest() {
@@ -127,7 +132,7 @@ class RetrieveMessageListOperationsTest : RobolectricTest() {
             message.id
         }
 
-        assertThat(result).containsExactly(messageId1, messageId3)
+        assertThat(result).containsExactly(messageId3, messageId1)
     }
 
     @Test

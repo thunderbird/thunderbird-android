@@ -1,10 +1,11 @@
 package com.fsck.k9.ui.messageview
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.buildMessage
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 private const val IDENTITY_ADDRESS = "me@domain.example"

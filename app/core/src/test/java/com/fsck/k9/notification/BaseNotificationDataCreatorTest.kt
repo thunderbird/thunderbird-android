@@ -1,5 +1,10 @@
 package com.fsck.k9.notification
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isSameAs
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.K9
@@ -7,7 +12,6 @@ import com.fsck.k9.K9.LockScreenNotificationVisibility
 import com.fsck.k9.NotificationLight
 import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.mockito.kotlin.mock
 
@@ -21,7 +25,7 @@ class BaseNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
-        assertThat(result.account).isSameInstanceAs(account)
+        assertThat(result.account).isSameAs(account)
     }
 
     @Test
@@ -163,9 +167,8 @@ class BaseNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
-        assertThat(result.appearance.vibrationPattern).isEqualTo(
-            NotificationVibration.getSystemPattern(VibratePattern.Pattern3, 2),
-        )
+        assertThat(result.appearance.vibrationPattern).isNotNull()
+            .isEqualTo(NotificationVibration.getSystemPattern(VibratePattern.Pattern3, 2))
     }
 
     @Test

@@ -1,7 +1,9 @@
 package com.fsck.k9.ui.messageview
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import com.fsck.k9.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class RecipientLayoutCreatorTest : RobolectricTest() {

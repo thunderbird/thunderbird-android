@@ -1,8 +1,12 @@
 package com.fsck.k9.notification
 
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.containsNoDuplicates
+import assertk.assertions.doesNotContain
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
 import com.fsck.k9.Account
-import com.google.common.truth.Truth.assertThat
-import com.google.common.truth.Truth.assertWithMessage
 import org.junit.Test
 
 class NotificationIdsTest {
@@ -37,7 +41,7 @@ class NotificationIdsTest {
         val notificationIds1 = getAccountNotificationIds(account1)
         val notificationIds2 = getAccountNotificationIds(account2)
 
-        assertWithMessage("Reused notification IDs").that(notificationIds1 intersect notificationIds2).isEmpty()
+        assertThat(actual = notificationIds1 intersect notificationIds2, name = "Reused notification IDs").isEmpty()
     }
 
     @Test
@@ -64,7 +68,7 @@ class NotificationIdsTest {
         val minNotificationId = requireNotNull(notificationIds.minOrNull())
         val maxNotificationId = requireNotNull(notificationIds.maxOrNull())
         val notificationIdRange = (minNotificationId..maxNotificationId)
-        assertWithMessage("Skipped notification IDs").that(notificationIdRange - notificationIds).isEmpty()
+        assertThat(actual = notificationIdRange - notificationIds, name = "Skipped notification IDs").isEmpty()
     }
 
     @Test
@@ -87,9 +91,8 @@ class NotificationIdsTest {
 
         val notificationIds = NotificationIds.getAllMessageNotificationIds(account)
 
-        assertThat(notificationIds).containsExactlyElementsIn(
-            getNewMessageNotificationIds(account) + NotificationIds.getNewMailSummaryNotificationId(account),
-        )
+        val expected = getNewMessageNotificationIds(account) + NotificationIds.getNewMailSummaryNotificationId(account)
+        assertThat(notificationIds).containsExactly(*expected)
     }
 
     private fun getGeneralNotificationIds(): List<Int> {
@@ -108,13 +111,13 @@ class NotificationIdsTest {
         ) + getNewMessageNotificationIds(account)
     }
 
-    private fun getNewMessageNotificationIds(account: Account): List<Int> {
+    private fun getNewMessageNotificationIds(account: Account): Array<Int> {
         return (0 until MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS).map { index ->
             NotificationIds.getSingleMessageNotificationId(account, index)
-        }
+        }.toTypedArray()
     }
 
-    fun createAccount(accountNumber: Int): Account {
+    private fun createAccount(accountNumber: Int): Account {
         return Account("uuid").apply {
             this.accountNumber = accountNumber
         }

@@ -1,11 +1,13 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.CreateFolderInfo
 import com.fsck.k9.mailstore.FolderSettings
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class CreateFolderOperationsTest : RobolectricTest() {

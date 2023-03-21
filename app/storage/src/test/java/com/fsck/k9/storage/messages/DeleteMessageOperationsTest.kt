@@ -1,8 +1,15 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.containsExactlyInAnyOrder
+import assertk.assertions.extracting
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Test
 import org.mockito.kotlin.anyOrNull
@@ -184,6 +191,6 @@ class DeleteMessageOperationsTest : RobolectricTest() {
 
         val threads = sqliteDatabase.readThreads()
         assertThat(threads).hasSize(2)
-        assertThat(threads.map { it.id }.toSet()).isEqualTo(setOf(threadId1, threadId2))
+        assertThat(threads).extracting { it.id }.containsExactlyInAnyOrder(threadId1, threadId2)
     }
 }

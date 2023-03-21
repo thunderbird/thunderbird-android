@@ -1,6 +1,9 @@
 package com.fsck.k9.widget.unread
 
 import android.content.Context
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import com.fsck.k9.Account
 import com.fsck.k9.AppRobolectricTest
 import com.fsck.k9.Preferences
@@ -12,7 +15,6 @@ import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock

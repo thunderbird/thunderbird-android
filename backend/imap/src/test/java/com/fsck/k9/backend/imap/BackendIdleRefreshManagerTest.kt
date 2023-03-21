@@ -1,6 +1,9 @@
 package com.fsck.k9.backend.imap
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import org.junit.Test
 
 private const val START_TIME = 100_000_000L

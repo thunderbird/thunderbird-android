@@ -1,11 +1,12 @@
 package com.fsck.k9.message
 
+import assertk.assertThat
+import assertk.assertions.isGreaterThan
 import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.Identity
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.internet.MimeHeaderChecker
 import com.fsck.k9.mail.internet.TextBody
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 private const val IDENTITY_HEADER = "X-K9mail-Identity"

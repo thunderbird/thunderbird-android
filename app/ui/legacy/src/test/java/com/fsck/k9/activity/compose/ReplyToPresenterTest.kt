@@ -1,10 +1,13 @@
 package com.fsck.k9.activity.compose
 
 import android.os.Bundle
+import assertk.assertThat
+import assertk.assertions.isFalse
+import assertk.assertions.isSameAs
+import assertk.assertions.isTrue
 import com.fsck.k9.Identity
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.Address
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -42,7 +45,7 @@ class ReplyToPresenterTest : RobolectricTest() {
 
         val result = replyToPresenter.getAddresses()
 
-        assertThat(result).isSameInstanceAs(addresses)
+        assertThat(result).isSameAs(addresses)
     }
 
     @Test

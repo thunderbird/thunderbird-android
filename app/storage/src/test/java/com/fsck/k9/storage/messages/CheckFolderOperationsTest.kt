@@ -1,7 +1,9 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertThat
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import com.fsck.k9.storage.RobolectricTest
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class CheckFolderOperationsTest : RobolectricTest() {

@@ -1,12 +1,16 @@
 package com.fsck.k9.storage.notifications
 
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.notification.NotificationStoreOperation
 import com.fsck.k9.storage.RobolectricTest
 import com.fsck.k9.storage.messages.createDatabase
 import com.fsck.k9.storage.messages.createLockableDatabaseMock
 import com.fsck.k9.storage.messages.createMessage
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 private const val FOLDER_ID = 1L

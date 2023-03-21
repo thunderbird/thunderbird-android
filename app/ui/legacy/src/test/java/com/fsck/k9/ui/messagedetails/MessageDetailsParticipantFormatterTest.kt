@@ -4,12 +4,17 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import androidx.core.text.getSpans
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 private const val IDENTITY_NAME = "Alice"
@@ -119,7 +124,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
         val displayName = participantFormatter.getDisplayName(Address("user1@domain.example"), account)
 
         assertThat(displayName.toString()).isEqualTo("Contact One")
-        assertThat(displayName).isInstanceOf(Spannable::class.java)
+        assertThat(displayName).isNotNull().isInstanceOf(Spannable::class.java)
         val spans = (displayName as Spannable).getSpans<ForegroundColorSpan>(0, displayName.length)
         assertThat(spans.map { it.foregroundColor }).containsExactly(Color.RED)
     }
