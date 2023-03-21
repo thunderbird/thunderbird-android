@@ -61,7 +61,7 @@ internal class DefaultMessageCountsProvider(
         }
     }
 
-    private fun getMessageCounts(account: Account, conditions: ConditionsTreeNode): MessageCounts {
+    private fun getMessageCounts(account: Account, conditions: ConditionsTreeNode?): MessageCounts {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)
             return MessageCounts(

@@ -172,15 +172,15 @@ $displayModeSelection
         }
     }
 
-    fun getUnreadMessageCount(conditions: ConditionsTreeNode): Int {
+    fun getUnreadMessageCount(conditions: ConditionsTreeNode?): Int {
         return getMessageCount(condition = "messages.read = 0", conditions)
     }
 
-    fun getStarredMessageCount(conditions: ConditionsTreeNode): Int {
+    fun getStarredMessageCount(conditions: ConditionsTreeNode?): Int {
         return getMessageCount(condition = "messages.flagged = 1", conditions)
     }
 
-    private fun getMessageCount(condition: String, extraConditions: ConditionsTreeNode): Int {
+    private fun getMessageCount(condition: String, extraConditions: ConditionsTreeNode?): Int {
         val whereBuilder = StringBuilder()
         val queryArgs = mutableListOf<String>()
         SqlQueryBuilder.buildWhereClause(extraConditions, whereBuilder, queryArgs)

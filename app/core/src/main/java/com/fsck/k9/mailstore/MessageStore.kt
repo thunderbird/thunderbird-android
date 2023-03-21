@@ -235,12 +235,12 @@ interface MessageStore {
     /**
      * Retrieve the number of unread messages matching [conditions].
      */
-    fun getUnreadMessageCount(conditions: ConditionsTreeNode): Int
+    fun getUnreadMessageCount(conditions: ConditionsTreeNode?): Int
 
     /**
      * Retrieve the number of starred messages matching [conditions].
      */
-    fun getStarredMessageCount(conditions: ConditionsTreeNode): Int
+    fun getStarredMessageCount(conditions: ConditionsTreeNode?): Int
 
     /**
      * Update a folder's name and type.
