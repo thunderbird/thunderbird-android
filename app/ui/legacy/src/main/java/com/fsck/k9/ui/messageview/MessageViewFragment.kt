@@ -123,6 +123,7 @@ class MessageViewFragment :
 
         if (savedInstanceState != null) {
             wasMessageMarkedAsOpened = savedInstanceState.getBoolean(STATE_WAS_MESSAGE_MARKED_AS_OPENED)
+            isActive = savedInstanceState.getBoolean(STATE_IS_ACTIVE)
         }
 
         messageCryptoPresenter = MessageCryptoPresenter(messageCryptoMvpView)
@@ -186,6 +187,7 @@ class MessageViewFragment :
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(STATE_WAS_MESSAGE_MARKED_AS_OPENED, wasMessageMarkedAsOpened)
+        outState.putBoolean(STATE_IS_ACTIVE, isActive)
     }
 
     override fun setMenuVisibility(menuVisible: Boolean) {
@@ -988,6 +990,7 @@ class MessageViewFragment :
         private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
 
         private const val STATE_WAS_MESSAGE_MARKED_AS_OPENED = "wasMessageMarkedAsOpened"
+        private const val STATE_IS_ACTIVE = "isActive"
 
         private const val ACTIVITY_CHOOSE_FOLDER_MOVE = 1
         private const val ACTIVITY_CHOOSE_FOLDER_COPY = 2
