@@ -20,7 +20,6 @@ public class MessageListHandler extends Handler {
     private static final int ACTION_REFRESH_TITLE = 2;
     private static final int ACTION_PROGRESS = 3;
     private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
-    private static final int ACTION_GO_BACK = 5;
 
     private WeakReference<MessageListFragment> mFragment;
 
@@ -61,11 +60,6 @@ public class MessageListHandler extends Handler {
         });
     }
 
-    public void goBack() {
-        android.os.Message msg = android.os.Message.obtain(this, ACTION_GO_BACK);
-        sendMessage(msg);
-    }
-
     @Override
     public void handleMessage(android.os.Message msg) {
         MessageListFragment fragment = mFragment.get();
@@ -101,10 +95,6 @@ public class MessageListHandler extends Handler {
             case ACTION_PROGRESS: {
                 boolean progress = (msg.arg1 == 1);
                 fragment.progress(progress);
-                break;
-            }
-            case ACTION_GO_BACK: {
-                fragment.goBack();
                 break;
             }
         }
