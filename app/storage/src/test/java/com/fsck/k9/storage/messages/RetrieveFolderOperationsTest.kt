@@ -413,10 +413,25 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         val folderId2 = sqliteDatabase.createFolder(integrate = true)
         sqliteDatabase.createMessage(folderId = folderId2, read = false)
         sqliteDatabase.createMessage(folderId = folderId2, read = true)
+        val folderId3 = sqliteDatabase.createFolder(integrate = false)
+        sqliteDatabase.createMessage(folderId = folderId3, read = false)
 
         val result = retrieveFolderOperations.getUnreadMessageCount(unifiedInboxConditions)
 
         assertThat(result).isEqualTo(3)
+    }
+
+    @Test
+    fun `get unread message count without condition`() {
+        val folderId1 = sqliteDatabase.createFolder(integrate = true)
+        sqliteDatabase.createMessage(folderId = folderId1, read = false)
+        val folderId2 = sqliteDatabase.createFolder(integrate = false)
+        sqliteDatabase.createMessage(folderId = folderId2, read = false)
+        sqliteDatabase.createMessage(folderId = folderId2, read = true)
+
+        val result = retrieveFolderOperations.getUnreadMessageCount(conditions = null)
+
+        assertThat(result).isEqualTo(2)
     }
 
     @Test
@@ -444,10 +459,25 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         sqliteDatabase.createMessage(folderId = folderId2, flagged = true)
         sqliteDatabase.createMessage(folderId = folderId2, flagged = true)
         sqliteDatabase.createMessage(folderId = folderId2, flagged = false)
+        val folderId3 = sqliteDatabase.createFolder(integrate = false)
+        sqliteDatabase.createMessage(folderId = folderId3, flagged = true)
 
         val result = retrieveFolderOperations.getStarredMessageCount(unifiedInboxConditions)
 
         assertThat(result).isEqualTo(3)
+    }
+
+    @Test
+    fun `get starred message count without condition`() {
+        val folderId1 = sqliteDatabase.createFolder(integrate = true)
+        sqliteDatabase.createMessage(folderId = folderId1, flagged = true)
+        val folderId2 = sqliteDatabase.createFolder(integrate = false)
+        sqliteDatabase.createMessage(folderId = folderId2, flagged = true)
+        sqliteDatabase.createMessage(folderId = folderId2, flagged = false)
+
+        val result = retrieveFolderOperations.getStarredMessageCount(conditions = null)
+
+        assertThat(result).isEqualTo(2)
     }
 
     @Test

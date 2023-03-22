@@ -185,11 +185,11 @@ class K9MessageStore(
         return retrieveFolderOperations.getUnreadMessageCount(folderId)
     }
 
-    override fun getUnreadMessageCount(conditions: ConditionsTreeNode): Int {
+    override fun getUnreadMessageCount(conditions: ConditionsTreeNode?): Int {
         return retrieveFolderOperations.getUnreadMessageCount(conditions)
     }
 
-    override fun getStarredMessageCount(conditions: ConditionsTreeNode): Int {
+    override fun getStarredMessageCount(conditions: ConditionsTreeNode?): Int {
         return retrieveFolderOperations.getStarredMessageCount(conditions)
     }
 
