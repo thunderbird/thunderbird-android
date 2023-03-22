@@ -596,7 +596,7 @@ class MessageListFragment :
         messagingController.removeListener(activityListener)
     }
 
-    fun goBack() {
+    private fun goBack() {
         fragmentListener.goBack()
     }
 
@@ -1420,7 +1420,7 @@ class MessageListFragment :
     private fun setMessageList(messageListInfo: MessageListInfo) {
         val messageListItems = messageListInfo.messageListItems
         if (isThreadDisplay && messageListItems.isEmpty()) {
-            handler.goBack()
+            goBack()
             return
         }
 
