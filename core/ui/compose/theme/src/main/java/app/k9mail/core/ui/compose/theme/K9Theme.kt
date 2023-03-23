@@ -1,8 +1,6 @@
 package app.k9mail.core.ui.compose.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val k9LightColorPalette = lightColors(

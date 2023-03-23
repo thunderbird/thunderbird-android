@@ -1,7 +1,6 @@
 package app.k9mail.core.ui.compose.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
 import androidx.compose.material.Typography
@@ -30,13 +29,14 @@ fun MainTheme(
     }
 
     CompositionLocalProvider(
+        LocalColors provides colors,
         LocalElevations provides Elevations(),
         LocalImages provides images,
         LocalSizes provides Sizes(),
         LocalSpacings provides Spacings(),
     ) {
         MaterialTheme(
-            colors = colors,
+            colors = colors.toMaterialColors(),
             typography = typography,
             shapes = shapes,
             content = content,
@@ -48,7 +48,7 @@ object MainTheme {
     val colors: Colors
         @Composable
         @ReadOnlyComposable
-        get() = MaterialTheme.colors
+        get() = LocalColors.current
 
     val typography: Typography
         @Composable
