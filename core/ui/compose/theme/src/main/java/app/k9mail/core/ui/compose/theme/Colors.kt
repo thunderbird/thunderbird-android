@@ -13,15 +13,19 @@ data class Colors(
     val secondaryVariant: Color,
     val background: Color,
     val surface: Color,
+    val success: Color,
     val error: Color,
+    val warning: Color,
+    val info: Color,
     val onPrimary: Color,
     val onSecondary: Color,
     val onBackground: Color,
     val onSurface: Color,
-    val onError: Color,
+    val onMessage: Color,
     val isLight: Boolean,
 )
 
+@Suppress("LongParameterList")
 internal fun lightColors(
     primary: Color = MaterialColor.deep_purple_600,
     primaryVariant: Color = MaterialColor.deep_purple_900,
@@ -29,12 +33,15 @@ internal fun lightColors(
     secondaryVariant: Color = MaterialColor.cyan_800,
     background: Color = MaterialColor.gray_200,
     surface: Color = Color.White,
+    success: Color = MaterialColor.green_600,
     error: Color = MaterialColor.red_600,
+    warning: Color = MaterialColor.orange_600,
+    info: Color = MaterialColor.yellow_600,
     onPrimary: Color = Color.White,
     onSecondary: Color = Color.Black,
     onBackground: Color = Color.Black,
     onSurface: Color = Color.Black,
-    onError: Color = Color.White,
+    onMessage: Color = Color.White,
 ) = Colors(
     primary = primary,
     primaryVariant = primaryVariant,
@@ -42,15 +49,19 @@ internal fun lightColors(
     secondaryVariant = secondaryVariant,
     background = background,
     surface = surface,
+    success = success,
     error = error,
+    warning = warning,
+    info = info,
     onPrimary = onPrimary,
     onSecondary = onSecondary,
     onBackground = onBackground,
     onSurface = onSurface,
-    onError = onError,
+    onMessage = onMessage,
     isLight = true,
 )
 
+@Suppress("LongParameterList")
 internal fun darkColors(
     primary: Color = MaterialColor.deep_purple_200,
     primaryVariant: Color = MaterialColor.deep_purple_50,
@@ -58,12 +69,15 @@ internal fun darkColors(
     secondaryVariant: Color = MaterialColor.cyan_100,
     background: Color = MaterialColor.gray_800,
     surface: Color = MaterialColor.gray_900,
+    success: Color = MaterialColor.green_300,
     error: Color = MaterialColor.red_300,
+    warning: Color = MaterialColor.orange_300,
+    info: Color = MaterialColor.yellow_300,
     onPrimary: Color = Color.Black,
     onSecondary: Color = Color.Black,
     onBackground: Color = Color.White,
     onSurface: Color = Color.White,
-    onError: Color = Color.Black,
+    onMessage: Color = Color.Black,
 ) = Colors(
     primary = primary,
     primaryVariant = primaryVariant,
@@ -71,12 +85,15 @@ internal fun darkColors(
     secondaryVariant = secondaryVariant,
     background = background,
     surface = surface,
+    success = success,
     error = error,
+    warning = warning,
+    info = info,
     onPrimary = onPrimary,
     onSecondary = onSecondary,
     onBackground = onBackground,
     onSurface = onSurface,
-    onError = onError,
+    onMessage = onMessage,
     isLight = false,
 )
 
@@ -93,7 +110,7 @@ internal fun Colors.toMaterialColors(): MaterialColors {
         onSecondary = onSecondary,
         onBackground = onBackground,
         onSurface = onSurface,
-        onError = onError,
+        onError = onMessage,
         isLight = isLight,
     )
 }
