@@ -4,17 +4,17 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 
 private val k9LightColorPalette = lightColors(
-    primary = material_gray_800,
-    primaryVariant = material_gray_700,
-    secondary = material_pink_500,
-    secondaryVariant = material_pink_300,
+    primary = MaterialColor.gray_800,
+    primaryVariant = MaterialColor.gray_700,
+    secondary = MaterialColor.pink_500,
+    secondaryVariant = MaterialColor.pink_300,
 )
 
 private val k9DarkColorPalette = darkColors(
-    primary = material_gray_100,
-    primaryVariant = material_gray_50,
-    secondary = material_pink_300,
-    secondaryVariant = material_pink_500,
+    primary = MaterialColor.gray_100,
+    primaryVariant = MaterialColor.gray_50,
+    secondary = MaterialColor.pink_300,
+    secondaryVariant = MaterialColor.pink_500,
 )
 
 @Composable

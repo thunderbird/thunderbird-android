@@ -22,14 +22,14 @@ data class Colors(
     val isLight: Boolean,
 )
 
-fun lightColors(
-    primary: Color = Color(0xFF6200EE),
-    primaryVariant: Color = Color(0xFF3700B3),
-    secondary: Color = Color(0xFF03DAC6),
-    secondaryVariant: Color = Color(0xFF018786),
-    background: Color = Color.White,
+internal fun lightColors(
+    primary: Color = MaterialColor.deep_purple_600,
+    primaryVariant: Color = MaterialColor.deep_purple_900,
+    secondary: Color = MaterialColor.cyan_600,
+    secondaryVariant: Color = MaterialColor.cyan_800,
+    background: Color = MaterialColor.gray_200,
     surface: Color = Color.White,
-    error: Color = Color(0xFFB00020),
+    error: Color = MaterialColor.red_600,
     onPrimary: Color = Color.White,
     onSecondary: Color = Color.Black,
     onBackground: Color = Color.Black,
@@ -51,14 +51,14 @@ fun lightColors(
     isLight = true,
 )
 
-fun darkColors(
-    primary: Color = Color(0xFFBB86FC),
-    primaryVariant: Color = Color(0xFF3700B3),
-    secondary: Color = Color(0xFF03DAC6),
-    secondaryVariant: Color = secondary,
-    background: Color = Color(0xFF121212),
-    surface: Color = Color(0xFF121212),
-    error: Color = Color(0xFFCF6679),
+internal fun darkColors(
+    primary: Color = MaterialColor.deep_purple_200,
+    primaryVariant: Color = MaterialColor.deep_purple_50,
+    secondary: Color = MaterialColor.cyan_300,
+    secondaryVariant: Color = MaterialColor.cyan_100,
+    background: Color = MaterialColor.gray_800,
+    surface: Color = MaterialColor.gray_900,
+    error: Color = MaterialColor.red_300,
     onPrimary: Color = Color.Black,
     onSecondary: Color = Color.Black,
     onBackground: Color = Color.White,
