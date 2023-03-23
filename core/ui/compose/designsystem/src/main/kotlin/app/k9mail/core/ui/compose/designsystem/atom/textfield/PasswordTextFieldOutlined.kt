@@ -38,14 +38,14 @@ fun PasswordTextFieldOutlined(
         onValueChange = onValueChange,
         modifier = modifier,
         enabled = enabled,
-        label = selectLabel(label),
-        trailingIcon = selectTrailingIcon(
+        label = configureLabel(label),
+        trailingIcon = configureTrailingIcon(
             isEnabled = enabled,
             isPasswordVisible = passwordVisibilityState,
             onClick = { passwordVisibilityState = !passwordVisibilityState },
         ),
         isError = isError,
-        visualTransformation = selectVisualTransformation(
+        visualTransformation = configureVisualTransformation(
             isEnabled = enabled,
             isPasswordVisible = passwordVisibilityState,
         ),
@@ -54,7 +54,7 @@ fun PasswordTextFieldOutlined(
     )
 }
 
-private fun selectLabel(label: String?): @Composable (() -> Unit)? {
+private fun configureLabel(label: String?): @Composable (() -> Unit)? {
     return if (label != null) {
         {
             Text(text = label)
@@ -64,7 +64,7 @@ private fun selectLabel(label: String?): @Composable (() -> Unit)? {
     }
 }
 
-private fun selectTrailingIcon(
+private fun configureTrailingIcon(
     isEnabled: Boolean,
     isPasswordVisible: Boolean,
     onClick: () -> Unit,
@@ -93,7 +93,7 @@ private fun selectTrailingIcon(
     }
 }
 
-private fun selectVisualTransformation(
+private fun configureVisualTransformation(
     isEnabled: Boolean,
     isPasswordVisible: Boolean,
 ): VisualTransformation {

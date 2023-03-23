@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.ui.catalog.items.alertDialogItems
 import app.k9mail.ui.catalog.items.buttonItems
 import app.k9mail.ui.catalog.items.colorItems
 import app.k9mail.ui.catalog.items.iconItems
@@ -53,6 +54,7 @@ fun CatalogContent(
             textFieldItems()
             imageItems()
             iconItems()
+            alertDialogItems()
         }
     }
 }

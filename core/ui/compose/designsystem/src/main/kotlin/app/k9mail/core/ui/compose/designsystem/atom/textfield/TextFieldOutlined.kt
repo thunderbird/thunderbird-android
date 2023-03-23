@@ -21,12 +21,12 @@ fun TextFieldOutlined(
         onValueChange = onValueChange,
         modifier = modifier,
         enabled = enabled,
-        label = selectLabel(label),
+        label = configureLabel(label),
         isError = isError,
     )
 }
 
-private fun selectLabel(label: String?): @Composable (() -> Unit)? {
+private fun configureLabel(label: String?): @Composable (() -> Unit)? {
     return if (label != null) {
         {
             Text(text = label)
