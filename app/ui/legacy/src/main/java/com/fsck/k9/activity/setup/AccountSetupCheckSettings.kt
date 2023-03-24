@@ -69,7 +69,19 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
         super.onCreate(savedInstanceState)
         setLayout(R.layout.account_setup_check_settings)
 
-        authViewModel.init(activityResultRegistry, lifecycle)
+        messageView = findViewById(R.id.message)
+        progressBar = findViewById(R.id.progress)
+        findViewById<View>(R.id.cancel).setOnClickListener { onCancel() }
+
+        setMessage(R.string.account_setup_check_settings_retr_info_msg)
+        progressBar.isIndeterminate = true
+
+        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("Missing account UUID")
+        account = preferences.getAccount(accountUuid) ?: error("Could not find account")
+        direction = intent.getSerializableExtra(EXTRA_CHECK_DIRECTION) as CheckDirection?
+            ?: error("Missing CheckDirection")
+
+        authViewModel.init(activityResultRegistry, lifecycle, account)
 
         authViewModel.uiState.observe(this) { state ->
             when (state) {
@@ -96,22 +108,10 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
             authViewModel.authResultConsumed()
         }
 
-        messageView = findViewById(R.id.message)
-        progressBar = findViewById(R.id.progress)
-        findViewById<View>(R.id.cancel).setOnClickListener { onCancel() }
-
-        setMessage(R.string.account_setup_check_settings_retr_info_msg)
-        progressBar.isIndeterminate = true
-
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("Missing account UUID")
-        account = preferences.getAccount(accountUuid) ?: error("Could not find account")
-        direction = intent.getSerializableExtra(EXTRA_CHECK_DIRECTION) as CheckDirection?
-            ?: error("Missing CheckDirection")
-
         if (savedInstanceState == null) {
             if (needsAuthorization()) {
                 setMessage(R.string.account_setup_check_settings_authenticate)
-                authViewModel.login(account)
+                authViewModel.login()
             } else {
                 startCheckServerSettings()
             }

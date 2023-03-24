@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
-import com.fsck.k9.Account
 import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
@@ -40,7 +39,7 @@ class OAuthFlowActivity : K9Activity() {
         }
 
         signInButton.isVisible = true
-        signInButton.setOnClickListener { startOAuthFlow(account) }
+        signInButton.setOnClickListener { startOAuthFlow() }
 
         savedInstanceState?.let {
             val signInRunning = it.getBoolean(STATE_PROGRESS)
@@ -48,7 +47,7 @@ class OAuthFlowActivity : K9Activity() {
             signInProgress.isVisible = signInRunning
         }
 
-        authViewModel.init(activityResultRegistry, lifecycle)
+        authViewModel.init(activityResultRegistry, lifecycle, account)
 
         authViewModel.uiState.observe(this) { state ->
             handleUiUpdates(state)
@@ -87,12 +86,12 @@ class OAuthFlowActivity : K9Activity() {
         errorText.text = getString(errorTextResId, *args)
     }
 
-    private fun startOAuthFlow(account: Account) {
+    private fun startOAuthFlow() {
         signInButton.isVisible = false
         signInProgress.isVisible = true
         errorText.text = ""
 
-        authViewModel.login(account)
+        authViewModel.login()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -56,7 +56,8 @@ class AuthViewModel(
         return authService ?: AuthorizationService(getApplication<Application>()).also { authService = it }
     }
 
-    fun init(activityResultRegistry: ActivityResultRegistry, lifecycle: Lifecycle) {
+    fun init(activityResultRegistry: ActivityResultRegistry, lifecycle: Lifecycle, account: Account) {
+        this.account = account
         resultObserver = AppAuthResultObserver(activityResultRegistry)
         lifecycle.addObserver(resultObserver)
     }
@@ -83,8 +84,8 @@ class AuthViewModel(
         }
     }
 
-    fun login(account: Account) {
-        this.account = account
+    fun login() {
+        val account = checkNotNull(account)
 
         viewModelScope.launch {
             val config = findOAuthConfiguration(account)
