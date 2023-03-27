@@ -7,6 +7,9 @@ import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import app.k9mail.core.ui.compose.theme.color.Colors
+import app.k9mail.core.ui.compose.theme.color.LocalColors
+import app.k9mail.core.ui.compose.theme.color.toMaterialColors
 
 @Composable
 fun MainTheme(
