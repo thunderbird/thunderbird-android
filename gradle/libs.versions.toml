@@ -23,6 +23,7 @@ androidxTransition = "1.4.1"
 androidxComposeCompiler = "1.4.4"
 androidxComposeBom = "2023.03.00"
 androidxComposeMaterial = "1.3.1"
+accompanist = "0.30.0"
 fastAdapter = "5.7.0"
 preferencesFix = "1.1.0"
 timber = "5.0.1"
@@ -90,6 +91,7 @@ androidx-test-core = "androidx.test:core:1.5.0"
 androidx-test-ext-junit-ktx = "androidx.test.ext:junit-ktx:1.1.5"
 androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
 android-material = "com.google.android.material:material:1.8.0"
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 fastadapter = { module = "com.mikepenz:fastadapter", version.ref = "fastAdapter" }
 fastadapter-extensions-drag = { module = "com.mikepenz:fastadapter-extensions-drag", version.ref = "fastAdapter" }
 fastadapter-extensions-utils = { module = "com.mikepenz:fastadapter-extensions-utils", version.ref = "fastAdapter" }

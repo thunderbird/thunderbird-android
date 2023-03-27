@@ -11,6 +11,7 @@ private val k9LightColorPalette = lightColors(
     primaryVariant = MaterialColor.gray_700,
     secondary = MaterialColor.pink_500,
     secondaryVariant = MaterialColor.pink_300,
+    toolbar = MaterialColor.gray_100,
 )
 
 private val k9DarkColorPalette = darkColors(

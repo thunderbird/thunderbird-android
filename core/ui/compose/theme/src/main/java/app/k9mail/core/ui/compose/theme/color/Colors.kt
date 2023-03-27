@@ -22,6 +22,7 @@ data class Colors(
     val onBackground: Color,
     val onSurface: Color,
     val onMessage: Color,
+    val toolbar: Color,
     val isLight: Boolean,
 )
 
@@ -42,6 +43,7 @@ internal fun lightColors(
     onBackground: Color = Color.Black,
     onSurface: Color = Color.Black,
     onMessage: Color = Color.White,
+    toolbar: Color = primary,
 ) = Colors(
     primary = primary,
     primaryVariant = primaryVariant,
@@ -58,6 +60,7 @@ internal fun lightColors(
     onBackground = onBackground,
     onSurface = onSurface,
     onMessage = onMessage,
+    toolbar = toolbar,
     isLight = true,
 )
 
@@ -78,6 +81,7 @@ internal fun darkColors(
     onBackground: Color = Color.White,
     onSurface: Color = Color.White,
     onMessage: Color = Color.Black,
+    toolbar: Color = surface,
 ) = Colors(
     primary = primary,
     primaryVariant = primaryVariant,
@@ -94,6 +98,7 @@ internal fun darkColors(
     onBackground = onBackground,
     onSurface = onSurface,
     onMessage = onMessage,
+    toolbar = toolbar,
     isLight = false,
 )
 

@@ -9,5 +9,6 @@ android {
 
 dependencies {
     api(projects.core.ui.compose.common)
+    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.compose.material)
 }
