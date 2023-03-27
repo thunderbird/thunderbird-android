@@ -729,7 +729,7 @@ style:
 Compose:
   CompositionLocalAllowlist:
     active: true
-    allowedCompositionLocals: [LocalElevations, LocalImages, LocalSizes, LocalSpacings]
+    allowedCompositionLocals: [LocalColors, LocalElevations, LocalImages, LocalSizes, LocalSpacings]
   ContentEmitterReturningValues:
     active: true
     # You can optionally add your own composables here

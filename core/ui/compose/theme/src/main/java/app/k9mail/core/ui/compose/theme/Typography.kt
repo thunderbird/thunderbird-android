@@ -6,6 +6,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+@Suppress("MagicNumber")
 val typography = typographyFromDefaults(
     h1 = TextStyle(
         fontFamily = FontFamily.Default,
@@ -87,6 +88,7 @@ val typography = typographyFromDefaults(
     ),
 )
 
+@Suppress("LongParameterList")
 fun typographyFromDefaults(
     h1: TextStyle,
     h2: TextStyle,

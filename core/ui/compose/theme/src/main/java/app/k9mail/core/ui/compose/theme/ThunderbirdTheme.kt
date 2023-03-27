@@ -1,22 +1,22 @@
 package app.k9mail.core.ui.compose.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val thunderbirdLightColorPalette = lightColors(
-    primary = material_blue_600,
-    primaryVariant = material_light_blue_500,
-    secondary = material_pink_500,
-    secondaryVariant = material_pink_300,
+    primary = MaterialColor.blue_600,
+    primaryVariant = MaterialColor.light_blue_500,
+    secondary = MaterialColor.pink_500,
+    secondaryVariant = MaterialColor.pink_300,
+    background = MaterialColor.gray_200,
 )
 
 private val thunderbirdDarkColorPalette = darkColors(
-    primary = material_blue_100,
-    primaryVariant = material_blue_50,
-    secondary = material_pink_300,
-    secondaryVariant = material_pink_500,
+    primary = MaterialColor.blue_100,
+    primaryVariant = MaterialColor.blue_50,
+    secondary = MaterialColor.pink_300,
+    secondaryVariant = MaterialColor.pink_500,
+    background = MaterialColor.gray_800,
 )
 
 @Composable
