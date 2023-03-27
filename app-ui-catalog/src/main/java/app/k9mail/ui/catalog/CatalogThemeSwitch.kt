@@ -7,20 +7,51 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 @Composable
 fun CatalogThemeSwitch(
     theme: CatalogTheme,
-    themeVariation: CatalogThemeVariant,
+    themeVariant: CatalogThemeVariant,
     content: @Composable () -> Unit,
 ) {
     when (theme) {
-        CatalogTheme.K9 -> K9Theme(
-            darkTheme = isDarkVariation(themeVariation),
+        CatalogTheme.K9 -> K9ThemeSwitch(
+            themeVariant = themeVariant,
             content = content,
         )
-        CatalogTheme.THUNDERBIRD -> ThunderbirdTheme(
-            darkTheme = isDarkVariation(themeVariation),
+        CatalogTheme.THUNDERBIRD -> ThunderbirdThemeSwitch(
+            themeVariant = themeVariant,
             content = content,
         )
     }
 }
 
-private fun isDarkVariation(themeVariation: CatalogThemeVariant): Boolean =
-    themeVariation == CatalogThemeVariant.DARK
+@Composable
+private fun K9ThemeSwitch(
+    themeVariant: CatalogThemeVariant,
+    content: @Composable () -> Unit,
+) {
+    when (themeVariant) {
+        CatalogThemeVariant.LIGHT -> K9Theme(
+            darkTheme = false,
+            content = content,
+        )
+        CatalogThemeVariant.DARK -> K9Theme(
+            darkTheme = true,
+            content = content,
+        )
+    }
+}
+
+@Composable
+private fun ThunderbirdThemeSwitch(
+    themeVariant: CatalogThemeVariant,
+    content: @Composable () -> Unit,
+) {
+    when (themeVariant) {
+        CatalogThemeVariant.LIGHT -> ThunderbirdTheme(
+            darkTheme = false,
+            content = content,
+        )
+        CatalogThemeVariant.DARK -> ThunderbirdTheme(
+            darkTheme = true,
+            content = content,
+        )
+    }
+}
