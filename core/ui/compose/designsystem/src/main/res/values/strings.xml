@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="designsystem_atom_icon_success">Success icon</string>
+    <string name="designsystem_atom_icon_error">Error icon</string>
+    <string name="designsystem_atom_icon_warning">Warning icon</string>
+    <string name="designsystem_atom_icon_info">Info icon</string>
     <string name="designsystem_atom_password_textfield_hide_password">Hide password</string>
     <string name="designsystem_atom_password_textfield_show_password">Show password</string>
 </resources>
