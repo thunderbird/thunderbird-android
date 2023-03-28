@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toStartOf="@+id/menu_add_contact"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/start_guideline"
+        app:layout_constraintStart_toStartOf="@id/email"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_goneMarginBottom="12dp"
@@ -42,12 +42,13 @@
         android:layout_marginEnd="4dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="?android:attr/textColorSecondary"
+        android:layout_marginStart="16dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
         app:layout_constraintEnd_toStartOf="@+id/menu_add_contact"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/start_guideline"
+        app:layout_constraintStart_toEndOf="@id/contact_picture"
         app:layout_constraintTop_toBottomOf="@+id/name"
         tools:text="alice@domain.example" />
 
@@ -79,13 +80,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/dots_vertical" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/start_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="72dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline"
