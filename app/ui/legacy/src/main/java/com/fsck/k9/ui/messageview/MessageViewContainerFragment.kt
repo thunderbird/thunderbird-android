@@ -138,6 +138,8 @@ class MessageViewContainerFragment : Fragment() {
             return
         }
 
+        val oldPosition = viewPager.currentItem
+
         adapter.messageList = messageListItems
 
         // We only set the adapter on ViewPager2 after the message list has been loaded. This way ViewPager2 can
@@ -147,7 +149,12 @@ class MessageViewContainerFragment : Fragment() {
         }
 
         val position = adapter.getPosition(messageReference)
-        viewPager.setCurrentItem(position, false)
+        if (position != oldPosition) {
+            // The current message now has a different position in the updated list. So point the view pager to it.
+            // Note: This cancels ongoing swipe actions/animations. We might want to change this to defer list updates
+            // until after swipe actions have been completed.
+            viewPager.setCurrentItem(position, false)
+        }
     }
 
     private fun setActiveMessage(position: Int) {
