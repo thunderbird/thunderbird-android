@@ -28,4 +28,5 @@ build.xml
 proguard-project.txt
 .idea/
 *.iml
-user-manual
+user-manual/screenshots
+user-manual/output
