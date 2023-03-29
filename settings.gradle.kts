@@ -28,7 +28,6 @@ include(
 include(
     ":app:k9mail",
     ":app:ui:base",
-    ":app:ui:setup",
     ":app:ui:legacy",
     ":app:ui:message-list-widget",
     ":app:core",

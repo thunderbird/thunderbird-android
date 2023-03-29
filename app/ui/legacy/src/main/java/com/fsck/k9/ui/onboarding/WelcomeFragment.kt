@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.HtmlToSpanned
 import com.fsck.k9.ui.observeNotNull
@@ -43,12 +42,8 @@ class WelcomeFragment : Fragment() {
     }
 
     private fun launchAccountSetup() {
-        if (BuildConfig.USE_NEW_SETUP_UI_FOR_ONBOARDING) {
-            findNavController().navigate(R.id.action_welcomeScreen_to_newAddAccountScreen)
-        } else {
-            findNavController().navigate(R.id.action_welcomeScreen_to_addAccountScreen)
-            requireActivity().finish()
-        }
+        findNavController().navigate(R.id.action_welcomeScreen_to_addAccountScreen)
+        requireActivity().finish()
     }
 
     private fun launchImportSettings() {
