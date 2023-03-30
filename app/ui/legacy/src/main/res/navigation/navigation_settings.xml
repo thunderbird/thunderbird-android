@@ -5,8 +5,6 @@
     android:id="@+id/navigation_settings"
     app:startDestination="@id/settingsListScreen">
 
-    <include app:graph="@navigation/navigation_add_account" />
-
     <fragment
         android:id="@+id/settingsListScreen"
         android:name="com.fsck.k9.ui.settings.SettingsListFragment"
@@ -28,10 +26,6 @@
         <action
             android:id="@+id/action_settingsListScreen_to_addAccountScreen"
             app:destination="@id/addAccountScreen" />
-
-        <action
-            android:id="@+id/action_settingsListScreen_to_newAddAccountScreen"
-            app:destination="@id/navigation_add_account" />
 
         <action
             android:id="@+id/action_settingsListScreen_to_settingsExportScreen"

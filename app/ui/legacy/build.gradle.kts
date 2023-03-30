@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
     api(projects.app.ui.base)
-    debugImplementation(projects.app.ui.setup)
     implementation(projects.app.core)
     implementation(projects.app.autodiscovery.api)
     implementation(projects.app.autodiscovery.providersxml)
@@ -75,18 +74,9 @@ android {
 
     buildTypes {
         debug {
-            val useNewSetupUi = if (project.hasProperty("k9mail.useNewSetupUi")) {
-                project.property("k9mail.useNewSetupUi").toString()
-            } else {
-                "false"
-            }
-            buildConfigField("boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", useNewSetupUi)
-
             manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
         }
         release {
-            buildConfigField("boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", "false")
-
             manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
         }
     }
