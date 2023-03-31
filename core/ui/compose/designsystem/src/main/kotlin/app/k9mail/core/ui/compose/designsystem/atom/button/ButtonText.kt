@@ -15,7 +15,7 @@ fun ButtonText(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = buttonContentPadding(),
 ) {
     MaterialTextButton(
         onClick = onClick,
