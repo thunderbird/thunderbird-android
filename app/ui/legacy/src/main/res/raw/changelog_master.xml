@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.511" versioncode="35011" date="2023-03-31">
+        <change>Swiping between messages should now work more reliably</change>
+        <change>Fixed message details layout when contact pictures are disabled</change>
+        <change>Fixed disappearing toolbar buttons in the message view screen</change>
+        <change>Fixed a couple of rare crashes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.510" versioncode="35010" date="2023-03-17">
         <change>Made small changes to the appearance of the message list</change>
         <change>Added a font size setting for the account name when viewing a message</change>
