@@ -220,7 +220,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="message_to_label">An:</string>
   <string name="message_view_cc_label">CC:</string>
   <string name="message_view_bcc_label">BCC:</string>
-  <string name="message_view_status_attachment_not_saved">Anhang konnte nicht gespeichert werden</string>
+  <string name="message_view_status_attachment_not_saved">Anhang konnte nicht gespeichert werden.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
   <string name="message_view_recipient_prefix">"an "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
@@ -236,7 +236,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="message_discarded_toast">Nachricht wurde verworfen</string>
   <string name="message_saved_toast">Nachricht wurde als Entwurf gespeichert</string>
   <string name="global_settings_flag_label">Wichtige Nachrichten</string>
-  <string name="global_settings_flag_summary">Sterne weisen auf wichtige Nachrichten hin.</string>
+  <string name="global_settings_flag_summary">Sterne weisen auf wichtige Nachrichten hin</string>
   <string name="global_settings_preview_lines_label">Vorschauzeilen</string>
   <string name="global_settings_show_correspondent_names_label">Namen anzeigen</string>
   <string name="global_settings_show_correspondent_names_summary">Namen anstatt der E-Mail-Adresse des Korrespondenten anzeigen</string>
@@ -381,7 +381,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_setup_outgoing_smtp_server_label">SMTP-Server</string>
   <string name="account_setup_outgoing_port_label">Port</string>
   <string name="account_setup_outgoing_security_label">Sicherheitstyp</string>
-  <string name="account_setup_outgoing_require_login_label">Anmeldung erforderlich</string>
+  <string name="account_setup_outgoing_require_login_label">Anmeldung erforderlich.</string>
   <string name="account_setup_outgoing_username_label">Benutzername</string>
   <string name="account_setup_outgoing_password_label">Passwort</string>
   <string name="account_setup_outgoing_authentication_label">Authentifizierungsmethode</string>
@@ -424,8 +424,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Passwort ist falsch.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen, dass der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen, dass jemand versucht dich oder deinen E-Mail-Server anzugreifen. Falls du dir nicht sicher bist, was der Grund ist, klicke auf Abbrechen und kontaktiere die Administratoren deines E-Mail-Servers.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.
-(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_oauth_flow_canceled">Berechtigung aufgehoben</string>
   <string name="account_setup_failed_dlg_oauth_flow_failed">Die Autorisierung ist aufgrund des folgenden Fehlers fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
   <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wird von diesem Anbieter derzeit nicht unterstützt.</string>
@@ -464,9 +463,9 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_settings_show_pictures_always">Immer</string>
   <string name="account_settings_composition">E-Mail-Versand</string>
   <string name="account_settings_default_quoted_text_shown_label">Nachricht beim Antworten zitieren</string>
-  <string name="account_settings_default_quoted_text_shown_summary">Ursprüngliche Nachricht als Zitat in die Antwort einfügen</string>
+  <string name="account_settings_default_quoted_text_shown_summary">Ursprüngliche Nachricht als Zitat in die Antwort einfügen.</string>
   <string name="account_settings_reply_after_quote_label">Antwort nach Zitat</string>
-  <string name="account_settings_reply_after_quote_summary">Die ursprüngliche Nachricht erscheint vor der Antwort</string>
+  <string name="account_settings_reply_after_quote_summary">Die ursprüngliche Nachricht erscheint vor der Antwort.</string>
   <string name="account_settings_strip_signature_label">Signatur aus Zitat entfernen</string>
   <string name="account_settings_strip_signature_summary">In Antworten werden Signaturen aus zitierten Nachrichten entfernt</string>
   <string name="account_settings_message_format_label">Formatierung</string>
@@ -665,7 +664,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Zertifikat ablehnen</string>
   <string name="folder_list_filter_hint">Ordnername enthält</string>
-  <string name="folder_list_display_mode_label">Ordner</string>
+  <string name="folder_list_display_mode_label">Ordner anzeigen…</string>
   <string name="folder_list_display_mode_all">Alle Ordner anzeigen</string>
   <string name="folder_list_display_mode_first_class">Nur Hauptordner anzeigen</string>
   <string name="folder_list_display_mode_first_and_second_class">Haupt- und Nebenordner anzeigen</string>
@@ -922,8 +921,8 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="compose_error_no_draft_folder">Kein Ordner für Entwürfe für dieses Konto festgelegt!</string>
   <string name="compose_error_no_key_configured">Kein Schlüssel für dieses Konto konfiguriert! Überprüfe deine Einstellungen.</string>
   <string name="error_crypto_provider_incompatible">Verschlüsselungsdienst verwendet inkompatible Version. Bitte überprüfe deine Einstellungen!</string>
-  <string name="error_crypto_provider_connect">Verbindung zu Verschlüsselungsdienst fehlgeschlagen. Überprüfe deine Einstellungen oder tippe auf das Verschlüsselungs-Symbol, um es erneut zu versuchen.</string>
-  <string name="error_crypto_provider_ui_required">Die Ende-zu-Ende Verschlüsselung konnte nicht initialisiert werden, bitte überprüfe deine Einstellungen.</string>
+  <string name="error_crypto_provider_connect">Verbindung zum Verschlüsselungsdienst fehlgeschlagen. Überprüfe deine Einstellungen oder tippe auf das Verschlüsselungssymbol, um es erneut zu versuchen!</string>
+  <string name="error_crypto_provider_ui_required">Ende-zu-Ende Verschlüsselung konnte nicht initialisiert werden, bitte überprüfe deine Einstellungen</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-Modus unterstützt keine Anhänge!</string>
   <string name="enable_inline_pgp">PGP/INLINE aktivieren</string>
   <string name="disable_inline_pgp">PGP/INLINE deaktivieren</string>
@@ -958,7 +957,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="crypto_msg_unencrypted_sign_mismatch">aber der Ende-zu-Ende-Schlüssel stimmte nicht mit dem Absender überein</string>
   <string name="crypto_msg_unencrypted_sign_expired">aber der Ende-zu-Ende-Schlüssel ist abgelaufen</string>
   <string name="crypto_msg_unencrypted_sign_revoked">aber der Ende-zu-Ende-Schlüssel wurde widerrufen</string>
-  <string name="crypto_msg_unencrypted_sign_insecure">aber der Ende-zu-Ende-Schlüssel wird nicht als sicher angesehen.</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">aber der Ende-zu-Ende-Schlüssel wird nicht als sicher angesehen</string>
   <string name="crypto_msg_unencrypted_sign_unknown">von unbekanntem Ende-zu-Ende-Schlüssel</string>
   <string name="crypto_msg_title_encrypted_unknown">Verschlüsselt</string>
   <string name="crypto_msg_encrypted_error">aber es gab einen Entschlüsselungsfehler</string>
@@ -997,8 +996,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="error_sign_only_no_encryption">Verschlüsselung ist im Nur-Signieren-Modus nicht verfügbar!</string>
   <string name="unsigned_text_divider_label">Unsignierter Text</string>
   <string name="crypto_no_provider_title">Diese E-Mail ist verschlüsselt</string>
-  <string name="crypto_no_provider_message">Diese E-Mail ist mit OpenPGP verschlüsselt.
-Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert werden.</string>
+  <string name="crypto_no_provider_message">Diese E-Mail ist mit OpenPGP verschlüsselt.\nUm sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert werden.</string>
   <string name="crypto_no_provider_button">Zu den Einstellungen</string>
   <string name="mail_list_widget_text">K-9 Nachrichtenliste</string>
   <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
@@ -1033,7 +1031,7 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="ac_transfer_setting_title">Autocrypt-Setup-Nachricht senden</string>
   <string name="ac_transfer_setting_summary">Das Ende-zu-Ende-Setup auf sichere Art mit anderen Geräten teilen</string>
   <string name="ac_transfer_title">Autocrypt-Setup-Nachricht</string>
-  <string name="ac_transfer_intro">Eine Autocrypt-Setup-Nachricht teilt dein Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten</string>
+  <string name="ac_transfer_intro">Eine Autocrypt-Setup-Nachricht teilt dein Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten.</string>
   <string name="ac_transfer_button_send">Setup-Nachricht senden</string>
   <string name="ac_transfer_will_be_sent">Diese Nachricht wird an dein Adresse gesendet:</string>
   <string name="ac_transfer_generating">Erstelle Setup-Nachricht…</string>

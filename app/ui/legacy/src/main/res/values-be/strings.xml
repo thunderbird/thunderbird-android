@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Даведайцеся, што новага ў гэтым выпуску</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Праглядзець</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Вітаем у K-9</string>
   <string name="accounts_welcome"><![CDATA[<p>
@@ -225,9 +226,13 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="message_view_bcc_label">Схаваная копія:</string>
   <string name="message_view_status_attachment_not_saved">Немагчыма захаваць далучаныя файлы.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"да "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">я</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Паказаць выдаленныя выявы</string>
   <string name="message_view_no_viewer">Няма праграмы для прагляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Спампаваць ліст цалкам</string>
   <string name="message_view_sender_label">ад %1$s</string>
