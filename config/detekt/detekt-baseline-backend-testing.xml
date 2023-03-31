@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>MagicNumber:InMemoryBackendFolder.kt$InMemoryBackendFolder$25</ID>
+    <ID>TooManyFunctions:InMemoryBackendFolder.kt$InMemoryBackendFolder : BackendFolder</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CastToNullableType:ToolbarBottomSheetDialogFragment.kt$ToolbarBottomSheetDialogFragment$as</ID>
+    <ID>TooManyFunctions:ToolbarBottomSheetDialog.kt$ToolbarBottomSheetDialog : AppCompatDialog</ID>
+  </CurrentIssues>
+</SmellBaseline>

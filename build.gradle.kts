@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
 
     id("thunderbird.quality.spotless")
-    id("thunderbird.quality.detekt")
     id("thunderbird.dependency.check")
 }
 
