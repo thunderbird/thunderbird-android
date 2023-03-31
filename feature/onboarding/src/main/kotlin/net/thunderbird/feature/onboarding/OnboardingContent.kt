@@ -18,7 +18,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.Button
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline2
-import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithFooter
+import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
@@ -34,7 +34,7 @@ internal fun OnboardingContent(
         modifier = modifier,
     ) {
         ResponsiveContent {
-            LazyColumnWithFooter(
+            LazyColumnWithHeaderFooter(
                 modifier = Modifier.fillMaxSize(),
                 footer = {
                     WelcomeFooter(
