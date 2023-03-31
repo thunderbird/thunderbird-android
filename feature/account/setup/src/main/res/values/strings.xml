@@ -3,4 +3,5 @@
     <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_button_next">Next</string>
     <string name="account_setup_button_back">Back</string>
+    <string name="account_setup_button_finish">Finish</string>
 </resources>

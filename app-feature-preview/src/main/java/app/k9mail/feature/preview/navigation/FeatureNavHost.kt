@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import net.thunderbird.feature.onboarding.navigation.NAVIGATION_ROUTE_ONBOARDING
-import net.thunderbird.feature.onboarding.navigation.onboardingScreen
+import app.k9mail.feature.account.setup.navigation.accountSetupScreen
+import app.k9mail.feature.account.setup.navigation.navigateToAccountSetup
+import app.k9mail.feature.onboarding.navigation.NAVIGATION_ROUTE_ONBOARDING
+import app.k9mail.feature.onboarding.navigation.onboardingScreen
 
 @Composable
 fun FeatureNavHost(
@@ -19,8 +21,12 @@ fun FeatureNavHost(
         modifier = modifier,
     ) {
         onboardingScreen(
-            onStartClick = { /* TODO */ },
+            onStartClick = { navController.navigateToAccountSetup() },
             onImportClick = { /* TODO */ },
+        )
+        accountSetupScreen(
+            onBackClick = navController::popBackStack,
+            onFinishClick = { /* TODO */ },
         )
     }
 }
