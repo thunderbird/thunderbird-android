@@ -12,11 +12,11 @@ enum class WindowSizeClass {
     ;
 
     companion object {
-        private const val COMPACT_MAX_WIDTH = 600
-        private const val COMPACT_MAX_HEIGHT = 480
+        const val COMPACT_MAX_WIDTH = 600
+        const val COMPACT_MAX_HEIGHT = 480
 
-        private const val MEDIUM_MAX_WIDTH = 840
-        private const val MEDIUM_MAX_HEIGHT = 900
+        const val MEDIUM_MAX_WIDTH = 840
+        const val MEDIUM_MAX_HEIGHT = 900
 
         fun fromWidth(width: Int): WindowSizeClass {
             return when {

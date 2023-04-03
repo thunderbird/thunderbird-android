@@ -83,6 +83,7 @@ androidx-compose-activity = "androidx.activity:activity-compose:1.6.1"
 androidx-compose-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidxComposeMaterial" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidxComposeMaterial" }
+androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
 androidx-test-core = "androidx.test:core:1.5.0"
 androidx-test-ext-junit-ktx = "androidx.test.ext:junit-ktx:1.1.5"
 androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
@@ -154,6 +155,7 @@ shared-jvm-android-compose = [
   "androidx-compose-foundation",
   "androidx-compose-ui-tooling-preview",
   "androidx-compose-lifecycle-viewmodel",
+  "androidx-compose-navigation",
 ]
 shared-jvm-android-compose-debug = [
   "androidx-compose-ui-tooling",

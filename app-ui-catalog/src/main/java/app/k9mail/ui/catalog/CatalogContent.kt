@@ -10,7 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
+import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.ui.catalog.items.buttonItems
 import app.k9mail.ui.catalog.items.colorItems
 import app.k9mail.ui.catalog.items.imageItems
@@ -30,39 +33,57 @@ fun CatalogContent(
     modifier: Modifier = Modifier,
 ) {
     Surface {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(300.dp),
-            contentPadding = contentPadding,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-            modifier = modifier.padding(MainTheme.spacings.double),
-        ) {
-            themeHeaderItem(text = "Thunderbird Catalog")
-            themeSelectorItems(
-                catalogTheme = catalogTheme,
-                catalogThemeVariant = catalogThemeVariant,
-                onThemeChange = onThemeChange,
-                onThemeVariantChange = onThemeVariantChange,
-            )
+        ResponsiveContent {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(300.dp),
+                contentPadding = contentPadding,
+                horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                modifier = modifier.padding(MainTheme.spacings.double),
+            ) {
+                themeHeaderItem(text = "Thunderbird Catalog")
+                themeSelectorItems(
+                    catalogTheme = catalogTheme,
+                    catalogThemeVariant = catalogThemeVariant,
+                    onThemeChange = onThemeChange,
+                    onThemeVariantChange = onThemeVariantChange,
+                )
 
-            typographyItems()
-            colorItems()
-            buttonItems()
-            selectionControlItems()
-            textFieldItems()
-            imageItems()
+                typographyItems()
+                colorItems()
+                buttonItems()
+                selectionControlItems()
+                textFieldItems()
+                imageItems()
+            }
         }
     }
 }
 
 @DevicePreviews
 @Composable
-internal fun CatalogContentPreview() {
-    CatalogContent(
-        catalogTheme = CatalogTheme.K9,
-        catalogThemeVariant = CatalogThemeVariant.LIGHT,
-        onThemeChange = {},
-        onThemeVariantChange = {},
-        contentPadding = PaddingValues(),
-    )
+internal fun CatalogContentK9ThemePreview() {
+    K9Theme {
+        CatalogContent(
+            catalogTheme = CatalogTheme.K9,
+            catalogThemeVariant = CatalogThemeVariant.LIGHT,
+            onThemeChange = {},
+            onThemeVariantChange = {},
+            contentPadding = PaddingValues(),
+        )
+    }
+}
+
+@DevicePreviews
+@Composable
+internal fun CatalogContentThunderbirdThemePreview() {
+    ThunderbirdTheme {
+        CatalogContent(
+            catalogTheme = CatalogTheme.THUNDERBIRD,
+            catalogThemeVariant = CatalogThemeVariant.LIGHT,
+            onThemeChange = {},
+            onThemeVariantChange = {},
+            contentPadding = PaddingValues(),
+        )
+    }
 }

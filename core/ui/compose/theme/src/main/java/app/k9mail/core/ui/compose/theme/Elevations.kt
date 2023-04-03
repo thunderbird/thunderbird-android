@@ -7,7 +7,9 @@ import androidx.compose.ui.unit.dp
 
 @Immutable
 data class Elevations(
-    val card: Dp = 0.dp,
+    val default: Dp = 0.dp,
+    val raised: Dp = 2.dp,
+    val card: Dp = 4.dp,
 )
 
 internal val LocalElevations = staticCompositionLocalOf { Elevations() }

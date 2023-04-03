@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.theme
+package app.k9mail.core.ui.compose.theme.color
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -31,7 +31,7 @@ internal fun lightColors(
     primaryVariant: Color = MaterialColor.deep_purple_900,
     secondary: Color = MaterialColor.cyan_600,
     secondaryVariant: Color = MaterialColor.cyan_800,
-    background: Color = MaterialColor.gray_200,
+    background: Color = Color.White,
     surface: Color = Color.White,
     success: Color = MaterialColor.green_600,
     error: Color = MaterialColor.red_600,
@@ -66,9 +66,9 @@ internal fun darkColors(
     primary: Color = MaterialColor.deep_purple_200,
     primaryVariant: Color = MaterialColor.deep_purple_50,
     secondary: Color = MaterialColor.cyan_300,
-    secondaryVariant: Color = MaterialColor.cyan_100,
-    background: Color = MaterialColor.gray_800,
-    surface: Color = MaterialColor.gray_900,
+    secondaryVariant: Color = secondary,
+    background: Color = MaterialColor.gray_950,
+    surface: Color = MaterialColor.gray_950,
     success: Color = MaterialColor.green_300,
     error: Color = MaterialColor.red_300,
     warning: Color = MaterialColor.orange_300,

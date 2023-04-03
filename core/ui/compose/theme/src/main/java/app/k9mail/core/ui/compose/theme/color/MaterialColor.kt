@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package app.k9mail.core.ui.compose.theme
+package app.k9mail.core.ui.compose.theme.color
 
 import androidx.compose.ui.graphics.Color
 
@@ -214,4 +214,5 @@ internal object MaterialColor {
     val gray_700 = Color(color = 0xFF616161)
     val gray_800 = Color(color = 0xFF424242)
     val gray_900 = Color(color = 0xFF212121)
+    val gray_950 = Color(color = 0xFF121212)
 }
