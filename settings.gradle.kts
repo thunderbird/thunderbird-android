@@ -22,6 +22,7 @@ rootProject.name = "k-9"
 includeBuild("build-plugin")
 
 include(
+    ":app-feature-preview",
     ":app-ui-catalog",
 )
 
