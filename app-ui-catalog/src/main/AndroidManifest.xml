@@ -4,11 +4,11 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Thunderbird"
+        android:theme="@style/Theme.Thunderbird.Splashscreen"
         >
+
         <activity
             android:name=".CatalogActivity"
             android:exported="true">
@@ -18,6 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
     </application>
 
 </manifest>

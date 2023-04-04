@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#FCE8DC</color>
+    <!--  Material orange 300  -->
+    <color name="ic_launcher_logo_main">#FFB74D</color>
+    <!--  Material orange 700  -->
+    <color name="ic_launcher_logo_shadow">#F57C00</color>
+    <!--  Material orange 50  -->
+    <color name="ic_launcher_background">#FFF3E0</color>
 </resources>
