@@ -1,521 +1,585 @@
 package com.fsck.k9.mail.store.imap
 
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.cause
+import assertk.assertions.containsExactly
+import assertk.assertions.hasMessage
+import assertk.assertions.hasSize
+import assertk.assertions.index
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
+import assertk.assertions.prop
 import com.fsck.k9.mail.filter.FixedLengthInputStream
 import com.fsck.k9.mail.filter.PeekableInputStream
 import java.io.ByteArrayInputStream
 import java.io.IOException
-import org.junit.Assert
 import org.junit.Test
 
 class ImapResponseParserTest {
     private var peekableInputStream: PeekableInputStream? = null
+
     @Test
-    @Throws(IOException::class)
-    fun testSimpleOkResponse() {
-        val parser = createParser("* OK\r\n")
+    fun `readResponse() with untagged OK response`() {
+        val parser = createParserWithResponses("* OK")
+
         val response = parser.readResponse()
-        Assert.assertNotNull(response)
-        Assert.assertEquals(1, response.size.toLong())
-        Assert.assertEquals("OK", response[0])
+
+        assertThat(response).containsExactly("OK")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(IOException::class)
-    fun testOkResponseWithText() {
-        val parser = createParser("* OK Some text here\r\n")
+    fun `readResponse() with untagged OK response containing text`() {
+        val parser = createParserWithResponses("* OK Some text here")
+
         val response = parser.readResponse()
-        Assert.assertNotNull(response)
-        Assert.assertEquals(2, response.size.toLong())
-        Assert.assertEquals("OK", response[0])
-        Assert.assertEquals("Some text here", response[1])
+
+        assertThat(response).containsExactly("OK", "Some text here")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(IOException::class)
-    fun testOkResponseWithRespTextCode() {
-        val parser = createParser("* OK [UIDVALIDITY 3857529045]\r\n")
+    fun `readResponse() with untagged OK response containing resp-text code`() {
+        val parser = createParserWithResponses("* OK [UIDVALIDITY 3857529045]")
+
         val response = parser.readResponse()
-        Assert.assertNotNull(response)
-        Assert.assertEquals(2, response.size.toLong())
-        Assert.assertEquals("OK", response[0])
-        Assert.assertTrue(response[1] is ImapList)
-        val respTextCode = response[1] as ImapList
-        Assert.assertEquals(2, respTextCode.size.toLong())
-        Assert.assertEquals("UIDVALIDITY", respTextCode[0])
-        Assert.assertEquals("3857529045", respTextCode[1])
+
+        assertThat(response).hasSize(2)
+        assertThat(response).index(0).isEqualTo("OK")
+        assertThat(response).index(1).isInstanceOf(ImapList::class).containsExactly("UIDVALIDITY", "3857529045")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(IOException::class)
-    fun testOkResponseWithRespTextCodeAndText() {
-        val parser = createParser("* OK [token1 token2] {x} test [...]\r\n")
+    fun `readResponse() with untagged OK response containing resp-text code and text`() {
+        val parser = createParserWithResponses("* OK [token1 token2] {x} test [...]")
+
         val response = parser.readResponse()
-        Assert.assertNotNull(response)
-        Assert.assertEquals(3, response.size.toLong())
-        Assert.assertEquals("OK", response[0])
-        Assert.assertTrue(response[1] is ImapList)
-        Assert.assertEquals("{x} test [...]", response[2])
-        val respTextCode = response[1] as ImapList
-        Assert.assertEquals(2, respTextCode.size.toLong())
-        Assert.assertEquals("token1", respTextCode[0])
-        Assert.assertEquals("token2", respTextCode[1])
+
+        assertThat(response).hasSize(3)
+        assertThat(response).index(0).isEqualTo("OK")
+        assertThat(response).index(1).isInstanceOf(ImapList::class).containsExactly("token1", "token2")
+        assertThat(response).index(2).isEqualTo("{x} test [...]")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testReadStatusResponseWithOKResponse() {
-        val parser = createParser(
-            "* COMMAND BAR\tBAZ\r\n" +
-                "TAG OK COMMAND completed\r\n"
+    fun `readStatusResponse() with OK response`() {
+        val parser = createParserWithResponses(
+            "* COMMAND BAR\tBAZ",
+            "TAG OK COMMAND completed",
         )
+
         val responses = parser.readStatusResponse("TAG", null, null, null)
-        Assert.assertEquals(2, responses.size.toLong())
-        Assert.assertEquals(mutableListOf("COMMAND", "BAR", "BAZ"), responses[0])
-        Assert.assertEquals(mutableListOf("OK", "COMMAND completed"), responses[1])
+
+        assertThat(responses).hasSize(2)
+        assertThat(responses).index(0).containsExactly("COMMAND", "BAR", "BAZ")
+        assertThat(responses).index(1).containsExactly("OK", "COMMAND completed")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testReadStatusResponseUntaggedHandlerGetsUntaggedOnly() {
-        val parser = createParser(
-            """
-                 * UNTAGGED
-                 A2 OK COMMAND completed
-                 
-                 """.trimIndent()
+    fun `readStatusResponse() should only deliver untagged responses to UntaggedHandler`() {
+        val parser = createParserWithResponses(
+            "* UNTAGGED",
+            "A2 OK COMMAND completed",
         )
         val untaggedHandler = TestUntaggedHandler()
+
         parser.readStatusResponse("A2", null, null, untaggedHandler)
-        Assert.assertEquals(1, untaggedHandler.responses.size.toLong())
-        Assert.assertEquals(mutableListOf("UNTAGGED"), untaggedHandler.responses[0])
+
+        assertThat(untaggedHandler.responses).hasSize(1)
+        assertThat(untaggedHandler.responses).index(0).containsExactly("UNTAGGED")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testReadStatusResponseSkippingWrongTag() {
-        val parser = createParser(
-            """
-    * UNTAGGED
-    * 0 EXPUNGE
-    * 42 EXISTS
-    A1 COMMAND BAR BAZ
-    A2 OK COMMAND completed
-    
-    """.trimIndent()
+    fun `readStatusResponse() should skip tagged response that does not match tag`() {
+        val parser = createParserWithResponses(
+            "* UNTAGGED",
+            "* 0 EXPUNGE",
+            "* 42 EXISTS",
+            "A1 COMMAND BAR BAZ",
+            "A2 OK COMMAND completed",
         )
         val untaggedHandler = TestUntaggedHandler()
+
         val responses = parser.readStatusResponse("A2", null, null, untaggedHandler)
-        Assert.assertEquals(3, responses.size.toLong())
-        Assert.assertEquals(mutableListOf("0", "EXPUNGE"), responses[0])
-        Assert.assertEquals(mutableListOf("42", "EXISTS"), responses[1])
-        Assert.assertEquals(mutableListOf("OK", "COMMAND completed"), responses[2])
-        Assert.assertEquals(mutableListOf("UNTAGGED"), untaggedHandler.responses[0])
-        Assert.assertEquals(responses[0], untaggedHandler.responses[1])
-        Assert.assertEquals(responses[1], untaggedHandler.responses[2])
+
+        assertThat(responses).hasSize(3)
+        assertThat(responses).index(0).containsExactly("0", "EXPUNGE")
+        assertThat(responses).index(1).containsExactly("42", "EXISTS")
+        assertThat(responses).index(2).containsExactly("OK", "COMMAND completed")
+
+        assertThat(untaggedHandler.responses).hasSize(3)
+        assertThat(untaggedHandler.responses).index(0).containsExactly("UNTAGGED")
+        assertThat(untaggedHandler.responses).index(1).containsExactly("0", "EXPUNGE")
+        assertThat(untaggedHandler.responses).index(2).containsExactly("42", "EXISTS")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testReadStatusResponseUntaggedHandlerStillCalledOnNegativeReply() {
-        val parser = createParser(
-            """
-                 + text
-                 A2 NO Bad response
-                 
-                 """.trimIndent()
+    fun `readStatusResponse() should deliver untagged responses to UntaggedHandler even on negative tagged response`() {
+        val parser = createParserWithResponses(
+            "* untagged",
+            "A2 NO Bad response",
         )
         val untaggedHandler = TestUntaggedHandler()
-        try {
-            val responses = parser.readStatusResponse("A2", null, null, untaggedHandler)
-        } catch (e: NegativeImapResponseException) {
-        }
-        Assert.assertEquals(1, untaggedHandler.responses.size.toLong())
-        Assert.assertEquals(mutableListOf("text"), untaggedHandler.responses[0])
-    }
 
-    @Test(expected = NegativeImapResponseException::class)
-    @Throws(Exception::class)
-    fun testReadStatusResponseWithErrorResponse() {
-        val parser = createParser("* COMMAND BAR BAZ\r\nTAG ERROR COMMAND errored\r\n")
-        parser.readStatusResponse("TAG", null, null, null)
+        try {
+            parser.readStatusResponse("A2", null, null, untaggedHandler)
+        } catch (ignored: NegativeImapResponseException) {
+        }
+
+        assertThat(untaggedHandler.responses).hasSize(1)
+        assertThat(untaggedHandler.responses).index(0).containsExactly("untagged")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testRespTextCodeWithList() {
-        val parser = createParser(
-            """
-    * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft NonJunk ${"$"}MDNSent \*)] Flags permitted.
-    
-    """.trimIndent()
+    fun `readStatusResponse() with error response should throw`() {
+        val parser = createParserWithResponses(
+            "* COMMAND BAR BAZ",
+            "TAG ERROR COMMAND errored",
         )
-        val response = parser.readResponse()
-        Assert.assertEquals(3, response.size.toLong())
-        Assert.assertTrue(response[1] is ImapList)
-        Assert.assertEquals(2, response.getList(1).size.toLong())
-        Assert.assertEquals("PERMANENTFLAGS", response.getList(1).getString(0))
-        Assert.assertTrue(response.getList(1)[1] is ImapList)
-        Assert.assertEquals("\\Answered", response.getList(1).getList(1).getString(0))
-        Assert.assertEquals("\\Flagged", response.getList(1).getList(1).getString(1))
-        Assert.assertEquals("\\Deleted", response.getList(1).getList(1).getString(2))
-        Assert.assertEquals("\\Seen", response.getList(1).getList(1).getString(3))
-        Assert.assertEquals("\\Draft", response.getList(1).getList(1).getString(4))
-        Assert.assertEquals("NonJunk", response.getList(1).getList(1).getString(5))
-        Assert.assertEquals("\$MDNSent", response.getList(1).getList(1).getString(6))
-        Assert.assertEquals("\\*", response.getList(1).getList(1).getString(7))
+
+        assertThat {
+            parser.readStatusResponse("TAG", null, null, null)
+        }.isFailure()
+            .isInstanceOf(NegativeImapResponseException::class)
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testExistsResponse() {
-        val parser = createParser("* 23 EXISTS\r\n")
-        val response = parser.readResponse()
-        Assert.assertEquals(2, response.size.toLong())
-        Assert.assertEquals(23, response.getNumber(0).toLong())
-        Assert.assertEquals("EXISTS", response.getString(1))
-    }
-
-    @Test(expected = IOException::class)
-    @Throws(IOException::class)
-    fun testReadStringUntilEndOfStream() {
-        val parser = createParser("* OK Some text ")
-        parser.readResponse()
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testCommandContinuation() {
-        val parser = createParser("+ Ready for additional command text\r\n")
-        val response = parser.readResponse()
-        Assert.assertEquals(1, response.size.toLong())
-        Assert.assertEquals("Ready for additional command text", response.getString(0))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testParseLiteral() {
-        val parser = createParser("* {4}\r\ntest\r\n")
-        val response = parser.readResponse()
-        Assert.assertEquals(1, response.size.toLong())
-        Assert.assertEquals("test", response.getString(0))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testParseLiteralWithEmptyString() {
-        val parser = createParser("* {0}\r\n\r\n")
-        val response = parser.readResponse()
-        Assert.assertEquals(1, response.size.toLong())
-        Assert.assertEquals("", response.getString(0))
-    }
-
-    @Test(expected = IOException::class)
-    @Throws(Exception::class)
-    fun testParseLiteralToEndOfStream() {
-        val parser = createParser("* {4}\r\nabc")
-        parser.readResponse()
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testParseLiteralWithConsumingCallbackReturningNull() {
-        val parser = createParser("* {4}\r\ntest\r\n")
-        val callback = TestImapResponseCallback.readBytesAndReturn(4, "cheeseburger")
-        val response = parser.readResponse(callback)
-        Assert.assertEquals(1, response.size.toLong())
-        Assert.assertEquals("cheeseburger", response.getString(0))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testParseLiteralWithNonConsumingCallbackReturningNull() {
-        val parser = createParser("* {4}\r\ntest\r\n")
-        val callback = TestImapResponseCallback.readBytesAndReturn(0, null)
-        val response = parser.readResponse(callback)
-        Assert.assertEquals(1, response.size.toLong())
-        Assert.assertEquals("test", response.getString(0))
-        Assert.assertTrue(callback.foundLiteralCalled)
-        assertAllInputConsumed()
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun readResponse_withPartlyConsumingCallbackReturningNull_shouldThrow() {
-        val parser = createParser("* {4}\r\ntest\r\n")
-        val callback = TestImapResponseCallback.readBytesAndReturn(2, null)
-        try {
-            parser.readResponse(callback)
-            Assert.fail()
-        } catch (e: AssertionError) {
-            Assert.assertEquals("Callback consumed some data but returned no result", e.message)
-        }
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun readResponse_withPartlyConsumingCallbackThatThrows_shouldReadAllDataAndThrow() {
-        val parser = createParser("* {4}\r\ntest\r\n")
-        val callback = TestImapResponseCallback.readBytesAndThrow(2)
-        try {
-            parser.readResponse(callback)
-            Assert.fail()
-        } catch (e: ImapResponseParserException) {
-            Assert.assertEquals("readResponse(): Exception in callback method", e.message)
-            Assert.assertEquals(ImapResponseParserTestException::class.java, e.cause!!.javaClass)
-        }
-        assertAllInputConsumed()
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun readResponse_withCallbackThatThrowsRepeatedly_shouldConsumeAllInputAndThrowFirstException() {
-        val parser = createParser("* {3}\r\none {3}\r\ntwo\r\n")
-        val callback = TestImapResponseCallback.readBytesAndThrow(3)
-        try {
-            parser.readResponse(callback)
-            Assert.fail()
-        } catch (e: ImapResponseParserException) {
-            Assert.assertEquals("readResponse(): Exception in callback method", e.message)
-            Assert.assertEquals(ImapResponseParserTestException::class.java, e.cause!!.javaClass)
-            Assert.assertEquals(0, (e.cause as ImapResponseParserTestException?)!!.instanceNumber.toLong())
-        }
-        assertAllInputConsumed()
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testParseLiteralWithIncompleteConsumingCallbackReturningString() {
-        val parser = createParser("* {4}\r\ntest\r\n")
-        val callback = TestImapResponseCallback.readBytesAndReturn(2, "ninja")
-        val response = parser.readResponse(callback)
-        Assert.assertEquals(1, response.size.toLong())
-        Assert.assertEquals("ninja", response.getString(0))
-        assertAllInputConsumed()
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testParseLiteralWithThrowingCallback() {
-        val parser = createParser("* {4}\r\ntest\r\n")
-        val callback: ImapResponseCallback = TestImapResponseCallback.readBytesAndThrow(0)
-        try {
-            parser.readResponse(callback)
-            Assert.fail()
-        } catch (e: ImapResponseParserException) {
-            Assert.assertEquals("readResponse(): Exception in callback method", e.message)
-        }
-        assertAllInputConsumed()
-    }
-
-    @Test(expected = IOException::class)
-    @Throws(Exception::class)
-    fun testParseLiteralWithCallbackThrowingIOException() {
-        val parser = createParser("* {4}\r\ntest\r\n")
-        val callback = ImapResponseCallback { response, literal -> throw IOException() }
-        parser.readResponse(callback)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testParseQuoted() {
-        val parser = createParser("* \"qu\\\"oted\"\r\n")
-        val response = parser.readResponse()
-        Assert.assertEquals(1, response.size.toLong())
-        Assert.assertEquals("qu\"oted", response.getString(0))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun utf8InQuotedString() {
-        val parser = createParser("* \"quöted\"\r\n")
-        val response = parser.readResponse()
-        Assert.assertEquals(1, response.size.toLong())
-        Assert.assertEquals("quöted", response.getString(0))
-    }
-
-    @Test(expected = IOException::class)
-    @Throws(Exception::class)
-    fun testParseQuotedToEndOfStream() {
-        val parser = createParser("* \"abc")
-        parser.readResponse()
-    }
-
-    @Test(expected = IOException::class)
-    @Throws(Exception::class)
-    fun testParseAtomToEndOfStream() {
-        val parser = createParser("* abc")
-        parser.readResponse()
-    }
-
-    @Test(expected = IOException::class)
-    @Throws(Exception::class)
-    fun testParseUntaggedResponseWithoutSpace() {
-        val parser = createParser("*\r\n")
-        parser.readResponse()
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testListResponseContainingFolderNameWithBrackets() {
-        val parser = createParser("* LIST (\\HasNoChildren) \".\" [FolderName]\r\n")
-        val response = parser.readResponse()
-        Assert.assertEquals(4, response.size.toLong())
-        Assert.assertEquals("LIST", response[0])
-        Assert.assertEquals(1, response.getList(1).size.toLong())
-        Assert.assertEquals("\\HasNoChildren", response.getList(1).getString(0))
-        Assert.assertEquals(".", response[2])
-        Assert.assertEquals("[FolderName]", response[3])
-    }
-
-    @Test(expected = IOException::class)
-    @Throws(Exception::class)
-    fun testListResponseContainingFolderNameContainingBracketsThrowsException() {
-        val parser = createParser(
-            "* LIST (\\NoInferiors) \"/\" Root/Folder/Subfolder()\r\n"
+    fun `readResponse() with resp-text code containing a list`() {
+        val parser = createParserWithResponses(
+            """* OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft NonJunk ${"$"}MDNSent \*)] """ +
+                "Flags permitted.",
         )
-        parser.readResponse()
-    }
 
-    @Test
-    @Throws(Exception::class)
-    fun readResponseShouldReadWholeListResponseLine() {
-        val parser = createParser(
-            """* LIST (\HasNoChildren) "." [FolderName]
-TAG OK [List complete]
-"""
-        )
-        parser.readResponse()
-        val responseTwo = parser.readResponse()
-        Assert.assertEquals("TAG", responseTwo.tag)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun readResponse_withListResponseContainingNil() {
-        val parser = createParser("* LIST (\\NoInferiors) NIL INBOX\r\n")
         val response = parser.readResponse()
-        Assert.assertEquals(4, response.size.toLong())
-        Assert.assertEquals("LIST", response[0])
-        Assert.assertEquals(1, response.getList(1).size.toLong())
-        Assert.assertEquals("\\NoInferiors", response.getList(1).getString(0))
-        Assert.assertEquals(null, response[2])
-        Assert.assertEquals("INBOX", response[3])
+
+        assertThat(response).hasSize(3)
+        assertThat(response).index(0).isEqualTo("OK")
+        assertThat(response).index(1).isInstanceOf(ImapList::class).all {
+            index(0).isEqualTo("PERMANENTFLAGS")
+            index(1).isInstanceOf(ImapList::class).containsExactly(
+                """\Answered""",
+                """\Flagged""",
+                """\Deleted""",
+                """\Seen""",
+                """\Draft""",
+                "NonJunk",
+                "\$MDNSent",
+                """\*""",
+            )
+        }
+
+        assertThat(response).index(2).isEqualTo("Flags permitted.")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(Exception::class)
-    fun readResponse_withListAsFirstToken_shouldThrow() {
-        val parser = createParser("* [1 2] 3\r\n")
-        try {
+    fun `readResponse() with untagged EXISTS response`() {
+        val parser = createParserWithResponses("* 23 EXISTS")
+
+        val response = parser.readResponse()
+
+        assertThat(response).hasSize(2)
+        assertThat(response).transform { it.getNumber(0) }.isEqualTo(23)
+        assertThat(response).transform { it.getString(1) }.isEqualTo("EXISTS")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() should throw if stream ends before end of line is found`() {
+        val parser = createParserWithData("* OK Some text ")
+
+        assertThat {
             parser.readResponse()
-            Assert.fail("Expected exception")
-        } catch (e: IOException) {
-            Assert.assertEquals("Unexpected non-string token: ImapList - [1, 2]", e.message)
-        }
+        }.isFailure()
+            .isInstanceOf(IOException::class)
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testFetchResponse() {
-        val parser = createParser(
-            """* 1 FETCH (UID 23 INTERNALDATE "01-Jul-2015 12:34:56 +0200" RFC822.SIZE 3456 BODY[HEADER.FIELDS (date subject from)] "<headers>" FLAGS (\Seen))
-"""
-        )
+    fun `readResponse() with command continuation`() {
+        val parser = createParserWithResponses("+ Ready for additional command text")
+
         val response = parser.readResponse()
-        Assert.assertEquals(3, response.size.toLong())
-        Assert.assertEquals("1", response.getString(0))
-        Assert.assertEquals("FETCH", response.getString(1))
-        Assert.assertEquals("UID", response.getList(2).getString(0))
-        Assert.assertEquals(23, response.getList(2).getNumber(1).toLong())
-        Assert.assertEquals("INTERNALDATE", response.getList(2).getString(2))
-        Assert.assertEquals("01-Jul-2015 12:34:56 +0200", response.getList(2).getString(3))
-        Assert.assertEquals("RFC822.SIZE", response.getList(2).getString(4))
-        Assert.assertEquals(3456, response.getList(2).getNumber(5).toLong())
-        Assert.assertEquals("BODY", response.getList(2).getString(6))
-        Assert.assertEquals(2, response.getList(2).getList(7).size.toLong())
-        Assert.assertEquals("HEADER.FIELDS", response.getList(2).getList(7).getString(0))
-        Assert.assertEquals(3, response.getList(2).getList(7).getList(1).size.toLong())
-        Assert.assertEquals("date", response.getList(2).getList(7).getList(1).getString(0))
-        Assert.assertEquals("subject", response.getList(2).getList(7).getList(1).getString(1))
-        Assert.assertEquals("from", response.getList(2).getList(7).getList(1).getString(2))
-        Assert.assertEquals("<headers>", response.getList(2).getString(8))
-        Assert.assertEquals("FLAGS", response.getList(2).getString(9))
-        Assert.assertEquals(1, response.getList(2).getList(10).size.toLong())
-        Assert.assertEquals("\\Seen", response.getList(2).getList(10).getString(0))
+
+        assertThat(response.isContinuationRequested).isTrue()
+        assertThat(response).containsExactly("Ready for additional command text")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(Exception::class)
-    fun readStatusResponse_withNoResponse_shouldThrow() {
-        val parser = createParser("1 NO\r\n")
-        try {
-            parser.readStatusResponse("1", "COMMAND", "[logId]", null)
-            Assert.fail("Expected exception")
-        } catch (e: NegativeImapResponseException) {
-            Assert.assertEquals("Command: COMMAND; response: #1# [NO]", e.message)
-        }
+    fun `readResponse() with literal`() {
+        val parser = createParserWithResponses("* {4}\r\ntest")
+
+        val response = parser.readResponse()
+
+        assertThat(response).containsExactly("test")
+        assertThatAllInputWasConsumed()
     }
 
     @Test
-    @Throws(Exception::class)
-    fun readStatusResponse_withNoResponseAndAlertText_shouldThrowWithAlertText() {
-        val parser = createParser("1 NO [ALERT] Access denied\r\n")
-        try {
-            parser.readStatusResponse("1", "COMMAND", "[logId]", null)
-            Assert.fail("Expected exception")
-        } catch (e: NegativeImapResponseException) {
-            Assert.assertEquals("Access denied", e.alertText)
-        }
+    fun `readResponse() with empty literal`() {
+        val parser = createParserWithResponses("* {0}\r\n")
+
+        val response = parser.readResponse()
+
+        assertThat(response).containsExactly("")
+        assertThatAllInputWasConsumed()
     }
 
-    private fun createParser(response: String): ImapResponseParser {
-        val byteArrayInputStream = ByteArrayInputStream(response.toByteArray(UTF_8))
+    @Test
+    fun `readResponse() should throw when end of stream is reached while reading literal`() {
+        val parser = createParserWithData("* {4}\r\nabc")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(IOException::class)
+    }
+
+    @Test
+    fun `readResponse() with literal should include return value of ImapResponseCallback_foundLiteral() in response`() {
+        val parser = createParserWithResponses("* {4}\r\ntest")
+        val callback = TestImapResponseCallback.readBytesAndReturn(4, "replacement value")
+
+        val response = parser.readResponse(callback)
+
+        assertThat(response).containsExactly("replacement value")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with literal should read literal when ImapResponseCallback_foundLiteral() returns null`() {
+        val parser = createParserWithResponses("* {4}\r\ntest")
+        val callback = TestImapResponseCallback.readBytesAndReturn(0, null)
+
+        val response = parser.readResponse(callback)
+
+        assertThat(response).containsExactly("test")
+        assertThat(callback.foundLiteralCalled).isTrue()
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with partly consuming callback returning null should throw`() {
+        val parser = createParserWithResponses("* {4}\r\ntest")
+        val callback = TestImapResponseCallback.readBytesAndReturn(2, null)
+
+        assertThat {
+            parser.readResponse(callback)
+        }.isFailure()
+            .isInstanceOf(AssertionError::class)
+            .hasMessage("Callback consumed some data but returned no result")
+    }
+
+    @Test
+    fun `readResponse() with partly consuming callback that throws should read all data and throw`() {
+        val parser = createParserWithResponses("* {4}\r\ntest")
+        val callback = TestImapResponseCallback.readBytesAndThrow(2)
+
+        assertThat {
+            parser.readResponse(callback)
+        }.isFailure()
+            .isInstanceOf(ImapResponseParserException::class)
+            .all {
+                hasMessage("readResponse(): Exception in callback method")
+                cause().isNotNull().isInstanceOf(ImapResponseParserTestException::class)
+            }
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with callback that throws repeatedly should consume all input and throw first exception`() {
+        val parser = createParserWithResponses("* {3}\r\none {3}\r\ntwo")
+        val callback = TestImapResponseCallback.readBytesAndThrow(3)
+
+        assertThat {
+            parser.readResponse(callback)
+        }.isFailure()
+            .isInstanceOf(ImapResponseParserException::class)
+            .all {
+                hasMessage("readResponse(): Exception in callback method")
+                cause().isNotNull().isInstanceOf(ImapResponseParserTestException::class)
+                    .prop(ImapResponseParserTestException::instanceNumber).isEqualTo(0)
+            }
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with callback not consuming the entire literal should skip the rest of the literal`() {
+        val parser = createParserWithResponses("* {3}\r\none two")
+        val callback = TestImapResponseCallback.readBytesAndReturn(2, "replacement value")
+
+        val response = parser.readResponse(callback)
+
+        assertThat(response).containsExactly("replacement value", "two")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with callback not consuming and throwing should read response and throw`() {
+        val parser = createParserWithResponses("* {4}\r\ntest")
+        val callback = TestImapResponseCallback.readBytesAndThrow(0)
+
+        assertThat {
+            parser.readResponse(callback)
+        }.isFailure()
+            .isInstanceOf(ImapResponseParserException::class)
+            .hasMessage("readResponse(): Exception in callback method")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with callback throwing IOException should re-throw that exception`() {
+        val parser = createParserWithResponses("* {4}\r\ntest")
+        val exception = IOException()
+        val callback = ImapResponseCallback { _, _ -> throw exception }
+
+        assertThat {
+            parser.readResponse(callback)
+        }.isFailure()
+            .isEqualTo(exception)
+    }
+
+    @Test
+    fun `readResponse() with quoted string containing an escaped quote character`() {
+        val parser = createParserWithResponses("""* "qu\"oted"""")
+
+        val response = parser.readResponse()
+
+        assertThat(response).containsExactly("""qu"oted""")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with UTF-8 data in quoted string`() {
+        val parser = createParserWithResponses("""* "quöted"""")
+
+        val response = parser.readResponse()
+
+        assertThat(response).containsExactly("quöted")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() should throw when end of stream is reached before end of quoted string`() {
+        val parser = createParserWithResponses("* \"abc")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(IOException::class)
+    }
+
+    @Test
+    fun `readResponse() should throw if end of stream is reached before end of atom`() {
+        val parser = createParserWithData("* abc")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(IOException::class)
+    }
+
+    @Test
+    fun `readResponse() should throw if untagged response indicator is not followed by a space`() {
+        val parser = createParserWithResponses("*")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(IOException::class)
+    }
+
+    @Test
+    fun `readResponse() with LIST response containing folder name with brackets`() {
+        val parser = createParserWithResponses("""* LIST (\HasNoChildren) "." [FolderName]""")
+
+        val response = parser.readResponse()
+
+        assertThat(response).hasSize(4)
+        assertThat(response).index(0).isEqualTo("LIST")
+        assertThat(response).index(1).isInstanceOf(ImapList::class).containsExactly("""\HasNoChildren""")
+        assertThat(response).index(2).isEqualTo(".")
+        assertThat(response).index(3).isEqualTo("[FolderName]")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with LIST response containing folder name with parentheses should throw`() {
+        val parser = createParserWithResponses("""* LIST (\NoInferiors) "/" Root/Folder/Subfolder()""")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(IOException::class)
+    }
+
+    @Test
+    fun `readResponse() should read whole LIST response line`() {
+        val parser = createParserWithResponses(
+            """* LIST (\HasNoChildren) "." [FolderName]""",
+            "TAG OK [List complete]",
+        )
+        parser.readResponse()
+
+        val responseTwo = parser.readResponse()
+
+        assertThat(responseTwo.tag).isEqualTo("TAG")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with LIST response containing NIL`() {
+        val parser = createParserWithResponses("""* LIST (\NoInferiors) NIL INBOX""")
+
+        val response = parser.readResponse()
+
+        assertThat(response).hasSize(4)
+        assertThat(response).index(0).isEqualTo("LIST")
+        assertThat(response).index(1).isInstanceOf(ImapList::class).containsExactly("""\NoInferiors""")
+        assertThat(response).index(2).isNull()
+        assertThat(response).index(3).isEqualTo("INBOX")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with list as first token should throw`() {
+        val parser = createParserWithResponses("* [1 2] 3")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(IOException::class)
+            .hasMessage("Unexpected non-string token: ImapList - [1, 2]")
+    }
+
+    @Test
+    fun `readResponse() with FETCH response`() {
+        val parser = createParserWithResponses(
+            "* 1 FETCH (" +
+                "UID 23 " +
+                """INTERNALDATE "01-Jul-2015 12:34:56 +0200" """ +
+                "RFC822.SIZE 3456 " +
+                """BODY[HEADER.FIELDS (date subject from)] "<headers>" """ +
+                """FLAGS (\Seen)""" +
+                ")",
+        )
+
+        val response = parser.readResponse()
+
+        assertThat(response).hasSize(3)
+        assertThat(response).index(0).isEqualTo("1")
+        assertThat(response).index(1).isEqualTo("FETCH")
+        assertThat(response).index(2).isInstanceOf(ImapList::class).all {
+            hasSize(11)
+            index(0).isEqualTo("UID")
+            index(1).isEqualTo("23")
+            index(2).isEqualTo("INTERNALDATE")
+            index(3).isEqualTo("01-Jul-2015 12:34:56 +0200")
+            index(4).isEqualTo("RFC822.SIZE")
+            index(5).isEqualTo("3456")
+            index(6).isEqualTo("BODY")
+            index(7).isInstanceOf(ImapList::class).all {
+                hasSize(2)
+                index(0).isEqualTo("HEADER.FIELDS")
+                index(1).isInstanceOf(ImapList::class).containsExactly("date", "subject", "from")
+            }
+            index(8).isEqualTo("<headers>")
+            index(9).isEqualTo("FLAGS")
+            index(10).isInstanceOf(ImapList::class).containsExactly("""\Seen""")
+        }
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readStatusResponse() with NO response should throw`() {
+        val parser = createParserWithResponses("1 NO")
+
+        assertThat {
+            parser.readStatusResponse("1", "COMMAND", "[logId]", null)
+        }.isFailure()
+            .isInstanceOf(NegativeImapResponseException::class)
+            .hasMessage("Command: COMMAND; response: #1# [NO]")
+    }
+
+    @Test
+    fun `readStatusResponse() with NO response and alert text should throw with alert text`() {
+        val parser = createParserWithResponses("1 NO [ALERT] Access denied\r\n")
+
+        assertThat {
+            parser.readStatusResponse("1", "COMMAND", "[logId]", null)
+        }.isFailure()
+            .isInstanceOf(NegativeImapResponseException::class)
+            .prop(NegativeImapResponseException::getAlertText).isEqualTo("Access denied")
+    }
+
+    private fun createParserWithResponses(vararg responses: String): ImapResponseParser {
+        val response = responses.joinToString(separator = "\r\n", postfix = "\r\n")
+        return createParserWithData(response)
+    }
+
+    private fun createParserWithData(response: String): ImapResponseParser {
+        val byteArrayInputStream = ByteArrayInputStream(response.toByteArray(Charsets.UTF_8))
         peekableInputStream = PeekableInputStream(byteArrayInputStream)
+
         return ImapResponseParser(peekableInputStream)
     }
 
-    @Throws(IOException::class)
-    private fun assertAllInputConsumed() {
-        Assert.assertEquals(0, peekableInputStream!!.available().toLong())
+    private fun assertThatAllInputWasConsumed() {
+        assertThat(peekableInputStream).isNotNull().prop(PeekableInputStream::available).isEqualTo(0)
+    }
+}
+
+private class TestImapResponseCallback(
+    private val readNumberOfBytes: Long,
+    private val returnValue: Any?,
+    private val throwException: Boolean,
+) : ImapResponseCallback {
+    private var exceptionCount = 0
+    var foundLiteralCalled = false
+
+    override fun foundLiteral(response: ImapResponse, literal: FixedLengthInputStream): Any? {
+        foundLiteralCalled = true
+
+        var skipBytes = readNumberOfBytes
+        while (skipBytes > 0) {
+            skipBytes -= literal.skip(skipBytes)
+        }
+
+        if (throwException) {
+            throw ImapResponseParserTestException(exceptionCount++)
+        }
+
+        return returnValue
     }
 
-    internal class TestImapResponseCallback private constructor(
-        private val readNumberOfBytes: Int,
-        private val returnValue: Any,
-        private val throwException: Boolean
-    ) : ImapResponseCallback {
-        private var exceptionCount = 0
-        var foundLiteralCalled = false
-        @Throws(Exception::class)
-        override fun foundLiteral(response: ImapResponse, literal: FixedLengthInputStream): Any {
-            foundLiteralCalled = true
-            var skipBytes = readNumberOfBytes
-            while (skipBytes > 0) {
-                val skippedBytes = literal.skip(skipBytes.toLong())
-                skipBytes -= skippedBytes.toInt()
-            }
-            if (throwException) {
-                throw ImapResponseParserTestException(exceptionCount++)
-            }
-            return returnValue
+    companion object {
+        fun readBytesAndReturn(readNumberOfBytes: Int, returnValue: Any?): TestImapResponseCallback {
+            return TestImapResponseCallback(readNumberOfBytes.toLong(), returnValue, false)
         }
 
-        companion object {
-            fun readBytesAndReturn(readNumberOfBytes: Int, returnValue: Any?): TestImapResponseCallback {
-                return TestImapResponseCallback(readNumberOfBytes, returnValue!!, false)
-            }
-
-            fun readBytesAndThrow(readNumberOfBytes: Int): TestImapResponseCallback {
-                return TestImapResponseCallback(readNumberOfBytes, null, true)
-            }
+        fun readBytesAndThrow(readNumberOfBytes: Int): TestImapResponseCallback {
+            return TestImapResponseCallback(readNumberOfBytes.toLong(), null, true)
         }
     }
+}
 
-    internal class ImapResponseParserTestException(val instanceNumber: Int) : RuntimeException()
-    internal class TestUntaggedHandler : UntaggedHandler {
-        val responses: MutableList<ImapResponse> = ArrayList()
-        override fun handleAsyncUntaggedResponse(response: ImapResponse) {
-            responses.add(response)
-        }
+private class ImapResponseParserTestException(val instanceNumber: Int) : RuntimeException()
+
+private class TestUntaggedHandler : UntaggedHandler {
+    val responses = mutableListOf<ImapResponse>()
+
+    override fun handleAsyncUntaggedResponse(response: ImapResponse) {
+        responses.add(response)
     }
 }
