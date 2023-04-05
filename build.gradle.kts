@@ -66,7 +66,7 @@ allprojects {
             substitute(module("org.jetbrains.kotlinx:kotlinx-coroutines-android"))
                 .using(
                     module(
-                        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.kotlinCoroutines.get()}",
+                        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.kotlinxCoroutines.get()}",
                     ),
                 )
         }
