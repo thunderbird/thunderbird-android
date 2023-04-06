@@ -3,6 +3,7 @@ package com.fsck.k9.ui.base
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -11,13 +12,14 @@ import androidx.lifecycle.asLiveData
 import com.fsck.k9.controller.push.PushController
 import java.util.Locale
 import org.koin.android.ext.android.inject
-
+import com.fsck.k9.preferences.GeneralSettingsManager
 abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity() {
     constructor() : this(ThemeType.DEFAULT)
 
     private val pushController: PushController by inject()
     protected val themeManager: ThemeManager by inject()
     private val appLanguageManager: AppLanguageManager by inject()
+    private val generalSettingsManager: GeneralSettingsManager by inject()
 
     private var overrideLocaleOnLaunch: Locale? = null
 
@@ -34,6 +36,7 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
     override fun onCreate(savedInstanceState: Bundle?) {
         initializeTheme()
         initializePushController()
+        setHideScreenShot()
         super.onCreate(savedInstanceState)
 
         setLayoutDirection()
@@ -45,6 +48,13 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
     private fun setLayoutDirection() {
         if (Build.VERSION.SDK_INT >= 31) {
             window.decorView.layoutDirection = resources.configuration.layoutDirection
+        }
+    }
+
+    private fun setHideScreenShot(){
+        if(generalSettingsManager.getSettings().hideScreenshot){
+            window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE)
         }
     }
 

@@ -293,6 +293,11 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="global_settings_privacy_hide_useragent">E-Mail-Client ausblenden</string>
   <string name="global_settings_privacy_hide_useragent_detail">K-9 Benutzer-Agent aus E-Mail-Kopfzeilen entfernen</string>
   <string name="global_settings_privacy_hide_timezone">Zeitzone ausblenden</string>
+
+  <string name="global_settings_privacy_hide_screenshot">Bildschirmsperre</string>
+  <string name="global_settings_privacy_hide_screenshot_detail">Bildschirmfotos in der Anwendung und der Liste der letzten Anwendungen blockieren</string>
+
+
   <string name="global_settings_privacy_hide_timezone_detail">UTC statt lokaler Zeitzone in E-Mail-Kopfzeilen und Antwort-Kopfzeilen verwenden</string>
   <string name="global_settings_notification_quick_delete_title">Löschen erlauben</string>
   <string name="global_settings_notification_quick_delete_never">Nie</string>

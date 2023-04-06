@@ -123,12 +123,18 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(fixedMessageViewTheme = fixedMessageViewTheme).persist()
     }
 
+    @Synchronized
+    override fun setHideScreenshot(hideScreenshot: Boolean) {
+        getSettings().copy(hideScreenshot = hideScreenshot).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
         editor.putEnum("messageViewTheme", settings.messageViewTheme)
         editor.putEnum("messageComposeTheme", settings.messageComposeTheme)
         editor.putBoolean("fixedMessageViewTheme", settings.fixedMessageViewTheme)
+        editor.putBoolean("hideScreenshot", settings.hideScreenshot)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -141,6 +147,7 @@ internal class RealGeneralSettingsManager(
             messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL),
             messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL),
             fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true),
+            hideScreenshot = storage.getBoolean("hideScreenshot", false)
         )
 
         updateSettingsFlow(settings)

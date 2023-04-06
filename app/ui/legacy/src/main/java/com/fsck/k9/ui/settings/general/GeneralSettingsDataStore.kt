@@ -42,6 +42,7 @@ class GeneralSettingsDataStore(
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.isHideUserAgent
             "privacy_hide_timezone" -> K9.isHideTimeZone
+            "privacy_hide_screenshot" -> generalSettingsManager.getSettings().hideScreenshot
             "debug_logging" -> K9.isDebugLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation
@@ -73,6 +74,7 @@ class GeneralSettingsDataStore(
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.isHideUserAgent = value
             "privacy_hide_timezone" -> K9.isHideTimeZone = value
+            "privacy_hide_screenshot" -> setHideScreenshot(value)
             "debug_logging" -> K9.isDebugLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
@@ -243,6 +245,10 @@ class GeneralSettingsDataStore(
     private fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setFixedMessageViewTheme(fixedMessageViewTheme)
+    }
+
+    private fun setHideScreenshot(hideScreenshot : Boolean){
+        generalSettingsManager.setHideScreenshot(hideScreenshot);
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {

@@ -442,6 +442,11 @@
             android:summary="@string/global_settings_privacy_hide_timezone_detail"
             android:title="@string/global_settings_privacy_hide_timezone" />
 
+        <CheckBoxPreference
+            android:key="privacy_hide_screenshot"
+            android:summary="@string/global_settings_privacy_hide_screenshot_detail"
+            android:title="@string/global_settings_privacy_hide_screenshot" />
+
     </PreferenceScreen>
 
     <PreferenceScreen
