@@ -20,6 +20,7 @@ pushd "${SCRIPT_PATH}/.."
 # Record screenshots
 maestro test ui-flows/screenshots/user_manual_account_setup.yml
 maestro test ui-flows/screenshots/user_manual_accounts.yml
+maestro test ui-flows/screenshots/user_manual_reading.yml
 
 # Post-process screenshots
 user-manual/process_screenshots.sh
