@@ -182,4 +182,22 @@ class HtmlSignatureRemoverTest {
             """.trimIndent().removeNewlines(),
         )
     }
+
+    @Test
+    fun `signature delimiter with non-breaking space character entity`() {
+        val html = "Body text<br>--&nbsp;<br>Signature text"
+
+        val withoutSignature = stripSignature(html)
+
+        assertThat(extractText(withoutSignature)).isEqualTo("Body text")
+    }
+
+    @Test
+    fun `signature delimiter with non-breaking space`() {
+        val html = "Body text<br>--\u00A0<br>Signature text"
+
+        val withoutSignature = stripSignature(html)
+
+        assertThat(extractText(withoutSignature)).isEqualTo("Body text")
+    }
 }

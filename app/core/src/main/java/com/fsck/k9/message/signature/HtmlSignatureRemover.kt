@@ -130,7 +130,7 @@ class HtmlSignatureRemover {
     }
 
     companion object {
-        private val DASH_SIGNATURE_HTML = Pattern.compile("\\s*-- \\s*", Pattern.CASE_INSENSITIVE)
+        private val DASH_SIGNATURE_HTML = Pattern.compile("\\s*--[ \u00A0]\\s*")
         private val BLOCKQUOTE = Tag.valueOf("blockquote")
         private val BR = Tag.valueOf("br")
 
