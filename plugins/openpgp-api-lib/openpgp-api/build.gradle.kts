@@ -11,7 +11,10 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.lifecycle.common)
+    api(libs.androidx.lifecycle.common)
+    api(libs.androidx.preference)
+    api(libs.androidx.fragment)
+
+    implementation(libs.androidx.annotation)
     implementation(libs.timber)
-    implementation(libs.preferencex)
 }
