@@ -31,14 +31,13 @@ private class LoaderStateObserver<T>(
 ) : Observer<LoaderState<T>> {
     private val allViews = setOf(loadingView, errorView, dataView)
 
-    override fun onChanged(state: LoaderState<T>?) {
-        when (state) {
-            null -> Unit
+    override fun onChanged(value: LoaderState<T>) {
+        when (value) {
             is LoaderState.Loading -> loadingView.show()
             is LoaderState.Error -> errorView.show()
             is LoaderState.Data -> {
                 dataView.show()
-                displayData(state.data)
+                displayData(value.data)
             }
         }
     }
