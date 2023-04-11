@@ -15,6 +15,8 @@ import java.util.Locale;
 import static com.fsck.k9.mail.internet.JisSupport.SHIFT_JIS;
 
 public class CharsetSupport {
+    private static final String DEFAULT_CHARSET = "US-ASCII";
+
     /**
      * Table for character set fall-back.
      *
@@ -23,15 +25,13 @@ public class CharsetSupport {
     private static final String[][] CHARSET_FALLBACK_MAP = new String[][] {
             // Some Android versions don't support KOI8-U
             {"koi8-u", "koi8-r"},
-            {"iso-2022-jp-[\\d]+", "iso-2022-jp"},
-            // Default fall-back is US-ASCII
-            {".*", "US-ASCII"}
+            {"iso-2022-jp-[\\d]+", "iso-2022-jp"}
     };
 
 
     static String fixupCharset(String charset, Message message) throws MessagingException {
         if (charset == null || "0".equals(charset))
-            charset = "US-ASCII";  // No encoding, so use us-ascii, which is the standard.
+            charset = DEFAULT_CHARSET;
 
         charset = charset.toLowerCase(Locale.US);
         if (charset.equals("cp932"))
@@ -91,6 +91,10 @@ public class CharsetSupport {
                     supported = false;
                 }
             }
+        }
+
+        if (!supported) {
+            charset = DEFAULT_CHARSET;
         }
 
         /*

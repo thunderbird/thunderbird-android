@@ -1,6 +1,10 @@
 package com.fsck.k9.mail.internet;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -94,5 +98,25 @@ public class CharsetSupportTest {
         charsetOnMail = "shift_jis";
         expect = "x-kddi-shift_jis-2007";
         assertEquals(expect, CharsetSupport.fixupCharset(charsetOnMail, message));
+    }
+
+    @Test
+    public void readToString_withUnsupportedCharset_shouldFallBackToAscii() throws IOException {
+        InputStream inputStream = new ByteArrayInputStream("input".getBytes());
+        String charset = "unsupported";
+
+        String result = CharsetSupport.readToString(inputStream, charset);
+
+        assertEquals("input", result);
+    }
+
+    @Test
+    public void readToString_withInvalidCharset_shouldFallBackToAscii() throws IOException {
+        InputStream inputStream = new ByteArrayInputStream("input".getBytes());
+        String charset = "invalid\n";
+
+        String result = CharsetSupport.readToString(inputStream, charset);
+
+        assertEquals("input", result);
     }
 }
