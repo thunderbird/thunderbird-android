@@ -1,19 +1,15 @@
 package net.thunderbird.feature.onboarding
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.composed
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
@@ -34,38 +30,38 @@ internal fun OnboardingContent(
     onImportClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ResponsiveContent {
-        Background(
-            modifier = modifier,
-        ) {
+    Background(
+        modifier = modifier,
+    ) {
+        ResponsiveContent {
             LazyColumnWithFooter(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(MainTheme.spacings.double),
+                modifier = Modifier.fillMaxSize(),
                 footer = {
                     WelcomeFooter(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = MainTheme.spacings.triple),
+                            .padding(top = MainTheme.spacings.quadruple),
                         onStartClick = onStartClick,
                         onImportClick = onImportClick,
                     )
                 },
-                verticalArrangement = Arrangement.spacedBy(MainTheme.sizes.large, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.sizes.medium, Alignment.CenterVertically),
             ) {
                 item {
                     WelcomeLogo(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .defaultItemModifier()
+                            .padding(top = MainTheme.spacings.quadruple),
                     )
                 }
                 item {
                     WelcomeTitle(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.defaultItemModifier(),
                     )
                 }
                 item {
                     WelcomeMessage(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.defaultItemModifier(),
                     )
                 }
             }
@@ -81,18 +77,10 @@ private fun WelcomeLogo(
         modifier = Modifier.then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier
-                .size(MainTheme.sizes.huge)
-                .clip(shape = RoundedCornerShape(percent = 50))
-                .background(color = MainTheme.colors.surface),
-        ) {
-            Image(
-                painter = painterResource(id = MainTheme.images.logo),
-                contentDescription = null,
-                modifier = Modifier.size(MainTheme.sizes.huge),
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.onboarding_welcome_logo),
+            contentDescription = null,
+        )
     }
 }
 
@@ -146,6 +134,11 @@ private fun WelcomeFooter(
             onClick = onImportClick,
         )
     }
+}
+
+private fun Modifier.defaultItemModifier() = composed {
+    fillMaxWidth()
+        .padding(MainTheme.spacings.double)
 }
 
 @Composable

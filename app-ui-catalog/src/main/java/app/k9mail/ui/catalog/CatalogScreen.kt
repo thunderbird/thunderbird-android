@@ -17,7 +17,10 @@ fun CatalogScreen(
     val themeState = remember { mutableStateOf(CatalogTheme.K9) }
     val themeVariantState = remember { mutableStateOf(CatalogThemeVariant.LIGHT) }
 
-    CatalogThemeSwitch(theme = themeState.value, themeVariation = themeVariantState.value) {
+    CatalogThemeSwitch(
+        theme = themeState.value,
+        themeVariant = themeVariantState.value,
+    ) {
         val contentPadding = WindowInsets.systemBars.asPaddingValues()
 
         CatalogContent(

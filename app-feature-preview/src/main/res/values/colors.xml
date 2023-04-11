@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  Material green 300  -->
+    <color name="ic_launcher_logo_main">#81C784</color>
+    <!--  Material green 700  -->
+    <color name="ic_launcher_logo_shadow">#FF388E3C</color>
+    <!--  Material green 50  -->
+    <color name="ic_launcher_background">#E8F5E9</color>
+</resources>

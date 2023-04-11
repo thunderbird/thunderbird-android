@@ -9,6 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import app.k9mail.core.ui.compose.theme.color.Colors
 import app.k9mail.core.ui.compose.theme.color.LocalColors
+import app.k9mail.core.ui.compose.theme.color.SetSystemBarsColor
 import app.k9mail.core.ui.compose.theme.color.toMaterialColors
 
 @Composable
@@ -30,6 +31,8 @@ fun MainTheme(
     } else {
         lightImages
     }
+
+    SetSystemBarsColor(color = colors.toolbar)
 
     CompositionLocalProvider(
         LocalColors provides colors,

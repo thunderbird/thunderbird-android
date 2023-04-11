@@ -20,7 +20,7 @@ fun CatalogThemeVariantSelector(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
     ) {
-        TextBody1(text = "Set dark mode:")
+        TextBody1(text = "Dark mode:")
         Checkbox(
             checked = catalogThemeVariant == CatalogThemeVariant.DARK,
             onCheckedChange = { onThemeVariantChange() },
