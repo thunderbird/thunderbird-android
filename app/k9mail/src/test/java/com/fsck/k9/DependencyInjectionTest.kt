@@ -50,6 +50,9 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             withParameter<FolderIconProvider> {
                 ContextThemeWrapper(RuntimeEnvironment.getApplication(), R.style.Theme_K9_DayNight).theme
             }
+            withParameters(clazz = Class.forName("com.fsck.k9.view.K9WebViewClient").kotlin) {
+                parametersOf(null, null)
+            }
         }
     }
 }

@@ -7,12 +7,16 @@ import android.webkit.WebSettings.LayoutAlgorithm
 import android.webkit.WebSettings.RenderPriority
 import android.webkit.WebView
 import com.fsck.k9.mailstore.AttachmentResolver
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 
-class MessageWebView : WebView {
+class MessageWebView : WebView, KoinComponent {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+
+    private val webViewClientFactory: WebViewClientFactory by inject()
 
     fun blockNetworkData(shouldBlockNetworkData: Boolean) {
         // Images with content: URIs will not be blocked, nor will network images that are already in the WebView cache.
@@ -81,10 +85,7 @@ class MessageWebView : WebView {
         attachmentResolver: AttachmentResolver?,
         onPageFinishedListener: OnPageFinishedListener?,
     ) {
-        val webViewClient = K9WebViewClient.newInstance(attachmentResolver)
-        if (onPageFinishedListener != null) {
-            webViewClient.setOnPageFinishedListener(onPageFinishedListener)
-        }
+        val webViewClient = webViewClientFactory.create(attachmentResolver, onPageFinishedListener)
         setWebViewClient(webViewClient)
     }
 

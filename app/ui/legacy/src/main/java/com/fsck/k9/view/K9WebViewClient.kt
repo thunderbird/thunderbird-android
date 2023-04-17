@@ -22,8 +22,8 @@ import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
  */
 internal class K9WebViewClient(
     private val attachmentResolver: AttachmentResolver?,
+    private val onPageFinishedListener: OnPageFinishedListener?,
 ) : WebViewClient() {
-    private var onPageFinishedListener: OnPageFinishedListener? = null
 
     @Deprecated("Deprecated in parent class")
     override fun shouldOverrideUrlLoading(webView: WebView, url: String): Boolean {
@@ -100,10 +100,6 @@ internal class K9WebViewClient(
         responseHeaders = mapOf("Cache-Control" to "no-store")
     }
 
-    fun setOnPageFinishedListener(onPageFinishedListener: OnPageFinishedListener?) {
-        this.onPageFinishedListener = onPageFinishedListener
-    }
-
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
 
@@ -115,9 +111,5 @@ internal class K9WebViewClient(
 
         private val RESULT_DO_NOT_INTERCEPT: WebResourceResponse? = null
         private val RESULT_DUMMY_RESPONSE = WebResourceResponse(null, null, null)
-
-        fun newInstance(attachmentResolver: AttachmentResolver?): K9WebViewClient {
-            return K9WebViewClient(attachmentResolver)
-        }
     }
 }
