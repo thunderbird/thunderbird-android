@@ -13,7 +13,7 @@ val viewModule = module {
     factory { ReplyToParser() }
     factory { ReplyActionStrategy(replyRoParser = get()) }
     factory { (attachmentResolver: AttachmentResolver?, onPageFinishedListener: OnPageFinishedListener?) ->
-        K9WebViewClient(attachmentResolver, onPageFinishedListener)
+        K9WebViewClient(clipboardManager = get(), attachmentResolver, onPageFinishedListener)
     }
     factory { WebViewClientFactory() }
 }

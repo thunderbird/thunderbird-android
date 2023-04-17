@@ -144,12 +144,14 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
 
         menu.setHeaderTitle(linkUrl)
 
-        menu.add(
-            Menu.NONE,
-            MENU_ITEM_LINK_VIEW,
-            0,
-            context.getString(R.string.webview_contextmenu_link_view_action),
-        ).setOnMenuItemClickListener(listener)
+        if (!linkUrl.startsWith("file:")) {
+            menu.add(
+                Menu.NONE,
+                MENU_ITEM_LINK_VIEW,
+                0,
+                context.getString(R.string.webview_contextmenu_link_view_action),
+            ).setOnMenuItemClickListener(listener)
+        }
 
         menu.add(
             Menu.NONE,

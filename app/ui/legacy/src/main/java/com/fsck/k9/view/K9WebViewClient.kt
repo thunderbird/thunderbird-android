@@ -12,6 +12,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.logging.Timber
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.ui.R
@@ -21,6 +22,7 @@ import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
  * [WebViewClient] that intercepts requests for `cid:` URIs to load the respective body part.
  */
 internal class K9WebViewClient(
+    private val clipboardManager: ClipboardManager,
     private val attachmentResolver: AttachmentResolver?,
     private val onPageFinishedListener: OnPageFinishedListener?,
 ) : WebViewClient() {
@@ -36,28 +38,40 @@ internal class K9WebViewClient(
     }
 
     private fun shouldOverrideUrlLoading(webView: WebView, uri: Uri): Boolean {
-        if (uri.scheme == CID_SCHEME) return false
+        return when (uri.scheme) {
+            CID_SCHEME -> {
+                false
+            }
+            FILE_SCHEME -> {
+                copyUrlToClipboard(webView.context, uri)
+                true
+            }
+            else -> {
+                openUrl(webView.context, uri)
+                true
+            }
+        }
+    }
 
-        val context = webView.context
-        val intent = createBrowserViewIntent(uri, context)
+    private fun copyUrlToClipboard(context: Context, uri: Uri) {
+        val label = context.getString(R.string.webview_contextmenu_link_clipboard_label)
+        clipboardManager.setText(label, uri.toString())
+    }
+
+    private fun openUrl(context: Context, uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+            putExtra(Browser.EXTRA_APPLICATION_ID, context.packageName)
+            putExtra(Browser.EXTRA_CREATE_NEW_TAB, true)
+
+            addCategory(Intent.CATEGORY_BROWSABLE)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+        }
 
         try {
             context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
             Timber.d(e, "Couldn't open URL: %s", uri)
             Toast.makeText(context, R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
-        }
-
-        return true
-    }
-
-    private fun createBrowserViewIntent(uri: Uri, context: Context): Intent {
-        return Intent(Intent.ACTION_VIEW, uri).apply {
-            putExtra(Browser.EXTRA_APPLICATION_ID, context.packageName)
-            putExtra(Browser.EXTRA_CREATE_NEW_TAB, true)
-
-            addCategory(Intent.CATEGORY_BROWSABLE)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
         }
     }
 
@@ -108,6 +122,7 @@ internal class K9WebViewClient(
 
     companion object {
         private const val CID_SCHEME = "cid"
+        private const val FILE_SCHEME = "file"
 
         private val RESULT_DO_NOT_INTERCEPT: WebResourceResponse? = null
         private val RESULT_DUMMY_RESPONSE = WebResourceResponse(null, null, null)
