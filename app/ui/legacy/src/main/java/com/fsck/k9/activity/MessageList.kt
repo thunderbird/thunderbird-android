@@ -465,7 +465,7 @@ open class MessageList :
             val messageReference = MessageReference.parse(messageReferenceString)
 
             if (messageReference != null) {
-                val search = if (intent.hasExtra(EXTRA_SEARCH)) {
+                val search = if (intent.hasByteArrayExtra(EXTRA_SEARCH)) {
                     ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR)
                 } else {
                     messageReference.toLocalSearch()
@@ -477,7 +477,7 @@ open class MessageList :
                     messageViewOnly = intent.getBooleanExtra(EXTRA_MESSAGE_VIEW_ONLY, false),
                 )
             }
-        } else if (intent.hasExtra(EXTRA_SEARCH)) {
+        } else if (intent.hasByteArrayExtra(EXTRA_SEARCH)) {
             // regular LocalSearch object was passed
             val search = ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR)
             val noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false)
@@ -1553,4 +1553,8 @@ open class MessageList :
             actionDisplaySearch(context, search, noThreading = false, newTask = false)
         }
     }
+}
+
+private fun Intent.hasByteArrayExtra(name: String): Boolean {
+    return getByteArrayExtra(name) != null
 }
