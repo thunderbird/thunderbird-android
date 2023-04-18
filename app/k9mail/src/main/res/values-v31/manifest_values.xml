@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Home screen widgets should be disabled by default. They will be enabled programmatically if necessary. -->
-    <bool name="home_screen_widgets_enabled">false</bool>
-</resources>

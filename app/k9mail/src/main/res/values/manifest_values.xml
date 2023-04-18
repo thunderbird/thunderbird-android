@@ -4,6 +4,10 @@
     We'd like to disable this component by default. However, due to a bug in Android versions prior to 12, users then
     wouldn't be able to use the home screen widget.
     See https://android.googlesource.com/platform/frameworks/base/+/85be035336af8d83eb24980026418207c85991cb%5E%21/#F0
+
+    Previously, we've set this value to false on Android 12+ devices. However, a few people have reported widgets
+    disappearing after updating to an app version containing that change. So for now we're back to having widgets
+    enabled by default on all Android versions. We'll try again for Android versions released in or after 2025.
     -->
     <bool name="home_screen_widgets_enabled">true</bool>
 </resources>
