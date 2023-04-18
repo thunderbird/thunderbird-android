@@ -2,6 +2,7 @@
 # Please don't open pull requests upgrading dependencies if you're a new contributor.
 
 [versions]
+gradle = "8.0.2"
 androidGradlePlugin = "7.4.2"
 ktlint = "0.48.2"
 
