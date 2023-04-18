@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.601" versioncode="36001" date="2023-04-18">
+        <change>Reverted changes to home screen widgets because apparently not every device vendor has incorporated the relevant fixes in Android 12+</change>
+    </release>
     <release version="6.600" versioncode="36000" date="2023-04-11">
         <change>Redesigned the message view screen; tap the message header containing sender/recipient names to see more details</change>
         <change>Added a setting for three different message list densities: compact, default, relaxed</change>
