@@ -638,7 +638,6 @@
     <ID>SwallowedException:RealImapStore.kt$RealImapStore$e: CharacterCodingException</ID>
     <ID>SwallowedException:RealImapStore.kt$RealImapStore$ioe: IOException</ID>
     <ID>SwallowedException:SaveMessageOperations.kt$SaveMessageOperations$e: IOException</ID>
-    <ID>SwallowedException:SettingsExportViewModel.kt$SettingsExportViewModel$e: Exception</ID>
     <ID>SwallowedException:SettingsExporter.kt$SettingsExporter$e: InvalidSettingValueException</ID>
     <ID>SwallowedException:SettingsListFragment.kt$SettingsListFragment$e: ActivityNotFoundException</ID>
     <ID>SwallowedException:SmtpTransport.kt$SmtpTransport$e: NegativeSmtpReplyException</ID>
@@ -802,7 +801,6 @@
     <ID>UnusedPrivateMember:HttpUriParser.kt$HttpUriParser$i</ID>
     <ID>UnusedPrivateMember:MessageListLoader.kt$MessageListLoader$account: Account</ID>
     <ID>UnusedPrivateMember:MessageViewFragment.kt$MessageViewFragment$requestKey: String</ID>
-    <ID>UnusedPrivateMember:NewSetupUiHack.kt$NewSetupUiHack$builder: SettingsListBuilder</ID>
     <ID>UseCheckOrError:OutboxStateRepository.kt$OutboxStateRepository$throw IllegalStateException("No outbox_state entry for message with id $messageId")</ID>
     <ID>UseCheckOrError:ThemeExtensions.kt$throw IllegalStateException("Couldn't resolve attribute ($attrId)")</ID>
     <ID>UseRequire:MimeParameterEncoder.kt$MimeParameterEncoder$throw IllegalArgumentException("Unsupported character: $c")</ID>
