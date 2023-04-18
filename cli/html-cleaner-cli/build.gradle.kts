@@ -1,7 +1,6 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    id("application")
+    id(ThunderbirdPlugins.App.jvm)
 }
 
 version = "unspecified"
@@ -15,9 +14,4 @@ dependencies {
 
     implementation(libs.clikt)
     implementation(libs.okio)
-}
-
-java {
-    sourceCompatibility = ThunderbirdProjectConfig.javaVersion
-    targetCompatibility = ThunderbirdProjectConfig.javaVersion
 }

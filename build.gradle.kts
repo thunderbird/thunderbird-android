@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application) apply false
@@ -16,9 +14,6 @@ plugins {
 }
 
 val propertyTestCoverage: String? by extra
-
-val javaVersion = JavaVersion.VERSION_11
-val jvmTargetVersion = JvmTarget.JVM_11
 
 allprojects {
     extra.apply {
@@ -70,10 +65,6 @@ allprojects {
                     ),
                 )
         }
-    }
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = jvmTargetVersion.target
     }
 
     tasks.withType<Test> {

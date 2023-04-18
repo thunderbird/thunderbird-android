@@ -3,7 +3,7 @@
 
 [versions]
 gradle = "8.0.2"
-androidGradlePlugin = "7.4.2"
+androidGradlePlugin = "8.0.0"
 ktlint = "0.48.2"
 
 kotlin = "1.8.10"
