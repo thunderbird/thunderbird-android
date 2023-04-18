@@ -45,7 +45,7 @@ android {
         applicationId = "com.fsck.k9"
         testApplicationId = "com.fsck.k9.tests"
 
-        versionCode = 36000
+        versionCode = 36001
         versionName = "6.700-SNAPSHOT"
 
         // Keep in sync with the resource string array "supported_languages"
