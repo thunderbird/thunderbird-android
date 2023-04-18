@@ -178,6 +178,7 @@ class SmtpResponseParserTest {
             250-PIPELINING
             250-PIPE_CONNECT
             250-AUTH=PLAIN
+            250-%1 crash when included in format string
             250 HELP
         """.toPeekableInputStream()
         val parser = SmtpResponseParser(logger, input)
@@ -195,8 +196,10 @@ class SmtpResponseParserTest {
         assertThat(logger.logEntries.map { it.message }).containsExactly(
             "Ignoring EHLO keyword line: PIPE_CONNECT",
             "Ignoring EHLO keyword line: AUTH=PLAIN",
+            "Ignoring EHLO keyword line: %1 crash when included in format string",
         )
         assertThat(logger.logEntries.map { it.throwable?.message }).containsExactly(
+            "EHLO keyword contains invalid character",
             "EHLO keyword contains invalid character",
             "EHLO keyword contains invalid character",
         )
