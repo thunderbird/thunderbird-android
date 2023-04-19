@@ -237,6 +237,39 @@ class ImapResponseParserTest {
     }
 
     @Test
+    fun `readResponse() with literal containing negative size`() {
+        val parser = createParserWithResponses("* {-1}")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(ImapResponseParserException::class)
+            .hasMessage("Invalid value for size of literal string")
+    }
+
+    @Test
+    fun `readResponse() with literal size exceeding Int`() {
+        val parser = createParserWithResponses("* {2147483648}")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(ImapResponseParserException::class)
+            .hasMessage("Invalid value for size of literal string")
+    }
+
+    @Test
+    fun `readResponse() with invalid characters for literal size`() {
+        val parser = createParserWithResponses("* {invalid}")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(ImapResponseParserException::class)
+            .hasMessage("Invalid value for size of literal string")
+    }
+
+    @Test
     fun `readResponse() should throw when end of stream is reached while reading literal`() {
         val parser = createParserWithData("* {4}\r\nabc")
 
@@ -453,14 +486,25 @@ class ImapResponseParserTest {
     }
 
     @Test
+    fun `readResponse() with tagged response missing completion code should throw`() {
+        val parser = createParserWithResponses("tag ")
+
+        assertThat {
+            parser.readResponse()
+        }.isFailure()
+            .isInstanceOf(ImapResponseParserException::class)
+            .hasMessage("Unexpected non-string token")
+    }
+
+    @Test
     fun `readResponse() with list as first token should throw`() {
         val parser = createParserWithResponses("* [1 2] 3")
 
         assertThat {
             parser.readResponse()
         }.isFailure()
-            .isInstanceOf(IOException::class)
-            .hasMessage("Unexpected non-string token: ImapList - [1, 2]")
+            .isInstanceOf(ImapResponseParserException::class)
+            .hasMessage("Unexpected non-string token")
     }
 
     @Test
