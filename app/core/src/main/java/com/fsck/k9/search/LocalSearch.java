@@ -355,6 +355,8 @@ public class LocalSearch implements SearchSpecification {
         mManualSearch = (in.readByte() == 1);
         mAccountUuids.addAll(in.createStringArrayList());
         mConditions = in.readParcelable(LocalSearch.class.getClassLoader());
-        mLeafSet = (mConditions == null) ? null : mConditions.getLeafSet();
+        if (mConditions != null) {
+            mLeafSet = mConditions.getLeafSet();
+        }
     }
 }
