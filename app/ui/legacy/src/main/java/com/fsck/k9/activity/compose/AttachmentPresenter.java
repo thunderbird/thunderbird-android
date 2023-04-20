@@ -299,9 +299,14 @@ public class AttachmentPresenter {
                         return;
                     }
 
-                    attachmentMvpView.updateAttachmentView(attachment);
-                    attachments.put(attachment.uri, attachment);
-                    initAttachmentContentLoader(attachment);
+                    if (attachment.state == LoadingState.METADATA) {
+                        attachmentMvpView.updateAttachmentView(attachment);
+                        attachments.put(attachment.uri, attachment);
+                        initAttachmentContentLoader(attachment);
+                    } else {
+                        attachments.remove(attachment.uri);
+                        attachmentMvpView.removeAttachmentView(attachment);
+                    }
                 }
 
                 @Override

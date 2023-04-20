@@ -156,9 +156,6 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
     }
 
     public Attachment deriveWithLoadCancelled() {
-        if (state != Attachment.LoadingState.METADATA) {
-            throw new IllegalStateException("deriveWitLoadCancelled can only be called on a METADATA attachment!");
-        }
         return new Attachment(uri, Attachment.LoadingState.CANCELLED, loaderId, contentType, allowMessageType, name,
                 size, null, internalAttachment);
     }
