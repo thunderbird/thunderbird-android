@@ -339,7 +339,18 @@ class ImapResponseParser {
      */
     private Object parseLiteral() throws IOException {
         expect('{');
-        int size = Integer.parseInt(readStringUntil('}'));
+
+        int size;
+        try {
+            size = Integer.parseInt(readStringUntil('}'));
+        } catch (NumberFormatException e) {
+            throw new ImapResponseParserException("Invalid value for size of literal string", e);
+        }
+
+        if (size < 0) {
+            throw new ImapResponseParserException("Invalid value for size of literal string");
+        }
+
         expect('\r');
         expect('\n');
 
@@ -479,9 +490,9 @@ class ImapResponseParser {
 
     }
 
-    private void checkTokenIsString(Object token) throws IOException {
+    private void checkTokenIsString(Object token) {
         if (!(token instanceof String)) {
-            throw new IOException("Unexpected non-string token: " + token.getClass().getSimpleName() + " - " + token);
+            throw new ImapResponseParserException("Unexpected non-string token");
         }
     }
 }
