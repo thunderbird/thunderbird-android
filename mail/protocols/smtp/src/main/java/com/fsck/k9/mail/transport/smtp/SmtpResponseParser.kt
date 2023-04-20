@@ -128,7 +128,7 @@ internal class SmtpResponseParser(
 
             keywords[keyword] = parameters
         } catch (e: SmtpResponseParserException) {
-            logger.log(e, "Ignoring EHLO keyword line: $ehloLine")
+            logger.log(e, "Ignoring EHLO keyword line: %s", ehloLine)
         }
     }
 
