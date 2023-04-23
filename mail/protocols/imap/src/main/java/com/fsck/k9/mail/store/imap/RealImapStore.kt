@@ -299,6 +299,9 @@ internal open class RealImapStore(
         override val useCompression: Boolean
             get() = this@RealImapStore.config.useCompression()
 
+        override val clientIdAppName: String?
+            get() = this@RealImapStore.config.clientIdAppName()
+
         override var pathPrefix: String?
             get() = this@RealImapStore.pathPrefix
             set(value) {

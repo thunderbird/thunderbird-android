@@ -1037,6 +1037,7 @@ class RealImapConnectionTest {
         connectionSecurity: ConnectionSecurity = ConnectionSecurity.NONE,
         authType: AuthType = AuthType.PLAIN,
         useCompression: Boolean = false,
+        clientIdAppName: String? = null,
     ): ImapConnection {
         server.start()
 
@@ -1048,6 +1049,7 @@ class RealImapConnectionTest {
             username = USERNAME,
             password = PASSWORD,
             useCompression = useCompression,
+            clientIdAppName = clientIdAppName,
         )
 
         return createImapConnection(settings, socketFactory, oAuth2TokenProvider)
