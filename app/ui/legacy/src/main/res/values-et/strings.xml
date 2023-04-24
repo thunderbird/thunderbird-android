@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Vaata mis on selles versioonis muutunud</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Vaata</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Tere tulemast K-9 Maili</string>
   <string name="accounts_welcome"><![CDATA[
@@ -287,7 +288,10 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Teisalda</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Sõnumiloendi tihedus</string>
+  <string name="general_settings_ui_density_compact">Kompaktne</string>
   <string name="general_settings_ui_density_default">Vaikimisi</string>
+  <string name="general_settings_ui_density_relaxed">Hõre</string>
   <string name="global_settings_privacy_hide_useragent">Peida meiliklient</string>
   <string name="global_settings_privacy_hide_useragent_detail">Eemalda K-9 User-Agent meili päistest</string>
   <string name="global_settings_privacy_hide_timezone">Peida ajavöönd</string>

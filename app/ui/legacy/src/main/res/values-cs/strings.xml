@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Zjistěte, co je v tomto vydání nového</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Zobrazit</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Vítejte v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -226,9 +227,13 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="message_view_bcc_label">Skrytá kopie (Bcc):</string>
   <string name="message_view_status_attachment_not_saved">Přílohu se nedaří uložit.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"komu "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">Mně</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Zobrazit vzdálené obrázky</string>
   <string name="message_view_no_viewer">Nelze nalézt prohlížeč pro <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Stáhnout úplnou zprávu</string>
   <string name="message_view_sender_label">přes %1$s</string>
@@ -286,7 +291,10 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Přesunout</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Hustota zpráv</string>
+  <string name="general_settings_ui_density_compact">Kompaktní</string>
   <string name="general_settings_ui_density_default">Standardní</string>
+  <string name="general_settings_ui_density_relaxed">Volné</string>
   <string name="global_settings_privacy_hide_useragent">Skrýt e-mailového klienta</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstraňovat z hlaviček e-mailů informaci o K-9 (user agent)</string>
   <string name="global_settings_privacy_hide_timezone">Skrýt časovou zónu</string>
@@ -304,7 +312,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="quiet_time">Doba klidu</string>
   <string name="quiet_time_description">Zakázat v noci zvonění, vibrace a blikání</string>
   <string name="quiet_time_notification">Vypnout oznamování</string>
-  <string name="quiet_time_notification_description">Kompletně vypnout oznamování v režimu nevyrušování</string>
+  <string name="quiet_time_notification_description">Kompletně vypnout oznamování v režimu Doba klidu</string>
   <string name="quiet_time_starts">Doba klidu začíná</string>
   <string name="quiet_time_ends">Doba klidu končí</string>
   <string name="account_setup_basics_title">Založit nový účet</string>
@@ -731,6 +739,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
   <string name="font_size_message_view_account">Název účtu</string>
   <string name="font_size_message_view_sender">Odesílatel</string>
+  <string name="font_size_message_view_recipients">Příjemci</string>
   <string name="font_size_message_view_subject">Předmět</string>
   <string name="font_size_message_view_date">Datum a čas</string>
   <string name="font_size_message_view_content">Tělo</string>
@@ -1090,10 +1099,15 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Přesunout…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Zobrazit tlačíko Nová zpráva</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Chyba</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Složka nenalezena</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Informace o zprávě</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Neznámí datum</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">Odesílatel</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1107,11 +1121,17 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Skrytá kopie</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Chyba při načítání informací o zprávě.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Přidat do kontaktů</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Odeslat zprávu</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Zkopírovat adresu</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Zkopírovat jméno a adresu</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">E-mailová adresa</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Jméno a adresa</string>
 </resources>
