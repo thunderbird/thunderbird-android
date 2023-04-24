@@ -52,8 +52,9 @@ class NotificationDataStoreTest : RobolectricTest() {
         notificationDataStore.addNotification(account, createNotificationContent("6"), TIMESTAMP)
         notificationDataStore.addNotification(account, createNotificationContent("7"), TIMESTAMP)
         notificationDataStore.addNotification(account, createNotificationContent("8"), TIMESTAMP)
+        notificationDataStore.addNotification(account, createNotificationContent("9"), TIMESTAMP)
 
-        val result = notificationDataStore.addNotification(account, createNotificationContent("9"), TIMESTAMP)
+        val result = notificationDataStore.addNotification(account, createNotificationContent("10"), TIMESTAMP)
 
         assertNotNull(result)
         assertThat(result.shouldCancelNotification).isTrue()
@@ -86,7 +87,8 @@ class NotificationDataStoreTest : RobolectricTest() {
         notificationDataStore.addNotification(account, createNotificationContent("7"), TIMESTAMP)
         notificationDataStore.addNotification(account, createNotificationContent("8"), TIMESTAMP)
         notificationDataStore.addNotification(account, createNotificationContent("9"), TIMESTAMP)
-        val latestContent = createNotificationContent("10")
+        notificationDataStore.addNotification(account, createNotificationContent("10"), TIMESTAMP)
+        val latestContent = createNotificationContent("11")
         notificationDataStore.addNotification(account, latestContent, TIMESTAMP)
 
         val result = notificationDataStore.removeNotifications(account) { listOf(latestContent.messageReference) }
@@ -207,7 +209,8 @@ class NotificationDataStoreTest : RobolectricTest() {
         notificationDataStore.addNotification(account, createNotificationContent("6"), TIMESTAMP)
         notificationDataStore.addNotification(account, createNotificationContent("7"), TIMESTAMP)
         notificationDataStore.addNotification(account, createNotificationContent("8"), TIMESTAMP)
-        val latestNotificationContent = createNotificationContent("9")
+        notificationDataStore.addNotification(account, createNotificationContent("9"), TIMESTAMP)
+        val latestNotificationContent = createNotificationContent("10")
         notificationDataStore.addNotification(account, latestNotificationContent, TIMESTAMP)
         val content = createNotificationContent("1")
 
