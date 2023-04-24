@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id(ThunderbirdPlugins.Library.android)
     alias(libs.plugins.kotlin.parcelize)
