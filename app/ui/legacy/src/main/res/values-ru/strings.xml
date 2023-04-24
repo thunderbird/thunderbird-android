@@ -27,7 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Узнайте, что нового в этом выпуске</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <string name="changelog_snackbar_button_text">Вид</string>
+  <string name="changelog_snackbar_button_text">Показать</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добро пожаловать!</string>
   <string name="accounts_welcome"><![CDATA[
