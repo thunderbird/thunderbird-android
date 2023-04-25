@@ -16,5 +16,5 @@ dependencies {
 }
 
 android {
-    namespace = "com.fsck.k9.autodiscovery.providersxml"
+    namespace = "app.k9mail.autodiscovery.providersxml"
 }

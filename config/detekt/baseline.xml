@@ -502,6 +502,7 @@
     <ID>MayBeConst:SummaryNotificationDataCreatorTest.kt$private val TIMESTAMP = 0L</ID>
     <ID>MemberNameEqualsClassName:HtmlModification.kt$HtmlModification.Replace$abstract fun replace(textToHtml: TextToHtml)</ID>
     <ID>MemberNameEqualsClassName:ReplyToView.kt$ReplyToView$private val replyToView: RecipientSelectView = activity.findViewById(R.id.reply_to)</ID>
+    <ID>NestedBlockDepth:AutoconfigParser.kt$AutoconfigParser$private fun parseServer(xpp: XmlPullParser, nodeName: String, email: String): DiscoveredServerSettings</ID>
     <ID>NestedBlockDepth:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
     <ID>NestedBlockDepth:ImapSync.kt$ImapSync$private fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener)</ID>
     <ID>NestedBlockDepth:MessageList.kt$MessageList$override fun onBackPressed()</ID>
@@ -518,7 +519,6 @@
     <ID>NestedBlockDepth:SingleMessageNotificationCreator.kt$SingleMessageNotificationCreator$private fun NotificationBuilder.setWearActions(notificationData: SingleNotificationData)</ID>
     <ID>NestedBlockDepth:SmtpTransport.kt$SmtpTransport$@VisibleForTesting @Throws(MessagingException::class) internal fun open()</ID>
     <ID>NestedBlockDepth:SummaryNotificationCreator.kt$SummaryNotificationCreator$private fun NotificationBuilder.setWearActions( account: Account, notificationData: SummaryInboxNotificationData, )</ID>
-    <ID>NestedBlockDepth:ThunderbirdAutoconfigParser.kt$ThunderbirdAutoconfigParser$private fun parseServer(xpp: XmlPullParser, nodeName: String, email: String): DiscoveredServerSettings</ID>
     <ID>ReturnCount:AccountSetupBasics.kt$AccountSetupBasics$private fun providersXmlDiscoveryDiscover(email: String): ConnectionSettings?</ID>
     <ID>ReturnCount:AccountSetupBasics.kt$private fun DiscoveredServerSettings.toServerSettings(): ServerSettings?</ID>
     <ID>ReturnCount:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$private fun isCanceled(): Boolean</ID>

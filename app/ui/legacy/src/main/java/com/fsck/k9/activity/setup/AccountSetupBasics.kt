@@ -10,14 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import androidx.core.view.isVisible
+import app.k9mail.autodiscovery.api.DiscoveredServerSettings
+import app.k9mail.autodiscovery.providersxml.ProvidersXmlDiscovery
 import com.fsck.k9.Account
 import com.fsck.k9.Core
 import com.fsck.k9.EmailAddressValidator
 import com.fsck.k9.Preferences
 import com.fsck.k9.account.AccountCreator
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection
-import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings
-import com.fsck.k9.autodiscovery.providersxml.ProvidersXmlDiscovery
 import com.fsck.k9.helper.SimpleTextWatcher
 import com.fsck.k9.helper.Utility.requiredFieldValid
 import com.fsck.k9.mail.AuthType
