@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation(projects.app.core)
     implementation(projects.mail.common)
-    implementation(projects.app.autodiscovery.api)
+    implementation(projects.feature.autodiscovery.api)
 
     implementation(libs.timber)
 

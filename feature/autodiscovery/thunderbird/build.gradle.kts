@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.app.autodiscovery.api)
+    api(projects.feature.autodiscovery.api)
 
     compileOnly(libs.xmlpull)
     implementation(libs.okhttp)

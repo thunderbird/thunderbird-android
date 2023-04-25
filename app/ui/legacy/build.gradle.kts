@@ -6,8 +6,8 @@ plugins {
 dependencies {
     api(projects.app.ui.base)
     implementation(projects.app.core)
-    implementation(projects.app.autodiscovery.api)
-    implementation(projects.app.autodiscovery.providersxml)
+    implementation(projects.feature.autodiscovery.api)
+    implementation(projects.feature.autodiscovery.providersxml)
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
 
