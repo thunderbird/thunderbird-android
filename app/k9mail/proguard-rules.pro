@@ -53,3 +53,8 @@
 
 # OkHttp platform used only on JVM and when Conscrypt dependency is available.
 -dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+-dontwarn kotlinx.serialization.KSerializer
+-dontwarn kotlinx.serialization.Serializable
+-dontwarn org.apache.http.client.methods.CloseableHttpResponse
+-dontwarn org.slf4j.impl.StaticLoggerBinder

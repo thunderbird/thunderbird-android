@@ -11,7 +11,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = ThunderbirdProjectConfig.javaVersion.toString()
+        jvmTarget = ThunderbirdProjectConfig.javaCompatibilityVersion.toString()
     }
 
     lint {

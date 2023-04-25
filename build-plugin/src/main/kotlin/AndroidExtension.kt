@@ -14,8 +14,8 @@ internal fun CommonExtension<*, *, *, *>.configureSharedConfig() {
     }
 
     compileOptions {
-        sourceCompatibility = ThunderbirdProjectConfig.javaVersion
-        targetCompatibility = ThunderbirdProjectConfig.javaVersion
+        sourceCompatibility = ThunderbirdProjectConfig.javaCompatibilityVersion
+        targetCompatibility = ThunderbirdProjectConfig.javaCompatibilityVersion
     }
 
     lint {
@@ -45,7 +45,7 @@ internal fun CommonExtension<*, *, *, *>.configureSharedComposeConfig(
         abortOnError = true
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }

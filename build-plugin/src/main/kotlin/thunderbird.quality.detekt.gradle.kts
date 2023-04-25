@@ -16,7 +16,7 @@ configure<DetektExtension> {
 }
 
 tasks.withType<Detekt>().configureEach {
-    jvmTarget = ThunderbirdProjectConfig.javaVersion.toString()
+    jvmTarget = ThunderbirdProjectConfig.javaCompatibilityVersion.toString()
 
     exclude(
         "**/.gradle/**",
