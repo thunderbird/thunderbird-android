@@ -43,7 +43,7 @@ include(
     ":feature:autodiscovery:api",
     ":feature:autodiscovery:providersxml",
     ":feature:autodiscovery:srvrecords",
-    ":feature:autodiscovery:thunderbird",
+    ":feature:autodiscovery:autoconfig",
 )
 
 include(
