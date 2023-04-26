@@ -120,7 +120,6 @@
     <ID>ImplicitDefaultLocale:SmtpTransport.kt$SmtpTransport$String.format("MAIL FROM:&lt;%s&gt; BODY=8BITMIME", fromAddress)</ID>
     <ID>ImplicitDefaultLocale:SmtpTransport.kt$SmtpTransport$String.format("MAIL FROM:&lt;%s&gt;", fromAddress)</ID>
     <ID>ImplicitDefaultLocale:SmtpTransport.kt$SmtpTransport$String.format("RCPT TO:&lt;%s&gt;", address)</ID>
-    <ID>InvalidPackageDeclaration:Main.kt$package app.k9mail.cli.html.cleaner</ID>
     <ID>LargeClass:MessageList.kt$MessageList : K9ActivityMessageListFragmentListenerMessageViewFragmentListenerMessageViewContainerListenerOnBackStackChangedListenerOnSwitchCompleteListenerPermissionUiHelper</ID>
     <ID>LargeClass:MessageListFragment.kt$MessageListFragment : FragmentConfirmationDialogFragmentListenerMessageListItemActionListener</ID>
     <ID>LargeClass:RealImapConnection.kt$RealImapConnection : ImapConnection</ID>
