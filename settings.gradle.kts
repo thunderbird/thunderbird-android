@@ -35,15 +35,15 @@ include(
     ":app:storage",
     ":app:crypto-openpgp",
     ":app:testing",
-    ":app:autodiscovery:api",
-    ":app:autodiscovery:providersxml",
-    ":app:autodiscovery:srvrecords",
-    ":app:autodiscovery:thunderbird",
     ":app:html-cleaner",
 )
 
 include(
     ":feature:onboarding",
+    ":feature:autodiscovery:api",
+    ":feature:autodiscovery:providersxml",
+    ":feature:autodiscovery:srvrecords",
+    ":feature:autodiscovery:autoconfig",
 )
 
 include(
