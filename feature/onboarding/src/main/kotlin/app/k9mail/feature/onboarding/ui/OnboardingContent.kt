@@ -46,13 +46,13 @@ internal fun OnboardingContent(
                         onImportClick = onImportClick,
                     )
                 },
-                verticalArrangement = Arrangement.spacedBy(MainTheme.sizes.medium, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.SpaceEvenly,
             ) {
                 item {
                     WelcomeLogo(
                         modifier = Modifier
                             .defaultItemModifier()
-                            .padding(top = MainTheme.spacings.quadruple),
+                            .padding(top = MainTheme.spacings.double),
                     )
                 }
                 item {
@@ -122,8 +122,8 @@ private fun WelcomeFooter(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        modifier = modifier.padding(bottom = MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Button(
@@ -139,7 +139,7 @@ private fun WelcomeFooter(
 
 private fun Modifier.defaultItemModifier() = composed {
     fillMaxWidth()
-        .padding(MainTheme.spacings.double)
+        .padding(MainTheme.spacings.default)
 }
 
 @Composable
