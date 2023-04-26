@@ -13,6 +13,7 @@ class Capabilities {
     public static final String LOGINDISABLED = "LOGINDISABLED";
     public static final String NAMESPACE = "NAMESPACE";
     public static final String COMPRESS_DEFLATE = "COMPRESS=DEFLATE";
+    public static final String ID = "ID";
     public static final String STARTTLS = "STARTTLS";
     public static final String SPECIAL_USE = "SPECIAL-USE";
     public static final String UID_PLUS = "UIDPLUS";

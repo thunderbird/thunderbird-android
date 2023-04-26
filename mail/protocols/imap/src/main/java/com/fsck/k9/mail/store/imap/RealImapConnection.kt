@@ -96,6 +96,7 @@ internal class RealImapConnection(
             extractOrRequestCapabilities(responses)
 
             enableCompressionIfRequested()
+            sendClientIdIfSupported()
 
             retrievePathPrefixIfNecessary()
             retrievePathDelimiterIfNecessary()
@@ -558,6 +559,17 @@ internal class RealImapConnection(
     private fun enableCompressionIfRequested() {
         if (hasCapability(Capabilities.COMPRESS_DEFLATE) && settings.useCompression) {
             enableCompression()
+        }
+    }
+
+    private fun sendClientIdIfSupported() {
+        if (hasCapability(Capabilities.ID) && settings.clientIdAppName != null) {
+            val encodedAppName = ImapUtility.encodeString(settings.clientIdAppName)
+            try {
+                executeSimpleCommand("""ID ("name" $encodedAppName)""")
+            } catch (e: NegativeImapResponseException) {
+                Timber.d(e, "Ignoring negative response to ID command")
+            }
         }
     }
 

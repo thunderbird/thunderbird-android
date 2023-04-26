@@ -234,6 +234,10 @@ class Account(override val uuid: String) : BaseAccount {
 
     @get:Synchronized
     @set:Synchronized
+    var isSendClientIdEnabled = true
+
+    @get:Synchronized
+    @set:Synchronized
     var searchableFolders = Searchable.ALL
 
     @get:Synchronized

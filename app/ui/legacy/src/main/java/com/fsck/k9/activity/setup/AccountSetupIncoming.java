@@ -86,6 +86,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private Account mAccount;
     private boolean mMakeDefault;
     private CheckBox useCompressionCheckBox;
+    private CheckBox isSendClientIdEnabledCheckBox;
     private CheckBox mSubscribedFoldersOnly;
     private AuthTypeAdapter mAuthTypeAdapter;
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
@@ -134,6 +135,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mWebdavMailboxPathView = findViewById(R.id.webdav_mailbox_path);
         mNextButton = findViewById(R.id.next);
         useCompressionCheckBox = findViewById(R.id.use_compression);
+        isSendClientIdEnabledCheckBox = findViewById(R.id.is_send_client_id_enabled);
         mSubscribedFoldersOnly = findViewById(R.id.subscribed_folders_only);
         mAllowClientCertificateView = findViewById(R.id.account_allow_client_certificate);
 
@@ -213,6 +215,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
                 useCompressionCheckBox.setVisibility(View.GONE);
+                isSendClientIdEnabledCheckBox.setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
             } else if (settings.type.equals(Protocols.IMAP)) {
                 serverLayoutView.setHint(getString(R.string.account_setup_incoming_imap_server_label));
@@ -244,6 +247,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 useCompressionCheckBox.setVisibility(View.GONE);
+                isSendClientIdEnabledCheckBox.setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
 
                 String path = WebDavStoreSettings.getPath(settings);
@@ -294,6 +298,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             updateViewFromSecurity();
 
             useCompressionCheckBox.setChecked(mAccount.useCompression());
+            isSendClientIdEnabledCheckBox.setChecked(mAccount.isSendClientIdEnabled());
 
             if (settings.host != null) {
                 mServerView.setText(settings.host);
@@ -623,6 +628,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount.setIncomingServerSettings(settings);
 
             mAccount.setUseCompression(useCompressionCheckBox.isChecked());
+            mAccount.setSendClientIdEnabled(isSendClientIdEnabledCheckBox.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);

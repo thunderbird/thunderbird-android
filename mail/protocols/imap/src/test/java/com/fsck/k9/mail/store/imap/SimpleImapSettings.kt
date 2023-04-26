@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store.imap
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 
+@Suppress("LongParameterList")
 internal class SimpleImapSettings(
     override val host: String,
     override val port: Int = 0,
@@ -11,6 +12,7 @@ internal class SimpleImapSettings(
     override val username: String,
     override val password: String? = null,
     override val useCompression: Boolean = false,
+    override val clientIdAppName: String? = null,
 ) : ImapSettings {
     override val clientCertificateAlias: String? = null
 

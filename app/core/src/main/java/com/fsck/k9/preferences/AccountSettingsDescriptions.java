@@ -276,6 +276,9 @@ public class AccountSettingsDescriptions {
         s.put("useCompression", Settings.versions(
                 new V(81, new BooleanSetting(true))
         ));
+        s.put("sendClientId", Settings.versions(
+                new V(88, new BooleanSetting(true))
+        ));
         // note that there is no setting for openPgpProvider, because this will have to be set up together
         // with the actual provider after import anyways.
 

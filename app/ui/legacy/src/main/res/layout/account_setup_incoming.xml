@@ -253,6 +253,12 @@
                     android:layout_width="wrap_content"
                     android:text="@string/account_setup_incoming_use_compression" />
 
+            <CheckBox
+                    android:id="@+id/is_send_client_id_enabled"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/account_setup_incoming_send_client_id" />
+
             <View
                     android:layout_width="match_parent"
                     android:layout_height="0dip"

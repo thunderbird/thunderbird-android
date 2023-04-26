@@ -4,4 +4,5 @@ interface ImapStoreConfig {
     val logLabel: String
     fun isSubscribedFoldersOnly(): Boolean
     fun useCompression(): Boolean
+    fun clientIdAppName(): String?
 }

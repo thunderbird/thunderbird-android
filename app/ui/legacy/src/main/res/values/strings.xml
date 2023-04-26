@@ -429,6 +429,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_incoming_delete_policy_markread_label">Mark as read on server</string>
 
     <string name="account_setup_incoming_use_compression">Use compression</string>
+    <string name="account_setup_incoming_send_client_id">Send client ID</string>
 
     <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_setup_expunge_policy_immediately">Immediately</string>
