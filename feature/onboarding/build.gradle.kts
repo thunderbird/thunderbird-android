@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "net.thunderbird.feature.onboarding"
+    namespace = "app.k9mail.feature.onboarding"
     resourcePrefix = "onboarding_"
 }
 

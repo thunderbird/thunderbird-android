@@ -1,4 +1,4 @@
-package net.thunderbird.feature.onboarding
+package app.k9mail.feature.onboarding.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
