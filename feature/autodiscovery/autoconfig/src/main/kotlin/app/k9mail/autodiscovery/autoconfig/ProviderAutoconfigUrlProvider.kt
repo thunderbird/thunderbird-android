@@ -3,18 +3,20 @@ package app.k9mail.autodiscovery.autoconfig
 import com.fsck.k9.helper.EmailHelper
 import okhttp3.HttpUrl
 
-class ProviderAutoconfigUrlProvider : AutoconfigUrlProvider {
+class ProviderAutoconfigUrlProvider(private val config: AutoconfigUrlConfig) : AutoconfigUrlProvider {
     override fun getAutoconfigUrls(email: String): List<HttpUrl> {
         val domain = EmailHelper.getDomainFromEmailAddress(email)
         requireNotNull(domain) { "Couldn't extract domain from email address: $email" }
 
-        return listOf(
-            createProviderUrl(domain, email, useHttps = true),
-            createDomainUrl(domain, email, useHttps = true),
+        return buildList {
+            add(createProviderUrl(domain, email, useHttps = true))
+            add(createDomainUrl(domain, email, useHttps = true))
 
-            createProviderUrl(domain, email, useHttps = false),
-            createDomainUrl(domain, email, useHttps = false),
-        )
+            if (!config.httpsOnly) {
+                add(createProviderUrl(domain, email, useHttps = false))
+                add(createDomainUrl(domain, email, useHttps = false))
+            }
+        }
     }
 
     private fun createProviderUrl(domain: String, email: String, useHttps: Boolean): HttpUrl {
@@ -24,7 +26,11 @@ class ProviderAutoconfigUrlProvider : AutoconfigUrlProvider {
             .scheme(if (useHttps) "https" else "http")
             .host("autoconfig.$domain")
             .addEncodedPathSegments("mail/config-v1.1.xml")
-            .addQueryParameter("emailaddress", email)
+            .apply {
+                if (config.includeEmailAddress) {
+                    addQueryParameter("emailaddress", email)
+                }
+            }
             .build()
     }
 
@@ -35,7 +41,16 @@ class ProviderAutoconfigUrlProvider : AutoconfigUrlProvider {
             .scheme(if (useHttps) "https" else "http")
             .host(domain)
             .addEncodedPathSegments(".well-known/autoconfig/mail/config-v1.1.xml")
-            .addQueryParameter("emailaddress", email)
+            .apply {
+                if (config.includeEmailAddress) {
+                    addQueryParameter("emailaddress", email)
+                }
+            }
             .build()
     }
 }
+
+data class AutoconfigUrlConfig(
+    val httpsOnly: Boolean,
+    val includeEmailAddress: Boolean,
+)
