@@ -13,8 +13,9 @@ class ProviderAutoconfigUrlProviderTest {
 
         assertThat(autoconfigUrls.map { it.toString() }).containsExactly(
             "https://autoconfig.domain.example/mail/config-v1.1.xml?emailaddress=test%40domain.example",
-            "https://domain.example/.well-known/autoconfig/mail/config-v1.1.xml",
-            "http://domain.example/.well-known/autoconfig/mail/config-v1.1.xml",
+            "https://domain.example/.well-known/autoconfig/mail/config-v1.1.xml?emailaddress=test%40domain.example",
+            "http://autoconfig.domain.example/mail/config-v1.1.xml?emailaddress=test%40domain.example",
+            "http://domain.example/.well-known/autoconfig/mail/config-v1.1.xml?emailaddress=test%40domain.example",
         )
     }
 }
