@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.701" versioncode="37001" date="2023-04-28">
+        <change>IMAP: Added support for sending the ID command (that is required by some email providers)</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.700" versioncode="37000" date="2023-04-24">
         <change>Don't attempt to open file: URIs in an email; tapping such a link will now copy the URL to the clipboard instead</change>
         <change>Fixed a crash when trying to export accounts containing an identity without a sender name</change>
