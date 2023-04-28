@@ -366,6 +366,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_incoming_delete_policy_delete_label">Usuń ją z serwera</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Oznacz jako przeczytane na serwerze</string>
   <string name="account_setup_incoming_use_compression">Użyj kompresji</string>
+  <string name="account_setup_incoming_send_client_id">Wyślij identyfikator klienta</string>
   <string name="account_setup_expunge_policy_label">Kasowanie usuniętych wiadomości na serwerze</string>
   <string name="account_setup_expunge_policy_immediately">Od razu</string>
   <string name="account_setup_expunge_policy_on_poll">Podczas każdego pobrania</string>
@@ -387,7 +388,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_outgoing_port_label">Port</string>
   <string name="account_setup_outgoing_security_label">Typ zabezpieczeń</string>
   <string name="account_setup_outgoing_require_login_label">Serwer wymaga uwierzytelnienia</string>
-  <string name="account_setup_outgoing_username_label">Identyfikator</string>
+  <string name="account_setup_outgoing_username_label">Nazwa użytkownika</string>
   <string name="account_setup_outgoing_password_label">Hasło</string>
   <string name="account_setup_outgoing_authentication_label">Rodzaj uwierzytelnienia</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nie jest ważny z \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>

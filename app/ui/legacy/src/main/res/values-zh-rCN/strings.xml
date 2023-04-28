@@ -360,6 +360,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_incoming_delete_policy_delete_label">立刻从服务器上删除</string>
   <string name="account_setup_incoming_delete_policy_markread_label">在服务器上将邮件标记为已读</string>
   <string name="account_setup_incoming_use_compression">使用压缩</string>
+  <string name="account_setup_incoming_send_client_id">发送客户端 ID</string>
   <string name="account_setup_expunge_policy_label">抹掉删除的邮件</string>
   <string name="account_setup_expunge_policy_immediately">立刻</string>
   <string name="account_setup_expunge_policy_on_poll">接收邮件时</string>
