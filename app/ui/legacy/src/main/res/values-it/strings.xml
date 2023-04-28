@@ -365,6 +365,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_incoming_delete_policy_delete_label">Elimina dal server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marca come letto sul server</string>
   <string name="account_setup_incoming_use_compression">Usa la compressione</string>
+  <string name="account_setup_incoming_send_client_id">Invia ID del client</string>
   <string name="account_setup_expunge_policy_label">Cancella i messaggi eliminati sul server</string>
   <string name="account_setup_expunge_policy_immediately">Immediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante ogni recupero</string>

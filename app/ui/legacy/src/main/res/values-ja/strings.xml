@@ -359,6 +359,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_incoming_delete_policy_delete_label">サーバでも削除する</string>
   <string name="account_setup_incoming_delete_policy_markread_label">サーバでは既読にする</string>
   <string name="account_setup_incoming_use_compression">圧縮を使用する</string>
+  <string name="account_setup_incoming_send_client_id">クライアント ID を送信</string>
   <string name="account_setup_expunge_policy_label">サーバから削除したメッセージを消す</string>
   <string name="account_setup_expunge_policy_immediately">削除または移動後即時</string>
   <string name="account_setup_expunge_policy_on_poll">同期のタイミングで</string>

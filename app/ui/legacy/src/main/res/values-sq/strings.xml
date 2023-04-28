@@ -362,6 +362,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_incoming_delete_policy_delete_label">Fshije te shërbyesi</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Vëri shenjë si të lexuar te shërbyesi</string>
   <string name="account_setup_incoming_use_compression">Përdor ngjeshje</string>
+  <string name="account_setup_incoming_send_client_id">Dërgo ID klienti</string>
   <string name="account_setup_expunge_policy_label">Hiqi dhe në shërbyes mesazhet e fshira</string>
   <string name="account_setup_expunge_policy_immediately">Menjëherë</string>
   <string name="account_setup_expunge_policy_on_poll">Kur vilet</string>

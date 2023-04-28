@@ -363,6 +363,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_incoming_delete_policy_delete_label">Excluí-la do servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcá-la como lida no servidor</string>
   <string name="account_setup_incoming_use_compression">Usar compressão</string>
+  <string name="account_setup_incoming_send_client_id">Enviar ID do cliente</string>
   <string name="account_setup_expunge_policy_label">Apagar no servidor as mensagens excluídas localmente</string>
   <string name="account_setup_expunge_policy_immediately">Imediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante a verificação</string>

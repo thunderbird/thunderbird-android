@@ -362,6 +362,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_incoming_delete_policy_delete_label">Borrar del servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcar como leído en servidor</string>
   <string name="account_setup_incoming_use_compression">Con compresión</string>
+  <string name="account_setup_incoming_send_client_id">Enviar identificador del cliente de correo</string>
   <string name="account_setup_expunge_policy_label">Eliminar mensajes borrados en el servidor</string>
   <string name="account_setup_expunge_policy_immediately">Inmediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante comprobación</string>

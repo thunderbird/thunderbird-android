@@ -361,6 +361,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_incoming_delete_policy_delete_label">Poista palvelimelta</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Merkitse luetuksi palvelimella</string>
   <string name="account_setup_incoming_use_compression">Käytä pakkausta</string>
+  <string name="account_setup_incoming_send_client_id">Lähetä asiakasohjelmiston ID-tunniste</string>
   <string name="account_setup_expunge_policy_label">Poista viestit</string>
   <string name="account_setup_expunge_policy_immediately">Heti</string>
   <string name="account_setup_expunge_policy_on_poll">Tarkistettaessa</string>

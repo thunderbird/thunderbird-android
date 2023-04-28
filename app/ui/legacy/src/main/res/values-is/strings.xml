@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Skoðaðu hvað sé nýtt við þessa útgáfu</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Skoða</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Velkomin í K-9 póstinn</string>
   <string name="accounts_welcome"><![CDATA[
@@ -43,7 +44,7 @@ Meðal bættra eiginleika þess eru:
   <li>Bcc-til-sjálfs</li>
   <li>Áskriftir að möppum</li>
   <li>Samstilling allra mappa</li>
-  <li>Uppsetning svarnetfangs</li>
+  <li>Uppsetning svarpóstfangs</li>
   <li>Flýtilyklar</li>
   <li>Betri IMAP-stuðningur</li>
   <li>Vistun viðhengja á SD</li>
@@ -121,7 +122,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="show_headers_action">Birta hausa</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Netfang afritað á klippispjald</item>
-    <item quantity="other">Netföng afrituð á klippispjald</item>
+    <item quantity="other">Póstföng afrituð á klippispjald</item>
   </plurals>
   <string name="copy_subject_to_clipboard">Texti viðfangsefnis afritaður á klippispjald</string>
   <string name="message_view_theme_action_dark">Skipta yfir í dekkra þema</string>
@@ -222,9 +223,13 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="message_view_bcc_label">Falið afrit:</string>
   <string name="message_view_status_attachment_not_saved">Tókst ekki að vista viðhengi</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"til "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">mín</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Birta fjartengdar myndir</string>
   <string name="message_view_no_viewer">Gat ekki fundið neitt skoðunarforrit fyrir <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Niðurhala heil skilaboð</string>
   <string name="message_view_sender_label">í gegnum %1$s</string>
@@ -235,7 +240,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_flag_summary">Stjörnur gefa til kynna merkt skilaboð</string>
   <string name="global_settings_preview_lines_label">Forskoða línur</string>
   <string name="global_settings_show_correspondent_names_label">Birta nöfn samskiptaaðila</string>
-  <string name="global_settings_show_correspondent_names_summary">Birta nöfn samskiptaaðila fremur en netföng þeirra</string>
+  <string name="global_settings_show_correspondent_names_summary">Birta nöfn samskiptaaðila fremur en póstföng þeirra</string>
   <string name="global_settings_sender_above_subject_label">Samskiptaaðili fyrir ofan viðfangsefni</string>
   <string name="global_settings_sender_above_subject_summary">Birta nöfn samskiptaaðila ofan við efnislínu fremur en fyrir neðan</string>
   <string name="global_settings_show_contact_name_label">Birta nöfn tengiliða</string>
@@ -282,7 +287,10 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Færa</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Þéttleiki</string>
+  <string name="general_settings_ui_density_compact">Þjappað</string>
   <string name="general_settings_ui_density_default">Sjálfgefið</string>
+  <string name="general_settings_ui_density_relaxed">Rúmgott</string>
   <string name="global_settings_privacy_hide_useragent">Fela póstforrit</string>
   <string name="global_settings_privacy_hide_useragent_detail">Fjarlægja kennistreng K-9 úr pósthausum</string>
   <string name="global_settings_privacy_hide_timezone">Fela tímabelti</string>
@@ -304,7 +312,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="quiet_time_starts">Kyrrðarstund hefst</string>
   <string name="quiet_time_ends">Kyrrðarstund endar</string>
   <string name="account_setup_basics_title">Setja upp nýjan aðgang</string>
-  <string name="account_setup_basics_email_hint">Netfang</string>
+  <string name="account_setup_basics_email_hint">Tölvupóstfang</string>
   <string name="account_setup_basics_password_hint">Lykilorð</string>
   <string name="account_setup_oauth_description">Til að nota þennan tölvupóstaðgang með K-9 póstinum, þarftu að skrá þig inn og veita forritinu heimild inn á tölvupóstinn þinn.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
@@ -603,7 +611,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_composition_label">Sjálfgefið við samningu skilaboða</string>
   <string name="account_settings_composition_summary">Settu sjálfgefið Frá, BCC (falið afrit) og undirskrift</string>
   <string name="account_settings_identities_label">Sýsla með persónuauðkenni</string>
-  <string name="account_settings_identities_summary">Settu aukaleg \'Frá\' netföng og undirskriftir</string>
+  <string name="account_settings_identities_summary">Settu aukaleg \'Frá\' póstföng og undirskriftir</string>
   <string name="manage_identities_title">Sýsla með persónuauðkenni</string>
   <string name="manage_identities_context_menu_title">Sýsla með persónuauðkennið</string>
   <string name="edit_identity_title">Breyta persónuauðkenni</string>
@@ -619,9 +627,9 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="edit_identity_description_hint">(valkvætt)</string>
   <string name="edit_identity_name_label">Nafnið þitt</string>
   <string name="edit_identity_name_hint">(valkvætt)</string>
-  <string name="edit_identity_email_label">Netfang</string>
+  <string name="edit_identity_email_label">Tölvupóstfang</string>
   <string name="edit_identity_email_hint">(krafist)</string>
-  <string name="edit_identity_reply_to_label">Svarnetfang</string>
+  <string name="edit_identity_reply_to_label">Svarpóstfang</string>
   <string name="edit_identity_reply_to_hint">(valkvætt)</string>
   <string name="edit_identity_signature_label">Undirskrift</string>
   <string name="edit_identity_signature_hint">(valkvætt)</string>
@@ -727,6 +735,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
   <string name="font_size_message_view_account">Nafn aðgangsins</string>
   <string name="font_size_message_view_sender">Sendandi</string>
+  <string name="font_size_message_view_recipients">Viðtakendur</string>
   <string name="font_size_message_view_subject">Viðfangsefni</string>
   <string name="font_size_message_view_date">Tími og dagsetning</string>
   <string name="font_size_message_view_content">Efni skilaboða</string>
@@ -842,7 +851,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="webview_contextmenu_email_send_action">Senda póst</string>
   <string name="webview_contextmenu_email_save_action">Vista í Tengiliði</string>
   <string name="webview_contextmenu_email_copy_action">Afrita vistfang á klippispjald</string>
-  <string name="webview_contextmenu_email_clipboard_label">Netfang</string>
+  <string name="webview_contextmenu_email_clipboard_label">Tölvupóstfang</string>
   <string name="account_settings_remote_search_num_results_entries_all">Allt</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -981,7 +990,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="messageview_decrypt_incomplete">Það verður að sækja dulrituð skilaboð svo hægt sé að afkóða þau.</string>
   <string name="messageview_crypto_error_title">Villa við að afkóða póst</string>
   <string name="recipient_error_non_ascii">Ekki er ennþá stuðningur við sérstafi!</string>
-  <string name="recipient_error_parse_failed">Villa við að þátta netfang!</string>
+  <string name="recipient_error_parse_failed">Villa við að þátta póstfang!</string>
   <string name="account_settings_crypto_hide_sign_only">Fela ódulritaðar undirritanir</string>
   <string name="account_settings_crypto_hide_sign_only_on">Einungis verða birtar dulritaðar undirritanir</string>
   <string name="account_settings_crypto_hide_sign_only_off">Allar undirritanir verða birtar</string>
@@ -1025,7 +1034,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="ac_transfer_title">Autocrypt uppsetningarpóstur</string>
   <string name="ac_transfer_intro">Autocrypt uppsetningarpóstur deilir á öruggan máta enda-í-enda uppsetningunni þinni með öðrum tækjum</string>
   <string name="ac_transfer_button_send">Senda uppsetningarpóst</string>
-  <string name="ac_transfer_will_be_sent">Skilaboðin verða send á netfangið þitt:</string>
+  <string name="ac_transfer_will_be_sent">Skilaboðin verða send á póstfangið þitt:</string>
   <string name="ac_transfer_generating">Útbý uppsetningarpóst…</string>
   <string name="ac_transfer_sending_to">Sendi skilaboð til:</string>
   <string name="ac_transfer_finish">Til að ljúka uppsetningunni, opnaðu skilaboðin á hinu tækinu þínu og settu inn uppsetningarkóðann.</string>
@@ -1077,10 +1086,15 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Færa…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Birta fljótandi \'Semja\'-hnapp</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Villa</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Mappa fannst ekki</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Nánari upplýsingar skilaboða</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Vantar \'Dagsetning\'-haus</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">Frá</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1094,11 +1108,17 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Falið afrit</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Villa kom upp við að hlaða inn nánari upplýsingum skilaboða.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Bæta í tengiliði</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Semja skilaboð til</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Afrita tölvupóstfang</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Afrita nafn og tölvupóstfang</string>
   <!--A user visible label for the email address copied to the clipboard-->
-  <string name="clipboard_label_email_address">Netfang</string>
+  <string name="clipboard_label_email_address">Tölvupóstfang</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Nafn og tölvupóstfang</string>
 </resources>
