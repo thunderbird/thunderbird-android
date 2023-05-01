@@ -58,3 +58,5 @@
 -dontwarn kotlinx.serialization.Serializable
 -dontwarn org.apache.http.client.methods.CloseableHttpResponse
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+-keep,allowshrinking class com.tokenautocomplete.TokenCompleteTextView
