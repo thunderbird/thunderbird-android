@@ -357,6 +357,7 @@ Graach flaterrapporten stjoere, bydragen foar nije funksjes en fragen stelle op
   <string name="account_setup_incoming_delete_policy_delete_label">Fan server fuortsmite</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Op server as lêzen markearje </string>
   <string name="account_setup_incoming_use_compression">Kompresje brûke</string>
+  <string name="account_setup_incoming_send_client_id">Client-ID ferstjoere</string>
   <string name="account_setup_expunge_policy_label">Op server fuortsmiten berjochten wiskje </string>
   <string name="account_setup_expunge_policy_immediately">Daliks nei it fuortsmiten of ferpleatsen</string>
   <string name="account_setup_expunge_policy_on_poll">By elke berjochtkontrôle</string>

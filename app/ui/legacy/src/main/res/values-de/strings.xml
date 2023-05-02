@@ -361,6 +361,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Auf Server als gelesen markieren</string>
   <string name="account_setup_incoming_use_compression">Komprimierung durchführen</string>
+  <string name="account_setup_incoming_send_client_id">Client-ID senden</string>
   <string name="account_setup_expunge_policy_label">Gelöschte Nachrichten auf dem Server löschen</string>
   <string name="account_setup_expunge_policy_immediately">Sofort nach Verschieben oder Kopieren</string>
   <string name="account_setup_expunge_policy_on_poll">Bei jedem Abrufen</string>
