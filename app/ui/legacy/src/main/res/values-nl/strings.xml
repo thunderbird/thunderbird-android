@@ -357,6 +357,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_incoming_delete_policy_delete_label">Van server verwijderen</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Als gelezen op server markeren </string>
   <string name="account_setup_incoming_use_compression">Compressie gebruiken</string>
+  <string name="account_setup_incoming_send_client_id">Client-ID verzenden</string>
   <string name="account_setup_expunge_policy_label">Verwijderde berichten op server wissen</string>
   <string name="account_setup_expunge_policy_immediately">Onmiddellijk na verwijderen of verplaatsen</string>
   <string name="account_setup_expunge_policy_on_poll">Tijdens iedere peiling</string>

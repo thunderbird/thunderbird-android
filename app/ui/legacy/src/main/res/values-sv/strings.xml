@@ -362,6 +362,7 @@ Skicka in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_incoming_delete_policy_delete_label">Ta bort från servern</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Markera som läst på servern</string>
   <string name="account_setup_incoming_use_compression">Använd kompression</string>
+  <string name="account_setup_incoming_send_client_id">Skicka klient-ID</string>
   <string name="account_setup_expunge_policy_label">Ta bort borttagna meddelanden från servern</string>
   <string name="account_setup_expunge_policy_immediately">Direkt</string>
   <string name="account_setup_expunge_policy_on_poll">Vid e-postkontroll</string>

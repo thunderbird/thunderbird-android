@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Uzzināt, kas jauns šajā versijā</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Skatīt</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Laipni lūdzam K-9 Pastā</string>
   <string name="accounts_welcome"><![CDATA[
@@ -288,7 +289,10 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Pārvietot</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Blīvums</string>
+  <string name="general_settings_ui_density_compact">Kompakts</string>
   <string name="general_settings_ui_density_default">Noklusējums</string>
+  <string name="general_settings_ui_density_relaxed">Atraisīts</string>
   <string name="global_settings_privacy_hide_useragent">Paslēpt pasta programmu</string>
   <string name="global_settings_privacy_hide_useragent_detail">Noņemt K-9 lietotāju-aģentu no vēstules papildinformācijas</string>
   <string name="global_settings_privacy_hide_timezone">Paslēpt laika zonu</string>
@@ -360,6 +364,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Izdzēst to no servera</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Atzīmēt kā izlasītu uz servera</string>
   <string name="account_setup_incoming_use_compression">Izmantot saspiešanu</string>
+  <string name="account_setup_incoming_send_client_id">Sūtīt klienta ID</string>
   <string name="account_setup_expunge_policy_label">Izdzēst vēstules arī no servera</string>
   <string name="account_setup_expunge_policy_immediately">Uzreiz</string>
   <string name="account_setup_expunge_policy_on_poll">Pārbaudes laikā</string>
@@ -1115,6 +1120,7 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Pievienot kontaktiem</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Rakstīt vēstuli</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Nokopēt e-pasta adresi</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
