@@ -16,4 +16,5 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
 
     implementation(projects.feature.onboarding)
+    implementation(projects.feature.account.setup)
 }

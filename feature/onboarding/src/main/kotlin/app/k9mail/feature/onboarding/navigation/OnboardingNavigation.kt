@@ -1,12 +1,12 @@
-package net.thunderbird.feature.onboarding.navigation
+package app.k9mail.feature.onboarding.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import net.thunderbird.feature.onboarding.OnboardingScreen
+import app.k9mail.feature.onboarding.ui.OnboardingScreen
 
-const val NAVIGATION_ROUTE_ONBOARDING = "onboarding"
+const val NAVIGATION_ROUTE_ONBOARDING = "/onboarding"
 
 fun NavController.navigateToOnboarding(
     navOptions: NavOptions? = null,

@@ -1,4 +1,4 @@
-package net.thunderbird.feature.onboarding
+package app.k9mail.feature.onboarding.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -18,11 +18,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.Button
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline2
-import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithFooter
+import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.onboarding.R
 
 @Composable
 internal fun OnboardingContent(
@@ -34,7 +35,7 @@ internal fun OnboardingContent(
         modifier = modifier,
     ) {
         ResponsiveContent {
-            LazyColumnWithFooter(
+            LazyColumnWithHeaderFooter(
                 modifier = Modifier.fillMaxSize(),
                 footer = {
                     WelcomeFooter(
@@ -45,13 +46,13 @@ internal fun OnboardingContent(
                         onImportClick = onImportClick,
                     )
                 },
-                verticalArrangement = Arrangement.spacedBy(MainTheme.sizes.medium, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.SpaceEvenly,
             ) {
                 item {
                     WelcomeLogo(
                         modifier = Modifier
                             .defaultItemModifier()
-                            .padding(top = MainTheme.spacings.quadruple),
+                            .padding(top = MainTheme.spacings.double),
                     )
                 }
                 item {
@@ -121,8 +122,8 @@ private fun WelcomeFooter(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        modifier = modifier.padding(bottom = MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Button(
@@ -138,7 +139,7 @@ private fun WelcomeFooter(
 
 private fun Modifier.defaultItemModifier() = composed {
     fillMaxWidth()
-        .padding(MainTheme.spacings.double)
+        .padding(MainTheme.spacings.default)
 }
 
 @Composable
