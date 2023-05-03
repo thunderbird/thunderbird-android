@@ -14,16 +14,16 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.ui.catalog.items.buttonItems
-import app.k9mail.ui.catalog.items.colorItems
-import app.k9mail.ui.catalog.items.iconItems
-import app.k9mail.ui.catalog.items.imageItems
 import app.k9mail.ui.catalog.items.moleculeItems
-import app.k9mail.ui.catalog.items.selectionControlItems
-import app.k9mail.ui.catalog.items.textFieldItems
 import app.k9mail.ui.catalog.items.themeHeaderItem
 import app.k9mail.ui.catalog.items.themeSelectorItems
-import app.k9mail.ui.catalog.items.typographyItems
+import app.k9mail.ui.catalog.ui.atom.items.buttonItems
+import app.k9mail.ui.catalog.ui.atom.items.colorItems
+import app.k9mail.ui.catalog.ui.atom.items.iconItems
+import app.k9mail.ui.catalog.ui.atom.items.imageItems
+import app.k9mail.ui.catalog.ui.atom.items.selectionControlItems
+import app.k9mail.ui.catalog.ui.atom.items.textFieldItems
+import app.k9mail.ui.catalog.ui.atom.items.typographyItems
 
 @Composable
 fun CatalogContent(

@@ -18,7 +18,8 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.ui.catalog.helper.WithRememberedState
+import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
+import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import kotlinx.collections.immutable.persistentListOf
 
 @Suppress("LongMethod")

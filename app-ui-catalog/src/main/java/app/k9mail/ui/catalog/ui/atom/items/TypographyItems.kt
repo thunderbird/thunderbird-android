@@ -1,4 +1,4 @@
-package app.k9mail.ui.catalog.items
+package app.k9mail.ui.catalog.ui.atom.items
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.graphics.Color
@@ -19,6 +19,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextOverline
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle2
+import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
+import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
 
 fun LazyGridScope.typographyItems() {
     sectionHeaderItem(text = "Typography")
