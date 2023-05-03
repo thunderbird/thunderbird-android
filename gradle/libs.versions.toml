@@ -34,7 +34,7 @@ mime4j = "0.8.9"
 okhttp = "4.10.0"
 glide = "4.15.1"
 moshi = "1.14.0"
-mockito = "5.2.0"
+mockito = "5.3.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
