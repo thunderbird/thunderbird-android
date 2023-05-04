@@ -299,7 +299,6 @@
   <string name="account_setup_incoming_client_certificate_label">شهادة العميل</string>
   <string name="account_setup_incoming_pop_server_label">خادم POP3</string>
   <string name="account_setup_incoming_imap_server_label">خادم IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">خادم إكستشينج</string>
   <string name="account_setup_incoming_port_label">المَنفذ</string>
   <string name="account_setup_incoming_security_label">الأمان</string>
   <string name="account_setup_incoming_auth_type_label">المصادقة</string>
@@ -321,9 +320,6 @@
   <string name="archive_folder_label">مجلد الأرشيف</string>
   <string name="spam_folder_label">مجلد البريد المزعج</string>
   <string name="account_setup_auto_expand_folder">توسيع المجلد تلقائيا</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">مسار OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">مسار المصادقة</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">علبة بريد التحويل</string>
   <string name="account_setup_outgoing_title">إعدادات الخادم الخارج</string>
   <string name="account_setup_outgoing_smtp_server_label">خادم SMTP</string>
   <string name="account_setup_outgoing_port_label">المَنفذ</string>

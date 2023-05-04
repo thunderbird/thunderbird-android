@@ -105,11 +105,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mAccount = Preferences.getPreferences().getAccount(accountUuid);
 
         ServerSettings incomingServerSettings = mAccount.getIncomingServerSettings();
-        if (incomingServerSettings.type.equals(Protocols.WEBDAV)) {
-            mAccount.setOutgoingServerSettings(incomingServerSettings);
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
-        }
-
 
         mUsernameView = findViewById(R.id.account_username);
         mPasswordView = findViewById(R.id.account_password);

@@ -29,12 +29,6 @@ public class K9MailLib {
      */
     public static boolean DEBUG_PROTOCOL_POP3 = true;
 
-    /**
-     * Should K-9 log the conversation it has over the wire with
-     * WebDAV servers?
-     */
-    public static boolean DEBUG_PROTOCOL_WEBDAV = true;
-
     public static boolean isDebug() {
         return debugStatus.enabled();
     }

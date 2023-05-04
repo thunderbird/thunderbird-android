@@ -18,7 +18,6 @@ class AccountCreator(private val preferences: Preferences, private val resources
         return when (type) {
             Protocols.IMAP -> DeletePolicy.ON_DELETE
             Protocols.POP3 -> DeletePolicy.NEVER
-            Protocols.WEBDAV -> DeletePolicy.ON_DELETE
             "demo" -> DeletePolicy.ON_DELETE
             else -> throw AssertionError("Unhandled case: $type")
         }
@@ -27,7 +26,6 @@ class AccountCreator(private val preferences: Preferences, private val resources
     fun getDefaultPort(securityType: ConnectionSecurity, serverType: String): Int {
         return when (serverType) {
             Protocols.IMAP -> getImapDefaultPort(securityType)
-            Protocols.WEBDAV -> getWebDavDefaultPort(securityType)
             Protocols.POP3 -> getPop3DefaultPort(securityType)
             Protocols.SMTP -> getSmtpDefaultPort(securityType)
             else -> throw AssertionError("Unhandled case: $serverType")
@@ -40,10 +38,6 @@ class AccountCreator(private val preferences: Preferences, private val resources
 
     private fun getPop3DefaultPort(connectionSecurity: ConnectionSecurity): Int {
         return if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) 995 else 110
-    }
-
-    private fun getWebDavDefaultPort(connectionSecurity: ConnectionSecurity): Int {
-        return if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) 443 else 80
     }
 
     private fun getSmtpDefaultPort(connectionSecurity: ConnectionSecurity): Int {

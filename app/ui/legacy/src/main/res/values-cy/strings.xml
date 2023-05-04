@@ -340,7 +340,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_incoming_client_certificate_label">Tystysgrif cleient</string>
   <string name="account_setup_incoming_pop_server_label">Gweinydd POP3</string>
   <string name="account_setup_incoming_imap_server_label">Gweinydd IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Gweinydd Exchange</string>
   <string name="account_setup_incoming_port_label">Porth</string>
   <string name="account_setup_incoming_security_label">Diogelwch</string>
   <string name="account_setup_incoming_auth_type_label">Dilysiad</string>
@@ -366,9 +365,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="spam_folder_label">Ffolder sbam</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Dangos dim ond y ffolderi dwi\'n eu dewis</string>
   <string name="account_setup_auto_expand_folder">Awto-ehangu ffolder</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Llwybr OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Llwybr dilysu</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Enw\'r mewnflwch</string>
   <string name="account_setup_outgoing_title">Gosodiadau\'r gweinydd anfon</string>
   <string name="account_setup_outgoing_smtp_server_label">Gweinydd SMTP</string>
   <string name="account_setup_outgoing_port_label">Porth</string>

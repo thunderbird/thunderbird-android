@@ -199,10 +199,8 @@
     <ID>MagicNumber:Account.kt$Account.DeletePolicy.MARK_AS_READ$3</ID>
     <ID>MagicNumber:AccountCreator.kt$AccountCreator$110</ID>
     <ID>MagicNumber:AccountCreator.kt$AccountCreator$143</ID>
-    <ID>MagicNumber:AccountCreator.kt$AccountCreator$443</ID>
     <ID>MagicNumber:AccountCreator.kt$AccountCreator$465</ID>
     <ID>MagicNumber:AccountCreator.kt$AccountCreator$587</ID>
-    <ID>MagicNumber:AccountCreator.kt$AccountCreator$80</ID>
     <ID>MagicNumber:AccountCreator.kt$AccountCreator$993</ID>
     <ID>MagicNumber:AccountCreator.kt$AccountCreator$995</ID>
     <ID>MagicNumber:AccountItem.kt$AccountItem$200L</ID>
@@ -790,7 +788,6 @@
     <ID>TooManyFunctions:UnreadWidgetConfigurationFragment.kt$UnreadWidgetConfigurationFragment : PreferenceFragmentCompat</ID>
     <ID>TooManyFunctions:UpdateFolderOperations.kt$UpdateFolderOperations</ID>
     <ID>TooManyFunctions:VibrationDialogFragment.kt$VibrationDialogFragment$VibrationPatternAdapter : BaseAdapter</ID>
-    <ID>TooManyFunctions:WebDavBackend.kt$WebDavBackend : Backend</ID>
     <ID>UnnecessaryAbstractClass:AppRobolectricTest.kt$AppRobolectricTest$AppRobolectricTest</ID>
     <ID>UnnecessaryAbstractClass:HtmlModification.kt$HtmlModification$HtmlModification</ID>
     <ID>UnnecessaryAbstractClass:K9RobolectricTest.kt$K9RobolectricTest$K9RobolectricTest</ID>

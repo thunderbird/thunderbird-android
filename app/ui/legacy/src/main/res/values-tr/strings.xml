@@ -337,7 +337,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="account_setup_incoming_client_certificate_label">İstemci sertifikası</string>
   <string name="account_setup_incoming_pop_server_label">POP3 sunucusu</string>
   <string name="account_setup_incoming_imap_server_label">IMAP sunucusu</string>
-  <string name="account_setup_incoming_webdav_server_label">Takas sunucusu</string>
   <string name="account_setup_incoming_port_label">Bağlanma noktası</string>
   <string name="account_setup_incoming_security_label">Güvenlik </string>
   <string name="account_setup_incoming_auth_type_label">Kimlik doğrulama </string>
@@ -362,9 +361,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="spam_folder_label">Gereksiz posta Klasörü</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Sadece abone olunan klasörleri göster</string>
   <string name="account_setup_auto_expand_folder">Otomatik genişleyen klasör</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA yolu</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Kimlik doğrulama yolu</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Posta kutusu takma adı</string>
   <string name="account_setup_outgoing_title">Giden sunucu ayarları</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP sunucu</string>
   <string name="account_setup_outgoing_port_label">Bağlanma noktası</string>

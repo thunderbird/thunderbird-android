@@ -270,7 +270,6 @@
   <string name="account_setup_incoming_client_certificate_label">Certifikat klijenta</string>
   <string name="account_setup_incoming_pop_server_label">POP3 poslužitelj</string>
   <string name="account_setup_incoming_imap_server_label">IMAP poslužitelj</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange poslužitelj</string>
   <string name="account_setup_incoming_port_label">Ulaz</string>
   <string name="account_setup_incoming_security_label">Sigurnost</string>
   <string name="account_setup_incoming_auth_type_label">Identifikacija</string>
@@ -295,9 +294,6 @@
   <string name="spam_folder_label">Mapa neželjene pošte</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Prikaži samo pretplaćene mape</string>
   <string name="account_setup_auto_expand_folder">Automatsko proširivanje mapa</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA putanja</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Putanja identifikacije</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Alias poštanskog sandučića</string>
   <string name="account_setup_outgoing_title">Postavke odlaznog poslužitelja</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP poslužitelj</string>
   <string name="account_setup_outgoing_port_label">Ulaz</string>

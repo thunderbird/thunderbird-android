@@ -283,7 +283,6 @@
   <string name="account_setup_incoming_client_certificate_label">Teisteanas a’ chliant</string>
   <string name="account_setup_incoming_pop_server_label">Frithealaiche POP3</string>
   <string name="account_setup_incoming_imap_server_label">Frithealaiche IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Frithealaiche Exchange</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Tèarainteachd</string>
   <string name="account_setup_incoming_auth_type_label">Dearbhadh</string>
@@ -308,9 +307,6 @@
   <string name="spam_folder_label">Pasgan an spama</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Na seall ach pasganan le fo-sgrìobhadh</string>
   <string name="account_setup_auto_expand_folder">Leudaich am pasgan gu fèin-obrachail</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Slighe OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Slighe an dearbhaidh</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Alias a’ bhogsa-phuist</string>
   <string name="account_setup_outgoing_title">Roghainnean an fhrithealaiche a-mach</string>
   <string name="account_setup_outgoing_smtp_server_label">Frithealaiche SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>

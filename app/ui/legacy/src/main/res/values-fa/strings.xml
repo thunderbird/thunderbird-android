@@ -335,7 +335,6 @@
   <string name="account_setup_incoming_client_certificate_label">گواهی کارخواه</string>
   <string name="account_setup_incoming_pop_server_label">کارساز POP3</string>
   <string name="account_setup_incoming_imap_server_label">کارساز IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">کارساز Exchange</string>
   <string name="account_setup_incoming_port_label">درگاه</string>
   <string name="account_setup_incoming_security_label">امنیت</string>
   <string name="account_setup_incoming_auth_type_label">احراز هویت</string>
@@ -361,9 +360,6 @@
   <string name="spam_folder_label">پوشهٔ هرزنامه</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">فقط پوشه‌هایی که مشترک آن‌ها هستم را نمایش بده</string>
   <string name="account_setup_auto_expand_folder">پوشهٔ آغازین</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">مسیر OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">مسیر احراز هویت</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">نام مستعار صندوق پستی</string>
   <string name="account_setup_outgoing_title">تنظیمات کارساز خروجی </string>
   <string name="account_setup_outgoing_smtp_server_label">کارساز SMTP</string>
   <string name="account_setup_outgoing_port_label">درگاه</string>

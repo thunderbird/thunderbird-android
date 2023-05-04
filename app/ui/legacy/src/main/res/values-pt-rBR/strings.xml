@@ -350,7 +350,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_incoming_client_certificate_label">Certificado do cliente</string>
   <string name="account_setup_incoming_pop_server_label">Servidor POP3</string>
   <string name="account_setup_incoming_imap_server_label">Servidor IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Servidor Exchange</string>
   <string name="account_setup_incoming_port_label">Porta</string>
   <string name="account_setup_incoming_security_label">Segurança</string>
   <string name="account_setup_incoming_auth_type_label">Autenticação</string>
@@ -377,9 +376,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="spam_folder_label">Pasta de spam</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Exibir somente pastas assinadas</string>
   <string name="account_setup_auto_expand_folder">Expandir as pastas automaticamente</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Caminho do OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Caminho da autenticação</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Apelido da caixa de correio</string>
   <string name="account_setup_outgoing_title">Configurações do servidor de envio</string>
   <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
   <string name="account_setup_outgoing_port_label">Porta</string>

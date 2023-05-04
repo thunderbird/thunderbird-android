@@ -40,13 +40,6 @@ public class AccountCreatorTest extends RobolectricTest {
         assertEquals(DeletePolicy.NEVER, result);
     }
 
-    @Test
-    public void getDefaultDeletePolicy_withWebDav_shouldReturn_ON_DELETE() {
-        DeletePolicy result = accountCreator.getDefaultDeletePolicy(Protocols.WEBDAV);
-
-        assertEquals(DeletePolicy.ON_DELETE, result);
-    }
-
     @Test(expected = AssertionError.class)
     public void getDefaultDeletePolicy_withSmtp_shouldFail() {
         accountCreator.getDefaultDeletePolicy(Protocols.SMTP);

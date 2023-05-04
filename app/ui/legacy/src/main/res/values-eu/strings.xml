@@ -340,7 +340,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_incoming_client_certificate_label">Bezero ziurtagiria</string>
   <string name="account_setup_incoming_pop_server_label">POP3 zerbitzaria</string>
   <string name="account_setup_incoming_imap_server_label">IMAP zebitzaria</string>
-  <string name="account_setup_incoming_webdav_server_label">Partekatze zerbitzaria</string>
   <string name="account_setup_incoming_port_label">Ataka</string>
   <string name="account_setup_incoming_security_label">Segurtasuna</string>
   <string name="account_setup_incoming_auth_type_label">Autentifikazioa</string>
@@ -366,9 +365,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="spam_folder_label">Zabor-posta karpeta</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Erakutsi harpidetutako karpetak bakarrik</string>
   <string name="account_setup_auto_expand_folder">Automatikoki irekitako karpeta</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA bide-izena</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Autentifikazio bide-izena</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Postontzi aliasa</string>
   <string name="account_setup_outgoing_title">Irteerako zerbitzariaren ezarpenak</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP zerbitzaria</string>
   <string name="account_setup_outgoing_port_label">Ataka</string>

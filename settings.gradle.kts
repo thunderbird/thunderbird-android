@@ -68,7 +68,6 @@ include(
     ":mail:testing",
     ":mail:protocols:imap",
     ":mail:protocols:pop3",
-    ":mail:protocols:webdav",
     ":mail:protocols:smtp",
 )
 
@@ -77,7 +76,6 @@ include(
     ":backend:testing",
     ":backend:imap",
     ":backend:pop3",
-    ":backend:webdav",
     ":backend:jmap",
     ":backend:demo",
 )

@@ -349,7 +349,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_incoming_client_certificate_label">Dëshmi klienti</string>
   <string name="account_setup_incoming_pop_server_label">Shërbyes POP3</string>
   <string name="account_setup_incoming_imap_server_label">Shërbyes IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Shërbyes Exchange</string>
   <string name="account_setup_incoming_port_label">Portë</string>
   <string name="account_setup_incoming_security_label">Siguri</string>
   <string name="account_setup_incoming_auth_type_label">Mirëfilltësim</string>
@@ -376,9 +375,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="spam_folder_label">Dosje të padëshiruarish</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Shfaq vetëm dosje me pajtim</string>
   <string name="account_setup_auto_expand_folder">Dosje për vetë-zgjerim</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Shteg OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Shteg mirëfilltësimi</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Alias kutie postare</string>
   <string name="account_setup_outgoing_title">Rregullime shërbyesi për dërgim</string>
   <string name="account_setup_outgoing_smtp_server_label">Shërbyes SMTP</string>
   <string name="account_setup_outgoing_port_label">Portë</string>

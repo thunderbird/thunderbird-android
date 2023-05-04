@@ -13,7 +13,6 @@ dependencies {
 
     // Remove AccountSetupIncoming's dependency on these
     compileOnly(projects.mail.protocols.imap)
-    compileOnly(projects.mail.protocols.webdav)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
 

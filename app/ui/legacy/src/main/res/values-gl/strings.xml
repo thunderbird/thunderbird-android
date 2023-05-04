@@ -324,7 +324,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_incoming_client_certificate_label">Certificado cliente</string>
   <string name="account_setup_incoming_pop_server_label">Servidor POP3</string>
   <string name="account_setup_incoming_imap_server_label">Servidor IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Servidor WebDAV (Exchange)</string>
   <string name="account_setup_incoming_port_label">Porto</string>
   <string name="account_setup_incoming_security_label">Tipo de Seguridade</string>
   <string name="account_setup_incoming_auth_type_label">Tipo de autentificación</string>
@@ -349,9 +348,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="spam_folder_label">Carpeta SPAM</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Ver só carpetas	suscritas</string>
   <string name="account_setup_auto_expand_folder">Autoexpandir carpeta</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Enderezo WebDAV (Exchange)</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Enderezo de autentificación</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Enderezo buzón</string>
   <string name="account_setup_outgoing_title">Correo Sainte</string>
   <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
   <string name="account_setup_outgoing_port_label">Porto</string>

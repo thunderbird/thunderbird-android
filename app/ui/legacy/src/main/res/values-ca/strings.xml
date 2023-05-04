@@ -349,7 +349,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_incoming_client_certificate_label">Certificat del client</string>
   <string name="account_setup_incoming_pop_server_label">Servidor POP3</string>
   <string name="account_setup_incoming_imap_server_label">Servidor IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Servidor WebDAV (Exchange)</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Tipus de seguretat</string>
   <string name="account_setup_incoming_auth_type_label">Tipus d\'autenticació</string>
@@ -376,9 +375,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="spam_folder_label">Carpeta brossa</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Només mostra carpetes subscrites</string>
   <string name="account_setup_auto_expand_folder">Autoexpandeix la carpeta</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Camí OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Camí d\'autenticació</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Àlies de la bústia</string>
   <string name="account_setup_outgoing_title">Configuració del servidor de sortida</string>
   <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>

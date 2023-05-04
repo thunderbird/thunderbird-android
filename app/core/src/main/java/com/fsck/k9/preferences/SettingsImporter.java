@@ -379,37 +379,30 @@ public class SettingsImporter {
 
         boolean authorizationNeeded = incoming.authenticationType == AuthType.XOAUTH2;
 
-        String incomingServerType = ServerTypeConverter.toServerSettingsType(account.incoming.type);
-        if (account.outgoing == null && !incomingServerType.equals(Protocols.WEBDAV)) {
-            // All account types except WebDAV need to provide outgoing server settings
+        if (account.outgoing == null) {
             throw new InvalidSettingValueException();
         }
 
         String outgoingServerName = null;
         boolean outgoingPasswordNeeded = false;
-        if (account.outgoing != null) {
-            // Write outgoing server settings
-            ServerSettings outgoing = createServerSettings(account.outgoing);
-            String outgoingServer = serverSettingsSerializer.serialize(outgoing);
-            putString(editor, accountKeyPrefix + AccountPreferenceSerializer.OUTGOING_SERVER_SETTINGS_KEY, outgoingServer);
+        // Write outgoing server settings
+        ServerSettings outgoing = createServerSettings(account.outgoing);
+        String outgoingServer = serverSettingsSerializer.serialize(outgoing);
+        putString(editor, accountKeyPrefix + AccountPreferenceSerializer.OUTGOING_SERVER_SETTINGS_KEY, outgoingServer);
 
-            /*
-             * Mark account as disabled if the settings file contained a username but no password. However, no password
-             * is required for the outgoing server for WebDAV accounts, because incoming and outgoing servers are 
-             * identical for this account type. Nor is a password required if the AuthType is EXTERNAL.
-             */
-            String outgoingServerType = ServerTypeConverter.toServerSettingsType(outgoing.type);
-            outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
-                    AuthType.XOAUTH2 != outgoing.authenticationType &&
-                    !outgoingServerType.equals(Protocols.WEBDAV) &&
-                    outgoing.username != null &&
-                    !outgoing.username.isEmpty() &&
-                    (outgoing.password == null || outgoing.password.isEmpty());
+        /*
+         * Mark account as disabled if the settings file contained a username but no password, except when the
+         * AuthType is EXTERNAL.
+         */
+        outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
+                AuthType.XOAUTH2 != outgoing.authenticationType &&
+                outgoing.username != null &&
+                !outgoing.username.isEmpty() &&
+                (outgoing.password == null || outgoing.password.isEmpty());
 
-            authorizationNeeded |= outgoing.authenticationType == AuthType.XOAUTH2;
+        authorizationNeeded |= outgoing.authenticationType == AuthType.XOAUTH2;
 
-            outgoingServerName = outgoing.host;
-        }
+        outgoingServerName = outgoing.host;
 
         boolean createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded || authorizationNeeded;
         if (createAccountDisabled) {

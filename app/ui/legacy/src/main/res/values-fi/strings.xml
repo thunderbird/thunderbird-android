@@ -348,7 +348,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_incoming_client_certificate_label">Asiakasvarmenne</string>
   <string name="account_setup_incoming_pop_server_label">POP3-palvelin</string>
   <string name="account_setup_incoming_imap_server_label">IMAP-palvelin</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange-palvelin</string>
   <string name="account_setup_incoming_port_label">Portti</string>
   <string name="account_setup_incoming_security_label">Suojauksen tyyppi</string>
   <string name="account_setup_incoming_auth_type_label">Todennuksen tyyppi</string>
@@ -375,9 +374,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="spam_folder_label">Roskapostikansio</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
   <string name="account_setup_auto_expand_folder">Avaa kansio automaattisesti</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA-polku</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Autentikointipolku</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Postilaatikon polku</string>
   <string name="account_setup_outgoing_title">Lähtevän postin palvelimen asetukset</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-palvelin</string>
   <string name="account_setup_outgoing_port_label">Portti</string>

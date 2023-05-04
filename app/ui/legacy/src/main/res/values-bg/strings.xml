@@ -316,7 +316,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_incoming_client_certificate_label">Клиентски сертификат</string>
   <string name="account_setup_incoming_pop_server_label">POP3 сървър</string>
   <string name="account_setup_incoming_imap_server_label">IMAP сървър</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange сървър</string>
   <string name="account_setup_incoming_port_label">Порт</string>
   <string name="account_setup_incoming_security_label">Сигурност</string>
   <string name="account_setup_incoming_auth_type_label">Идентифициране</string>
@@ -341,9 +340,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="spam_folder_label">Папка Спам</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Показвай само абонираните папките</string>
   <string name="account_setup_auto_expand_folder">Автоматично разгъване на папка</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA path</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Authentication path</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Прякор на профила</string>
   <string name="account_setup_outgoing_title">Настройки за изходяща поща</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP сървър</string>
   <string name="account_setup_outgoing_port_label">Порт</string>

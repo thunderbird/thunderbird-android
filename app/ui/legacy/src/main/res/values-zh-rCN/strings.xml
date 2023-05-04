@@ -347,7 +347,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_incoming_client_certificate_label">客户端证书</string>
   <string name="account_setup_incoming_pop_server_label">POP3 服务器</string>
   <string name="account_setup_incoming_imap_server_label">IMAP 服务器</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange 服务器</string>
   <string name="account_setup_incoming_port_label">端口号</string>
   <string name="account_setup_incoming_security_label">加密方法</string>
   <string name="account_setup_incoming_auth_type_label">身份验证方法</string>
@@ -374,9 +373,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="spam_folder_label">垃圾邮件箱名称</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">只显示订阅的文件夹</string>
   <string name="account_setup_auto_expand_folder">自动展开文件夹</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA 路径</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">身份验证路径</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">邮箱路径</string>
   <string name="account_setup_outgoing_title">发件服务器设置</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP 服务器</string>
   <string name="account_setup_outgoing_port_label">端口号</string>

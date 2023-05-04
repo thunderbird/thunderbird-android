@@ -348,7 +348,6 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_setup_incoming_client_certificate_label">Client-Zertifikat</string>
   <string name="account_setup_incoming_pop_server_label">POP3-Server</string>
   <string name="account_setup_incoming_imap_server_label">IMAP-Server</string>
-  <string name="account_setup_incoming_webdav_server_label">WebDAV(Exchange)-Server</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Sicherheitstyp</string>
   <string name="account_setup_incoming_auth_type_label">Authentifizierungstyp</string>
@@ -375,9 +374,6 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="spam_folder_label">Ordner für Spam</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Nur ausgewählte Ordner anzeigen</string>
   <string name="account_setup_auto_expand_folder">Startordner</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV-(Exchange-)Pfad</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Authentifizierungspfad</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox-Pfad</string>
   <string name="account_setup_outgoing_title">Einstellungen für Postausgangsserver</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-Server</string>
   <string name="account_setup_outgoing_port_label">Port</string>

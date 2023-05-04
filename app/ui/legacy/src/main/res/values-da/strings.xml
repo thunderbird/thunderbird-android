@@ -339,7 +339,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_incoming_client_certificate_label">Klient certifikat</string>
   <string name="account_setup_incoming_pop_server_label">POP3 server</string>
   <string name="account_setup_incoming_imap_server_label">IMAP server</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange server</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Sikkerhed</string>
   <string name="account_setup_incoming_auth_type_label">Autentifikations type</string>
@@ -365,9 +364,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="spam_folder_label">Spam mappe</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Vis kun mapper du abonerer på</string>
   <string name="account_setup_auto_expand_folder">Udvid mapper automatisk</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Sti til WebDav (Exchange)</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Sti til autentifikation</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Sti til mailboks (alias)</string>
   <string name="account_setup_outgoing_title">Udgående serverindstillinger</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
   <string name="account_setup_outgoing_port_label">Port</string>
