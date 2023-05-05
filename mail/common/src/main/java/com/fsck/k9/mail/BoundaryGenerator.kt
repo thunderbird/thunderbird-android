@@ -1,9 +1,9 @@
 package com.fsck.k9.mail
 
-import java.util.Random
+import java.security.SecureRandom
 import org.jetbrains.annotations.VisibleForTesting
 
-class BoundaryGenerator @VisibleForTesting internal constructor(private val random: Random) {
+class BoundaryGenerator @VisibleForTesting internal constructor(private val random: SecureRandom) {
 
     fun generateBoundary(): String {
         return buildString(4 + BOUNDARY_CHARACTER_COUNT) {
@@ -25,7 +25,7 @@ class BoundaryGenerator @VisibleForTesting internal constructor(private val rand
             'U', 'V', 'W', 'X', 'Y', 'Z',
         )
 
-        private val INSTANCE = BoundaryGenerator(Random())
+        private val INSTANCE = BoundaryGenerator(SecureRandom())
 
         @JvmStatic
         fun getInstance() = INSTANCE

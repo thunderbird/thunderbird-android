@@ -2,7 +2,7 @@ package com.fsck.k9.mail
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import java.util.Random
+import java.security.SecureRandom
 import org.junit.Test
 import org.mockito.kotlin.mock
 
@@ -29,7 +29,7 @@ class BoundaryGeneratorTest {
         assertThat(result).isEqualTo("----0123456789ABCDEFGHIJKLMNOPQRSZ")
     }
 
-    private fun createRandom(vararg values: Int): Random {
+    private fun createRandom(vararg values: Int): SecureRandom {
         return mock {
             var ongoingStubbing = on { nextInt(36) }
             for (value in values) {
