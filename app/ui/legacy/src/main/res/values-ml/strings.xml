@@ -325,7 +325,6 @@
   <string name="account_setup_incoming_client_certificate_label">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ്</string>
   <string name="account_setup_incoming_pop_server_label">POP3 സെർവർ</string>
   <string name="account_setup_incoming_imap_server_label">IMAP സെർവർ</string>
-  <string name="account_setup_incoming_webdav_server_label">എക്സ്ചേഞ്ച് സെർവർ</string>
   <string name="account_setup_incoming_port_label">പോർട്ട്</string>
   <string name="account_setup_incoming_security_label">സുരക്ഷ</string>
   <string name="account_setup_incoming_auth_type_label">പ്രമാണീകരണം</string>
@@ -350,9 +349,6 @@
   <string name="spam_folder_label">സ്പാം ഫോൾഡർ</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">സബ്‌സ്‌ക്രൈബുചെയ്‌ത ഫോൾഡറുകൾ മാത്രം കാണിക്കുക</string>
   <string name="account_setup_auto_expand_folder">ഫോൾഡർ യാന്ത്രികമായി വികസിപ്പിക്കുക</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA പാത</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">പ്രാമാണീകരണ പാത</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">മെയിൽ‌ബോക്സ് അപരനാമം</string>
   <string name="account_setup_outgoing_title">ഔട്ട്‌ഗോയിംഗ് സെർവർ ക്രമീകരണങ്ങൾ</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP സെർവർ</string>
   <string name="account_setup_outgoing_port_label">പോർട്ട്</string>

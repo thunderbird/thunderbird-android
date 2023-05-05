@@ -346,7 +346,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_incoming_client_certificate_label">クライアント証明書</string>
   <string name="account_setup_incoming_pop_server_label">POP3 サーバ</string>
   <string name="account_setup_incoming_imap_server_label">IMAP サーバ</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange サーバ</string>
   <string name="account_setup_incoming_port_label">ポート</string>
   <string name="account_setup_incoming_security_label">保護された接続</string>
   <string name="account_setup_incoming_auth_type_label">認証タイプ</string>
@@ -373,9 +372,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="spam_folder_label">迷惑メールフォルダ名</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">購読フォルダのみ表示</string>
   <string name="account_setup_auto_expand_folder">自動表示フォルダ</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA パス</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">認証パス</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">メールボックスエイリアス</string>
   <string name="account_setup_outgoing_title">送信メールサーバ設定</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP サーバ</string>
   <string name="account_setup_outgoing_port_label">ポート</string>

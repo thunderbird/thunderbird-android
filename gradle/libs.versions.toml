@@ -120,7 +120,6 @@ minidns-hla = "org.minidns:minidns-hla:1.0.4"
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 jsoup = "org.jsoup:jsoup:1.15.4"
-apache-httpclient = "org.apache.httpcomponents:httpclient:4.5.14"
 apache-httpclient5 = "org.apache.httpcomponents.client5:httpclient5:5.2.1"
 clikt = "com.github.ajalt.clikt:clikt:3.5.2"
 jzlib = "com.jcraft:jzlib:1.0.7"

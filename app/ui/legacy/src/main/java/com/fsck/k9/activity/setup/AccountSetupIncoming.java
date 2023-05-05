@@ -38,7 +38,6 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
-import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.extensions.TextInputLayoutHelper;
@@ -78,9 +77,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private int mCurrentAuthTypeViewPosition;
     private CheckBox mImapAutoDetectNamespaceView;
     private TextInputEditText mImapPathPrefixView;
-    private TextInputEditText mWebdavPathPrefixView;
-    private TextInputEditText mWebdavAuthPathView;
-    private TextInputEditText mWebdavMailboxPathView;
     private ViewGroup mAllowClientCertificateView;
     private Button mNextButton;
     private Account mAccount;
@@ -130,9 +126,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mAuthTypeView = findViewById(R.id.account_auth_type);
         mImapAutoDetectNamespaceView = findViewById(R.id.imap_autodetect_namespace);
         mImapPathPrefixView = findViewById(R.id.imap_path_prefix);
-        mWebdavPathPrefixView = findViewById(R.id.webdav_path_prefix);
-        mWebdavAuthPathView = findViewById(R.id.webdav_auth_path);
-        mWebdavMailboxPathView = findViewById(R.id.webdav_mailbox_path);
         mNextButton = findViewById(R.id.next);
         useCompressionCheckBox = findViewById(R.id.use_compression);
         isSendClientIdEnabledCheckBox = findViewById(R.id.is_send_client_id_enabled);
@@ -210,10 +203,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             if (settings.type.equals(Protocols.POP3)) {
                 serverLayoutView.setHint(getString(R.string.account_setup_incoming_pop_server_label));
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
-                findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
                 useCompressionCheckBox.setVisibility(View.GONE);
                 isSendClientIdEnabledCheckBox.setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
@@ -228,41 +217,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     mImapPathPrefixView.setText(pathPrefix);
                 }
 
-                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
-                findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-
                 if (!editSettings) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
-                }
-            } else if (settings.type.equals(Protocols.WEBDAV)) {
-                serverLayoutView.setHint(getString(R.string.account_setup_incoming_webdav_server_label));
-                mConnectionSecurityChoices = new ConnectionSecurity[] {
-                        ConnectionSecurity.NONE,
-                        ConnectionSecurity.SSL_TLS_REQUIRED };
-
-                // Hide the unnecessary fields
-                findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type).setVisibility(View.GONE);
-                useCompressionCheckBox.setVisibility(View.GONE);
-                isSendClientIdEnabledCheckBox.setVisibility(View.GONE);
-                mSubscribedFoldersOnly.setVisibility(View.GONE);
-
-                String path = WebDavStoreSettings.getPath(settings);
-                if (path != null) {
-                    mWebdavPathPrefixView.setText(path);
-                }
-
-                String authPath = WebDavStoreSettings.getAuthPath(settings);
-                if (authPath != null) {
-                    mWebdavAuthPathView.setText(authPath);
-                }
-
-                String mailboxPath = WebDavStoreSettings.getMailboxPath(settings);
-                if (mailboxPath != null) {
-                    mWebdavMailboxPathView.setText(mailboxPath);
                 }
             } else {
                 throw new Exception("Unknown account type: " + settings.type);
@@ -614,11 +570,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 boolean autoDetectNamespace = mImapAutoDetectNamespaceView.isChecked();
                 String pathPrefix = mImapPathPrefixView.getText().toString();
                 extra = ImapStoreSettings.createExtra(autoDetectNamespace, pathPrefix);
-            } else if (mStoreType.equals(Protocols.WEBDAV)) {
-                String path = mWebdavPathPrefixView.getText().toString();
-                String authPath = mWebdavAuthPathView.getText().toString();
-                String mailboxPath = mWebdavMailboxPathView.getText().toString();
-                extra = WebDavStoreSettings.createExtra(null, path, authPath, mailboxPath);
             }
 
             DI.get(LocalKeyStoreManager.class).deleteCertificate(mAccount, host, port, MailServerDirection.INCOMING);

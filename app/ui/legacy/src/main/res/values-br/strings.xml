@@ -297,7 +297,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_incoming_client_certificate_label">Testeni an arval</string>
   <string name="account_setup_incoming_pop_server_label">Dafariad POP3</string>
   <string name="account_setup_incoming_imap_server_label">Dafariad IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Dafariad Exchange</string>
   <string name="account_setup_incoming_port_label">Porzh</string>
   <string name="account_setup_incoming_security_label">Diogelroez</string>
   <string name="account_setup_incoming_auth_type_label">Dilesa</string>
@@ -322,9 +321,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="spam_folder_label">Teuliad lastez</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Diskouez an teuliadoù koumanantet hepken</string>
   <string name="account_setup_auto_expand_folder">Kreskaat an teuliad ent emgefreek</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Treug OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Treug dilesa</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Lesanv ar voest postel</string>
   <string name="account_setup_outgoing_title">Arventennoù an dafariad ec’hankañ</string>
   <string name="account_setup_outgoing_smtp_server_label">Dafariad SMTP</string>
   <string name="account_setup_outgoing_port_label">Porzh</string>

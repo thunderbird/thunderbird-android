@@ -346,7 +346,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_incoming_client_certificate_label">Сертифікат клієнта</string>
   <string name="account_setup_incoming_pop_server_label">Сервер POP3</string>
   <string name="account_setup_incoming_imap_server_label">Сервер IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Сервер Exchange</string>
   <string name="account_setup_incoming_port_label">Порт</string>
   <string name="account_setup_incoming_security_label">Тип системи захисту</string>
   <string name="account_setup_incoming_auth_type_label">Метод автентифікації</string>
@@ -372,9 +371,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="spam_folder_label">Назва теки Спам</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Показувати лише теки, на які здійснено підписку</string>
   <string name="account_setup_auto_expand_folder">Автоматично відкривати теку</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Шлях Outlook Web Access</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Шлях для автентифікації</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Псевдонім поштової скриньки</string>
   <string name="account_setup_outgoing_title">Налаштування сервера вихідної пошти</string>
   <string name="account_setup_outgoing_smtp_server_label">Сервер SMTP</string>
   <string name="account_setup_outgoing_port_label">Порт</string>

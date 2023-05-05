@@ -344,7 +344,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_incoming_client_certificate_label">Clientcertificaat</string>
   <string name="account_setup_incoming_pop_server_label">POP3-server</string>
   <string name="account_setup_incoming_imap_server_label">IMAP-server</string>
-  <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange)-server</string>
   <string name="account_setup_incoming_port_label">Poort</string>
   <string name="account_setup_incoming_security_label">Beveiligingstype</string>
   <string name="account_setup_incoming_auth_type_label">Authenticatietype</string>
@@ -371,9 +370,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="spam_folder_label">Spammap</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Alleen geabonneerde mappen weergeven</string>
   <string name="account_setup_auto_expand_folder">Map automatisch uitvouwen</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV (Exchange)-pad</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Authenticatiepad</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Mailboxalias</string>
   <string name="account_setup_outgoing_title">Uitgaande serverinstellingen</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-server</string>
   <string name="account_setup_outgoing_port_label">Poort</string>

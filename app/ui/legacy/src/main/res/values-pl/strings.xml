@@ -353,7 +353,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_incoming_client_certificate_label">Certyfikat klienta</string>
   <string name="account_setup_incoming_pop_server_label">Serwer POP3</string>
   <string name="account_setup_incoming_imap_server_label">Serwer IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Serwer WebDAV (Exchange)</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Zabezpieczenia</string>
   <string name="account_setup_incoming_auth_type_label">Rodzaj uwierzytelnienia</string>
@@ -380,9 +379,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="spam_folder_label">Spam</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Pokaż tylko subskrybowane foldery</string>
   <string name="account_setup_auto_expand_folder">Zawsze rozwijaj folder</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Ścieżka OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Ścieżka uwierzytelnienia</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Ścieżka Mailboxa</string>
   <string name="account_setup_outgoing_title">Ustawienia poczty wychodzącej</string>
   <string name="account_setup_outgoing_smtp_server_label">Serwer SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>

@@ -352,7 +352,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_incoming_client_certificate_label">Certificato client</string>
   <string name="account_setup_incoming_pop_server_label">Server POP3</string>
   <string name="account_setup_incoming_imap_server_label">Server IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Server Exchange</string>
   <string name="account_setup_incoming_port_label">Porta</string>
   <string name="account_setup_incoming_security_label">Protezione</string>
   <string name="account_setup_incoming_auth_type_label">Autenticazione</string>
@@ -379,9 +378,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="spam_folder_label">Cartella Spam</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Mostra solo le cartelle sottoscritte</string>
   <string name="account_setup_auto_expand_folder">Auto-espandi cartella</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Percorso OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Percorso di autenticazione</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Alias della casella postale</string>
   <string name="account_setup_outgoing_title">Impostazioni server della posta in uscita</string>
   <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
   <string name="account_setup_outgoing_port_label">Porta</string>

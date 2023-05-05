@@ -38,16 +38,6 @@ public class ServerNameSuggesterTest {
     }
 
     @Test
-    public void suggestServerName_forWebDavServer() throws Exception {
-        String serverType = Protocols.WEBDAV;
-        String domainPart = "example.org";
-
-        String result = serverNameSuggester.suggestServerName(serverType, domainPart);
-
-        assertEquals("exchange.example.org", result);
-    }
-
-    @Test
     public void suggestServerName_forSmtpServer() throws Exception {
         String serverType = Protocols.SMTP;
         String domainPart = "example.org";

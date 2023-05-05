@@ -349,7 +349,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_incoming_client_certificate_label">Skilríki forritsins</string>
   <string name="account_setup_incoming_pop_server_label">POP3 þjónn</string>
   <string name="account_setup_incoming_imap_server_label">IMAP þjónn</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange þjónn</string>
   <string name="account_setup_incoming_port_label">Gátt</string>
   <string name="account_setup_incoming_security_label">Öryggi</string>
   <string name="account_setup_incoming_auth_type_label">Auðkenning</string>
@@ -375,9 +374,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="spam_folder_label">Ruslpóstmappa</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Sýna einungis möppur í áskrift</string>
   <string name="account_setup_auto_expand_folder">Fletta möppu út sjálfvirkt</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA-slóð</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Slóð auðkenningar</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Samnefni pósthólfs</string>
   <string name="account_setup_outgoing_title">Stillingar sendinga-póstþjóns</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-þjónn</string>
   <string name="account_setup_outgoing_port_label">Gátt</string>

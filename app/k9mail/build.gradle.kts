@@ -15,7 +15,6 @@ dependencies {
     implementation(projects.app.cryptoOpenpgp)
     implementation(projects.backend.imap)
     implementation(projects.backend.pop3)
-    implementation(projects.backend.webdav)
     debugImplementation(projects.backend.demo)
 
     implementation(libs.androidx.appcompat)

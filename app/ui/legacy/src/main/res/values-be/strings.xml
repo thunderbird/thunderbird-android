@@ -352,7 +352,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_incoming_client_certificate_label">Сертыфікат кліента</string>
   <string name="account_setup_incoming_pop_server_label">Сервер POP3</string>
   <string name="account_setup_incoming_imap_server_label">Сервер IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Сервер Exchange</string>
   <string name="account_setup_incoming_port_label">Порт</string>
   <string name="account_setup_incoming_security_label">Бяспека</string>
   <string name="account_setup_incoming_auth_type_label">Аўтэнтыфікацыя</string>
@@ -378,9 +377,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="spam_folder_label">Каталог спаму</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Паказваць толькі падпісаныя каталогі</string>
   <string name="account_setup_auto_expand_folder">Аўтапераход у каталог</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Шлях OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Шлях аўтэнтыфікацыі</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Псеўданім скрыні</string>
   <string name="account_setup_outgoing_title">Налады сервера выходнай пошты</string>
   <string name="account_setup_outgoing_smtp_server_label">Сервер SMTP</string>
   <string name="account_setup_outgoing_port_label">Порт</string>

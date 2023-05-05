@@ -285,7 +285,6 @@
   <string name="account_setup_incoming_client_certificate_label">클라이언트 인증서</string>
   <string name="account_setup_incoming_pop_server_label">POP3 서버</string>
   <string name="account_setup_incoming_imap_server_label">IMAP 서버</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange 서버</string>
   <string name="account_setup_incoming_port_label">포트 번호</string>
   <string name="account_setup_incoming_security_label">보안 연결</string>
   <string name="account_setup_incoming_auth_type_label">인증 방식</string>
@@ -309,9 +308,6 @@
   <string name="spam_folder_label">스팸 폴더</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">설정한 폴더만 보기</string>
   <string name="account_setup_auto_expand_folder">폴더 자동 펼치기</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA 경로</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">인증 경로</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">편지함 별명</string>
   <string name="account_setup_outgoing_title">보내기 서버 설정</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP 서버</string>
   <string name="account_setup_outgoing_port_label">포트번호</string>

@@ -352,7 +352,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="account_setup_incoming_client_certificate_label">Certificat client</string>
   <string name="account_setup_incoming_pop_server_label">Serveur POP3</string>
   <string name="account_setup_incoming_imap_server_label">Serveur IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Serveur Exchange (WebDAV)</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Sécurité</string>
   <string name="account_setup_incoming_auth_type_label">Authentification</string>
@@ -378,9 +377,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="spam_folder_label">Dossier des pourriels</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Afficher seulement les dossiers auxquels je suis abonné</string>
   <string name="account_setup_auto_expand_folder">Ouvrir automatiquement le dossier</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Chemin OWA</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Chemin d’authentification</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Alias de la boîte de courriels</string>
   <string name="account_setup_outgoing_title">Paramètres du serveur sortant</string>
   <string name="account_setup_outgoing_smtp_server_label">Serveur SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>

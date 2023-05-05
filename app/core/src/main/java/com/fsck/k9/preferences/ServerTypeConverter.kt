@@ -8,7 +8,6 @@ object ServerTypeConverter {
     fun fromServerSettingsType(serverSettingsType: String): String = when (serverSettingsType) {
         Protocols.IMAP -> "IMAP"
         Protocols.POP3 -> "POP3"
-        Protocols.WEBDAV -> "WebDAV"
         Protocols.SMTP -> "SMTP"
         else -> throw AssertionError("Unsupported type: $serverSettingsType")
     }

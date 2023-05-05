@@ -318,7 +318,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_incoming_client_certificate_label">Klienta atestilo</string>
   <string name="account_setup_incoming_pop_server_label">POP3-servilo</string>
   <string name="account_setup_incoming_imap_server_label">IMAP-servilo</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange-servilo</string>
   <string name="account_setup_incoming_port_label">Pordo</string>
   <string name="account_setup_incoming_security_label">Sekureco</string>
   <string name="account_setup_incoming_auth_type_label">Aŭtentigo</string>
@@ -343,9 +342,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="spam_folder_label">Trudmesaĝujo</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Montri nur abonitajn mesaĝujojn</string>
   <string name="account_setup_auto_expand_folder">Ĉiam etendi mesaĝujon</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA-vojo</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Aŭtentiga vojo</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Retpoŝta kromnomo</string>
   <string name="account_setup_outgoing_title">Agordoj de elira servilo</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-servilo</string>
   <string name="account_setup_outgoing_port_label">Pordo</string>

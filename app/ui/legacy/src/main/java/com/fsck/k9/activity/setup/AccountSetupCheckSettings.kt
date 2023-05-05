@@ -23,7 +23,6 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.MailServerDirection
 import com.fsck.k9.mail.filter.Hex
-import com.fsck.k9.preferences.Protocols
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.observe
@@ -448,25 +447,15 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
         }
 
         private fun checkOutgoing() {
-            if (!isWebDavAccount) {
-                publishProgress(R.string.account_setup_check_settings_check_outgoing_msg)
-            }
+            publishProgress(R.string.account_setup_check_settings_check_outgoing_msg)
 
             messagingController.checkOutgoingServerSettings(account)
         }
 
         private fun checkIncoming() {
-            if (isWebDavAccount) {
-                publishProgress(R.string.account_setup_check_settings_authenticate)
-            } else {
-                publishProgress(R.string.account_setup_check_settings_check_incoming_msg)
-            }
+            publishProgress(R.string.account_setup_check_settings_check_incoming_msg)
 
             messagingController.checkIncomingServerSettings(account)
-
-            if (isWebDavAccount) {
-                publishProgress(R.string.account_setup_check_settings_fetch)
-            }
 
             messagingController.refreshFolderListSynchronous(account)
 
@@ -475,9 +464,6 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
                 messagingController.synchronizeMailbox(account, inboxFolderId, false, null)
             }
         }
-
-        private val isWebDavAccount: Boolean
-            get() = account.incomingServerSettings.type == Protocols.WEBDAV
 
         override fun onProgressUpdate(vararg values: Int?) {
             setMessage(values[0]!!)

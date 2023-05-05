@@ -339,7 +339,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_incoming_client_certificate_label">Ügyféltanúsítvány</string>
   <string name="account_setup_incoming_pop_server_label">POP3 kiszolgáló</string>
   <string name="account_setup_incoming_imap_server_label">IMAP kiszolgáló</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange kiszolgáló</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Biztonság</string>
   <string name="account_setup_incoming_auth_type_label">Hitelesítés</string>
@@ -365,9 +364,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="spam_folder_label">Levélszemét mappa</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Csak feliratkozott mappák megjelenítése</string>
   <string name="account_setup_auto_expand_folder">Mappa automatikus kinyitása</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA útvonal</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Hitelesítési útvonal</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Postafiók álnév</string>
   <string name="account_setup_outgoing_title">Kimenő kiszolgáló beállításai</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP kiszolgáló</string>
   <string name="account_setup_outgoing_port_label">Port</string>

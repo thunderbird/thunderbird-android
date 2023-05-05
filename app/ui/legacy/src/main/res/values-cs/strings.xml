@@ -353,7 +353,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_incoming_client_certificate_label">Klientský certifikát</string>
   <string name="account_setup_incoming_pop_server_label">Server POP3</string>
   <string name="account_setup_incoming_imap_server_label">Server IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Server Exchange (WebDAV)</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Typ zabezpečení</string>
   <string name="account_setup_incoming_auth_type_label">Typ ověření</string>
@@ -379,9 +378,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="spam_folder_label">Název složky Nevyžádaná</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Zobrazit jen odebírané složky</string>
   <string name="account_setup_auto_expand_folder">Aut. rozbalená složka</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA cesta</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Ověřovací cesta</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Alternativní název schránky</string>
   <string name="account_setup_outgoing_title">Nastavení serveru odchozí pošty</string>
   <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>
