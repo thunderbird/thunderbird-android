@@ -9,6 +9,8 @@ import java.util.regex.Pattern
  */
 class GenericUriParser : UriParser {
     override fun parseUri(text: CharSequence, startPos: Int): UriMatch? {
+        require(startPos in text.indices) { "Invalid 'startPos' value" }
+
         val matcher = PATTERN.matcher(text)
         if (!matcher.find(startPos) || matcher.start() != startPos) return null
 

@@ -1,7 +1,10 @@
 package com.fsck.k9.message.html
 
 import assertk.assertThat
+import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import org.junit.Test
@@ -280,6 +283,24 @@ class HttpUriParserTest {
         val uriMatch = parser.parseUri(input, 6)
 
         assertUriMatch("https://domain.example/path", uriMatch, 6)
+    }
+
+    @Test
+    fun `negative 'startPos' value`() {
+        assertThat {
+            parser.parseUri("test", -1)
+        }.isFailure()
+            .isInstanceOf(IllegalArgumentException::class)
+            .hasMessage("Invalid 'startPos' value")
+    }
+
+    @Test
+    fun `out of bounds 'startPos' value`() {
+        assertThat {
+            parser.parseUri("test", 4)
+        }.isFailure()
+            .isInstanceOf(IllegalArgumentException::class)
+            .hasMessage("Invalid 'startPos' value")
     }
 
     private fun assertValidUri(uri: String) {
