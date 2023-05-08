@@ -11,6 +11,8 @@ import kotlin.math.min
  */
 internal class HttpUriParser : UriParser {
     override fun parseUri(text: CharSequence, startPos: Int): UriMatch? {
+        require(startPos in text.indices) { "Invalid 'startPos' value" }
+
         val matchResult = SCHEME_REGEX.find(text, startPos) ?: return null
         if (matchResult.range.first != startPos) return null
 
