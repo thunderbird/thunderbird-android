@@ -53,54 +53,16 @@
     <ID>DestructuringDeclarationWithTooManyEntries:RetrieveFolderOperationsTest.kt$RetrieveFolderOperationsTest$val (folderId1, folderId2, folderId3, folderId4) = listOf( sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"), sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"), sqliteDatabase.createFolder(name = "Folder 3", displayClass = "FIRST_CLASS"), sqliteDatabase.createFolder(name = "Folder 4", displayClass = "NO_CLASS"), )</ID>
     <ID>EmptyCatchBlock:CommandRefreshFolderListTest.kt$CommandRefreshFolderListTest${ }</ID>
     <ID>EmptyCatchBlock:K9BackendFolderTest.kt$K9BackendFolderTest${ }</ID>
-    <ID>ForbiddenComment:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$// TODO: Remove preference settings that may exist for individual folders in the account.</ID>
-    <ID>ForbiddenComment:AccountSearchConditions.kt$// TODO: Create a proper interface for creating arbitrary condition trees</ID>
-    <ID>ForbiddenComment:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$// TODO: commitAllowingStateLoss() is used to prevent https://code.google.com/p/android/issues/detail?id=23761</ID>
-    <ID>ForbiddenComment:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$// TODO: localize this string</ID>
-    <ID>ForbiddenComment:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$// TODO: localize this strings</ID>
-    <ID>ForbiddenComment:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$// TODO: refactor with DialogFragment.</ID>
     <ID>ForbiddenComment:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$* FIXME: Don't use an AsyncTask to perform network operations. * See also discussion in https://github.com/thundernest/k-9/pull/560</ID>
-    <ID>ForbiddenComment:Backend.kt$Backend$// TODO: Add a way to cancel the sync process</ID>
     <ID>ForbiddenComment:BackendFolder.kt$BackendFolder$// FIXME: add documentation</ID>
-    <ID>ForbiddenComment:BackgroundAccountRemover.kt$BackgroundAccountRemover$// TODO: Add a mechanism to hide the account from the UI right away</ID>
-    <ID>ForbiddenComment:CommandRefreshFolderList.kt$CommandRefreshFolderList$// TODO: Start using the proper server ID.</ID>
     <ID>ForbiddenComment:CommandSync.kt$CommandSync$// FIXME: Add sort parameter</ID>
-    <ID>ForbiddenComment:Contacts.kt$Contacts$// TODO: Keep track of this information in a local database. Then use this information when sorting contacts for</ID>
-    <ID>ForbiddenComment:GeneralSettings.kt$GeneralSettings$// TODO: Move over settings from K9</ID>
-    <ID>ForbiddenComment:GeneralSettingsManager.kt$GeneralSettingsManager$* Retrieve and modify general settings. * * TODO: Add more settings as needed.</ID>
-    <ID>ForbiddenComment:ImapBackendPusher.kt$ImapBackendPusher$// TODO: This could be happening because of too many connections to the host. Ideally we'd want to</ID>
-    <ID>ForbiddenComment:ImapSync.kt$ImapSync$// TODO: Only fetch small and large messages if we have some</ID>
-    <ID>ForbiddenComment:ImapSync.kt$ImapSync.&lt;no name provided&gt;$// TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal</ID>
     <ID>ForbiddenComment:K9BackendFolderTest.kt$K9BackendFolderTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
     <ID>ForbiddenComment:K9BackendStorageTest.kt$K9BackendStorageTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
-    <ID>ForbiddenComment:K9ThemeProvider.kt$K9ThemeProvider$// TODO: Move this class and the theme resources to the main app module</ID>
     <ID>ForbiddenComment:MessageDetailsFragment.kt$MessageDetailsFragment$// FIXME: Replace this with a mechanism that survives process death</ID>
-    <ID>ForbiddenComment:MessageDetailsFragment.kt$MessageDetailsFragment$// TODO: Use the identity this message was sent to as sender identity</ID>
-    <ID>ForbiddenComment:MessageHelper.kt$MessageHelper.Companion$* If the number of addresses exceeds this value the addresses aren't * resolved to the names of Android contacts. * * TODO: This number was chosen arbitrarily and should be determined by performance tests. * * @see .toFriendly</ID>
     <ID>ForbiddenComment:MessageListFragment.kt$MessageListFragment$// FIXME: Don't save the changes in the UI thread</ID>
-    <ID>ForbiddenComment:MessageListFragment.kt$MessageListFragment$// TODO: empty thread view -&gt; return to full message list</ID>
-    <ID>ForbiddenComment:MessageListFragment.kt$MessageListFragment.ActionModeCallback$// TODO: Only finish action mode if all messages have been moved.</ID>
-    <ID>ForbiddenComment:MessageListLoader.kt$MessageListLoader$// TODO: Return an error object instead of an empty list</ID>
-    <ID>ForbiddenComment:MessageListRemoteViewFactory.kt$MessageListRemoteViewFactory$// TODO: Use same sort order that is used for the Unified Inbox inside the app</ID>
-    <ID>ForbiddenComment:MessageWebView.kt$MessageWebView$// TODO: Review alternatives. NARROW_COLUMNS is deprecated on KITKAT</ID>
-    <ID>ForbiddenComment:MimeHeaderEncoder.kt$MimeHeaderEncoder$// TODO: Fold long text that provides enough opportunities for folding and doesn't contain any characters that</ID>
-    <ID>ForbiddenComment:MimeTypeTest.kt$MimeTypeTest$// TODO: Try to parse all IANA-registered media types</ID>
-    <ID>ForbiddenComment:NotificationOperations.kt$NotificationOperations$// TODO: Remove notifications when updating the message list. That way we can easily remove only</ID>
-    <ID>ForbiddenComment:RealImapConnection.kt$RealImapConnection$// TODO: Check response code so we don't needlessly invalidate the token.</ID>
     <ID>ForbiddenComment:RealImapConnectionTest.kt$RealImapConnectionTest$// FIXME: CertificateValidationException seems wrong</ID>
     <ID>ForbiddenComment:RealImapConnectionTest.kt$RealImapConnectionTest$// FIXME: improve exception message</ID>
-    <ID>ForbiddenComment:RealImapFolder.kt$RealImapFolder$// TODO: Just perform the operation and only check for existence of the folder if the operation fails.</ID>
-    <ID>ForbiddenComment:SaveMessageOperations.kt$MessagePartType$// TODO: currently unused, might be used for caching at a later point</ID>
-    <ID>ForbiddenComment:SettingsExportFragment.kt$SettingsExportFragment$// TODO: Update list instead of replacing it completely</ID>
-    <ID>ForbiddenComment:SettingsImportFragment.kt$SettingsImportFragment$// TODO: Update list instead of replacing it completely</ID>
-    <ID>ForbiddenComment:ShareIntentBuilder.kt$ShareIntentBuilder$// TODO: Pass MessageViewInfo and extract text from there</ID>
-    <ID>ForbiddenComment:ShareIntentBuilder.kt$ShareIntentBuilder$// TODO: Use display HTML for EXTRA_HTML_TEXT and convert it to plain text for EXTRA_TEXT</ID>
-    <ID>ForbiddenComment:SmtpTransport.kt$SmtpTransport$// TODO: Fix tests to not use open() directly</ID>
     <ID>ForbiddenComment:SmtpTransportTest.kt$SmtpTransportTest$// FIXME: Make sure connection was closed</ID>
-    <ID>ForbiddenComment:SpecialFolderUpdater.kt$SpecialFolderUpdater$// TODO: Find a better way to deal with local-only special folders</ID>
-    <ID>ForbiddenComment:SpecialLocalFoldersCreator.kt$SpecialLocalFoldersCreator$// TODO: When rewriting the account setup code make sure this method is only called once. Until then this can be</ID>
-    <ID>ForbiddenComment:SyncNotificationController.kt$SyncNotificationController$// TODO: Use format string from resources</ID>
-    <ID>ForbiddenComment:ThreadMessageOperations.kt$ThreadMessageOperations$// TODO: Use MessageIdParser</ID>
     <ID>FunctionOnlyReturningConstant:DisplayHtml.kt$DisplayHtml$private fun cssStyleSignature(): String</ID>
     <ID>FunctionOnlyReturningConstant:ExtraAccountDiscovery.kt$ExtraAccountDiscovery$@JvmStatic fun discover(email: String): ConnectionSettings?</ID>
     <ID>ImplicitDefaultLocale:MessageListAdapter.kt$MessageListAdapter$String.format("%d", threadCount)</ID>
