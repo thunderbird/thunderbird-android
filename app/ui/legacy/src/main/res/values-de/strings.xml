@@ -550,7 +550,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_settings_sync_remote_deletetions_label">Löschungen vom Server übernehmen</string>
   <string name="account_settings_sync_remote_deletetions_summary">Nachrichten löschen, wenn sie vom Server gelöscht wurden</string>
   <string name="account_settings_openpgp_missing">Fehlende OpenPGP-App - wurde sie deinstalliert?</string>
-  <string name="folder_settings_title">Ordner-Einstellungen</string>
+  <string name="folder_settings_title">Ordnereinstellungen</string>
   <string name="folder_settings_in_top_group_label">Oben anzeigen</string>
   <string name="folder_settings_in_top_group_summary">Ordner am Anfang der Ordnerliste anzeigen</string>
   <string name="folder_settings_folder_display_mode_label">Anzeigeklasse</string>
@@ -696,7 +696,7 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="background_ops_always">Immer</string>
   <string name="background_ops_auto_sync_only">Wenn \'Automatische Synchronisation\' aktiviert ist</string>
   <string name="batch_select_all">Alle auswählen</string>
-  <string name="account_setup_push_limit_label">Maximale Push-Ordner-Anzahl</string>
+  <string name="account_setup_push_limit_label">Maximale Push-Ordneranzahl</string>
   <string name="account_setup_push_limit_5">5 Ordner</string>
   <string name="account_setup_push_limit_10">10 Ordner</string>
   <string name="account_setup_push_limit_25">25 Ordner</string>
