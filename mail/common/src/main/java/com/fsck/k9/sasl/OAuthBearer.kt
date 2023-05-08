@@ -10,6 +10,6 @@ import okio.ByteString.Companion.encodeUtf8
  * See [RFC 7628](https://datatracker.ietf.org/doc/html/rfc7628).
  */
 fun buildOAuthBearerInitialClientResponse(username: String, token: String): String {
-    val saslName = username.replace(",", "=2C").replace("=", "=3D")
+    val saslName = username.replace("=", "=3D").replace(",", "=2C")
     return "n,a=$saslName,\u0001auth=Bearer $token\u0001\u0001".encodeUtf8().base64()
 }
