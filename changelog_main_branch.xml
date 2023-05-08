@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.703" versioncode="37003" date="2023-05-08">
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.702" versioncode="37002" date="2023-05-02">
         <change>Fixed crash when the compose screen goes to the background, e.g. when adding an attachment</change>
         <change>Updated translations</change>
