@@ -2,6 +2,7 @@ package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.ConnectionSettingsDiscovery
 import app.k9mail.autodiscovery.api.DiscoveryResults
+import com.fsck.k9.helper.EmailHelper
 
 class AutoconfigDiscovery(
     private val urlProvider: AutoconfigUrlProvider,
@@ -10,7 +11,11 @@ class AutoconfigDiscovery(
 ) : ConnectionSettingsDiscovery {
 
     override fun discover(email: String): DiscoveryResults? {
-        val autoconfigUrls = urlProvider.getAutoconfigUrls(email)
+        val domain = requireNotNull(EmailHelper.getDomainFromEmailAddress(email)) {
+            "Couldn't extract domain from email address: $email"
+        }
+
+        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain, email)
 
         return autoconfigUrls
             .asSequence()

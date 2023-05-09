@@ -1,13 +1,9 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import com.fsck.k9.helper.EmailHelper
 import okhttp3.HttpUrl
 
 class ProviderAutoconfigUrlProvider(private val config: AutoconfigUrlConfig) : AutoconfigUrlProvider {
-    override fun getAutoconfigUrls(email: String): List<HttpUrl> {
-        val domain = EmailHelper.getDomainFromEmailAddress(email)
-        requireNotNull(domain) { "Couldn't extract domain from email address: $email" }
-
+    override fun getAutoconfigUrls(domain: String, email: String?): List<HttpUrl> {
         return buildList {
             add(createProviderUrl(domain, email, useHttps = true))
             add(createDomainUrl(domain, email, useHttps = true))
@@ -19,7 +15,7 @@ class ProviderAutoconfigUrlProvider(private val config: AutoconfigUrlConfig) : A
         }
     }
 
-    private fun createProviderUrl(domain: String, email: String, useHttps: Boolean): HttpUrl {
+    private fun createProviderUrl(domain: String, email: String?, useHttps: Boolean): HttpUrl {
         // https://autoconfig.{domain}/mail/config-v1.1.xml?emailaddress={email}
         // http://autoconfig.{domain}/mail/config-v1.1.xml?emailaddress={email}
         return HttpUrl.Builder()
@@ -27,14 +23,14 @@ class ProviderAutoconfigUrlProvider(private val config: AutoconfigUrlConfig) : A
             .host("autoconfig.$domain")
             .addEncodedPathSegments("mail/config-v1.1.xml")
             .apply {
-                if (config.includeEmailAddress) {
+                if (email != null && config.includeEmailAddress) {
                     addQueryParameter("emailaddress", email)
                 }
             }
             .build()
     }
 
-    private fun createDomainUrl(domain: String, email: String, useHttps: Boolean): HttpUrl {
+    private fun createDomainUrl(domain: String, email: String?, useHttps: Boolean): HttpUrl {
         // https://{domain}/.well-known/autoconfig/mail/config-v1.1.xml?emailaddress={email}
         // http://{domain}/.well-known/autoconfig/mail/config-v1.1.xml?emailaddress={email}
         return HttpUrl.Builder()
@@ -42,7 +38,7 @@ class ProviderAutoconfigUrlProvider(private val config: AutoconfigUrlConfig) : A
             .host(domain)
             .addEncodedPathSegments(".well-known/autoconfig/mail/config-v1.1.xml")
             .apply {
-                if (config.includeEmailAddress) {
+                if (email != null && config.includeEmailAddress) {
                     addQueryParameter("emailaddress", email)
                 }
             }

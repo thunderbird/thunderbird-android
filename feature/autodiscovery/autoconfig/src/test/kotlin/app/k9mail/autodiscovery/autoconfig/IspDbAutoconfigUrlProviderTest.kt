@@ -9,7 +9,7 @@ class IspDbAutoconfigUrlProviderTest {
 
     @Test
     fun `getAutoconfigUrls with ASCII email address`() {
-        val autoconfigUrls = urlProvider.getAutoconfigUrls("test@domain.example")
+        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain = "domain.example")
 
         assertThat(autoconfigUrls.map { it.toString() }).containsExactly(
             "https://autoconfig.thunderbird.net/v1.1/domain.example",
