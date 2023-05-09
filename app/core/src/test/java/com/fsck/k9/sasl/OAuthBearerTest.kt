@@ -29,4 +29,15 @@ class OAuthBearerTest {
         assertThat(result.decodeBase64()?.utf8())
             .isEqualTo("n,a=user=3Dname@domain.example,\u0001auth=Bearer token\u0001\u0001")
     }
+
+    @Test
+    fun `username contains comma that needs to be encoded`() {
+        val username = "user,name"
+        val token = "token"
+
+        val result = buildOAuthBearerInitialClientResponse(username, token)
+
+        assertThat(result).isEqualTo("bixhPXVzZXI9MkNuYW1lLAFhdXRoPUJlYXJlciB0b2tlbgEB")
+        assertThat(result.decodeBase64()?.utf8()).isEqualTo("n,a=user=2Cname,\u0001auth=Bearer token\u0001\u0001")
+    }
 }
