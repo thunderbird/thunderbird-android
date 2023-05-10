@@ -18,6 +18,7 @@ import app.k9mail.ui.catalog.items.buttonItems
 import app.k9mail.ui.catalog.items.colorItems
 import app.k9mail.ui.catalog.items.iconItems
 import app.k9mail.ui.catalog.items.imageItems
+import app.k9mail.ui.catalog.items.moleculeItems
 import app.k9mail.ui.catalog.items.selectionControlItems
 import app.k9mail.ui.catalog.items.textFieldItems
 import app.k9mail.ui.catalog.items.themeHeaderItem
@@ -57,6 +58,8 @@ fun CatalogContent(
                 textFieldItems()
                 imageItems()
                 iconItems()
+
+                moleculeItems()
             }
         }
     }

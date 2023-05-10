@@ -2,4 +2,5 @@
 <resources>
     <string name="designsystem_atom_password_textfield_hide_password">Hide password</string>
     <string name="designsystem_atom_password_textfield_show_password">Show password</string>
+    <string name="designsystem_molecule_error_view_button_retry">Retry</string>
 </resources>
