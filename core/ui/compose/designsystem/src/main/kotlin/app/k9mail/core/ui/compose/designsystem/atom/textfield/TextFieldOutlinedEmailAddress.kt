@@ -1,13 +1,15 @@
 package app.k9mail.core.ui.compose.designsystem.atom.textfield
 
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
 
 @Composable
-fun TextFieldOutlined(
+fun TextFieldOutlinedEmailAddress(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -22,12 +24,16 @@ fun TextFieldOutlined(
         enabled = enabled,
         label = selectLabel(label),
         isError = isError,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+        ),
+        singleLine = true,
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextFieldOutlinedPreview() {
+internal fun TextFieldOutlinedEmailAddressPreview() {
     PreviewWithThemes {
         TextFieldOutlined(
             value = "Input text",
@@ -38,9 +44,9 @@ internal fun TextFieldOutlinedPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextFieldOutlinedWithLabelPreview() {
+internal fun TextFieldOutlinedEmailAddressWithLabelPreview() {
     PreviewWithThemes {
-        TextFieldOutlined(
+        TextFieldOutlinedEmailAddress(
             value = "Input text",
             label = "Label",
             onValueChange = {},
@@ -50,9 +56,9 @@ internal fun TextFieldOutlinedWithLabelPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextFieldOutlinedDisabledPreview() {
+internal fun TextFieldOutlinedEmailDisabledPreview() {
     PreviewWithThemes {
-        TextFieldOutlined(
+        TextFieldOutlinedEmailAddress(
             value = "Input text",
             onValueChange = {},
             enabled = false,
@@ -62,7 +68,7 @@ internal fun TextFieldOutlinedDisabledPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextFieldOutlinedErrorPreview() {
+internal fun TextFieldOutlinedEmailErrorPreview() {
     PreviewWithThemes {
         TextFieldOutlined(
             value = "Input text",

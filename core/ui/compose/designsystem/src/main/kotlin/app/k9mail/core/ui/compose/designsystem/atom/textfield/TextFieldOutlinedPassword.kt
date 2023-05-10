@@ -3,7 +3,6 @@ package app.k9mail.core.ui.compose.designsystem.atom.textfield
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -23,7 +22,7 @@ import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
 
 @Composable
-fun PasswordTextFieldOutlined(
+fun TextFieldOutlinedPassword(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -52,16 +51,6 @@ fun PasswordTextFieldOutlined(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
     )
-}
-
-private fun selectLabel(label: String?): @Composable (() -> Unit)? {
-    return if (label != null) {
-        {
-            Text(text = label)
-        }
-    } else {
-        null
-    }
 }
 
 private fun selectTrailingIcon(
@@ -110,7 +99,7 @@ private fun isShowPasswordAllowed(isEnabled: Boolean, isPasswordVisible: Boolean
 @Composable
 internal fun PasswordTextFieldOutlinedPreview() {
     PreviewWithThemes {
-        PasswordTextFieldOutlined(
+        TextFieldOutlinedPassword(
             value = "Input text",
             onValueChange = {},
         )
@@ -119,9 +108,9 @@ internal fun PasswordTextFieldOutlinedPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun PasswordTextFieldOutlinedWithLabelPreview() {
+internal fun TextFieldOutlinedPasswordWithLabelPreview() {
     PreviewWithThemes {
-        PasswordTextFieldOutlined(
+        TextFieldOutlinedPassword(
             value = "Input text",
             label = "Label",
             onValueChange = {},
@@ -131,9 +120,9 @@ internal fun PasswordTextFieldOutlinedWithLabelPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun PasswordTextFieldOutlinedDisabledPreview() {
+internal fun TextFieldOutlinedPasswordDisabledPreview() {
     PreviewWithThemes {
-        PasswordTextFieldOutlined(
+        TextFieldOutlinedPassword(
             value = "Input text",
             onValueChange = {},
             enabled = false,
@@ -143,9 +132,9 @@ internal fun PasswordTextFieldOutlinedDisabledPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun PasswordTextFieldOutlinedErrorPreview() {
+internal fun TextFieldOutlinedPasswordErrorPreview() {
     PreviewWithThemes {
-        PasswordTextFieldOutlined(
+        TextFieldOutlinedPassword(
             value = "Input text",
             onValueChange = {},
             isError = true,

@@ -12,12 +12,12 @@ import org.junit.Test
 
 private const val PASSWORD = "Password input"
 
-class PasswordTextFieldOutlinedKtTest : ComposeTest() {
+class TextFieldOutlinedPasswordKtTest : ComposeTest() {
 
     @Test
     fun `should not display password by default`() = runComposeTest {
         setContent {
-            PasswordTextFieldOutlined(
+            TextFieldOutlinedPassword(
                 value = PASSWORD,
                 onValueChange = {},
             )
@@ -29,7 +29,7 @@ class PasswordTextFieldOutlinedKtTest : ComposeTest() {
     @Test
     fun `should display password when show password is clicked`() = runComposeTest {
         setContent {
-            PasswordTextFieldOutlined(
+            TextFieldOutlinedPassword(
                 value = PASSWORD,
                 onValueChange = {},
             )
@@ -43,7 +43,7 @@ class PasswordTextFieldOutlinedKtTest : ComposeTest() {
     @Test
     fun `should not display password when hide password is clicked`() = runComposeTest {
         setContent {
-            PasswordTextFieldOutlined(
+            TextFieldOutlinedPassword(
                 value = PASSWORD,
                 onValueChange = {},
             )
@@ -58,7 +58,7 @@ class PasswordTextFieldOutlinedKtTest : ComposeTest() {
     @Test
     fun `should display hide password icon when show password is clicked`() = runComposeTest {
         setContent {
-            PasswordTextFieldOutlined(
+            TextFieldOutlinedPassword(
                 value = PASSWORD,
                 onValueChange = {},
             )
@@ -72,7 +72,7 @@ class PasswordTextFieldOutlinedKtTest : ComposeTest() {
     @Test
     fun `should display show password icon when hide password icon is clicked`() = runComposeTest {
         setContent {
-            PasswordTextFieldOutlined(
+            TextFieldOutlinedPassword(
                 value = PASSWORD,
                 onValueChange = {},
             )
