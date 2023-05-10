@@ -10,7 +10,6 @@ android {
 dependencies {
     api(projects.core.ui.compose.theme)
     implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.compose.material.icons.extended)
 
     testImplementation(projects.core.ui.compose.testing)
 }
