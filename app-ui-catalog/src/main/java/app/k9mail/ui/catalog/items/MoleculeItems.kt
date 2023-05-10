@@ -14,9 +14,11 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.molecule.EmailAddressInput
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
+import app.k9mail.core.ui.compose.designsystem.molecule.PasswordInput
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.helper.WithRememberedState
 
+@Suppress("LongMethod")
 fun LazyGridScope.moleculeItems() {
     sectionHeaderItem(text = "Molecules")
     item {
@@ -58,6 +60,28 @@ fun LazyGridScope.moleculeItems() {
                     emailAddress = state.value,
                     onEmailAddressChange = { state.value = it },
                     errorMessage = "Invalid email address",
+                )
+            }
+        }
+    }
+
+    item {
+        MoleculeWrapper(title = "PasswordInput") {
+            WithRememberedState(input = "") { state ->
+                PasswordInput(
+                    password = state.value,
+                    onPasswordChange = { state.value = it },
+                )
+            }
+        }
+    }
+    item {
+        MoleculeWrapper(title = "PasswordInput with error") {
+            WithRememberedState(input = "wrong password") { state ->
+                PasswordInput(
+                    password = state.value,
+                    onPasswordChange = { state.value = it },
+                    errorMessage = "Invalid password",
                 )
             }
         }
