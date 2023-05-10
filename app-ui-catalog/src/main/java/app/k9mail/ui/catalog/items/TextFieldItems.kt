@@ -1,13 +1,10 @@
 package app.k9mail.ui.catalog.items
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedEmailAddress
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
+import app.k9mail.ui.catalog.helper.WithRememberedState
 
 fun LazyGridScope.textFieldItems() {
     sectionHeaderItem(text = "Text fields")
@@ -19,30 +16,30 @@ fun LazyGridScope.textFieldItems() {
 private fun LazyGridScope.textFieldOutlinedItems() {
     sectionSubtitleItem(text = "Outlined")
     item {
-        WithRememberedInput(text = "Initial text") { input ->
+        WithRememberedState(input = "Initial text") { state ->
             TextFieldOutlined(
-                value = input.value,
+                value = state.value,
                 label = "Label",
-                onValueChange = { input.value = it },
+                onValueChange = { state.value = it },
             )
         }
     }
     item {
-        WithRememberedInput(text = "Input text with error") { input ->
+        WithRememberedState(input = "Input text with error") { state ->
             TextFieldOutlined(
-                value = input.value,
+                value = state.value,
                 label = "Label",
-                onValueChange = { input.value = it },
+                onValueChange = { state.value = it },
                 isError = true,
             )
         }
     }
     item {
-        WithRememberedInput(text = "Input text disabled") { input ->
+        WithRememberedState(input = "Input text disabled") { state ->
             TextFieldOutlined(
-                value = input.value,
+                value = state.value,
                 label = "Label",
-                onValueChange = { input.value = it },
+                onValueChange = { state.value = it },
                 enabled = false,
             )
         }
@@ -52,30 +49,30 @@ private fun LazyGridScope.textFieldOutlinedItems() {
 private fun LazyGridScope.passwordTextFieldOutlinedItems() {
     sectionSubtitleItem(text = "Password outlined")
     item {
-        WithRememberedInput(text = "") { input ->
+        WithRememberedState(input = "") { state ->
             TextFieldOutlinedPassword(
-                value = input.value,
+                value = state.value,
                 label = "Password",
-                onValueChange = { input.value = it },
+                onValueChange = { state.value = it },
             )
         }
     }
     item {
-        WithRememberedInput(text = "Password") { input ->
+        WithRememberedState(input = "Password") { state ->
             TextFieldOutlinedPassword(
-                value = input.value,
+                value = state.value,
                 label = "Password with error",
-                onValueChange = { input.value = it },
+                onValueChange = { state.value = it },
                 isError = true,
             )
         }
     }
     item {
-        WithRememberedInput(text = "Password disabled") { input ->
+        WithRememberedState(input = "Password disabled") { state ->
             TextFieldOutlinedPassword(
-                value = input.value,
+                value = state.value,
                 label = "Password",
-                onValueChange = { input.value = it },
+                onValueChange = { state.value = it },
                 enabled = false,
             )
         }
@@ -85,41 +82,32 @@ private fun LazyGridScope.passwordTextFieldOutlinedItems() {
 private fun LazyGridScope.emailTextFieldOutlinedItems() {
     sectionSubtitleItem(text = "Email outlined")
     item {
-        WithRememberedInput(text = "") { input ->
+        WithRememberedState(input = "") { state ->
             TextFieldOutlinedEmailAddress(
-                value = input.value,
+                value = state.value,
                 label = "Email address",
-                onValueChange = { input.value = it },
+                onValueChange = { state.value = it },
             )
         }
     }
     item {
-        WithRememberedInput(text = "email@example.com") { input ->
+        WithRememberedState(input = "email@example.com") { state ->
             TextFieldOutlinedEmailAddress(
-                value = input.value,
+                value = state.value,
                 label = "Email address with error",
-                onValueChange = { input.value = it },
+                onValueChange = { state.value = it },
                 isError = true,
             )
         }
     }
     item {
-        WithRememberedInput(text = "email@example.com disabled") { input ->
+        WithRememberedState(input = "email@example.com disabled") { state ->
             TextFieldOutlinedEmailAddress(
-                value = input.value,
+                value = state.value,
                 label = "Email address",
-                onValueChange = { input.value = it },
+                onValueChange = { state.value = it },
                 enabled = false,
             )
         }
     }
-}
-
-@Composable
-private fun WithRememberedInput(
-    text: String,
-    content: @Composable (text: MutableState<String>) -> Unit,
-) {
-    val inputText = remember { mutableStateOf(text) }
-    content(inputText)
 }
