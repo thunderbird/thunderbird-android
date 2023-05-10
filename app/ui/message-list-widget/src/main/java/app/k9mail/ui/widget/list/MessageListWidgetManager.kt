@@ -23,6 +23,9 @@ class MessageListWidgetManager(
 
     fun init() {
         appWidgetManager = AppWidgetManager.getInstance(context)
+        if (appWidgetManager == null) {
+            Timber.v("Message list widget is not supported on this device.")
+        }
 
         if (isAtLeastOneMessageListWidgetAdded()) {
             resetMessageListWidget()
