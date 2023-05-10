@@ -39,8 +39,8 @@ class ReplyActionStrategyTest {
 
         val replyActions = replyActionStrategy.getReplyActions(account, message)
 
-        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY_ALL)
-        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY)
+        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY)
+        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY_ALL)
     }
 
     @Test
@@ -52,8 +52,8 @@ class ReplyActionStrategyTest {
 
         val replyActions = replyActionStrategy.getReplyActions(account, message)
 
-        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY_ALL)
-        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY)
+        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY)
+        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY_ALL)
     }
 
     @Test
@@ -66,8 +66,8 @@ class ReplyActionStrategyTest {
 
         val replyActions = replyActionStrategy.getReplyActions(account, message)
 
-        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY_ALL)
-        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY)
+        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY)
+        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY_ALL)
     }
 
     @Test
@@ -80,8 +80,8 @@ class ReplyActionStrategyTest {
 
         val replyActions = replyActionStrategy.getReplyActions(account, message)
 
-        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY_ALL)
-        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY)
+        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY)
+        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY_ALL)
     }
 
     @Test
@@ -93,8 +93,8 @@ class ReplyActionStrategyTest {
 
         val replyActions = replyActionStrategy.getReplyActions(account, message)
 
-        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY_ALL)
-        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY)
+        assertThat(replyActions.defaultAction).isEqualTo(ReplyAction.REPLY)
+        assertThat(replyActions.additionalActions).containsExactly(ReplyAction.REPLY_ALL)
     }
 
     @Test
