@@ -1,6 +1,7 @@
 package app.k9mail.ui.catalog.items
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.ui.graphics.Color
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextButton
@@ -30,4 +31,18 @@ fun LazyGridScope.typographyItems() {
     item { TextButton(text = "Button") }
     item { TextCaption(text = "Caption") }
     item { TextOverline(text = "Overline") }
+    sectionSubtitleItem(text = "colored")
+    item { TextHeadline1(text = "Headline1", color = Color.Magenta) }
+    item { TextHeadline2(text = "Headline2", color = Color.Magenta) }
+    item { TextHeadline3(text = "Headline3", color = Color.Magenta) }
+    item { TextHeadline4(text = "Headline4", color = Color.Magenta) }
+    item { TextHeadline5(text = "Headline5", color = Color.Magenta) }
+    item { TextHeadline6(text = "Headline6", color = Color.Magenta) }
+    item { TextSubtitle1(text = "Subtitle1", color = Color.Magenta) }
+    item { TextSubtitle2(text = "Subtitle2", color = Color.Magenta) }
+    item { TextBody1(text = "Body1", color = Color.Magenta) }
+    item { TextBody2(text = "Body2", color = Color.Magenta) }
+    item { TextButton(text = "Button", color = Color.Magenta) }
+    item { TextCaption(text = "Caption", color = Color.Magenta) }
+    item { TextOverline(text = "Overline", color = Color.Magenta) }
 }
