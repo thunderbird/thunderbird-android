@@ -188,6 +188,7 @@ shared-jvm-test = [
   "mockito-kotlin",
   "koin-test",
   "koin-test-junit4",
+  "turbine",
 ]
 shared-jvm-test-compose = [
   "robolectric",

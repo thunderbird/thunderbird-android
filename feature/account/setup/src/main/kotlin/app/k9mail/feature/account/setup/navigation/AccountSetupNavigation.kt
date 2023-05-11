@@ -13,13 +13,13 @@ fun NavController.navigateToAccountSetup(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.accountSetupScreen(
-    onBackClick: () -> Unit,
-    onFinishClick: () -> Unit,
+    onBack: () -> Unit,
+    onFinish: () -> Unit,
 ) {
     composable(route = NAVIGATION_ROUTE_ACCOUNT_SETUP) {
         AccountSetupScreen(
-            onBackClick = onBackClick,
-            onFinishClick = onFinishClick,
+            onBack = onBack,
+            onFinish = onFinish,
         )
     }
 }

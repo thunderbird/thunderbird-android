@@ -25,8 +25,8 @@ fun FeatureNavHost(
             onImportClick = { /* TODO */ },
         )
         accountSetupScreen(
-            onBackClick = navController::popBackStack,
-            onFinishClick = { /* TODO */ },
+            onBack = navController::popBackStack,
+            onFinish = { /* TODO */ },
         )
     }
 }
