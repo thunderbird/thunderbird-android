@@ -87,6 +87,7 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-compose-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-compose-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidxComposeMaterial" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidxComposeMaterial" }
@@ -166,6 +167,7 @@ shared-jvm-android-app = [
 shared-jvm-android-compose = [
   "androidx-compose-foundation",
   "androidx-compose-ui-tooling-preview",
+  "androidx-compose-lifecycle-runtime",
   "androidx-compose-lifecycle-viewmodel",
   "androidx-compose-navigation",
 ]
