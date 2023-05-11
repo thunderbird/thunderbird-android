@@ -7,6 +7,7 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
+import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,6 +21,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
     @Test
     fun `should display correct screen for every setup step`() = runTest {
         val viewModel = FakeAccountSetupViewModel()
+        val optionsViewModel = FakeAccountOptionsViewModel()
 
         setContent {
             ThunderbirdTheme {
@@ -27,6 +29,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { },
                     onBack = { },
                     viewModel = viewModel,
+                    optionsViewModel = optionsViewModel,
                 )
             }
         }
@@ -41,6 +44,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
         val viewModel = FakeAccountSetupViewModel(initialState)
+        val optionsViewModel = FakeAccountOptionsViewModel()
         var onFinishCounter = 0
         var onBackCounter = 0
 
@@ -50,6 +54,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { onFinishCounter++ },
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,
+                    optionsViewModel = optionsViewModel,
                 )
             }
         }

@@ -32,11 +32,15 @@ import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.ui.common.defaultHeadlineItemPadding
 import app.k9mail.feature.account.setup.ui.common.defaultItemPadding
+import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
+import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.State
 
 @OptIn(ExperimentalLayoutApi::class)
 @Suppress("LongMethod")
 @Composable
 internal fun AccountOptionsContent(
+    state: State,
+    onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -67,8 +71,8 @@ internal fun AccountOptionsContent(
 
             item {
                 TextInput(
-                    text = "",
-                    onTextChange = { },
+                    text = state.accountName.value,
+                    onTextChange = { onEvent(Event.OnAccountNameChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_account_name_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -76,8 +80,8 @@ internal fun AccountOptionsContent(
 
             item {
                 TextInput(
-                    text = "",
-                    onTextChange = { },
+                    text = state.displayName.value,
+                    onTextChange = { onEvent(Event.OnDisplayNameChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_display_name_label),
                     contentPadding = defaultItemPadding(),
                     isRequired = true,
@@ -86,8 +90,8 @@ internal fun AccountOptionsContent(
 
             item {
                 TextInput(
-                    text = "",
-                    onTextChange = { },
+                    text = state.emailSignature.value,
+                    onTextChange = { onEvent(Event.OnEmailSignatureChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_email_signature_label),
                     contentPadding = defaultItemPadding(),
                     isSingleLine = false,
@@ -107,8 +111,8 @@ internal fun AccountOptionsContent(
                 SelectInput(
                     options = EmailCheckFrequency.all(),
                     optionToStringTransformation = { transformCheckFrequency(resources, it) },
-                    selectedOption = EmailCheckFrequency.DEFAULT,
-                    onOptionChange = { },
+                    selectedOption = state.checkFrequency,
+                    onOptionChange = { onEvent(Event.OnCheckFrequencyChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_account_check_frequency_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -118,8 +122,8 @@ internal fun AccountOptionsContent(
                 SelectInput(
                     options = EmailDisplayCount.all(),
                     optionToStringTransformation = { transformMessageDisplayCount(resources, it) },
-                    selectedOption = EmailDisplayCount.DEFAULT,
-                    onOptionChange = { },
+                    selectedOption = state.messageDisplayCount,
+                    onOptionChange = { onEvent(Event.OnMessageDisplayCountChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_email_display_count_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -128,8 +132,8 @@ internal fun AccountOptionsContent(
             item {
                 SwitchInput(
                     text = stringResource(id = R.string.account_setup_options_show_notifications_label),
-                    checked = false,
-                    onCheckedChange = { },
+                    checked = state.showNotification,
+                    onCheckedChange = { onEvent(Event.OnShowNotificationChanged(it)) },
                     contentPadding = defaultItemPadding(),
                 )
             }
@@ -177,6 +181,8 @@ private fun transformMessageDisplayCount(
 internal fun AccountOptionsContentK9Preview() {
     K9Theme {
         AccountOptionsContent(
+            state = State(),
+            onEvent = {},
             contentPadding = PaddingValues(),
         )
     }
@@ -187,6 +193,8 @@ internal fun AccountOptionsContentK9Preview() {
 internal fun AccountOptionsContentThunderbirdPreview() {
     ThunderbirdTheme {
         AccountOptionsContent(
+            state = State(),
+            onEvent = {},
             contentPadding = PaddingValues(),
         )
     }
