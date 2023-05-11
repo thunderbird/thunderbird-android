@@ -110,6 +110,7 @@ moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 timber = "com.jakewharton.timber:timber:5.0.1"
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koinCore" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinCore" }
 commons-io = "commons-io:commons-io:2.11.0"
@@ -170,6 +171,7 @@ shared-jvm-android-compose = [
   "androidx-compose-lifecycle-runtime",
   "androidx-compose-lifecycle-viewmodel",
   "androidx-compose-navigation",
+  "koin-androidx-compose",
 ]
 shared-jvm-android-compose-debug = [
   "androidx-compose-ui-tooling",
