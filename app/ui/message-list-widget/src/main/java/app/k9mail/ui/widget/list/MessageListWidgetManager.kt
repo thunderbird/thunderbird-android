@@ -14,7 +14,7 @@ class MessageListWidgetManager(
     private val messageListRepository: MessageListRepository,
     private val config: MessageListWidgetConfig,
 ) {
-    private lateinit var appWidgetManager: AppWidgetManager
+    private var appWidgetManager: AppWidgetManager? = null
 
     private var listenerAdded = false
     private val listener = MessageListChangedListener {
@@ -23,6 +23,9 @@ class MessageListWidgetManager(
 
     fun init() {
         appWidgetManager = AppWidgetManager.getInstance(context)
+        if (appWidgetManager == null) {
+            Timber.v("Message list widget is not supported on this device.")
+        }
 
         if (isAtLeastOneMessageListWidgetAdded()) {
             resetMessageListWidget()
@@ -83,7 +86,7 @@ class MessageListWidgetManager(
     private fun triggerMessageListWidgetUpdate() {
         val appWidgetIds = getAppWidgetIds()
         if (appWidgetIds.isNotEmpty()) {
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
+            appWidgetManager?.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
         }
     }
 
@@ -101,6 +104,6 @@ class MessageListWidgetManager(
 
     private fun getAppWidgetIds(): IntArray {
         val componentName = ComponentName(context, config.providerClass)
-        return appWidgetManager.getAppWidgetIds(componentName)
+        return appWidgetManager?.getAppWidgetIds(componentName) ?: intArrayOf()
     }
 }
