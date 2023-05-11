@@ -106,6 +106,7 @@ class TextFieldKtTest(
     companion object {
         @JvmStatic
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0}")
+        @Suppress("LongMethod")
         fun data(): List<TextFieldTestData> = listOf(
             TextFieldTestData(
                 name = "TextFieldOutlined",
@@ -129,10 +130,10 @@ class TextFieldKtTest(
                 },
             ),
             TextFieldTestData(
-                name = "PasswordTextFieldOutlined",
+                name = "TextFieldOutlinedPassword",
                 content = { value, onValueChange, modifier, enabled, label ->
                     if (enabled != null) {
-                        PasswordTextFieldOutlined(
+                        TextFieldOutlinedPassword(
                             value = value,
                             onValueChange = onValueChange,
                             modifier = modifier,
@@ -140,7 +141,28 @@ class TextFieldKtTest(
                             label = label,
                         )
                     } else {
-                        PasswordTextFieldOutlined(
+                        TextFieldOutlinedPassword(
+                            value = value,
+                            onValueChange = onValueChange,
+                            modifier = modifier,
+                            label = label,
+                        )
+                    }
+                },
+            ),
+            TextFieldTestData(
+                name = "TextFieldOutlinedEmail",
+                content = { value, onValueChange, modifier, enabled, label ->
+                    if (enabled != null) {
+                        TextFieldOutlinedEmailAddress(
+                            value = value,
+                            onValueChange = onValueChange,
+                            modifier = modifier,
+                            enabled = enabled,
+                            label = label,
+                        )
+                    } else {
+                        TextFieldOutlinedEmailAddress(
                             value = value,
                             onValueChange = onValueChange,
                             modifier = modifier,

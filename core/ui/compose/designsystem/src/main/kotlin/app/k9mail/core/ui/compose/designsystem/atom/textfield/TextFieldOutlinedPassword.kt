@@ -3,10 +3,6 @@ package app.k9mail.core.ui.compose.designsystem.atom.textfield
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,11 +15,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.R
+import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
 
 @Composable
-fun PasswordTextFieldOutlined(
+fun TextFieldOutlinedPassword(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -54,16 +51,6 @@ fun PasswordTextFieldOutlined(
     )
 }
 
-private fun selectLabel(label: String?): @Composable (() -> Unit)? {
-    return if (label != null) {
-        {
-            Text(text = label)
-        }
-    } else {
-        null
-    }
-}
-
 private fun selectTrailingIcon(
     isEnabled: Boolean,
     isPasswordVisible: Boolean,
@@ -73,9 +60,9 @@ private fun selectTrailingIcon(
     return if (hasTrailingIcon) {
         {
             val image = if (isShowPasswordAllowed(isEnabled, isPasswordVisible)) {
-                Icons.Filled.Visibility
+                Icons.passwordVisibility
             } else {
-                Icons.Filled.VisibilityOff
+                Icons.passwordVisibilityOff
             }
 
             val description = if (isShowPasswordAllowed(isEnabled, isPasswordVisible)) {
@@ -110,7 +97,7 @@ private fun isShowPasswordAllowed(isEnabled: Boolean, isPasswordVisible: Boolean
 @Composable
 internal fun PasswordTextFieldOutlinedPreview() {
     PreviewWithThemes {
-        PasswordTextFieldOutlined(
+        TextFieldOutlinedPassword(
             value = "Input text",
             onValueChange = {},
         )
@@ -119,9 +106,9 @@ internal fun PasswordTextFieldOutlinedPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun PasswordTextFieldOutlinedWithLabelPreview() {
+internal fun TextFieldOutlinedPasswordWithLabelPreview() {
     PreviewWithThemes {
-        PasswordTextFieldOutlined(
+        TextFieldOutlinedPassword(
             value = "Input text",
             label = "Label",
             onValueChange = {},
@@ -131,9 +118,9 @@ internal fun PasswordTextFieldOutlinedWithLabelPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun PasswordTextFieldOutlinedDisabledPreview() {
+internal fun TextFieldOutlinedPasswordDisabledPreview() {
     PreviewWithThemes {
-        PasswordTextFieldOutlined(
+        TextFieldOutlinedPassword(
             value = "Input text",
             onValueChange = {},
             enabled = false,
@@ -143,9 +130,9 @@ internal fun PasswordTextFieldOutlinedDisabledPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun PasswordTextFieldOutlinedErrorPreview() {
+internal fun TextFieldOutlinedPasswordErrorPreview() {
     PreviewWithThemes {
-        PasswordTextFieldOutlined(
+        TextFieldOutlinedPassword(
             value = "Input text",
             onValueChange = {},
             isError = true,
