@@ -44,6 +44,27 @@ private fun LazyGridScope.textFieldOutlinedItems() {
             )
         }
     }
+    item {
+        WithRememberedState(input = "Input text required") { state ->
+            TextFieldOutlined(
+                value = state.value,
+                label = "Label",
+                onValueChange = { state.value = it },
+                isRequired = true,
+            )
+        }
+    }
+    item {
+        WithRememberedState(input = "Input text required with error") { state ->
+            TextFieldOutlined(
+                value = state.value,
+                label = "Label",
+                onValueChange = { state.value = it },
+                isRequired = true,
+                isError = true,
+            )
+        }
+    }
 }
 
 private fun LazyGridScope.passwordTextFieldOutlinedItems() {
@@ -68,12 +89,33 @@ private fun LazyGridScope.passwordTextFieldOutlinedItems() {
         }
     }
     item {
-        WithRememberedState(input = "Password disabled") { state ->
+        WithRememberedState(input = "Password") { state ->
             TextFieldOutlinedPassword(
                 value = state.value,
-                label = "Password",
+                label = "Password disabled",
                 onValueChange = { state.value = it },
                 enabled = false,
+            )
+        }
+    }
+    item {
+        WithRememberedState(input = "Password") { state ->
+            TextFieldOutlinedPassword(
+                value = state.value,
+                label = "Password required",
+                onValueChange = { state.value = it },
+                isRequired = true,
+            )
+        }
+    }
+    item {
+        WithRememberedState(input = "Password") { state ->
+            TextFieldOutlinedPassword(
+                value = state.value,
+                label = "Password required with error",
+                onValueChange = { state.value = it },
+                isRequired = true,
+                isError = true,
             )
         }
     }
@@ -101,12 +143,33 @@ private fun LazyGridScope.emailTextFieldOutlinedItems() {
         }
     }
     item {
-        WithRememberedState(input = "email@example.com disabled") { state ->
+        WithRememberedState(input = "email@example.com") { state ->
             TextFieldOutlinedEmailAddress(
                 value = state.value,
-                label = "Email address",
+                label = "Email address disabled",
                 onValueChange = { state.value = it },
                 enabled = false,
+            )
+        }
+    }
+    item {
+        WithRememberedState(input = "email@example.com") { state ->
+            TextFieldOutlinedEmailAddress(
+                value = state.value,
+                label = "Email address required",
+                onValueChange = { state.value = it },
+                isRequired = true,
+            )
+        }
+    }
+    item {
+        WithRememberedState(input = "email@example.com") { state ->
+            TextFieldOutlinedEmailAddress(
+                value = state.value,
+                label = "Email address required with error",
+                onValueChange = { state.value = it },
+                isRequired = true,
+                isError = true,
             )
         }
     }

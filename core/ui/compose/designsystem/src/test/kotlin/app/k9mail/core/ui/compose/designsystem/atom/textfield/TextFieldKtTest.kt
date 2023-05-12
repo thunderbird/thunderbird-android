@@ -28,6 +28,7 @@ data class TextFieldTestData(
         modifier: Modifier,
         enabled: Boolean?,
         label: String?,
+        isRequired: Boolean,
     ) -> Unit,
 )
 
@@ -49,6 +50,7 @@ class TextFieldKtTest(
                 modifier = Modifier.testTag(testSubjectName),
                 enabled = null,
                 label = null,
+                isRequired = false,
             )
         }
 
@@ -67,6 +69,7 @@ class TextFieldKtTest(
                 modifier = Modifier.testTag(testSubjectName),
                 enabled = null,
                 label = null,
+                isRequired = false,
             )
         }
 
@@ -82,6 +85,7 @@ class TextFieldKtTest(
                 modifier = Modifier.testTag(testSubjectName),
                 enabled = false,
                 label = null,
+                isRequired = false,
             )
         }
 
@@ -97,10 +101,43 @@ class TextFieldKtTest(
                 modifier = Modifier.testTag(testSubjectName),
                 enabled = null,
                 label = LABEL,
+                isRequired = false,
             )
         }
 
         onNodeWithText(LABEL).assertIsDisplayed()
+    }
+
+    @Test
+    fun `should show asterisk when isRequired is true`() = runComposeTest {
+        setContent {
+            testSubject(
+                value = VALUE,
+                onValueChange = {},
+                modifier = Modifier.testTag(testSubjectName),
+                enabled = null,
+                label = LABEL,
+                isRequired = true,
+            )
+        }
+
+        onNodeWithText("$LABEL*").assertIsDisplayed()
+    }
+
+    @Test
+    fun `should not show asterisk when isRequired is false`() = runComposeTest {
+        setContent {
+            testSubject(
+                value = VALUE,
+                onValueChange = {},
+                modifier = Modifier.testTag(testSubjectName),
+                enabled = null,
+                label = LABEL,
+                isRequired = false,
+            )
+        }
+
+        onNodeWithText("$LABEL*").assertDoesNotExist()
     }
 
     companion object {
@@ -110,7 +147,7 @@ class TextFieldKtTest(
         fun data(): List<TextFieldTestData> = listOf(
             TextFieldTestData(
                 name = "TextFieldOutlined",
-                content = { value, onValueChange, modifier, enabled, label ->
+                content = { value, onValueChange, modifier, enabled, label, isRequired ->
                     if (enabled != null) {
                         TextFieldOutlined(
                             value = value,
@@ -118,6 +155,7 @@ class TextFieldKtTest(
                             modifier = modifier,
                             enabled = enabled,
                             label = label,
+                            isRequired = isRequired,
                         )
                     } else {
                         TextFieldOutlined(
@@ -125,13 +163,14 @@ class TextFieldKtTest(
                             onValueChange = onValueChange,
                             modifier = modifier,
                             label = label,
+                            isRequired = isRequired,
                         )
                     }
                 },
             ),
             TextFieldTestData(
                 name = "TextFieldOutlinedPassword",
-                content = { value, onValueChange, modifier, enabled, label ->
+                content = { value, onValueChange, modifier, enabled, label, isRequired ->
                     if (enabled != null) {
                         TextFieldOutlinedPassword(
                             value = value,
@@ -139,6 +178,7 @@ class TextFieldKtTest(
                             modifier = modifier,
                             enabled = enabled,
                             label = label,
+                            isRequired = isRequired,
                         )
                     } else {
                         TextFieldOutlinedPassword(
@@ -146,13 +186,14 @@ class TextFieldKtTest(
                             onValueChange = onValueChange,
                             modifier = modifier,
                             label = label,
+                            isRequired = isRequired,
                         )
                     }
                 },
             ),
             TextFieldTestData(
                 name = "TextFieldOutlinedEmail",
-                content = { value, onValueChange, modifier, enabled, label ->
+                content = { value, onValueChange, modifier, enabled, label, isRequired ->
                     if (enabled != null) {
                         TextFieldOutlinedEmailAddress(
                             value = value,
@@ -160,6 +201,7 @@ class TextFieldKtTest(
                             modifier = modifier,
                             enabled = enabled,
                             label = label,
+                            isRequired = isRequired,
                         )
                     } else {
                         TextFieldOutlinedEmailAddress(
@@ -167,6 +209,7 @@ class TextFieldKtTest(
                             onValueChange = onValueChange,
                             modifier = modifier,
                             label = label,
+                            isRequired = isRequired,
                         )
                     }
                 },
