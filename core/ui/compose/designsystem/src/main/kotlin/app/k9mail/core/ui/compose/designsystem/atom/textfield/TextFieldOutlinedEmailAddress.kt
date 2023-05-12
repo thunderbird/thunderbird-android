@@ -15,6 +15,7 @@ fun TextFieldOutlinedEmailAddress(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String? = null,
+    isRequired: Boolean = false,
     isError: Boolean = false,
 ) {
     MaterialOutlinedTextField(
@@ -22,7 +23,7 @@ fun TextFieldOutlinedEmailAddress(
         onValueChange = onValueChange,
         modifier = modifier,
         enabled = enabled,
-        label = selectLabel(label),
+        label = selectLabel(label, isRequired),
         isError = isError,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,

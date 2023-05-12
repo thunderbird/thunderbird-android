@@ -13,6 +13,7 @@ fun TextFieldOutlined(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String? = null,
+    isRequired: Boolean = false,
     isError: Boolean = false,
 ) {
     MaterialOutlinedTextField(
@@ -20,7 +21,7 @@ fun TextFieldOutlined(
         onValueChange = onValueChange,
         modifier = modifier,
         enabled = enabled,
-        label = selectLabel(label),
+        label = selectLabel(label, isRequired),
         isError = isError,
     )
 }
@@ -68,6 +69,19 @@ internal fun TextFieldOutlinedErrorPreview() {
             value = "Input text",
             onValueChange = {},
             isError = true,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun TextFieldOutlinedRequiredPreview() {
+    PreviewWithThemes {
+        TextFieldOutlined(
+            value = "",
+            onValueChange = {},
+            label = "Label",
+            isRequired = true,
         )
     }
 }

@@ -26,6 +26,7 @@ fun TextFieldOutlinedPassword(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String? = null,
+    isRequired: Boolean = false,
     isError: Boolean = false,
 ) {
     var passwordVisibilityState by rememberSaveable { mutableStateOf(false) }
@@ -35,7 +36,7 @@ fun TextFieldOutlinedPassword(
         onValueChange = onValueChange,
         modifier = modifier,
         enabled = enabled,
-        label = selectLabel(label),
+        label = selectLabel(label, isRequired),
         trailingIcon = selectTrailingIcon(
             isEnabled = enabled,
             isPasswordVisible = passwordVisibilityState,
