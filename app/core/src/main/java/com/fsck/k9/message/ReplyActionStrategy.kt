@@ -20,7 +20,7 @@ class ReplyActionStrategy(private val replyRoParser: ReplyToParser) {
                 ReplyActions(defaultAction = ReplyAction.REPLY)
             }
         } else {
-            ReplyActions(defaultAction = ReplyAction.REPLY_ALL, additionalActions = listOf(ReplyAction.REPLY))
+            ReplyActions(defaultAction = ReplyAction.REPLY, additionalActions = listOf(ReplyAction.REPLY_ALL))
         }
     }
 }
