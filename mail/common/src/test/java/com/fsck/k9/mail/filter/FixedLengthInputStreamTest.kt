@@ -1,273 +1,275 @@
-package com.fsck.k9.mail.filter;
+package com.fsck.k9.mail.filter
 
+import assertk.Assert
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import java.io.InputStream
+import kotlin.test.Test
+import okio.blackholeSink
+import okio.buffer
+import okio.source
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import okio.Buffer;
-import okio.ByteString;
-import okio.Okio;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-
-
-public class FixedLengthInputStreamTest {
+class FixedLengthInputStreamTest {
     @Test
-    public void readingStream_shouldReturnDataUpToLimit() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello world"), 5);
+    fun `reading stream should return data up to limit`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
 
-        String readString = readStreamAsUtf8String(fixedLengthInputStream);
+        val result = fixedLengthInputStream.readToString()
 
-        assertEquals("Hello", readString);
+        assertThat(result).isEqualTo("Hello")
     }
 
     @Test
-    public void readingStream_shouldNotConsumeMoreThanLimitFromUnderlyingInputStream() throws Exception {
-        InputStream inputStream = inputStream("Hello world");
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, 5);
+    fun `reading stream should not consume more than limit from underlying InputStream`() {
+        val inputStream = "Hello world".byteInputStream()
+        val fixedLengthInputStream = FixedLengthInputStream(inputStream, 5)
 
-        exhaustStream(fixedLengthInputStream);
+        fixedLengthInputStream.exhaust()
 
-        assertRemainingInputStreamEquals(" world", inputStream);
+        assertThat(inputStream).readToString().isEqualTo(" world")
+    }
+
+    // TODO: Maybe this should throw. The underlying stream delivering less bytes than expected is most likely an error.
+    @Test
+    fun `reading stream with limit greater than number of bytes in underlying InputStream`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 100)
+
+        val result = fixedLengthInputStream.readToString()
+
+        assertThat(result).isEqualTo("Hello world")
     }
 
     @Test
-    //TODO: Maybe this should throw. The underlying stream delivering less bytes than expected is most likely an error.
-    public void readingStream_withLimitGreaterThanNumberOfBytesInUnderlyingInputStream() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 100);
-
-        String readString = readStreamAsUtf8String(fixedLengthInputStream);
-
-        assertEquals("Hello World", readString);
-    }
-
-    @Test
-    public void read_withOverSizedByteArray_shouldReturnDataUpToLimit() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 6);
-
-        byte[] data = new byte[100];
-        int numberOfBytesRead = fixedLengthInputStream.read(data);
-
-        assertEquals(6, numberOfBytesRead);
-        assertEquals("Hello ", ByteString.of(data, 0, numberOfBytesRead).utf8());
-    }
-
-    @Test
-    public void read_withOverSizedByteArray_shouldNotConsumeMoreThanLimitFromUnderlyingStream() throws Exception {
-        InputStream inputStream = inputStream("Hello World");
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, 6);
-
-        //noinspection ResultOfMethodCallIgnored
-        fixedLengthInputStream.read(new byte[100]);
-
-        assertRemainingInputStreamEquals("World", inputStream);
-    }
-
-    @Test
-    public void read_withByteArraySmallerThanLimit_shouldConsumeSizeOfByteArray() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 6);
-
-        byte[] data = new byte[5];
-        int numberOfBytesRead = fixedLengthInputStream.read(data);
-
-        assertEquals(5, numberOfBytesRead);
-        assertEquals("Hello", ByteString.of(data).utf8());
-    }
-
-    @Test
-    public void read_withOverSizedByteArrayInMiddleOfStream_shouldReturnDataUpToLimit() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 6);
-        consumeBytes(fixedLengthInputStream, 5);
-
-        byte[] data = new byte[10];
-        int numberOfBytesRead = fixedLengthInputStream.read(data);
-
-        assertEquals(1, numberOfBytesRead);
-        assertEquals(" ", ByteString.of(data, 0, numberOfBytesRead).utf8());
-    }
-
-    @Test
-    public void read_withOverSizedByteArrayInMiddleOfStream_shouldNotConsumeMoreThanLimitFromUnderlyingStream()
-            throws Exception {
-        InputStream inputStream = inputStream("Hello World");
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, 6);
-        consumeBytes(fixedLengthInputStream, 5);
-
-        //noinspection ResultOfMethodCallIgnored
-        fixedLengthInputStream.read(new byte[10]);
-
-        assertRemainingInputStreamEquals("World", inputStream);
-    }
-
-    @Test
-    public void read_atStartOfStream() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Word"), 2);
-
-        int readByte = fixedLengthInputStream.read();
-
-        assertEquals('W', (char) readByte);
-    }
-
-    @Test
-    public void read_inMiddleOfStream() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Word"), 2);
-        consumeBytes(fixedLengthInputStream, 1);
-
-        int readByte = fixedLengthInputStream.read();
-
-        assertEquals('o', (char) readByte);
-    }
-
-    @Test
-    public void read_atEndOfStream_shouldReturnMinusOne() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello world"), 5);
-        exhaustStream(fixedLengthInputStream);
-
-        int readByte = fixedLengthInputStream.read();
-
-        assertEquals(-1, readByte);
-    }
-
-    @Test
-    public void readArray_atEndOfStream_shouldReturnMinusOne() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello world"), 5);
-        exhaustStream(fixedLengthInputStream);
-
-        int numberOfBytesRead = fixedLengthInputStream.read(new byte[2]);
-
-        assertEquals(-1, numberOfBytesRead);
-    }
-
-    @Test
-    public void readArrayWithOffset_atEndOfStream_shouldReturnMinusOne() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello world"), 5);
-        exhaustStream(fixedLengthInputStream);
-
-        int numberOfBytesRead = fixedLengthInputStream.read(new byte[2], 0, 2);
-
-        assertEquals(-1, numberOfBytesRead);
-    }
-
-    @Test
-    public void available_atStartOfStream() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
-
-        int available = fixedLengthInputStream.available();
-
-        assertEquals(5, available);
-    }
-
-    @Test
-    public void available_afterPartialRead() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
-        //noinspection ResultOfMethodCallIgnored
-        fixedLengthInputStream.read();
-
-        int available = fixedLengthInputStream.available();
-
-        assertEquals(4, available);
-    }
-
-    @Test
-    public void available_afterPartialReadArray() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
-        consumeBytes(fixedLengthInputStream, 2);
-
-        int available = fixedLengthInputStream.available();
-
-        assertEquals(3, available);
-    }
-
-    @Test
-    public void available_afterStreamHasBeenExhausted() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
-        exhaustStream(fixedLengthInputStream);
-
-        int available = fixedLengthInputStream.available();
-
-        assertEquals(0, available);
-    }
-
-    @Test
-    public void available_afterSkip() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
-        guaranteedSkip(fixedLengthInputStream, 2);
-
-        int available = fixedLengthInputStream.available();
-
-        assertEquals(3, available);
-    }
-
-    @Test
-    public void available_afterSkipRemaining() throws Exception {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
-        fixedLengthInputStream.skipRemaining();
-
-        int available = fixedLengthInputStream.available();
-
-        assertEquals(0, available);
-    }
-
-    @Test
-    public void skip_shouldConsumeBytes() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
-
-        guaranteedSkip(fixedLengthInputStream, 2);
-
-        assertRemainingInputStreamEquals("llo", fixedLengthInputStream);
-    }
-
-    @Test
-    public void skipRemaining_shouldExhaustStream() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
-
-        fixedLengthInputStream.skipRemaining();
-
-        assertInputStreamExhausted(fixedLengthInputStream);
-    }
-
-    @Test
-    public void skipRemaining_shouldNotConsumeMoreThanLimitFromUnderlyingInputStream() throws IOException {
-        InputStream inputStream = inputStream("Hello World");
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, 6);
-
-        fixedLengthInputStream.skipRemaining();
-
-        assertRemainingInputStreamEquals("World", inputStream);
-    }
-
-
-    private String readStreamAsUtf8String(InputStream inputStream) throws IOException {
-        return Okio.buffer(Okio.source(inputStream)).readUtf8();
-    }
-
-    private void exhaustStream(InputStream inputStream) throws IOException {
-        Okio.buffer(Okio.source(inputStream)).readAll(Okio.blackhole());
-    }
-
-    private void consumeBytes(InputStream inputStream, int numberOfBytes) throws IOException {
-        int read = inputStream.read(new byte[numberOfBytes]);
-        assertEquals(numberOfBytes, read);
-    }
-
-    private void guaranteedSkip(InputStream inputStream, int numberOfBytesToSkip) throws IOException {
-        int remaining = numberOfBytesToSkip;
-        while (remaining > 0) {
-            remaining -= inputStream.skip(remaining);
+    fun `read() with oversized ByteArray should return data up to limit`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello World", length = 6)
+        val data = ByteArray(100)
+
+        val result = fixedLengthInputStream.read(data)
+
+        assertThat(result).isEqualTo(6)
+        assertThat(data).all {
+            slice(0 until 6).asString().isEqualTo("Hello ")
+            slice(6 until 100).isEqualTo(ByteArray(100 - 6))
         }
-        assertEquals(0, remaining);
     }
 
-    private void assertRemainingInputStreamEquals(String expected, InputStream inputStream) throws IOException {
-        assertEquals(expected, readStreamAsUtf8String(inputStream));
+    @Test
+    fun `read() with oversized ByteArray should not consume more than limit from underlying InputStream`() {
+        val inputStream = "Hello World".byteInputStream()
+        val fixedLengthInputStream = FixedLengthInputStream(inputStream, 6)
+
+        fixedLengthInputStream.read(ByteArray(100))
+
+        assertThat(inputStream).readToString().isEqualTo("World")
     }
 
-    private void assertInputStreamExhausted(InputStream inputStream) throws IOException {
-        assertEquals(-1, inputStream.read());
+    @Test
+    fun `read() with ByteArray smaller than limit should consume size of ByteArray`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello World", length = 6)
+        val data = ByteArray(5)
+
+        val result = fixedLengthInputStream.read(data)
+
+        assertThat(result).isEqualTo(5)
+        assertThat(data).asString().isEqualTo("Hello")
     }
 
-    private InputStream inputStream(String data) {
-        return new Buffer().writeUtf8(data).inputStream();
+    @Test
+    fun `read() with oversized ByteArray in middle of stream should return data up to limit`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello World", length = 6)
+        fixedLengthInputStream.consumeBytes(5)
+        val data = ByteArray(10)
+
+        val result = fixedLengthInputStream.read(data)
+
+        assertThat(result).isEqualTo(1)
+        assertThat(data).all {
+            slice(0 until 1).asString().isEqualTo(" ")
+            slice(1 until 10).isEqualTo(ByteArray(10 - 1))
+        }
     }
+
+    @Test
+    fun `read() with oversized ByteArray in middle of stream should not read more than limit from underlying stream`() {
+        val inputStream = "Hello World".byteInputStream()
+        val fixedLengthInputStream = FixedLengthInputStream(inputStream, 6)
+        fixedLengthInputStream.consumeBytes(5)
+
+        fixedLengthInputStream.read(ByteArray(10))
+
+        assertThat(inputStream).readToString().isEqualTo("World")
+    }
+
+    @Test
+    fun `read() at start of stream`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Word", length = 2)
+
+        val result = fixedLengthInputStream.read()
+
+        assertThat(result).isEqualTo('W'.code)
+    }
+
+    @Test
+    fun `read() in middle of stream`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Word", length = 2)
+        fixedLengthInputStream.consumeBytes(1)
+
+        val result = fixedLengthInputStream.read()
+
+        assertThat(result).isEqualTo('o'.code)
+    }
+
+    @Test
+    fun `read() at end of stream should return -1`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+        fixedLengthInputStream.exhaust()
+
+        val result = fixedLengthInputStream.read()
+
+        assertThat(result).isEqualTo(-1)
+    }
+
+    @Test
+    fun `read(ByteArray) at end of stream should return -1`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+        fixedLengthInputStream.exhaust()
+
+        val result = fixedLengthInputStream.read(ByteArray(2))
+
+        assertThat(result).isEqualTo(-1)
+    }
+
+    @Test
+    fun `read(ByteArray) with offset at end of stream should return -1`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+        fixedLengthInputStream.exhaust()
+
+        val result = fixedLengthInputStream.read(ByteArray(2), 0, 2)
+
+        assertThat(result).isEqualTo(-1)
+    }
+
+    @Test
+    fun `available() at start of stream`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+
+        val result = fixedLengthInputStream.available()
+
+        assertThat(result).isEqualTo(5)
+    }
+
+    @Test
+    fun `available() after partial read`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+        fixedLengthInputStream.read()
+
+        val result = fixedLengthInputStream.available()
+
+        assertThat(result).isEqualTo(4)
+    }
+
+    @Test
+    fun `available() after partial multi-byte read`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+        fixedLengthInputStream.consumeBytes(2)
+
+        val result = fixedLengthInputStream.available()
+
+        assertThat(result).isEqualTo(3)
+    }
+
+    @Test
+    fun `available() after stream has been exhausted`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+        fixedLengthInputStream.exhaust()
+
+        val result = fixedLengthInputStream.available()
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `available() after skip()`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+        fixedLengthInputStream.guaranteedSkip(2)
+
+        val result = fixedLengthInputStream.available()
+
+        assertThat(result).isEqualTo(3)
+    }
+
+    @Test
+    fun `available() after skip remaining`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+        fixedLengthInputStream.skipRemaining()
+
+        val result = fixedLengthInputStream.available()
+
+        assertThat(result).isEqualTo(0)
+    }
+
+    @Test
+    fun `skip() should consume bytes`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+
+        fixedLengthInputStream.guaranteedSkip(2)
+
+        assertThat(fixedLengthInputStream).readToString().isEqualTo("llo")
+    }
+
+    @Test
+    fun `skipRemaining() should exhaust stream`() {
+        val fixedLengthInputStream = createFixedLengthInputStream(data = "Hello world", length = 5)
+
+        fixedLengthInputStream.skipRemaining()
+
+        assertThat(fixedLengthInputStream).isExhausted()
+    }
+
+    @Test
+    fun `skipRemaining() should not consume more than limit from underlying InputStream`() {
+        val inputStream = "Hello World".byteInputStream()
+        val fixedLengthInputStream = FixedLengthInputStream(inputStream, 6)
+
+        fixedLengthInputStream.skipRemaining()
+
+        assertThat(inputStream).readToString().isEqualTo("World")
+    }
+
+    private fun createFixedLengthInputStream(data: String, length: Int): FixedLengthInputStream {
+        return FixedLengthInputStream(data.byteInputStream(), length)
+    }
+
+    private fun InputStream.guaranteedSkip(numberOfBytesToSkip: Int) {
+        var remaining = numberOfBytesToSkip.toLong()
+        while (remaining > 0) {
+            remaining -= skip(remaining)
+        }
+
+        assertThat(remaining).isEqualTo(0L)
+    }
+
+    private fun InputStream.readToString(): String = source().buffer().readUtf8()
+
+    private fun InputStream.exhaust() {
+        source().buffer().readAll(blackholeSink())
+    }
+
+    private fun InputStream.consumeBytes(numberOfBytes: Int) {
+        val numberOfBytesRead = read(ByteArray(numberOfBytes))
+
+        assertThat(numberOfBytesRead).isEqualTo(numberOfBytes)
+    }
+
+    private fun Assert<InputStream>.isExhausted() = given { actual ->
+        assertThat(actual.read()).isEqualTo(-1)
+        assertThat(actual.available()).isEqualTo(0)
+    }
+
+    private fun Assert<InputStream>.readToString() = transform { it.readToString() }
+
+    private fun Assert<ByteArray>.slice(range: IntRange) = transform { it.sliceArray(range) }
+
+    private fun Assert<ByteArray>.asString() = transform { String(it) }
 }
