@@ -1,7 +1,8 @@
 package com.fsck.k9.crypto
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.Identity
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class OpenPgpApiHelperTest {
@@ -15,7 +16,7 @@ class OpenPgpApiHelperTest {
 
         val result = OpenPgpApiHelper.buildUserId(identity)
 
-        assertEquals("Name <user@domain.com>", result)
+        assertThat(result).isEqualTo("Name <user@domain.com>")
     }
 
     @Test
@@ -26,6 +27,6 @@ class OpenPgpApiHelperTest {
 
         val result = OpenPgpApiHelper.buildUserId(identity)
 
-        assertEquals("<user@domain.com>", result)
+        assertThat(result).isEqualTo("<user@domain.com>")
     }
 }

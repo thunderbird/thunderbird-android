@@ -1,8 +1,15 @@
 package app.k9mail.autodiscovery.srvrecords
 
 import app.k9mail.autodiscovery.api.DiscoveryResults
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.extracting
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.prop
 import com.fsck.k9.mail.ConnectionSecurity
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -16,7 +23,7 @@ class SrvServiceDiscoveryTest {
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
         val result = srvServiceDiscovery.discover("test@example.com")
 
-        assertEquals(DiscoveryResults(listOf(), listOf()), result)
+        assertThat(result).isEqualTo(DiscoveryResults(incoming = listOf(), outgoing = listOf()))
     }
 
     @Test
@@ -31,8 +38,10 @@ class SrvServiceDiscoveryTest {
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
         val result = srvServiceDiscovery.discover("test@example.com")
 
-        assertEquals(2, result!!.incoming.size)
-        assertEquals(0, result.outgoing.size)
+        assertThat(result).isNotNull().all {
+            prop(DiscoveryResults::incoming).hasSize(2)
+            prop(DiscoveryResults::outgoing).hasSize(0)
+        }
     }
 
     @Test
@@ -55,8 +64,10 @@ class SrvServiceDiscoveryTest {
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
         val result = srvServiceDiscovery.discover("test@example.com")
 
-        assertEquals(0, result!!.incoming.size)
-        assertEquals(2, result.outgoing.size)
+        assertThat(result).isNotNull().all {
+            prop(DiscoveryResults::incoming).hasSize(0)
+            prop(DiscoveryResults::outgoing).hasSize(2)
+        }
     }
 
     @Test
@@ -131,24 +142,20 @@ class SrvServiceDiscoveryTest {
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
         val result = srvServiceDiscovery.discover("test@example.com")
 
-        assertEquals(
-            listOf(
+        assertThat(result).isNotNull().all {
+            prop(DiscoveryResults::outgoing).extracting { it.host }.containsExactly(
                 "smtp3.example.com",
                 "smtp1.example.com",
                 "smtp4.example.com",
                 "smtp2.example.com",
-            ),
-            result?.outgoing?.map { it.host },
-        )
-        assertEquals(
-            listOf(
+            )
+            prop(DiscoveryResults::incoming).extracting { it.host }.containsExactly(
                 "imaps1.example.com",
                 "imap1.example.com",
                 "imaps2.example.com",
                 "imap2.example.com",
-            ),
-            result?.incoming?.map { it.host },
-        )
+            )
+        }
     }
 
     private fun newMailService(

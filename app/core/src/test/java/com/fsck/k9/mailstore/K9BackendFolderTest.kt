@@ -2,6 +2,13 @@ package com.fsck.k9.mailstore
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
+import assertk.assertThat
+import assertk.assertions.contains
+import assertk.assertions.hasMessage
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isTrue
 import com.fsck.k9.Account
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
@@ -17,9 +24,6 @@ import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.TextBody
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import org.junit.Test
 import org.koin.core.component.inject
 
@@ -45,7 +49,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
         val messageFlags = backendFolder.getMessageFlags(MESSAGE_SERVER_ID)
 
-        assertEquals(flags, messageFlags)
+        assertThat(messageFlags).isEqualTo(flags)
     }
 
     @Test
@@ -55,7 +59,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
         val messageFlags = backendFolder.getMessageFlags(MESSAGE_SERVER_ID)
 
-        assertTrue(messageFlags.isEmpty())
+        assertThat(messageFlags.isEmpty()).isTrue()
     }
 
     @Test
@@ -66,29 +70,29 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
         val messageFlags = backendFolder.getMessageFlags(MESSAGE_SERVER_ID)
 
-        assertEquals(flags, messageFlags)
+        assertThat(messageFlags).isEqualTo(flags)
     }
 
     @Test
     fun saveCompleteMessage_withoutServerId_shouldThrow() {
         val message = createMessage(messageServerId = null)
 
-        try {
+        assertThat {
             backendFolder.saveMessage(message, MessageDownloadState.FULL)
-            fail("Expected exception")
-        } catch (e: IllegalStateException) {
-        }
+        }.isFailure()
+            .isInstanceOf(IllegalStateException::class)
+            .hasMessage("Message requires a server ID to be set")
     }
 
     @Test
     fun savePartialMessage_withoutServerId_shouldThrow() {
         val message = createMessage(messageServerId = null)
 
-        try {
+        assertThat {
             backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
-            fail("Expected exception")
-        } catch (e: IllegalStateException) {
-        }
+        }.isFailure()
+            .isInstanceOf(IllegalStateException::class)
+            .hasMessage("Message requires a server ID to be set")
     }
 
     fun createAccount(): Account {
@@ -111,7 +115,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
         }
 
         val folderServerIds = backendStorage.getFolderServerIds()
-        assertTrue(FOLDER_SERVER_ID in folderServerIds)
+        assertThat(folderServerIds).contains(FOLDER_SERVER_ID)
 
         return K9BackendFolder(messageStore, saveMessageDataCreator, FOLDER_SERVER_ID)
     }
@@ -121,7 +125,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
         backendFolder.saveMessage(message, MessageDownloadState.FULL)
 
         val messageServerIds = backendFolder.getMessageServerIds()
-        assertTrue(messageServerId in messageServerIds)
+        assertThat(messageServerIds).contains(messageServerId)
     }
 
     private fun createMessage(messageServerId: String?, flags: Set<Flag> = emptySet()): Message {
@@ -144,7 +148,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
                 "uid = ?",
                 arrayOf(MESSAGE_SERVER_ID),
             )
-            assertEquals(1, numberOfUpdatedRows)
+            assertThat(numberOfUpdatedRows).isEqualTo(1)
         }
     }
 

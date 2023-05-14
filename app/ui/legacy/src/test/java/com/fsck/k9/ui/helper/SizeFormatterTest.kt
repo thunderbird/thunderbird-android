@@ -1,7 +1,8 @@
 package com.fsck.k9.ui.helper
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.RobolectricTest
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -12,46 +13,46 @@ class SizeFormatterTest : RobolectricTest() {
 
     @Test
     fun bytes_lower_bound() {
-        assertEquals("0 B", sizeFormatter.formatSize(0))
+        assertThat(sizeFormatter.formatSize(0)).isEqualTo("0 B")
     }
 
     @Test
     fun bytes_upper_bound() {
-        assertEquals("999 B", sizeFormatter.formatSize(999))
+        assertThat(sizeFormatter.formatSize(999)).isEqualTo("999 B")
     }
 
     @Test
     fun kilobytes_lower_bound() {
-        assertEquals("1.0 kB", sizeFormatter.formatSize(1000))
+        assertThat(sizeFormatter.formatSize(1000)).isEqualTo("1.0 kB")
     }
 
     @Test
     fun kilobytes_upper_bound() {
-        assertEquals("999.9 kB", sizeFormatter.formatSize(999_949))
+        assertThat(sizeFormatter.formatSize(999_949)).isEqualTo("999.9 kB")
     }
 
     @Test
     fun megabytes_lower_bound() {
-        assertEquals("1.0 MB", sizeFormatter.formatSize(999_950))
+        assertThat(sizeFormatter.formatSize(999_950)).isEqualTo("1.0 MB")
     }
 
     @Test
     fun megabytes_upper_bound() {
-        assertEquals("999.9 MB", sizeFormatter.formatSize(999_949_999))
+        assertThat(sizeFormatter.formatSize(999_949_999)).isEqualTo("999.9 MB")
     }
 
     @Test
     fun gigabytes_lower_bound() {
-        assertEquals("1.0 GB", sizeFormatter.formatSize(999_950_000))
+        assertThat(sizeFormatter.formatSize(999_950_000)).isEqualTo("1.0 GB")
     }
 
     @Test
     fun gigabytes_2() {
-        assertEquals("2.0 GB", sizeFormatter.formatSize(2_000_000_000L))
+        assertThat(sizeFormatter.formatSize(2_000_000_000L)).isEqualTo("2.0 GB")
     }
 
     @Test
     fun gigabytes_2000() {
-        assertEquals("2000.0 GB", sizeFormatter.formatSize(2_000_000_000_000L))
+        assertThat(sizeFormatter.formatSize(2_000_000_000_000L)).isEqualTo("2000.0 GB")
     }
 }

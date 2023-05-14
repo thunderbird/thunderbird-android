@@ -1,12 +1,18 @@
 package com.fsck.k9.mailstore
 
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import com.fsck.k9.mail.assertk.body
+import com.fsck.k9.mail.assertk.bodyPart
+import com.fsck.k9.mail.assertk.bodyParts
+import com.fsck.k9.mail.assertk.mimeType
 import com.fsck.k9.mail.crlf
-import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMultipart
 import java.io.ByteArrayInputStream
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MimePartStreamParserTest {
@@ -35,14 +41,15 @@ class MimePartStreamParserTest {
             --1--
             """.trimIndent().crlf()
 
-        val msg = MimePartStreamParser.parse(null, ByteArrayInputStream(messageContent.toByteArray()))
+        val bodyPart = MimePartStreamParser.parse(null, ByteArrayInputStream(messageContent.toByteArray()))
 
-        val body = msg.body as MimeMultipart
-        assertEquals(2, body.count.toLong())
-
-        val messagePart = body.getBodyPart(1) as MimeBodyPart
-        assertEquals("message/rfc822", messagePart.mimeType)
-        assertTrue(messagePart.body is MimeMessage)
+        assertThat(bodyPart.body).isInstanceOf(MimeMultipart::class).all {
+            bodyParts().hasSize(2)
+            bodyPart(1).all {
+                mimeType().isEqualTo("message/rfc822")
+                body().isInstanceOf(MimeMessage::class)
+            }
+        }
     }
 
     @Test
@@ -71,13 +78,14 @@ class MimePartStreamParserTest {
             --1--
             """.trimIndent().crlf()
 
-        val msg = MimePartStreamParser.parse(null, ByteArrayInputStream(messageContent.toByteArray()))
+        val bodyPart = MimePartStreamParser.parse(null, ByteArrayInputStream(messageContent.toByteArray()))
 
-        val body = msg.body as MimeMultipart
-        assertEquals(2, body.count)
-
-        val messagePart = body.getBodyPart(1) as MimeBodyPart
-        assertEquals("message/rfc822", messagePart.mimeType)
-        assertTrue(messagePart.body is DeferredFileBody)
+        assertThat(bodyPart.body).isInstanceOf(MimeMultipart::class).all {
+            bodyParts().hasSize(2)
+            bodyPart(1).all {
+                mimeType().isEqualTo("message/rfc822")
+                body().isInstanceOf(DeferredFileBody::class)
+            }
+        }
     }
 }

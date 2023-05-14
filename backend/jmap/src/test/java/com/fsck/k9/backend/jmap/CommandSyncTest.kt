@@ -2,6 +2,12 @@ package com.fsck.k9.backend.jmap
 
 import app.k9mail.backend.testing.InMemoryBackendFolder
 import app.k9mail.backend.testing.InMemoryBackendStorage
+import assertk.assertThat
+import assertk.assertions.containsOnly
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
@@ -16,7 +22,6 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import rs.ltt.jmap.client.JmapClient
@@ -49,9 +54,9 @@ class CommandSyncTest {
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
-        assertEquals(SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID), syncListener.getNextEvent())
+        assertThat(syncListener.getNextEvent()).isEqualTo(SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID))
         val failedEvent = syncListener.getNextEvent() as SyncListenerEvent.SyncFailed
-        assertEquals(AuthenticationFailedException::class.java, failedEvent.exception!!.javaClass)
+        assertThat(failedEvent.exception).isNotNull().isInstanceOf(AuthenticationFailedException::class)
     }
 
     @Test
@@ -103,7 +108,13 @@ class CommandSyncTest {
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
-        assertEquals(setOf("M001", "M002", "M003", "M004", "M005"), backendFolder.getMessageServerIds())
+        assertThat(backendFolder.getMessageServerIds()).containsOnly(
+            "M001",
+            "M002",
+            "M003",
+            "M004",
+            "M005",
+        )
         syncListener.assertSyncSuccess()
     }
 
@@ -145,7 +156,7 @@ class CommandSyncTest {
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
-        assertEquals(emptySet<String>(), backendFolder.getMessageServerIds())
+        assertThat(backendFolder.getMessageServerIds()).isEmpty()
         syncListener.assertSyncEvents(
             SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID),
             SyncListenerEvent.SyncFinished(FOLDER_SERVER_ID),
@@ -168,9 +179,9 @@ class CommandSyncTest {
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
-        assertEquals(setOf("M001", "M002"), backendFolder.getMessageServerIds())
-        assertEquals(emptySet<Flag>(), backendFolder.getMessageFlags("M001"))
-        assertEquals(setOf(Flag.SEEN), backendFolder.getMessageFlags("M002"))
+        assertThat(backendFolder.getMessageServerIds()).containsOnly("M001", "M002")
+        assertThat(backendFolder.getMessageFlags("M001")).isEmpty()
+        assertThat(backendFolder.getMessageFlags("M002")).containsOnly(Flag.SEEN)
         backendFolder.assertQueryState("50:0")
         syncListener.assertSyncEvents(
             SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID),
@@ -196,7 +207,7 @@ class CommandSyncTest {
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
-        assertEquals(setOf("M002", "M003"), backendFolder.getMessageServerIds())
+        assertThat(backendFolder.getMessageServerIds()).containsOnly("M002", "M003")
         backendFolder.assertQueryState("51:0")
         syncListener.assertSyncSuccess()
     }
@@ -220,7 +231,7 @@ class CommandSyncTest {
 
         command.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
 
-        assertEquals(setOf("M002", "M003"), backendFolder.getMessageServerIds())
+        assertThat(backendFolder.getMessageServerIds()).containsOnly("M002", "M003")
         backendFolder.assertQueryState("50:0")
         syncListener.assertSyncSuccess()
     }
@@ -246,11 +257,11 @@ class CommandSyncTest {
         val request = takeRequest()
         val requestUrl = request.requestUrl ?: error("No request URL")
         val requestUrlPath = requestUrl.encodedPath + "?" + requestUrl.encodedQuery
-        assertEquals(expected, requestUrlPath)
+        assertThat(requestUrlPath).isEqualTo(expected)
     }
 
     private fun InMemoryBackendFolder.assertQueryState(expected: String) {
-        assertEquals(expected, getFolderExtraString("jmapQueryState"))
+        assertThat(getFolderExtraString("jmapQueryState")).isEqualTo(expected)
     }
 
     private fun InMemoryBackendFolder.setQueryState(queryState: String) {

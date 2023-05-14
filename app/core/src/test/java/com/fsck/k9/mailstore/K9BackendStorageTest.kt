@@ -1,12 +1,13 @@
 package com.fsck.k9.mailstore
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.Account
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.mail.FolderClass
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.koin.core.component.inject
 import org.mockito.kotlin.any
@@ -15,12 +16,10 @@ import org.mockito.kotlin.mock
 
 class K9BackendStorageTest : K9RobolectricTest() {
     val preferences: Preferences by inject()
-    val localStoreProvider: LocalStoreProvider by inject()
     val messageStoreManager: MessageStoreManager by inject()
     val saveMessageDataCreator: SaveMessageDataCreator by inject()
 
     val account: Account = createAccount()
-    val database: LockableDatabase = localStoreProvider.getInstance(account).database
     val backendStorage = createBackendStorage()
 
     @After
@@ -33,7 +32,7 @@ class K9BackendStorageTest : K9RobolectricTest() {
         backendStorage.setExtraString("testString", "someValue")
         val value = backendStorage.getExtraString("testString")
 
-        assertEquals("someValue", value)
+        assertThat(value).isEqualTo("someValue")
     }
 
     @Test
@@ -42,7 +41,7 @@ class K9BackendStorageTest : K9RobolectricTest() {
         backendStorage.setExtraString("testString", "newValue")
 
         val value = backendStorage.getExtraString("testString")
-        assertEquals("newValue", value)
+        assertThat(value).isEqualTo("newValue")
     }
 
     @Test
@@ -50,7 +49,7 @@ class K9BackendStorageTest : K9RobolectricTest() {
         backendStorage.setExtraNumber("testNumber", 42)
         val value = backendStorage.getExtraNumber("testNumber")
 
-        assertEquals(42L, value)
+        assertThat(value).isEqualTo(42L)
     }
 
     @Test
@@ -59,7 +58,7 @@ class K9BackendStorageTest : K9RobolectricTest() {
         backendStorage.setExtraNumber("testNumber", 23)
 
         val value = backendStorage.getExtraNumber("testNumber")
-        assertEquals(23L, value)
+        assertThat(value).isEqualTo(23L)
     }
 
     fun createAccount(): Account {

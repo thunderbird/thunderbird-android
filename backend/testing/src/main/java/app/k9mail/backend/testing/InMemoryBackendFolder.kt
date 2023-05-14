@@ -1,5 +1,7 @@
 package app.k9mail.backend.testing
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.Flag
@@ -11,7 +13,6 @@ import java.util.Date
 import okio.Buffer
 import okio.buffer
 import okio.source
-import org.junit.Assert.assertEquals
 
 class InMemoryBackendFolder(override var name: String, var type: FolderType) : BackendFolder {
     val extraStrings: MutableMap<String, String> = mutableMapOf()
@@ -29,12 +30,12 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
             assertMessageContents(messageServerId, resourceName)
         }
         val messageServerIds = messagePairs.map { it.first }.toSet()
-        assertEquals(messageServerIds, messages.keys)
+        assertThat(messages.keys).isEqualTo(messageServerIds)
     }
 
     private fun assertMessageContents(messageServerId: String, resourceName: String) {
         val message = messages[messageServerId] ?: error("Message $messageServerId not found")
-        assertEquals(loadResource(resourceName), getMessageContents(message))
+        assertThat(getMessageContents(message)).isEqualTo(loadResource(resourceName))
     }
 
     fun createMessages(vararg messagePairs: Pair<String, String>) {

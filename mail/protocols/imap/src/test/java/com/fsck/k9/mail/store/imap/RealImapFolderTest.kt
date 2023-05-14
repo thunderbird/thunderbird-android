@@ -4,11 +4,17 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.cause
 import assertk.assertions.containsExactly
+import assertk.assertions.containsOnly
+import assertk.assertions.extracting
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFailure
+import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
+import assertk.fail
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.DefaultBodyFactory
 import com.fsck.k9.mail.FetchProfile
@@ -27,12 +33,6 @@ import java.util.TimeZone
 import okio.Buffer
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anySet
@@ -79,7 +79,7 @@ class RealImapFolderTest {
 
         imapFolder.open(OpenMode.READ_WRITE)
 
-        assertTrue(imapFolder.isOpen)
+        assertThat(imapFolder.isOpen).isTrue()
     }
 
     @Test
@@ -89,7 +89,7 @@ class RealImapFolderTest {
 
         imapFolder.open(OpenMode.READ_ONLY)
 
-        assertTrue(imapFolder.isOpen)
+        assertThat(imapFolder.isOpen).isTrue()
     }
 
     @Test
@@ -99,7 +99,7 @@ class RealImapFolderTest {
 
         imapFolder.open(OpenMode.READ_WRITE)
 
-        assertEquals(23, imapFolder.messageCount)
+        assertThat(imapFolder.messageCount).isEqualTo(23)
     }
 
     @Test
@@ -109,7 +109,7 @@ class RealImapFolderTest {
 
         imapFolder.open(OpenMode.READ_WRITE)
 
-        assertEquals(OpenMode.READ_WRITE, imapFolder.mode)
+        assertThat(imapFolder.mode).isEqualTo(OpenMode.READ_WRITE)
     }
 
     @Test
@@ -119,7 +119,7 @@ class RealImapFolderTest {
 
         imapFolder.open(OpenMode.READ_ONLY)
 
-        assertEquals(OpenMode.READ_ONLY, imapFolder.mode)
+        assertThat(imapFolder.mode).isEqualTo(OpenMode.READ_ONLY)
     }
 
     @Test
@@ -129,7 +129,7 @@ class RealImapFolderTest {
 
         imapFolder.open(OpenMode.READ_WRITE)
 
-        assertTrue(imapFolder.exists())
+        assertThat(imapFolder.exists()).isTrue()
         verify(imapConnection, times(1)).executeSimpleCommand(anyString())
     }
 
@@ -202,7 +202,7 @@ class RealImapFolderTest {
 
         imapFolder.close()
 
-        assertFalse(imapFolder.isOpen)
+        assertThat(imapFolder.isOpen).isFalse()
     }
 
     @Test
@@ -220,7 +220,7 @@ class RealImapFolderTest {
 
         val folderExists = imapFolder.exists()
 
-        assertTrue(folderExists)
+        assertThat(folderExists).isTrue()
     }
 
     @Test
@@ -231,7 +231,7 @@ class RealImapFolderTest {
 
         val folderExists = imapFolder.exists()
 
-        assertFalse(folderExists)
+        assertThat(folderExists).isFalse()
     }
 
     @Test
@@ -249,7 +249,7 @@ class RealImapFolderTest {
 
         val success = imapFolder.create()
 
-        assertTrue(success)
+        assertThat(success).isTrue()
     }
 
     @Test
@@ -259,7 +259,7 @@ class RealImapFolderTest {
 
         val success = imapFolder.create()
 
-        assertFalse(success)
+        assertThat(success).isFalse()
     }
 
     @Test
@@ -270,7 +270,7 @@ class RealImapFolderTest {
 
         val uidMapping = sourceFolder.copyMessages(messages, destinationFolder)
 
-        assertNull(uidMapping)
+        assertThat(uidMapping).isNull()
     }
 
     @Test
@@ -297,8 +297,7 @@ class RealImapFolderTest {
 
         val uidMapping = sourceFolder.copyMessages(messages, destinationFolder)
 
-        assertNotNull(uidMapping)
-        assertEquals("101", uidMapping!!["1"])
+        assertThat(uidMapping).isNotNull().containsOnly("1" to "101")
     }
 
     @Test
@@ -312,8 +311,7 @@ class RealImapFolderTest {
 
         val uidMapping = sourceFolder.moveMessages(messages, destinationFolder)
 
-        assertNotNull(uidMapping)
-        assertEquals("101", uidMapping!!["1"])
+        assertThat(uidMapping).isNotNull().containsOnly("1" to "101")
     }
 
     @Test
@@ -337,7 +335,7 @@ class RealImapFolderTest {
 
         val uidMapping = sourceFolder.moveMessages(messages, destinationFolder)
 
-        assertNull(uidMapping)
+        assertThat(uidMapping).isNull()
     }
 
     @Test
@@ -375,7 +373,7 @@ class RealImapFolderTest {
 
         val unreadMessageCount = folder.unreadMessageCount
 
-        assertEquals(3, unreadMessageCount)
+        assertThat(unreadMessageCount).isEqualTo(3)
     }
 
     @Test
@@ -402,7 +400,7 @@ class RealImapFolderTest {
 
         val flaggedMessageCount = folder.flaggedMessageCount
 
-        assertEquals(4, flaggedMessageCount)
+        assertThat(flaggedMessageCount).isEqualTo(4)
     }
 
     @Test
@@ -414,7 +412,7 @@ class RealImapFolderTest {
 
         val highestUid = folder.highestUid
 
-        assertEquals(42L, highestUid)
+        assertThat(highestUid).isEqualTo(42L)
     }
 
     @Test
@@ -426,7 +424,7 @@ class RealImapFolderTest {
 
         val highestUid = folder.highestUid
 
-        assertEquals(-1L, highestUid)
+        assertThat(highestUid).isEqualTo(-1L)
     }
 
     @Test
@@ -452,8 +450,8 @@ class RealImapFolderTest {
 
         val messages = folder.getMessages(1, 10, null, null)
 
-        assertNotNull(messages)
-        assertEquals(setOf("3", "5", "6"), extractMessageUids(messages))
+        assertThat(messages).isNotNull()
+            .extracting { it.uid }.containsOnly("3", "5", "6")
     }
 
     @Test
@@ -466,8 +464,8 @@ class RealImapFolderTest {
 
         val messages = folder.getMessages(1, 10, Date(1454719826000L), null)
 
-        assertNotNull(messages)
-        assertEquals(setOf("18", "47"), extractMessageUids(messages))
+        assertThat(messages).isNotNull()
+            .extracting { it.uid }.containsOnly("18", "47")
     }
 
     @Test
@@ -548,8 +546,8 @@ class RealImapFolderTest {
 
         val messages = folder.getMessages(setOf(1L, 2L, 5L), false, null)
 
-        assertNotNull(messages)
-        assertEquals(setOf("17", "18", "49"), extractMessageUids(messages))
+        assertThat(messages).isNotNull()
+            .extracting { it.uid }.containsOnly("17", "18", "49")
     }
 
     @Test
@@ -586,8 +584,8 @@ class RealImapFolderTest {
 
         val messages = folder.getMessagesFromUids(listOf("11", "22", "25"))
 
-        assertNotNull(messages)
-        assertEquals(setOf("11", "22", "25"), extractMessageUids(messages))
+        assertThat(messages).isNotNull()
+            .extracting { it.uid }.containsOnly("11", "22", "25")
     }
 
     @Test
@@ -610,7 +608,7 @@ class RealImapFolderTest {
 
         val areMoreMessagesAvailable = folder.areMoreMessagesAvailable(10, null)
 
-        assertTrue(areMoreMessagesAvailable)
+        assertThat(areMoreMessagesAvailable).isTrue()
     }
 
     @Test
@@ -622,7 +620,7 @@ class RealImapFolderTest {
 
         val areMoreMessagesAvailable = folder.areMoreMessagesAvailable(600, null)
 
-        assertFalse(areMoreMessagesAvailable)
+        assertThat(areMoreMessagesAvailable).isFalse()
     }
 
     @Test
@@ -633,7 +631,7 @@ class RealImapFolderTest {
 
         val areMoreMessagesAvailable = folder.areMoreMessagesAvailable(1, null)
 
-        assertFalse(areMoreMessagesAvailable)
+        assertThat(areMoreMessagesAvailable).isFalse()
         // SELECT during OPEN and no more
         verify(imapConnection, times(1)).executeSimpleCommand(anyString())
     }
@@ -922,7 +920,7 @@ class RealImapFolderTest {
         val body = bodyArgumentCaptor.firstValue
         val buffer = Buffer()
         body.writeTo(buffer.outputStream())
-        assertEquals("text", buffer.readUtf8())
+        assertThat(buffer.readUtf8()).isEqualTo("text")
     }
 
     @Test
@@ -993,7 +991,7 @@ class RealImapFolderTest {
 
         val uid = folder.getUidFromMessageId("<00000000.0000000@example.org>")
 
-        assertEquals("23", uid)
+        assertThat(uid).isEqualTo("23")
     }
 
     @Test
@@ -1066,7 +1064,7 @@ class RealImapFolderTest {
 
         val message = folder.getMessage("uid")
 
-        assertEquals("uid", message.uid)
+        assertThat(message.uid).isEqualTo("uid")
     }
 
     @Suppress("SameParameterValue")
@@ -1102,8 +1100,6 @@ class RealImapFolderTest {
         response.add(fetchList)
         return response
     }
-
-    private fun extractMessageUids(messages: List<ImapMessage>) = messages.map { it.uid }.toSet()
 
     private fun createFolder(folderName: String): RealImapFolder {
         return RealImapFolder(internalImapStore, testConnectionManager, folderName, FolderNameCodec())

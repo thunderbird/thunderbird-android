@@ -4,6 +4,17 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Parcelable
+import assertk.Assert
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isSameAs
 import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Identity
@@ -15,29 +26,29 @@ import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor
 import com.fsck.k9.autocrypt.AutocryptOperations
 import com.fsck.k9.autocrypt.AutocryptOperationsHelper.assertMessageHasAutocryptHeader
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mail.BodyPart
 import com.fsck.k9.mail.BoundaryGenerator
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.assertk.asBytes
+import com.fsck.k9.mail.assertk.asText
+import com.fsck.k9.mail.assertk.body
+import com.fsck.k9.mail.assertk.bodyPart
+import com.fsck.k9.mail.assertk.bodyParts
+import com.fsck.k9.mail.assertk.contentTransferEncoding
+import com.fsck.k9.mail.assertk.contentType
+import com.fsck.k9.mail.assertk.mimeType
+import com.fsck.k9.mail.assertk.parameter
+import com.fsck.k9.mail.assertk.value
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.MessageIdGenerator
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMultipart
-import com.fsck.k9.mail.internet.MimeUtility
 import com.fsck.k9.mail.internet.TextBody
 import com.fsck.k9.message.MessageBuilder.Callback
 import com.fsck.k9.message.quote.InsertableHtmlContent
 import com.fsck.k9.view.RecipientSelectView
-import java.io.ByteArrayOutputStream
-import java.io.IOException
 import java.io.OutputStream
 import java.util.Date
-import org.apache.commons.io.Charsets
-import org.apache.commons.io.IOUtils
 import org.apache.james.mime4j.util.MimeUtil
-import org.junit.Assert
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.component.inject
@@ -143,7 +154,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         verifyNoMoreInteractions(mockCallback)
 
         val message = captor.value
-        assertEquals("text/plain", message.mimeType)
+        assertThat(message.mimeType).isEqualTo("text/plain")
     }
 
     @Test
@@ -159,7 +170,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val message = captor.value
         assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL)
-        assertEquals(0, message.getHeader("Autocrypt-Draft-State").size)
+        assertThat(message.getHeader("Autocrypt-Draft-State")).isEmpty()
     }
 
     @Test
@@ -206,45 +217,32 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val expectedIntent = Intent(OpenPgpApi.ACTION_DETACHED_SIGN)
         expectedIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_KEY_ID)
         expectedIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true)
-        assertIntentEqualsActionAndExtras(expectedIntent, capturedApiIntent.value)
+        assertThat(capturedApiIntent.value).matches(expectedIntent)
 
         val captor = ArgumentCaptor.forClass(MimeMessage::class.java)
         verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false))
         verifyNoMoreInteractions(mockCallback)
 
         val message = captor.value
-        Assert.assertEquals("message must be multipart/signed", "multipart/signed", message.mimeType)
+        assertThat(message.mimeType).isEqualTo("multipart/signed")
 
-        val multipart = message.body as MimeMultipart
-        Assert.assertEquals("multipart/signed must consist of two parts", 2, multipart.count.toLong())
-
-        val contentBodyPart = multipart.getBodyPart(0)
-        Assert.assertEquals(
-            "first part must have content type text/plain",
-            "text/plain",
-            MimeUtility.getHeaderParameter(contentBodyPart.contentType, null),
-        )
-        assertTrue("signed message body must be TextBody", contentBodyPart.body is TextBody)
-        Assert.assertEquals(MimeUtil.ENC_QUOTED_PRINTABLE, (contentBodyPart.body as TextBody).encoding)
-        assertContentOfBodyPartEquals("content must match the message text", contentBodyPart, TEST_MESSAGE_TEXT)
-
-        val signatureBodyPart = multipart.getBodyPart(1)
-        val contentType = signatureBodyPart.contentType
-        Assert.assertEquals(
-            "second part must be pgp signature",
-            "application/pgp-signature",
-            MimeUtility.getHeaderParameter(contentType, null),
-        )
-        Assert.assertEquals(
-            "second part must be called signature.asc",
-            "signature.asc",
-            MimeUtility.getHeaderParameter(contentType, "name"),
-        )
-        assertContentOfBodyPartEquals(
-            "content must match the supplied detached signature",
-            signatureBodyPart,
-            byteArrayOf(1, 2, 3),
-        )
+        assertThat(message.body).isInstanceOf(MimeMultipart::class).all {
+            bodyParts().hasSize(2)
+            bodyPart(0).all {
+                contentType().value().isEqualTo("text/plain")
+                body().isInstanceOf(TextBody::class).all {
+                    contentTransferEncoding().isEqualTo(MimeUtil.ENC_QUOTED_PRINTABLE)
+                    asText().isEqualTo(TEST_MESSAGE_TEXT)
+                }
+            }
+            bodyPart(1).all {
+                contentType().all {
+                    value().isEqualTo("application/pgp-signature")
+                    parameter("name").isEqualTo("signature.asc")
+                }
+                body().asBytes().isEqualTo(byteArrayOf(1, 2, 3))
+            }
+        }
 
         assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL)
     }
@@ -274,7 +272,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         verifyNoMoreInteractions(mockCallback)
 
         val pendingIntent = captor.value
-        Assert.assertSame(pendingIntent, mockPendingIntent)
+        assertThat(pendingIntent).isSameAs(mockPendingIntent)
     }
 
     @Test
@@ -306,7 +304,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             verifyNoMoreInteractions(mockCallback)
 
             returnedRequestCode = rcCaptor.value
-            Assert.assertSame(mockPendingIntent, piCaptor.value)
+            assertThat(piCaptor.value).isEqualTo(mockPendingIntent)
         }
 
         run {
@@ -367,7 +365,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mimeMessage = buildMessage()
 
-        assertEquals("encrypt=no; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
+        assertThat(mimeMessage.getHeader("Autocrypt-Draft-State")).containsExactly("encrypt=no; ")
     }
 
     @Test
@@ -382,7 +380,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mimeMessage = buildMessage()
 
-        assertEquals("encrypt=yes; _is-reply-to-encrypted=yes; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
+        assertThat(mimeMessage.getHeader("Autocrypt-Draft-State"))
+            .containsExactly("encrypt=yes; _is-reply-to-encrypted=yes; ")
     }
 
     @Test
@@ -394,7 +393,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mimeMessage = buildMessage()
 
-        assertEquals("encrypt=yes; _by-choice=yes; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
+        assertThat(mimeMessage.getHeader("Autocrypt-Draft-State")).containsExactly("encrypt=yes; _by-choice=yes; ")
     }
 
     @Test
@@ -406,10 +405,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mimeMessage = buildMessage()
 
-        assertEquals(
-            "encrypt=no; _sign-only=yes; _by-choice=yes; ",
-            mimeMessage.getHeader("Autocrypt-Draft-State").get(0),
-        )
+        assertThat(mimeMessage.getHeader("Autocrypt-Draft-State"))
+            .containsExactly("encrypt=no; _sign-only=yes; _by-choice=yes; ")
     }
 
     private fun buildMessage(): MimeMessage {
@@ -431,7 +428,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         verify(mockCallback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(true))
         verifyNoMoreInteractions(mockCallback)
 
-        assertNotNull(mimeMessageCaptor.value)
+        assertThat(mimeMessageCaptor.value).isNotNull()
         return mimeMessageCaptor.value
     }
 
@@ -552,7 +549,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, longArrayOf(TEST_KEY_ID))
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true)
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.recipientAddressesAsArray)
-        assertIntentEqualsActionAndExtras(expectedApiIntent, capturedApiIntent.value)
+        assertThat(capturedApiIntent.value).matches(expectedApiIntent)
 
         val captor = ArgumentCaptor.forClass(MimeMessage::class.java)
         verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false))
@@ -560,34 +557,24 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val message = captor.value
 
-        Assert.assertEquals("message must be multipart/encrypted", "multipart/encrypted", message.mimeType)
-
-        val multipart = message.body as MimeMultipart
-        Assert.assertEquals("multipart/encrypted must consist of two parts", 2, multipart.count.toLong())
-
-        val dummyBodyPart = multipart.getBodyPart(0)
-        Assert.assertEquals(
-            "first part must be pgp encrypted dummy part",
-            "application/pgp-encrypted",
-            dummyBodyPart.contentType,
-        )
-        assertContentOfBodyPartEquals(
-            "content must match the supplied detached signature",
-            dummyBodyPart,
-            "Version: 1",
-        )
-
-        val encryptedBodyPart = multipart.getBodyPart(1)
-        Assert.assertEquals(
-            "second part must be octet-stream of encrypted data",
-            "application/octet-stream; name=\"encrypted.asc\"",
-            encryptedBodyPart.contentType,
-        )
-        assertTrue(
-            "message body must be BinaryTempFileBody",
-            encryptedBodyPart.body is BinaryTempFileBody,
-        )
-        Assert.assertEquals(MimeUtil.ENC_7BIT, (encryptedBodyPart.body as BinaryTempFileBody).encoding)
+        assertThat(message).all {
+            mimeType().isEqualTo("multipart/encrypted")
+            body().isInstanceOf(MimeMultipart::class).all {
+                bodyParts().hasSize(2)
+                bodyPart(0).all {
+                    contentType().value().isEqualTo("application/pgp-encrypted")
+                    body().asText().isEqualTo("Version: 1")
+                }
+                bodyPart(1).all {
+                    contentType().all {
+                        value().isEqualTo("application/octet-stream")
+                        parameter("name").isEqualTo("encrypted.asc")
+                    }
+                    body().isInstanceOf(BinaryTempFileBody::class)
+                        .contentTransferEncoding().isEqualTo(MimeUtil.ENC_7BIT)
+                }
+            }
+        }
 
         assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL)
     }
@@ -623,16 +610,18 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, longArrayOf(TEST_KEY_ID))
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true)
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.recipientAddressesAsArray)
-        assertIntentEqualsActionAndExtras(expectedApiIntent, capturedApiIntent.value)
+        assertThat(capturedApiIntent.value).matches(expectedApiIntent)
 
         val captor = ArgumentCaptor.forClass(MimeMessage::class.java)
         verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false))
         verifyNoMoreInteractions(mockCallback)
 
         val message = captor.value
-        Assert.assertEquals("text/plain", message.mimeType)
-        assertTrue("message body must be BinaryTempFileBody", message.body is BinaryTempFileBody)
-        Assert.assertEquals(MimeUtil.ENC_7BIT, (message.body as BinaryTempFileBody).encoding)
+        assertThat(message).all {
+            mimeType().isEqualTo("text/plain")
+            body().isInstanceOf(BinaryTempFileBody::class)
+                .contentTransferEncoding().isEqualTo(MimeUtil.ENC_7BIT)
+        }
 
         assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL)
     }
@@ -667,14 +656,14 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val expectedApiIntent = Intent(OpenPgpApi.ACTION_SIGN)
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_KEY_ID)
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true)
-        assertIntentEqualsActionAndExtras(expectedApiIntent, capturedApiIntent.value)
+        assertThat(capturedApiIntent.value).matches(expectedApiIntent)
 
         val captor = ArgumentCaptor.forClass(MimeMessage::class.java)
         verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false))
         verifyNoMoreInteractions(mockCallback)
 
         val message = captor.value
-        Assert.assertEquals("message must be text/plain", "text/plain", message.mimeType)
+        assertThat(message.mimeType).isEqualTo("text/plain")
 
         assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL)
     }
@@ -742,7 +731,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         verifyNoMoreInteractions(mockCallback)
 
         val message = captor.value
-        Assert.assertEquals("text/plain", message.mimeType)
+        assertThat(message.mimeType).isEqualTo("text/plain")
     }
 
     @Test
@@ -820,58 +809,28 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             return builder
         }
 
-        private fun assertContentOfBodyPartEquals(reason: String, signatureBodyPart: BodyPart, expected: ByteArray) {
-            try {
-                val bos = ByteArrayOutputStream()
-                signatureBodyPart.body.writeTo(bos)
-                Assert.assertArrayEquals(reason, expected, bos.toByteArray())
-            } catch (e: IOException) {
-                Assert.fail()
-            } catch (e: MessagingException) {
-                Assert.fail()
-            }
-        }
+        private fun Assert<Intent>.matches(expected: Intent) = given { actual ->
+            assertThat(actual.action).isEqualTo(expected.action)
 
-        private fun assertContentOfBodyPartEquals(reason: String, signatureBodyPart: BodyPart, expected: String) {
-            try {
-                val bos = ByteArrayOutputStream()
-                val inputStream = MimeUtility.decodeBody(signatureBodyPart.body)
-                IOUtils.copy(inputStream, bos)
-                Assert.assertEquals(reason, expected, String(bos.toByteArray(), Charsets.UTF_8))
-            } catch (e: IOException) {
-                Assert.fail()
-            } catch (e: MessagingException) {
-                Assert.fail()
-            }
-        }
-
-        private fun assertIntentEqualsActionAndExtras(expected: Intent, actual: Intent) {
-            Assert.assertEquals(expected.action, actual.action)
-
-            val expectedExtras = expected.extras
-            val intentExtras = actual.extras
-
-            if (expectedExtras!!.size() != intentExtras!!.size()) {
-                Assert.assertEquals(expectedExtras.size().toLong(), intentExtras.size().toLong())
-            }
+            val expectedExtras = checkNotNull(expected.extras)
+            val intentExtras = checkNotNull(actual.extras)
+            assertThat(intentExtras.size()).isEqualTo(expectedExtras.size())
 
             for (key in expectedExtras.keySet()) {
+                val name = "extra[$key]"
                 val intentExtra = intentExtras.get(key)
                 val expectedExtra = expectedExtras.get(key)
-                if (intentExtra == null) {
-                    if (expectedExtra == null) {
-                        continue
-                    }
-                    Assert.fail("found null for an expected non-null extra: $key")
-                }
-                if (intentExtra is LongArray) {
-                    Assert.assertArrayEquals("error in $key", expectedExtra as LongArray, intentExtra)
-                } else if (intentExtra is Array<*>) {
-                    Assert.assertArrayEquals("error in $key", expectedExtra as Array<*>, intentExtra)
+
+                if (expectedExtra == null) {
+                    assertThat(intentExtra, name).isNull()
                 } else {
-                    if (intentExtra != expectedExtra) {
-                        Assert.assertEquals("error in $key", expectedExtra, intentExtra)
-                    }
+                    assertThat(intentExtra, name).isNotNull()
+                }
+
+                when (intentExtra) {
+                    is LongArray -> assertThat(intentExtra, name).isEqualTo(expectedExtra as LongArray)
+                    is Array<*> -> assertThat(intentExtra as Array<Any?>, name).isEqualTo(expectedExtra as Array<Any?>)
+                    else -> assertThat(intentExtra, name).isEqualTo(expectedExtra)
                 }
             }
         }

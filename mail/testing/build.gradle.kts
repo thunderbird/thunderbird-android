@@ -13,4 +13,5 @@ dependencies {
 
     api(libs.okio)
     api(libs.junit)
+    api(libs.assertk)
 }

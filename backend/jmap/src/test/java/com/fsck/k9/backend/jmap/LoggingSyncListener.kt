@@ -1,9 +1,10 @@
 package com.fsck.k9.backend.jmap
 
+import assertk.assertThat
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.fail
 import com.fsck.k9.backend.api.SyncListener
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 
 class LoggingSyncListener : SyncListener {
     private val events = mutableListOf<SyncListenerEvent>()
@@ -20,18 +21,15 @@ class LoggingSyncListener : SyncListener {
 
     fun assertSyncEvents(vararg events: SyncListenerEvent) {
         for (event in events) {
-            assertEquals(event, getNextEvent())
+            assertThat(getNextEvent()).isEqualTo(event)
         }
-        assertNoMoreEventsLeft()
+
+        assertThat(this.events).isEmpty()
     }
 
     fun getNextEvent(): SyncListenerEvent {
         require(events.isNotEmpty()) { "No events left" }
         return events.removeAt(0)
-    }
-
-    private fun assertNoMoreEventsLeft() {
-        assertTrue("Expected no more events; but still have: $events", events.isEmpty())
     }
 
     override fun syncStarted(folderServerId: String) {

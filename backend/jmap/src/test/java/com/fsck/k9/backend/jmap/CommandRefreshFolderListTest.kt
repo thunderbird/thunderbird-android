@@ -1,18 +1,21 @@
 package com.fsck.k9.backend.jmap
 
 import app.k9mail.backend.testing.InMemoryBackendStorage
+import assertk.assertThat
+import assertk.assertions.containsExactlyInAnyOrder
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isTrue
+import assertk.fail
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.MessagingException
-import junit.framework.AssertionFailedError
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import org.junit.Test
 import rs.ltt.jmap.client.JmapClient
 
@@ -25,11 +28,10 @@ class CommandRefreshFolderListTest {
             MockResponse().setResponseCode(401),
         )
 
-        try {
+        assertThat {
             command.refreshFolderList()
-            fail("Expected exception")
-        } catch (e: AuthenticationFailedException) {
-        }
+        }.isFailure()
+            .isInstanceOf(AuthenticationFailedException::class)
     }
 
     @Test
@@ -38,12 +40,11 @@ class CommandRefreshFolderListTest {
             MockResponse().setBody("invalid"),
         )
 
-        try {
+        assertThat {
             command.refreshFolderList()
-            fail("Expected exception")
-        } catch (e: MessagingException) {
-            assertTrue(e.isPermanentFailure)
-        }
+        }.isFailure()
+            .isInstanceOf(MessagingException::class)
+            .transform { it.isPermanentFailure }.isTrue()
     }
 
     @Test
@@ -162,18 +163,17 @@ class CommandRefreshFolderListTest {
     }
 
     private fun assertFolderList(vararg folderServerIds: String) {
-        assertEquals(folderServerIds.toSet(), backendStorage.getFolderServerIds().toSet())
+        assertThat(backendStorage.getFolderServerIds()).containsExactlyInAnyOrder(*folderServerIds)
     }
 
     private fun assertFolderPresent(serverId: String, name: String, type: FolderType) {
-        val folder = backendStorage.folders[serverId]
-            ?: throw AssertionFailedError("Expected folder '$serverId' in BackendStorage")
+        val folder = backendStorage.folders[serverId] ?: fail("Expected folder '$serverId' in BackendStorage")
 
-        assertEquals(name, folder.name)
-        assertEquals(type, folder.type)
+        assertThat(folder.name).isEqualTo(name)
+        assertThat(folder.type).isEqualTo(type)
     }
 
     private fun assertMailboxState(expected: String) {
-        assertEquals(expected, backendStorage.getExtraString("jmapState"))
+        assertThat(backendStorage.getExtraString("jmapState")).isEqualTo(expected)
     }
 }

@@ -1,14 +1,15 @@
 package com.fsck.k9.preferences
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.FolderRepository
 import java.io.ByteArrayOutputStream
 import org.jdom2.Document
 import org.jdom2.input.SAXBuilder
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Test
 import org.koin.core.component.inject
 import org.mockito.kotlin.mock
@@ -31,35 +32,35 @@ class SettingsExporterTest : K9RobolectricTest() {
     fun exportPreferences_producesXML() {
         val document = exportPreferences(false, emptySet())
 
-        assertEquals("k9settings", document.rootElement.name)
+        assertThat(document.rootElement.name).isEqualTo("k9settings")
     }
 
     @Test
     fun exportPreferences_setsVersionToLatest() {
         val document = exportPreferences(false, emptySet())
 
-        assertEquals(Settings.VERSION.toString(), document.rootElement.getAttributeValue("version"))
+        assertThat(document.rootElement.getAttributeValue("version")).isEqualTo(Settings.VERSION.toString())
     }
 
     @Test
     fun exportPreferences_setsFormatTo1() {
         val document = exportPreferences(false, emptySet())
 
-        assertEquals("1", document.rootElement.getAttributeValue("format"))
+        assertThat(document.rootElement.getAttributeValue("format")).isEqualTo("1")
     }
 
     @Test
     fun exportPreferences_exportsGlobalSettingsWhenRequested() {
         val document = exportPreferences(true, emptySet())
 
-        assertNotNull(document.rootElement.getChild("global"))
+        assertThat(document.rootElement.getChild("global")).isNotNull()
     }
 
     @Test
     fun exportPreferences_ignoresGlobalSettingsWhenRequested() {
         val document = exportPreferences(false, emptySet())
 
-        assertNull(document.rootElement.getChild("global"))
+        assertThat(document.rootElement.getChild("global")).isNull()
     }
 
     private fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document {

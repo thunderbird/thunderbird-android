@@ -3,7 +3,7 @@ package com.fsck.k9.storage.messages
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
-import org.junit.Assert.fail
+import assertk.fail
 import org.junit.Test
 
 class ChunkedDatabaseOperationsTest {

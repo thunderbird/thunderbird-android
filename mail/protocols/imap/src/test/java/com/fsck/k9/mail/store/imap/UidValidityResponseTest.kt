@@ -1,8 +1,10 @@
 package com.fsck.k9.mail.store.imap
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.prop
 import org.junit.Test
 
 class UidValidityResponseTest {
@@ -12,8 +14,8 @@ class UidValidityResponseTest {
 
         val result = UidValidityResponse.parse(response)
 
-        assertNotNull(result)
-        assertEquals(23, result!!.uidValidity)
+        assertThat(result).isNotNull()
+            .prop(UidValidityResponse::uidValidity).isEqualTo(23)
     }
 
     @Test
@@ -22,8 +24,8 @@ class UidValidityResponseTest {
 
         val result = UidValidityResponse.parse(response)
 
-        assertNotNull(result)
-        assertEquals(42, result!!.uidValidity)
+        assertThat(result).isNotNull()
+            .prop(UidValidityResponse::uidValidity).isEqualTo(42)
     }
 
     @Test
@@ -58,6 +60,7 @@ class UidValidityResponseTest {
 
     private fun assertNotValid(response: String) {
         val result = UidValidityResponse.parse(ImapResponseHelper.createImapResponse(response))
-        assertNull(result)
+
+        assertThat(result).isNull()
     }
 }

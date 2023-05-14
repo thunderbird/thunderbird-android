@@ -1,7 +1,8 @@
 package com.fsck.k9.mail.internet
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.Address
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class MessageIdGeneratorTest {
@@ -20,7 +21,7 @@ class MessageIdGeneratorTest {
 
         val result = messageIdGenerator.generateMessageId(message)
 
-        assertEquals("<00000000-0000-4000-0000-000000000000@example.org>", result)
+        assertThat(result).isEqualTo("<00000000-0000-4000-0000-000000000000@example.org>")
     }
 
     @Test
@@ -31,7 +32,7 @@ class MessageIdGeneratorTest {
 
         val result = messageIdGenerator.generateMessageId(message)
 
-        assertEquals("<00000000-0000-4000-0000-000000000000@example.com>", result)
+        assertThat(result).isEqualTo("<00000000-0000-4000-0000-000000000000@example.com>")
     }
 
     @Test
@@ -40,6 +41,6 @@ class MessageIdGeneratorTest {
 
         val result = messageIdGenerator.generateMessageId(message)
 
-        assertEquals("<00000000-0000-4000-0000-000000000000@fallback.k9mail.app>", result)
+        assertThat(result).isEqualTo("<00000000-0000-4000-0000-000000000000@fallback.k9mail.app>")
     }
 }

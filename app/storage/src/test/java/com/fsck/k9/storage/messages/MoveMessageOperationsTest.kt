@@ -9,7 +9,6 @@ import assertk.assertions.startsWith
 import com.fsck.k9.K9
 import com.fsck.k9.storage.RobolectricTest
 import org.junit.Test
-import org.junit.Assert.fail as junitFail
 
 private const val SOURCE_FOLDER_ID = 3L
 private const val DESTINATION_FOLDER_ID = 23L
@@ -211,6 +210,4 @@ class MoveMessageOperationsTest : RobolectricTest() {
         assertThat(message.messagePartId).isNull()
         assertThat(message.encryptionType).isNull()
     }
-
-    private fun fail(message: String): Nothing = junitFail(message) as Nothing
 }

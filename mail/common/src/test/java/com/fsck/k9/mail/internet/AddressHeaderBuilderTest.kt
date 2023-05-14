@@ -1,8 +1,12 @@
 package com.fsck.k9.mail.internet
 
+import assertk.assertThat
+import assertk.assertions.hasMessage
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
+import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.crlf
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class AddressHeaderBuilderTest {
@@ -13,7 +17,7 @@ class AddressHeaderBuilderTest {
 
         val headerValue = AddressHeaderBuilder.createHeaderValue(addresses)
 
-        assertEquals("test@domain.example", headerValue)
+        assertThat(headerValue).isEqualTo("test@domain.example")
     }
 
     @Test
@@ -25,7 +29,7 @@ class AddressHeaderBuilderTest {
 
         val headerValue = AddressHeaderBuilder.createHeaderValue(addresses)
 
-        assertEquals("one@domain.example, two@domain.example", headerValue)
+        assertThat(headerValue).isEqualTo("one@domain.example, two@domain.example")
     }
 
     @Test
@@ -40,19 +44,22 @@ class AddressHeaderBuilderTest {
 
         val headerValue = AddressHeaderBuilder.createHeaderValue(addresses)
 
-        assertEquals(
+        assertThat(headerValue).isEqualTo(
             """
             |Person One <one@domain.example>,
             | "Person \"Long Email Address\" Two" <two+because.i.can@this.is.quite.some.domain.example>,
             | Person Three <three@domain.example>, Person Four <four@domain.example>,
             | Person Five <five@domain.example>
             """.trimMargin().crlf(),
-            headerValue,
         )
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun createHeaderValue_withoutAddresses_shouldThrow() {
-        AddressHeaderBuilder.createHeaderValue(emptyArray())
+        assertThat {
+            AddressHeaderBuilder.createHeaderValue(emptyArray())
+        }.isFailure()
+            .isInstanceOf(IllegalArgumentException::class)
+            .hasMessage("addresses must not be empty")
     }
 }
