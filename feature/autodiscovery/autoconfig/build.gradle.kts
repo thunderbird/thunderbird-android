@@ -10,5 +10,6 @@ dependencies {
     implementation(libs.okhttp)
 
     testImplementation(libs.kxml2)
+    testImplementation(libs.jsoup)
     testImplementation(libs.okhttp.mockwebserver)
 }
