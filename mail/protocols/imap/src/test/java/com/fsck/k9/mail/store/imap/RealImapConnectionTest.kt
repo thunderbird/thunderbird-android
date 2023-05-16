@@ -1,12 +1,12 @@
 package com.fsck.k9.mail.store.imap
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsExactly
 import assertk.assertions.hasMessage
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
@@ -128,10 +128,9 @@ class RealImapConnectionTest {
         imapConnection.open()
         imapConnection.close()
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(IllegalStateException::class)
+        }.isInstanceOf<IllegalStateException>()
             .hasMessage("open() called after close(). Check wrapped exception to see where close() was called.")
     }
 
@@ -142,10 +141,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.PLAIN)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled.")
 
         server.verifyConnectionClosed()
@@ -185,10 +183,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.PLAIN)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .prop(AuthenticationFailedException::messageFromServer)
             .isEqualTo("Go away")
 
@@ -208,10 +205,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.PLAIN)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(NegativeImapResponseException::class)
+        }.isInstanceOf<NegativeImapResponseException>()
             .message().isNotNull().contains("Maximum number of connections from user+IP exceeded")
 
         assertThat(imapConnection.isConnected).isFalse()
@@ -232,10 +228,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.PLAIN)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .prop(AuthenticationFailedException::messageFromServer)
             .isEqualTo("Login Failure")
 
@@ -288,10 +283,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.CRAM_MD5)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .prop(AuthenticationFailedException::messageFromServer)
             .isEqualTo("Who are you?")
 
@@ -306,10 +300,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.CRAM_MD5)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Server doesn't support encrypted passwords using CRAM-MD5.")
 
         server.verifyConnectionClosed()
@@ -393,10 +386,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.XOAUTH2)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .prop(AuthenticationFailedException::messageFromServer)
             .isEqualTo("SASL authentication failed")
     }
@@ -479,10 +471,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.XOAUTH2)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .prop(AuthenticationFailedException::messageFromServer)
             .isEqualTo("SASL authentication failed")
     }
@@ -530,10 +521,9 @@ class RealImapConnectionTest {
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.EXTERNAL)
 
         // FIXME: improve exception message
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(CertificateValidationException::class)
+        }.isInstanceOf<CertificateValidationException>()
             .message().isNotNull().contains("Bad certificate")
 
         server.verifyConnectionClosed()
@@ -547,10 +537,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.EXTERNAL)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(CertificateValidationException::class)
+        }.isInstanceOf<CertificateValidationException>()
             .prop(CertificateValidationException::getReason)
             .isEqualTo(CertificateValidationException.Reason.MissingCapability)
 
@@ -652,10 +641,9 @@ class RealImapConnectionTest {
         val settings = createImapSettings(host = "host name")
         val imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(UnknownHostException::class)
+        }.isInstanceOf<UnknownHostException>()
 
         assertThat(imapConnection.isConnected).isFalse()
     }
@@ -699,10 +687,9 @@ class RealImapConnectionTest {
         )
 
         // FIXME: CertificateValidationException seems wrong
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(CertificateValidationException::class)
+        }.isInstanceOf<CertificateValidationException>()
             .hasMessage("STARTTLS connection security not available")
 
         server.verifyConnectionClosed()
@@ -749,10 +736,9 @@ class RealImapConnectionTest {
             authType = AuthType.PLAIN,
         )
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(NegativeImapResponseException::class)
+        }.isInstanceOf<NegativeImapResponseException>()
             .hasMessage("Command: STARTTLS; response: #2# [NO]")
 
         server.verifyConnectionClosed()
@@ -801,10 +787,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, useCompression = true)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(IOException::class)
+        }.isInstanceOf<IOException>()
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -819,10 +804,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(IOException::class)
+        }.isInstanceOf<IOException>()
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -1058,10 +1042,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server)
 
-        assertThat {
+        assertFailure {
             imapConnection.executeSimpleCommand("CREATE Folder")
-        }.isFailure()
-            .isInstanceOf(NegativeImapResponseException::class)
+        }.isInstanceOf<NegativeImapResponseException>()
             .prop(NegativeImapResponseException::getLastResponse)
             .containsExactly("NO", "Folder exists")
 
@@ -1100,10 +1083,9 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server)
 
-        assertThat {
+        assertFailure {
             imapConnection.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .prop(AuthenticationFailedException::messageFromServer)
             .isEqualTo("AUTHENTICATE failed")
 

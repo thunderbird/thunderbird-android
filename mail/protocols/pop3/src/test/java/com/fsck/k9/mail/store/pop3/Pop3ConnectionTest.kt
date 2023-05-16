@@ -1,9 +1,8 @@
 package com.fsck.k9.mail.store.pop3
 
-import assertk.assertThat
+import assertk.assertFailure
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
@@ -162,10 +161,9 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = PLAIN)
 
-        assertThat {
+        assertFailure {
             createAndOpenPop3Connection(settings)
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
 
         server.verifyInteractionCompleted()
     }
@@ -197,10 +195,9 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = PLAIN)
 
-        assertThat {
+        assertFailure {
             createAndOpenPop3Connection(settings)
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
 
         server.verifyInteractionCompleted()
     }
@@ -233,10 +230,9 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = CRAM_MD5)
 
-        assertThat {
+        assertFailure {
             createAndOpenPop3Connection(settings)
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
 
         server.verifyInteractionCompleted()
     }
@@ -273,10 +269,9 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = CRAM_MD5)
 
-        assertThat {
+        assertFailure {
             createAndOpenPop3Connection(settings)
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
 
         server.verifyInteractionCompleted()
     }
@@ -303,10 +298,9 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = EXTERNAL)
 
-        assertThat {
+        assertFailure {
             createAndOpenPop3Connection(settings)
-        }.isFailure()
-            .isInstanceOf(CertificateValidationException::class.java)
+        }.isInstanceOf<CertificateValidationException>()
             .prop(CertificateValidationException::getReason)
             .isEqualTo(CertificateValidationException.Reason.MissingCapability)
 
@@ -323,10 +317,9 @@ class Pop3ConnectionTest {
         }
         val settings = server.createSettings(authType = EXTERNAL)
 
-        assertThat {
+        assertFailure {
             createAndOpenPop3Connection(settings)
-        }.isFailure()
-            .isInstanceOf(CertificateValidationException::class.java)
+        }.isInstanceOf<CertificateValidationException>()
             .hasMessage("POP3 client certificate authentication failed: -ERR Invalid certificate")
 
         server.verifyInteractionCompleted()

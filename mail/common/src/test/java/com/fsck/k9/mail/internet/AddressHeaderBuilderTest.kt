@@ -1,9 +1,9 @@
 package com.fsck.k9.mail.internet
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.crlf
@@ -56,10 +56,9 @@ class AddressHeaderBuilderTest {
 
     @Test
     fun createHeaderValue_withoutAddresses_shouldThrow() {
-        assertThat {
+        assertFailure {
             AddressHeaderBuilder.createHeaderValue(emptyArray())
-        }.isFailure()
-            .isInstanceOf(IllegalArgumentException::class)
+        }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("addresses must not be empty")
     }
 }

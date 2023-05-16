@@ -1,8 +1,8 @@
 package com.fsck.k9.mail
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
@@ -69,10 +69,9 @@ class MimeTypeTest {
     }
 
     private fun assertInvalidMimeType(input: String) {
-        assertThat {
+        assertFailure {
             input.toMimeType()
-        }.isFailure()
-            .isInstanceOf(IllegalArgumentException::class)
+        }.isInstanceOf<IllegalArgumentException>()
             .message().isNotNull().startsWith("Invalid MIME type: ")
     }
 

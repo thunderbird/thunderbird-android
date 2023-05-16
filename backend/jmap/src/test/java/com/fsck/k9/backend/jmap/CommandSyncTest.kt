@@ -56,7 +56,7 @@ class CommandSyncTest {
 
         assertThat(syncListener.getNextEvent()).isEqualTo(SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID))
         val failedEvent = syncListener.getNextEvent() as SyncListenerEvent.SyncFailed
-        assertThat(failedEvent.exception).isNotNull().isInstanceOf(AuthenticationFailedException::class)
+        assertThat(failedEvent.exception).isNotNull().isInstanceOf<AuthenticationFailedException>()
     }
 
     @Test

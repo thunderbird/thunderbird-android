@@ -1,9 +1,9 @@
 package com.fsck.k9
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
@@ -67,10 +67,9 @@ class ServerSettingsSerializerTest {
             }
         """.trimIndent()
 
-        assertThat {
+        assertFailure {
             serverSettingsSerializer.deserialize(json)
-        }.isFailure()
-            .isInstanceOf(IllegalArgumentException::class)
+        }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("'type' must not be missing")
     }
 }

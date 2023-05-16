@@ -2,11 +2,11 @@ package com.fsck.k9.mailstore
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import com.fsck.k9.Account
@@ -77,10 +77,9 @@ class K9BackendFolderTest : K9RobolectricTest() {
     fun saveCompleteMessage_withoutServerId_shouldThrow() {
         val message = createMessage(messageServerId = null)
 
-        assertThat {
+        assertFailure {
             backendFolder.saveMessage(message, MessageDownloadState.FULL)
-        }.isFailure()
-            .isInstanceOf(IllegalStateException::class)
+        }.isInstanceOf<IllegalStateException>()
             .hasMessage("Message requires a server ID to be set")
     }
 
@@ -88,10 +87,9 @@ class K9BackendFolderTest : K9RobolectricTest() {
     fun savePartialMessage_withoutServerId_shouldThrow() {
         val message = createMessage(messageServerId = null)
 
-        assertThat {
+        assertFailure {
             backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
-        }.isFailure()
-            .isInstanceOf(IllegalStateException::class)
+        }.isInstanceOf<IllegalStateException>()
             .hasMessage("Message requires a server ID to be set")
     }
 

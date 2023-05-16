@@ -1,5 +1,6 @@
 package assertk.assertions
 
+import assertk.assertFailure
 import assertk.assertThat
 import kotlin.test.Test
 
@@ -16,13 +17,8 @@ class ListExtensionsKtTest {
     fun `containsNoDuplicates() should fail with duplicates`() {
         val list = listOf("a", "b", "c", "a", "a")
 
-        assertThat {
+        assertFailure {
             assertThat(list).containsNoDuplicates()
-        }.isFailure()
-            .hasMessage(
-                """
-                expected to contain no duplicates but found: <["a", "a"]>
-                """.trimIndent(),
-            )
+        }.hasMessage("""expected to contain no duplicates but found: <["a", "a"]>""")
     }
 }

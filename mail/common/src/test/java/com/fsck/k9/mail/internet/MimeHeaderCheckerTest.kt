@@ -1,9 +1,7 @@
 package com.fsck.k9.mail.internet
 
-import assertk.assertThat
-import assertk.assertions.isFailure
+import assertk.assertFailure
 import assertk.assertions.isInstanceOf
-import assertk.assertions.isSuccess
 import org.junit.Test
 
 class MimeHeaderCheckerTest {
@@ -200,17 +198,14 @@ class MimeHeaderCheckerTest {
     private fun assertValidHeader(header: String) {
         val (name, value) = header.split(": ", limit = 2)
 
-        assertThat {
-            MimeHeaderChecker.checkHeader(name, value)
-        }.isSuccess()
+        MimeHeaderChecker.checkHeader(name, value)
     }
 
     private fun assertInvalidHeader(header: String) {
         val (name, value) = header.split(": ", limit = 2)
 
-        assertThat {
+        assertFailure {
             MimeHeaderChecker.checkHeader(name, value)
-        }.isFailure()
-            .isInstanceOf(MimeHeaderParserException::class)
+        }.isInstanceOf<MimeHeaderParserException>()
     }
 }

@@ -226,11 +226,11 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val message = captor.value
         assertThat(message.mimeType).isEqualTo("multipart/signed")
 
-        assertThat(message.body).isInstanceOf(MimeMultipart::class).all {
+        assertThat(message.body).isInstanceOf<MimeMultipart>().all {
             bodyParts().hasSize(2)
             bodyPart(0).all {
                 contentType().value().isEqualTo("text/plain")
-                body().isInstanceOf(TextBody::class).all {
+                body().isInstanceOf<TextBody>().all {
                     contentTransferEncoding().isEqualTo(MimeUtil.ENC_QUOTED_PRINTABLE)
                     asText().isEqualTo(TEST_MESSAGE_TEXT)
                 }
@@ -559,7 +559,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         assertThat(message).all {
             mimeType().isEqualTo("multipart/encrypted")
-            body().isInstanceOf(MimeMultipart::class).all {
+            body().isInstanceOf<MimeMultipart>().all {
                 bodyParts().hasSize(2)
                 bodyPart(0).all {
                     contentType().value().isEqualTo("application/pgp-encrypted")
@@ -570,7 +570,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                         value().isEqualTo("application/octet-stream")
                         parameter("name").isEqualTo("encrypted.asc")
                     }
-                    body().isInstanceOf(BinaryTempFileBody::class)
+                    body().isInstanceOf<BinaryTempFileBody>()
                         .contentTransferEncoding().isEqualTo(MimeUtil.ENC_7BIT)
                 }
             }
@@ -619,7 +619,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val message = captor.value
         assertThat(message).all {
             mimeType().isEqualTo("text/plain")
-            body().isInstanceOf(BinaryTempFileBody::class)
+            body().isInstanceOf<BinaryTempFileBody>()
                 .contentTransferEncoding().isEqualTo(MimeUtil.ENC_7BIT)
         }
 

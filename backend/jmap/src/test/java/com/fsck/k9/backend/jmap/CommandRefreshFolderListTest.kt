@@ -1,10 +1,10 @@
 package com.fsck.k9.backend.jmap
 
 import app.k9mail.backend.testing.InMemoryBackendStorage
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import assertk.fail
@@ -28,10 +28,9 @@ class CommandRefreshFolderListTest {
             MockResponse().setResponseCode(401),
         )
 
-        assertThat {
+        assertFailure {
             command.refreshFolderList()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
     }
 
     @Test
@@ -40,10 +39,9 @@ class CommandRefreshFolderListTest {
             MockResponse().setBody("invalid"),
         )
 
-        assertThat {
+        assertFailure {
             command.refreshFolderList()
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .transform { it.isPermanentFailure }.isTrue()
     }
 

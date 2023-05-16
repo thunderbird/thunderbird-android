@@ -1,11 +1,11 @@
 package com.fsck.k9.preferences
 
 import android.content.Context
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsOnly
 import assertk.assertions.isEmpty
-import assertk.assertions.isFailure
 import assertk.assertions.isSameAs
 import assertk.assertions.isTrue
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
@@ -63,10 +63,9 @@ class StoragePersisterTest : K9RobolectricTest() {
             },
         )
 
-        assertThat {
+        assertFailure {
             storagePersister.doInTransaction(operationCallback)
-        }.isFailure()
-            .isSameAs(exception)
+        }.isSameAs(exception)
 
         val values = storagePersister.loadValues()
 

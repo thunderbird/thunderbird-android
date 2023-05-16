@@ -43,11 +43,11 @@ class MimePartStreamParserTest {
 
         val bodyPart = MimePartStreamParser.parse(null, ByteArrayInputStream(messageContent.toByteArray()))
 
-        assertThat(bodyPart.body).isInstanceOf(MimeMultipart::class).all {
+        assertThat(bodyPart.body).isInstanceOf<MimeMultipart>().all {
             bodyParts().hasSize(2)
             bodyPart(1).all {
                 mimeType().isEqualTo("message/rfc822")
-                body().isInstanceOf(MimeMessage::class)
+                body().isInstanceOf<MimeMessage>()
             }
         }
     }
@@ -80,11 +80,11 @@ class MimePartStreamParserTest {
 
         val bodyPart = MimePartStreamParser.parse(null, ByteArrayInputStream(messageContent.toByteArray()))
 
-        assertThat(bodyPart.body).isInstanceOf(MimeMultipart::class).all {
+        assertThat(bodyPart.body).isInstanceOf<MimeMultipart>().all {
             bodyParts().hasSize(2)
             bodyPart(1).all {
                 mimeType().isEqualTo("message/rfc822")
-                body().isInstanceOf(DeferredFileBody::class)
+                body().isInstanceOf<DeferredFileBody>()
             }
         }
     }
