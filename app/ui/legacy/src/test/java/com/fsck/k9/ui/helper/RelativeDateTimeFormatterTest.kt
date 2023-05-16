@@ -3,13 +3,14 @@ package com.fsck.k9.ui.helper
 import android.os.Build
 import android.os.SystemClock
 import app.k9mail.core.testing.TestClock
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fsck.k9.RobolectricTest
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.TimeZone
 import kotlinx.datetime.Instant
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
@@ -39,7 +40,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         val displayDate = dateTimeFormatter.formatDate(date)
 
-        assertEquals("May 18", displayDate)
+        assertThat(displayDate).isEqualTo("May 18")
     }
 
     @Test
@@ -49,7 +50,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         val displayDate = dateTimeFormatter.formatDate(date)
 
-        assertEquals("3:41 PM", displayDate)
+        assertThat(displayDate).isEqualTo("3:41 PM")
     }
 
     @Test
@@ -59,7 +60,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         val displayDate = dateTimeFormatter.formatDate(date)
 
-        assertEquals("9:42 AM", displayDate)
+        assertThat(displayDate).isEqualTo("9:42 AM")
     }
 
     @Test
@@ -69,7 +70,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         val displayDate = dateTimeFormatter.formatDate(date)
 
-        assertEquals("Sat", displayDate)
+        assertThat(displayDate).isEqualTo("Sat")
     }
 
     @Test
@@ -79,7 +80,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         val displayDate = dateTimeFormatter.formatDate(date)
 
-        assertEquals("Mon", displayDate)
+        assertThat(displayDate).isEqualTo("Mon")
     }
 
     @Test
@@ -89,7 +90,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         val displayDate = dateTimeFormatter.formatDate(date)
 
-        assertEquals("May 10", displayDate)
+        assertThat(displayDate).isEqualTo("May 10")
     }
 
     @Test
@@ -99,7 +100,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         val displayDate = dateTimeFormatter.formatDate(date)
 
-        assertEquals("May 10", displayDate)
+        assertThat(displayDate).isEqualTo("May 10")
     }
 
     @Test
@@ -109,7 +110,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         val displayDate = dateTimeFormatter.formatDate(date)
 
-        assertEquals("Jan 1", displayDate)
+        assertThat(displayDate).isEqualTo("Jan 1")
     }
 
     @Test
@@ -119,7 +120,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         val displayDate = dateTimeFormatter.formatDate(date)
 
-        assertEquals("12/31/2019", displayDate)
+        assertThat(displayDate).isEqualTo("12/31/2019")
     }
 
     private fun setClockTo(time: String) {

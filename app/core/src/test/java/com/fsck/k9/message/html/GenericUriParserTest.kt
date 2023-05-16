@@ -5,7 +5,8 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
-import kotlin.test.assertNotNull
+import assertk.assertions.isNotNull
+import assertk.assertions.prop
 import org.junit.Test
 
 class GenericUriParserTest {
@@ -86,8 +87,7 @@ class GenericUriParserTest {
     private fun assertUriValid(input: String) {
         val result = parser.parseUri(input, 0)
 
-        assertNotNull(result) { uriMatch ->
-            assertThat(uriMatch.uri).isEqualTo(input)
-        }
+        assertThat(result).isNotNull()
+            .prop(UriMatch::uri).isEqualTo(input)
     }
 }

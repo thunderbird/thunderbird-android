@@ -8,4 +8,5 @@ dependencies {
 
     implementation(libs.okio)
     implementation(libs.junit)
+    implementation(libs.assertk)
 }

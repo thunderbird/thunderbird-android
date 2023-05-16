@@ -12,6 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import app.k9mail.core.testing.TestClock
+import assertk.Assert
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
+import assertk.assertions.support.expected
 import com.fsck.k9.Account
 import com.fsck.k9.FontSizes
 import com.fsck.k9.FontSizes.FONT_DEFAULT
@@ -23,10 +28,6 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.textString
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.robolectric.Robolectric
@@ -49,7 +50,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.accountChipView.isVisible)
+        assertThat(view.accountChipView).isVisible()
     }
 
     @Test
@@ -58,7 +59,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.accountChipView.isGone)
+        assertThat(view.accountChipView).isGone()
     }
 
     @Test
@@ -67,7 +68,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.starView.isGone)
+        assertThat(view.starView).isGone()
     }
 
     @Test
@@ -76,7 +77,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.starView.isVisible)
+        assertThat(view.starView).isVisible()
     }
 
     @Test
@@ -86,7 +87,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertTrue(view.starView.isSelected)
+        assertThat(view.starView).isSelected()
     }
 
     @Test
@@ -96,7 +97,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertFalse(view.starView.isSelected)
+        assertThat(view.starView).isNotSelected()
     }
 
     @Test
@@ -105,7 +106,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.contactPictureContainerView.isGone)
+        assertThat(view.contactPictureContainerView).isGone()
     }
 
     @Test
@@ -114,7 +115,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.contactPictureContainerView.isVisible)
+        assertThat(view.contactPictureContainerView).isVisible()
     }
 
     @Test
@@ -124,7 +125,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertTrue(view.threadCountView.isGone)
+        assertThat(view.threadCountView).isGone()
     }
 
     @Test
@@ -134,8 +135,8 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertTrue(view.threadCountView.isVisible)
-        assertEquals("13", view.threadCountView.textString)
+        assertThat(view.threadCountView).isVisible()
+        assertThat(view.threadCountView.textString).isEqualTo("13")
     }
 
     @Test
@@ -145,7 +146,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertEquals("Subject", view.firstLineView.textString)
+        assertThat(view.firstLineView.textString).isEqualTo("Subject")
     }
 
     @Test
@@ -155,7 +156,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertEquals("Display Name", view.firstLineView.textString)
+        assertThat(view.firstLineView.textString).isEqualTo("Display Name")
     }
 
     @Test
@@ -165,7 +166,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertEquals("Display Name", view.secondLineView.textString)
+        assertThat(view.secondLineView.textString).isEqualTo("Display Name")
     }
 
     @Test
@@ -175,7 +176,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertEquals(secondLine("Display Name", "Preview"), view.secondLineView.textString)
+        assertThat(view.secondLineView.textString).isEqualTo(secondLine("Display Name", "Preview"))
     }
 
     @Test
@@ -185,7 +186,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertEquals("Subject", view.secondLineView.textString)
+        assertThat(view.secondLineView.textString).isEqualTo("Subject")
     }
 
     @Test
@@ -195,7 +196,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertEquals(secondLine("Subject", "Preview"), view.secondLineView.textString)
+        assertThat(view.secondLineView.textString).isEqualTo(secondLine("Subject", "Preview"))
     }
 
     @Test
@@ -205,7 +206,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertTrue(view.firstLineView.containsNoSubjectIndicator())
+        assertThat(view.firstLineView.textString).isMissingSubjectText()
     }
 
     @Test
@@ -215,7 +216,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertTrue(view.firstLineView.containsNoSubjectIndicator())
+        assertThat(view.firstLineView.textString).isMissingSubjectText()
     }
 
     @Test
@@ -225,7 +226,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertTrue(view.attachmentCountView.isGone)
+        assertThat(view.attachmentCountView).isGone()
     }
 
     @Test
@@ -235,7 +236,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView(messageListItem)
 
-        assertTrue(view.attachmentCountView.isVisible)
+        assertThat(view.attachmentCountView).isVisible()
     }
 
     @Test
@@ -247,7 +248,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(FIRST_LINE_DEFAULT_FONT_SIZE, view.firstLineView.textSize)
+        assertThat(view.firstLineView.textSize).isEqualTo(FIRST_LINE_DEFAULT_FONT_SIZE)
     }
 
     @Test
@@ -259,7 +260,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(22f, view.firstLineView.textSize)
+        assertThat(view.firstLineView.textSize).isEqualTo(22f)
     }
 
     @Test
@@ -271,7 +272,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(FIRST_LINE_DEFAULT_FONT_SIZE, view.firstLineView.textSize)
+        assertThat(view.firstLineView.textSize).isEqualTo(FIRST_LINE_DEFAULT_FONT_SIZE)
     }
 
     @Test
@@ -283,7 +284,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(22f, view.firstLineView.textSize)
+        assertThat(view.firstLineView.textSize).isEqualTo(22f)
     }
 
     @Test
@@ -295,7 +296,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertNull(view.secondLineView.getFirstAbsoluteSizeSpanValueOrNull())
+        assertThat(view.secondLineView.text).firstAbsoluteSizeSpanValue().isNull()
     }
 
     @Test
@@ -307,7 +308,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(22, view.secondLineView.getFirstAbsoluteSizeSpanValueOrNull())
+        assertThat(view.secondLineView.text).firstAbsoluteSizeSpanValue().isEqualTo(22)
     }
 
     @Test
@@ -319,7 +320,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertNull(view.secondLineView.getFirstAbsoluteSizeSpanValueOrNull())
+        assertThat(view.secondLineView.text).firstAbsoluteSizeSpanValue().isNull()
     }
 
     @Test
@@ -331,7 +332,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(22, view.secondLineView.getFirstAbsoluteSizeSpanValueOrNull())
+        assertThat(view.secondLineView.text).firstAbsoluteSizeSpanValue().isEqualTo(22)
     }
 
     @Test
@@ -340,7 +341,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(DATE_DEFAULT_FONT_SIZE, view.dateView.textSize)
+        assertThat(view.dateView.textSize).isEqualTo(DATE_DEFAULT_FONT_SIZE)
     }
 
     @Test
@@ -349,7 +350,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(22f, view.dateView.textSize)
+        assertThat(view.dateView.textSize).isEqualTo(22f)
     }
 
     @Test
@@ -361,7 +362,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(SECOND_LINE_DEFAULT_FONT_SIZE, view.secondLineView.textSize)
+        assertThat(view.secondLineView.textSize).isEqualTo(SECOND_LINE_DEFAULT_FONT_SIZE)
     }
 
     @Test
@@ -373,7 +374,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertEquals(22f, view.secondLineView.textSize)
+        assertThat(view.secondLineView.textSize).isEqualTo(22f)
     }
 
     fun createFontSizes(
@@ -486,10 +487,36 @@ class MessageListAdapterTest : RobolectricTest() {
     val View.attachmentCountView: View get() = findViewById(R.id.attachment)
     val View.dateView: TextView get() = findViewById(R.id.date)
 
-    fun TextView.containsNoSubjectIndicator() = textString.contains(context.getString(R.string.general_no_subject))
+    private fun Assert<View>.isVisible() = given { actual ->
+        if (!actual.isVisible) {
+            expected("View to be visible ($actual)")
+        }
+    }
 
-    fun TextView.getFirstAbsoluteSizeSpanValueOrNull(): Int? {
+    private fun Assert<View>.isGone() = given { actual ->
+        if (!actual.isGone) {
+            expected("View to be gone ($actual)")
+        }
+    }
+
+    private fun Assert<View>.isSelected() = given { actual ->
+        if (!actual.isSelected) {
+            expected("View to be selected ($actual)")
+        }
+    }
+
+    private fun Assert<View>.isNotSelected() = given { actual ->
+        if (actual.isSelected) {
+            expected("View to not be selected ($actual)")
+        }
+    }
+
+    private fun Assert<CharSequence>.isMissingSubjectText() {
+        isEqualTo(context.getString(R.string.general_no_subject))
+    }
+
+    private fun Assert<CharSequence>.firstAbsoluteSizeSpanValue() = transform { text ->
         val spans = (text as Spannable).getSpans(0, text.length, AbsoluteSizeSpan::class.java)
-        return spans.firstOrNull()?.size
+        spans.firstOrNull()?.size
     }
 }

@@ -1,13 +1,16 @@
 package com.fsck.k9.preferences
 
 import android.content.Context
+import assertk.assertThat
+import assertk.assertions.contains
+import assertk.assertions.containsOnly
+import assertk.assertions.isEmpty
+import assertk.assertions.isFailure
+import assertk.assertions.isSameAs
+import assertk.assertions.isTrue
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
 import com.fsck.k9.storage.K9RobolectricTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.inOrder
@@ -39,16 +42,15 @@ class StoragePersisterTest : K9RobolectricTest() {
         val operationCallback = prepareCallback(
             persistOp = { ops -> ops.put("x", "y") },
             onSuccess = { map ->
-                assertEquals(1, map.size)
-                assertEquals("y", map["x"])
+                assertThat(map).containsOnly("x" to "y")
             },
         )
 
         storagePersister.doInTransaction(operationCallback)
 
         val values = storagePersister.loadValues().all
-        assertEquals(1, values.size)
-        assertEquals("y", values["x"])
+
+        assertThat(values).containsOnly("x" to "y")
     }
 
     @Test
@@ -61,15 +63,14 @@ class StoragePersisterTest : K9RobolectricTest() {
             },
         )
 
-        try {
+        assertThat {
             storagePersister.doInTransaction(operationCallback)
-            fail("expected exception")
-        } catch (e: Exception) {
-            assertSame(exception, e)
-        }
+        }.isFailure()
+            .isSameAs(exception)
 
         val values = storagePersister.loadValues()
-        assertTrue(values.isEmpty())
+
+        assertThat(values.isEmpty).isTrue()
         verify(operationCallback, never()).onPersistTransactionSuccess(any())
     }
 
@@ -78,26 +79,32 @@ class StoragePersisterTest : K9RobolectricTest() {
         val operationCallback = prepareCallback(
             before = { map -> map["x"] = "y" },
             persistOp = { ops -> ops.remove("x") },
-            onSuccess = { map -> assertTrue(map.isEmpty()) },
+            onSuccess = { map ->
+                assertThat(map).isEmpty()
+            },
         )
 
         storagePersister.doInTransaction(operationCallback)
 
         val values = storagePersister.loadValues()
-        assertTrue(values.isEmpty())
+
+        assertThat(values.isEmpty).isTrue()
     }
 
     @Test
     fun doInTransaction_before_preserveButNotPersist() {
         val operationCallback = prepareCallback(
             before = { map -> map["x"] = "y" },
-            onSuccess = { map -> assertEquals("y", map["x"]) },
+            onSuccess = { map ->
+                assertThat(map).contains(key = "x", value = "y")
+            },
         )
 
         storagePersister.doInTransaction(operationCallback)
 
         val values = storagePersister.loadValues()
-        assertTrue(values.isEmpty())
+
+        assertThat(values.isEmpty).isTrue()
     }
 
     private fun prepareCallback(

@@ -1,10 +1,11 @@
 package com.fsck.k9
 
 import app.k9mail.core.testing.TestClock
+import assertk.assertThat
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import java.util.Calendar
 import kotlinx.datetime.Instant
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class QuietTimeCheckerTest {
@@ -15,7 +16,7 @@ class QuietTimeCheckerTest {
         setClockTo("02:00")
         val quietTimeChecker = QuietTimeChecker(clock, "22:30", "06:45")
 
-        assertTrue(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isTrue()
     }
 
     @Test
@@ -23,7 +24,7 @@ class QuietTimeCheckerTest {
         setClockTo("10:00")
         val quietTimeChecker = QuietTimeChecker(clock, "22:30", "06:45")
 
-        assertFalse(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isFalse()
     }
 
     @Test
@@ -31,7 +32,7 @@ class QuietTimeCheckerTest {
         setClockTo("23:00")
         val quietTimeChecker = QuietTimeChecker(clock, "22:30", "06:45")
 
-        assertTrue(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isTrue()
     }
 
     @Test
@@ -39,7 +40,7 @@ class QuietTimeCheckerTest {
         setClockTo("22:30")
         val quietTimeChecker = QuietTimeChecker(clock, "22:30", "06:45")
 
-        assertTrue(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isTrue()
     }
 
     @Test
@@ -47,7 +48,7 @@ class QuietTimeCheckerTest {
         setClockTo("06:45")
         val quietTimeChecker = QuietTimeChecker(clock, "22:30", "06:45")
 
-        assertTrue(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isTrue()
     }
 
     @Test
@@ -55,7 +56,7 @@ class QuietTimeCheckerTest {
         setClockTo("02:00")
         val quietTimeChecker = QuietTimeChecker(clock, "09:00", "17:00")
 
-        assertFalse(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isFalse()
     }
 
     @Test
@@ -63,7 +64,7 @@ class QuietTimeCheckerTest {
         setClockTo("10:00")
         val quietTimeChecker = QuietTimeChecker(clock, "09:00", "17:00")
 
-        assertTrue(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isTrue()
     }
 
     @Test
@@ -71,7 +72,7 @@ class QuietTimeCheckerTest {
         setClockTo("20:00")
         val quietTimeChecker = QuietTimeChecker(clock, "09:00", "17:00")
 
-        assertFalse(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isFalse()
     }
 
     @Test
@@ -79,7 +80,7 @@ class QuietTimeCheckerTest {
         setClockTo("09:00")
         val quietTimeChecker = QuietTimeChecker(clock, "09:00", "17:00")
 
-        assertTrue(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isTrue()
     }
 
     @Test
@@ -87,7 +88,7 @@ class QuietTimeCheckerTest {
         setClockTo("17:00")
         val quietTimeChecker = QuietTimeChecker(clock, "09:00", "17:00")
 
-        assertTrue(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isTrue()
     }
 
     @Test
@@ -95,7 +96,7 @@ class QuietTimeCheckerTest {
         setClockTo("10:00")
         val quietTimeChecker = QuietTimeChecker(clock, "06:00", "06:00")
 
-        assertFalse(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isFalse()
     }
 
     @Test
@@ -103,7 +104,7 @@ class QuietTimeCheckerTest {
         setClockTo("06:00")
         val quietTimeChecker = QuietTimeChecker(clock, "06:00", "06:00")
 
-        assertFalse(quietTimeChecker.isQuietTime)
+        assertThat(quietTimeChecker.isQuietTime).isFalse()
     }
 
     private fun setClockTo(time: String) {

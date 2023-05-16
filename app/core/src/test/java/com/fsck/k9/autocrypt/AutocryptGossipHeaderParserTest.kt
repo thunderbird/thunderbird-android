@@ -1,12 +1,16 @@
 package com.fsck.k9.autocrypt
 
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.extracting
+import assertk.assertions.index
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import com.fsck.k9.mail.crlf
 import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.mailstore.MimePartStreamParser
-import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Test
 
 class AutocryptGossipHeaderParserTest {
@@ -56,20 +60,24 @@ class AutocryptGossipHeaderParserTest {
         val gossipPart = MimePartStreamParser.parse(null, GOSSIP_PART.byteInputStream())
         val allAutocryptGossipHeaders = autocryptGossipHeaderParser.getAllAutocryptGossipHeaders(gossipPart)
 
-        assertEquals("text/plain", gossipPart.mimeType)
-        assertEquals(2, allAutocryptGossipHeaders.size)
-        assertEquals("bob@autocrypt.example", allAutocryptGossipHeaders[0].addr)
-        assertEquals("carol@autocrypt.example", allAutocryptGossipHeaders[1].addr)
-        assertArrayEquals(GOSSIP_DATA_BOB, allAutocryptGossipHeaders[0].keyData)
+        assertThat(gossipPart.mimeType).isEqualTo("text/plain")
+        assertThat(allAutocryptGossipHeaders).all {
+            extracting { it.addr }.containsExactly(
+                "bob@autocrypt.example",
+                "carol@autocrypt.example",
+            )
+            index(0).transform { it.keyData }.isEqualTo(GOSSIP_DATA_BOB)
+        }
     }
 
     @Test
     fun parseString() {
         val gossipHeader = autocryptGossipHeaderParser.parseAutocryptGossipHeader(GOSSIP_HEADER_BOB)
 
-        gossipHeader!!
-        assertArrayEquals(GOSSIP_DATA_BOB, gossipHeader.keyData)
-        assertEquals(GOSSIP_RAW_HEADER_BOB, gossipHeader.toRawHeaderString())
+        assertThat(gossipHeader).isNotNull().all {
+            transform { it.keyData }.isEqualTo(GOSSIP_DATA_BOB)
+            transform { it.toRawHeaderString() }.isEqualTo(GOSSIP_RAW_HEADER_BOB)
+        }
     }
 
     @Test
@@ -78,7 +86,7 @@ class AutocryptGossipHeaderParserTest {
             "addr=CDEF",
         )
 
-        assertNull(gossipHeader)
+        assertThat(gossipHeader).isNull()
     }
 
     @Test
@@ -87,7 +95,7 @@ class AutocryptGossipHeaderParserTest {
             "addr=bawb; somecritical=value; keydata=aGk",
         )
 
-        assertNull(gossipHeader)
+        assertThat(gossipHeader).isNull()
     }
 
     @Test
@@ -96,7 +104,7 @@ class AutocryptGossipHeaderParserTest {
             "addr=bawb; _somenoncritical=value; keydata=aGk",
         )
 
-        assertNotNull(gossipHeader)
+        assertThat(gossipHeader).isNotNull()
     }
 
     @Test
@@ -105,6 +113,6 @@ class AutocryptGossipHeaderParserTest {
             "addr=bawb; _somenoncritical=value; keydata=X",
         )
 
-        assertNull(gossipHeader)
+        assertThat(gossipHeader).isNull()
     }
 }
