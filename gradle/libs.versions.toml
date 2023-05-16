@@ -177,6 +177,7 @@ shared-jvm-androidtest-compose = [
   "androidx-compose-ui-test-junit4",
 ]
 shared-jvm-test = [
+  "kotlin-test",
   "junit",
   "assertk",
   "mockito-core",
