@@ -1,10 +1,10 @@
 package com.fsck.k9.storage.messages
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
@@ -482,10 +482,9 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
 
     @Test
     fun `get 'more messages' value from non-existent folder`() {
-        assertThat {
+        assertFailure {
             retrieveFolderOperations.hasMoreMessages(23)
-        }.isFailure()
-            .isInstanceOf(FolderNotFoundException::class)
+        }.isInstanceOf<FolderNotFoundException>()
             .transform { it.folderId }.isEqualTo(23)
     }
 

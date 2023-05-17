@@ -3,10 +3,10 @@ package app.k9mail.autodiscovery.autoconfig
 import app.k9mail.autodiscovery.api.DiscoveredServerSettings
 import app.k9mail.autodiscovery.api.DiscoveryResults
 import assertk.all
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.hasMessage
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.prop
@@ -194,10 +194,9 @@ class AutoconfigParserTest {
             element("emailProvider").removeAttr("id")
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'emailProvider.id' attribute")
     }
 
@@ -207,10 +206,9 @@ class AutoconfigParserTest {
             element("emailProvider").attr("id", "-23")
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Invalid 'emailProvider.id' attribute")
     }
 
@@ -220,10 +218,9 @@ class AutoconfigParserTest {
             element("emailProvider > domain").remove()
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Valid 'domain' element required")
     }
 
@@ -233,10 +230,9 @@ class AutoconfigParserTest {
             element("emailProvider > domain").text("-invalid")
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Valid 'domain' element required")
     }
 
@@ -246,10 +242,9 @@ class AutoconfigParserTest {
             element("incomingServer").remove()
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'incomingServer' element")
     }
 
@@ -259,10 +254,9 @@ class AutoconfigParserTest {
             element("outgoingServer").remove()
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'outgoingServer' element")
     }
 
@@ -272,10 +266,9 @@ class AutoconfigParserTest {
             element("incomingServer > hostname").remove()
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'hostname' element")
     }
 
@@ -285,10 +278,9 @@ class AutoconfigParserTest {
             element("incomingServer > hostname").text("in valid")
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Invalid 'hostname' value: 'in valid'")
     }
 
@@ -298,10 +290,9 @@ class AutoconfigParserTest {
             element("incomingServer > port").remove()
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'port' element")
     }
 
@@ -311,10 +302,9 @@ class AutoconfigParserTest {
             element("incomingServer > socketType").remove()
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'socketType' element")
     }
 
@@ -324,10 +314,9 @@ class AutoconfigParserTest {
             element("incomingServer > authentication").remove()
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("No usable 'authentication' element found")
     }
 
@@ -337,10 +326,9 @@ class AutoconfigParserTest {
             element("incomingServer > username").remove()
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'username' element")
     }
 
@@ -350,10 +338,9 @@ class AutoconfigParserTest {
             element("incomingServer > port").text("invalid")
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Invalid 'port' value: 'invalid'")
     }
 
@@ -363,10 +350,9 @@ class AutoconfigParserTest {
             element("incomingServer > port").text("100000")
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Invalid 'port' value: '100000'")
     }
 
@@ -376,10 +362,9 @@ class AutoconfigParserTest {
             element("incomingServer > socketType").text("TLS")
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Unknown 'socketType' value: 'TLS'")
     }
 
@@ -389,10 +374,9 @@ class AutoconfigParserTest {
             element("incomingServer > hostname").html("imap.domain.example<element/>")
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Expected text, but got START_TAG")
     }
 
@@ -402,10 +386,9 @@ class AutoconfigParserTest {
             element("emailProvider").tagName("madeUpTag")
         }
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "user@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'emailProvider' element")
     }
 
@@ -413,10 +396,9 @@ class AutoconfigParserTest {
     fun `non XML data should throw`() {
         val inputStream = "invalid".byteInputStream()
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "irrelevant@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Error parsing Autoconfig XML")
     }
 
@@ -429,10 +411,9 @@ class AutoconfigParserTest {
             <serverConfig></serverConfig>
             """.trimIndent().byteInputStream()
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "irrelevant@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'clientConfig' element")
     }
 
@@ -462,10 +443,9 @@ class AutoconfigParserTest {
             </clientConfig>
             """.trimIndent().byteInputStream()
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "irrelevant@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Error parsing Autoconfig XML")
     }
 
@@ -479,10 +459,9 @@ class AutoconfigParserTest {
               <emailProvider id="domain.example">
             """.trimIndent().byteInputStream()
 
-        assertThat {
+        assertFailure {
             parser.parseSettings(inputStream, email = "irrelevant@domain.example")
-        }.isFailure()
-            .isInstanceOf(AutoconfigParserException::class)
+        }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("End of document reached while reading element 'emailProvider'")
     }
 

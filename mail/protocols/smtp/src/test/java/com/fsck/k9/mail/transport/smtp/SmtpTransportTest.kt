@@ -1,10 +1,9 @@
 package com.fsck.k9.mail.transport.smtp
 
 import assertk.all
-import assertk.assertThat
+import assertk.assertFailure
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import assertk.assertions.prop
@@ -122,10 +121,9 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.PLAIN)
 
-        assertThat {
+        assertFailure {
             transport.open()
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Authentication methods SASL PLAIN and LOGIN are unavailable.")
 
         server.verifyConnectionClosed()
@@ -164,10 +162,9 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.CRAM_MD5)
 
-        assertThat {
+        assertFailure {
             transport.open()
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Authentication method CRAM-MD5 is unavailable.")
 
         server.verifyConnectionClosed()
@@ -245,10 +242,9 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
-        assertThat {
+        assertFailure {
             transport.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .hasMessage(
                 "5.7.1 Username and Password not accepted. Learn more at " +
                     "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
@@ -369,10 +365,9 @@ class SmtpTransportTest {
 
         val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
-        assertThat {
+        assertFailure {
             transport.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .hasMessage(
                 "5.7.1 Username and Password not accepted. Learn more at " +
                     "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
@@ -397,10 +392,9 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
-        assertThat {
+        assertFailure {
             transport.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .hasMessage("Failed to fetch token")
 
         server.verifyConnectionClosed()
@@ -419,10 +413,9 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
-        assertThat {
+        assertFailure {
             transport.open()
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Server doesn't support SASL OAUTHBEARER or XOAUTH2.")
 
         server.verifyConnectionClosed()
@@ -459,10 +452,9 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.EXTERNAL)
 
-        assertThat {
+        assertFailure {
             transport.open()
-        }.isFailure()
-            .isInstanceOf(CertificateValidationException::class)
+        }.isInstanceOf<CertificateValidationException>()
             .prop(CertificateValidationException::getReason)
             .isEqualTo(CertificateValidationException.Reason.MissingCapability)
 
@@ -509,10 +501,9 @@ class SmtpTransportTest {
             connectionSecurity = ConnectionSecurity.NONE,
         )
 
-        assertThat {
+        assertFailure {
             transport.open()
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Update your outgoing server authentication setting. AUTOMATIC authentication is unavailable.")
 
         server.verifyConnectionClosed()
@@ -553,10 +544,9 @@ class SmtpTransportTest {
         server.output("221 BYE")
         val transport = startServerAndCreateSmtpTransport(server, authenticationType = AuthType.XOAUTH2)
 
-        assertThat {
+        assertFailure {
             transport.open()
-        }.isFailure()
-            .isInstanceOf(AuthenticationFailedException::class)
+        }.isInstanceOf<AuthenticationFailedException>()
             .hasMessage(
                 "Username and Password not accepted. " +
                     "Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
@@ -718,13 +708,12 @@ class SmtpTransportTest {
         val server = createServerAndSetupForPlainAuthentication("SIZE 1000")
         val transport = startServerAndCreateSmtpTransport(server)
 
-        assertThat {
+        assertFailure {
             transport.sendMessage(message)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class).all {
-                hasMessage("Message too large for server")
-                transform { it.isPermanentFailure }.isTrue()
-            }
+        }.isInstanceOf<MessagingException>().all {
+            hasMessage("Message too large for server")
+            transform { it.isPermanentFailure }.isTrue()
+        }
 
         // FIXME: Make sure connection was closed
         // server.verifyConnectionClosed();
@@ -749,13 +738,12 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server)
 
-        assertThat {
+        assertFailure {
             transport.sendMessage(message)
-        }.isFailure()
-            .isInstanceOf(NegativeSmtpReplyException::class).all {
-                prop(NegativeSmtpReplyException::replyCode).isEqualTo(421)
-                prop(NegativeSmtpReplyException::replyText).isEqualTo("4.7.0 Temporary system problem")
-            }
+        }.isInstanceOf<NegativeSmtpReplyException>().all {
+            prop(NegativeSmtpReplyException::replyCode).isEqualTo(421)
+            prop(NegativeSmtpReplyException::replyText).isEqualTo("4.7.0 Temporary system problem")
+        }
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -825,14 +813,13 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server)
 
-        assertThat {
+        assertFailure {
             transport.sendMessage(message)
-        }.isFailure()
-            .isInstanceOf(NegativeSmtpReplyException::class).all {
-                prop(NegativeSmtpReplyException::replyCode).isEqualTo(550)
-                prop(NegativeSmtpReplyException::replyText)
-                    .isEqualTo("remote mail to <user2@localhost> not allowed")
-            }
+        }.isInstanceOf<NegativeSmtpReplyException>().all {
+            prop(NegativeSmtpReplyException::replyCode).isEqualTo(550)
+            prop(NegativeSmtpReplyException::replyText)
+                .isEqualTo("remote mail to <user2@localhost> not allowed")
+        }
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -851,14 +838,13 @@ class SmtpTransportTest {
         server.closeConnection()
         val transport = startServerAndCreateSmtpTransport(server)
 
-        assertThat {
+        assertFailure {
             transport.sendMessage(message)
-        }.isFailure()
-            .isInstanceOf(NegativeSmtpReplyException::class).all {
-                prop(NegativeSmtpReplyException::replyCode).isEqualTo(550)
-                prop(NegativeSmtpReplyException::replyText)
-                    .isEqualTo("remote mail to <user2@localhost> not allowed")
-            }
+        }.isInstanceOf<NegativeSmtpReplyException>().all {
+            prop(NegativeSmtpReplyException::replyCode).isEqualTo(550)
+            prop(NegativeSmtpReplyException::replyText)
+                .isEqualTo("remote mail to <user2@localhost> not allowed")
+        }
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -880,14 +866,13 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server)
 
-        assertThat {
+        assertFailure {
             transport.sendMessage(message)
-        }.isFailure()
-            .isInstanceOf(NegativeSmtpReplyException::class).all {
-                prop(NegativeSmtpReplyException::replyCode).isEqualTo(550)
-                prop(NegativeSmtpReplyException::replyText)
-                    .isEqualTo("remote mail to <user2@localhost> not allowed")
-            }
+        }.isInstanceOf<NegativeSmtpReplyException>().all {
+            prop(NegativeSmtpReplyException::replyCode).isEqualTo(550)
+            prop(NegativeSmtpReplyException::replyText)
+                .isEqualTo("remote mail to <user2@localhost> not allowed")
+        }
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -909,14 +894,13 @@ class SmtpTransportTest {
         }
         val transport = startServerAndCreateSmtpTransport(server)
 
-        assertThat {
+        assertFailure {
             transport.sendMessage(message)
-        }.isFailure()
-            .isInstanceOf(NegativeSmtpReplyException::class).all {
-                prop(NegativeSmtpReplyException::replyCode).isEqualTo(550)
-                prop(NegativeSmtpReplyException::replyText)
-                    .isEqualTo("remote mail to <user3@localhost> not allowed")
-            }
+        }.isInstanceOf<NegativeSmtpReplyException>().all {
+            prop(NegativeSmtpReplyException::replyCode).isEqualTo(550)
+            prop(NegativeSmtpReplyException::replyText)
+                .isEqualTo("remote mail to <user3@localhost> not allowed")
+        }
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()

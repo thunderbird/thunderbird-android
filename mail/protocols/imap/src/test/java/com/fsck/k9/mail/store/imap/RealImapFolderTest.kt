@@ -1,6 +1,7 @@
 package com.fsck.k9.mail.store.imap
 
 import assertk.all
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.cause
 import assertk.assertions.containsExactly
@@ -8,7 +9,6 @@ import assertk.assertions.containsOnly
 import assertk.assertions.extracting
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
@@ -161,10 +161,10 @@ class RealImapFolderTest {
         val imapFolder = createFolder("Folder")
         doThrow(IOException::class).whenever(imapConnection).executeSimpleCommand("SELECT \"Folder\"")
 
-        assertThat {
+        assertFailure {
             imapFolder.open(OpenMode.READ_WRITE)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class).cause().isNotNull().isInstanceOf(IOException::class)
+        }.isInstanceOf<MessagingException>()
+            .cause().isNotNull().isInstanceOf<IOException>()
     }
 
     @Test
@@ -172,10 +172,9 @@ class RealImapFolderTest {
         val imapFolder = createFolder("Folder")
         doThrow(MessagingException::class).whenever(imapConnection).executeSimpleCommand("SELECT \"Folder\"")
 
-        assertThat {
+        assertFailure {
             imapFolder.open(OpenMode.READ_WRITE)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
     }
 
     @Test
@@ -187,10 +186,9 @@ class RealImapFolderTest {
         )
         whenever(imapConnection.executeSimpleCommand("SELECT \"Folder\"")).thenReturn(selectResponses)
 
-        assertThat {
+        assertFailure {
             imapFolder.open(OpenMode.READ_WRITE)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Did not find message count during open")
     }
 
@@ -279,10 +277,9 @@ class RealImapFolderTest {
         val destinationFolder = createFolder("Destination")
         val messages = listOf(mock<ImapMessage>())
 
-        assertThat {
+        assertFailure {
             sourceFolder.copyMessages(messages, destinationFolder)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Folder Source is not open.")
     }
 
@@ -342,10 +339,9 @@ class RealImapFolderTest {
     fun getUnreadMessageCount_withClosedFolder_shouldThrow() {
         val folder = createFolder("FolderName")
 
-        assertThat {
+        assertFailure {
             folder.unreadMessageCount
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Folder FolderName is not open.")
     }
 
@@ -356,10 +352,9 @@ class RealImapFolderTest {
         whenever(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED")).thenThrow(IOException())
         folder.open(OpenMode.READ_WRITE)
 
-        assertThat {
+        assertFailure {
             folder.unreadMessageCount
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("IO Error")
     }
 
@@ -380,10 +375,9 @@ class RealImapFolderTest {
     fun getFlaggedMessageCount_withClosedFolder_shouldThrow() {
         val folder = createFolder("FolderName")
 
-        assertThat {
+        assertFailure {
             folder.flaggedMessageCount
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Folder FolderName is not open.")
     }
 
@@ -434,10 +428,9 @@ class RealImapFolderTest {
         doThrow(IOException::class).whenever(imapConnection).executeSimpleCommand("UID SEARCH *:*")
         folder.open(OpenMode.READ_WRITE)
 
-        assertThat {
+        assertFailure {
             folder.highestUid
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("IO Error")
     }
 
@@ -486,10 +479,9 @@ class RealImapFolderTest {
     fun getMessages_withInvalidStartArgument_shouldThrow() {
         val folder = createFolder("Folder")
 
-        assertThat {
+        assertFailure {
             folder.getMessages(0, 10, null, null)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Invalid message set 0 10")
     }
 
@@ -497,10 +489,9 @@ class RealImapFolderTest {
     fun getMessages_withInvalidEndArgument_shouldThrow() {
         val folder = createFolder("Folder")
 
-        assertThat {
+        assertFailure {
             folder.getMessages(10, 0, null, null)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Invalid message set 10 0")
     }
 
@@ -508,10 +499,9 @@ class RealImapFolderTest {
     fun getMessages_withEndArgumentSmallerThanStartArgument_shouldThrow() {
         val folder = createFolder("Folder")
 
-        assertThat {
+        assertFailure {
             folder.getMessages(10, 5, null, null)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Invalid message set 10 5")
     }
 
@@ -519,10 +509,9 @@ class RealImapFolderTest {
     fun getMessages_withClosedFolder_shouldThrow() {
         val folder = createFolder("FolderName")
 
-        assertThat {
+        assertFailure {
             folder.getMessages(1, 5, null, null)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Folder FolderName is not open.")
     }
 
@@ -530,10 +519,9 @@ class RealImapFolderTest {
     fun getMessages_sequenceNumbers_withClosedFolder_shouldThrow() {
         val folder = createFolder("FolderName")
 
-        assertThat {
+        assertFailure {
             folder.getMessages(setOf(1L, 2L, 5L), false, null)
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Folder FolderName is not open.")
     }
 
@@ -568,10 +556,9 @@ class RealImapFolderTest {
     fun getMessagesFromUids_withClosedFolder_shouldThrow() {
         val folder = createFolder("FolderName")
 
-        assertThat {
+        assertFailure {
             folder.getMessagesFromUids(listOf("11", "22", "25"))
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Folder FolderName is not open.")
     }
 
@@ -592,10 +579,9 @@ class RealImapFolderTest {
     fun areMoreMessagesAvailable_withClosedFolder_shouldThrow() {
         val folder = createFolder("FolderName")
 
-        assertThat {
+        assertFailure {
             folder.areMoreMessagesAvailable(10, Date())
-        }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        }.isInstanceOf<MessagingException>()
             .hasMessage("Folder FolderName is not open.")
     }
 
@@ -944,13 +930,12 @@ class RealImapFolderTest {
         val messages = listOf(createImapMessage("1"))
         whenever(imapConnection.readResponse()).thenReturn(createImapResponse("x NO Can't append to this folder"))
 
-        assertThat {
+        assertFailure {
             folder.appendMessages(messages)
-        }.isFailure()
-            .isInstanceOf(NegativeImapResponseException::class.java).all {
-                hasMessage("APPEND failed")
-                transform { it.lastResponse[0] }.isEqualTo("NO")
-            }
+        }.isInstanceOf<NegativeImapResponseException>().all {
+            hasMessage("APPEND failed")
+            transform { it.lastResponse[0] }.isEqualTo("NO")
+        }
     }
 
     @Test
@@ -961,13 +946,12 @@ class RealImapFolderTest {
         val messages = listOf(createImapMessage("1"))
         whenever(imapConnection.readResponse()).thenReturn(createImapResponse("x BAD [TOOBIG] Message too large."))
 
-        assertThat {
+        assertFailure {
             folder.appendMessages(messages)
-        }.isFailure()
-            .isInstanceOf(NegativeImapResponseException::class.java).all {
-                hasMessage("APPEND failed")
-                transform { it.lastResponse[0] }.isEqualTo("BAD")
-            }
+        }.isInstanceOf<NegativeImapResponseException>().all {
+            hasMessage("APPEND failed")
+            transform { it.lastResponse[0] }.isEqualTo("BAD")
+        }
     }
 
     @Test

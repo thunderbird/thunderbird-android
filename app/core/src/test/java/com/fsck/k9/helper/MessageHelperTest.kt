@@ -60,7 +60,7 @@ class MessageHelperTest : RobolectricTest() {
             changeContactNameColor = true,
             contactNameColor = Color.RED,
         )
-        assertThat(friendly).isInstanceOf(SpannableString::class.java)
+        assertThat(friendly).isInstanceOf<SpannableString>()
         assertThat(friendly.toString()).isEqualTo("Tim Testor")
     }
 

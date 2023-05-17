@@ -127,7 +127,7 @@ class BaseNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
-        assertThat(result.lockScreenNotificationData).isInstanceOf(LockScreenNotificationData.SenderNames::class.java)
+        assertThat(result.lockScreenNotificationData).isInstanceOf<LockScreenNotificationData.SenderNames>()
         val senderNamesData = result.lockScreenNotificationData as LockScreenNotificationData.SenderNames
         assertThat(senderNamesData.senderNames).isEqualTo("Sender One, Sender Two, Sender Three")
     }

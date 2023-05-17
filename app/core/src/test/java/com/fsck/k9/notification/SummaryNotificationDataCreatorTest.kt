@@ -51,7 +51,7 @@ class SummaryNotificationDataCreatorTest {
             silent = false,
         )
 
-        assertThat(result).isInstanceOf(SummarySingleNotificationData::class.java)
+        assertThat(result).isInstanceOf<SummarySingleNotificationData>()
     }
 
     @Test

@@ -131,7 +131,7 @@ class NotificationDataStoreTest : RobolectricTest() {
             assertThat(removeResult.notificationHolders).hasSize(0)
             assertThat(removeResult.notificationStoreOperations).hasSize(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS + 1)
             for (notificationStoreOperation in removeResult.notificationStoreOperations) {
-                assertThat(notificationStoreOperation).isInstanceOf(NotificationStoreOperation.Remove::class.java)
+                assertThat(notificationStoreOperation).isInstanceOf<NotificationStoreOperation.Remove>()
             }
         }
     }

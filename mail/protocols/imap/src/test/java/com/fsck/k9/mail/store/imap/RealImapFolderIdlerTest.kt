@@ -1,9 +1,9 @@
 package com.fsck.k9.mail.store.imap
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isFalse
 import assertk.assertions.isGreaterThan
 import assertk.assertions.isInstanceOf
@@ -224,10 +224,9 @@ class RealImapFolderIdlerTest {
         imapFolder.throwOnOpen { throw AuthenticationFailedException("Authentication failure for test") }
 
         thread {
-            assertThat {
+            assertFailure {
                 idler.idle()
-            }.isFailure()
-                .isInstanceOf(AuthenticationFailedException::class)
+            }.isInstanceOf<AuthenticationFailedException>()
                 .hasMessage("Authentication failure for test")
 
             latch.countDown()
@@ -243,10 +242,9 @@ class RealImapFolderIdlerTest {
         imapFolder.throwOnOpen { throw IOException("I/O error for test") }
 
         thread {
-            assertThat {
+            assertFailure {
                 idler.idle()
-            }.isFailure()
-                .isInstanceOf(IOException::class)
+            }.isInstanceOf<IOException>()
                 .hasMessage("I/O error for test")
 
             latch.countDown()
@@ -261,10 +259,9 @@ class RealImapFolderIdlerTest {
         val latch = CountDownLatch(1)
 
         thread {
-            assertThat {
+            assertFailure {
                 idler.idle()
-            }.isFailure()
-                .isInstanceOf(IOException::class)
+            }.isInstanceOf<IOException>()
                 .hasMessage("Socket closed during IDLE")
 
             latch.countDown()

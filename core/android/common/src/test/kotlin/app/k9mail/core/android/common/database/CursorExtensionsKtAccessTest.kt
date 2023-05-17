@@ -2,10 +2,10 @@ package app.k9mail.core.android.common.database
 
 import android.database.Cursor
 import android.database.MatrixCursor
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isNull
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -55,9 +55,9 @@ class CursorExtensionsKtAccessTest(data: CursorExtensionsAccessTestData<Any>) {
             addRow(arrayOf(null))
         }
 
-        assertThat {
+        assertFailure {
             cursor.map { testThrowingAction(it, "column") }
-        }.isFailure().hasMessage("Column column must not be null")
+        }.hasMessage("Column column must not be null")
     }
 
     @Test

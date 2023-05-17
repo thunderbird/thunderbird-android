@@ -144,7 +144,7 @@ mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:4.1.0"
 turbine = "app.cash.turbine:turbine:0.12.3"
 jdom2 = "org.jdom:jdom2:2.0.6.1"
 icu4j-charset = "com.ibm.icu:icu4j-charset:72.1"
-assertk = "com.willowtreeapps.assertk:assertk-jvm:0.25"
+assertk = "com.willowtreeapps.assertk:assertk-jvm:0.26"
 
 leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
 

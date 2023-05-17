@@ -1,9 +1,9 @@
 package app.k9mail.core.common.mail
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 
@@ -11,10 +11,9 @@ internal class EmailAddressTest {
 
     @Test
     fun `should reject blank email address`() {
-        assertThat {
+        assertFailure {
             EmailAddress("")
-        }.isFailure()
-            .isInstanceOf(IllegalArgumentException::class)
+        }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("Email address must not be blank")
     }
 

@@ -133,7 +133,7 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
         val displayName = recipientFormatter.getDisplayName(Address("user1@domain.example"), account)
 
         assertThat(displayName.toString()).isEqualTo("Contact One")
-        assertThat(displayName).isInstanceOf(Spannable::class.java)
+        assertThat(displayName).isInstanceOf<Spannable>()
         val spans = (displayName as Spannable).getSpans<ForegroundColorSpan>(0, displayName.length)
         assertThat(spans.map { it.foregroundColor }).containsExactly(Color.RED)
     }

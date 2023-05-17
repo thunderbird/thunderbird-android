@@ -1,9 +1,9 @@
 package com.fsck.k9.message.html
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
@@ -287,19 +287,17 @@ class HttpUriParserTest {
 
     @Test
     fun `negative 'startPos' value`() {
-        assertThat {
+        assertFailure {
             parser.parseUri("test", -1)
-        }.isFailure()
-            .isInstanceOf(IllegalArgumentException::class)
+        }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("Invalid 'startPos' value")
     }
 
     @Test
     fun `out of bounds 'startPos' value`() {
-        assertThat {
+        assertFailure {
             parser.parseUri("test", 4)
-        }.isFailure()
-            .isInstanceOf(IllegalArgumentException::class)
+        }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("Invalid 'startPos' value")
     }
 

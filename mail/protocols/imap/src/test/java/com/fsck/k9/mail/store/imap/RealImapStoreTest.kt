@@ -1,11 +1,11 @@
 package com.fsck.k9.mail.store.imap
 
 import assertk.all
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.cause
 import assertk.assertions.containsExactly
 import assertk.assertions.hasMessage
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isSameAs
@@ -50,11 +50,12 @@ class RealImapStoreTest {
         }
         imapStore.enqueueImapConnection(imapConnection)
 
-        assertThat { imapStore.checkSettings() }.isFailure()
-            .isInstanceOf(MessagingException::class).all {
-                hasMessage("Unable to connect")
-                cause().isNotNull().isInstanceOf(IOException::class)
-            }
+        assertFailure {
+            imapStore.checkSettings()
+        }.isInstanceOf<MessagingException>().all {
+            hasMessage("Unable to connect")
+            cause().isNotNull().isInstanceOf<IOException>()
+        }
     }
 
     @Test
@@ -249,8 +250,9 @@ class RealImapStoreTest {
         }
         imapStore.enqueueImapConnection(imapConnection)
 
-        assertThat { imapStore.getFolders() }.isFailure()
-            .isInstanceOf(MessagingException::class)
+        assertFailure {
+            imapStore.getFolders()
+        }.isInstanceOf<MessagingException>()
 
         verify(imapConnection).close()
     }
