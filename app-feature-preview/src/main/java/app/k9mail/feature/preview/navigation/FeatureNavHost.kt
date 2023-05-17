@@ -21,8 +21,8 @@ fun FeatureNavHost(
         modifier = modifier,
     ) {
         onboardingScreen(
-            onStartClick = { navController.navigateToAccountSetup() },
-            onImportClick = { /* TODO */ },
+            onStart = { navController.navigateToAccountSetup() },
+            onImport = { /* TODO */ },
         )
         accountSetupScreen(
             onBack = navController::popBackStack,
