@@ -21,12 +21,12 @@ fun FeatureNavHost(
         modifier = modifier,
     ) {
         onboardingScreen(
-            onStartClick = { navController.navigateToAccountSetup() },
-            onImportClick = { /* TODO */ },
+            onStart = { navController.navigateToAccountSetup() },
+            onImport = { /* TODO */ },
         )
         accountSetupScreen(
-            onBackClick = navController::popBackStack,
-            onFinishClick = { /* TODO */ },
+            onBack = navController::popBackStack,
+            onFinish = { /* TODO */ },
         )
     }
 }

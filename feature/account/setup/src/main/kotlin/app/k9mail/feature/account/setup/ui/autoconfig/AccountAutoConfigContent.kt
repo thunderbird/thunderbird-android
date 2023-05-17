@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
@@ -32,7 +33,9 @@ internal fun AccountAutoConfigContent(
     modifier: Modifier = Modifier,
 ) {
     ResponsiveContentWithBackground(
-        modifier = modifier,
+        modifier = Modifier
+            .testTag("AccountAutoConfigContent")
+            .then(modifier),
     ) {
         LazyColumnWithHeaderFooter(
             modifier = Modifier.fillMaxSize(),

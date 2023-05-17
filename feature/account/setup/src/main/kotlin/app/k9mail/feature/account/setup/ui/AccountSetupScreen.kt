@@ -1,65 +1,59 @@
 package app.k9mail.feature.account.setup.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
+import app.k9mail.core.ui.compose.common.mvi.observe
+import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
+import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
+import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
+import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigScreen
 import app.k9mail.feature.account.setup.ui.manualconfig.AccountManualConfigScreen
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AccountSetupScreen(
-    onFinishClick: () -> Unit,
-    onBackClick: () -> Unit,
+    onFinish: () -> Unit,
+    onBack: () -> Unit,
+    viewModel: ViewModel = koinViewModel<AccountSetupViewModel>(),
 ) {
-    val accountSetupSteps = remember { mutableStateOf(AccountSetupSteps.AUTO_CONFIG) }
+    val (state, dispatch) = viewModel.observe { effect ->
+        when (effect) {
+            Effect.NavigateBack -> onBack()
+            Effect.NavigateNext -> onFinish()
+        }
+    }
 
-    when (accountSetupSteps.value) {
-        AccountSetupSteps.AUTO_CONFIG -> {
+    when (state.value.setupStep) {
+        SetupStep.AUTO_CONFIG -> {
             AccountAutoConfigScreen(
-                onNextClick = {
-                    // TODO validate config
-                    accountSetupSteps.value = AccountSetupSteps.MANUAL_CONFIG
-                },
-                onBackClick = onBackClick,
+                onNextClick = { dispatch(Event.OnNext) },
+                onBackClick = { dispatch(Event.OnBack) },
             )
         }
 
-        AccountSetupSteps.MANUAL_CONFIG -> {
+        SetupStep.MANUAL_CONFIG -> {
             AccountManualConfigScreen(
-                onNextClick = {
-                    accountSetupSteps.value = AccountSetupSteps.OPTIONS
-                },
-                onBackClick = {
-                    accountSetupSteps.value = AccountSetupSteps.AUTO_CONFIG
-                },
+                onNextClick = { dispatch(Event.OnNext) },
+                onBackClick = { dispatch(Event.OnBack) },
             )
         }
 
-        AccountSetupSteps.OPTIONS -> {
+        SetupStep.OPTIONS -> {
             AccountOptionsScreen(
-                // validate account
-                onFinishClick = onFinishClick,
-                onBackClick = {
-                    accountSetupSteps.value = AccountSetupSteps.MANUAL_CONFIG
-                },
+                onFinishClick = { dispatch(Event.OnNext) },
+                onBackClick = { dispatch(Event.OnBack) },
             )
         }
     }
-}
-
-enum class AccountSetupSteps {
-    AUTO_CONFIG,
-    MANUAL_CONFIG,
-    OPTIONS,
 }
 
 @Preview(showBackground = true)
 @Composable
 internal fun AccountSetupScreenPreview() {
     AccountSetupScreen(
-        onFinishClick = {},
-        onBackClick = {},
+        onFinish = {},
+        onBack = {},
     )
 }

@@ -15,13 +15,13 @@ fun NavController.navigateToOnboarding(
 }
 
 fun NavGraphBuilder.onboardingScreen(
-    onStartClick: () -> Unit,
-    onImportClick: () -> Unit,
+    onStart: () -> Unit,
+    onImport: () -> Unit,
 ) {
     composable(route = NAVIGATION_ROUTE_ONBOARDING) {
         OnboardingScreen(
-            onStartClick = onStartClick,
-            onImportClick = onImportClick,
+            onStartClick = onStart,
+            onImportClick = onImport,
         )
     }
 }

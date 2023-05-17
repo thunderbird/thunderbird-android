@@ -87,6 +87,7 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-compose-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-compose-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidxComposeMaterial" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidxComposeMaterial" }
@@ -109,6 +110,7 @@ moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 timber = "com.jakewharton.timber:timber:5.0.1"
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koinCore" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinCore" }
 commons-io = "commons-io:commons-io:2.11.0"
@@ -166,8 +168,10 @@ shared-jvm-android-app = [
 shared-jvm-android-compose = [
   "androidx-compose-foundation",
   "androidx-compose-ui-tooling-preview",
+  "androidx-compose-lifecycle-runtime",
   "androidx-compose-lifecycle-viewmodel",
   "androidx-compose-navigation",
+  "koin-androidx-compose",
 ]
 shared-jvm-android-compose-debug = [
   "androidx-compose-ui-tooling",
@@ -184,6 +188,7 @@ shared-jvm-test = [
   "mockito-kotlin",
   "koin-test",
   "koin-test-junit4",
+  "turbine",
 ]
 shared-jvm-test-compose = [
   "robolectric",
