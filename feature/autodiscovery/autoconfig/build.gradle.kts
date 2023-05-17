@@ -8,6 +8,7 @@ dependencies {
 
     compileOnly(libs.xmlpull)
     implementation(libs.okhttp)
+    implementation(libs.minidns.hla)
 
     testImplementation(libs.kxml2)
     testImplementation(libs.jsoup)
