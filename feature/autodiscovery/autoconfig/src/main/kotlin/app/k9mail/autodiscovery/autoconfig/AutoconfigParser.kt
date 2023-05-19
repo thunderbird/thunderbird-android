@@ -112,8 +112,8 @@ private class ClientConfigParser(
                         }
                     }
                     "outgoingServer" -> {
-                        parseServer()?.let { serverSe ->
-                            outgoingServers.add(serverSe)
+                        parseServer()?.let { serverSettings ->
+                            outgoingServers.add(serverSettings)
                         }
                     }
                     else -> {
@@ -140,6 +140,7 @@ private class ClientConfigParser(
     private fun parseServer(): DiscoveredServerSettings? {
         val type = pullParser.getAttributeValue(null, "type")
         if (type != "imap" && type != "smtp") {
+            skipElement()
             return null
         }
 

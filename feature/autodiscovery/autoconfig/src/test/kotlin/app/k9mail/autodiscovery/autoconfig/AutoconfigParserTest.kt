@@ -393,6 +393,36 @@ class AutoconfigParserTest {
     }
 
     @Test
+    fun `ignore 'incomingServer' inside unsupported 'incomingServer' element`() {
+        val inputStream = minimalConfig.withModifications {
+            val incomingServer = element("incomingServer")
+            val incomingServerXml = incomingServer.outerHtml()
+            incomingServer.attr("type", "unsupported")
+            incomingServer.html(incomingServerXml)
+        }
+
+        assertFailure {
+            parser.parseSettings(inputStream, email = "user@domain.example")
+        }.isInstanceOf<AutoconfigParserException>()
+            .hasMessage("Missing 'incomingServer' element")
+    }
+
+    @Test
+    fun `ignore 'outgoingServer' inside unsupported 'outgoingServer' element`() {
+        val inputStream = minimalConfig.withModifications {
+            val outgoingServer = element("outgoingServer")
+            val outgoingServerXml = outgoingServer.outerHtml()
+            outgoingServer.attr("type", "unsupported")
+            outgoingServer.html(outgoingServerXml)
+        }
+
+        assertFailure {
+            parser.parseSettings(inputStream, email = "user@domain.example")
+        }.isInstanceOf<AutoconfigParserException>()
+            .hasMessage("Missing 'outgoingServer' element")
+    }
+
+    @Test
     fun `non XML data should throw`() {
         val inputStream = "invalid".byteInputStream()
 
