@@ -169,6 +169,46 @@ class AutoconfigParserTest {
     }
 
     @Test
+    fun `ignore unsupported 'incomingServer' type`() {
+        val inputStream = minimalConfig.withModifications {
+            element("incomingServer").insertBefore("""<incomingServer type="smtp"/>""")
+        }
+
+        val result = parser.parseSettings(inputStream, email = "user@domain.example")
+
+        assertThat(result.incoming).containsExactly(
+            DiscoveredServerSettings(
+                protocol = "imap",
+                host = "imap.domain.example",
+                port = 993,
+                security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                authType = AuthType.PLAIN,
+                username = "user@domain.example",
+            ),
+        )
+    }
+
+    @Test
+    fun `ignore unsupported 'outgoingServer' type`() {
+        val inputStream = minimalConfig.withModifications {
+            element("outgoingServer").insertBefore("""<outgoingServer type="imap"/>""")
+        }
+
+        val result = parser.parseSettings(inputStream, email = "user@domain.example")
+
+        assertThat(result.outgoing).containsExactly(
+            DiscoveredServerSettings(
+                protocol = "smtp",
+                host = "smtp.domain.example",
+                port = 587,
+                security = ConnectionSecurity.STARTTLS_REQUIRED,
+                authType = AuthType.PLAIN,
+                username = "user@domain.example",
+            ),
+        )
+    }
+
+    @Test
     fun `empty authentication element should be ignored`() {
         val inputStream = minimalConfig.withModifications {
             element("incomingServer > authentication").insertBefore("<authentication></authentication>")

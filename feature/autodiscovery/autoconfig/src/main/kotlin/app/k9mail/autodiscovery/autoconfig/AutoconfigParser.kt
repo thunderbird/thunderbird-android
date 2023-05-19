@@ -107,12 +107,12 @@ private class ClientConfigParser(
                         }
                     }
                     "incomingServer" -> {
-                        parseServer()?.let { serverSettings ->
+                        parseServer("imap")?.let { serverSettings ->
                             incomingServers.add(serverSettings)
                         }
                     }
                     "outgoingServer" -> {
-                        parseServer()?.let { serverSettings ->
+                        parseServer("smtp")?.let { serverSettings ->
                             outgoingServers.add(serverSettings)
                         }
                     }
@@ -137,9 +137,10 @@ private class ClientConfigParser(
         }
     }
 
-    private fun parseServer(): DiscoveredServerSettings? {
+    private fun parseServer(vararg supportedTypes: String): DiscoveredServerSettings? {
         val type = pullParser.getAttributeValue(null, "type")
-        if (type != "imap" && type != "smtp") {
+        if (type !in supportedTypes) {
+            Timber.d("Unsupported '%s[type]' value: '%s'", pullParser.name, type)
             skipElement()
             return null
         }
