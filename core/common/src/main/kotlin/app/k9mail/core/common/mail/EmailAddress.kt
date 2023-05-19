@@ -6,3 +6,5 @@ value class EmailAddress(val address: String) {
         require(address.isNotBlank()) { "Email address must not be blank" }
     }
 }
+
+fun String.toEmailAddress() = EmailAddress(this)

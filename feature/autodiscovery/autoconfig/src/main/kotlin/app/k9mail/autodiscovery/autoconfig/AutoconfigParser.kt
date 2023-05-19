@@ -2,6 +2,7 @@ package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.DiscoveredServerSettings
 import app.k9mail.autodiscovery.api.DiscoveryResults
+import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.net.HostNameUtils
 import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.logging.Timber
@@ -19,9 +20,9 @@ import org.xmlpull.v1.XmlPullParserFactory
  * See [https://github.com/thundernest/autoconfig](https://github.com/thundernest/autoconfig)
  */
 class AutoconfigParser {
-    fun parseSettings(stream: InputStream, email: String): DiscoveryResults {
+    fun parseSettings(stream: InputStream, email: EmailAddress): DiscoveryResults {
         return try {
-            ClientConfigParser(stream, email).parse()
+            ClientConfigParser(stream, email.address).parse()
         } catch (e: XmlPullParserException) {
             throw AutoconfigParserException("Error parsing Autoconfig XML", e)
         }
