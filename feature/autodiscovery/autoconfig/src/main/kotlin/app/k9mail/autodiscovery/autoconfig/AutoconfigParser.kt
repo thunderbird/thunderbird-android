@@ -2,8 +2,8 @@ package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.DiscoveredServerSettings
 import app.k9mail.autodiscovery.api.DiscoveryResults
+import app.k9mail.core.common.net.HostNameUtils
 import com.fsck.k9.helper.EmailHelper
-import com.fsck.k9.helper.HostNameUtils
 import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
