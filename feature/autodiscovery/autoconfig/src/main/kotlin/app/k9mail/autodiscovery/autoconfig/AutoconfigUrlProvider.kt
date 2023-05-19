@@ -1,7 +1,8 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.core.common.net.Domain
 import okhttp3.HttpUrl
 
 interface AutoconfigUrlProvider {
-    fun getAutoconfigUrls(domain: String, email: String? = null): List<HttpUrl>
+    fun getAutoconfigUrls(domain: Domain, email: String? = null): List<HttpUrl>
 }

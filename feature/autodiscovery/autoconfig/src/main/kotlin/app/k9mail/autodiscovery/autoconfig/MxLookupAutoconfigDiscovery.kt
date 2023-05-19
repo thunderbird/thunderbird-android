@@ -2,6 +2,8 @@ package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.ConnectionSettingsDiscovery
 import app.k9mail.autodiscovery.api.DiscoveryResults
+import app.k9mail.core.common.net.Domain
+import app.k9mail.core.common.net.toDomain
 import com.fsck.k9.helper.EmailHelper
 
 class MxLookupAutoconfigDiscovery(
@@ -15,7 +17,7 @@ class MxLookupAutoconfigDiscovery(
 
     @Suppress("ReturnCount")
     override fun discover(email: String): DiscoveryResults? {
-        val domain = requireNotNull(EmailHelper.getDomainFromEmailAddress(email)) {
+        val domain = requireNotNull(EmailHelper.getDomainFromEmailAddress(email)?.toDomain()) {
             "Couldn't extract domain from email address: $email"
         }
 
@@ -42,16 +44,16 @@ class MxLookupAutoconfigDiscovery(
             .firstOrNull()
     }
 
-    private fun mxLookup(domain: String): String? {
+    private fun mxLookup(domain: Domain): Domain? {
         // Only return the most preferred entry to match Thunderbird's behavior.
         return mxResolver.lookup(domain).firstOrNull()
     }
 
-    private fun getMxBaseDomain(mxHostName: String): String {
+    private fun getMxBaseDomain(mxHostName: Domain): Domain {
         return baseDomainExtractor.extractBaseDomain(mxHostName)
     }
 
-    private fun getNextSubDomain(domain: String): String? {
+    private fun getNextSubDomain(domain: Domain): Domain? {
         return subDomainExtractor.extractSubDomain(domain)
     }
 }

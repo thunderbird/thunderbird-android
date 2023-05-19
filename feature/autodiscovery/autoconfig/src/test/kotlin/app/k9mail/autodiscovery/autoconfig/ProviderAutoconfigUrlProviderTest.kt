@@ -1,17 +1,21 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import org.junit.Test
 
 class ProviderAutoconfigUrlProviderTest {
+    private val domain = "domain.example".toDomain()
+    private val email = "test@domain.example"
+
     @Test
     fun `getAutoconfigUrls with http allowed and email address included`() {
         val urlProvider = ProviderAutoconfigUrlProvider(
             AutoconfigUrlConfig(httpsOnly = false, includeEmailAddress = true),
         )
 
-        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain = "domain.example", email = "test@domain.example")
+        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain, email)
 
         assertThat(autoconfigUrls.map { it.toString() }).containsExactly(
             "https://autoconfig.domain.example/mail/config-v1.1.xml?emailaddress=test%40domain.example",
@@ -27,7 +31,7 @@ class ProviderAutoconfigUrlProviderTest {
             AutoconfigUrlConfig(httpsOnly = true, includeEmailAddress = true),
         )
 
-        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain = "domain.example", email = "test@domain.example")
+        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain, email)
 
         assertThat(autoconfigUrls.map { it.toString() }).containsExactly(
             "https://autoconfig.domain.example/mail/config-v1.1.xml?emailaddress=test%40domain.example",
@@ -41,7 +45,7 @@ class ProviderAutoconfigUrlProviderTest {
             AutoconfigUrlConfig(httpsOnly = true, includeEmailAddress = false),
         )
 
-        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain = "domain.example", email = "test@domain.example")
+        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain, email)
 
         assertThat(autoconfigUrls.map { it.toString() }).containsExactly(
             "https://autoconfig.domain.example/mail/config-v1.1.xml",
@@ -55,7 +59,7 @@ class ProviderAutoconfigUrlProviderTest {
             AutoconfigUrlConfig(httpsOnly = false, includeEmailAddress = false),
         )
 
-        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain = "domain.example", email = "test@domain.example")
+        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain, email)
 
         assertThat(autoconfigUrls.map { it.toString() }).containsExactly(
             "https://autoconfig.domain.example/mail/config-v1.1.xml",
@@ -71,7 +75,7 @@ class ProviderAutoconfigUrlProviderTest {
             AutoconfigUrlConfig(httpsOnly = false, includeEmailAddress = true),
         )
 
-        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain = "domain.example")
+        val autoconfigUrls = urlProvider.getAutoconfigUrls(domain)
 
         assertThat(autoconfigUrls.map { it.toString() }).containsExactly(
             "https://autoconfig.domain.example/mail/config-v1.1.xml",

@@ -6,3 +6,5 @@ value class Domain(val value: String) {
         requireNotNull(HostNameUtils.isLegalHostName(value)) { "Not a valid domain name: '$value'" }
     }
 }
+
+fun String.toDomain() = Domain(this)
