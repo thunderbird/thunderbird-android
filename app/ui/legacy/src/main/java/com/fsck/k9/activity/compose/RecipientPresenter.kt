@@ -741,8 +741,6 @@ class RecipientPresenter(
         }
     }
 
-
-
     private fun Array<String>.toAddressArray(): Array<Address> {
         return flatMap { addressString ->
             Address.parseUnencoded(addressString).toList()
