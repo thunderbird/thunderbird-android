@@ -90,6 +90,24 @@ class RecipientPresenter(
     private val allRecipients: List<Recipient>
         get() = with(recipientMvpView) { toRecipients + ccRecipients + bccRecipients }
 
+    private val openPgpCallback = object : OpenPgpApiManagerCallback {
+        override fun onOpenPgpProviderStatusChanged() {
+            if (openPgpApiManager.openPgpProviderState == OpenPgpProviderState.UI_REQUIRED) {
+                recipientMvpView.showErrorOpenPgpUserInteractionRequired()
+            }
+            asyncUpdateCryptoStatus()
+        }
+
+        override fun onOpenPgpProviderError(error: OpenPgpProviderError) {
+            when (error) {
+                OpenPgpProviderError.ConnectionLost -> openPgpApiManager.refreshConnection()
+                OpenPgpProviderError.VersionIncompatible -> recipientMvpView.showErrorOpenPgpIncompatible()
+                OpenPgpProviderError.ConnectionFailed -> recipientMvpView.showErrorOpenPgpConnection()
+                else -> recipientMvpView.showErrorOpenPgpConnection()
+            }
+        }
+    }
+
     init {
         recipientMvpView.setPresenter(this)
         recipientMvpView.setLoaderManager(loaderManager)
@@ -723,24 +741,7 @@ class RecipientPresenter(
         }
     }
 
-    private val openPgpCallback = object : OpenPgpApiManagerCallback {
-        override fun onOpenPgpProviderStatusChanged() {
-            if (openPgpApiManager.openPgpProviderState == OpenPgpProviderState.UI_REQUIRED) {
-                recipientMvpView.showErrorOpenPgpUserInteractionRequired()
-            }
 
-            asyncUpdateCryptoStatus()
-        }
-
-        override fun onOpenPgpProviderError(error: OpenPgpProviderError) {
-            when (error) {
-                OpenPgpProviderError.ConnectionLost -> openPgpApiManager.refreshConnection()
-                OpenPgpProviderError.VersionIncompatible -> recipientMvpView.showErrorOpenPgpIncompatible()
-                OpenPgpProviderError.ConnectionFailed -> recipientMvpView.showErrorOpenPgpConnection()
-                else -> recipientMvpView.showErrorOpenPgpConnection()
-            }
-        }
-    }
 
     private fun Array<String>.toAddressArray(): Array<Address> {
         return flatMap { addressString ->
