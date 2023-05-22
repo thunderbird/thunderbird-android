@@ -1,18 +1,22 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.autodiscovery.api.DiscoveredServerSettings
-import app.k9mail.autodiscovery.api.DiscoveryResults
+import app.k9mail.autodiscovery.api.AuthenticationType.OAuth2
+import app.k9mail.autodiscovery.api.AuthenticationType.PasswordCleartext
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.autodiscovery.api.ConnectionSecurity.StartTLS
+import app.k9mail.autodiscovery.api.ConnectionSecurity.TLS
+import app.k9mail.autodiscovery.api.ImapServerSettings
+import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.mail.toEmailAddress
-import assertk.all
+import app.k9mail.core.common.net.toHostname
+import app.k9mail.core.common.net.toPort
 import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.containsExactly
 import assertk.assertions.hasMessage
+import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.prop
-import com.fsck.k9.mail.AuthType
-import com.fsck.k9.mail.ConnectionSecurity
 import java.io.InputStream
 import org.intellij.lang.annotations.Language
 import org.jsoup.Jsoup
@@ -59,28 +63,24 @@ class AutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result).isNotNull().all {
-            prop(DiscoveryResults::incoming).containsExactly(
-                DiscoveredServerSettings(
-                    protocol = "imap",
-                    host = "imap.domain.example",
-                    port = 993,
-                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    authType = AuthType.PLAIN,
+        assertThat(result).isNotNull().isEqualTo(
+            AutoDiscoveryResult(
+                ImapServerSettings(
+                    hostname = "imap.domain.example".toHostname(),
+                    port = 993.toPort(),
+                    connectionSecurity = TLS,
+                    authenticationType = PasswordCleartext,
                     username = "user@domain.example",
                 ),
-            )
-            prop(DiscoveryResults::outgoing).containsExactly(
-                DiscoveredServerSettings(
-                    protocol = "smtp",
-                    host = "smtp.domain.example",
-                    port = 587,
-                    security = ConnectionSecurity.STARTTLS_REQUIRED,
-                    authType = AuthType.PLAIN,
+                SmtpServerSettings(
+                    hostname = "smtp.domain.example".toHostname(),
+                    port = 587.toPort(),
+                    connectionSecurity = StartTLS,
+                    authenticationType = PasswordCleartext,
                     username = "user@domain.example",
                 ),
-            )
-        }
+            ),
+        )
     }
 
     @Test
@@ -89,28 +89,24 @@ class AutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "test@gmail.com".toEmailAddress())
 
-        assertThat(result).isNotNull().all {
-            prop(DiscoveryResults::incoming).containsExactly(
-                DiscoveredServerSettings(
-                    protocol = "imap",
-                    host = "imap.gmail.com",
-                    port = 993,
-                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    authType = AuthType.XOAUTH2,
+        assertThat(result).isNotNull().isEqualTo(
+            AutoDiscoveryResult(
+                ImapServerSettings(
+                    hostname = "imap.gmail.com".toHostname(),
+                    port = 993.toPort(),
+                    connectionSecurity = TLS,
+                    authenticationType = OAuth2,
                     username = "test@gmail.com",
                 ),
-            )
-            prop(DiscoveryResults::outgoing).containsExactly(
-                DiscoveredServerSettings(
-                    protocol = "smtp",
-                    host = "smtp.gmail.com",
-                    port = 465,
-                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    authType = AuthType.XOAUTH2,
+                SmtpServerSettings(
+                    hostname = "smtp.gmail.com".toHostname(),
+                    port = 465.toPort(),
+                    connectionSecurity = TLS,
+                    authenticationType = OAuth2,
                     username = "test@gmail.com",
                 ),
-            )
-        }
+            ),
+        )
     }
 
     @Test
@@ -123,28 +119,24 @@ class AutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result).isNotNull().all {
-            prop(DiscoveryResults::incoming).containsExactly(
-                DiscoveredServerSettings(
-                    protocol = "imap",
-                    host = "user.domain.example",
-                    port = 993,
-                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                    authType = AuthType.PLAIN,
+        assertThat(result).isNotNull().isEqualTo(
+            AutoDiscoveryResult(
+                ImapServerSettings(
+                    hostname = "user.domain.example".toHostname(),
+                    port = 993.toPort(),
+                    connectionSecurity = TLS,
+                    authenticationType = PasswordCleartext,
                     username = "user@domain.example",
                 ),
-            )
-            prop(DiscoveryResults::outgoing).containsExactly(
-                DiscoveredServerSettings(
-                    protocol = "smtp",
-                    host = "user.outgoing.domain.example",
-                    port = 587,
-                    security = ConnectionSecurity.STARTTLS_REQUIRED,
-                    authType = AuthType.PLAIN,
+                SmtpServerSettings(
+                    hostname = "user.outgoing.domain.example".toHostname(),
+                    port = 587.toPort(),
+                    connectionSecurity = StartTLS,
+                    authenticationType = PasswordCleartext,
                     username = "domain.example",
                 ),
-            )
-        }
+            ),
+        )
     }
 
     @Test
@@ -159,16 +151,16 @@ class AutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result.incoming).containsExactly(
-            DiscoveredServerSettings(
-                protocol = "imap",
-                host = "imap.domain.example",
-                port = 993,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                authType = AuthType.PLAIN,
-                username = "user@domain.example",
-            ),
-        )
+        assertThat(result).isNotNull()
+            .prop(AutoDiscoveryResult::incomingServerSettings).isEqualTo(
+                ImapServerSettings(
+                    hostname = "imap.domain.example".toHostname(),
+                    port = 993.toPort(),
+                    connectionSecurity = TLS,
+                    authenticationType = PasswordCleartext,
+                    username = "user@domain.example",
+                ),
+            )
     }
 
     @Test
@@ -179,16 +171,16 @@ class AutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result.incoming).containsExactly(
-            DiscoveredServerSettings(
-                protocol = "imap",
-                host = "imap.domain.example",
-                port = 993,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                authType = AuthType.PLAIN,
-                username = "user@domain.example",
-            ),
-        )
+        assertThat(result).isNotNull()
+            .prop(AutoDiscoveryResult::incomingServerSettings).isEqualTo(
+                ImapServerSettings(
+                    hostname = "imap.domain.example".toHostname(),
+                    port = 993.toPort(),
+                    connectionSecurity = TLS,
+                    authenticationType = PasswordCleartext,
+                    username = "user@domain.example",
+                ),
+            )
     }
 
     @Test
@@ -199,16 +191,16 @@ class AutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result.outgoing).containsExactly(
-            DiscoveredServerSettings(
-                protocol = "smtp",
-                host = "smtp.domain.example",
-                port = 587,
-                security = ConnectionSecurity.STARTTLS_REQUIRED,
-                authType = AuthType.PLAIN,
-                username = "user@domain.example",
-            ),
-        )
+        assertThat(result).isNotNull()
+            .prop(AutoDiscoveryResult::outgoingServerSettings).isEqualTo(
+                SmtpServerSettings(
+                    hostname = "smtp.domain.example".toHostname(),
+                    port = 587.toPort(),
+                    connectionSecurity = StartTLS,
+                    authenticationType = PasswordCleartext,
+                    username = "user@domain.example",
+                ),
+            )
     }
 
     @Test
@@ -219,16 +211,16 @@ class AutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result.incoming).containsExactly(
-            DiscoveredServerSettings(
-                protocol = "imap",
-                host = "imap.domain.example",
-                port = 993,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED,
-                authType = AuthType.PLAIN,
-                username = "user@domain.example",
-            ),
-        )
+        assertThat(result).isNotNull()
+            .prop(AutoDiscoveryResult::incomingServerSettings).isEqualTo(
+                ImapServerSettings(
+                    hostname = "imap.domain.example".toHostname(),
+                    port = 993.toPort(),
+                    connectionSecurity = TLS,
+                    authenticationType = PasswordCleartext,
+                    username = "user@domain.example",
+                ),
+            )
     }
 
     @Test

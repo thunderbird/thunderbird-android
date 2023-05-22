@@ -1,18 +1,38 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.autodiscovery.api.DiscoveredServerSettings
-import app.k9mail.autodiscovery.api.DiscoveryResults
+import app.k9mail.autodiscovery.api.AuthenticationType
+import app.k9mail.autodiscovery.api.AuthenticationType.OAuth2
+import app.k9mail.autodiscovery.api.AuthenticationType.PasswordCleartext
+import app.k9mail.autodiscovery.api.AuthenticationType.PasswordEncrypted
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.autodiscovery.api.ConnectionSecurity
+import app.k9mail.autodiscovery.api.ConnectionSecurity.StartTLS
+import app.k9mail.autodiscovery.api.ConnectionSecurity.TLS
+import app.k9mail.autodiscovery.api.ImapServerSettings
+import app.k9mail.autodiscovery.api.IncomingServerSettings
+import app.k9mail.autodiscovery.api.OutgoingServerSettings
+import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.net.HostNameUtils
+import app.k9mail.core.common.net.Hostname
+import app.k9mail.core.common.net.Port
+import app.k9mail.core.common.net.toHostname
+import app.k9mail.core.common.net.toPort
 import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.logging.Timber
-import com.fsck.k9.mail.AuthType
-import com.fsck.k9.mail.ConnectionSecurity
 import java.io.InputStream
 import java.io.InputStreamReader
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
+
+private typealias ServerSettingsFactory<T> = (
+    hostname: Hostname,
+    port: Port,
+    connectionSecurity: ConnectionSecurity,
+    authenticationType: AuthenticationType,
+    username: String,
+) -> T
 
 /**
  * Parser for Thunderbird's Autoconfig file format.
@@ -20,7 +40,7 @@ import org.xmlpull.v1.XmlPullParserFactory
  * See [https://github.com/thundernest/autoconfig](https://github.com/thundernest/autoconfig)
  */
 class AutoconfigParser {
-    fun parseSettings(stream: InputStream, email: EmailAddress): DiscoveryResults {
+    fun parseSettings(stream: InputStream, email: EmailAddress): AutoDiscoveryResult? {
         return try {
             ClientConfigParser(stream, email.address).parse()
         } catch (e: XmlPullParserException) {
@@ -41,54 +61,49 @@ private class ClientConfigParser(
         setInput(InputStreamReader(inputStream))
     }
 
-    private val incomingServers = mutableListOf<DiscoveredServerSettings>()
-    private val outgoingServers = mutableListOf<DiscoveredServerSettings>()
-
-    fun parse(): DiscoveryResults {
-        var clientConfigFound = false
+    fun parse(): AutoDiscoveryResult {
+        var autoDiscoveryResult: AutoDiscoveryResult? = null
         do {
             val eventType = pullParser.next()
 
             if (eventType == XmlPullParser.START_TAG) {
                 when (pullParser.name) {
                     "clientConfig" -> {
-                        clientConfigFound = true
-                        parseClientConfig()
+                        autoDiscoveryResult = parseClientConfig()
                     }
                     else -> skipElement()
                 }
             }
         } while (eventType != XmlPullParser.END_DOCUMENT)
 
-        if (!clientConfigFound) {
+        if (autoDiscoveryResult == null) {
             parserError("Missing 'clientConfig' element")
         }
 
-        return DiscoveryResults(incomingServers, outgoingServers)
+        return autoDiscoveryResult
     }
 
-    private fun parseClientConfig() {
-        var emailProviderFound = false
+    private fun parseClientConfig(): AutoDiscoveryResult {
+        var autoDiscoveryResult: AutoDiscoveryResult? = null
 
         readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
                 when (pullParser.name) {
                     "emailProvider" -> {
-                        emailProviderFound = true
-                        parseEmailProvider()
+                        autoDiscoveryResult = parseEmailProvider()
                     }
                     else -> skipElement()
                 }
             }
         }
 
-        if (!emailProviderFound) {
-            parserError("Missing 'emailProvider' element")
-        }
+        return autoDiscoveryResult ?: parserError("Missing 'emailProvider' element")
     }
 
-    private fun parseEmailProvider() {
+    private fun parseEmailProvider(): AutoDiscoveryResult {
         var domainFound = false
+        var incomingServerSettings: IncomingServerSettings? = null
+        var outgoingServerSettings: OutgoingServerSettings? = null
 
         // The 'id' attribute is required (but not really used) by Thunderbird desktop.
         val emailProviderId = pullParser.getAttributeValue(null, "id")
@@ -108,13 +123,15 @@ private class ClientConfigParser(
                         }
                     }
                     "incomingServer" -> {
-                        parseServer("imap")?.let { serverSettings ->
-                            incomingServers.add(serverSettings)
+                        val serverSettings = parseServer("imap", ::createImapServerSettings)
+                        if (incomingServerSettings == null) {
+                            incomingServerSettings = serverSettings
                         }
                     }
                     "outgoingServer" -> {
-                        parseServer("smtp")?.let { serverSettings ->
-                            outgoingServers.add(serverSettings)
+                        val serverSettings = parseServer("smtp", ::createSmtpServerSettings)
+                        if (outgoingServerSettings == null) {
+                            outgoingServerSettings = serverSettings
                         }
                     }
                     else -> {
@@ -129,54 +146,54 @@ private class ClientConfigParser(
             parserError("Valid 'domain' element required")
         }
 
-        if (incomingServers.isEmpty()) {
-            parserError("Missing 'incomingServer' element")
-        }
-
-        if (outgoingServers.isEmpty()) {
-            parserError("Missing 'outgoingServer' element")
-        }
+        return AutoDiscoveryResult(
+            incomingServerSettings = incomingServerSettings ?: parserError("Missing 'incomingServer' element"),
+            outgoingServerSettings = outgoingServerSettings ?: parserError("Missing 'outgoingServer' element"),
+        )
     }
 
-    private fun parseServer(vararg supportedTypes: String): DiscoveredServerSettings? {
+    private fun <T> parseServer(
+        protocolType: String,
+        createServerSettings: ServerSettingsFactory<T>,
+    ): T? {
         val type = pullParser.getAttributeValue(null, "type")
-        if (type !in supportedTypes) {
+        if (type != protocolType) {
             Timber.d("Unsupported '%s[type]' value: '%s'", pullParser.name, type)
             skipElement()
             return null
         }
 
-        var hostName: String? = null
+        var hostname: String? = null
         var port: Int? = null
         var userName: String? = null
-        var authType: AuthType? = null
+        var authenticationType: AuthenticationType? = null
         var connectionSecurity: ConnectionSecurity? = null
 
         readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
                 when (pullParser.name) {
-                    "hostname" -> hostName = readHostname()
+                    "hostname" -> hostname = readHostname()
                     "port" -> port = readPort()
                     "username" -> userName = readUsername()
-                    "authentication" -> authType = readAuthentication(authType)
+                    "authentication" -> authenticationType = readAuthentication(authenticationType)
                     "socketType" -> connectionSecurity = readSocketType()
                 }
             }
         }
 
-        if (hostName == null) {
-            parserError("Missing 'hostname' element")
-        } else if (port == null) {
-            parserError("Missing 'port' element")
-        } else if (userName == null) {
-            parserError("Missing 'username' element")
-        } else if (authType == null) {
-            parserError("No usable 'authentication' element found")
-        } else if (connectionSecurity == null) {
-            parserError("Missing 'socketType' element")
-        }
+        val finalHostname = hostname ?: parserError("Missing 'hostname' element")
+        val finalPort = port ?: parserError("Missing 'port' element")
+        val finalUserName = userName ?: parserError("Missing 'username' element")
+        val finalAuthenticationType = authenticationType ?: parserError("No usable 'authentication' element found")
+        val finalConnectionSecurity = connectionSecurity ?: parserError("Missing 'socketType' element")
 
-        return DiscoveredServerSettings(type, hostName!!, port!!, connectionSecurity!!, authType, userName)
+        return createServerSettings(
+            finalHostname.toHostname(),
+            finalPort.toPort(),
+            finalConnectionSecurity,
+            finalAuthenticationType,
+            finalUserName,
+        )
     }
 
     private fun readHostname(): String {
@@ -194,17 +211,17 @@ private class ClientConfigParser(
 
     private fun readUsername(): String = readText().replaceVariables()
 
-    private fun readAuthentication(authType: AuthType?): AuthType? {
-        return authType ?: readText().toAuthType()
+    private fun readAuthentication(authenticationType: AuthenticationType?): AuthenticationType? {
+        return authenticationType ?: readText().toAuthenticationType()
     }
 
     private fun readSocketType() = readText().toConnectionSecurity()
 
-    private fun String.toAuthType(): AuthType? {
+    private fun String.toAuthenticationType(): AuthenticationType? {
         return when (this) {
-            "OAuth2" -> AuthType.XOAUTH2
-            "password-cleartext" -> AuthType.PLAIN
-            "password-encrypted" -> AuthType.CRAM_MD5
+            "OAuth2" -> OAuth2
+            "password-cleartext" -> PasswordCleartext
+            "password-encrypted" -> PasswordEncrypted
             else -> {
                 Timber.d("Ignoring unknown 'authentication' value '$this'")
                 null
@@ -214,8 +231,8 @@ private class ClientConfigParser(
 
     private fun String.toConnectionSecurity(): ConnectionSecurity {
         return when (this) {
-            "SSL" -> ConnectionSecurity.SSL_TLS_REQUIRED
-            "STARTTLS" -> ConnectionSecurity.STARTTLS_REQUIRED
+            "SSL" -> TLS
+            "STARTTLS" -> StartTLS
             else -> parserError("Unknown 'socketType' value: '$this'")
         }
     }
@@ -277,6 +294,26 @@ private class ClientConfigParser(
         return replace("%EMAILDOMAIN%", domain)
             .replace("%EMAILLOCALPART%", localPart)
             .replace("%EMAILADDRESS%", email)
+    }
+
+    private fun createImapServerSettings(
+        hostname: Hostname,
+        port: Port,
+        connectionSecurity: ConnectionSecurity,
+        authenticationType: AuthenticationType,
+        username: String,
+    ): ImapServerSettings {
+        return ImapServerSettings(hostname, port, connectionSecurity, authenticationType, username)
+    }
+
+    private fun createSmtpServerSettings(
+        hostname: Hostname,
+        port: Port,
+        connectionSecurity: ConnectionSecurity,
+        authenticationType: AuthenticationType,
+        username: String,
+    ): SmtpServerSettings {
+        return SmtpServerSettings(hostname, port, connectionSecurity, authenticationType, username)
     }
 }
 
