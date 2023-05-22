@@ -1,15 +1,19 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.core.common.net.Domain
+import app.k9mail.core.common.net.toDomain
+
 class RealSubDomainExtractor(private val baseDomainExtractor: BaseDomainExtractor) : SubDomainExtractor {
     @Suppress("ReturnCount")
-    override fun extractSubDomain(domain: String): String? {
+    override fun extractSubDomain(domain: Domain): Domain? {
         val baseDomain = baseDomainExtractor.extractBaseDomain(domain)
         if (baseDomain == domain) {
             // The domain doesn't have a sub domain.
             return null
         }
 
-        val domainPrefix = domain.removeSuffix(".$baseDomain")
+        val baseDomainString = baseDomain.value
+        val domainPrefix = domain.value.removeSuffix(".$baseDomainString")
         val index = domainPrefix.indexOf('.')
         if (index == -1) {
             // The prefix is the sub domain. When we remove it only the base domain remains.
@@ -17,6 +21,6 @@ class RealSubDomainExtractor(private val baseDomainExtractor: BaseDomainExtracto
         }
 
         val prefixWithoutFirstLabel = domainPrefix.substring(index + 1)
-        return "$prefixWithoutFirstLabel.$baseDomain"
+        return "$prefixWithoutFirstLabel.$baseDomainString".toDomain()
     }
 }

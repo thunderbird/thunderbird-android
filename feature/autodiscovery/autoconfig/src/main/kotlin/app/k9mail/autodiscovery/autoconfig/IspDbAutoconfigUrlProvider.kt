@@ -1,18 +1,20 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.core.common.mail.EmailAddress
+import app.k9mail.core.common.net.Domain
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 class IspDbAutoconfigUrlProvider : AutoconfigUrlProvider {
-    override fun getAutoconfigUrls(domain: String, email: String?): List<HttpUrl> {
+    override fun getAutoconfigUrls(domain: Domain, email: EmailAddress?): List<HttpUrl> {
         return listOf(createIspDbUrl(domain))
     }
 
-    private fun createIspDbUrl(domain: String): HttpUrl {
+    private fun createIspDbUrl(domain: Domain): HttpUrl {
         // https://autoconfig.thunderbird.net/v1.1/{domain}
         return "https://autoconfig.thunderbird.net/v1.1/".toHttpUrl()
             .newBuilder()
-            .addPathSegment(domain)
+            .addPathSegment(domain.value)
             .build()
     }
 }

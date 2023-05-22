@@ -1,8 +1,10 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.core.common.net.toDomain
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
+import assertk.assertions.extracting
 import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import kotlin.test.Ignore
@@ -14,9 +16,11 @@ class MiniDnsMxResolverTest {
     @Test
     @Ignore("Requires internet")
     fun `MX lookup for known domain`() {
-        val result = resolver.lookup("thunderbird.net")
+        val domain = "thunderbird.net".toDomain()
 
-        assertThat(result).all {
+        val result = resolver.lookup(domain)
+
+        assertThat(result).extracting { it.value }.all {
             index(0).isEqualTo("aspmx.l.google.com")
             containsExactlyInAnyOrder(
                 "aspmx.l.google.com",

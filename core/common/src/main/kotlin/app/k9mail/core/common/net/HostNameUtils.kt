@@ -1,4 +1,4 @@
-package com.fsck.k9.helper
+package app.k9mail.core.common.net
 
 /**
  * Code to check the validity of host names and IP addresses.

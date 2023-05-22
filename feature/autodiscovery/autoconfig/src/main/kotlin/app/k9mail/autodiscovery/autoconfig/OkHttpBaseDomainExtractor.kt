@@ -1,10 +1,12 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.core.common.net.Domain
+import app.k9mail.core.common.net.toDomain
 import okhttp3.HttpUrl
 
 class OkHttpBaseDomainExtractor : BaseDomainExtractor {
-    override fun extractBaseDomain(domain: String): String {
-        return domain.toHttpUrlOrNull().topPrivateDomain() ?: domain
+    override fun extractBaseDomain(domain: Domain): Domain {
+        return domain.value.toHttpUrlOrNull().topPrivateDomain()?.toDomain() ?: domain
     }
 
     private fun String.toHttpUrlOrNull(): HttpUrl {

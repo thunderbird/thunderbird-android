@@ -1,11 +1,11 @@
-package com.fsck.k9.helper
+package app.k9mail.core.common.net
 
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import org.junit.Test
+import kotlin.test.Test
 
 /**
  * Test data copied from `mailnews/base/test/unit/test_hostnameUtils.js`

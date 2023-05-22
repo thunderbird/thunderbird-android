@@ -1,9 +1,11 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.core.common.mail.EmailAddress
+import app.k9mail.core.common.net.Domain
 import okhttp3.HttpUrl
 
 class ProviderAutoconfigUrlProvider(private val config: AutoconfigUrlConfig) : AutoconfigUrlProvider {
-    override fun getAutoconfigUrls(domain: String, email: String?): List<HttpUrl> {
+    override fun getAutoconfigUrls(domain: Domain, email: EmailAddress?): List<HttpUrl> {
         return buildList {
             add(createProviderUrl(domain, email, useHttps = true))
             add(createDomainUrl(domain, email, useHttps = true))
@@ -15,31 +17,31 @@ class ProviderAutoconfigUrlProvider(private val config: AutoconfigUrlConfig) : A
         }
     }
 
-    private fun createProviderUrl(domain: String, email: String?, useHttps: Boolean): HttpUrl {
+    private fun createProviderUrl(domain: Domain, email: EmailAddress?, useHttps: Boolean): HttpUrl {
         // https://autoconfig.{domain}/mail/config-v1.1.xml?emailaddress={email}
         // http://autoconfig.{domain}/mail/config-v1.1.xml?emailaddress={email}
         return HttpUrl.Builder()
             .scheme(if (useHttps) "https" else "http")
-            .host("autoconfig.$domain")
+            .host("autoconfig.${domain.value}")
             .addEncodedPathSegments("mail/config-v1.1.xml")
             .apply {
                 if (email != null && config.includeEmailAddress) {
-                    addQueryParameter("emailaddress", email)
+                    addQueryParameter("emailaddress", email.address)
                 }
             }
             .build()
     }
 
-    private fun createDomainUrl(domain: String, email: String?, useHttps: Boolean): HttpUrl {
+    private fun createDomainUrl(domain: Domain, email: EmailAddress?, useHttps: Boolean): HttpUrl {
         // https://{domain}/.well-known/autoconfig/mail/config-v1.1.xml?emailaddress={email}
         // http://{domain}/.well-known/autoconfig/mail/config-v1.1.xml?emailaddress={email}
         return HttpUrl.Builder()
             .scheme(if (useHttps) "https" else "http")
-            .host(domain)
+            .host(domain.value)
             .addEncodedPathSegments(".well-known/autoconfig/mail/config-v1.1.xml")
             .apply {
                 if (email != null && config.includeEmailAddress) {
-                    addQueryParameter("emailaddress", email)
+                    addQueryParameter("emailaddress", email.address)
                 }
             }
             .build()

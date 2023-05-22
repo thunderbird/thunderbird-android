@@ -1,5 +1,6 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test
@@ -9,21 +10,37 @@ class OkHttpBaseDomainExtractorTest {
 
     @Test
     fun `basic domain`() {
-        assertThat(baseDomainExtractor.extractBaseDomain("domain.example")).isEqualTo("domain.example")
+        val domain = "domain.example".toDomain()
+
+        val result = baseDomainExtractor.extractBaseDomain(domain)
+
+        assertThat(result).isEqualTo(domain)
     }
 
     @Test
     fun `basic subdomain`() {
-        assertThat(baseDomainExtractor.extractBaseDomain("subdomain.domain.example")).isEqualTo("domain.example")
+        val domain = "subdomain.domain.example".toDomain()
+
+        val result = baseDomainExtractor.extractBaseDomain(domain)
+
+        assertThat(result).isEqualTo("domain.example".toDomain())
     }
 
     @Test
     fun `domain with public suffix`() {
-        assertThat(baseDomainExtractor.extractBaseDomain("example.co.uk")).isEqualTo("example.co.uk")
+        val domain = "example.co.uk".toDomain()
+
+        val result = baseDomainExtractor.extractBaseDomain(domain)
+
+        assertThat(result).isEqualTo(domain)
     }
 
     @Test
     fun `subdomain with public suffix`() {
-        assertThat(baseDomainExtractor.extractBaseDomain("subdomain.example.co.uk")).isEqualTo("example.co.uk")
+        val domain = "subdomain.example.co.uk".toDomain()
+
+        val result = baseDomainExtractor.extractBaseDomain(domain)
+
+        assertThat(result).isEqualTo("example.co.uk".toDomain())
     }
 }
