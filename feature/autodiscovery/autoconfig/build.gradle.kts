@@ -7,7 +7,6 @@ dependencies {
     api(projects.feature.autodiscovery.api)
 
     compileOnly(libs.xmlpull)
-    implementation(projects.core.common)
     implementation(libs.okhttp)
     implementation(libs.minidns.hla)
 
