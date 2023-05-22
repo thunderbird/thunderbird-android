@@ -169,6 +169,46 @@ class AutoconfigParserTest {
     }
 
     @Test
+    fun `ignore unsupported 'incomingServer' type`() {
+        val inputStream = minimalConfig.withModifications {
+            element("incomingServer").insertBefore("""<incomingServer type="smtp"/>""")
+        }
+
+        val result = parser.parseSettings(inputStream, email = "user@domain.example")
+
+        assertThat(result.incoming).containsExactly(
+            DiscoveredServerSettings(
+                protocol = "imap",
+                host = "imap.domain.example",
+                port = 993,
+                security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                authType = AuthType.PLAIN,
+                username = "user@domain.example",
+            ),
+        )
+    }
+
+    @Test
+    fun `ignore unsupported 'outgoingServer' type`() {
+        val inputStream = minimalConfig.withModifications {
+            element("outgoingServer").insertBefore("""<outgoingServer type="imap"/>""")
+        }
+
+        val result = parser.parseSettings(inputStream, email = "user@domain.example")
+
+        assertThat(result.outgoing).containsExactly(
+            DiscoveredServerSettings(
+                protocol = "smtp",
+                host = "smtp.domain.example",
+                port = 587,
+                security = ConnectionSecurity.STARTTLS_REQUIRED,
+                authType = AuthType.PLAIN,
+                username = "user@domain.example",
+            ),
+        )
+    }
+
+    @Test
     fun `empty authentication element should be ignored`() {
         val inputStream = minimalConfig.withModifications {
             element("incomingServer > authentication").insertBefore("<authentication></authentication>")
@@ -390,6 +430,36 @@ class AutoconfigParserTest {
             parser.parseSettings(inputStream, email = "user@domain.example")
         }.isInstanceOf<AutoconfigParserException>()
             .hasMessage("Missing 'emailProvider' element")
+    }
+
+    @Test
+    fun `ignore 'incomingServer' inside unsupported 'incomingServer' element`() {
+        val inputStream = minimalConfig.withModifications {
+            val incomingServer = element("incomingServer")
+            val incomingServerXml = incomingServer.outerHtml()
+            incomingServer.attr("type", "unsupported")
+            incomingServer.html(incomingServerXml)
+        }
+
+        assertFailure {
+            parser.parseSettings(inputStream, email = "user@domain.example")
+        }.isInstanceOf<AutoconfigParserException>()
+            .hasMessage("Missing 'incomingServer' element")
+    }
+
+    @Test
+    fun `ignore 'outgoingServer' inside unsupported 'outgoingServer' element`() {
+        val inputStream = minimalConfig.withModifications {
+            val outgoingServer = element("outgoingServer")
+            val outgoingServerXml = outgoingServer.outerHtml()
+            outgoingServer.attr("type", "unsupported")
+            outgoingServer.html(outgoingServerXml)
+        }
+
+        assertFailure {
+            parser.parseSettings(inputStream, email = "user@domain.example")
+        }.isInstanceOf<AutoconfigParserException>()
+            .hasMessage("Missing 'outgoingServer' element")
     }
 
     @Test
