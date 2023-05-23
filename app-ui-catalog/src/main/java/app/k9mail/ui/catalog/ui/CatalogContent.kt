@@ -14,6 +14,7 @@ import app.k9mail.ui.catalog.ui.common.ThemeTopAppBar
 import app.k9mail.ui.catalog.ui.common.drawer.DrawerContent
 import app.k9mail.ui.catalog.ui.molecule.navigateToCatalogMolecule
 import app.k9mail.ui.catalog.ui.navigation.CatalogNavHost
+import app.k9mail.ui.catalog.ui.organism.navigateToCatalogOrganism
 
 @Composable
 fun CatalogContent(
@@ -50,6 +51,9 @@ fun CatalogContent(
                 },
                 onNavigateToMolecules = {
                     navController.navigateToCatalogMolecule()
+                },
+                onNavigateToOrganisms = {
+                    navController.navigateToCatalogOrganism()
                 },
             )
         },

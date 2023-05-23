@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import app.k9mail.ui.catalog.ui.atom.NAVIGATION_ROUTE_CATALOG_ATOM
 import app.k9mail.ui.catalog.ui.atom.catalogAtomRoute
 import app.k9mail.ui.catalog.ui.molecule.catalogMoleculeRoute
+import app.k9mail.ui.catalog.ui.organism.catalogOrganismRoute
 
 @Composable
 fun CatalogNavHost(
@@ -21,5 +22,6 @@ fun CatalogNavHost(
     ) {
         catalogAtomRoute()
         catalogMoleculeRoute()
+        catalogOrganismRoute()
     }
 }

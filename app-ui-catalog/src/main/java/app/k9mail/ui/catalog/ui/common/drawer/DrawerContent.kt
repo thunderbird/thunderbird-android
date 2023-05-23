@@ -12,7 +12,7 @@ import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 import app.k9mail.ui.catalog.ui.common.theme.ThemeSelector
 import app.k9mail.ui.catalog.ui.common.theme.ThemeVariantSelector
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 @Composable
 fun DrawerContent(
     toggleDrawer: () -> Unit,
@@ -22,6 +22,7 @@ fun DrawerContent(
     onThemeVariantChanged: () -> Unit,
     onNavigateToAtoms: () -> Unit,
     onNavigateToMolecules: () -> Unit,
+    onNavigateToOrganisms: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -48,6 +49,15 @@ fun DrawerContent(
                 onItemClick = {
                     toggleDrawer()
                     onNavigateToMolecules()
+                },
+            )
+        }
+        item {
+            DrawerCategoryItem(
+                text = "Organisms",
+                onItemClick = {
+                    toggleDrawer()
+                    onNavigateToOrganisms()
                 },
             )
         }
