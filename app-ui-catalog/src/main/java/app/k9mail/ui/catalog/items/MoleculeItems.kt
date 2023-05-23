@@ -87,6 +87,17 @@ fun LazyGridScope.moleculeItems() {
             }
         }
     }
+    item {
+        MoleculeWrapper(title = "CheckboxInput") {
+            WithRememberedState(input = false) { state ->
+                CheckboxInput(
+                    text = "Check the box",
+                    checked = state.value,
+                    onCheckedChange = { state.value = it },
+                )
+            }
+        }
+    }
 }
 
 @Composable
