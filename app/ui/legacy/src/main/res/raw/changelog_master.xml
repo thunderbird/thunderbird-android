@@ -5,6 +5,12 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.704" versioncode="37004" date="2023-05-23">
+        <change>Changed primary action in message view header from "reply all" to "reply"</change>
+        <change>Fixed the app so it runs on devices that don't support home screen widgets</change>
+        <change>Fixed bug where "Cannot connect to crypto provider" was displayed when the problem wasn't the crypto provider</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.703" versioncode="37003" date="2023-05-08">
         <change>Internal changes</change>
         <change>Updated translations</change>
