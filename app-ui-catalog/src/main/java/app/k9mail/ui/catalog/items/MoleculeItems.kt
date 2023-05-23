@@ -16,8 +16,10 @@ import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
+import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.helper.WithRememberedState
+import kotlinx.collections.immutable.persistentListOf
 
 @Suppress("LongMethod")
 fun LazyGridScope.moleculeItems() {
@@ -94,6 +96,18 @@ fun LazyGridScope.moleculeItems() {
                     text = "Check the box",
                     checked = state.value,
                     onCheckedChange = { state.value = it },
+                )
+            }
+        }
+    }
+    item {
+        val options = persistentListOf("Option 1", "Option 2", "Option 3")
+        MoleculeWrapper(title = "SelectInput") {
+            WithRememberedState(input = options.first()) { state ->
+                SelectInput(
+                    options = options,
+                    selectedOption = state.value,
+                    onOptionChange = { state.value = it },
                 )
             }
         }
