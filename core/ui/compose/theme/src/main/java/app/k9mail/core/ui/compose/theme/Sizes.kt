@@ -14,6 +14,8 @@ data class Sizes(
     val larger: Dp = 128.dp,
     val huge: Dp = 256.dp,
     val huger: Dp = 384.dp,
+
+    val icon: Dp = 24.dp,
 )
 
 internal val LocalSizes = staticCompositionLocalOf { Sizes() }

@@ -16,14 +16,27 @@ import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
 
 fun LazyGridScope.iconItems() {
-    sectionHeaderItem(text = "Icons")
-    item {
-        IconItem(
-            name = "Error",
-            imageVector = Icons.error,
-        )
+    sectionHeaderItem(text = "Filled")
+    getIconsFor(Icons.Filled)
+    sectionHeaderItem(text = "Outlined")
+    getIconsFor(Icons.Outlined)
+}
+
+@Suppress("UnusedPrivateMember")
+private inline fun <reified T> LazyGridScope.getIconsFor(icons: T) {
+    for (field in T::class.java.declaredFields) {
+        if (field.name in exclusions) continue
+        item {
+            field.isAccessible = true
+            IconItem(
+                name = field.name.replaceFirstChar { it.uppercase() },
+                imageVector = field.get(Icons.Filled) as ImageVector,
+            )
+        }
     }
 }
+
+private val exclusions = listOf("\$stable", "INSTANCE")
 
 @Composable
 private fun IconItem(
