@@ -30,7 +30,7 @@ fun Icon(
 internal fun IconPreview() {
     PreviewWithThemes {
         Icon(
-            imageVector = Icons.error,
+            imageVector = Icons.Filled.error,
         )
     }
 }
@@ -40,7 +40,7 @@ internal fun IconPreview() {
 internal fun IconTintedPreview() {
     PreviewWithThemes {
         Icon(
-            imageVector = Icons.error,
+            imageVector = Icons.Filled.error,
             tint = Color.Magenta,
         )
     }

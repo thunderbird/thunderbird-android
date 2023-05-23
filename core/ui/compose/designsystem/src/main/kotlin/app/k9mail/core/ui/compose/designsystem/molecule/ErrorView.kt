@@ -39,7 +39,7 @@ fun ErrorView(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
     ) {
         Icon(
-            imageVector = Icons.error,
+            imageVector = Icons.Filled.error,
             contentDescription = null,
             tint = MainTheme.colors.error,
             modifier = Modifier.padding(top = MainTheme.spacings.default),
