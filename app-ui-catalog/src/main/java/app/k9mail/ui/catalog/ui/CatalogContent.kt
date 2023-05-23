@@ -12,6 +12,7 @@ import app.k9mail.ui.catalog.ui.CatalogContract.State
 import app.k9mail.ui.catalog.ui.atom.navigateToCatalogAtom
 import app.k9mail.ui.catalog.ui.common.ThemeTopAppBar
 import app.k9mail.ui.catalog.ui.common.drawer.DrawerContent
+import app.k9mail.ui.catalog.ui.molecule.navigateToCatalogMolecule
 import app.k9mail.ui.catalog.ui.navigation.CatalogNavHost
 
 @Composable
@@ -44,7 +45,12 @@ fun CatalogContent(
                 themeVariant = state.themeVariant,
                 onThemeChanged = onThemeChanged,
                 onThemeVariantChanged = onThemeVariantChanged,
-                onNavigateToAtoms = { navController.navigateToCatalogAtom() },
+                onNavigateToAtoms = {
+                    navController.navigateToCatalogAtom()
+                },
+                onNavigateToMolecules = {
+                    navController.navigateToCatalogMolecule()
+                },
             )
         },
     ) {
