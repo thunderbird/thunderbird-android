@@ -3,6 +3,8 @@ package app.k9mail.core.ui.compose.designsystem.atom.textfield
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import app.k9mail.core.ui.compose.designsystem.atom.Icon
+import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
 
@@ -13,6 +15,7 @@ fun TextFieldOutlined(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     isEnabled: Boolean = true,
     isReadOnly: Boolean = false,
     isRequired: Boolean = false,
@@ -24,6 +27,7 @@ fun TextFieldOutlined(
         modifier = modifier,
         enabled = isEnabled,
         label = selectLabel(label, isRequired),
+        trailingIcon = trailingIcon,
         readOnly = isReadOnly,
         isError = hasError,
     )
@@ -84,6 +88,19 @@ internal fun TextFieldOutlinedRequiredPreview() {
             value = "",
             onValueChange = {},
             label = "Label",
+            isRequired = true,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun TextFieldOutlinedWithTrailingIconPreview() {
+    PreviewWithThemes {
+        TextFieldOutlined(
+            value = "",
+            onValueChange = {},
+            trailingIcon = { Icon(imageVector = Icons.Filled.user) },
             isRequired = true,
         )
     }
