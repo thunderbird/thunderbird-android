@@ -14,6 +14,8 @@ import app.k9mail.core.ui.compose.testing.ComposeTest
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
@@ -36,6 +38,7 @@ data class TextFieldTestData<INPUT, VALUE>(
         modifier: Modifier,
         textFieldConfig: TextFieldConfig,
     ) -> Unit,
+    val isSelectionTest: Boolean = false,
 )
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
@@ -46,6 +49,7 @@ class TextFieldKtTest(
     private val testSubjectName = data.name
     private val testSubject = data.content
     private val testInput = data.input
+    private val isSelectionTest = data.isSelectionTest
 
     @Test
     fun `should call onValueChange when value changes`() = runComposeTest {
@@ -65,9 +69,14 @@ class TextFieldKtTest(
         }
 
         onNodeWithTag(testSubjectName).performClick()
-        onNodeWithTag(testSubjectName).performTextInput(" + added text")
 
-        assertThat(value).isEqualTo("$testInput + added text")
+        if (isSelectionTest) {
+            onNodeWithText((testInput as ImmutableList<*>)[1].toString()).performClick()
+            assertThat(value).isEqualTo(testInput[1])
+        } else {
+            onNodeWithTag(testSubjectName).performTextInput(" + added text")
+            assertThat(value).isEqualTo("$testInput + added text")
+        }
     }
 
     @Test
@@ -261,6 +270,37 @@ class TextFieldKtTest(
                     } else {
                         TextFieldOutlinedEmailAddress(
                             value = value,
+                            onValueChange = onValueChange,
+                            modifier = modifier,
+                            label = config.label,
+                            isRequired = config.isRequired,
+                            isReadOnly = config.isReadOnly,
+                        )
+                    }
+                },
+            ),
+            TextFieldTestData(
+                name = "TextFieldOutlinedSelect",
+                input = persistentListOf("option1", "option2"),
+                isSelectionTest = true,
+                content = { value, onValueChange: (Any) -> Unit, modifier, config ->
+                    if (config.isEnabled != null) {
+                        @Suppress("UNCHECKED_CAST")
+                        TextFieldOutlinedSelect(
+                            options = value as ImmutableList<Any>,
+                            selectedOption = value.first(),
+                            onValueChange = onValueChange,
+                            modifier = modifier,
+                            label = config.label,
+                            isEnabled = config.isEnabled,
+                            isReadOnly = config.isReadOnly,
+                            isRequired = config.isRequired,
+                        )
+                    } else {
+                        @Suppress("UNCHECKED_CAST")
+                        TextFieldOutlinedSelect(
+                            options = value as ImmutableList<Any>,
+                            selectedOption = value.first(),
                             onValueChange = onValueChange,
                             modifier = modifier,
                             label = config.label,
