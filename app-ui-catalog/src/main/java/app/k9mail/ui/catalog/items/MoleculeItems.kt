@@ -11,10 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
-import app.k9mail.core.ui.compose.designsystem.molecule.EmailAddressInput
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
-import app.k9mail.core.ui.compose.designsystem.molecule.PasswordInput
+import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
+import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
+import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.helper.WithRememberedState
 

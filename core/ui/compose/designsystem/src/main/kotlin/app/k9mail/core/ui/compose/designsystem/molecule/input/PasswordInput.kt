@@ -1,10 +1,11 @@
-package app.k9mail.core.ui.compose.designsystem.molecule
+package app.k9mail.core.ui.compose.designsystem.molecule.input
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,26 +21,25 @@ fun PasswordInput(
     modifier: Modifier = Modifier,
     password: String = "",
     errorMessage: String? = null,
+    contentPadding: PaddingValues = inputContentPadding(),
 ) {
     Column(
         modifier = Modifier
-            .padding(
-                horizontal = MainTheme.spacings.double,
-                vertical = MainTheme.spacings.default,
-            )
+            .padding(contentPadding)
+            .fillMaxWidth()
             .then(modifier),
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextFieldOutlinedPassword(
             value = password,
             onValueChange = onPasswordChange,
             label = stringResource(id = R.string.designsystem_molecule_password_input_label),
             hasError = errorMessage != null,
+            modifier = Modifier.fillMaxWidth(),
         )
         AnimatedVisibility(visible = errorMessage != null) {
             TextCaption(
                 text = errorMessage ?: "",
-                modifier = Modifier.padding(top = MainTheme.spacings.default),
+                modifier = Modifier.padding(start = MainTheme.spacings.double, top = MainTheme.spacings.half),
                 color = MainTheme.colors.error,
             )
         }
