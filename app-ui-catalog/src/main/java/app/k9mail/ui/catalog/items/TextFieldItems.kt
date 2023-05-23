@@ -1,176 +1,237 @@
 package app.k9mail.ui.catalog.items
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.key
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import app.k9mail.core.ui.compose.designsystem.atom.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedEmailAddress
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
+import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedSelect
+import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
+import app.k9mail.core.ui.compose.theme.Icons
+import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.helper.WithRememberedState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 fun LazyGridScope.textFieldItems() {
-    sectionHeaderItem(text = "Text fields")
+    sectionHeaderItem(text = "Text field - Outlined")
+    sectionSubtitleItem(text = "Default")
     textFieldOutlinedItems()
+    sectionSubtitleItem(text = "Password")
     passwordTextFieldOutlinedItems()
+    sectionSubtitleItem(text = "Email address")
     emailTextFieldOutlinedItems()
+    sectionSubtitleItem(text = "Selection")
+    selectionTextFieldOutlinedItems()
 }
 
+@Stable
+data class TextFieldState<T>(
+    val input: T,
+    val label: String = "Label",
+    val showLabel: Boolean = false,
+    val showTrailingIcon: Boolean = false,
+    val isDisabled: Boolean = false,
+    val isReadOnly: Boolean = false,
+    val isRequired: Boolean = false,
+    val hasError: Boolean = false,
+)
+
+@Suppress("LongMethod")
+@Composable
+fun <T> TextFieldDemo(
+    initialState: TextFieldState<T>,
+    modifier: Modifier = Modifier,
+    hasTrailingIcon: Boolean = false,
+    content: @Composable (state: MutableState<TextFieldState<T>>) -> Unit,
+) {
+    WithRememberedState(input = initialState) { state ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(modifier),
+        ) {
+            key(state.value.showLabel, state.value.isRequired) {
+                content(state)
+            }
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = MainTheme.spacings.double,
+                            start = MainTheme.spacings.default,
+                        ),
+                ) {
+                    TextSubtitle1(text = "Configuration:")
+                }
+
+                CheckboxInput(
+                    text = "Show Label",
+                    checked = state.value.showLabel,
+                    onCheckedChange = { state.value = state.value.copy(showLabel = it) },
+                    contentPadding = defaultPadding,
+                )
+
+                if (hasTrailingIcon) {
+                    CheckboxInput(
+                        text = "Show Trailing Icon",
+                        checked = state.value.showTrailingIcon,
+                        onCheckedChange = { state.value = state.value.copy(showTrailingIcon = it) },
+                        contentPadding = defaultPadding,
+                    )
+                }
+
+                CheckboxInput(
+                    text = "Is required",
+                    checked = state.value.isRequired,
+                    onCheckedChange = { state.value = state.value.copy(isRequired = it) },
+                    contentPadding = defaultPadding,
+                )
+
+                CheckboxInput(
+                    text = "Is read-only",
+                    checked = state.value.isReadOnly,
+                    onCheckedChange = { state.value = state.value.copy(isReadOnly = it) },
+                    contentPadding = defaultPadding,
+                )
+
+                CheckboxInput(
+                    text = "Is disabled",
+                    checked = state.value.isDisabled,
+                    onCheckedChange = { state.value = state.value.copy(isDisabled = it) },
+                    contentPadding = defaultPadding,
+                )
+
+                CheckboxInput(
+                    text = "Has Error",
+                    checked = state.value.hasError,
+                    onCheckedChange = { state.value = state.value.copy(hasError = it) },
+                    contentPadding = defaultPadding,
+                )
+            }
+        }
+    }
+}
+
+private val defaultPadding = PaddingValues(0.dp)
+
 private fun LazyGridScope.textFieldOutlinedItems() {
-    sectionSubtitleItem(text = "Outlined")
     item {
-        WithRememberedState(input = "Initial text") { state ->
+        TextFieldDemo(
+            hasTrailingIcon = true,
+            initialState = TextFieldState(input = ""),
+        ) { state ->
             TextFieldOutlined(
-                value = state.value,
-                label = "Label",
-                onValueChange = { state.value = it },
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "Input text with error") { state ->
-            TextFieldOutlined(
-                value = state.value,
-                label = "Label",
-                onValueChange = { state.value = it },
-                hasError = true,
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "Input text disabled") { state ->
-            TextFieldOutlined(
-                value = state.value,
-                label = "Label",
-                onValueChange = { state.value = it },
-                hasError = false,
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "Input text required") { state ->
-            TextFieldOutlined(
-                value = state.value,
-                label = "Label",
-                onValueChange = { state.value = it },
-                isRequired = true,
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "Input text required with error") { state ->
-            TextFieldOutlined(
-                value = state.value,
-                label = "Label",
-                onValueChange = { state.value = it },
-                isRequired = true,
-                hasError = true,
+                value = state.value.input,
+                label = if (state.value.showLabel) state.value.label else null,
+                onValueChange = { state.value = state.value.copy(input = it) },
+                trailingIcon = {
+                    if (state.value.showTrailingIcon) {
+                        Icon(imageVector = Icons.Filled.user)
+                    }
+                },
+                isEnabled = !state.value.isDisabled,
+                isReadOnly = state.value.isReadOnly,
+                isRequired = state.value.isRequired,
+                hasError = state.value.hasError,
+                modifier = Modifier
+                    .fillMaxWidth(),
             )
         }
     }
 }
 
 private fun LazyGridScope.passwordTextFieldOutlinedItems() {
-    sectionSubtitleItem(text = "Password outlined")
     item {
-        WithRememberedState(input = "") { state ->
-            TextFieldOutlinedPassword(
-                value = state.value,
+        TextFieldDemo(
+            initialState = TextFieldState(
+                input = "",
                 label = "Password",
-                onValueChange = { state.value = it },
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "Password") { state ->
+            ),
+        ) { state ->
             TextFieldOutlinedPassword(
-                value = state.value,
-                label = "Password with error",
-                onValueChange = { state.value = it },
-                hasError = true,
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "Password") { state ->
-            TextFieldOutlinedPassword(
-                value = state.value,
-                label = "Password disabled",
-                onValueChange = { state.value = it },
-                isEnabled = false,
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "Password") { state ->
-            TextFieldOutlinedPassword(
-                value = state.value,
-                label = "Password required",
-                onValueChange = { state.value = it },
-                isRequired = true,
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "Password") { state ->
-            TextFieldOutlinedPassword(
-                value = state.value,
-                label = "Password required with error",
-                onValueChange = { state.value = it },
-                isRequired = true,
-                hasError = true,
+                value = state.value.input,
+                label = if (state.value.showLabel) state.value.label else null,
+                onValueChange = { state.value = state.value.copy(input = it) },
+                isEnabled = !state.value.isDisabled,
+                isReadOnly = state.value.isReadOnly,
+                isRequired = state.value.isRequired,
+                hasError = state.value.hasError,
+                modifier = Modifier
+                    .fillMaxWidth(),
             )
         }
     }
 }
 
 private fun LazyGridScope.emailTextFieldOutlinedItems() {
-    sectionSubtitleItem(text = "Email outlined")
     item {
-        WithRememberedState(input = "") { state ->
+        TextFieldDemo(
+            initialState = TextFieldState(
+                input = "",
+                label = "Email Address",
+            ),
+        ) { state ->
             TextFieldOutlinedEmailAddress(
-                value = state.value,
-                label = "Email address",
-                onValueChange = { state.value = it },
+                value = state.value.input,
+                label = if (state.value.showLabel) state.value.label else null,
+                onValueChange = { state.value = state.value.copy(input = it) },
+                isEnabled = !state.value.isDisabled,
+                isReadOnly = state.value.isReadOnly,
+                isRequired = state.value.isRequired,
+                hasError = state.value.hasError,
+                modifier = Modifier
+                    .fillMaxWidth(),
             )
         }
     }
+}
+
+private data class TextFieldSelectState(
+    val options: ImmutableList<String> = persistentListOf("Option 1", "Option 2", "Option 3"),
+    val selectedOption: String = options.first(),
+)
+
+private fun LazyGridScope.selectionTextFieldOutlinedItems() {
     item {
-        WithRememberedState(input = "email@example.com") { state ->
-            TextFieldOutlinedEmailAddress(
-                value = state.value,
-                label = "Email address with error",
-                onValueChange = { state.value = it },
-                hasError = true,
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "email@example.com") { state ->
-            TextFieldOutlinedEmailAddress(
-                value = state.value,
-                label = "Email address disabled",
-                onValueChange = { state.value = it },
-                isEnabled = false,
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "email@example.com") { state ->
-            TextFieldOutlinedEmailAddress(
-                value = state.value,
-                label = "Email address required",
-                onValueChange = { state.value = it },
-                isRequired = true,
-            )
-        }
-    }
-    item {
-        WithRememberedState(input = "email@example.com") { state ->
-            TextFieldOutlinedEmailAddress(
-                value = state.value,
-                label = "Email address required with error",
-                onValueChange = { state.value = it },
-                isRequired = true,
-                hasError = true,
-            )
+        TextFieldDemo(
+            initialState = TextFieldState(
+                input = TextFieldSelectState(),
+                label = "Select",
+            ),
+        ) { state ->
+            key(
+                state.value.input.selectedOption,
+            ) {
+                TextFieldOutlinedSelect(
+                    options = state.value.input.options,
+                    label = if (state.value.showLabel) state.value.label else null,
+                    onValueChange = {
+                        state.value = state.value.copy(input = state.value.input.copy(selectedOption = it))
+                    },
+                    selectedOption = state.value.input.selectedOption,
+                    isEnabled = !state.value.isDisabled,
+                    isReadOnly = state.value.isReadOnly,
+                    isRequired = state.value.isRequired,
+                    hasError = state.value.hasError,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                )
+            }
         }
     }
 }
