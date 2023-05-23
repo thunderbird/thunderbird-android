@@ -362,6 +362,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_incoming_delete_policy_delete_label">Kustuta serveris</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Märgi serveris loetuks</string>
   <string name="account_setup_incoming_use_compression">Kasuta pakkimist</string>
+  <string name="account_setup_incoming_send_client_id">Saada kliendi tunnus</string>
   <string name="account_setup_expunge_policy_label">Eemalda kustutatud kirjad serverist</string>
   <string name="account_setup_expunge_policy_immediately">Koheselt</string>
   <string name="account_setup_expunge_policy_on_poll">Andmete kontrollimisel</string>
