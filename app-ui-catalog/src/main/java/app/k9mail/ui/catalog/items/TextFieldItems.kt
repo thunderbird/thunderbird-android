@@ -30,7 +30,7 @@ private fun LazyGridScope.textFieldOutlinedItems() {
                 value = state.value,
                 label = "Label",
                 onValueChange = { state.value = it },
-                isError = true,
+                hasError = true,
             )
         }
     }
@@ -40,7 +40,7 @@ private fun LazyGridScope.textFieldOutlinedItems() {
                 value = state.value,
                 label = "Label",
                 onValueChange = { state.value = it },
-                enabled = false,
+                hasError = false,
             )
         }
     }
@@ -61,7 +61,7 @@ private fun LazyGridScope.textFieldOutlinedItems() {
                 label = "Label",
                 onValueChange = { state.value = it },
                 isRequired = true,
-                isError = true,
+                hasError = true,
             )
         }
     }
@@ -84,7 +84,7 @@ private fun LazyGridScope.passwordTextFieldOutlinedItems() {
                 value = state.value,
                 label = "Password with error",
                 onValueChange = { state.value = it },
-                isError = true,
+                hasError = true,
             )
         }
     }
@@ -94,7 +94,7 @@ private fun LazyGridScope.passwordTextFieldOutlinedItems() {
                 value = state.value,
                 label = "Password disabled",
                 onValueChange = { state.value = it },
-                enabled = false,
+                isEnabled = false,
             )
         }
     }
@@ -115,7 +115,7 @@ private fun LazyGridScope.passwordTextFieldOutlinedItems() {
                 label = "Password required with error",
                 onValueChange = { state.value = it },
                 isRequired = true,
-                isError = true,
+                hasError = true,
             )
         }
     }
@@ -138,7 +138,7 @@ private fun LazyGridScope.emailTextFieldOutlinedItems() {
                 value = state.value,
                 label = "Email address with error",
                 onValueChange = { state.value = it },
-                isError = true,
+                hasError = true,
             )
         }
     }
@@ -148,7 +148,7 @@ private fun LazyGridScope.emailTextFieldOutlinedItems() {
                 value = state.value,
                 label = "Email address disabled",
                 onValueChange = { state.value = it },
-                enabled = false,
+                isEnabled = false,
             )
         }
     }
@@ -169,7 +169,7 @@ private fun LazyGridScope.emailTextFieldOutlinedItems() {
                 label = "Email address required with error",
                 onValueChange = { state.value = it },
                 isRequired = true,
-                isError = true,
+                hasError = true,
             )
         }
     }

@@ -34,7 +34,7 @@ fun EmailAddressInput(
             value = emailAddress,
             onValueChange = onEmailAddressChange,
             label = stringResource(id = R.string.designsystem_molecule_email_address_input_label),
-            isError = errorMessage != null,
+            hasError = errorMessage != null,
         )
         AnimatedVisibility(visible = errorMessage != null) {
             TextCaption(

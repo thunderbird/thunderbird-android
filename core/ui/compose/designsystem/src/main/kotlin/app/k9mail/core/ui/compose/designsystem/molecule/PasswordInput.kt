@@ -34,7 +34,7 @@ fun PasswordInput(
             value = password,
             onValueChange = onPasswordChange,
             label = stringResource(id = R.string.designsystem_molecule_password_input_label),
-            isError = errorMessage != null,
+            hasError = errorMessage != null,
         )
         AnimatedVisibility(visible = errorMessage != null) {
             TextCaption(
