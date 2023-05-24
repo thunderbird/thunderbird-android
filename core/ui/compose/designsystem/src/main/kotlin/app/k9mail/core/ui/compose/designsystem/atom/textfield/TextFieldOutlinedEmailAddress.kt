@@ -8,23 +8,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
 
+@Suppress("LongParameterList")
 @Composable
 fun TextFieldOutlinedEmailAddress(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
     label: String? = null,
+    isEnabled: Boolean = true,
+    isReadOnly: Boolean = false,
     isRequired: Boolean = false,
-    isError: Boolean = false,
+    hasError: Boolean = false,
 ) {
     MaterialOutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        enabled = enabled,
+        enabled = isEnabled,
         label = selectLabel(label, isRequired),
-        isError = isError,
+        readOnly = isReadOnly,
+        isError = hasError,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
         ),
@@ -62,7 +65,7 @@ internal fun TextFieldOutlinedEmailDisabledPreview() {
         TextFieldOutlinedEmailAddress(
             value = "Input text",
             onValueChange = {},
-            enabled = false,
+            isEnabled = false,
         )
     }
 }
@@ -74,7 +77,7 @@ internal fun TextFieldOutlinedEmailErrorPreview() {
         TextFieldOutlined(
             value = "Input text",
             onValueChange = {},
-            isError = true,
+            hasError = true,
         )
     }
 }

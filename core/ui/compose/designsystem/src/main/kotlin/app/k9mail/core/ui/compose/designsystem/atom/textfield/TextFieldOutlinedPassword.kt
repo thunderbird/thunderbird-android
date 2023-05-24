@@ -19,15 +19,17 @@ import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
 
+@Suppress("LongParameterList")
 @Composable
 fun TextFieldOutlinedPassword(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
     label: String? = null,
+    isEnabled: Boolean = true,
+    isReadOnly: Boolean = false,
     isRequired: Boolean = false,
-    isError: Boolean = false,
+    hasError: Boolean = false,
 ) {
     var passwordVisibilityState by rememberSaveable { mutableStateOf(false) }
 
@@ -35,16 +37,17 @@ fun TextFieldOutlinedPassword(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        enabled = enabled,
+        enabled = isEnabled,
         label = selectLabel(label, isRequired),
         trailingIcon = selectTrailingIcon(
-            isEnabled = enabled,
+            isEnabled = isEnabled,
             isPasswordVisible = passwordVisibilityState,
             onClick = { passwordVisibilityState = !passwordVisibilityState },
         ),
-        isError = isError,
+        readOnly = isReadOnly,
+        isError = hasError,
         visualTransformation = selectVisualTransformation(
-            isEnabled = enabled,
+            isEnabled = isEnabled,
             isPasswordVisible = passwordVisibilityState,
         ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -124,7 +127,7 @@ internal fun TextFieldOutlinedPasswordDisabledPreview() {
         TextFieldOutlinedPassword(
             value = "Input text",
             onValueChange = {},
-            enabled = false,
+            isEnabled = false,
         )
     }
 }
@@ -136,7 +139,7 @@ internal fun TextFieldOutlinedPasswordErrorPreview() {
         TextFieldOutlinedPassword(
             value = "Input text",
             onValueChange = {},
-            isError = true,
+            hasError = true,
         )
     }
 }

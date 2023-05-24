@@ -11,65 +11,87 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import app.k9mail.core.ui.compose.testing.ComposeTest
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 
-private const val VALUE = "Input text"
 private const val LABEL = "Label"
 
-data class TextFieldTestData(
+data class TextFieldConfig(
+    val label: String?,
+    val isEnabled: Boolean?,
+    val isReadOnly: Boolean,
+    val isRequired: Boolean,
+)
+
+data class TextFieldTestData<INPUT, VALUE>(
     val name: String,
+    val input: INPUT,
     val content: @Composable (
-        value: String,
-        onValueChange: (String) -> Unit,
+        value: VALUE,
+        onValueChange: (VALUE) -> Unit,
         modifier: Modifier,
-        enabled: Boolean?,
-        label: String?,
-        isRequired: Boolean,
+        textFieldConfig: TextFieldConfig,
     ) -> Unit,
+    val isSelectionTest: Boolean = false,
 )
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
 class TextFieldKtTest(
-    data: TextFieldTestData,
+    data: TextFieldTestData<Any, Any>,
 ) : ComposeTest() {
 
     private val testSubjectName = data.name
     private val testSubject = data.content
+    private val testInput = data.input
+    private val isSelectionTest = data.isSelectionTest
 
     @Test
     fun `should call onValueChange when value changes`() = runComposeTest {
-        var value = VALUE
+        var value = testInput
         setContent {
             testSubject(
                 value = value,
                 onValueChange = { value = it },
                 modifier = Modifier.testTag(testSubjectName),
-                enabled = null,
-                label = null,
-                isRequired = false,
+                textFieldConfig = TextFieldConfig(
+                    label = null,
+                    isEnabled = null,
+                    isReadOnly = false,
+                    isRequired = false,
+                ),
             )
         }
 
         onNodeWithTag(testSubjectName).performClick()
-        onNodeWithTag(testSubjectName).performTextInput(" + added text")
 
-        assertThat(value).isEqualTo("$VALUE + added text")
+        if (isSelectionTest) {
+            onNodeWithText((testInput as ImmutableList<*>)[1].toString()).performClick()
+            assertThat(value).isEqualTo(testInput[1])
+        } else {
+            onNodeWithTag(testSubjectName).performTextInput(" + added text")
+            assertThat(value).isEqualTo("$testInput + added text")
+        }
     }
 
     @Test
     fun `should be enabled by default`() = runComposeTest {
         setContent {
             testSubject(
-                value = VALUE,
+                value = testInput,
                 onValueChange = {},
                 modifier = Modifier.testTag(testSubjectName),
-                enabled = null,
-                label = null,
-                isRequired = false,
+                textFieldConfig = TextFieldConfig(
+                    label = null,
+                    isEnabled = null,
+                    isReadOnly = false,
+                    isRequired = false,
+                ),
             )
         }
 
@@ -80,12 +102,15 @@ class TextFieldKtTest(
     fun `should be disabled when enabled is false`() = runComposeTest {
         setContent {
             testSubject(
-                value = VALUE,
+                value = testInput,
                 onValueChange = {},
                 modifier = Modifier.testTag(testSubjectName),
-                enabled = false,
-                label = null,
-                isRequired = false,
+                textFieldConfig = TextFieldConfig(
+                    label = null,
+                    isEnabled = false,
+                    isReadOnly = false,
+                    isRequired = false,
+                ),
             )
         }
 
@@ -96,12 +121,15 @@ class TextFieldKtTest(
     fun `should show label when label is not null`() = runComposeTest {
         setContent {
             testSubject(
-                value = VALUE,
+                value = testInput,
                 onValueChange = {},
                 modifier = Modifier.testTag(testSubjectName),
-                enabled = null,
-                label = LABEL,
-                isRequired = false,
+                textFieldConfig = TextFieldConfig(
+                    label = LABEL,
+                    isEnabled = null,
+                    isReadOnly = false,
+                    isRequired = false,
+                ),
             )
         }
 
@@ -112,12 +140,15 @@ class TextFieldKtTest(
     fun `should show asterisk when isRequired is true`() = runComposeTest {
         setContent {
             testSubject(
-                value = VALUE,
+                value = testInput,
                 onValueChange = {},
                 modifier = Modifier.testTag(testSubjectName),
-                enabled = null,
-                label = LABEL,
-                isRequired = true,
+                textFieldConfig = TextFieldConfig(
+                    label = LABEL,
+                    isEnabled = null,
+                    isReadOnly = false,
+                    isRequired = true,
+                ),
             )
         }
 
@@ -128,88 +159,153 @@ class TextFieldKtTest(
     fun `should not show asterisk when isRequired is false`() = runComposeTest {
         setContent {
             testSubject(
-                value = VALUE,
+                value = testInput,
                 onValueChange = {},
                 modifier = Modifier.testTag(testSubjectName),
-                enabled = null,
-                label = LABEL,
-                isRequired = false,
+                textFieldConfig = TextFieldConfig(
+                    label = LABEL,
+                    isEnabled = null,
+                    isReadOnly = false,
+                    isRequired = false,
+                ),
             )
         }
 
         onNodeWithText("$LABEL*").assertDoesNotExist()
     }
 
+    @Test
+    fun `should not allow editing when isReadOnly is true`() = runComposeTest {
+        setContent {
+            testSubject(
+                value = testInput,
+                onValueChange = {},
+                modifier = Modifier.testTag(testSubjectName),
+                textFieldConfig = TextFieldConfig(
+                    label = LABEL,
+                    isEnabled = null,
+                    isReadOnly = true,
+                    isRequired = false,
+                ),
+            )
+        }
+
+        onNodeWithTag(testSubjectName).performClick()
+        assertFailure {
+            onNodeWithText(testSubjectName).performTextInput(" + added text")
+        }
+    }
+
     companion object {
         @JvmStatic
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0}")
         @Suppress("LongMethod")
-        fun data(): List<TextFieldTestData> = listOf(
+        fun data(): List<TextFieldTestData<*, *>> = listOf(
             TextFieldTestData(
                 name = "TextFieldOutlined",
-                content = { value, onValueChange, modifier, enabled, label, isRequired ->
-                    if (enabled != null) {
+                input = "value",
+                content = { value, onValueChange: (String) -> Unit, modifier, config ->
+                    if (config.isEnabled != null) {
                         TextFieldOutlined(
                             value = value,
                             onValueChange = onValueChange,
                             modifier = modifier,
-                            enabled = enabled,
-                            label = label,
-                            isRequired = isRequired,
+                            label = config.label,
+                            isEnabled = config.isEnabled,
+                            isReadOnly = config.isReadOnly,
+                            isRequired = config.isRequired,
                         )
                     } else {
                         TextFieldOutlined(
                             value = value,
                             onValueChange = onValueChange,
                             modifier = modifier,
-                            label = label,
-                            isRequired = isRequired,
+                            label = config.label,
+                            isRequired = config.isRequired,
+                            isReadOnly = config.isReadOnly,
                         )
                     }
                 },
             ),
             TextFieldTestData(
                 name = "TextFieldOutlinedPassword",
-                content = { value, onValueChange, modifier, enabled, label, isRequired ->
-                    if (enabled != null) {
+                input = "value",
+                content = { value, onValueChange: (String) -> Unit, modifier, config ->
+                    if (config.isEnabled != null) {
                         TextFieldOutlinedPassword(
                             value = value,
                             onValueChange = onValueChange,
                             modifier = modifier,
-                            enabled = enabled,
-                            label = label,
-                            isRequired = isRequired,
+                            label = config.label,
+                            isEnabled = config.isEnabled,
+                            isReadOnly = config.isReadOnly,
+                            isRequired = config.isRequired,
                         )
                     } else {
                         TextFieldOutlinedPassword(
                             value = value,
                             onValueChange = onValueChange,
+                            label = config.label,
                             modifier = modifier,
-                            label = label,
-                            isRequired = isRequired,
+                            isRequired = config.isRequired,
+                            isReadOnly = config.isReadOnly,
                         )
                     }
                 },
             ),
             TextFieldTestData(
                 name = "TextFieldOutlinedEmail",
-                content = { value, onValueChange, modifier, enabled, label, isRequired ->
-                    if (enabled != null) {
+                input = "value",
+                content = { value, onValueChange: (String) -> Unit, modifier, config ->
+                    if (config.isEnabled != null) {
                         TextFieldOutlinedEmailAddress(
                             value = value,
                             onValueChange = onValueChange,
                             modifier = modifier,
-                            enabled = enabled,
-                            label = label,
-                            isRequired = isRequired,
+                            label = config.label,
+                            isEnabled = config.isEnabled,
+                            isReadOnly = config.isReadOnly,
+                            isRequired = config.isRequired,
                         )
                     } else {
                         TextFieldOutlinedEmailAddress(
                             value = value,
                             onValueChange = onValueChange,
                             modifier = modifier,
-                            label = label,
-                            isRequired = isRequired,
+                            label = config.label,
+                            isRequired = config.isRequired,
+                            isReadOnly = config.isReadOnly,
+                        )
+                    }
+                },
+            ),
+            TextFieldTestData(
+                name = "TextFieldOutlinedSelect",
+                input = persistentListOf("option1", "option2"),
+                isSelectionTest = true,
+                content = { value, onValueChange: (Any) -> Unit, modifier, config ->
+                    if (config.isEnabled != null) {
+                        @Suppress("UNCHECKED_CAST")
+                        TextFieldOutlinedSelect(
+                            options = value as ImmutableList<Any>,
+                            selectedOption = value.first(),
+                            onValueChange = onValueChange,
+                            modifier = modifier,
+                            label = config.label,
+                            isEnabled = config.isEnabled,
+                            isReadOnly = config.isReadOnly,
+                            isRequired = config.isRequired,
+                        )
+                    } else {
+                        @Suppress("UNCHECKED_CAST")
+                        TextFieldOutlinedSelect(
+                            options = value as ImmutableList<Any>,
+                            selectedOption = value.first(),
+                            onValueChange = onValueChange,
+                            modifier = modifier,
+                            label = config.label,
+                            isRequired = config.isRequired,
+                            isReadOnly = config.isReadOnly,
                         )
                     }
                 },
