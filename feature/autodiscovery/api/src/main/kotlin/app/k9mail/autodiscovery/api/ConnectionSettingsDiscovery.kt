@@ -3,6 +3,7 @@ package app.k9mail.autodiscovery.api
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 
+@Deprecated("New code should use app.k9mail.autodiscovery.api.AutoDiscovery")
 interface ConnectionSettingsDiscovery {
     fun discover(email: String): DiscoveryResults?
 }

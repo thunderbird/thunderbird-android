@@ -6,10 +6,10 @@ plugins {
 dependencies {
     api(projects.feature.autodiscovery.api)
 
-    compileOnly(libs.xmlpull)
-    implementation(projects.core.common)
+    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.okhttp)
     implementation(libs.minidns.hla)
+    compileOnly(libs.xmlpull)
 
     testImplementation(libs.kxml2)
     testImplementation(libs.jsoup)

@@ -5,4 +5,5 @@ plugins {
 
 dependencies {
     api(projects.mail.common)
+    api(projects.core.common)
 }
