@@ -1,4 +1,4 @@
-package app.k9mail.ui.catalog
+package app.k9mail.ui.catalog.ui
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -9,33 +9,36 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.ui.catalog.ui.CatalogContract.Theme
+import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
+import app.k9mail.ui.catalog.ui.common.theme.ThemeSwitch
 
 @Composable
 fun CatalogScreen(
     modifier: Modifier = Modifier,
 ) {
-    val themeState = remember { mutableStateOf(CatalogTheme.K9) }
-    val themeVariantState = remember { mutableStateOf(CatalogThemeVariant.LIGHT) }
+    val themeState = remember { mutableStateOf(Theme.K9) }
+    val themeVariantState = remember { mutableStateOf(ThemeVariant.LIGHT) }
 
-    CatalogThemeSwitch(
+    ThemeSwitch(
         theme = themeState.value,
         themeVariant = themeVariantState.value,
     ) {
         val contentPadding = WindowInsets.systemBars.asPaddingValues()
 
         CatalogContent(
-            catalogTheme = themeState.value,
-            catalogThemeVariant = themeVariantState.value,
+            theme = themeState.value,
+            themeVariant = themeVariantState.value,
             onThemeChange = {
                 themeState.value = when (themeState.value) {
-                    CatalogTheme.K9 -> CatalogTheme.THUNDERBIRD
-                    CatalogTheme.THUNDERBIRD -> CatalogTheme.K9
+                    Theme.K9 -> Theme.THUNDERBIRD
+                    Theme.THUNDERBIRD -> Theme.K9
                 }
             },
             onThemeVariantChange = {
                 themeVariantState.value = when (themeVariantState.value) {
-                    CatalogThemeVariant.LIGHT -> CatalogThemeVariant.DARK
-                    CatalogThemeVariant.DARK -> CatalogThemeVariant.LIGHT
+                    ThemeVariant.LIGHT -> ThemeVariant.DARK
+                    ThemeVariant.DARK -> ThemeVariant.LIGHT
                 }
             },
             contentPadding = contentPadding,

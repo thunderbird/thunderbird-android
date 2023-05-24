@@ -1,4 +1,4 @@
-package app.k9mail.ui.catalog
+package app.k9mail.ui.catalog.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +17,8 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.ui.catalog.items.moleculeItems
 import app.k9mail.ui.catalog.items.themeHeaderItem
 import app.k9mail.ui.catalog.items.themeSelectorItems
+import app.k9mail.ui.catalog.ui.CatalogContract.Theme
+import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 import app.k9mail.ui.catalog.ui.atom.items.buttonItems
 import app.k9mail.ui.catalog.ui.atom.items.colorItems
 import app.k9mail.ui.catalog.ui.atom.items.iconItems
@@ -27,8 +29,8 @@ import app.k9mail.ui.catalog.ui.atom.items.typographyItems
 
 @Composable
 fun CatalogContent(
-    catalogTheme: CatalogTheme,
-    catalogThemeVariant: CatalogThemeVariant,
+    theme: Theme,
+    themeVariant: ThemeVariant,
     onThemeChange: () -> Unit,
     onThemeVariantChange: () -> Unit,
     contentPadding: PaddingValues,
@@ -45,8 +47,8 @@ fun CatalogContent(
             ) {
                 themeHeaderItem(text = "Thunderbird Catalog")
                 themeSelectorItems(
-                    catalogTheme = catalogTheme,
-                    catalogThemeVariant = catalogThemeVariant,
+                    theme = theme,
+                    themeVariant = themeVariant,
                     onThemeChange = onThemeChange,
                     onThemeVariantChange = onThemeVariantChange,
                 )
@@ -70,8 +72,8 @@ fun CatalogContent(
 internal fun CatalogContentK9ThemePreview() {
     K9Theme {
         CatalogContent(
-            catalogTheme = CatalogTheme.K9,
-            catalogThemeVariant = CatalogThemeVariant.LIGHT,
+            theme = Theme.K9,
+            themeVariant = ThemeVariant.LIGHT,
             onThemeChange = {},
             onThemeVariantChange = {},
             contentPadding = PaddingValues(),
@@ -84,8 +86,8 @@ internal fun CatalogContentK9ThemePreview() {
 internal fun CatalogContentThunderbirdThemePreview() {
     ThunderbirdTheme {
         CatalogContent(
-            catalogTheme = CatalogTheme.THUNDERBIRD,
-            catalogThemeVariant = CatalogThemeVariant.LIGHT,
+            theme = Theme.THUNDERBIRD,
+            themeVariant = ThemeVariant.LIGHT,
             onThemeChange = {},
             onThemeVariantChange = {},
             contentPadding = PaddingValues(),
