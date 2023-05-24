@@ -18,6 +18,7 @@ fun <T> SelectInput(
     selectedOption: T,
     onOptionChange: (T) -> Unit,
     modifier: Modifier = Modifier,
+    label: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
 ) {
     Column(
@@ -31,6 +32,7 @@ fun <T> SelectInput(
             selectedOption = selectedOption,
             onValueChange = onOptionChange,
             modifier = Modifier.fillMaxWidth(),
+            label = label,
         )
     }
 }
