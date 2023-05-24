@@ -3,7 +3,7 @@ package app.k9mail.autodiscovery.autoconfig
 import app.k9mail.core.common.net.Domain
 import app.k9mail.core.common.net.toDomain
 
-class RealSubDomainExtractor(private val baseDomainExtractor: BaseDomainExtractor) : SubDomainExtractor {
+internal class RealSubDomainExtractor(private val baseDomainExtractor: BaseDomainExtractor) : SubDomainExtractor {
     @Suppress("ReturnCount")
     override fun extractSubDomain(domain: Domain): Domain? {
         val baseDomain = baseDomainExtractor.extractBaseDomain(domain)

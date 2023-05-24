@@ -5,7 +5,7 @@ import app.k9mail.core.common.net.Domain
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
-class IspDbAutoconfigUrlProvider : AutoconfigUrlProvider {
+internal class IspDbAutoconfigUrlProvider : AutoconfigUrlProvider {
     override fun getAutoconfigUrls(domain: Domain, email: EmailAddress?): List<HttpUrl> {
         return listOf(createIspDbUrl(domain))
     }

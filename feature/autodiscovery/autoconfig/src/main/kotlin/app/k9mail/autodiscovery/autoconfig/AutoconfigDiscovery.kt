@@ -9,8 +9,9 @@ import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.logging.Timber
 import java.io.IOException
 import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
 
-class AutoconfigDiscovery(
+class AutoconfigDiscovery internal constructor(
     private val urlProvider: AutoconfigUrlProvider,
     private val fetcher: AutoconfigFetcher,
     private val parser: SuspendableAutoconfigParser,
@@ -43,4 +44,26 @@ class AutoconfigDiscovery(
             null
         }
     }
+}
+
+fun createProviderAutoconfigDiscovery(
+    okHttpClient: OkHttpClient,
+    config: AutoconfigUrlConfig,
+): AutoconfigDiscovery {
+    val urlProvider = ProviderAutoconfigUrlProvider(config)
+    return createAutoconfigDiscovery(okHttpClient, urlProvider)
+}
+
+fun createIspDbAutoconfigDiscovery(okHttpClient: OkHttpClient): AutoconfigDiscovery {
+    val urlProvider = IspDbAutoconfigUrlProvider()
+    return createAutoconfigDiscovery(okHttpClient, urlProvider)
+}
+
+private fun createAutoconfigDiscovery(
+    okHttpClient: OkHttpClient,
+    urlProvider: AutoconfigUrlProvider,
+): AutoconfigDiscovery {
+    val fetcher = AutoconfigFetcher(okHttpClient)
+    val parser = SuspendableAutoconfigParser(AutoconfigParser())
+    return AutoconfigDiscovery(urlProvider, fetcher, parser)
 }

@@ -39,7 +39,7 @@ private typealias ServerSettingsFactory<T> = (
  *
  * See [https://github.com/thundernest/autoconfig](https://github.com/thundernest/autoconfig)
  */
-class AutoconfigParser {
+internal class AutoconfigParser {
     fun parseSettings(stream: InputStream, email: EmailAddress): AutoDiscoveryResult? {
         return try {
             ClientConfigParser(stream, email.address).parse()
