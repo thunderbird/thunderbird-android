@@ -41,7 +41,7 @@ class AutoDiscoveryCli : CliktCommand(
             echo("Couldn't find any mail server settings.")
         } else {
             echo("Found the following mail server settings:")
-            echo(discoveryResult)
+            AutoDiscoveryResultFormatter(::echo).output(discoveryResult)
         }
 
         echo()
