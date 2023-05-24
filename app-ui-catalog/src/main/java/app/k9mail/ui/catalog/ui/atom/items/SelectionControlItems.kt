@@ -25,7 +25,7 @@ fun LazyGridScope.selectionControlItems() {
     captionItem(caption = "Disabled") {
         Checkbox(checked = false, onCheckedChange = {}, enabled = false)
     }
-    sectionSubtitleItem(text = "Switch")
+    sectionHeaderItem(text = "Switch")
     captionItem(caption = "Checked") {
         Switch(checked = true, onCheckedChange = {})
     }
