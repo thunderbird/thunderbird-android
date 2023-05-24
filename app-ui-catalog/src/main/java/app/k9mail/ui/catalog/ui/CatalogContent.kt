@@ -25,6 +25,7 @@ import app.k9mail.ui.catalog.ui.atom.items.textFieldItems
 import app.k9mail.ui.catalog.ui.atom.items.typographyItems
 import app.k9mail.ui.catalog.ui.common.PagedContent
 import app.k9mail.ui.catalog.ui.common.ThemeTopAppBar
+import app.k9mail.ui.catalog.ui.common.drawer.DrawerContent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -34,7 +35,6 @@ fun CatalogContent(
     pages: ImmutableList<String>,
     onThemeChanged: () -> Unit,
     onThemeVariantChanged: () -> Unit,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val contentPadding = WindowInsets.systemBars.asPaddingValues()
@@ -50,6 +50,16 @@ fun CatalogContent(
                 themeVariant = state.themeVariant,
                 onThemeClick = onThemeChanged,
                 onThemeVariantClick = onThemeVariantChanged,
+            )
+        },
+        drawerContent = { toogleDrawer ->
+            DrawerContent(
+                toggleDrawer = toogleDrawer,
+                theme = state.theme,
+                themeVariant = state.themeVariant,
+                onThemeChanged = onThemeChanged,
+                onThemeVariantChanged = onThemeVariantChanged,
+                onNavigateToAtoms = {},
             )
         },
     ) {

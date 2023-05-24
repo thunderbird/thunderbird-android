@@ -26,8 +26,6 @@ fun CatalogScreen(
         theme = state.value.theme,
         themeVariant = state.value.themeVariant,
     ) {
-        val contentPadding = WindowInsets.systemBars.asPaddingValues()
-
         val pages = persistentListOf(
             "Typography",
             "Colors",
@@ -44,7 +42,6 @@ fun CatalogScreen(
             pages = pages,
             onThemeChanged = { dispatch(OnThemeChanged) },
             onThemeVariantChanged = { dispatch(OnThemeVariantChanged) },
-            contentPadding = contentPadding,
             modifier = Modifier
                 .fillMaxSize()
                 .then(modifier),
