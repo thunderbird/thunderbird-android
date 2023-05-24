@@ -1,22 +1,17 @@
 package app.k9mail.ui.catalog.ui
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline4
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.ui.catalog.items.moleculeItems
-import app.k9mail.ui.catalog.items.themeHeaderItem
-import app.k9mail.ui.catalog.items.themeSelectorItems
 import app.k9mail.ui.catalog.ui.CatalogContract.Theme
 import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 import app.k9mail.ui.catalog.ui.atom.items.buttonItems
@@ -26,9 +21,16 @@ import app.k9mail.ui.catalog.ui.atom.items.imageItems
 import app.k9mail.ui.catalog.ui.atom.items.selectionControlItems
 import app.k9mail.ui.catalog.ui.atom.items.textFieldItems
 import app.k9mail.ui.catalog.ui.atom.items.typographyItems
+import app.k9mail.ui.catalog.ui.common.PagedContent
+import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
+import app.k9mail.ui.catalog.ui.common.theme.ThemeSelector
+import app.k9mail.ui.catalog.ui.common.theme.ThemeVariantSelector
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun CatalogContent(
+    pages: ImmutableList<String>,
     theme: Theme,
     themeVariant: ThemeVariant,
     onThemeChange: () -> Unit,
@@ -36,32 +38,50 @@ fun CatalogContent(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    Surface {
-        ResponsiveContent {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(300.dp),
-                contentPadding = contentPadding,
-                horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-                modifier = modifier.padding(MainTheme.spacings.double),
-            ) {
-                themeHeaderItem(text = "Thunderbird Catalog")
-                themeSelectorItems(
-                    theme = theme,
-                    themeVariant = themeVariant,
-                    onThemeChange = onThemeChange,
-                    onThemeVariantChange = onThemeVariantChange,
+    Column(
+        modifier = modifier.padding(contentPadding),
+    ) {
+        TextHeadline4(
+            text = "Thunderbird Catalog",
+            modifier = Modifier
+                .padding(
+                    start = MainTheme.spacings.double,
+                    top = MainTheme.spacings.default,
+                    end = MainTheme.spacings.double,
                 )
+                .fillMaxWidth(),
+        )
+        ThemeSelector(
+            theme = theme,
+            modifier = Modifier
+                .fillMaxWidth()
+                .itemDefaultPadding(),
+            onThemeChangeClick = onThemeChange,
+        )
+        ThemeVariantSelector(
+            themeVariant = themeVariant,
+            modifier = Modifier
+                .fillMaxWidth()
+                .itemDefaultPadding(),
+            onThemeVariantChange = onThemeVariantChange,
+        )
+        PagedContent(
+            pages = pages,
+            initialPage = "Typography",
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            when (it) {
+                "Typography" -> typographyItems()
+                "Colors" -> colorItems()
+                "Buttons" -> buttonItems()
+                "Selection controls" -> selectionControlItems()
+                "Text fields" -> textFieldItems()
+                "Images" -> imageItems()
+                "Icons" -> iconItems()
 
-                typographyItems()
-                colorItems()
-                buttonItems()
-                selectionControlItems()
-                textFieldItems()
-                imageItems()
-                iconItems()
+                "Molecules" -> moleculeItems()
 
-                moleculeItems()
+                else -> throw IllegalArgumentException("Unknown page: $it")
             }
         }
     }
@@ -72,6 +92,7 @@ fun CatalogContent(
 internal fun CatalogContentK9ThemePreview() {
     K9Theme {
         CatalogContent(
+            pages = persistentListOf("Typography", "Colors"),
             theme = Theme.K9,
             themeVariant = ThemeVariant.LIGHT,
             onThemeChange = {},
@@ -86,6 +107,7 @@ internal fun CatalogContentK9ThemePreview() {
 internal fun CatalogContentThunderbirdThemePreview() {
     ThunderbirdTheme {
         CatalogContent(
+            pages = persistentListOf("Typography", "Colors"),
             theme = Theme.THUNDERBIRD,
             themeVariant = ThemeVariant.LIGHT,
             onThemeChange = {},

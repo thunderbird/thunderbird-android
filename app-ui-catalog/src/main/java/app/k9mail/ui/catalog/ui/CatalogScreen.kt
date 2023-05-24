@@ -12,6 +12,7 @@ import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.ui.catalog.ui.CatalogContract.Theme
 import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 import app.k9mail.ui.catalog.ui.common.theme.ThemeSwitch
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun CatalogScreen(
@@ -26,7 +27,19 @@ fun CatalogScreen(
     ) {
         val contentPadding = WindowInsets.systemBars.asPaddingValues()
 
+        val pages = persistentListOf(
+            "Typography",
+            "Colors",
+            "Buttons",
+            "Selection controls",
+            "Text fields",
+            "Icons",
+            "Images",
+            "Molecules",
+        )
+
         CatalogContent(
+            pages = pages,
             theme = themeState.value,
             themeVariant = themeVariantState.value,
             onThemeChange = {

@@ -1,9 +1,12 @@
 package app.k9mail.ui.catalog.ui.common.list
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.Modifier
+import app.k9mail.core.ui.compose.designsystem.atom.Divider
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.theme.MainTheme
 
@@ -11,6 +14,19 @@ fun LazyGridScope.sectionSubtitleItem(
     text: String,
 ) {
     item(span = { GridItemSpan(maxLineSpan) }) {
-        TextSubtitle1(text = text, modifier = Modifier.padding(top = MainTheme.spacings.default))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = MainTheme.spacings.double,
+                    top = MainTheme.spacings.double,
+                    end = MainTheme.spacings.double,
+                ),
+        ) {
+            TextSubtitle1(
+                text = text,
+            )
+            Divider()
+        }
     }
 }
