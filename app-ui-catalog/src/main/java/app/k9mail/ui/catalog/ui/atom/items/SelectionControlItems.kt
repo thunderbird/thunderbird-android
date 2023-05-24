@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.Checkbox
+import app.k9mail.core.ui.compose.designsystem.atom.Switch
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
@@ -23,6 +24,19 @@ fun LazyGridScope.selectionControlItems() {
     }
     captionItem(caption = "Disabled") {
         Checkbox(checked = false, onCheckedChange = {}, enabled = false)
+    }
+    sectionSubtitleItem(text = "Switch")
+    captionItem(caption = "Checked") {
+        Switch(checked = true, onCheckedChange = {})
+    }
+    captionItem(caption = "Unchecked") {
+        Switch(checked = false, onCheckedChange = {})
+    }
+    captionItem(caption = "Disabled Checked") {
+        Switch(checked = true, onCheckedChange = {}, enabled = false)
+    }
+    captionItem(caption = "Disabled") {
+        Switch(checked = false, onCheckedChange = {}, enabled = false)
     }
 }
 
