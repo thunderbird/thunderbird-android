@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -56,7 +57,9 @@ fun <T> PagedContent(
             HorizontalPager(
                 pageCount = pages.size,
                 state = pagerState,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = MainTheme.sizes.topBarHeight),
             ) { page ->
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(300.dp),

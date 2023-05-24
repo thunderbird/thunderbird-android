@@ -16,4 +16,5 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
 
     implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material.icons.extended)
 }

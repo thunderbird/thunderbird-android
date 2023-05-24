@@ -1,15 +1,16 @@
 package app.k9mail.ui.catalog.ui
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline4
+import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.ui.catalog.items.moleculeItems
 import app.k9mail.ui.catalog.ui.CatalogContract.State
@@ -23,9 +24,7 @@ import app.k9mail.ui.catalog.ui.atom.items.selectionControlItems
 import app.k9mail.ui.catalog.ui.atom.items.textFieldItems
 import app.k9mail.ui.catalog.ui.atom.items.typographyItems
 import app.k9mail.ui.catalog.ui.common.PagedContent
-import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
-import app.k9mail.ui.catalog.ui.common.theme.ThemeSelector
-import app.k9mail.ui.catalog.ui.common.theme.ThemeVariantSelector
+import app.k9mail.ui.catalog.ui.common.ThemeTopAppBar
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -38,33 +37,22 @@ fun CatalogContent(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.padding(contentPadding),
+    val contentPadding = WindowInsets.systemBars.asPaddingValues()
+
+    Scaffold(
+        modifier = Modifier
+            .padding(top = contentPadding.calculateTopPadding())
+            .then(modifier),
+        topBar = { toggleDrawer ->
+            ThemeTopAppBar(
+                onNavigationClick = toggleDrawer,
+                theme = state.theme,
+                themeVariant = state.themeVariant,
+                onThemeClick = onThemeChanged,
+                onThemeVariantClick = onThemeVariantChanged,
+            )
+        },
     ) {
-        TextHeadline4(
-            text = "Thunderbird Catalog",
-            modifier = Modifier
-                .padding(
-                    start = MainTheme.spacings.double,
-                    top = MainTheme.spacings.default,
-                    end = MainTheme.spacings.double,
-                )
-                .fillMaxWidth(),
-        )
-        ThemeSelector(
-            theme = state.theme,
-            modifier = Modifier
-                .fillMaxWidth()
-                .itemDefaultPadding(),
-            onThemeChangeClick = onThemeChanged,
-        )
-        ThemeVariantSelector(
-            themeVariant = state.themeVariant,
-            modifier = Modifier
-                .fillMaxWidth()
-                .itemDefaultPadding(),
-            onThemeVariantChange = onThemeVariantChanged,
-        )
         PagedContent(
             pages = pages,
             initialPage = "Typography",
