@@ -12,6 +12,7 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.ui.catalog.items.moleculeItems
+import app.k9mail.ui.catalog.ui.CatalogContract.State
 import app.k9mail.ui.catalog.ui.CatalogContract.Theme
 import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 import app.k9mail.ui.catalog.ui.atom.items.buttonItems
@@ -30,11 +31,10 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun CatalogContent(
+    state: State,
     pages: ImmutableList<String>,
-    theme: Theme,
-    themeVariant: ThemeVariant,
-    onThemeChange: () -> Unit,
-    onThemeVariantChange: () -> Unit,
+    onThemeChanged: () -> Unit,
+    onThemeVariantChanged: () -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -52,18 +52,18 @@ fun CatalogContent(
                 .fillMaxWidth(),
         )
         ThemeSelector(
-            theme = theme,
+            theme = state.theme,
             modifier = Modifier
                 .fillMaxWidth()
                 .itemDefaultPadding(),
-            onThemeChangeClick = onThemeChange,
+            onThemeChangeClick = onThemeChanged,
         )
         ThemeVariantSelector(
-            themeVariant = themeVariant,
+            themeVariant = state.themeVariant,
             modifier = Modifier
                 .fillMaxWidth()
                 .itemDefaultPadding(),
-            onThemeVariantChange = onThemeVariantChange,
+            onThemeVariantChange = onThemeVariantChanged,
         )
         PagedContent(
             pages = pages,
@@ -92,11 +92,13 @@ fun CatalogContent(
 internal fun CatalogContentK9ThemePreview() {
     K9Theme {
         CatalogContent(
+            state = State(
+                theme = Theme.K9,
+                themeVariant = ThemeVariant.LIGHT,
+            ),
             pages = persistentListOf("Typography", "Colors"),
-            theme = Theme.K9,
-            themeVariant = ThemeVariant.LIGHT,
-            onThemeChange = {},
-            onThemeVariantChange = {},
+            onThemeChanged = {},
+            onThemeVariantChanged = {},
             contentPadding = PaddingValues(),
         )
     }
@@ -107,11 +109,13 @@ internal fun CatalogContentK9ThemePreview() {
 internal fun CatalogContentThunderbirdThemePreview() {
     ThunderbirdTheme {
         CatalogContent(
+            state = State(
+                theme = Theme.THUNDERBIRD,
+                themeVariant = ThemeVariant.LIGHT,
+            ),
             pages = persistentListOf("Typography", "Colors"),
-            theme = Theme.THUNDERBIRD,
-            themeVariant = ThemeVariant.LIGHT,
-            onThemeChange = {},
-            onThemeVariantChange = {},
+            onThemeChanged = {},
+            onThemeVariantChanged = {},
             contentPadding = PaddingValues(),
         )
     }

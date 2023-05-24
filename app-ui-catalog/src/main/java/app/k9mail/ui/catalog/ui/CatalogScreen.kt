@@ -5,25 +5,26 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.ui.catalog.ui.CatalogContract.Theme
-import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
+import app.k9mail.core.ui.compose.common.mvi.observe
+import app.k9mail.ui.catalog.ui.CatalogContract.Event.OnThemeChanged
+import app.k9mail.ui.catalog.ui.CatalogContract.Event.OnThemeVariantChanged
+import app.k9mail.ui.catalog.ui.CatalogContract.ViewModel
 import app.k9mail.ui.catalog.ui.common.theme.ThemeSwitch
 import kotlinx.collections.immutable.persistentListOf
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CatalogScreen(
     modifier: Modifier = Modifier,
+    viewModel: ViewModel = koinViewModel<CatalogViewModel>(),
 ) {
-    val themeState = remember { mutableStateOf(Theme.K9) }
-    val themeVariantState = remember { mutableStateOf(ThemeVariant.LIGHT) }
+    val (state, dispatch) = viewModel.observe(handleEffect = {})
 
     ThemeSwitch(
-        theme = themeState.value,
-        themeVariant = themeVariantState.value,
+        theme = state.value.theme,
+        themeVariant = state.value.themeVariant,
     ) {
         val contentPadding = WindowInsets.systemBars.asPaddingValues()
 
@@ -39,21 +40,10 @@ fun CatalogScreen(
         )
 
         CatalogContent(
+            state = state.value,
             pages = pages,
-            theme = themeState.value,
-            themeVariant = themeVariantState.value,
-            onThemeChange = {
-                themeState.value = when (themeState.value) {
-                    Theme.K9 -> Theme.THUNDERBIRD
-                    Theme.THUNDERBIRD -> Theme.K9
-                }
-            },
-            onThemeVariantChange = {
-                themeVariantState.value = when (themeVariantState.value) {
-                    ThemeVariant.LIGHT -> ThemeVariant.DARK
-                    ThemeVariant.DARK -> ThemeVariant.LIGHT
-                }
-            },
+            onThemeChanged = { dispatch(OnThemeChanged) },
+            onThemeVariantChanged = { dispatch(OnThemeVariantChanged) },
             contentPadding = contentPadding,
             modifier = Modifier
                 .fillMaxSize()
