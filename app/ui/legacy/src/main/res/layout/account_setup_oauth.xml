@@ -44,7 +44,6 @@
                 android:background="@drawable/btn_google_signin_dark"
                 android:text="@string/account_setup_oauth_sign_in_with_google"
                 android:textAllCaps="false"
-                android:textColor="#ffffff"
                 android:textSize="14sp"
                 android:visibility="gone"
                 tools:visibility="visible" />
