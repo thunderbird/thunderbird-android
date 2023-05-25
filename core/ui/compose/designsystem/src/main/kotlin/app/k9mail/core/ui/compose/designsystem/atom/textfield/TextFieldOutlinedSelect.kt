@@ -25,6 +25,7 @@ fun <T> TextFieldOutlinedSelect(
     selectedOption: T,
     onValueChange: (T) -> Unit,
     modifier: Modifier = Modifier,
+    optionToStringTransformation: (T) -> String = { it.toString() },
     label: String? = null,
     isEnabled: Boolean = true,
     isReadOnly: Boolean = false,
@@ -34,10 +35,11 @@ fun <T> TextFieldOutlinedSelect(
     TextFieldDropDownWrapper(
         isReadOnlyOrDisabled = isReadOnly || !isEnabled,
         options = options,
+        optionToStringTransformation = optionToStringTransformation,
         onValueChange = onValueChange,
     ) { expanded ->
         MaterialOutlinedTextField(
-            value = selectedOption.toString(),
+            value = optionToStringTransformation(selectedOption),
             onValueChange = { },
             modifier = Modifier
                 .fillMaxWidth()
@@ -69,6 +71,7 @@ private fun selectTrailingIcon(
 private fun <T> TextFieldDropDownWrapper(
     isReadOnlyOrDisabled: Boolean,
     options: ImmutableList<T>,
+    optionToStringTransformation: (T) -> String,
     onValueChange: (T) -> Unit,
     content: @Composable (expanded: Boolean) -> Unit,
 ) {
@@ -77,6 +80,7 @@ private fun <T> TextFieldDropDownWrapper(
     } else {
         DropDownMenu(
             options = options,
+            optionToStringTransformation = optionToStringTransformation,
             onValueChange = onValueChange,
             content = content,
         )
@@ -88,6 +92,7 @@ private fun <T> TextFieldDropDownWrapper(
 private fun <T> DropDownMenu(
     options: ImmutableList<T>,
     onValueChange: (T) -> Unit,
+    optionToStringTransformation: (T) -> String,
     content: @Composable (expanded: Boolean) -> Unit,
 ) {
     var expanded = remember { mutableStateOf(false) }
@@ -113,7 +118,7 @@ private fun <T> DropDownMenu(
                         expanded.value = false
                     },
                 ) {
-                    Text(text = option.toString())
+                    Text(text = optionToStringTransformation(option))
                 }
             }
         }
