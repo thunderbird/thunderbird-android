@@ -8,14 +8,12 @@ import app.k9mail.core.common.net.toDomain
 import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.logging.Timber
 import java.io.IOException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 
 class AutoconfigDiscovery(
     private val urlProvider: AutoconfigUrlProvider,
     private val fetcher: AutoconfigFetcher,
-    private val parser: AutoconfigParser,
+    private val parser: SuspendableAutoconfigParser,
 ) : AutoDiscovery {
 
     override fun initDiscovery(email: EmailAddress): List<AutoDiscoveryRunnable> {
@@ -27,18 +25,12 @@ class AutoconfigDiscovery(
 
         return autoconfigUrls.map { autoconfigUrl ->
             AutoDiscoveryRunnable {
-                getConfigInBackground(email, autoconfigUrl)
+                getAutoconfig(email, autoconfigUrl)
             }
         }
     }
 
-    private suspend fun getConfigInBackground(email: EmailAddress, autoconfigUrl: HttpUrl): AutoDiscoveryResult? {
-        return withContext(Dispatchers.IO) {
-            getAutoconfig(email, autoconfigUrl)
-        }
-    }
-
-    private fun getAutoconfig(email: EmailAddress, autoconfigUrl: HttpUrl): AutoDiscoveryResult? {
+    private suspend fun getAutoconfig(email: EmailAddress, autoconfigUrl: HttpUrl): AutoDiscoveryResult? {
         return try {
             fetcher.fetchAutoconfigFile(autoconfigUrl)?.use { inputStream ->
                 parser.parseSettings(inputStream, email)
