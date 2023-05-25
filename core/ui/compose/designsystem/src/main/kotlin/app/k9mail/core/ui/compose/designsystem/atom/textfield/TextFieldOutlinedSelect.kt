@@ -1,5 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.atom.textfield
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
@@ -15,6 +16,7 @@ import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
 
 @Suppress("LongParameterList")
 @Composable
@@ -34,18 +36,21 @@ fun <T> TextFieldOutlinedSelect(
         options = options,
         onValueChange = onValueChange,
     ) { expanded ->
-        TextFieldOutlined(
+        MaterialOutlinedTextField(
             value = selectedOption.toString(),
             onValueChange = { },
-            label = label,
-            trailingIcon = selectTrailingIcon(expanded),
-            isEnabled = isEnabled,
-            isReadOnly = true,
-            isRequired = isRequired,
-            hasError = hasError,
             modifier = Modifier
                 .fillMaxWidth()
                 .then(modifier),
+            enabled = isEnabled,
+            readOnly = true,
+            label = selectLabel(label, isRequired),
+            trailingIcon = selectTrailingIcon(expanded),
+            isError = hasError,
+            singleLine = true,
+            interactionSource = remember {
+                MutableInteractionSource()
+            },
         )
     }
 }
