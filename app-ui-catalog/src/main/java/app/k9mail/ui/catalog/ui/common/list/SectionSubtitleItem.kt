@@ -19,7 +19,7 @@ fun LazyGridScope.sectionSubtitleItem(
                 .fillMaxWidth()
                 .padding(
                     start = MainTheme.spacings.double,
-                    top = MainTheme.spacings.double,
+                    top = MainTheme.spacings.default,
                     end = MainTheme.spacings.double,
                 ),
         ) {

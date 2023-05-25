@@ -56,7 +56,8 @@ fun <T> PagedContent(
             HorizontalPager(
                 pageCount = pages.size,
                 state = pagerState,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize(),
             ) { page ->
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(300.dp),

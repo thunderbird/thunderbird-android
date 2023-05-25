@@ -11,9 +11,11 @@ interface CatalogContract {
         THUNDERBIRD("Thunderbird"),
     }
 
-    enum class ThemeVariant {
-        LIGHT,
-        DARK,
+    enum class ThemeVariant(
+        val displayName: String,
+    ) {
+        LIGHT("Light"),
+        DARK("Dark"),
     }
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Nothing>
