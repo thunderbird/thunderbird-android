@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.minidns.hla)
     compileOnly(libs.xmlpull)
 
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kxml2)
     testImplementation(libs.jsoup)
     testImplementation(libs.okhttp.mockwebserver)
