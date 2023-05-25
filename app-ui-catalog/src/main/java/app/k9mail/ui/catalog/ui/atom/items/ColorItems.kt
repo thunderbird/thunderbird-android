@@ -1,4 +1,4 @@
-package app.k9mail.ui.catalog.items
+package app.k9mail.ui.catalog.ui.atom.items
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -11,9 +11,11 @@ import androidx.compose.ui.graphics.Color
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
+import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 
 fun LazyGridScope.colorItems() {
-    sectionHeaderItem(text = "Colors")
+    sectionHeaderItem(text = "Material theme colors")
     item {
         ColorContent(
             name = "Primary",
@@ -66,11 +68,14 @@ private fun ColorContent(
 ) {
     Surface(
         color = color,
+        modifier = Modifier
+            .itemDefaultPadding()
+            .then(modifier),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
-            modifier = modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(MainTheme.spacings.double),
         ) {
             TextBody1(text = name)
         }

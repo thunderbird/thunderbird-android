@@ -1,21 +1,23 @@
-package app.k9mail.ui.catalog
+package app.k9mail.ui.catalog.ui.common.theme
 
 import androidx.compose.runtime.Composable
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.ui.catalog.ui.CatalogContract.Theme
+import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 
 @Composable
-fun CatalogThemeSwitch(
-    theme: CatalogTheme,
-    themeVariant: CatalogThemeVariant,
+fun ThemeSwitch(
+    theme: Theme,
+    themeVariant: ThemeVariant,
     content: @Composable () -> Unit,
 ) {
     when (theme) {
-        CatalogTheme.K9 -> K9ThemeSwitch(
+        Theme.K9 -> K9ThemeSwitch(
             themeVariant = themeVariant,
             content = content,
         )
-        CatalogTheme.THUNDERBIRD -> ThunderbirdThemeSwitch(
+        Theme.THUNDERBIRD -> ThunderbirdThemeSwitch(
             themeVariant = themeVariant,
             content = content,
         )
@@ -24,15 +26,15 @@ fun CatalogThemeSwitch(
 
 @Composable
 private fun K9ThemeSwitch(
-    themeVariant: CatalogThemeVariant,
+    themeVariant: ThemeVariant,
     content: @Composable () -> Unit,
 ) {
     when (themeVariant) {
-        CatalogThemeVariant.LIGHT -> K9Theme(
+        ThemeVariant.LIGHT -> K9Theme(
             darkTheme = false,
             content = content,
         )
-        CatalogThemeVariant.DARK -> K9Theme(
+        ThemeVariant.DARK -> K9Theme(
             darkTheme = true,
             content = content,
         )
@@ -41,15 +43,15 @@ private fun K9ThemeSwitch(
 
 @Composable
 private fun ThunderbirdThemeSwitch(
-    themeVariant: CatalogThemeVariant,
+    themeVariant: ThemeVariant,
     content: @Composable () -> Unit,
 ) {
     when (themeVariant) {
-        CatalogThemeVariant.LIGHT -> ThunderbirdTheme(
+        ThemeVariant.LIGHT -> ThunderbirdTheme(
             darkTheme = false,
             content = content,
         )
-        CatalogThemeVariant.DARK -> ThunderbirdTheme(
+        ThemeVariant.DARK -> ThunderbirdTheme(
             darkTheme = true,
             content = content,
         )

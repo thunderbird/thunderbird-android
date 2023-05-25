@@ -1,9 +1,8 @@
-package app.k9mail.ui.catalog.items
+package app.k9mail.ui.catalog.ui.atom.items
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,6 +13,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
 import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
+import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 
 fun LazyGridScope.iconItems() {
     sectionHeaderItem(text = "Filled")
@@ -22,7 +23,6 @@ fun LazyGridScope.iconItems() {
     getIconsFor(Icons.Outlined)
 }
 
-@Suppress("UnusedPrivateMember")
 private inline fun <reified T> LazyGridScope.getIconsFor(icons: T) {
     for (field in T::class.java.declaredFields) {
         if (field.name in exclusions) continue
@@ -30,7 +30,7 @@ private inline fun <reified T> LazyGridScope.getIconsFor(icons: T) {
             field.isAccessible = true
             IconItem(
                 name = field.name.replaceFirstChar { it.uppercase() },
-                imageVector = field.get(Icons.Filled) as ImageVector,
+                imageVector = field.get(icons) as ImageVector,
             )
         }
     }
@@ -42,9 +42,12 @@ private val exclusions = listOf("\$stable", "INSTANCE")
 private fun IconItem(
     name: String,
     imageVector: ImageVector,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier.padding(MainTheme.spacings.default),
+        modifier = Modifier
+            .itemDefaultPadding()
+            .then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
     ) {

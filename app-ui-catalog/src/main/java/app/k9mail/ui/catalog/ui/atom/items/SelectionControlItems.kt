@@ -1,15 +1,17 @@
-package app.k9mail.ui.catalog.items
+package app.k9mail.ui.catalog.ui.atom.items
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.Checkbox
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
+import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
+import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 
 fun LazyGridScope.selectionControlItems() {
-    sectionHeaderItem(text = "Selection Controls")
-    sectionSubtitleItem(text = "Checkbox")
+    sectionHeaderItem(text = "Checkbox")
     captionItem(caption = "Checked") {
         Checkbox(checked = true, onCheckedChange = {})
     }
@@ -31,6 +33,7 @@ private fun LazyGridScope.captionItem(
     item {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.itemDefaultPadding(),
         ) {
             content()
             TextCaption(text = caption)

@@ -1,4 +1,4 @@
-package app.k9mail.ui.catalog.items
+package app.k9mail.ui.catalog.ui.atom.items
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,7 +21,10 @@ import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedS
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.ui.catalog.helper.WithRememberedState
+import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
+import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
+import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
+import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -61,6 +64,7 @@ fun <T> TextFieldDemo(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .itemDefaultPadding()
                 .then(modifier),
         ) {
             key(state.value.showLabel, state.value.isRequired) {
@@ -148,8 +152,7 @@ private fun LazyGridScope.textFieldOutlinedItems() {
                 isReadOnly = state.value.isReadOnly,
                 isRequired = state.value.isRequired,
                 hasError = state.value.hasError,
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -171,8 +174,7 @@ private fun LazyGridScope.passwordTextFieldOutlinedItems() {
                 isReadOnly = state.value.isReadOnly,
                 isRequired = state.value.isRequired,
                 hasError = state.value.hasError,
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -194,8 +196,7 @@ private fun LazyGridScope.emailTextFieldOutlinedItems() {
                 isReadOnly = state.value.isReadOnly,
                 isRequired = state.value.isRequired,
                 hasError = state.value.hasError,
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -228,8 +229,7 @@ private fun LazyGridScope.selectionTextFieldOutlinedItems() {
                     isReadOnly = state.value.isReadOnly,
                     isRequired = state.value.isRequired,
                     hasError = state.value.hasError,
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }

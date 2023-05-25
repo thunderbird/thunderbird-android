@@ -1,4 +1,4 @@
-package app.k9mail.ui.catalog.helper
+package app.k9mail.ui.catalog.ui.common.helper
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

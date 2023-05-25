@@ -14,4 +14,6 @@ android {
 
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
+
+    implementation(libs.androidx.compose.material)
 }
