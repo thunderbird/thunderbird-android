@@ -17,6 +17,7 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
+import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
@@ -96,6 +97,17 @@ fun LazyGridScope.moleculeItems() {
             WithRememberedState(input = false) { state ->
                 CheckboxInput(
                     text = "Check the box",
+                    checked = state.value,
+                    onCheckedChange = { state.value = it },
+                )
+            }
+        }
+    }
+    item {
+        MoleculeWrapper(title = "SwitchInput") {
+            WithRememberedState(input = false) { state ->
+                SwitchInput(
+                    text = "Switch the toggle",
                     checked = state.value,
                     onCheckedChange = { state.value = it },
                 )

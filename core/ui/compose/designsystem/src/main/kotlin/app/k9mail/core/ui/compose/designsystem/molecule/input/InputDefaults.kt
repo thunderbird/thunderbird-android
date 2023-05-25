@@ -17,3 +17,12 @@ fun inputContentPadding(
     end = end,
     bottom = bottom,
 )
+
+@Composable
+fun inputContentPadding(
+    horizontal: Dp = MainTheme.spacings.double,
+    vertical: Dp = MainTheme.spacings.default,
+): PaddingValues = PaddingValues(
+    horizontal = horizontal,
+    vertical = vertical,
+)
