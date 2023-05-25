@@ -50,6 +50,7 @@ data class TextFieldState<T>(
     val isReadOnly: Boolean = false,
     val isRequired: Boolean = false,
     val hasError: Boolean = false,
+    val isSingleLine: Boolean = false,
 )
 
 @Suppress("LongMethod")
@@ -58,6 +59,7 @@ fun <T> TextFieldDemo(
     initialState: TextFieldState<T>,
     modifier: Modifier = Modifier,
     hasTrailingIcon: Boolean = false,
+    hasSingleLine: Boolean = false,
     content: @Composable (state: MutableState<TextFieldState<T>>) -> Unit,
 ) {
     WithRememberedState(input = initialState) { state ->
@@ -126,6 +128,15 @@ fun <T> TextFieldDemo(
                     onCheckedChange = { state.value = state.value.copy(hasError = it) },
                     contentPadding = defaultPadding,
                 )
+
+                if (hasSingleLine) {
+                    CheckboxInput(
+                        text = "Single line",
+                        checked = state.value.isSingleLine,
+                        onCheckedChange = { state.value = state.value.copy(isSingleLine = it) },
+                        contentPadding = defaultPadding,
+                    )
+                }
             }
         }
     }
@@ -137,6 +148,7 @@ private fun LazyGridScope.textFieldOutlinedItems() {
     item {
         TextFieldDemo(
             hasTrailingIcon = true,
+            hasSingleLine = true,
             initialState = TextFieldState(input = ""),
         ) { state ->
             TextFieldOutlined(
@@ -151,6 +163,7 @@ private fun LazyGridScope.textFieldOutlinedItems() {
                 isEnabled = !state.value.isDisabled,
                 isReadOnly = state.value.isReadOnly,
                 isRequired = state.value.isRequired,
+                isSingleLine = state.value.isSingleLine,
                 hasError = state.value.hasError,
                 modifier = Modifier.fillMaxWidth(),
             )

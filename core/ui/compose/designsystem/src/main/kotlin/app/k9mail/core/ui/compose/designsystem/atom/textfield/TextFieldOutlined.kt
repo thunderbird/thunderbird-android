@@ -20,6 +20,7 @@ fun TextFieldOutlined(
     isReadOnly: Boolean = false,
     isRequired: Boolean = false,
     hasError: Boolean = false,
+    isSingleLine: Boolean = true,
 ) {
     MaterialOutlinedTextField(
         value = value,
@@ -30,6 +31,7 @@ fun TextFieldOutlined(
         trailingIcon = trailingIcon,
         readOnly = isReadOnly,
         isError = hasError,
+        singleLine = isSingleLine,
     )
 }
 

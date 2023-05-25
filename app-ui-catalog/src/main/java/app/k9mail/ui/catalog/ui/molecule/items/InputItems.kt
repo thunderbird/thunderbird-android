@@ -6,6 +6,7 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
+import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
 import app.k9mail.ui.catalog.ui.common.list.ItemOutlined
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
@@ -14,6 +15,31 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Suppress("LongMethod")
 fun LazyGridScope.inputItems() {
+    sectionHeaderItem(text = "TextInput")
+    sectionSubtitleItem(text = "Default")
+    item {
+        ItemOutlined {
+            WithRememberedState(input = "") { state ->
+                TextInput(
+                    text = state.value,
+                    onTextChange = { state.value = it },
+                )
+            }
+        }
+    }
+    sectionSubtitleItem(text = "With error")
+    item {
+        ItemOutlined {
+            WithRememberedState(input = "") { state ->
+                TextInput(
+                    text = state.value,
+                    onTextChange = { state.value = it },
+                    errorMessage = "Invalid input",
+                )
+            }
+        }
+    }
+
     sectionHeaderItem(text = "EmailAddressInput")
     sectionSubtitleItem(text = "Default")
     item {
@@ -91,7 +117,7 @@ fun LazyGridScope.inputItems() {
         }
     }
 
-    sectionHeaderItem(text = "SelectInput")
+    sectionHeaderItem(text = "SwitchInput")
     item {
         ItemOutlined {
             WithRememberedState(input = false) { state ->

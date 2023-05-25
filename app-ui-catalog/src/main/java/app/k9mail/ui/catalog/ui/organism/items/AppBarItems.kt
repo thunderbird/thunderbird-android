@@ -34,24 +34,52 @@ fun LazyGridScope.appBarItems() {
             )
         }
     }
+    sectionSubtitleItem(text = "With subtitle")
+    item {
+        ItemOutlined {
+            TopAppBarItem(
+                title = "Title",
+                subtitle = "Subtitle",
+                navIcon = Icons.Outlined.menu,
+                actionIcon = Icons.Filled.user,
+            )
+        }
+    }
+    sectionSubtitleItem(text = "With subtitle and no nav icon")
+    item {
+        ItemOutlined {
+            TopAppBarItem(
+                title = "Title",
+                subtitle = "Subtitle",
+                navIcon = null,
+                actionIcon = Icons.Filled.user,
+            )
+        }
+    }
 }
 
 @Composable
 fun TopAppBarItem(
     title: String,
-    navIcon: ImageVector,
     actionIcon: ImageVector,
     modifier: Modifier = Modifier,
+    subtitle: String? = null,
+    navIcon: ImageVector? = null,
 ) {
     TopAppBar(
         title = title,
-        navigationIcon = {
-            IconButton(onClick = {}) {
-                Icon(
-                    imageVector = navIcon,
-                    contentDescription = null,
-                )
+        subtitle = subtitle,
+        navigationIcon = if (navIcon != null) {
+            {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = navIcon,
+                        contentDescription = null,
+                    )
+                }
             }
+        } else {
+            null
         },
         actions = {
             IconButton(onClick = {}) {
