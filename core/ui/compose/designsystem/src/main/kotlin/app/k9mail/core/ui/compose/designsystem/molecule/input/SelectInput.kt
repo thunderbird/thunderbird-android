@@ -18,6 +18,7 @@ fun <T> SelectInput(
     selectedOption: T,
     onOptionChange: (T) -> Unit,
     modifier: Modifier = Modifier,
+    optionToStringTransformation: (T) -> String = { it.toString() },
     label: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
 ) {
@@ -32,6 +33,7 @@ fun <T> SelectInput(
             selectedOption = selectedOption,
             onValueChange = onOptionChange,
             modifier = Modifier.fillMaxWidth(),
+            optionToStringTransformation = optionToStringTransformation,
             label = label,
         )
     }
