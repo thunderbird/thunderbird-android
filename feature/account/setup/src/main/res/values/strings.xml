@@ -5,4 +5,6 @@
     <string name="account_setup_button_next">Next</string>
     <string name="account_setup_button_back">Back</string>
     <string name="account_setup_button_finish">Finish</string>
+
+    <string name="account_setup_options_top_bar_title">Account options</string>
 </resources>

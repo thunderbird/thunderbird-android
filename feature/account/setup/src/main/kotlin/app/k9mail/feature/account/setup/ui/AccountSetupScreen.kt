@@ -42,8 +42,8 @@ fun AccountSetupScreen(
 
         SetupStep.OPTIONS -> {
             AccountOptionsScreen(
-                onFinishClick = { dispatch(Event.OnNext) },
-                onBackClick = { dispatch(Event.OnBack) },
+                onNext = { dispatch(Event.OnNext) },
+                onBack = { dispatch(Event.OnBack) },
             )
         }
     }
