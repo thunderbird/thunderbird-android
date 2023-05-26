@@ -12,7 +12,7 @@ fun NavController.navigateToAccountSetup(navOptions: NavOptions? = null) {
     navigate(NAVIGATION_ROUTE_ACCOUNT_SETUP, navOptions)
 }
 
-fun NavGraphBuilder.accountSetupScreen(
+fun NavGraphBuilder.accountSetupRoute(
     onBack: () -> Unit,
     onFinish: () -> Unit,
 ) {

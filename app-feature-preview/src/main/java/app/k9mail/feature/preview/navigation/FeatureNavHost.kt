@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import app.k9mail.feature.account.setup.navigation.accountSetupScreen
+import app.k9mail.feature.account.setup.navigation.accountSetupRoute
 import app.k9mail.feature.account.setup.navigation.navigateToAccountSetup
 import app.k9mail.feature.onboarding.navigation.NAVIGATION_ROUTE_ONBOARDING
-import app.k9mail.feature.onboarding.navigation.onboardingScreen
+import app.k9mail.feature.onboarding.navigation.onboardingRoute
 
 @Composable
 fun FeatureNavHost(
@@ -20,11 +20,11 @@ fun FeatureNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        onboardingScreen(
+        onboardingRoute(
             onStart = { navController.navigateToAccountSetup() },
             onImport = { /* TODO */ },
         )
-        accountSetupScreen(
+        accountSetupRoute(
             onBack = navController::popBackStack,
             onFinish = { /* TODO */ },
         )
