@@ -27,8 +27,8 @@ import org.junit.Test
 
 private const val PRINT_MODIFIED_XML = false
 
-class AutoconfigParserTest {
-    private val parser = AutoconfigParser()
+class RealAutoconfigParserTest {
+    private val parser = RealAutoconfigParser()
 
     @Language("XML")
     private val minimalConfig =

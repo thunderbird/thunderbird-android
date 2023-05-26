@@ -64,6 +64,6 @@ private fun createAutoconfigDiscovery(
     urlProvider: AutoconfigUrlProvider,
 ): AutoconfigDiscovery {
     val fetcher = OkHttpAutoconfigFetcher(okHttpClient)
-    val parser = SuspendableAutoconfigParser(AutoconfigParser())
+    val parser = SuspendableAutoconfigParser(RealAutoconfigParser())
     return AutoconfigDiscovery(urlProvider, fetcher, parser)
 }
