@@ -1,9 +1,5 @@
 package app.k9mail.ui.catalog.ui
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
@@ -24,12 +20,9 @@ fun CatalogContent(
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
-    val contentPadding = WindowInsets.systemBars.asPaddingValues()
 
     Scaffold(
-        modifier = Modifier
-            .padding(top = contentPadding.calculateTopPadding())
-            .then(modifier),
+        modifier = modifier,
         topBar = { toggleDrawer ->
             ThemeTopAppBar(
                 onNavigationClick = toggleDrawer,

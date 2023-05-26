@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -61,7 +62,8 @@ fun <T> PagedContent(
             ) { page ->
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(300.dp),
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize()
+                        .imePadding(),
                     horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
                     verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
                 ) {
