@@ -4,7 +4,7 @@ import app.k9mail.core.common.net.Domain
 import app.k9mail.core.common.net.toDomain
 import okhttp3.HttpUrl
 
-class OkHttpBaseDomainExtractor : BaseDomainExtractor {
+internal class OkHttpBaseDomainExtractor : BaseDomainExtractor {
     override fun extractBaseDomain(domain: Domain): Domain {
         return domain.value.toHttpUrlOrNull().topPrivateDomain()?.toDomain() ?: domain
     }

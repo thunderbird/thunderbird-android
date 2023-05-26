@@ -10,8 +10,9 @@ import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.logging.Timber
 import java.io.IOException
 import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
 
-class MxLookupAutoconfigDiscovery(
+class MxLookupAutoconfigDiscovery internal constructor(
     private val mxResolver: SuspendableMxResolver,
     private val baseDomainExtractor: BaseDomainExtractor,
     private val subDomainExtractor: SubDomainExtractor,
@@ -89,4 +90,16 @@ class MxLookupAutoconfigDiscovery(
             null
         }
     }
+}
+
+fun createMxLookupAutoconfigDiscovery(okHttpClient: OkHttpClient): MxLookupAutoconfigDiscovery {
+    val baseDomainExtractor = OkHttpBaseDomainExtractor()
+    return MxLookupAutoconfigDiscovery(
+        mxResolver = SuspendableMxResolver(MiniDnsMxResolver()),
+        baseDomainExtractor = baseDomainExtractor,
+        subDomainExtractor = RealSubDomainExtractor(baseDomainExtractor),
+        urlProvider = IspDbAutoconfigUrlProvider(),
+        fetcher = AutoconfigFetcher(okHttpClient),
+        parser = SuspendableAutoconfigParser(AutoconfigParser()),
+    )
 }

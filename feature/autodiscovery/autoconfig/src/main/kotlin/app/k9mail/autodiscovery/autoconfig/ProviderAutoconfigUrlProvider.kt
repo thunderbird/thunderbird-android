@@ -4,7 +4,7 @@ import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.net.Domain
 import okhttp3.HttpUrl
 
-class ProviderAutoconfigUrlProvider(private val config: AutoconfigUrlConfig) : AutoconfigUrlProvider {
+internal class ProviderAutoconfigUrlProvider(private val config: AutoconfigUrlConfig) : AutoconfigUrlProvider {
     override fun getAutoconfigUrls(domain: Domain, email: EmailAddress?): List<HttpUrl> {
         return buildList {
             add(createProviderUrl(domain, email, useHttps = true))

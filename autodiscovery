@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./gradlew --quiet ":cli:autodiscovery-cli:installDist" < /dev/null && ./cli/autodiscovery-cli/build/install/autodiscovery-cli/bin/autodiscovery-cli "$@"

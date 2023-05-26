@@ -7,6 +7,6 @@ import app.k9mail.core.common.net.Domain
  *
  * An implementation needs to respect the [Public Suffix List](https://publicsuffix.org/).
  */
-interface BaseDomainExtractor {
+internal interface BaseDomainExtractor {
     fun extractBaseDomain(domain: Domain): Domain
 }

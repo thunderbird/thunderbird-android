@@ -82,4 +82,7 @@ include(
 
 include(":plugins:openpgp-api-lib:openpgp-api")
 
-include(":cli:html-cleaner-cli")
+include(
+    ":cli:autodiscovery-cli",
+    ":cli:html-cleaner-cli",
+)
