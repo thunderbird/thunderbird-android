@@ -37,13 +37,14 @@
                 android:text="@string/account_setup_oauth_sign_in"
                 android:visibility="gone" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/google_sign_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_google_signin_dark"
                 android:text="@string/account_setup_oauth_sign_in_with_google"
                 android:textAllCaps="false"
+                android:textColor="#ffffff"
                 android:textSize="14sp"
                 android:visibility="gone"
                 tools:visibility="visible" />
