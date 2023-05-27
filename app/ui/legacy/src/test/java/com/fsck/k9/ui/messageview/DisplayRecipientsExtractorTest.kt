@@ -49,6 +49,45 @@ class DisplayRecipientsExtractorTest {
     }
 
     @Test
+    fun `single recipient is identity address with different local part case`() {
+        val message = buildMessage {
+            header("To", "Test User <ME@domain.example>")
+        }
+
+        val displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account)
+
+        assertThat(displayRecipients).isEqualTo(
+            DisplayRecipients(recipientNames = listOf("me"), numberOfRecipients = 1),
+        )
+    }
+
+    @Test
+    fun `single recipient is identity address with different domain case`() {
+        val message = buildMessage {
+            header("To", "Test User <me@DOMAIN.EXAMPLE>")
+        }
+
+        val displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account)
+
+        assertThat(displayRecipients).isEqualTo(
+            DisplayRecipients(recipientNames = listOf("me"), numberOfRecipients = 1),
+        )
+    }
+
+    @Test
+    fun `single recipient is identity address with different local part and domain case`() {
+        val message = buildMessage {
+            header("To", "Test User <ME@DOMAIN.EXAMPLE>")
+        }
+
+        val displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account)
+
+        assertThat(displayRecipients).isEqualTo(
+            DisplayRecipients(recipientNames = listOf("me"), numberOfRecipients = 1),
+        )
+    }
+
+    @Test
     fun `single recipient is a contact`() {
         val message = buildMessage {
             header("To", "User 1 <user1@domain.example>")
