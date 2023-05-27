@@ -35,7 +35,7 @@ internal class DisplayRecipientsExtractor(
 
         val recipientNames = sequenceOf(toRecipients, ccRecipients, bccRecipients)
             .flatMap { addressArray -> addressArray.asSequence() }
-            .filter { address -> address.address != identityEmail }
+            .filter { address -> !address.address.equals(identityEmail, ignoreCase = true) }
             .map { address -> recipientFormatter.getDisplayName(address, account) }
             .take(maxAdditionalRecipients)
             .toList()
