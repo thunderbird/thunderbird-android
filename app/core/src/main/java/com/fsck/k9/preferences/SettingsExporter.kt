@@ -206,7 +206,7 @@ class SettingsExporter(
             if (hasThirdPart) {
                 val secondPart = keyPart.substring(0, indexOfLastDot)
                 val thirdPart = keyPart.substring(indexOfLastDot + 1)
-                if (secondPart == IDENTITY_DESCRIPTION_KEY) {
+                if (secondPart == IDENTITY_EMAIL_KEY) {
                     // This is an identity key. Save identity index for later...
                     thirdPart.toIntOrNull()?.let {
                         identities.add(it)
