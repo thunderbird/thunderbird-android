@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.EmailAddress
+import app.k9mail.core.common.mail.toEmailAddress
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.mail.Flag
@@ -88,7 +88,7 @@ class K9NotificationStrategy(
         }
 
         if (account.isNotifyContactsMailOnly &&
-            !contactRepository.hasAnyContactFor(message.from.asList().mapNotNull { EmailAddress(it.address) })
+            !contactRepository.hasAnyContactFor(message.from.asList().mapNotNull { it.address.toEmailAddress() })
         ) {
             Timber.v("No notification: Message is not from a known contact")
             return false

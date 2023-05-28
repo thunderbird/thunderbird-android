@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.EmailAddress
+import app.k9mail.core.common.mail.toEmailAddress
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.ClipboardManager
@@ -130,7 +130,7 @@ internal class MessageDetailsViewModel(
             Participant(
                 displayName = displayName,
                 emailAddress = emailAddress,
-                contactLookupUri = contactRepository.getContactFor(EmailAddress(emailAddress))?.uri,
+                contactLookupUri = contactRepository.getContactFor(emailAddress.toEmailAddress())?.uri,
             )
         }
     }
