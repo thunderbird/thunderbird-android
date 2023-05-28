@@ -1,32 +1,60 @@
 package app.k9mail.core.common.mail
 
-import assertk.assertFailure
+import app.k9mail.core.common.mail.EmailAddress.Warning
 import assertk.assertThat
-import assertk.assertions.hasMessage
+import assertk.assertions.containsExactlyInAnyOrder
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import assertk.assertions.isInstanceOf
+import assertk.assertions.isSameAs
 import kotlin.test.Test
 
-internal class EmailAddressTest {
-
+class EmailAddressTest {
     @Test
-    fun `should reject blank email address`() {
-        assertFailure {
-            EmailAddress("")
-        }.isInstanceOf<IllegalArgumentException>()
-            .hasMessage("Email address must not be blank")
+    fun `simple email address`() {
+        val domain = EmailDomain("DOMAIN.example")
+        val emailAddress = EmailAddress(localPart = "user", domain = domain)
+
+        assertThat(emailAddress.localPart).isEqualTo("user")
+        assertThat(emailAddress.encodedLocalPart).isEqualTo("user")
+        assertThat(emailAddress.domain).isSameAs(domain)
+        assertThat(emailAddress.address).isEqualTo("user@DOMAIN.example")
+        assertThat(emailAddress.normalizedAddress).isEqualTo("user@domain.example")
+        assertThat(emailAddress.toString()).isEqualTo("user@DOMAIN.example")
+        assertThat(emailAddress.warnings).isEmpty()
     }
 
     @Test
-    fun `should return email address`() {
-        val emailAddress = EmailAddress(EMAIL_ADDRESS)
+    fun `local part that requires use of quoted string`() {
+        val emailAddress = EmailAddress(localPart = "foo bar", domain = EmailDomain("domain.example"))
 
-        val address = emailAddress.address
-
-        assertThat(address).isEqualTo(EMAIL_ADDRESS)
+        assertThat(emailAddress.localPart).isEqualTo("foo bar")
+        assertThat(emailAddress.encodedLocalPart).isEqualTo("\"foo bar\"")
+        assertThat(emailAddress.address).isEqualTo("\"foo bar\"@domain.example")
+        assertThat(emailAddress.normalizedAddress).isEqualTo("\"foo bar\"@domain.example")
+        assertThat(emailAddress.toString()).isEqualTo("\"foo bar\"@domain.example")
+        assertThat(emailAddress.warnings).containsExactlyInAnyOrder(Warning.QuotedStringInLocalPart)
     }
 
-    private companion object {
-        private const val EMAIL_ADDRESS = "email@example.com"
+    @Test
+    fun `empty local part`() {
+        val emailAddress = EmailAddress(localPart = "", domain = EmailDomain("domain.example"))
+
+        assertThat(emailAddress.localPart).isEqualTo("")
+        assertThat(emailAddress.encodedLocalPart).isEqualTo("\"\"")
+        assertThat(emailAddress.address).isEqualTo("\"\"@domain.example")
+        assertThat(emailAddress.normalizedAddress).isEqualTo("\"\"@domain.example")
+        assertThat(emailAddress.toString()).isEqualTo("\"\"@domain.example")
+        assertThat(emailAddress.warnings).containsExactlyInAnyOrder(
+            Warning.QuotedStringInLocalPart,
+            Warning.EmptyLocalPart,
+        )
+    }
+
+    @Test
+    fun `equals() does case-insensitive domain comparison`() {
+        val emailAddress1 = EmailAddress(localPart = "user", domain = EmailDomain("domain.example"))
+        val emailAddress2 = EmailAddress(localPart = "user", domain = EmailDomain("DOMAIN.example"))
+
+        assertThat(emailAddress2).isEqualTo(emailAddress1)
     }
 }
