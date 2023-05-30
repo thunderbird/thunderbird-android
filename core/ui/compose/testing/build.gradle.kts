@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
+    api(projects.core.testing)
+
     implementation(projects.core.ui.compose.theme)
     implementation(libs.androidx.compose.material)
 

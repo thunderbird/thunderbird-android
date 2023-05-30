@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     implementation(libs.assertk)
+    implementation(libs.turbine)
 }

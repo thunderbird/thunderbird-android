@@ -1,15 +1,12 @@
 package app.k9mail.feature.account.setup.ui
 
-import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.testIn
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect.NavigateBack
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect.NavigateNext
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
-import assertk.Assert
-import assertk.all
-import assertk.assertThat
+import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
 import assertk.assertions.prop
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,7 +28,7 @@ class AccountSetupViewModelTest {
         val turbines = listOf(stateTurbine, effectTurbine)
 
         // Initial state
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
@@ -40,7 +37,7 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
@@ -49,7 +46,7 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
@@ -58,7 +55,7 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
@@ -67,7 +64,7 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = effectTurbine.awaitItem(),
             turbines = turbines,
         ) {
@@ -84,7 +81,7 @@ class AccountSetupViewModelTest {
         val turbines = listOf(stateTurbine, effectTurbine)
 
         // Initial state
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
@@ -93,7 +90,7 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnBack)
 
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
@@ -102,7 +99,7 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnBack)
 
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
@@ -111,7 +108,7 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnBack)
 
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
@@ -120,23 +117,11 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnBack)
 
-        assertThatAndAllEventsConsumed(
+        assertThatAndTurbinesConsumed(
             actual = effectTurbine.awaitItem(),
             turbines = turbines,
         ) {
             isEqualTo(NavigateBack)
         }
-    }
-
-    private fun <T> assertThatAndAllEventsConsumed(
-        actual: T,
-        turbines: List<ReceiveTurbine<*>>,
-        assertion: Assert<T>.() -> Unit,
-    ) {
-        assertThat(actual).all {
-            assertion()
-        }
-
-        turbines.forEach { it.ensureAllEventsConsumed() }
     }
 }
