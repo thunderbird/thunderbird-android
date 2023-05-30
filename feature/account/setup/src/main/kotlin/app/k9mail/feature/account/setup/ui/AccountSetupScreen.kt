@@ -28,8 +28,8 @@ fun AccountSetupScreen(
     when (state.value.setupStep) {
         SetupStep.AUTO_CONFIG -> {
             AccountAutoConfigScreen(
-                onNextClick = { dispatch(Event.OnNext) },
-                onBackClick = { dispatch(Event.OnBack) },
+                onNext = { dispatch(Event.OnNext) },
+                onBack = { dispatch(Event.OnBack) },
             )
         }
 

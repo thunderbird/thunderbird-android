@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_top_bar_subtitle">K-9 Mail</string>
     <string name="account_setup_button_next">Next</string>
     <string name="account_setup_button_back">Back</string>
     <string name="account_setup_button_finish">Finish</string>
+
+    <string name="account_setup_auto_config_title">K-9 Mail</string>
 
     <string name="account_setup_options_top_bar_title">Account options</string>
 </resources>
