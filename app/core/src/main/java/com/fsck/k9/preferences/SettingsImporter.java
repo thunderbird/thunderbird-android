@@ -533,19 +533,6 @@ public class SettingsImporter {
                 nextIdentityIndex++;
             }
 
-            String identityDescription = (identity.description == null) ? "Imported" : identity.description;
-            if (isIdentityDescriptionUsed(identityDescription, existingIdentities)) {
-                // Identity description is already in use. So generate a new one by appending
-                // " (x)", where x is the first number >= 1 that results in an unused identity
-                // description.
-                for (int i = 1; i <= existingIdentities.size(); i++) {
-                    identityDescription = identity.description + " (" + i + ")";
-                    if (!isIdentityDescriptionUsed(identityDescription, existingIdentities)) {
-                        break;
-                    }
-                }
-            }
-
             String identitySuffix = "." + writeIdentityIndex;
 
             // Write name used in identity
@@ -561,8 +548,10 @@ public class SettingsImporter {
             putString(editor, accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_EMAIL_KEY + identitySuffix, identity.email);
 
             // Write identity description
-            putString(editor, accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_DESCRIPTION_KEY + identitySuffix,
-                    identityDescription);
+            if (identity.description != null) {
+                putString(editor, accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_DESCRIPTION_KEY + identitySuffix,
+                        identity.description);
+            }
 
             if (identity.settings != null) {
                 // Validate identity settings
@@ -604,15 +593,6 @@ public class SettingsImporter {
             }
 
             if (account.getDisplayName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean isIdentityDescriptionUsed(String description, List<Identity> identities) {
-        for (Identity identity : identities) {
-            if (identity.getDescription().equals(description)) {
                 return true;
             }
         }

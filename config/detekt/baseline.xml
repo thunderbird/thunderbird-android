@@ -51,8 +51,6 @@
     <ID>CyclomaticComplexMethod:StorageMigrations.kt$StorageMigrations$@JvmStatic fun upgradeDatabase(db: SQLiteDatabase, migrationsHelper: StorageMigrationsHelper)</ID>
     <ID>CyclomaticComplexMethod:TouchInterceptView.kt$TouchInterceptView$private fun handleOnInterceptTouchEvent(event: MotionEvent)</ID>
     <ID>DestructuringDeclarationWithTooManyEntries:RetrieveFolderOperationsTest.kt$RetrieveFolderOperationsTest$val (folderId1, folderId2, folderId3, folderId4) = listOf( sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"), sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"), sqliteDatabase.createFolder(name = "Folder 3", displayClass = "FIRST_CLASS"), sqliteDatabase.createFolder(name = "Folder 4", displayClass = "NO_CLASS"), )</ID>
-    <ID>EmptyCatchBlock:CommandRefreshFolderListTest.kt$CommandRefreshFolderListTest${ }</ID>
-    <ID>EmptyCatchBlock:K9BackendFolderTest.kt$K9BackendFolderTest${ }</ID>
     <ID>ForbiddenComment:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$* FIXME: Don't use an AsyncTask to perform network operations. * See also discussion in https://github.com/thundernest/k-9/pull/560</ID>
     <ID>ForbiddenComment:BackendFolder.kt$BackendFolder$// FIXME: add documentation</ID>
     <ID>ForbiddenComment:CommandSync.kt$CommandSync$// FIXME: Add sort parameter</ID>
@@ -148,7 +146,7 @@
     <ID>LoopWithTooManyJumpStatements:HttpUriParser.kt$HttpUriParser$while (currentPos &lt; text.length) { val c = text[currentPos] if (isHexDigit(c)) { shouldBeHex = (shouldBeHex - 1).coerceAtLeast(0) } else if (shouldBeHex == 0) { if (c in allowedCharacters) { // Everything ok here :) } else if (c == '%') { shouldBeHex = 2 } else { break } } else { break } currentPos++ }</ID>
     <ID>LoopWithTooManyJumpStatements:RealImapStore.kt$RealImapStore$for (listResponse in listResponses) { val serverId = listResponse.name if (pathDelimiter == null) { pathDelimiter = listResponse.hierarchyDelimiter combinedPrefix = null } if (RealImapFolder.INBOX.equals(serverId, ignoreCase = true)) { continue } else if (listResponse.hasAttribute("\\NoSelect")) { continue } val name = getFolderDisplayName(serverId) val oldServerId = getOldServerId(serverId) val type = when { listResponse.hasAttribute("\\Archive") -&gt; FolderType.ARCHIVE listResponse.hasAttribute("\\All") -&gt; FolderType.ARCHIVE listResponse.hasAttribute("\\Drafts") -&gt; FolderType.DRAFTS listResponse.hasAttribute("\\Sent") -&gt; FolderType.SENT listResponse.hasAttribute("\\Junk") -&gt; FolderType.SPAM listResponse.hasAttribute("\\Trash") -&gt; FolderType.TRASH else -&gt; FolderType.REGULAR } val existingItem = folderMap[serverId] if (existingItem == null || existingItem.type == FolderType.REGULAR) { folderMap[serverId] = FolderListItem(serverId, name, type, oldServerId) } }</ID>
     <ID>LoopWithTooManyJumpStatements:SettingsExporter.kt$SettingsExporter$for ((key, value) in prefs) { val valueString = value.toString() val comps = key.split(".") if (comps.size &lt; 3) { // Skip non-identity config entries continue } val keyUuid = comps[0] val identityKey = comps[1] val identityIndex = comps[2] if (keyUuid != accountUuid || identityIndex != identity) { // Skip entries that belong to another identity continue } val versionedSetting = IdentitySettingsDescriptions.SETTINGS[identityKey] if (versionedSetting != null) { val highestVersion = versionedSetting.lastKey() val setting = versionedSetting[highestVersion] if (setting != null) { // Only write settings that have an entry in IdentitySettings.SETTINGS try { writeKeyAndPrettyValueFromSetting(serializer, identityKey, setting, valueString) } catch (e: InvalidSettingValueException) { Timber.w( "Identity setting \"%s\" has invalid value \"%s\" in preference storage. " + "This shouldn't happen!", identityKey, valueString, ) } } } }</ID>
-    <ID>LoopWithTooManyJumpStatements:SettingsExporter.kt$SettingsExporter$for ((key, value) in prefs) { val valueString = value.toString() val comps = key.split(".", limit = 2) if (comps.size &lt; 2) { // Skip global settings continue } val keyUuid = comps[0] val keyPart = comps[1] if (keyUuid != accountUuid) { // Setting doesn't belong to the account we're currently writing. continue } val indexOfLastDot = keyPart.lastIndexOf(".") val hasThirdPart = indexOfLastDot != -1 &amp;&amp; indexOfLastDot &lt; keyPart.length - 1 if (hasThirdPart) { val secondPart = keyPart.substring(0, indexOfLastDot) val thirdPart = keyPart.substring(indexOfLastDot + 1) if (secondPart == IDENTITY_DESCRIPTION_KEY) { // This is an identity key. Save identity index for later... thirdPart.toIntOrNull()?.let { identities.add(it) } // ... but don't write it now. continue } if (FolderSettingsDescriptions.SETTINGS.containsKey(thirdPart)) { // This is a folder key. Ignore it. continue } } if (keyPart !in FOLDER_NAME_KEYS) { writeAccountSettingIfValid(serializer, keyPart, valueString, account) } }</ID>
+    <ID>LoopWithTooManyJumpStatements:SettingsExporter.kt$SettingsExporter$for ((key, value) in prefs) { val valueString = value.toString() val comps = key.split(".", limit = 2) if (comps.size &lt; 2) { // Skip global settings continue } val keyUuid = comps[0] val keyPart = comps[1] if (keyUuid != accountUuid) { // Setting doesn't belong to the account we're currently writing. continue } val indexOfLastDot = keyPart.lastIndexOf(".") val hasThirdPart = indexOfLastDot != -1 &amp;&amp; indexOfLastDot &lt; keyPart.length - 1 if (hasThirdPart) { val secondPart = keyPart.substring(0, indexOfLastDot) val thirdPart = keyPart.substring(indexOfLastDot + 1) if (secondPart == IDENTITY_EMAIL_KEY) { // This is an identity key. Save identity index for later... thirdPart.toIntOrNull()?.let { identities.add(it) } // ... but don't write it now. continue } if (FolderSettingsDescriptions.SETTINGS.containsKey(thirdPart)) { // This is a folder key. Ignore it. continue } } if (keyPart !in FOLDER_NAME_KEYS) { writeAccountSettingIfValid(serializer, keyPart, valueString, account) } }</ID>
     <ID>LoopWithTooManyJumpStatements:UnreadWidgetMigrations.kt$UnreadWidgetMigrations$for (widgetId in widgetIds) { val accountUuid = preferences.getString("unread_widget.$widgetId", null) ?: continue val account = accountRepository.getAccount(accountUuid) ?: continue val folderServerId = preferences.getString("unread_widget.$widgetId.folder_name", null) if (folderServerId != null) { val folderId = folderRepository.getFolderId(account, folderServerId) putString("unread_widget.$widgetId.folder_id", folderId?.toString()) } remove("unread_widget.$widgetId.folder_name") }</ID>
     <ID>MagicNumber:Account.kt$Account$168</ID>
     <ID>MagicNumber:Account.kt$Account$2</ID>
@@ -443,7 +441,6 @@
     <ID>MatchingDeclarationName:Main.kt$HtmlCleaner : CliktCommand</ID>
     <ID>MaxLineLength:BoundaryGeneratorTest.kt$BoundaryGeneratorTest$0</ID>
     <ID>MaxLineLength:ComposeCryptoStatus.kt$ComposeCryptoStatus$OpenPgpApiManager.OpenPgpProviderState.ERROR, OpenPgpApiManager.OpenPgpProviderState.UI_REQUIRED -&gt; CryptoStatusDisplayType.ERROR</ID>
-    <ID>MaxLineLength:EmailAddressValidatorTest.kt$EmailAddressValidatorTest$Assert.assertTrue(validator.isValidAddressOnly("\"very.(),:;&lt;&gt;[]\\\".VERY.\\\"very@\\\\ \\\"very\\\".unusual\"@strange.example.com"))</ID>
     <ID>MaxLineLength:GenericUriParserTest.kt$GenericUriParserTest$assertUriValid("xmpp:node@example.com/repulsive%20!%23%22\$%25&amp;'()*+,-.%2F:;%3C=%3E%3F%40%5B%5C%5D%5E_%60%7B%7C%7D~resource")</ID>
     <ID>MaxLineLength:HtmlSanitizerTest.kt$HtmlSanitizerTest$assertThat(result.toCompactString()).isEqualTo("&lt;html&gt;&lt;head&gt;&lt;style&gt;keep this&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;")</ID>
     <ID>MaxLineLength:ImapSync.kt$ImapSync.&lt;no name provided&gt;$// TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal</ID>
@@ -461,7 +458,6 @@
     <ID>MayBeConst:SummaryNotificationDataCreatorTest.kt$private val TIMESTAMP = 0L</ID>
     <ID>MemberNameEqualsClassName:HtmlModification.kt$HtmlModification.Replace$abstract fun replace(textToHtml: TextToHtml)</ID>
     <ID>MemberNameEqualsClassName:ReplyToView.kt$ReplyToView$private val replyToView: RecipientSelectView = activity.findViewById(R.id.reply_to)</ID>
-    <ID>NestedBlockDepth:AutoconfigParser.kt$AutoconfigParser$private fun parseServer(xpp: XmlPullParser, nodeName: String, email: String): DiscoveredServerSettings</ID>
     <ID>NestedBlockDepth:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
     <ID>NestedBlockDepth:ImapSync.kt$ImapSync$private fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener)</ID>
     <ID>NestedBlockDepth:MessageList.kt$MessageList$override fun onBackPressed()</ID>
@@ -567,14 +563,12 @@
     <ID>SpreadOperator:ReplyToView.kt$ReplyToView$(*recipients)</ID>
     <ID>SwallowedException:AboutFragment.kt$e: ActivityNotFoundException</ID>
     <ID>SwallowedException:AuthViewModel.kt$AuthViewModel$e: ActivityNotFoundException</ID>
-    <ID>SwallowedException:CommandRefreshFolderListTest.kt$CommandRefreshFolderListTest$e: AuthenticationFailedException</ID>
     <ID>SwallowedException:ContactPictureLoader.kt$ContactPictureLoader$e: Exception</ID>
     <ID>SwallowedException:DecoderUtil.kt$DecoderUtil$e: IOException</ID>
     <ID>SwallowedException:DecoderUtil.kt$DecoderUtil$e: MessagingException</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: EndpointNotFoundException</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: UnauthorizedException</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: UnknownHostException</ID>
-    <ID>SwallowedException:K9BackendFolderTest.kt$K9BackendFolderTest$e: IllegalStateException</ID>
     <ID>SwallowedException:LocalKeyStore.kt$LocalKeyStore$e: FileNotFoundException</ID>
     <ID>SwallowedException:LocalKeyStore.kt$LocalKeyStore$e: KeyStoreException</ID>
     <ID>SwallowedException:MessageContainerView.kt$MessageContainerView$e: ActivityNotFoundException</ID>
@@ -588,8 +582,6 @@
     <ID>SwallowedException:MimeParameterDecoder.kt$MimeParameterDecoder$e: IllegalCharsetNameException</ID>
     <ID>SwallowedException:MimeParameterDecoder.kt$MimeParameterDecoder$e: MimeHeaderParserException</ID>
     <ID>SwallowedException:MimeType.kt$MimeType.Companion$e: IllegalArgumentException</ID>
-    <ID>SwallowedException:PgpMessageBuilderTest.kt$PgpMessageBuilderTest.Companion$e: IOException</ID>
-    <ID>SwallowedException:PgpMessageBuilderTest.kt$PgpMessageBuilderTest.Companion$e: MessagingException</ID>
     <ID>SwallowedException:PushInfoFragment.kt$PushInfoFragment$e: ActivityNotFoundException</ID>
     <ID>SwallowedException:QuoteDateFormatter.kt$QuoteDateFormatter$e: Exception</ID>
     <ID>SwallowedException:RealImapConnection.kt$RealImapConnection$e: NegativeImapResponseException</ID>
