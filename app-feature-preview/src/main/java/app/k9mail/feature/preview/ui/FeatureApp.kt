@@ -1,10 +1,7 @@
 package app.k9mail.feature.preview.ui
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
@@ -19,12 +16,10 @@ fun FeatureApp(
     val navController = rememberNavController()
 
     K9Theme {
-        val contentPadding = WindowInsets.systemBars.asPaddingValues()
-
         Background(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(contentPadding)
+                .systemBarsPadding()
                 .then(modifier),
         ) {
             FeatureNavHost(navController = navController)

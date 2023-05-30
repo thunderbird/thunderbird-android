@@ -13,7 +13,7 @@ class CatalogActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             CatalogScreen()

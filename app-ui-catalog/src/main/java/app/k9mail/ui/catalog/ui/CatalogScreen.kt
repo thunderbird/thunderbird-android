@@ -1,5 +1,6 @@
 package app.k9mail.ui.catalog.ui
 
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.mvi.observe
@@ -24,7 +25,9 @@ fun CatalogScreen(
             state = state.value,
             onThemeChanged = { dispatch(OnThemeChanged) },
             onThemeVariantChanged = { dispatch(OnThemeVariantChanged) },
-            modifier = modifier,
+            modifier = Modifier
+                .systemBarsPadding()
+                .then(modifier),
         )
     }
 }
