@@ -12,10 +12,12 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.prop
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AccountSetupViewModelTest {
 
     @get:Rule
@@ -42,7 +44,16 @@ class AccountSetupViewModelTest {
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
-            prop(State::setupStep).isEqualTo(SetupStep.MANUAL_CONFIG)
+            prop(State::setupStep).isEqualTo(SetupStep.INCOMING_CONFIG)
+        }
+
+        viewModel.event(AccountSetupContract.Event.OnNext)
+
+        assertThatAndAllEventsConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            prop(State::setupStep).isEqualTo(SetupStep.OUTGOING_CONFIG)
         }
 
         viewModel.event(AccountSetupContract.Event.OnNext)
@@ -86,7 +97,16 @@ class AccountSetupViewModelTest {
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
-            prop(State::setupStep).isEqualTo(SetupStep.MANUAL_CONFIG)
+            prop(State::setupStep).isEqualTo(SetupStep.OUTGOING_CONFIG)
+        }
+
+        viewModel.event(AccountSetupContract.Event.OnBack)
+
+        assertThatAndAllEventsConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            prop(State::setupStep).isEqualTo(SetupStep.INCOMING_CONFIG)
         }
 
         viewModel.event(AccountSetupContract.Event.OnBack)

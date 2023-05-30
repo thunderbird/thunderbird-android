@@ -8,8 +8,9 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigScreen
-import app.k9mail.feature.account.setup.ui.manualconfig.AccountManualConfigScreen
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigScreen
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
+import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -33,10 +34,17 @@ fun AccountSetupScreen(
             )
         }
 
-        SetupStep.MANUAL_CONFIG -> {
-            AccountManualConfigScreen(
-                onNextClick = { dispatch(Event.OnNext) },
-                onBackClick = { dispatch(Event.OnBack) },
+        SetupStep.INCOMING_CONFIG -> {
+            AccountIncomingConfigScreen(
+                onNext = { dispatch(Event.OnNext) },
+                onBack = { dispatch(Event.OnBack) },
+            )
+        }
+
+        SetupStep.OUTGOING_CONFIG -> {
+            AccountOutgoingConfigScreen(
+                onNext = { dispatch(Event.OnNext) },
+                onBack = { dispatch(Event.OnBack) },
             )
         }
 

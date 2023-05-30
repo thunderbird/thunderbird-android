@@ -7,5 +7,9 @@
 
     <string name="account_setup_auto_config_title">K-9 Mail</string>
 
+    <string name="account_setup_incoming_config_top_bar_title">Incoming server settings</string>
+
+    <string name="account_setup_outgoing_config_top_bar_title">Outgoing server settings</string>
+
     <string name="account_setup_options_top_bar_title">Account options</string>
 </resources>
