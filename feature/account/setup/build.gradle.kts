@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.common)
 
     testImplementation(projects.core.ui.compose.testing)
 }
