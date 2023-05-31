@@ -99,7 +99,7 @@ fun createMxLookupAutoconfigDiscovery(okHttpClient: OkHttpClient): MxLookupAutoc
         baseDomainExtractor = baseDomainExtractor,
         subDomainExtractor = RealSubDomainExtractor(baseDomainExtractor),
         urlProvider = IspDbAutoconfigUrlProvider(),
-        fetcher = AutoconfigFetcher(okHttpClient),
-        parser = SuspendableAutoconfigParser(AutoconfigParser()),
+        fetcher = OkHttpAutoconfigFetcher(okHttpClient),
+        parser = SuspendableAutoconfigParser(RealAutoconfigParser()),
     )
 }

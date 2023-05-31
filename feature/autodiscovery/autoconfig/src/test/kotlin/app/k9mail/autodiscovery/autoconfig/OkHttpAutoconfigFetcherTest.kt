@@ -11,8 +11,8 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Test
 
-class AutoconfigFetcherTest {
-    private val fetcher = AutoconfigFetcher(OkHttpClient.Builder().build())
+class OkHttpAutoconfigFetcherTest {
+    private val fetcher = OkHttpAutoconfigFetcher(OkHttpClient.Builder().build())
 
     @Test
     fun shouldHandleNonexistentUrl() = runTest {
