@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
+import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailSignature.ValidateEmailSignatureError
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
@@ -18,14 +19,12 @@ class ValidateEmailSignatureTest {
     }
 
     @Test
-    fun `should fail when email signature is empty`() {
+    fun `should succeed when email signature is empty`() {
         val useCase = ValidateEmailSignature()
 
         val result = useCase.execute("")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
-            .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateEmailSignature.EmptyEmailSignature::class)
+        assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
@@ -36,6 +35,6 @@ class ValidateEmailSignatureTest {
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateEmailSignature.EmptyEmailSignature::class)
+            .isInstanceOf(ValidateEmailSignatureError.BlankEmailSignature::class)
     }
 }
