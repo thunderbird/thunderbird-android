@@ -30,7 +30,7 @@ internal fun AccountOptionsScreen(
         when (effect) {
             Effect.NavigateBack -> onBack()
             Effect.NavigateNext -> {
-                Toast.makeText(context, "Finish clicked", Toast.LENGTH_SHORT).show() // TODO remove
+                Toast.makeText(context, "Input is valid", Toast.LENGTH_SHORT).show() // TODO remove
                 onNext()
             }
         }
@@ -67,7 +67,9 @@ internal fun AccountOptionsScreenK9Preview() {
         AccountOptionsScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountOptionsViewModel(),
+            viewModel = AccountOptionsViewModel(
+                validator = AccountOptionsValidator(),
+            ),
         )
     }
 }
@@ -79,7 +81,9 @@ internal fun AccountOptionsScreenThunderbirdPreview() {
         AccountOptionsScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountOptionsViewModel(),
+            viewModel = AccountOptionsViewModel(
+                validator = AccountOptionsValidator(),
+            ),
         )
     }
 }

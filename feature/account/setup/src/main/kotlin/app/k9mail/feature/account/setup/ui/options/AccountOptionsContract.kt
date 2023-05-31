@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.options
 
+import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
@@ -35,5 +36,11 @@ interface AccountOptionsContract {
     sealed class Effect {
         object NavigateNext : Effect()
         object NavigateBack : Effect()
+    }
+
+    interface Validator {
+        fun validateAccountName(accountName: String): ValidationResult
+        fun validateDisplayName(displayName: String): ValidationResult
+        fun validateEmailSignature(emailSignature: String): ValidationResult
     }
 }

@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.setup.ui.options
 
-import android.content.res.Resources
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -72,6 +71,7 @@ internal fun AccountOptionsContent(
             item {
                 TextInput(
                     text = state.accountName.value,
+                    errorMessage = state.accountName.error?.toResourceString(resources),
                     onTextChange = { onEvent(Event.OnAccountNameChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_account_name_label),
                     contentPadding = defaultItemPadding(),
@@ -81,6 +81,7 @@ internal fun AccountOptionsContent(
             item {
                 TextInput(
                     text = state.displayName.value,
+                    errorMessage = state.displayName.error?.toResourceString(resources),
                     onTextChange = { onEvent(Event.OnDisplayNameChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_display_name_label),
                     contentPadding = defaultItemPadding(),
@@ -91,6 +92,7 @@ internal fun AccountOptionsContent(
             item {
                 TextInput(
                     text = state.emailSignature.value,
+                    errorMessage = state.emailSignature.error?.toResourceString(resources),
                     onTextChange = { onEvent(Event.OnEmailSignatureChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_email_signature_label),
                     contentPadding = defaultItemPadding(),
@@ -110,7 +112,7 @@ internal fun AccountOptionsContent(
             item {
                 SelectInput(
                     options = EmailCheckFrequency.all(),
-                    optionToStringTransformation = { transformCheckFrequency(resources, it) },
+                    optionToStringTransformation = { it.toResourceString(resources) },
                     selectedOption = state.checkFrequency,
                     onOptionChange = { onEvent(Event.OnCheckFrequencyChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_account_check_frequency_label),
@@ -121,7 +123,7 @@ internal fun AccountOptionsContent(
             item {
                 SelectInput(
                     options = EmailDisplayCount.all(),
-                    optionToStringTransformation = { transformMessageDisplayCount(resources, it) },
+                    optionToStringTransformation = { it.toResourceString(resources) },
                     selectedOption = state.messageDisplayCount,
                     onOptionChange = { onEvent(Event.OnMessageDisplayCountChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_email_display_count_label),
@@ -144,37 +146,6 @@ internal fun AccountOptionsContent(
         }
     }
 }
-
-@Suppress("MagicNumber")
-private fun transformCheckFrequency(
-    resources: Resources,
-    it: EmailCheckFrequency,
-): String {
-    return when (it.minutes) {
-        -1 -> resources.getString(R.string.account_setup_options_email_check_frequency_zero)
-
-        in 1..59 -> resources.getQuantityString(
-            R.plurals.account_setup_options_email_check_frequency_minutes,
-            it.minutes,
-            it.minutes,
-        )
-
-        else -> resources.getQuantityString(
-            R.plurals.account_setup_options_email_check_frequency_hours,
-            (it.minutes / 60),
-            (it.minutes / 60),
-        )
-    }
-}
-
-private fun transformMessageDisplayCount(
-    resources: Resources,
-    it: EmailDisplayCount,
-) = resources.getQuantityString(
-    R.plurals.account_setup_options_email_display_count_messages,
-    it.count,
-    it.count,
-)
 
 @Composable
 @DevicePreviews
