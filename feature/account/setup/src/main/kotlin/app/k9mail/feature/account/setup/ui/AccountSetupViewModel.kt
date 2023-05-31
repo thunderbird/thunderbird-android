@@ -21,15 +21,17 @@ class AccountSetupViewModel(
     private fun onBack() {
         when (state.value.setupStep) {
             SetupStep.AUTO_CONFIG -> navigateBack()
-            SetupStep.MANUAL_CONFIG -> changeToSetupStep(SetupStep.AUTO_CONFIG)
-            SetupStep.OPTIONS -> changeToSetupStep(SetupStep.MANUAL_CONFIG)
+            SetupStep.INCOMING_CONFIG -> changeToSetupStep(SetupStep.AUTO_CONFIG)
+            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
+            SetupStep.OPTIONS -> changeToSetupStep(SetupStep.OUTGOING_CONFIG)
         }
     }
 
     private fun onNext() {
         when (state.value.setupStep) {
-            SetupStep.AUTO_CONFIG -> changeToSetupStep(SetupStep.MANUAL_CONFIG)
-            SetupStep.MANUAL_CONFIG -> changeToSetupStep(SetupStep.OPTIONS)
+            SetupStep.AUTO_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
+            SetupStep.INCOMING_CONFIG -> changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.OPTIONS)
             SetupStep.OPTIONS -> navigateNext()
         }
     }

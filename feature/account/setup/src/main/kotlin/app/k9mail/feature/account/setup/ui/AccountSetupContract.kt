@@ -6,7 +6,8 @@ interface AccountSetupContract {
 
     enum class SetupStep {
         AUTO_CONFIG,
-        MANUAL_CONFIG,
+        INCOMING_CONFIG,
+        OUTGOING_CONFIG,
         OPTIONS,
     }
 

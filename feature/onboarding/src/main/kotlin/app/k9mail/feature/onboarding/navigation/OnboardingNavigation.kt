@@ -14,7 +14,7 @@ fun NavController.navigateToOnboarding(
     navigate(NAVIGATION_ROUTE_ONBOARDING, navOptions)
 }
 
-fun NavGraphBuilder.onboardingScreen(
+fun NavGraphBuilder.onboardingRoute(
     onStart: () -> Unit,
     onImport: () -> Unit,
 ) {

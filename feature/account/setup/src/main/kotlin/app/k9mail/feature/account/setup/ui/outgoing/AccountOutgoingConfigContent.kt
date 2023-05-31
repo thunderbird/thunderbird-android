@@ -1,7 +1,6 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.outgoing
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,20 +12,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 
 @Composable
-internal fun AccountAutoConfigContent(
+internal fun AccountOutgoingConfigContent(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTag("AccountAutoConfigContent")
+            .testTag("AccountOutgoingConfigContent")
             .padding(contentPadding)
             .fillMaxWidth()
             .then(modifier),
@@ -35,38 +34,21 @@ internal fun AccountAutoConfigContent(
             modifier = Modifier
                 .fillMaxSize()
                 .imePadding(),
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
             item {
-                AccountSetupEmailForm(
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                TextBody1(text = "Outgoing Config")
             }
         }
     }
 }
 
 @Composable
-private fun AccountSetupEmailForm(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        TextFieldOutlined(
-            value = "",
-            onValueChange = { /*TODO*/ },
-            label = "Email address",
-        )
-    }
-}
-
-@Composable
 @DevicePreviews
-internal fun AccountAutoConfigContentK9Preview() {
+internal fun AccountOutgoingConfigContentK9Preview() {
     K9Theme {
-        AccountAutoConfigContent(
+        AccountOutgoingConfigContent(
             contentPadding = PaddingValues(),
         )
     }
@@ -74,9 +56,9 @@ internal fun AccountAutoConfigContentK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountAutoConfigContentThunderbirdPreview() {
+internal fun AccountOutgoingConfigContentThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountAutoConfigContent(
+        AccountOutgoingConfigContent(
             contentPadding = PaddingValues(),
         )
     }

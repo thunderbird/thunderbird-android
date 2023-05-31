@@ -3,15 +3,18 @@ package app.k9mail.feature.account.setup.ui
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
 import app.k9mail.core.ui.compose.testing.setContent
+import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AccountSetupScreenKtTest : ComposeTest() {
 
     @Test
@@ -19,11 +22,13 @@ class AccountSetupScreenKtTest : ComposeTest() {
         val viewModel = FakeAccountSetupViewModel()
 
         setContent {
-            AccountSetupScreen(
-                onFinish = { },
-                onBack = { },
-                viewModel = viewModel,
-            )
+            ThunderbirdTheme {
+                AccountSetupScreen(
+                    onFinish = { },
+                    onBack = { },
+                    viewModel = viewModel,
+                )
+            }
         }
 
         for (step in SetupStep.values()) {
@@ -40,11 +45,13 @@ class AccountSetupScreenKtTest : ComposeTest() {
         var onBackCounter = 0
 
         setContent {
-            AccountSetupScreen(
-                onFinish = { onFinishCounter++ },
-                onBack = { onBackCounter++ },
-                viewModel = viewModel,
-            )
+            ThunderbirdTheme {
+                AccountSetupScreen(
+                    onFinish = { onFinishCounter++ },
+                    onBack = { onBackCounter++ },
+                    viewModel = viewModel,
+                )
+            }
         }
 
         assertThat(onFinishCounter).isEqualTo(0)
@@ -63,7 +70,8 @@ class AccountSetupScreenKtTest : ComposeTest() {
 
     private fun getTagForStep(step: SetupStep): String = when (step) {
         SetupStep.AUTO_CONFIG -> "AccountAutoConfigContent"
-        SetupStep.MANUAL_CONFIG -> "AccountManualConfigContent"
+        SetupStep.INCOMING_CONFIG -> "AccountIncomingConfigContent"
+        SetupStep.OUTGOING_CONFIG -> "AccountOutgoingConfigContent"
         SetupStep.OPTIONS -> "AccountOptionsContent"
     }
 }
