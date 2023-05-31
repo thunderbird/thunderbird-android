@@ -1,22 +1,41 @@
 package app.k9mail.feature.account.setup.ui.options
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R.string
 import app.k9mail.feature.account.setup.ui.common.AccountSetupBottomBar
 import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
+import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
+import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
+import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewModel
 
 @Composable
 internal fun AccountOptionsScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
+    viewModel: ViewModel,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
+    val (state, dispatch) = viewModel.observe { effect ->
+        when (effect) {
+            Effect.NavigateBack -> onBack()
+            Effect.NavigateNext -> {
+                Toast.makeText(context, "Finish clicked", Toast.LENGTH_SHORT).show() // TODO remove
+                onNext()
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             AccountSetupTopAppBar(
@@ -27,13 +46,15 @@ internal fun AccountOptionsScreen(
             AccountSetupBottomBar(
                 nextButtonText = stringResource(id = string.account_setup_button_finish),
                 backButtonText = stringResource(id = string.account_setup_button_back),
-                onNextClick = onNext,
-                onBackClick = onBack,
+                onNextClick = { dispatch(Event.OnNextClicked) },
+                onBackClick = { dispatch(Event.OnBackClicked) },
             )
         },
         modifier = modifier,
     ) { innerPadding ->
         AccountOptionsContent(
+            state = state.value,
+            onEvent = { dispatch(it) },
             contentPadding = innerPadding,
         )
     }
@@ -46,6 +67,7 @@ internal fun AccountOptionsScreenK9Preview() {
         AccountOptionsScreen(
             onNext = {},
             onBack = {},
+            viewModel = AccountOptionsViewModel(),
         )
     }
 }
@@ -57,6 +79,7 @@ internal fun AccountOptionsScreenThunderbirdPreview() {
         AccountOptionsScreen(
             onNext = {},
             onBack = {},
+            viewModel = AccountOptionsViewModel(),
         )
     }
 }
