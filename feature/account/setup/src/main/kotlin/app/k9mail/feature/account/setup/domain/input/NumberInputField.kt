@@ -3,39 +3,39 @@ package app.k9mail.feature.account.setup.domain.input
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 
-data class StringInputField(
-    override val value: String = "",
+data class NumberInputField(
+    override val value: Long? = null,
     override val error: ValidationError? = null,
     override val isValid: Boolean = false,
-) : InputField<String> {
+) : InputField<Long?> {
 
-    override fun updateValue(value: String): StringInputField {
-        return StringInputField(
+    override fun updateValue(value: Long?): NumberInputField {
+        return NumberInputField(
             value = value,
             error = null,
             isValid = false,
         )
     }
 
-    override fun updateError(error: ValidationError?): StringInputField {
-        return StringInputField(
+    override fun updateError(error: ValidationError?): NumberInputField {
+        return NumberInputField(
             value = value,
             error = error,
             isValid = false,
         )
     }
 
-    override fun updateValidity(isValid: Boolean): StringInputField {
+    override fun updateValidity(isValid: Boolean): NumberInputField {
         if (isValid == this.isValid) return this
 
-        return StringInputField(
+        return NumberInputField(
             value = value,
             error = null,
             isValid = isValid,
         )
     }
 
-    override fun updateFromValidationResult(result: ValidationResult): StringInputField {
+    override fun updateFromValidationResult(result: ValidationResult): NumberInputField {
         return when (result) {
             is ValidationResult.Success -> copy(
                 error = null,

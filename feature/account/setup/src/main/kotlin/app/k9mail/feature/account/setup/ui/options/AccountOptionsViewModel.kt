@@ -2,7 +2,6 @@ package app.k9mail.feature.account.setup.ui.options
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.setup.domain.input.fromValidationResult
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event.OnAccountNameChanged
@@ -83,9 +82,9 @@ internal class AccountOptionsViewModel(
 
         updateState {
             it.copy(
-                accountName = state.value.accountName.fromValidationResult(accountNameResult),
-                displayName = state.value.displayName.fromValidationResult(displayNameResult),
-                emailSignature = state.value.emailSignature.fromValidationResult(emailSignatureResult),
+                accountName = state.value.accountName.updateFromValidationResult(accountNameResult),
+                displayName = state.value.displayName.updateFromValidationResult(displayNameResult),
+                emailSignature = state.value.emailSignature.updateFromValidationResult(emailSignatureResult),
             )
         }
 
