@@ -10,9 +10,9 @@ import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
 
 @Suppress("LongParameterList")
 @Composable
-fun TextFieldOutlinedEmailAddress(
-    value: String,
-    onValueChange: (String) -> Unit,
+fun TextFieldOutlinedNumber(
+    value: Long?,
+    onValueChange: (Long?) -> Unit,
     modifier: Modifier = Modifier,
     label: String? = null,
     isEnabled: Boolean = true,
@@ -21,15 +21,17 @@ fun TextFieldOutlinedEmailAddress(
     hasError: Boolean = false,
 ) {
     MaterialOutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
+        value = value?.toString() ?: "",
+        onValueChange = {
+            onValueChange(it.toLongOrNull())
+        },
         modifier = modifier,
         enabled = isEnabled,
         label = selectLabel(label, isRequired),
         readOnly = isReadOnly,
         isError = hasError,
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
+            keyboardType = KeyboardType.NumberPassword,
         ),
         singleLine = true,
     )
@@ -37,10 +39,10 @@ fun TextFieldOutlinedEmailAddress(
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextFieldOutlinedEmailAddressPreview() {
+internal fun TextFieldOutlinedNumberPreview() {
     PreviewWithThemes {
-        TextFieldOutlinedEmailAddress(
-            value = "Input text",
+        TextFieldOutlinedNumber(
+            value = 123L,
             onValueChange = {},
         )
     }
@@ -48,10 +50,10 @@ internal fun TextFieldOutlinedEmailAddressPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextFieldOutlinedEmailAddressWithLabelPreview() {
+internal fun TextFieldOutlinedNumberWithLabelPreview() {
     PreviewWithThemes {
-        TextFieldOutlinedEmailAddress(
-            value = "Input text",
+        TextFieldOutlinedNumber(
+            value = 123L,
             label = "Label",
             onValueChange = {},
         )
@@ -60,10 +62,10 @@ internal fun TextFieldOutlinedEmailAddressWithLabelPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextFieldOutlinedEmailDisabledPreview() {
+internal fun TextFieldOutlinedNumberDisabledPreview() {
     PreviewWithThemes {
-        TextFieldOutlinedEmailAddress(
-            value = "Input text",
+        TextFieldOutlinedNumber(
+            value = 123L,
             onValueChange = {},
             isEnabled = false,
         )
@@ -72,10 +74,10 @@ internal fun TextFieldOutlinedEmailDisabledPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextFieldOutlinedEmailErrorPreview() {
+internal fun TextFieldOutlinedNumberErrorPreview() {
     PreviewWithThemes {
-        TextFieldOutlinedEmailAddress(
-            value = "Input text",
+        TextFieldOutlinedNumber(
+            value = 123L,
             onValueChange = {},
             hasError = true,
         )

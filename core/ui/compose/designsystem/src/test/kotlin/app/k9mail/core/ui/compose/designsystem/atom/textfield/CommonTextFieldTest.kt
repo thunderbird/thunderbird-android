@@ -228,6 +228,31 @@ class CommonTextFieldTest(
                 },
             ),
             CommonTextFieldTestData(
+                name = "TextFieldOutlinedNumber",
+                content = { modifier, config ->
+                    if (config.isEnabled != null) {
+                        TextFieldOutlinedNumber(
+                            value = 123L,
+                            onValueChange = {},
+                            modifier = modifier,
+                            label = config.label,
+                            isEnabled = config.isEnabled,
+                            isReadOnly = config.isReadOnly,
+                            isRequired = config.isRequired,
+                        )
+                    } else {
+                        TextFieldOutlinedNumber(
+                            value = 123L,
+                            onValueChange = {},
+                            modifier = modifier,
+                            label = config.label,
+                            isRequired = config.isRequired,
+                            isReadOnly = config.isReadOnly,
+                        )
+                    }
+                },
+            ),
+            CommonTextFieldTestData(
                 name = "TextFieldOutlinedSelect",
                 content = { modifier, config ->
                     if (config.isEnabled != null) {

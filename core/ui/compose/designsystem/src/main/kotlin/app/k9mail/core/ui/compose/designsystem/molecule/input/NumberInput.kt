@@ -3,35 +3,37 @@ package app.k9mail.core.ui.compose.designsystem.molecule.input
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
+import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedNumber
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
 @Suppress("LongParameterList")
 @Composable
-fun TextInput(
-    onTextChange: (String) -> Unit,
+fun NumberInput(
+    onValueChange: (Long?) -> Unit,
     modifier: Modifier = Modifier,
-    text: String = "",
+    value: Long? = null,
     label: String? = null,
     isRequired: Boolean = false,
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
-    isSingleLine: Boolean = true,
 ) {
+    val inputError = remember { mutableStateOf<String?>(null) }
+
     InputLayout(
         modifier = modifier,
         contentPadding = contentPadding,
-        errorMessage = errorMessage,
+        errorMessage = errorMessage ?: inputError.value,
     ) {
-        TextFieldOutlined(
-            value = text,
-            onValueChange = onTextChange,
+        TextFieldOutlinedNumber(
+            value = value,
+            onValueChange = onValueChange,
             label = label,
             isRequired = isRequired,
             hasError = errorMessage != null,
-            isSingleLine = isSingleLine,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -39,20 +41,20 @@ fun TextInput(
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextInputPreview() {
+internal fun IntegerInputPreview() {
     PreviewWithThemes {
-        TextInput(
-            onTextChange = {},
+        NumberInput(
+            onValueChange = {},
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextInputIsRequiredPreview() {
+internal fun IntegerInputIsRequiredPreview() {
     PreviewWithThemes {
-        TextInput(
-            onTextChange = {},
+        NumberInput(
+            onValueChange = {},
             label = "Text input is required",
             isRequired = true,
         )
@@ -61,10 +63,10 @@ internal fun TextInputIsRequiredPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun TextInputWithErrorPreview() {
+internal fun IntegerInputWithErrorPreview() {
     PreviewWithThemes {
-        TextInput(
-            onTextChange = {},
+        NumberInput(
+            onValueChange = {},
             errorMessage = "Text input error",
         )
     }

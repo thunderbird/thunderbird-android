@@ -3,6 +3,7 @@ package app.k9mail.ui.catalog.ui.molecule.items
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
+import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
@@ -60,6 +61,31 @@ fun LazyGridScope.inputItems() {
                     emailAddress = state.value,
                     onEmailAddressChange = { state.value = it },
                     errorMessage = "Invalid email address",
+                )
+            }
+        }
+    }
+
+    sectionHeaderItem(text = "NumberInput")
+    sectionSubtitleItem(text = "Default")
+    item {
+        ItemOutlined {
+            WithRememberedState<Long?>(input = null) { state ->
+                NumberInput(
+                    value = state.value,
+                    onValueChange = { state.value = it },
+                )
+            }
+        }
+    }
+    sectionSubtitleItem(text = "With error")
+    item {
+        ItemOutlined {
+            WithRememberedState<Long?>(input = 123L) { state ->
+                NumberInput(
+                    value = state.value,
+                    onValueChange = { state.value = it },
+                    errorMessage = "Invalid number",
                 )
             }
         }

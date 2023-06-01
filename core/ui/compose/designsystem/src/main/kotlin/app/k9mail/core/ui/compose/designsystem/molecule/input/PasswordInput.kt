@@ -18,7 +18,7 @@ fun PasswordInput(
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
 ) {
-    TextInputLayout(
+    InputLayout(
         modifier = modifier,
         contentPadding = contentPadding,
         errorMessage = errorMessage,

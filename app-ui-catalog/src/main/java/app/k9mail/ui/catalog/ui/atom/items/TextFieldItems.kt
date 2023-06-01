@@ -16,6 +16,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedEmailAddress
+import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedNumber
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedSelect
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
@@ -36,6 +37,8 @@ fun LazyGridScope.textFieldItems() {
     passwordTextFieldOutlinedItems()
     sectionSubtitleItem(text = "Email address")
     emailTextFieldOutlinedItems()
+    sectionSubtitleItem(text = "Number")
+    numberTextFieldOutlinedItems()
     sectionSubtitleItem(text = "Selection")
     selectionTextFieldOutlinedItems()
 }
@@ -202,6 +205,28 @@ private fun LazyGridScope.emailTextFieldOutlinedItems() {
             ),
         ) { state ->
             TextFieldOutlinedEmailAddress(
+                value = state.value.input,
+                label = if (state.value.showLabel) state.value.label else null,
+                onValueChange = { state.value = state.value.copy(input = it) },
+                isEnabled = !state.value.isDisabled,
+                isReadOnly = state.value.isReadOnly,
+                isRequired = state.value.isRequired,
+                hasError = state.value.hasError,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+}
+
+private fun LazyGridScope.numberTextFieldOutlinedItems() {
+    item {
+        TextFieldDemo(
+            initialState = TextFieldState<Long?>(
+                input = 123L,
+                label = "Number",
+            ),
+        ) { state ->
+            TextFieldOutlinedNumber(
                 value = state.value.input,
                 label = if (state.value.showLabel) state.value.label else null,
                 onValueChange = { state.value = state.value.copy(input = it) },
