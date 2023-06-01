@@ -4,8 +4,8 @@ import app.k9mail.autodiscovery.api.AutoDiscovery
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
 import app.k9mail.core.common.mail.EmailAddress
+import app.k9mail.core.common.mail.toDomain
 import app.k9mail.core.common.net.toDomain
-import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.logging.Timber
 import java.io.IOException
 import okhttp3.HttpUrl
@@ -18,9 +18,7 @@ class AutoconfigDiscovery internal constructor(
 ) : AutoDiscovery {
 
     override fun initDiscovery(email: EmailAddress): List<AutoDiscoveryRunnable> {
-        val domain = requireNotNull(EmailHelper.getDomainFromEmailAddress(email.address)?.toDomain()) {
-            "Couldn't extract domain from email address: $email"
-        }
+        val domain = email.domain.toDomain()
 
         val autoconfigUrls = urlProvider.getAutoconfigUrls(domain, email)
 

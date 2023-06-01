@@ -4,9 +4,9 @@ import app.k9mail.autodiscovery.api.AutoDiscovery
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
 import app.k9mail.core.common.mail.EmailAddress
+import app.k9mail.core.common.mail.toDomain
 import app.k9mail.core.common.net.Domain
 import app.k9mail.core.common.net.toDomain
-import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.logging.Timber
 import java.io.IOException
 import okhttp3.HttpUrl
@@ -31,9 +31,7 @@ class MxLookupAutoconfigDiscovery internal constructor(
 
     @Suppress("ReturnCount")
     private suspend fun mxLookupAutoconfig(email: EmailAddress): AutoDiscoveryResult? {
-        val domain = requireNotNull(EmailHelper.getDomainFromEmailAddress(email.address)?.toDomain()) {
-            "Couldn't extract domain from email address: ${email.address}"
-        }
+        val domain = email.domain.toDomain()
 
         val mxHostName = mxLookup(domain) ?: return null
 
