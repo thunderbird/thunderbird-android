@@ -45,6 +45,7 @@ include(
     ":feature:autodiscovery:providersxml",
     ":feature:autodiscovery:srvrecords",
     ":feature:autodiscovery:autoconfig",
+    ":feature:autodiscovery:service",
 )
 
 include(
