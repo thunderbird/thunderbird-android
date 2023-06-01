@@ -19,13 +19,16 @@ class DisplayRecipientsExtractorTest {
 
     private val recipientFormatter = object : MessageViewRecipientFormatter {
         override fun getDisplayName(address: Address, account: Account): CharSequence {
-            return when (address.address) {
-                IDENTITY_ADDRESS -> "me"
-                "user1@domain.example" -> "Contact One"
-                "user2@domain.example" -> "Contact Two"
-                "user3@domain.example" -> "Contact Three"
-                "user4@domain.example" -> "Contact Four"
-                else -> address.personal ?: address.address
+            return if (account.isAnIdentity(address)) {
+                "me"
+            } else {
+                when (address.address) {
+                    "user1@domain.example" -> "Contact One"
+                    "user2@domain.example" -> "Contact Two"
+                    "user3@domain.example" -> "Contact Three"
+                    "user4@domain.example" -> "Contact Four"
+                    else -> address.personal ?: address.address
+                }
             }
         }
     }
