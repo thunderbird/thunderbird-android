@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.messageview
 
 import com.fsck.k9.Account
-import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 
 /**
@@ -21,13 +20,12 @@ internal class DisplayRecipientsExtractor(
 
         val numberOfRecipients = toRecipients.size + ccRecipients.size + bccRecipients.size
 
-        val identity = sequenceOf(toRecipients, ccRecipients, bccRecipients)
+        val identityAddress = sequenceOf(toRecipients, ccRecipients, bccRecipients)
             .flatMap { addressArray -> addressArray.asSequence() }
-            .mapNotNull { address -> account.findIdentity(address) }
+            .filter { address -> account.isAnIdentity(address) }
             .firstOrNull()
 
-        val identityEmail = identity?.email
-        val maxAdditionalRecipients = if (identity != null) {
+        val maxAdditionalRecipients = if (identityAddress != null) {
             maxNumberOfDisplayRecipients - 1
         } else {
             maxNumberOfDisplayRecipients
@@ -35,13 +33,12 @@ internal class DisplayRecipientsExtractor(
 
         val recipientNames = sequenceOf(toRecipients, ccRecipients, bccRecipients)
             .flatMap { addressArray -> addressArray.asSequence() }
-            .filter { address -> address.address != identityEmail }
+            .filter { address -> address !== identityAddress }
             .map { address -> recipientFormatter.getDisplayName(address, account) }
             .take(maxAdditionalRecipients)
             .toList()
 
-        return if (identity != null) {
-            val identityAddress = Address(identity.email)
+        return if (identityAddress != null) {
             val meName = recipientFormatter.getDisplayName(identityAddress, account)
             val recipients = listOf(meName) + recipientNames
 
