@@ -1,5 +1,7 @@
 package app.k9mail.feature.account.setup.domain.input
 
+import app.k9mail.core.common.domain.usecase.validation.ValidationError
+import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -17,20 +19,23 @@ class StringInputFieldTest {
 
         assertThat(stringInputState).all {
             prop(StringInputField::value).isEqualTo("")
-            prop(StringInputField::errorMessage).isNull()
+            prop(StringInputField::error).isNull()
             prop(StringInputField::isValid).isFalse()
         }
     }
 
     @Test
     fun `should reset errorMessage and isValid when value changed`() {
-        val initialInputState = StringInputField(errorMessage = "error", isValid = false)
+        val initialInputState = StringInputField(
+            error = TestValidationError,
+            isValid = false,
+        )
 
         val result = initialInputState.updateValue("new value")
 
         assertThat(result).all {
             prop(StringInputField::value).isEqualTo("new value")
-            prop(StringInputField::errorMessage).isNull()
+            prop(StringInputField::error).isNull()
             prop(StringInputField::isValid).isFalse()
         }
     }
@@ -39,24 +44,27 @@ class StringInputFieldTest {
     fun `should reset isValid when error set`() {
         val initialInputState = StringInputField(value = "input", isValid = true)
 
-        val result = initialInputState.updateErrorMessage("error")
+        val result = initialInputState.updateError(TestValidationError)
 
         assertThat(result).all {
             prop(StringInputField::value).isEqualTo("input")
-            prop(StringInputField::errorMessage).isEqualTo("error")
+            prop(StringInputField::error).isEqualTo(TestValidationError)
             prop(StringInputField::isValid).isFalse()
         }
     }
 
     @Test
     fun `should reset errorMessage when valid`() {
-        val initialInputState = StringInputField(value = "input", errorMessage = "error")
+        val initialInputState = StringInputField(
+            value = "input",
+            error = TestValidationError,
+        )
 
         val result = initialInputState.updateValidity(isValid = true)
 
         assertThat(result).all {
             prop(StringInputField::value).isEqualTo("input")
-            prop(StringInputField::errorMessage).isNull()
+            prop(StringInputField::error).isNull()
             prop(StringInputField::isValid).isTrue()
         }
     }
@@ -65,15 +73,49 @@ class StringInputFieldTest {
     fun `should not reset errorMessage when invalid`() {
         val initialInputState = StringInputField(
             value = "input",
-            errorMessage = "error",
+            error = TestValidationError,
         )
 
         val result = initialInputState.updateValidity(isValid = false)
 
         assertThat(result).all {
             prop(StringInputField::value).isEqualTo("input")
-            prop(StringInputField::errorMessage).isEqualTo("error")
+            prop(StringInputField::error).isEqualTo(TestValidationError)
             prop(StringInputField::isValid).isFalse()
         }
     }
+
+    @Test
+    fun `should map from success ValidationResult`() {
+        val initialInputState = StringInputField(
+            value = "input",
+            error = TestValidationError,
+        )
+
+        val result = initialInputState.fromValidationResult(ValidationResult.Success)
+
+        assertThat(result).all {
+            prop(StringInputField::value).isEqualTo("input")
+            prop(StringInputField::error).isNull()
+            prop(StringInputField::isValid).isTrue()
+        }
+    }
+
+    @Test
+    fun `should map from failure ValidationResult`() {
+        val initialInputState = StringInputField(
+            value = "input",
+            error = null,
+        )
+
+        val result = initialInputState.fromValidationResult(ValidationResult.Failure(TestValidationError))
+
+        assertThat(result).all {
+            prop(StringInputField::value).isEqualTo("input")
+            prop(StringInputField::error).isEqualTo(TestValidationError)
+            prop(StringInputField::isValid).isFalse()
+        }
+    }
+
+    private object TestValidationError : ValidationError
 }

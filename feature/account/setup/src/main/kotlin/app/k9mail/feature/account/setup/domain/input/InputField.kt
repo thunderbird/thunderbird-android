@@ -1,5 +1,7 @@
 package app.k9mail.feature.account.setup.domain.input
 
+import app.k9mail.core.common.domain.usecase.validation.ValidationError
+
 /**
  * InputField is an interface defining the state of an input field.
  *
@@ -7,7 +9,7 @@ package app.k9mail.feature.account.setup.domain.input
  */
 interface InputField<T> {
     val value: T
-    val errorMessage: String?
+    val error: ValidationError?
     val isValid: Boolean
 
     /**
@@ -19,11 +21,11 @@ interface InputField<T> {
     fun updateValue(value: T): InputField<T>
 
     /**
-     * Updates the current error message of the input field.
+     * Updates the current error of the input field.
      *
-     * @param errorMessage The new error message to be set for the input field.
+     * @param error The new error to be set for the input field.
      */
-    fun updateErrorMessage(errorMessage: String?): InputField<T>
+    fun updateError(error: ValidationError?): InputField<T>
 
     /**
      * Updates the current validity of the input field.
@@ -38,6 +40,6 @@ interface InputField<T> {
      * @return a Boolean indicating whether the input field has an error.
      */
     fun hasError(): Boolean {
-        return errorMessage != null
+        return error != null
     }
 }

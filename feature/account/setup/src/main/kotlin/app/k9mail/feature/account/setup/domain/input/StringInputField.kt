@@ -1,23 +1,26 @@
 package app.k9mail.feature.account.setup.domain.input
 
+import app.k9mail.core.common.domain.usecase.validation.ValidationError
+import app.k9mail.core.common.domain.usecase.validation.ValidationResult
+
 data class StringInputField(
     override val value: String = "",
-    override val errorMessage: String? = null,
+    override val error: ValidationError? = null,
     override val isValid: Boolean = false,
 ) : InputField<String> {
 
     override fun updateValue(value: String): StringInputField {
         return StringInputField(
             value = value,
-            errorMessage = null,
+            error = null,
             isValid = false,
         )
     }
 
-    override fun updateErrorMessage(errorMessage: String?): StringInputField {
+    override fun updateError(error: ValidationError?): StringInputField {
         return StringInputField(
             value = value,
-            errorMessage = errorMessage,
+            error = error,
             isValid = false,
         )
     }
@@ -27,8 +30,22 @@ data class StringInputField(
 
         return StringInputField(
             value = value,
-            errorMessage = null,
+            error = null,
             isValid = isValid,
+        )
+    }
+}
+
+fun StringInputField.fromValidationResult(result: ValidationResult): StringInputField {
+    return when (result) {
+        is ValidationResult.Success -> copy(
+            error = null,
+            isValid = true,
+        )
+
+        is ValidationResult.Failure -> copy(
+            error = result.error,
+            isValid = false,
         )
     }
 }

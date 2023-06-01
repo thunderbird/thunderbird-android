@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
+import app.k9mail.feature.account.setup.domain.usecase.ValidateAccountName.ValidateAccountNameError
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
@@ -18,14 +19,12 @@ class ValidateAccountNameTest {
     }
 
     @Test
-    fun `should fail when account name is empty`() {
+    fun `should succeed when account name is empty`() {
         val useCase = ValidateAccountName()
 
         val result = useCase.execute("")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
-            .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateAccountName.EmptyAccountName::class)
+        assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
@@ -36,6 +35,6 @@ class ValidateAccountNameTest {
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateAccountName.EmptyAccountName::class)
+            .isInstanceOf(ValidateAccountNameError.BlankAccountName::class)
     }
 }
