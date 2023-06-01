@@ -1,8 +1,6 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import com.fsck.k9.logging.Timber
 import java.io.IOException
-import java.io.InputStream
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
@@ -16,16 +14,7 @@ internal class OkHttpFetcher(
     private val okHttpClient: OkHttpClient,
 ) : HttpFetcher {
 
-    override suspend fun fetch(url: HttpUrl): InputStream? {
-        return try {
-            performHttpRequest(url)
-        } catch (e: IOException) {
-            Timber.d(e, "Error fetching URL: %s", url)
-            null
-        }
-    }
-
-    private suspend fun performHttpRequest(url: HttpUrl): InputStream? {
+    override suspend fun fetch(url: HttpUrl): HttpFetchResult {
         return suspendCancellableCoroutine { cancellableContinuation ->
             val request = Builder()
                 .url(url)
@@ -44,12 +33,16 @@ internal class OkHttpFetcher(
 
                 override fun onResponse(call: Call, response: Response) {
                     if (response.isSuccessful) {
-                        val inputStream = response.body?.byteStream()
-                        cancellableContinuation.resume(inputStream)
+                        val result = HttpFetchResult.SuccessResponse(
+                            inputStream = response.body!!.byteStream(),
+                        )
+                        cancellableContinuation.resume(result)
                     } else {
                         // We don't care about the body of error responses.
                         response.close()
-                        cancellableContinuation.resume(null)
+
+                        val result = HttpFetchResult.ErrorResponse(response.code)
+                        cancellableContinuation.resume(result)
                     }
                 }
             }

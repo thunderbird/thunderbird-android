@@ -32,7 +32,7 @@ class MxLookupAutoconfigDiscoveryTest {
         val emailAddress = "user@company.example".toEmailAddress()
         mxResolver.addResult("mx.emailprovider.example".toDomain())
         urlProvider.addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
-        fetcher.addResult("data")
+        fetcher.addSuccessResult("data")
         parser.addResult(MockAutoconfigParser.RESULT_ONE)
 
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
@@ -61,8 +61,8 @@ class MxLookupAutoconfigDiscoveryTest {
             addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
         }
         fetcher.apply {
-            addResult(null)
-            addResult(null)
+            addErrorResult(404)
+            addErrorResult(404)
         }
 
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)

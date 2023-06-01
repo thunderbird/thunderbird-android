@@ -1,9 +1,12 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import assertk.all
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNull
-import kotlin.test.assertNotNull
+import assertk.assertions.isInstanceOf
+import assertk.assertions.prop
+import java.net.UnknownHostException
 import kotlinx.coroutines.test.runTest
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -19,9 +22,9 @@ class OkHttpFetcherTest {
         val nonExistentUrl =
             "https://autoconfig.domain.invalid/mail/config-v1.1.xml?emailaddress=test%40domain.example".toHttpUrl()
 
-        val inputStream = fetcher.fetch(nonExistentUrl)
-
-        assertThat(inputStream).isNull()
+        assertFailure {
+            fetcher.fetch(nonExistentUrl)
+        }.isInstanceOf<UnknownHostException>()
     }
 
     @Test
@@ -36,10 +39,10 @@ class OkHttpFetcherTest {
         }
         val url = server.url("/empty/")
 
-        val inputStream = fetcher.fetch(url)
+        val result = fetcher.fetch(url)
 
-        assertNotNull(inputStream) { inputStream ->
-            assertThat(inputStream.available()).isEqualTo(0)
+        assertThat(result).isInstanceOf<HttpFetchResult.SuccessResponse>().all {
+            prop(HttpFetchResult.SuccessResponse::inputStream).transform { it.available() }.isEqualTo(0)
         }
     }
 }

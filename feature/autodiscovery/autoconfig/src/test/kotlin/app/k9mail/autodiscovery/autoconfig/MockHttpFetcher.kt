@@ -1,6 +1,5 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import java.io.InputStream
 import okhttp3.HttpUrl
 
 internal class MockHttpFetcher : HttpFetcher {
@@ -9,13 +8,21 @@ internal class MockHttpFetcher : HttpFetcher {
     val callCount: Int
         get() = callArguments.size
 
-    private val results = mutableListOf<InputStream?>()
+    private val results = mutableListOf<HttpFetchResult>()
 
-    fun addResult(data: String?) {
-        results.add(data?.byteInputStream())
+    fun addSuccessResult(data: String) {
+        val result = HttpFetchResult.SuccessResponse(
+            inputStream = data.byteInputStream(),
+        )
+
+        results.add(result)
     }
 
-    override suspend fun fetch(url: HttpUrl): InputStream? {
+    fun addErrorResult(code: Int) {
+        results.add(HttpFetchResult.ErrorResponse(code))
+    }
+
+    override suspend fun fetch(url: HttpUrl): HttpFetchResult {
         callArguments.add(url)
 
         check(results.isNotEmpty()) { "MockHttpFetcher.fetch($url) called but no result provided" }

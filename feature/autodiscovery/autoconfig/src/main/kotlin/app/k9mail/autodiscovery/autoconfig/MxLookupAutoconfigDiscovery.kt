@@ -3,6 +3,8 @@ package app.k9mail.autodiscovery.autoconfig
 import app.k9mail.autodiscovery.api.AutoDiscovery
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
+import app.k9mail.autodiscovery.autoconfig.HttpFetchResult.ErrorResponse
+import app.k9mail.autodiscovery.autoconfig.HttpFetchResult.SuccessResponse
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.mail.toDomain
 import app.k9mail.core.common.net.Domain
@@ -76,8 +78,13 @@ class MxLookupAutoconfigDiscovery internal constructor(
 
     private suspend fun getAutoconfig(email: EmailAddress, autoconfigUrl: HttpUrl): AutoDiscoveryResult? {
         return try {
-            fetcher.fetch(autoconfigUrl)?.use { inputStream ->
-                parser.parseSettings(inputStream, email)
+            when (val fetchResult = fetcher.fetch(autoconfigUrl)) {
+                is SuccessResponse -> {
+                    fetchResult.inputStream.use { inputStream ->
+                        parser.parseSettings(inputStream, email)
+                    }
+                }
+                is ErrorResponse -> null
             }
         } catch (e: AutoconfigParserException) {
             Timber.d(e, "Failed to parse config from URL: %s", autoconfigUrl)

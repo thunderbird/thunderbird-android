@@ -24,7 +24,7 @@ class AutoconfigDiscoveryTest {
         val emailAddress = "user@domain.example".toEmailAddress()
         val autoconfigUrl = "https://autoconfig.domain.invalid/mail/config-v1.1.xml".toHttpUrl()
         urlProvider.addResult(listOf(autoconfigUrl))
-        fetcher.addResult("data")
+        fetcher.addSuccessResult("data")
         parser.addResult(MockAutoconfigParser.RESULT_ONE)
 
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
@@ -50,8 +50,8 @@ class AutoconfigDiscoveryTest {
             ),
         )
         fetcher.apply {
-            addResult("data1")
-            addResult("data2")
+            addSuccessResult("data1")
+            addSuccessResult("data2")
         }
         parser.apply {
             addResult(MockAutoconfigParser.RESULT_ONE)
