@@ -1,5 +1,6 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.autodiscovery.autoconfig.MockAutoconfigFetcher.Companion.RESULT_ONE
 import app.k9mail.core.common.mail.toEmailAddress
 import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
@@ -16,15 +17,13 @@ class MxLookupAutoconfigDiscoveryTest {
     private val mxResolver = MockMxResolver()
     private val baseDomainExtractor = OkHttpBaseDomainExtractor()
     private val urlProvider = MockAutoconfigUrlProvider()
-    private val fetcher = MockHttpFetcher()
-    private val parser = MockAutoconfigParser()
+    private val autoconfigFetcher = MockAutoconfigFetcher()
     private val discovery = MxLookupAutoconfigDiscovery(
         mxResolver = SuspendableMxResolver(mxResolver),
         baseDomainExtractor = baseDomainExtractor,
         subDomainExtractor = RealSubDomainExtractor(baseDomainExtractor),
         urlProvider = urlProvider,
-        fetcher = fetcher,
-        parser = SuspendableAutoconfigParser(parser),
+        autoconfigFetcher = autoconfigFetcher,
     )
 
     @Test
@@ -32,24 +31,21 @@ class MxLookupAutoconfigDiscoveryTest {
         val emailAddress = "user@company.example".toEmailAddress()
         mxResolver.addResult("mx.emailprovider.example".toDomain())
         urlProvider.addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
-        fetcher.addSuccessResult("data")
-        parser.addResult(MockAutoconfigParser.RESULT_ONE)
+        autoconfigFetcher.addResult(RESULT_ONE)
 
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
 
         assertThat(autoDiscoveryRunnables).hasSize(1)
         assertThat(mxResolver.callCount).isEqualTo(0)
-        assertThat(fetcher.callCount).isEqualTo(0)
-        assertThat(parser.callCount).isEqualTo(0)
+        assertThat(autoconfigFetcher.callCount).isEqualTo(0)
 
         val discoveryResult = autoDiscoveryRunnables.first().run()
 
         assertThat(mxResolver.callArguments).containsExactly("company.example".toDomain())
         assertThat(urlProvider.callArguments).extracting { it.first }
             .containsExactly("emailprovider.example".toDomain())
-        assertThat(fetcher.callCount).isEqualTo(1)
-        assertThat(parser.callCount).isEqualTo(1)
-        assertThat(discoveryResult).isEqualTo(MockAutoconfigParser.RESULT_ONE)
+        assertThat(autoconfigFetcher.callCount).isEqualTo(1)
+        assertThat(discoveryResult).isEqualTo(RESULT_ONE)
     }
 
     @Test
@@ -60,9 +56,9 @@ class MxLookupAutoconfigDiscoveryTest {
             addResult(listOf("https://ispdb.invalid/something.emailprovider.example".toHttpUrl()))
             addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
         }
-        fetcher.apply {
-            addErrorResult(404)
-            addErrorResult(404)
+        autoconfigFetcher.apply {
+            addResult(null)
+            addResult(null)
         }
 
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
@@ -72,8 +68,7 @@ class MxLookupAutoconfigDiscoveryTest {
             "something.emailprovider.example".toDomain(),
             "emailprovider.example".toDomain(),
         )
-        assertThat(fetcher.callCount).isEqualTo(2)
-        assertThat(parser.callCount).isEqualTo(0)
+        assertThat(autoconfigFetcher.callCount).isEqualTo(2)
         assertThat(discoveryResult).isNull()
     }
 
@@ -87,8 +82,7 @@ class MxLookupAutoconfigDiscoveryTest {
 
         assertThat(mxResolver.callCount).isEqualTo(1)
         assertThat(urlProvider.callCount).isEqualTo(0)
-        assertThat(fetcher.callCount).isEqualTo(0)
-        assertThat(parser.callCount).isEqualTo(0)
+        assertThat(autoconfigFetcher.callCount).isEqualTo(0)
         assertThat(discoveryResult).isNull()
     }
 
@@ -102,8 +96,7 @@ class MxLookupAutoconfigDiscoveryTest {
 
         assertThat(mxResolver.callCount).isEqualTo(1)
         assertThat(urlProvider.callCount).isEqualTo(0)
-        assertThat(fetcher.callCount).isEqualTo(0)
-        assertThat(parser.callCount).isEqualTo(0)
+        assertThat(autoconfigFetcher.callCount).isEqualTo(0)
         assertThat(discoveryResult).isNull()
     }
 }

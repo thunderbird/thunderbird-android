@@ -10,10 +10,10 @@ import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
-import java.io.InputStream
+import okhttp3.HttpUrl
 
-internal class MockAutoconfigParser : AutoconfigParser {
-    val callArguments = mutableListOf<Pair<String, EmailAddress>>()
+internal class MockAutoconfigFetcher : AutoconfigFetcher {
+    val callArguments = mutableListOf<Pair<HttpUrl, EmailAddress>>()
 
     val callCount: Int
         get() = callArguments.size
@@ -24,11 +24,12 @@ internal class MockAutoconfigParser : AutoconfigParser {
         results.add(discoveryResult)
     }
 
-    override fun parseSettings(inputStream: InputStream, email: EmailAddress): AutoDiscoveryResult? {
-        val data = String(inputStream.readBytes())
-        callArguments.add(data to email)
+    override suspend fun fetchAutoconfig(autoconfigUrl: HttpUrl, email: EmailAddress): AutoDiscoveryResult? {
+        callArguments.add(autoconfigUrl to email)
 
-        check(results.isNotEmpty()) { "parseSettings($data, $email) called but no result provided" }
+        check(results.isNotEmpty()) {
+            "MockAutoconfigFetcher.fetchAutoconfig($autoconfigUrl) called but no result provided"
+        }
         return results.removeAt(0)
     }
 
