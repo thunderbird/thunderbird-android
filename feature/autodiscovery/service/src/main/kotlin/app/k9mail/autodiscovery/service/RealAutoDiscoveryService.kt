@@ -16,7 +16,7 @@ class RealAutoDiscoveryService(
     private val okHttpClient: OkHttpClient,
 ) : AutoDiscoveryService {
 
-    override suspend fun discover(email: EmailAddress): AutoDiscoveryResult? {
+    override suspend fun discover(email: EmailAddress): AutoDiscoveryResult {
         val config = AutoconfigUrlConfig(
             httpsOnly = false,
             includeEmailAddress = false,

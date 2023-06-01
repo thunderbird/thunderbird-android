@@ -1,13 +1,13 @@
 package app.k9mail.cli.autodiscovery
 
-import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult.Settings
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 
 internal class AutoDiscoveryResultFormatter(private val echo: (String) -> Unit) {
-    fun output(discoveryResult: AutoDiscoveryResult) {
-        val incomingServer = requireNotNull(discoveryResult.incomingServerSettings as? ImapServerSettings)
-        val outgoingServer = requireNotNull(discoveryResult.outgoingServerSettings as? SmtpServerSettings)
+    fun output(settings: Settings) {
+        val incomingServer = requireNotNull(settings.incomingServerSettings as? ImapServerSettings)
+        val outgoingServer = requireNotNull(settings.outgoingServerSettings as? SmtpServerSettings)
 
         echo("------------------------------")
         echo("Incoming server:")

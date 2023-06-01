@@ -18,13 +18,13 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
     val callCount: Int
         get() = callArguments.size
 
-    private val results = mutableListOf<AutoDiscoveryResult?>()
+    private val results = mutableListOf<AutoDiscoveryResult>()
 
-    fun addResult(discoveryResult: AutoDiscoveryResult?) {
+    fun addResult(discoveryResult: AutoDiscoveryResult) {
         results.add(discoveryResult)
     }
 
-    override suspend fun fetchAutoconfig(autoconfigUrl: HttpUrl, email: EmailAddress): AutoDiscoveryResult? {
+    override suspend fun fetchAutoconfig(autoconfigUrl: HttpUrl, email: EmailAddress): AutoDiscoveryResult {
         callArguments.add(autoconfigUrl to email)
 
         check(results.isNotEmpty()) {
@@ -34,7 +34,7 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
     }
 
     companion object {
-        val RESULT_ONE = AutoDiscoveryResult(
+        val RESULT_ONE = AutoDiscoveryResult.Settings(
             incomingServerSettings = ImapServerSettings(
                 hostname = "imap.domain.example".toHostname(),
                 port = 993.toPort(),
@@ -50,7 +50,7 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
                 username = "irrelevant@domain.example",
             ),
         )
-        val RESULT_TWO = AutoDiscoveryResult(
+        val RESULT_TWO = AutoDiscoveryResult.Settings(
             incomingServerSettings = ImapServerSettings(
                 hostname = "imap.company.example".toHostname(),
                 port = 143.toPort(),

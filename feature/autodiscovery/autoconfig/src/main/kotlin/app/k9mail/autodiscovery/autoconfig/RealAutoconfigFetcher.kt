@@ -15,7 +15,7 @@ internal class RealAutoconfigFetcher(
     private val fetcher: HttpFetcher,
     private val parser: SuspendableAutoconfigParser,
 ) : AutoconfigFetcher {
-    override suspend fun fetchAutoconfig(autoconfigUrl: HttpUrl, email: EmailAddress): AutoDiscoveryResult? {
+    override suspend fun fetchAutoconfig(autoconfigUrl: HttpUrl, email: EmailAddress): AutoDiscoveryResult {
         return try {
             when (val fetchResult = fetcher.fetch(autoconfigUrl)) {
                 is SuccessResponse -> {
@@ -23,11 +23,11 @@ internal class RealAutoconfigFetcher(
                         parseSettings(inputStream, email, autoconfigUrl)
                     }
                 }
-                is ErrorResponse -> null
+                is ErrorResponse -> AutoDiscoveryResult.NoUsableSettingsFound
             }
         } catch (e: IOException) {
             Timber.d(e, "Error fetching Autoconfig from URL: %s", autoconfigUrl)
-            null
+            AutoDiscoveryResult.NetworkError(e)
         }
     }
 
@@ -35,20 +35,20 @@ internal class RealAutoconfigFetcher(
         inputStream: InputStream,
         email: EmailAddress,
         autoconfigUrl: HttpUrl,
-    ): AutoDiscoveryResult? {
+    ): AutoDiscoveryResult {
         return try {
             return when (val parserResult = parser.parseSettings(inputStream, email)) {
                 is Settings -> {
-                    AutoDiscoveryResult(
+                    AutoDiscoveryResult.Settings(
                         incomingServerSettings = parserResult.incomingServerSettings,
                         outgoingServerSettings = parserResult.outgoingServerSettings,
                     )
                 }
-                is ParserError -> null
+                is ParserError -> AutoDiscoveryResult.NoUsableSettingsFound
             }
         } catch (e: AutoconfigParserException) {
             Timber.d(e, "Failed to parse config from URL: %s", autoconfigUrl)
-            null
+            AutoDiscoveryResult.NoUsableSettingsFound
         }
     }
 }

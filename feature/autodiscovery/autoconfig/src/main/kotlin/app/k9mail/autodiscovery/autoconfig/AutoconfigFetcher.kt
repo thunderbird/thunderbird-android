@@ -8,5 +8,5 @@ import okhttp3.HttpUrl
  * Fetches and parses Autoconfig settings.
  */
 internal interface AutoconfigFetcher {
-    suspend fun fetchAutoconfig(autoconfigUrl: HttpUrl, email: EmailAddress): AutoDiscoveryResult?
+    suspend fun fetchAutoconfig(autoconfigUrl: HttpUrl, email: EmailAddress): AutoDiscoveryResult
 }
