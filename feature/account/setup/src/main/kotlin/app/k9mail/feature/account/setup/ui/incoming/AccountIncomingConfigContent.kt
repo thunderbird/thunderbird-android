@@ -17,7 +17,6 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContent
 
 @Composable
 internal fun AccountIncomingConfigContent(
@@ -49,7 +48,7 @@ internal fun AccountIncomingConfigContent(
 @DevicePreviews
 internal fun AccountIncomingConfigContentK9Preview() {
     K9Theme {
-        AccountOutgoingConfigContent(
+        AccountIncomingConfigContent(
             contentPadding = PaddingValues(),
         )
     }
@@ -59,7 +58,7 @@ internal fun AccountIncomingConfigContentK9Preview() {
 @DevicePreviews
 internal fun AccountIncomingConfigContentThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountOutgoingConfigContent(
+        AccountIncomingConfigContent(
             contentPadding = PaddingValues(),
         )
     }

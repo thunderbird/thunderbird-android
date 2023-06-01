@@ -15,6 +15,7 @@ fun PasswordInput(
     onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     password: String = "",
+    isRequired: Boolean = false,
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
 ) {
@@ -27,6 +28,7 @@ fun PasswordInput(
             value = password,
             onValueChange = onPasswordChange,
             label = stringResource(id = R.string.designsystem_molecule_password_input_label),
+            isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),
         )
