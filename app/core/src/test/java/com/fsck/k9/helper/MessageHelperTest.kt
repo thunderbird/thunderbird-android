@@ -5,6 +5,7 @@ import android.text.SpannableString
 import app.k9mail.core.android.common.contact.Contact
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.EmailAddress
+import app.k9mail.core.common.mail.toEmailAddress
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -142,6 +143,6 @@ class MessageHelperTest : RobolectricTest() {
     }
 
     private companion object {
-        val EMAIL_ADDRESS = EmailAddress("test@testor.com")
+        val EMAIL_ADDRESS = "test@testor.com".toEmailAddress()
     }
 }

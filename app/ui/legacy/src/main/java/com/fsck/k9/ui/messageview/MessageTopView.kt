@@ -18,7 +18,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.EmailAddress
+import app.k9mail.core.common.mail.toEmailAddress
 import com.fsck.k9.Account
 import com.fsck.k9.Account.ShowPictures
 import com.fsck.k9.mail.Message
@@ -262,7 +262,7 @@ class MessageTopView(
             return false
         }
         val senderEmailAddress = getSenderEmailAddress(message) ?: return false
-        return contactRepository.hasContactFor(EmailAddress(senderEmailAddress))
+        return contactRepository.hasContactFor(senderEmailAddress.toEmailAddress())
     }
 
     private fun getSenderEmailAddress(message: Message): String? {

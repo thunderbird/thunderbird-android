@@ -18,7 +18,6 @@ import app.k9mail.core.common.net.Hostname
 import app.k9mail.core.common.net.Port
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
-import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.logging.Timber
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -37,7 +36,7 @@ private typealias ServerSettingsFactory<T> = (
 internal class RealAutoconfigParser : AutoconfigParser {
     override fun parseSettings(inputStream: InputStream, email: EmailAddress): AutoDiscoveryResult? {
         return try {
-            ClientConfigParser(inputStream, email.address).parse()
+            ClientConfigParser(inputStream, email).parse()
         } catch (e: XmlPullParserException) {
             throw AutoconfigParserException("Error parsing Autoconfig XML", e)
         }
@@ -47,10 +46,10 @@ internal class RealAutoconfigParser : AutoconfigParser {
 @Suppress("TooManyFunctions")
 private class ClientConfigParser(
     private val inputStream: InputStream,
-    private val email: String,
+    private val email: EmailAddress,
 ) {
-    private val localPart = requireNotNull(EmailHelper.getLocalPartFromEmailAddress(email)) { "Invalid email address" }
-    private val domain = requireNotNull(EmailHelper.getDomainFromEmailAddress(email)) { "Invalid email address" }
+    private val localPart = email.localPart
+    private val domain = email.domain.normalized
 
     private val pullParser: XmlPullParser = XmlPullParserFactory.newInstance().newPullParser().apply {
         setInput(InputStreamReader(inputStream))
@@ -288,7 +287,7 @@ private class ClientConfigParser(
     private fun String.replaceVariables(): String {
         return replace("%EMAILDOMAIN%", domain)
             .replace("%EMAILLOCALPART%", localPart)
-            .replace("%EMAILADDRESS%", email)
+            .replace("%EMAILADDRESS%", email.address)
     }
 
     private fun createImapServerSettings(
