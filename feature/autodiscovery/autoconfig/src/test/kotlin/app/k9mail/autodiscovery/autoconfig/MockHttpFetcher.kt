@@ -3,7 +3,7 @@ package app.k9mail.autodiscovery.autoconfig
 import java.io.InputStream
 import okhttp3.HttpUrl
 
-internal class MockAutoconfigFetcher : AutoconfigFetcher {
+internal class MockHttpFetcher : HttpFetcher {
     val callArguments = mutableListOf<HttpUrl>()
 
     val callCount: Int
@@ -15,10 +15,10 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
         results.add(data?.byteInputStream())
     }
 
-    override suspend fun fetchAutoconfigFile(url: HttpUrl): InputStream? {
+    override suspend fun fetch(url: HttpUrl): InputStream? {
         callArguments.add(url)
 
-        check(results.isNotEmpty()) { "fetchAutoconfigFile($url) called but no result provided" }
+        check(results.isNotEmpty()) { "MockHttpFetcher.fetch($url) called but no result provided" }
         return results.removeAt(0)
     }
 }

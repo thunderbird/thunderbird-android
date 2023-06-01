@@ -6,7 +6,6 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.mail.toDomain
 import app.k9mail.core.common.net.Domain
-import app.k9mail.core.common.net.toDomain
 import com.fsck.k9.logging.Timber
 import java.io.IOException
 import okhttp3.HttpUrl
@@ -17,7 +16,7 @@ class MxLookupAutoconfigDiscovery internal constructor(
     private val baseDomainExtractor: BaseDomainExtractor,
     private val subDomainExtractor: SubDomainExtractor,
     private val urlProvider: AutoconfigUrlProvider,
-    private val fetcher: AutoconfigFetcher,
+    private val fetcher: HttpFetcher,
     private val parser: SuspendableAutoconfigParser,
 ) : AutoDiscovery {
 
@@ -77,7 +76,7 @@ class MxLookupAutoconfigDiscovery internal constructor(
 
     private suspend fun getAutoconfig(email: EmailAddress, autoconfigUrl: HttpUrl): AutoDiscoveryResult? {
         return try {
-            fetcher.fetchAutoconfigFile(autoconfigUrl)?.use { inputStream ->
+            fetcher.fetch(autoconfigUrl)?.use { inputStream ->
                 parser.parseSettings(inputStream, email)
             }
         } catch (e: AutoconfigParserException) {
@@ -97,7 +96,7 @@ fun createMxLookupAutoconfigDiscovery(okHttpClient: OkHttpClient): MxLookupAutoc
         baseDomainExtractor = baseDomainExtractor,
         subDomainExtractor = RealSubDomainExtractor(baseDomainExtractor),
         urlProvider = IspDbAutoconfigUrlProvider(),
-        fetcher = OkHttpAutoconfigFetcher(okHttpClient),
+        fetcher = OkHttpFetcher(okHttpClient),
         parser = SuspendableAutoconfigParser(RealAutoconfigParser()),
     )
 }

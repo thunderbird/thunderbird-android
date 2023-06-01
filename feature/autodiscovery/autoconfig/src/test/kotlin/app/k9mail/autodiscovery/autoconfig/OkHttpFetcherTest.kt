@@ -11,15 +11,15 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Test
 
-class OkHttpAutoconfigFetcherTest {
-    private val fetcher = OkHttpAutoconfigFetcher(OkHttpClient.Builder().build())
+class OkHttpFetcherTest {
+    private val fetcher = OkHttpFetcher(OkHttpClient.Builder().build())
 
     @Test
     fun shouldHandleNonexistentUrl() = runTest {
         val nonExistentUrl =
             "https://autoconfig.domain.invalid/mail/config-v1.1.xml?emailaddress=test%40domain.example".toHttpUrl()
 
-        val inputStream = fetcher.fetchAutoconfigFile(nonExistentUrl)
+        val inputStream = fetcher.fetch(nonExistentUrl)
 
         assertThat(inputStream).isNull()
     }
@@ -36,7 +36,7 @@ class OkHttpAutoconfigFetcherTest {
         }
         val url = server.url("/empty/")
 
-        val inputStream = fetcher.fetchAutoconfigFile(url)
+        val inputStream = fetcher.fetch(url)
 
         assertNotNull(inputStream) { inputStream ->
             assertThat(inputStream.available()).isEqualTo(0)

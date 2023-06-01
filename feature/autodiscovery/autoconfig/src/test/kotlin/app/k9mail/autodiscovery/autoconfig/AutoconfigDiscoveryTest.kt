@@ -15,7 +15,7 @@ private val IRRELEVANT_EMAIL_ADDRESS = "irrelevant@domain.example".toEmailAddres
 
 class AutoconfigDiscoveryTest {
     private val urlProvider = MockAutoconfigUrlProvider()
-    private val fetcher = MockAutoconfigFetcher()
+    private val fetcher = MockHttpFetcher()
     private val parser = MockAutoconfigParser()
     private val discovery = AutoconfigDiscovery(urlProvider, fetcher, SuspendableAutoconfigParser(parser))
 

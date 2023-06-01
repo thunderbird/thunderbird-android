@@ -16,7 +16,7 @@ class MxLookupAutoconfigDiscoveryTest {
     private val mxResolver = MockMxResolver()
     private val baseDomainExtractor = OkHttpBaseDomainExtractor()
     private val urlProvider = MockAutoconfigUrlProvider()
-    private val fetcher = MockAutoconfigFetcher()
+    private val fetcher = MockHttpFetcher()
     private val parser = MockAutoconfigParser()
     private val discovery = MxLookupAutoconfigDiscovery(
         mxResolver = SuspendableMxResolver(mxResolver),

@@ -5,7 +5,6 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.mail.toDomain
-import app.k9mail.core.common.net.toDomain
 import com.fsck.k9.logging.Timber
 import java.io.IOException
 import okhttp3.HttpUrl
@@ -13,7 +12,7 @@ import okhttp3.OkHttpClient
 
 class AutoconfigDiscovery internal constructor(
     private val urlProvider: AutoconfigUrlProvider,
-    private val fetcher: AutoconfigFetcher,
+    private val fetcher: HttpFetcher,
     private val parser: SuspendableAutoconfigParser,
 ) : AutoDiscovery {
 
@@ -31,7 +30,7 @@ class AutoconfigDiscovery internal constructor(
 
     private suspend fun getAutoconfig(email: EmailAddress, autoconfigUrl: HttpUrl): AutoDiscoveryResult? {
         return try {
-            fetcher.fetchAutoconfigFile(autoconfigUrl)?.use { inputStream ->
+            fetcher.fetch(autoconfigUrl)?.use { inputStream ->
                 parser.parseSettings(inputStream, email)
             }
         } catch (e: AutoconfigParserException) {
@@ -61,7 +60,7 @@ private fun createAutoconfigDiscovery(
     okHttpClient: OkHttpClient,
     urlProvider: AutoconfigUrlProvider,
 ): AutoconfigDiscovery {
-    val fetcher = OkHttpAutoconfigFetcher(okHttpClient)
+    val fetcher = OkHttpFetcher(okHttpClient)
     val parser = SuspendableAutoconfigParser(RealAutoconfigParser())
     return AutoconfigDiscovery(urlProvider, fetcher, parser)
 }

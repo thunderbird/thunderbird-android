@@ -12,11 +12,11 @@ import okhttp3.OkHttpClient
 import okhttp3.Request.Builder
 import okhttp3.Response
 
-internal class OkHttpAutoconfigFetcher(
+internal class OkHttpFetcher(
     private val okHttpClient: OkHttpClient,
-) : AutoconfigFetcher {
+) : HttpFetcher {
 
-    override suspend fun fetchAutoconfigFile(url: HttpUrl): InputStream? {
+    override suspend fun fetch(url: HttpUrl): InputStream? {
         return try {
             performHttpRequest(url)
         } catch (e: IOException) {
