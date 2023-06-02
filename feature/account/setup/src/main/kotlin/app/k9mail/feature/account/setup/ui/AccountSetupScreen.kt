@@ -12,7 +12,9 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigScreen
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
+import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigScreen
+import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -20,6 +22,7 @@ fun AccountSetupScreen(
     onFinish: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel = koinViewModel<AccountSetupViewModel>(),
+    outgoingViewModel: AccountOutgoingConfigContract.ViewModel = koinViewModel<AccountOutgoingConfigViewModel>(),
     optionsViewModel: AccountOptionsContract.ViewModel = koinViewModel<AccountOptionsViewModel>(),
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
@@ -48,6 +51,7 @@ fun AccountSetupScreen(
             AccountOutgoingConfigScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
+                viewModel = outgoingViewModel,
             )
         }
 

@@ -28,11 +28,15 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.ui.common.defaultItemPadding
+import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event
+import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State
 import kotlinx.collections.immutable.persistentListOf
 
 @Suppress("LongMethod")
 @Composable
 internal fun AccountOutgoingConfigContent(
+    state: State,
+    onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -58,8 +62,8 @@ internal fun AccountOutgoingConfigContent(
 
             item {
                 TextInput(
-                    text = "",
-                    onTextChange = { },
+                    text = state.server.value,
+                    onTextChange = { onEvent(Event.ServerChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_server_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -69,8 +73,8 @@ internal fun AccountOutgoingConfigContent(
                 SelectInput(
                     options = ConnectionSecurity.all(),
                     optionToStringTransformation = { it.toResourceString(resources) },
-                    selectedOption = ConnectionSecurity.DEFAULT,
-                    onOptionChange = { },
+                    selectedOption = state.security,
+                    onOptionChange = { onEvent(Event.SecurityChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_security_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -78,8 +82,8 @@ internal fun AccountOutgoingConfigContent(
 
             item {
                 NumberInput(
-                    value = null,
-                    onValueChange = { },
+                    value = state.port.value,
+                    onValueChange = { onEvent(Event.PortChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_port_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -87,8 +91,8 @@ internal fun AccountOutgoingConfigContent(
 
             item {
                 TextInput(
-                    text = "",
-                    onTextChange = { },
+                    text = state.username.value,
+                    onTextChange = { onEvent(Event.UsernameChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_username_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -96,8 +100,8 @@ internal fun AccountOutgoingConfigContent(
 
             item {
                 PasswordInput(
-                    password = "",
-                    onPasswordChange = { },
+                    password = state.password.value,
+                    onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
                     contentPadding = defaultItemPadding(),
                 )
             }
@@ -114,7 +118,7 @@ internal fun AccountOutgoingConfigContent(
                     selectedOption = stringResource(
                         id = R.string.account_setup_outgoing_config_client_certificate_none_available,
                     ),
-                    onOptionChange = {},
+                    onOptionChange = { onEvent(Event.ClientCertificateChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_client_certificate_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -123,8 +127,8 @@ internal fun AccountOutgoingConfigContent(
             item {
                 CheckboxInput(
                     text = stringResource(id = R.string.account_setup_outgoing_config_imap_namespace_label),
-                    checked = false,
-                    onCheckedChange = { },
+                    checked = state.imapAutodetectNamespaceEnabled,
+                    onCheckedChange = { onEvent(Event.ImapAutoDetectNamespaceChanged(it)) },
                     contentPadding = defaultItemPadding(),
                 )
             }
@@ -132,8 +136,8 @@ internal fun AccountOutgoingConfigContent(
             item {
                 CheckboxInput(
                     text = stringResource(id = R.string.account_setup_outgoing_config_compression_label),
-                    checked = false,
-                    onCheckedChange = { },
+                    checked = state.useCompression,
+                    onCheckedChange = { onEvent(Event.UseCompressionChanged(it)) },
                     contentPadding = defaultItemPadding(),
                 )
             }
@@ -146,6 +150,8 @@ internal fun AccountOutgoingConfigContent(
 internal fun AccountOutgoingConfigContentK9Preview() {
     K9Theme {
         AccountOutgoingConfigContent(
+            onEvent = { },
+            state = State(),
             contentPadding = PaddingValues(),
         )
     }
@@ -156,6 +162,8 @@ internal fun AccountOutgoingConfigContentK9Preview() {
 internal fun AccountOutgoingConfigContentThunderbirdPreview() {
     ThunderbirdTheme {
         AccountOutgoingConfigContent(
+            onEvent = { },
+            state = State(),
             contentPadding = PaddingValues(),
         )
     }
