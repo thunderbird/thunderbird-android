@@ -29,12 +29,16 @@ import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.ui.common.defaultItemPadding
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.State
 import app.k9mail.feature.account.setup.ui.toResourceString
 import kotlinx.collections.immutable.persistentListOf
 
 @Suppress("LongMethod")
 @Composable
 internal fun AccountIncomingConfigContent(
+    state: State,
+    onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -61,8 +65,8 @@ internal fun AccountIncomingConfigContent(
             item {
                 SelectInput(
                     options = IncomingProtocolType.all(),
-                    selectedOption = IncomingProtocolType.DEFAULT,
-                    onOptionChange = { },
+                    selectedOption = state.protocolType,
+                    onOptionChange = { onEvent(Event.ProtocolTypeChanged(it)) },
                     label = stringResource(id = R.string.account_setup_incoming_config_protocol_type_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -70,8 +74,8 @@ internal fun AccountIncomingConfigContent(
 
             item {
                 TextInput(
-                    text = "",
-                    onTextChange = { },
+                    text = state.server.value,
+                    onTextChange = { onEvent(Event.ServerChanged(it)) },
                     label = stringResource(id = R.string.account_setup_incoming_config_server_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -81,8 +85,8 @@ internal fun AccountIncomingConfigContent(
                 SelectInput(
                     options = ConnectionSecurity.all(),
                     optionToStringTransformation = { it.toResourceString(resources) },
-                    selectedOption = ConnectionSecurity.DEFAULT,
-                    onOptionChange = { },
+                    selectedOption = state.security,
+                    onOptionChange = { onEvent(Event.SecurityChanged(it)) },
                     label = stringResource(id = R.string.account_setup_incoming_config_security_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -90,8 +94,8 @@ internal fun AccountIncomingConfigContent(
 
             item {
                 NumberInput(
-                    value = null,
-                    onValueChange = { },
+                    value = state.port.value,
+                    onValueChange = { onEvent(Event.PortChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_port_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -99,8 +103,8 @@ internal fun AccountIncomingConfigContent(
 
             item {
                 TextInput(
-                    text = "",
-                    onTextChange = { },
+                    text = state.username.value,
+                    onTextChange = { onEvent(Event.UsernameChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_username_label),
                     contentPadding = defaultItemPadding(),
                 )
@@ -108,8 +112,8 @@ internal fun AccountIncomingConfigContent(
 
             item {
                 PasswordInput(
-                    password = "",
-                    onPasswordChange = { },
+                    password = state.password.value,
+                    onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
                     contentPadding = defaultItemPadding(),
                 )
             }
@@ -126,35 +130,37 @@ internal fun AccountIncomingConfigContent(
                     selectedOption = stringResource(
                         id = R.string.account_setup_client_certificate_none_available,
                     ),
-                    onOptionChange = { },
+                    onOptionChange = { onEvent(Event.ClientCertificateChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_client_certificate_label),
                     contentPadding = defaultItemPadding(),
                 )
             }
 
-            item {
-                CheckboxInput(
-                    text = stringResource(id = R.string.account_setup_incoming_config_imap_namespace_label),
-                    checked = true,
-                    onCheckedChange = { },
-                    contentPadding = defaultItemPadding(),
-                )
-            }
+            if (state.protocolType == IncomingProtocolType.IMAP) {
+                item {
+                    CheckboxInput(
+                        text = stringResource(id = R.string.account_setup_incoming_config_imap_namespace_label),
+                        checked = state.imapAutodetectNamespaceEnabled,
+                        onCheckedChange = { onEvent(Event.ImapAutoDetectNamespaceChanged(it)) },
+                        contentPadding = defaultItemPadding(),
+                    )
+                }
 
-            item {
-                TextInput(
-                    text = "",
-                    onTextChange = { },
-                    label = stringResource(id = R.string.account_setup_incoming_config_imap_prefix_label),
-                    contentPadding = defaultItemPadding(),
-                )
+                item {
+                    TextInput(
+                        text = state.imapPrefix.value,
+                        onTextChange = { onEvent(Event.ImapPrefixChanged(it)) },
+                        label = stringResource(id = R.string.account_setup_incoming_config_imap_prefix_label),
+                        contentPadding = defaultItemPadding(),
+                    )
+                }
             }
 
             item {
                 CheckboxInput(
                     text = stringResource(id = R.string.account_setup_incoming_config_compression_label),
-                    checked = true,
-                    onCheckedChange = { },
+                    checked = state.useCompression,
+                    onCheckedChange = { onEvent(Event.UseCompressionChanged(it)) },
                     contentPadding = defaultItemPadding(),
                 )
             }
@@ -167,6 +173,8 @@ internal fun AccountIncomingConfigContent(
 internal fun AccountIncomingConfigContentK9Preview() {
     K9Theme {
         AccountIncomingConfigContent(
+            onEvent = { },
+            state = State(),
             contentPadding = PaddingValues(),
         )
     }
@@ -177,6 +185,8 @@ internal fun AccountIncomingConfigContentK9Preview() {
 internal fun AccountIncomingConfigContentThunderbirdPreview() {
     ThunderbirdTheme {
         AccountIncomingConfigContent(
+            onEvent = { },
+            state = State(),
             contentPadding = PaddingValues(),
         )
     }

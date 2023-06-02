@@ -42,8 +42,8 @@ class AccountOutgoingConfigViewModel(
             is ImapAutoDetectNamespaceChanged -> updateState { it.copy(imapAutodetectNamespaceEnabled = event.enabled) }
             is UseCompressionChanged -> updateState { it.copy(useCompression = event.useCompression) }
 
-            OnBackClicked -> navigateBack()
             OnNextClicked -> submit()
+            OnBackClicked -> navigateBack()
         }
     }
 

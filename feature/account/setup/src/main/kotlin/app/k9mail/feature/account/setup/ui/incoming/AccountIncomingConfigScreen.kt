@@ -4,19 +4,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.common.AccountSetupBottomBar
 import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Effect
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.ViewModel
 
 @Composable
 fun AccountIncomingConfigScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
+    viewModel: ViewModel,
     modifier: Modifier = Modifier,
 ) {
+    val (state, dispatch) = viewModel.observe { effect ->
+        when (effect) {
+            is Effect.NavigateNext -> onNext()
+            is Effect.NavigateBack -> onBack()
+        }
+    }
+
     Scaffold(
         topBar = {
             AccountSetupTopAppBar(
@@ -27,13 +39,15 @@ fun AccountIncomingConfigScreen(
             AccountSetupBottomBar(
                 nextButtonText = stringResource(id = R.string.account_setup_button_next),
                 backButtonText = stringResource(id = R.string.account_setup_button_back),
-                onNextClick = onNext,
-                onBackClick = onBack,
+                onNextClick = { dispatch(Event.OnNextClicked) },
+                onBackClick = { dispatch(Event.OnBackClicked) },
             )
         },
         modifier = modifier,
     ) { innerPadding ->
         AccountIncomingConfigContent(
+            onEvent = { dispatch(it) },
+            state = state.value,
             contentPadding = innerPadding,
         )
     }
@@ -46,6 +60,7 @@ internal fun AccountIncomingConfigScreenK9Preview() {
         AccountIncomingConfigScreen(
             onNext = {},
             onBack = {},
+            viewModel = AccountIncomingConfigViewModel(),
         )
     }
 }
@@ -57,6 +72,7 @@ internal fun AccountIncomingConfigScreenThunderbirdPreview() {
         AccountIncomingConfigScreen(
             onNext = {},
             onBack = {},
+            viewModel = AccountIncomingConfigViewModel(),
         )
     }
 }
