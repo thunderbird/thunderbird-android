@@ -11,7 +11,6 @@ import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -35,7 +34,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
         }
 
         for (step in SetupStep.values()) {
-            viewModel.mutableState.update { it.copy(setupStep = step) }
+            viewModel.state { it.copy(setupStep = step) }
             onNodeWithTag(getTagForStep(step)).assertExists()
         }
     }
@@ -62,12 +61,12 @@ class AccountSetupScreenKtTest : ComposeTest() {
         assertThat(onFinishCounter).isEqualTo(0)
         assertThat(onBackCounter).isEqualTo(0)
 
-        viewModel.mutableEffect.emit(Effect.NavigateNext)
+        viewModel.effect(Effect.NavigateNext)
 
         assertThat(onFinishCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(0)
 
-        viewModel.mutableEffect.emit(Effect.NavigateBack)
+        viewModel.effect(Effect.NavigateBack)
 
         assertThat(onFinishCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(1)
