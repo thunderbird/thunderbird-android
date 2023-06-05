@@ -3,7 +3,7 @@ package app.k9mail.feature.account.setup.domain.input
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 
-data class NumberInputField(
+class NumberInputField(
     override val value: Long? = null,
     override val error: ValidationError? = null,
     override val isValid: Boolean = false,
@@ -37,15 +37,35 @@ data class NumberInputField(
 
     override fun updateFromValidationResult(result: ValidationResult): NumberInputField {
         return when (result) {
-            is ValidationResult.Success -> copy(
+            is ValidationResult.Success -> NumberInputField(
+                value = value,
                 error = null,
                 isValid = true,
             )
 
-            is ValidationResult.Failure -> copy(
+            is ValidationResult.Failure -> NumberInputField(
+                value = value,
                 error = result.error,
                 isValid = false,
             )
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as NumberInputField
+
+        if (value != other.value) return false
+        if (error != other.error) return false
+        return isValid == other.isValid
+    }
+
+    override fun hashCode(): Int {
+        var result = value?.hashCode() ?: 0
+        result = 31 * result + (error?.hashCode() ?: 0)
+        result = 31 * result + isValid.hashCode()
+        return result
     }
 }

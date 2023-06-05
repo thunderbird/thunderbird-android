@@ -7,7 +7,9 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isNotSameAs
 import assertk.assertions.isNull
+import assertk.assertions.isSameAs
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import org.junit.Test
@@ -27,7 +29,7 @@ data class InputFieldTestData<T>(
 
 @RunWith(Parameterized::class)
 class InputFieldTest(
-    val data: InputFieldTestData<Any>,
+    private val data: InputFieldTestData<Any>,
 ) {
 
     @Test
@@ -50,6 +52,7 @@ class InputFieldTest(
         val result = initialInput.updateValue(data.updatedValue)
 
         assertThat(result).all {
+            isNotSameAs(initialInput)
             hasValue(data.updatedValue)
             hasNoError()
             isNotValid()
@@ -67,6 +70,7 @@ class InputFieldTest(
         val result = initialInput.updateError(TestValidationError)
 
         assertThat(result).all {
+            isNotSameAs(initialInput)
             hasValue(data.initialValue)
             hasError(TestValidationError)
             isNotValid()
@@ -84,6 +88,7 @@ class InputFieldTest(
         val result = initialInput.updateValidity(isValid = true)
 
         assertThat(result).all {
+            isNotSameAs(initialInput)
             hasValue(data.initialValue)
             hasNoError()
             isValid()
@@ -101,6 +106,7 @@ class InputFieldTest(
         val result = initialInput.updateValidity(isValid = false)
 
         assertThat(result).all {
+            isSameAs(initialInput)
             hasValue(data.initialValue)
             hasError(TestValidationError)
             isNotValid()
@@ -118,6 +124,7 @@ class InputFieldTest(
         val result = initialInput.updateError(TestValidationError2)
 
         assertThat(result).all {
+            isNotSameAs(initialInput)
             hasValue(data.initialValue)
             hasError(TestValidationError2)
             isNotValid()
@@ -135,6 +142,7 @@ class InputFieldTest(
         val result = initialInput.updateFromValidationResult(ValidationResult.Success)
 
         assertThat(result).all {
+            isNotSameAs(initialInput)
             hasValue(data.initialValue)
             hasNoError()
             isValid()
@@ -152,10 +160,43 @@ class InputFieldTest(
         val result = initialInput.updateFromValidationResult(ValidationResult.Failure(TestValidationError))
 
         assertThat(result).all {
+            isNotSameAs(initialInput)
             hasValue(data.initialValue)
             hasError(TestValidationError)
             isNotValid()
         }
+    }
+
+    @Test
+    fun `should decide equality on properties`() {
+        val input1 = data.createInitialInput(
+            data.initialValue,
+            data.initialError,
+            data.initialIsValid,
+        )
+        val input2 = data.createInitialInput(
+            data.initialValue,
+            data.initialError,
+            data.initialIsValid,
+        )
+
+        assertThat(input1.equals(input2)).isTrue()
+    }
+
+    @Test
+    fun `should have same hashCode`() {
+        val input1 = data.createInitialInput(
+            data.initialValue,
+            data.initialError,
+            data.initialIsValid,
+        )
+        val input2 = data.createInitialInput(
+            data.initialValue,
+            data.initialError,
+            data.initialIsValid,
+        )
+
+        assertThat(input1.hashCode()).isEqualTo(input2.hashCode())
     }
 
     private fun Assert<InputField<Any>>.hasValue(value: Any) {
