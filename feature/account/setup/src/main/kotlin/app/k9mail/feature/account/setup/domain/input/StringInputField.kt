@@ -68,4 +68,8 @@ class StringInputField(
         result = 31 * result + isValid.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "StringInputField(value='$value', error=$error, isValid=$isValid)"
+    }
 }

@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.incoming
 
+import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
@@ -47,5 +48,13 @@ interface AccountIncomingConfigContract {
     sealed class Effect {
         object NavigateNext : Effect()
         object NavigateBack : Effect()
+    }
+
+    interface Validator {
+        fun validateServer(server: String): ValidationResult
+        fun validatePort(port: Long?): ValidationResult
+        fun validateUsername(username: String): ValidationResult
+        fun validatePassword(password: String): ValidationResult
+        fun validateImapPrefix(imapPrefix: String): ValidationResult
     }
 }

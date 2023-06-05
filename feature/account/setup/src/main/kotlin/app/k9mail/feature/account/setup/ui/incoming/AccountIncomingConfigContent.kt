@@ -75,6 +75,7 @@ internal fun AccountIncomingConfigContent(
             item {
                 TextInput(
                     text = state.server.value,
+                    errorMessage = state.server.error?.toResourceString(resources),
                     onTextChange = { onEvent(Event.ServerChanged(it)) },
                     label = stringResource(id = R.string.account_setup_incoming_config_server_label),
                     contentPadding = defaultItemPadding(),
@@ -95,6 +96,7 @@ internal fun AccountIncomingConfigContent(
             item {
                 NumberInput(
                     value = state.port.value,
+                    errorMessage = state.port.error?.toResourceString(resources),
                     onValueChange = { onEvent(Event.PortChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_port_label),
                     contentPadding = defaultItemPadding(),
@@ -104,6 +106,7 @@ internal fun AccountIncomingConfigContent(
             item {
                 TextInput(
                     text = state.username.value,
+                    errorMessage = state.username.error?.toResourceString(resources),
                     onTextChange = { onEvent(Event.UsernameChanged(it)) },
                     label = stringResource(id = R.string.account_setup_outgoing_config_username_label),
                     contentPadding = defaultItemPadding(),
@@ -113,6 +116,7 @@ internal fun AccountIncomingConfigContent(
             item {
                 PasswordInput(
                     password = state.password.value,
+                    errorMessage = state.password.error?.toResourceString(resources),
                     onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
                     contentPadding = defaultItemPadding(),
                 )
@@ -149,6 +153,7 @@ internal fun AccountIncomingConfigContent(
                 item {
                     TextInput(
                         text = state.imapPrefix.value,
+                        errorMessage = state.imapPrefix.error?.toResourceString(resources),
                         onTextChange = { onEvent(Event.ImapPrefixChanged(it)) },
                         label = stringResource(id = R.string.account_setup_incoming_config_imap_prefix_label),
                         contentPadding = defaultItemPadding(),
