@@ -7,6 +7,7 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
+import app.k9mail.feature.account.setup.ui.autoconfig.FakeAccountAutoConfigViewModel
 import app.k9mail.feature.account.setup.ui.incoming.FakeAccountIncomingConfigViewModel
 import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigViewModel
@@ -22,6 +23,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
     @Test
     fun `should display correct screen for every setup step`() = runTest {
         val viewModel = FakeAccountSetupViewModel()
+        val autoConfigViewModel = FakeAccountAutoConfigViewModel()
         val incomingViewModel = FakeAccountIncomingConfigViewModel()
         val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
         val optionsViewModel = FakeAccountOptionsViewModel()
@@ -32,6 +34,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { },
                     onBack = { },
                     viewModel = viewModel,
+                    autoConfigViewModel = autoConfigViewModel,
                     incomingViewModel = incomingViewModel,
                     outgoingViewModel = outgoingViewModel,
                     optionsViewModel = optionsViewModel,
@@ -49,6 +52,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
         val viewModel = FakeAccountSetupViewModel(initialState)
+        val autoConfigViewModel = FakeAccountAutoConfigViewModel()
         val incomingViewModel = FakeAccountIncomingConfigViewModel()
         val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
         val optionsViewModel = FakeAccountOptionsViewModel()
@@ -61,6 +65,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { onFinishCounter++ },
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,
+                    autoConfigViewModel = autoConfigViewModel,
                     incomingViewModel = incomingViewModel,
                     outgoingViewModel = outgoingViewModel,
                     optionsViewModel = optionsViewModel,

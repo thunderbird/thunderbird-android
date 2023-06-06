@@ -18,9 +18,13 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
 
 @Composable
 internal fun AccountAutoConfigContent(
+    state: State,
+    onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -39,6 +43,8 @@ internal fun AccountAutoConfigContent(
         ) {
             item {
                 AccountSetupEmailForm(
+                    state = state,
+                    onEvent = onEvent,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -48,6 +54,8 @@ internal fun AccountAutoConfigContent(
 
 @Composable
 private fun AccountSetupEmailForm(
+    state: State,
+    onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -55,8 +63,8 @@ private fun AccountSetupEmailForm(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextFieldOutlined(
-            value = "",
-            onValueChange = { /*TODO*/ },
+            value = state.emailAddress.value,
+            onValueChange = { onEvent(Event.EmailAddressChanged(it)) },
             label = "Email address",
         )
     }
@@ -67,6 +75,8 @@ private fun AccountSetupEmailForm(
 internal fun AccountAutoConfigContentK9Preview() {
     K9Theme {
         AccountAutoConfigContent(
+            state = State(),
+            onEvent = {},
             contentPadding = PaddingValues(),
         )
     }
@@ -77,6 +87,8 @@ internal fun AccountAutoConfigContentK9Preview() {
 internal fun AccountAutoConfigContentThunderbirdPreview() {
     ThunderbirdTheme {
         AccountAutoConfigContent(
+            state = State(),
+            onEvent = {},
             contentPadding = PaddingValues(),
         )
     }

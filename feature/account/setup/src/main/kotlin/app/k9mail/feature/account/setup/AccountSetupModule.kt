@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup
 
 import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigViewModel
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigValidator
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewModel
@@ -20,6 +21,7 @@ val featureAccountSetupModule: Module = module {
     factory<AccountOptionsContract.Validator> { AccountOptionsValidator() }
 
     viewModel { AccountSetupViewModel() }
+    viewModel { AccountAutoConfigViewModel() }
     viewModel {
         AccountIncomingConfigViewModel(
             validator = get(),
