@@ -43,6 +43,7 @@ val featureAccountSetupModule: Module = module {
     viewModel {
         AccountAutoConfigViewModel(
             validator = get(),
+            getAutoDiscovery = get(),
         )
     }
     viewModel {

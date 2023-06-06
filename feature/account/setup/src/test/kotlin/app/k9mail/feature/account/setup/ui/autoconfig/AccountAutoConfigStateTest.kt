@@ -18,7 +18,7 @@ class AccountAutoConfigStateTest {
                 configStep = ConfigStep.EMAIL_ADDRESS,
                 emailAddress = StringInputField(),
                 password = StringInputField(),
-                autoDiscovery = null,
+                autoDiscoverySettings = null,
                 error = null,
                 isLoading = false,
             ),

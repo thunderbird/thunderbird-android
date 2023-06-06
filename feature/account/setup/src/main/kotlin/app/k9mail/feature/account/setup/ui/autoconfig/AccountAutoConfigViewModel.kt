@@ -1,19 +1,25 @@
 package app.k9mail.feature.account.setup.ui.autoconfig
 
+import androidx.lifecycle.viewModelScope
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Error
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Validator
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ViewModel
+import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
 class AccountAutoConfigViewModel(
     initialState: State = State(),
     private val validator: Validator,
+    private val getAutoDiscovery: DomainContract.GetAutoDiscoveryUseCase,
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     override fun initState(state: State) {
@@ -69,10 +75,50 @@ class AccountAutoConfigViewModel(
 
             updateState {
                 it.copy(
-                    configStep = if (hasError) ConfigStep.EMAIL_ADDRESS else ConfigStep.PASSWORD,
                     emailAddress = it.emailAddress.updateFromValidationResult(emailValidationResult),
                 )
             }
+
+            if (!hasError) {
+                loadAutoConfig()
+            }
+        }
+    }
+
+    private fun loadAutoConfig() {
+        viewModelScope.launch {
+            updateState {
+                it.copy(
+                    isLoading = true,
+                )
+            }
+
+            val result = getAutoDiscovery.execute(state.value.emailAddress.value)
+            when (result) {
+                AutoDiscoveryResult.NoUsableSettingsFound -> updateAutoDiscoverySettings(null)
+                is AutoDiscoveryResult.Settings -> updateAutoDiscoverySettings(result)
+                is AutoDiscoveryResult.NetworkError -> updateError(Error.NetworkError)
+                is AutoDiscoveryResult.UnexpectedException -> updateError(Error.UnknownError)
+            }
+        }
+    }
+
+    private fun updateAutoDiscoverySettings(settings: AutoDiscoveryResult.Settings?) {
+        updateState {
+            it.copy(
+                isLoading = false,
+                autoDiscoverySettings = settings,
+                configStep = ConfigStep.PASSWORD, // TODO use oauth if applicable
+            )
+        }
+    }
+
+    private fun updateError(error: Error) {
+        updateState {
+            it.copy(
+                isLoading = false,
+                error = error,
+            )
         }
     }
 

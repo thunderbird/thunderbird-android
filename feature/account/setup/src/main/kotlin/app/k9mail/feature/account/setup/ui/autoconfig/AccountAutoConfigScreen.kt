@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup.ui.autoconfig
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
@@ -60,6 +61,7 @@ internal fun AccountAutoConfigScreenK9Preview() {
             onBack = {},
             viewModel = AccountAutoConfigViewModel(
                 validator = AccountAutoConfigValidator(),
+                getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
             ),
         )
     }
@@ -74,6 +76,7 @@ internal fun AccountAutoConfigScreenThunderbirdPreview() {
             onBack = {},
             viewModel = AccountAutoConfigViewModel(
                 validator = AccountAutoConfigValidator(),
+                getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
             ),
         )
     }

@@ -57,7 +57,7 @@ internal fun AccountAutoConfigContent(
                 item(key = "error") {
                     ErrorItem(
                         title = stringResource(id = R.string.account_setup_auto_config_loading_error),
-                        message = state.error.toResourceString(resources)
+                        message = state.error.toResourceString(resources),
                     )
                 }
             } else {
