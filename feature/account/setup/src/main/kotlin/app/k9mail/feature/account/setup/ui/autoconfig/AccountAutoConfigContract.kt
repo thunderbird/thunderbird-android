@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.autoconfig
 
+import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.setup.domain.entity.AutoConfig
 import app.k9mail.feature.account.setup.domain.input.StringInputField
@@ -37,5 +38,10 @@ interface AccountAutoConfigContract {
     sealed class Effect {
         object NavigateNext : Effect()
         object NavigateBack : Effect()
+    }
+
+    interface Validator {
+        fun validateEmailAddress(emailAddress: String): ValidationResult
+        fun validatePassword(password: String): ValidationResult
     }
 }

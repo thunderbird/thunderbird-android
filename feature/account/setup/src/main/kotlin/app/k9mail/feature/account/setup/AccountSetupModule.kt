@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.setup
 
 import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigValidator
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigViewModel
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigValidator
@@ -16,12 +18,17 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val featureAccountSetupModule: Module = module {
+    factory<AccountAutoConfigContract.Validator> { AccountAutoConfigValidator() }
     factory<AccountIncomingConfigContract.Validator> { AccountIncomingConfigValidator() }
     factory<AccountOutgoingConfigContract.Validator> { AccountOutgoingConfigValidator() }
     factory<AccountOptionsContract.Validator> { AccountOptionsValidator() }
 
     viewModel { AccountSetupViewModel() }
-    viewModel { AccountAutoConfigViewModel() }
+    viewModel {
+        AccountAutoConfigViewModel(
+            validator = get(),
+        )
+    }
     viewModel {
         AccountIncomingConfigViewModel(
             validator = get(),
