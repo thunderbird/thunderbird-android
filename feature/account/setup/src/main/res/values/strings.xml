@@ -16,7 +16,6 @@
     <string name="account_setup_validation_error_password_required">Password is required.</string>
     <string name="account_setup_validation_error_imap_prefix_blank">Imap prefix can\'t be blank.</string>
 
-
     <string name="account_setup_incoming_config_top_bar_title">Incoming server settings</string>
     <string name="account_setup_incoming_config_protocol_type_label">Protocol</string>
     <string name="account_setup_incoming_config_server_label">Server</string>
