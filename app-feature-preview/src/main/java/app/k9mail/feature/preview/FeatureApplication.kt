@@ -1,7 +1,6 @@
 package app.k9mail.feature.preview
 
 import android.app.Application
-import app.k9mail.feature.account.setup.featureAccountSetupModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -12,7 +11,7 @@ class FeatureApplication : Application() {
 
         startKoin {
             androidContext(this@FeatureApplication)
-            modules(featureAccountSetupModule)
+            modules(featureModule)
         }
     }
 }

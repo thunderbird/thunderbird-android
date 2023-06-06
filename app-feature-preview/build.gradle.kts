@@ -29,4 +29,5 @@ dependencies {
 
     implementation(projects.feature.onboarding)
     implementation(projects.feature.account.setup)
+    implementation(libs.okhttp)
 }

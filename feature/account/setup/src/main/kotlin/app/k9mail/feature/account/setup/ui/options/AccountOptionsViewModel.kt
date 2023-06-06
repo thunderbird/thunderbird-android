@@ -17,8 +17,8 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Valida
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewModel
 
 internal class AccountOptionsViewModel(
-    initialState: State = State(),
     private val validator: Validator,
+    initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     override fun initState(state: State) {
