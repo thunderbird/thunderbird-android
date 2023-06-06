@@ -7,8 +7,9 @@ import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.setup.R.string
+import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.common.AccountSetupBottomBar
+import app.k9mail.feature.account.setup.ui.common.AccountSetupTopHeader
 
 @Composable
 fun AccountAutoConfigScreen(
@@ -18,12 +19,12 @@ fun AccountAutoConfigScreen(
 ) {
     Scaffold(
         topBar = {
-            AccountAutoConfigTopHeader()
+            AccountSetupTopHeader()
         },
         bottomBar = {
             AccountSetupBottomBar(
-                nextButtonText = stringResource(id = string.account_setup_button_next),
-                backButtonText = stringResource(id = string.account_setup_button_back),
+                nextButtonText = stringResource(id = R.string.account_setup_button_next),
+                backButtonText = stringResource(id = R.string.account_setup_button_back),
                 onNextClick = onNext,
                 onBackClick = onBack,
             )

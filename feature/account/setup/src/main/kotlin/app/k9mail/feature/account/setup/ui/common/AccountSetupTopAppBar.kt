@@ -16,7 +16,7 @@ internal fun AccountSetupTopAppBar(
 ) {
     TopAppBar(
         title = title,
-        subtitle = stringResource(id = string.account_setup_top_bar_subtitle),
+        subtitle = stringResource(id = string.account_setup_title),
         titleContentPadding = PaddingValues(
             start = MainTheme.spacings.double,
         ),
