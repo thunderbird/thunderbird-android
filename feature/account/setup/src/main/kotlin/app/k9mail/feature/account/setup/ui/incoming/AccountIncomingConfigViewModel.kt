@@ -2,7 +2,9 @@ package app.k9mail.feature.account.setup.ui.incoming
 
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
-import app.k9mail.feature.account.setup.domain.entity.toImapDefaultPort
+import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
+import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
+import app.k9mail.feature.account.setup.domain.entity.toDefaultSecurity
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.ClientCertificateChanged
@@ -32,10 +34,10 @@ class AccountIncomingConfigViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
-            is ProtocolTypeChanged -> updateState { it.copy(protocolType = event.protocolType) }
-            is SecurityChanged -> updateSecurity(event.security)
+            is ProtocolTypeChanged -> updateProtocolType(event.protocolType)
             is ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
+            is SecurityChanged -> updateSecurity(event.security)
+            is PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
             is UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
             is PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
             is ClientCertificateChanged -> updateState { it.copy(clientCertificate = event.clientCertificate) }
@@ -47,11 +49,23 @@ class AccountIncomingConfigViewModel(
         }
     }
 
+    private fun updateProtocolType(protocolType: IncomingProtocolType) {
+        updateState {
+            it.copy(
+                protocolType = protocolType,
+                security = protocolType.toDefaultSecurity(),
+                port = it.port.updateValue(
+                    protocolType.toDefaultPort(protocolType.toDefaultSecurity()),
+                ),
+            )
+        }
+    }
+
     private fun updateSecurity(security: ConnectionSecurity) {
         updateState {
             it.copy(
                 security = security,
-                port = it.port.updateValue(security.toImapDefaultPort()),
+                port = it.port.updateValue(it.protocolType.toDefaultPort(security)),
             )
         }
     }

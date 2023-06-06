@@ -34,3 +34,12 @@ fun ConnectionSecurity.toImapDefaultPort(): Long {
         TLS -> 993
     }
 }
+
+@Suppress("MagicNumber")
+fun ConnectionSecurity.toPop3DefaultPort(): Long {
+    return when (this) {
+        None -> 110
+        StartTLS -> 110
+        TLS -> 995
+    }
+}

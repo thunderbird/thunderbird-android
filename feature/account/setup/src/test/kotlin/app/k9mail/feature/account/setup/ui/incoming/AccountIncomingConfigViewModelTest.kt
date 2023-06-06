@@ -1,10 +1,12 @@
 package app.k9mail.feature.account.setup.ui.incoming
 
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.cash.turbine.testIn
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toImapDefaultPort
+import app.k9mail.feature.account.setup.domain.entity.toPop3DefaultPort
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.testing.eventStateTest
@@ -27,12 +29,22 @@ class AccountIncomingConfigViewModelTest {
     private val testSubject = AccountIncomingConfigViewModel()
 
     @Test
-    fun `should change state when ProtocolTypeChanged event is received`() = runTest {
+    fun `should change protocol, security and port when ProtocolTypeChanged event is received`() = runTest {
+        val initialState = State(
+            security = ConnectionSecurity.StartTLS,
+            port = NumberInputField(value = ConnectionSecurity.StartTLS.toImapDefaultPort()),
+        )
+        testSubject.initState(initialState)
+
         eventStateTest(
             viewModel = testSubject,
-            initialState = State(),
+            initialState = initialState,
             event = Event.ProtocolTypeChanged(IncomingProtocolType.POP3),
-            expectedState = State(protocolType = IncomingProtocolType.POP3),
+            expectedState = State(
+                protocolType = IncomingProtocolType.POP3,
+                security = ConnectionSecurity.TLS,
+                port = NumberInputField(value = ConnectionSecurity.TLS.toPop3DefaultPort()),
+            ),
             coroutineScope = backgroundScope,
         )
     }

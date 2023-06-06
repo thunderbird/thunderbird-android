@@ -3,7 +3,8 @@ package app.k9mail.feature.account.setup.ui.incoming
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
-import app.k9mail.feature.account.setup.domain.entity.toImapDefaultPort
+import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
+import app.k9mail.feature.account.setup.domain.entity.toDefaultSecurity
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 
@@ -16,8 +17,10 @@ interface AccountIncomingConfigContract {
     data class State(
         val protocolType: IncomingProtocolType = IncomingProtocolType.DEFAULT,
         val server: StringInputField = StringInputField(),
-        val security: ConnectionSecurity = ConnectionSecurity.DEFAULT,
-        val port: NumberInputField = NumberInputField(ConnectionSecurity.DEFAULT.toImapDefaultPort()),
+        val security: ConnectionSecurity = IncomingProtocolType.DEFAULT.toDefaultSecurity(),
+        val port: NumberInputField = NumberInputField(
+            IncomingProtocolType.DEFAULT.toDefaultPort(IncomingProtocolType.DEFAULT.toDefaultSecurity()),
+        ),
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
         val clientCertificate: String = "",
