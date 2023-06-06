@@ -7,11 +7,11 @@ import org.junit.Test
 class IncomingProtocolTypeTest {
 
     @Test
-    fun `should provide right default security`() {
+    fun `should provide right default connection security`() {
         val incomingProtocolTypes = IncomingProtocolType.all()
 
         for (incomingProtocolType in incomingProtocolTypes) {
-            val security = incomingProtocolType.toDefaultSecurity()
+            val security = incomingProtocolType.defaultConnectionSecurity
 
             assertThat(security).isEqualTo(
                 when (incomingProtocolType) {
