@@ -23,7 +23,9 @@ fun TextFieldOutlinedNumber(
     MaterialOutlinedTextField(
         value = value?.toString() ?: "",
         onValueChange = {
-            onValueChange(it.toLongOrNull())
+            onValueChange(
+                it.takeIf { it.isNotBlank() }?.toLongOrNull(),
+            )
         },
         modifier = modifier,
         enabled = isEnabled,

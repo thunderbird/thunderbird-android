@@ -3,8 +3,6 @@ package app.k9mail.core.ui.compose.designsystem.molecule.input
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedNumber
@@ -21,12 +19,10 @@ fun NumberInput(
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
 ) {
-    val inputError = remember { mutableStateOf<String?>(null) }
-
     InputLayout(
         modifier = modifier,
         contentPadding = contentPadding,
-        errorMessage = errorMessage ?: inputError.value,
+        errorMessage = errorMessage,
     ) {
         TextFieldOutlinedNumber(
             value = value,

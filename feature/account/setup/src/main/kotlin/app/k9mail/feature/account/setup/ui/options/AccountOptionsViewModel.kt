@@ -2,7 +2,6 @@ package app.k9mail.feature.account.setup.ui.options
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.setup.domain.input.fromValidationResult
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event.OnAccountNameChanged
@@ -21,6 +20,13 @@ internal class AccountOptionsViewModel(
     initialState: State = State(),
     private val validator: Validator,
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
+
+    override fun initState(state: State) {
+        updateState {
+            state.copy()
+        }
+    }
+
     override fun event(event: Event) {
         when (event) {
             is OnAccountNameChanged -> updateState { state ->
@@ -64,12 +70,6 @@ internal class AccountOptionsViewModel(
         }
     }
 
-    override fun initState(state: State) {
-        updateState {
-            state.copy()
-        }
-    }
-
     private fun submit() = with(state.value) {
         val accountNameResult = validator.validateAccountName(accountName.value)
         val displayNameResult = validator.validateDisplayName(displayName.value)
@@ -83,9 +83,9 @@ internal class AccountOptionsViewModel(
 
         updateState {
             it.copy(
-                accountName = state.value.accountName.fromValidationResult(accountNameResult),
-                displayName = state.value.displayName.fromValidationResult(displayNameResult),
-                emailSignature = state.value.emailSignature.fromValidationResult(emailSignatureResult),
+                accountName = it.accountName.updateFromValidationResult(accountNameResult),
+                displayName = it.displayName.updateFromValidationResult(displayNameResult),
+                emailSignature = it.emailSignature.updateFromValidationResult(emailSignatureResult),
             )
         }
 

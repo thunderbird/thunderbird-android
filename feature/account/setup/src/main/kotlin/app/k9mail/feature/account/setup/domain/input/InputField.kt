@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup.domain.input
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
+import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 
 /**
  * InputField is an interface defining the state of an input field.
@@ -42,4 +43,6 @@ interface InputField<T> {
     fun hasError(): Boolean {
         return error != null
     }
+
+    fun updateFromValidationResult(result: ValidationResult): InputField<T>
 }

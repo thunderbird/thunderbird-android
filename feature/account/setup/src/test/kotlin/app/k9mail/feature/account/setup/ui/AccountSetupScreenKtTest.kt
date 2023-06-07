@@ -8,10 +8,10 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
+import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -21,6 +21,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
     @Test
     fun `should display correct screen for every setup step`() = runTest {
         val viewModel = FakeAccountSetupViewModel()
+        val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
         val optionsViewModel = FakeAccountOptionsViewModel()
 
         setContent {
@@ -29,13 +30,14 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { },
                     onBack = { },
                     viewModel = viewModel,
+                    outgoingViewModel = outgoingViewModel,
                     optionsViewModel = optionsViewModel,
                 )
             }
         }
 
         for (step in SetupStep.values()) {
-            viewModel.mutableState.update { it.copy(setupStep = step) }
+            viewModel.state { it.copy(setupStep = step) }
             onNodeWithTag(getTagForStep(step)).assertExists()
         }
     }
@@ -44,6 +46,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
         val viewModel = FakeAccountSetupViewModel(initialState)
+        val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
         val optionsViewModel = FakeAccountOptionsViewModel()
         var onFinishCounter = 0
         var onBackCounter = 0
@@ -54,6 +57,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { onFinishCounter++ },
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,
+                    outgoingViewModel = outgoingViewModel,
                     optionsViewModel = optionsViewModel,
                 )
             }
@@ -62,12 +66,12 @@ class AccountSetupScreenKtTest : ComposeTest() {
         assertThat(onFinishCounter).isEqualTo(0)
         assertThat(onBackCounter).isEqualTo(0)
 
-        viewModel.mutableEffect.emit(Effect.NavigateNext)
+        viewModel.effect(Effect.NavigateNext)
 
         assertThat(onFinishCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(0)
 
-        viewModel.mutableEffect.emit(Effect.NavigateBack)
+        viewModel.effect(Effect.NavigateBack)
 
         assertThat(onFinishCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(1)
