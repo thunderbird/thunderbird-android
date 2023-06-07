@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.incoming
 
+import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
@@ -20,10 +21,12 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContrac
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.UseCompressionChanged
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.UsernameChanged
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.State
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Validator
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.ViewModel
 
 class AccountIncomingConfigViewModel(
     initialState: State = State(),
+    private val validator: Validator,
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     override fun initState(state: State) {
@@ -70,8 +73,29 @@ class AccountIncomingConfigViewModel(
         }
     }
 
-    private fun submit() {
-        navigateNext()
+    private fun submit() = with(state.value) {
+        val serverResult = validator.validateServer(server.value)
+        val portResult = validator.validatePort(port.value)
+        val usernameResult = validator.validateUsername(username.value)
+        val passwordResult = validator.validatePassword(password.value)
+        val imapPrefixResult = validator.validateImapPrefix(imapPrefix.value)
+
+        val hasError = listOf(serverResult, portResult, usernameResult, passwordResult, imapPrefixResult)
+            .any { it is ValidationResult.Failure }
+
+        updateState {
+            it.copy(
+                server = it.server.updateFromValidationResult(serverResult),
+                port = it.port.updateFromValidationResult(portResult),
+                username = it.username.updateFromValidationResult(usernameResult),
+                password = it.password.updateFromValidationResult(passwordResult),
+                imapPrefix = it.imapPrefix.updateFromValidationResult(imapPrefixResult),
+            )
+        }
+
+        if (!hasError) {
+            navigateNext()
+        }
     }
 
     private fun navigateBack() = emitEffect(Effect.NavigateBack)

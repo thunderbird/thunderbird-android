@@ -2,6 +2,8 @@ package app.k9mail.feature.account.setup.ui.incoming
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.cash.turbine.testIn
+import app.k9mail.core.common.domain.usecase.validation.ValidationError
+import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
@@ -13,6 +15,7 @@ import app.k9mail.feature.account.setup.testing.eventStateTest
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.State
+import assertk.assertThat
 import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +29,9 @@ class AccountIncomingConfigViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val testSubject = AccountIncomingConfigViewModel()
+    private val testSubject = AccountIncomingConfigViewModel(
+        validator = FakeAccountIncomingConfigValidator(),
+    )
 
     @Test
     fun `should change protocol, security and port when ProtocolTypeChanged event is received`() = runTest {
@@ -152,28 +157,76 @@ class AccountIncomingConfigViewModelTest {
     }
 
     @Test
-    fun `should emit NavigateNext effect when OnNextClicked event received`() = runTest {
-        val viewModel = testSubject
-        val stateTurbine = viewModel.state.testIn(backgroundScope)
-        val effectTurbine = viewModel.effect.testIn(backgroundScope)
-        val turbines = listOf(stateTurbine, effectTurbine)
+    fun `should change state and emit NavigateNext effect when OnNextClicked event is received and input is valid`() =
+        runTest {
+            val viewModel = testSubject
+            val stateTurbine = viewModel.state.testIn(backgroundScope)
+            val effectTurbine = viewModel.effect.testIn(backgroundScope)
+            val turbines = listOf(stateTurbine, effectTurbine)
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(State())
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(State())
+            }
+
+            viewModel.event(Event.OnNextClicked)
+
+            assertThat(stateTurbine.awaitItem()).isEqualTo(
+                State(
+                    server = StringInputField(value = "", isValid = true),
+                    port = NumberInputField(value = 993L, isValid = true),
+                    username = StringInputField(value = "", isValid = true),
+                    password = StringInputField(value = "", isValid = true),
+                    imapPrefix = StringInputField(value = "", isValid = true),
+                ),
+            )
+
+            assertThatAndTurbinesConsumed(
+                actual = effectTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(Effect.NavigateNext)
+            }
         }
 
-        viewModel.event(Event.OnNextClicked)
+    @Test
+    fun `should change state and not emit NavigateNext effect when OnNextClicked event received and input invalid`() =
+        runTest {
+            val viewModel = AccountIncomingConfigViewModel(
+                validator = FakeAccountIncomingConfigValidator(
+                    serverAnswer = ValidationResult.Failure(TestError),
+                ),
+            )
+            val stateTurbine = viewModel.state.testIn(backgroundScope)
+            val effectTurbine = viewModel.effect.testIn(backgroundScope)
+            val turbines = listOf(stateTurbine, effectTurbine)
 
-        assertThatAndTurbinesConsumed(
-            actual = effectTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(Effect.NavigateNext)
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(State())
+            }
+
+            viewModel.event(Event.OnNextClicked)
+
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(
+                    State(
+                        server = StringInputField(value = "", error = TestError, isValid = false),
+                        port = NumberInputField(value = 993L, isValid = true),
+                        username = StringInputField(value = "", isValid = true),
+                        password = StringInputField(value = "", isValid = true),
+                        imapPrefix = StringInputField(value = "", isValid = true),
+                    ),
+                )
+            }
         }
-    }
 
     @Test
     fun `should emit NavigateBack effect when OnBackClicked event received`() = runTest {
@@ -198,4 +251,6 @@ class AccountIncomingConfigViewModelTest {
             isEqualTo(Effect.NavigateBack)
         }
     }
+
+    private object TestError : ValidationError
 }

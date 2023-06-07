@@ -60,7 +60,9 @@ internal fun AccountIncomingConfigScreenK9Preview() {
         AccountIncomingConfigScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountIncomingConfigViewModel(),
+            viewModel = AccountIncomingConfigViewModel(
+                validator = AccountIncomingConfigValidator(),
+            ),
         )
     }
 }
@@ -72,7 +74,9 @@ internal fun AccountIncomingConfigScreenThunderbirdPreview() {
         AccountIncomingConfigScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountIncomingConfigViewModel(),
+            viewModel = AccountIncomingConfigViewModel(
+                validator = AccountIncomingConfigValidator(),
+            ),
         )
     }
 }
