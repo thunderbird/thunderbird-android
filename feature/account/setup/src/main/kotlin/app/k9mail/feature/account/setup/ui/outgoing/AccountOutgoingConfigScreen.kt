@@ -27,7 +27,7 @@ fun AccountOutgoingConfigScreen(
             Effect.NavigateBack -> onBack()
             Effect.NavigateNext -> onNext()
         }
-    }	
+    }
 
     Scaffold(
         topBar = {
@@ -60,7 +60,9 @@ internal fun AccountOutgoingConfigScreenK9Preview() {
         AccountOutgoingConfigScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountOutgoingConfigViewModel(),
+            viewModel = AccountOutgoingConfigViewModel(
+                validator = AccountOutgoingConfigValidator(),
+            ),
         )
     }
 }
@@ -72,7 +74,9 @@ internal fun AccountOutgoingConfigScreenThunderbirdPreview() {
         AccountOutgoingConfigScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountOutgoingConfigViewModel(),
+            viewModel = AccountOutgoingConfigViewModel(
+                validator = AccountOutgoingConfigValidator(),
+            ),
         )
     }
 }
