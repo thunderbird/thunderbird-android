@@ -115,7 +115,8 @@ public class Address implements Serializable {
             for (Rfc822Token token : tokens) {
                 String address = token.getAddress();
                 if (!TextUtils.isEmpty(address)) {
-                    addresses.add(new Address(token.getAddress(), token.getName(), false));
+                    String name = TextUtils.isEmpty(token.getName()) ? null : token.getName();
+                    addresses.add(new Address(token.getAddress(), name, false));
                 }
             }
         }
