@@ -1,9 +1,11 @@
 package app.k9mail.ui.catalog.ui
 
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.mvi.observe
+import app.k9mail.core.ui.compose.designsystem.atom.Background
 import app.k9mail.ui.catalog.ui.CatalogContract.Event.OnThemeChanged
 import app.k9mail.ui.catalog.ui.CatalogContract.Event.OnThemeVariantChanged
 import app.k9mail.ui.catalog.ui.CatalogContract.ViewModel
@@ -21,13 +23,17 @@ fun CatalogScreen(
         theme = state.value.theme,
         themeVariant = state.value.themeVariant,
     ) {
-        CatalogContent(
-            state = state.value,
-            onThemeChanged = { dispatch(OnThemeChanged) },
-            onThemeVariantChanged = { dispatch(OnThemeVariantChanged) },
+        Background(
             modifier = Modifier
-                .systemBarsPadding()
+                .fillMaxSize()
+                .safeDrawingPadding()
                 .then(modifier),
-        )
+        ) {
+            CatalogContent(
+                state = state.value,
+                onThemeChanged = { dispatch(OnThemeChanged) },
+                onThemeVariantChanged = { dispatch(OnThemeVariantChanged) },
+            )
+        }
     }
 }
