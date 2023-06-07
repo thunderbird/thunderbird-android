@@ -6,6 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -171,6 +173,13 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     protected Recipient defaultObject(String completionText) {
+        String emailPattern = "<([^>]+)>"; // matches anything inside <>
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(completionText);
+        if (matcher.find()) {
+            completionText = matcher.group(1);
+        }
+
         Address[] parsedAddresses = Address.parse(completionText);
         if (!CharsetUtil.isASCII(completionText)) {
             setError(getContext().getString(R.string.recipient_error_non_ascii));
