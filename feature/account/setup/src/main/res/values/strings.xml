@@ -18,7 +18,7 @@
     <string name="account_setup_outgoing_config_security_start_tls">StartTLS</string>
     <string name="account_setup_outgoing_config_port_label">Port</string>
     <string name="account_setup_outgoing_config_port_error_required">Port is required.</string>
-    <string name="account_setup_outgoing_config_port_error_invalid">Port is invalid (0–65535).</string>
+    <string name="account_setup_outgoing_config_port_error_invalid">Port is invalid (must be 1–65535).</string>
     <string name="account_setup_outgoing_config_username_label">Username</string>
     <string name="account_setup_outgoing_config_username_error_required">Username is required.</string>
     <string name="account_setup_outgoing_config_password_error_required">Password is required.</string>

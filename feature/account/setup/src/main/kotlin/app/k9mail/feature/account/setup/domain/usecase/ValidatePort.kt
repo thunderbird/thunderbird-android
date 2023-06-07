@@ -7,11 +7,10 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 class ValidatePort : ValidationUseCase<Long?> {
 
     override fun execute(input: Long?): ValidationResult {
-        return when {
-            input == null -> ValidationResult.Failure(ValidatePortError.EmptyPort)
-            input < MIN_PORT_NUMBER -> ValidationResult.Failure(ValidatePortError.InvalidPort)
-            input > MAX_PORT_NUMBER -> ValidationResult.Failure(ValidatePortError.InvalidPort)
-            else -> ValidationResult.Success
+        return when (input) {
+            null -> ValidationResult.Failure(ValidatePortError.EmptyPort)
+            in MIN_PORT_NUMBER..MAX_PORT_NUMBER -> ValidationResult.Success
+            else -> ValidationResult.Failure(ValidatePortError.InvalidPort)
         }
     }
 
@@ -22,6 +21,6 @@ class ValidatePort : ValidationUseCase<Long?> {
 
     companion object {
         const val MAX_PORT_NUMBER = 65535
-        const val MIN_PORT_NUMBER = 0
+        const val MIN_PORT_NUMBER = 1
     }
 }

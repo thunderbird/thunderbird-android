@@ -30,6 +30,17 @@ class ValidatePortTest {
     }
 
     @Test
+    fun `should fail when port is zero`() {
+        val useCase = ValidatePort()
+
+        val result = useCase.execute(0)
+
+        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+            .prop(ValidationResult.Failure::error)
+            .isInstanceOf(ValidatePortError.InvalidPort::class)
+    }
+
+    @Test
     fun `should fail when port exceeds maximum`() {
         val useCase = ValidatePort()
 
