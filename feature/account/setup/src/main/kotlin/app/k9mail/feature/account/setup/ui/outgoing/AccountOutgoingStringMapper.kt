@@ -3,19 +3,10 @@ package app.k9mail.feature.account.setup.ui.outgoing
 import android.content.res.Resources
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.usecase.ValidatePassword.ValidatePasswordError
 import app.k9mail.feature.account.setup.domain.usecase.ValidatePort.ValidatePortError
 import app.k9mail.feature.account.setup.domain.usecase.ValidateServer.ValidateServerError
 import app.k9mail.feature.account.setup.domain.usecase.ValidateUsername.ValidateUsernameError
-
-internal fun ConnectionSecurity.toResourceString(resources: Resources): String {
-    return when (this) {
-        ConnectionSecurity.None -> resources.getString(R.string.account_setup_outgoing_config_security_none)
-        ConnectionSecurity.StartTLS -> resources.getString(R.string.account_setup_outgoing_config_security_start_tls)
-        ConnectionSecurity.TLS -> resources.getString(R.string.account_setup_outgoing_config_security_ssl)
-    }
-}
 
 internal fun ValidationError.toResourceString(resources: Resources): String {
     return when (this) {

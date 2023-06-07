@@ -33,17 +33,17 @@ class AccountOutgoingConfigViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is ServerChanged -> updateState { it.copy(server = it.server.copy(value = event.server)) }
+            is ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
             is SecurityChanged -> updateSecurity(event.security)
-            is PortChanged -> updateState { it.copy(port = it.port.copy(value = event.port)) }
-            is UsernameChanged -> updateState { it.copy(username = it.username.copy(value = event.username)) }
-            is PasswordChanged -> updateState { it.copy(password = it.password.copy(value = event.password)) }
+            is PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
+            is UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
+            is PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
             is ClientCertificateChanged -> updateState { it.copy(clientCertificate = event.clientCertificate) }
             is ImapAutoDetectNamespaceChanged -> updateState { it.copy(imapAutodetectNamespaceEnabled = event.enabled) }
             is UseCompressionChanged -> updateState { it.copy(useCompression = event.useCompression) }
 
-            OnBackClicked -> navigateBack()
             OnNextClicked -> submit()
+            OnBackClicked -> navigateBack()
         }
     }
 
@@ -51,10 +51,7 @@ class AccountOutgoingConfigViewModel(
         updateState {
             it.copy(
                 security = security,
-                port = it.port.copy(
-                    value = security.toSmtpDefaultPort(),
-                    error = null,
-                ),
+                port = it.port.updateValue(security.toSmtpDefaultPort()),
             )
         }
     }
