@@ -16,6 +16,7 @@ fun EmailAddressInput(
     modifier: Modifier = Modifier,
     emailAddress: String = "",
     errorMessage: String? = null,
+    isEnabled: Boolean = true,
     contentPadding: PaddingValues = inputContentPadding(),
 ) {
     InputLayout(
@@ -27,6 +28,7 @@ fun EmailAddressInput(
             value = emailAddress,
             onValueChange = onEmailAddressChange,
             label = stringResource(id = R.string.designsystem_molecule_email_address_input_label),
+            isEnabled = isEnabled,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),
         )

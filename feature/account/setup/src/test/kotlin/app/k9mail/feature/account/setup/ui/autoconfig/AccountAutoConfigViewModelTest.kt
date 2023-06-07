@@ -59,8 +59,27 @@ class AccountAutoConfigViewModelTest {
     }
 
     @Test
-    fun `should emit NavigateNext effect when NextClicked event is received`() = runTest {
+    fun `should change config step to password when OnNextClicked event is received`() = runTest {
+        eventStateTest(
+            viewModel = testSubject,
+            initialState = State(),
+            event = Event.OnNextClicked,
+            expectedState = State(
+                configStep = ConfigStep.PASSWORD,
+            ),
+            coroutineScope = backgroundScope,
+        )
+    }
+
+    @Test
+    fun `should emit NavigateNext effect when OnNextClicked event is received in password config step`() = runTest {
+        val initialState = State(
+            configStep = ConfigStep.PASSWORD,
+            emailAddress = StringInputField(value = "email"),
+            password = StringInputField(value = "password"),
+        )
         val viewModel = testSubject
+        viewModel.initState(initialState)
         val stateTurbine = viewModel.state.testIn(backgroundScope)
         val effectTurbine = viewModel.effect.testIn(backgroundScope)
         val turbines = listOf(stateTurbine, effectTurbine)
@@ -69,7 +88,7 @@ class AccountAutoConfigViewModelTest {
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
-            isEqualTo(State())
+            isEqualTo(initialState)
         }
 
         viewModel.event(Event.OnNextClicked)
@@ -83,7 +102,7 @@ class AccountAutoConfigViewModelTest {
     }
 
     @Test
-    fun `should emit NavigateBack effect when BackClicked event is received`() = runTest {
+    fun `should emit NavigateBack effect when OnBackClicked event is received`() = runTest {
         val viewModel = testSubject
         val stateTurbine = viewModel.state.testIn(backgroundScope)
         val effectTurbine = viewModel.effect.testIn(backgroundScope)
@@ -105,4 +124,40 @@ class AccountAutoConfigViewModelTest {
             isEqualTo(Effect.NavigateBack)
         }
     }
+
+    @Test
+    fun `should change config step to email address when OnBackClicked event is received in password config step`() =
+        runTest {
+            val initialState = State(
+                configStep = ConfigStep.PASSWORD,
+                emailAddress = StringInputField(value = "email"),
+                password = StringInputField(value = "password"),
+            )
+            val viewModel = testSubject
+            viewModel.initState(initialState)
+            val stateTurbine = viewModel.state.testIn(backgroundScope)
+            val effectTurbine = viewModel.effect.testIn(backgroundScope)
+            val turbines = listOf(stateTurbine, effectTurbine)
+
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(initialState)
+            }
+
+            viewModel.event(Event.OnBackClicked)
+
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(
+                    State(
+                        configStep = ConfigStep.EMAIL_ADDRESS,
+                        emailAddress = StringInputField(value = "email"),
+                    ),
+                )
+            }
+        }
 }

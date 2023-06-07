@@ -2,9 +2,7 @@ package app.k9mail.feature.account.setup.ui.autoconfig
 
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.setup.domain.input.StringInputField
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep.EMAIL_ADDRESS
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep.OAUTH
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep.PASSWORD
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
@@ -25,8 +23,8 @@ class AccountAutoConfigViewModel(
         when (event) {
             is Event.EmailAddressChanged -> changeEmailAddress(event.emailAddress)
             is Event.PasswordChanged -> changePassword(event.password)
-            Event.OnNextClicked -> submit()
-            Event.OnBackClicked -> navigateBack()
+            Event.OnNextClicked -> onNext()
+            Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> retry()
         }
     }
@@ -47,24 +45,41 @@ class AccountAutoConfigViewModel(
         }
     }
 
-    private fun submit() {
+    private fun onNext() {
         when (state.value.configStep) {
-            EMAIL_ADDRESS -> submitEmail()
-            PASSWORD -> submitPassword()
-            OAUTH -> TODO()
+            ConfigStep.EMAIL_ADDRESS -> submitEmail()
+            ConfigStep.PASSWORD -> submitPassword()
+            ConfigStep.OAUTH -> TODO()
         }
     }
 
     private fun retry() {
-        TODO()
+        updateState {
+            it.copy(configStep = ConfigStep.EMAIL_ADDRESS)
+        }
     }
 
     private fun submitEmail() {
-        navigateNext()
+        updateState {
+            it.copy(configStep = ConfigStep.PASSWORD)
+        }
     }
 
     private fun submitPassword() {
         navigateNext()
+    }
+
+    private fun onBack() {
+        when (state.value.configStep) {
+            ConfigStep.EMAIL_ADDRESS -> navigateBack()
+            ConfigStep.PASSWORD -> updateState {
+                it.copy(
+                    configStep = ConfigStep.EMAIL_ADDRESS,
+                    password = StringInputField(),
+                )
+            }
+            ConfigStep.OAUTH -> TODO()
+        }
     }
 
     private fun navigateBack() = emitEffect(Effect.NavigateBack)

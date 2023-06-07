@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui.autoconfig
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,13 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
+import app.k9mail.feature.account.setup.ui.autoconfig.item.contentItems
 
 @Composable
 internal fun AccountAutoConfigContent(
@@ -41,32 +40,11 @@ internal fun AccountAutoConfigContent(
                 .imePadding(),
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
         ) {
-            item {
-                AccountSetupEmailForm(
-                    state = state,
-                    onEvent = onEvent,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+            contentItems(
+                state = state,
+                onEvent = onEvent,
+            )
         }
-    }
-}
-
-@Composable
-private fun AccountSetupEmailForm(
-    state: State,
-    onEvent: (Event) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        TextFieldOutlined(
-            value = state.emailAddress.value,
-            onValueChange = { onEvent(Event.EmailAddressChanged(it)) },
-            label = "Email address",
-        )
     }
 }
 
