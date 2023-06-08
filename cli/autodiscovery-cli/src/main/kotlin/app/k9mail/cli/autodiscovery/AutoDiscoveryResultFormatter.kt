@@ -24,5 +24,10 @@ internal class AutoDiscoveryResultFormatter(private val echo: (String) -> Unit) 
         echo("  Authentication type: ${outgoingServer.authenticationType}")
         echo("  Username:            ${outgoingServer.username}")
         echo("------------------------------")
+        if (settings.isTrusted) {
+            echo("These settings have been retrieved through trusted channels.")
+        } else {
+            echo("At least one UNTRUSTED channel was involved in retrieving these settings.")
+        }
     }
 }
