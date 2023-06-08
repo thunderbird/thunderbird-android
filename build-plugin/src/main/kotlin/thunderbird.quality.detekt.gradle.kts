@@ -7,11 +7,8 @@ plugins {
 }
 
 configure<DetektExtension> {
-    source = project.files(
-        project.file(project.rootDir),
-    )
-
-    config = project.rootProject.files("config/detekt/detekt.yml")
+    source.setFrom(project.file(project.rootDir))
+    config.setFrom(project.rootProject.files("config/detekt/detekt.yml"))
     baseline = project.rootProject.file("config/detekt/baseline.xml")
 }
 

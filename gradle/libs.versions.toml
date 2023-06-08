@@ -47,7 +47,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 spotless = "com.diffplug.spotless:6.14.0"
-detekt = "io.gitlab.arturbosch.detekt:1.22.0"
+detekt = "io.gitlab.arturbosch.detekt:1.23.0"
 dependency-check = "com.github.ben-manes.versions:0.46.0"
 
 [libraries]
@@ -151,7 +151,7 @@ assertk = "com.willowtreeapps.assertk:assertk-jvm:0.26.1"
 
 leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
 
-detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.1"
+detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.7"
 
 [bundles]
 shared-jvm-main = [
