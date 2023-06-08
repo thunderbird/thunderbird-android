@@ -5,12 +5,15 @@ import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailAddress.Vali
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ValidateEmailAddressTest {
 
     @Test
-    fun `should succeed when email address is valid`() {
+    fun `should succeed when email address is valid`() = runTest {
         val useCase = ValidateEmailAddress()
 
         val result = useCase.execute("test@example.com")
@@ -19,7 +22,7 @@ class ValidateEmailAddressTest {
     }
 
     @Test
-    fun `should fail when email address is blank`() {
+    fun `should fail when email address is blank`() = runTest {
         val useCase = ValidateEmailAddress()
 
         val result = useCase.execute(" ")
@@ -30,7 +33,7 @@ class ValidateEmailAddressTest {
     }
 
     @Test
-    fun `should fail when email address is invalid`() {
+    fun `should fail when email address is invalid`() = runTest {
         val useCase = ValidateEmailAddress()
 
         val result = useCase.execute("test")

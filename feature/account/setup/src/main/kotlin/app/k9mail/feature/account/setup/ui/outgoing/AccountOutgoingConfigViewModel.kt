@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.outgoing
 
+import androidx.lifecycle.viewModelScope
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
@@ -19,6 +20,7 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContrac
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Validator
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.ViewModel
+import kotlinx.coroutines.launch
 
 class AccountOutgoingConfigViewModel(
     initialState: State = State(),
@@ -56,26 +58,28 @@ class AccountOutgoingConfigViewModel(
         }
     }
 
-    private fun submit() = with(state.value) {
-        val serverResult = validator.validateServer(server.value)
-        val portResult = validator.validatePort(port.value)
-        val usernameResult = validator.validateUsername(username.value)
-        val passwordResult = validator.validatePassword(password.value)
+    private fun submit() {
+        viewModelScope.launch {
+            val serverResult = validator.validateServer(state.value.server.value)
+            val portResult = validator.validatePort(state.value.port.value)
+            val usernameResult = validator.validateUsername(state.value.username.value)
+            val passwordResult = validator.validatePassword(state.value.password.value)
 
-        val hasError = listOf(serverResult, portResult, usernameResult, passwordResult)
-            .any { it is ValidationResult.Failure }
+            val hasError = listOf(serverResult, portResult, usernameResult, passwordResult)
+                .any { it is ValidationResult.Failure }
 
-        updateState {
-            it.copy(
-                server = it.server.updateFromValidationResult(serverResult),
-                port = it.port.updateFromValidationResult(portResult),
-                username = it.username.updateFromValidationResult(usernameResult),
-                password = it.password.updateFromValidationResult(passwordResult),
-            )
-        }
+            updateState {
+                it.copy(
+                    server = it.server.updateFromValidationResult(serverResult),
+                    port = it.port.updateFromValidationResult(portResult),
+                    username = it.username.updateFromValidationResult(usernameResult),
+                    password = it.password.updateFromValidationResult(passwordResult),
+                )
+            }
 
-        if (!hasError) {
-            navigateNext()
+            if (!hasError) {
+                navigateNext()
+            }
         }
     }
 

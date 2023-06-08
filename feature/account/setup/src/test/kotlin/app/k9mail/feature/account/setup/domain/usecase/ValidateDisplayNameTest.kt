@@ -5,12 +5,15 @@ import app.k9mail.feature.account.setup.domain.usecase.ValidateDisplayName.Valid
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ValidateDisplayNameTest {
 
     @Test
-    fun `should succeed when display name is set`() {
+    fun `should succeed when display name is set`() = runTest {
         val useCase = ValidateDisplayName()
 
         val result = useCase.execute("display name")
@@ -19,7 +22,7 @@ class ValidateDisplayNameTest {
     }
 
     @Test
-    fun `should fail when display name is empty`() {
+    fun `should fail when display name is empty`() = runTest {
         val useCase = ValidateDisplayName()
 
         val result = useCase.execute("")
@@ -30,7 +33,7 @@ class ValidateDisplayNameTest {
     }
 
     @Test
-    fun `should fail when display name is blank`() {
+    fun `should fail when display name is blank`() = runTest {
         val useCase = ValidateDisplayName()
 
         val result = useCase.execute(" ")

@@ -12,19 +12,19 @@ class AccountOutgoingConfigValidator(
     private val usernameValidator: ValidateUsername = ValidateUsername(),
     private val passwordValidator: ValidatePassword = ValidatePassword(),
 ) : AccountOutgoingConfigContract.Validator {
-    override fun validateServer(server: String): ValidationResult {
+    override suspend fun validateServer(server: String): ValidationResult {
         return serverValidator.execute(server)
     }
 
-    override fun validatePort(port: Long?): ValidationResult {
+    override suspend fun validatePort(port: Long?): ValidationResult {
         return portValidator.execute(port)
     }
 
-    override fun validateUsername(username: String): ValidationResult {
+    override suspend fun validateUsername(username: String): ValidationResult {
         return usernameValidator.execute(username)
     }
 
-    override fun validatePassword(password: String): ValidationResult {
+    override suspend fun validatePassword(password: String): ValidationResult {
         return passwordValidator.execute(password)
     }
 }

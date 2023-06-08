@@ -7,7 +7,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 class ValidateEmailAddress : ValidationUseCase<String> {
 
     // TODO replace by new email validation
-    override fun execute(input: String): ValidationResult {
+    override suspend fun execute(input: String): ValidationResult {
         return when {
             input.isBlank() -> ValidationResult.Failure(ValidateEmailAddressError.EmptyEmailAddress)
 

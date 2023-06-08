@@ -5,12 +5,15 @@ import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailSignature.Va
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ValidateEmailSignatureTest {
 
     @Test
-    fun `should succeed when email signature is set`() {
+    fun `should succeed when email signature is set`() = runTest {
         val useCase = ValidateEmailSignature()
 
         val result = useCase.execute("email signature")
@@ -19,7 +22,7 @@ class ValidateEmailSignatureTest {
     }
 
     @Test
-    fun `should succeed when email signature is empty`() {
+    fun `should succeed when email signature is empty`() = runTest {
         val useCase = ValidateEmailSignature()
 
         val result = useCase.execute("")
@@ -28,7 +31,7 @@ class ValidateEmailSignatureTest {
     }
 
     @Test
-    fun `should fail when email signature is blank`() {
+    fun `should fail when email signature is blank`() = runTest {
         val useCase = ValidateEmailSignature()
 
         val result = useCase.execute(" ")

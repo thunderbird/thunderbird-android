@@ -6,7 +6,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 
 class ValidateDisplayName : ValidationUseCase<String> {
 
-    override fun execute(input: String): ValidationResult {
+    override suspend fun execute(input: String): ValidationResult {
         return when {
             input.isBlank() -> ValidationResult.Failure(ValidateDisplayNameError.EmptyDisplayName)
             else -> ValidationResult.Success

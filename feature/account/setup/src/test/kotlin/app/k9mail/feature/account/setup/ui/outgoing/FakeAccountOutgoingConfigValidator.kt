@@ -8,8 +8,8 @@ class FakeAccountOutgoingConfigValidator(
     private val usernameAnswer: ValidationResult = ValidationResult.Success,
     private val passwordAnswer: ValidationResult = ValidationResult.Success,
 ) : AccountOutgoingConfigContract.Validator {
-    override fun validateServer(server: String): ValidationResult = serverAnswer
-    override fun validatePort(port: Long?): ValidationResult = portAnswer
-    override fun validateUsername(username: String): ValidationResult = usernameAnswer
-    override fun validatePassword(password: String): ValidationResult = passwordAnswer
+    override suspend fun validateServer(server: String): ValidationResult = serverAnswer
+    override suspend fun validatePort(port: Long?): ValidationResult = portAnswer
+    override suspend fun validateUsername(username: String): ValidationResult = usernameAnswer
+    override suspend fun validatePassword(password: String): ValidationResult = passwordAnswer
 }

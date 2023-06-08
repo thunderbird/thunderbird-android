@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.options
 
+import androidx.lifecycle.viewModelScope
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
@@ -15,6 +16,7 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event.
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.State
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Validator
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewModel
+import kotlinx.coroutines.launch
 
 internal class AccountOptionsViewModel(
     initialState: State = State(),
@@ -70,27 +72,29 @@ internal class AccountOptionsViewModel(
         }
     }
 
-    private fun submit() = with(state.value) {
-        val accountNameResult = validator.validateAccountName(accountName.value)
-        val displayNameResult = validator.validateDisplayName(displayName.value)
-        val emailSignatureResult = validator.validateEmailSignature(emailSignature.value)
+    private fun submit() {
+        viewModelScope.launch {
+            val accountNameResult = validator.validateAccountName(state.value.accountName.value)
+            val displayNameResult = validator.validateDisplayName(state.value.displayName.value)
+            val emailSignatureResult = validator.validateEmailSignature(state.value.emailSignature.value)
 
-        val hasError = listOf(
-            accountNameResult,
-            displayNameResult,
-            emailSignatureResult,
-        ).any { it is ValidationResult.Failure }
+            val hasError = listOf(
+                accountNameResult,
+                displayNameResult,
+                emailSignatureResult,
+            ).any { it is ValidationResult.Failure }
 
-        updateState {
-            it.copy(
-                accountName = it.accountName.updateFromValidationResult(accountNameResult),
-                displayName = it.displayName.updateFromValidationResult(displayNameResult),
-                emailSignature = it.emailSignature.updateFromValidationResult(emailSignatureResult),
-            )
-        }
+            updateState {
+                it.copy(
+                    accountName = it.accountName.updateFromValidationResult(accountNameResult),
+                    displayName = it.displayName.updateFromValidationResult(displayNameResult),
+                    emailSignature = it.emailSignature.updateFromValidationResult(emailSignatureResult),
+                )
+            }
 
-        if (!hasError) {
-            navigateNext()
+            if (!hasError) {
+                navigateNext()
+            }
         }
     }
 

@@ -6,7 +6,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 
 class ValidateImapPrefix : ValidationUseCase<String> {
 
-    override fun execute(input: String): ValidationResult {
+    override suspend fun execute(input: String): ValidationResult {
         return when {
             input.isEmpty() -> ValidationResult.Success
             input.isBlank() -> ValidationResult.Failure(ValidateImapPrefixError.BlankImapPrefix)

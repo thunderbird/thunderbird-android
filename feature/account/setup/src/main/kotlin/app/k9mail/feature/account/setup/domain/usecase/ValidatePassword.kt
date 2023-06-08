@@ -7,7 +7,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 class ValidatePassword : ValidationUseCase<String> {
 
     // TODO change behavior to allow empty password when no password is required based on auth type
-    override fun execute(input: String): ValidationResult {
+    override suspend fun execute(input: String): ValidationResult {
         return when {
             input.isBlank() -> ValidationResult.Failure(ValidatePasswordError.EmptyPassword)
 

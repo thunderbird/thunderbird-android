@@ -7,7 +7,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 class ValidateServer : ValidationUseCase<String> {
 
     // TODO validate domain, ip4 or ip6
-    override fun execute(input: String): ValidationResult {
+    override suspend fun execute(input: String): ValidationResult {
         return when {
             input.isBlank() -> ValidationResult.Failure(ValidateServerError.EmptyServer)
             else -> ValidationResult.Success

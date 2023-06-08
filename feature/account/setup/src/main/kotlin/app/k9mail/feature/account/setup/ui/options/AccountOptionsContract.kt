@@ -39,8 +39,8 @@ interface AccountOptionsContract {
     }
 
     interface Validator {
-        fun validateAccountName(accountName: String): ValidationResult
-        fun validateDisplayName(displayName: String): ValidationResult
-        fun validateEmailSignature(emailSignature: String): ValidationResult
+        suspend fun validateAccountName(accountName: String): ValidationResult
+        suspend fun validateDisplayName(displayName: String): ValidationResult
+        suspend fun validateEmailSignature(emailSignature: String): ValidationResult
     }
 }

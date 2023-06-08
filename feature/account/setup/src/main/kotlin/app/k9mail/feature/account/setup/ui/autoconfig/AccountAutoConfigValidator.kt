@@ -9,11 +9,11 @@ class AccountAutoConfigValidator(
     private val passwordValidator: ValidatePassword = ValidatePassword(),
 ) : AccountAutoConfigContract.Validator {
 
-    override fun validateEmailAddress(emailAddress: String): ValidationResult {
+    override suspend fun validateEmailAddress(emailAddress: String): ValidationResult {
         return emailAddressValidator.execute(emailAddress)
     }
 
-    override fun validatePassword(password: String): ValidationResult {
+    override suspend fun validatePassword(password: String): ValidationResult {
         return passwordValidator.execute(password)
     }
 }

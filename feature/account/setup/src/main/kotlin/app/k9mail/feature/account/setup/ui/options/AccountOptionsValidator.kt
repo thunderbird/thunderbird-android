@@ -11,15 +11,15 @@ internal class AccountOptionsValidator(
     private val displayNameValidator: ValidateDisplayName = ValidateDisplayName(),
     private val emailSignatureValidator: ValidateEmailSignature = ValidateEmailSignature(),
 ) : Validator {
-    override fun validateAccountName(accountName: String): ValidationResult {
+    override suspend fun validateAccountName(accountName: String): ValidationResult {
         return accountNameValidator.execute(accountName)
     }
 
-    override fun validateDisplayName(displayName: String): ValidationResult {
+    override suspend fun validateDisplayName(displayName: String): ValidationResult {
         return displayNameValidator.execute(displayName)
     }
 
-    override fun validateEmailSignature(emailSignature: String): ValidationResult {
+    override suspend fun validateEmailSignature(emailSignature: String): ValidationResult {
         return emailSignatureValidator.execute(emailSignature)
     }
 }

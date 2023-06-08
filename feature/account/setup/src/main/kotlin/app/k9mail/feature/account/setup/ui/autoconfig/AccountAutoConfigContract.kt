@@ -41,7 +41,7 @@ interface AccountAutoConfigContract {
     }
 
     interface Validator {
-        fun validateEmailAddress(emailAddress: String): ValidationResult
-        fun validatePassword(password: String): ValidationResult
+        suspend fun validateEmailAddress(emailAddress: String): ValidationResult
+        suspend fun validatePassword(password: String): ValidationResult
     }
 }

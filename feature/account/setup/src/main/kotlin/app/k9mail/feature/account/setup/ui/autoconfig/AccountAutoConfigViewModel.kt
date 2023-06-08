@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.autoconfig
 
+import androidx.lifecycle.viewModelScope
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.setup.domain.input.StringInputField
@@ -9,6 +10,7 @@ import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Validator
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ViewModel
+import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
 class AccountAutoConfigViewModel(
@@ -63,8 +65,8 @@ class AccountAutoConfigViewModel(
     }
 
     private fun submitEmail() {
-        with(state.value) {
-            val emailValidationResult = validator.validateEmailAddress(emailAddress.value)
+        viewModelScope.launch {
+            val emailValidationResult = validator.validateEmailAddress(state.value.emailAddress.value)
             val hasError = emailValidationResult is ValidationResult.Failure
 
             updateState {
@@ -77,9 +79,9 @@ class AccountAutoConfigViewModel(
     }
 
     private fun submitPassword() {
-        with(state.value) {
-            val emailValidationResult = validator.validateEmailAddress(emailAddress.value)
-            val passwordValidationResult = validator.validatePassword(password.value)
+        viewModelScope.launch {
+            val emailValidationResult = validator.validateEmailAddress(state.value.emailAddress.value)
+            val passwordValidationResult = validator.validatePassword(state.value.password.value)
             val hasError = listOf(emailValidationResult, passwordValidationResult)
                 .any { it is ValidationResult.Failure }
 

@@ -6,7 +6,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 
 class ValidatePort : ValidationUseCase<Long?> {
 
-    override fun execute(input: Long?): ValidationResult {
+    override suspend fun execute(input: Long?): ValidationResult {
         return when (input) {
             null -> ValidationResult.Failure(ValidatePortError.EmptyPort)
             in MIN_PORT_NUMBER..MAX_PORT_NUMBER -> ValidationResult.Success

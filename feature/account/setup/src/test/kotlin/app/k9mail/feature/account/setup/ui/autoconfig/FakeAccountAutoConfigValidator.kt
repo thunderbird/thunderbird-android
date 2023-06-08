@@ -6,6 +6,6 @@ class FakeAccountAutoConfigValidator(
     private val emailAddressAnswer: ValidationResult = ValidationResult.Success,
     private val passwordAnswer: ValidationResult = ValidationResult.Success,
 ) : AccountAutoConfigContract.Validator {
-    override fun validateEmailAddress(emailAddress: String): ValidationResult = emailAddressAnswer
-    override fun validatePassword(password: String): ValidationResult = passwordAnswer
+    override suspend fun validateEmailAddress(emailAddress: String): ValidationResult = emailAddressAnswer
+    override suspend fun validatePassword(password: String): ValidationResult = passwordAnswer
 }

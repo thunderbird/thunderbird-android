@@ -5,12 +5,15 @@ import app.k9mail.feature.account.setup.domain.usecase.ValidateAccountName.Valid
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ValidateAccountNameTest {
 
     @Test
-    fun `should succeed when account name is set`() {
+    fun `should succeed when account name is set`() = runTest {
         val useCase = ValidateAccountName()
 
         val result = useCase.execute("account name")
@@ -19,7 +22,7 @@ class ValidateAccountNameTest {
     }
 
     @Test
-    fun `should succeed when account name is empty`() {
+    fun `should succeed when account name is empty`() = runTest {
         val useCase = ValidateAccountName()
 
         val result = useCase.execute("")
@@ -28,7 +31,7 @@ class ValidateAccountNameTest {
     }
 
     @Test
-    fun `should fail when account name is blank`() {
+    fun `should fail when account name is blank`() = runTest {
         val useCase = ValidateAccountName()
 
         val result = useCase.execute(" ")

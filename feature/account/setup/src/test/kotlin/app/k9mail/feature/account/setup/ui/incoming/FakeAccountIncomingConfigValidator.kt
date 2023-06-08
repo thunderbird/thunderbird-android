@@ -9,9 +9,9 @@ class FakeAccountIncomingConfigValidator(
     private val passwordAnswer: ValidationResult = ValidationResult.Success,
     private val imapPrefixAnswer: ValidationResult = ValidationResult.Success,
 ) : AccountIncomingConfigContract.Validator {
-    override fun validateServer(server: String): ValidationResult = serverAnswer
-    override fun validatePort(port: Long?): ValidationResult = portAnswer
-    override fun validateUsername(username: String): ValidationResult = usernameAnswer
-    override fun validatePassword(password: String): ValidationResult = passwordAnswer
-    override fun validateImapPrefix(imapPrefix: String): ValidationResult = imapPrefixAnswer
+    override suspend fun validateServer(server: String): ValidationResult = serverAnswer
+    override suspend fun validatePort(port: Long?): ValidationResult = portAnswer
+    override suspend fun validateUsername(username: String): ValidationResult = usernameAnswer
+    override suspend fun validatePassword(password: String): ValidationResult = passwordAnswer
+    override suspend fun validateImapPrefix(imapPrefix: String): ValidationResult = imapPrefixAnswer
 }

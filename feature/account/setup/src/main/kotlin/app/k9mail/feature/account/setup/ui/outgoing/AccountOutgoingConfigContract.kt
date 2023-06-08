@@ -43,9 +43,9 @@ interface AccountOutgoingConfigContract {
     }
 
     interface Validator {
-        fun validateServer(server: String): ValidationResult
-        fun validatePort(port: Long?): ValidationResult
-        fun validateUsername(username: String): ValidationResult
-        fun validatePassword(password: String): ValidationResult
+        suspend fun validateServer(server: String): ValidationResult
+        suspend fun validatePort(port: Long?): ValidationResult
+        suspend fun validateUsername(username: String): ValidationResult
+        suspend fun validatePassword(password: String): ValidationResult
     }
 }
