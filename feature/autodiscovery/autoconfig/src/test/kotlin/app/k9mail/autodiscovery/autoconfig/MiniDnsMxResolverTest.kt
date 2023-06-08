@@ -20,7 +20,7 @@ class MiniDnsMxResolverTest {
 
         val result = resolver.lookup(domain)
 
-        assertThat(result).extracting { it.value }.all {
+        assertThat(result.mxNames).extracting { it.value }.all {
             index(0).isEqualTo("aspmx.l.google.com")
             containsExactlyInAnyOrder(
                 "aspmx.l.google.com",

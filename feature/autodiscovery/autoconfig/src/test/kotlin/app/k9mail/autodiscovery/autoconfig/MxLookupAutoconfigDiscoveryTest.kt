@@ -99,4 +99,30 @@ class MxLookupAutoconfigDiscoveryTest {
         assertThat(autoconfigFetcher.callCount).isEqualTo(0)
         assertThat(discoveryResult).isEqualTo(NoUsableSettingsFound)
     }
+
+    @Test
+    fun `isTrusted should be false when MxLookupResult_isTrusted is false`() = runTest {
+        val emailAddress = "user@company.example".toEmailAddress()
+        mxResolver.addResult("mx.emailprovider.example".toDomain(), isTrusted = false)
+        urlProvider.addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
+        autoconfigFetcher.addResult(RESULT_ONE.copy(isTrusted = true))
+
+        val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
+        val discoveryResult = autoDiscoveryRunnables.first().run()
+
+        assertThat(discoveryResult).isEqualTo(RESULT_ONE.copy(isTrusted = false))
+    }
+
+    @Test
+    fun `isTrusted should be false when AutoDiscoveryResult_isTrusted from AutoconfigFetcher is false`() = runTest {
+        val emailAddress = "user@company.example".toEmailAddress()
+        mxResolver.addResult("mx.emailprovider.example".toDomain(), isTrusted = true)
+        urlProvider.addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
+        autoconfigFetcher.addResult(RESULT_ONE.copy(isTrusted = false))
+
+        val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
+        val discoveryResult = autoDiscoveryRunnables.first().run()
+
+        assertThat(discoveryResult).isEqualTo(RESULT_ONE.copy(isTrusted = false))
+    }
 }

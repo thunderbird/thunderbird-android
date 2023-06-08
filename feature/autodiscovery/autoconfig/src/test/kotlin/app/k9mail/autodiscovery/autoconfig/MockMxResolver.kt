@@ -8,17 +8,17 @@ class MockMxResolver : MxResolver {
     val callCount: Int
         get() = callArguments.size
 
-    private val results = mutableListOf<List<Domain>>()
+    private val results = mutableListOf<MxLookupResult>()
 
-    fun addResult(domain: Domain) {
-        results.add(listOf(domain))
+    fun addResult(domain: Domain, isTrusted: Boolean = true) {
+        results.add(MxLookupResult(mxNames = listOf(domain), isTrusted = isTrusted))
     }
 
     fun addResult(domains: List<Domain>) {
-        results.add(domains)
+        results.add(MxLookupResult(mxNames = domains, isTrusted = true))
     }
 
-    override fun lookup(domain: Domain): List<Domain> {
+    override fun lookup(domain: Domain): MxLookupResult {
         callArguments.add(domain)
 
         check(results.isNotEmpty()) { "lookup($domain) called but no result provided" }

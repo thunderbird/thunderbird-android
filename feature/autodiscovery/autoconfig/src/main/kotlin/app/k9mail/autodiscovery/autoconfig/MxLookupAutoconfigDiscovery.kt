@@ -32,7 +32,8 @@ class MxLookupAutoconfigDiscovery internal constructor(
     private suspend fun mxLookupAutoconfig(email: EmailAddress): AutoDiscoveryResult {
         val domain = email.domain.toDomain()
 
-        val mxHostName = mxLookup(domain) ?: return NoUsableSettingsFound
+        val mxLookupResult = mxLookup(domain) ?: return NoUsableSettingsFound
+        val mxHostName = mxLookupResult.mxNames.first()
 
         val mxBaseDomain = getMxBaseDomain(mxHostName)
         if (mxBaseDomain == domain) {
@@ -49,7 +50,9 @@ class MxLookupAutoconfigDiscovery internal constructor(
             for (autoconfigUrl in urlProvider.getAutoconfigUrls(domainToCheck)) {
                 val discoveryResult = autoconfigFetcher.fetchAutoconfig(autoconfigUrl, email)
                 if (discoveryResult is Settings) {
-                    return discoveryResult
+                    return discoveryResult.copy(
+                        isTrusted = mxLookupResult.isTrusted && discoveryResult.isTrusted,
+                    )
                 }
 
                 latestResult = discoveryResult
@@ -59,10 +62,10 @@ class MxLookupAutoconfigDiscovery internal constructor(
         return latestResult
     }
 
-    private suspend fun mxLookup(domain: Domain): Domain? {
+    private suspend fun mxLookup(domain: Domain): MxLookupResult? {
         // Only return the most preferred entry to match Thunderbird's behavior.
         return try {
-            mxResolver.lookup(domain).firstOrNull()
+            mxResolver.lookup(domain).takeIf { it.mxNames.isNotEmpty() }
         } catch (e: IOException) {
             Timber.d(e, "Failed to get MX record for domain: %s", domain.value)
             null
