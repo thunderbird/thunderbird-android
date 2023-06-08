@@ -7,34 +7,37 @@ import org.junit.Test
 class IncomingProtocolTypeTest {
 
     @Test
-    fun `should provide right default connection security`() {
-        val incomingProtocolTypes = IncomingProtocolType.all()
+    fun `all should contain all protocol types`() {
+        val protocolTypes = IncomingProtocolType.all()
 
-        for (incomingProtocolType in incomingProtocolTypes) {
-            val security = incomingProtocolType.defaultConnectionSecurity
+        assertThat(protocolTypes).isEqualTo(
+            IncomingProtocolType.values().toList(),
+        )
+    }
 
-            assertThat(security).isEqualTo(
-                when (incomingProtocolType) {
-                    IncomingProtocolType.IMAP -> ConnectionSecurity.TLS
-                    IncomingProtocolType.POP3 -> ConnectionSecurity.TLS
-                },
-            )
-        }
+    @Test
+    fun `defaultConnectionSecurity should provide right default connection security`() {
+        val protocolTypeToConnectionSecurity = IncomingProtocolType.all()
+            .associateWith { it.defaultConnectionSecurity }
+
+        assertThat(protocolTypeToConnectionSecurity).isEqualTo(
+            mapOf(
+                IncomingProtocolType.IMAP to ConnectionSecurity.TLS,
+                IncomingProtocolType.POP3 to ConnectionSecurity.TLS,
+            ),
+        )
     }
 
     @Test
     fun `should provide right default port`() {
-        val incomingProtocolTypes = IncomingProtocolType.all()
+        val protocolTypeToPort = IncomingProtocolType.all()
+            .associateWith { it.toDefaultPort(it.defaultConnectionSecurity) }
 
-        for (incomingProtocolType in incomingProtocolTypes) {
-            val port = incomingProtocolType.toDefaultPort(ConnectionSecurity.TLS)
-
-            assertThat(port).isEqualTo(
-                when (incomingProtocolType) {
-                    IncomingProtocolType.IMAP -> 993L
-                    IncomingProtocolType.POP3 -> 995L
-                },
-            )
-        }
+        assertThat(protocolTypeToPort).isEqualTo(
+            mapOf(
+                IncomingProtocolType.IMAP to 993L,
+                IncomingProtocolType.POP3 to 995L,
+            ),
+        )
     }
 }

@@ -7,32 +7,34 @@ import org.junit.Test
 class OutgoingProtocolTypeTest {
 
     @Test
-    fun `should provide right default connection security`() {
-        val outgoingProtocolTypes = OutgoingProtocolType.all()
+    fun `all should contain all protocol types`() {
+        val protocolTypes = OutgoingProtocolType.all()
 
-        for (protocolType in outgoingProtocolTypes) {
-            val security = protocolType.defaultConnectionSecurity
+        assertThat(protocolTypes).isEqualTo(
+            OutgoingProtocolType.values().toList(),
+        )
+    }
 
-            assertThat(security).isEqualTo(
-                when (protocolType) {
-                    OutgoingProtocolType.SMTP -> ConnectionSecurity.TLS
-                },
-            )
-        }
+    @Test
+    fun `defaultConnectionSecurity should provide right default connection security`() {
+        val protocolTypeToConnectionSecurity = OutgoingProtocolType.all().associateWith { it.defaultConnectionSecurity }
+
+        assertThat(protocolTypeToConnectionSecurity).isEqualTo(
+            mapOf(
+                OutgoingProtocolType.SMTP to ConnectionSecurity.TLS,
+            ),
+        )
     }
 
     @Test
     fun `should provide right default port`() {
-        val outgoingProtocolTypes = OutgoingProtocolType.all()
+        val protocolTypeToPort = OutgoingProtocolType.all()
+            .associateWith { it.toDefaultPort(it.defaultConnectionSecurity) }
 
-        for (protocolType in outgoingProtocolTypes) {
-            val port = protocolType.toDefaultPort(ConnectionSecurity.TLS)
-
-            assertThat(port).isEqualTo(
-                when (protocolType) {
-                    OutgoingProtocolType.SMTP -> 465L
-                },
-            )
-        }
+        assertThat(protocolTypeToPort).isEqualTo(
+            mapOf(
+                OutgoingProtocolType.SMTP to 465L,
+            ),
+        )
     }
 }
