@@ -4,39 +4,36 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test
 
-class IncomingProtocolTypeTest {
+class OutgoingProtocolTypeTest {
 
     @Test
     fun `all should contain all protocol types`() {
-        val protocolTypes = IncomingProtocolType.all()
+        val protocolTypes = OutgoingProtocolType.all()
 
         assertThat(protocolTypes).isEqualTo(
-            IncomingProtocolType.values().toList(),
+            OutgoingProtocolType.values().toList(),
         )
     }
 
     @Test
     fun `defaultConnectionSecurity should provide right default connection security`() {
-        val protocolTypeToConnectionSecurity = IncomingProtocolType.all()
-            .associateWith { it.defaultConnectionSecurity }
+        val protocolTypeToConnectionSecurity = OutgoingProtocolType.all().associateWith { it.defaultConnectionSecurity }
 
         assertThat(protocolTypeToConnectionSecurity).isEqualTo(
             mapOf(
-                IncomingProtocolType.IMAP to ConnectionSecurity.TLS,
-                IncomingProtocolType.POP3 to ConnectionSecurity.TLS,
+                OutgoingProtocolType.SMTP to ConnectionSecurity.TLS,
             ),
         )
     }
 
     @Test
     fun `should provide right default port`() {
-        val protocolTypeToPort = IncomingProtocolType.all()
+        val protocolTypeToPort = OutgoingProtocolType.all()
             .associateWith { it.toDefaultPort(it.defaultConnectionSecurity) }
 
         assertThat(protocolTypeToPort).isEqualTo(
             mapOf(
-                IncomingProtocolType.IMAP to 993L,
-                IncomingProtocolType.POP3 to 995L,
+                OutgoingProtocolType.SMTP to 465L,
             ),
         )
     }

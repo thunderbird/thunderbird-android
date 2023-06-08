@@ -7,7 +7,9 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigScreen
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigViewModel
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigScreen
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewModel
@@ -24,6 +26,7 @@ fun AccountSetupScreen(
     onFinish: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel = koinViewModel<AccountSetupViewModel>(),
+    autoConfigViewModel: AccountAutoConfigContract.ViewModel = koinViewModel<AccountAutoConfigViewModel>(),
     incomingViewModel: AccountIncomingConfigContract.ViewModel = koinViewModel<AccountIncomingConfigViewModel>(),
     outgoingViewModel: AccountOutgoingConfigContract.ViewModel = koinViewModel<AccountOutgoingConfigViewModel>(),
     optionsViewModel: AccountOptionsContract.ViewModel = koinViewModel<AccountOptionsViewModel>(),
@@ -40,6 +43,7 @@ fun AccountSetupScreen(
             AccountAutoConfigScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
+                viewModel = autoConfigViewModel,
             )
         }
 

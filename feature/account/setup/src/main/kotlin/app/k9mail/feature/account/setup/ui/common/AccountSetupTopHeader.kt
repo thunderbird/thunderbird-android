@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +22,7 @@ import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.setup.R.string
 
 @Composable
-internal fun AccountAutoConfigTopHeader(
+internal fun AccountSetupTopHeader(
     modifier: Modifier = Modifier,
 ) {
     ResponsiveWidthContainer(
@@ -53,7 +53,7 @@ internal fun AccountAutoConfigTopHeader(
             TextHeadline2(
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(stringResource(id = string.account_setup_auto_config_title))
+                        append(stringResource(id = string.account_setup_title))
                     }
                 },
             )
@@ -65,6 +65,6 @@ internal fun AccountAutoConfigTopHeader(
 @Composable
 internal fun AccountAutoConfigTopHeaderPreview() {
     PreviewWithThemes {
-        AccountAutoConfigTopHeader()
+        AccountSetupTopHeader()
     }
 }

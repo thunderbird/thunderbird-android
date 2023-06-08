@@ -5,7 +5,6 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
-import app.k9mail.feature.account.setup.domain.entity.toDefaultSecurity
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.ClientCertificateChanged
@@ -47,6 +46,7 @@ class AccountIncomingConfigViewModel(
             is ImapAutoDetectNamespaceChanged -> updateState { it.copy(imapAutodetectNamespaceEnabled = event.enabled) }
             is ImapPrefixChanged -> updateState { it.copy(imapPrefix = it.imapPrefix.updateValue(event.imapPrefix)) }
             is UseCompressionChanged -> updateState { it.copy(useCompression = event.useCompression) }
+
             OnBackClicked -> navigateBack()
             OnNextClicked -> submit()
         }
@@ -56,9 +56,9 @@ class AccountIncomingConfigViewModel(
         updateState {
             it.copy(
                 protocolType = protocolType,
-                security = protocolType.toDefaultSecurity(),
+                security = protocolType.defaultConnectionSecurity,
                 port = it.port.updateValue(
-                    protocolType.toDefaultPort(protocolType.toDefaultSecurity()),
+                    protocolType.toDefaultPort(protocolType.defaultConnectionSecurity),
                 ),
             )
         }
