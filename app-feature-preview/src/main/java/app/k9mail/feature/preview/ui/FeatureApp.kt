@@ -1,7 +1,7 @@
 package app.k9mail.feature.preview.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
@@ -19,7 +19,7 @@ fun FeatureApp(
         Background(
             modifier = Modifier
                 .fillMaxSize()
-                .systemBarsPadding()
+                .safeDrawingPadding()
                 .then(modifier),
         ) {
             FeatureNavHost(navController = navController)
