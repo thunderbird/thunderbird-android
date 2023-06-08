@@ -4,7 +4,6 @@ import app.k9mail.autodiscovery.api.AuthenticationType
 import app.k9mail.autodiscovery.api.AuthenticationType.OAuth2
 import app.k9mail.autodiscovery.api.AuthenticationType.PasswordCleartext
 import app.k9mail.autodiscovery.api.AuthenticationType.PasswordEncrypted
-import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ConnectionSecurity
 import app.k9mail.autodiscovery.api.ConnectionSecurity.StartTLS
 import app.k9mail.autodiscovery.api.ConnectionSecurity.TLS
@@ -34,11 +33,13 @@ private typealias ServerSettingsFactory<T> = (
 ) -> T
 
 internal class RealAutoconfigParser : AutoconfigParser {
-    override fun parseSettings(inputStream: InputStream, email: EmailAddress): AutoDiscoveryResult? {
+    override fun parseSettings(inputStream: InputStream, email: EmailAddress): AutoconfigParserResult {
         return try {
             ClientConfigParser(inputStream, email).parse()
         } catch (e: XmlPullParserException) {
-            throw AutoconfigParserException("Error parsing Autoconfig XML", e)
+            AutoconfigParserResult.ParserError(error = AutoconfigParserException("Error parsing Autoconfig XML", e))
+        } catch (e: AutoconfigParserException) {
+            AutoconfigParserResult.ParserError(e)
         }
     }
 }
@@ -55,46 +56,46 @@ private class ClientConfigParser(
         setInput(InputStreamReader(inputStream))
     }
 
-    fun parse(): AutoDiscoveryResult {
-        var autoDiscoveryResult: AutoDiscoveryResult? = null
+    fun parse(): AutoconfigParserResult {
+        var result: AutoconfigParserResult? = null
         do {
             val eventType = pullParser.next()
 
             if (eventType == XmlPullParser.START_TAG) {
                 when (pullParser.name) {
                     "clientConfig" -> {
-                        autoDiscoveryResult = parseClientConfig()
+                        result = parseClientConfig()
                     }
                     else -> skipElement()
                 }
             }
         } while (eventType != XmlPullParser.END_DOCUMENT)
 
-        if (autoDiscoveryResult == null) {
+        if (result == null) {
             parserError("Missing 'clientConfig' element")
         }
 
-        return autoDiscoveryResult
+        return result
     }
 
-    private fun parseClientConfig(): AutoDiscoveryResult {
-        var autoDiscoveryResult: AutoDiscoveryResult? = null
+    private fun parseClientConfig(): AutoconfigParserResult {
+        var result: AutoconfigParserResult? = null
 
         readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
                 when (pullParser.name) {
                     "emailProvider" -> {
-                        autoDiscoveryResult = parseEmailProvider()
+                        result = parseEmailProvider()
                     }
                     else -> skipElement()
                 }
             }
         }
 
-        return autoDiscoveryResult ?: parserError("Missing 'emailProvider' element")
+        return result ?: parserError("Missing 'emailProvider' element")
     }
 
-    private fun parseEmailProvider(): AutoDiscoveryResult {
+    private fun parseEmailProvider(): AutoconfigParserResult {
         var domainFound = false
         var incomingServerSettings: IncomingServerSettings? = null
         var outgoingServerSettings: OutgoingServerSettings? = null
@@ -140,7 +141,7 @@ private class ClientConfigParser(
             parserError("Valid 'domain' element required")
         }
 
-        return AutoDiscoveryResult(
+        return AutoconfigParserResult.Settings(
             incomingServerSettings = incomingServerSettings ?: parserError("Missing 'incomingServer' element"),
             outgoingServerSettings = outgoingServerSettings ?: parserError("Missing 'outgoingServer' element"),
         )

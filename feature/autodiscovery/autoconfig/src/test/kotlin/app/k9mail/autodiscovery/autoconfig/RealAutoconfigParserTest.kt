@@ -2,15 +2,15 @@ package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.AuthenticationType.OAuth2
 import app.k9mail.autodiscovery.api.AuthenticationType.PasswordCleartext
-import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ConnectionSecurity.StartTLS
 import app.k9mail.autodiscovery.api.ConnectionSecurity.TLS
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
+import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.ParserError
+import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.Settings
 import app.k9mail.core.common.mail.toEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
-import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
@@ -64,7 +64,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
         assertThat(result).isNotNull().isEqualTo(
-            AutoDiscoveryResult(
+            Settings(
                 ImapServerSettings(
                     hostname = "imap.domain.example".toHostname(),
                     port = 993.toPort(),
@@ -90,7 +90,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, email = "test@gmail.com".toEmailAddress())
 
         assertThat(result).isNotNull().isEqualTo(
-            AutoDiscoveryResult(
+            Settings(
                 ImapServerSettings(
                     hostname = "imap.gmail.com".toHostname(),
                     port = 993.toPort(),
@@ -120,7 +120,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
         assertThat(result).isNotNull().isEqualTo(
-            AutoDiscoveryResult(
+            Settings(
                 ImapServerSettings(
                     hostname = "user.domain.example".toHostname(),
                     port = 993.toPort(),
@@ -151,8 +151,8 @@ class RealAutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result).isNotNull()
-            .prop(AutoDiscoveryResult::incomingServerSettings).isEqualTo(
+        assertThat(result).isInstanceOf<Settings>()
+            .prop(Settings::incomingServerSettings).isEqualTo(
                 ImapServerSettings(
                     hostname = "imap.domain.example".toHostname(),
                     port = 993.toPort(),
@@ -171,8 +171,8 @@ class RealAutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result).isNotNull()
-            .prop(AutoDiscoveryResult::incomingServerSettings).isEqualTo(
+        assertThat(result).isInstanceOf<Settings>()
+            .prop(Settings::incomingServerSettings).isEqualTo(
                 ImapServerSettings(
                     hostname = "imap.domain.example".toHostname(),
                     port = 993.toPort(),
@@ -191,8 +191,8 @@ class RealAutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result).isNotNull()
-            .prop(AutoDiscoveryResult::outgoingServerSettings).isEqualTo(
+        assertThat(result).isInstanceOf<Settings>()
+            .prop(Settings::outgoingServerSettings).isEqualTo(
                 SmtpServerSettings(
                     hostname = "smtp.domain.example".toHostname(),
                     port = 587.toPort(),
@@ -211,8 +211,8 @@ class RealAutoconfigParserTest {
 
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
 
-        assertThat(result).isNotNull()
-            .prop(AutoDiscoveryResult::incomingServerSettings).isEqualTo(
+        assertThat(result).isInstanceOf<Settings>()
+            .prop(Settings::incomingServerSettings).isEqualTo(
                 ImapServerSettings(
                     hostname = "imap.domain.example".toHostname(),
                     port = 993.toPort(),
@@ -229,10 +229,10 @@ class RealAutoconfigParserTest {
             element("emailProvider").removeAttr("id")
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'emailProvider.id' attribute")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'emailProvider.id' attribute")
     }
 
     @Test
@@ -241,10 +241,10 @@ class RealAutoconfigParserTest {
             element("emailProvider").attr("id", "-23")
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Invalid 'emailProvider.id' attribute")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Invalid 'emailProvider.id' attribute")
     }
 
     @Test
@@ -253,10 +253,10 @@ class RealAutoconfigParserTest {
             element("emailProvider > domain").remove()
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Valid 'domain' element required")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Valid 'domain' element required")
     }
 
     @Test
@@ -265,10 +265,10 @@ class RealAutoconfigParserTest {
             element("emailProvider > domain").text("-invalid")
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Valid 'domain' element required")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Valid 'domain' element required")
     }
 
     @Test
@@ -277,10 +277,10 @@ class RealAutoconfigParserTest {
             element("incomingServer").remove()
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'incomingServer' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'incomingServer' element")
     }
 
     @Test
@@ -289,10 +289,10 @@ class RealAutoconfigParserTest {
             element("outgoingServer").remove()
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'outgoingServer' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'outgoingServer' element")
     }
 
     @Test
@@ -301,10 +301,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > hostname").remove()
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'hostname' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'hostname' element")
     }
 
     @Test
@@ -313,10 +313,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > hostname").text("in valid")
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Invalid 'hostname' value: 'in valid'")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Invalid 'hostname' value: 'in valid'")
     }
 
     @Test
@@ -325,10 +325,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > port").remove()
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'port' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'port' element")
     }
 
     @Test
@@ -337,10 +337,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > socketType").remove()
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'socketType' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'socketType' element")
     }
 
     @Test
@@ -349,10 +349,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > authentication").remove()
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("No usable 'authentication' element found")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("No usable 'authentication' element found")
     }
 
     @Test
@@ -361,10 +361,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > username").remove()
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'username' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'username' element")
     }
 
     @Test
@@ -373,10 +373,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > port").text("invalid")
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Invalid 'port' value: 'invalid'")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Invalid 'port' value: 'invalid'")
     }
 
     @Test
@@ -385,10 +385,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > port").text("100000")
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Invalid 'port' value: '100000'")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Invalid 'port' value: '100000'")
     }
 
     @Test
@@ -397,10 +397,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > socketType").text("TLS")
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Unknown 'socketType' value: 'TLS'")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Unknown 'socketType' value: 'TLS'")
     }
 
     @Test
@@ -409,10 +409,10 @@ class RealAutoconfigParserTest {
             element("incomingServer > hostname").html("imap.domain.example<element/>")
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Expected text, but got START_TAG")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Expected text, but got START_TAG")
     }
 
     @Test
@@ -421,10 +421,10 @@ class RealAutoconfigParserTest {
             element("emailProvider").tagName("madeUpTag")
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'emailProvider' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'emailProvider' element")
     }
 
     @Test
@@ -436,10 +436,10 @@ class RealAutoconfigParserTest {
             incomingServer.html(incomingServerXml)
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'incomingServer' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'incomingServer' element")
     }
 
     @Test
@@ -451,20 +451,20 @@ class RealAutoconfigParserTest {
             outgoingServer.html(outgoingServerXml)
         }
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'outgoingServer' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'outgoingServer' element")
     }
 
     @Test
     fun `non XML data should throw`() {
         val inputStream = "invalid".byteInputStream()
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Error parsing Autoconfig XML")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Error parsing Autoconfig XML")
     }
 
     @Test
@@ -476,10 +476,10 @@ class RealAutoconfigParserTest {
             <serverConfig></serverConfig>
             """.trimIndent().byteInputStream()
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Missing 'clientConfig' element")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Missing 'clientConfig' element")
     }
 
     @Test
@@ -508,10 +508,10 @@ class RealAutoconfigParserTest {
             </clientConfig>
             """.trimIndent().byteInputStream()
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("Error parsing Autoconfig XML")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("Error parsing Autoconfig XML")
     }
 
     @Test
@@ -524,10 +524,10 @@ class RealAutoconfigParserTest {
               <emailProvider id="domain.example">
             """.trimIndent().byteInputStream()
 
-        assertFailure {
-            parser.parseSettings(inputStream, irrelevantEmailAddress)
-        }.isInstanceOf<AutoconfigParserException>()
-            .hasMessage("End of document reached while reading element 'emailProvider'")
+        val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
+
+        assertThat(result).isInstanceOf<ParserError>()
+            .prop(ParserError::error).hasMessage("End of document reached while reading element 'emailProvider'")
     }
 
     private fun String.withModifications(block: Document.() -> Unit): InputStream {
