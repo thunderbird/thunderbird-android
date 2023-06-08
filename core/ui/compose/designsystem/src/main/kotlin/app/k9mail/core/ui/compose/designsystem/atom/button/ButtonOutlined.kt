@@ -19,6 +19,7 @@ fun ButtonOutlined(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    color: Color? = null,
     contentPadding: PaddingValues = buttonContentPadding(),
 ) {
     MaterialOutlinedButton(
@@ -26,6 +27,7 @@ fun ButtonOutlined(
         modifier = modifier,
         enabled = enabled,
         colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = color ?: MainTheme.colors.primary,
             backgroundColor = Color.Transparent,
         ),
         border = BorderStroke(
@@ -51,6 +53,18 @@ internal fun ButtonOutlinedPreview() {
         ButtonOutlined(
             text = "ButtonOutlined",
             onClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun ButtonOutlinedColoredPreview() {
+    PreviewWithThemes {
+        ButtonOutlined(
+            text = "ButtonOutlinedColored",
+            onClick = {},
+            color = Color.Magenta,
         )
     }
 }
