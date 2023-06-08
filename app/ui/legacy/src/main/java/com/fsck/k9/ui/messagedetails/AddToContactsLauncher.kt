@@ -6,8 +6,8 @@ import android.provider.ContactsContract
 
 internal class AddToContactsLauncher {
     fun launch(context: Context, name: String?, email: String) {
-        val intent = Intent(Intent.ACTION_INSERT).apply {
-            type = ContactsContract.Contacts.CONTENT_TYPE
+        val intent = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
+            type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
 
             putExtra(ContactsContract.Intents.Insert.EMAIL, email)
 
