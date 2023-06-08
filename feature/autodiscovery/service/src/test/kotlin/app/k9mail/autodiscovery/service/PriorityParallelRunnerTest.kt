@@ -155,6 +155,7 @@ class PriorityParallelRunnerTest {
                 authenticationType = PasswordCleartext,
                 username = "user@domain.example",
             ),
+            isTrusted = true,
         )
 
         private val DISCOVERY_RESULT_TWO = AutoDiscoveryResult.Settings(
@@ -172,6 +173,7 @@ class PriorityParallelRunnerTest {
                 authenticationType = PasswordCleartext,
                 username = "user@domain.example",
             ),
+            isTrusted = true,
         )
     }
 }

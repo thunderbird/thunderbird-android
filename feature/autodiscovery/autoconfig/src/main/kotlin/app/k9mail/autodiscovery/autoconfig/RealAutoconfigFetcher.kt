@@ -42,6 +42,7 @@ internal class RealAutoconfigFetcher(
                     AutoDiscoveryResult.Settings(
                         incomingServerSettings = parserResult.incomingServerSettings,
                         outgoingServerSettings = parserResult.outgoingServerSettings,
+                        isTrusted = false,
                     )
                 }
                 is ParserError -> AutoDiscoveryResult.NoUsableSettingsFound
