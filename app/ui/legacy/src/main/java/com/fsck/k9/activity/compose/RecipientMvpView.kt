@@ -192,6 +192,29 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
         }
     }
 
+    fun silentlyAddRecipients(recipientType: RecipientType, vararg recipients: Recipient) {
+        removeAllTextListenersFromView(recipientType)
+        addRecipients(recipientType, *recipients)
+        addAllTextListenersToView(recipientType)
+    }
+
+    private fun removeAllTextListenersFromView(recipientType: RecipientType) {
+        when (recipientType) {
+            RecipientType.TO -> removeAllTextChangedListeners(toView)
+            RecipientType.CC -> removeAllTextChangedListeners(ccView)
+            RecipientType.BCC -> removeAllTextChangedListeners(bccView)
+            else -> throw AssertionError("Unsupported type: $recipientType")
+        }
+    }
+
+    private fun addAllTextListenersToView(recipientType: RecipientType) {
+        when (recipientType) {
+            RecipientType.TO -> addAllTextChangedListeners(toView)
+            RecipientType.CC -> addAllTextChangedListeners(ccView)
+            RecipientType.BCC -> addAllTextChangedListeners(bccView)
+            else -> throw AssertionError("Unsupported type: $recipientType")
+        }
+    }
     fun silentlyAddBccAddresses(vararg recipients: Recipient) {
         removeAllTextChangedListeners(bccView)
 
