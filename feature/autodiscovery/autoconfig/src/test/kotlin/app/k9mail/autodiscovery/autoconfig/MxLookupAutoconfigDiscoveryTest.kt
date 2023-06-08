@@ -1,5 +1,6 @@
 package app.k9mail.autodiscovery.autoconfig
 
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult.NoUsableSettingsFound
 import app.k9mail.autodiscovery.autoconfig.MockAutoconfigFetcher.Companion.RESULT_ONE
 import app.k9mail.core.common.mail.toEmailAddress
 import app.k9mail.core.common.net.toDomain
@@ -8,7 +9,6 @@ import assertk.assertions.containsExactly
 import assertk.assertions.extracting
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNull
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -57,8 +57,8 @@ class MxLookupAutoconfigDiscoveryTest {
             addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
         }
         autoconfigFetcher.apply {
-            addResult(null)
-            addResult(null)
+            addResult(NoUsableSettingsFound)
+            addResult(NoUsableSettingsFound)
         }
 
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
@@ -69,7 +69,7 @@ class MxLookupAutoconfigDiscoveryTest {
             "emailprovider.example".toDomain(),
         )
         assertThat(autoconfigFetcher.callCount).isEqualTo(2)
-        assertThat(discoveryResult).isNull()
+        assertThat(discoveryResult).isEqualTo(NoUsableSettingsFound)
     }
 
     @Test
@@ -83,7 +83,7 @@ class MxLookupAutoconfigDiscoveryTest {
         assertThat(mxResolver.callCount).isEqualTo(1)
         assertThat(urlProvider.callCount).isEqualTo(0)
         assertThat(autoconfigFetcher.callCount).isEqualTo(0)
-        assertThat(discoveryResult).isNull()
+        assertThat(discoveryResult).isEqualTo(NoUsableSettingsFound)
     }
 
     @Test
@@ -97,6 +97,6 @@ class MxLookupAutoconfigDiscoveryTest {
         assertThat(mxResolver.callCount).isEqualTo(1)
         assertThat(urlProvider.callCount).isEqualTo(0)
         assertThat(autoconfigFetcher.callCount).isEqualTo(0)
-        assertThat(discoveryResult).isNull()
+        assertThat(discoveryResult).isEqualTo(NoUsableSettingsFound)
     }
 }

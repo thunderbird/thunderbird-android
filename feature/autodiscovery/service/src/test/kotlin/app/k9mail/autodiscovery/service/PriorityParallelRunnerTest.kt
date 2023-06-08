@@ -2,6 +2,7 @@ package app.k9mail.autodiscovery.service
 
 import app.k9mail.autodiscovery.api.AuthenticationType.PasswordCleartext
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult.NoUsableSettingsFound
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
 import app.k9mail.autodiscovery.api.ConnectionSecurity.StartTLS
 import app.k9mail.autodiscovery.api.ConnectionSecurity.TLS
@@ -137,9 +138,9 @@ class PriorityParallelRunnerTest {
     }
 
     companion object {
-        private val NO_DISCOVERY_RESULT: AutoDiscoveryResult? = null
+        private val NO_DISCOVERY_RESULT: AutoDiscoveryResult = NoUsableSettingsFound
 
-        private val DISCOVERY_RESULT_ONE = AutoDiscoveryResult(
+        private val DISCOVERY_RESULT_ONE = AutoDiscoveryResult.Settings(
             ImapServerSettings(
                 hostname = "imap.domain.example".toHostname(),
                 port = 993.toPort(),
@@ -156,7 +157,7 @@ class PriorityParallelRunnerTest {
             ),
         )
 
-        private val DISCOVERY_RESULT_TWO = AutoDiscoveryResult(
+        private val DISCOVERY_RESULT_TWO = AutoDiscoveryResult.Settings(
             ImapServerSettings(
                 hostname = "imap.domain.example".toHostname(),
                 port = 143.toPort(),

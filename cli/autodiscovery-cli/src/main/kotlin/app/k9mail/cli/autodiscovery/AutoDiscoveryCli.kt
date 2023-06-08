@@ -1,6 +1,7 @@
 package app.k9mail.cli.autodiscovery
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult.Settings
 import app.k9mail.autodiscovery.autoconfig.AutoconfigUrlConfig
 import app.k9mail.autodiscovery.autoconfig.createIspDbAutoconfigDiscovery
 import app.k9mail.autodiscovery.autoconfig.createMxLookupAutoconfigDiscovery
@@ -37,18 +38,18 @@ class AutoDiscoveryCli : CliktCommand(
             runAutoDiscovery(config)
         }
 
-        if (discoveryResult == null) {
-            echo("Couldn't find any mail server settings.")
-        } else {
+        if (discoveryResult is Settings) {
             echo("Found the following mail server settings:")
             AutoDiscoveryResultFormatter(::echo).output(discoveryResult)
+        } else {
+            echo("Couldn't find any mail server settings.")
         }
 
         echo()
         echo("Duration: ${durationInMillis.toDuration(MILLISECONDS)}")
     }
 
-    private fun runAutoDiscovery(config: AutoconfigUrlConfig): AutoDiscoveryResult? {
+    private fun runAutoDiscovery(config: AutoconfigUrlConfig): AutoDiscoveryResult {
         val okHttpClient = Builder().build()
         try {
             val providerDiscovery = createProviderAutoconfigDiscovery(okHttpClient, config)

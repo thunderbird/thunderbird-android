@@ -2,6 +2,8 @@ package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.AutoDiscovery
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult.NoUsableSettingsFound
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult.Settings
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.mail.toDomain
@@ -27,31 +29,34 @@ class MxLookupAutoconfigDiscovery internal constructor(
     }
 
     @Suppress("ReturnCount")
-    private suspend fun mxLookupAutoconfig(email: EmailAddress): AutoDiscoveryResult? {
+    private suspend fun mxLookupAutoconfig(email: EmailAddress): AutoDiscoveryResult {
         val domain = email.domain.toDomain()
 
-        val mxHostName = mxLookup(domain) ?: return null
+        val mxHostName = mxLookup(domain) ?: return NoUsableSettingsFound
 
         val mxBaseDomain = getMxBaseDomain(mxHostName)
         if (mxBaseDomain == domain) {
             // Exit early to match Thunderbird's behavior.
-            return null
+            return NoUsableSettingsFound
         }
 
         // In addition to just the base domain, also check the MX hostname without the first label to differentiate
         // between Outlook.com/Hotmail and Office365 business domains.
         val mxSubDomain = getNextSubDomain(mxHostName)?.takeIf { it != mxBaseDomain }
 
+        var latestResult: AutoDiscoveryResult = NoUsableSettingsFound
         for (domainToCheck in listOfNotNull(mxSubDomain, mxBaseDomain)) {
             for (autoconfigUrl in urlProvider.getAutoconfigUrls(domainToCheck)) {
                 val discoveryResult = autoconfigFetcher.fetchAutoconfig(autoconfigUrl, email)
-                if (discoveryResult != null) {
+                if (discoveryResult is Settings) {
                     return discoveryResult
                 }
+
+                latestResult = discoveryResult
             }
         }
 
-        return null
+        return latestResult
     }
 
     private suspend fun mxLookup(domain: Domain): Domain? {
