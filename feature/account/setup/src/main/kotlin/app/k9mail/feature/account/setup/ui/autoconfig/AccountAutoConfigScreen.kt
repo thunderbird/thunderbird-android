@@ -58,7 +58,9 @@ internal fun AccountAutoConfigScreenK9Preview() {
         AccountAutoConfigScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountAutoConfigViewModel(),
+            viewModel = AccountAutoConfigViewModel(
+                validator = AccountAutoConfigValidator(),
+            ),
         )
     }
 }
@@ -70,7 +72,9 @@ internal fun AccountAutoConfigScreenThunderbirdPreview() {
         AccountAutoConfigScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountAutoConfigViewModel(),
+            viewModel = AccountAutoConfigViewModel(
+                validator = AccountAutoConfigValidator(),
+            ),
         )
     }
 }

@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.common
+package app.k9mail.feature.account.setup.ui.common.item
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
