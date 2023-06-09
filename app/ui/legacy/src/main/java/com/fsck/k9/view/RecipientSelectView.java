@@ -33,6 +33,7 @@ import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
@@ -43,7 +44,6 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.ui.compose.RecipientCircleImageView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
-import org.apache.james.mime4j.util.CharsetUtil;
 import timber.log.Timber;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,6 +60,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private static final int LOADER_ID_FILTERING = 0;
     private static final int LOADER_ID_ALTERNATES = 1;
 
+
+    private final UserInputEmailAddressParser emailAddressParser = DI.get(UserInputEmailAddressParser.class);
 
     private RecipientAdapter adapter;
     @Nullable
@@ -171,17 +173,19 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     protected Recipient defaultObject(String completionText) {
-        Address[] parsedAddresses = Address.parse(completionText);
-        if (!CharsetUtil.isASCII(completionText)) {
+        try {
+            List<Address> parsedAddresses = emailAddressParser.parse(completionText);
+
+            if (parsedAddresses.isEmpty()) {
+                setError(getContext().getString(R.string.recipient_error_parse_failed));
+                return null;
+            }
+
+            return new Recipient(parsedAddresses.get(0));
+        } catch (NonAsciiEmailAddressException e) {
             setError(getContext().getString(R.string.recipient_error_non_ascii));
             return null;
         }
-        if (parsedAddresses.length == 0 || parsedAddresses[0].getAddress() == null) {
-            setError(getContext().getString(R.string.recipient_error_parse_failed));
-            return null;
-        }
-
-        return new Recipient(parsedAddresses[0]);
     }
 
     public void setLoaderManager(@Nullable LoaderManager loaderManager) {

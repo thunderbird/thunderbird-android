@@ -16,4 +16,5 @@ val viewModule = module {
         K9WebViewClient(clipboardManager = get(), attachmentResolver, onPageFinishedListener)
     }
     factory { WebViewClientFactory() }
+    factory { UserInputEmailAddressParser() }
 }
