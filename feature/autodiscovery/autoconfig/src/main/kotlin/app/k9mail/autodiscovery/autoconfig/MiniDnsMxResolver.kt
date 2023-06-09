@@ -6,10 +6,16 @@ import org.minidns.hla.ResolverApi
 import org.minidns.record.MX
 
 internal class MiniDnsMxResolver : MxResolver {
-    override fun lookup(domain: Domain): List<Domain> {
+    override fun lookup(domain: Domain): MxLookupResult {
         val result = ResolverApi.INSTANCE.resolve(domain.value, MX::class.java)
-        return result.answersOrEmptySet
+
+        val mxNames = result.answersOrEmptySet
             .sortedBy { it.priority }
             .map { it.target.toString().toDomain() }
+
+        return MxLookupResult(
+            mxNames = mxNames,
+            isTrusted = result.isAuthenticData,
+        )
     }
 }

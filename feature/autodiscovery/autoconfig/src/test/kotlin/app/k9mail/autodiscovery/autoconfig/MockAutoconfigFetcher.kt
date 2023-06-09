@@ -49,6 +49,7 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
                 authenticationType = PasswordCleartext,
                 username = "irrelevant@domain.example",
             ),
+            isTrusted = true,
         )
         val RESULT_TWO = AutoDiscoveryResult.Settings(
             incomingServerSettings = ImapServerSettings(
@@ -65,6 +66,7 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
                 authenticationType = PasswordEncrypted,
                 username = "irrelevant@company.example",
             ),
+            isTrusted = true,
         )
     }
 }

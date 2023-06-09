@@ -35,6 +35,7 @@ internal class OkHttpFetcher(
                     if (response.isSuccessful) {
                         val result = HttpFetchResult.SuccessResponse(
                             inputStream = response.body!!.byteStream(),
+                            isTrusted = response.isTrusted(),
                         )
                         cancellableContinuation.resume(result)
                     } else {
@@ -48,6 +49,15 @@ internal class OkHttpFetcher(
             }
 
             call.enqueue(responseCallback)
+        }
+    }
+
+    private tailrec fun Response.isTrusted(): Boolean {
+        val priorResponse = priorResponse
+        return when {
+            !request.isHttps -> false
+            priorResponse == null -> true
+            else -> priorResponse.isTrusted()
         }
     }
 }

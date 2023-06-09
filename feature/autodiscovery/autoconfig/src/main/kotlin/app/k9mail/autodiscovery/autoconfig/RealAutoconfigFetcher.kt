@@ -8,7 +8,6 @@ import app.k9mail.autodiscovery.autoconfig.HttpFetchResult.SuccessResponse
 import app.k9mail.core.common.mail.EmailAddress
 import com.fsck.k9.logging.Timber
 import java.io.IOException
-import java.io.InputStream
 import okhttp3.HttpUrl
 
 internal class RealAutoconfigFetcher(
@@ -19,9 +18,7 @@ internal class RealAutoconfigFetcher(
         return try {
             when (val fetchResult = fetcher.fetch(autoconfigUrl)) {
                 is SuccessResponse -> {
-                    fetchResult.inputStream.use { inputStream ->
-                        parseSettings(inputStream, email, autoconfigUrl)
-                    }
+                    parseSettings(fetchResult, email, autoconfigUrl)
                 }
                 is ErrorResponse -> AutoDiscoveryResult.NoUsableSettingsFound
             }
@@ -32,19 +29,23 @@ internal class RealAutoconfigFetcher(
     }
 
     private suspend fun parseSettings(
-        inputStream: InputStream,
+        fetchResult: SuccessResponse,
         email: EmailAddress,
         autoconfigUrl: HttpUrl,
     ): AutoDiscoveryResult {
         return try {
-            return when (val parserResult = parser.parseSettings(inputStream, email)) {
-                is Settings -> {
-                    AutoDiscoveryResult.Settings(
-                        incomingServerSettings = parserResult.incomingServerSettings,
-                        outgoingServerSettings = parserResult.outgoingServerSettings,
-                    )
+            fetchResult.inputStream.use { inputStream ->
+                return when (val parserResult = parser.parseSettings(inputStream, email)) {
+                    is Settings -> {
+                        AutoDiscoveryResult.Settings(
+                            incomingServerSettings = parserResult.incomingServerSettings,
+                            outgoingServerSettings = parserResult.outgoingServerSettings,
+                            isTrusted = fetchResult.isTrusted,
+                        )
+                    }
+
+                    is ParserError -> AutoDiscoveryResult.NoUsableSettingsFound
                 }
-                is ParserError -> AutoDiscoveryResult.NoUsableSettingsFound
             }
         } catch (e: AutoconfigParserException) {
             Timber.d(e, "Failed to parse config from URL: %s", autoconfigUrl)
