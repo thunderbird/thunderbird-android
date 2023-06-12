@@ -10,6 +10,18 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/DEPENDENCIES",
+            )
+        }
+    }
+
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
 }
 
 dependencies {
