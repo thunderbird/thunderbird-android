@@ -243,6 +243,16 @@ class InputFieldTest(
                 initialIsValid = false,
                 updatedValue = 456L,
             ),
+            InputFieldTestData(
+                name = "BooleanInputField",
+                createInitialInput = { value, error, isValid -> BooleanInputField(value, error, isValid) },
+                initialState = BooleanInputField(),
+                initialValue = true,
+                initialValueEmpty = null,
+                initialError = null,
+                initialIsValid = false,
+                updatedValue = false,
+            ),
         )
     }
 
