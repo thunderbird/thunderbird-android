@@ -361,6 +361,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_incoming_delete_policy_delete_label">Eyða af póstþjóni</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Merkja sem lesið á póstþjóni</string>
   <string name="account_setup_incoming_use_compression">Nota þjöppun</string>
+  <string name="account_setup_incoming_send_client_id">Senda auðkenni biðlara</string>
   <string name="account_setup_expunge_policy_label">Þurrka út eyddum skilaboðum á póstþjóni</string>
   <string name="account_setup_expunge_policy_immediately">Strax</string>
   <string name="account_setup_expunge_policy_on_poll">Við athuganir</string>

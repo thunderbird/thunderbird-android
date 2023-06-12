@@ -690,9 +690,9 @@ K-9 Mail — почтовик для Android.
   <string name="settings_compose_theme_label">Тема редактора</string>
   <string name="settings_language_label">Язык</string>
   <string name="preference_search_no_results">Настройки не найдены</string>
-  <string name="settings_message_theme_selection_label">Задать тему для писем</string>
-  <string name="settings_message_theme_selection_summary_off">Разрешить выбор темы при чтении сообщения</string>
-  <string name="settings_message_theme_selection_summary_on">Возможность выбрать тему для писем отдельно от темы приложения</string>
+  <string name="settings_message_theme_selection_label">Тема для писем</string>
+  <string name="settings_message_theme_selection_summary_off">Разрешено выбрать тему сообщения не зависимо от темы приложения.</string>
+  <string name="settings_message_theme_selection_summary_on">Фиксированная тема для писем, зависит от выбранной темы приложения</string>
   <string name="setting_language_system">По умолчанию</string>
   <string name="background_ops_label">Фоновая синхронизация</string>
   <string name="background_ops_never">Никогда</string>
