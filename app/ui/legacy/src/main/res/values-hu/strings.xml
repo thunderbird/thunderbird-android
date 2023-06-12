@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Tudja meg, hogy mik az újdonságok ebben a kiadásban</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Megtekintés</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Üdvözlet a K-9 Mail alkalmazásban.</string>
   <string name="accounts_welcome"><![CDATA[
@@ -220,9 +221,13 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="message_view_bcc_label">Titkos másolat:</string>
   <string name="message_view_status_attachment_not_saved">Nem lehet elmenteni a mellékletet.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">-&gt;</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">Számomra</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Távoli képek megjelenítése</string>
   <string name="message_view_no_viewer">Nem sikerült megjelenítőt találni ehhez: <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Teljes üzenet letöltése</string>
   <string name="message_view_sender_label">ezen keresztül: %1$s</string>
@@ -280,7 +285,10 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Áthelyezés</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Sűrűség</string>
+  <string name="general_settings_ui_density_compact">Kompakt</string>
   <string name="general_settings_ui_density_default">Alapértelmezett</string>
+  <string name="general_settings_ui_density_relaxed">Relaxált</string>
   <string name="global_settings_privacy_hide_useragent">Levelező alkalmazás elrejtése</string>
   <string name="global_settings_privacy_hide_useragent_detail">A K-9 azonosító eltávolítása a levél fejlécéből</string>
   <string name="global_settings_privacy_hide_timezone">Időzóna elrejtése</string>
@@ -351,6 +359,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_incoming_delete_policy_delete_label">Törlés a kiszolgálóról</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Olvasottnak jelölés a kiszolgálón</string>
   <string name="account_setup_incoming_use_compression">Tömörítés használata</string>
+  <string name="account_setup_incoming_send_client_id">Ügyfélazonosítót kell küldeni</string>
   <string name="account_setup_expunge_policy_label">Törölt üzenetek végleges törlése a kiszolgálóról</string>
   <string name="account_setup_expunge_policy_immediately">Azonnal</string>
   <string name="account_setup_expunge_policy_on_poll">Lekérdezéskor</string>
@@ -721,6 +730,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
   <string name="font_size_message_view_account">Fióknév</string>
   <string name="font_size_message_view_sender">Feladó</string>
+  <string name="font_size_message_view_recipients">Címzettek</string>
   <string name="font_size_message_view_subject">Tárgy</string>
   <string name="font_size_message_view_date">Idő és dátum</string>
   <string name="font_size_message_view_content">Üzenet törzse</string>
@@ -1071,13 +1081,19 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Áthelyezés...</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Lebegő levélírás-gomb megjelenítése</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Hiba</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">A mappa nem található</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Üzenet részletei</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Hiányzik a „Dátum” fejléc</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">Feladó</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+  <string name="message_details_sender_section_title">Feladó</string>
   <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
   <string name="message_details_replyto_section_title">Válasz címzettje</string>
   <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
@@ -1087,11 +1103,17 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Titkos másolat</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Hiba történt az üzenet részleteinek betöltése közben.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Hozzáadás a Kapcsolatokhoz</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Üzenet írása, címzett:</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">E-mail cím másolása</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Név és e-mail cím másolása</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">E-mail-cím</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Név és e-mail cím</string>
 </resources>

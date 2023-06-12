@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Descubra o que há de novo nesta versão</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Ver</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bem-vindo ao K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -225,9 +226,13 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Não foi possível guardar o anexo</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"para "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">eu</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Mostrar imagens remotas</string>
   <string name="message_view_no_viewer">Incapaz de encontrar visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Transferir mensagem completa</string>
   <string name="message_view_sender_label">via %1$s</string>
@@ -263,6 +268,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_confirm_menu_mark_all_read">Marcar todas as mensagens como lidas</string>
   <string name="global_settings_confirm_action_delete_notif">Eliminar (a partir da notificação)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Ações de deslize</string>
   <!--Name of the setting to configure the right swipe action-->
   <string name="general_settings_right_swipe_title">Deslizo para a direita</string>
   <!--Name of the setting to configure the left swipe action-->
@@ -270,9 +276,11 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Nenhuma</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Seleção alternada</string>
   <!--Name of the swipe action to mark as message as read/unread-->
   <string name="general_settings_swipe_action_toggle_read">Marcar como lida/não-lida</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Adicionar/remover estrela</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Arquivo</string>
   <!--Name of the swipe action to delete a message-->
@@ -282,7 +290,10 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Mover</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Densidade</string>
+  <string name="general_settings_ui_density_compact">Compacto</string>
   <string name="general_settings_ui_density_default">Predefinição</string>
+  <string name="general_settings_ui_density_relaxed">Relaxado</string>
   <string name="global_settings_privacy_hide_useragent">Ocultar cliente de email</string>
   <string name="global_settings_privacy_hide_useragent_detail">Remover o \"User-Agent\" do K-9 dos cabeçalhos dos emails</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar fuso horário</string>
@@ -353,6 +364,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_incoming_delete_policy_delete_label">Eliminar no servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcar como lido no servidor</string>
   <string name="account_setup_incoming_use_compression">Usar compressão</string>
+  <string name="account_setup_incoming_send_client_id">Enviar ID do client</string>
   <string name="account_setup_expunge_policy_label">Apagar mensagens eliminadas no servidor</string>
   <string name="account_setup_expunge_policy_immediately">Imediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Na verificação</string>
@@ -558,6 +570,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="folder_settings_folder_push_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_push_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_push_mode_second_class">2ª classe</string>
+  <string name="folder_settings_folder_push_mode_inherited">Igual à classe de sondagem</string>
   <string name="folder_settings_folder_notify_mode_label">Classe de notificação da pasta</string>
   <string name="folder_settings_folder_notify_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_notify_mode_first_class">1ª classe</string>
@@ -700,6 +713,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="animations_summary">Usar efeitos visuais exuberantes</string>
   <string name="volume_navigation_title">Navegação com os botões de volume na visualização de mensagens</string>
   <string name="show_unified_inbox_title">Mostrar caixa de entrada unificada</string>
+  <string name="show_starred_count_title">Mostrar contagem de estrelas</string>
   <string name="integrated_inbox_title">Caixa de entrada unificada</string>
   <string name="integrated_inbox_detail">Todas as mensagens em pastas unificadas</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
@@ -721,6 +735,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
   <string name="font_size_message_view_account">Nome da conta</string>
   <string name="font_size_message_view_sender">Remetente</string>
+  <string name="font_size_message_view_recipients">Destinatários</string>
   <string name="font_size_message_view_subject">Assunto</string>
   <string name="font_size_message_view_date">Data e hora</string>
   <string name="font_size_message_view_content">Corpo da mensagem</string>
@@ -1076,10 +1091,15 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Mover…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Mostrar botão de composição flutuante</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Erro</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Pasta não encontrada</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Detalhes da mensagem</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Cabeçalho \"Data\" em falta</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">De</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1093,11 +1113,17 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Bcc</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Ocorreu um erro ao carregar os detalhes da mensagem.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Adicionar aos contactos</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Compor mensagem para</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Copiar o endereço de email</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Copiar o nome e o endereço de email</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Endereço de email</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Nome e endereço de email</string>
 </resources>
