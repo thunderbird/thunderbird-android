@@ -2,7 +2,6 @@ package app.k9mail.core.ui.compose.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
 import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -34,17 +33,20 @@ fun MainTheme(
 
     SetSystemBarsColor(color = colors.toolbar)
 
+    val shapes = MainTheme.shapes
+
     CompositionLocalProvider(
         LocalColors provides colors,
         LocalElevations provides Elevations(),
         LocalImages provides images,
         LocalSizes provides Sizes(),
         LocalSpacings provides Spacings(),
+        LocalShapes provides shapes,
     ) {
         MaterialTheme(
             colors = colors.toMaterialColors(),
             typography = typography,
-            shapes = shapes,
+            shapes = shapes.toMaterialShapes(),
             content = content,
         )
     }
@@ -64,7 +66,7 @@ object MainTheme {
     val shapes: Shapes
         @Composable
         @ReadOnlyComposable
-        get() = MaterialTheme.shapes
+        get() = LocalShapes.current
 
     val spacings: Spacings
         @Composable

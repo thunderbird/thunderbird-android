@@ -7,6 +7,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.theme.MainTheme
@@ -18,12 +19,14 @@ fun TextButton(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
+    textAlign: TextAlign? = null,
 ) {
     MaterialText(
         text = text.uppercase(),
-        style = MainTheme.typography.button,
         modifier = modifier,
         color = color,
+        textAlign = textAlign,
+        style = MainTheme.typography.button,
     )
 }
 
@@ -32,6 +35,7 @@ fun TextButton(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
+    textAlign: TextAlign? = null,
 ) {
     MaterialText(
         text = AnnotatedString(
@@ -39,9 +43,10 @@ fun TextButton(
             spanStyles = text.spanStyles,
             paragraphStyles = text.paragraphStyles,
         ),
-        style = MainTheme.typography.button,
         modifier = modifier,
         color = color,
+        textAlign = textAlign,
+        style = MainTheme.typography.button,
     )
 }
 

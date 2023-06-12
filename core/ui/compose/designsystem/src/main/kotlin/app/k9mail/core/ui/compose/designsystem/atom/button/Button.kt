@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextButton
+import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import androidx.compose.material.Button as MaterialButton
 
@@ -15,13 +17,16 @@ fun Button(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    color: Color? = null,
     contentPadding: PaddingValues = buttonContentPadding(),
 ) {
     MaterialButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = color ?: MainTheme.colors.primary,
+        ),
         contentPadding = contentPadding,
     ) {
         TextButton(text = text)
@@ -35,6 +40,18 @@ internal fun ButtonPreview() {
         Button(
             text = "Button",
             onClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun ButtonColoredPreview() {
+    PreviewWithThemes {
+        Button(
+            text = "ButtonColored",
+            onClick = {},
+            color = Color.Magenta,
         )
     }
 }

@@ -131,6 +131,7 @@ fun LazyGridScope.inputItems() {
     }
 
     sectionHeaderItem(text = "CheckboxInput")
+    sectionSubtitleItem(text = "Default")
     item {
         ItemOutlined {
             WithRememberedState(input = false) { state ->
@@ -142,8 +143,22 @@ fun LazyGridScope.inputItems() {
             }
         }
     }
+    sectionSubtitleItem(text = "With error")
+    item {
+        ItemOutlined {
+            WithRememberedState(input = false) { state ->
+                CheckboxInput(
+                    text = "Check the box",
+                    checked = state.value,
+                    onCheckedChange = { state.value = it },
+                    errorMessage = "Checkbox must be checked",
+                )
+            }
+        }
+    }
 
     sectionHeaderItem(text = "SwitchInput")
+    sectionSubtitleItem(text = "Default")
     item {
         ItemOutlined {
             WithRememberedState(input = false) { state ->
@@ -151,6 +166,19 @@ fun LazyGridScope.inputItems() {
                     text = "Switch the toggle",
                     checked = state.value,
                     onCheckedChange = { state.value = it },
+                )
+            }
+        }
+    }
+    sectionSubtitleItem(text = "With error")
+    item {
+        ItemOutlined {
+            WithRememberedState(input = false) { state ->
+                SwitchInput(
+                    text = "Switch the toggle",
+                    checked = state.value,
+                    onCheckedChange = { state.value = it },
+                    errorMessage = "Switch must be checked",
                 )
             }
         }
