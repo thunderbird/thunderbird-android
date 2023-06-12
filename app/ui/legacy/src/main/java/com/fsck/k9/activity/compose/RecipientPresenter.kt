@@ -490,7 +490,7 @@ class RecipientPresenter(
         object : RecipientLoader(context, account.openPgpProvider, *addresses) {
             override fun deliverResult(result: List<Recipient>?) {
                 val recipientArray = result!!.toTypedArray()
-                recipientMvpView.addRecipients(recipientType, *recipientArray)
+                recipientMvpView.silentlyAddRecipients(recipientType, *recipientArray)
 
                 stopLoading()
                 abandon()
