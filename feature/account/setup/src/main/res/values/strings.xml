@@ -9,6 +9,9 @@
     <string name="account_setup_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_client_certificate_none_available">None available</string>
 
+    <string name="account_setup_error_network">Network </string>
+    <string name="account_setup_error_unknown">Unknown error</string>
+
     <string name="account_setup_validation_error_email_address_required">Email address is required.</string>
     <string name="account_setup_validation_error_email_address_invalid">Email address is invalid.</string>
     <string name="account_setup_validation_error_server_required">Server name is required.</string>

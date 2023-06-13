@@ -22,7 +22,7 @@ interface AccountAutoConfigContract {
         val emailAddress: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
         val autoConfig: AutoConfig? = null,
-        val errorMessage: String? = null,
+        val error: Error? = null,
         val isLoading: Boolean = false,
     )
 
@@ -43,5 +43,10 @@ interface AccountAutoConfigContract {
     interface Validator {
         fun validateEmailAddress(emailAddress: String): ValidationResult
         fun validatePassword(password: String): ValidationResult
+    }
+
+    sealed interface Error {
+        object NetworkError : Error
+        object UnknownError : Error
     }
 }

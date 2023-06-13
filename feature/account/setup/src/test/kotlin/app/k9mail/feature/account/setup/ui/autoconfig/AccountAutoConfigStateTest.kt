@@ -19,7 +19,7 @@ class AccountAutoConfigStateTest {
                 emailAddress = StringInputField(),
                 password = StringInputField(),
                 autoConfig = null,
-                errorMessage = null,
+                error = null,
                 isLoading = false,
             ),
         )
