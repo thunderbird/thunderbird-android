@@ -10,6 +10,7 @@ import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.testing.eventStateTest
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Error
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
 import assertk.assertThat
@@ -177,6 +178,35 @@ class AccountAutoConfigViewModelTest {
             ) {
                 isEqualTo(failureState)
             }
+        }
+
+    @Test
+    fun `should reset error state and change to password step when OnNextClicked event received when having error`() =
+        runTest {
+            val initialState = State(
+                configStep = ConfigStep.EMAIL_ADDRESS,
+                emailAddress = StringInputField(
+                    value = "email",
+                    isValid = true,
+                ),
+                error = Error.UnknownError,
+            )
+            testSubject.initState(initialState)
+
+            eventStateTest(
+                viewModel = testSubject,
+                initialState = initialState,
+                event = Event.OnNextClicked,
+                expectedState = State(
+                    configStep = ConfigStep.PASSWORD,
+                    emailAddress = StringInputField(
+                        value = "email",
+                        isValid = true,
+                    ),
+                    error = null,
+                ),
+                coroutineScope = backgroundScope,
+            )
         }
 
     @Test
@@ -363,6 +393,35 @@ class AccountAutoConfigViewModelTest {
                     ),
                 )
             }
+        }
+
+    @Test
+    fun `should reset error state when OnBackClicked event received when having error and in email address step`() =
+        runTest {
+            val initialState = State(
+                configStep = ConfigStep.EMAIL_ADDRESS,
+                emailAddress = StringInputField(
+                    value = "email",
+                    isValid = true,
+                ),
+                error = Error.UnknownError,
+            )
+            testSubject.initState(initialState)
+
+            eventStateTest(
+                viewModel = testSubject,
+                initialState = initialState,
+                event = Event.OnBackClicked,
+                expectedState = State(
+                    configStep = ConfigStep.EMAIL_ADDRESS,
+                    emailAddress = StringInputField(
+                        value = "email",
+                        isValid = true,
+                    ),
+                    error = null,
+                ),
+                coroutineScope = backgroundScope,
+            )
         }
 
     private object TestError : ValidationError

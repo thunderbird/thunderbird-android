@@ -10,6 +10,7 @@ fun LazyItemScope.ErrorItem(
     title: String,
     modifier: Modifier = Modifier,
     message: String? = null,
+    onRetry: () -> Unit = { },
 ) {
     ListItem(
         modifier = modifier,
@@ -17,6 +18,7 @@ fun LazyItemScope.ErrorItem(
         ErrorView(
             title = title,
             message = message,
+            onRetry = onRetry,
         )
     }
 }

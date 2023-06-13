@@ -56,7 +56,18 @@ class AccountAutoConfigViewModel(
 
     private fun onNext() {
         when (state.value.configStep) {
-            ConfigStep.EMAIL_ADDRESS -> submitEmail()
+            ConfigStep.EMAIL_ADDRESS ->
+                if (state.value.error != null) {
+                    updateState {
+                        it.copy(
+                            error = null,
+                            configStep = ConfigStep.PASSWORD,
+                        )
+                    }
+                } else {
+                    submitEmail()
+                }
+
             ConfigStep.PASSWORD -> submitPassword()
             ConfigStep.OAUTH -> TODO()
         }
@@ -64,8 +75,9 @@ class AccountAutoConfigViewModel(
 
     private fun retry() {
         updateState {
-            it.copy(configStep = ConfigStep.EMAIL_ADDRESS)
+            it.copy(error = null)
         }
+        loadAutoConfig()
     }
 
     private fun submitEmail() {
@@ -144,7 +156,16 @@ class AccountAutoConfigViewModel(
 
     private fun onBack() {
         when (state.value.configStep) {
-            ConfigStep.EMAIL_ADDRESS -> navigateBack()
+            ConfigStep.EMAIL_ADDRESS -> {
+                if (state.value.error != null) {
+                    updateState {
+                        it.copy(error = null)
+                    }
+                } else {
+                    navigateBack()
+                }
+            }
+
             ConfigStep.PASSWORD -> updateState {
                 it.copy(
                     configStep = ConfigStep.EMAIL_ADDRESS,
