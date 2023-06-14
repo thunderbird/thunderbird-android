@@ -28,7 +28,10 @@
     <string name="account_setup_auto_config_status_header_title_configuration_not_found">Configuration Not Found</string>
     <string name="account_setup_auto_config_status_header_subtitle_configuration_trusted">Configure automatically</string>
     <string name="account_setup_auto_config_status_header_subtitle_configuration_untrusted">This configuration is not trusted</string>
+    <string name="account_setup_auto_config_status_disclaimer_untrusted_configuration">We received the configuration for your email server over a connection that isn\'t as secure as we\'d like. This means that there is a tiny chance that someone could have altered it. Could you please double-check the provided configuration to make sure it\'s as it should be?</string>
     <string name="account_setup_auto_config_status_header_subtitle_configuration_not_found">Configure manually</string>
+    <string name="account_setup_auto_config_status_edit_configuration_button_label">Edit configuration</string>
+
     <string name="account_setup_incoming_config_top_bar_title">Incoming server settings</string>
     <string name="account_setup_incoming_config_protocol_type_label">Protocol</string>
     <string name="account_setup_incoming_config_server_label">Server</string>

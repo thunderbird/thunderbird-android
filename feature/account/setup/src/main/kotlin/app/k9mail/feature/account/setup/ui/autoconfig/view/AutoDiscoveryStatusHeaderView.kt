@@ -23,6 +23,7 @@ import app.k9mail.feature.account.setup.R
 @Composable
 internal fun AutoDiscoveryStatusHeaderView(
     state: AutoDiscoveryStatusHeaderState,
+    isExpanded: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -84,6 +85,12 @@ internal fun AutoDiscoveryStatusHeaderView(
                 color = selectColor(state),
             )
         }
+        if (state != AutoDiscoveryStatusHeaderState.NoSettings) {
+            Icon(
+                imageVector = if (isExpanded) Icons.Outlined.expandLess else Icons.Outlined.expandMore,
+                modifier = Modifier.padding(MainTheme.spacings.default),
+            )
+        }
     }
 }
 
@@ -102,6 +109,18 @@ internal fun AutoDiscoveryStatusHeaderViewTrustedCollapsedPreview() {
     PreviewWithThemes {
         AutoDiscoveryStatusHeaderView(
             state = AutoDiscoveryStatusHeaderState.Trusted,
+            isExpanded = true,
+        )
+    }
+}
+
+@Preview
+@Composable
+internal fun AutoDiscoveryStatusHeaderViewTrustedExpandedPreview() {
+    PreviewWithThemes {
+        AutoDiscoveryStatusHeaderView(
+            state = AutoDiscoveryStatusHeaderState.Trusted,
+            isExpanded = false,
         )
     }
 }
@@ -112,6 +131,18 @@ internal fun AutoDiscoveryStatusHeaderViewUntrustedCollapsedPreview() {
     PreviewWithThemes {
         AutoDiscoveryStatusHeaderView(
             state = AutoDiscoveryStatusHeaderState.Untrusted,
+            isExpanded = true,
+        )
+    }
+}
+
+@Preview
+@Composable
+internal fun AutoDiscoveryStatusHeaderViewUntrustedExpandedPreview() {
+    PreviewWithThemes {
+        AutoDiscoveryStatusHeaderView(
+            state = AutoDiscoveryStatusHeaderState.Untrusted,
+            isExpanded = false,
         )
     }
 }
@@ -122,6 +153,7 @@ internal fun AutoDiscoveryStatusHeaderNoSettingsPreview() {
     PreviewWithThemes {
         AutoDiscoveryStatusHeaderView(
             state = AutoDiscoveryStatusHeaderState.NoSettings,
+            isExpanded = false,
         )
     }
 }

@@ -10,6 +10,7 @@ import app.k9mail.feature.account.setup.ui.common.item.ListItem
 @Composable
 fun LazyItemScope.AutoDiscoveryStatusItem(
     autoDiscoverySettings: AutoDiscoveryResult.Settings?,
+    onEditConfigurationClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ListItem(
@@ -17,6 +18,7 @@ fun LazyItemScope.AutoDiscoveryStatusItem(
     ) {
         AutoDiscoveryStatusView(
             settings = autoDiscoverySettings,
+            onEditConfigurationClick = onEditConfigurationClick,
         )
     }
 }

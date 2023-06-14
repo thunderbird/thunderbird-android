@@ -13,6 +13,7 @@ internal fun LazyListScope.contentItems(
         item(key = "autodiscovery") {
             AutoDiscoveryStatusItem(
                 autoDiscoverySettings = state.autoDiscoverySettings,
+                onEditConfigurationClick = { onEvent(Event.OnEditConfigurationClicked) },
             )
         }
     }

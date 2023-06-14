@@ -35,6 +35,7 @@ class AccountAutoConfigViewModel(
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> retry()
+            Event.OnEditConfigurationClicked -> navigateNext()
         }
     }
 

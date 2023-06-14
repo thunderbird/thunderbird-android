@@ -424,5 +424,29 @@ class AccountAutoConfigViewModelTest {
             )
         }
 
+    @Test
+    fun `should emit NavigateNext effect when OnEditConfigurationClicked event is received`() = runTest {
+        val viewModel = testSubject
+        val stateTurbine = viewModel.state.testIn(backgroundScope)
+        val effectTurbine = viewModel.effect.testIn(backgroundScope)
+        val turbines = listOf(stateTurbine, effectTurbine)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(State())
+        }
+
+        viewModel.event(Event.OnEditConfigurationClicked)
+
+        assertThatAndTurbinesConsumed(
+            actual = effectTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(Effect.NavigateNext)
+        }
+    }
+
     private object TestError : ValidationError
 }

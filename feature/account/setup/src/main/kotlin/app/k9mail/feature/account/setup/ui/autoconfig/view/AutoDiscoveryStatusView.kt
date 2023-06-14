@@ -1,9 +1,13 @@
 package app.k9mail.feature.account.setup.ui.autoconfig.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,15 +26,19 @@ import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 @Composable
 internal fun AutoDiscoveryStatusView(
     settings: AutoDiscoveryResult.Settings?,
+    onEditConfigurationClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val expanded = remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier,
     ) {
         Surface(
             shape = MainTheme.shapes.small,
             modifier = Modifier
-                .border(1.dp, Color.Gray.copy(alpha = 0.5f)),
+                .border(1.dp, Color.Gray.copy(alpha = 0.5f))
+                .clickable { expanded.value = !expanded.value },
         ) {
             Column(
                 modifier = Modifier.padding(MainTheme.spacings.default),
@@ -43,7 +51,17 @@ internal fun AutoDiscoveryStatusView(
                     } else {
                         AutoDiscoveryStatusHeaderState.Untrusted
                     },
+                    isExpanded = expanded.value,
                 )
+
+                if (settings != null) {
+                    AnimatedVisibility(visible = expanded.value) {
+                        AutoDiscoveryStatusBodyView(
+                            settings = settings,
+                            onEditConfigurationClick = onEditConfigurationClick,
+                        )
+                    }
+                }
             }
         }
     }
@@ -71,6 +89,7 @@ internal fun AutoDiscoveryStatusViewTrustedPreview() {
                 ),
                 isTrusted = true,
             ),
+            onEditConfigurationClick = {},
         )
     }
 }
@@ -97,6 +116,7 @@ internal fun AutoDiscoveryStatusViewUntrustedPreview() {
                 ),
                 isTrusted = false,
             ),
+            onEditConfigurationClick = {},
         )
     }
 }
