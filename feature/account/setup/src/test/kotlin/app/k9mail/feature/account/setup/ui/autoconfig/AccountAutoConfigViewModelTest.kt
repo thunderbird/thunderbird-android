@@ -288,6 +288,11 @@ class AccountAutoConfigViewModelTest {
                         error = null,
                         isValid = true,
                     ),
+                    configurationApproved = BooleanInputField(
+                        value = null,
+                        error = null,
+                        isValid = true,
+                    ),
                 ),
             )
 
@@ -343,6 +348,11 @@ class AccountAutoConfigViewModelTest {
                             value = "password",
                             error = TestError,
                             isValid = false,
+                        ),
+                        configurationApproved = BooleanInputField(
+                            value = null,
+                            error = null,
+                            isValid = true,
                         ),
                     ),
                 )

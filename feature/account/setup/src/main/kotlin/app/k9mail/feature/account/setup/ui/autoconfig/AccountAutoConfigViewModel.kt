@@ -149,13 +149,23 @@ internal class AccountAutoConfigViewModel(
         with(state.value) {
             val emailValidationResult = validator.validateEmailAddress(emailAddress.value)
             val passwordValidationResult = validator.validatePassword(password.value)
-            val hasError = listOf(emailValidationResult, passwordValidationResult)
-                .any { it is ValidationResult.Failure }
+            val configurationApprovalValidationResult = validator.validateConfigurationApproval(
+                isApproved = configurationApproved.value,
+                isAutoDiscoveryTrusted = autoDiscoverySettings?.isTrusted,
+            )
+            val hasError = listOf(
+                emailValidationResult,
+                passwordValidationResult,
+                configurationApprovalValidationResult,
+            ).any { it is ValidationResult.Failure }
 
             updateState {
                 it.copy(
                     emailAddress = it.emailAddress.updateFromValidationResult(emailValidationResult),
                     password = it.password.updateFromValidationResult(passwordValidationResult),
+                    configurationApproved = it.configurationApproved.updateFromValidationResult(
+                        configurationApprovalValidationResult,
+                    ),
                 )
             }
 

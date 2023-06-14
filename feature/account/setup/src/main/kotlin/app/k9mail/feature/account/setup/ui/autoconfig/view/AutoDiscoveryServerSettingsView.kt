@@ -80,7 +80,7 @@ internal fun AutoDiscoveryServerSettingsView(
             },
         )
 
-        if (username != null) {
+        if (username.isNotEmpty()) {
             ServerSettingRow(
                 icon = Icons.Filled.user,
                 text = buildAnnotatedString {

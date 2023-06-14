@@ -18,6 +18,10 @@ internal interface DomainContract {
             fun execute(password: String): ValidationResult
         }
 
+        fun interface ValidateConfigurationApproval {
+            fun execute(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationResult
+        }
+
         fun interface ValidateServer {
             fun execute(server: String): ValidationResult
         }
