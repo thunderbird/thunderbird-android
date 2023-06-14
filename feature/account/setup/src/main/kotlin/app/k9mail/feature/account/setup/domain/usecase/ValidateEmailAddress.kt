@@ -4,7 +4,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 
-class ValidateEmailAddress : ValidationUseCase<String> {
+internal class ValidateEmailAddress : ValidationUseCase<String> {
 
     // TODO replace by new email validation
     override fun execute(input: String): ValidationResult {

@@ -16,7 +16,7 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContrac
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.ViewModel
 
 @Composable
-fun AccountIncomingConfigScreen(
+internal fun AccountIncomingConfigScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,

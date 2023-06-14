@@ -6,7 +6,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailSignature.ValidateEmailSignatureError.BlankEmailSignature
 
 // TODO check signature for input validity
-class ValidateEmailSignature : ValidationUseCase<String> {
+internal class ValidateEmailSignature : ValidationUseCase<String> {
 
     override fun execute(input: String): ValidationResult {
         return when {

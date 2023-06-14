@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 
 @Composable
-fun LazyItemScope.LoadingItem(
+internal fun LazyItemScope.LoadingItem(
     modifier: Modifier = Modifier,
     message: String? = null,
 ) {

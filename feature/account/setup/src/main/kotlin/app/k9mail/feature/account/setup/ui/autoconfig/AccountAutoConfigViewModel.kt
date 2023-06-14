@@ -16,7 +16,7 @@ import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.
 import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
-class AccountAutoConfigViewModel(
+internal class AccountAutoConfigViewModel(
     initialState: State = State(),
     private val validator: Validator,
     private val getAutoDiscovery: DomainContract.GetAutoDiscoveryUseCase,

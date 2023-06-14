@@ -8,7 +8,7 @@ import app.k9mail.feature.account.setup.ui.autoconfig.view.AutoDiscoveryStatusVi
 import app.k9mail.feature.account.setup.ui.common.item.ListItem
 
 @Composable
-fun LazyItemScope.AutoDiscoveryStatusItem(
+internal fun LazyItemScope.AutoDiscoveryStatusItem(
     autoDiscoverySettings: AutoDiscoveryResult.Settings?,
     onEditConfigurationClick: () -> Unit,
     modifier: Modifier = Modifier,

@@ -20,7 +20,7 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContrac
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Validator
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.ViewModel
 
-class AccountOutgoingConfigViewModel(
+internal class AccountOutgoingConfigViewModel(
     initialState: State = State(),
     private val validator: Validator,
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {

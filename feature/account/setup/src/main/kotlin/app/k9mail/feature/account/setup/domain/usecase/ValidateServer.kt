@@ -4,7 +4,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 
-class ValidateServer : ValidationUseCase<String> {
+internal class ValidateServer : ValidationUseCase<String> {
 
     // TODO validate domain, ip4 or ip6
     override fun execute(input: String): ValidationResult {

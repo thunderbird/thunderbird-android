@@ -4,7 +4,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 
-class ValidateImapPrefix : ValidationUseCase<String> {
+internal class ValidateImapPrefix : ValidationUseCase<String> {
 
     override fun execute(input: String): ValidationResult {
         return when {

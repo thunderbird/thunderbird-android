@@ -7,7 +7,7 @@ import app.k9mail.feature.account.setup.domain.usecase.ValidatePort
 import app.k9mail.feature.account.setup.domain.usecase.ValidateServer
 import app.k9mail.feature.account.setup.domain.usecase.ValidateUsername
 
-class AccountIncomingConfigValidator(
+internal class AccountIncomingConfigValidator(
     private val serverValidator: ValidateServer = ValidateServer(),
     private val portValidator: ValidatePort = ValidatePort(),
     private val usernameValidator: ValidateUsername = ValidateUsername(),

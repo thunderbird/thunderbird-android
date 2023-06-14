@@ -93,7 +93,7 @@ internal fun AutoDiscoveryServerSettingsView(
 }
 
 @Composable
-internal fun ServerSettingRow(
+private fun ServerSettingRow(
     icon: ImageVector,
     text: AnnotatedString,
     modifier: Modifier = Modifier,

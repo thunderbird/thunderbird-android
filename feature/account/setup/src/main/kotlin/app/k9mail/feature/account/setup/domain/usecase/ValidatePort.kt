@@ -4,7 +4,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
 
-class ValidatePort : ValidationUseCase<Long?> {
+internal class ValidatePort : ValidationUseCase<Long?> {
 
     override fun execute(input: Long?): ValidationResult {
         return when (input) {
