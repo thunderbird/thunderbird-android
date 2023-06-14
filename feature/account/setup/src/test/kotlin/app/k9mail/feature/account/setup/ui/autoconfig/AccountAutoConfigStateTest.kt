@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.autoconfig
 
+import app.k9mail.feature.account.setup.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
@@ -19,6 +20,7 @@ class AccountAutoConfigStateTest {
                 emailAddress = StringInputField(),
                 password = StringInputField(),
                 autoDiscoverySettings = null,
+                configurationApproved = BooleanInputField(),
                 error = null,
                 isLoading = false,
             ),

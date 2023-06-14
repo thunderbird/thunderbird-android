@@ -32,6 +32,8 @@ class AccountAutoConfigViewModel(
         when (event) {
             is Event.EmailAddressChanged -> changeEmailAddress(event.emailAddress)
             is Event.PasswordChanged -> changePassword(event.password)
+            is Event.ConfigurationApprovalChanged -> changeConfigurationApproval(event.confirmed)
+
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> retry()
@@ -51,6 +53,14 @@ class AccountAutoConfigViewModel(
         updateState {
             it.copy(
                 password = it.password.updateValue(password),
+            )
+        }
+    }
+
+    private fun changeConfigurationApproval(approved: Boolean) {
+        updateState {
+            it.copy(
+                configurationApproved = it.configurationApproved.updateValue(approved),
             )
         }
     }

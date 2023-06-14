@@ -6,6 +6,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoverySettingsFixture
+import app.k9mail.feature.account.setup.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.testing.eventStateTest
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
@@ -64,6 +65,19 @@ class AccountAutoConfigViewModelTest {
             event = Event.PasswordChanged("password"),
             expectedState = State(
                 password = StringInputField(value = "password"),
+            ),
+            coroutineScope = backgroundScope,
+        )
+    }
+
+    @Test
+    fun `should change state when ConfigurationApprovalChanged event is received`() = runTest {
+        eventStateTest(
+            viewModel = testSubject,
+            initialState = State(),
+            event = Event.ConfigurationApprovalChanged(true),
+            expectedState = State(
+                configurationApproved = BooleanInputField(value = true),
             ),
             coroutineScope = backgroundScope,
         )
