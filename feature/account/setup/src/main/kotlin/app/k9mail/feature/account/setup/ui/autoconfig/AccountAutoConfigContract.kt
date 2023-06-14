@@ -30,9 +30,10 @@ interface AccountAutoConfigContract {
         data class EmailAddressChanged(val emailAddress: String) : Event()
         data class PasswordChanged(val password: String) : Event()
 
-        object OnRetryClicked : Event()
         object OnNextClicked : Event()
         object OnBackClicked : Event()
+        object OnRetryClicked : Event()
+        object OnEditConfigurationClicked : Event()
     }
 
     sealed class Effect {

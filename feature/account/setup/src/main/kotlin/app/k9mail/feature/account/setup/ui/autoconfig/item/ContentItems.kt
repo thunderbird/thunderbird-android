@@ -9,6 +9,14 @@ internal fun LazyListScope.contentItems(
     state: State,
     onEvent: (Event) -> Unit,
 ) {
+    if (state.configStep == ConfigStep.PASSWORD) {
+        item(key = "autodiscovery") {
+            AutoDiscoveryStatusItem(
+                autoDiscoverySettings = state.autoDiscoverySettings,
+            )
+        }
+    }
+
     item(key = "email") {
         EmailAddressItem(
             emailAddress = state.emailAddress.value,
