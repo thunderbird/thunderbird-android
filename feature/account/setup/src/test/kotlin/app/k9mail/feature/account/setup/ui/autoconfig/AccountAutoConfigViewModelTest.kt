@@ -1,24 +1,26 @@
 package app.k9mail.feature.account.setup.ui.autoconfig
 
 import app.cash.turbine.testIn
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
+import app.k9mail.feature.account.setup.domain.entity.AutoDiscoverySettingsFixture
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.testing.eventStateTest
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
+import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Error
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
 import assertk.assertThat
 import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AccountAutoConfigViewModelTest {
 
     @get:Rule
@@ -26,6 +28,10 @@ class AccountAutoConfigViewModelTest {
 
     private val testSubject = AccountAutoConfigViewModel(
         validator = FakeAccountAutoConfigValidator(),
+        getAutoDiscovery = {
+            delay(50)
+            AutoDiscoveryResult.NoUsableSettingsFound
+        },
     )
 
     @Test
@@ -64,28 +70,144 @@ class AccountAutoConfigViewModelTest {
     }
 
     @Test
-    fun `should change config step to password when OnNextClicked event is received`() = runTest {
-        val initialState = State(
-            configStep = ConfigStep.EMAIL_ADDRESS,
-            emailAddress = StringInputField(value = "email"),
-        )
-        testSubject.initState(initialState)
+    fun `should change state to password when OnNextClicked event is received, input valid and discovery loaded`() =
+        runTest {
+            val autoDiscoverySettings = AutoDiscoverySettingsFixture.settings
+            val initialState = State(
+                configStep = ConfigStep.EMAIL_ADDRESS,
+                emailAddress = StringInputField(value = "email"),
+            )
+            val viewModel = AccountAutoConfigViewModel(
+                validator = FakeAccountAutoConfigValidator(),
+                getAutoDiscovery = {
+                    delay(50)
+                    autoDiscoverySettings
+                },
+                initialState = initialState,
+            )
+            val stateTurbine = viewModel.state.testIn(backgroundScope)
+            val effectTurbine = viewModel.effect.testIn(backgroundScope)
+            val turbines = listOf(stateTurbine, effectTurbine)
 
-        eventStateTest(
-            viewModel = testSubject,
-            initialState = initialState,
-            event = Event.OnNextClicked,
-            expectedState = State(
-                configStep = ConfigStep.PASSWORD,
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(initialState)
+            }
+
+            viewModel.event(Event.OnNextClicked)
+
+            val validatedState = initialState.copy(
                 emailAddress = StringInputField(
                     value = "email",
                     error = null,
                     isValid = true,
                 ),
-            ),
-            coroutineScope = backgroundScope,
-        )
-    }
+            )
+            assertThat(stateTurbine.awaitItem()).isEqualTo(validatedState)
+
+            val loadingState = validatedState.copy(
+                isLoading = true,
+            )
+            assertThat(stateTurbine.awaitItem()).isEqualTo(loadingState)
+
+            val successState = validatedState.copy(
+                autoDiscoverySettings = autoDiscoverySettings,
+                configStep = ConfigStep.PASSWORD,
+                isLoading = false,
+            )
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(successState)
+            }
+        }
+
+    @Test
+    fun `should not change state when OnNextClicked event is received, input valid but discovery failed`() =
+        runTest {
+            val initialState = State(
+                configStep = ConfigStep.EMAIL_ADDRESS,
+                emailAddress = StringInputField(value = "email"),
+            )
+            val discoveryError = Exception("discovery error")
+            val viewModel = AccountAutoConfigViewModel(
+                validator = FakeAccountAutoConfigValidator(),
+                getAutoDiscovery = {
+                    delay(50)
+                    AutoDiscoveryResult.UnexpectedException(discoveryError)
+                },
+                initialState = initialState,
+            )
+            val stateTurbine = viewModel.state.testIn(backgroundScope)
+            val effectTurbine = viewModel.effect.testIn(backgroundScope)
+            val turbines = listOf(stateTurbine, effectTurbine)
+
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(initialState)
+            }
+
+            viewModel.event(Event.OnNextClicked)
+
+            val validatedState = initialState.copy(
+                emailAddress = StringInputField(
+                    value = "email",
+                    error = null,
+                    isValid = true,
+                ),
+            )
+            assertThat(stateTurbine.awaitItem()).isEqualTo(validatedState)
+
+            val loadingState = validatedState.copy(
+                isLoading = true,
+            )
+            assertThat(stateTurbine.awaitItem()).isEqualTo(loadingState)
+
+            val failureState = validatedState.copy(
+                isLoading = false,
+                error = AccountAutoConfigContract.Error.UnknownError,
+            )
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(failureState)
+            }
+        }
+
+    @Test
+    fun `should reset error state and change to password step when OnNextClicked event received when having error`() =
+        runTest {
+            val initialState = State(
+                configStep = ConfigStep.EMAIL_ADDRESS,
+                emailAddress = StringInputField(
+                    value = "email",
+                    isValid = true,
+                ),
+                error = Error.UnknownError,
+            )
+            testSubject.initState(initialState)
+
+            eventStateTest(
+                viewModel = testSubject,
+                initialState = initialState,
+                event = Event.OnNextClicked,
+                expectedState = State(
+                    configStep = ConfigStep.PASSWORD,
+                    emailAddress = StringInputField(
+                        value = "email",
+                        isValid = true,
+                    ),
+                    error = null,
+                ),
+                coroutineScope = backgroundScope,
+            )
+        }
 
     @Test
     fun `should not change config step to password when OnNextClicked event is received and input invalid`() = runTest {
@@ -97,6 +219,7 @@ class AccountAutoConfigViewModelTest {
             validator = FakeAccountAutoConfigValidator(
                 emailAddressAnswer = ValidationResult.Failure(TestError),
             ),
+            getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
             initialState = initialState,
         )
 
@@ -174,6 +297,7 @@ class AccountAutoConfigViewModelTest {
                 validator = FakeAccountAutoConfigValidator(
                     passwordAnswer = ValidationResult.Failure(TestError),
                 ),
+                getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
                 initialState = initialState,
             )
             val stateTurbine = viewModel.state.testIn(backgroundScope)
@@ -269,6 +393,35 @@ class AccountAutoConfigViewModelTest {
                     ),
                 )
             }
+        }
+
+    @Test
+    fun `should reset error state when OnBackClicked event received when having error and in email address step`() =
+        runTest {
+            val initialState = State(
+                configStep = ConfigStep.EMAIL_ADDRESS,
+                emailAddress = StringInputField(
+                    value = "email",
+                    isValid = true,
+                ),
+                error = Error.UnknownError,
+            )
+            testSubject.initState(initialState)
+
+            eventStateTest(
+                viewModel = testSubject,
+                initialState = initialState,
+                event = Event.OnBackClicked,
+                expectedState = State(
+                    configStep = ConfigStep.EMAIL_ADDRESS,
+                    emailAddress = StringInputField(
+                        value = "email",
+                        isValid = true,
+                    ),
+                    error = null,
+                ),
+                coroutineScope = backgroundScope,
+            )
         }
 
     private object TestError : ValidationError

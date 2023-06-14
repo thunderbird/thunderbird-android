@@ -33,7 +33,7 @@ fun ButtonOutlined(
         border = BorderStroke(
             width = 1.dp,
             color = if (enabled) {
-                MainTheme.colors.primary
+                color ?: MainTheme.colors.primary
             } else {
                 MainTheme.colors.onSurface.copy(
                     alpha = 0.12f,

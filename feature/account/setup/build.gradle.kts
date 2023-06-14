@@ -11,5 +11,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
 
+    implementation(projects.feature.autodiscovery.service)
+
     testImplementation(projects.core.ui.compose.testing)
 }

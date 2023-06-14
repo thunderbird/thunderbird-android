@@ -1,8 +1,8 @@
 package app.k9mail.feature.account.setup.ui.autoconfig
 
+import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import app.k9mail.feature.account.setup.domain.entity.AutoConfig
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 
 interface AccountAutoConfigContract {
@@ -21,8 +21,8 @@ interface AccountAutoConfigContract {
         val configStep: ConfigStep = ConfigStep.EMAIL_ADDRESS,
         val emailAddress: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
-        val autoConfig: AutoConfig? = null,
-        val errorMessage: String? = null,
+        val autoDiscoverySettings: AutoDiscoveryResult.Settings? = null,
+        val error: Error? = null,
         val isLoading: Boolean = false,
     )
 
@@ -43,5 +43,10 @@ interface AccountAutoConfigContract {
     interface Validator {
         fun validateEmailAddress(emailAddress: String): ValidationResult
         fun validatePassword(password: String): ValidationResult
+    }
+
+    sealed interface Error {
+        object NetworkError : Error
+        object UnknownError : Error
     }
 }

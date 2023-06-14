@@ -1,5 +1,9 @@
 package app.k9mail.feature.account.setup
 
+import app.k9mail.autodiscovery.api.AutoDiscoveryService
+import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
+import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigValidator
@@ -18,6 +22,18 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val featureAccountSetupModule: Module = module {
+    single<AutoDiscoveryService> {
+        RealAutoDiscoveryService(
+            okHttpClient = get(),
+        )
+    }
+
+    single<DomainContract.GetAutoDiscoveryUseCase> {
+        GetAutoDiscovery(
+            service = get(),
+        )
+    }
+
     factory<AccountAutoConfigContract.Validator> { AccountAutoConfigValidator() }
     factory<AccountIncomingConfigContract.Validator> { AccountIncomingConfigValidator() }
     factory<AccountOutgoingConfigContract.Validator> { AccountOutgoingConfigValidator() }
@@ -27,6 +43,7 @@ val featureAccountSetupModule: Module = module {
     viewModel {
         AccountAutoConfigViewModel(
             validator = get(),
+            getAutoDiscovery = get(),
         )
     }
     viewModel {

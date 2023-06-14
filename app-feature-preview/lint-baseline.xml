@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.0.2" type="baseline" client="gradle" dependencies="true" name="AGP (8.0.2)" variant="all" version="8.0.2">
+
+    <issue
+        id="CustomX509TrustManager"
+        message="Implementing a custom `X509TrustManager` is error-prone and likely to be insecure. It is likely to disable certificate validation altogether, and is non-trivial to implement correctly without calling Android&apos;s default implementation."
+        errorLine1="    private class SecureX509TrustManager implements X509TrustManager {"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/fsck/k9/mail/ssl/TrustManagerFactory.java"
+            line="70"
+            column="19"/>
+    </issue>
+
+</issues>
