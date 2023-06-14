@@ -2,14 +2,14 @@ package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
+import app.k9mail.feature.account.setup.domain.DomainContract
 
-internal class ValidateImapPrefix : ValidationUseCase<String> {
+internal class ValidateImapPrefix : DomainContract.UseCase.ValidateImapPrefix {
 
-    override fun execute(input: String): ValidationResult {
+    override fun execute(imapPrefix: String): ValidationResult {
         return when {
-            input.isEmpty() -> ValidationResult.Success
-            input.isBlank() -> ValidationResult.Failure(ValidateImapPrefixError.BlankImapPrefix)
+            imapPrefix.isEmpty() -> ValidationResult.Success
+            imapPrefix.isBlank() -> ValidationResult.Failure(ValidateImapPrefixError.BlankImapPrefix)
 
             else -> ValidationResult.Success
         }

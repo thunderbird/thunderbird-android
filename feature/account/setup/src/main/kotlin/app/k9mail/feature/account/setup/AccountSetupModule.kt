@@ -28,7 +28,7 @@ val featureAccountSetupModule: Module = module {
         )
     }
 
-    single<DomainContract.GetAutoDiscoveryUseCase> {
+    single<DomainContract.UseCase.GetAutoDiscovery> {
         GetAutoDiscovery(
             service = get(),
         )

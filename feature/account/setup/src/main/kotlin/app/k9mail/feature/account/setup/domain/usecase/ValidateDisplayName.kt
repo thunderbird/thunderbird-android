@@ -2,13 +2,13 @@ package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
+import app.k9mail.feature.account.setup.domain.DomainContract
 
-internal class ValidateDisplayName : ValidationUseCase<String> {
+internal class ValidateDisplayName : DomainContract.UseCase.ValidateDisplayName {
 
-    override fun execute(input: String): ValidationResult {
+    override fun execute(displayName: String): ValidationResult {
         return when {
-            input.isBlank() -> ValidationResult.Failure(ValidateDisplayNameError.EmptyDisplayName)
+            displayName.isBlank() -> ValidationResult.Failure(ValidateDisplayNameError.EmptyDisplayName)
             else -> ValidationResult.Success
         }
     }

@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 internal class AccountAutoConfigViewModel(
     initialState: State = State(),
     private val validator: Validator,
-    private val getAutoDiscovery: DomainContract.GetAutoDiscoveryUseCase,
+    private val getAutoDiscovery: UseCase.GetAutoDiscovery,
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     override fun initState(state: State) {

@@ -2,16 +2,18 @@ package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
+import app.k9mail.feature.account.setup.domain.DomainContract
 
-internal class ValidateEmailAddress : ValidationUseCase<String> {
+internal class ValidateEmailAddress : DomainContract.UseCase.ValidateEmailAddress {
 
     // TODO replace by new email validation
-    override fun execute(input: String): ValidationResult {
+    override fun execute(emailAddress: String): ValidationResult {
         return when {
-            input.isBlank() -> ValidationResult.Failure(ValidateEmailAddressError.EmptyEmailAddress)
+            emailAddress.isBlank() -> ValidationResult.Failure(ValidateEmailAddressError.EmptyEmailAddress)
 
-            !EMAIL_ADDRESS.matches(input) -> ValidationResult.Failure(ValidateEmailAddressError.InvalidEmailAddress)
+            !EMAIL_ADDRESS.matches(emailAddress) -> ValidationResult.Failure(
+                ValidateEmailAddressError.InvalidEmailAddress,
+            )
 
             else -> ValidationResult.Success
         }

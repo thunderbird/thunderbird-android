@@ -16,7 +16,7 @@ import kotlinx.coroutines.delay
 
 internal class GetAutoDiscovery(
     private val service: AutoDiscoveryService,
-) : DomainContract.GetAutoDiscoveryUseCase {
+) : DomainContract.UseCase.GetAutoDiscovery {
     override suspend fun execute(emailAddress: String): AutoDiscoveryResult {
         val fakeResult: AutoDiscoveryResult? = if (emailAddress.contains("empty")) {
             AutoDiscoveryResult.NoUsableSettingsFound
