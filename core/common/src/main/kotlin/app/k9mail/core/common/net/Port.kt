@@ -4,7 +4,7 @@ package app.k9mail.core.common.net
 @JvmInline
 value class Port(val value: Int) {
     init {
-        require(value in 0..65535) { "Not a valid port number: $value" }
+        require(value in 1..65535) { "Not a valid port number: $value" }
     }
 }
 
