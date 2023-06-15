@@ -6,6 +6,7 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 
 class AccountSetupViewModel(
     initialState: State = State(),
@@ -13,9 +14,15 @@ class AccountSetupViewModel(
 
     override fun event(event: Event) {
         when (event) {
+            is Event.OnAutoDiscoveryFinished -> handleAutoDiscoveryFinished(event.state)
             Event.OnBack -> onBack()
             Event.OnNext -> onNext()
         }
+    }
+
+    private fun handleAutoDiscoveryFinished(autoDiscoveryState: AccountAutoDiscoveryContract.State) {
+        // TODO emmit effect to update ViewModels
+        onNext()
     }
 
     private fun onBack() {

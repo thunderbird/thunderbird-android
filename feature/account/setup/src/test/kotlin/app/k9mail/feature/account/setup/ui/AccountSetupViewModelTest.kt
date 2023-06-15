@@ -2,19 +2,16 @@ package app.k9mail.feature.account.setup.ui
 
 import app.cash.turbine.testIn
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
-import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect.NavigateBack
-import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect.NavigateNext
+import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
 import assertk.assertions.prop
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AccountSetupViewModelTest {
 
     @get:Rule
@@ -35,7 +32,7 @@ class AccountSetupViewModelTest {
             prop(State::setupStep).isEqualTo(SetupStep.AUTO_CONFIG)
         }
 
-        viewModel.event(AccountSetupContract.Event.OnNext)
+        viewModel.event(AccountSetupContract.Event.OnAutoDiscoveryFinished(AccountAutoDiscoveryContract.State()))
 
         assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
@@ -68,7 +65,7 @@ class AccountSetupViewModelTest {
             actual = effectTurbine.awaitItem(),
             turbines = turbines,
         ) {
-            isEqualTo(NavigateNext)
+            isEqualTo(Effect.NavigateNext)
         }
     }
 
@@ -121,7 +118,7 @@ class AccountSetupViewModelTest {
             actual = effectTurbine.awaitItem(),
             turbines = turbines,
         ) {
-            isEqualTo(NavigateBack)
+            isEqualTo(Effect.NavigateBack)
         }
     }
 }
