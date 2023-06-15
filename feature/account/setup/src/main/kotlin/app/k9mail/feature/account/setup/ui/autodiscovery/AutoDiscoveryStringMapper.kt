@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import android.content.res.Resources
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
@@ -18,10 +18,10 @@ internal fun AutoDiscoveryConnectionSecurity.toResourceString(resources: Resourc
     }
 }
 
-internal fun AccountAutoConfigContract.Error.toResourceString(resources: Resources): String {
+internal fun AccountAutoDiscoveryContract.Error.toResourceString(resources: Resources): String {
     return when (this) {
-        AccountAutoConfigContract.Error.NetworkError -> resources.getString(R.string.account_setup_error_network)
-        AccountAutoConfigContract.Error.UnknownError -> resources.getString(R.string.account_setup_error_unknown)
+        AccountAutoDiscoveryContract.Error.NetworkError -> resources.getString(R.string.account_setup_error_network)
+        AccountAutoDiscoveryContract.Error.UnknownError -> resources.getString(R.string.account_setup_error_unknown)
     }
 }
 

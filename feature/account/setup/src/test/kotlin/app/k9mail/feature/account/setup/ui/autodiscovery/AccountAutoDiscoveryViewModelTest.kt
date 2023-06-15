@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.cash.turbine.testIn
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
@@ -9,11 +9,11 @@ import app.k9mail.feature.account.setup.domain.entity.AutoDiscoverySettingsFixtu
 import app.k9mail.feature.account.setup.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.testing.eventStateTest
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Error
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ConfigStep
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Error
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import assertk.assertThat
 import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
@@ -22,13 +22,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-class AccountAutoConfigViewModelTest {
+class AccountAutoDiscoveryViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val testSubject = AccountAutoConfigViewModel(
-        validator = FakeAccountAutoConfigValidator(),
+    private val testSubject = AccountAutoDiscoveryViewModel(
+        validator = FakeAccountAutoDiscoveryValidator(),
         getAutoDiscovery = {
             delay(50)
             AutoDiscoveryResult.NoUsableSettingsFound
@@ -91,8 +91,8 @@ class AccountAutoConfigViewModelTest {
                 configStep = ConfigStep.EMAIL_ADDRESS,
                 emailAddress = StringInputField(value = "email"),
             )
-            val viewModel = AccountAutoConfigViewModel(
-                validator = FakeAccountAutoConfigValidator(),
+            val viewModel = AccountAutoDiscoveryViewModel(
+                validator = FakeAccountAutoDiscoveryValidator(),
                 getAutoDiscovery = {
                     delay(50)
                     autoDiscoverySettings
@@ -147,8 +147,8 @@ class AccountAutoConfigViewModelTest {
                 emailAddress = StringInputField(value = "email"),
             )
             val discoveryError = Exception("discovery error")
-            val viewModel = AccountAutoConfigViewModel(
-                validator = FakeAccountAutoConfigValidator(),
+            val viewModel = AccountAutoDiscoveryViewModel(
+                validator = FakeAccountAutoDiscoveryValidator(),
                 getAutoDiscovery = {
                     delay(50)
                     AutoDiscoveryResult.UnexpectedException(discoveryError)
@@ -184,7 +184,7 @@ class AccountAutoConfigViewModelTest {
 
             val failureState = validatedState.copy(
                 isLoading = false,
-                error = AccountAutoConfigContract.Error.UnknownError,
+                error = AccountAutoDiscoveryContract.Error.UnknownError,
             )
             assertThatAndTurbinesConsumed(
                 actual = stateTurbine.awaitItem(),
@@ -229,8 +229,8 @@ class AccountAutoConfigViewModelTest {
             configStep = ConfigStep.EMAIL_ADDRESS,
             emailAddress = StringInputField(value = "invalid email"),
         )
-        val viewModel = AccountAutoConfigViewModel(
-            validator = FakeAccountAutoConfigValidator(
+        val viewModel = AccountAutoDiscoveryViewModel(
+            validator = FakeAccountAutoDiscoveryValidator(
                 emailAddressAnswer = ValidationResult.Failure(TestError),
             ),
             getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
@@ -312,8 +312,8 @@ class AccountAutoConfigViewModelTest {
                 emailAddress = StringInputField(value = "email"),
                 password = StringInputField(value = "password"),
             )
-            val viewModel = AccountAutoConfigViewModel(
-                validator = FakeAccountAutoConfigValidator(
+            val viewModel = AccountAutoDiscoveryViewModel(
+                validator = FakeAccountAutoDiscoveryValidator(
                     passwordAnswer = ValidationResult.Failure(TestError),
                 ),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },

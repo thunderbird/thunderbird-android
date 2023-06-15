@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig.view
+package app.k9mail.feature.account.setup.ui.autodiscovery.view
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +11,7 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.input.BooleanInputField
-import app.k9mail.feature.account.setup.ui.autoconfig.toResourceString
+import app.k9mail.feature.account.setup.ui.autodiscovery.toResourceString
 
 @Composable
 internal fun ConfigurationApprovalView(

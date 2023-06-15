@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig.view
+package app.k9mail.feature.account.setup.ui.autodiscovery.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import app.k9mail.autodiscovery.api.AuthenticationType
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.autodiscovery.api.ConnectionSecurity
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.toHostname
@@ -112,15 +114,15 @@ internal fun AutoDiscoveryStatusBodyViewPreview() {
                 incomingServerSettings = ImapServerSettings(
                     hostname = "imap.example.com".toHostname(),
                     port = 993.toPort(),
-                    connectionSecurity = app.k9mail.autodiscovery.api.ConnectionSecurity.TLS,
-                    authenticationType = app.k9mail.autodiscovery.api.AuthenticationType.PasswordEncrypted,
+                    connectionSecurity = ConnectionSecurity.TLS,
+                    authenticationType = AuthenticationType.PasswordEncrypted,
                     username = "",
                 ),
                 outgoingServerSettings = SmtpServerSettings(
                     hostname = "smtp.example.com".toHostname(),
                     port = 465.toPort(),
-                    connectionSecurity = app.k9mail.autodiscovery.api.ConnectionSecurity.TLS,
-                    authenticationType = app.k9mail.autodiscovery.api.AuthenticationType.PasswordEncrypted,
+                    connectionSecurity = ConnectionSecurity.TLS,
+                    authenticationType = AuthenticationType.PasswordEncrypted,
                     username = "",
                 ),
                 isTrusted = true,

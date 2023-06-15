@@ -5,9 +5,9 @@ import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigValidator
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryValidator
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigValidator
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewModel
@@ -34,14 +34,14 @@ val featureAccountSetupModule: Module = module {
         )
     }
 
-    factory<AccountAutoConfigContract.Validator> { AccountAutoConfigValidator() }
+    factory<AccountAutoDiscoveryContract.Validator> { AccountAutoDiscoveryValidator() }
     factory<AccountIncomingConfigContract.Validator> { AccountIncomingConfigValidator() }
     factory<AccountOutgoingConfigContract.Validator> { AccountOutgoingConfigValidator() }
     factory<AccountOptionsContract.Validator> { AccountOptionsValidator() }
 
     viewModel { AccountSetupViewModel() }
     viewModel {
-        AccountAutoConfigViewModel(
+        AccountAutoDiscoveryViewModel(
             validator = get(),
             getAutoDiscovery = get(),
         )

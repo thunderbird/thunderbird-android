@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,14 +10,14 @@ import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ViewModel
 import app.k9mail.feature.account.setup.ui.common.AccountSetupBottomBar
 import app.k9mail.feature.account.setup.ui.common.AccountSetupTopHeader
 
 @Composable
-internal fun AccountAutoConfigScreen(
+internal fun AccountAutoDiscoveryScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
@@ -44,7 +44,7 @@ internal fun AccountAutoConfigScreen(
         },
         modifier = modifier,
     ) { innerPadding ->
-        AccountAutoConfigContent(
+        AccountAutoDiscoveryContent(
             state = state.value,
             onEvent = { dispatch(it) },
             contentPadding = innerPadding,
@@ -54,13 +54,13 @@ internal fun AccountAutoConfigScreen(
 
 @Composable
 @DevicePreviews
-internal fun AccountAutoConfigScreenK9Preview() {
+internal fun AccountAutoDiscoveryScreenK9Preview() {
     K9Theme {
-        AccountAutoConfigScreen(
+        AccountAutoDiscoveryScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountAutoConfigViewModel(
-                validator = AccountAutoConfigValidator(),
+            viewModel = AccountAutoDiscoveryViewModel(
+                validator = AccountAutoDiscoveryValidator(),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
             ),
         )
@@ -69,13 +69,13 @@ internal fun AccountAutoConfigScreenK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountAutoConfigScreenThunderbirdPreview() {
+internal fun AccountAutoDiscoveryScreenThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountAutoConfigScreen(
+        AccountAutoDiscoveryScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountAutoConfigViewModel(
-                validator = AccountAutoConfigValidator(),
+            viewModel = AccountAutoDiscoveryViewModel(
+                validator = AccountAutoDiscoveryValidator(),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
             ),
         )
