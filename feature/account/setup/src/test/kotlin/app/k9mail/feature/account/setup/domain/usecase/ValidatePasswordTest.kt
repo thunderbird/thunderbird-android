@@ -8,20 +8,18 @@ import org.junit.Test
 
 class ValidatePasswordTest {
 
+    private val testSubject = ValidatePassword()
+
     @Test
     fun `should succeed when password is set`() {
-        val useCase = ValidatePassword()
-
-        val result = useCase.execute("password")
+        val result = testSubject.execute("password")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when password is empty`() {
-        val useCase = ValidatePassword()
-
-        val result = useCase.execute("")
+        val result = testSubject.execute("")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -30,9 +28,7 @@ class ValidatePasswordTest {
 
     @Test
     fun `should fail when password is blank`() {
-        val useCase = ValidatePassword()
-
-        val result = useCase.execute(" ")
+        val result = testSubject.execute(" ")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)

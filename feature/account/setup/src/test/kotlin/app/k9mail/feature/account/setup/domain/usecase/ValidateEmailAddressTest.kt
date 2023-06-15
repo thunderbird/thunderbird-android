@@ -9,20 +9,18 @@ import org.junit.Test
 
 class ValidateEmailAddressTest {
 
+    private val testSubject = ValidateEmailAddress()
+
     @Test
     fun `should succeed when email address is valid`() {
-        val useCase = ValidateEmailAddress()
-
-        val result = useCase.execute("test@example.com")
+        val result = testSubject.execute("test@example.com")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when email address is blank`() {
-        val useCase = ValidateEmailAddress()
-
-        val result = useCase.execute(" ")
+        val result = testSubject.execute(" ")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -31,9 +29,7 @@ class ValidateEmailAddressTest {
 
     @Test
     fun `should fail when email address is invalid`() {
-        val useCase = ValidateEmailAddress()
-
-        val result = useCase.execute("test")
+        val result = testSubject.execute("test")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)

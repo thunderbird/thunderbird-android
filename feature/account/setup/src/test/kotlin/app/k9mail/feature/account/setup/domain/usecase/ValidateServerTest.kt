@@ -8,20 +8,18 @@ import org.junit.Test
 
 class ValidateServerTest {
 
+    private val testSubject = ValidateServer()
+
     @Test
     fun `should succeed when server is set`() {
-        val useCase = ValidateServer()
-
-        val result = useCase.execute("server")
+        val result = testSubject.execute("server")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when server is empty`() {
-        val useCase = ValidateServer()
-
-        val result = useCase.execute("")
+        val result = testSubject.execute("")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -30,9 +28,7 @@ class ValidateServerTest {
 
     @Test
     fun `should fail when server is blank`() {
-        val useCase = ValidateServer()
-
-        val result = useCase.execute(" ")
+        val result = testSubject.execute(" ")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)

@@ -8,38 +8,32 @@ import org.junit.Test
 
 class ValidateConfigurationApprovalTest {
 
+    private val testSubject = ValidateConfigurationApproval()
+
     @Test
     fun `should succeed when auto discovery is approved and trusted`() {
-        val useCase = ValidateConfigurationApproval()
-
-        val result = useCase.execute(isApproved = true, isAutoDiscoveryTrusted = true)
+        val result = testSubject.execute(isApproved = true, isAutoDiscoveryTrusted = true)
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should succeed when auto discovery not approved but is trusted`() {
-        val useCase = ValidateConfigurationApproval()
-
-        val result = useCase.execute(isApproved = false, isAutoDiscoveryTrusted = true)
+        val result = testSubject.execute(isApproved = false, isAutoDiscoveryTrusted = true)
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should succeed when auto discovery is approved but not trusted`() {
-        val useCase = ValidateConfigurationApproval()
-
-        val result = useCase.execute(isApproved = true, isAutoDiscoveryTrusted = false)
+        val result = testSubject.execute(isApproved = true, isAutoDiscoveryTrusted = false)
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when auto discovery is not approved and not trusted`() {
-        val useCase = ValidateConfigurationApproval()
-
-        val result = useCase.execute(isApproved = false, isAutoDiscoveryTrusted = false)
+        val result = testSubject.execute(isApproved = false, isAutoDiscoveryTrusted = false)
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -48,18 +42,14 @@ class ValidateConfigurationApprovalTest {
 
     @Test
     fun `should succeed when auto discovery isApproved null and is trusted`() {
-        val useCase = ValidateConfigurationApproval()
-
-        val result = useCase.execute(isApproved = null, isAutoDiscoveryTrusted = true)
+        val result = testSubject.execute(isApproved = null, isAutoDiscoveryTrusted = true)
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when auto discovery is isApproved null and is not trusted`() {
-        val useCase = ValidateConfigurationApproval()
-
-        val result = useCase.execute(isApproved = null, isAutoDiscoveryTrusted = false)
+        val result = testSubject.execute(isApproved = null, isAutoDiscoveryTrusted = false)
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -68,9 +58,7 @@ class ValidateConfigurationApprovalTest {
 
     @Test
     fun `should fail when auto discovery is approved and trusted is null`() {
-        val useCase = ValidateConfigurationApproval()
-
-        val result = useCase.execute(isApproved = false, isAutoDiscoveryTrusted = null)
+        val result = testSubject.execute(isApproved = false, isAutoDiscoveryTrusted = null)
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -79,9 +67,7 @@ class ValidateConfigurationApprovalTest {
 
     @Test
     fun `should fail when auto discovery is not approved and trusted is null`() {
-        val useCase = ValidateConfigurationApproval()
-
-        val result = useCase.execute(isApproved = false, isAutoDiscoveryTrusted = null)
+        val result = testSubject.execute(isApproved = false, isAutoDiscoveryTrusted = null)
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)

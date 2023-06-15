@@ -8,29 +8,25 @@ import org.junit.Test
 
 class ValidateImapPrefixTest {
 
+    private val testSubject = ValidateImapPrefix()
+
     @Test
     fun `should success when imap prefix is set`() {
-        val useCase = ValidateImapPrefix()
-
-        val result = useCase.execute("imap")
+        val result = testSubject.execute("imap")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should succeed when imap prefix is empty`() {
-        val useCase = ValidateImapPrefix()
-
-        val result = useCase.execute("")
+        val result = testSubject.execute("")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when imap prefix is blank`() {
-        val useCase = ValidateImapPrefix()
-
-        val result = useCase.execute(" ")
+        val result = testSubject.execute(" ")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
