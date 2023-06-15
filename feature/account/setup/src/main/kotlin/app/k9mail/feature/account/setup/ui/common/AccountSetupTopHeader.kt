@@ -63,7 +63,7 @@ internal fun AccountSetupTopHeader(
 
 @Preview
 @Composable
-internal fun AccountAutoConfigTopHeaderPreview() {
+internal fun AccountSetupTopHeaderPreview() {
     PreviewWithThemes {
         AccountSetupTopHeader()
     }

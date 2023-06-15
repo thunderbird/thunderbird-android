@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.setup
 
 import app.k9mail.feature.account.setup.ui.AccountSetupContract
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
@@ -31,7 +31,7 @@ class AccountSetupModuleKtTest : KoinTest {
         featureAccountSetupModule.verify(
             extraTypes = listOf(
                 AccountSetupContract.State::class,
-                AccountAutoConfigContract.State::class,
+                AccountAutoDiscoveryContract.State::class,
                 AccountIncomingConfigContract.State::class,
                 AccountOutgoingConfigContract.State::class,
                 AccountOptionsContract.State::class,

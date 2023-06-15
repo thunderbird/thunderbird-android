@@ -6,17 +6,17 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.input.StringInputField
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.ConfigStep
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Effect
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Error
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Event
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.State
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Validator
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.ViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ConfigStep
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Error
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Validator
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ViewModel
 import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
-internal class AccountAutoConfigViewModel(
+internal class AccountAutoDiscoveryViewModel(
     initialState: State = State(),
     private val validator: Validator,
     private val getAutoDiscovery: UseCase.GetAutoDiscovery,
@@ -88,7 +88,7 @@ internal class AccountAutoConfigViewModel(
         updateState {
             it.copy(error = null)
         }
-        loadAutoConfig()
+        loadAutoDiscovery()
     }
 
     private fun submitEmail() {
@@ -103,12 +103,12 @@ internal class AccountAutoConfigViewModel(
             }
 
             if (!hasError) {
-                loadAutoConfig()
+                loadAutoDiscovery()
             }
         }
     }
 
-    private fun loadAutoConfig() {
+    private fun loadAutoDiscovery() {
         viewModelScope.launch {
             updateState {
                 it.copy(

@@ -6,7 +6,7 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.setup.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 
-interface AccountAutoConfigContract {
+interface AccountAutoDiscoveryContract {
 
     enum class ConfigStep {
         EMAIL_ADDRESS,

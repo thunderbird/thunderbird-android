@@ -19,14 +19,14 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Event
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.item.contentItems
 import app.k9mail.feature.account.setup.ui.common.item.ErrorItem
 import app.k9mail.feature.account.setup.ui.common.item.LoadingItem
 
 @Composable
-internal fun AccountAutoConfigContent(
+internal fun AccountAutoDiscoveryContent(
     state: State,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
@@ -34,7 +34,7 @@ internal fun AccountAutoConfigContent(
 ) {
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTag("AccountAutoConfigContent")
+            .testTag("AccountAutoDiscoveryContent")
             .padding(contentPadding)
             .fillMaxWidth()
             .then(modifier),
@@ -73,9 +73,9 @@ internal fun AccountAutoConfigContent(
 
 @Composable
 @DevicePreviews
-internal fun AccountAutoConfigContentK9Preview() {
+internal fun AccountAutoDiscoveryContentK9Preview() {
     K9Theme {
-        AccountAutoConfigContent(
+        AccountAutoDiscoveryContent(
             state = State(),
             onEvent = {},
             contentPadding = PaddingValues(),
@@ -85,9 +85,9 @@ internal fun AccountAutoConfigContentK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountAutoConfigContentThunderbirdPreview() {
+internal fun AccountAutoDiscoveryContentThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountAutoConfigContent(
+        AccountAutoDiscoveryContent(
             state = State(),
             onEvent = {},
             contentPadding = PaddingValues(),
