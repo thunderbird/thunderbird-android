@@ -1,0 +1,9 @@
+MIME-Version: 1.0
+From: Sender <aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggg@k9mail.example> (local part exceeds maximum length)
+Date: Thu, 15 Jun 2023 18:00:00 +0200
+Message-ID: <localpart@k9mail.example>
+Subject: Localpart of email address exceeds 64 characters
+To: User <user@k9mail.example>
+Content-Type: text/plain; charset=UTF-8
+
+You should still be able to read this message.

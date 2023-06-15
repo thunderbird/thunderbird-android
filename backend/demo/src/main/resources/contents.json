@@ -8,7 +8,8 @@
       "thread_1",
       "thread_2",
       "inline_image_data_uri",
-      "inline_image_attachment"
+      "inline_image_attachment",
+      "localpart_exceeds_length_limit"
     ]
   },
   "trash": {
