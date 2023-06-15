@@ -13,13 +13,6 @@ import app.k9mail.core.common.mail.EmailAddressParserError.LocalPartRequiresQuot
 import app.k9mail.core.common.mail.EmailAddressParserError.QuotedStringInLocalPart
 import app.k9mail.core.common.mail.EmailAddressParserError.TotalLengthExceeded
 
-// See RFC 5321, 4.5.3.1.3.
-// The maximum length of 'Path' indirectly limits the length of 'Mailbox'.
-internal const val MAXIMUM_EMAIL_ADDRESS_LENGTH = 254
-
-// See RFC 5321, 4.5.3.1.1.
-internal const val MAXIMUM_LOCAL_PART_LENGTH = 64
-
 /**
  * Parse an email address.
  *
@@ -52,8 +45,14 @@ internal class EmailAddressParser(
             parserError(ExpectedEndOfInput)
         }
 
-        if (emailAddress.address.length > MAXIMUM_EMAIL_ADDRESS_LENGTH) {
+        if (
+            config.isEmailAddressLengthCheckEnabled && Warning.EmailAddressExceedsLengthLimit in emailAddress.warnings
+        ) {
             parserError(TotalLengthExceeded)
+        }
+
+        if (config.isLocalPartLengthCheckEnabled && Warning.LocalPartExceedsLengthLimit in emailAddress.warnings) {
+            parserError(LocalPartLengthExceeded, position = input.lastIndexOf('@'))
         }
 
         if (
@@ -94,10 +93,6 @@ internal class EmailAddressParser(
             else -> {
                 parserError(InvalidLocalPart)
             }
-        }
-
-        if (localPart.length > MAXIMUM_LOCAL_PART_LENGTH) {
-            parserError(LocalPartLengthExceeded)
         }
 
         return localPart

@@ -15,6 +15,7 @@ import app.k9mail.core.common.mail.EmailAddressParserError.UnexpectedCharacter
 import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -224,9 +225,12 @@ class EmailAddressParserTest {
     }
 
     @Test
-    fun `local part exceeds maximum size`() {
+    fun `local part exceeds maximum size with length check enabled`() {
         assertFailure {
-            parseEmailAddress("1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12345@domain.example")
+            parseEmailAddress(
+                address = "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12345@domain.example",
+                isLocalPartLengthCheckEnabled = true,
+            )
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(LocalPartLengthExceeded)
             prop(EmailAddressParserException::position).isEqualTo(65)
@@ -235,19 +239,55 @@ class EmailAddressParserTest {
     }
 
     @Test
-    fun `email exceeds maximum size`() {
+    fun `local part exceeds maximum size with length check disabled`() {
+        val input = "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12345@domain.example"
+
+        val emailAddress = parseEmailAddress(address = input, isLocalPartLengthCheckEnabled = false)
+
+        assertThat(emailAddress.localPart)
+            .isEqualTo("1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12345")
+        assertThat(emailAddress.domain).isEqualTo(EmailDomain("domain.example"))
+        assertThat(emailAddress.address).isEqualTo(input)
+        assertThat(emailAddress.warnings).contains(EmailAddress.Warning.LocalPartExceedsLengthLimit)
+    }
+
+    @Test
+    fun `email exceeds maximum size with length check enabled`() {
         assertFailure {
             parseEmailAddress(
-                "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx1234@" +
+                address = "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx1234@" +
                     "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
                     "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
                     "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12",
+                isEmailAddressLengthCheckEnabled = true,
             )
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(TotalLengthExceeded)
             prop(EmailAddressParserException::position).isEqualTo(255)
             hasMessage("The email address exceeds the maximum length of 254 characters")
         }
+    }
+
+    @Test
+    fun `email exceeds maximum size with length check disabled`() {
+        val input = "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx1234@" +
+            "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
+            "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
+            "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12"
+
+        val emailAddress = parseEmailAddress(address = input, isEmailAddressLengthCheckEnabled = false)
+
+        assertThat(emailAddress.localPart)
+            .isEqualTo("1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx1234")
+        assertThat(emailAddress.domain).isEqualTo(
+            EmailDomain(
+                "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
+                    "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
+                    "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12",
+            ),
+        )
+        assertThat(emailAddress.address).isEqualTo(input)
+        assertThat(emailAddress.warnings).contains(EmailAddress.Warning.EmailAddressExceedsLengthLimit)
     }
 
     @Test
@@ -263,11 +303,15 @@ class EmailAddressParserTest {
 
     private fun parseEmailAddress(
         address: String,
+        isLocalPartLengthCheckEnabled: Boolean = false,
+        isEmailAddressLengthCheckEnabled: Boolean = false,
         isEmptyLocalPartAllowed: Boolean = false,
         isLocalPartRequiringQuotedStringAllowed: Boolean = isEmptyLocalPartAllowed,
         isQuotedLocalPartAllowed: Boolean = isLocalPartRequiringQuotedStringAllowed,
     ): EmailAddress {
         val config = EmailAddressParserConfig(
+            isLocalPartLengthCheckEnabled,
+            isEmailAddressLengthCheckEnabled,
             isQuotedLocalPartAllowed,
             isLocalPartRequiringQuotedStringAllowed,
             isEmptyLocalPartAllowed,

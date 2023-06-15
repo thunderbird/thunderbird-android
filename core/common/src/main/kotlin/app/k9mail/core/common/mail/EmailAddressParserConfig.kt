@@ -3,6 +3,13 @@ package app.k9mail.core.common.mail
 /**
  * Configuration to control the behavior when parsing an email address into [EmailAddress].
  *
+ * @param isLocalPartLengthCheckEnabled When this is `true` the length of the local part is checked to make sure it
+ * doesn't exceed the specified limit (see RFC 5321, 4.5.3.1.1.).
+ *
+ * @param isEmailAddressLengthCheckEnabled When this is `true` the length of the whole email address is checked to make
+ * sure it doesn't exceed the specified limit (see RFC 5321, 4.5.3.1.3.; The maximum length of 'Path' indirectly limits
+ * the length of 'Mailbox').
+ *
  * @param isQuotedLocalPartAllowed When this is `true`, the parsing step allows email addresses with a local part
  * encoded as quoted string, e.g. `"foo bar"@domain.example`. Otherwise, the parser will throw an
  * [EmailAddressParserException] as soon as a quoted string is encountered.
@@ -24,12 +31,16 @@ package app.k9mail.core.common.mail
  * [isLocalPartRequiringQuotedStringAllowed] is `false`.
  */
 data class EmailAddressParserConfig(
+    val isLocalPartLengthCheckEnabled: Boolean,
+    val isEmailAddressLengthCheckEnabled: Boolean,
     val isQuotedLocalPartAllowed: Boolean,
     val isLocalPartRequiringQuotedStringAllowed: Boolean,
     val isEmptyLocalPartAllowed: Boolean = false,
 ) {
     companion object {
         val DEFAULT = EmailAddressParserConfig(
+            isLocalPartLengthCheckEnabled = true,
+            isEmailAddressLengthCheckEnabled = true,
             isQuotedLocalPartAllowed = true,
             isLocalPartRequiringQuotedStringAllowed = true,
             isEmptyLocalPartAllowed = false,

@@ -1,5 +1,12 @@
 package app.k9mail.core.common.mail
 
+// See RFC 5321, 4.5.3.1.3.
+// The maximum length of 'Path' indirectly limits the length of 'Mailbox'.
+internal const val MAXIMUM_EMAIL_ADDRESS_LENGTH = 254
+
+// See RFC 5321, 4.5.3.1.1.
+internal const val MAXIMUM_LOCAL_PART_LENGTH = 64
+
 /**
  * Represents an email address.
  *
@@ -15,6 +22,14 @@ class EmailAddress internal constructor(
 
     init {
         warnings = buildSet {
+            if (localPart.length > MAXIMUM_LOCAL_PART_LENGTH) {
+                add(Warning.LocalPartExceedsLengthLimit)
+            }
+
+            if (address.length > MAXIMUM_EMAIL_ADDRESS_LENGTH) {
+                add(Warning.EmailAddressExceedsLengthLimit)
+            }
+
             if (localPart.isEmpty()) {
                 add(Warning.EmptyLocalPart)
             }
@@ -65,6 +80,17 @@ class EmailAddress internal constructor(
     }
 
     enum class Warning {
+        /**
+         * The local part exceeds the length limit (see RFC 5321, 4.5.3.1.1.).
+         */
+        LocalPartExceedsLengthLimit,
+
+        /**
+         * The email address exceeds the length limit (see RFC 5321, 4.5.3.1.3.; The maximum length of 'Path'
+         * indirectly limits the length of 'Mailbox').
+         */
+        EmailAddressExceedsLengthLimit,
+
         /**
          * The local part requires using a quoted string.
          *
