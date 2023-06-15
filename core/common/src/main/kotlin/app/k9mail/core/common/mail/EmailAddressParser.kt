@@ -56,11 +56,13 @@ internal class EmailAddressParser(
             parserError(TotalLengthExceeded)
         }
 
-        if (!config.allowLocalPartRequiringQuotedString && Warning.QuotedStringInLocalPart in emailAddress.warnings) {
+        if (
+            !config.isLocalPartRequiringQuotedStringAllowed && Warning.QuotedStringInLocalPart in emailAddress.warnings
+        ) {
             parserError(LocalPartRequiresQuotedString, position = 0)
         }
 
-        if (!config.allowEmptyLocalPart && Warning.EmptyLocalPart in emailAddress.warnings) {
+        if (!config.isEmptyLocalPartAllowed && Warning.EmptyLocalPart in emailAddress.warnings) {
             parserError(EmptyLocalPart, position = 1)
         }
 
@@ -83,7 +85,7 @@ internal class EmailAddressParser(
                 readDotString()
             }
             character == DQUOTE -> {
-                if (config.allowQuotedLocalPart) {
+                if (config.isQuotedLocalPartAllowed) {
                     readQuotedString()
                 } else {
                     parserError(QuotedStringInLocalPart)
