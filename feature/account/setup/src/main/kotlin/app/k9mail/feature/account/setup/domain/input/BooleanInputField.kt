@@ -8,7 +8,7 @@ class BooleanInputField(
     override val error: ValidationError? = null,
     override val isValid: Boolean = false,
 ) : InputField<Boolean?> {
-    override fun updateValue(value: Boolean?): InputField<Boolean?> {
+    override fun updateValue(value: Boolean?): BooleanInputField {
         return BooleanInputField(
             value = value,
             error = null,
@@ -16,7 +16,7 @@ class BooleanInputField(
         )
     }
 
-    override fun updateError(error: ValidationError?): InputField<Boolean?> {
+    override fun updateError(error: ValidationError?): BooleanInputField {
         return BooleanInputField(
             value = value,
             error = error,
@@ -24,7 +24,7 @@ class BooleanInputField(
         )
     }
 
-    override fun updateValidity(isValid: Boolean): InputField<Boolean?> {
+    override fun updateValidity(isValid: Boolean): BooleanInputField {
         if (isValid == this.isValid) return this
 
         return BooleanInputField(
@@ -34,7 +34,7 @@ class BooleanInputField(
         )
     }
 
-    override fun updateFromValidationResult(result: ValidationResult): InputField<Boolean?> {
+    override fun updateFromValidationResult(result: ValidationResult): BooleanInputField {
         return when (result) {
             is ValidationResult.Success -> BooleanInputField(
                 value = value,

@@ -9,6 +9,23 @@ internal fun LazyListScope.contentItems(
     state: State,
     onEvent: (Event) -> Unit,
 ) {
+    if (state.configStep == ConfigStep.PASSWORD) {
+        item(key = "autodiscovery") {
+            AutoDiscoveryStatusItem(
+                autoDiscoverySettings = state.autoDiscoverySettings,
+                onEditConfigurationClick = { onEvent(Event.OnEditConfigurationClicked) },
+            )
+        }
+        if (state.autoDiscoverySettings != null && state.autoDiscoverySettings.isTrusted.not()) {
+            item(key = "config_approval") {
+                ConfigurationApprovalItem(
+                    approvalState = state.configurationApproved,
+                    onConfigurationApprovalChange = { onEvent(Event.ConfigurationApprovalChanged(it)) },
+                )
+            }
+        }
+    }
+
     item(key = "email") {
         EmailAddressItem(
             emailAddress = state.emailAddress.value,

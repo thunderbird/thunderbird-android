@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup.ui.autoconfig
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.account.setup.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 
 interface AccountAutoConfigContract {
@@ -22,6 +23,7 @@ interface AccountAutoConfigContract {
         val emailAddress: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
         val autoDiscoverySettings: AutoDiscoveryResult.Settings? = null,
+        val configurationApproved: BooleanInputField = BooleanInputField(),
         val error: Error? = null,
         val isLoading: Boolean = false,
     )
@@ -29,10 +31,12 @@ interface AccountAutoConfigContract {
     sealed class Event {
         data class EmailAddressChanged(val emailAddress: String) : Event()
         data class PasswordChanged(val password: String) : Event()
+        data class ConfigurationApprovalChanged(val confirmed: Boolean) : Event()
 
-        object OnRetryClicked : Event()
         object OnNextClicked : Event()
         object OnBackClicked : Event()
+        object OnRetryClicked : Event()
+        object OnEditConfigurationClicked : Event()
     }
 
     sealed class Effect {
