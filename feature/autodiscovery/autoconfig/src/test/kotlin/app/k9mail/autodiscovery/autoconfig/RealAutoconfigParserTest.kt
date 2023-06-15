@@ -8,7 +8,7 @@ import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.ParserError
 import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.Settings
-import app.k9mail.core.common.mail.toEmailAddress
+import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import assertk.assertThat
@@ -55,13 +55,13 @@ class RealAutoconfigParserTest {
         </clientConfig>
         """.trimIndent()
 
-    private val irrelevantEmailAddress = "irrelevant@domain.example".toEmailAddress()
+    private val irrelevantEmailAddress = "irrelevant@domain.example".toUserEmailAddress()
 
     @Test
     fun `minimal data`() {
         val inputStream = minimalConfig.byteInputStream()
 
-        val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
+        val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isNotNull().isEqualTo(
             Settings(
@@ -87,7 +87,7 @@ class RealAutoconfigParserTest {
     fun `real-world data`() {
         val inputStream = javaClass.getResourceAsStream("/2022-11-19-googlemail.com.xml")!!
 
-        val result = parser.parseSettings(inputStream, email = "test@gmail.com".toEmailAddress())
+        val result = parser.parseSettings(inputStream, email = "test@gmail.com".toUserEmailAddress())
 
         assertThat(result).isNotNull().isEqualTo(
             Settings(
@@ -117,7 +117,7 @@ class RealAutoconfigParserTest {
             element("outgoingServer > username").text("%EMAILDOMAIN%")
         }
 
-        val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
+        val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isNotNull().isEqualTo(
             Settings(
@@ -149,7 +149,7 @@ class RealAutoconfigParserTest {
             element("incomingServer > username").prepend("<!-- comment -->")
         }
 
-        val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
+        val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isInstanceOf<Settings>()
             .prop(Settings::incomingServerSettings).isEqualTo(
@@ -169,7 +169,7 @@ class RealAutoconfigParserTest {
             element("incomingServer").insertBefore("""<incomingServer type="smtp"/>""")
         }
 
-        val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
+        val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isInstanceOf<Settings>()
             .prop(Settings::incomingServerSettings).isEqualTo(
@@ -189,7 +189,7 @@ class RealAutoconfigParserTest {
             element("outgoingServer").insertBefore("""<outgoingServer type="imap"/>""")
         }
 
-        val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
+        val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isInstanceOf<Settings>()
             .prop(Settings::outgoingServerSettings).isEqualTo(
@@ -209,7 +209,7 @@ class RealAutoconfigParserTest {
             element("incomingServer > authentication").insertBefore("<authentication></authentication>")
         }
 
-        val result = parser.parseSettings(inputStream, email = "user@domain.example".toEmailAddress())
+        val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isInstanceOf<Settings>()
             .prop(Settings::incomingServerSettings).isEqualTo(

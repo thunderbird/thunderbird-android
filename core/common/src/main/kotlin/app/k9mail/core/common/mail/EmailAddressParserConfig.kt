@@ -38,11 +38,27 @@ data class EmailAddressParserConfig(
     val isEmptyLocalPartAllowed: Boolean = false,
 ) {
     companion object {
-        val DEFAULT = EmailAddressParserConfig(
-            isLocalPartLengthCheckEnabled = true,
-            isEmailAddressLengthCheckEnabled = true,
+        /**
+         * This allows local parts requiring quoted strings and disables length checks for the local part and the
+         * whole email address.
+         */
+        val RELAXED = EmailAddressParserConfig(
+            isLocalPartLengthCheckEnabled = false,
+            isEmailAddressLengthCheckEnabled = false,
             isQuotedLocalPartAllowed = true,
             isLocalPartRequiringQuotedStringAllowed = true,
+            isEmptyLocalPartAllowed = false,
+        )
+
+        /**
+         * This only allows a subset of valid email addresses. Use this when validating the email address a user wants
+         * to add to an account/identity.
+         */
+        val LIMITED = EmailAddressParserConfig(
+            isLocalPartLengthCheckEnabled = true,
+            isEmailAddressLengthCheckEnabled = true,
+            isQuotedLocalPartAllowed = false,
+            isLocalPartRequiringQuotedStringAllowed = false,
             isEmptyLocalPartAllowed = false,
         )
     }

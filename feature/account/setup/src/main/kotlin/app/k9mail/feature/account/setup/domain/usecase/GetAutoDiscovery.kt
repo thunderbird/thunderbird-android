@@ -6,7 +6,7 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.api.ConnectionSecurity
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
-import app.k9mail.core.common.mail.toEmailAddress
+import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.feature.account.setup.domain.DomainContract
@@ -34,7 +34,7 @@ internal class GetAutoDiscovery(
             return provideWithDelay(fakeResult)
         }
 
-        return service.discover(emailAddress.toEmailAddress())!!
+        return service.discover(emailAddress.toUserEmailAddress())!!
     }
 
     @Suppress("MagicNumber")

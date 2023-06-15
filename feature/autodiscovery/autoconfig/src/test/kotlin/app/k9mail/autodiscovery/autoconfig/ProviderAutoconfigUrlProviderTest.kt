@@ -1,6 +1,6 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.core.common.mail.toEmailAddress
+import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
 import assertk.assertions.containsExactly
@@ -8,7 +8,7 @@ import org.junit.Test
 
 class ProviderAutoconfigUrlProviderTest {
     private val domain = "domain.example".toDomain()
-    private val email = "test@domain.example".toEmailAddress()
+    private val email = "test@domain.example".toUserEmailAddress()
 
     @Test
     fun `getAutoconfigUrls with http allowed and email address included`() {

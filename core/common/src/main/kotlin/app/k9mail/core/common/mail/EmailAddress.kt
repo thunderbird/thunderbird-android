@@ -107,10 +107,32 @@ class EmailAddress internal constructor(
     }
 
     companion object {
-        fun parse(address: String, config: EmailAddressParserConfig = EmailAddressParserConfig.DEFAULT): EmailAddress {
+        fun parse(address: String, config: EmailAddressParserConfig = EmailAddressParserConfig.RELAXED): EmailAddress {
             return EmailAddressParser(address, config).parse()
         }
     }
 }
 
-fun String.toEmailAddress() = EmailAddress.parse(this)
+/**
+ * Converts this string to an [EmailAddress] instance using [EmailAddressParserConfig.RELAXED].
+ */
+fun String.toEmailAddressOrThrow() = EmailAddress.parse(this, EmailAddressParserConfig.RELAXED)
+
+/**
+ * Converts this string to an [EmailAddress] instance using [EmailAddressParserConfig.RELAXED].
+ */
+@Suppress("SwallowedException")
+fun String.toEmailAddressOrNull(): EmailAddress? {
+    return try {
+        EmailAddress.parse(this, EmailAddressParserConfig.RELAXED)
+    } catch (e: EmailAddressParserException) {
+        null
+    }
+}
+
+/**
+ * Convert this string into an [EmailAddress] instance using [EmailAddressParserConfig.LIMITED].
+ *
+ * Use this when validating the email address a user wants to add to an account/identity.
+ */
+fun String.toUserEmailAddress() = EmailAddress.parse(this, EmailAddressParserConfig.LIMITED)

@@ -2,7 +2,7 @@ package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.autoconfig.MockAutoconfigFetcher.Companion.RESULT_ONE
 import app.k9mail.autodiscovery.autoconfig.MockAutoconfigFetcher.Companion.RESULT_TWO
-import app.k9mail.core.common.mail.toEmailAddress
+import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
 import assertk.assertions.containsExactly
@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
-private val IRRELEVANT_EMAIL_ADDRESS = "irrelevant@domain.example".toEmailAddress()
+private val IRRELEVANT_EMAIL_ADDRESS = "irrelevant@domain.example".toUserEmailAddress()
 
 class AutoconfigDiscoveryTest {
     private val urlProvider = MockAutoconfigUrlProvider()
@@ -22,7 +22,7 @@ class AutoconfigDiscoveryTest {
 
     @Test
     fun `AutoconfigFetcher and AutoconfigParser should only be called when AutoDiscoveryRunnable is run`() = runTest {
-        val emailAddress = "user@domain.example".toEmailAddress()
+        val emailAddress = "user@domain.example".toUserEmailAddress()
         val autoconfigUrl = "https://autoconfig.domain.invalid/mail/config-v1.1.xml".toHttpUrl()
         urlProvider.addResult(listOf(autoconfigUrl))
         autoconfigFetcher.addResult(RESULT_ONE)
