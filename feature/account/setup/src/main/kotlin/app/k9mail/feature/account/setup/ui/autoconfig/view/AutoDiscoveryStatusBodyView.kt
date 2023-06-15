@@ -51,9 +51,10 @@ internal fun AutoDiscoveryStatusBodyView(
             Spacer(modifier = Modifier.height(MainTheme.sizes.smaller))
             AutoDiscoveryServerSettingsView(
                 protocolName = "IMAP",
-                serverHostname = incomingServerSettings.hostname.value,
+                serverHostname = incomingServerSettings.hostname,
                 serverPort = incomingServerSettings.port.value,
                 connectionSecurity = incomingServerSettings.connectionSecurity,
+                username = incomingServerSettings.username,
                 isIncoming = true,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -64,9 +65,10 @@ internal fun AutoDiscoveryStatusBodyView(
             Spacer(modifier = Modifier.height(MainTheme.sizes.smaller))
             AutoDiscoveryServerSettingsView(
                 protocolName = "SMTP",
-                serverHostname = outgoingServerSettings.hostname.value,
+                serverHostname = outgoingServerSettings.hostname,
                 serverPort = outgoingServerSettings.port.value,
                 connectionSecurity = outgoingServerSettings.connectionSecurity,
+                username = outgoingServerSettings.username,
                 isIncoming = false,
                 modifier = Modifier.fillMaxWidth(),
             )

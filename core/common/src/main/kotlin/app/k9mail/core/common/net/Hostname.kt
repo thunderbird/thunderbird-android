@@ -11,3 +11,5 @@ value class Hostname(val value: String) {
 }
 
 fun String.toHostname() = Hostname(this)
+
+fun Hostname.isIpAddress(): Boolean = HostNameUtils.isLegalIPAddress(value) != null

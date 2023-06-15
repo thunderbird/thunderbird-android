@@ -17,6 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.autodiscovery.api.ConnectionSecurity
+import app.k9mail.core.common.net.Hostname
+import app.k9mail.core.common.net.isIpAddress
+import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
@@ -24,16 +27,15 @@ import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.setup.ui.autoconfig.toResourceString
-import app.k9mail.feature.account.setup.ui.common.toResourceString
 
 @Composable
 internal fun AutoDiscoveryServerSettingsView(
     protocolName: String,
-    serverHostname: String,
+    serverHostname: Hostname,
     serverPort: Int,
     connectionSecurity: ConnectionSecurity,
     modifier: Modifier = Modifier,
-    username: String? = null,
+    username: String = "",
     isIncoming: Boolean = true,
 ) {
     val resources = LocalContext.current.resources
@@ -58,9 +60,13 @@ internal fun AutoDiscoveryServerSettingsView(
             text = buildAnnotatedString {
                 append("Server")
                 append(": ")
-                append(serverHostname.substringBefore(".") + ".")
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(serverHostname.substringAfter("."))
+                if (serverHostname.isIpAddress()) {
+                    append(serverHostname.value)
+                } else {
+                    append(serverHostname.value.substringBefore(".") + ".")
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(serverHostname.value.substringAfter("."))
+                    }
                 }
                 append(":$serverPort")
             },
@@ -117,7 +123,7 @@ internal fun AutoDiscoveryServerSettingsViewPreview() {
     PreviewWithThemes {
         AutoDiscoveryServerSettingsView(
             protocolName = "IMAP",
-            serverHostname = "imap.example.com",
+            serverHostname = "imap.example.com".toHostname(),
             serverPort = 993,
             connectionSecurity = ConnectionSecurity.TLS,
         )
@@ -130,7 +136,7 @@ internal fun AutoDiscoveryServerSettingsViewOutgoingPreview() {
     PreviewWithThemes {
         AutoDiscoveryServerSettingsView(
             protocolName = "IMAP",
-            serverHostname = "imap.example.com",
+            serverHostname = "imap.example.com".toHostname(),
             serverPort = 993,
             connectionSecurity = ConnectionSecurity.TLS,
             isIncoming = false,
@@ -144,7 +150,21 @@ internal fun AutoDiscoveryServerSettingsViewWithUserPreview() {
     PreviewWithThemes {
         AutoDiscoveryServerSettingsView(
             protocolName = "IMAP",
-            serverHostname = "imap.example.com",
+            serverHostname = "imap.example.com".toHostname(),
+            serverPort = 993,
+            connectionSecurity = ConnectionSecurity.TLS,
+            username = "username",
+        )
+    }
+}
+
+@Preview
+@Composable
+internal fun AutoDiscoveryServerSettingsViewWithIpAddressPreview() {
+    PreviewWithThemes {
+        AutoDiscoveryServerSettingsView(
+            protocolName = "IMAP",
+            serverHostname = "127.0.0.1".toHostname(),
             serverPort = 993,
             connectionSecurity = ConnectionSecurity.TLS,
             username = "username",
