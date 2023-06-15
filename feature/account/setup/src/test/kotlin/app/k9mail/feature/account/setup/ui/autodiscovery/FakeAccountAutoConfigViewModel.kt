@@ -1,10 +1,10 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Effect
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Event
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.ViewModel
 
 class FakeAccountAutoConfigViewModel(
     initialState: State = State(),

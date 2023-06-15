@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase

@@ -1,9 +1,9 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.feature.account.setup.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.ConfigStep
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test

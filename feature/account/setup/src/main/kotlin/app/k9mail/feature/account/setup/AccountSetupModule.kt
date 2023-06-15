@@ -5,9 +5,9 @@ import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigValidator
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigValidator
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigViewModel
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigValidator
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewModel

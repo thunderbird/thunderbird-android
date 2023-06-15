@@ -1,10 +1,10 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContent
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Effect
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.ExperimentalCoroutinesApi

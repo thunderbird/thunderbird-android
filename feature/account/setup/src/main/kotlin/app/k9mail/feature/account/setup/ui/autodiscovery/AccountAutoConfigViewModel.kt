@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
@@ -6,13 +6,13 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.input.StringInputField
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Error
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Validator
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.ConfigStep
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Effect
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Error
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Event
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Validator
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.ViewModel
 import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")

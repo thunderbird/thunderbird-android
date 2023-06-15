@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig.view
+package app.k9mail.feature.account.setup.ui.autodiscovery.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

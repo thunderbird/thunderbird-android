@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig.view
+package app.k9mail.feature.account.setup.ui.autodiscovery.view
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.border

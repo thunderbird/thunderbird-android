@@ -1,9 +1,9 @@
-package app.k9mail.feature.account.setup.ui.autoconfig.item
+package app.k9mail.feature.account.setup.ui.autodiscovery.item
 
 import androidx.compose.foundation.lazy.LazyListScope
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.ConfigStep
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Event
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.State
 
 internal fun LazyListScope.contentItems(
     state: State,

@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,9 +10,9 @@ import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Effect
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Event
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.ViewModel
 import app.k9mail.feature.account.setup.ui.common.AccountSetupBottomBar
 import app.k9mail.feature.account.setup.ui.common.AccountSetupTopHeader
 

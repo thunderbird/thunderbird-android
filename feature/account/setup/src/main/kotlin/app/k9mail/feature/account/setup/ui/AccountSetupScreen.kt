@@ -7,9 +7,9 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigScreen
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigScreen
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigViewModel
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigScreen
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewModel

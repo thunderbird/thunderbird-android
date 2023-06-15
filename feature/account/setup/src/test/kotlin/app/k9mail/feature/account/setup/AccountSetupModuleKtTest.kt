@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.setup
 
 import app.k9mail.feature.account.setup.ui.AccountSetupContract
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract

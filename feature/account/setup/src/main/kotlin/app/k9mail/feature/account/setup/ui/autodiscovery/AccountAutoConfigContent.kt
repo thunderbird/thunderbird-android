@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.autoconfig
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,9 +19,9 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Event
-import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.State
-import app.k9mail.feature.account.setup.ui.autoconfig.item.contentItems
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.Event
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoConfigContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.item.contentItems
 import app.k9mail.feature.account.setup.ui.common.item.ErrorItem
 import app.k9mail.feature.account.setup.ui.common.item.LoadingItem
 
