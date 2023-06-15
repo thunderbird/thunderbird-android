@@ -47,6 +47,7 @@ interface AccountAutoConfigContract {
     interface Validator {
         fun validateEmailAddress(emailAddress: String): ValidationResult
         fun validatePassword(password: String): ValidationResult
+        fun validateConfigurationApproval(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationResult
     }
 
     sealed interface Error {

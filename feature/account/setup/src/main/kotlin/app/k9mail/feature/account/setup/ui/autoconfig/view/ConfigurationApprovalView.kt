@@ -5,17 +5,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.input.BooleanInputField
+import app.k9mail.feature.account.setup.ui.autoconfig.toResourceString
 
 @Composable
 internal fun ConfigurationApprovalView(
     approvalState: BooleanInputField,
     onConfigurationApprovalChange: (Boolean) -> Unit,
 ) {
+    val resources = LocalContext.current.resources
+
     Spacer(modifier = Modifier.height(MainTheme.spacings.default))
 
     CheckboxInput(
@@ -24,7 +28,7 @@ internal fun ConfigurationApprovalView(
         ),
         checked = approvalState.value ?: false,
         onCheckedChange = onConfigurationApprovalChange,
-        errorMessage = approvalState.error?.toString(), // TODO
+        errorMessage = approvalState.error?.toResourceString(resources),
         contentPadding = PaddingValues(),
     )
 }

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LazyItemScope.ListItem(
+internal fun LazyItemScope.ListItem(
     modifier: Modifier = Modifier,
     contentPaddingValues: PaddingValues = defaultItemPadding(),
     content: @Composable () -> Unit,

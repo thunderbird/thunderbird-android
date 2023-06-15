@@ -9,20 +9,18 @@ import org.junit.Test
 
 class ValidatePortTest {
 
+    private val testSubject = ValidatePort()
+
     @Test
     fun `should succeed when port is set`() {
-        val useCase = ValidatePort()
-
-        val result = useCase.execute(123L)
+        val result = testSubject.execute(123L)
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when port is negative`() {
-        val useCase = ValidatePort()
-
-        val result = useCase.execute(-1L)
+        val result = testSubject.execute(-1L)
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -31,9 +29,7 @@ class ValidatePortTest {
 
     @Test
     fun `should fail when port is zero`() {
-        val useCase = ValidatePort()
-
-        val result = useCase.execute(0)
+        val result = testSubject.execute(0)
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -42,9 +38,7 @@ class ValidatePortTest {
 
     @Test
     fun `should fail when port exceeds maximum`() {
-        val useCase = ValidatePort()
-
-        val result = useCase.execute(65536L)
+        val result = testSubject.execute(65536L)
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -53,9 +47,7 @@ class ValidatePortTest {
 
     @Test
     fun `should fail when port is null`() {
-        val useCase = ValidatePort()
-
-        val result = useCase.execute(null)
+        val result = testSubject.execute(null)
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)

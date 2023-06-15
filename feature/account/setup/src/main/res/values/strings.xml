@@ -23,7 +23,6 @@
 
     <string name="account_setup_auto_config_loading_message">Finding email details</string>
     <string name="account_setup_auto_config_loading_error">Failed to load email configuration</string>
-
     <string name="account_setup_auto_config_status_header_title_configuration_found">Configuration Found</string>
     <string name="account_setup_auto_config_status_header_title_configuration_not_found">Configuration Not Found</string>
     <string name="account_setup_auto_config_status_header_subtitle_configuration_trusted">Configure automatically</string>
@@ -32,6 +31,7 @@
     <string name="account_setup_auto_config_status_header_subtitle_configuration_not_found">Configure manually</string>
     <string name="account_setup_auto_config_status_edit_configuration_button_label">Edit configuration</string>
     <string name="account_setup_auto_config_status_checkbox_configuration_untrusted_confirmation_label">I trust this configuration</string>
+    <string name="account_setup_error_configuration_approval_required">It is required to approve the configuration.</string>
 
     <string name="account_setup_incoming_config_top_bar_title">Incoming server settings</string>
     <string name="account_setup_incoming_config_protocol_type_label">Protocol</string>

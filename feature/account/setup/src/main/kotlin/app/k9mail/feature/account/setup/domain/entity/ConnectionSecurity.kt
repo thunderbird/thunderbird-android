@@ -18,7 +18,7 @@ enum class ConnectionSecurity {
 }
 
 @Suppress("MagicNumber")
-fun ConnectionSecurity.toSmtpDefaultPort(): Long {
+internal fun ConnectionSecurity.toSmtpDefaultPort(): Long {
     return when (this) {
         None -> 587
         StartTLS -> 587
@@ -27,7 +27,7 @@ fun ConnectionSecurity.toSmtpDefaultPort(): Long {
 }
 
 @Suppress("MagicNumber")
-fun ConnectionSecurity.toImapDefaultPort(): Long {
+internal fun ConnectionSecurity.toImapDefaultPort(): Long {
     return when (this) {
         None -> 143
         StartTLS -> 143
@@ -36,7 +36,7 @@ fun ConnectionSecurity.toImapDefaultPort(): Long {
 }
 
 @Suppress("MagicNumber")
-fun ConnectionSecurity.toPop3DefaultPort(): Long {
+internal fun ConnectionSecurity.toPop3DefaultPort(): Long {
     return when (this) {
         None -> 110
         StartTLS -> 110

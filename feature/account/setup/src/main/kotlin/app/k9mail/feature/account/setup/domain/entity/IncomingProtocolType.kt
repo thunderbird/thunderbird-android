@@ -17,7 +17,7 @@ enum class IncomingProtocolType(
     }
 }
 
-fun IncomingProtocolType.toDefaultPort(connectionSecurity: ConnectionSecurity): Long {
+internal fun IncomingProtocolType.toDefaultPort(connectionSecurity: ConnectionSecurity): Long {
     return when (this) {
         IncomingProtocolType.IMAP -> connectionSecurity.toImapDefaultPort()
         IncomingProtocolType.POP3 -> connectionSecurity.toPop3DefaultPort()

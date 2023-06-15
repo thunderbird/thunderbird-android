@@ -8,20 +8,18 @@ import org.junit.Test
 
 class ValidateUsernameTest {
 
+    private val testSubject = ValidateUsername()
+
     @Test
     fun `should succeed when username is set`() {
-        val useCase = ValidateUsername()
-
-        val result = useCase.execute("username")
+        val result = testSubject.execute("username")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when username is empty`() {
-        val useCase = ValidateUsername()
-
-        val result = useCase.execute("")
+        val result = testSubject.execute("")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -30,9 +28,7 @@ class ValidateUsernameTest {
 
     @Test
     fun `should fail when username is blank`() {
-        val useCase = ValidateUsername()
-
-        val result = useCase.execute(" ")
+        val result = testSubject.execute(" ")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)

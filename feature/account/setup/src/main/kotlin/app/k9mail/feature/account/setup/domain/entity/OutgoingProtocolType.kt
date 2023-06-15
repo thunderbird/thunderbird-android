@@ -2,7 +2,7 @@ package app.k9mail.feature.account.setup.domain.entity
 
 import kotlinx.collections.immutable.toImmutableList
 
-enum class OutgoingProtocolType(
+internal enum class OutgoingProtocolType(
     val defaultName: String,
     val defaultConnectionSecurity: ConnectionSecurity,
 ) {
@@ -16,7 +16,7 @@ enum class OutgoingProtocolType(
     }
 }
 
-fun OutgoingProtocolType.toDefaultPort(connectionSecurity: ConnectionSecurity): Long {
+internal fun OutgoingProtocolType.toDefaultPort(connectionSecurity: ConnectionSecurity): Long {
     return when (this) {
         OutgoingProtocolType.SMTP -> connectionSecurity.toSmtpDefaultPort()
     }

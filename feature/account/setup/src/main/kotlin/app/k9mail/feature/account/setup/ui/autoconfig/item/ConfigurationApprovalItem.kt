@@ -8,7 +8,7 @@ import app.k9mail.feature.account.setup.ui.autoconfig.view.ConfigurationApproval
 import app.k9mail.feature.account.setup.ui.common.item.ListItem
 
 @Composable
-fun LazyItemScope.ConfigurationApprovalItem(
+internal fun LazyItemScope.ConfigurationApprovalItem(
     approvalState: BooleanInputField,
     onConfigurationApprovalChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,

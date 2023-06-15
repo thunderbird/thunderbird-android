@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.Effect
@@ -16,10 +16,10 @@ import app.k9mail.feature.account.setup.ui.autoconfig.AccountAutoConfigContract.
 import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
-class AccountAutoConfigViewModel(
+internal class AccountAutoConfigViewModel(
     initialState: State = State(),
     private val validator: Validator,
-    private val getAutoDiscovery: DomainContract.GetAutoDiscoveryUseCase,
+    private val getAutoDiscovery: UseCase.GetAutoDiscovery,
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     override fun initState(state: State) {
@@ -149,13 +149,23 @@ class AccountAutoConfigViewModel(
         with(state.value) {
             val emailValidationResult = validator.validateEmailAddress(emailAddress.value)
             val passwordValidationResult = validator.validatePassword(password.value)
-            val hasError = listOf(emailValidationResult, passwordValidationResult)
-                .any { it is ValidationResult.Failure }
+            val configurationApprovalValidationResult = validator.validateConfigurationApproval(
+                isApproved = configurationApproved.value,
+                isAutoDiscoveryTrusted = autoDiscoverySettings?.isTrusted,
+            )
+            val hasError = listOf(
+                emailValidationResult,
+                passwordValidationResult,
+                configurationApprovalValidationResult,
+            ).any { it is ValidationResult.Failure }
 
             updateState {
                 it.copy(
                     emailAddress = it.emailAddress.updateFromValidationResult(emailValidationResult),
                     password = it.password.updateFromValidationResult(passwordValidationResult),
+                    configurationApproved = it.configurationApproved.updateFromValidationResult(
+                        configurationApprovalValidationResult,
+                    ),
                 )
             }
 

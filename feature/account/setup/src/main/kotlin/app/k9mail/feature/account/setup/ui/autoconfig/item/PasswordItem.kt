@@ -11,7 +11,7 @@ import app.k9mail.feature.account.setup.ui.common.item.ListItem
 import app.k9mail.feature.account.setup.ui.common.toResourceString
 
 @Composable
-fun LazyItemScope.PasswordItem(
+internal fun LazyItemScope.PasswordItem(
     password: String,
     error: ValidationError?,
     onPasswordChange: (String) -> Unit,

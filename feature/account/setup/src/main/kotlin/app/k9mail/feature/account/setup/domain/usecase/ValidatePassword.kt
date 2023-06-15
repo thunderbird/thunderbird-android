@@ -2,14 +2,14 @@ package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
+import app.k9mail.feature.account.setup.domain.DomainContract
 
-class ValidatePassword : ValidationUseCase<String> {
+internal class ValidatePassword : DomainContract.UseCase.ValidatePassword {
 
     // TODO change behavior to allow empty password when no password is required based on auth type
-    override fun execute(input: String): ValidationResult {
+    override fun execute(password: String): ValidationResult {
         return when {
-            input.isBlank() -> ValidationResult.Failure(ValidatePasswordError.EmptyPassword)
+            password.isBlank() -> ValidationResult.Failure(ValidatePasswordError.EmptyPassword)
 
             else -> ValidationResult.Success
         }

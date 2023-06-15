@@ -9,29 +9,25 @@ import org.junit.Test
 
 class ValidateAccountNameTest {
 
+    private val testSubject = ValidateAccountName()
+
     @Test
     fun `should succeed when account name is set`() {
-        val useCase = ValidateAccountName()
-
-        val result = useCase.execute("account name")
+        val result = testSubject.execute("account name")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should succeed when account name is empty`() {
-        val useCase = ValidateAccountName()
-
-        val result = useCase.execute("")
+        val result = testSubject.execute("")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when account name is blank`() {
-        val useCase = ValidateAccountName()
-
-        val result = useCase.execute(" ")
+        val result = testSubject.execute(" ")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)

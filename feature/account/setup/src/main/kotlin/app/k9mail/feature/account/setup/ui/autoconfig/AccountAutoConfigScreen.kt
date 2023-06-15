@@ -17,7 +17,7 @@ import app.k9mail.feature.account.setup.ui.common.AccountSetupBottomBar
 import app.k9mail.feature.account.setup.ui.common.AccountSetupTopHeader
 
 @Composable
-fun AccountAutoConfigScreen(
+internal fun AccountAutoConfigScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,

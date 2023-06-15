@@ -2,12 +2,12 @@ package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.core.common.domain.usecase.validation.ValidationUseCase
+import app.k9mail.feature.account.setup.domain.DomainContract
 
-class ValidatePort : ValidationUseCase<Long?> {
+internal class ValidatePort : DomainContract.UseCase.ValidatePort {
 
-    override fun execute(input: Long?): ValidationResult {
-        return when (input) {
+    override fun execute(port: Long?): ValidationResult {
+        return when (port) {
             null -> ValidationResult.Failure(ValidatePortError.EmptyPort)
             in MIN_PORT_NUMBER..MAX_PORT_NUMBER -> ValidationResult.Success
             else -> ValidationResult.Failure(ValidatePortError.InvalidPort)

@@ -80,7 +80,7 @@ internal fun AutoDiscoveryServerSettingsView(
             },
         )
 
-        if (username != null) {
+        if (username.isNotEmpty()) {
             ServerSettingRow(
                 icon = Icons.Filled.user,
                 text = buildAnnotatedString {
@@ -93,7 +93,7 @@ internal fun AutoDiscoveryServerSettingsView(
 }
 
 @Composable
-internal fun ServerSettingRow(
+private fun ServerSettingRow(
     icon: ImageVector,
     text: AnnotatedString,
     modifier: Modifier = Modifier,

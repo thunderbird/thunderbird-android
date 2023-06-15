@@ -9,29 +9,25 @@ import org.junit.Test
 
 class ValidateEmailSignatureTest {
 
+    private val testSubject = ValidateEmailSignature()
+
     @Test
     fun `should succeed when email signature is set`() {
-        val useCase = ValidateEmailSignature()
-
-        val result = useCase.execute("email signature")
+        val result = testSubject.execute("email signature")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should succeed when email signature is empty`() {
-        val useCase = ValidateEmailSignature()
-
-        val result = useCase.execute("")
+        val result = testSubject.execute("")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when email signature is blank`() {
-        val useCase = ValidateEmailSignature()
-
-        val result = useCase.execute(" ")
+        val result = testSubject.execute(" ")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)

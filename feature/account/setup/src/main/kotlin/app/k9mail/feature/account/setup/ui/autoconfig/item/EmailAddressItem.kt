@@ -11,7 +11,7 @@ import app.k9mail.feature.account.setup.ui.common.item.ListItem
 import app.k9mail.feature.account.setup.ui.common.toResourceString
 
 @Composable
-fun LazyItemScope.EmailAddressItem(
+internal fun LazyItemScope.EmailAddressItem(
     emailAddress: String,
     error: ValidationError?,
     onEmailAddressChange: (String) -> Unit,

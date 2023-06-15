@@ -9,20 +9,18 @@ import org.junit.Test
 
 class ValidateDisplayNameTest {
 
+    private val testSubject = ValidateDisplayName()
+
     @Test
     fun `should succeed when display name is set`() {
-        val useCase = ValidateDisplayName()
-
-        val result = useCase.execute("display name")
+        val result = testSubject.execute("display name")
 
         assertThat(result).isInstanceOf(ValidationResult.Success::class)
     }
 
     @Test
     fun `should fail when display name is empty`() {
-        val useCase = ValidateDisplayName()
-
-        val result = useCase.execute("")
+        val result = testSubject.execute("")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
@@ -31,9 +29,7 @@ class ValidateDisplayNameTest {
 
     @Test
     fun `should fail when display name is blank`() {
-        val useCase = ValidateDisplayName()
-
-        val result = useCase.execute(" ")
+        val result = testSubject.execute(" ")
 
         assertThat(result).isInstanceOf(ValidationResult.Failure::class)
             .prop(ValidationResult.Failure::error)
