@@ -17,7 +17,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
 import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
-import app.k9mail.feature.account.setup.R
 
 @Suppress("LongMethod")
 @Composable
@@ -33,13 +32,10 @@ internal fun AutoDiscoveryStatusHeaderView(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            imageVector = when (state) {
-                AutoDiscoveryStatusHeaderState.NoSettings -> Icons.Outlined.info
-                AutoDiscoveryStatusHeaderState.Trusted -> Icons.Outlined.check
-                AutoDiscoveryStatusHeaderState.Untrusted -> Icons.Outlined.info
-            },
+            imageVector = state.icon,
             tint = selectColor(state),
-            modifier = Modifier.padding(MainTheme.spacings.default)
+            modifier = Modifier
+                .padding(MainTheme.spacings.default)
                 .requiredSize(MainTheme.sizes.medium),
         )
         Column(
@@ -52,40 +48,14 @@ internal fun AutoDiscoveryStatusHeaderView(
                 ),
         ) {
             TextHeadline6(
-                text = stringResource(
-                    id = when (state) {
-                        AutoDiscoveryStatusHeaderState.NoSettings -> {
-                            R.string.account_setup_auto_config_status_header_title_configuration_not_found
-                        }
-
-                        AutoDiscoveryStatusHeaderState.Trusted,
-                        AutoDiscoveryStatusHeaderState.Untrusted,
-                        -> {
-                            R.string.account_setup_auto_config_status_header_title_configuration_found
-                        }
-                    },
-                ),
+                text = stringResource(state.titleResourceId),
             )
             TextBody2(
-                text = stringResource(
-                    when (state) {
-                        AutoDiscoveryStatusHeaderState.NoSettings -> {
-                            R.string.account_setup_auto_config_status_header_subtitle_configuration_not_found
-                        }
-
-                        AutoDiscoveryStatusHeaderState.Trusted -> {
-                            R.string.account_setup_auto_config_status_header_subtitle_configuration_trusted
-                        }
-
-                        AutoDiscoveryStatusHeaderState.Untrusted -> {
-                            R.string.account_setup_auto_config_status_header_subtitle_configuration_untrusted
-                        }
-                    },
-                ),
+                text = stringResource(state.subtitleResourceId),
                 color = selectColor(state),
             )
         }
-        if (state != AutoDiscoveryStatusHeaderState.NoSettings) {
+        if (state.isExpandable) {
             Icon(
                 imageVector = if (isExpanded) Icons.Outlined.expandLess else Icons.Outlined.expandMore,
                 modifier = Modifier.padding(MainTheme.spacings.default),
