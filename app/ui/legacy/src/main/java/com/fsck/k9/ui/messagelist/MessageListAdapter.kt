@@ -378,6 +378,7 @@ class MessageListAdapter internal constructor(
             val displayDate = relativeDateTimeFormatter.formatDate(messageDate)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
             val subject = MlfUtils.buildSubject(subject, res.getString(R.string.general_no_subject), displayThreadCount)
+            val textSize = if (isRead) FontSizes.FONT_16SP else FontSizes.MEDIUM
 
             if (appearance.showAccountChip) {
                 val accountChipDrawable = holder.chip.drawable.mutate()
@@ -409,6 +410,8 @@ class MessageListAdapter internal constructor(
 
             holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
             holder.subject.setTextColor(textColor)
+            holder.subject.textSize = textSize.toFloat()
+            holder.unreadMessageIndicator.isVisible = !isRead
             if (appearance.senderAboveSubject) {
                 holder.subject.text = displayName
             } else {

@@ -134,6 +134,17 @@
         tools:text="Oct 27" />
 
     <ImageView
+        android:id="@+id/unread_image_indicator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="4dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/date"
+        app:srcCompat="@drawable/unread_message_indicator" />
+        
+    <ImageView
         android:id="@+id/star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -22,6 +22,7 @@ class MessageViewHolder(view: View) : MessageListViewHolder(view) {
     val starClickArea: View = view.findViewById(R.id.star_click_area)
     val attachment: ImageView = view.findViewById(R.id.attachment)
     val status: ImageView = view.findViewById(R.id.status)
+    val unreadMessageIndicator: ImageView = view.findViewById(R.id.unread_image_indicator)
 }
 
 class FooterViewHolder(view: View) : MessageListViewHolder(view) {
