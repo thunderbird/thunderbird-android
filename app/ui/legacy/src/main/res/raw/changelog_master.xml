@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.706" versioncode="37006" date="2023-06-16">
+        <change>Fixed a bug that lead to folders appearing to be empty</change>
+        <change>Don't use nickname as display name when auto-completing recipient using the nickname</change>
+    </release>
     <release version="6.705" versioncode="37005" date="2023-06-12">
         <change>Adding to contacts should now allow you again to add the email address to an existing contact</change>
         <change>Fixed display issue with recipients in message view screen</change>
