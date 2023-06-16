@@ -371,6 +371,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_SPACE) {
+            performCompletion();
+        }
         alternatesPopup.dismiss();
         return super.onKeyDown(keyCode, event);
     }
