@@ -6,7 +6,7 @@ import app.k9mail.autodiscovery.autoconfig.AutoconfigUrlConfig
 import app.k9mail.autodiscovery.autoconfig.createIspDbAutoconfigDiscovery
 import app.k9mail.autodiscovery.autoconfig.createMxLookupAutoconfigDiscovery
 import app.k9mail.autodiscovery.autoconfig.createProviderAutoconfigDiscovery
-import app.k9mail.core.common.mail.toEmailAddress
+import app.k9mail.core.common.mail.toUserEmailAddress
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.flag
@@ -57,7 +57,7 @@ class AutoDiscoveryCli : CliktCommand(
             val mxDiscovery = createMxLookupAutoconfigDiscovery(okHttpClient)
 
             val runnables = listOf(providerDiscovery, ispDbDiscovery, mxDiscovery)
-                .flatMap { it.initDiscovery(emailAddress.toEmailAddress()) }
+                .flatMap { it.initDiscovery(emailAddress.toUserEmailAddress()) }
             val serialRunner = SerialRunner(runnables)
 
             return runBlocking {

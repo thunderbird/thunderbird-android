@@ -6,7 +6,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.toEmailAddress
+import app.k9mail.core.common.mail.toEmailAddressOrNull
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9.contactNameColor
 import com.fsck.k9.K9.isChangeContactNameColor
@@ -101,7 +101,7 @@ class MessageHelper(
             if (!showCorrespondentNames) {
                 return address.address
             } else if (contactRepository != null) {
-                val name = contactRepository.getContactFor(address.address.toEmailAddress())?.name
+                val name = contactRepository.getContactName(address)
                 if (name != null) {
                     return if (changeContactNameColor) {
                         val coloredName = SpannableString(name)
@@ -121,6 +121,12 @@ class MessageHelper(
                 address.personal
             } else {
                 address.address
+            }
+        }
+
+        private fun ContactRepository.getContactName(address: Address): String? {
+            return address.address.toEmailAddressOrNull()?.let { emailAddress ->
+                getContactFor(emailAddress)?.name
             }
         }
 

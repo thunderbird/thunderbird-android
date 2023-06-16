@@ -15,6 +15,7 @@ import app.k9mail.core.common.mail.EmailAddressParserError.UnexpectedCharacter
 import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -40,7 +41,10 @@ class EmailAddressParserTest {
 
     @Test
     fun `quoted local part`() {
-        val emailAddress = parseEmailAddress("\"one two\"@domain.example", allowLocalPartRequiringQuotedString = true)
+        val emailAddress = parseEmailAddress(
+            address = "\"one two\"@domain.example",
+            isLocalPartRequiringQuotedStringAllowed = true,
+        )
 
         assertThat(emailAddress.localPart).isEqualTo("one two")
         assertThat(emailAddress.domain).isEqualTo(EmailDomain("domain.example"))
@@ -51,8 +55,8 @@ class EmailAddressParserTest {
         assertFailure {
             parseEmailAddress(
                 address = "\"one two\"@domain.example",
-                allowQuotedLocalPart = true,
-                allowLocalPartRequiringQuotedString = false,
+                isQuotedLocalPartAllowed = true,
+                isLocalPartRequiringQuotedStringAllowed = false,
             )
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(LocalPartRequiresQuotedString)
@@ -65,8 +69,8 @@ class EmailAddressParserTest {
     fun `unnecessarily quoted local part`() {
         val emailAddress = parseEmailAddress(
             address = "\"user\"@domain.example",
-            allowQuotedLocalPart = true,
-            allowLocalPartRequiringQuotedString = false,
+            isQuotedLocalPartAllowed = true,
+            isLocalPartRequiringQuotedStringAllowed = false,
         )
 
         assertThat(emailAddress.localPart).isEqualTo("user")
@@ -77,7 +81,7 @@ class EmailAddressParserTest {
     @Test
     fun `unnecessarily quoted local part not allowed`() {
         assertFailure {
-            parseEmailAddress("\"user\"@domain.example", allowQuotedLocalPart = false)
+            parseEmailAddress("\"user\"@domain.example", isQuotedLocalPartAllowed = false)
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(QuotedStringInLocalPart)
             prop(EmailAddressParserException::position).isEqualTo(0)
@@ -87,7 +91,10 @@ class EmailAddressParserTest {
 
     @Test
     fun `quoted local part containing double quote character`() {
-        val emailAddress = parseEmailAddress(""""a\"b"@domain.example""", allowLocalPartRequiringQuotedString = true)
+        val emailAddress = parseEmailAddress(
+            address = """"a\"b"@domain.example""",
+            isLocalPartRequiringQuotedStringAllowed = true,
+        )
 
         assertThat(emailAddress.localPart).isEqualTo("a\"b")
         assertThat(emailAddress.domain).isEqualTo(EmailDomain("domain.example"))
@@ -96,7 +103,7 @@ class EmailAddressParserTest {
 
     @Test
     fun `empty local part`() {
-        val emailAddress = parseEmailAddress("\"\"@domain.example", allowEmptyLocalPart = true)
+        val emailAddress = parseEmailAddress("\"\"@domain.example", isEmptyLocalPartAllowed = true)
 
         assertThat(emailAddress.localPart).isEqualTo("")
         assertThat(emailAddress.domain).isEqualTo(EmailDomain("domain.example"))
@@ -108,8 +115,8 @@ class EmailAddressParserTest {
         assertFailure {
             parseEmailAddress(
                 address = "\"\"@domain.example",
-                allowLocalPartRequiringQuotedString = true,
-                allowEmptyLocalPart = false,
+                isLocalPartRequiringQuotedStringAllowed = true,
+                isEmptyLocalPartAllowed = false,
             )
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(EmptyLocalPart)
@@ -154,7 +161,7 @@ class EmailAddressParserTest {
     @Test
     fun `obsolete syntax`() {
         assertFailure {
-            parseEmailAddress("\"quoted\".atom@domain.example", allowLocalPartRequiringQuotedString = true)
+            parseEmailAddress("\"quoted\".atom@domain.example", isLocalPartRequiringQuotedStringAllowed = true)
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(UnexpectedCharacter)
             prop(EmailAddressParserException::position).isEqualTo(8)
@@ -187,7 +194,7 @@ class EmailAddressParserTest {
     @Test
     fun `quoted local part missing closing double quote`() {
         assertFailure {
-            parseEmailAddress("\"invalid@domain.example", allowLocalPartRequiringQuotedString = true)
+            parseEmailAddress("\"invalid@domain.example", isLocalPartRequiringQuotedStringAllowed = true)
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(UnexpectedCharacter)
             prop(EmailAddressParserException::position).isEqualTo(23)
@@ -198,7 +205,7 @@ class EmailAddressParserTest {
     @Test
     fun `quoted text containing unsupported character`() {
         assertFailure {
-            parseEmailAddress("\"ä\"@domain.example", allowLocalPartRequiringQuotedString = true)
+            parseEmailAddress("\"ä\"@domain.example", isLocalPartRequiringQuotedStringAllowed = true)
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(InvalidQuotedString)
             prop(EmailAddressParserException::position).isEqualTo(1)
@@ -209,7 +216,7 @@ class EmailAddressParserTest {
     @Test
     fun `quoted text containing unsupported escaped character`() {
         assertFailure {
-            parseEmailAddress(""""\ä"@domain.example""", allowLocalPartRequiringQuotedString = true)
+            parseEmailAddress(""""\ä"@domain.example""", isLocalPartRequiringQuotedStringAllowed = true)
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(InvalidQuotedString)
             prop(EmailAddressParserException::position).isEqualTo(3)
@@ -218,9 +225,12 @@ class EmailAddressParserTest {
     }
 
     @Test
-    fun `local part exceeds maximum size`() {
+    fun `local part exceeds maximum size with length check enabled`() {
         assertFailure {
-            parseEmailAddress("1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12345@domain.example")
+            parseEmailAddress(
+                address = "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12345@domain.example",
+                isLocalPartLengthCheckEnabled = true,
+            )
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(LocalPartLengthExceeded)
             prop(EmailAddressParserException::position).isEqualTo(65)
@@ -229,19 +239,55 @@ class EmailAddressParserTest {
     }
 
     @Test
-    fun `email exceeds maximum size`() {
+    fun `local part exceeds maximum size with length check disabled`() {
+        val input = "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12345@domain.example"
+
+        val emailAddress = parseEmailAddress(address = input, isLocalPartLengthCheckEnabled = false)
+
+        assertThat(emailAddress.localPart)
+            .isEqualTo("1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12345")
+        assertThat(emailAddress.domain).isEqualTo(EmailDomain("domain.example"))
+        assertThat(emailAddress.address).isEqualTo(input)
+        assertThat(emailAddress.warnings).contains(EmailAddress.Warning.LocalPartExceedsLengthLimit)
+    }
+
+    @Test
+    fun `email exceeds maximum size with length check enabled`() {
         assertFailure {
             parseEmailAddress(
-                "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx1234@" +
+                address = "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx1234@" +
                     "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
                     "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
                     "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12",
+                isEmailAddressLengthCheckEnabled = true,
             )
         }.isInstanceOf<EmailAddressParserException>().all {
             prop(EmailAddressParserException::error).isEqualTo(TotalLengthExceeded)
             prop(EmailAddressParserException::position).isEqualTo(255)
             hasMessage("The email address exceeds the maximum length of 254 characters")
         }
+    }
+
+    @Test
+    fun `email exceeds maximum size with length check disabled`() {
+        val input = "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx1234@" +
+            "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
+            "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
+            "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12"
+
+        val emailAddress = parseEmailAddress(address = input, isEmailAddressLengthCheckEnabled = false)
+
+        assertThat(emailAddress.localPart)
+            .isEqualTo("1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx1234")
+        assertThat(emailAddress.domain).isEqualTo(
+            EmailDomain(
+                "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
+                    "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx123." +
+                    "1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxx5xxxxxxxxx6xxxxxxxxx12",
+            ),
+        )
+        assertThat(emailAddress.address).isEqualTo(input)
+        assertThat(emailAddress.warnings).contains(EmailAddress.Warning.EmailAddressExceedsLengthLimit)
     }
 
     @Test
@@ -257,14 +303,18 @@ class EmailAddressParserTest {
 
     private fun parseEmailAddress(
         address: String,
-        allowEmptyLocalPart: Boolean = false,
-        allowLocalPartRequiringQuotedString: Boolean = allowEmptyLocalPart,
-        allowQuotedLocalPart: Boolean = allowLocalPartRequiringQuotedString,
+        isLocalPartLengthCheckEnabled: Boolean = false,
+        isEmailAddressLengthCheckEnabled: Boolean = false,
+        isEmptyLocalPartAllowed: Boolean = false,
+        isLocalPartRequiringQuotedStringAllowed: Boolean = isEmptyLocalPartAllowed,
+        isQuotedLocalPartAllowed: Boolean = isLocalPartRequiringQuotedStringAllowed,
     ): EmailAddress {
         val config = EmailAddressParserConfig(
-            allowQuotedLocalPart,
-            allowLocalPartRequiringQuotedString,
-            allowEmptyLocalPart,
+            isLocalPartLengthCheckEnabled,
+            isEmailAddressLengthCheckEnabled,
+            isQuotedLocalPartAllowed,
+            isLocalPartRequiringQuotedStringAllowed,
+            isEmptyLocalPartAllowed,
         )
         return EmailAddressParser(address, config).parse()
     }

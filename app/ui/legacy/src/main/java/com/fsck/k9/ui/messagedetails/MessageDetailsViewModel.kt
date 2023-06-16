@@ -2,12 +2,13 @@ package com.fsck.k9.ui.messagedetails
 
 import android.app.PendingIntent
 import android.content.res.Resources
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.toEmailAddress
+import app.k9mail.core.common.mail.toEmailAddressOrNull
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.ClipboardManager
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+@Suppress("TooManyFunctions")
 internal class MessageDetailsViewModel(
     private val resources: Resources,
     private val messageRepository: MessageRepository,
@@ -130,8 +132,14 @@ internal class MessageDetailsViewModel(
             Participant(
                 displayName = displayName,
                 emailAddress = emailAddress,
-                contactLookupUri = contactRepository.getContactFor(emailAddress.toEmailAddress())?.uri,
+                contactLookupUri = getContactLookupUri(emailAddress),
             )
+        }
+    }
+
+    private fun getContactLookupUri(email: String): Uri? {
+        return email.toEmailAddressOrNull()?.let { emailAddress ->
+            contactRepository.getContactFor(emailAddress)?.uri
         }
     }
 
