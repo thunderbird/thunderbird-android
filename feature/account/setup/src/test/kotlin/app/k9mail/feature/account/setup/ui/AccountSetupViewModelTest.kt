@@ -5,6 +5,11 @@ import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
+import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
+import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
+import assertk.assertThat
 import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
 import assertk.assertions.prop
@@ -33,6 +38,15 @@ class AccountSetupViewModelTest {
         }
 
         viewModel.event(AccountSetupContract.Event.OnAutoDiscoveryFinished(AccountAutoDiscoveryContract.State()))
+
+        assertThat(effectTurbine.awaitItem())
+            .isEqualTo(Effect.UpdateIncomingConfig(AccountIncomingConfigContract.State()))
+
+        assertThat(effectTurbine.awaitItem())
+            .isEqualTo(Effect.UpdateOutgoingConfig(AccountOutgoingConfigContract.State()))
+
+        assertThat(effectTurbine.awaitItem())
+            .isEqualTo(Effect.UpdateOptions(AccountOptionsContract.State()))
 
         assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
