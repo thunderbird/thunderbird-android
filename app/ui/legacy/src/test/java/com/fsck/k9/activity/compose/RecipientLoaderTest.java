@@ -49,8 +49,7 @@ public class RecipientLoaderTest extends RobolectricTest {
             ContactsContract.Contacts.STARRED
     };
     static final String[] PROJECTION_NICKNAME = {
-            ContactsContract.Data.CONTACT_ID,
-            ContactsContract.CommonDataKinds.Nickname.NAME
+            ContactsContract.Data.CONTACT_ID
     };
     static final String[] PROJECTION_CRYPTO_ADDRESSES = { "address", "uid_address" };
     static final String[] PROJECTION_CRYPTO_STATUS = { "address", "uid_key_status", "autocrypt_key_status" };
@@ -66,7 +65,7 @@ public class RecipientLoaderTest extends RobolectricTest {
     static final String[] CONTACT_WITH_NICKNAME_NOT_CONTACTED =
             new String[] { "0", "Eve_notContacted", "eve_notContacted", "eve_notContacted@host.com", TYPE, null, "2",
                     null, "0", "Eve", "0" };
-    static final String[] NICKNAME_NOT_CONTACTED = new String[] { "2", "Eves_Nickname_Bob" };
+    static final String[] NICKNAME_NOT_CONTACTED = new String[] { "2" };
 
     static final String QUERYSTRING = "querystring";
 

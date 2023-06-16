@@ -75,7 +75,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     };
 
     private static final int INDEX_CONTACT_ID_FOR_NICKNAME = 0;
-    private static final int INDEX_NICKNAME = 1;
 
     private static final String[] PROJECTION_CRYPTO_ADDRESSES = {
             "address",
@@ -443,7 +442,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
         while (cursor.moveToNext() && (maxRecipients == null || recipients.size() < maxRecipients)) {
             String name = cursor.getString(INDEX_NAME);
-
             String email = cursor.getString(INDEX_EMAIL);
 
             // already exists? just skip then
