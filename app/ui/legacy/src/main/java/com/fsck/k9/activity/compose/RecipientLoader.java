@@ -72,7 +72,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private static final String[] PROJECTION_NICKNAME = {
             ContactsContract.Data.CONTACT_ID,
-            ContactsContract.CommonDataKinds.Nickname.NAME
     };
 
     private static final int INDEX_CONTACT_ID_FOR_NICKNAME = 0;
@@ -377,8 +376,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                 Cursor cursor = contentResolver
                         .query(queryUri, PROJECTION, selection, new String[] { id }, SORT_ORDER);
 
-                String contactNickname = nicknameCursor.getString(INDEX_NICKNAME);
-                fillContactDataFromCursor(cursor, recipients, recipientMap, contactNickname, null);
+                fillContactDataFromCursor(cursor, recipients, recipientMap, null);
 
                 hasContact = true;
             }
@@ -403,7 +401,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             return recipients;
         }
 
-        fillContactDataFromCursor(cursor, recipients, new HashMap<>(), null, maxRecipients);
+        fillContactDataFromCursor(cursor, recipients, new HashMap<>(), maxRecipients);
 
         return recipients;
     }
@@ -437,14 +435,14 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private void fillContactDataFromCursor(Cursor cursor, List<Recipient> recipients,
             Map<String, Recipient> recipientMap) {
-        fillContactDataFromCursor(cursor, recipients, recipientMap, null, null);
+        fillContactDataFromCursor(cursor, recipients, recipientMap, null);
     }
 
     private void fillContactDataFromCursor(Cursor cursor, List<Recipient> recipients,
-            Map<String, Recipient> recipientMap, @Nullable String prefilledName, @Nullable Integer maxRecipients) {
+            Map<String, Recipient> recipientMap, @Nullable Integer maxRecipients) {
 
         while (cursor.moveToNext() && (maxRecipients == null || recipients.size() < maxRecipients)) {
-            String name = prefilledName != null ? prefilledName : cursor.getString(INDEX_NAME);
+            String name = cursor.getString(INDEX_NAME);
 
             String email = cursor.getString(INDEX_EMAIL);
 
