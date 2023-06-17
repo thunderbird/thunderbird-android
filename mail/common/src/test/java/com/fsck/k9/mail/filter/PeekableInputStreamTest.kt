@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import java.io.InputStream
 import kotlin.test.Test
@@ -138,4 +139,57 @@ class PeekableInputStreamTest {
 
         assertThat(read).isEqualTo('T'.code)
     }
+
+    @Test
+    fun `skip() should skip correct amount of bytes`() {
+        val wrappedInputStream = "Test".byteInputStream()
+        val peekableInputStream = PeekableInputStream(wrappedInputStream)
+
+        peekableInputStream.skip(2)
+
+        assertThat(peekableInputStream.readToString()).isEqualTo("st")
+    }
+
+    @Test
+    fun `skip() after peek() should skip correct amount of bytes`() {
+        val wrappedInputStream = "Test".byteInputStream()
+        val peekableInputStream = PeekableInputStream(wrappedInputStream)
+
+        peekableInputStream.peek()
+        peekableInputStream.skip(2)
+
+        assertThat(peekableInputStream.readToString()).isEqualTo("st")
+    }
+
+    @Test
+    fun `available() should return number of available bytes`() {
+        val wrappedInputStream = "Test".byteInputStream()
+        val peekableInputStream = PeekableInputStream(wrappedInputStream)
+
+        val available = peekableInputStream.available()
+
+        assertThat(available).isEqualTo(4)
+    }
+
+    @Test
+    fun `available() after peek() should return number of available bytes`() {
+        val wrappedInputStream = "Test".byteInputStream()
+        val peekableInputStream = PeekableInputStream(wrappedInputStream)
+
+        peekableInputStream.peek()
+        val available = peekableInputStream.available()
+
+        assertThat(available).isEqualTo(4)
+    }
+
+    @Test
+    fun `markSupported() should return false`() {
+        val peekableInputStream = PeekableInputStream("abc".byteInputStream())
+
+        val result = peekableInputStream.markSupported()
+
+        assertThat(result).isFalse()
+    }
+
+    private fun InputStream.readToString() = readBytes().decodeToString()
 }

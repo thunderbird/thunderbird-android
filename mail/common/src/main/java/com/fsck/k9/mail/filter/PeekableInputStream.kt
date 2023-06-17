@@ -57,6 +57,32 @@ class PeekableInputStream(private val inputStream: InputStream) : FilterInputStr
         return read(buffer, 0, buffer.size)
     }
 
+    @Throws(IOException::class)
+    override fun skip(n: Long): Long {
+        return if (!peeked) {
+            inputStream.skip(n)
+        } else if (n > 0) {
+            peeked = false
+            inputStream.skip(n - 1)
+        } else {
+            0
+        }
+    }
+
+    @Throws(IOException::class)
+    override fun available(): Int {
+        return if (!peeked) {
+            inputStream.available()
+        } else {
+            1 + inputStream.available()
+        }
+    }
+
+    override fun markSupported(): Boolean {
+        // We're not using this mechanism. So it's not worth the effort to add support for mark() and reset().
+        return false
+    }
+
     override fun toString(): String {
         return "PeekableInputStream(in=%s, peeked=%b, peekedByte=%d)".format(
             Locale.ROOT,
