@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.707" versioncode="37007" date="2023-06-19">
+        <change>Fixed bug where navigating to a different screen after using the system back button/gesture could crash the app</change>
+    </release>
     <release version="6.706" versioncode="37006" date="2023-06-16">
         <change>Fixed a bug that lead to folders appearing to be empty</change>
         <change>Don't use nickname as display name when auto-completing recipient using the nickname</change>
