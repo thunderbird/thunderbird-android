@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup.ui.options
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -34,6 +35,10 @@ internal fun AccountOptionsScreen(
                 onNext()
             }
         }
+    }
+
+    BackHandler {
+        dispatch(Event.OnBackClicked)
     }
 
     Scaffold(
