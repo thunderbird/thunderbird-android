@@ -1,7 +1,7 @@
 package com.fsck.k9
 
+import app.k9mail.dev.createOAuthProviderSettings
 import app.k9mail.ui.widget.list.messageListWidgetModule
-import com.fsck.k9.auth.createOAuthProviderSettings
 import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.crypto.EncryptionExtractor
