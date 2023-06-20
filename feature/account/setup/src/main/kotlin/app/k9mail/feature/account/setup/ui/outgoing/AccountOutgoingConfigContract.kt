@@ -30,23 +30,23 @@ interface AccountOutgoingConfigContract {
         val isLoading: Boolean = false,
     )
 
-    sealed class Event {
-        data class ServerChanged(val server: String) : Event()
-        data class SecurityChanged(val security: ConnectionSecurity) : Event()
-        data class PortChanged(val port: Long?) : Event()
-        data class AuthenticationTypeChanged(val authenticationType: AuthenticationType) : Event()
-        data class UsernameChanged(val username: String) : Event()
-        data class PasswordChanged(val password: String) : Event()
-        data class ClientCertificateChanged(val clientCertificate: String) : Event()
+    sealed interface Event {
+        data class ServerChanged(val server: String) : Event
+        data class SecurityChanged(val security: ConnectionSecurity) : Event
+        data class PortChanged(val port: Long?) : Event
+        data class AuthenticationTypeChanged(val authenticationType: AuthenticationType) : Event
+        data class UsernameChanged(val username: String) : Event
+        data class PasswordChanged(val password: String) : Event
+        data class ClientCertificateChanged(val clientCertificate: String) : Event
 
-        object OnNextClicked : Event()
-        object OnBackClicked : Event()
-        object OnRetryClicked : Event()
+        object OnNextClicked : Event
+        object OnBackClicked : Event
+        object OnRetryClicked : Event
     }
 
-    sealed class Effect {
-        object NavigateNext : Effect()
-        object NavigateBack : Effect()
+    sealed interface Effect {
+        object NavigateNext : Effect
+        object NavigateBack : Effect
     }
 
     interface Validator {
