@@ -105,8 +105,8 @@ android {
             buildConfigField("String", "OAUTH_MICROSOFT_CLIENT_ID", "\"e647013a-ada4-4114-b419-e43d250f99c5\"")
             buildConfigField(
                 "String",
-                "OAUTH_MICROSOFT_REDIRECT_URI",
-                "\"msauth://com.fsck.k9/Dx8yUsuhyU3dYYba1aA16Wxu5eM%3D\"",
+                "OAUTH_MICROSOFT_REDIRECT_URI_ID",
+                "\"Dx8yUsuhyU3dYYba1aA16Wxu5eM%3D\"",
             )
 
             manifestPlaceholders["appAuthRedirectScheme"] = "com.fsck.k9"
@@ -137,8 +137,8 @@ android {
             buildConfigField("String", "OAUTH_MICROSOFT_CLIENT_ID", "\"e647013a-ada4-4114-b419-e43d250f99c5\"")
             buildConfigField(
                 "String",
-                "OAUTH_MICROSOFT_REDIRECT_URI",
-                "\"msauth://com.fsck.k9.debug/VZF2DYuLYAu4TurFd6usQB2JPts%3D\"",
+                "OAUTH_MICROSOFT_REDIRECT_URI_ID",
+                "\"VZF2DYuLYAu4TurFd6usQB2JPts%3D\"",
             )
 
             manifestPlaceholders["appAuthRedirectScheme"] = "com.fsck.k9.debug"
