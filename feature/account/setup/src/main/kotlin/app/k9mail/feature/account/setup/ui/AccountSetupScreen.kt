@@ -33,15 +33,18 @@ fun AccountSetupScreen(
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
-            Effect.NavigateBack -> onBack()
+            is Effect.UpdateIncomingConfig -> incomingViewModel.initState(effect.state)
+            is Effect.UpdateOutgoingConfig -> outgoingViewModel.initState(effect.state)
+            is Effect.UpdateOptions -> optionsViewModel.initState(effect.state)
             Effect.NavigateNext -> onFinish()
+            Effect.NavigateBack -> onBack()
         }
     }
 
     when (state.value.setupStep) {
         SetupStep.AUTO_CONFIG -> {
             AccountAutoDiscoveryScreen(
-                onNext = { dispatch(Event.OnNext) },
+                onNext = { dispatch(Event.OnAutoDiscoveryFinished(it)) },
                 onBack = { dispatch(Event.OnBack) },
                 viewModel = autoDiscoveryViewModel,
             )
