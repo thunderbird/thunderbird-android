@@ -72,7 +72,7 @@ class AuthViewModel(
     }
 
     fun isUsingGoogle(account: Account): Boolean {
-        return oAuthConfigurationProvider.isGoogle(account.incomingServerSettings.host!!)
+        return GoogleOAuthHelper.isGoogle(account.incomingServerSettings.host!!)
     }
 
     private fun getOrCreateAuthState(account: Account): AuthState {

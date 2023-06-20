@@ -1,7 +1,6 @@
 package app.k9mail.core.common
 
-import app.k9mail.core.common.oauth.OAuthProvider
-import app.k9mail.core.common.oauth.OAuthProviderSettings
+import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.koinApplication
@@ -13,12 +12,8 @@ import org.koin.test.verify.verify
 internal class CoreCommonModuleKtTest {
 
     private val externalModule = module {
-        single<OAuthProviderSettings> {
-            OAuthProviderSettings(
-                applicationId = "test",
-                clientIds = OAuthProvider.values().associateWith { "testClientId" },
-                redirectUriIds = OAuthProvider.values().associateWith { "testRedirectUriId" },
-            )
+        single<OAuthConfigurationFactory> {
+            OAuthConfigurationFactory { emptyMap() }
         }
     }
 
@@ -26,7 +21,7 @@ internal class CoreCommonModuleKtTest {
     fun `should have a valid di module`() {
         coreCommonModule.verify(
             extraTypes = listOf(
-                OAuthProviderSettings::class,
+                OAuthConfigurationFactory::class,
             ),
         )
 

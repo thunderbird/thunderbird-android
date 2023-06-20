@@ -1,11 +1,11 @@
 package app.k9mail.core.common.oauth
 
-internal class InMemoryOauthConfigurationProvider(
-    private val configurations: Map<List<String>, OAuthConfiguration>,
+internal class InMemoryOAuthConfigurationProvider(
+    private val configurationFactory: OAuthConfigurationFactory,
 ) : OAuthConfigurationProvider {
 
     private val hostnameMapping: Map<String, OAuthConfiguration> = buildMap {
-        for ((hostnames, configuration) in configurations) {
+        for ((hostnames, configuration) in configurationFactory.createConfigurations()) {
             for (hostname in hostnames) {
                 put(hostname.lowercase(), configuration)
             }
@@ -14,9 +14,5 @@ internal class InMemoryOauthConfigurationProvider(
 
     override fun getConfiguration(hostname: String): OAuthConfiguration? {
         return hostnameMapping[hostname.lowercase()]
-    }
-
-    override fun isGoogle(hostname: String): Boolean {
-        return getConfiguration(hostname)?.provider == OAuthProvider.GMAIL
     }
 }
