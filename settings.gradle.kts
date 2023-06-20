@@ -52,6 +52,7 @@ include(
     ":core:common",
     ":core:testing",
     ":core:android:common",
+    ":core:android:testing",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:theme",

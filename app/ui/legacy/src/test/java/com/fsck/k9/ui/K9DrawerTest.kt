@@ -1,9 +1,9 @@
 package com.fsck.k9.ui
 
+import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.size
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.core.R
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment

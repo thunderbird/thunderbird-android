@@ -1,11 +1,11 @@
 package app.k9mail.autodiscovery.providersxml
 
 import androidx.test.core.app.ApplicationProvider
+import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.oauth.OAuthConfiguration

@@ -2,8 +2,8 @@ package com.fsck.k9.notification
 
 import androidx.core.app.NotificationCompat
 import androidx.test.core.app.ApplicationProvider
+import app.k9mail.core.android.testing.RobolectricTest
 import com.fsck.k9.Account
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.testing.MockHelper.mockBuilder
 import org.junit.Test
 import org.mockito.Mockito.verify
