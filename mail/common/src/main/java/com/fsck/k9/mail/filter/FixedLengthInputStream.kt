@@ -3,6 +3,7 @@ package com.fsck.k9.mail.filter
 import java.io.IOException
 import java.io.InputStream
 import java.util.Locale
+import org.apache.commons.io.IOUtils
 
 /**
  * A filtering InputStream that stops allowing reads after the given length has been read. This
@@ -66,9 +67,7 @@ class FixedLengthInputStream(
 
     @Throws(IOException::class)
     fun skipRemaining() {
-        while (remainingBytes() > 0) {
-            skip(remainingBytes().toLong())
-        }
+        IOUtils.skipFully(this, remainingBytes().toLong())
     }
 
     private fun remainingBytes(): Int {
