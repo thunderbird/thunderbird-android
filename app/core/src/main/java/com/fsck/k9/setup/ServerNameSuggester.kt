@@ -1,6 +1,6 @@
 package com.fsck.k9.setup
 
-import com.fsck.k9.preferences.Protocols
+import app.k9mail.core.common.mail.Protocols
 
 class ServerNameSuggester {
     fun suggestServerName(serverType: String, domainPart: String): String = when (serverType) {

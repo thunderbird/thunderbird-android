@@ -7,7 +7,7 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.preferences.Protocols;
+import app.k9mail.core.common.mail.Protocols;
 
 import org.junit.Before;
 import org.junit.Test;

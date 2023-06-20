@@ -1,4 +1,4 @@
-package com.fsck.k9.oauth
+package app.k9mail.core.common.oauth
 
 class OAuthConfigurationProvider(
     private val configurations: Map<List<String>, OAuthConfiguration>,

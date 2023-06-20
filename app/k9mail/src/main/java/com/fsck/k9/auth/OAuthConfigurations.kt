@@ -1,8 +1,8 @@
 package com.fsck.k9.auth
 
+import app.k9mail.core.common.oauth.OAuthConfiguration
+import app.k9mail.core.common.oauth.OAuthConfigurationProvider
 import com.fsck.k9.BuildConfig
-import com.fsck.k9.oauth.OAuthConfiguration
-import com.fsck.k9.oauth.OAuthConfigurationProvider
 
 fun createOAuthConfigurationProvider(): OAuthConfigurationProvider {
     val redirectUriSlash = BuildConfig.APPLICATION_ID + ":/oauth2redirect"

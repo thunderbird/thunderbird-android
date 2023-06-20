@@ -28,7 +28,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.preferences.Protocols;
+import app.k9mail.core.common.mail.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.ui.base.K9Activity;

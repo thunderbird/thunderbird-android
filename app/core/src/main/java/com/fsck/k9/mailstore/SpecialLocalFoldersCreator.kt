@@ -1,10 +1,10 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.core.common.mail.Protocols
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderType
-import com.fsck.k9.preferences.Protocols
 import timber.log.Timber
 
 class SpecialLocalFoldersCreator(

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.app.core)
+    implementation(projects.core.common)
     implementation(projects.mail.common)
     implementation(projects.feature.autodiscovery.api)
 
