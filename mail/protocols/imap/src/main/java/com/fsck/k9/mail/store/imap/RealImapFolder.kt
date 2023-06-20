@@ -543,7 +543,7 @@ internal class RealImapFolder(
             fetchFields.add("RFC822.SIZE")
             fetchFields.add(
                 "BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc bcc " +
-                    "reply-to message-id references in-reply-to list-unsubscribe sender " +
+                    "reply-to message-id references in-reply-to list-post list-unsubscribe sender " +
                     K9MailLib.IDENTITY_HEADER + " " + K9MailLib.CHAT_HEADER + ")]",
             )
         }
