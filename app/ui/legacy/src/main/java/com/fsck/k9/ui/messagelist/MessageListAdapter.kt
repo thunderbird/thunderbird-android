@@ -414,7 +414,10 @@ class MessageListAdapter internal constructor(
             } else {
                 holder.subject.text = subject
             }
-
+            if (!isRead) {
+                holder.subject.contentDescription =
+                    "${res.getString(R.string.unread_mail)} ${holder.subject.text}"
+            }
             holder.date.typeface = Typeface.create(holder.date.typeface, maybeBoldTypeface)
             holder.date.setTextColor(textColor)
             holder.date.text = displayDate
