@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup
 
+import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.ui.AccountSetupContract
@@ -34,6 +35,7 @@ class AccountSetupModuleKtTest : KoinTest {
         single<AccountCreator> {
             AccountCreator { _ -> AccountCreatorResult.Success("accountUuid") }
         }
+        single<OAuthConfigurationFactory> { OAuthConfigurationFactory { emptyMap() } }
     }
 
     @Test
