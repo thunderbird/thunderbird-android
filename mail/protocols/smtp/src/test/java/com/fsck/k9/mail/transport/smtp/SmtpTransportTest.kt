@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.transport.smtp
 
+import assertk.Assert
 import assertk.all
 import assertk.assertFailure
 import assertk.assertions.hasMessage
@@ -231,6 +232,7 @@ class SmtpTransportTest {
             output("220 localhost Simple Mail Transfer Service Ready")
             expect("EHLO [127.0.0.1]")
             output("250-localhost Hello client.localhost")
+            output("250-ENHANCEDSTATUSCODES")
             output("250 AUTH XOAUTH2")
             expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
             output("334 " + XOAuth2ChallengeParserTest.STATUS_401_RESPONSE)
@@ -245,9 +247,9 @@ class SmtpTransportTest {
         assertFailure {
             transport.open()
         }.isInstanceOf<AuthenticationFailedException>()
-            .hasMessage(
-                "5.7.1 Username and Password not accepted. Learn more at " +
-                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
+            .hasServerMessage(
+                "Username and Password not accepted. Learn more at " +
+                    "http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
             )
 
         inOrder(oAuth2TokenProvider) {
@@ -348,6 +350,7 @@ class SmtpTransportTest {
             output("220 localhost Simple Mail Transfer Service Ready")
             expect("EHLO [127.0.0.1]")
             output("250-localhost Hello client.localhost")
+            output("250-ENHANCEDSTATUSCODES")
             output("250 AUTH XOAUTH2")
             expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=")
             output("334 " + XOAuth2ChallengeParserTest.STATUS_400_RESPONSE)
@@ -368,9 +371,9 @@ class SmtpTransportTest {
         assertFailure {
             transport.open()
         }.isInstanceOf<AuthenticationFailedException>()
-            .hasMessage(
-                "5.7.1 Username and Password not accepted. Learn more at " +
-                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
+            .hasServerMessage(
+                "Username and Password not accepted. Learn more at " +
+                    "http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
             )
 
         server.verifyConnectionClosed()
@@ -547,7 +550,7 @@ class SmtpTransportTest {
         assertFailure {
             transport.open()
         }.isInstanceOf<AuthenticationFailedException>()
-            .hasMessage(
+            .hasServerMessage(
                 "Username and Password not accepted. " +
                     "Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
             )
@@ -971,4 +974,8 @@ class SmtpTransportTest {
             on { getToken(anyLong()) } doReturn "oldToken" doReturn "newToken"
         }
     }
+}
+
+private fun Assert<AuthenticationFailedException>.hasServerMessage(expected: String) = given { actual ->
+    assertThat(actual.messageFromServer).isEqualTo(expected)
 }

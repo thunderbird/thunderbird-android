@@ -13,4 +13,9 @@ class Pop3ErrorResponse extends MessagingException {
     public Pop3ErrorResponse(String message) {
         super(message, true);
     }
+
+    public String getResponseText() {
+        // TODO: Extract response text from response line
+        return getMessage();
+    }
 }

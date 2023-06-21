@@ -255,8 +255,7 @@ class Pop3Connection {
         try {
             executeSimpleCommand(PASS_COMMAND + " " + settings.getPassword(), true);
         } catch (Pop3ErrorResponse e) {
-            throw new AuthenticationFailedException(
-                    "POP3 login authentication failed: " + e.getMessage(), e);
+            throw new AuthenticationFailedException("USER/PASS failed", e, e.getResponseText());
         }
     }
 
@@ -267,9 +266,7 @@ class Pop3Connection {
                     + "\000" + settings.getPassword()).getBytes());
             executeSimpleCommand(new String(encodedBytes), true);
         } catch (Pop3ErrorResponse e) {
-            throw new AuthenticationFailedException(
-                    "POP3 SASL auth PLAIN authentication failed: "
-                            + e.getMessage(), e);
+            throw new AuthenticationFailedException("AUTH PLAIN failed", e, e.getResponseText());
         }
     }
 
@@ -293,8 +290,7 @@ class Pop3Connection {
         try {
             executeSimpleCommand("APOP " + settings.getUsername() + " " + hexDigest, true);
         } catch (Pop3ErrorResponse e) {
-            throw new AuthenticationFailedException(
-                    "POP3 APOP authentication failed: " + e.getMessage(), e);
+            throw new AuthenticationFailedException("APOP failed", e, e.getResponseText());
         }
     }
 
@@ -305,9 +301,7 @@ class Pop3Connection {
         try {
             executeSimpleCommand(b64CRAM, true);
         } catch (Pop3ErrorResponse e) {
-            throw new AuthenticationFailedException(
-                    "POP3 CRAM-MD5 authentication failed: "
-                            + e.getMessage(), e);
+            throw new AuthenticationFailedException("AUTH CRAM-MD5 failed", e, e.getResponseText());
         }
     }
 
