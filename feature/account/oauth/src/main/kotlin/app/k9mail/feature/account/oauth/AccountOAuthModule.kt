@@ -6,8 +6,10 @@ import app.k9mail.feature.account.oauth.domain.DomainContract
 import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase
 import app.k9mail.feature.account.oauth.domain.usecase.GetOAuthRequestIntent
 import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName
+import app.k9mail.feature.account.oauth.ui.AccountOAuthViewModel
 import net.openid.appauth.AuthorizationService
 import org.koin.android.ext.koin.androidApplication
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -32,6 +34,12 @@ val featureAccountOAuthModule: Module = module {
         GetOAuthRequestIntent(
             repository = get(),
             configurationProvider = get(),
+        )
+    }
+
+    viewModel {
+        AccountOAuthViewModel(
+            getOAuthRequestIntent = get(),
         )
     }
 }

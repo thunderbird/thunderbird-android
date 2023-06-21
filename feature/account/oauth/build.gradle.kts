@@ -19,6 +19,7 @@ android {
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
+    implementation(projects.feature.account.common)
 
     implementation(libs.appauth)
     implementation(libs.androidx.compose.material)
