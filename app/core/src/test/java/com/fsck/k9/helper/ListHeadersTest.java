@@ -1,7 +1,6 @@
 package com.fsck.k9.helper;
 
-
-import com.fsck.k9.RobolectricTest;
+import app.k9mail.core.android.testing.RobolectricTest;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -9,7 +8,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 
 public class ListHeadersTest extends RobolectricTest {
     private static final String[] TEST_EMAIL_ADDRESSES = new String[] {

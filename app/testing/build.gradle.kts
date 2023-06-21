@@ -5,8 +5,8 @@ plugins {
 dependencies {
     implementation(projects.app.core)
 
-    api(libs.junit)
-    api(libs.robolectric)
+    api(projects.core.android.testing)
+
     api(libs.koin.core)
     api(libs.mockito.core)
     api(libs.mockito.kotlin)

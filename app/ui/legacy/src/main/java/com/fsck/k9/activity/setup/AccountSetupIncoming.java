@@ -38,7 +38,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
-import com.fsck.k9.preferences.Protocols;
+import app.k9mail.core.common.mail.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.extensions.TextInputLayoutHelper;
 import com.fsck.k9.view.ClientCertificateSpinner;

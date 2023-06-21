@@ -1,9 +1,9 @@
 package com.fsck.k9.ui.messageview
 
+import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
-import com.fsck.k9.RobolectricTest
 import org.junit.Test
 
 class RecipientLayoutCreatorTest : RobolectricTest() {

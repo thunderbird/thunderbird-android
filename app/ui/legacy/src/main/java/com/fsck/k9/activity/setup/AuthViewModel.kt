@@ -14,9 +14,9 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
+import app.k9mail.core.common.oauth.OAuthConfiguration
+import app.k9mail.core.common.oauth.OAuthConfigurationProvider
 import com.fsck.k9.Account
-import com.fsck.k9.oauth.OAuthConfiguration
-import com.fsck.k9.oauth.OAuthConfigurationProvider
 import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,7 +72,7 @@ class AuthViewModel(
     }
 
     fun isUsingGoogle(account: Account): Boolean {
-        return oAuthConfigurationProvider.isGoogle(account.incomingServerSettings.host!!)
+        return GoogleOAuthHelper.isGoogle(account.incomingServerSettings.host!!)
     }
 
     private fun getOrCreateAuthState(account: Account): AuthState {

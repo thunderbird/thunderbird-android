@@ -7,7 +7,7 @@ import java.util.List;
 
 import android.net.Uri;
 
-import com.fsck.k9.RobolectricTest;
+import app.k9mail.core.android.testing.RobolectricTest;
 import com.fsck.k9.helper.MailTo.CaseInsensitiveParamWrapper;
 import com.fsck.k9.mail.Address;
 import org.junit.Rule;

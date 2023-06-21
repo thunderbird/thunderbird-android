@@ -1,8 +1,8 @@
 package com.fsck.k9.preferences.migrations
 
 import android.database.sqlite.SQLiteDatabase
+import app.k9mail.core.common.mail.Protocols
 import com.fsck.k9.ServerSettingsSerializer
-import com.fsck.k9.preferences.Protocols
 
 /**
  * Rewrite 'folderPushMode' value of non-IMAP accounts to 'NONE'.

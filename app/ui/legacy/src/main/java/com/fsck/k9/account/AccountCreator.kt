@@ -1,11 +1,11 @@
 package com.fsck.k9.account
 
 import android.content.res.Resources
+import app.k9mail.core.common.mail.Protocols
 import com.fsck.k9.Account.DeletePolicy
 import com.fsck.k9.Preferences
 import com.fsck.k9.core.R
 import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.preferences.Protocols
 
 /**
  * Deals with logic surrounding account creation.

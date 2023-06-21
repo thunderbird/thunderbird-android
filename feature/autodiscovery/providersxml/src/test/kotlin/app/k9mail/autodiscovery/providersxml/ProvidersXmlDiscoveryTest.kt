@@ -1,15 +1,15 @@
 package app.k9mail.autodiscovery.providersxml
 
 import androidx.test.core.app.ApplicationProvider
+import app.k9mail.core.android.testing.RobolectricTest
+import app.k9mail.core.common.oauth.OAuthConfiguration
+import app.k9mail.core.common.oauth.OAuthConfigurationProvider
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.oauth.OAuthConfiguration
-import com.fsck.k9.oauth.OAuthConfigurationProvider
 import org.junit.Test
 
 class ProvidersXmlDiscoveryTest : RobolectricTest() {
@@ -46,19 +46,22 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
     }
 
     private fun createOAuthConfigurationProvider(): OAuthConfigurationProvider {
-        val googleConfig = OAuthConfiguration(
-            clientId = "irrelevant",
-            scopes = listOf("irrelevant"),
-            authorizationEndpoint = "irrelevant",
-            tokenEndpoint = "irrelevant",
-            redirectUri = "irrelevant",
-        )
-
-        return OAuthConfigurationProvider(
-            configurations = mapOf(
-                listOf("imap.gmail.com", "smtp.gmail.com") to googleConfig,
-            ),
-            googleConfiguration = googleConfig,
-        )
+        return object : OAuthConfigurationProvider {
+            override fun getConfiguration(hostname: String): OAuthConfiguration? {
+                return when (hostname) {
+                    "imap.gmail.com" -> oAuthConfiguration
+                    "smtp.gmail.com" -> oAuthConfiguration
+                    else -> null
+                }
+            }
+        }
     }
+
+    private val oAuthConfiguration = OAuthConfiguration(
+        clientId = "irrelevant",
+        scopes = listOf("irrelevant"),
+        authorizationEndpoint = "irrelevant",
+        tokenEndpoint = "irrelevant",
+        redirectUri = "irrelevant",
+    )
 }

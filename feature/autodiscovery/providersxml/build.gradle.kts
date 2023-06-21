@@ -3,13 +3,13 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.app.core)
+    implementation(projects.core.common)
     implementation(projects.mail.common)
     implementation(projects.feature.autodiscovery.api)
 
     implementation(libs.timber)
 
-    testImplementation(projects.app.testing)
+    testImplementation(projects.core.android.testing)
     testImplementation(projects.backend.imap)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)

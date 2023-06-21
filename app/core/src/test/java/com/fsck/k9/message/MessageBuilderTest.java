@@ -1,6 +1,5 @@
 package com.fsck.k9.message;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,10 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import app.k9mail.core.android.testing.RobolectricTest;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.Identity;
-import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.TestCoreResourceProvider;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;

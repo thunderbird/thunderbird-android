@@ -1,7 +1,8 @@
 package com.fsck.k9
 
+import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.ui.widget.list.messageListWidgetModule
-import com.fsck.k9.auth.createOAuthConfigurationProvider
+import com.fsck.k9.auth.AppOAuthConfigurationFactory
 import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.crypto.EncryptionExtractor
@@ -29,7 +30,7 @@ private val mainAppModule = module {
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
     single<EncryptionExtractor> { OpenPgpEncryptionExtractor.newInstance() }
     single<StoragePersister> { K9StoragePersister(get()) }
-    single { createOAuthConfigurationProvider() }
+    single<OAuthConfigurationFactory> { AppOAuthConfigurationFactory() }
 }
 
 val appModules = listOf(

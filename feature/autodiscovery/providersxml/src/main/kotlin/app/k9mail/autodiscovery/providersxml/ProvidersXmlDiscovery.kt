@@ -5,11 +5,11 @@ import android.net.Uri
 import app.k9mail.autodiscovery.api.ConnectionSettingsDiscovery
 import app.k9mail.autodiscovery.api.DiscoveredServerSettings
 import app.k9mail.autodiscovery.api.DiscoveryResults
+import app.k9mail.core.common.mail.Protocols
+import app.k9mail.core.common.oauth.OAuthConfigurationProvider
 import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.oauth.OAuthConfigurationProvider
-import com.fsck.k9.preferences.Protocols
 import org.xmlpull.v1.XmlPullParser
 import timber.log.Timber
 

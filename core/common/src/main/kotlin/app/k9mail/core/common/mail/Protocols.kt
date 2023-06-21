@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences
+package app.k9mail.core.common.mail
 
 object Protocols {
     const val IMAP = "imap"

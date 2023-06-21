@@ -1,5 +1,6 @@
 package app.k9mail.core.android.common
 
+import app.k9mail.core.android.common.test.externalModule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
@@ -14,7 +15,10 @@ internal class CoreCommonAndroidModuleKtTest {
     @Test
     fun `should have a valid di module`() {
         koinApplication {
-            modules(coreCommonAndroidModule)
+            modules(
+                externalModule,
+                coreCommonAndroidModule,
+            )
             androidContext(RuntimeEnvironment.getApplication())
             checkModules()
         }
