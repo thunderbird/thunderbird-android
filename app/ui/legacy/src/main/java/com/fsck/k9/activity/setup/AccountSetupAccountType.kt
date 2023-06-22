@@ -5,13 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import app.k9mail.core.common.mail.Protocols
+import app.k9mail.feature.account.oauth.domain.usecase.ServerNameSuggester
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.EmailHelper.getDomainFromEmailAddress
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
-import com.fsck.k9.setup.ServerNameSuggester
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import org.koin.android.ext.android.inject

@@ -1,4 +1,4 @@
-package com.fsck.k9.setup
+package app.k9mail.feature.account.oauth.domain.usecase
 
 import app.k9mail.core.common.mail.Protocols
 

@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.feature.autodiscovery.providersxml)
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
+    implementation(projects.feature.account.oauth)
 
     // Remove AccountSetupIncoming's dependency on these
     compileOnly(projects.mail.protocols.imap)

@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.core.common)
 
     implementation(projects.feature.autodiscovery.service)
+    implementation(projects.feature.account.oauth)
 
     testImplementation(projects.core.ui.compose.testing)
 }

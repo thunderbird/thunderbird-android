@@ -29,7 +29,7 @@ import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.helper.EmailHelper;
-import com.fsck.k9.setup.ServerNameSuggester;
+import app.k9mail.feature.account.oauth.domain.usecase.ServerNameSuggester;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;

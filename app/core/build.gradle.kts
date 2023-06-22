@@ -10,6 +10,7 @@ dependencies {
     api(projects.core.android.common)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
+    implementation(projects.feature.account.oauth)
 
     api(libs.koin.android)
 
