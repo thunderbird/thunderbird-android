@@ -20,5 +20,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
 
+    implementation(libs.appauth)
+
     testImplementation(projects.core.ui.compose.testing)
 }
