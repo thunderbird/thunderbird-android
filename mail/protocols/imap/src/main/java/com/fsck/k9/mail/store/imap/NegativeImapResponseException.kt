@@ -14,6 +14,8 @@ internal class NegativeImapResponseException(
     val lastResponse: ImapResponse
         get() = responses.last()
 
+    val responseText: String? by lazy { ResponseTextExtractor.getResponseText(lastResponse) }
+
     val alertText: String? by lazy { AlertResponse.getAlertText(lastResponse) }
 
     fun wasByeResponseReceived(): Boolean {

@@ -363,7 +363,7 @@ internal class RealImapConnection(
         return AuthenticationFailedException(
             message = "Authentication failed",
             throwable = e,
-            messageFromServer = ResponseTextExtractor.getResponseText(e.lastResponse),
+            messageFromServer = e.responseText,
         )
     }
 
@@ -547,7 +547,7 @@ internal class RealImapConnection(
             AuthenticationFailedException(
                 message = "Authentication failed",
                 throwable = negativeResponseException,
-                messageFromServer = ResponseTextExtractor.getResponseText(lastResponse),
+                messageFromServer = negativeResponseException.responseText,
             )
         } else {
             close()
