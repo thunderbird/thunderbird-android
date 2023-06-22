@@ -39,6 +39,8 @@ internal open class RealImapStore(
     private var connectionGeneration = 1
 
     init {
+        require(serverSettings.type == "imap") { "Expected IMAP ServerSettings" }
+
         val autoDetectNamespace = serverSettings.autoDetectNamespace
         val pathPrefixSetting = serverSettings.pathPrefix
 
