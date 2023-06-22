@@ -546,7 +546,7 @@ class ImapResponseParserTest {
         assertFailure {
             parser.readStatusResponse("1", "COMMAND", "[logId]", null)
         }.isInstanceOf<NegativeImapResponseException>()
-            .prop(NegativeImapResponseException::getAlertText).isEqualTo("Access denied")
+            .prop(NegativeImapResponseException::alertText).isEqualTo("Access denied")
     }
 
     private fun createParserWithResponses(vararg responses: String): ImapResponseParser {

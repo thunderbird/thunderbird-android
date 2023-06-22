@@ -1045,7 +1045,7 @@ class RealImapConnectionTest {
         assertFailure {
             imapConnection.executeSimpleCommand("CREATE Folder")
         }.isInstanceOf<NegativeImapResponseException>()
-            .prop(NegativeImapResponseException::getLastResponse)
+            .prop(NegativeImapResponseException::lastResponse)
             .containsExactly("NO", "Folder exists")
 
         server.verifyConnectionStillOpen()

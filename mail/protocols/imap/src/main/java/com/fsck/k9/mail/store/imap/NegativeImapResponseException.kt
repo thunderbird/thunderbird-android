@@ -1,43 +1,25 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
-import java.util.List;
+import com.fsck.k9.mail.MessagingException
 
-import com.fsck.k9.mail.MessagingException;
+internal class NegativeImapResponseException(
+    message: String?,
+    private val responses: List<ImapResponse>,
+) : MessagingException(message, true) {
 
-import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
-
-
-class NegativeImapResponseException extends MessagingException {
-    private static final long serialVersionUID = 3725007182205882394L;
-
-    private final List<ImapResponse> responses;
-    private String alertText;
-
-    public NegativeImapResponseException(String message, List<ImapResponse> responses) {
-        super(message, true);
-        this.responses = responses;
+    init {
+        require(responses.isNotEmpty()) { "List of responses must not be empty" }
     }
 
-    public String getAlertText() {
-        if (alertText == null) {
-            ImapResponse lastResponse = getLastResponse();
-            alertText = AlertResponse.getAlertText(lastResponse);
-        }
-        
-        return alertText;
+    val lastResponse: ImapResponse
+        get() = responses.last()
+
+    val alertText: String? by lazy { AlertResponse.getAlertText(lastResponse) }
+
+    fun wasByeResponseReceived(): Boolean {
+        return responses.any { it.isByeResponse }
     }
 
-    public boolean wasByeResponseReceived() {
-        for (ImapResponse response : responses) {
-            if (response.getTag() == null && response.size() >= 1 && equalsIgnoreCase(response.get(0), Responses.BYE)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public ImapResponse getLastResponse() {
-        return responses.get(responses.size() - 1);
-    }
+    private val ImapResponse.isByeResponse: Boolean
+        get() = !isTagged && isNotEmpty() && ImapResponseParser.equalsIgnoreCase(first(), Responses.BYE)
 }
