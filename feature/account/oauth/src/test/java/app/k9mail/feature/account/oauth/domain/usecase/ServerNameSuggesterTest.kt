@@ -1,48 +1,42 @@
-package app.k9mail.feature.account.oauth.domain.usecase;
+package app.k9mail.feature.account.oauth.domain.usecase
 
+import app.k9mail.core.common.mail.Protocols
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
 
-import app.k9mail.core.common.mail.Protocols;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-
-
-public class ServerNameSuggesterTest {
-    private ServerNameSuggester serverNameSuggester;
-
+class ServerNameSuggesterTest {
+    private var serverNameSuggester: ServerNameSuggester? = null
     @Before
-    public void setUp() throws Exception {
-        serverNameSuggester = new ServerNameSuggester();
+    @Throws(Exception::class)
+    fun setUp() {
+        serverNameSuggester = ServerNameSuggester()
     }
 
     @Test
-    public void suggestServerName_forImapServer() throws Exception {
-        String serverType = Protocols.IMAP;
-        String domainPart = "example.org";
-
-        String result = serverNameSuggester.suggestServerName(serverType, domainPart);
-
-        assertEquals("imap.example.org", result);
+    @Throws(Exception::class)
+    fun suggestServerName_forImapServer() {
+        val serverType = Protocols.IMAP
+        val domainPart = "example.org"
+        val result = serverNameSuggester!!.suggestServerName(serverType, domainPart)
+        Assert.assertEquals("imap.example.org", result)
     }
 
     @Test
-    public void suggestServerName_forPop3Server() throws Exception {
-        String serverType = Protocols.POP3;
-        String domainPart = "example.org";
-
-        String result = serverNameSuggester.suggestServerName(serverType, domainPart);
-
-        assertEquals("pop3.example.org", result);
+    @Throws(Exception::class)
+    fun suggestServerName_forPop3Server() {
+        val serverType = Protocols.POP3
+        val domainPart = "example.org"
+        val result = serverNameSuggester!!.suggestServerName(serverType, domainPart)
+        Assert.assertEquals("pop3.example.org", result)
     }
 
     @Test
-    public void suggestServerName_forSmtpServer() throws Exception {
-        String serverType = Protocols.SMTP;
-        String domainPart = "example.org";
-
-        String result = serverNameSuggester.suggestServerName(serverType, domainPart);
-
-        assertEquals("smtp.example.org", result);
+    @Throws(Exception::class)
+    fun suggestServerName_forSmtpServer() {
+        val serverType = Protocols.SMTP
+        val domainPart = "example.org"
+        val result = serverNameSuggester!!.suggestServerName(serverType, domainPart)
+        Assert.assertEquals("smtp.example.org", result)
     }
 }
