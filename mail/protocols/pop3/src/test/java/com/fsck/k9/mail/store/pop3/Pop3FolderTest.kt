@@ -89,7 +89,7 @@ class Pop3FolderTest {
     @Test(expected = MessagingException::class)
     fun `open() with STAT command failing should throw`() {
         stubbing(connection) {
-            on { executeSimpleCommand(STAT_COMMAND) } doThrow MessagingException("Test")
+            on { executeSimpleCommand(STAT_COMMAND) } doThrow Pop3ErrorResponse("Test")
         }
 
         folder.open()
@@ -136,7 +136,7 @@ class Pop3FolderTest {
     @Test
     fun `close() with exception when sending QUIT command should not throw`() {
         stubbing(connection) {
-            on { executeSimpleCommand(Pop3Commands.QUIT_COMMAND) } doThrow MessagingException("Test")
+            on { executeSimpleCommand(Pop3Commands.QUIT_COMMAND) } doThrow Pop3ErrorResponse("Test")
         }
         folder.open()
 
