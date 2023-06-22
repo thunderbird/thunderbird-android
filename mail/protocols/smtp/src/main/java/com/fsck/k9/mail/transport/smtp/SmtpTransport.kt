@@ -552,11 +552,7 @@ class SmtpTransport(
             executeSensitiveCommand(Base64.encode(username))
             executeSensitiveCommand(Base64.encode(password))
         } catch (exception: NegativeSmtpReplyException) {
-            if (exception.replyCode == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                throw AuthenticationFailedException("AUTH LOGIN failed (${exception.message})")
-            } else {
-                throw exception
-            }
+            handlePossibleAuthenticationFailure("AUTH LOGIN", exception)
         }
     }
 
@@ -565,11 +561,7 @@ class SmtpTransport(
         try {
             executeSensitiveCommand("AUTH PLAIN %s", data)
         } catch (exception: NegativeSmtpReplyException) {
-            if (exception.replyCode == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                throw AuthenticationFailedException("AUTH PLAIN failed (${exception.message})")
-            } else {
-                throw exception
-            }
+            handlePossibleAuthenticationFailure("AUTH PLAIN", exception)
         }
     }
 
@@ -584,11 +576,7 @@ class SmtpTransport(
         try {
             executeSensitiveCommand(b64CRAMString)
         } catch (exception: NegativeSmtpReplyException) {
-            if (exception.replyCode == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                throw AuthenticationFailedException(exception.message!!, exception)
-            } else {
-                throw exception
-            }
+            handlePossibleAuthenticationFailure("AUTH CRAM-MD5", exception)
         }
     }
 
@@ -604,18 +592,25 @@ class SmtpTransport(
             oauthTokenProvider!!.invalidateToken()
 
             if (!retryOAuthWithNewToken) {
-                handlePermanentFailure(negativeResponse)
+                handlePermanentOAuthFailure(method, negativeResponse)
             } else {
-                handleTemporaryFailure(method, username, negativeResponse)
+                handleTemporaryOAuthFailure(method, username, negativeResponse)
             }
         }
     }
 
-    private fun handlePermanentFailure(negativeResponse: NegativeSmtpReplyException): Nothing {
-        throw AuthenticationFailedException(negativeResponse.message!!, negativeResponse)
+    private fun handlePermanentOAuthFailure(
+        method: OAuthMethod,
+        negativeResponse: NegativeSmtpReplyException,
+    ): Nothing {
+        throw AuthenticationFailedException(
+            message = "${method.command} failed",
+            throwable = negativeResponse,
+            messageFromServer = negativeResponse.replyText,
+        )
     }
 
-    private fun handleTemporaryFailure(
+    private fun handleTemporaryOAuthFailure(
         method: OAuthMethod,
         username: String,
         negativeResponseFromOldToken: NegativeSmtpReplyException,
@@ -635,7 +630,7 @@ class SmtpTransport(
             Timber.v(negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed")
 
             oauthTokenProvider!!.invalidateToken()
-            handlePermanentFailure(negativeResponseFromNewToken)
+            handlePermanentOAuthFailure(method, negativeResponseFromNewToken)
         }
     }
 
@@ -655,6 +650,21 @@ class SmtpTransport(
 
     private fun saslAuthExternal() {
         executeCommand("AUTH EXTERNAL %s", Base64.encode(username))
+    }
+
+    private fun handlePossibleAuthenticationFailure(
+        authenticationMethod: String,
+        negativeResponse: NegativeSmtpReplyException,
+    ): Nothing {
+        if (negativeResponse.replyCode == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
+            throw AuthenticationFailedException(
+                message = "$authenticationMethod failed",
+                throwable = negativeResponse,
+                messageFromServer = negativeResponse.replyText,
+            )
+        } else {
+            throw negativeResponse
+        }
     }
 
     @Throws(MessagingException::class)
