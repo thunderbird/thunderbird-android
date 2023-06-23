@@ -524,7 +524,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
 
                 String domain = EmailHelper.getDomainFromEmailAddress(mAccount.getEmail());
-                String host = serverNameSuggester.suggestServerName(Protocols.SMTP, domain);
+                String host = serverNameSuggester.suggest(Protocols.SMTP, domain);
                 ServerSettings transportServer = new ServerSettings(Protocols.SMTP, host,
                         -1, ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password,
                         clientCertificateAlias);

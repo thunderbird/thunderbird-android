@@ -1,43 +1,41 @@
 package app.k9mail.feature.account.oauth.domain.usecase
 
 import app.k9mail.core.common.mail.Protocols
-import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName
-import org.junit.Assert
-import org.junit.Before
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import org.junit.Test
 
 class SuggestServerNameTest {
-    private var serverNameSuggester: SuggestServerName? = null
-    @Before
-    @Throws(Exception::class)
-    fun setUp() {
-        serverNameSuggester = SuggestServerName()
-    }
+
+    private val testSubject = SuggestServerName()
 
     @Test
-    @Throws(Exception::class)
-    fun suggestServerName_forImapServer() {
+    fun `should suggest server name for IMAP server`() {
         val serverType = Protocols.IMAP
-        val domainPart = "example.org"
-        val result = serverNameSuggester!!.suggestServerName(serverType, domainPart)
-        Assert.assertEquals("imap.example.org", result)
+        val domain = "example.org"
+
+        val result = testSubject.suggest(serverType, domain)
+
+        assertThat(result).isEqualTo("imap.example.org")
     }
 
     @Test
-    @Throws(Exception::class)
-    fun suggestServerName_forPop3Server() {
+    fun `should suggest server name for POP3 server`() {
         val serverType = Protocols.POP3
-        val domainPart = "example.org"
-        val result = serverNameSuggester!!.suggestServerName(serverType, domainPart)
-        Assert.assertEquals("pop3.example.org", result)
+        val domain = "example.org"
+
+        val result = testSubject.suggest(serverType, domain)
+
+        assertThat(result).isEqualTo("pop3.example.org")
     }
 
     @Test
-    @Throws(Exception::class)
-    fun suggestServerName_forSmtpServer() {
+    fun `should suggest server name for SMTP server`() {
         val serverType = Protocols.SMTP
-        val domainPart = "example.org"
-        val result = serverNameSuggester!!.suggestServerName(serverType, domainPart)
-        Assert.assertEquals("smtp.example.org", result)
+        val domain = "example.org"
+
+        val result = testSubject.suggest(serverType, domain)
+
+        assertThat(result).isEqualTo("smtp.example.org")
     }
 }

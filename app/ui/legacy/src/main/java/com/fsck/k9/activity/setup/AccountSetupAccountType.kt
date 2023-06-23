@@ -71,7 +71,7 @@ class AccountSetupAccountType : K9Activity() {
     }
 
     private fun initializeIncomingServerSettings(serverType: String, domainPart: String) {
-        val suggestedStoreServerName = serverNameSuggester.suggestServerName(serverType, domainPart)
+        val suggestedStoreServerName = serverNameSuggester.suggest(serverType, domainPart)
         val storeServer = ServerSettings(
             serverType,
             suggestedStoreServerName,
@@ -86,7 +86,7 @@ class AccountSetupAccountType : K9Activity() {
     }
 
     private fun initializeOutgoingServerSettings(domainPart: String) {
-        val suggestedTransportServerName = serverNameSuggester.suggestServerName(Protocols.SMTP, domainPart)
+        val suggestedTransportServerName = serverNameSuggester.suggest(Protocols.SMTP, domainPart)
         val transportServer = ServerSettings(
             Protocols.SMTP,
             suggestedTransportServerName,
