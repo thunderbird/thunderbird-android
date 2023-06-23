@@ -1,16 +1,17 @@
 package app.k9mail.feature.account.oauth.domain.usecase
 
 import app.k9mail.core.common.mail.Protocols
+import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class ServerNameSuggesterTest {
-    private var serverNameSuggester: ServerNameSuggester? = null
+class SuggestServerNameTest {
+    private var serverNameSuggester: SuggestServerName? = null
     @Before
     @Throws(Exception::class)
     fun setUp() {
-        serverNameSuggester = ServerNameSuggester()
+        serverNameSuggester = SuggestServerName()
     }
 
     @Test

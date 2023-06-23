@@ -29,7 +29,7 @@ import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.helper.EmailHelper;
-import app.k9mail.feature.account.oauth.domain.usecase.ServerNameSuggester;
+import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
@@ -61,7 +61,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
-    private final ServerNameSuggester serverNameSuggester = DI.get(ServerNameSuggester.class);
+    private final SuggestServerName serverNameSuggester = DI.get(SuggestServerName.class);
 
     private String mStoreType;
     private TextInputEditText mUsernameView;

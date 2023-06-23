@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import app.k9mail.core.common.mail.Protocols
-import app.k9mail.feature.account.oauth.domain.usecase.ServerNameSuggester
+import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.EmailHelper.getDomainFromEmailAddress
@@ -23,7 +23,7 @@ import org.koin.android.ext.android.inject
  */
 class AccountSetupAccountType : K9Activity() {
     private val preferences: Preferences by inject()
-    private val serverNameSuggester: ServerNameSuggester by inject()
+    private val serverNameSuggester: SuggestServerName by inject()
     private val localFoldersCreator: SpecialLocalFoldersCreator by inject()
 
     private lateinit var account: Account
