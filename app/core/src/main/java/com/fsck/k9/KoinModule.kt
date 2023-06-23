@@ -2,7 +2,6 @@ package com.fsck.k9
 
 import android.content.Context
 import app.k9mail.core.android.common.coreCommonAndroidModule
-import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.DefaultTrustedSocketFactory
 import com.fsck.k9.mail.ssl.LocalKeyStore
@@ -34,7 +33,6 @@ val mainModule = module {
     single { LocalKeyStoreManager(get()) }
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
     single<Clock> { Clock.System }
-    factory { SuggestServerName() }
     factory { EmailAddressValidator() }
     factory { ServerSettingsSerializer() }
 }
