@@ -52,15 +52,19 @@ public class Pop3Folder {
         }
 
         connection = pop3Store.createConnection();
-        connection.open();
+        try {
+            connection.open();
 
-        String response = connection.executeSimpleCommand(STAT_COMMAND);
-        String[] parts = response.split(" ");
-        messageCount = Integer.parseInt(parts[1]);
+            String response = connection.executeSimpleCommand(STAT_COMMAND);
+            String[] parts = response.split(" ");
+            messageCount = Integer.parseInt(parts[1]);
 
-        uidToMsgMap.clear();
-        msgNumToMsgMap.clear();
-        uidToMsgNumMap.clear();
+            uidToMsgMap.clear();
+            msgNumToMsgMap.clear();
+            uidToMsgNumMap.clear();
+        } catch (IOException e) {
+            handleIOException(e);
+        }
     }
 
     public boolean isOpen() {
@@ -114,7 +118,7 @@ public class Pop3Folder {
         try {
             indexMsgNums(start, end);
         } catch (IOException ioe) {
-            throw new MessagingException("getMessages", ioe);
+            handleIOException(ioe);
         }
         List<Pop3Message> messages = new ArrayList<>();
         for (int msgNum = start; msgNum <= end; msgNum++) {
@@ -295,7 +299,7 @@ public class Pop3Folder {
         try {
             indexUids(uids);
         } catch (IOException ioe) {
-            throw new MessagingException("fetch", ioe);
+            handleIOException(ioe);
         }
         try {
             if (fp.contains(FetchProfile.Item.ENVELOPE)) {
@@ -308,7 +312,7 @@ public class Pop3Folder {
                 fetchEnvelope(messages, fp.size() == 1 ? listener : null);
             }
         } catch (IOException ioe) {
-            throw new MessagingException("fetch", ioe);
+            handleIOException(ioe);
         }
         for (Pop3Message pop3Message : messages) {
             try {
@@ -335,7 +339,7 @@ public class Pop3Folder {
                     listener.messageFinished(pop3Message);
                 }
             } catch (IOException ioe) {
-                throw new MessagingException("Unable to fetch message", ioe);
+                handleIOException(ioe);
             }
         }
     }
@@ -477,7 +481,7 @@ public class Pop3Folder {
 
             indexUids(uids);
         } catch (IOException ioe) {
-            throw new MessagingException("Could not get message number for uid " + uids, ioe);
+            handleIOException(ioe);
         }
         for (Pop3Message message : messages) {
 
@@ -489,7 +493,11 @@ public class Pop3Folder {
                 );
             }
             open();
-            connection.executeSimpleCommand(String.format(DELE_COMMAND + " %s", msgNum));
+            try {
+                connection.executeSimpleCommand(String.format(DELE_COMMAND + " %s", msgNum));
+            } catch (IOException e) {
+                handleIOException(e);
+            }
         }
     }
 
@@ -511,17 +519,31 @@ public class Pop3Folder {
     }
 
     void requestUidl() throws MessagingException {
-        if (!connection.supportsUidl()) {
-            /*
-             * Run an additional test to see if UIDL is supported on the server. If it's not we
-             * can't service this account.
-             */
+        try {
+            if (!connection.supportsUidl()) {
+                /*
+                 * Run an additional test to see if UIDL is supported on the server. If it's not we
+                 * can't service this account.
+                 */
 
-            /*
-             * If the server doesn't support UIDL it will return a - response, which causes
-             * executeSimpleCommand to throw a MessagingException, exiting this method.
-             */
-            connection.executeSimpleCommand(UIDL_COMMAND);
+                /*
+                 * If the server doesn't support UIDL it will return a - response, which causes
+                 * executeSimpleCommand to throw a MessagingException, exiting this method.
+                 */
+                connection.executeSimpleCommand(UIDL_COMMAND);
+            }
+        } catch (IOException e) {
+            handleIOException(e);
         }
+    }
+
+    private void handleIOException(IOException exception) throws MessagingException {
+        Pop3Connection connection = this.connection;
+        if (connection != null) {
+            connection.close();
+        }
+
+        // For now we wrap IOExceptions in a MessagingException
+        throw new MessagingException("I/O error", exception);
     }
 }
