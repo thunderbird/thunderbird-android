@@ -281,6 +281,10 @@ class SmtpTransport(
     private fun readGreeting() {
         val smtpResponse = responseParser!!.readGreeting()
         logResponse(smtpResponse)
+
+        if (smtpResponse.isNegativeResponse) {
+            throw buildNegativeSmtpReplyException(smtpResponse)
+        }
     }
 
     private fun logResponse(smtpResponse: SmtpResponse, sensitive: Boolean = false) {
