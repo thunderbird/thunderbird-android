@@ -8,7 +8,6 @@ import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.setup.ServerNameSuggester
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.datetime.Clock
@@ -34,7 +33,6 @@ val mainModule = module {
     single { LocalKeyStoreManager(get()) }
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
     single<Clock> { Clock.System }
-    factory { ServerNameSuggester() }
     factory { EmailAddressValidator() }
     factory { ServerSettingsSerializer() }
 }

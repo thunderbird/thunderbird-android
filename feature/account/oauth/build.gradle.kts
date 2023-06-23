@@ -3,8 +3,8 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.feature.account.setup"
-    resourcePrefix = "account_setup_"
+    namespace = "app.k9mail.feature.account.oauth"
+    resourcePrefix = "account_oauth_"
 
     buildTypes {
         debug {
@@ -20,8 +20,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
 
-    implementation(projects.feature.autodiscovery.service)
-    implementation(projects.feature.account.oauth)
+    implementation(libs.appauth)
 
     testImplementation(projects.core.ui.compose.testing)
 }

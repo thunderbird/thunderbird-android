@@ -35,6 +35,8 @@ android {
             "OAUTH_MICROSOFT_REDIRECT_URI_ID",
             "\"VZF2DYuLYAu4TurFd6usQB2JPts%3D\"",
         )
+
+        manifestPlaceholders["appAuthRedirectScheme"] = "com.fsck.k9.debug"
     }
 
     packaging {

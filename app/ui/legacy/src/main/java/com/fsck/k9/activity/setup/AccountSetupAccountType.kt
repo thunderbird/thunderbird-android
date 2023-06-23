@@ -5,13 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import app.k9mail.core.common.mail.Protocols
+import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.EmailHelper.getDomainFromEmailAddress
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
-import com.fsck.k9.setup.ServerNameSuggester
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import org.koin.android.ext.android.inject
@@ -23,7 +23,7 @@ import org.koin.android.ext.android.inject
  */
 class AccountSetupAccountType : K9Activity() {
     private val preferences: Preferences by inject()
-    private val serverNameSuggester: ServerNameSuggester by inject()
+    private val serverNameSuggester: SuggestServerName by inject()
     private val localFoldersCreator: SpecialLocalFoldersCreator by inject()
 
     private lateinit var account: Account
@@ -71,7 +71,7 @@ class AccountSetupAccountType : K9Activity() {
     }
 
     private fun initializeIncomingServerSettings(serverType: String, domainPart: String) {
-        val suggestedStoreServerName = serverNameSuggester.suggestServerName(serverType, domainPart)
+        val suggestedStoreServerName = serverNameSuggester.suggest(serverType, domainPart)
         val storeServer = ServerSettings(
             serverType,
             suggestedStoreServerName,
@@ -86,7 +86,7 @@ class AccountSetupAccountType : K9Activity() {
     }
 
     private fun initializeOutgoingServerSettings(domainPart: String) {
-        val suggestedTransportServerName = serverNameSuggester.suggestServerName(Protocols.SMTP, domainPart)
+        val suggestedTransportServerName = serverNameSuggester.suggest(Protocols.SMTP, domainPart)
         val transportServer = ServerSettings(
             Protocols.SMTP,
             suggestedTransportServerName,
