@@ -2,10 +2,12 @@ package com.fsck.k9.backends
 
 import app.k9mail.dev.developmentBackends
 import app.k9mail.dev.developmentModuleAdditions
+import com.fsck.k9.BuildConfig
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.imap.BackendIdleRefreshManager
 import com.fsck.k9.backend.imap.SystemAlarmManager
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val backendsModule = module {
@@ -25,11 +27,13 @@ val backendsModule = module {
             backendStorageFactory = get(),
             trustedSocketFactory = get(),
             context = get(),
+            clientIdAppName = get(named("ClientIdAppName")),
         )
     }
     single<SystemAlarmManager> { AndroidAlarmManager(context = get(), alarmManager = get()) }
     single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
     single { Pop3BackendFactory(get(), get()) }
+    single(named("ClientIdAppName")) { BuildConfig.CLIENT_ID_APP_NAME }
 
     developmentModuleAdditions()
 }
