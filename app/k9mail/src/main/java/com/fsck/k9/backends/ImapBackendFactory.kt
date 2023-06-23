@@ -47,7 +47,9 @@ class ImapBackendFactory(
     }
 
     private fun createImapStore(account: Account): ImapStore {
-        val oAuth2TokenProvider = if (account.incomingServerSettings.authenticationType == AuthType.XOAUTH2) {
+        val serverSettings = account.toImapServerSettings()
+
+        val oAuth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
             RealOAuth2TokenProvider(context, accountManager, account)
         } else {
             null
@@ -55,7 +57,7 @@ class ImapBackendFactory(
 
         val config = createImapStoreConfig(account)
         return ImapStore.create(
-            account.incomingServerSettings,
+            serverSettings,
             config,
             trustedSocketFactory,
             oAuth2TokenProvider,
@@ -69,10 +71,7 @@ class ImapBackendFactory(
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
 
-            override fun useCompression() = account.useCompression
-            override fun clientIdAppName(): String? {
-                return clientIdAppName.takeIf { account.isSendClientIdEnabled }
-            }
+            override fun clientIdAppName() = clientIdAppName
         }
     }
 

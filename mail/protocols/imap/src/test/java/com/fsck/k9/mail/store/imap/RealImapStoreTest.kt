@@ -387,18 +387,21 @@ class RealImapStoreTest {
             username = "user",
             password = "password",
             clientCertificateAlias = null,
-            extra = createExtra(autoDetectNamespace = true, pathPrefix = null),
+            extra = createExtra(
+                autoDetectNamespace = true,
+                pathPrefix = null,
+                useCompression = false,
+                sendClientId = false,
+            ),
         )
     }
 
     private fun createTestImapStore(
         isSubscribedFoldersOnly: Boolean = false,
-        useCompression: Boolean = false,
-        clientIdAppName: String? = null,
     ): TestImapStore {
         return TestImapStore(
             serverSettings = createServerSettings(),
-            config = createImapStoreConfig(isSubscribedFoldersOnly, useCompression, clientIdAppName),
+            config = createImapStoreConfig(isSubscribedFoldersOnly),
             trustedSocketFactory = mock(),
             oauth2TokenProvider = null,
         )
@@ -406,14 +409,11 @@ class RealImapStoreTest {
 
     private fun createImapStoreConfig(
         isSubscribedFoldersOnly: Boolean,
-        useCompression: Boolean,
-        clientIdAppName: String?,
     ): ImapStoreConfig {
         return object : ImapStoreConfig {
             override val logLabel: String = "irrelevant"
             override fun isSubscribedFoldersOnly(): Boolean = isSubscribedFoldersOnly
-            override fun useCompression(): Boolean = useCompression
-            override fun clientIdAppName(): String? = clientIdAppName
+            override fun clientIdAppName(): String = "irrelevant"
         }
     }
 
