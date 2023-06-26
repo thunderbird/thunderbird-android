@@ -8,14 +8,13 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.common.oauth.OAuthConfiguration
-import app.k9mail.core.common.oauth.OAuthConfigurationProvider
+import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase.GetOAuthRequestIntent
+import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase.GetOAuthRequestIntent.GetOAuthRequestIntentResult
 import com.fsck.k9.Account
 import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.Dispatchers
@@ -27,11 +26,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
-import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
-import net.openid.appauth.AuthorizationServiceConfiguration
-import net.openid.appauth.ResponseTypeValues
 import timber.log.Timber
 
 private const val KEY_AUTHORIZATION = "app.k9mail_auth"
@@ -39,7 +35,7 @@ private const val KEY_AUTHORIZATION = "app.k9mail_auth"
 class AuthViewModel(
     application: Application,
     private val accountManager: AccountManager,
-    private val oAuthConfigurationProvider: OAuthConfigurationProvider,
+    private val getOAuthRequestIntent: GetOAuthRequestIntent,
 ) : AndroidViewModel(application) {
     private var authService: AuthorizationService? = null
     private val authState = AuthState()
@@ -88,54 +84,26 @@ class AuthViewModel(
         val account = checkNotNull(account)
 
         viewModelScope.launch {
-            val config = findOAuthConfiguration(account)
-            if (config == null) {
-                _uiState.update { AuthFlowState.NotSupported }
-                return@launch
-            }
-
             try {
-                startLogin(account, config)
+                startLogin(account)
             } catch (e: ActivityNotFoundException) {
                 _uiState.update { AuthFlowState.BrowserNotFound }
             }
         }
     }
 
-    private suspend fun startLogin(account: Account, config: OAuthConfiguration) {
-        val authRequestIntent = withContext(Dispatchers.IO) {
-            createAuthorizationRequestIntent(account.email, config)
+    private suspend fun startLogin(account: Account) {
+        val authRequestIntentResult = withContext(Dispatchers.IO) {
+            getOAuthRequestIntent.execute(account.incomingServerSettings.host!!, account.email)
         }
 
-        resultObserver.login(authRequestIntent)
-    }
+        when (authRequestIntentResult) {
+            GetOAuthRequestIntentResult.NotSupported -> {
+                _uiState.update { AuthFlowState.NotSupported }
+            }
 
-    private fun createAuthorizationRequestIntent(email: String, config: OAuthConfiguration): Intent {
-        val serviceConfig = AuthorizationServiceConfiguration(
-            config.authorizationEndpoint.toUri(),
-            config.tokenEndpoint.toUri(),
-        )
-
-        val authRequestBuilder = AuthorizationRequest.Builder(
-            serviceConfig,
-            config.clientId,
-            ResponseTypeValues.CODE,
-            config.redirectUri.toUri(),
-        )
-
-        val scopeString = config.scopes.joinToString(separator = " ")
-        val authRequest = authRequestBuilder
-            .setScope(scopeString)
-            .setLoginHint(email)
-            .build()
-
-        val authService = getAuthService()
-
-        return authService.getAuthorizationRequestIntent(authRequest)
-    }
-
-    private fun findOAuthConfiguration(account: Account): OAuthConfiguration? {
-        return oAuthConfigurationProvider.getConfiguration(account.incomingServerSettings.host!!)
+            is GetOAuthRequestIntentResult.Success -> resultObserver.login(authRequestIntentResult.intent)
+        }
     }
 
     private fun onLoginResult(authorizationResult: AuthorizationResult?) {
