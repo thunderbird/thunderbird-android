@@ -2,7 +2,6 @@ package com.fsck.k9.backends
 
 import android.content.Context
 import com.fsck.k9.Account
-import com.fsck.k9.BuildConfig
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
@@ -27,6 +26,7 @@ class ImapBackendFactory(
     private val backendStorageFactory: K9BackendStorageFactory,
     private val trustedSocketFactory: TrustedSocketFactory,
     private val context: Context,
+    private val clientIdAppName: String,
 ) : BackendFactory {
     override fun createBackend(account: Account): Backend {
         val accountName = account.displayName
@@ -47,7 +47,9 @@ class ImapBackendFactory(
     }
 
     private fun createImapStore(account: Account): ImapStore {
-        val oAuth2TokenProvider = if (account.incomingServerSettings.authenticationType == AuthType.XOAUTH2) {
+        val serverSettings = account.toImapServerSettings()
+
+        val oAuth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
             RealOAuth2TokenProvider(context, accountManager, account)
         } else {
             null
@@ -55,7 +57,7 @@ class ImapBackendFactory(
 
         val config = createImapStoreConfig(account)
         return ImapStore.create(
-            account.incomingServerSettings,
+            serverSettings,
             config,
             trustedSocketFactory,
             oAuth2TokenProvider,
@@ -69,10 +71,7 @@ class ImapBackendFactory(
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
 
-            override fun useCompression() = account.useCompression
-            override fun clientIdAppName(): String? {
-                return BuildConfig.CLIENT_ID_APP_NAME.takeIf { account.isSendClientIdEnabled }
-            }
+            override fun clientIdAppName() = clientIdAppName
         }
     }
 

@@ -11,6 +11,8 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import java.io.IOException
 import java.util.Deque
@@ -37,6 +39,8 @@ internal open class RealImapStore(
     private var connectionGeneration = 1
 
     init {
+        require(serverSettings.type == "imap") { "Expected IMAP ServerSettings" }
+
         val autoDetectNamespace = serverSettings.autoDetectNamespace
         val pathPrefixSetting = serverSettings.pathPrefix
 
@@ -296,11 +300,9 @@ internal open class RealImapStore(
         override val password: String? = serverSettings.password
         override val clientCertificateAlias: String? = serverSettings.clientCertificateAlias
 
-        override val useCompression: Boolean
-            get() = this@RealImapStore.config.useCompression()
+        override val useCompression: Boolean = serverSettings.isUseCompression
 
-        override val clientIdAppName: String?
-            get() = this@RealImapStore.config.clientIdAppName()
+        override val clientIdAppName: String? = config.clientIdAppName().takeIf { serverSettings.isSendClientId }
 
         override var pathPrefix: String?
             get() = this@RealImapStore.pathPrefix
