@@ -18,6 +18,7 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContrac
 import assertk.assertThat
 import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
+import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -31,6 +32,7 @@ class AccountIncomingConfigViewModelTest {
 
     private val testSubject = AccountIncomingConfigViewModel(
         validator = FakeAccountIncomingConfigValidator(),
+        checkIncomingServerConfig = { _, _ -> ServerSettingsValidationResult.Success },
     )
 
     @Test
@@ -198,6 +200,7 @@ class AccountIncomingConfigViewModelTest {
                 validator = FakeAccountIncomingConfigValidator(
                     serverAnswer = ValidationResult.Failure(TestError),
                 ),
+                checkIncomingServerConfig = { _, _ -> ServerSettingsValidationResult.Success },
             )
             val stateTurbine = viewModel.state.testIn(backgroundScope)
             val effectTurbine = viewModel.effect.testIn(backgroundScope)

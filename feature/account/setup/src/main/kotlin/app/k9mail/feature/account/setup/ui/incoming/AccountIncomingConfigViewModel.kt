@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.ui.incoming
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
@@ -26,6 +27,7 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContrac
 internal class AccountIncomingConfigViewModel(
     initialState: State = State(),
     private val validator: Validator,
+    private val checkIncomingServerConfig: UseCase.CheckIncomingServerConfig,
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     override fun initState(state: State) {

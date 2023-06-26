@@ -75,6 +75,7 @@ val featureAccountSetupModule: Module = module {
     viewModel {
         AccountIncomingConfigViewModel(
             validator = get(),
+            checkIncomingServerConfig = get(),
         )
     }
     viewModel {
