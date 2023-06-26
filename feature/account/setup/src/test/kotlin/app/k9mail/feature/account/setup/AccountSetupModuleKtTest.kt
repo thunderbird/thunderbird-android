@@ -5,11 +5,13 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
+import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import okhttp3.OkHttpClient
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.module.Module
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import org.koin.test.KoinTest
@@ -22,8 +24,11 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class AccountSetupModuleKtTest : KoinTest {
 
-    private val networkModule = module {
+    private val externalModule: Module = module {
         single<OkHttpClient> { OkHttpClient() }
+        single<TrustedSocketFactory> {
+            TrustedSocketFactory { _, _, _, _ -> null }
+        }
     }
 
     @Test
@@ -39,7 +44,7 @@ class AccountSetupModuleKtTest : KoinTest {
         )
 
         koinApplication {
-            modules(networkModule, featureAccountSetupModule)
+            modules(externalModule, featureAccountSetupModule)
             androidContext(RuntimeEnvironment.getApplication())
             checkModules()
         }
