@@ -33,7 +33,7 @@ class SettingsActivity : K9Activity() {
     }
 
     private fun navigateUpBySimulatedBackButtonPress(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 

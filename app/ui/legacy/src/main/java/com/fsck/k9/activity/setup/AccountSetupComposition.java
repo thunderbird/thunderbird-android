@@ -111,7 +111,7 @@ public class AccountSetupComposition extends K9Activity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
             return true;
         }
 
@@ -135,7 +135,7 @@ public class AccountSetupComposition extends K9Activity {
     @Override
     public void onBackPressed() {
         saveSettings();
-        super.onBackPressed();
+        getOnBackPressedDispatcher().onBackPressed();
     }
 
     @Override

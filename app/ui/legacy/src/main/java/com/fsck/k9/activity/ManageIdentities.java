@@ -133,7 +133,7 @@ public class ManageIdentities extends ChooseIdentity {
     @Override
     public void onBackPressed() {
         saveIdentities();
-        super.onBackPressed();
+        getOnBackPressedDispatcher().onBackPressed();
     }
 
     private void saveIdentities() {

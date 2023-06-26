@@ -356,7 +356,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
             return true;
         }
 

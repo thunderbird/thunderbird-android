@@ -1099,7 +1099,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (navigateUp) {
                     openDefaultFolder();
                 } else {
-                    super.onBackPressed();
+                    getOnBackPressedDispatcher().onBackPressed();
                 }
             }
         }

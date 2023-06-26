@@ -111,7 +111,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
             return true
         }
 
@@ -120,7 +120,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
 
     override fun onBackPressed() {
         if (!searchPreferenceActionView.cancelSearch()) {
-            super.onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 

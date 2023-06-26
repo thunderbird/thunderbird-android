@@ -697,7 +697,7 @@ open class MessageList :
                     if (search!!.id != SearchAccount.UNIFIED_INBOX) {
                         openUnifiedInbox()
                     } else {
-                        super.onBackPressed()
+                        onBackPressedDispatcher.onBackPressed()
                     }
                 } else {
                     val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!)
@@ -705,11 +705,11 @@ open class MessageList :
                     if (currentFolder == null || defaultFolderId != currentFolder) {
                         openFolderImmediately(defaultFolderId)
                     } else {
-                        super.onBackPressed()
+                        onBackPressedDispatcher.onBackPressed()
                     }
                 }
             } else {
-                super.onBackPressed()
+                onBackPressedDispatcher.onBackPressed()
             }
         }
     }
