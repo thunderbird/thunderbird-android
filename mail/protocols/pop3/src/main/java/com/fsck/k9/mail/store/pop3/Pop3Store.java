@@ -25,6 +25,10 @@ public class Pop3Store {
     private Map<String, Pop3Folder> mFolders = new HashMap<>();
 
     public Pop3Store(ServerSettings serverSettings, TrustedSocketFactory socketFactory) {
+        if (!serverSettings.type.equals("pop3")) {
+            throw new IllegalArgumentException("Expected POP3 ServerSettings");
+        }
+
         trustedSocketFactory = socketFactory;
         host = serverSettings.host;
         port = serverSettings.port;
