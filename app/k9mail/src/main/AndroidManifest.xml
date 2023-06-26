@@ -343,10 +343,6 @@
             android:exported="false"/>
 
         <service
-            android:name="com.fsck.k9.account.AccountRemoverService"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-        <service
             android:name=".controller.push.PushService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
