@@ -1,7 +1,7 @@
-package com.fsck.k9.mail;
+package com.fsck.k9.mail
 
-public enum ConnectionSecurity {
+enum class ConnectionSecurity {
     NONE,
     STARTTLS_REQUIRED,
-    SSL_TLS_REQUIRED
+    SSL_TLS_REQUIRED,
 }
