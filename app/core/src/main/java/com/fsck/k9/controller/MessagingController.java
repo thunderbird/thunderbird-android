@@ -1502,8 +1502,8 @@ public class MessagingController {
 
                     SendState sendState = outboxState.getSendState();
                     if (sendState != SendState.READY) {
-                        Timber.v("Skipping sending message %s (reason: %s)", message.getUid(),
-                                sendState.getDatabaseName());
+                        Timber.v("Skipping sending message %s (reason: %s - %s)", message.getUid(),
+                                sendState.getDatabaseName(), outboxState.getSendError());
 
                         if (sendState == SendState.RETRIES_EXCEEDED) {
                             lastFailure = new MessagingException("Retries exceeded", true);
