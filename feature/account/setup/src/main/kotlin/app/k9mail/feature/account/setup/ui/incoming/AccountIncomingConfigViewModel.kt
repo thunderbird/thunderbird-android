@@ -8,18 +8,6 @@ import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.ClientCertificateChanged
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.ImapAutoDetectNamespaceChanged
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.ImapPrefixChanged
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.OnBackClicked
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.OnNextClicked
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.PasswordChanged
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.PortChanged
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.ProtocolTypeChanged
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.SecurityChanged
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.ServerChanged
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.UseCompressionChanged
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event.UsernameChanged
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.State
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Validator
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.ViewModel
@@ -38,19 +26,19 @@ internal class AccountIncomingConfigViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is ProtocolTypeChanged -> updateProtocolType(event.protocolType)
-            is ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
-            is SecurityChanged -> updateSecurity(event.security)
-            is PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
-            is UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
-            is PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
-            is ClientCertificateChanged -> updateState { it.copy(clientCertificate = event.clientCertificate) }
-            is ImapAutoDetectNamespaceChanged -> updateState { it.copy(imapAutodetectNamespaceEnabled = event.enabled) }
-            is ImapPrefixChanged -> updateState { it.copy(imapPrefix = it.imapPrefix.updateValue(event.imapPrefix)) }
-            is UseCompressionChanged -> updateState { it.copy(useCompression = event.useCompression) }
+            is Event.ProtocolTypeChanged -> updateProtocolType(event.protocolType)
+            is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
+            is Event.SecurityChanged -> updateSecurity(event.security)
+            is Event.PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
+            is Event.UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
+            is Event.PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
+            is Event.ClientCertificateChanged -> updateState { it.copy(clientCertificate = event.clientCertificate) }
+            is Event.ImapAutoDetectNamespaceChanged -> updateState { it.copy(imapAutodetectNamespaceEnabled = event.enabled) }
+            is Event.ImapPrefixChanged -> updateState { it.copy(imapPrefix = it.imapPrefix.updateValue(event.imapPrefix)) }
+            is Event.UseCompressionChanged -> updateState { it.copy(useCompression = event.useCompression) }
 
-            OnBackClicked -> navigateBack()
-            OnNextClicked -> submit()
+            Event.OnBackClicked -> navigateBack()
+            Event.OnNextClicked -> submit()
         }
     }
 
