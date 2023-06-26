@@ -26,6 +26,12 @@ class AccountSetupModuleKtTest : KoinTest {
         single<OkHttpClient> { OkHttpClient() }
     }
 
+    private val appModule = module {
+        single<ServerSettingsValidatorProvider> {
+            ServerSettingsValidatorProvider { emptyMap() }
+        }
+    }
+
     @Test
     fun `should have a valid di module`() {
         featureAccountSetupModule.verify(
@@ -39,7 +45,7 @@ class AccountSetupModuleKtTest : KoinTest {
         )
 
         koinApplication {
-            modules(networkModule, featureAccountSetupModule)
+            modules(appModule, networkModule, featureAccountSetupModule)
             androidContext(RuntimeEnvironment.getApplication())
             checkModules()
         }

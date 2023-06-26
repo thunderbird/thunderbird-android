@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup
 import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.setup.domain.usecase.CheckServerSettings
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
@@ -31,6 +32,12 @@ val featureAccountSetupModule: Module = module {
     single<DomainContract.UseCase.GetAutoDiscovery> {
         GetAutoDiscovery(
             service = get(),
+        )
+    }
+
+    single<DomainContract.UseCase.CheckServerSettings> {
+        CheckServerSettings(
+            serverSettingsValidators = get<ServerSettingsValidatorProvider>().getValidators(),
         )
     }
 
