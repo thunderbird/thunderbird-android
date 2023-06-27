@@ -2,6 +2,7 @@ package app.k9mail.feature.preview
 
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.setup.featureAccountSetupModule
+import app.k9mail.feature.preview.account.AccountCreator
 import app.k9mail.feature.preview.account.AccountOwnerNameProvider
 import app.k9mail.feature.preview.account.AccountSetupFinishedLauncher
 import app.k9mail.feature.preview.auth.AndroidKeyStoreDirectoryProvider
@@ -18,6 +19,7 @@ import org.koin.dsl.module
 
 val accountModule: Module = module {
     factory { AccountOwnerNameProvider() }
+    factory { AccountCreator() }
     factory {
         AccountSetupFinishedLauncher(
             context = androidContext(),
