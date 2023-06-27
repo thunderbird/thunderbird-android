@@ -5,6 +5,11 @@ import org.koin.dsl.module
 
 val newAccountModule = module {
     factory {
+        AccountOwnerNameProvider(
+            preferences = get(),
+        )
+    }
+    factory {
         AccountSetupFinishedLauncher(
             context = androidContext(),
             preferences = get(),
