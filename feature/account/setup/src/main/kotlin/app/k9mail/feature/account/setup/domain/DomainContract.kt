@@ -2,12 +2,26 @@ package app.k9mail.feature.account.setup.domain
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
+import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
+import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.server.ServerSettingsValidationResult
 
 internal interface DomainContract {
 
     interface UseCase {
         fun interface GetAutoDiscovery {
             suspend fun execute(emailAddress: String): AutoDiscoveryResult
+        }
+
+        fun interface CheckIncomingServerConfig {
+            suspend fun execute(
+                protocolType: IncomingProtocolType,
+                settings: ServerSettings,
+            ): ServerSettingsValidationResult
+        }
+
+        fun interface CheckOutgoingServerConfig {
+            suspend fun execute(settings: ServerSettings): ServerSettingsValidationResult
         }
 
         fun interface ValidateEmailAddress {

@@ -17,6 +17,14 @@ enum class ConnectionSecurity {
     }
 }
 
+internal fun ConnectionSecurity.toMailConnectionSecurity(): MailConnectionSecurity {
+    return when (this) {
+        None -> MailConnectionSecurity.NONE
+        StartTLS -> MailConnectionSecurity.STARTTLS_REQUIRED
+        TLS -> MailConnectionSecurity.SSL_TLS_REQUIRED
+    }
+}
+
 @Suppress("MagicNumber")
 internal fun ConnectionSecurity.toSmtpDefaultPort(): Long {
     return when (this) {

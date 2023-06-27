@@ -28,6 +28,9 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
+import app.k9mail.feature.account.setup.ui.common.item.ErrorItem
+import app.k9mail.feature.account.setup.ui.common.item.LoadingItem
+import app.k9mail.feature.account.setup.ui.common.item.SuccessItem
 import app.k9mail.feature.account.setup.ui.common.item.defaultItemPadding
 import app.k9mail.feature.account.setup.ui.common.toResourceString
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
@@ -56,118 +59,145 @@ internal fun AccountIncomingConfigContent(
                 .fillMaxSize()
                 .imePadding(),
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            verticalArrangement = if (state.isLoading || state.error != null || state.isSuccess) {
+                Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically)
+            } else {
+                Arrangement.spacedBy(MainTheme.spacings.default)
+            },
         ) {
-            item {
-                Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
-            }
-
-            item {
-                SelectInput(
-                    options = IncomingProtocolType.all(),
-                    selectedOption = state.protocolType,
-                    onOptionChange = { onEvent(Event.ProtocolTypeChanged(it)) },
-                    label = stringResource(id = R.string.account_setup_incoming_config_protocol_type_label),
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            item {
-                TextInput(
-                    text = state.server.value,
-                    errorMessage = state.server.error?.toResourceString(resources),
-                    onTextChange = { onEvent(Event.ServerChanged(it)) },
-                    label = stringResource(id = R.string.account_setup_incoming_config_server_label),
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            item {
-                SelectInput(
-                    options = ConnectionSecurity.all(),
-                    optionToStringTransformation = { it.toResourceString(resources) },
-                    selectedOption = state.security,
-                    onOptionChange = { onEvent(Event.SecurityChanged(it)) },
-                    label = stringResource(id = R.string.account_setup_incoming_config_security_label),
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            item {
-                NumberInput(
-                    value = state.port.value,
-                    errorMessage = state.port.error?.toResourceString(resources),
-                    onValueChange = { onEvent(Event.PortChanged(it)) },
-                    label = stringResource(id = R.string.account_setup_outgoing_config_port_label),
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            item {
-                TextInput(
-                    text = state.username.value,
-                    errorMessage = state.username.error?.toResourceString(resources),
-                    onTextChange = { onEvent(Event.UsernameChanged(it)) },
-                    label = stringResource(id = R.string.account_setup_outgoing_config_username_label),
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            item {
-                PasswordInput(
-                    password = state.password.value,
-                    errorMessage = state.password.error?.toResourceString(resources),
-                    onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            item {
-                // TODO add client certificate support
-                SelectInput(
-                    options = persistentListOf(
-                        stringResource(
-                            id = R.string.account_setup_client_certificate_none_available,
-                        ),
-                    ),
-                    optionToStringTransformation = { it },
-                    selectedOption = stringResource(
-                        id = R.string.account_setup_client_certificate_none_available,
-                    ),
-                    onOptionChange = { onEvent(Event.ClientCertificateChanged(it)) },
-                    label = stringResource(id = R.string.account_setup_outgoing_config_client_certificate_label),
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            if (state.protocolType == IncomingProtocolType.IMAP) {
+            if (state.isLoading) {
+                item(key = "loading") {
+                    LoadingItem(
+                        message = stringResource(id = R.string.account_setup_incoming_config_loading_message),
+                    )
+                }
+            } else if (state.error != null) {
+                item(key = "error") {
+                    // TODO add raw error message
+                    ErrorItem(
+                        title = stringResource(id = R.string.account_setup_incoming_config_loading_error),
+                        message = state.error.toResourceString(resources),
+                        onRetry = { onEvent(Event.OnRetryClicked) },
+                    )
+                }
+            } else if (state.isSuccess) {
+                item(key = "success") {
+                    SuccessItem(
+                        message = stringResource(id = R.string.account_setup_incoming_config_success),
+                    )
+                }
+            } else {
                 item {
-                    CheckboxInput(
-                        text = stringResource(id = R.string.account_setup_incoming_config_imap_namespace_label),
-                        checked = state.imapAutodetectNamespaceEnabled,
-                        onCheckedChange = { onEvent(Event.ImapAutoDetectNamespaceChanged(it)) },
+                    Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
+                }
+
+                item {
+                    SelectInput(
+                        options = IncomingProtocolType.all(),
+                        selectedOption = state.protocolType,
+                        onOptionChange = { onEvent(Event.ProtocolTypeChanged(it)) },
+                        label = stringResource(id = R.string.account_setup_incoming_config_protocol_type_label),
                         contentPadding = defaultItemPadding(),
                     )
                 }
 
                 item {
                     TextInput(
-                        text = state.imapPrefix.value,
-                        errorMessage = state.imapPrefix.error?.toResourceString(resources),
-                        onTextChange = { onEvent(Event.ImapPrefixChanged(it)) },
-                        label = stringResource(id = R.string.account_setup_incoming_config_imap_prefix_label),
+                        text = state.server.value,
+                        errorMessage = state.server.error?.toResourceString(resources),
+                        onTextChange = { onEvent(Event.ServerChanged(it)) },
+                        label = stringResource(id = R.string.account_setup_incoming_config_server_label),
                         contentPadding = defaultItemPadding(),
                     )
                 }
-            }
 
-            item {
-                CheckboxInput(
-                    text = stringResource(id = R.string.account_setup_incoming_config_compression_label),
-                    checked = state.useCompression,
-                    onCheckedChange = { onEvent(Event.UseCompressionChanged(it)) },
-                    contentPadding = defaultItemPadding(),
-                )
+                item {
+                    SelectInput(
+                        options = ConnectionSecurity.all(),
+                        optionToStringTransformation = { it.toResourceString(resources) },
+                        selectedOption = state.security,
+                        onOptionChange = { onEvent(Event.SecurityChanged(it)) },
+                        label = stringResource(id = R.string.account_setup_incoming_config_security_label),
+                        contentPadding = defaultItemPadding(),
+                    )
+                }
+
+                item {
+                    NumberInput(
+                        value = state.port.value,
+                        errorMessage = state.port.error?.toResourceString(resources),
+                        onValueChange = { onEvent(Event.PortChanged(it)) },
+                        label = stringResource(id = R.string.account_setup_outgoing_config_port_label),
+                        contentPadding = defaultItemPadding(),
+                    )
+                }
+
+                item {
+                    TextInput(
+                        text = state.username.value,
+                        errorMessage = state.username.error?.toResourceString(resources),
+                        onTextChange = { onEvent(Event.UsernameChanged(it)) },
+                        label = stringResource(id = R.string.account_setup_outgoing_config_username_label),
+                        contentPadding = defaultItemPadding(),
+                    )
+                }
+
+                item {
+                    PasswordInput(
+                        password = state.password.value,
+                        errorMessage = state.password.error?.toResourceString(resources),
+                        onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
+                        contentPadding = defaultItemPadding(),
+                    )
+                }
+
+                item {
+                    // TODO add client certificate support
+                    SelectInput(
+                        options = persistentListOf(
+                            stringResource(
+                                id = R.string.account_setup_client_certificate_none_available,
+                            ),
+                        ),
+                        optionToStringTransformation = { it },
+                        selectedOption = stringResource(
+                            id = R.string.account_setup_client_certificate_none_available,
+                        ),
+                        onOptionChange = { onEvent(Event.ClientCertificateChanged(it)) },
+                        label = stringResource(id = R.string.account_setup_outgoing_config_client_certificate_label),
+                        contentPadding = defaultItemPadding(),
+                    )
+                }
+
+                if (state.protocolType == IncomingProtocolType.IMAP) {
+                    item {
+                        CheckboxInput(
+                            text = stringResource(id = R.string.account_setup_incoming_config_imap_namespace_label),
+                            checked = state.imapAutodetectNamespaceEnabled,
+                            onCheckedChange = { onEvent(Event.ImapAutoDetectNamespaceChanged(it)) },
+                            contentPadding = defaultItemPadding(),
+                        )
+                    }
+
+                    item {
+                        TextInput(
+                            text = state.imapPrefix.value,
+                            errorMessage = state.imapPrefix.error?.toResourceString(resources),
+                            onTextChange = { onEvent(Event.ImapPrefixChanged(it)) },
+                            label = stringResource(id = R.string.account_setup_incoming_config_imap_prefix_label),
+                            contentPadding = defaultItemPadding(),
+                        )
+                    }
+                }
+
+                item {
+                    CheckboxInput(
+                        text = stringResource(id = R.string.account_setup_incoming_config_compression_label),
+                        checked = state.useCompression,
+                        onCheckedChange = { onEvent(Event.UseCompressionChanged(it)) },
+                        contentPadding = defaultItemPadding(),
+                    )
+                }
             }
         }
     }

@@ -34,7 +34,7 @@ internal class GetAutoDiscovery(
             return provideWithDelay(fakeResult)
         }
 
-        return service.discover(emailAddress.toUserEmailAddress())!!
+        return service.discover(emailAddress.toUserEmailAddress())
     }
 
     @Suppress("MagicNumber")
