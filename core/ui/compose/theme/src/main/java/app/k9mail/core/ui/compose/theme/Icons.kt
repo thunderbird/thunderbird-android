@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
+import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material.icons.outlined.ErrorOutline
@@ -39,6 +40,7 @@ object Icons {
         val arrowBack = MaterialIcons.Outlined.ArrowBack
         val arrowDropDown = MaterialIcons.Outlined.ArrowDropDown
         val arrowDropUp = MaterialIcons.Outlined.ArrowDropUp
+        val celebration = MaterialIcons.Outlined.Celebration
         val menu = MaterialIcons.Outlined.Menu
         val check = MaterialIcons.Outlined.Check
         val info = MaterialIcons.Outlined.Info
