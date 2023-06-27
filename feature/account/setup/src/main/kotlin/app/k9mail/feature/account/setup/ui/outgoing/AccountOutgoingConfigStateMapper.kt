@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.incoming
+package app.k9mail.feature.account.setup.ui.outgoing
 
 import app.k9mail.feature.account.setup.domain.entity.toMailConnectionSecurity
 import com.fsck.k9.mail.AuthType
@@ -7,9 +7,9 @@ import com.fsck.k9.mail.ServerSettings
 // TODO map extras
 // TODO map authenticationType
 // TODO map clientCertificateAlias
-internal fun AccountIncomingConfigContract.State.toServerSettings(): ServerSettings {
+internal fun AccountOutgoingConfigContract.State.toServerSettings(): ServerSettings {
     return ServerSettings(
-        type = protocolType.defaultName,
+        type = "smtp",
         host = server.value,
         port = port.value!!.toInt(),
         connectionSecurity = security.toMailConnectionSecurity(),

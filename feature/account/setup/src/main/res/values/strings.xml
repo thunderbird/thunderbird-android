@@ -48,7 +48,7 @@
     <string name="account_setup_incoming_config_compression_label">Use compression</string>
     <string name="account_setup_incoming_config_loading_message">Checking incoming server settings…</string>
     <string name="account_setup_incoming_config_loading_error">Checking incoming server settings failed!</string>
-    <string name="account_setup_incoming_config_success">Incoming server Settings are valid!</string>
+    <string name="account_setup_incoming_config_success">Incoming server settings are valid!</string>
 
     <string name="account_setup_outgoing_config_top_bar_title">Outgoing server settings</string>
     <string name="account_setup_outgoing_config_server_label">Server</string>
@@ -58,6 +58,9 @@
     <string name="account_setup_outgoing_config_client_certificate_label">Client certificate</string>
     <string name="account_setup_outgoing_config_imap_namespace_label">Auto-detect IMAP namespace</string>
     <string name="account_setup_outgoing_config_compression_label">Use compression</string>
+    <string name="account_setup_outgoing_config_loading_message">Checking outgoing server settings…</string>
+    <string name="account_setup_outgoing_config_loading_error">Outgoing server settings are not valid</string>
+    <string name="account_setup_outgoing_config_success">Outgoing server settings are valid!</string>
 
     <string name="account_setup_options_top_bar_title">Account options</string>
     <string name="account_setup_options_section_display_options">Display options</string>
