@@ -1,21 +1,35 @@
 package com.fsck.k9.account
 
 import android.content.Context
-import app.k9mail.feature.account.setup.domain.ExternalContract
+import app.k9mail.feature.account.setup.AccountSetupExternalContract
+import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.domain.entity.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class AccountCreator(
     private val accountCreatorHelper: AccountCreatorHelper,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val preferences: Preferences,
     private val context: Context,
-) : ExternalContract.AccountCreator {
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
+) : AccountSetupExternalContract.AccountCreator {
 
-    override suspend fun createAccount(account: Account): String {
+    @Suppress("TooGenericExceptionCaught")
+    override suspend fun createAccount(account: Account): AccountCreatorResult {
+        return try {
+            withContext(coroutineDispatcher) { AccountCreatorResult.Success(create(account)) }
+        } catch (e: Exception) {
+            AccountCreatorResult.Error(e.message ?: "Unknown create account error")
+        }
+    }
+
+    private fun create(account: Account): String {
         val newAccount = preferences.newAccount()
 
         newAccount.email = account.emailAddress
@@ -32,13 +46,11 @@ class AccountCreator(
         newAccount.automaticCheckIntervalMinutes = account.options.checkFrequencyInMinutes
         newAccount.displayCount = account.options.messageDisplayCount
 
-        newAccount.folderPushMode = FolderMode.ALL // TODO is this always ALL?
-        newAccount.deletePolicy = accountCreatorHelper.getDefaultDeletePolicy(newAccount.incomingServerSettings.type)
+        newAccount.folderPushMode = FolderMode.ALL
+        newAccount.deletePolicy = accountCreatorHelper.getDefaultDeletePolicy(
+            newAccount.incomingServerSettings.type,
+        )
         newAccount.chipColor = accountCreatorHelper.pickColor()
-
-        // TODO check this:
-        // DI.get(LocalKeyStoreManager.class)
-        //      .deleteCertificate(mAccount, newHost, newPort, MailServerDirection.OUTGOING)
 
         localFoldersCreator.createSpecialLocalFolders(newAccount)
 

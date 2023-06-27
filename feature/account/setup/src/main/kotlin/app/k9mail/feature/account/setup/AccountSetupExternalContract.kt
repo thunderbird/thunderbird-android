@@ -1,23 +1,23 @@
-package app.k9mail.feature.account.setup.domain
+package app.k9mail.feature.account.setup
 
 import app.k9mail.feature.account.setup.domain.entity.Account
 
-interface ExternalContract {
+interface AccountSetupExternalContract {
 
     fun interface AccountCreator {
-        suspend fun createAccount(account: Account): String
+        suspend fun createAccount(account: Account): AccountCreatorResult
 
         sealed interface AccountCreatorResult {
-            object Success : AccountCreatorResult
+            data class Success(val accountUuid: String) : AccountCreatorResult
             data class Error(val message: String) : AccountCreatorResult
         }
     }
 
     fun interface AccountOwnerNameProvider {
-        fun getOwnerName(): String?
+        suspend fun getOwnerName(): String?
     }
 
     fun interface AccountSetupFinishedLauncher {
-        fun launch(accountUuid: String)
+        suspend fun launch(accountUuid: String)
     }
 }

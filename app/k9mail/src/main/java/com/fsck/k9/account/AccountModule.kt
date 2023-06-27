@@ -16,7 +16,7 @@ val newAccountModule = module {
             accountCreatorHelper = get(),
             localFoldersCreator = get(),
             preferences = get(),
-            context = androidApplication()
+            context = androidApplication(),
         )
     }
 
