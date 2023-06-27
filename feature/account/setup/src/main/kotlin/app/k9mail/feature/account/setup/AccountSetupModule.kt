@@ -81,6 +81,7 @@ val featureAccountSetupModule: Module = module {
     viewModel {
         AccountOutgoingConfigViewModel(
             validator = get(),
+            checkOutgoingServerConfig = get(),
         )
     }
     viewModel {

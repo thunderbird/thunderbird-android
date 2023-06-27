@@ -15,6 +15,7 @@ import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.ViewModel
+import com.fsck.k9.mail.server.ServerSettingsValidationResult
 
 @Composable
 internal fun AccountOutgoingConfigScreen(
@@ -67,6 +68,9 @@ internal fun AccountOutgoingConfigScreenK9Preview() {
             onBack = {},
             viewModel = AccountOutgoingConfigViewModel(
                 validator = AccountOutgoingConfigValidator(),
+                checkOutgoingServerConfig = { _ ->
+                    ServerSettingsValidationResult.Success
+                },
             ),
         )
     }
@@ -81,6 +85,9 @@ internal fun AccountOutgoingConfigScreenThunderbirdPreview() {
             onBack = {},
             viewModel = AccountOutgoingConfigViewModel(
                 validator = AccountOutgoingConfigValidator(),
+                checkOutgoingServerConfig = { _ ->
+                    ServerSettingsValidationResult.Success
+                },
             ),
         )
     }

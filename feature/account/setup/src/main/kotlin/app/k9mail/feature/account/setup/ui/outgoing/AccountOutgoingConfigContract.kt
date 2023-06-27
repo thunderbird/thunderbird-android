@@ -6,6 +6,8 @@ import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
+import java.io.IOException
+import java.security.cert.X509Certificate
 
 interface AccountOutgoingConfigContract {
 
@@ -22,6 +24,10 @@ interface AccountOutgoingConfigContract {
         val clientCertificate: String = "",
         val imapAutodetectNamespaceEnabled: Boolean = true,
         val useCompression: Boolean = true,
+
+        val isSuccess: Boolean = false,
+        val error: Error? = null,
+        val isLoading: Boolean = false,
     )
 
     sealed class Event {
@@ -33,8 +39,10 @@ interface AccountOutgoingConfigContract {
         data class ClientCertificateChanged(val clientCertificate: String) : Event()
         data class ImapAutoDetectNamespaceChanged(val enabled: Boolean) : Event()
         data class UseCompressionChanged(val useCompression: Boolean) : Event()
+
         object OnNextClicked : Event()
         object OnBackClicked : Event()
+        object OnRetryClicked : Event()
     }
 
     sealed class Effect {
@@ -47,5 +55,13 @@ interface AccountOutgoingConfigContract {
         fun validatePort(port: Long?): ValidationResult
         fun validateUsername(username: String): ValidationResult
         fun validatePassword(password: String): ValidationResult
+    }
+
+    sealed interface Error {
+        data class NetworkError(val exception: IOException) : Error
+        data class CertificateError(val certificateChain: List<X509Certificate>) : Error
+        data class AuthenticationError(val serverMessage: String?) : Error
+        data class ServerError(val serverMessage: String?) : Error
+        data class UnknownError(val exception: Exception) : Error
     }
 }
