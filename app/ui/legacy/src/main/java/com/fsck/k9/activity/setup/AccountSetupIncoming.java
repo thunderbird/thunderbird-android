@@ -32,7 +32,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.account.AccountCreatorHelper;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.Utility;
@@ -59,7 +59,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
-    private final AccountCreator accountCreator = DI.get(AccountCreator.class);
+    private final AccountCreatorHelper accountCreatorHelper = DI.get(AccountCreatorHelper.class);
     private final SuggestServerName serverNameSuggester = DI.get(SuggestServerName.class);
 
     private String mStoreType;
@@ -224,7 +224,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             if (!editSettings) {
-                mAccount.setDeletePolicy(accountCreator.getDefaultDeletePolicy(settings.type));
+                mAccount.setDeletePolicy(accountCreatorHelper.getDefaultDeletePolicy(settings.type));
             }
 
             // Note that mConnectionSecurityChoices is configured above based on server type
@@ -485,7 +485,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(String.valueOf(accountCreator.getDefaultPort(securityType, mStoreType)));
+        mPortView.setText(String.valueOf(accountCreatorHelper.getDefaultPort(securityType, mStoreType)));
         mPortView.addTextChangedListener(validationTextWatcher);
     }
 

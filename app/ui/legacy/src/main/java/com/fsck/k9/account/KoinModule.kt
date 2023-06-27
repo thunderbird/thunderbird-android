@@ -13,5 +13,5 @@ val accountModule = module {
         )
     }
     factory { BackgroundAccountRemover(get()) }
-    factory { AccountCreator(get(), get()) }
+    factory { AccountCreatorHelper(get(), get()) }
 }

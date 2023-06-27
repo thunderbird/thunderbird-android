@@ -156,12 +156,12 @@
     <ID>MagicNumber:Account.kt$Account$6</ID>
     <ID>MagicNumber:Account.kt$Account$84</ID>
     <ID>MagicNumber:Account.kt$Account.DeletePolicy.MARK_AS_READ$3</ID>
-    <ID>MagicNumber:AccountCreator.kt$AccountCreator$110</ID>
-    <ID>MagicNumber:AccountCreator.kt$AccountCreator$143</ID>
-    <ID>MagicNumber:AccountCreator.kt$AccountCreator$465</ID>
-    <ID>MagicNumber:AccountCreator.kt$AccountCreator$587</ID>
-    <ID>MagicNumber:AccountCreator.kt$AccountCreator$993</ID>
-    <ID>MagicNumber:AccountCreator.kt$AccountCreator$995</ID>
+    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$110</ID>
+    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$143</ID>
+    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$465</ID>
+    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$587</ID>
+    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$993</ID>
+    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$995</ID>
     <ID>MagicNumber:AccountItem.kt$AccountItem$200L</ID>
     <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$10</ID>
     <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$24</ID>
@@ -590,7 +590,6 @@
     <ID>SwallowedException:SettingsExporter.kt$SettingsExporter$e: InvalidSettingValueException</ID>
     <ID>SwallowedException:SettingsListFragment.kt$SettingsListFragment$e: ActivityNotFoundException</ID>
     <ID>SwallowedException:SmtpTransport.kt$SmtpTransport$e: NegativeSmtpReplyException</ID>
-    <ID>SwallowedException:SmtpTransport.kt$SmtpTransport$exception: NegativeSmtpReplyException</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:RealImapConnection.kt$RealImapConnection$Exception()</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:SmtpTransport.kt$SmtpTransport$RuntimeException()</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:TimberLogger.kt$TimberLogger$Throwable()</ID>
@@ -600,7 +599,6 @@
     <ID>ThrowsCount:RealImapConnection.kt$RealImapConnection$private fun authenticate(): List&lt;ImapResponse&gt;</ID>
     <ID>ThrowsCount:SmtpTransport.kt$SmtpTransport$@Throws(MessagingException::class) fun sendMessage(message: Message)</ID>
     <ID>ThrowsCount:SmtpTransport.kt$SmtpTransport$@VisibleForTesting @Throws(MessagingException::class) internal fun open()</ID>
-    <ID>ThrowsCount:SmtpTransport.kt$SmtpTransport$private fun saslAuthCramMD5()</ID>
     <ID>TooGenericExceptionCaught:AccountRemover.kt$AccountRemover$e: Exception</ID>
     <ID>TooGenericExceptionCaught:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$e: Exception</ID>
     <ID>TooGenericExceptionCaught:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$e: Exception</ID>

@@ -12,7 +12,7 @@ import com.fsck.k9.mail.ConnectionSecurity
  *
  * TODO Move much of the code from com.fsck.k9.activity.setup.* into here
  */
-class AccountCreator(private val preferences: Preferences, private val resources: Resources) {
+class AccountCreatorHelper(private val preferences: Preferences, private val resources: Resources) {
 
     fun getDefaultDeletePolicy(type: String): DeletePolicy {
         return when (type) {

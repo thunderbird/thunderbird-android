@@ -17,51 +17,51 @@ import static org.mockito.Mockito.mock;
 
 
 public class AccountCreatorTest extends RobolectricTest {
-    private AccountCreator accountCreator;
+    private AccountCreatorHelper accountCreatorHelper;
 
     @Before
     public void setUp() {
         Preferences preferences = mock(Preferences.class);
         Resources resources = mock(Resources.class);
-        accountCreator = new AccountCreator(preferences, resources);
+        accountCreatorHelper = new AccountCreatorHelper(preferences, resources);
     }
 
     @Test
     public void getDefaultDeletePolicy_withImap_shouldReturn_ON_DELETE() {
-        DeletePolicy result = accountCreator.getDefaultDeletePolicy(Protocols.IMAP);
+        DeletePolicy result = accountCreatorHelper.getDefaultDeletePolicy(Protocols.IMAP);
 
         assertEquals(DeletePolicy.ON_DELETE, result);
     }
 
     @Test
     public void getDefaultDeletePolicy_withPop3_shouldReturn_NEVER() {
-        DeletePolicy result = accountCreator.getDefaultDeletePolicy(Protocols.POP3);
+        DeletePolicy result = accountCreatorHelper.getDefaultDeletePolicy(Protocols.POP3);
 
         assertEquals(DeletePolicy.NEVER, result);
     }
 
     @Test(expected = AssertionError.class)
     public void getDefaultDeletePolicy_withSmtp_shouldFail() {
-        accountCreator.getDefaultDeletePolicy(Protocols.SMTP);
+        accountCreatorHelper.getDefaultDeletePolicy(Protocols.SMTP);
     }
 
     @Test
     public void getDefaultPort_withNoConnectionSecurityAndImap_shouldReturnDefaultPort() {
-        int result = accountCreator.getDefaultPort(ConnectionSecurity.NONE, Protocols.IMAP);
+        int result = accountCreatorHelper.getDefaultPort(ConnectionSecurity.NONE, Protocols.IMAP);
 
         assertEquals(143, result);
     }
 
     @Test
     public void getDefaultPort_withStartTlsAndImap_shouldReturnDefaultPort() {
-        int result = accountCreator.getDefaultPort(ConnectionSecurity.STARTTLS_REQUIRED, Protocols.IMAP);
+        int result = accountCreatorHelper.getDefaultPort(ConnectionSecurity.STARTTLS_REQUIRED, Protocols.IMAP);
 
         assertEquals(143, result);
     }
 
     @Test
     public void getDefaultPort_withTlsAndImap_shouldReturnDefaultTlsPort() {
-        int result = accountCreator.getDefaultPort(ConnectionSecurity.SSL_TLS_REQUIRED, Protocols.IMAP);
+        int result = accountCreatorHelper.getDefaultPort(ConnectionSecurity.SSL_TLS_REQUIRED, Protocols.IMAP);
 
         assertEquals(993, result);
     }
