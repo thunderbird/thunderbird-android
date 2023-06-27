@@ -1,5 +1,7 @@
 package app.k9mail.feature.account.setup
 
+import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
+import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.ui.AccountSetupContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
@@ -28,6 +30,9 @@ class AccountSetupModuleKtTest : KoinTest {
         single<OkHttpClient> { OkHttpClient() }
         single<TrustedSocketFactory> {
             TrustedSocketFactory { _, _, _, _ -> null }
+        }
+        single<AccountCreator> {
+            AccountCreator { _ -> AccountCreatorResult.Success("accountUuid") }
         }
     }
 

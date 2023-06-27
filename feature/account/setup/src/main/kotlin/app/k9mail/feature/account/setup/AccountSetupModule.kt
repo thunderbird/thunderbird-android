@@ -5,6 +5,7 @@ import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.CheckIncomingServerConfig
 import app.k9mail.feature.account.setup.domain.usecase.CheckOutgoingServerConfig
+import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
@@ -59,13 +60,22 @@ val featureAccountSetupModule: Module = module {
             ),
         )
     }
+    factory<DomainContract.UseCase.CreateAccount> {
+        CreateAccount(
+            accountCreator = get(),
+        )
+    }
 
     factory<AccountAutoDiscoveryContract.Validator> { AccountAutoDiscoveryValidator() }
     factory<AccountIncomingConfigContract.Validator> { AccountIncomingConfigValidator() }
     factory<AccountOutgoingConfigContract.Validator> { AccountOutgoingConfigValidator() }
     factory<AccountOptionsContract.Validator> { AccountOptionsValidator() }
 
-    viewModel { AccountSetupViewModel() }
+    viewModel {
+        AccountSetupViewModel(
+            createAccount = get(),
+        )
+    }
     viewModel {
         AccountAutoDiscoveryViewModel(
             validator = get(),

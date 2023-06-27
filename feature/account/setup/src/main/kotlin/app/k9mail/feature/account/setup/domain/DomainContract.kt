@@ -7,7 +7,7 @@ import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 
-internal interface DomainContract {
+interface DomainContract {
 
     interface UseCase {
         fun interface GetAutoDiscovery {

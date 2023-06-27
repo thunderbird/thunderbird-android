@@ -22,9 +22,12 @@ class AccountSetupViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    @Suppress("LongMethod")
     @Test
     fun `should forward step state on next event`() = runTest {
-        val viewModel = AccountSetupViewModel()
+        val viewModel = AccountSetupViewModel(
+            createAccount = { _, _, _, _ -> "accountUuid" },
+        )
         val stateTurbine = viewModel.state.testIn(backgroundScope)
         val effectTurbine = viewModel.effect.testIn(backgroundScope)
         val turbines = listOf(stateTurbine, effectTurbine)
@@ -79,14 +82,33 @@ class AccountSetupViewModelTest {
             actual = effectTurbine.awaitItem(),
             turbines = turbines,
         ) {
-            isEqualTo(Effect.NavigateNext)
+            isEqualTo(Effect.CollectExternalStates)
+        }
+
+        viewModel.event(
+            AccountSetupContract.Event.OnStateCollected(
+                autoDiscoveryState = AccountAutoDiscoveryContract.State(),
+                incomingState = AccountIncomingConfigContract.State(),
+                outgoingState = AccountOutgoingConfigContract.State(),
+                optionsState = AccountOptionsContract.State(),
+            ),
+        )
+
+        assertThatAndTurbinesConsumed(
+            actual = effectTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(Effect.NavigateNext("accountUuid"))
         }
     }
 
     @Test
     fun `should rewind step state on back event`() = runTest {
         val initialState = State(setupStep = SetupStep.OPTIONS)
-        val viewModel = AccountSetupViewModel(initialState)
+        val viewModel = AccountSetupViewModel(
+            createAccount = { _, _, _, _ -> "accountUuid" },
+            initialState = initialState,
+        )
         val stateTurbine = viewModel.state.testIn(backgroundScope)
         val effectTurbine = viewModel.effect.testIn(backgroundScope)
         val turbines = listOf(stateTurbine, effectTurbine)

@@ -62,7 +62,7 @@ class CreateAccountTest {
                 incomingServerSettings = incomingServerSettings,
                 outgoingServerSettings = outgoingServerSettings,
                 options = options,
-            )
+            ),
         )
     }
 }

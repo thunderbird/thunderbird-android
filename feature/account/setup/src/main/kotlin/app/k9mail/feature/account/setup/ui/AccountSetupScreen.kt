@@ -23,7 +23,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AccountSetupScreen(
-    onFinish: () -> Unit,
+    onFinish: (String) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel = koinViewModel<AccountSetupViewModel>(),
     autoDiscoveryViewModel: AccountAutoDiscoveryContract.ViewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
@@ -36,7 +36,16 @@ fun AccountSetupScreen(
             is Effect.UpdateIncomingConfig -> incomingViewModel.initState(effect.state)
             is Effect.UpdateOutgoingConfig -> outgoingViewModel.initState(effect.state)
             is Effect.UpdateOptions -> optionsViewModel.initState(effect.state)
-            Effect.NavigateNext -> onFinish()
+            is Effect.CollectExternalStates -> viewModel.event(
+                Event.OnStateCollected(
+                    autoDiscoveryState = autoDiscoveryViewModel.state.value,
+                    incomingState = incomingViewModel.state.value,
+                    outgoingState = outgoingViewModel.state.value,
+                    optionsState = optionsViewModel.state.value,
+                ),
+            )
+
+            is Effect.NavigateNext -> onFinish(effect.accountUuid)
             Effect.NavigateBack -> onBack()
         }
     }
