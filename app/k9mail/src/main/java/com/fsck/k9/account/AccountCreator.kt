@@ -18,11 +18,11 @@ class AccountCreator(
         val newAccount = preferences.newAccount()
 
         newAccount.email = account.emailAddress
-        newAccount.senderName = account.senderName
 
         newAccount.incomingServerSettings = account.incomingServerSettings
         newAccount.outgoingServerSettings = account.outgoingServerSettings
 
+        newAccount.senderName = account.options.accountName
         newAccount.deletePolicy = accountCreatorHelper.getDefaultDeletePolicy(newAccount.incomingServerSettings.type)
         newAccount.chipColor = accountCreatorHelper.pickColor()
 
