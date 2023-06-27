@@ -18,6 +18,7 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
 
 
+@Deprecated(since = "New account setup flow")
 public class AccountSetupOptions extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
 
