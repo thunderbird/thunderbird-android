@@ -9,16 +9,6 @@ import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Error
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.ClientCertificateChanged
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.ImapAutoDetectNamespaceChanged
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.OnBackClicked
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.OnNextClicked
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.PasswordChanged
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.PortChanged
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.SecurityChanged
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.ServerChanged
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.UseCompressionChanged
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event.UsernameChanged
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Validator
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.ViewModel
@@ -43,17 +33,20 @@ internal class AccountOutgoingConfigViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
-            is SecurityChanged -> updateSecurity(event.security)
-            is PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
-            is UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
-            is PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
-            is ClientCertificateChanged -> updateState { it.copy(clientCertificate = event.clientCertificate) }
-            is ImapAutoDetectNamespaceChanged -> updateState { it.copy(imapAutodetectNamespaceEnabled = event.enabled) }
-            is UseCompressionChanged -> updateState { it.copy(useCompression = event.useCompression) }
+            is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
+            is Event.SecurityChanged -> updateSecurity(event.security)
+            is Event.PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
+            is Event.UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
+            is Event.PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
+            is Event.ClientCertificateChanged -> updateState { it.copy(clientCertificate = event.clientCertificate) }
+            is Event.ImapAutoDetectNamespaceChanged -> updateState {
+                it.copy(imapAutodetectNamespaceEnabled = event.enabled)
+            }
 
-            OnNextClicked -> onNext()
-            OnBackClicked -> onBack()
+            is Event.UseCompressionChanged -> updateState { it.copy(useCompression = event.useCompression) }
+
+            Event.OnNextClicked -> onNext()
+            Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> onRetry()
         }
     }
