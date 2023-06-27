@@ -17,6 +17,8 @@ dependencies {
     implementation(projects.backend.pop3)
     debugImplementation(projects.backend.demo)
 
+    implementation(projects.feature.account.setup)
+
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.work.ktx)
