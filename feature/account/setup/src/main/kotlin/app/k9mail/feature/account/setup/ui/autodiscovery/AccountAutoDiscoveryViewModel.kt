@@ -36,7 +36,7 @@ internal class AccountAutoDiscoveryViewModel(
 
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()
-            Event.OnRetryClicked -> retry()
+            Event.OnRetryClicked -> onRetry()
             Event.OnEditConfigurationClicked -> navigateNext()
         }
     }
@@ -84,7 +84,7 @@ internal class AccountAutoDiscoveryViewModel(
         }
     }
 
-    private fun retry() {
+    private fun onRetry() {
         updateState {
             it.copy(error = null)
         }

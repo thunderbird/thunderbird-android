@@ -40,6 +40,9 @@
     <string name="account_setup_incoming_config_imap_namespace_label">Auto-detect IMAP namespace</string>
     <string name="account_setup_incoming_config_imap_prefix_label">IMAP path prefix</string>
     <string name="account_setup_incoming_config_compression_label">Use compression</string>
+    <string name="account_setup_incoming_config_loading_message">Checking incoming server settings…</string>
+    <string name="account_setup_incoming_config_loading_error">Incoming server Settings are not valid</string>
+    <string name="account_setup_incoming_config_success">Incoming server Settings are valid!</string>
 
     <string name="account_setup_outgoing_config_top_bar_title">Outgoing server settings</string>
     <string name="account_setup_outgoing_config_server_label">Server</string>
