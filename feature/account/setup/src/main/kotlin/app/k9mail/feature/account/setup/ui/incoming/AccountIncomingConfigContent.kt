@@ -73,9 +73,10 @@ internal fun AccountIncomingConfigContent(
                 }
             } else if (state.error != null) {
                 item(key = "error") {
+                    // TODO add raw error message
                     ErrorItem(
                         title = stringResource(id = R.string.account_setup_incoming_config_loading_error),
-                        message = state.error.toString(), // TODO map to string
+                        message = state.error.toResourceString(resources),
                         onRetry = { onEvent(Event.OnRetryClicked) },
                     )
                 }
