@@ -106,28 +106,6 @@ class AccountOutgoingConfigViewModelTest {
     }
 
     @Test
-    fun `should change state when ImapAutoDetectNamespaceChanged event is received`() = runTest {
-        eventStateTest(
-            viewModel = testSubject,
-            initialState = State(imapAutodetectNamespaceEnabled = true),
-            event = Event.ImapAutoDetectNamespaceChanged(false),
-            expectedState = State(imapAutodetectNamespaceEnabled = false),
-            coroutineScope = backgroundScope,
-        )
-    }
-
-    @Test
-    fun `should change state when UseCompressionChanged event is received`() = runTest {
-        eventStateTest(
-            viewModel = testSubject,
-            initialState = State(useCompression = true),
-            event = Event.UseCompressionChanged(false),
-            expectedState = State(useCompression = false),
-            coroutineScope = backgroundScope,
-        )
-    }
-
-    @Test
     fun `should emit effect NavigateNext when OnNextClicked is received in success state`() = runTest {
         val initialState = State(isSuccess = true)
         testSubject.initState(initialState)

@@ -22,8 +22,6 @@ class AccountOutgoingConfigStateMapperKtTest {
             username = StringInputField(value = "user"),
             password = StringInputField(value = "password"),
             clientCertificate = "",
-            imapAutodetectNamespaceEnabled = true,
-            useCompression = true,
         )
 
         val result = outgoingState.toServerSettings()

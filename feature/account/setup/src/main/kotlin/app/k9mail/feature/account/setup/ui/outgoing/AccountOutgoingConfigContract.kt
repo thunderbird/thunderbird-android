@@ -22,8 +22,6 @@ interface AccountOutgoingConfigContract {
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
         val clientCertificate: String = "",
-        val imapAutodetectNamespaceEnabled: Boolean = true,
-        val useCompression: Boolean = true,
 
         val isSuccess: Boolean = false,
         val error: Error? = null,
@@ -37,8 +35,6 @@ interface AccountOutgoingConfigContract {
         data class UsernameChanged(val username: String) : Event()
         data class PasswordChanged(val password: String) : Event()
         data class ClientCertificateChanged(val clientCertificate: String) : Event()
-        data class ImapAutoDetectNamespaceChanged(val enabled: Boolean) : Event()
-        data class UseCompressionChanged(val useCompression: Boolean) : Event()
 
         object OnNextClicked : Event()
         object OnBackClicked : Event()
