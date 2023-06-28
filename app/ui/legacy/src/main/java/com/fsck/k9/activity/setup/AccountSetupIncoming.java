@@ -2,6 +2,9 @@
 package com.fsck.k9.activity.setup;
 
 
+import java.util.Locale;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -23,30 +26,26 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import app.k9mail.core.common.mail.Protocols;
+import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase.SuggestServerName;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
-import com.fsck.k9.helper.EmailHelper;
-import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName;
-import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
+import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
-import app.k9mail.core.common.mail.Protocols;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.ui.base.extensions.TextInputLayoutHelper;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
-
-import java.util.Locale;
-import java.util.Map;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import timber.log.Timber;
