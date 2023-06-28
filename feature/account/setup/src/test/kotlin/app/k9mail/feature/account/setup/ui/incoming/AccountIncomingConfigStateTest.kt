@@ -26,7 +26,7 @@ class AccountIncomingConfigStateTest {
                 password = StringInputField(),
                 clientCertificate = "",
                 imapAutodetectNamespaceEnabled = true,
-                useCompression = true,
+                imapUseCompression = true,
             ),
         )
     }

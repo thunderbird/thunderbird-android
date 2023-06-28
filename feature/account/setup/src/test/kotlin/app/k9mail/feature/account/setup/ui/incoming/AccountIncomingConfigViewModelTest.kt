@@ -152,12 +152,12 @@ class AccountIncomingConfigViewModelTest {
     }
 
     @Test
-    fun `should change state when UseCompressionChanged event is received`() = runTest {
+    fun `should change state when ImapUseCompressionChanged event is received`() = runTest {
         eventStateTest(
             viewModel = testSubject,
-            initialState = State(useCompression = true),
-            event = Event.UseCompressionChanged(false),
-            expectedState = State(useCompression = false),
+            initialState = State(imapUseCompression = true),
+            event = Event.ImapUseCompressionChanged(false),
+            expectedState = State(imapUseCompression = false),
             coroutineScope = backgroundScope,
         )
     }
