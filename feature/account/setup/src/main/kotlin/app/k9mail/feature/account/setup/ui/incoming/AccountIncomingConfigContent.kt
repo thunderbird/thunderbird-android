@@ -26,12 +26,14 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R
+import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.ui.common.item.ErrorItem
 import app.k9mail.feature.account.setup.ui.common.item.LoadingItem
 import app.k9mail.feature.account.setup.ui.common.item.SuccessItem
 import app.k9mail.feature.account.setup.ui.common.item.defaultItemPadding
+import app.k9mail.feature.account.setup.ui.common.mapper.toResourceString
 import app.k9mail.feature.account.setup.ui.common.toResourceString
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.State
@@ -128,6 +130,17 @@ internal fun AccountIncomingConfigContent(
                         errorMessage = state.port.error?.toResourceString(resources),
                         onValueChange = { onEvent(Event.PortChanged(it)) },
                         label = stringResource(id = R.string.account_setup_outgoing_config_port_label),
+                        contentPadding = defaultItemPadding(),
+                    )
+                }
+
+                item {
+                    SelectInput(
+                        options = AuthenticationType.all(),
+                        optionToStringTransformation = { it.toResourceString(resources) },
+                        selectedOption = state.authenticationType,
+                        onOptionChange = { onEvent(Event.AuthenticationTypeChanged(it)) },
+                        label = stringResource(id = R.string.account_setup_incoming_config_authentication_label),
                         contentPadding = defaultItemPadding(),
                     )
                 }

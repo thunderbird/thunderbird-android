@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.incoming
 
+import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
@@ -21,6 +22,7 @@ class AccountIncomingConfigStateMapperKtTest {
             server = StringInputField(value = "imap.example.org"),
             port = NumberInputField(value = 993),
             security = ConnectionSecurity.TLS,
+            authenticationType = AuthenticationType.PasswordCleartext,
             username = StringInputField(value = "user"),
             password = StringInputField(value = "password"),
             clientCertificate = "",

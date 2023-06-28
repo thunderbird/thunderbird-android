@@ -2,9 +2,10 @@ package app.k9mail.feature.account.setup.domain.entity
 
 import kotlinx.collections.immutable.toImmutableList
 
-internal enum class AuthenticationType {
+enum class AuthenticationType {
     PasswordCleartext,
     PasswordEncrypted,
+    ClientCertificate,
     OAuth2,
     ;
 
