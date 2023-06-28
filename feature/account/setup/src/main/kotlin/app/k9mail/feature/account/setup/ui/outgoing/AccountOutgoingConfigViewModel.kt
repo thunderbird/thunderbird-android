@@ -39,11 +39,6 @@ internal class AccountOutgoingConfigViewModel(
             is Event.UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
             is Event.PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
             is Event.ClientCertificateChanged -> updateState { it.copy(clientCertificate = event.clientCertificate) }
-            is Event.ImapAutoDetectNamespaceChanged -> updateState {
-                it.copy(imapAutodetectNamespaceEnabled = event.enabled)
-            }
-
-            is Event.UseCompressionChanged -> updateState { it.copy(useCompression = event.useCompression) }
 
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()

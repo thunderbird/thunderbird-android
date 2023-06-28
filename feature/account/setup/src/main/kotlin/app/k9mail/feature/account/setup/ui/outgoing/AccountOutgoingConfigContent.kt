@@ -16,7 +16,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
@@ -157,24 +156,6 @@ internal fun AccountOutgoingConfigContent(
                         ),
                         onOptionChange = { onEvent(Event.ClientCertificateChanged(it)) },
                         label = stringResource(id = R.string.account_setup_outgoing_config_client_certificate_label),
-                        contentPadding = defaultItemPadding(),
-                    )
-                }
-
-                item {
-                    CheckboxInput(
-                        text = stringResource(id = R.string.account_setup_outgoing_config_imap_namespace_label),
-                        checked = state.imapAutodetectNamespaceEnabled,
-                        onCheckedChange = { onEvent(Event.ImapAutoDetectNamespaceChanged(it)) },
-                        contentPadding = defaultItemPadding(),
-                    )
-                }
-
-                item {
-                    CheckboxInput(
-                        text = stringResource(id = R.string.account_setup_outgoing_config_compression_label),
-                        checked = state.useCompression,
-                        onCheckedChange = { onEvent(Event.UseCompressionChanged(it)) },
                         contentPadding = defaultItemPadding(),
                     )
                 }

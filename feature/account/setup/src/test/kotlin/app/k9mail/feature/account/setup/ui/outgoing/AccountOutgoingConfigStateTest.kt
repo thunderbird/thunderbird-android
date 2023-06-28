@@ -23,8 +23,6 @@ class AccountOutgoingConfigStateTest {
                 username = StringInputField(),
                 password = StringInputField(),
                 clientCertificate = "",
-                imapAutodetectNamespaceEnabled = true,
-                useCompression = true,
             ),
         )
     }

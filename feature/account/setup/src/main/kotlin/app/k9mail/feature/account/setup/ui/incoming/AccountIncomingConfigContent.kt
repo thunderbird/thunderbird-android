@@ -188,15 +188,15 @@ internal fun AccountIncomingConfigContent(
                             contentPadding = defaultItemPadding(),
                         )
                     }
-                }
 
-                item {
-                    CheckboxInput(
-                        text = stringResource(id = R.string.account_setup_incoming_config_compression_label),
-                        checked = state.useCompression,
-                        onCheckedChange = { onEvent(Event.UseCompressionChanged(it)) },
-                        contentPadding = defaultItemPadding(),
-                    )
+                    item {
+                        CheckboxInput(
+                            text = stringResource(id = R.string.account_setup_incoming_config_imap_compression_label),
+                            checked = state.imapUseCompression,
+                            onCheckedChange = { onEvent(Event.ImapUseCompressionChanged(it)) },
+                            contentPadding = defaultItemPadding(),
+                        )
+                    }
                 }
             }
         }

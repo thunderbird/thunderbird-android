@@ -45,7 +45,7 @@
     <string name="account_setup_incoming_config_security_label">Security</string>
     <string name="account_setup_incoming_config_imap_namespace_label">Auto-detect IMAP namespace</string>
     <string name="account_setup_incoming_config_imap_prefix_label">IMAP path prefix</string>
-    <string name="account_setup_incoming_config_compression_label">Use compression</string>
+    <string name="account_setup_incoming_config_imap_compression_label">Use compression</string>
     <string name="account_setup_incoming_config_loading_message">Checking incoming server settings…</string>
     <string name="account_setup_incoming_config_loading_error">Checking incoming server settings failed!</string>
     <string name="account_setup_incoming_config_success">Incoming server settings are valid!</string>
