@@ -1398,7 +1398,7 @@ open class MessageList :
         private const val ACTION_SHORTCUT = "shortcut"
         private const val EXTRA_SPECIAL_FOLDER = "special_folder"
 
-        private const val EXTRA_ACCOUNT = "account_uuid"
+        const val EXTRA_ACCOUNT = "account_uuid"
         private const val EXTRA_MESSAGE_REFERENCE = "message_reference"
         private const val EXTRA_MESSAGE_VIEW_ONLY = "message_view_only"
 

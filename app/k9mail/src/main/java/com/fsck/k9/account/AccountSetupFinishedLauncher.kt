@@ -1,27 +1,21 @@
 package com.fsck.k9.account
 
 import android.content.Context
+import android.content.Intent
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
-import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class AccountSetupFinishedLauncher(
     private val context: Context,
-    private val preferences: Preferences,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountSetupExternalContract.AccountSetupFinishedLauncher {
     override suspend fun launch(accountUuid: String) {
-        val account = withContext(coroutineDispatcher) {
-            preferences.getAccount(accountUuid)
+        val intent = Intent(context, MessageList::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(MessageList.EXTRA_ACCOUNT, accountUuid)
         }
 
-        if (account == null) {
-            MessageList.launch(context)
-        } else {
-            MessageList.launch(context, account)
-        }
+        context.startActivity(intent)
     }
 }

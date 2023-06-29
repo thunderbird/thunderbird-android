@@ -24,7 +24,6 @@ val newAccountModule = module {
     factory<AccountSetupExternalContract.AccountSetupFinishedLauncher> {
         AccountSetupFinishedLauncher(
             context = androidContext(),
-            preferences = get(),
         )
     }
 }
