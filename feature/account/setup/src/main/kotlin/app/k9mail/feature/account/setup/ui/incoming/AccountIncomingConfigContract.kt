@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.ui.incoming
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
@@ -23,6 +24,7 @@ interface AccountIncomingConfigContract {
         val port: NumberInputField = NumberInputField(
             IncomingProtocolType.DEFAULT.toDefaultPort(IncomingProtocolType.DEFAULT.defaultConnectionSecurity),
         ),
+        val authenticationType: AuthenticationType = AuthenticationType.PasswordCleartext,
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
         val clientCertificate: String = "",
@@ -40,6 +42,7 @@ interface AccountIncomingConfigContract {
         data class ServerChanged(val server: String) : Event()
         data class SecurityChanged(val security: ConnectionSecurity) : Event()
         data class PortChanged(val port: Long?) : Event()
+        data class AuthenticationTypeChanged(val authenticationType: AuthenticationType) : Event()
         data class UsernameChanged(val username: String) : Event()
         data class PasswordChanged(val password: String) : Event()
         data class ClientCertificateChanged(val clientCertificate: String) : Event()

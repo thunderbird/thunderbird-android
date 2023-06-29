@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.incoming
 
+import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toImapDefaultPort
@@ -22,6 +23,7 @@ class AccountIncomingConfigStateTest {
                 server = StringInputField(),
                 security = ConnectionSecurity.DEFAULT,
                 port = NumberInputField(value = ConnectionSecurity.DEFAULT.toImapDefaultPort()),
+                authenticationType = AuthenticationType.PasswordCleartext,
                 username = StringInputField(),
                 password = StringInputField(),
                 clientCertificate = "",
