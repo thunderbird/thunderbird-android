@@ -13,7 +13,6 @@ import com.fsck.k9.mail.ssl.KeyStoreDirectoryProvider
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
-import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -29,11 +28,6 @@ val accountModule: Module = module {
 }
 
 val featureModule: Module = module {
-    // TODO move to network module
-    single<OkHttpClient> {
-        OkHttpClient()
-    }
-
     single<OAuthConfigurationFactory> { AppOAuthConfigurationFactory() }
 
     factory<KeyStoreDirectoryProvider> { AndroidKeyStoreDirectoryProvider(context = get()) }
