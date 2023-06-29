@@ -16,8 +16,4 @@ interface AccountSetupExternalContract {
     fun interface AccountOwnerNameProvider {
         suspend fun getOwnerName(): String?
     }
-
-    fun interface AccountSetupFinishedLauncher {
-        suspend fun launch(accountUuid: String)
-    }
 }
