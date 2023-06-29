@@ -136,7 +136,7 @@ internal fun AccountIncomingConfigContent(
 
                 item {
                     SelectInput(
-                        options = AuthenticationType.all(),
+                        options = AuthenticationType.incoming(),
                         optionToStringTransformation = { it.toResourceString(resources) },
                         selectedOption = state.authenticationType,
                         onOptionChange = { onEvent(Event.AuthenticationTypeChanged(it)) },

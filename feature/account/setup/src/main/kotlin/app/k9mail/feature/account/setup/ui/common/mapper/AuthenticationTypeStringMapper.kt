@@ -6,6 +6,9 @@ import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 
 internal fun AuthenticationType.toResourceString(resources: Resources): String {
     return when (this) {
+        AuthenticationType.None -> {
+            resources.getString(R.string.account_setup_authentication_none)
+        }
         AuthenticationType.PasswordCleartext -> {
             resources.getString(R.string.account_setup_authentication_password_cleartext)
         }

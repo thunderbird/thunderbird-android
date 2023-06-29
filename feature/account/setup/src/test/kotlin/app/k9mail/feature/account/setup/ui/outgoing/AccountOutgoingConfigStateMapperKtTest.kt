@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.outgoing
 
+import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
@@ -19,6 +20,7 @@ class AccountOutgoingConfigStateMapperKtTest {
             server = StringInputField(value = "smtp.example.org"),
             port = NumberInputField(value = 587),
             security = ConnectionSecurity.TLS,
+            authenticationType = AuthenticationType.PasswordCleartext,
             username = StringInputField(value = "user"),
             password = StringInputField(value = "password"),
             clientCertificate = "",

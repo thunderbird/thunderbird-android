@@ -36,6 +36,7 @@ internal class AccountOutgoingConfigViewModel(
             is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
             is Event.SecurityChanged -> updateSecurity(event.security)
             is Event.PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
+            is Event.AuthenticationTypeChanged -> updateState { it.copy(authenticationType = event.authenticationType) }
             is Event.UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
             is Event.PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
             is Event.ClientCertificateChanged -> updateState { it.copy(clientCertificate = event.clientCertificate) }

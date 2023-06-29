@@ -7,6 +7,7 @@
     <string name="account_setup_connection_security_none">None</string>
     <string name="account_setup_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_authentication_none">None</string>
     <string name="account_setup_authentication_password_cleartext">Normal password</string>
     <string name="account_setup_authentication_password_encrypted">Encrypted password</string>
     <string name="account_setup_authentication_client_certificate">Client certificate</string>
@@ -59,6 +60,7 @@
     <string name="account_setup_outgoing_config_server_label">Server</string>
     <string name="account_setup_outgoing_config_security_label">Security</string>
     <string name="account_setup_outgoing_config_port_label">Port</string>
+    <string name="account_setup_outgoing_config_authentication_label">Authentication</string>
     <string name="account_setup_outgoing_config_username_label">Username</string>
     <string name="account_setup_outgoing_config_client_certificate_label">Client certificate</string>
     <string name="account_setup_outgoing_config_loading_message">Checking outgoing server settings…</string>
