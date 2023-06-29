@@ -54,7 +54,7 @@ jobs:
 
       - id: upload
         name: NowSecure upload app
-        uses: nowsecure/nowsecure-action/upload-app@v3
+        uses: nowsecure/nowsecure-action/upload-app@v3.2
         with:
           platform_token: ${{ secrets.NS_TOKEN }}
           # TODO: Replace application path.
@@ -73,7 +73,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: NowSecure download report
-        uses: nowsecure/nowsecure-action/convert-sarif@v3
+        uses: nowsecure/nowsecure-action/convert-sarif@v3.2
         timeout-minutes: 30
         with:
           report_id: ${{ needs.scan.outputs.report_id }}
