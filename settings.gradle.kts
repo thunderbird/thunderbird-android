@@ -39,6 +39,7 @@ include(
 )
 
 include(
+    ":feature:launcher",
     ":feature:account:setup",
     ":feature:account:oauth",
     ":feature:onboarding",
