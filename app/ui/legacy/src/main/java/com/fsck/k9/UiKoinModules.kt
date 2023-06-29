@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import app.k9mail.autodiscovery.providersxml.autodiscoveryProvidersXmlModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
+import app.k9mail.feature.launcher.di.featureLauncherModule
 import com.fsck.k9.account.accountModule
 import com.fsck.k9.activity.activityModule
 import com.fsck.k9.contacts.contactsModule
@@ -42,4 +43,5 @@ val uiModules = listOf(
     messageDetailsUiModule,
     messageViewUiModule,
     identityUiModule,
+    featureLauncherModule,
 )

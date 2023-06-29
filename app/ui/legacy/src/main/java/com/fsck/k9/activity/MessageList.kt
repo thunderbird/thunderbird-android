@@ -28,6 +28,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
+import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.K9.SplitViewMode
@@ -153,7 +154,12 @@ open class MessageList :
         deleteIncompleteAccounts(accounts)
         val hasAccountSetup = accounts.any { it.isFinishedSetup }
         if (!hasAccountSetup) {
-            OnboardingActivity.launch(this)
+            val useNewOnboarding = true
+            if (useNewOnboarding) {
+                FeatureLauncherActivity.launchOnboarding(this)
+            } else {
+                OnboardingActivity.launch(this)
+            }
             finish()
             return
         }
