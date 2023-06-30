@@ -19,7 +19,7 @@ jobs:
         timeout-minutes: 30
         id: getreport
         with:
-          report_id: 8c7fdf66-b63f-11ed-ac54-d765fca77473
+          report_id: 9dc174fc-1746-11ee-b9c9-33379181e26c
           platform_token: ${{ secrets.NS_TOKEN }}
           # TODO: Replace the Group ID.
           group_id: "602abed9-4c66-453d-8431-da0195b682de"
