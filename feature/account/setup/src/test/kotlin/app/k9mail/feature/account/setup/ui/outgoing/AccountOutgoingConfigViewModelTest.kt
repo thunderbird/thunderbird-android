@@ -4,6 +4,7 @@ import app.cash.turbine.testIn
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
+import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
@@ -68,6 +69,17 @@ class AccountOutgoingConfigViewModelTest {
             initialState = State(),
             event = Event.PortChanged(456L),
             expectedState = State(port = NumberInputField(value = 456L)),
+            coroutineScope = backgroundScope,
+        )
+    }
+
+    @Test
+    fun `should change state when AuthenticationTypeChanged event is received`() = runTest {
+        eventStateTest(
+            viewModel = testSubject,
+            initialState = State(),
+            event = Event.AuthenticationTypeChanged(AuthenticationType.PasswordEncrypted),
+            expectedState = State(authenticationType = AuthenticationType.PasswordEncrypted),
             coroutineScope = backgroundScope,
         )
     }
