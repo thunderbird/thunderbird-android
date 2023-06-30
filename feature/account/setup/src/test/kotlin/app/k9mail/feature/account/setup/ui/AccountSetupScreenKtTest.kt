@@ -13,11 +13,9 @@ import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AccountSetupScreenKtTest : ComposeTest() {
 
     @Test
@@ -76,7 +74,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
         assertThat(onFinishCounter).isEqualTo(0)
         assertThat(onBackCounter).isEqualTo(0)
 
-        viewModel.effect(Effect.NavigateNext)
+        viewModel.effect(Effect.NavigateNext("accountUuid"))
 
         assertThat(onFinishCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(0)

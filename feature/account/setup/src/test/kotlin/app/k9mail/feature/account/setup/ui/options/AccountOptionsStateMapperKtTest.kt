@@ -1,0 +1,37 @@
+package app.k9mail.feature.account.setup.ui.options
+
+import app.k9mail.feature.account.setup.domain.entity.AccountOptions
+import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
+import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
+import app.k9mail.feature.account.setup.domain.input.StringInputField
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import org.junit.Test
+
+class AccountOptionsStateMapperKtTest {
+
+    @Test
+    fun `should map state to account options`() {
+        val state = AccountOptionsContract.State(
+            accountName = StringInputField("accountName"),
+            displayName = StringInputField("displayName"),
+            emailSignature = StringInputField("emailSignature"),
+            checkFrequency = EmailCheckFrequency.EVERY_2_HOURS,
+            messageDisplayCount = EmailDisplayCount.MESSAGES_100,
+            showNotification = true,
+        )
+
+        val result = state.toAccountOptions()
+
+        assertThat(result).isEqualTo(
+            AccountOptions(
+                accountName = "accountName",
+                displayName = "displayName",
+                emailSignature = "emailSignature",
+                checkFrequencyInMinutes = 120,
+                messageDisplayCount = 100,
+                showNotification = true,
+            ),
+        )
+    }
+}

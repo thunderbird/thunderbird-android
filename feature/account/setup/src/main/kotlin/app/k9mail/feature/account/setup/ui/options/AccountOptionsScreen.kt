@@ -1,10 +1,8 @@
 package app.k9mail.feature.account.setup.ui.options
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.common.mvi.observe
@@ -25,15 +23,10 @@ internal fun AccountOptionsScreen(
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             Effect.NavigateBack -> onBack()
-            Effect.NavigateNext -> {
-                Toast.makeText(context, "Input is valid", Toast.LENGTH_SHORT).show() // TODO remove
-                onNext()
-            }
+            Effect.NavigateNext -> onNext()
         }
     }
 

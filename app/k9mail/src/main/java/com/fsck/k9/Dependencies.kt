@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.ui.widget.list.messageListWidgetModule
+import com.fsck.k9.account.newAccountModule
 import com.fsck.k9.auth.AppOAuthConfigurationFactory
 import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
@@ -42,4 +43,5 @@ val appModules = listOf(
     resourcesModule,
     backendsModule,
     storageModule,
+    newAccountModule,
 )

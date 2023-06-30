@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import app.k9mail.feature.account.setup.navigation.accountSetupRoute
 import app.k9mail.feature.account.setup.navigation.navigateToAccountSetup
 import app.k9mail.feature.onboarding.navigation.NAVIGATION_ROUTE_ONBOARDING
+import app.k9mail.feature.onboarding.navigation.navigateToOnboarding
 import app.k9mail.feature.onboarding.navigation.onboardingRoute
 
 @Composable
@@ -26,7 +27,7 @@ fun FeatureNavHost(
         )
         accountSetupRoute(
             onBack = navController::popBackStack,
-            onFinish = { /* TODO */ },
+            onFinish = { navController.navigateToOnboarding() },
         )
     }
 }

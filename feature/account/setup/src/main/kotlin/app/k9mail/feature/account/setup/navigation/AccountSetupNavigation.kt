@@ -14,7 +14,7 @@ fun NavController.navigateToAccountSetup(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.accountSetupRoute(
     onBack: () -> Unit,
-    onFinish: () -> Unit,
+    onFinish: (String) -> Unit,
 ) {
     composable(route = NAVIGATION_ROUTE_ACCOUNT_SETUP) {
         AccountSetupScreen(

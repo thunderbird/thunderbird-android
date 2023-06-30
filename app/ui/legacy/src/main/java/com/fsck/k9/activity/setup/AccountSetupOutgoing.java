@@ -30,7 +30,7 @@ import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import app.k9mail.core.common.mail.Protocols;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.account.AccountCreatorHelper;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
@@ -53,7 +53,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
 
-    private final AccountCreator accountCreator = DI.get(AccountCreator.class);
+    private final AccountCreatorHelper accountCreatorHelper = DI.get(AccountCreatorHelper.class);
 
     private TextInputEditText mUsernameView;
     private TextInputEditText mPasswordView;
@@ -476,7 +476,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(String.valueOf(accountCreator.getDefaultPort(securityType, Protocols.SMTP)));
+        mPortView.setText(String.valueOf(accountCreatorHelper.getDefaultPort(securityType, Protocols.SMTP)));
         mPortView.addTextChangedListener(validationTextWatcher);
     }
 

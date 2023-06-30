@@ -16,7 +16,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Core
 import com.fsck.k9.EmailAddressValidator
 import com.fsck.k9.Preferences
-import com.fsck.k9.account.AccountCreator
+import com.fsck.k9.account.AccountCreatorHelper
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection
 import com.fsck.k9.helper.SimpleTextWatcher
 import com.fsck.k9.helper.Utility.requiredFieldValid
@@ -42,7 +42,7 @@ import org.koin.android.ext.android.inject
  */
 class AccountSetupBasics : K9Activity() {
     private val providersXmlDiscovery: ProvidersXmlDiscovery by inject()
-    private val accountCreator: AccountCreator by inject()
+    private val accountCreatorHelper: AccountCreatorHelper by inject()
     private val localFoldersCreator: SpecialLocalFoldersCreator by inject()
     private val preferences: Preferences by inject()
     private val emailValidator: EmailAddressValidator by inject()
@@ -258,7 +258,7 @@ class AccountSetupBasics : K9Activity() {
         val outgoingServerSettings = connectionSettings.outgoing.newPassword(password)
         account.outgoingServerSettings = outgoingServerSettings
 
-        account.deletePolicy = accountCreator.getDefaultDeletePolicy(incomingServerSettings.type)
+        account.deletePolicy = accountCreatorHelper.getDefaultDeletePolicy(incomingServerSettings.type)
 
         localFoldersCreator.createSpecialLocalFolders(account)
 
@@ -301,7 +301,7 @@ class AccountSetupBasics : K9Activity() {
 
     private fun createAccount(): Account {
         return preferences.newAccount().apply {
-            chipColor = accountCreator.pickColor()
+            chipColor = accountCreatorHelper.pickColor()
         }
     }
 

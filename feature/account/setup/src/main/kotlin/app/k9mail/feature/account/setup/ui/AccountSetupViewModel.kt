@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.setup.ui
 
+import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
@@ -10,20 +12,35 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.common.mapper.toIncomingConfigState
 import app.k9mail.feature.account.setup.ui.common.mapper.toOptionsState
 import app.k9mail.feature.account.setup.ui.common.mapper.toOutgoingConfigState
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
+import app.k9mail.feature.account.setup.ui.incoming.toServerSettings
+import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
+import app.k9mail.feature.account.setup.ui.options.toAccountOptions
+import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.setup.ui.outgoing.toServerSettings
+import kotlinx.coroutines.launch
 
 class AccountSetupViewModel(
+    private val createAccount: UseCase.CreateAccount,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     override fun event(event: Event) {
         when (event) {
-            is Event.OnAutoDiscoveryFinished -> handleAutoDiscoveryFinished(event.state)
+            is Event.OnAutoDiscoveryFinished -> onAutoDiscoveryFinished(event.state)
+            is Event.OnStateCollected -> onStateCollected(
+                autoDiscoveryState = event.autoDiscoveryState,
+                incomingState = event.incomingState,
+                outgoingState = event.outgoingState,
+                optionsState = event.optionsState,
+            )
+
             Event.OnBack -> onBack()
             Event.OnNext -> onNext()
         }
     }
 
-    private fun handleAutoDiscoveryFinished(autoDiscoveryState: AccountAutoDiscoveryContract.State) {
+    private fun onAutoDiscoveryFinished(autoDiscoveryState: AccountAutoDiscoveryContract.State) {
         emitEffect(Effect.UpdateIncomingConfig(autoDiscoveryState.toIncomingConfigState()))
         emitEffect(Effect.UpdateOutgoingConfig(autoDiscoveryState.toOutgoingConfigState()))
         emitEffect(Effect.UpdateOptions(autoDiscoveryState.toOptionsState()))
@@ -44,7 +61,7 @@ class AccountSetupViewModel(
             SetupStep.AUTO_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
             SetupStep.INCOMING_CONFIG -> changeToSetupStep(SetupStep.OUTGOING_CONFIG)
             SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.OPTIONS)
-            SetupStep.OPTIONS -> navigateNext()
+            SetupStep.OPTIONS -> onFinish()
         }
     }
 
@@ -56,11 +73,29 @@ class AccountSetupViewModel(
         }
     }
 
-    private fun navigateNext() {
-        // TODO: validate account
-
-        emitEffect(Effect.NavigateNext)
+    private fun onFinish() {
+        emitEffect(Effect.CollectExternalStates)
     }
+
+    private fun onStateCollected(
+        autoDiscoveryState: AccountAutoDiscoveryContract.State,
+        incomingState: AccountIncomingConfigContract.State,
+        outgoingState: AccountOutgoingConfigContract.State,
+        optionsState: AccountOptionsContract.State,
+    ) {
+        viewModelScope.launch {
+            val result = createAccount.execute(
+                emailAddress = autoDiscoveryState.emailAddress.value,
+                incomingServerSettings = incomingState.toServerSettings(),
+                outgoingServerSettings = outgoingState.toServerSettings(),
+                options = optionsState.toAccountOptions(),
+            )
+
+            navigateNext(result)
+        }
+    }
+
+    private fun navigateNext(accountUuid: String) = emitEffect(Effect.NavigateNext(accountUuid))
 
     private fun navigateBack() = emitEffect(Effect.NavigateBack)
 }
