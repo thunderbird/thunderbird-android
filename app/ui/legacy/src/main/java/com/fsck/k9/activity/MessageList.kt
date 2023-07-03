@@ -28,6 +28,8 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
+import app.k9mail.core.featureflag.FeatureFlagKey
+import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.K9
@@ -92,6 +94,7 @@ open class MessageList :
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val messagingController: MessagingController by inject()
     private val contactRepository: ContactRepository by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
@@ -154,10 +157,12 @@ open class MessageList :
         deleteIncompleteAccounts(accounts)
         val hasAccountSetup = accounts.any { it.isFinishedSetup }
         if (!hasAccountSetup) {
-            val useNewOnboarding = false
-            if (useNewOnboarding) {
+            featureFlagProvider.provide(FeatureFlagKey("new_onboarding")).onEnabled {
                 FeatureLauncherActivity.launchOnboarding(this)
-            } else {
+            }.onDisabled {
+                OnboardingActivity.launch(this)
+            }.onUnavailable {
+                Timber.d("Feature flag 'new_onboarding' is unavailable, falling back to old onboarding")
                 OnboardingActivity.launch(this)
             }
             finish()

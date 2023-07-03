@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
 
+    implementation(projects.core.featureflags)
     implementation(projects.feature.launcher)
     // TODO: Remove AccountOauth dependency
     implementation(projects.feature.account.oauth)

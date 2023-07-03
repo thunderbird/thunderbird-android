@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.backend.pop3)
     debugImplementation(projects.backend.demo)
 
+    implementation(projects.core.featureflags)
     implementation(projects.feature.launcher)
 
     // TODO remove account setup dependency
