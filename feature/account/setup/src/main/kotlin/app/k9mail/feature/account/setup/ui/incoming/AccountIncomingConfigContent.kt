@@ -155,13 +155,15 @@ internal fun AccountIncomingConfigContent(
                     )
                 }
 
-                item {
-                    PasswordInput(
-                        password = state.password.value,
-                        errorMessage = state.password.error?.toResourceString(resources),
-                        onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
-                        contentPadding = defaultItemPadding(),
-                    )
+                if (state.isPasswordFieldVisible) {
+                    item {
+                        PasswordInput(
+                            password = state.password.value,
+                            errorMessage = state.password.error?.toResourceString(resources),
+                            onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
+                            contentPadding = defaultItemPadding(),
+                        )
+                    }
                 }
 
                 item {

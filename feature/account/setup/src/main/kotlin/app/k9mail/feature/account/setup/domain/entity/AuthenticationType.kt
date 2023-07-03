@@ -2,12 +2,24 @@ package app.k9mail.feature.account.setup.domain.entity
 
 import kotlinx.collections.immutable.toImmutableList
 
-enum class AuthenticationType {
-    None,
-    PasswordCleartext,
-    PasswordEncrypted,
-    ClientCertificate,
-    OAuth2,
+enum class AuthenticationType(
+    val isPasswordRequired: Boolean,
+) {
+    None(
+        isPasswordRequired = false,
+    ),
+    PasswordCleartext(
+        isPasswordRequired = true,
+    ),
+    PasswordEncrypted(
+        isPasswordRequired = true,
+    ),
+    ClientCertificate(
+        isPasswordRequired = false,
+    ),
+    OAuth2(
+        isPasswordRequired = false,
+    ),
     ;
 
     companion object {
