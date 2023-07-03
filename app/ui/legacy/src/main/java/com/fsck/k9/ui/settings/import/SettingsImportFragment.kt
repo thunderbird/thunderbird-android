@@ -153,11 +153,16 @@ class SettingsImportFragment : Fragment() {
         }
     }
 
+    @Suppress("SwallowedException")
     private fun closeImportScreen(action: Action.Close) {
         if (action.importSuccess) {
             resultViewModel.setSettingsImportResult()
         }
-        findNavController().popBackStack()
+        try {
+            findNavController().popBackStack()
+        } catch (e: IllegalStateException) {
+            // Fragment does not have NavController
+        }
     }
 
     private fun pickDocument() {

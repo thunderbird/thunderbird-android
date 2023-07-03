@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import app.k9mail.feature.account.setup.navigation.accountSetupRoute
 import app.k9mail.feature.account.setup.navigation.navigateToAccountSetup
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.AccountSetupFinishedLauncher
+import app.k9mail.feature.launcher.FeatureLauncherExternalContract.ImportSettingsLauncher
 import app.k9mail.feature.onboarding.navigation.NAVIGATION_ROUTE_ONBOARDING
 import app.k9mail.feature.onboarding.navigation.onboardingRoute
 import org.koin.compose.koinInject
@@ -16,6 +17,7 @@ fun FeatureLauncherNavHost(
     navController: NavHostController,
     startDestination: String?,
     modifier: Modifier = Modifier,
+    importSettingsLauncher: ImportSettingsLauncher = koinInject(),
     accountSetupFinishedLauncher: AccountSetupFinishedLauncher = koinInject(),
 ) {
     NavHost(
@@ -25,7 +27,7 @@ fun FeatureLauncherNavHost(
     ) {
         onboardingRoute(
             onStart = { navController.navigateToAccountSetup() },
-            onImport = { /* TODO */ },
+            onImport = { importSettingsLauncher.launch() },
         )
         accountSetupRoute(
             onBack = navController::popBackStack,

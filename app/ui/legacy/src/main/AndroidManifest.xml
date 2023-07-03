@@ -5,7 +5,13 @@
 
     <application
         android:theme="@style/Theme.K9.Light"
-        android:supportsRtl="true" />
+        android:supportsRtl="true">
+
+        <activity
+            android:name="com.fsck.k9.activity.FragmentLauncherActivity"
+            />
+
+    </application>
 
     <queries>
         <intent>
