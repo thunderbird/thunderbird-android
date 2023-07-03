@@ -27,13 +27,6 @@ enum class AuthenticationType(
         val DEFAULT = PasswordCleartext
         fun all() = values().toList().toImmutableList()
 
-        fun incoming() = listOf(
-            PasswordCleartext,
-            PasswordEncrypted,
-            ClientCertificate,
-            OAuth2,
-        ).toImmutableList()
-
         fun outgoing() = all()
     }
 }
