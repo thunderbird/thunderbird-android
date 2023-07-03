@@ -2,7 +2,6 @@ package com.fsck.k9.account
 
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val newAccountModule = module {
@@ -18,13 +17,6 @@ val newAccountModule = module {
             localFoldersCreator = get(),
             preferences = get(),
             context = androidApplication(),
-        )
-    }
-
-    factory<AccountSetupExternalContract.AccountSetupFinishedLauncher> {
-        AccountSetupFinishedLauncher(
-            context = androidContext(),
-            preferences = get(),
         )
     }
 }

@@ -17,6 +17,9 @@ dependencies {
     implementation(projects.backend.pop3)
     debugImplementation(projects.backend.demo)
 
+    implementation(projects.feature.launcher)
+
+    // TODO remove account setup dependency
     implementation(projects.feature.account.setup)
 
     implementation(libs.androidx.appcompat)

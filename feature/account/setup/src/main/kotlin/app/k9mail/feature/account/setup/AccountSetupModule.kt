@@ -23,11 +23,17 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewMod
 import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
 import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator
+import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val featureAccountSetupModule: Module = module {
+
+    single<OkHttpClient> {
+        OkHttpClient()
+    }
+
     single<AutoDiscoveryService> {
         RealAutoDiscoveryService(
             okHttpClient = get(),
