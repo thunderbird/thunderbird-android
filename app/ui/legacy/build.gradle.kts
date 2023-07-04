@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.fastadapter.extensions.utils)
     implementation(libs.circleimageview)
     api(libs.appauth)
+    implementation(libs.androidx.core.splashscreen)
 
     implementation(libs.commons.io)
     implementation(libs.androidx.core.ktx)
