@@ -15,7 +15,7 @@ internal class MiniDnsMxResolver : MxResolver {
 
         return MxLookupResult(
             mxNames = mxNames,
-            isTrusted = result.isAuthenticData,
+            isTrusted = if (result.wasSuccessful()) result.isAuthenticData else false,
         )
     }
 }

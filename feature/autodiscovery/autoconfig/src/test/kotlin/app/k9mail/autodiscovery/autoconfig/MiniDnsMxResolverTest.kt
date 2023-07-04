@@ -6,7 +6,9 @@ import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
 import assertk.assertions.extracting
 import assertk.assertions.index
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import kotlin.test.Ignore
 import kotlin.test.Test
 
@@ -30,5 +32,16 @@ class MiniDnsMxResolverTest {
                 "alt3.aspmx.l.google.com",
             )
         }
+    }
+
+    @Test
+    @Ignore("Requires internet")
+    fun `MX lookup for non-existent domain`() {
+        val domain = "test.invalid".toDomain()
+
+        val result = resolver.lookup(domain)
+
+        assertThat(result.mxNames).isEmpty()
+        assertThat(result.isTrusted).isFalse()
     }
 }
