@@ -1,19 +1,19 @@
-package app.k9mail.feature.account.setup.ui.common.item
+package app.k9mail.feature.account.common.ui.item
 
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
+import app.k9mail.feature.account.common.ui.view.SuccessView
 
 @Composable
-internal fun LazyItemScope.LoadingItem(
+fun LazyItemScope.SuccessItem(
+    message: String,
     modifier: Modifier = Modifier,
-    message: String? = null,
 ) {
     ListItem(
         modifier = modifier,
     ) {
-        LoadingView(
+        SuccessView(
             message = message,
         )
     }

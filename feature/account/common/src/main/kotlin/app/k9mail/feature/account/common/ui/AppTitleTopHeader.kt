@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.common
+package app.k9mail.feature.account.common.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -19,10 +18,10 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline2
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
-import app.k9mail.feature.account.setup.R.string
 
 @Composable
-internal fun AccountSetupTopHeader(
+fun AppTitleTopHeader(
+    title: String,
     modifier: Modifier = Modifier,
 ) {
     ResponsiveWidthContainer(
@@ -53,7 +52,7 @@ internal fun AccountSetupTopHeader(
             TextHeadline2(
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(stringResource(id = string.account_setup_title))
+                        append(title)
                     }
                 },
             )
@@ -63,8 +62,8 @@ internal fun AccountSetupTopHeader(
 
 @Preview
 @Composable
-internal fun AccountSetupTopHeaderPreview() {
+internal fun AppTitleTopHeaderPreview() {
     PreviewWithThemes {
-        AccountSetupTopHeader()
+        AppTitleTopHeader("Title")
     }
 }

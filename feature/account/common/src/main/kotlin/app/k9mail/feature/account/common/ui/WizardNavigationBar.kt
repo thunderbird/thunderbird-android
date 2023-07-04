@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.common
+package app.k9mail.feature.account.common.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,7 +15,7 @@ import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 
 @Composable
-internal fun AccountSetupBottomBar(
+fun WizardNavigationBar(
     nextButtonText: String,
     backButtonText: String,
     onNextClick: () -> Unit,
@@ -52,9 +52,9 @@ internal fun AccountSetupBottomBar(
 
 @DevicePreviews
 @Composable
-internal fun AccountSetupBottomBarK9Preview() {
+internal fun WizardNavigationBarK9Preview() {
     K9Theme {
-        AccountSetupBottomBar(
+        WizardNavigationBar(
             nextButtonText = "Next",
             backButtonText = "Back",
             onNextClick = {},
@@ -65,9 +65,9 @@ internal fun AccountSetupBottomBarK9Preview() {
 
 @DevicePreviews
 @Composable
-internal fun AccountSetupBottomBarThunderbirdPreview() {
+internal fun WizardNavigationBarThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountSetupBottomBar(
+        WizardNavigationBar(
             nextButtonText = "Next",
             backButtonText = "Back",
             onNextClick = {},

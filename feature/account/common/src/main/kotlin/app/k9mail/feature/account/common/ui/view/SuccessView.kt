@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.common.view
+package app.k9mail.feature.account.common.ui.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +17,7 @@ import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
 @Composable
-fun SuccessView(
+internal fun SuccessView(
     message: String,
     modifier: Modifier = Modifier,
 ) {
