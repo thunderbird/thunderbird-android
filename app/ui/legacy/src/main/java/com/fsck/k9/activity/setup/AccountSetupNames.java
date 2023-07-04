@@ -14,15 +14,21 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.ui.permissions.K9PermissionUiHelper;
+import com.fsck.k9.ui.permissions.Permission;
+import com.fsck.k9.ui.permissions.PermissionUiHelper;
 
-@Deprecated(since = "New account setup flow")
-public class AccountSetupNames extends K9Activity implements OnClickListener {
+public class AccountSetupNames extends K9Activity implements OnClickListener, PermissionUiHelper,
+    ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String EXTRA_ACCOUNT = "account";
 
     private EditText mDescription;
@@ -32,6 +38,8 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
     private Account mAccount;
 
     private Button mDoneButton;
+
+    private final PermissionUiHelper permissionUiHelper = new K9PermissionUiHelper(this);
 
     public static void actionSetNames(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupNames.class);
@@ -90,13 +98,42 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         mAccount.setSenderName(mName.getText().toString());
         mAccount.markSetupFinished();
         Preferences.getPreferences().saveAccount(mAccount);
-        finishAffinity();
-        MessageList.launch(this, mAccount);
+        checkAndRequestPermissions();
     }
 
     public void onClick(View v) {
         if (v.getId() == R.id.done) {
             onNext();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Permission.READ_CONTACTS.getRequestCode()) {
+            finishAffinity();
+            MessageList.launch(this, mAccount);
+        }
+    }
+
+    private void checkAndRequestPermissions() {
+        if (!hasPermission(Permission.READ_CONTACTS)) {
+            requestPermissionOrShowRationale(Permission.READ_CONTACTS);
+        }
+    }
+
+    @Override
+    public boolean hasPermission(@NonNull Permission permission) {
+        return permissionUiHelper.hasPermission(permission);
+    }
+
+    @Override
+    public void requestPermissionOrShowRationale(@NonNull Permission permission) {
+        permissionUiHelper.requestPermissionOrShowRationale(permission);
+    }
+
+    @Override
+    public void requestPermission(@NonNull Permission permission) {
+        permissionUiHelper.requestPermission(permission);
     }
 }
