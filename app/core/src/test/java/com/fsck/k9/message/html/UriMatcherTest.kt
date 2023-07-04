@@ -5,6 +5,7 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEqualTo
+import kotlin.test.assertFalse
 import org.junit.Test
 
 class UriMatcherTest {
@@ -80,6 +81,44 @@ class UriMatcherTest {
             "http://uri1.example.org",
             "http://uri2.example.org/path",
         )
+    }
+
+    @Test
+    fun textIsValidHttpUri() {
+        assertPastedUriFound(
+            "https://github.com",
+        )
+    }
+
+    @Test
+    fun textIsValidMailToUri() {
+        assertPastedUriFound(
+            "mailto:mail@email.com",
+        )
+    }
+
+    @Test
+    fun invalidHttpUriWithSpaceInUri() {
+        assertPastedUriNotFound(
+            "https:// github.com",
+        )
+    }
+
+    @Test
+    fun invalidMailToUriPrefixedWithSpace() {
+        assertPastedUriNotFound(
+            " mailto:mail@email.com",
+        )
+    }
+
+    private fun assertPastedUriFound(text: String) {
+        val result = UriMatcher.isValidUri(text)
+        assert(result)
+    }
+
+    private fun assertPastedUriNotFound(text: String) {
+        val result = UriMatcher.isValidUri(text)
+        assertFalse(result)
     }
 
     private fun assertNoMatch(text: String) {

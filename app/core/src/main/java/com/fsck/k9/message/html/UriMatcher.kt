@@ -31,4 +31,20 @@ object UriMatcher {
             parser.parseUri(text, startIndex)
         }.filterNotNull().toList()
     }
+
+    fun isValidUri(text: CharSequence): Boolean {
+        if (text.toString().contains(" ")) return false
+
+        val startIndex = 0
+        val matchResult = URI_SCHEME.matchAt(text, startIndex)
+        return if (matchResult != null) {
+            val matchGroup = matchResult.groups[1]!!
+            val scheme = matchGroup.value.lowercase()
+            val parser = SUPPORTED_URIS[scheme]
+            val uriMatch = parser?.parseUri(text, startIndex)
+            uriMatch != null
+        } else {
+            false
+        }
+    }
 }

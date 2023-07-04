@@ -105,6 +105,7 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.html.UriMatcher;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
@@ -363,7 +364,25 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         subjectView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
-        messageContentView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        TextWatcher messageContentViewTextWatcher = new SimpleTextWatcher(){
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                changesMadeSinceLastSave = true;
+                int smallestSchemaSize = 5;
+                int addedCharactersLength = 2;
+                if (count >= smallestSchemaSize) {
+                    CharSequence pastedText = s.subSequence(start, start + count);
+                    if (UriMatcher.INSTANCE.isValidUri(pastedText)) {
+                        String newText = addAngleBracketsToPastedUri(s, start, count, pastedText);
+                        messageContentView.removeTextChangedListener(this);
+                        messageContentView.setText(newText);
+                        messageContentView.setSelection(start + count + addedCharactersLength);
+                        messageContentView.addTextChangedListener(this);
+                    }
+                }
+            }
+        };
+        messageContentView.addTextChangedListener(messageContentViewTextWatcher);
 
         /*
          * We set this to invisible by default. Other methods will turn it back on if it's
@@ -488,6 +507,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (savedInstanceState == null) {
             checkAndRequestPermissions();
         }
+    }
+
+    private String addAngleBracketsToPastedUri(CharSequence text,
+                                               int textStartPosition,
+                                               int addedTextLength,
+                                               CharSequence pastedText) {
+        String newLinkText = "<" + pastedText + ">";
+        CharSequence startPart = text.subSequence(0, textStartPosition);
+        CharSequence lastPart = text.subSequence(textStartPosition + addedTextLength, text.length());
+        return startPart + newLinkText + lastPart;
     }
 
     /**
