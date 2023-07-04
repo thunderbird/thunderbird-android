@@ -20,6 +20,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.FragmentManager
@@ -142,6 +143,7 @@ open class MessageList :
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
 
         // If the app's main task was not created using the default launch intent (e.g. from a notification, a widget,
         // or a shortcut), using the app icon to "launch" the app will create a new MessageList instance instead of only
