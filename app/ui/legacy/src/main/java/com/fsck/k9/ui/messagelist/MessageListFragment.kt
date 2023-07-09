@@ -345,6 +345,19 @@ class MessageListFragment :
         )
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                if (currentFolder?.loading == false) {
+                    if (linearLayoutManager.findLastCompletelyVisibleItemPosition() == adapter.itemCount - 1) {
+                        onFooterClicked()
+                        currentFolder?.loading = true
+                    }
+                }
+            }
+        })
+
         recyclerView.adapter = adapter
 
         this.recyclerView = recyclerView
