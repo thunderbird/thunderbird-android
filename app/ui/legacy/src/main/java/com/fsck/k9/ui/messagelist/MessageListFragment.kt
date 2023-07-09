@@ -491,7 +491,7 @@ class MessageListFragment :
         fragmentListener.setMessageListProgressEnabled(progress)
     }
 
-    override fun onFooterClicked() {
+    fun onFooterClicked() {
         val currentFolder = this.currentFolder ?: return
 
         if (currentFolder.moreMessages && !localSearch.isManualSearch) {

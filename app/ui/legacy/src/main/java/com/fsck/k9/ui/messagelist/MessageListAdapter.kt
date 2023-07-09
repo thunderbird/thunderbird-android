@@ -199,10 +199,6 @@ class MessageListAdapter internal constructor(
         true
     }
 
-    private val footerClickListener = OnClickListener {
-        listItemListener.onFooterClicked()
-    }
-
     private val starClickListener = OnClickListener { view: View ->
         val parentView = view.parent as View
         val messageListItem = getItemFromView(parentView) ?: return@OnClickListener
@@ -339,7 +335,6 @@ class MessageListAdapter internal constructor(
 
     private fun createFooterViewHolder(parent: ViewGroup): MessageListViewHolder {
         val view = layoutInflater.inflate(R.layout.message_list_item_footer, parent, false)
-        view.setOnClickListener(footerClickListener)
         return FooterViewHolder(view)
     }
 
@@ -615,5 +610,4 @@ interface MessageListItemActionListener {
     fun onMessageClicked(messageListItem: MessageListItem)
     fun onToggleMessageSelection(item: MessageListItem)
     fun onToggleMessageFlag(item: MessageListItem)
-    fun onFooterClicked()
 }
