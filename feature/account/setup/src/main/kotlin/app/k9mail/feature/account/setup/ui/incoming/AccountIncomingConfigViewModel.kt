@@ -69,12 +69,20 @@ internal class AccountIncomingConfigViewModel(
 
     private fun updateProtocolType(protocolType: IncomingProtocolType) {
         updateState {
+            val allowedAuthenticationTypesForNewProtocol = protocolType.allowedAuthenticationTypes
+            val newAuthenticationType = if (it.authenticationType in allowedAuthenticationTypesForNewProtocol) {
+                it.authenticationType
+            } else {
+                allowedAuthenticationTypesForNewProtocol.first()
+            }
+
             it.copy(
                 protocolType = protocolType,
                 security = protocolType.defaultConnectionSecurity,
                 port = it.port.updateValue(
                     protocolType.toDefaultPort(protocolType.defaultConnectionSecurity),
                 ),
+                authenticationType = newAuthenticationType,
             )
         }
     }

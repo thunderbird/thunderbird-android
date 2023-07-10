@@ -26,7 +26,6 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.ui.common.item.ErrorItem
@@ -136,7 +135,7 @@ internal fun AccountIncomingConfigContent(
 
                 item {
                     SelectInput(
-                        options = AuthenticationType.incoming(),
+                        options = state.allowedAuthenticationTypes,
                         optionToStringTransformation = { it.toResourceString(resources) },
                         selectedOption = state.authenticationType,
                         onOptionChange = { onEvent(Event.AuthenticationTypeChanged(it)) },
@@ -155,13 +154,15 @@ internal fun AccountIncomingConfigContent(
                     )
                 }
 
-                item {
-                    PasswordInput(
-                        password = state.password.value,
-                        errorMessage = state.password.error?.toResourceString(resources),
-                        onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
-                        contentPadding = defaultItemPadding(),
-                    )
+                if (state.isPasswordFieldVisible) {
+                    item {
+                        PasswordInput(
+                            password = state.password.value,
+                            errorMessage = state.password.error?.toResourceString(resources),
+                            onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
+                            contentPadding = defaultItemPadding(),
+                        )
+                    }
                 }
 
                 item {
